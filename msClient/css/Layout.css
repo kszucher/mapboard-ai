@@ -1,0 +1,73 @@
+html, body, div, canvas, table, td, tr {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+[contenteditable="true"]:focus {
+    outline: none;
+}
+#Test
+{
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    white-space: nowrap; /* Thanks to Herb Caudill comment */
+}
+.katex {
+    display: inline-block ;
+}
+
+
+
+#wrapper{
+}
+#header {
+    position:fixed;
+    /*top:0;*/
+    width:100%;
+    z-index:999;
+    background: #747CA8;
+    color:#fff;
+    height:96px;
+    left:0;
+}
+#header-columns{
+    display: flex;
+    flex:1;
+}
+#header-main{
+    background: #747CA8;
+    width: 1366px;
+}
+#header-sidebar-left, #header-sidebar-right{
+    flex: 1;
+    background: #747CA8;
+}
+#left,#right {
+    background:#ccc;
+    height:100%;
+    position:fixed;
+    top:96px;
+    /*z-index:999;*/
+    width:calc(50% - 683px);
+}
+#left {
+    left:0;
+}
+#right {
+    right:0;
+}
+#center {
+    position:relative;
+    top:78px;
+    left:calc(50% - 683px);
+    width: 1366px;
+    height:100%;
+}
+#mapDiv{
+    background:#fbfafc;
+}
+#mapCanvas{
+    position:absolute;
+}

@@ -1,0 +1,59 @@
+import {mapref} from "./Map";
+import {mapDivRemove} from "./MapDivRemove";
+
+export function structDeleteReselect(sc) {
+    // calculate jumpback
+    let lastRef = sc.lastRef;
+    let lastParentRef = mapref(lastRef.parentPath);
+    let lastParentRefChildCntr = lastParentRef.s.length;
+    let lastParentRefDelChildCntr = 0;
+    for (let i = lastRef.index; i > - 1; i--) {
+        if (lastParentRef.s[i].selected > 0) {
+            lastParentRefDelChildCntr++;
+        }
+    }
+
+    // delete
+    for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
+        let currRef = mapref(sc.structSelectedPathList[i]);
+        if (currRef.isRoot === 0) {
+            let currParentRef = mapref(currRef.parentPath);
+            mapDivRemove.start(currParentRef.s[currRef.index]);
+            currParentRef.s.splice(currRef.index, 1);
+        }
+    }
+
+    // reselect on jumpback
+    if (lastRef.isRoot === 0) {
+        if (lastParentRefChildCntr === lastParentRefDelChildCntr) {
+            lastParentRef.selected = 1;
+        }
+        else {
+            if (lastRef.index === 0) {
+                if (lastParentRef.s.length > 0) {
+                    lastParentRef.s[0].selected = 1;
+                } else {
+                    lastParentRef.selected = 1;
+                }
+            }
+            else {
+                lastParentRef.s[lastRef.index - lastParentRefDelChildCntr].selected = 1;
+            }
+        }
+    }
+}
+
+export function cellBlockDeleteReselect (lastRef) {
+    let lastParentRef = mapref(lastRef.parentPath);
+    let rcSelected = checkSelection(lastParentRef);
+    if (rcSelected[0]) {
+        lastParentRef.c.splice(lastRef.index[0], 1);
+    }
+    if (rcSelected[1]) {
+        for (let i = 0; i < lastParentRef.c.length; i++) {
+            lastParentRef.c[i].splice(lastRef.index[1], 1);
+        }
+    }
+    // TODO better after deletion rules
+    lastParentRef.selected = 1;
+}
