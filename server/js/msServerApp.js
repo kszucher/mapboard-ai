@@ -96,6 +96,8 @@ async function mongoFunction(c2s, operation) {
         const collectionUsers =     client.db("app").collection("users");
         const collectionMaps =      client.db("app").collection("maps1v1");
 
+        // ha MINDENKÉPP az lesz, hogy mapet csinálok vagy nem, akkor egyértelműen
+
 
         switch (operation) {
             case 'getUserMaps': {

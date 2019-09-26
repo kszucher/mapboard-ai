@@ -7,17 +7,20 @@ export function structInsert(lastRef, direction) {
     let parentRef = mapref(lastRef.parentPath);
     if (direction === 'UP') {
         parentRef.s.splice(lastRef.index, 0, getDefaultNode({
-            'selected': 1
+            'selected': 1,
+            'taskStatus': parentRef.taskStatus
         }))
     }
     if (direction === 'DOWN') {
         parentRef.s.splice(lastRef.index + 1, 0, getDefaultNode({
-            'selected': 1
+            'selected': 1,
+            'taskStatus': parentRef.taskStatus
         }));
     }
     else if (direction === 'RIGHT') {
         lastRef.s.splice(lastRef.s.length, 0, getDefaultNode({
-            'selected': 1
+            'selected': 1,
+            'taskStatus': parentRef.taskStatus
         }));
     }
 }

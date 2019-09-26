@@ -1,5 +1,6 @@
 import {mapref} from "./Map";
 import {mapDivRemove} from "./MapDivRemove";
+import {copy} from "./Utils";
 
 export function structDeleteReselect(sc) {
     // calculate jumpback
@@ -18,6 +19,8 @@ export function structDeleteReselect(sc) {
         let currRef = mapref(sc.structSelectedPathList[i]);
         if (currRef.isRoot === 0) {
             let currParentRef = mapref(currRef.parentPath);
+            currParentRef.taskStatus = currRef.taskStatus;
+            currParentRef.taskStatusInherited = 0;
             mapDivRemove.start(currParentRef.s[currRef.index]);
             currParentRef.s.splice(currRef.index, 1);
         }

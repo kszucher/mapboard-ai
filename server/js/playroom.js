@@ -12,6 +12,16 @@ async function mongoFunction() {
 
         let username = 'a591e739';
 
+
+
+        // USUAL steps
+        // 1. create backup
+        // 2. do some query
+        // 3. do modification based on query
+        // 4. test
+
+
+
         let currUser = await collectionUsers.findOne({id: username});
         
         let mapIdList = currUser.headerMaps;
