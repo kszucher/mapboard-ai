@@ -34,7 +34,7 @@ export function loadMap(mapStorage) {
         data:                                mapAssembly((mapStorage.data)),
         // saveNever
         defaultH:                           mapStorage.hasTasks? 30:20,
-        sLineDeltaXDefault:                 20,
+        sLineDeltaXDefault:                 mapStorage.hasTasks? 30:20,
         clipboard:                          getDefaultNode(),
         filter:                             [],
         deepestSelectablePath:              [],

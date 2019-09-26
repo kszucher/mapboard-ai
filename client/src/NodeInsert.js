@@ -20,7 +20,7 @@ export function structInsert(lastRef, direction) {
     else if (direction === 'RIGHT') {
         lastRef.s.splice(lastRef.s.length, 0, getDefaultNode({
             'selected': 1,
-            'taskStatus': parentRef.taskStatus
+            'taskStatus': lastRef.taskStatus
         }));
     }
 }
