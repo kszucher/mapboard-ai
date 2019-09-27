@@ -115,7 +115,7 @@ class MapMeasure {
                         cm.sTextWidth =                     getTextWidthDOM(cm.content, cm.sTextFontSize);
                         cm.sTextWidthShouldCalculate =      0;
                     }
-                    cm.selfW =                              cm.sTextWidth;
+                    cm.selfW =                              cm.sTextWidth + 2*mapMem.padding;
                 }
                 else {
                     cm.selfW =                              cm.selfWidthOverride;

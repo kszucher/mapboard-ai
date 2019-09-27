@@ -18,9 +18,9 @@ class MapCanvasVisualize {
             canvasContext.beginPath();
             canvasContext.strokeStyle =                 cm.lineColor;
             canvasContext.lineWidth =                   1;
-            canvasContext.moveTo(                       cm.parentNodeEndX + mapMem.padding,                             cm.parentNodeEndY);
-            canvasContext.bezierCurveTo(                cm.parentNodeEndX + mapMem.padding + cm.lineDeltaX *1/4,        cm.parentNodeEndY,
-                                                        cm.parentNodeEndX + mapMem.padding + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
+            canvasContext.moveTo(                       cm.parentNodeEndX ,                             cm.parentNodeEndY);
+            canvasContext.bezierCurveTo(                cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY,
+                                                        cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
                                                         cm.nodeStartX,                                                  cm.nodeStartY);
             canvasContext.stroke();
         }
@@ -68,19 +68,19 @@ class MapCanvasVisualize {
                     cm.lineColor =                      cm.polygonBorderColor;
                 }
 
-                if (cm.ellipseFill === 1) {
-                    paintPolygon(
-                        canvasContext,
-                        cm.ellipseBorderColor,
-                        cm.ellipseFillColor,
-                        cm.ellipseLineWidth,
-                        [
-                                                        [cm.centerX - cm.selfW/2 - -1,                  cm.centerY + cm.selfH/2 + -1],
-                                                        [cm.centerX + cm.selfW/2 + -1,                  cm.centerY + cm.selfH/2 + -1],
-                                                        [cm.centerX + cm.selfW/2 + -1,                  cm.centerY - cm.selfH/2 - -1],
-                                                        [cm.centerX - cm.selfW/2 - -1,                  cm.centerY - cm.selfH/2 - -1],
-                        ])
-                }
+                // if (cm.ellipseFill === 1) {
+                //     paintPolygon(
+                //         canvasContext,
+                //         cm.ellipseBorderColor,
+                //         cm.ellipseFillColor,
+                //         cm.ellipseLineWidth,
+                //         [
+                //                                         [cm.centerX - cm.selfW/2 - -1,                  cm.centerY + cm.selfH/2 + -1],
+                //                                         [cm.centerX + cm.selfW/2 + -1,                  cm.centerY + cm.selfH/2 + -1],
+                //                                         [cm.centerX + cm.selfW/2 + -1,                  cm.centerY - cm.selfH/2 - -1],
+                //                                         [cm.centerX - cm.selfW/2 - -1,                  cm.centerY - cm.selfH/2 - -1],
+                //         ])
+                // }
             }
         }
 

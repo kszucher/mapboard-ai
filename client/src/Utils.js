@@ -121,7 +121,7 @@ export function getTextWidthDOM(text, fontSize) {
     var element = document.getElementById("Test");
     element.parentNode.removeChild(element);
 
-    return width + 10;
+    return width + 2;
 }
 
 // dec2hex :: Integer -> String

@@ -17,10 +17,13 @@ class MapDivVisualize {
                 let nextStyle = {
                     left:                                   cm.nodeStartX                                                                           + 'px',
                     top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2 - mapMem.padding    + 'px',
+                    width:                                  cm.selfW                                                            - mapMem.padding    + 'px',
                     height:                                 cm.selfH                                                            - mapMem.padding    + 'px',
-                    width:                                  cm.selfW                                                                                + 'px',
                     color:                                  cm.sTextColor,
-                };
+                    backgroundColor:                        cm.ellipseFillColor,
+                    // borderColor: '#ff0000'
+
+            };
 
                 // console.log(cm.selfH)
 
@@ -119,7 +122,6 @@ class MapDivVisualize {
                         div.style.fontFamily =              'Roboto';
                         div.style.fontSize =                cm.sTextFontSize        + 'px';
                         div.style.cursor =                  'default';
-                        div.style.backgroundColor =         '#d4ebfe';
                         div.style.borderRadius =            '8px'
 
                         // TODO multiline
