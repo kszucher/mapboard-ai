@@ -1,5 +1,5 @@
 import {mapMem}                                             from "./Map";
-import {genHash, getLatexString, setEndOfContenteditable}   from "./Utils";
+import {genHash, getLatexString, setEndOfContenteditable, copy}   from "./Utils";
 import {hasCell}                                            from "./Node";
 
 class MapDivVisualize {
@@ -14,7 +14,14 @@ class MapDivVisualize {
 
             }
             else {
-                // div create
+                let nextStyle = {
+                    left:                                   cm.nodeStartX                                                           + 'px',
+                    top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2     + 'px',
+                    height:                                 cm.selfH                                                                + 'px',
+                    width:                                  cm.selfW                                                                + 'px',
+                    color:                                  cm.sTextColor,
+                };
+
                 let div;
                 if (cm.isDivAssigned === 0) {
                     cm.isDivAssigned =                      1;
@@ -31,27 +38,39 @@ class MapDivVisualize {
 
                     div.appendChild(document.createTextNode(''));
                     document.getElementById('mapDiv').appendChild(div);
+
+                    for (let i = 0; i < Object.keys(nextStyle).length; i++) {
+                        let styleName = Object.keys(nextStyle)[i];
+                        if (nextStyle[styleName] !==        mapMem.divData[cm.divId].style[styleName]) {
+                            div.style[styleName] =          nextStyle[styleName];
+                        }
+                    }
                 }
                 else {
                     div =                                   document.getElementById(cm.divId);
-                }
 
-                // div update
-                let nextStyle = {
-                    left:                                   cm.nodeStartX                                                           + 'px',
-                    top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2     + 'px',
-                    height:                                 cm.selfH                                                                + 'px',
-                    width:                                  cm.selfW                                                                + 'px',
-                    color:                                  cm.sTextColor,
-                };
+                    for (let i = 0; i < Object.keys(nextStyle).length; i++) {
+                        let styleName = Object.keys(nextStyle)[i];
+                        if (styleName !== 'left' && styleName !== 'top') {
+                            if (nextStyle[styleName] !==    mapMem.divData[cm.divId].style[styleName]) {
+                                div.style[styleName] =      nextStyle[styleName];
+                            }
+                        }
+                    }
 
-                for (let i = 0; i < Object.keys(nextStyle).length; i++) {
-                    let styleName = Object.keys(nextStyle)[i];
-                    if (nextStyle[styleName] !== mapMem.divData[cm.divId].style[styleName]) {
-                        mapMem.divData[cm.divId].style[styleName] = nextStyle[styleName];
-                        div.style[styleName] =                      nextStyle[styleName];
+                    let leftDelta = (parseInt(div.style.left, 10) - parseInt(nextStyle.left));
+                    let topDelta = (parseInt(div.style.top, 10) - parseInt(nextStyle.top));
+
+                    if (leftDelta !== 0 || topDelta !== 0 ) {
+                        div.style.transform =               "translate(" + leftDelta + ',' + topDelta + ")";
+                        div.style.transition =              '0.5s ease-out';
+
+                        div.style.left =                    nextStyle.left;
+                        div.style.top =                     nextStyle.top;
                     }
                 }
+
+                mapMem.divData[cm.divId].style = copy(nextStyle);
 
                 // content
                 // if (cm.content.split('.').pop() === 'jpg' || cm.content.split('.').pop() === 'noun') {
@@ -112,7 +131,6 @@ class MapDivVisualize {
                         setEndOfContenteditable(div);
                     }
                 }
-
             }
         }
 
