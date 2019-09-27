@@ -1,5 +1,5 @@
 import {mapMem}                                             from "./Map";
-import {genHash, getLatexString, setEndOfContenteditable, copy}   from "./Utils";
+import {genHash, getLatexString, setEndOfContenteditable, copy, getBgc} from "./Utils";
 import {hasCell}                                            from "./Node";
 
 class MapDivVisualize {
@@ -20,7 +20,7 @@ class MapDivVisualize {
                     width:                                  cm.selfW                                                            - mapMem.padding    + 'px',
                     height:                                 cm.selfH                                                            - mapMem.padding    + 'px',
                     color:                                  cm.sTextColor,
-                    backgroundColor:                        cm.ellipseFillColor,
+                    backgroundColor:                        cm.ellipseFill? cm.ellipseFillColor : getBgc(),
                     // borderColor: '#ff0000'
 
             };
