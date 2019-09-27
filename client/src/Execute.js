@@ -251,10 +251,10 @@ export function execute(command) {
 
                 tmpDiv = document.createElement('div');
 
-                tmpDiv.style.paddingLeft =   4 +  'px';
-                tmpDiv.style.paddingBottom = 0 +  'px';
-                tmpDiv.style.fontSize =      14 + 'px';
-                tmpDiv.style.lineHeight =    14 + 'px';
+                tmpDiv.style.paddingLeft =              mapMem.padding + 'px';
+                tmpDiv.style.paddingTop =               mapMem.padding + 'px';
+                tmpDiv.style.fontSize =                 14 + 'px';
+                tmpDiv.style.lineHeight =               14 + 'px';
 
                 document.getElementById('dm').appendChild(tmpDiv);
 

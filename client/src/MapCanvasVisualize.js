@@ -18,10 +18,10 @@ class MapCanvasVisualize {
             canvasContext.beginPath();
             canvasContext.strokeStyle =                 cm.lineColor;
             canvasContext.lineWidth =                   1;
-            canvasContext.moveTo(                       cm.parentNodeEndX,                              cm.parentNodeEndY);
-            canvasContext.bezierCurveTo(                cm.parentNodeEndX + cm.lineDeltaX / 2,          cm.parentNodeEndY,
-                                                        cm.parentNodeEndX + cm.lineDeltaX / 2,          cm.parentNodeEndY + cm.lineDeltaY,
-                                                        cm.nodeStartX,                                  cm.nodeStartY);
+            canvasContext.moveTo(                       cm.parentNodeEndX + mapMem.padding,                             cm.parentNodeEndY);
+            canvasContext.bezierCurveTo(                cm.parentNodeEndX + mapMem.padding + cm.lineDeltaX *1/4,        cm.parentNodeEndY,
+                                                        cm.parentNodeEndX + mapMem.padding + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
+                                                        cm.nodeStartX,                                                  cm.nodeStartY);
             canvasContext.stroke();
         }
 

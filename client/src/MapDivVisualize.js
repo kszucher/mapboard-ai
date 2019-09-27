@@ -15,12 +15,14 @@ class MapDivVisualize {
             }
             else {
                 let nextStyle = {
-                    left:                                   cm.nodeStartX                                                           + 'px',
-                    top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2     + 'px',
-                    height:                                 cm.selfH                                                                + 'px',
-                    width:                                  cm.selfW                                                                + 'px',
+                    left:                                   cm.nodeStartX                                                                           + 'px',
+                    top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2 - mapMem.padding    + 'px',
+                    height:                                 cm.selfH                                                            - mapMem.padding    + 'px',
+                    width:                                  cm.selfW                                                                                + 'px',
                     color:                                  cm.sTextColor,
                 };
+
+                // console.log(cm.selfH)
 
                 let div;
                 if (cm.isDivAssigned === 0) {
@@ -67,6 +69,7 @@ class MapDivVisualize {
 
                         div.style.left =                    nextStyle.left;
                         div.style.top =                     nextStyle.top;
+
                     }
                 }
 
@@ -90,7 +93,8 @@ class MapDivVisualize {
                     if (cm.isEquationAssigned === 0) {
                         cm.isEquationAssigned = 1;
 
-                        div.style.paddingLeft =             4 +                 'px';
+                        div.style.paddingLeft =             mapMem.padding + 'px';
+                        div.style.paddingTop =              mapMem.padding + 'px';
                         div.style.fontSize =                cm.sTextFontSize +  'px';
                         div.style.cursor =                  'default';
 
@@ -110,10 +114,13 @@ class MapDivVisualize {
                         div.innerHTML =                     cm.content;
                         div.contentEditable =               false;
                         div.spellcheck =                    false;
-                        div.style.paddingLeft =             4 + 'px';
+                        div.style.paddingLeft =             mapMem.padding          + 'px';
+                        div.style.paddingTop =              mapMem.padding          + 'px';
                         div.style.fontFamily =              'Roboto';
-                        div.style.fontSize =                cm.sTextFontSize +  'px';
+                        div.style.fontSize =                cm.sTextFontSize        + 'px';
                         div.style.cursor =                  'default';
+                        div.style.backgroundColor =         '#d4ebfe';
+                        div.style.borderRadius =            '8px'
 
                         // TODO multiline
                         // https://stackoverflow.com/questions/11449161/multiline-string-in-div-using-javascript
