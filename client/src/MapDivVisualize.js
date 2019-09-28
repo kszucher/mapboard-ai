@@ -96,7 +96,7 @@ class MapDivVisualize {
                     if (cm.isEquationAssigned === 0) {
                         cm.isEquationAssigned = 1;
 
-                        div.style.paddingLeft =             mapMem.padding + 'px';
+                        div.style.paddingLeft =             4 + 'px';
                         div.style.paddingTop =              mapMem.padding + 'px';
                         div.style.fontSize =                cm.sTextFontSize +  'px';
                         div.style.cursor =                  'default';
@@ -117,7 +117,7 @@ class MapDivVisualize {
                         div.innerHTML =                     cm.content;
                         div.contentEditable =               false;
                         div.spellcheck =                    false;
-                        div.style.paddingLeft =             mapMem.padding          + 'px';
+                        div.style.paddingLeft =             mapMem.padding    -2      + 'px';
                         div.style.paddingTop =              mapMem.padding -2       + 'px'; // because of the border
                         div.style.fontFamily =              'Roboto';
                         div.style.fontSize =                cm.sTextFontSize        + 'px';
