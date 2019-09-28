@@ -20,12 +20,9 @@ class MapDivVisualize {
                     width:                                  cm.selfW                                                            - mapMem.padding    + 'px',
                     height:                                 cm.selfH                                                            - mapMem.padding    + 'px',
                     color:                                  cm.sTextColor,
-                    backgroundColor:                        cm.ellipseFill? cm.ellipseFillColor : getBgc(),
-                    // borderColor: '#ff0000'
-
-            };
-
-                // console.log(cm.selfH)
+                    backgroundColor:                        cm.ellipseFill?     cm.ellipseFillColor :   getBgc(),
+                    border:                                 cm.selected?        '1px solid black' :     '1px solid' + getBgc()
+                };
 
                 let div;
                 if (cm.isDivAssigned === 0) {
@@ -72,7 +69,10 @@ class MapDivVisualize {
 
                         div.style.left =                    nextStyle.left;
                         div.style.top =                     nextStyle.top;
-
+                    }
+                    else {
+                        div.style.transform =               '';
+                        div.style.transition =              '';
                     }
                 }
 
@@ -118,11 +118,11 @@ class MapDivVisualize {
                         div.contentEditable =               false;
                         div.spellcheck =                    false;
                         div.style.paddingLeft =             mapMem.padding          + 'px';
-                        div.style.paddingTop =              mapMem.padding          + 'px';
+                        div.style.paddingTop =              mapMem.padding -2       + 'px'; // because of the border
                         div.style.fontFamily =              'Roboto';
                         div.style.fontSize =                cm.sTextFontSize        + 'px';
                         div.style.cursor =                  'default';
-                        div.style.borderRadius =            '8px'
+                        div.style.borderRadius =            '8px';
 
                         // TODO multiline
                         // https://stackoverflow.com/questions/11449161/multiline-string-in-div-using-javascript

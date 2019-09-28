@@ -21,7 +21,7 @@ class MapCanvasVisualize {
             canvasContext.moveTo(                       cm.parentNodeEndX ,                             cm.parentNodeEndY);
             canvasContext.bezierCurveTo(                cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY,
                                                         cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
-                                                        cm.nodeStartX,                                                  cm.nodeStartY);
+                                                        cm.nodeStartX,                                  cm.nodeStartY);
             canvasContext.stroke();
         }
 
@@ -66,31 +66,6 @@ class MapCanvasVisualize {
                     cm.ellipseFill =                    1;
                     cm.ellipseFillColor =               cm.polygonBorderColor;
                     cm.lineColor =                      cm.polygonBorderColor;
-                }
-
-                // if (cm.ellipseFill === 1) {
-                //     paintPolygon(
-                //         canvasContext,
-                //         cm.ellipseBorderColor,
-                //         cm.ellipseFillColor,
-                //         cm.ellipseLineWidth,
-                //         [
-                //                                         [cm.centerX - cm.selfW/2 - -1,                  cm.centerY + cm.selfH/2 + -1],
-                //                                         [cm.centerX + cm.selfW/2 + -1,                  cm.centerY + cm.selfH/2 + -1],
-                //                                         [cm.centerX + cm.selfW/2 + -1,                  cm.centerY - cm.selfH/2 - -1],
-                //                                         [cm.centerX - cm.selfW/2 - -1,                  cm.centerY - cm.selfH/2 - -1],
-                //         ])
-                // }
-            }
-        }
-
-        if (cm.selected) {
-            if (eventRouter.isEditing === 1) {
-                paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, cm.selfH, '#000000', 'lefty');
-            }
-            else {
-                if(cm.type !== 'cell') {
-                    paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, cm.selfH, '#000000', 'full');
                 }
             }
         }
