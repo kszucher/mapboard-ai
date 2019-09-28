@@ -1,100 +1,95 @@
 import {getBgc} from './Utils'
 
-let props = {
+export let props = {
     saveOptional: {
-        // path is saved BUT should be inited ALWAYS!!! last bug I guess
-        path:                               [],
+        path:                                   [],
 
-        content:                            '',
+        content:                                '',
 
-        ilink:                              '',
-        elink:                              '',
+        ilink:                                  '',
+        elink:                                  '',
 
-        s:                                  [],
-        sTextWidthShouldCalculate:          1,
-        sTextWidth:                         0,
-        sTextColor:                         '#222222',
-        sTextFontSize:                      14,
+        s:                                      [],
+        sTextWidthShouldCalculate:              1,
+        sTextWidth:                             0,
+        sTextColor:                             '#222222',
+        sTextFontSize:                          14,
 
-        c:                                  [[]],
-        cBorderColor:                       '#50dfff',
+        c:                                      [[]],
+        cBorderColor:                           '#50dfff',
 
-        nodeStartXOverride:                 0,
-        nodeStartYOverride:                 0,
-        selfWidthOverride:                  0,
-        selfHeightOverride:                 0,
+        nodeStartXOverride:                     0,
+        nodeStartYOverride:                     0,
+        selfWidthOverride:                      0,
+        selfHeightOverride:                     0,
 
-        selected:                           0,
-        lastSelectedChild:                  -1, // -1 means not selected ever
+        selected:                               0,
+        lastSelectedChild:                      -1, // -1 means not selected ever
 
-        lineColor:                         '#bbbbbb',
+        lineColor:                              '#bbbbbb',
 
-        polygonFill:                        0,
-        polygonBorderColor:                 '#ffffff',
-        polygonFillColor:                   getBgc(),
-        polygonLineWidth:                   1,
+        polygonFill:                            0,
+        polygonBorderColor:                     '#ffffff',
+        polygonFillColor:                       getBgc(),
+        polygonLineWidth:                       1,
 
-        ellipseFill:                        0,
-        ellipseBorderColor:                 '#ffffff',
-        ellipseFillColor:                   getBgc(),
-        ellipseLineWidth:                   1,
+        ellipseFill:                            0,
+        ellipseBorderColor:                     '#ffffff',
+        ellipseFillColor:                       getBgc(),
+        ellipseLineWidth:                       1,
 
-        taskStatus:                         -1,
+        taskStatus:                             -1,
     },
     saveNever: {
-        // INIT ALWAYS
+        initOnce: {
+            // mapDivVisualize
+            isDivAssigned:                      0,
+            isTextAssigned:                     0,
+            isLinkAssigned:                     0,
+            isPicAssigned:                      0,
+            isEquationAssigned:                 0,
+            isSvgAssigned:                      0,
+            editTrigger:                        0,
 
-        // mapChain
-        isRoot:                             0,
-        parentPath:                         [],
-        type:                               '', // struct or cell
-        parentType:                         '',
-        index:                              [],
+            // mapTaskCalc
+            taskStatusInherited:                0,
+        },
+        initAlways: {
+            // mapChain
+            isRoot:                             0,
+            parentPath:                         [],
+            type:                               '', // struct or cell
+            parentType:                         '',
+            index:                              [],
 
-        // mapMeasure
-        selfW:                              0,
-        selfH:                              0,
-        familyW:                            0,
-        familyH:                            0,
-        maxColWidth:                        [],
-        maxRowHeight:                       [],
-        sumMaxColWidth:                     [0],
-        sumMaxRowHeight:                    [0],
-        maxW:                               0,
-        maxH:                               0,
-        spacing:                            10,
-        spacingActivated:                   0,
+            // mapMeasure
+            selfW:                              0,
+            selfH:                              0,
+            familyW:                            0,
+            familyH:                            0,
+            maxColWidth:                        [],
+            maxRowHeight:                       [],
+            sumMaxColWidth:                     [0],
+            sumMaxRowHeight:                    [0],
+            maxW:                               0,
+            maxH:                               0,
+            spacing:                            10,
+            spacingActivated:                   0,
 
-        // mapPlace
-        parentNodeEndX:                     0,
-        parentNodeEndY:                     0,
-        lineDeltaX:                         0,
-        lineDeltaY:                         0,
-        nodeStartX:                         0,
-        nodeStartY:                         0,
-        nodeEndX:                           0,
-        nodeEndY:                           0,
-        centerX:                            0,
-        centerY:                            0,
-
-        // INIT ONCE
-        isDivAssigned:                      0,
-        isTextAssigned:                     0,
-        isLinkAssigned:                     0,
-        isPicAssigned:                      0,
-        isEquationAssigned:                 0,
-
-        editTrigger:                        0,
-
-        // mapTaskCalc
-        taskStatusInherited:                0,
+            // mapPlace
+            parentNodeEndX:                     0,
+            parentNodeEndY:                     0,
+            lineDeltaX:                         0,
+            lineDeltaY:                         0,
+            nodeStartX:                         0,
+            nodeStartY:                         0,
+            nodeEndX:                           0,
+            nodeEndY:                           0,
+            centerX:                            0,
+            centerY:                            0,
+        }
     }
 };
-
-let so =    Object.keys(props.saveOptional);
-let sn =    Object.keys(props.saveNever);
-
-export {props, so, sn}
 
 export function hasCell(cm) { // beware: it returns logical
     return !(cm.c.length === 1 && cm.c[0].length === 0);

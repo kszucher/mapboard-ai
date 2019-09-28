@@ -1,5 +1,4 @@
 import {mapMem}                                         from "./Map";
-import {eventRouter}                                    from "./EventRouter"
 import {hasCell}                                        from "./Node";
 import {paintPolygon, paintSelection}                   from "./Ellipse";
 import {getBgc} from "./Utils";
@@ -23,6 +22,16 @@ class MapCanvasVisualize {
                                                         cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
                                                         cm.nodeStartX,                                  cm.nodeStartY);
             canvasContext.stroke();
+
+            if (cm.isSvgAssigned === 0) {
+                cm.isSvgAssigned = 1;
+
+                // TODO
+
+
+
+
+            }
         }
 
         if (cm.type === "struct") {

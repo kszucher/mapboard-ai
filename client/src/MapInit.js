@@ -1,6 +1,6 @@
-import {mapMem}                                             from "./Map";
-import {props, so, sn}                                      from "./Node"
-import {copy, shallowCopy} from "./Utils"
+import {checkMapBuilt, mapMem}                  from "./Map";
+import {props}                                  from "./Node"
+import {copy, shallowCopy}                      from "./Utils"
 
 class MapInit {
     start() {
@@ -9,53 +9,23 @@ class MapInit {
     }
 
     iterate(cm) {
-        // saveOptional
-        for (let i = 0; i < so.length; i++) {
-            let currProperty = so[i];
+        Object.keys(props.saveOptional).map(currProperty => {
+            if (!cm.hasOwnProperty(currProperty)) {
+                cm[currProperty] = ['s', 'c', 'path'].includes(currProperty)?
+                    copy(props.saveOptional[currProperty]) :
+                    shallowCopy(props.saveOptional[currProperty])
+            }
+        });
 
-            if (cm.hasOwnProperty(so[i])) {
-                // use ONLY when you adjust node settings, otherwise it will negatively impact performance
-                // let currPropertyCopy = copy(cm[currProperty]);
-                // delete cm[currProperty];
-                // cm[currProperty] = currPropertyCopy;
-            }
-            else {
-                if (['s', 'c', 'path'].includes(currProperty)) {
-                    cm[currProperty] = copy(props.saveOptional[currProperty]);
-                }
-                else {
-                    cm[currProperty] = shallowCopy(props.saveOptional[currProperty]);
-                }
-            }
+        if(checkMapBuilt() === 0) {
+            Object.keys(props.saveNever.initOnce).map(currProperty => {
+                cm[currProperty] = shallowCopy(props.saveNever.initOnce[currProperty])
+            });
         }
 
-        // saveNever
-        for (let i = 0; i < sn.length; i++) {
-            let currProperty = sn[i];
-
-            // initAlways
-            if (currProperty === 'taskStatusInherited' && cm.hasOwnProperty('taskStatusInherited')) {
-                // do not init
-            } else if (currProperty === 'id' && cm.hasOwnProperty('id')) {
-                // do not init
-            } else if (currProperty === 'isDivAssigned' && cm.hasOwnProperty('isDivAssigned')) {
-                // do not init
-            } else if (currProperty === 'isTextAssigned' && cm.hasOwnProperty('isTextAssigned')) {
-                // do not init
-            } else if (currProperty === 'isLinkAssigned' && cm.hasOwnProperty('isLinkAssigned')) {
-                // do not init
-            } else if (currProperty === 'isPicAssigned' && cm.hasOwnProperty('isPicAssigned')) {
-                // do not init
-            } else if (currProperty === 'isEquationAssigned' && cm.hasOwnProperty('isEquationAssigned')) {
-                // do not init
-            } else if (currProperty === 'editTrigger' && cm.hasOwnProperty('editTrigger')) {
-                // do not init
-            }
-            else {
-                // initOnce
-                cm[currProperty] = shallowCopy(props.saveNever[currProperty])
-            }
-        }
+        Object.keys(props.saveNever.initAlways).map(currProperty => {
+            cm[currProperty] = shallowCopy(props.saveNever.initAlways[currProperty])
+        });
 
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;

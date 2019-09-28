@@ -1,7 +1,7 @@
 import {getDim}                                 from "./Dim"
 import {communication}                          from "./Communication"
 import {execute}                                from "./Execute";
-import {mapMem, loadMap, redraw, rebuild}       from "./Map"
+import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
