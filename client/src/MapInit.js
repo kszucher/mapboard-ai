@@ -17,7 +17,7 @@ class MapInit {
             }
         });
 
-        if(checkMapBuilt() === 0) {
+        if(checkMapBuilt() === 0 || !cm.hasOwnProperty('isDivAssigned')) {
             Object.keys(props.saveNever.initOnce).map(currProperty => {
                 cm[currProperty] = shallowCopy(props.saveNever.initOnce[currProperty])
             });
