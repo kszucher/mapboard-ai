@@ -2,8 +2,8 @@ import {eventListener} from "./EventListener"
 
 class Communication {
     constructor() {
-        // this.myUrl = "http://127.0.0.1:8082/beta";
-        this.myUrl = "http://mindboard.io/beta";
+        this.myUrl = "http://127.0.0.1:8082/beta";
+        // this.myUrl = "http://mindboard.io/beta";
         this.eventsEnabled = 1;
     }
 

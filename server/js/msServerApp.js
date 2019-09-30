@@ -81,6 +81,7 @@ function auth(c2s) {
 }
 
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 
 async function mongoFunction(c2s, operation) {
@@ -96,17 +97,14 @@ async function mongoFunction(c2s, operation) {
         const collectionUsers =     client.db("app").collection("users");
         const collectionMaps =      client.db("app").collection("maps1v1");
 
-        // ha MINDENKÉPP az lesz, hogy mapet csinálok vagy nem, akkor egyértelműen
-
-
         switch (operation) {
             case 'getUserMaps': {
                 let currUser = await collectionUsers.findOne({id: 'a591e739'});
                 let headerMapList = currUser.headerMapList;
                 let headerMapNameList = [];
                 await collectionMaps.aggregate([
-                    {$match:        {id:            {$in:           headerMapList}}             },
-                    {$addFields:    {"__order":     {$indexOfArray: [headerMapList, "$id" ]}}   },
+                    {$match:        {_id:           {$in:           headerMapList}}             },
+                    {$addFields:    {"__order":     {$indexOfArray: [headerMapList, "$_id" ]}}  },
                     {$sort:         {"__order":     1}                                          },
                 ]).forEach(function (m) {
                     headerMapNameList.push(m.data[0].content)
@@ -125,11 +123,11 @@ async function mongoFunction(c2s, operation) {
                 break;
             }
             case 'openMap': {
-                m2s = await collectionMaps.findOne({id: c2s.mapName});
+                m2s = await collectionMaps.findOne({_id: ObjectId(c2s.mapName)});
                 break;
             }
             case 'writeMap': {
-                await collectionMaps.replaceOne({id: c2s.mapName}, c2s.mapStorage);
+                await collectionMaps.replaceOne({_id: ObjectId(c2s.mapName)}, c2s.mapStorage);
                 break;
             }
         }

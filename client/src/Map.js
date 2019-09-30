@@ -33,7 +33,7 @@ export function loadMap(mapStorage) {
 
     mapMem = {
         // saveOptional
-        id:                                 copy(mapStorage.id),
+        id:                                 copy(mapStorage._id),
         version:                            copy(mapStorage.version),
         hasTasks:                           copy(mapStorage.hasTasks),
         data:                                mapAssembly((mapStorage.data)),
