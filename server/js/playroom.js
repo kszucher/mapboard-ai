@@ -8,56 +8,80 @@ async function mongoFunction() {
     try {
         await client.connect();
 
-        const collectionMaps =    client.db("app").collection("maps1v1");
-
-
-        const collectionUsers =         client.db("app").collection("users");
-
-        //
-        // let nowid = '5d91cdc5bc560b176c9e7cf0'
-        //
-        // let x = await collectionUsers.findOne({_id: ObjectId(nowid)})
-
-        // collectionUsers.insertOne({'cica': 'kutya'}, function(err,docsInserted){
-        //     console.log(docsInserted.insertedId);
-        // });
+        const collectionMaps =      client.db("app").collection("maps1v1");
+        const collectionUsers =     client.db("app").collection("users");
 
 
 
-        let headerMapListX = [];
+        let temp = [];
+
+
+        // find doc "_id", where a given node prop exists
+        let dataElemField = 'ilink';
+        await collectionMaps.aggregate(
+            [
+                {
+                    $project: {
+                        data: {
+                            $filter: {
+                                input: "$data",
+                                as: "dataElem",
+                                cond: {
+                                    $ifNull: [
+                                        "$$dataElem." + dataElemField,
+                                        false
+                                    ]}
+                            }
+                        }
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$data"
+                    }
+                }
+            ]
+        ).forEach( doc => {
+
+            temp.push({
+                updateId : doc._id,
+                updatePath: doc.data['path'],
+                updateOldIlink : doc.data[dataElemField]
+            })
+
+            console.log(doc._id);
+            console.log(doc.data['path']);
+            console.log(doc.data[dataElemField]);
+        });
+
+        // TODO: végigmegyek a listán, és egyrészt lekérem a megfelelő _id-t, majd egy új updateOne művelettel frissítem is
 
 
 
+        for (let i = 0; i < temp.length; i++) {
 
-        // let currUser = await collectionUsers.findOne({id: 'a591e739'});
-        // let headerMapList = currUser.headerMapList;
-        // await collectionMaps.aggregate([
-        //     {$match:        {id:            {$in:           headerMapList}}             },
-        //     {$addFields:    {"__order":     {$indexOfArray: [headerMapList, "$id" ]}}   },
-        //     {$sort:         {"__order":     1}                                       },
-        // ]).forEach(function (m) {
-        //     headerMapListX.push(m._id)
-        // });
+            let newId = await collectionMaps.findOne({
+                "id": temp[i].updateOldIlink
+            });
 
+            let newIdReal = newId._id;
+
+            console.log(newIdReal)
 
 
-        // let x = await collectionMapsLatest.findOne({id: 'f17bffc4'})
-
-        //
-        // await collectionUsers.updateOne(
-        //     {id: 'a591e739'},
-        //     {$set: {"headerMapListX": headerMapListX}});
-
-        // await currUser
+            // https://stackoverflow.com/questions/4669178/how-to-update-multiple-array-elements-in-mongodb/46054172#46054172
+            await collectionMaps.updateOne(
+                { "_id":  ObjectId(temp[i].updateId) },
+                { "$set": { "data.$[elem].ilink": newIdReal } },
+                { "arrayFilters": [{ "elem.path": temp[i].updatePath }], "multi": true }
+            )
 
 
-
-        // végig kellene menni az összes map-en
-
-
+        }
 
 
     }
+
     catch (err) {
         console.log('error');
         console.log(err.stack);

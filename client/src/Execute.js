@@ -328,6 +328,7 @@ export function execute(command) {
                     'cred':                     JSON.parse(localStorage.getItem('cred')),
                     'mapName':                  lastRef.ilink
                 };
+                console.log(lastRef)
                 communication.sender(c2s);
             }
             break;
