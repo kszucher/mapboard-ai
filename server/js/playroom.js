@@ -15,8 +15,17 @@ async function mongoFunction() {
 
         // FIND STAGE
 
-        filterOp = '';
+        filterOp = 'allDoc';
         switch (filterOp) {
+            case 'allDoc': {
+
+                await collectionMaps.find({}).forEach( doc => {
+                    filter.push({
+                        _id : doc._id,
+                    });
+                });
+                break;
+            }
             case 'existingProp': {
                 let dataElemField = 'ilink';
                 await collectionMaps.aggregate(
@@ -52,9 +61,10 @@ async function mongoFunction() {
             }
         }
 
-        console.log(filter);
+        // console.log(filter);
+        // console.log(filter.length);
 
-        modifyOp = '';
+        modifyOp = 'unset';
         switch (modifyOp) {
             case 'silly': {
                 for (let i = 0; i < filter.length; i++) {
@@ -71,6 +81,18 @@ async function mongoFunction() {
                         { "$set": { "data.$[elem].ilink": newIdReal } },
                         { "arrayFilters": [{ "elem.path": filter[i].updatePath }], "multi": true }
                     )
+                }
+                break;
+            }
+            case 'unset': {
+                // note: unable to use aggregation unset from mongodb v4.2, as mongodb free tier only supports mongodb 4.0
+                for (let i = 0; i < filter.length; i++) {
+                    let _id = filter[i]._id;
+
+                    await collectionMaps.updateOne(
+                        {_id: _id},
+                        {$unset: {'padding' : ""}}
+                        );
                 }
                 break;
             }
