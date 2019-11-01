@@ -10,8 +10,6 @@ export let props = {
         elink:                                  '',
 
         s:                                      [],
-        sTextWidthShouldCalculate:              1,
-        sTextWidth:                             0,
         sTextColor:                             '#222222',
         sTextFontSize:                          14,
 
@@ -42,6 +40,10 @@ export let props = {
     },
     saveNever: {
         initOnce: {
+            //
+            sTextWidthShouldCalculate:          1,
+            sTextWidth:                         0,
+
             // mapDivVisualize
             isDivAssigned:                      0,
             isTextAssigned:                     0,

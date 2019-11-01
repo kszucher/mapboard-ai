@@ -14,11 +14,9 @@ async function mongoFunction() {
         let filter = [];
 
         // FIND STAGE
-
-        filterOp = 'allDoc';
+        filterOp = '';
         switch (filterOp) {
             case 'allDoc': {
-
                 await collectionMaps.find({}).forEach( doc => {
                     filter.push({
                         _id : doc._id,
@@ -26,8 +24,8 @@ async function mongoFunction() {
                 });
                 break;
             }
-            case 'existingProp': {
-                let dataElemField = 'ilink';
+            case 'existingNodeProp': {
+                let dataElemField = 'NODEPROPNAME';
                 await collectionMaps.aggregate(
                     [
                         {
@@ -53,46 +51,37 @@ async function mongoFunction() {
                     ]
                 ).forEach( doc => {
                     filter.push({
-                        updateId : doc._id,
-                        updatePath: doc.data['path'],
-                        updateOldIlink : doc.data[dataElemField]
+                        _id : doc._id,
+                        path: doc.data['path'],
+                        value : doc.data[dataElemField]
                     });
                 });
             }
         }
 
         // console.log(filter);
-        // console.log(filter.length);
+        console.log(filter.length);
 
-        modifyOp = 'unset';
+        // MODIFY STAGE
+        modifyOp = '';
         switch (modifyOp) {
-            case 'silly': {
+            case 'unsetMapProp': {
                 for (let i = 0; i < filter.length; i++) {
-
-                    let newId = await collectionMaps.findOne({
-                        "id": filter[i].updateOldIlink
-                    });
-
-                    let newIdReal = newId._id;
-
-                    // https://stackoverflow.com/questions/4669178/how-to-update-multiple-array-elements-in-mongodb/46054172#46054172
                     await collectionMaps.updateOne(
-                        { "_id":  ObjectId(filter[i].updateId) },
-                        { "$set": { "data.$[elem].ilink": newIdReal } },
-                        { "arrayFilters": [{ "elem.path": filter[i].updatePath }], "multi": true }
-                    )
+                        {_id: filter[i]._id},
+                        {$unset: {'MAPROPNAME' : ""}}
+                        );
                 }
+                // note: unable to use aggregation unset from mongodb v4.2, as mongodb free tier only supports mongodb 4.0
                 break;
             }
-            case 'unset': {
-                // note: unable to use aggregation unset from mongodb v4.2, as mongodb free tier only supports mongodb 4.0
+            case 'unsetNodeProp': {
                 for (let i = 0; i < filter.length; i++) {
-                    let _id = filter[i]._id;
-
                     await collectionMaps.updateOne(
-                        {_id: _id},
-                        {$unset: {'padding' : ""}}
-                        );
+                        { _id: filter[i]._id },
+                        { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true },
+                    { $unset: { "data.$[elem].NODEPROPNAME" : "" } }
+                    )
                 }
                 break;
             }
