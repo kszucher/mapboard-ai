@@ -24,6 +24,20 @@ export function checkMapBuilt() {
     return isMapBuilt;
 }
 
+let mapSaveNever = [
+    'defaultH',
+    'sLineDeltaXDefault',
+    'padding',
+    'clipboard',
+    'filter',
+    'deepestSelectablePath',
+    'deepestSelectableRef',
+    'div',
+    'divData',
+    'canvas',
+    'canvasContext'
+];
+
 export function loadMap(mapStorage) {
 
     if (isMapLoaded === 1) {
@@ -121,7 +135,6 @@ export function pathMerge(path1, path2) {
 export function saveMap () {
 
     mapStorageOut = JSON.parse(JSON.stringify(mapMem));
-    mapStorageOut.version = '1.0';
 
     // genMapNodePropRemove
     let cm = mapStorageOut.data.s[0];
@@ -132,14 +145,7 @@ export function saveMap () {
     mapStorageOut.data = nodeCopyList;
 
     // genMapPropRemove
-    delete mapStorageOut['defaultH'];
-    delete mapStorageOut['sLineDeltaXDefault'];
-    delete mapStorageOut['clipboard'];
-    delete mapStorageOut['filter'];
-    delete mapStorageOut['deepestSelectablePath'];
-    delete mapStorageOut['deepestSelectableRef'];
-    delete mapStorageOut['div'];
-    delete mapStorageOut['divData'];
-    delete mapStorageOut['canvas'];
-    delete mapStorageOut['canvasContext'];
+    for (let i = 0; i < mapSaveNever.length; i++) {
+        delete mapStorageOut[mapSaveNever[i]];
+    }
 }
