@@ -95,7 +95,7 @@ async function mongoFunction(c2s, operation) {
         console.log('connected to server...');
 
         const collectionUsers =     client.db("app").collection("users");
-        const collectionMaps =      client.db("app").collection("maps1v1");
+        const collectionMaps =      client.db("app").collection("maps");
 
         switch (operation) {
             case 'getUserMaps': {
