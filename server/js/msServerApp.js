@@ -99,7 +99,7 @@ async function mongoFunction(c2s, operation) {
 
         switch (operation) {
             case 'getUserMaps': {
-                let currUser = await collectionUsers.findOne({id: 'a591e739'});
+                let currUser = await collectionUsers.findOne({_id: ObjectId('5d88c99f1935c83e84ca263d')});
                 let headerMapList = currUser.headerMapList;
                 let headerMapNameList = [];
                 await collectionMaps.aggregate([

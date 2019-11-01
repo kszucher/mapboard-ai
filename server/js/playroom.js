@@ -80,7 +80,7 @@ async function mongoFunction() {
                     await collectionMaps.updateOne(
                         { _id: filter[i]._id },
                         { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true },
-                    { $unset: { "data.$[elem].NODEPROPNAME" : "" } }
+                        { $unset: { "data.$[elem].NODEPROPNAME" : "" } }
                     )
                 }
                 break;
