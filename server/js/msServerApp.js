@@ -108,18 +108,18 @@ async function mongoFunction(c2s, operation) {
         switch (operation) {
             case 'getUserMaps': {
                 let currUser = await collectionUsers.findOne({_id: ObjectId('5d88c99f1935c83e84ca263d')});
-                let headerMapList = currUser.headerMapList;
+                let headerMapIdList = currUser.headerMapIdList;
                 let headerMapNameList = [];
                 await collectionMaps.aggregate([
-                    {$match:        {_id:           {$in:           headerMapList}}             },
-                    {$addFields:    {"__order":     {$indexOfArray: [headerMapList, "$_id" ]}}  },
-                    {$sort:         {"__order":     1}                                          },
+                    {$match:        {_id:           {$in:           headerMapIdList}}             },
+                    {$addFields:    {"__order":     {$indexOfArray: [headerMapIdList, "$_id" ]}}  },
+                    {$sort:         {"__order":     1}                                            },
                 ]).forEach(function (m) {
                     headerMapNameList.push(m.data[0].content)
                 });
 
                 m2s = {
-                    headerMapList: headerMapList,
+                    headerMapIdList: headerMapIdList,
                     headerMapNameList: headerMapNameList,
                     headerMapSelected: currUser.headerMapSelected
                 };

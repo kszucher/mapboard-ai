@@ -306,7 +306,7 @@ export function execute(command) {
             let c2s = {
                 'cmd':                          'openMapRequest',
                 'cred':                         JSON.parse(localStorage.getItem('cred')),
-                'mapName':                      headerData.headerMapList[headerData.headerMapSelected]
+                'mapName':                      headerData.headerMapIdList[headerData.headerMapSelected]
             };
             communication.sender(c2s);
             break;
@@ -316,7 +316,7 @@ export function execute(command) {
             let c2s = {
                 'cmd':                          'openMapRequest',
                 'cred':                         JSON.parse(localStorage.getItem('cred')),
-                'mapName':                      headerData.headerMapList[a2c.tabId]
+                'mapName':                      headerData.headerMapIdList[a2c.tabId]
             };
             communication.sender(c2s);
             break;
