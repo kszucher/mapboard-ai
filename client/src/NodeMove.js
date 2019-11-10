@@ -1,9 +1,11 @@
-import {mapMem, mapref}                             from "./Map";
+import {mapMem, mapref}                  from "./Map";
 import {mapNodePropChange}                          from "./MapNodePropChange";
 import {clearStructSelection}                       from "./NodeSelect";
 import {getDefaultNode}                             from "./Node";
 import {structDeleteReselect}                       from "./NodeDelete";
 import {arrayValuesSame, copy, transpose}           from "./Utils";
+
+let clipboard = [];
 
 export function structMove(sc, target, mode) {
     let parentPathList = [];
@@ -89,13 +91,13 @@ export function structMove(sc, target, mode) {
     else if (target === 'struct2clipboard') {
         if (mode === 'CUT' && sc.lastRef.isRoot === 0 ||
             mode === 'COPY') {
-            mapMem.clipboard = [];
+            clipboard = [];
             for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(sc.structSelectedPathList[i]);
-                mapMem.clipboard.splice(0, 0, copy(currRef));
-                for (let j = 0; j < mapMem.clipboard.length; j++) {
-                    mapNodePropChange.start(mapMem.clipboard[j], 'isDivAssigned', 0);
-                    mapNodePropChange.start(mapMem.clipboard[j], 'isTextAssigned', 0);
+                clipboard.splice(0, 0, copy(currRef));
+                for (let j = 0; j < clipboard.length; j++) {
+                    mapNodePropChange.start(clipboard[j], 'isDivAssigned', 0);
+                    mapNodePropChange.start(clipboard[j], 'isTextAssigned', 0);
                 }
             }
             if (mode === 'CUT') {
@@ -106,8 +108,8 @@ export function structMove(sc, target, mode) {
     else if (target === 'clipboard2struct') {
         clearStructSelection();
         let toIndex = sc.lastRef.s.length;
-        for (let i = 0; i < mapMem.clipboard.length; i++) {
-            sc.lastRef.s.splice(toIndex + i, 0, copy(mapMem.clipboard[i]));
+        for (let i = 0; i < clipboard.length; i++) {
+            sc.lastRef.s.splice(toIndex + i, 0, copy(clipboard[i]));
         }
     }
 }

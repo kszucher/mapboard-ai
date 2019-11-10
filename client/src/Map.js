@@ -28,7 +28,6 @@ let mapSaveNever = [
     'defaultH',
     'sLineDeltaXDefault',
     'padding',
-    'clipboard',
     'filter',
     'deepestSelectablePath',
     'deepestSelectableRef',
@@ -53,7 +52,6 @@ export function loadMap(mapStorage) {
         defaultH:                           mapStorage.hasTasks? 30:20, // shall rather be isDense separately from hasTasks
         sLineDeltaXDefault:                 mapStorage.hasTasks? 30:20,
         padding:                            mapStorage.hasTasks? 8:3,
-        clipboard:                          getDefaultNode(),
         filter:                             [],
         deepestSelectablePath:              [],
         deepestSelectableRef:               [],
