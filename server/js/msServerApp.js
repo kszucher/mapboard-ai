@@ -61,6 +61,14 @@ async function sendResponse(c2s) {
                 };
                 break;
             }
+            case 'createMapInMapRequest': {
+                let m2s = await mongoFunction(c2s, 'createMapInMap');
+                s2c = {
+                    cmd:                'createMapInMapSuccess',
+                    newMapId:           m2s.insertedId
+                };
+                break;
+            }
         }
     }
     else {
@@ -118,8 +126,11 @@ async function mongoFunction(c2s, operation) {
 
                 break;
             }
-            case 'createMap': {
-                await collectionMaps.insertOne(c2s.mapStorage);
+            case 'createMapInMap': {
+                let result = await collectionMaps.insertOne(c2s.newMap);
+                m2s = {
+                    insertedId: result.insertedId
+                };
                 break;
             }
             case 'openMap': {

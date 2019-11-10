@@ -2,7 +2,7 @@ import {initDim}                                                                
 import {communication}                                                                          from "./Communication";
 import {lastEvent}                                                                              from "./EventListener"
 import {eventRouter}                                                                            from "./EventRouter";
-import {mapMem, mapref, pathMerge, rebuild, redraw, loadMap, saveMap, mapStorageOut} from "./Map";
+import {mapMem, mapref, pathMerge, rebuild, redraw, loadMap, saveMap, mapStorageOut}            from "./Map";
 import {cellNavigate, structNavigate}                                                           from "./NodeNavigate";
 import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelectionContext}     from "./NodeSelect"
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
@@ -60,9 +60,9 @@ export function execute(command) {
         'transpose',
         'makeGrid',
         'renderEquation',
-
-        'openAfterMapSelect'
-
+        'openAfterMapSelect',
+        'createMapInMap',
+        'createMapInMapSuccess',
     ].includes(command)) {
         sc = getSelectionContext();
         maxSel = sc.maxSel;
@@ -275,7 +275,7 @@ export function execute(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // SERVER RELATED
+        // SERVER RELATED - TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
             initDim();
@@ -328,17 +328,8 @@ export function execute(command) {
                     'cred':                     JSON.parse(localStorage.getItem('cred')),
                     'mapName':                  lastRef.ilink
                 };
-                console.log(lastRef)
                 communication.sender(c2s);
             }
-            break;
-        }
-        case 'openMapSuccess': {
-            let s2c =                           lastEvent.eventRef;
-            lastUserMap =                       s2c.mapName;
-            loadMap(s2c.mapStorage);
-            rebuild();
-            redraw();
             break;
         }
         case 'save': {
@@ -350,6 +341,51 @@ export function execute(command) {
                 mapStorage:                     mapStorageOut
             };
             communication.sender(c2s);
+            break;
+        }
+        case 'createMapInTab': {
+            break;
+        }
+        case 'createMapInMap': {
+
+            // TODO: multi command pipeline with save included
+
+            let newMap = {
+                hasTasks: 0,
+                data: [
+                    {
+                        path: ['s', 0],
+                        content: lastRef.content,
+                        selected: 1
+                    }
+                ]
+            };
+
+            let c2s = {
+                'cmd':                          'createMapInMapRequest',
+                'cred':                         JSON.parse(localStorage.getItem('cred')),
+                'newMap':                       newMap
+            };
+            communication.sender(c2s);
+
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        // SERVER RELATED - RX
+        // -------------------------------------------------------------------------------------------------------------
+        case 'openMapSuccess': {
+            let s2c =                           lastEvent.eventRef;
+            lastUserMap =                       s2c.mapName;
+            loadMap(s2c.mapStorage);
+            rebuild();
+            redraw();
+            break;
+        }
+        case 'createMapInMapSuccess': {
+
+            let s2c =                           lastEvent.eventRef;
+            lastRef.ilink = s2c.newMapId;
+
             break;
         }
     }

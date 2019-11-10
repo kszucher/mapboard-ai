@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+// TODO add reactmaterial menu to handle stuff
 
 function ReactMaterialToolBar() {
     const classes = useStyles();

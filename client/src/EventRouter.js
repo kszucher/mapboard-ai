@@ -68,6 +68,10 @@ class EventRouter {
                         console.log('file saved');
                         break;
                     }
+                    case 'createMapInMapSuccess': {
+                        execute('createMapInMapSuccess');
+                        break;
+                    }
                 }
             }
             else if (lastEvent.inputType === 'mouseEvent') {
@@ -139,6 +143,7 @@ class EventRouter {
                     ['',         keyStr === 'VK_BACK_SPACE',        [          'm'], 0,   1,   ['selectBackwardMixed'                 ], 1 ],
                     ['',         keyStr === 'VK_DELETE',            ['s'          ], 0,   1,   ['deleteNode'                          ], 1 ],
                     ['',         keyStr === 'VK_DELETE',            [     'c'     ], 0,   1,   ['deleteCellBlock'                     ], 1 ],
+                    ['control',  keyStr === 'VK_E',                 ['s', 'c', 'm'], 0,   1,   ['createMapInMap'                      ], 1 ],
                     ['control',  keyStr === 'VK_G',                 ['s', 'c', 'm'], 0,   1,   ['makeGrid'                            ], 1 ],
                     ['control',  keyStr === 'VK_O',                 ['s', 'c', 'm'], 0,   1,   ['normalize'                           ], 1 ],
                     ['control',  keyStr === 'VK_C',                 ['s', 'c', 'm'], 0,   1,   ['copySelection'                       ], 1 ],

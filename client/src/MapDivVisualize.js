@@ -20,8 +20,9 @@ class MapDivVisualize {
                     width:                                  cm.selfW                                                            - mapMem.padding    + 'px',
                     height:                                 cm.selfH                                                            - mapMem.padding    + 'px',
                     color:                                  cm.sTextColor,
-                    backgroundColor:                        cm.ellipseFill?     cm.ellipseFillColor :   getBgc(),
-                    border:                                 cm.selected?        '1px solid black' :     '1px solid' + getBgc()
+                    textDecoration:                         cm.ilink === ""?    ""                      : "underline",
+                    backgroundColor:                        cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
+                    border:                                 cm.selected?        '1px solid black'       : '1px solid' + getBgc()
                 };
 
                 let div;
