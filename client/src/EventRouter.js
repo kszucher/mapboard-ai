@@ -6,7 +6,6 @@ import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
 import {lastEvent}                              from "./EventListener";
-import {headerData} from "./User";
 
 class EventRouter {
     constructor() {
@@ -20,62 +19,13 @@ class EventRouter {
         else {
             if (lastEvent.inputType === 'apiEvent') {
                 let a2c = lastEvent.eventRef;
-                switch (a2c.cmd) {
-                    case 'signIn':              execute('signIn');                  break;
-                    case 'signOut':             execute('signOut');                 break;
-                    case 'openAfterTabSelect':  execute('openAfterTabSelect');      break;
-                }
+                execute(a2c.cmd);
             }
             else if (lastEvent.inputType === 'serverEvent') {
                 let s2c = lastEvent.eventRef;
-                switch (s2c.cmd) {
-                    case 'signInSuccess': {
-
-                        console.log('sign in success');
-
-                        var event = new CustomEvent("event", {
-                            "detail": {
-                                tabData: {
-                                    tabNames:   s2c.headerData.headerMapNameList,
-                                    tabId:      s2c.headerData.headerMapSelected,
-                                },
-                            }
-                        });
-                        document.dispatchEvent(event);
-
-                        execute('openAfterInit');
-
-                        break;
-                    }
-                    case 'signInFail': {
-
-                        // updateCredentials('unsigned');
-
-                        console.log('sign in fail');
-                        console.log(localStorage);
-
-                        break;
-                    }
-                    case 'signOutSuccess': {
-                        localStorage.clear();
-                        break;
-                    }
-                    case 'openMapSuccess': {
-                        execute('openMapSuccess');
-                        break;
-                    }
-                    case 'writeMapRequestSuccess': {
-                        console.log('file saved');
-                        break;
-                    }
-                    case 'createMapInMapSuccess': {
-                        execute('createMapInMapSuccess');
-                        break;
-                    }
-                }
+                execute(s2c.cmd);
             }
             else if (lastEvent.inputType === 'mouseEvent') {
-
                 let pageX =             lastEvent.inputProps.pageX;
                 let pageY =             lastEvent.inputProps.pageY;
                 let controlStatus =     lastEvent.inputProps.controlStatus;

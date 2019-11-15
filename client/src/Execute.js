@@ -301,7 +301,6 @@ export function execute(command) {
             break;
         }
         case 'openAfterInit': {
-            let s2c =                           lastEvent.eventRef;
             headerData =                        copy(lastEvent.eventRef.headerData);
             let c2s = {
                 'cmd':                          'openMapRequest',
@@ -373,6 +372,30 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         // SERVER RELATED - RX
         // -------------------------------------------------------------------------------------------------------------
+        case 'signInSuccess': {
+            console.log('sign in success');
+            let s2c =                           lastEvent.eventRef;
+            var event = new CustomEvent("event", {
+                "detail": {
+                    tabData: {
+                        tabNames:   s2c.headerData.headerMapNameList,
+                        tabId:      s2c.headerData.headerMapSelected,
+                    },
+                }
+            });
+            document.dispatchEvent(event);
+            execute('openAfterInit');
+            break;
+        }
+        case 'signInFail': {
+            console.log('sign in fail');
+            console.log(localStorage);
+            break;
+        }
+        case 'signOutSuccess': {
+            localStorage.clear();
+            break;
+        }
         case 'openMapSuccess': {
             let s2c =                           lastEvent.eventRef;
             lastUserMap =                       s2c.mapName;
@@ -381,11 +404,13 @@ export function execute(command) {
             redraw();
             break;
         }
+        case 'writeMapRequestSuccess': {
+            console.log('file saved');
+            break;
+        }
         case 'createMapInMapSuccess': {
-
             let s2c =                           lastEvent.eventRef;
             lastRef.ilink = s2c.newMapId;
-
             break;
         }
     }
