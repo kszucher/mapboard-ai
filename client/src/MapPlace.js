@@ -7,9 +7,9 @@ class MapPlace {
         let cm =                                            mapMem.data.s[0];
 
         let available =                                     getDim().mw;
-        let needed =                                        mapMem.hasTasks? getDim().mw : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1;
+        let needed =                                        mapMem.task? getDim().mw : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1;
 
-        let mapWidth =                                      mapMem.hasTasks && available > needed? available : needed;
+        let mapWidth =                                      mapMem.task && available > needed? available : needed;
         let mapHeight =                                     500 + cm.familyH > cm.selfH? cm.familyH + 2*20 : cm.selfH + 2*20;
         mapHeight += 500;
 

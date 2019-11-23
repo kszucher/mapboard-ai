@@ -14,9 +14,9 @@ async function mongoFunction() {
         let filter = [];
 
         // FIND STAGE
-        filterOp = '';
+        filterOp = 'allMap';
         switch (filterOp) {
-            case 'allDoc': {
+            case 'allMap': {
                 await collectionMaps.find({}).forEach( doc => {
                     filter.push({
                         _id : doc._id,
@@ -65,6 +65,15 @@ async function mongoFunction() {
         // MODIFY STAGE
         modifyOp = '';
         switch (modifyOp) {
+            case 'setMapProp': {
+                for (let i = 0; i < filter.length; i++) {
+                    await collectionMaps.updateOne(
+                        {_id: filter[i]._id},
+                        {$set: {'MAPROPNAME' : 0}}
+                    );
+                }
+                break;
+            }
             case 'unsetMapProp': {
                 for (let i = 0; i < filter.length; i++) {
                     await collectionMaps.updateOne(

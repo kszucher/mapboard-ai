@@ -1,4 +1,3 @@
-import {getDefaultNode}                     from "./Node";
 import {copy, subsref, subsasgn}            from "./Utils"
 import {mapInit}                            from './MapInit'
 import {mapChain}                           from './MapChain'
@@ -46,12 +45,14 @@ export function loadMap(mapStorage) {
 
     mapMem = {
         // saveOptional
-        hasTasks:                           copy(mapStorage.hasTasks),
         data:                                mapAssembly((mapStorage.data)),
+        density:                            copy(mapStorage.density),
+        task:                           copy(mapStorage.task),
+
         // saveNever
-        defaultH:                           mapStorage.hasTasks? 30:20, // shall rather be isDense separately from hasTasks
-        sLineDeltaXDefault:                 mapStorage.hasTasks? 30:20,
-        padding:                            mapStorage.hasTasks? 8:3,
+        defaultH:                           mapStorage.density === 'large'? 30:20,
+        sLineDeltaXDefault:                 mapStorage.density === 'large'? 30:20,
+        padding:                            mapStorage.density === 'large'? 8:3,
         filter:                             [],
         deepestSelectablePath:              [],
         deepestSelectableRef:               [],
@@ -68,7 +69,7 @@ export function rebuild() {
     mapMeasure.start();
     mapPlace.start();
 
-    if (mapMem.hasTasks) {
+    if (mapMem.task) {
         mapTaskCalc.start();
         mapTaskColor.start();
     }
@@ -83,7 +84,7 @@ export function redraw() {
     mapDivVisualize.start();
     mapCanvasVisualize.start();
 
-    if (mapMem.hasTasks) {
+    if (mapMem.task) {
         taskCanvasVisualize();
     }
 }

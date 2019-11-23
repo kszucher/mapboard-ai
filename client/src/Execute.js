@@ -350,14 +350,15 @@ export function execute(command) {
             // TODO: multi command pipeline with save included
 
             let newMap = {
-                hasTasks: 0,
                 data: [
                     {
                         path: ['s', 0],
                         content: lastRef.content,
                         selected: 1
                     }
-                ]
+                ],
+                density: 'small',
+                task: 0
             };
 
             let c2s = {
