@@ -1,14 +1,10 @@
-import React, {useCallback} from 'react';
-import  { useState, useEffect } from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-
-import { createMuiTheme } from '@material-ui/core/styles';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-
-import {mindBoardApi} from "./MindBoardApi";
+import React, {useCallback}                                 from 'react';
+import  { useState, useEffect }                             from 'react';
+import { createMuiTheme }                                   from '@material-ui/core/styles';
+import MuiThemeProvider                                     from '@material-ui/core/styles/MuiThemeProvider';
+import Tabs                                                 from '@material-ui/core/Tabs';
+import Tab                                                  from '@material-ui/core/Tab';
+import {mindBoardApi}                                       from "./MindBoardApi";
 
 const theme = createMuiTheme({
     palette: {
@@ -16,12 +12,6 @@ const theme = createMuiTheme({
             main: '#00ff00',
         },
     },
-});
-
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    }
 });
 
 export function ReactMaterialTabHolder() {
@@ -60,6 +50,7 @@ export function ReactMaterialTab(pass) {
     });
 
     useEffect(() => {
+        // https://stackoverflow.com/questions/54569681/cannot-remove-an-event-listener-outside-useeffect
         document.addEventListener("event", updater);
         return () => {
             document.removeEventListener("event", updater)
@@ -89,6 +80,3 @@ export function ReactMaterialTab(pass) {
         </MuiThemeProvider>
     );
 }
-
-// knawledge
-// https://stackoverflow.com/questions/54569681/cannot-remove-an-event-listener-outside-useeffect

@@ -1,5 +1,5 @@
-import {mapMem, mapref, mapasgn, pathMerge} from "./Map";
-import {mapCollect} from "./MapCollect";
+import {mapMem, mapref, mapasgn, pathMerge}                 from "./Map";
+import {mapCollect}                                         from "./MapCollect";
 
 export function getSelectionContext () {
 

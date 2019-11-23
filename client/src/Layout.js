@@ -3,7 +3,6 @@ import React                                                from 'react'
 import ReactMaterialToolBar                                 from "./ReactMaterialToolBar";
 import {ReactMaterialTabHolder}                             from "./ReactMaterialTab";
 import {mindBoardApi}                                       from "./MindBoardApi";
-import FloatingActionButtons                                from "./ReactMaterialIcon";
 
 export function Layout() {
 
@@ -26,7 +25,6 @@ export function Layout() {
                         </ReactMaterialTabHolder>
                     </main>
                     <aside id="header-sidebar-right">
-                        <FloatingActionButtons/>
                     </aside>
                 </div>
             </div>,

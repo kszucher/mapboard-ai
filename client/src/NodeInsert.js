@@ -1,6 +1,6 @@
-import {clearStructSelection}               from "./NodeSelect";
-import {mapref}                             from "./Map";
-import {getDefaultNode}                     from "./Node";
+import {clearStructSelection}                           from "./NodeSelect";
+import {mapref}                                         from "./Map";
+import {getDefaultNode}                                 from "./Node";
 
 export function structInsert(lastRef, direction) {
     clearStructSelection();

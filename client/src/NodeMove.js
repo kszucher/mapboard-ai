@@ -1,9 +1,9 @@
-import {mapMem, mapref}                  from "./Map";
-import {mapNodePropChange}                          from "./MapNodePropChange";
-import {clearStructSelection}                       from "./NodeSelect";
-import {getDefaultNode}                             from "./Node";
-import {structDeleteReselect}                       from "./NodeDelete";
-import {arrayValuesSame, copy, transpose}           from "./Utils";
+import {mapMem, mapref}                                 from "./Map";
+import {mapNodePropChange}                              from "./MapNodePropChange";
+import {clearStructSelection}                           from "./NodeSelect";
+import {getDefaultNode}                                 from "./Node";
+import {structDeleteReselect}                           from "./NodeDelete";
+import {arrayValuesSame, copy, transpose}               from "./Utils";
 
 let clipboard = [];
 
