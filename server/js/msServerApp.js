@@ -1,6 +1,5 @@
 let express =           require('express');
 let cors =              require('cors');
-let hash =              require('./Hash');
 let sizeOf =            require('image-size');
 let app =               express();
 
