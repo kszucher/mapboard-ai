@@ -51,7 +51,6 @@ export let props = {
             isPicAssigned:                      0,
             isEquationAssigned:                 0,
             isSvgAssigned:                      0,
-            editTrigger:                        0,
 
             // mapTaskCalc
             taskStatusInherited:                0,

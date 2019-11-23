@@ -8,7 +8,7 @@ import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelect
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
 import {structMove}                                                                             from "./NodeMove";
-import {copy, transposeArray} from "./Utils";
+import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
 import {hasCell}                                                                                from "./Node";
 
 let headerData = {};
@@ -16,7 +16,6 @@ let lastUserMap = '';
 
 export function execute(command) {
 
-    // console.log('COMMAND: ' + command);
 
     let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath, geomLowRef;
 
@@ -24,7 +23,6 @@ export function execute(command) {
         keyStr = lastEvent.inputProps.keyStr;
     }
 
-    // this will be a table at some point, I am telling you...
     if ([
         'selectMeStruct',
         'selectMeStructToo',
@@ -184,7 +182,9 @@ export function execute(command) {
         }
         case 'startEdit': {
             eventRouter.isEditing = 1;
-            lastRef.editTrigger = 1;
+            let holderElement = document.getElementById(lastRef.divId);
+            holderElement.contentEditable = 'true';
+            setEndOfContenteditable(holderElement);
             break;
         }
         case 'finishEdit' : {
@@ -194,7 +194,6 @@ export function execute(command) {
 
             lastRef.content = holderElement.textContent;
             lastRef.sTextWidthCalculated = 0;
-
 
             eventRouter.isEditing = 0;
             break;
@@ -346,15 +345,12 @@ export function execute(command) {
             break;
         }
         case 'createMapInMap': {
-
-            // TODO: multi command pipeline with save included
-
             let newMap = {
                 data: [
                     {
-                        path: ['s', 0],
-                        content: lastRef.content,
-                        selected: 1
+                        path:                   ['s', 0],
+                        content:                lastRef.content,
+                        selected:               1
                     }
                 ],
                 density: 'small',
@@ -367,7 +363,6 @@ export function execute(command) {
                 'newMap':                       newMap
             };
             communication.sender(c2s);
-
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
@@ -376,14 +371,16 @@ export function execute(command) {
         case 'signInSuccess': {
             console.log('sign in success');
             let s2c =                           lastEvent.eventRef;
-            var event = new CustomEvent("event", {
-                "detail": {
-                    tabData: {
-                        tabNames:   s2c.headerData.headerMapNameList,
-                        tabId:      s2c.headerData.headerMapSelected,
-                    },
-                }
-            });
+            var event = new CustomEvent(        // c2a communication is based on a hook which is triggered by an event
+                "event",
+                {
+                    "detail": {
+                        tabData: {
+                            tabNames:           s2c.headerData.headerMapNameList,
+                            tabId:              s2c.headerData.headerMapSelected,
+                        },
+                    }
+                });
             document.dispatchEvent(event);
             execute('openAfterInit');
             break;

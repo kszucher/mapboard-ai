@@ -1,5 +1,5 @@
 import {mapMem}                                             from "./Map";
-import {genHash, getLatexString, setEndOfContenteditable, copy, getBgc} from "./Utils";
+import {genHash, getLatexString, copy, getBgc}              from "./Utils";
 import {hasCell}                                            from "./Node";
 
 class MapDivVisualize {
@@ -118,27 +118,17 @@ class MapDivVisualize {
                         div.innerHTML =                     cm.content;
                         div.contentEditable =               false;
                         div.spellcheck =                    false;
-                        div.style.paddingLeft =             mapMem.padding    -2      + 'px';
+                        div.style.paddingLeft =             mapMem.padding -2       + 'px';
                         div.style.paddingTop =              mapMem.padding -2       + 'px'; // because of the border
                         div.style.fontFamily =              'Roboto';
                         div.style.fontSize =                cm.sTextFontSize        + 'px';
                         div.style.cursor =                  'default';
                         div.style.borderRadius =            '8px';
-
-                        // TODO multiline
-                        // https://stackoverflow.com/questions/11449161/multiline-string-in-div-using-javascript
                     }
 
                     if(cm.content !== mapMem.divData[cm.divId].innerHTML) {
                         mapMem.divData[cm.divId].innerHTML = cm.content;
                         div.innerHTML = cm.content;
-                    }
-
-                    if (cm.editTrigger === 1) {
-                        cm.editTrigger = 0;
-
-                        div.contentEditable = 'true';
-                        setEndOfContenteditable(div);
                     }
                 }
             }
