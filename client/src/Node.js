@@ -1,4 +1,4 @@
-import {getBgc} from './Utils'
+import {getBgc}                                 from './Utils'
 
 export let props = {
     saveOptional: {
@@ -41,7 +41,7 @@ export let props = {
     saveNever: {
         initOnce: {
             //
-            sTextWidthShouldCalculate:          1,
+            sTextWidthCalculated:               0,
             sTextWidth:                         0,
 
             // mapDivVisualize

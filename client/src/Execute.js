@@ -193,7 +193,7 @@ export function execute(command) {
             holderElement.contentEditable = 'false';
 
             lastRef.content = holderElement.textContent;
-            lastRef.sTextWidthShouldCalculate = 1;
+            lastRef.sTextWidthCalculated = 0;
 
 
             eventRouter.isEditing = 0;
