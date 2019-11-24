@@ -13,10 +13,10 @@ class EventListener {
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
         window.addEventListener('click',    event =>    this.click(event)   );
-        window.addEventListener("keydown",  event =>    this.keydown(event) );
-        window.addEventListener("keyup",    event =>    this.keyup(event)   );
         window.addEventListener("focus",                this.focus()        );
         window.addEventListener("resize",               this.resize()       );
+        window.addEventListener("keydown",  event =>    this.keydown(event) );
+        window.addEventListener("keyup",    event =>    this.keyup(event)   );
     }
 
     click(event) {

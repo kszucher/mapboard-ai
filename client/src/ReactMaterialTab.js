@@ -27,9 +27,7 @@ export function ReactMaterialTabHolder() {
 
     useEffect(() => {
         document.addEventListener("event", updater);
-        return () => {
-            document.removeEventListener("event", updater)
-        }
+        return () => {document.removeEventListener("event", updater)}
     });
 
     return (
@@ -50,7 +48,8 @@ export function ReactMaterialTab(pass) {
 
     useEffect(() => {
         // https://stackoverflow.com/questions/54569681/cannot-remove-an-event-listener-outside-useeffect
-        document.addEventListener("event", updater); return () => {document.removeEventListener("event", updater)}
+        document.addEventListener("event", updater);
+        return () => {document.removeEventListener("event", updater)}
     });
 
     function handleChange(event, newValue) {
