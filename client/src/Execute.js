@@ -19,7 +19,7 @@ export function execute(command) {
     let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath;
 
     if (lastEvent.inputType === 'windowKeyDown') {
-        keyStr = lastEvent.inputProps.keyStr;
+        keyStr = lastEvent.props.keyStr;
     }
 
     if ([
@@ -298,7 +298,7 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
             initDim();
-            let a2c =                           lastEvent.eventRef;
+            let a2c =                           lastEvent.ref;
             localStorage.setItem('cred', JSON.stringify({
                 name:                           a2c.user,
                 pass:                           a2c.pass,
@@ -320,7 +320,7 @@ export function execute(command) {
             break;
         }
         case 'openAfterInit': {
-            headerData =                        copy(lastEvent.eventRef.headerData);
+            headerData =                        copy(lastEvent.ref.headerData);
             let c2s = {
                 'cmd':                          'openMapRequest',
                 'cred':                         JSON.parse(localStorage.getItem('cred')),
@@ -330,7 +330,7 @@ export function execute(command) {
             break;
         }
         case 'openAfterTabSelect': {
-            let a2c = lastEvent.eventRef;
+            let a2c = lastEvent.ref;
             let c2s = {
                 'cmd':                          'openMapRequest',
                 'cred':                         JSON.parse(localStorage.getItem('cred')),
@@ -390,7 +390,7 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'signInSuccess': {
             console.log('sign in success');
-            let s2c =                           lastEvent.eventRef;
+            let s2c =                           lastEvent.ref;
             var event = new CustomEvent(        // c2a communication is based on a hook which is triggered by an event
                 "event",
                 {
@@ -415,7 +415,7 @@ export function execute(command) {
             break;
         }
         case 'openMapSuccess': {
-            let s2c =                           lastEvent.eventRef;
+            let s2c =                           lastEvent.ref;
             lastUserMap =                       s2c.mapName;
             loadMap(s2c.mapStorage);
             rebuild();
@@ -427,7 +427,7 @@ export function execute(command) {
             break;
         }
         case 'createMapInMapSuccess': {
-            let s2c =                           lastEvent.eventRef;
+            let s2c =                           lastEvent.ref;
             lastRef.ilink = s2c.newMapId;
             break;
         }

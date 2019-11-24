@@ -17,16 +17,17 @@ class EventListener {
         window.addEventListener("resize",               this.resize()       );
         window.addEventListener("keydown",  event =>    this.keydown(event) );
         window.addEventListener("keyup",    event =>    this.keyup(event)   );
+        window.addEventListener("paste",    event =>    this.paste(event)   );
     }
 
     click(event) {
         lastEvent = {
-            'eventRef':                                 event,
-            'inputType':                                'windowClick',
-            'inputProps': {
-                'pageX':                                event.pageX,
-                'pageY':                                event.pageY,
-                'controlStatus':                        this.controlStatus,
+            ref:                                        event,
+            type:                                       'windowClick',
+            props: {
+                pageX:                                  event.pageX,
+                pageY:                                  event.pageY,
+                controlStatus:                          this.controlStatus,
             }
         };
         eventRouter.processEvent();
@@ -60,12 +61,12 @@ class EventListener {
                 let currKey = keyHelper.lut[keyLutFields[i]];
                 if (keyLutFields[i] !== 'VK_SHIFT' && currKey.status === true) {
                     lastEvent = {
-                        'eventRef':                     event,
-                        'inputType':                    'windowKeyDown',
-                        'inputProps': {
-                            'keyCode':                  keyCode,
-                            'keyStr':                   keyStr,
-                            'modifier':                 'shift',
+                        ref:                            event,
+                        type:                           'windowKeyDown',
+                        props: {
+                            keyCode:                    keyCode,
+                            keyStr:                     keyStr,
+                            modifier:                   'shift',
                         }
                     };
                     eventRouter.processEvent();
@@ -78,12 +79,12 @@ class EventListener {
                 let currKey = keyHelper.lut[keyLutFields[i]];
                 if (keyLutFields[i] !== 'VK_CONTROL' && currKey.status === true) {
                     lastEvent = {
-                        'eventRef':                     event,
-                        'inputType':                    'windowKeyDown',
-                        'inputProps': {
-                            'keyCode':                  keyCode,
-                            'keyStr':                   keyStr,
-                            'modifier':                 'control',
+                        ref:                            event,
+                        type:                           'windowKeyDown',
+                        props: {
+                            keyCode:                    keyCode,
+                            keyStr:                     keyStr,
+                            modifier:                   'control',
                         }
                     };
                     eventRouter.processEvent();
@@ -96,12 +97,12 @@ class EventListener {
                 let currKey = keyHelper.lut[keyLutFields[i]];
                 if (keyLutFields[i] !== 'VK_ALT' && currKey.status === true) {
                     lastEvent = {
-                        'eventRef':                     event,
-                        'inputType':                    'windowKeyDown',
-                        'inputProps': {
-                            'keyCode':                  keyCode,
-                            'keyStr':                   keyStr,
-                            'modifier':                 'alt',
+                        ref:                            event,
+                        type:                           'windowKeyDown',
+                        props: {
+                            keyCode:                    keyCode,
+                            keyStr:                     keyStr,
+                            modifier:                   'alt',
                         }
                     };
                     eventRouter.processEvent();
@@ -110,12 +111,12 @@ class EventListener {
         }
         else {
             lastEvent = {
-                'eventRef':                             event,
-                'inputType':                            'windowKeyDown',
-                'inputProps': {
-                    'keyCode':                          keyCode,
-                    'keyStr':                           keyStr,
-                    'modifier':                         '',
+                ref:                                    event,
+                type:                                   'windowKeyDown',
+                props: {
+                    keyCode:                            keyCode,
+                    keyStr:                             keyStr,
+                    modifier:                           '',
                 }
             };
             eventRouter.processEvent();
@@ -138,18 +139,26 @@ class EventListener {
         }
     };
 
+    paste(event) {
+        console.log('PASTE');
+        lastEvent = {
+            ref:                                        event,
+
+        }
+    }
+
     receiveFromReact(a2c) {
         lastEvent = {
-            'eventRef':                                 a2c,
-            'inputType':                                'reactEvent',
+            ref:                                        a2c,
+            type:                                       'reactEvent',
         };
         eventRouter.processEvent();
     }
 
     receiveFromServer(s2c) {
         lastEvent = {
-            'eventRef':                                 s2c,
-            'inputType':                                'serverEvent',
+            ref:                                        s2c,
+            type:                                       'serverEvent',
         };
         eventRouter.processEvent();
     }

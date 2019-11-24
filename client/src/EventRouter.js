@@ -17,10 +17,10 @@ class EventRouter {
             console.log('unfinished server communication')
         }
         else {
-            if (lastEvent.inputType === 'windowClick') {
-                let pageX =             lastEvent.inputProps.pageX;
-                let pageY =             lastEvent.inputProps.pageY;
-                let controlStatus =     lastEvent.inputProps.controlStatus;
+            if (lastEvent.type === 'windowClick') {
+                let pageX =             lastEvent.props.pageX;
+                let pageY =             lastEvent.props.pageY;
+                let controlStatus =     lastEvent.props.controlStatus;
 
                 if (! (pageX > getDim().lw && pageX <= getDim().lw + getDim().mw && pageY > getDim().uh)) {
                     console.log('not within region')
@@ -57,13 +57,13 @@ class EventRouter {
 
                 }
             }
-            else if (lastEvent.inputType === 'windowKeyDown') {
+            else if (lastEvent.type === 'windowKeyDown') {
                 let sc = getSelectionContext();
 
-                let eventRef = lastEvent.eventRef;
-                let keyCode = lastEvent.inputProps.keyCode;
-                let keyStr = lastEvent.inputProps.keyStr;
-                let modifier = lastEvent.inputProps.modifier;
+                let ref = lastEvent.ref;
+                let keyCode = lastEvent.props.keyCode;
+                let keyStr = lastEvent.props.keyStr;
+                let modifier = lastEvent.props.modifier;
 
                 let keyboardStateMachineDb = [
                     ['modifier', 'keyMatch',                        'scope',         'e', 'p', 'executionList',                         'd'],
@@ -119,7 +119,7 @@ class EventRouter {
                         keyboardStateMachine.keyMatch ===    true) {
 
                         if (keyboardStateMachine.p) {
-                            eventRef.preventDefault();
+                            ref.preventDefault();
                         }
 
                         for (let j = 0; j < keyboardStateMachine.executionList.length; j++) {
@@ -141,12 +141,12 @@ class EventRouter {
                     }
                 }
             }
-            else if (lastEvent.inputType === 'reactEvent') {
-                let a2c = lastEvent.eventRef;
+            else if (lastEvent.type === 'reactEvent') {
+                let a2c = lastEvent.ref;
                 execute(a2c.cmd);
             }
-            else if (lastEvent.inputType === 'serverEvent') {
-                let s2c = lastEvent.eventRef;
+            else if (lastEvent.type === 'serverEvent') {
+                let s2c = lastEvent.ref;
                 execute(s2c.cmd);
             }
         }
