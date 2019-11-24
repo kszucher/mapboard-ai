@@ -51,8 +51,8 @@ export function execute(command) {
         'moveNodeSelection',
         'copySelection',
         'cutSelection',
-        'pasteSelection',
-        'pasteFree',
+        'pasteInNode',
+        'pasteInText',
         'cellifyMulti',
         'transposeMe',
         'transpose',
@@ -213,15 +213,36 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         // MOVE
         // -------------------------------------------------------------------------------------------------------------
-        case 'moveNodeSelection':           structMove(sc, 'struct2struct',       keyStr);                                      break;
-        case 'copySelection':               structMove(sc, 'struct2clipboard',    'COPY');                                      break;
-        case 'cutSelection':                structMove(sc, 'struct2clipboard',    'CUT');                                       break;
-        case 'pasteSelection':              structMove(sc, 'clipboard2struct',    'PASTE');                                     break;
-        case 'pasteFree': {
+        case 'moveNodeSelection': {
+            structMove(sc, 'struct2struct', keyStr);
+            break;
+        }
+        case 'copySelection': {
+            structMove(sc, 'struct2clipboard', 'COPY');
+            break;
+        }
+        case 'cutSelection': {
+            structMove(sc, 'struct2clipboard', 'CUT');
+            break;
+        }
+        case 'pasteInText': {
+            // TODO: remove all formatting
+            // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-text-in-execcommand
+            // fontos: ha node lenne a vágólaon, akkor is igazából átmásolhatnánk... de csak a szöveget
             let holderElement = document.getElementById(sc.lastRef.divId);
             holderElement.style.width = 1000 + 'px'; // long enough
             break;
         }
+        case 'pasteInNode':
+            
+            // identifying, whats even on the clipboard...
+            
+            // TODO: switch, based on WHAT are we trying to paste
+            // - node?
+            // - picture?
+            structMove(sc, 'clipboard2struct',    'PASTE');
+            break;
+
         case 'cellifyMulti': {
             structMove(sc, 'struct2cell', 'multiRow');
             break;

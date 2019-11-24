@@ -17,7 +17,7 @@ class EventRouter {
             console.log('unfinished server communication')
         }
         else {
-            if (lastEvent.inputType === 'apiEvent') {
+            if (lastEvent.inputType === 'reactEvent') {
                 let a2c = lastEvent.eventRef;
                 execute(a2c.cmd);
             }
@@ -98,8 +98,8 @@ class EventRouter {
                     ['control',  keyStr === 'VK_O',                 ['s', 'c', 'm'], 0,   1,   ['normalize'                           ], 1 ],
                     ['control',  keyStr === 'VK_C',                 ['s', 'c', 'm'], 0,   1,   ['copySelection'                       ], 1 ],
                     ['control',  keyStr === 'VK_X',                 ['s', 'c', 'm'], 0,   1,   ['cutSelection', 'selectHighOrigin'    ], 1 ],
-                    ['control',  keyStr === 'VK_V',                 ['s', 'c', 'm'], 1,   0,   ['pasteFree'                           ], 1 ],
-                    ['control',  keyStr === 'VK_V',                 ['s', 'c', 'm'], 0,   1,   ['pasteSelection'                      ], 1 ],
+                    ['control',  keyStr === 'VK_V',                 ['s', 'c', 'm'], 1,   0,   ['pasteInText'                         ], 1 ],
+                    ['control',  keyStr === 'VK_V',                 ['s', 'c', 'm'], 0,   0,   ['pasteInNode'                         ], 1 ],
                     ['control',  keyStr === 'VK_S',                 ['s', 'c', 'm'], 0,   1,   ['save'                                ], 1 ],
                     ['control',  keyStr === 'VK_S',                 ['s', 'c', 'm'], 1,   1,   ['finishEdit', 'save'                  ], 1 ],
                     ['control',  keyStr === 'VK_R',                 [          'm'], 0,   1,   ['selectCellRow'                       ], 1 ],
@@ -136,7 +136,7 @@ class EventRouter {
                             execute(currExecution);
 
                             // build execution-wise
-                            if (currExecution !== 'typeText' && currExecution !== 'pasteFree') {
+                            if (currExecution !== 'typeText' && currExecution !== 'pasteInText') {
                                 rebuild();
                             }
 

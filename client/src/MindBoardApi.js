@@ -6,7 +6,7 @@ class MindBoardApi {
     }
 
     request(requestData) {
-        eventListener.receiveFromApi(requestData);
+        eventListener.receiveFromReact(requestData);
     }
 }
 
