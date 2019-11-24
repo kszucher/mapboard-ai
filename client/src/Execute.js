@@ -300,8 +300,43 @@ export function execute(command) {
         case 'paste': {
             let w2c =                               lastEvent.ref;
 
-            console.log('pasted')
+            if (eventRouter.isEditing === 1) {
 
+            }
+            else {
+
+                // https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
+
+                var items = (w2c.clipboardData || w2c.originalEvent.clipboardData).items;
+
+                console.log(JSON.stringify(items)); // will give you the mime types
+
+                // find pasted image among pasted items
+                var blob = null;
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf("image") === 0) {
+                        blob = items[i].getAsFile();
+                    }
+                }
+                // load image if there is a pasted image
+                if (blob !== null) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        console.log(event.target.result); // data url!
+                    };
+                    reader.readAsDataURL(blob);
+                }
+
+                var fd = new FormData();
+                fd.append('upl', blob, 'blobby.txt');
+
+                fetch('http://127.0.0.1:8082/feta',
+                    {
+                        method: 'post',
+                        body: fd
+                    });
+
+            }
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
