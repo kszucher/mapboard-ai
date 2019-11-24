@@ -1,5 +1,5 @@
 import {mapMem}                                             from "./Map";
-import {getBgc} from "./Utils";
+import {getBgc}                                             from "./Utils";
 
 class MapColor {
     start () {
@@ -10,7 +10,7 @@ class MapColor {
     iterate(cm) {
         if (cm.taskStatus !== -1) {
 
-            cm.sTextColor = '#000000';
+            cm.sTextColor =                                 '#000000';
 
             switch (cm.taskStatus) {
                 case 0: cm.lineColor =                      '#bbbbbb';  break;
@@ -21,11 +21,11 @@ class MapColor {
 
 
             if (cm.taskStatus === 0) {
-                cm.ellipseFill = 0;
+                cm.ellipseFill =                            0;
             }
             else {
-                cm.ellipseFill = 1;
-                cm.ellipseBorderColor = getBgc();
+                cm.ellipseFill =                            1;
+                cm.ellipseBorderColor =                     getBgc();
 
                 switch (cm.taskStatus) {
                     case 0: cm.ellipseFill = 0;                         break;
@@ -36,7 +36,7 @@ class MapColor {
             }
         }
         else {
-            cm.ellipseFill = 0;
+            cm.ellipseFill =                                0;
         }
 
         let sCount = Object.keys(cm.s).length;

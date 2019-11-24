@@ -1,4 +1,4 @@
-import {mapref}                                             from "./Map";
+import {mapref} from "./Map";
 
 export function structNavigate (lastPath, direction) {
 

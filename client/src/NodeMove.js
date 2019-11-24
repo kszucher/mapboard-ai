@@ -1,4 +1,4 @@
-import {mapMem, mapref}                                 from "./Map";
+import {mapref}                                         from "./Map";
 import {mapNodePropChange}                              from "./MapNodePropChange";
 import {clearStructSelection}                           from "./NodeSelect";
 import {getDefaultNode}                                 from "./Node";

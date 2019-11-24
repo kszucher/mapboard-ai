@@ -1,6 +1,5 @@
-import {mapref} from "./Map";
-import {mapDivRemove} from "./MapDivRemove";
-import {copy} from "./Utils";
+import {mapref}                     from "./Map";
+import {mapDivRemove}               from "./MapDivRemove";
 
 export function structDeleteReselect(sc) {
     // calculate jumpback

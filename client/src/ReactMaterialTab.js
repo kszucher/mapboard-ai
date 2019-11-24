@@ -1,6 +1,5 @@
-import React, {useCallback}                                 from 'react';
-import  { useState, useEffect }                             from 'react';
-import { createMuiTheme }                                   from '@material-ui/core/styles';
+import React, {useCallback, useState, useEffect}            from 'react';
+import {createMuiTheme }                                    from '@material-ui/core/styles';
 import MuiThemeProvider                                     from '@material-ui/core/styles/MuiThemeProvider';
 import Tabs                                                 from '@material-ui/core/Tabs';
 import Tab                                                  from '@material-ui/core/Tab';
@@ -51,10 +50,7 @@ export function ReactMaterialTab(pass) {
 
     useEffect(() => {
         // https://stackoverflow.com/questions/54569681/cannot-remove-an-event-listener-outside-useeffect
-        document.addEventListener("event", updater);
-        return () => {
-            document.removeEventListener("event", updater)
-        }
+        document.addEventListener("event", updater); return () => {document.removeEventListener("event", updater)}
     });
 
     function handleChange(event, newValue) {

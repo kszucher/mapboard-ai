@@ -14,15 +14,15 @@ class MapDivVisualize {
 
             }
             else {
-                let nextStyle = {
+                let newStyle = {
                     left:                                   cm.nodeStartX                                                                           + 'px',
                     top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2 - mapMem.padding    + 'px',
                     width:                                  cm.selfW                                                            - mapMem.padding    + 'px',
                     height:                                 cm.selfH                                                            - mapMem.padding    + 'px',
                     color:                                  cm.sTextColor,
-                    textDecoration:                         cm.ilink === ""?    ""                      : "underline",
-                    backgroundColor:                        cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
-                    border:                                 cm.selected?        '1px solid black'       : '1px solid' + getBgc()
+                    textDecoration:     cm.ilink === ""?    ""                      : "underline",
+                    backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
+                    border:             cm.selected?        '1px solid black'       : '1px solid' + getBgc()
                 };
 
                 let div;
@@ -42,34 +42,34 @@ class MapDivVisualize {
                     div.appendChild(document.createTextNode(''));
                     document.getElementById('mapDiv').appendChild(div);
 
-                    for (let i = 0; i < Object.keys(nextStyle).length; i++) {
-                        let styleName = Object.keys(nextStyle)[i];
-                        if (nextStyle[styleName] !==        mapMem.divData[cm.divId].style[styleName]) {
-                            div.style[styleName] =          nextStyle[styleName];
+                    for (let i = 0; i < Object.keys(newStyle).length; i++) {
+                        let styleName = Object.keys(newStyle)[i];
+                        if (newStyle[styleName] !==         mapMem.divData[cm.divId].style[styleName]) {
+                            div.style[styleName] =          newStyle[styleName];
                         }
                     }
                 }
                 else {
                     div =                                   document.getElementById(cm.divId);
 
-                    for (let i = 0; i < Object.keys(nextStyle).length; i++) {
-                        let styleName = Object.keys(nextStyle)[i];
+                    for (let i = 0; i < Object.keys(newStyle).length; i++) {
+                        let styleName = Object.keys(newStyle)[i];
                         if (styleName !== 'left' && styleName !== 'top') {
-                            if (nextStyle[styleName] !==    mapMem.divData[cm.divId].style[styleName]) {
-                                div.style[styleName] =      nextStyle[styleName];
+                            if (newStyle[styleName] !==     mapMem.divData[cm.divId].style[styleName]) {
+                                div.style[styleName] =      newStyle[styleName];
                             }
                         }
                     }
 
-                    let leftDelta = (parseInt(div.style.left, 10) - parseInt(nextStyle.left));
-                    let topDelta = (parseInt(div.style.top, 10) - parseInt(nextStyle.top));
+                    let leftDelta = (parseInt(div.style.left, 10) - parseInt(newStyle.left));
+                    let topDelta = (parseInt(div.style.top, 10) - parseInt(newStyle.top));
 
                     if (leftDelta !== 0 || topDelta !== 0 ) {
                         div.style.transform =               "translate(" + leftDelta + ',' + topDelta + ")";
                         div.style.transition =              '0.5s ease-out';
 
-                        div.style.left =                    nextStyle.left;
-                        div.style.top =                     nextStyle.top;
+                        div.style.left =                    newStyle.left;
+                        div.style.top =                     newStyle.top;
                     }
                     else {
                         div.style.transform =               '';
@@ -77,7 +77,7 @@ class MapDivVisualize {
                     }
                 }
 
-                mapMem.divData[cm.divId].style = copy(nextStyle);
+                mapMem.divData[cm.divId].style = copy(newStyle);
 
                 // content
                 // if (cm.content.split('.').pop() === 'jpg' || cm.content.split('.').pop() === 'noun') {
@@ -97,9 +97,9 @@ class MapDivVisualize {
                     if (cm.isEquationAssigned === 0) {
                         cm.isEquationAssigned = 1;
 
-                        div.style.paddingLeft =             4 + 'px';
-                        div.style.paddingTop =              mapMem.padding + 'px';
-                        div.style.fontSize =                cm.sTextFontSize +  'px';
+                        div.style.paddingLeft =             4                       + 'px';
+                        div.style.paddingTop =              mapMem.padding          + 'px';
+                        div.style.fontSize =                cm.sTextFontSize        + 'px';
                         div.style.cursor =                  'default';
 
                         katex.render(getLatexString(cm.content), div, {

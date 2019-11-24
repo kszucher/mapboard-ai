@@ -30,8 +30,8 @@ class MapPlace {
     }
 
     iterate(cm) {
-        cm.nodeStartX =                                     cm.nodeStartXOverride ? cm.nodeStartXOverride : cm.parentNodeEndX + cm.lineDeltaX;
-        cm.nodeStartY =                                     cm.nodeStartYOverride ? cm.nodeStartYOverride : cm.parentNodeEndY + cm.lineDeltaY;
+        cm.nodeStartX = cm.nodeStartXOverride?              cm.nodeStartXOverride : cm.parentNodeEndX + cm.lineDeltaX;
+        cm.nodeStartY = cm.nodeStartYOverride?              cm.nodeStartYOverride : cm.parentNodeEndY + cm.lineDeltaY;
 
         if (cm.parentType === 'cell') {
             cm.nodeStartX =                                 cm.parentNodeEndX;

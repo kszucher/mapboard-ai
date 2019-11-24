@@ -20,7 +20,6 @@ class MapDivRemove {
             this.iterate(cm.s[i]);
         }
 
-
         if (cm.type === 'struct') {
             if (hasCell(cm)) {
             }

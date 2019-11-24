@@ -40,9 +40,12 @@ export let props = {
     },
     saveNever: {
         initOnce: {
-            //
+            // mapMeasure
             sTextWidthCalculated:               0,
             sTextWidth:                         0,
+
+            // mapTaskCalc
+            taskStatusInherited:                0,
 
             // mapDivVisualize
             isDivAssigned:                      0,
@@ -51,9 +54,6 @@ export let props = {
             isPicAssigned:                      0,
             isEquationAssigned:                 0,
             isSvgAssigned:                      0,
-
-            // mapTaskCalc
-            taskStatusInherited:                0,
         },
         initAlways: {
             // mapChain

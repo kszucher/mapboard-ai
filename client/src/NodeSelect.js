@@ -27,9 +27,6 @@ export function getSelectionContext () {
     else if (filter.structSelectedPathList.length !== 0) {
         scope = 's';
         for (let i = 0; i < filter.structSelectedPathList.length; i++) {
-
-            // console.log(mapref(filter.structSelectedPathList[i]))
-
             let currSelectedNumber = mapref(filter.structSelectedPathList[i]).selected;
             if (currSelectedNumber > maxSel) {
                 maxSel = currSelectedNumber;

@@ -45,9 +45,9 @@ export function loadMap(mapStorage) {
 
     mapMem = {
         // saveOptional
-        data:                                mapAssembly((mapStorage.data)),
+        data:                               mapAssembly((mapStorage.data)),
         density:                            copy(mapStorage.density),
-        task:                           copy(mapStorage.task),
+        task:                               copy(mapStorage.task),
 
         // saveNever
         defaultH:                           mapStorage.density === 'large'? 30:20,
