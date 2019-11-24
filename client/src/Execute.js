@@ -16,10 +16,9 @@ let lastUserMap = '';
 
 export function execute(command) {
 
-
     let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath, geomLowRef;
 
-    if (lastEvent.inputType === 'keyboardEvent') {
+    if (lastEvent.inputType === 'windowKeyDown') {
         keyStr = lastEvent.inputProps.keyStr;
     }
 

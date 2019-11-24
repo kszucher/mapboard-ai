@@ -17,15 +17,7 @@ class EventRouter {
             console.log('unfinished server communication')
         }
         else {
-            if (lastEvent.inputType === 'reactEvent') {
-                let a2c = lastEvent.eventRef;
-                execute(a2c.cmd);
-            }
-            else if (lastEvent.inputType === 'serverEvent') {
-                let s2c = lastEvent.eventRef;
-                execute(s2c.cmd);
-            }
-            else if (lastEvent.inputType === 'mouseEvent') {
+            if (lastEvent.inputType === 'windowClick') {
                 let pageX =             lastEvent.inputProps.pageX;
                 let pageY =             lastEvent.inputProps.pageY;
                 let controlStatus =     lastEvent.inputProps.controlStatus;
@@ -65,7 +57,7 @@ class EventRouter {
 
                 }
             }
-            else if (lastEvent.inputType === 'keyboardEvent') {
+            else if (lastEvent.inputType === 'windowKeyDown') {
                 let sc = getSelectionContext();
 
                 let eventRef = lastEvent.eventRef;
@@ -145,10 +137,17 @@ class EventRouter {
                                 redraw();
                             }
                         }
-
                         break;
                     }
                 }
+            }
+            else if (lastEvent.inputType === 'reactEvent') {
+                let a2c = lastEvent.eventRef;
+                execute(a2c.cmd);
+            }
+            else if (lastEvent.inputType === 'serverEvent') {
+                let s2c = lastEvent.eventRef;
+                execute(s2c.cmd);
             }
         }
     }

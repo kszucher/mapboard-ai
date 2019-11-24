@@ -22,7 +22,7 @@ class EventListener {
     click(event) {
         lastEvent = {
             'eventRef':                                 event,
-            'inputType':                                'mouseEvent',
+            'inputType':                                'windowClick',
             'inputProps': {
                 'pageX':                                event.pageX,
                 'pageY':                                event.pageY,
@@ -61,7 +61,7 @@ class EventListener {
                 if (keyLutFields[i] !== 'VK_SHIFT' && currKey.status === true) {
                     lastEvent = {
                         'eventRef':                     event,
-                        'inputType':                    'keyboardEvent',
+                        'inputType':                    'windowKeyDown',
                         'inputProps': {
                             'keyCode':                  keyCode,
                             'keyStr':                   keyStr,
@@ -79,7 +79,7 @@ class EventListener {
                 if (keyLutFields[i] !== 'VK_CONTROL' && currKey.status === true) {
                     lastEvent = {
                         'eventRef':                     event,
-                        'inputType':                    'keyboardEvent',
+                        'inputType':                    'windowKeyDown',
                         'inputProps': {
                             'keyCode':                  keyCode,
                             'keyStr':                   keyStr,
@@ -97,7 +97,7 @@ class EventListener {
                 if (keyLutFields[i] !== 'VK_ALT' && currKey.status === true) {
                     lastEvent = {
                         'eventRef':                     event,
-                        'inputType':                    'keyboardEvent',
+                        'inputType':                    'windowKeyDown',
                         'inputProps': {
                             'keyCode':                  keyCode,
                             'keyStr':                   keyStr,
@@ -111,7 +111,7 @@ class EventListener {
         else {
             lastEvent = {
                 'eventRef':                             event,
-                'inputType':                            'keyboardEvent',
+                'inputType':                            'windowKeyDown',
                 'inputProps': {
                     'keyCode':                          keyCode,
                     'keyStr':                           keyStr,
