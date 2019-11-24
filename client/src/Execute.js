@@ -18,7 +18,7 @@ export function execute(command) {
 
     let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath;
 
-    if (lastEvent.inputType === 'windowKeyDown') {
+    if (lastEvent.type === 'windowKeyDown') {
         keyStr = lastEvent.props.keyStr;
     }
 
@@ -52,6 +52,7 @@ export function execute(command) {
         'cutSelection',
         'pasteInNode',
         'pasteInText',
+        'paste',
         'cellifyMulti',
         'transposeMe',
         'transpose',
@@ -200,15 +201,15 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp':                structInsert(lastRef, 'UP');                                                        break;
-        case 'newSiblingDown':              structInsert(lastRef, 'DOWN');                                                      break;
-        case 'newChild':                    structInsert(lastRef, 'RIGHT');                                                     break;
-        case 'newCellBlock':                cellInsert(lastPath.slice(0, lastPath.length -2), keyStr);                          break;
+        case 'newSiblingUp':                        structInsert(lastRef, 'UP');                                break;
+        case 'newSiblingDown':                      structInsert(lastRef, 'DOWN');                              break;
+        case 'newChild':                            structInsert(lastRef, 'RIGHT');                             break;
+        case 'newCellBlock':                        cellInsert(lastPath.slice(0, lastPath.length -2), keyStr);  break;
         // -------------------------------------------------------------------------------------------------------------
         // DELETE
         // -------------------------------------------------------------------------------------------------------------
-        case 'deleteNode':                  structDeleteReselect(sc);                                                           break;
-        case 'deleteCellBlock':             cellBlockDeleteReselect(lastRef);                                                   break;
+        case 'deleteNode':                          structDeleteReselect(sc);                                   break;
+        case 'deleteCellBlock':                     cellBlockDeleteReselect(lastRef);                           break;
         // -------------------------------------------------------------------------------------------------------------
         // MOVE
         // -------------------------------------------------------------------------------------------------------------
@@ -270,10 +271,10 @@ export function execute(command) {
 
                 tmpDiv = document.createElement('div');
 
-                tmpDiv.style.paddingLeft =              mapMem.padding + 'px';
-                tmpDiv.style.paddingTop =               mapMem.padding + 'px';
-                tmpDiv.style.fontSize =                 14 + 'px';
-                tmpDiv.style.lineHeight =               14 + 'px';
+                tmpDiv.style.paddingLeft =          mapMem.padding + 'px';
+                tmpDiv.style.paddingTop =           mapMem.padding + 'px';
+                tmpDiv.style.fontSize =             14 + 'px';
+                tmpDiv.style.lineHeight =           14 + 'px';
 
                 document.getElementById('dm').appendChild(tmpDiv);
 
@@ -281,8 +282,8 @@ export function execute(command) {
                     throwOnError: false
                 });
 
-                lastRef.selfWidthOverride = tmpDiv.childNodes[0].offsetWidth + 8;
-                lastRef.selfHeightOverride = tmpDiv.childNodes[0].offsetHeight + 8;
+                lastRef.selfWidthOverride =         tmpDiv.childNodes[0].offsetWidth + 8;
+                lastRef.selfHeightOverride =        tmpDiv.childNodes[0].offsetHeight + 8;
 
                 if (isOdd(lastRef.selfHeightOverride)) {
                     lastRef.selfHeightOverride += 1;
@@ -294,47 +295,57 @@ export function execute(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
+        // PASTE
+        // -------------------------------------------------------------------------------------------------------------
+        case 'paste': {
+            let w2c =                               lastEvent.ref;
+
+            console.log('pasted')
+
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
         // SERVER RELATED - TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
             initDim();
-            let a2c =                           lastEvent.ref;
+            let r2c =                               lastEvent.ref;
             localStorage.setItem('cred', JSON.stringify({
-                name:                           a2c.user,
-                pass:                           a2c.pass,
+                name:                               r2c.user,
+                pass:                               r2c.pass,
             }));
             let c2s = {
-                'cmd':                          'signInRequest',
-                'cred':                         JSON.parse(localStorage.getItem('cred')),
+                'cmd':                              'signInRequest',
+                'cred':                             JSON.parse(localStorage.getItem('cred')),
             };
             communication.sender(c2s);
             break;
         }
         case 'signOut': {
             let c2s = {
-                'cmd':                          'signOutRequest',
-                'cred':                         JSON.parse(localStorage.getItem('cred')),
+                'cmd':                              'signOutRequest',
+                'cred':                             JSON.parse(localStorage.getItem('cred')),
             };
             localStorage.setItem('cred', {});
             communication.sender(c2s);
             break;
         }
         case 'openAfterInit': {
-            headerData =                        copy(lastEvent.ref.headerData);
+            headerData =                            copy(lastEvent.ref.headerData);
             let c2s = {
-                'cmd':                          'openMapRequest',
-                'cred':                         JSON.parse(localStorage.getItem('cred')),
-                'mapName':                      headerData.headerMapIdList[headerData.headerMapSelected]
+                'cmd':                              'openMapRequest',
+                'cred':                             JSON.parse(localStorage.getItem('cred')),
+                'mapName':                          headerData.headerMapIdList[headerData.headerMapSelected]
             };
             communication.sender(c2s);
             break;
         }
         case 'openAfterTabSelect': {
-            let a2c = lastEvent.ref;
+            let r2c = lastEvent.ref;
             let c2s = {
-                'cmd':                          'openMapRequest',
-                'cred':                         JSON.parse(localStorage.getItem('cred')),
-                'mapName':                      headerData.headerMapIdList[a2c.tabId]
+                'cmd':                              'openMapRequest',
+                'cred':                             JSON.parse(localStorage.getItem('cred')),
+                'mapName':                          headerData.headerMapIdList[r2c.tabId]
             };
             communication.sender(c2s);
             break;
@@ -342,9 +353,9 @@ export function execute(command) {
         case 'openAfterMapSelect': {
             if(lastRef.ilink !== '') {
                 let c2s = {
-                    'cmd':                      'openMapRequest',
-                    'cred':                     JSON.parse(localStorage.getItem('cred')),
-                    'mapName':                  lastRef.ilink
+                    'cmd':                          'openMapRequest',
+                    'cred':                         JSON.parse(localStorage.getItem('cred')),
+                    'mapName':                      lastRef.ilink
                 };
                 communication.sender(c2s);
             }
@@ -353,10 +364,10 @@ export function execute(command) {
         case 'save': {
             saveMap();
             let c2s = {
-                cmd:                            'writeMapRequest',
-                cred:                           JSON.parse(localStorage.getItem('cred')),
-                mapName:                        lastUserMap,
-                mapStorage:                     mapStorageOut
+                cmd:                                'writeMapRequest',
+                cred:                               JSON.parse(localStorage.getItem('cred')),
+                mapName:                            lastUserMap,
+                mapStorage:                         mapStorageOut
             };
             communication.sender(c2s);
             break;
@@ -368,9 +379,9 @@ export function execute(command) {
             let newMap = {
                 data: [
                     {
-                        path:                   ['s', 0],
-                        content:                lastRef.content,
-                        selected:               1
+                        path:                       ['s', 0],
+                        content:                    lastRef.content,
+                        selected:                   1
                     }
                 ],
                 density: 'small',
@@ -378,9 +389,9 @@ export function execute(command) {
             };
 
             let c2s = {
-                'cmd':                          'createMapInMapRequest',
-                'cred':                         JSON.parse(localStorage.getItem('cred')),
-                'newMap':                       newMap
+                'cmd':                              'createMapInMapRequest',
+                'cred':                             JSON.parse(localStorage.getItem('cred')),
+                'newMap':                           newMap
             };
             communication.sender(c2s);
             break;
@@ -390,14 +401,14 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'signInSuccess': {
             console.log('sign in success');
-            let s2c =                           lastEvent.ref;
-            var event = new CustomEvent(        // c2a communication is based on a hook which is triggered by an event
+            let s2c =                               lastEvent.ref;
+            var event = new CustomEvent(            // c2a communication is based on a hook which is triggered by an event
                 "event",
                 {
                     "detail": {
                         tabData: {
-                            tabNames:           s2c.headerData.headerMapNameList,
-                            tabId:              s2c.headerData.headerMapSelected,
+                            tabNames:               s2c.headerData.headerMapNameList,
+                            tabId:                  s2c.headerData.headerMapSelected,
                         },
                     }
                 });
@@ -415,8 +426,8 @@ export function execute(command) {
             break;
         }
         case 'openMapSuccess': {
-            let s2c =                           lastEvent.ref;
-            lastUserMap =                       s2c.mapName;
+            let s2c =                               lastEvent.ref;
+            lastUserMap =                           s2c.mapName;
             loadMap(s2c.mapStorage);
             rebuild();
             redraw();
@@ -427,8 +438,8 @@ export function execute(command) {
             break;
         }
         case 'createMapInMapSuccess': {
-            let s2c =                           lastEvent.ref;
-            lastRef.ilink = s2c.newMapId;
+            let s2c =                               lastEvent.ref;
+            lastRef.ilink =                         s2c.newMapId;
             break;
         }
     }

@@ -143,13 +143,14 @@ class EventListener {
         console.log('PASTE');
         lastEvent = {
             ref:                                        event,
-
-        }
+            type:                                       'windowPaste'
+        };
+        eventRouter.processEvent();
     }
 
-    receiveFromReact(a2c) {
+    receiveFromReact(r2c) {
         lastEvent = {
-            ref:                                        a2c,
+            ref:                                        r2c,
             type:                                       'reactEvent',
         };
         eventRouter.processEvent();

@@ -141,9 +141,12 @@ class EventRouter {
                     }
                 }
             }
+            else if (lastEvent.type === 'windowPaste') {
+                execute('paste');
+            }
             else if (lastEvent.type === 'reactEvent') {
-                let a2c = lastEvent.ref;
-                execute(a2c.cmd);
+                let r2c = lastEvent.ref;
+                execute(r2c.cmd);
             }
             else if (lastEvent.type === 'serverEvent') {
                 let s2c = lastEvent.ref;
