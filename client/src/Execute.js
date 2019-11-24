@@ -16,7 +16,7 @@ let lastUserMap = '';
 
 export function execute(command) {
 
-    let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath, geomLowRef;
+    let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath;
 
     if (lastEvent.inputType === 'windowKeyDown') {
         keyStr = lastEvent.inputProps.keyStr;
@@ -68,7 +68,7 @@ export function execute(command) {
         geomHighPath = sc.geomHighPath;
         geomHighRef = sc.geomHighRef;
         geomLowPath = sc.geomLowPath;
-        geomLowRef = sc.geomLowRef;
+        // geomLowRef = sc.geomLowRef;
     }
 
     switch (command) {
