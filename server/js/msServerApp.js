@@ -41,17 +41,14 @@ var type = upload.single('upl');
 
 app.post('/feta', type, function (req, res) {
     console.log(req.body);
-    console.log(req.file); // this prints filename
-    // do stuff with file
+    console.log(req.file);
 
-    // CCALC AND SEND SIZE HERE ALSO, and done
-    // TODO return filepath!!! and with that its done
+    // TODO: measure AND provide meas data... and only then use the res.json
 
-
-    res.json({'cica': 2})
-
-
-
+    let sf2c = {
+            cmd:                'imageSaveSuccess',
+    };
+    res.json(sf2c)
 });
 
 app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});

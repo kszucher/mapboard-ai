@@ -4,10 +4,8 @@ import {execute}                                from "./Execute";
 import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
-import {setClipboard}                           from "./NodeMove"
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
-import {lastEvent}                              from "./EventListener";
-import {red} from "@material-ui/core/colors";
+import {eventListener, lastEvent}               from "./EventListener";
 
 class EventRouter {
     constructor() {
@@ -162,25 +160,17 @@ class EventRouter {
                         }
                     }
                     else if(lastEvent.props.dataType === 'image') {
+                        // TODO: replace communication with fetch and then merge
+
+                        var formData = new FormData();
+                        formData.append('upl', lastEvent.props.data, 'image.jpg');
 
                         fetch('http://127.0.0.1:8082/feta', {
                             method:     'post',
-                            body:       lastEvent.props.data
+                            body:       formData
                         }).then(function(response) {
-                            response.json().then(function(data) {
-                                // TODO: here return the filename, I will need to create a link, which
-                                // will be an internal picture-link
-
-
-
-                                execute();
-                                // létrehozok egy új gyereket, a gyerelnél beállítom a linket, újragen
-                                // a probléma itt inkább a passing of valuez
-                                // DE! ha ez úgyis majd egy event lesz valahol, akkor ezt most itt megelőlegezhetjük
-
-
-
-                                console.log(data);
+                            response.json().then(function(sf2c) {
+                                eventListener.receiveFromServerFetch(sf2c)
                             });
                         });
                     }
@@ -193,6 +183,10 @@ class EventRouter {
             else if (lastEvent.type === 'serverEvent') {
                 let s2c = lastEvent.ref;
                 execute(s2c.cmd);
+            }
+            else if (lastEvent.type === 'serverFetchEvent') {
+                let sf2c = lastEvent.ref;
+                execute(sf2c.cmd);
             }
         }
     }
