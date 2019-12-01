@@ -7,7 +7,7 @@ import {cellNavigate, structNavigate}                                           
 import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelectionContext}     from "./NodeSelect"
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
-import {structMove}                                                                             from "./NodeMove";
+import {setClipboard, structMove} from "./NodeMove";
 import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
 import {hasCell}                                                                                from "./Node";
 
@@ -225,10 +225,15 @@ export function execute(command) {
             break;
         }
         case 'pasteAsMap': {
+            let text = lastEvent.props.data;
+            setClipboard(JSON.parse(text));
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
         case 'pasteAsEquation': { // this shouldnt be here...
+            let text = lastEvent.props.data;
+            // connect new and old
+
             if (lastRef.content.substring(0, 2) === '\\[' && lastRef.isEquationAssigned === 0) {
 
                 let tmpDiv;

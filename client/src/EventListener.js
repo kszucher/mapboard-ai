@@ -1,6 +1,9 @@
 import {keyHelper}          from "./keyHelper";
 import {eventRouter}        from "./EventRouter"
 import {initDim}            from "./Dim";
+import {setClipboard} from "./NodeMove";
+import {execute} from "./Execute";
+import {rebuild, redraw} from "./Map";
 
 export let lastEvent = {};
 
@@ -146,11 +149,42 @@ class EventListener {
 
     paste(event) {
         console.log('PASTE');
-        lastEvent = {
-            ref:                                        event,
-            type:                                       'windowPaste'
-        };
-        eventRouter.processEvent();
+        navigator.permissions.query({name: "clipboard-write"}).then(result => {
+            if (result.state === "granted" || result.state === "prompt") {
+                navigator.clipboard.read().then(item => {
+                    let type = item[0].types[0];
+                    if (type === 'text/plain') {
+                        navigator.clipboard.readText().then(text => {
+                            lastEvent = {
+                                ref:                                        '',
+                                type:                                       'windowPaste',
+                                props: {
+                                    dataType:                               'text',
+                                    data:                                   text
+                                }
+                            };
+                            eventRouter.processEvent();
+                        });
+                    }
+                    if (type === 'image/png') {
+                        item[0].getType('image/png').then(result => {
+                            var formData = new FormData();
+                            formData.append('upl', result, 'image.jpg');
+                            lastEvent = {
+                                ref:                                        '',
+                                type:                                       'windowPaste',
+                                props: {
+                                    dataType:                               'image',
+                                    data:                                   formData
+                                }
+
+                            };
+                            eventRouter.processEvent();
+                        })
+                    }
+                })
+            }
+        });
     }
 
     receiveFromReact(r2c) {

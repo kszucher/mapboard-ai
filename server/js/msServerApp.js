@@ -48,6 +48,8 @@ app.post('/feta', type, function (req, res) {
     // TODO return filepath!!! and with that its done
 
 
+    res.json({'cica': 2})
+
 
 
 });

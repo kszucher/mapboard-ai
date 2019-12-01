@@ -144,48 +144,46 @@ class EventRouter {
                 }
             }
             else if (lastEvent.type === 'windowPaste') {
-                if (eventRouter.isEditing !== 1) {
-                    navigator.permissions.query({name: "clipboard-write"}).then(result => {
-                        if (result.state === "granted" || result.state === "prompt") {
-                            navigator.clipboard.read()
-                                .then(item => {
-                                    let type = item[0].types[0];
-                                    if (type === 'text/plain') {
-                                        navigator.clipboard.readText().then(text => {
-                                            if (text.substring(0, 1) === '[') {
-                                                setClipboard(JSON.parse(text));
-                                                execute('pasteAsMap');
-
-                                                rebuild();
-                                                redraw();
-
-                                            }
-                                            else if (text.substring(0, 3) === '\\[') {
-                                                // TODO pass text to equation renderer
-                                                execute('pasteAsEquation');
-                                            }
-                                            else {
-                                                execute('pasteAsText');
-                                            }
-                                        });
-                                    }
-                                    if (type === 'image/png') {
-                                        item[0].getType('image/png').then(result => {
-                                            var formData = new FormData();
-                                            formData.append('upl', result, 'image.jpg');
-
-                                            fetch('http://127.0.0.1:8082/feta', {
-                                                method:     'post',
-                                                body:       formData
-                                            });
-                                        })
-                                    }
-                                })
-                                .catch(err => {
-                                    console.error('Failed to read clipboard contents: ', err);
-                                });
+                if (this.isEditing !== 1) {
+                    if (lastEvent.props.dataType === 'text') {
+                        let text = lastEvent.props.data;
+                        if (text.substring(0, 1) === '[') {
+                            execute('pasteAsMap');
+                            rebuild();
+                            redraw();
                         }
-                    });
+                        else if (text.substring(0, 3) === '\\[') {
+                            execute('pasteAsEquation');
+                            rebuild();
+                            redraw();
+                        }
+                        else {
+                            execute('pasteAsText');
+                        }
+                    }
+                    else if(lastEvent.props.dataType === 'image') {
+
+                        fetch('http://127.0.0.1:8082/feta', {
+                            method:     'post',
+                            body:       lastEvent.props.data
+                        }).then(function(response) {
+                            response.json().then(function(data) {
+                                // TODO: here return the filename, I will need to create a link, which
+                                // will be an internal picture-link
+
+
+
+                                execute();
+                                // létrehozok egy új gyereket, a gyerelnél beállítom a linket, újragen
+                                // a probléma itt inkább a passing of valuez
+                                // DE! ha ez úgyis majd egy event lesz valahol, akkor ezt most itt megelőlegezhetjük
+
+
+
+                                console.log(data);
+                            });
+                        });
+                    }
                 }
             }
             else if (lastEvent.type === 'reactEvent') {
