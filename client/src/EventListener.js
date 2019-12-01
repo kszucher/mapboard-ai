@@ -19,9 +19,6 @@ class EventListener {
         window.addEventListener("keydown",              event =>    this.keydown(event)             );
         window.addEventListener("keyup",                event =>    this.keyup(event)               );
         window.addEventListener("paste",                event =>    this.paste(event)               );
-
-
-
     }
 
     click(event) {
@@ -36,33 +33,13 @@ class EventListener {
         };
         eventRouter.processEvent();
     }
-    //
+
     focusout() {
-    //     navigator.clipboard.read().then(data => {
-    //         for (let i=0; i<data.items.length; i++) {
-    //             if (data.items[i].type != "text/plain") {
-    //                 alert("Clipboard contains non-text data. Unable to access it.");
-    //             } else {
-    //                 textElem.innerText = data.items[i].getAs("text/plain");
-    //             }
-    //         }
-    //     });
+
     }
 
     focus() {
         console.log('FOCUS');
-
-
-        let data = new DataTransfer();
-
-        data.items.add("text/plain", 'cica');
-        navigator.clipboard.write(data).then(function() {
-            /* success */
-        }, function() {
-            /* failure */
-        });
-        // kiolvasom, megnézem hogy változott-e...
-
         keyHelper.init();
     }
 
@@ -190,20 +167,6 @@ class EventListener {
             type:                                       'serverEvent',
         };
         eventRouter.processEvent();
-    }
-
-    receiveFromPubNub() {
-        // var pubnubDemo = new PubNub({
-        //     publishKey: 'pub-c-90035b55-0e1c-4b24-b4fb-3027339550d2',
-        //     subscribeKey: 'sub-c-ee4b80f6-beae-11e9-81e6-3e7b6b592954'
-        // });
-        //
-        // pubnubDemo.publish({
-        //     message: {
-        //         "color": "blue"
-        //     },
-        //     channel: 'demo_tutorial'
-        // });
     }
 }
 
