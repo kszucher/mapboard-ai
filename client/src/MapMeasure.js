@@ -78,6 +78,9 @@ class MapMeasure {
                 }
             }
             else {
+
+                // TODO meas this
+
                 // process content
                 // if (cm.content.split('.').pop() === 'jpg') {
                 //

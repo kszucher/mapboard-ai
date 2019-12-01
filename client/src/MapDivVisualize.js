@@ -79,12 +79,13 @@ class MapDivVisualize {
 
                 mapMem.divData[cm.divId].style = copy(newStyle);
 
+                // TODO parse this
+
                 // content
-                // if (cm.content.split('.').pop() === 'jpg' || cm.content.split('.').pop() === 'noun') {
+                // if (cm.content === 'SAMPLEPIC') {
                 //     if (cm.isPicAssigned === 0) {
                 //         cm.isPicAssigned = 1;
                 //
-                //         // if pic, call SCRIPT
                 //
                 //         let filename =                              '../../db/pic/user_a591e739/' + lastUserMap + '/' + cm.content;
                 //         div.insertAdjacentHTML('beforeend',         '<img src="' + filename +  '">');

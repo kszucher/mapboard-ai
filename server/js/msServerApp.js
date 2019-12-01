@@ -5,8 +5,7 @@ var multer  =           require('multer');
 var path =              require('path');
 let app =               express();
 
-
-// improvement later
+// improvement for later times
 // https://flaviocopes.com/node-request-data/
 
 app.use(cors());
@@ -47,9 +46,13 @@ app.post('/feta', type, function (req, res) {
 
     let sf2c = {
             cmd:                'imageSaveSuccess',
+            imageId:            '',
+            imageSize:          []
     };
     res.json(sf2c)
 });
+
+app.use('/file', express.static(path.join(__dirname, '../uploads')));
 
 app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 

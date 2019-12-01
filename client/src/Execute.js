@@ -3,13 +3,13 @@ import {communication}                                                          
 import {lastEvent}                                                                              from "./EventListener"
 import {eventRouter}                                                                            from "./EventRouter";
 import {mapMem, mapref, pathMerge, rebuild, redraw, loadMap, saveMap, mapStorageOut}            from "./Map";
+import {hasCell}                                                                                from "./Node";
 import {cellNavigate, structNavigate}                                                           from "./NodeNavigate";
 import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelectionContext}     from "./NodeSelect"
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
-import {setClipboard, structMove} from "./NodeMove";
+import {setClipboard, structMove}                                                               from "./NodeMove";
 import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
-import {hasCell}                                                                                from "./Node";
 
 let headerData = {};
 let lastUserMap = '';
@@ -426,6 +426,15 @@ export function execute(command) {
         case 'createMapInMapSuccess': {
             let s2c =                               lastEvent.ref;
             lastRef.ilink =                         s2c.newMapId;
+            break;
+        }
+        case 'imageSaveSuccess': {
+            let sf2c =                              lastEvent.ref;
+
+            console.log('IMAGO');
+
+            // TODO we have name and size, based on that mapdiv vis can add it easily (using the new fileserv functionality)
+
             break;
         }
     }
