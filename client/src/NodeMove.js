@@ -7,6 +7,10 @@ import {arrayValuesSame, copy, transpose}               from "./Utils";
 
 let clipboard = [];
 
+export function setClipboard(clipboardIn) {
+    clipboard = clipboardIn;
+}
+
 export function structMove(sc, target, mode) {
     let parentPathList = [];
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
@@ -89,7 +93,7 @@ export function structMove(sc, target, mode) {
         }
     }
     else if (target === 'struct2clipboard') {
-        if (mode === 'CUT' && sc.lastRef.isRoot === 0 ||
+        if (mode === 'CUT' && sc.lastRef.isRoot !== 1 ||
             mode === 'COPY') {
             clipboard = [];
             for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
@@ -100,12 +104,28 @@ export function structMove(sc, target, mode) {
                     mapNodePropChange.start(clipboard[j], 'isTextAssigned', 0);
                 }
             }
+
+            navigator.permissions.query({name: "clipboard-write"}).then(result => {
+                if (result.state === "granted" || result.state === "prompt") {
+                    navigator.clipboard.writeText(JSON.stringify(clipboard, undefined, 4))
+                        .then(() => {
+                            console.log('Text copied to clipboard');
+                        })
+                        .catch(err => {
+                            console.error('Could not copy text: ', err);
+                        });
+                }
+            });
+
             if (mode === 'CUT') {
                 structDeleteReselect(sc);
             }
         }
     }
     else if (target === 'clipboard2struct') {
+
+        console.log(clipboard)
+
         clearStructSelection();
         let toIndex = sc.lastRef.s.length;
         for (let i = 0; i < clipboard.length; i++) {

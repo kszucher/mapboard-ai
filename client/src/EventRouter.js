@@ -4,8 +4,10 @@ import {execute}                                from "./Execute";
 import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
+import {setClipboard}                           from "./NodeMove"
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
 import {lastEvent}                              from "./EventListener";
+import {red} from "@material-ui/core/colors";
 
 class EventRouter {
     constructor() {
@@ -65,13 +67,15 @@ class EventRouter {
                 let keyStr = lastEvent.props.keyStr;
                 let modifier = lastEvent.props.modifier;
 
+                // note: az async/await szintaxissal el lehet kerülni az execute rekurziót, és mindent ki lehet ide hozni
+
                 let keyboardStateMachineDb = [
                     ['modifier', 'keyMatch',                        'scope',         'e', 'p', 'executionList',                         'd'],
                     ['',         keyStr === 'VK_F1',                ['s', 'c', 'm'], 0,   1,   [                                      ], 0 ],
                     ['',         keyStr === 'VK_F2',                ['s',      'm'], 0,   1,   ['startEdit'                           ], 1 ],
                     ['',         keyStr === 'VK_F3',                ['s', 'c', 'm'], 0,   1,   [                                      ], 0 ],
                     ['',         keyStr === 'VK_F5',                ['s', 'c', 'm'], 0,   0,   [                                      ], 0 ],
-                    ['',         keyStr === 'VK_RETURN',            ['s',      'm'], 1,   1,   ['finishEdit', 'renderEquation'        ], 1 ],
+                    ['',         keyStr === 'VK_RETURN',            ['s',      'm'], 1,   1,   ['finishEdit', 'pasteAsEquation'        ], 1 ],
                     ['',         keyStr === 'VK_RETURN',            ['s'          ], 0,   1,   ['newSiblingDown', 'startEdit'         ], 1 ],
                     [ '',        keyStr === 'VK_RETURN',            [          'm'], 0,   1,   ['selectDownMixed'                     ], 1 ],
                     ['shift',    keyStr === 'VK_RETURN',            ['s',      'm'], 0,   1,   ['newSiblingUp', 'startEdit'           ], 1 ],
@@ -90,8 +94,6 @@ class EventRouter {
                     ['control',  keyStr === 'VK_O',                 ['s', 'c', 'm'], 0,   1,   ['normalize'                           ], 1 ],
                     ['control',  keyStr === 'VK_C',                 ['s', 'c', 'm'], 0,   1,   ['copySelection'                       ], 1 ],
                     ['control',  keyStr === 'VK_X',                 ['s', 'c', 'm'], 0,   1,   ['cutSelection', 'selectHighOrigin'    ], 1 ],
-                    ['control',  keyStr === 'VK_V',                 ['s', 'c', 'm'], 1,   0,   ['pasteInText'                         ], 1 ],
-                    ['control',  keyStr === 'VK_V',                 ['s', 'c', 'm'], 0,   0,   ['pasteInNode'                         ], 1 ],
                     ['control',  keyStr === 'VK_S',                 ['s', 'c', 'm'], 0,   1,   ['save'                                ], 1 ],
                     ['control',  keyStr === 'VK_S',                 ['s', 'c', 'm'], 1,   1,   ['finishEdit', 'save'                  ], 1 ],
                     ['control',  keyStr === 'VK_R',                 [          'm'], 0,   1,   ['selectCellRow'                       ], 1 ],
@@ -128,7 +130,7 @@ class EventRouter {
                             execute(currExecution);
 
                             // build execution-wise
-                            if (currExecution !== 'typeText' && currExecution !== 'pasteInText') {
+                            if (currExecution !== 'typeText' && currExecution !== 'pasteAsText') {
                                 rebuild();
                             }
 
@@ -142,7 +144,49 @@ class EventRouter {
                 }
             }
             else if (lastEvent.type === 'windowPaste') {
-                execute('paste');
+                if (eventRouter.isEditing !== 1) {
+                    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+                        if (result.state === "granted" || result.state === "prompt") {
+                            navigator.clipboard.read()
+                                .then(item => {
+                                    let type = item[0].types[0];
+                                    if (type === 'text/plain') {
+                                        navigator.clipboard.readText().then(text => {
+                                            if (text.substring(0, 1) === '[') {
+                                                setClipboard(JSON.parse(text));
+                                                execute('pasteAsMap');
+
+                                                rebuild();
+                                                redraw();
+
+                                            }
+                                            else if (text.substring(0, 3) === '\\[') {
+                                                // TODO pass text to equation renderer
+                                                execute('pasteAsEquation');
+                                            }
+                                            else {
+                                                execute('pasteAsText');
+                                            }
+                                        });
+                                    }
+                                    if (type === 'image/png') {
+                                        item[0].getType('image/png').then(result => {
+                                            var formData = new FormData();
+                                            formData.append('upl', result, 'image.jpg');
+
+                                            fetch('http://127.0.0.1:8082/feta', {
+                                                method:     'post',
+                                                body:       formData
+                                            });
+                                        })
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error('Failed to read clipboard contents: ', err);
+                                });
+                        }
+                    });
+                }
             }
             else if (lastEvent.type === 'reactEvent') {
                 let r2c = lastEvent.ref;

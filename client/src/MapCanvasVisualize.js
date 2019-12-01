@@ -13,7 +13,8 @@ class MapCanvasVisualize {
 
         let canvasContext =                             document.getElementById('mapCanvas').getContext('2d');
 
-        if (cm.isRoot === 0 && (cm.type === 'struct' && !hasCell(cm) && cm.parentType !== 'cell' || cm.type === 'cell' && cm.index[0] > 0 && cm.index[1] === 0)) {
+        if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
+            cm.type === 'cell' && cm.index[0] > 0 && cm.index[1] === 0)) {
             canvasContext.beginPath();
             canvasContext.strokeStyle =                 cm.lineColor;
             canvasContext.lineWidth =                   1;
@@ -23,15 +24,7 @@ class MapCanvasVisualize {
                                                         cm.nodeStartX,                                  cm.nodeStartY);
             canvasContext.stroke();
 
-            if (cm.isSvgAssigned === 0) {
-                cm.isSvgAssigned = 1;
-
-                // TODO
-
-
-
-
-            }
+            // TODO svg
         }
 
         if (cm.type === "struct") {

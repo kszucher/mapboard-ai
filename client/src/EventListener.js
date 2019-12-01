@@ -12,12 +12,16 @@ class EventListener {
 
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
-        window.addEventListener('click',    event =>    this.click(event)   );
-        window.addEventListener("focus",                this.focus()        );
-        window.addEventListener("resize",               this.resize()       );
-        window.addEventListener("keydown",  event =>    this.keydown(event) );
-        window.addEventListener("keyup",    event =>    this.keyup(event)   );
-        window.addEventListener("paste",    event =>    this.paste(event)   );
+        window.addEventListener('click',                event =>    this.click(event)               );
+        window.addEventListener("focusout",             event =>    this.focusout()                 );
+        window.addEventListener("focus",                event =>    this.focus()                    );
+        window.addEventListener("resize",               event =>    this.resize()                   );
+        window.addEventListener("keydown",              event =>    this.keydown(event)             );
+        window.addEventListener("keyup",                event =>    this.keyup(event)               );
+        window.addEventListener("paste",                event =>    this.paste(event)               );
+
+
+
     }
 
     click(event) {
@@ -32,9 +36,33 @@ class EventListener {
         };
         eventRouter.processEvent();
     }
+    //
+    focusout() {
+    //     navigator.clipboard.read().then(data => {
+    //         for (let i=0; i<data.items.length; i++) {
+    //             if (data.items[i].type != "text/plain") {
+    //                 alert("Clipboard contains non-text data. Unable to access it.");
+    //             } else {
+    //                 textElem.innerText = data.items[i].getAs("text/plain");
+    //             }
+    //         }
+    //     });
+    }
 
     focus() {
         console.log('FOCUS');
+
+
+        let data = new DataTransfer();
+
+        data.items.add("text/plain", 'cica');
+        navigator.clipboard.write(data).then(function() {
+            /* success */
+        }, function() {
+            /* failure */
+        });
+        // kiolvasom, megnézem hogy változott-e...
+
         keyHelper.init();
     }
 

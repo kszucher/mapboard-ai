@@ -50,14 +50,13 @@ export function execute(command) {
         'moveNodeSelection',
         'copySelection',
         'cutSelection',
-        'pasteInNode',
-        'pasteInText',
-        'paste',
+        'pasteAsMap',
+        'pasteAsText',
         'cellifyMulti',
         'transposeMe',
         'transpose',
         'makeGrid',
-        'renderEquation',
+        'pasteAsEquation',
         'openAfterMapSelect',
         'createMapInMap',
         'createMapInMapSuccess',
@@ -225,46 +224,11 @@ export function execute(command) {
             structMove(sc, 'struct2clipboard', 'CUT');
             break;
         }
-        case 'pasteInText': {
-            // TODO: remove all formatting
-            // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-text-in-execcommand
-            // fontos: ha node lenne a vágólaon, akkor is igazából átmásolhatnánk... de csak a szöveget
-            let holderElement = document.getElementById(sc.lastRef.divId);
-            holderElement.style.width = 1000 + 'px'; // long enough
+        case 'pasteAsMap': {
+            structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
-        case 'pasteInNode':
-            
-            // identifying, whats even on the clipboard...
-            
-            // TODO: switch, based on WHAT are we trying to paste
-            // - node?
-            // - picture?
-            structMove(sc, 'clipboard2struct',    'PASTE');
-            break;
-
-        case 'cellifyMulti': {
-            structMove(sc, 'struct2cell', 'multiRow');
-            break;
-        }
-        case 'transposeMe': {
-            if (hasCell(lastRef)) {
-                lastRef.c = transposeArray(lastRef.c);
-            }
-            break;
-        }
-        case 'transpose': {
-            lastRef.c = transposeArray(lastRef.c);
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
-        // UNSORTED
-        // -------------------------------------------------------------------------------------------------------------
-        case 'makeGrid': {
-            makeGrid();
-            break;
-        }
-        case 'renderEquation': { // this shouldnt be here...
+        case 'pasteAsEquation': { // this shouldnt be here...
             if (lastRef.content.substring(0, 2) === '\\[' && lastRef.isEquationAssigned === 0) {
 
                 let tmpDiv;
@@ -290,53 +254,35 @@ export function execute(command) {
                 }
 
                 tmpDiv.parentNode.removeChild(tmpDiv);
-
             }
             break;
         }
+        case 'pasteAsText': {
+            // TODO: remove all formatting
+            // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-item-in-execcommand
+            let holderElement = document.getElementById(sc.lastRef.divId);
+            holderElement.style.width = 1000 + 'px'; // long enough
+            break;
+        }
+        case 'cellifyMulti': {
+            structMove(sc, 'struct2cell', 'multiRow');
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
-        // PASTE
+        // MISC
         // -------------------------------------------------------------------------------------------------------------
-        case 'paste': {
-            let w2c =                               lastEvent.ref;
-
-            if (eventRouter.isEditing === 1) {
-
+        case 'transposeMe': {
+            if (hasCell(lastRef)) {
+                lastRef.c = transposeArray(lastRef.c);
             }
-            else {
-
-                // https://stackoverflow.com/questions/6333814/how-does-the-paste-image-from-clipboard-functionality-work-in-gmail-and-google-c
-
-                var items = (w2c.clipboardData || w2c.originalEvent.clipboardData).items;
-
-                console.log(JSON.stringify(items)); // will give you the mime types
-
-                // find pasted image among pasted items
-                var blob = null;
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].type.indexOf("image") === 0) {
-                        blob = items[i].getAsFile();
-                    }
-                }
-                // load image if there is a pasted image
-                if (blob !== null) {
-                    var reader = new FileReader();
-                    reader.onload = function (event) {
-                        console.log(event.target.result); // data url!
-                    };
-                    reader.readAsDataURL(blob);
-                }
-
-                var fd = new FormData();
-                fd.append('upl', blob, 'blobby.txt');
-
-                fetch('http://127.0.0.1:8082/feta',
-                    {
-                        method: 'post',
-                        body: fd
-                    });
-
-            }
+            break;
+        }
+        case 'transpose': {
+            lastRef.c = transposeArray(lastRef.c);
+            break;
+        }
+        case 'makeGrid': {
+            makeGrid();
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

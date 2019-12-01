@@ -2,6 +2,7 @@ let express =           require('express');
 let cors =              require('cors');
 let sizeOf =            require('image-size');
 var multer  =           require('multer');
+var path =              require('path');
 let app =               express();
 
 
@@ -26,16 +27,29 @@ app.post('/beta', function (req, res) {
 
 // https://stackoverflow.com/questions/39677993/send-blob-data-to-node-using-fetch-multer-express
 
-var upload = multer({ dest: '../uploads/' });
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+    }
+});
+
+var upload = multer({ storage: storage });
 var type = upload.single('upl');
 
 app.post('/feta', type, function (req, res) {
-    console.log('THIS IS IT')
     console.log(req.body);
     console.log(req.file); // this prints filename
     // do stuff with file
 
+    // CCALC AND SEND SIZE HERE ALSO, and done
     // TODO return filepath!!! and with that its done
+
+
+
+
 });
 
 app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});

@@ -48,12 +48,11 @@ export let props = {
             taskStatusInherited:                0,
 
             // mapDivVisualize
+            isSvgAssigned:                      0,
             isDivAssigned:                      0,
             isTextAssigned:                     0,
-            isLinkAssigned:                     0,
             isPicAssigned:                      0,
             isEquationAssigned:                 0,
-            isSvgAssigned:                      0,
         },
         initAlways: {
             // mapChain
@@ -61,6 +60,7 @@ export let props = {
             parentPath:                         [],
             type:                               '', // struct or cell
             parentType:                         '',
+            subType:                            '',
             index:                              [],
 
             // mapMeasure
