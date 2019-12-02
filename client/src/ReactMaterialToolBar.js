@@ -21,17 +21,17 @@ function ReactMaterialToolBar() {
     return (
         <div className={classes.root}>
             <Toolbar variant="dense">
-                <Grid
-                    container
-                    direction="row"
-                    justify="space-between"
-                    alignItems="center">
+                {/*<Grid*/}
+                {/*    container*/}
+                {/*    direction="row"*/}
+                {/*    justify="space-between"*/}
+                {/*    alignItems="center">*/}
 
-                    <Grid
-                        container
-                        direction="row"
-                        justify="flex-start"
-                        alignItems="center">
+                    {/*<Grid*/}
+                    {/*    container*/}
+                    {/*    direction="row"*/}
+                    {/*    justify="flex-start"*/}
+                    {/*    alignItems="center">*/}
 
                         <IconButton
                             edge="start"
@@ -45,8 +45,8 @@ function ReactMaterialToolBar() {
                             MindBoard
                         </Typography>
 
-                    </Grid>
-                </Grid>
+                    {/*</Grid>*/}
+                {/*</Grid>*/}
             </Toolbar>
         </div>
     );
