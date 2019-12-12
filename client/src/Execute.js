@@ -19,7 +19,7 @@ export function execute(command) {
     let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath;
 
     if (lastEvent.type === 'windowKeyDown') {
-        keyStr = lastEvent.props.keyStr;
+        keyStr = lastEvent.ref.code;
     }
 
     if ([
@@ -114,18 +114,18 @@ export function execute(command) {
             break;
         }
         case 'selectDownMixed': {
-            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), 'VK_DOWN'));
+            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), 'ArrowDown'));
             break;
         }
         case 'selectRightMixed': {
-            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), 'VK_RIGHT'));
+            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), 'ArrowRight'));
             break;
         }
         case 'selectNeighborNode': {
             let toPath = [];
-            if (        keyStr === 'VK_UP') {       toPath = geomHighPath   }
-            else if (   keyStr === 'VK_DOWN') {     toPath = geomLowPath    }
-            else {                                  toPath = lastPath       }
+            if (        keyStr === 'ArrowUp') {       toPath = geomHighPath   }
+            else if (   keyStr === 'ArrowDown') {     toPath = geomLowPath    }
+            else {                                    toPath = lastPath       }
             applyStructSelection(structNavigate(toPath, keyStr));
             break;
         }
@@ -200,9 +200,9 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp':                        structInsert(lastRef, 'UP');                                break;
-        case 'newSiblingDown':                      structInsert(lastRef, 'DOWN');                              break;
-        case 'newChild':                            structInsert(lastRef, 'RIGHT');                             break;
+        case 'newSiblingUp':                        structInsert(lastRef, 'up');                                break;
+        case 'newSiblingDown':                      structInsert(lastRef, 'down');                              break;
+        case 'newChild':                            structInsert(lastRef, 'right');                             break;
         case 'newCellBlock':                        cellInsert(lastPath.slice(0, lastPath.length -2), keyStr);  break;
         // -------------------------------------------------------------------------------------------------------------
         // DELETE

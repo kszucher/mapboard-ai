@@ -22,7 +22,7 @@ export function structMove(sc, target, mode) {
             let currParentRef = mapref(currParentPath);
 
             if (target === 'struct2struct') {
-                if (mode === 'VK_LEFT') {
+                if (mode === 'ArrowLeft') {
                     if (currParentRef.isRoot === 0) {
                         let currParentParentPath = mapref(currParentPath).parentPath;
                         let currParentParentRef = mapref(currParentParentPath);
@@ -33,7 +33,7 @@ export function structMove(sc, target, mode) {
                         }
                     }
                 }
-                else if (mode === 'VK_RIGHT') {
+                else if (mode === 'ArrowRight') {
                     if (sc.geomHighRef.index > 0) {
                         let upperSibling = currParentRef.s[sc.geomHighRef.index - 1];
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
@@ -43,7 +43,7 @@ export function structMove(sc, target, mode) {
                         }
                     }
                 }
-                else if (mode === 'VK_UP') {
+                else if (mode === 'ArrowUp') {
                     if (sc.geomHighRef.index > 0) {
                         for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
@@ -59,7 +59,7 @@ export function structMove(sc, target, mode) {
                         }
                     }
                 }
-                else if (mode === 'VK_DOWN') {
+                else if (mode === 'ArrowDown') {
                     if (sc.geomLowRef.index !== currParentRef.s.length - 1) {
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);

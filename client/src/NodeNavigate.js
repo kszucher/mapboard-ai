@@ -24,10 +24,10 @@ export function structNavigate (lastPath, direction) {
             // sequence string based on depths nums
             let sequence = [];
             switch (direction) {
-                case 'VK_DOWN':     sequence = Array(leftDepth).fill('l').concat('d').concat(Array(rightDepth).fill('ru')); break;
-                case 'VK_UP':       sequence = Array(leftDepth).fill('l').concat('u').concat(Array(rightDepth).fill('rd')); break;
-                case 'VK_LEFT':     sequence = ['l']; break;
-                case 'VK_RIGHT':    sequence = ['rm']; break;
+                case 'ArrowDown':     sequence = Array(leftDepth).fill('l').concat('d').concat(Array(rightDepth).fill('ru')); break;
+                case 'ArrowUp':       sequence = Array(leftDepth).fill('l').concat('u').concat(Array(rightDepth).fill('rd')); break;
+                case 'ArrowLeft':     sequence = ['l']; break;
+                case 'ArrowRight':    sequence = ['rm']; break;
                 default:            console.log('sequence_err');
             }
 
@@ -106,10 +106,10 @@ export function cellNavigate (lastPath, direction) {
     let nextCol =           0;
 
     switch (direction) {
-        case 'VK_DOWN':    nextRow =    currRow + 1 < rowLen ?    currRow + 1   : currRow;        nextCol = currCol; break;
-        case 'VK_UP':      nextRow =    currRow - 1 < 0 ?         0             : currRow - 1;    nextCol = currCol; break;
-        case 'VK_RIGHT':   nextCol =    currCol + 1 < colLen ?    currCol + 1   : currCol;        nextRow = currRow; break;
-        case 'VK_LEFT':    nextCol =    currCol - 1 < 0 ?         0             : currCol - 1;    nextRow = currRow; break;
+        case 'ArrowDown':    nextRow =    currRow + 1 < rowLen ?    currRow + 1   : currRow;        nextCol = currCol; break;
+        case 'ArrowUp':      nextRow =    currRow - 1 < 0 ?         0             : currRow - 1;    nextCol = currCol; break;
+        case 'ArrowRight':   nextCol =    currCol + 1 < colLen ?    currCol + 1   : currCol;        nextRow = currRow; break;
+        case 'ArrowLeft':    nextCol =    currCol - 1 < 0 ?         0             : currCol - 1;    nextRow = currRow; break;
     }
 
     currPath[currPath.length - 2] = nextRow;

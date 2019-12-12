@@ -1,4 +1,3 @@
-import {keyHelper}          from "./keyHelper";
 import {eventRouter}        from "./EventRouter"
 import {initDim}            from "./Dim";
 
@@ -22,9 +21,12 @@ class EventListener {
     }
 
     click(event) {
+
+        console.log(event)
+
         lastEvent = {
-            ref:                                        event,
             type:                                       'windowClick',
+            ref:                                        event,
             props: {
                 pageX:                                  event.pageX,
                 pageY:                                  event.pageY,
@@ -40,7 +42,6 @@ class EventListener {
 
     focus() {
         console.log('FOCUS');
-        keyHelper.init();
     }
 
     resize() {
@@ -49,99 +50,19 @@ class EventListener {
     }
 
     keydown(event) {
-        let keyCode = event.keyCode;
-        let keyStr = keyHelper.getKey(keyCode);
-
-        if (keyStr === 'VK_CONTROL') {
+        if (event.ctrlKey === 'true') {
             this.controlStatus = true;
         }
 
-        if(keyHelper.lut[keyStr] !== undefined) {
-            keyHelper.lut[keyStr].status = true;
-        }
-
-        if(keyHelper.lut.VK_SHIFT.status === true) {
-            let keyLutFields = Object.keys(keyHelper.lut);
-            for (let i = 0; i < keyLutFields.length; i++) {
-                let currKey = keyHelper.lut[keyLutFields[i]];
-                if (keyLutFields[i] !== 'VK_SHIFT' && currKey.status === true) {
-                    lastEvent = {
-                        ref:                            event,
-                        type:                           'windowKeyDown',
-                        props: {
-                            keyCode:                    keyCode,
-                            keyStr:                     keyStr,
-                            modifier:                   'shift',
-                        }
-                    };
-                    eventRouter.processEvent();
-                }
-            }
-        }
-        else if(keyHelper.lut.VK_CONTROL.status === true) {
-            let keyLutFields = Object.keys(keyHelper.lut);
-            for (let i = 0; i < keyLutFields.length; i++) {
-                let currKey = keyHelper.lut[keyLutFields[i]];
-                if (keyLutFields[i] !== 'VK_CONTROL' && currKey.status === true) {
-                    lastEvent = {
-                        ref:                            event,
-                        type:                           'windowKeyDown',
-                        props: {
-                            keyCode:                    keyCode,
-                            keyStr:                     keyStr,
-                            modifier:                   'control',
-                        }
-                    };
-                    eventRouter.processEvent();
-                }
-            }
-        }
-        else if(keyHelper.lut.VK_ALT.status === true) {
-            let keyLutFields = Object.keys(keyHelper.lut);
-            for (let i = 0; i < keyLutFields.length; i++) {
-                let currKey = keyHelper.lut[keyLutFields[i]];
-                if (keyLutFields[i] !== 'VK_ALT' && currKey.status === true) {
-                    lastEvent = {
-                        ref:                            event,
-                        type:                           'windowKeyDown',
-                        props: {
-                            keyCode:                    keyCode,
-                            keyStr:                     keyStr,
-                            modifier:                   'alt',
-                        }
-                    };
-                    eventRouter.processEvent();
-                }
-            }
-        }
-        else {
-            lastEvent = {
-                ref:                                    event,
-                type:                                   'windowKeyDown',
-                props: {
-                    keyCode:                            keyCode,
-                    keyStr:                             keyStr,
-                    modifier:                           '',
-                }
-            };
-            eventRouter.processEvent();
-        }
+        lastEvent = {
+            type:                                       'windowKeyDown',
+            ref:                                        event,
+        };
+        eventRouter.processEvent();
     };
 
     keyup(event) {
-        let keyCode = event.keyCode;
-        let keyStr = keyHelper.getKey(keyCode);
 
-        if (keyStr === 'VK_CONTROL') {
-            this.controlStatus = false;
-        }
-
-        if(keyHelper.lut[keyStr] !== undefined) {
-            keyHelper.lut[keyStr].status = false;
-        }
-        else {
-            // in case we want to do anything with the special characters in text
-        }
     };
 
     paste() {
@@ -153,7 +74,6 @@ class EventListener {
                     if (type === 'text/plain') {
                         navigator.clipboard.readText().then(text => {
                             lastEvent = {
-                                ref:                    '',
                                 type:                   'windowPaste',
                                 props: {
                                     dataType:           'text',
@@ -166,7 +86,6 @@ class EventListener {
                     if (type === 'image/png') {
                         item[0].getType('image/png').then(image => {
                             lastEvent = {
-                                ref:                    '',
                                 type:                   'windowPaste',
                                 props: {
                                     dataType:           'image',
@@ -184,24 +103,24 @@ class EventListener {
 
     receiveFromReact(r2c) {
         lastEvent = {
-            ref:                                        r2c,
             type:                                       'reactEvent',
+            ref:                                        r2c,
         };
         eventRouter.processEvent();
     }
 
     receiveFromServer(s2c) {
         lastEvent = {
-            ref:                                        s2c,
             type:                                       'serverEvent',
+            ref:                                        s2c,
         };
         eventRouter.processEvent();
     }
 
     receiveFromServerFetch(sf2c) {
         lastEvent = {
-            ref:                                        sf2c,
             type:                                       'serverFetchEvent',
+            ref:                                        sf2c,
         };
         eventRouter.processEvent();
     }
