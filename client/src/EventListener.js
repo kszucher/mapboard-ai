@@ -5,7 +5,6 @@ export let lastEvent = {};
 
 class EventListener {
     constructor() {
-        this.controlStatus = false;
         lastEvent = {};
     }
 
@@ -21,17 +20,9 @@ class EventListener {
     }
 
     click(event) {
-
-        console.log(event)
-
         lastEvent = {
             type:                                       'windowClick',
             ref:                                        event,
-            props: {
-                pageX:                                  event.pageX,
-                pageY:                                  event.pageY,
-                controlStatus:                          this.controlStatus,
-            }
         };
         eventRouter.processEvent();
     }
@@ -50,10 +41,6 @@ class EventListener {
     }
 
     keydown(event) {
-        if (event.ctrlKey === 'true') {
-            this.controlStatus = true;
-        }
-
         lastEvent = {
             type:                                       'windowKeyDown',
             ref:                                        event,

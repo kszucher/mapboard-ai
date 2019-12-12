@@ -18,11 +18,9 @@ class EventRouter {
         }
         else {
             if (lastEvent.type === 'windowClick') {
-                let pageX =             lastEvent.props.pageX;
-                let pageY =             lastEvent.props.pageY;
-                let controlStatus =     lastEvent.props.controlStatus;
+                let e = lastEvent.ref;
 
-                if (! (pageX > getDim().lw && pageX <= getDim().lw + getDim().mw && pageY > getDim().uh)) {
+                if (! (e.pageX > getDim().lw && e.pageX <= getDim().lw + getDim().mw && e.pageY > getDim().uh)) {
                     console.log('not within region')
                 }
                 else {
@@ -38,12 +36,7 @@ class EventRouter {
                         console.log('not localizable')
                     }
                     else {
-                        if (controlStatus) {
-                            execute('selectMeStructToo');
-                        } else {
-                            execute('selectMeStruct');
-                        }
-
+                       e.ctrlKey? execute('selectMeStructToo') : execute('selectMeStruct');
                         execute('openAfterMapSelect');
 
                         redraw();
@@ -69,7 +62,7 @@ class EventRouter {
                     [ 0,  0,  0,  e.code === 'F2',                ['s',      'm'], 0,  1,  ['startEdit'                           ], 1 ],
                     [ 0,  0,  0,  e.code === 'F3',                ['s', 'c', 'm'], 0,  1,  [                                      ], 0 ],
                     [ 0,  0,  0,  e.code === 'F5',                ['s', 'c', 'm'], 0,  0,  [                                      ], 0 ],
-                    [ 0,  0,  0,  e.code === 'Enter',             ['s',      'm'], 1,  1,  ['finishEdit', 'pasteAsEquation'       ], 1 ],
+                    [ 0,  0,  0,  e.code === 'Enter',             ['s',      'm'], 1,  1,  ['finishEdit' /*check paste*/          ], 1 ],
                     [ 0,  0,  0,  e.code === 'Enter',             ['s'          ], 0,  1,  ['newSiblingDown', 'startEdit'         ], 1 ],
                     [ 0,  0,  0,  e.code === 'Enter',             [          'm'], 0,  1,  ['selectDownMixed'                     ], 1 ],
                     [ 0,  1,  0,  e.code === 'Enter',             ['s',      'm'], 0,  1,  ['newSiblingUp', 'startEdit'           ], 1 ],
