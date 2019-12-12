@@ -41,27 +41,17 @@ var upload = multer({ storage: storage });
 var type = upload.single('upl');
 
 app.post('/feta', type, async function (req, res) {
-    let imageSize = await measureImage(req.file);
+    let dimensions = await sizeOf('../uploads/' + req.file.filename);
     let sf2c = {
             cmd:                'imageSaveSuccess',
             imageId:            req.file.filename,
-            imageSize:          imageSize
+            imageSize:          dimensions
     };
     res.json(sf2c)
 });
 
 app.use('/file', express.static(path.join(__dirname, '../uploads')));
 app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
-
-async function measureImage(file) {
-    try {
-        const dimensions = await sizeOf('../uploads/' + file.filename);
-        console.log(dimensions.width, dimensions.height);
-        return dimensions;
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 async function sendResponse(c2s) {
     let s2c = {
