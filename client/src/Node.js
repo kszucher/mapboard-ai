@@ -8,6 +8,7 @@ export let props = {
 
         ilink:                                  '',
         elink:                                  '',
+        plink:                                  '',
 
         s:                                      [],
         sTextColor:                             '#222222',

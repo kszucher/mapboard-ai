@@ -154,7 +154,7 @@ class EventRouter {
                         // TODO: replace communication with fetch and then merge
 
                         var formData = new FormData();
-                        formData.append('upl', lastEvent.props.data, 'image.jpg');
+                        formData.append('upl', lastEvent.props.data, 'image.png');
 
                         fetch('http://127.0.0.1:8082/feta', {
                             method:     'post',

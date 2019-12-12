@@ -60,6 +60,7 @@ export function execute(command) {
         'openAfterMapSelect',
         'createMapInMap',
         'createMapInMapSuccess',
+        'imageSaveSuccess'
     ].includes(command)) {
         sc = getSelectionContext();
         maxSel = sc.maxSel;
@@ -431,8 +432,18 @@ export function execute(command) {
         case 'imageSaveSuccess': {
             let sf2c =                              lastEvent.ref;
 
-            console.log('IMAGO');
+            console.log(sf2c);
 
+            // structInsert(lastRef, 'right');
+
+            // TODO kitalálni hogy lesz ez jó
+
+            lastRef.content =                       '_pic';
+            lastRef.plink =                         sf2c.imageId;
+            lastRef.selfWidthOverride =             sf2c.imageSize.width;
+            lastRef.selfHeightOverride =            sf2c.imageSize.height;
+            rebuild();
+            redraw();
             // TODO we have name and size, based on that mapdiv vis can add it easily (using the new fileserv functionality)
 
             break;

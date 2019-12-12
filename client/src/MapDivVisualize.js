@@ -81,20 +81,23 @@ class MapDivVisualize {
 
                 // TODO parse this
 
-                // content
-                // if (cm.content === 'SAMPLEPIC') {
-                //     if (cm.isPicAssigned === 0) {
-                //         cm.isPicAssigned = 1;
-                //
-                //
-                //         let filename =                              '../../db/pic/user_a591e739/' + lastUserMap + '/' + cm.content;
-                //         div.insertAdjacentHTML('beforeend',         '<img src="' + filename +  '">');
-                //
-                //     }
-                // }
-                // else
 
-                if (cm.content.substring(0, 2) === '\\[') {
+
+                if (cm.content === '_pic') {
+                    if (cm.isPicAssigned === 0) {
+                        cm.isPicAssigned = 1;
+
+                        console.log('LEFF')
+
+                        let filename =                              'http://localhost:8082/file/' + cm.plink;
+
+                        console.log(filename)
+
+                        div.insertAdjacentHTML('beforeend',         '<img src="' + filename +  '">');
+
+                    }
+                }
+                else if (cm.content.substring(0, 2) === '\\[') {
                     if (cm.isEquationAssigned === 0) {
                         cm.isEquationAssigned = 1;
 

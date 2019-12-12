@@ -1,9 +1,11 @@
 let express =           require('express');
 let cors =              require('cors');
-let sizeOf =            require('image-size');
 var multer  =           require('multer');
 var path =              require('path');
 let app =               express();
+
+var { promisify } =     require('util');
+var sizeOf = promisify( require('image-size'));
 
 // improvement for later times
 // https://flaviocopes.com/node-request-data/
@@ -38,24 +40,28 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 var type = upload.single('upl');
 
-app.post('/feta', type, function (req, res) {
-    console.log(req.body);
-    console.log(req.file);
-
-    // TODO: measure AND provide meas data... and only then use the res.json
-
+app.post('/feta', type, async function (req, res) {
+    let imageSize = await measureImage(req.file);
     let sf2c = {
             cmd:                'imageSaveSuccess',
-            imageId:            '',
-            imageSize:          []
+            imageId:            req.file.filename,
+            imageSize:          imageSize
     };
     res.json(sf2c)
 });
 
 app.use('/file', express.static(path.join(__dirname, '../uploads')));
-
 app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 
+async function measureImage(file) {
+    try {
+        const dimensions = await sizeOf('../uploads/' + file.filename);
+        console.log(dimensions.width, dimensions.height);
+        return dimensions;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 async function sendResponse(c2s) {
     let s2c = {
