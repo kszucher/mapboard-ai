@@ -16,6 +16,8 @@ let lastUserMap = '';
 
 export function execute(command) {
 
+    console.log('execute: ' + command)
+
     let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath;
 
     if (lastEvent.type === 'windowKeyDown') {
@@ -51,9 +53,9 @@ export function execute(command) {
         'copySelection',
         'cutSelection',
         'insertMapFromClipboard',
-        'inserTextFromClipboardAsText',
-        'inserTextFromClipboardAsNode',
-        'insertEquationFromClipboard', // as text, as node?
+        'insertTextFromClipboardAsText',
+        'insertTextFromClipboardAsNode',
+        'insertEquationFromClipboardAsNode',
         'insertImageFromLinkAsNode',
         'cellifyMulti',
         'transposeMe',
@@ -198,7 +200,6 @@ export function execute(command) {
             break;
         }
         case 'finishEdit' : {
-
             let holderElement = document.getElementById(lm.divId);
             holderElement.contentEditable = 'false';
 
@@ -239,16 +240,16 @@ export function execute(command) {
         // PASTE
         // -------------------------------------------------------------------------------------------------------------
         case 'insertTextFromClipboardAsText': {
-            // TODO: remove all formatting
+            // TODO
+            // - calculate new width and adjust style.width
+            // - remove formatting
             // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-item-in-execcommand
-            let holderElement = document.getElementById(sc.lm.divId);
-            holderElement.style.width = 1000 + 'px'; // long enough
+            // let holderElement = document.getElementById(sc.lm.divId);
             break;
         }
-        case 'inserTextFromClipboardAsNode': {
-            // kétféle cucc lesz itt, ami "as map" meg ami "as plain"
-
-
+        case 'insertTextFromClipboardAsNode': {
+            lm.content =                            lastEvent.props.data;
+            lm.sTextWidthCalculated = 0;
             break;
         }
         case 'insertMapFromClipboard': {
@@ -257,37 +258,42 @@ export function execute(command) {
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
-        case 'insertEquationFromClipboard': { // this shouldnt be here...
+        case 'insertEquationFromClipboardAsNode': {
+
+            console.log('equation paste');
+
             // TODO: it should be pasted NOT as text but as a new node, just like with insertImage --> unity!!!
-            let text = lastEvent.props.data;
-            // connect new and old
 
-            if (lm.content.substring(0, 2) === '\\[' && lm.isEquationAssigned === 0) {
+            // let text = lastEvent.props.data;
+            // // connect new and old
+            //
+            // if (lm.content.substring(0, 2) === '\\[' && lm.isEquationAssigned === 0) {
+            //
+            //     let tmpDiv;
+            //
+            //     tmpDiv = document.createElement('div');
+            //
+            //     tmpDiv.style.paddingLeft =          mapMem.padding + 'px';
+            //     tmpDiv.style.paddingTop =           mapMem.padding + 'px';
+            //     tmpDiv.style.fontSize =             14 + 'px';
+            //     tmpDiv.style.lineHeight =           14 + 'px';
+            //
+            //     document.getElementById('dm').appendChild(tmpDiv);
+            //
+            //     katex.render(getLatexString(lm.content), tmpDiv, {
+            //         throwOnError: false
+            //     });
+            //
+            //     lm.selfWidthOverride =         tmpDiv.childNodes[0].offsetWidth + 8;
+            //     lm.selfHeightOverride =        tmpDiv.childNodes[0].offsetHeight + 8;
+            //
+            //     if (isOdd(lm.selfHeightOverride)) {
+            //         lm.selfHeightOverride += 1;
+            //     }
+            //
+            //     tmpDiv.parentNode.removeChild(tmpDiv);
+            // }
 
-                let tmpDiv;
-
-                tmpDiv = document.createElement('div');
-
-                tmpDiv.style.paddingLeft =          mapMem.padding + 'px';
-                tmpDiv.style.paddingTop =           mapMem.padding + 'px';
-                tmpDiv.style.fontSize =             14 + 'px';
-                tmpDiv.style.lineHeight =           14 + 'px';
-
-                document.getElementById('dm').appendChild(tmpDiv);
-
-                katex.render(getLatexString(lm.content), tmpDiv, {
-                    throwOnError: false
-                });
-
-                lm.selfWidthOverride =         tmpDiv.childNodes[0].offsetWidth + 8;
-                lm.selfHeightOverride =        tmpDiv.childNodes[0].offsetHeight + 8;
-
-                if (isOdd(lm.selfHeightOverride)) {
-                    lm.selfHeightOverride += 1;
-                }
-
-                tmpDiv.parentNode.removeChild(tmpDiv);
-            }
             break;
         }
         case 'insertImageFromLinkAsNode': {
@@ -329,16 +335,13 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'updateReactTabs': {
             let s2c =                               lastEvent.ref;
-            var event = new CustomEvent(
-                "event",
-                { "detail": {
-                        tabData: {
-                            tabNames:               s2c.headerData.headerMapNameList,
-                            tabId:                  s2c.headerData.headerMapSelected,
-                        },
-                    }
-                });
-            document.dispatchEvent(event);
+            let c2r = {
+                tabData: {
+                    tabNames:                       s2c.headerData.headerMapNameList,
+                    tabId:                          s2c.headerData.headerMapSelected,
+                }
+            };
+            document.dispatchEvent(new CustomEvent( "event", {"detail": c2r}));
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

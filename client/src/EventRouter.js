@@ -5,7 +5,7 @@ import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
-import {eventListener, lastEvent}               from "./EventListener";
+import {lastEvent}                              from "./EventListener";
 
 class EventRouter {
     constructor() {
@@ -62,7 +62,7 @@ class EventRouter {
                     [ 0,  0,  0,  e.code === 'F2',                ['s',      'm'], 0,  1,  ['startEdit'                           ], 1 ],
                     [ 0,  0,  0,  e.code === 'F3',                ['s', 'c', 'm'], 0,  1,  [                                      ], 0 ],
                     [ 0,  0,  0,  e.code === 'F5',                ['s', 'c', 'm'], 0,  0,  [                                      ], 0 ],
-                    [ 0,  0,  0,  e.code === 'Enter',             ['s',      'm'], 1,  1,  ['finishEdit' /*check paste*/          ], 1 ],
+                    [ 0,  0,  0,  e.code === 'Enter',             ['s',      'm'], 1,  1,  ['finishEdit'                          ], 1 ],
                     [ 0,  0,  0,  e.code === 'Enter',             ['s'          ], 0,  1,  ['newSiblingDown', 'startEdit'         ], 1 ],
                     [ 0,  0,  0,  e.code === 'Enter',             [          'm'], 0,  1,  ['selectDownMixed'                     ], 1 ],
                     [ 0,  1,  0,  e.code === 'Enter',             ['s',      'm'], 0,  1,  ['newSiblingUp', 'startEdit'           ], 1 ],
@@ -119,7 +119,7 @@ class EventRouter {
                             execute(currExecution);
 
                             // build execution-wise
-                            if (currExecution !== 'typeText' && currExecution !== 'inserTextFromClipboardAsText') {
+                            if (currExecution !== 'typeText') {
                                 rebuild();
                             }
 
@@ -133,7 +133,12 @@ class EventRouter {
                 }
             }
             else if (lastEvent.type === 'windowPaste') {
-                if (this.isEditing !== 1) {
+                if (this.isEditing === 1) {
+                    if (lastEvent.props.dataType === 'text') {
+                        execute('insertTextFromClipboardAsText');
+                    }
+                }
+                else {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
 
@@ -143,14 +148,16 @@ class EventRouter {
                             redraw();
                         }
                         else if (text.substring(0, 3) === '\\[') {
-                            execute('insertEquationFromClipboard');
+                            execute('newChild');
+                            rebuild();
+                            execute('insertEquationFromClipboardAsNode');
                             rebuild();
                             redraw();
                         }
                         else {
                             execute('newChild');
                             rebuild();
-                            execute('inserTextFromClipboardAsNode');
+                            execute('insertTextFromClipboardAsNode');
                             rebuild();
                             redraw();
                         }
@@ -193,6 +200,9 @@ class EventRouter {
                     }
                     case 'createMapInMapSuccess': {
                         execute('insertIlinkFromMongo');
+                        rebuild();
+                        redraw();
+                        // TRY
                         break;
                     }
                 }

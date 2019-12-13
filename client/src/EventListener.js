@@ -8,6 +8,8 @@ class EventListener {
         lastEvent = {};
     }
 
+    // WINDOW, ROUTE, EXECUTE
+
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
         window.addEventListener('click',                event =>    this.click(event)               );
