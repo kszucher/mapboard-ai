@@ -77,12 +77,11 @@ class MapMeasure {
                 }
             }
             else {
-                // TODO: this should work with both density and all node types
                 if (cm.selfHeightOverride === 0) {
                     cm.selfH =                              mapMem.defaultH;
                 }
                 else {
-                    cm.selfH =                              cm.selfHeightOverride;
+                    cm.selfH =                              cm.selfHeightOverride + mapMem.padding;
                 }
 
                 if (cm.selfWidthOverride === 0) {
@@ -90,10 +89,10 @@ class MapMeasure {
                         cm.sTextWidth =                     getTextWidthDOM(cm.content, cm.sTextFontSize);
                         cm.sTextWidthCalculated =           1;
                     }
-                    cm.selfW =                              cm.sTextWidth + 1.5*mapMem.padding;
+                    cm.selfW =                              cm.sTextWidth + mapMem.padding + 4;
                 }
                 else {
-                    cm.selfW =                              cm.selfWidthOverride;
+                    cm.selfW =                              cm.selfWidthOverride + mapMem.padding;
                 }
             }
         }

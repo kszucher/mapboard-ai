@@ -86,9 +86,9 @@ class MapDivVisualize {
                         let filename =                      'http://localhost:8082/file/' + cm.plink;
 
                         div.innerHTML = '';
-                        div.style.paddingLeft =             '0px';
-                        div.style.paddingTop =              '0px';
-                        div.style.borderRadius =            '8px';
+                        div.style.paddingLeft =             0                                   +'px';
+                        div.style.paddingTop =              0                                   +'px';
+                        div.style.borderRadius =            8                                   +'px';
 
                         div.insertAdjacentHTML('beforeend', '<img src="' + filename +  '">');
                     }
@@ -97,9 +97,9 @@ class MapDivVisualize {
                     if (cm.isEquationAssigned === 0) {
                         cm.isEquationAssigned = 1;
 
-                        div.style.paddingLeft =             4                       + 'px';
-                        div.style.paddingTop =              mapMem.padding          + 'px';
-                        div.style.fontSize =                cm.sTextFontSize        + 'px';
+                        div.style.paddingLeft =             4                                   + 'px';
+                        div.style.paddingTop =              mapMem.padding                      + 'px';
+                        div.style.fontSize =                cm.sTextFontSize                    + 'px';
                         div.style.cursor =                  'default';
 
                         katex.render(getLatexString(cm.content), div, {
@@ -118,10 +118,10 @@ class MapDivVisualize {
                         div.innerHTML =                     cm.content;
                         div.contentEditable =               false;
                         div.spellcheck =                    false;
-                        div.style.paddingLeft =             mapMem.padding -2       + 'px';
-                        div.style.paddingTop =              mapMem.padding -2       + 'px'; // because of the border
+                        div.style.paddingLeft =             mapMem.paddingTextLeft              + 'px';
+                        div.style.paddingTop =              mapMem.paddingTextTop               + 'px';
                         div.style.fontFamily =              'Roboto';
-                        div.style.fontSize =                cm.sTextFontSize        + 'px';
+                        div.style.fontSize =                cm.sTextFontSize                    + 'px';
                         div.style.cursor =                  'default';
                         div.style.borderRadius =            '8px';
                     }

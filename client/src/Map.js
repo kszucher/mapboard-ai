@@ -53,6 +53,8 @@ export function loadMap(mapStorage) {
         defaultH:                           mapStorage.density === 'large'? 30:20,
         sLineDeltaXDefault:                 mapStorage.density === 'large'? 30:20,
         padding:                            mapStorage.density === 'large'? 8:3,
+        paddingTextLeft:                    mapStorage.density === 'large'? 6:2,
+        paddingTextTop:                     mapStorage.density === 'large'? 6:1,
         filter:                             [],
         deepestSelectablePath:              [],
         deepestSelectableRef:               [],
