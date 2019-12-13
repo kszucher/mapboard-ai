@@ -76,7 +76,7 @@ class EventRouter {
                     [ 0,  0,  0,  e.code === 'Backspace',         [          'm'], 0,  1,  ['selectBackwardMixed'                 ], 1 ],
                     [ 0,  0,  0,  e.code === 'Delete',            ['s'          ], 0,  1,  ['deleteNode'                          ], 1 ],
                     [ 0,  0,  0,  e.code === 'Delete',            [     'c'     ], 0,  1,  ['deleteCellBlock'                     ], 1 ],
-                    [ 0,  0,  0,  e.code === 'KeyE',              ['s', 'c', 'm'], 0,  1,  ['createMapInMap'                      ], 1 ],
+                    [ 1,  0,  0,  e.code === 'KeyE',              ['s', 'c', 'm'], 0,  1,  ['createMapInMap'                      ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyG',              ['s', 'c', 'm'], 0,  1,  ['makeGrid'                            ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyO',              ['s', 'c', 'm'], 0,  1,  ['normalize'                           ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyC',              ['s', 'c', 'm'], 0,  1,  ['copySelection'                       ], 1 ],
@@ -201,8 +201,9 @@ class EventRouter {
                     case 'createMapInMapSuccess': {
                         execute('insertIlinkFromMongo');
                         rebuild();
+                        execute('save');
+                        rebuild();
                         redraw();
-                        // TRY
                         break;
                     }
                 }

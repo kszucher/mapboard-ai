@@ -16,7 +16,7 @@ let lastUserMap = '';
 
 export function execute(command) {
 
-    console.log('execute: ' + command)
+    // console.log('execute: ' + command);
 
     let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath;
 
@@ -57,13 +57,13 @@ export function execute(command) {
         'insertTextFromClipboardAsNode',
         'insertEquationFromClipboardAsNode',
         'insertImageFromLinkAsNode',
+        'insertIlinkFromMongo',
         'cellifyMulti',
         'transposeMe',
         'transpose',
         'makeGrid',
         'openAfterMapSelect',
         'createMapInMap',
-        'createMapInMapSuccess',
     ].includes(command)) {
         sc = getSelectionContext();
         maxSel = sc.maxSel;
