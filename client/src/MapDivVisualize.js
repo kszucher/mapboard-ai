@@ -79,22 +79,17 @@ class MapDivVisualize {
 
                 mapMem.divData[cm.divId].style = copy(newStyle);
 
-                // TODO parse this
-
-
-
                 if (cm.content === '_pic') {
                     if (cm.isPicAssigned === 0) {
                         cm.isPicAssigned = 1;
 
-                        console.log('LEFF')
+                        let filename =                      'http://localhost:8082/file/' + cm.plink;
 
-                        let filename =                              'http://localhost:8082/file/' + cm.plink;
+                        div.innerHTML = '';
+                        div.style.paddingLeft =             0                       + 'px';
+                        div.style.paddingTop =              0                       + 'px';
 
-                        console.log(filename)
-
-                        div.insertAdjacentHTML('beforeend',         '<img src="' + filename +  '">');
-
+                        div.insertAdjacentHTML('beforeend', '<img src="' + filename +  '">');
                     }
                 }
                 else if (cm.content.substring(0, 2) === '\\[') {

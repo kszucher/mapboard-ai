@@ -1,6 +1,7 @@
 import {mapMem}                                             from "./Map";
 import {hasCell}                                            from "./Node";
 import {getDim}                                             from "./Dim";
+import {isOdd} from "./Utils";
 
 class MapPlace {
     start() {
@@ -30,8 +31,9 @@ class MapPlace {
     }
 
     iterate(cm) {
-        cm.nodeStartX = cm.nodeStartXOverride?              cm.nodeStartXOverride : cm.parentNodeEndX + cm.lineDeltaX;
-        cm.nodeStartY = cm.nodeStartYOverride?              cm.nodeStartYOverride : cm.parentNodeEndY + cm.lineDeltaY;
+
+        cm.nodeStartX =                                     cm.parentNodeEndX + cm.lineDeltaX;
+        cm.nodeStartY =                                     cm.parentNodeEndY + cm.lineDeltaY;
 
         if (cm.parentType === 'cell') {
             cm.nodeStartX =                                 cm.parentNodeEndX;
@@ -39,6 +41,11 @@ class MapPlace {
 
         cm.nodeEndX =                                       cm.nodeStartX + cm.selfW;
         cm.nodeEndY =                                       cm.nodeStartY;
+
+        if (Number.isInteger(cm.nodeStartY)) {
+            cm.nodeStartY -= 0.5;
+            cm.nodeEndY -= 0.5;
+        }
 
         if (cm.type === 'struct') {
             if (hasCell(cm)) {

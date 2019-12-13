@@ -9,7 +9,7 @@ import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelect
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
 import {setClipboard, structMove}                                                               from "./NodeMove";
-import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
+import {copy, isOdd, setEndOfContenteditable, transposeArray} from "./Utils";
 
 let headerData = {};
 let lastUserMap = '';
@@ -60,7 +60,8 @@ export function execute(command) {
         'openAfterMapSelect',
         'createMapInMap',
         'createMapInMapSuccess',
-        'imageSaveSuccess'
+        'imageSaveSuccess',
+        'insertImage'
     ].includes(command)) {
         sc = getSelectionContext();
         maxSel = sc.maxSel;
@@ -430,22 +431,23 @@ export function execute(command) {
             break;
         }
         case 'imageSaveSuccess': {
+            execute('newChild');
+            rebuild();
+            redraw();
+            execute('insertImage');
+            break;
+        }
+        case 'insertImage': {
+
             let sf2c =                              lastEvent.ref;
-
-            console.log(sf2c);
-
-            // structInsert(lastRef, 'right');
-
-            // TODO kitalálni hogy lesz ez jó
 
             lastRef.content =                       '_pic';
             lastRef.plink =                         sf2c.imageId;
-            lastRef.selfWidthOverride =             sf2c.imageSize.width;
-            lastRef.selfHeightOverride =            sf2c.imageSize.height;
+            lastRef.selfWidthOverride =             sf2c.imageSize.width + 8;
+            lastRef.selfHeightOverride =            sf2c.imageSize.height + 8;
+
             rebuild();
             redraw();
-            // TODO we have name and size, based on that mapdiv vis can add it easily (using the new fileserv functionality)
-
             break;
         }
     }

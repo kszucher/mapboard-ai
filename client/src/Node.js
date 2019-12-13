@@ -17,8 +17,6 @@ export let props = {
         c:                                      [[]],
         cBorderColor:                           '#50dfff',
 
-        nodeStartXOverride:                     0,
-        nodeStartYOverride:                     0,
         selfWidthOverride:                      0,
         selfHeightOverride:                     0,
 

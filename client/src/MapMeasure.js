@@ -78,34 +78,6 @@ class MapMeasure {
                 }
             }
             else {
-
-                // TODO meas this
-
-                // process content
-                // if (cm.content.split('.').pop() === 'jpg') {
-                //
-                //     let dim = {
-                //         height: 0,
-                //         width: 0,
-                //     };
-                //
-                //     let imageList = mapMem.mapMeta;
-                //
-                //     for (let i = 0; i < imageList.length; i++) {
-                //         if (imageList[i].fileName === cm.content) {
-                //             dim.height = imageList[i].height + 8;
-                //             dim.width = imageList[i].width;
-                //         }
-                //     }
-                //
-                //     cm.selfHeightOverride = dim.height;
-                //     cm.selfWidthOverride = dim.width;
-                //
-                //     if (isOdd(cm.selfHeightOverride)) {
-                //         cm.selfHeightOverride += 1;
-                //     }
-                // }
-
                 if (cm.selfHeightOverride === 0) {
                     cm.selfH =                              mapMem.defaultH;
                 }

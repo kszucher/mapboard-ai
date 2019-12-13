@@ -71,3 +71,7 @@ html, body, div, canvas, table, td, tr {
 #mapCanvas{
     position:absolute;
 }
+
+img {
+    border-radius: 8px;
+}
