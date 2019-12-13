@@ -119,7 +119,7 @@ class EventRouter {
                             execute(currExecution);
 
                             // build execution-wise
-                            if (currExecution !== 'typeText' && currExecution !== 'pasteAsText') {
+                            if (currExecution !== 'typeText' && currExecution !== 'inserTextFromClipboardAsText') {
                                 rebuild();
                             }
 
@@ -136,48 +136,76 @@ class EventRouter {
                 if (this.isEditing !== 1) {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
+
                         if (text.substring(0, 1) === '[') {
-                            execute('pasteAsMap');
+                            execute('insertMapFromClipboard');
                             rebuild();
                             redraw();
                         }
                         else if (text.substring(0, 3) === '\\[') {
-                            execute('pasteAsEquation');
+                            execute('insertEquationFromClipboard');
                             rebuild();
                             redraw();
                         }
                         else {
-                            execute('pasteAsText');
+                            execute('newChild');
+                            rebuild();
+                            execute('inserTextFromClipboardAsNode');
+                            rebuild();
+                            redraw();
                         }
                     }
                     else if(lastEvent.props.dataType === 'image') {
-                        // TODO: replace communication with fetch and then merge
-
-                        var formData = new FormData();
-                        formData.append('upl', lastEvent.props.data, 'image.png');
-
-                        fetch('http://127.0.0.1:8082/feta', {
-                            method:     'post',
-                            body:       formData
-                        }).then(function(response) {
-                            response.json().then(function(sf2c) {
-                                eventListener.receiveFromServerFetch(sf2c)
-                            });
-                        });
+                        execute('sendImage');
                     }
                 }
             }
             else if (lastEvent.type === 'reactEvent') {
                 let r2c = lastEvent.ref;
+                // TODO see it all here in a switch
                 execute(r2c.cmd);
             }
             else if (lastEvent.type === 'serverEvent') {
                 let s2c = lastEvent.ref;
-                execute(s2c.cmd);
+                console.log('server: ' + s2c.cmd);
+                switch(s2c.cmd) {
+                    case 'signInSuccess': {
+                        execute('updateReactTabs');
+                        execute('openAfterInit');
+                        break;
+                    }
+                    case 'signInFail': {
+                        console.log(localStorage);
+                        break;
+                    }
+                    case 'signOutSuccess': {
+                        localStorage.clear();
+                        break;
+                    }
+                    case 'openMapSuccess': {
+                        execute('openMap');
+                        rebuild();
+                        redraw();
+                        break;
+                    }
+                    case 'writeMapRequestSuccess': {
+                        break;
+                    }
+                    case 'createMapInMapSuccess': {
+                        execute('insertIlinkFromMongo');
+                        break;
+                    }
+                }
             }
             else if (lastEvent.type === 'serverFetchEvent') {
                 let sf2c = lastEvent.ref;
-                execute(sf2c.cmd);
+                if (sf2c.cmd === 'imageSaveSuccess') {
+                    execute('newChild');
+                    rebuild();
+                    execute('insertImageFromLinkAsNode');
+                    rebuild();
+                    redraw();
+                }
             }
         }
     }

@@ -86,8 +86,9 @@ class MapDivVisualize {
                         let filename =                      'http://localhost:8082/file/' + cm.plink;
 
                         div.innerHTML = '';
-                        div.style.paddingLeft =             0                       + 'px';
-                        div.style.paddingTop =              0                       + 'px';
+                        div.style.paddingLeft =             '0px';
+                        div.style.paddingTop =              '0px';
+                        div.style.borderRadius =            '8px';
 
                         div.insertAdjacentHTML('beforeend', '<img src="' + filename +  '">');
                     }

@@ -1,15 +1,15 @@
 import {initDim}                                                                                from "./Dim";
 import {communication}                                                                          from "./Communication";
-import {lastEvent}                                                                              from "./EventListener"
+import {eventListener, lastEvent}                                                               from "./EventListener"
 import {eventRouter}                                                                            from "./EventRouter";
-import {mapMem, mapref, pathMerge, rebuild, redraw, loadMap, saveMap, mapStorageOut}            from "./Map";
+import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut}                             from "./Map";
 import {hasCell}                                                                                from "./Node";
 import {cellNavigate, structNavigate}                                                           from "./NodeNavigate";
 import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelectionContext}     from "./NodeSelect"
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
 import {setClipboard, structMove}                                                               from "./NodeMove";
-import {copy, isOdd, setEndOfContenteditable, transposeArray} from "./Utils";
+import {copy, isOdd, setEndOfContenteditable, transposeArray}                                   from "./Utils";
 
 let headerData = {};
 let lastUserMap = '';
@@ -50,18 +50,18 @@ export function execute(command) {
         'moveNodeSelection',
         'copySelection',
         'cutSelection',
-        'pasteAsMap',
-        'pasteAsText',
+        'insertMapFromClipboard',
+        'inserTextFromClipboardAsText',
+        'inserTextFromClipboardAsNode',
+        'insertEquationFromClipboard', // as text, as node?
+        'insertImageFromLinkAsNode',
         'cellifyMulti',
         'transposeMe',
         'transpose',
         'makeGrid',
-        'pasteAsEquation',
         'openAfterMapSelect',
         'createMapInMap',
         'createMapInMapSuccess',
-        'imageSaveSuccess',
-        'insertImage'
     ].includes(command)) {
         sc = getSelectionContext();
         maxSel = sc.maxSel;
@@ -74,6 +74,15 @@ export function execute(command) {
     }
 
     switch (command) {
+        // -------------------------------------------------------------------------------------------------------------
+        // OPEN
+        // -------------------------------------------------------------------------------------------------------------
+        case 'openMap': {
+            let s2c =                               lastEvent.ref;
+            lastUserMap =                           s2c.mapName;
+            loadMap(s2c.mapStorage);
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
         // SELECT
         // -------------------------------------------------------------------------------------------------------------
@@ -202,15 +211,15 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp':                        structInsert(lm, 'up');                                break;
-        case 'newSiblingDown':                      structInsert(lm, 'down');                              break;
-        case 'newChild':                            structInsert(lm, 'right');                             break;
+        case 'newSiblingUp':                        structInsert(lm, 'up');                                     break;
+        case 'newSiblingDown':                      structInsert(lm, 'down');                                   break;
+        case 'newChild':                            structInsert(lm, 'right');                                  break;
         case 'newCellBlock':                        cellInsert(lastPath.slice(0, lastPath.length -2), keyStr);  break;
         // -------------------------------------------------------------------------------------------------------------
         // DELETE
         // -------------------------------------------------------------------------------------------------------------
         case 'deleteNode':                          structDeleteReselect(sc);                                   break;
-        case 'deleteCellBlock':                     cellBlockDeleteReselect(lm);                           break;
+        case 'deleteCellBlock':                     cellBlockDeleteReselect(lm);                                break;
         // -------------------------------------------------------------------------------------------------------------
         // MOVE
         // -------------------------------------------------------------------------------------------------------------
@@ -226,13 +235,30 @@ export function execute(command) {
             structMove(sc, 'struct2clipboard', 'CUT');
             break;
         }
-        case 'pasteAsMap': {
+        // -------------------------------------------------------------------------------------------------------------
+        // PASTE
+        // -------------------------------------------------------------------------------------------------------------
+        case 'insertTextFromClipboardAsText': {
+            // TODO: remove all formatting
+            // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-item-in-execcommand
+            let holderElement = document.getElementById(sc.lm.divId);
+            holderElement.style.width = 1000 + 'px'; // long enough
+            break;
+        }
+        case 'inserTextFromClipboardAsNode': {
+            // kétféle cucc lesz itt, ami "as map" meg ami "as plain"
+
+
+            break;
+        }
+        case 'insertMapFromClipboard': {
             let text = lastEvent.props.data;
             setClipboard(JSON.parse(text));
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
-        case 'pasteAsEquation': { // this shouldnt be here...
+        case 'insertEquationFromClipboard': { // this shouldnt be here...
+            // TODO: it should be pasted NOT as text but as a new node, just like with insertImage --> unity!!!
             let text = lastEvent.props.data;
             // connect new and old
 
@@ -264,11 +290,17 @@ export function execute(command) {
             }
             break;
         }
-        case 'pasteAsText': {
-            // TODO: remove all formatting
-            // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-item-in-execcommand
-            let holderElement = document.getElementById(sc.lm.divId);
-            holderElement.style.width = 1000 + 'px'; // long enough
+        case 'insertImageFromLinkAsNode': {
+            let sf2c =                              lastEvent.ref;
+            lm.content =                            '_pic';
+            lm.plink =                              sf2c.imageId;
+            lm.selfWidthOverride =                  sf2c.imageSize.width + 8;
+            lm.selfHeightOverride =                 sf2c.imageSize.height + 8;
+            break;
+        }
+        case 'insertIlinkFromMongo': {
+            let s2c =                               lastEvent.ref;
+            lm.ilink =                              s2c.newMapId;
             break;
         }
         case 'cellifyMulti': {
@@ -293,7 +325,24 @@ export function execute(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // SERVER RELATED - TX
+        // REACT TX
+        // -------------------------------------------------------------------------------------------------------------
+        case 'updateReactTabs': {
+            let s2c =                               lastEvent.ref;
+            var event = new CustomEvent(
+                "event",
+                { "detail": {
+                        tabData: {
+                            tabNames:               s2c.headerData.headerMapNameList,
+                            tabId:                  s2c.headerData.headerMapSelected,
+                        },
+                    }
+                });
+            document.dispatchEvent(event);
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        // SERVER TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
             initDim();
@@ -385,69 +434,20 @@ export function execute(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // SERVER RELATED - RX
+        // SERVER FETCH TX
         // -------------------------------------------------------------------------------------------------------------
-        case 'signInSuccess': {
-            console.log('sign in success');
-            let s2c =                               lastEvent.ref;
-            var event = new CustomEvent(            // c2a communication is based on a hook which is triggered by an event
-                "event",
-                {
-                    "detail": {
-                        tabData: {
-                            tabNames:               s2c.headerData.headerMapNameList,
-                            tabId:                  s2c.headerData.headerMapSelected,
-                        },
-                    }
+        case 'sendImage': {
+            var formData = new FormData();
+            formData.append('upl', lastEvent.props.data, 'image.png');
+
+            fetch('http://127.0.0.1:8082/feta', {
+                method:     'post',
+                body:       formData
+            }).then(function(response) {
+                response.json().then(function(sf2c) {
+                    eventListener.receiveFromServerFetch(sf2c)
                 });
-            document.dispatchEvent(event);
-            execute('openAfterInit');
-            break;
-        }
-        case 'signInFail': {
-            console.log('sign in fail');
-            console.log(localStorage);
-            break;
-        }
-        case 'signOutSuccess': {
-            localStorage.clear();
-            break;
-        }
-        case 'openMapSuccess': {
-            let s2c =                               lastEvent.ref;
-            lastUserMap =                           s2c.mapName;
-            loadMap(s2c.mapStorage);
-            rebuild();
-            redraw();
-            break;
-        }
-        case 'writeMapRequestSuccess': {
-            console.log('file saved');
-            break;
-        }
-        case 'createMapInMapSuccess': {
-            let s2c =                               lastEvent.ref;
-            lm.ilink =                         s2c.newMapId;
-            break;
-        }
-        case 'imageSaveSuccess': {
-            execute('newChild');
-            rebuild();
-            redraw();
-            execute('insertImage');
-            break;
-        }
-        case 'insertImage': {
-
-            let sf2c =                              lastEvent.ref;
-
-            lm.content =                       '_pic';
-            lm.plink =                         sf2c.imageId;
-            lm.selfWidthOverride =             sf2c.imageSize.width + 8;
-            lm.selfHeightOverride =            sf2c.imageSize.height + 8;
-
-            rebuild();
-            redraw();
+            });
             break;
         }
     }
