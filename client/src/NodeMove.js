@@ -17,7 +17,7 @@ export function structMove(sc, target, mode) {
         parentPathList.push(mapref(sc.structSelectedPathList[i]).parentPath);
     }
     if (target === 'struct2struct' || target === 'struct2cell') {
-        if (arrayValuesSame(parentPathList) && sc.lastRef.isRoot === 0) {
+        if (arrayValuesSame(parentPathList) && sc.lm.isRoot === 0) {
             let currParentPath = parentPathList[0];
             let currParentRef = mapref(currParentPath);
 
@@ -93,7 +93,7 @@ export function structMove(sc, target, mode) {
         }
     }
     else if (target === 'struct2clipboard') {
-        if (mode === 'CUT' && sc.lastRef.isRoot !== 1 ||
+        if (mode === 'CUT' && sc.lm.isRoot !== 1 ||
             mode === 'COPY') {
             clipboard = [];
             for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
@@ -127,9 +127,9 @@ export function structMove(sc, target, mode) {
         console.log(clipboard)
 
         clearStructSelection();
-        let toIndex = sc.lastRef.s.length;
+        let toIndex = sc.lm.s.length;
         for (let i = 0; i < clipboard.length; i++) {
-            sc.lastRef.s.splice(toIndex + i, 0, copy(clipboard[i]));
+            sc.lm.s.splice(toIndex + i, 0, copy(clipboard[i]));
         }
     }
 }

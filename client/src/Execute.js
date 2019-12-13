@@ -16,7 +16,7 @@ let lastUserMap = '';
 
 export function execute(command) {
 
-    let keyStr, sc, maxSel, lastPath, lastRef, geomHighPath, geomHighRef, geomLowPath;
+    let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath;
 
     if (lastEvent.type === 'windowKeyDown') {
         keyStr = lastEvent.ref.code;
@@ -66,7 +66,7 @@ export function execute(command) {
         sc = getSelectionContext();
         maxSel = sc.maxSel;
         lastPath = sc.lastPath;
-        lastRef = sc.lastRef;
+        lm = sc.lm;
         geomHighPath = sc.geomHighPath;
         geomHighRef = sc.geomHighRef;
         geomLowPath = sc.geomLowPath;
@@ -86,7 +86,7 @@ export function execute(command) {
             break;
         }
         case 'selectForwardStruct': {
-            if (hasCell(lastRef)) {
+            if (hasCell(lm)) {
                 applyMixedSelection(pathMerge(lastPath, ['c', 0, 0]));
             }
             break;
@@ -96,17 +96,17 @@ export function execute(command) {
             break;
         }
         case 'selectBackwardStruct': {
-            for (let i = lastRef.path.length - 2; i > 0; i--) {
-                if (Number.isInteger(lastRef.path[i]) &&
-                    Number.isInteger(lastRef.path[i+1])) {
-                    applyMixedSelection(lastRef.path.slice(0, i + 2));
+            for (let i = lm.path.length - 2; i > 0; i--) {
+                if (Number.isInteger(lm.path[i]) &&
+                    Number.isInteger(lm.path[i+1])) {
+                    applyMixedSelection(lm.path.slice(0, i + 2));
                     break;
                 }
             }
             break;
         }
         case 'selectBackwardMixed': {
-            let parentRef = mapref(lastRef.parentPath);
+            let parentRef = mapref(lm.parentPath);
             let parentParentRef = mapref(parentRef.parentPath);
             applyStructSelection(parentParentRef.path);
             break;
@@ -138,8 +138,8 @@ export function execute(command) {
         case 'selectCellRow': {
             clearStructSelection();
             clearCellSelection();
-            let parentRef = mapref(lastRef.parentPath);
-            let currRow = lastRef.index[0];
+            let parentRef = mapref(lm.parentPath);
+            let currRow = lm.index[0];
             let colLen = parentRef.c[0].length;
 
             for (let i = 0; i < colLen; i++) {
@@ -152,8 +152,8 @@ export function execute(command) {
             clearStructSelection();
             clearCellSelection();
 
-            let parentRef = mapref(lastRef.parentPath);
-            let currCol = lastRef.index[1];
+            let parentRef = mapref(lm.parentPath);
+            let currCol = lm.index[1];
             let rowLen = parentRef.c.length;
 
             for (let i = 0; i < rowLen; i++) {
@@ -171,30 +171,30 @@ export function execute(command) {
         // EDIT
         // -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
-            lastRef.content = '';
-            let holderElement = document.getElementById(lastRef.divId);
+            lm.content = '';
+            let holderElement = document.getElementById(lm.divId);
             holderElement.innerHTML = '';
             break;
         }
         case 'typeText': {
-            let holderElement = document.getElementById(lastRef.divId);
+            let holderElement = document.getElementById(lm.divId);
             holderElement.style.width = 1000 + 'px'; // long enough
             break;
         }
         case 'startEdit': {
             eventRouter.isEditing = 1;
-            let holderElement = document.getElementById(lastRef.divId);
+            let holderElement = document.getElementById(lm.divId);
             holderElement.contentEditable = 'true';
             setEndOfContenteditable(holderElement);
             break;
         }
         case 'finishEdit' : {
 
-            let holderElement = document.getElementById(lastRef.divId);
+            let holderElement = document.getElementById(lm.divId);
             holderElement.contentEditable = 'false';
 
-            lastRef.content = holderElement.textContent;
-            lastRef.sTextWidthCalculated = 0;
+            lm.content = holderElement.textContent;
+            lm.sTextWidthCalculated = 0;
 
             eventRouter.isEditing = 0;
             break;
@@ -202,15 +202,15 @@ export function execute(command) {
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp':                        structInsert(lastRef, 'up');                                break;
-        case 'newSiblingDown':                      structInsert(lastRef, 'down');                              break;
-        case 'newChild':                            structInsert(lastRef, 'right');                             break;
+        case 'newSiblingUp':                        structInsert(lm, 'up');                                break;
+        case 'newSiblingDown':                      structInsert(lm, 'down');                              break;
+        case 'newChild':                            structInsert(lm, 'right');                             break;
         case 'newCellBlock':                        cellInsert(lastPath.slice(0, lastPath.length -2), keyStr);  break;
         // -------------------------------------------------------------------------------------------------------------
         // DELETE
         // -------------------------------------------------------------------------------------------------------------
         case 'deleteNode':                          structDeleteReselect(sc);                                   break;
-        case 'deleteCellBlock':                     cellBlockDeleteReselect(lastRef);                           break;
+        case 'deleteCellBlock':                     cellBlockDeleteReselect(lm);                           break;
         // -------------------------------------------------------------------------------------------------------------
         // MOVE
         // -------------------------------------------------------------------------------------------------------------
@@ -236,7 +236,7 @@ export function execute(command) {
             let text = lastEvent.props.data;
             // connect new and old
 
-            if (lastRef.content.substring(0, 2) === '\\[' && lastRef.isEquationAssigned === 0) {
+            if (lm.content.substring(0, 2) === '\\[' && lm.isEquationAssigned === 0) {
 
                 let tmpDiv;
 
@@ -249,15 +249,15 @@ export function execute(command) {
 
                 document.getElementById('dm').appendChild(tmpDiv);
 
-                katex.render(getLatexString(lastRef.content), tmpDiv, {
+                katex.render(getLatexString(lm.content), tmpDiv, {
                     throwOnError: false
                 });
 
-                lastRef.selfWidthOverride =         tmpDiv.childNodes[0].offsetWidth + 8;
-                lastRef.selfHeightOverride =        tmpDiv.childNodes[0].offsetHeight + 8;
+                lm.selfWidthOverride =         tmpDiv.childNodes[0].offsetWidth + 8;
+                lm.selfHeightOverride =        tmpDiv.childNodes[0].offsetHeight + 8;
 
-                if (isOdd(lastRef.selfHeightOverride)) {
-                    lastRef.selfHeightOverride += 1;
+                if (isOdd(lm.selfHeightOverride)) {
+                    lm.selfHeightOverride += 1;
                 }
 
                 tmpDiv.parentNode.removeChild(tmpDiv);
@@ -267,7 +267,7 @@ export function execute(command) {
         case 'pasteAsText': {
             // TODO: remove all formatting
             // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-item-in-execcommand
-            let holderElement = document.getElementById(sc.lastRef.divId);
+            let holderElement = document.getElementById(sc.lm.divId);
             holderElement.style.width = 1000 + 'px'; // long enough
             break;
         }
@@ -279,13 +279,13 @@ export function execute(command) {
         // MISC
         // -------------------------------------------------------------------------------------------------------------
         case 'transposeMe': {
-            if (hasCell(lastRef)) {
-                lastRef.c = transposeArray(lastRef.c);
+            if (hasCell(lm)) {
+                lm.c = transposeArray(lm.c);
             }
             break;
         }
         case 'transpose': {
-            lastRef.c = transposeArray(lastRef.c);
+            lm.c = transposeArray(lm.c);
             break;
         }
         case 'makeGrid': {
@@ -339,11 +339,11 @@ export function execute(command) {
             break;
         }
         case 'openAfterMapSelect': {
-            if(lastRef.ilink !== '') {
+            if(lm.ilink !== '') {
                 let c2s = {
                     'cmd':                          'openMapRequest',
                     'cred':                         JSON.parse(localStorage.getItem('cred')),
-                    'mapName':                      lastRef.ilink
+                    'mapName':                      lm.ilink
                 };
                 communication.sender(c2s);
             }
@@ -368,7 +368,7 @@ export function execute(command) {
                 data: [
                     {
                         path:                       ['s', 0],
-                        content:                    lastRef.content,
+                        content:                    lm.content,
                         selected:                   1
                     }
                 ],
@@ -427,7 +427,7 @@ export function execute(command) {
         }
         case 'createMapInMapSuccess': {
             let s2c =                               lastEvent.ref;
-            lastRef.ilink =                         s2c.newMapId;
+            lm.ilink =                         s2c.newMapId;
             break;
         }
         case 'imageSaveSuccess': {
@@ -441,10 +441,10 @@ export function execute(command) {
 
             let sf2c =                              lastEvent.ref;
 
-            lastRef.content =                       '_pic';
-            lastRef.plink =                         sf2c.imageId;
-            lastRef.selfWidthOverride =             sf2c.imageSize.width + 8;
-            lastRef.selfHeightOverride =            sf2c.imageSize.height + 8;
+            lm.content =                       '_pic';
+            lm.plink =                         sf2c.imageId;
+            lm.selfWidthOverride =             sf2c.imageSize.width + 8;
+            lm.selfHeightOverride =            sf2c.imageSize.height + 8;
 
             rebuild();
             redraw();

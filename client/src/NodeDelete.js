@@ -3,11 +3,11 @@ import {mapDivRemove}               from "./MapDivRemove";
 
 export function structDeleteReselect(sc) {
     // calculate jumpback
-    let lastRef = sc.lastRef;
-    let lastParentRef = mapref(lastRef.parentPath);
+    let lm = sc.lm;
+    let lastParentRef = mapref(lm.parentPath);
     let lastParentRefChildCntr = lastParentRef.s.length;
     let lastParentRefDelChildCntr = 0;
-    for (let i = lastRef.index; i > - 1; i--) {
+    for (let i = lm.index; i > - 1; i--) {
         if (lastParentRef.s[i].selected > 0) {
             lastParentRefDelChildCntr++;
         }
@@ -26,12 +26,12 @@ export function structDeleteReselect(sc) {
     }
 
     // reselect on jumpback
-    if (lastRef.isRoot === 0) {
+    if (lm.isRoot === 0) {
         if (lastParentRefChildCntr === lastParentRefDelChildCntr) {
             lastParentRef.selected = 1;
         }
         else {
-            if (lastRef.index === 0) {
+            if (lm.index === 0) {
                 if (lastParentRef.s.length > 0) {
                     lastParentRef.s[0].selected = 1;
                 } else {
@@ -39,21 +39,21 @@ export function structDeleteReselect(sc) {
                 }
             }
             else {
-                lastParentRef.s[lastRef.index - lastParentRefDelChildCntr].selected = 1;
+                lastParentRef.s[lm.index - lastParentRefDelChildCntr].selected = 1;
             }
         }
     }
 }
 
-export function cellBlockDeleteReselect (lastRef) {
-    let lastParentRef = mapref(lastRef.parentPath);
+export function cellBlockDeleteReselect (lm) {
+    let lastParentRef = mapref(lm.parentPath);
     let rcSelected = checkSelection(lastParentRef);
     if (rcSelected[0]) {
-        lastParentRef.c.splice(lastRef.index[0], 1);
+        lastParentRef.c.splice(lm.index[0], 1);
     }
     if (rcSelected[1]) {
         for (let i = 0; i < lastParentRef.c.length; i++) {
-            lastParentRef.c[i].splice(lastRef.index[1], 1);
+            lastParentRef.c[i].splice(lm.index[1], 1);
         }
     }
     // TODO better after deletion rules

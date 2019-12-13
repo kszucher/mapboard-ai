@@ -58,7 +58,7 @@ export function getSelectionContext () {
         'maxSel':                   maxSel,
         'scope':                    scope,
         'lastPath':                 lastPath,
-        'lastRef':                  mapref(lastPath),
+        'lm':                       mapref(lastPath),
         'geomHighPath':             geomHighPath,
         'geomHighRef':              mapref(geomHighPath),
         'geomLowPath':              geomLowPath,

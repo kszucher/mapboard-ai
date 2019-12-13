@@ -2,35 +2,35 @@ import {clearStructSelection}                           from "./NodeSelect";
 import {mapref}                                         from "./Map";
 import {getDefaultNode}                                 from "./Node";
 
-export function structInsert(lastRef, direction) {
+export function structInsert(lm, direction) {
     clearStructSelection();
-    let parentRef = mapref(lastRef.parentPath);
+    let parentRef = mapref(lm.parentPath);
     if (direction === 'up') {
-        parentRef.s.splice(lastRef.index, 0, getDefaultNode({
+        parentRef.s.splice(lm.index, 0, getDefaultNode({
             'selected': 1,
             'taskStatus': parentRef.taskStatus
         }))
     }
     if (direction === 'down') {
-        parentRef.s.splice(lastRef.index + 1, 0, getDefaultNode({
+        parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
             'selected': 1,
             'taskStatus': parentRef.taskStatus
         }));
     }
     else if (direction === 'right') {
-        lastRef.s.splice(lastRef.s.length, 0, getDefaultNode({
+        lm.s.splice(lm.s.length, 0, getDefaultNode({
             'selected': 1,
-            'taskStatus': lastRef.taskStatus
+            'taskStatus': lm.taskStatus
         }));
     }
 }
 
 export function cellInsert (lastPath, direction) {
-    let lastRef =       mapref(lastPath);
-    let parentRef =     mapref(lastRef.parentPath);
+    let lm =       mapref(lastPath);
+    let parentRef =     mapref(lm.parentPath);
 
-    let currRow =       lastRef.index[0];
-    let currCol =       lastRef.index[1];
+    let currRow =       lm.index[0];
+    let currCol =       lm.index[1];
     let rowLen =        parentRef.c.length;
     let colLen =        parentRef.c[0].length;
 
