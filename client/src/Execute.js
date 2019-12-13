@@ -300,8 +300,8 @@ export function execute(command) {
             let sf2c =                              lastEvent.ref;
             lm.content =                            '_pic';
             lm.plink =                              sf2c.imageId;
-            lm.selfWidthOverride =                  sf2c.imageSize.width + 8;
-            lm.selfHeightOverride =                 sf2c.imageSize.height + 8;
+            lm.selfWidthOverride =                  sf2c.imageSize.width;
+            lm.selfHeightOverride =                 sf2c.imageSize.height;
             break;
         }
         case 'insertIlinkFromMongo': {

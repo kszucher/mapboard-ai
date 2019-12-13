@@ -17,7 +17,6 @@ class MapMeasure {
         params.hasMultipleChild =                           0;
         params.hasMultipleContentRow =                      0;
 
-
         if (cm.type === 'struct') {
             if (hasCell(cm)) {
                 let rowCount = Object.keys(cm.c).length;
@@ -78,6 +77,7 @@ class MapMeasure {
                 }
             }
             else {
+                // TODO: this should work with both density and all node types
                 if (cm.selfHeightOverride === 0) {
                     cm.selfH =                              mapMem.defaultH;
                 }
