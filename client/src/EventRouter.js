@@ -142,22 +142,36 @@ class EventRouter {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
 
+                        let mainType;
+                        let subType;
                         if (text.substring(0, 1) === '[') {
-                            execute('insertMapFromClipboard');
-                            rebuild();
-                            redraw();
+                            mainType = 'map';
                         }
-                        else if (text.substring(0, 3) === '\\[') {
-                            execute('newChild');
-                            rebuild();
-                            execute('insertEquationFromClipboardAsNode');
-                            rebuild();
-                            redraw();
+                        else if (text.substring(0, 2) === '\\[') { // double backslash count as one character
+                            mainType = 'node';
+                            subType = 'equation'
                         }
                         else {
+                            mainType = 'node';
+                            subType = 'text';
+                        }
+
+                        if (mainType === 'node') {
                             execute('newChild');
                             rebuild();
-                            execute('insertTextFromClipboardAsNode');
+                            if (subType === 'text') {
+                                execute('insertTextFromClipboardAsNode');
+                                rebuild();
+                                redraw();
+                            }
+                            else if (subType === 'equation') {
+                                execute('insertEquationFromClipboardAsNode');
+                                rebuild();
+                                redraw();
+                            }
+                        }
+                        else if (mainType === 'map') {
+                            execute('insertMapFromClipboard');
                             rebuild();
                             redraw();
                         }

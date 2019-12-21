@@ -100,11 +100,8 @@ export function structMove(sc, target, mode) {
                 let currRef = mapref(sc.structSelectedPathList[i]);
                 clipboard.splice(0, 0, copy(currRef));
                 for (let j = 0; j < clipboard.length; j++) {
-                    // TODO: isContentAssigned globally, which will work for all of this
                     mapNodePropChange.start(clipboard[j], 'isDivAssigned', 0);
-                    mapNodePropChange.start(clipboard[j], 'isTextAssigned', 0);
-                    mapNodePropChange.start(clipboard[j], 'isPicAssigned', 0);
-                    mapNodePropChange.start(clipboard[j], 'isEquationAssigned', 0);
+                    // mapNodePropChange.start(clipboard[j], 'isInnerHtmlAssigned', 0);
                 }
             }
 

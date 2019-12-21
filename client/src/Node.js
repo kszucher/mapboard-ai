@@ -4,11 +4,11 @@ export let props = {
     saveOptional: {
         path:                                   [],
 
+        contentType:                            'text',
         content:                                '',
 
-        ilink:                                  '',
-        elink:                                  '',
-        plink:                                  '',
+        ilink:                                  '', // TODO delete
+        elink:                                  '', // TODO delete
 
         s:                                      [],
         sTextColor:                             '#222222',
@@ -47,11 +47,7 @@ export let props = {
             taskStatusInherited:                0,
 
             // mapDivVisualize
-            isSvgAssigned:                      0,
             isDivAssigned:                      0,
-            isTextAssigned:                     0,
-            isPicAssigned:                      0,
-            isEquationAssigned:                 0,
         },
         initAlways: {
             // mapChain

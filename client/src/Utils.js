@@ -37,7 +37,7 @@ export function transposeArray(array) {
         newArray.push([]);
     }
 
-    for(i = 0; i < origArrayLength; i++){
+    for(let i = 0; i < origArrayLength; i++){
         for(var j = 0; j < arrayLength; j++){
             newArray[j].push(array[i][j]);
         }
@@ -107,10 +107,10 @@ export function transpose(array2d) {
 
 export function getTextWidthDOM(text, fontSize) {
 
-    let nDiv = document.createElement('div');
-    nDiv.id = "Test";
-    nDiv.innerHTML = text;
-    mapDiv.appendChild(nDiv);
+    let tmpDiv = document.createElement('div');
+    tmpDiv.id = "Test";
+    tmpDiv.innerHTML = text;
+    mapDiv.appendChild(tmpDiv);
 
     var test = document.getElementById("Test");
     test.style.fontFamily = 'Roboto';
@@ -122,6 +122,27 @@ export function getTextWidthDOM(text, fontSize) {
     element.parentNode.removeChild(element);
 
     return width + 2;
+}
+
+export function getEquationDim (innerHTML, divStyle) {
+
+        let tmpDiv;
+
+        tmpDiv = document.createElement('div');
+
+        tmpDiv.style.paddingLeft =          divStyle.paddingLeft;
+        tmpDiv.style.paddingTop =           divStyle.paddingTop;
+
+        tmpDiv.innerHTML =                  innerHTML;
+
+        let dim = {
+            x:                              tmpDiv.childNodes[0].offsetWidth + 8,
+            y:                              tmpDiv.childNodes[0].offsetHeight + 8,
+        };
+
+        tmpDiv.parentNode.removeChild(tmpDiv);
+
+        return dim;
 }
 
 // dec2hex :: Integer -> String

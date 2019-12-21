@@ -252,67 +252,38 @@ export function execute(command) {
             lm.sTextWidthCalculated = 0;
             break;
         }
+        case 'insertIlinkFromMongo': {
+            let s2c =                               lastEvent.ref;
+            lm.contentType =                        'ilink';
+            lm.content =                            s2c.newMapId;
+            lm.ilink =                              s2c.newMapId;
+            break;
+        }
+        case 'insertEquationFromClipboardAsNode': {
+            lm.contentType =                        'equation';
+            lm.content =                            lastEvent.props.data;
+            break;
+        }
+        case 'insertImageFromLinkAsNode': {
+            // very important realization: i should not use lastevent, rather a STATE container!!!!!
+            let sf2c =                              lastEvent.ref;
+            lm.contentType =                        'image';
+            lm.content =                            sf2c.imageId;
+            lm.selfWidthOverride =                  sf2c.imageSize.width;
+            lm.selfHeightOverride =                 sf2c.imageSize.height;
+            break;
+        }
         case 'insertMapFromClipboard': {
             let text = lastEvent.props.data;
             setClipboard(JSON.parse(text));
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
-        case 'insertEquationFromClipboardAsNode': {
-
-            console.log('equation paste');
-
-            // TODO: it should be pasted NOT as text but as a new node, just like with insertImage --> unity!!!
-
-            // let text = lastEvent.props.data;
-            // // connect new and old
-            //
-            // if (lm.content.substring(0, 2) === '\\[' && lm.isEquationAssigned === 0) {
-            //
-            //     let tmpDiv;
-            //
-            //     tmpDiv = document.createElement('div');
-            //
-            //     tmpDiv.style.paddingLeft =          mapMem.padding + 'px';
-            //     tmpDiv.style.paddingTop =           mapMem.padding + 'px';
-            //     tmpDiv.style.fontSize =             14 + 'px';
-            //     tmpDiv.style.lineHeight =           14 + 'px';
-            //
-            //     document.getElementById('dm').appendChild(tmpDiv);
-            //
-            //     katex.render(getLatexString(lm.content), tmpDiv, {
-            //         throwOnError: false
-            //     });
-            //
-            //     lm.selfWidthOverride =         tmpDiv.childNodes[0].offsetWidth + 8;
-            //     lm.selfHeightOverride =        tmpDiv.childNodes[0].offsetHeight + 8;
-            //
-            //     if (isOdd(lm.selfHeightOverride)) {
-            //         lm.selfHeightOverride += 1;
-            //     }
-            //
-            //     tmpDiv.parentNode.removeChild(tmpDiv);
-            // }
-
-            break;
-        }
-        case 'insertImageFromLinkAsNode': {
-            let sf2c =                              lastEvent.ref;
-            lm.content =                            '_pic';
-            lm.plink =                              sf2c.imageId;
-            lm.selfWidthOverride =                  sf2c.imageSize.width;
-            lm.selfHeightOverride =                 sf2c.imageSize.height;
-            break;
-        }
-        case 'insertIlinkFromMongo': {
-            let s2c =                               lastEvent.ref;
-            lm.ilink =                              s2c.newMapId;
-            break;
-        }
         case 'cellifyMulti': {
             structMove(sc, 'struct2cell', 'multiRow');
             break;
         }
+        // TODO mongo stuff: when there is ilink, should be copied to content
         // -------------------------------------------------------------------------------------------------------------
         // MISC
         // -------------------------------------------------------------------------------------------------------------

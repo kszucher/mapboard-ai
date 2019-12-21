@@ -85,7 +85,7 @@ class MapMeasure {
                 }
 
                 if (cm.selfWidthOverride === 0) {
-                    if (cm.sTextWidthCalculated === 0) {
+                    if (cm.sTextWidthCalculated !== 1) {
                         cm.sTextWidth =                     getTextWidthDOM(cm.content, cm.sTextFontSize);
                         cm.sTextWidthCalculated =           1;
                     }
