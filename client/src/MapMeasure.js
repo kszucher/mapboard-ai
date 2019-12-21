@@ -1,6 +1,6 @@
 import {mapMem}                                             from "./Map";
 import {hasCell}                                            from "./Node";
-import {createArray, getTextWidthDOM}                       from "./Utils";
+import {createArray, getTextDim, getEquationDim}            from "./Utils";
 
 class MapMeasure {
     start() {
@@ -77,25 +77,36 @@ class MapMeasure {
                 }
             }
             else {
-                if (cm.selfHeightOverride === 0) {
-                    cm.selfH =                              mapMem.defaultH;
-                }
-                else {
-                    cm.selfH =                              cm.selfHeightOverride + mapMem.padding;
-                }
+                if (cm.contentType === 'text' ||
+                    cm.contentType === 'elink' ||
+                    cm.contentType === 'ilink') {
 
-                if (cm.selfWidthOverride === 0) {
-                    if (cm.sTextWidthCalculated !== 1) {
-                        cm.sTextWidth =                     getTextWidthDOM(cm.content, cm.sTextFontSize);
-                        cm.sTextWidthCalculated =           1;
+                    if (cm.dimCalculated === 0) {
+                        cm.dimCalculated = 1;
+                        cm.contentW =                       getTextDim(cm.content, cm.sTextFontSize);
+                        cm.contentH =                       mapMem.defaultH;
                     }
-                    cm.selfW =                              cm.sTextWidth + mapMem.padding + 4;
+
+                    cm.selfW =                              cm.contentW + mapMem.padding + 4;
+                    cm.selfH =                              cm.contentH;
                 }
-                else {
-                    cm.selfW =                              cm.selfWidthOverride + mapMem.padding;
+                else if (cm.contentType === 'equation') {
+                    let dim =                               getEquationDim(cm.content, cm.sTextFontSize);
+
+                    cm.contentW =                           dim.w;
+                    cm.contentH =                           dim.h;
+
+                    cm.selfW =                              cm.contentW + mapMem.padding + 4;
+                    cm.selfH =                              cm.contentH;
                 }
+                else if (cm.contentType === 'image') {
+                    cm.selfW =                              cm.contentW + mapMem.padding;
+                    cm.selfH =                              cm.contentH + mapMem.padding;
+                }
+                else {console.log('should not happen')}
             }
         }
+
 
         let sCount = Object.keys(cm.s).length;
         if (sCount) {

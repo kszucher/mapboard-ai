@@ -204,7 +204,7 @@ export function execute(command) {
             holderElement.contentEditable = 'false';
 
             lm.content = holderElement.textContent;
-            lm.sTextWidthCalculated = 0;
+            lm.dimCalculated = 0;
 
             eventRouter.isEditing = 0;
             break;
@@ -249,7 +249,7 @@ export function execute(command) {
         }
         case 'insertTextFromClipboardAsNode': {
             lm.content =                            lastEvent.props.data;
-            lm.sTextWidthCalculated = 0;
+            lm.dimCalculated =                      0;
             break;
         }
         case 'insertIlinkFromMongo': {
@@ -269,8 +269,8 @@ export function execute(command) {
             let sf2c =                              lastEvent.ref;
             lm.contentType =                        'image';
             lm.content =                            sf2c.imageId;
-            lm.selfWidthOverride =                  sf2c.imageSize.width;
-            lm.selfHeightOverride =                 sf2c.imageSize.height;
+            lm.contentW =                           sf2c.imageSize.width;
+            lm.contentH =                           sf2c.imageSize.height;
             break;
         }
         case 'insertMapFromClipboard': {
@@ -283,7 +283,6 @@ export function execute(command) {
             structMove(sc, 'struct2cell', 'multiRow');
             break;
         }
-        // TODO mongo stuff: when there is ilink, should be copied to content
         // -------------------------------------------------------------------------------------------------------------
         // MISC
         // -------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ async function mongoFunction() {
         let filter = [];
 
         // FIND STAGE
-        filterOp = 'allMap';
+        filterOp = '';
         switch (filterOp) {
             case 'allMap': {
                 await collectionMaps.find({}).forEach( doc => {
@@ -25,7 +25,7 @@ async function mongoFunction() {
                 break;
             }
             case 'existingNodeProp': {
-                let dataElemField = 'NODEPROPNAME';
+                let dataElemField = 'content';
                 await collectionMaps.aggregate(
                     [
                         {
@@ -69,7 +69,7 @@ async function mongoFunction() {
                 for (let i = 0; i < filter.length; i++) {
                     await collectionMaps.updateOne(
                         {_id: filter[i]._id},
-                        {$set: {'MAPROPNAME' : 0}}
+                        {$set: {'contentType' : 'text'}}
                     );
                 }
                 break;
@@ -84,12 +84,22 @@ async function mongoFunction() {
                 // note: unable to use aggregation unset from mongodb v4.2, as mongodb free tier only supports mongodb 4.0
                 break;
             }
+            case 'setNodeProp': {
+                for (let i = 0; i < filter.length; i++) {
+                    await collectionMaps.updateOne(
+                        { _id: filter[i]._id },
+                        { $set: { "data.$[elem].NODEPROPNAME" : "VALUE" } },
+                        { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true }
+                    )
+                }
+                break;
+            }
             case 'unsetNodeProp': {
                 for (let i = 0; i < filter.length; i++) {
                     await collectionMaps.updateOne(
                         { _id: filter[i]._id },
-                        { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true },
-                        { $unset: { "data.$[elem].NODEPROPNAME" : "" } }
+                        { $unset: { "data.$[elem].NODEPROPNAME" : "" } },
+                        { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true }
                     )
                 }
                 break;

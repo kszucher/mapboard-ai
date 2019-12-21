@@ -7,7 +7,7 @@ export let props = {
         contentType:                            'text',
         content:                                '',
 
-        ilink:                                  '', // TODO delete
+        ilink:                                  '', // TODO delete, with mongo, move ilink to content
         elink:                                  '', // TODO delete
 
         s:                                      [],
@@ -16,9 +16,6 @@ export let props = {
 
         c:                                      [[]],
         cBorderColor:                           '#50dfff',
-
-        selfWidthOverride:                      0,
-        selfHeightOverride:                     0,
 
         selected:                               0,
         lastSelectedChild:                      -1, // -1 means not selected ever
@@ -40,8 +37,9 @@ export let props = {
     saveNever: {
         initOnce: {
             // mapMeasure
-            sTextWidthCalculated:               0,
-            sTextWidth:                         0,
+            dimCalculated:                      0,
+            contentW:                           0,
+            contentH:                           0,
 
             // mapTaskCalc
             taskStatusInherited:                0,

@@ -105,7 +105,7 @@ export function transpose(array2d) {
     return array2d[0].map((col, i) => array2d.map(row => row[i]));
 }
 
-export function getTextWidthDOM(text, fontSize) {
+export function getTextDim(text, fontSize) {
 
     let tmpDiv = document.createElement('div');
     tmpDiv.id = "Test";
@@ -126,23 +126,23 @@ export function getTextWidthDOM(text, fontSize) {
 
 export function getEquationDim (innerHTML, divStyle) {
 
-        let tmpDiv;
+    let tmpDiv;
 
-        tmpDiv = document.createElement('div');
+    tmpDiv = document.createElement('div');
 
-        tmpDiv.style.paddingLeft =          divStyle.paddingLeft;
-        tmpDiv.style.paddingTop =           divStyle.paddingTop;
+    tmpDiv.style.paddingLeft =          divStyle.paddingLeft;
+    tmpDiv.style.paddingTop =           divStyle.paddingTop;
 
-        tmpDiv.innerHTML =                  innerHTML;
+    tmpDiv.innerHTML =                  innerHTML;
 
-        let dim = {
-            x:                              tmpDiv.childNodes[0].offsetWidth + 8,
-            y:                              tmpDiv.childNodes[0].offsetHeight + 8,
-        };
+    let dim = {
+        x:                              tmpDiv.childNodes[0].offsetWidth + 8,
+        y:                              tmpDiv.childNodes[0].offsetHeight + 8,
+    };
 
-        tmpDiv.parentNode.removeChild(tmpDiv);
+    tmpDiv.parentNode.removeChild(tmpDiv);
 
-        return dim;
+    return dim;
 }
 
 // dec2hex :: Integer -> String
