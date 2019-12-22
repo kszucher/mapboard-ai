@@ -10,6 +10,9 @@ export let props = {
         ilink:                                  '', // TODO delete, with mongo, move ilink to content
         elink:                                  '', // TODO delete
 
+        imageW:                                 0,
+        imageH:                                 0,
+
         s:                                      [],
         sTextColor:                             '#222222',
         sTextFontSize:                          14,

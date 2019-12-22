@@ -269,8 +269,8 @@ export function execute(command) {
             let sf2c =                              lastEvent.ref;
             lm.contentType =                        'image';
             lm.content =                            sf2c.imageId;
-            lm.contentW =                           sf2c.imageSize.width;
-            lm.contentH =                           sf2c.imageSize.height;
+            lm.imageW =                             sf2c.imageSize.width;
+            lm.imageH =                             sf2c.imageSize.height;
             break;
         }
         case 'insertMapFromClipboard': {

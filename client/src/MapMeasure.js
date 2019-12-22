@@ -91,19 +91,23 @@ class MapMeasure {
                     cm.selfH =                              cm.contentH;
                 }
                 else if (cm.contentType === 'equation') {
-                    let dim =                               getEquationDim(cm.content, cm.sTextFontSize);
-
-                    cm.contentW =                           dim.w;
-                    cm.contentH =                           dim.h;
+                    // TODO calc eq
+                    // let dim =                               getEquationDim(cm.content, cm.sTextFontSize);
+                    //
+                    // cm.contentW =                           dim.w;
+                    // cm.contentH =                           dim.h;
 
                     cm.selfW =                              cm.contentW + mapMem.padding + 4;
                     cm.selfH =                              cm.contentH;
                 }
                 else if (cm.contentType === 'image') {
+                    cm.contentW =                           cm.imageW;
+                    cm.contentH =                           cm.imageH;
+
                     cm.selfW =                              cm.contentW + mapMem.padding;
                     cm.selfH =                              cm.contentH + mapMem.padding;
                 }
-                else {console.log('should not happen')}
+                else {console.log('unknown contentType')}
             }
         }
 

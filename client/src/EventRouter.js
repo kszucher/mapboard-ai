@@ -147,7 +147,7 @@ class EventRouter {
                         if (text.substring(0, 1) === '[') {
                             mainType = 'map';
                         }
-                        else if (text.substring(0, 2) === '\\[') { // double backslash count as one character
+                        else if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                             mainType = 'node';
                             subType = 'equation'
                         }
