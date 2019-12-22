@@ -80,15 +80,11 @@ class MapMeasure {
                 if (cm.contentType === 'text' ||
                     cm.contentType === 'elink' ||
                     cm.contentType === 'ilink') {
-
                     if (cm.dimCalculated === 0) {
                         cm.dimCalculated = 1;
                         cm.contentW =                       getTextDim(cm.content, cm.sTextFontSize);
-                        cm.contentH =                       mapMem.defaultH;
+                        cm.contentH =                       mapMem.defaultH - mapMem.padding*2; // should rather be default font height = 14
                     }
-
-                    cm.selfW =                              cm.contentW + mapMem.padding + 4;
-                    cm.selfH =                              cm.contentH;
                 }
                 else if (cm.contentType === 'equation') {
                     if (cm.dimCalculated === 0) {
@@ -97,18 +93,15 @@ class MapMeasure {
                         cm.contentW =                       dim.w;
                         cm.contentH =                       dim.h;
                     }
-
-                    cm.selfW =                              cm.contentW + mapMem.padding + 4;
-                    cm.selfH =                              cm.contentH + mapMem.padding + 4;
                 }
                 else if (cm.contentType === 'image') {
                     cm.contentW =                           cm.imageW;
                     cm.contentH =                           cm.imageH;
-
-                    cm.selfW =                              cm.contentW + mapMem.padding;
-                    cm.selfH =                              cm.contentH + mapMem.padding;
                 }
                 else {console.log('unknown contentType')}
+
+                cm.selfW =                                  cm.contentW + mapMem.padding*2;
+                cm.selfH =                                  cm.contentH + mapMem.padding*2;
             }
         }
 

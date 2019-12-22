@@ -1,5 +1,7 @@
 import {mapMem} from "./Map";
 import {copy} from "./Utils"
+import {hasCell} from "./Node";
+// TODO: separate this to two files, as I can only prevent cell vis by NOT iterating over it, but that iteration is needed for the other one
 
 class MapSearch {
     start() {

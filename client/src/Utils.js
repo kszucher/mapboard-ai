@@ -115,13 +115,13 @@ export function getTextDim(innerHTML, fontSize) {
     var test = document.getElementById("Test");
     test.style.fontFamily = 'Roboto';
     test.style.fontSize = fontSize + 'px';
-    var height = (test.clientHeight + 1);
-    var width = (test.clientWidth + 1);
+    var height = test.clientHeight;
+    var width = test.clientWidth;
 
     var element = document.getElementById("Test");
     element.parentNode.removeChild(element);
 
-    return width + 2;
+    return width;
 }
 
 export function getEquationDim (content) {

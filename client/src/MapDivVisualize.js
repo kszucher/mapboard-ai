@@ -15,35 +15,22 @@ class MapDivVisualize {
             }
             else {
                 let divStyle = {
+                    left:                                   cm.nodeStartX +                                 'px',
+                    top:                                    cm.nodeStartY - cm.selfH/2  +                   'px',
+                    width :                                 cm.selfW - mapMem.padding - 2 +                 'px',
+                    height :                                cm.selfH - mapMem.padding - 2 +                 'px',
+                    paddingLeft :                           mapMem.paddingNoBorder +                        'px',
+                    paddingTop :                            mapMem.paddingNoBorder +                        'px',
                     position:                               'absolute',
-                    left:                                   cm.nodeStartX +                                                                         'px',
-                    top:                                    cm.nodeStartY - cm.selfH/2 + (mapMem.defaultH - cm.sTextFontSize)/2 - mapMem.padding +  'px',
-                    width:                                  cm.selfW                                                            - mapMem.padding +  'px',
-                    height:                                 cm.selfH                                                            - mapMem.padding +  'px',
-                    color:                                  cm.sTextColor,
-                    backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
                     border:             cm.selected?        '1px solid black'       : '1px solid' + getBgc(),
-                    borderRadius:                           8 +                                                                                     'px',
-                    fontSize:                               cm.sTextFontSize +                                                                      'px',
+                    borderRadius:                           8 +                                             'px',
+                    fontSize:                               cm.sTextFontSize +                              'px',
                     fontFamily:                             'Roboto',
                     textDecoration:     cm.ilink !== ""?    "underline"              : "",
                     cursor:                                 'default',
+                    color:                                  cm.sTextColor,
+                    backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
                 };
-
-                if (cm.contentType === 'text' ||
-                    cm.contentType === 'ilink' ||
-                    cm.contentType === 'elink') {
-                    divStyle.paddingLeft =                  mapMem.paddingTextLeft +        'px';
-                    divStyle.paddingTop =                   mapMem.paddingTextTop +         'px';
-                }
-                else if (cm.contentType === 'image') {
-                    divStyle.paddingLeft =                  0 +                             'px';
-                    divStyle.paddingTop =                   0 +                             'px';
-                }
-                else if (cm.contentType === 'equation') {
-                    divStyle.paddingLeft =                  4 +                             'px';
-                    divStyle.paddingTop =                   mapMem.padding +                'px';
-                }
 
                 let div;
                 if (cm.isDivAssigned === 0) {
