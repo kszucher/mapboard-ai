@@ -63,6 +63,7 @@ export function execute(command) {
         'transpose',
         'makeGrid',
         'openAfterMapSelect',
+        'latexify',
         'createMapInMap',
     ].includes(command)) {
         sc = getSelectionContext();
@@ -298,6 +299,11 @@ export function execute(command) {
         }
         case 'makeGrid': {
             makeGrid();
+            break;
+        }
+        case 'latexify': {
+            lm.contentType = 'equation';
+            lm.dimCalculated = 0;
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
