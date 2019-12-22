@@ -105,11 +105,11 @@ export function transpose(array2d) {
     return array2d[0].map((col, i) => array2d.map(row => row[i]));
 }
 
-export function getTextDim(text, fontSize) {
+export function getTextDim(innerHTML, fontSize) {
 
     let tmpDiv = document.createElement('div');
     tmpDiv.id = "Test";
-    tmpDiv.innerHTML = text;
+    tmpDiv.innerHTML = innerHTML;
     mapDiv.appendChild(tmpDiv);
 
     var test = document.getElementById("Test");
@@ -124,23 +124,22 @@ export function getTextDim(text, fontSize) {
     return width + 2;
 }
 
-export function getEquationDim (innerHTML, divStyle) {
+export function getEquationDim (content) {
 
-    let tmpDiv;
-
-    tmpDiv = document.createElement('div');
-
-    tmpDiv.style.paddingLeft =          divStyle.paddingLeft;
-    tmpDiv.style.paddingTop =           divStyle.paddingTop;
-
-    tmpDiv.innerHTML =                  innerHTML;
+    let tmpDiv = document.createElement('div');
+    tmpDiv.id = "Test";
+    tmpDiv.innerHTML = katex.renderToString(getLatexString(content), {throwOnError: false});
+    tmpDiv.style.fontFamily = 'Roboto';
+    tmpDiv.style.fontSize = 14 + 'px';
+    mapDiv.appendChild(tmpDiv);
 
     let dim = {
-        x:                              tmpDiv.childNodes[0].offsetWidth + 8,
-        y:                              tmpDiv.childNodes[0].offsetHeight + 8,
+        w: tmpDiv.childNodes[0].offsetWidth,
+        h: tmpDiv.childNodes[0].offsetHeight,
     };
 
-    tmpDiv.parentNode.removeChild(tmpDiv);
+    var element = document.getElementById("Test");
+    element.parentNode.removeChild(element);
 
     return dim;
 }

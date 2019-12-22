@@ -262,10 +262,10 @@ export function execute(command) {
         case 'insertEquationFromClipboardAsNode': {
             lm.contentType =                        'equation';
             lm.content =                            lastEvent.props.data;
+            lm.dimCalculated =                      0;
             break;
         }
         case 'insertImageFromLinkAsNode': {
-            // very important realization: i should not use lastevent, rather a STATE container!!!!!
             let sf2c =                              lastEvent.ref;
             lm.contentType =                        'image';
             lm.content =                            sf2c.imageId;

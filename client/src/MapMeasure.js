@@ -91,14 +91,15 @@ class MapMeasure {
                     cm.selfH =                              cm.contentH;
                 }
                 else if (cm.contentType === 'equation') {
-                    // TODO calc eq
-                    // let dim =                               getEquationDim(cm.content, cm.sTextFontSize);
-                    //
-                    // cm.contentW =                           dim.w;
-                    // cm.contentH =                           dim.h;
+                    if (cm.dimCalculated === 0) {
+                        cm.dimCalculated = 1;
+                        let dim =                           getEquationDim(cm.content);
+                        cm.contentW =                       dim.w;
+                        cm.contentH =                       dim.h;
+                    }
 
                     cm.selfW =                              cm.contentW + mapMem.padding + 4;
-                    cm.selfH =                              cm.contentH;
+                    cm.selfH =                              cm.contentH + mapMem.padding + 4;
                 }
                 else if (cm.contentType === 'image') {
                     cm.contentW =                           cm.imageW;
