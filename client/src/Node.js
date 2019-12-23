@@ -7,8 +7,8 @@ export let props = {
         contentType:                            'text',
         content:                                '',
 
-        ilink:                                  '', // TODO delete, with mongo, move ilink to content
-        elink:                                  '', // TODO delete
+        ilink:                                  '',
+        elink:                                  '',
 
         imageW:                                 0,
         imageH:                                 0,

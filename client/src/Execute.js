@@ -256,7 +256,6 @@ export function execute(command) {
         case 'insertIlinkFromMongo': {
             let s2c =                               lastEvent.ref;
             lm.contentType =                        'ilink';
-            lm.content =                            s2c.newMapId;
             lm.ilink =                              s2c.newMapId;
             break;
         }
