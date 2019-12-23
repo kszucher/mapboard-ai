@@ -103,7 +103,8 @@ class MapDivVisualize {
                         div.innerHTML =                     '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
                     }
                     else if (cm.contentType === 'equation') {
-                        div.innerHTML =                     katex.renderToString(getLatexString(cm.content), {throwOnError: false});
+                        // div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});
+                        katex.render(getLatexString(cm.content), div, {throwOnError: false});
                     }
                 }
             }
