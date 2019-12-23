@@ -84,8 +84,7 @@ class MapMeasure {
                         cm.isDimAssigned = 1;
                         let x =                             getTextDim(cm.content, cm.sTextFontSize);
                         cm.contentW =                       mapMem.density === 'large' ? x : x + 8;
-                        let yc =                            mapMem.density === 'large' ? 2 : 3;
-                        cm.contentH =                       mapMem.defaultH - mapMem.padding*2 + yc;
+                        cm.contentH =                       mapMem.defaultH - mapMem.padding*2 + 3;
                     }
                 }
                 else if (cm.contentType === 'equation') {
