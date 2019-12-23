@@ -40,7 +40,7 @@ export let props = {
     saveNever: {
         initOnce: {
             // mapMeasure
-            dimCalculated:                      0,
+            isDimAssigned:                      0,
             contentW:                           0,
             contentH:                           0,
 
@@ -49,6 +49,7 @@ export let props = {
 
             // mapDivVisualize
             isDivAssigned:                      0,
+            isContentAssigned:                  0,
         },
         initAlways: {
             // mapChain

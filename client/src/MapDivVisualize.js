@@ -17,10 +17,10 @@ class MapDivVisualize {
                 let divStyle = {
                     left:                                   cm.nodeStartX +                                 'px',
                     top:                                    cm.nodeStartY - cm.selfH/2  +                   'px',
-                    width :                                 cm.selfW -      mapMem.padding - 2 +            'px',
-                    height :                                cm.selfH -      mapMem.padding - 2 +            'px',
-                    paddingLeft :                                           mapMem.padding - 2 +            'px',
-                    paddingTop :                                            mapMem.padding - 2 +            'px',
+                    width :                                 cm.selfW - mapMem.padding - 2 +                 'px',
+                    height :                                cm.selfH - mapMem.padding - 2 +                 'px',
+                    paddingLeft :                           mapMem.padding - 2 +                            'px',
+                    paddingTop :                            mapMem.padding - 2 +                            'px',
                     position:                               'absolute',
                     border:             cm.selected?        '1px solid black'       : '1px solid' + getBgc(),
                     borderRadius:                           8 +                                             'px',
@@ -32,7 +32,7 @@ class MapDivVisualize {
                     backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
                 };
 
-                if (mapMem.density !== 'large' && (
+                if (mapMem.density === 'small' && (
                     cm.contentType === 'text' ||
                     cm.contentType === 'ilink' ||
                     cm.contentType === 'elink')) {
@@ -45,10 +45,7 @@ class MapDivVisualize {
                     cm.isDivAssigned =                      1;
 
                     cm.divId = 'div' + genHash(8);
-                    mapMem.divData[cm.divId] = {
-                        innerHTML:                          '',
-                        style:                              {}
-                    };
+                    mapMem.divData[cm.divId] =              {divStyle:{}};
 
                     div =                                   document.createElement('div');
                     div.id =                                cm.divId;
@@ -60,7 +57,7 @@ class MapDivVisualize {
 
                     for (let i = 0; i < Object.keys(divStyle).length; i++) {
                         let styleName = Object.keys(divStyle)[i];
-                        if (divStyle[styleName] !== mapMem.divData[cm.divId].style[styleName]) {
+                        if (divStyle[styleName] !== mapMem.divData[cm.divId].divStyle[styleName]) {
                             div.style[styleName] =          divStyle[styleName];
                         }
                     }
@@ -71,7 +68,7 @@ class MapDivVisualize {
                     for (let i = 0; i < Object.keys(divStyle).length; i++) {
                         let styleName = Object.keys(divStyle)[i];
                         if (styleName !== 'left' && styleName !== 'top') {
-                            if (divStyle[styleName] !== mapMem.divData[cm.divId].style[styleName]) {
+                            if (divStyle[styleName] !== mapMem.divData[cm.divId].divStyle[styleName]) {
                                 div.style[styleName] =      divStyle[styleName];
                             }
                         }
@@ -92,26 +89,23 @@ class MapDivVisualize {
                     }
                 }
 
-                mapMem.divData[cm.divId].style =            copy(divStyle);
+                mapMem.divData[cm.divId].divStyle =         copy(divStyle);
 
-                let divInnerHtml = '';
-                if (cm.contentType === 'text' ||
-                    cm.contentType === 'ilink' ||
-                    cm.contentType === 'elink') {
-                    divInnerHtml =                          cm.content;
-                }
-                else if (cm.contentType === 'image') {
-                    divInnerHtml =                          '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
-                }
-                else if (cm.contentType === 'equation') {
-                    divInnerHtml =                          katex.renderToString(getLatexString(cm.content), {throwOnError: false});
-                }
+                if (cm.isContentAssigned === 0) {
+                    cm.isContentAssigned = 1;
 
-                if (divInnerHtml !== mapMem.divData[cm.divId].innerHTML) {
-                    div.innerHTML =                         divInnerHtml;
+                    if (cm.contentType === 'text' ||
+                        cm.contentType === 'ilink' ||
+                        cm.contentType === 'elink') {
+                        div.innerHTML =                     cm.content;
+                    }
+                    else if (cm.contentType === 'image') {
+                        div.innerHTML =                     '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
+                    }
+                    else if (cm.contentType === 'equation') {
+                        div.innerHTML =                     katex.renderToString(getLatexString(cm.content), {throwOnError: false});
+                    }
                 }
-
-                mapMem.divData[cm.divId].innerHTML =        copy(divInnerHtml);
             }
         }
 

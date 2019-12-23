@@ -205,7 +205,7 @@ export function execute(command) {
             holderElement.contentEditable = 'false';
 
             lm.content = holderElement.textContent;
-            lm.dimCalculated = 0;
+            lm.isDimAssigned = 0;
 
             eventRouter.isEditing = 0;
             break;
@@ -250,7 +250,7 @@ export function execute(command) {
         }
         case 'insertTextFromClipboardAsNode': {
             lm.content =                            lastEvent.props.data;
-            lm.dimCalculated =                      0;
+            lm.isDimAssigned =                      0;
             break;
         }
         case 'insertIlinkFromMongo': {
@@ -262,7 +262,7 @@ export function execute(command) {
         case 'insertEquationFromClipboardAsNode': {
             lm.contentType =                        'equation';
             lm.content =                            lastEvent.props.data;
-            lm.dimCalculated =                      0;
+            lm.isDimAssigned =                      0;
             break;
         }
         case 'insertImageFromLinkAsNode': {
@@ -302,7 +302,7 @@ export function execute(command) {
         }
         case 'latexify': {
             lm.contentType = 'equation';
-            lm.dimCalculated = 0;
+            lm.isDimAssigned = 0;
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

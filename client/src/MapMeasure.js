@@ -80,8 +80,8 @@ class MapMeasure {
                 if (cm.contentType === 'text' ||
                     cm.contentType === 'elink' ||
                     cm.contentType === 'ilink') {
-                    if (cm.dimCalculated === 0) {
-                        cm.dimCalculated = 1;
+                    if (cm.isDimAssigned === 0) {
+                        cm.isDimAssigned = 1;
                         let x =                             getTextDim(cm.content, cm.sTextFontSize);
                         cm.contentW =                       mapMem.density === 'large' ? x : x + 8;
                         let yc =                            mapMem.density === 'large' ? 2 : 3;
@@ -89,8 +89,8 @@ class MapMeasure {
                     }
                 }
                 else if (cm.contentType === 'equation') {
-                    if (cm.dimCalculated === 0) {
-                        cm.dimCalculated = 1;
+                    if (cm.isDimAssigned === 0) {
+                        cm.isDimAssigned = 1;
                         let dim =                           getEquationDim(cm.content);
                         cm.contentW =                       dim.w;
                         cm.contentH =                       dim.h;
