@@ -17,10 +17,10 @@ class MapDivVisualize {
                 let divStyle = {
                     left:                                   cm.nodeStartX +                                 'px',
                     top:                                    cm.nodeStartY - cm.selfH/2  +                   'px',
-                    width :                                 cm.selfW - mapMem.padding - 2 +                 'px',
-                    height :                                cm.selfH - mapMem.padding - 2 +                 'px',
-                    paddingLeft :                           mapMem.paddingNoBorder +                        'px',
-                    paddingTop :                            mapMem.paddingNoBorder +                        'px',
+                    width :                                 cm.selfW -      mapMem.padding - 2 +            'px',
+                    height :                                cm.selfH -      mapMem.padding - 2 +            'px',
+                    paddingLeft :                                           mapMem.padding - 2 +            'px',
+                    paddingTop :                                            mapMem.padding - 2 +            'px',
                     position:                               'absolute',
                     border:             cm.selected?        '1px solid black'       : '1px solid' + getBgc(),
                     borderRadius:                           8 +                                             'px',
@@ -31,6 +31,14 @@ class MapDivVisualize {
                     color:                                  cm.sTextColor,
                     backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
                 };
+
+                if (mapMem.density !== 'large' && (
+                    cm.contentType === 'text' ||
+                    cm.contentType === 'ilink' ||
+                    cm.contentType === 'elink')) {
+                    divStyle.width =                        parseInt(divStyle.width, 10)       - 3 + 'px';
+                    divStyle.paddingLeft =                  parseInt(divStyle.paddingLeft, 10) + 3 + 'px';
+                }
 
                 let div;
                 if (cm.isDivAssigned === 0) {

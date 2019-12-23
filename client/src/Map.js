@@ -50,10 +50,9 @@ export function loadMap(mapStorage) {
         task:                               copy(mapStorage.task),
 
         // saveNever
-        defaultH:                           mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
         sLineDeltaXDefault:                 mapStorage.density === 'large'? 30:20,
         padding:                            mapStorage.density === 'large'? 8:3,
-        paddingNoBorder:                    mapStorage.density === 'large'? 6:1, // 8 - 2 = 6, 3 - 2 = 1
+        defaultH:                           mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
         filter:                             [],
         deepestSelectablePath:              [],
         deepestSelectableRef:               [],

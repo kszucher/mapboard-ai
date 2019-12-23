@@ -1,6 +1,6 @@
-import {mapMem}                                             from "./Map";
-import {hasCell}                                            from "./Node";
-import {createArray, getTextDim, getEquationDim}            from "./Utils";
+import {mapMem} from "./Map";
+import {hasCell} from "./Node";
+import {createArray, getEquationDim, getTextDim} from "./Utils";
 
 class MapMeasure {
     start() {
@@ -82,7 +82,8 @@ class MapMeasure {
                     cm.contentType === 'ilink') {
                     if (cm.dimCalculated === 0) {
                         cm.dimCalculated = 1;
-                        cm.contentW =                       getTextDim(cm.content, cm.sTextFontSize);
+                        let x =                             getTextDim(cm.content, cm.sTextFontSize);
+                        cm.contentW =                       mapMem.density === 'large' ? x : x + 8;
                         cm.contentH =                       mapMem.defaultH - mapMem.padding*2; // should rather be default font height = 14
                     }
                 }
