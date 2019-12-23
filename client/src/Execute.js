@@ -251,6 +251,7 @@ export function execute(command) {
         case 'insertTextFromClipboardAsNode': {
             lm.content =                            lastEvent.props.data;
             lm.isDimAssigned =                      0;
+            lm.isContentAssigned =                  0;
             break;
         }
         case 'insertIlinkFromMongo': {
@@ -263,6 +264,7 @@ export function execute(command) {
             lm.contentType =                        'equation';
             lm.content =                            lastEvent.props.data;
             lm.isDimAssigned =                      0;
+            lm.isContentAssigned =                  0;
             break;
         }
         case 'insertImageFromLinkAsNode': {

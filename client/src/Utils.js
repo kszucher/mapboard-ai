@@ -126,13 +126,15 @@ export function getTextDim(innerHTML, fontSize) {
 
 export function getEquationDim (content) {
 
+    let str = katex.renderToString(getLatexString(content), {throwOnError: false});
+
     let tmpDiv = document.createElement('TTT');
     tmpDiv.id = "Test";
     tmpDiv.style.fontFamily = 'Roboto';
     tmpDiv.style.fontSize = 14 + 'px';
+    tmpDiv.innerHTML = str;
 
     mapDiv.appendChild(tmpDiv);
-    katex.render(getLatexString(content), tmpDiv, {throwOnError: false});
 
     let dim = {
         w: tmpDiv.childNodes[0].offsetWidth,
