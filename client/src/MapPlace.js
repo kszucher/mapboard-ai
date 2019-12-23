@@ -12,7 +12,7 @@ class MapPlace {
 
         let mapWidth =                                      mapMem.task && available > needed? available : needed;
         let mapHeight =                                     500 + cm.familyH > cm.selfH? cm.familyH + 2*20 : cm.selfH + 2*20;
-        mapHeight += 500;
+        mapHeight += 0;                                     // TODO: only use this, when insertion happens at the bottom
 
         let canvas =                                        document.getElementById('mapCanvas');
         canvas.width =                                      mapWidth;

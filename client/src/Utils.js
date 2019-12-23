@@ -179,7 +179,7 @@ export function subsasgn(obj, path, value) {
 }
 
 export function isMouseInsideRectangle(centerX, centerY, selfW, selfH) {
-    let x = lastEvent.ref.pageX - getDim().lw + document.getElementById('mapDiv').scrollLeft + 17/2;
+    let x = lastEvent.ref.pageX - getDim().lw + document.getElementById('mapDiv').scrollLeft;
     let y = lastEvent.ref.pageY - getDim().uh + document.getElementById('mapDiv').scrollTop ;
 
     let leftX =     centerX - selfW/2;

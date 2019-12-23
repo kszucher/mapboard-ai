@@ -18,7 +18,7 @@ html, body, div, canvas, table, td, tr {
     display: inline-block ;
 }
 
-
+body    {overflow-y:scroll;}
 
 #wrapper{
 }
