@@ -1,7 +1,7 @@
 import {mapMem}                                         from "./Map";
 import {hasCell}                                        from "./Node";
 import {paintPolygon, paintSelection}                   from "./Ellipse";
-import {getBgc} from "./Utils";
+import {getBgc, isOdd} from "./Utils";
 
 class MapCanvasVisualize {
     start () {
@@ -29,14 +29,17 @@ class MapCanvasVisualize {
 
         if (cm.type === "struct") {
             if (hasCell(cm)){
-                paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, cm.selfH, cm.cBorderColor, 'partial');
+
+                let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
+
+                paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, selfHadj, cm.cBorderColor, 'partial');
 
                 let rowCount = Object.keys(cm.c).length;
                 for (let i = 1; i < rowCount; i++) {
                     canvasContext.beginPath();
                     canvasContext.strokeStyle =         '#dddddd';
-                    canvasContext.moveTo(               cm.nodeStartX,                                  cm.nodeStartY   - cm.selfH/2    + cm.sumMaxRowHeight[i] );
-                    canvasContext.lineTo(               cm.nodeEndX,                                    cm.nodeEndY     - cm.selfH/2    + cm.sumMaxRowHeight[i] );
+                    canvasContext.moveTo(               cm.nodeStartX,                                  cm.nodeStartY   - selfHadj/2    + cm.sumMaxRowHeight[i] );
+                    canvasContext.lineTo(               cm.nodeEndX,                                    cm.nodeEndY     - selfHadj/2    + cm.sumMaxRowHeight[i] );
                     canvasContext.stroke();
                 }
 
@@ -44,8 +47,8 @@ class MapCanvasVisualize {
                 for (let j = 1; j < colCount; j++) {
                     canvasContext.beginPath();
                     canvasContext.strokeStyle =         '#dddddd';
-                    canvasContext.moveTo(               cm.nodeStartX + cm.sumMaxColWidth[j] + 0.5,     cm.nodeStartY   - cm.selfH/2 );
-                    canvasContext.lineTo(               cm.nodeStartX + cm.sumMaxColWidth[j] + 0.5,     cm.nodeEndY     + cm.selfH/2 );
+                    canvasContext.moveTo(               cm.nodeStartX + cm.sumMaxColWidth[j] + 0.5,     cm.nodeStartY   - selfHadj/2 );
+                    canvasContext.lineTo(               cm.nodeStartX + cm.sumMaxColWidth[j] + 0.5,     cm.nodeEndY     + selfHadj/2 );
                     canvasContext.stroke();
                 }
             }
