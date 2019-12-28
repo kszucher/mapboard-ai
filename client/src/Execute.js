@@ -9,7 +9,8 @@ import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelect
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
 import {setClipboard, structMove}                                                               from "./NodeMove";
-import {copy, isOdd, setEndOfContenteditable, transposeArray}                                   from "./Utils";
+import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
+import { useHistory } from "react-router-dom";
 
 let headerData = {};
 let lastUserMap = '';
@@ -83,6 +84,10 @@ export function execute(command) {
         case 'openMap': {
             let s2c =                               lastEvent.ref;
             lastUserMap =                           s2c.mapName;
+
+            let stateObj =                          {lastUserMap: lastUserMap};
+            history.pushState(stateObj, 'untitled', lastUserMap);
+
             loadMap(s2c.mapStorage);
             break;
         }
@@ -376,6 +381,15 @@ export function execute(command) {
                 };
                 communication.sender(c2s);
             }
+            break;
+        }
+        case 'openAfterHistory': {
+            let c2s = {
+                'cmd':                              'openMapRequest',
+                'cred':                             JSON.parse(localStorage.getItem('cred')),
+                'mapName':                          lastEvent.ref.state.lastUserMap
+            };
+            communication.sender(c2s);
             break;
         }
         case 'save': {

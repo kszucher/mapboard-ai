@@ -5,11 +5,12 @@ import { Route, BrowserRouter as Router }           from 'react-router-dom'
 
 function RouteThis() {
     return(
-        <Router>
-            <div>
-                <Route exact path="/home" component={Layout}/>
-            </div>
-        </Router>
+        <Layout/>
+        // <Router>
+        //     <div>
+        //         <Route exact path="/home" component={Layout}/>
+        //     </div>
+        // </Router>
     );
 }
 

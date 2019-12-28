@@ -19,6 +19,7 @@ class EventListener {
         window.addEventListener("keydown",              event =>    this.keydown(event)             );
         window.addEventListener("keyup",                event =>    this.keyup(event)               );
         window.addEventListener("paste",                event =>    this.paste()                    );
+        window.addEventListener("popstate",             event =>    this.popstate(event)            );
     }
 
     click(event) {
@@ -88,6 +89,14 @@ class EventListener {
                 })
             }
         });
+    }
+
+    popstate(event) {
+        lastEvent = {
+            type:                                       'windowPopState',
+            ref:                                        event,
+        };
+        eventRouter.processEvent();
     }
 
     receiveFromReact(r2c) {

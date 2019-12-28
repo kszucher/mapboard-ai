@@ -182,6 +182,11 @@ class EventRouter {
                     }
                 }
             }
+            else if (lastEvent.type === 'windowPopState') {
+                execute('openAfterHistory');
+                rebuild();
+                redraw();
+            }
             else if (lastEvent.type === 'reactEvent') {
                 let r2c = lastEvent.ref;
                 // TODO see it all here in a switch
