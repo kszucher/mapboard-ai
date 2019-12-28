@@ -14,6 +14,7 @@ import {copy, setEndOfContenteditable, transposeArray}                          
 // these will be part of state
 let headerData = {};
 let lastUserMap = '';
+let shouldAddToHistory = 0;
 
 export function execute(command) {
 
@@ -85,9 +86,10 @@ export function execute(command) {
             let s2c =                               lastEvent.ref;
             lastUserMap =                           s2c.mapName;
 
-            let stateObj =                          {lastUserMap: lastUserMap};
-            history.pushState(stateObj, 'untitled', lastUserMap);
-
+            if (shouldAddToHistory === 1) {
+                let stateObj = {lastUserMap: lastUserMap};
+                history.pushState(stateObj, lastUserMap, '');
+            }
             loadMap(s2c.mapStorage);
             break;
         }
@@ -353,6 +355,7 @@ export function execute(command) {
             break;
         }
         case 'openAfterInit': {
+            shouldAddToHistory = 1;
             headerData =                            copy(lastEvent.ref.headerData);
             let c2s = {
                 'cmd':                              'openMapRequest',
@@ -363,6 +366,7 @@ export function execute(command) {
             break;
         }
         case 'openAfterTabSelect': {
+            shouldAddToHistory = 1;
             let c2s = {
                 'cmd':                              'openMapRequest',
                 'cred':                             JSON.parse(localStorage.getItem('cred')),
@@ -372,6 +376,7 @@ export function execute(command) {
             break;
         }
         case 'openAfterMapSelect': {
+            shouldAddToHistory = 1;
             if(lm.ilink !== '') {
                 let c2s = {
                     'cmd':                          'openMapRequest',
@@ -383,6 +388,7 @@ export function execute(command) {
             break;
         }
         case 'openAfterHistory': {
+            shouldAddToHistory = 0;
             let c2s = {
                 'cmd':                              'openMapRequest',
                 'cred':                             JSON.parse(localStorage.getItem('cred')),
