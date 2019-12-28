@@ -10,8 +10,8 @@ import {structInsert, cellInsert}                                               
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
 import {setClipboard, structMove}                                                               from "./NodeMove";
 import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
-import { useHistory } from "react-router-dom";
 
+// these will be part of state
 let headerData = {};
 let lastUserMap = '';
 
@@ -363,11 +363,10 @@ export function execute(command) {
             break;
         }
         case 'openAfterTabSelect': {
-            let r2c = lastEvent.ref;
             let c2s = {
                 'cmd':                              'openMapRequest',
                 'cred':                             JSON.parse(localStorage.getItem('cred')),
-                'mapName':                          headerData.headerMapIdList[r2c.tabId]
+                'mapName':                          headerData.headerMapIdList[lastEvent.ref.tabId]
             };
             communication.sender(c2s);
             break;
