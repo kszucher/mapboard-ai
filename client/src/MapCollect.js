@@ -1,9 +1,8 @@
 import {mapMem} from "./Map";
 import {copy} from "./Utils"
 import {hasCell} from "./Node";
-// TODO: separate this to two files, as I can only prevent cell vis by NOT iterating over it, but that iteration is needed for the other one
 
-class MapSearch {
+class MapCollect {
     start() {
         let cm = mapMem.data.s[0];
         let params = {
@@ -41,10 +40,10 @@ class MapSearch {
             this.iterate(cm.s[i], params);
         }
 
-        if (sCount === 0) {
+        if (sCount === 0 && !hasCell(cm) && cm.parentType !== 'cell' && cm.contentType !== 'image') {
             params.filter.taskEndPathList.push(cm.path.slice(0));
         }
     }
 }
 
-export let mapCollect = new MapSearch();
+export let mapCollect = new MapCollect();
