@@ -25,7 +25,7 @@ async function mongoFunction() {
                 break;
             }
             case 'existingNodeProp': {
-                let dataElemField = 'content';
+                let dataElemField = 'NODEPROPNAME';
                 await collectionMaps.aggregate(
                     [
                         {
