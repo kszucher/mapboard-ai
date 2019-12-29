@@ -77,9 +77,7 @@ class MapMeasure {
                 }
             }
             else {
-                if (cm.contentType === 'text' ||
-                    cm.contentType === 'elink' ||
-                    cm.contentType === 'ilink') {
+                if (cm.contentType === 'text') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
                         let x =                             getTextDim(cm.content, cm.sTextFontSize);

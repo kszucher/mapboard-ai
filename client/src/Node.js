@@ -7,8 +7,8 @@ export let props = {
         contentType:                            'text',
         content:                                '',
 
-        ilink:                                  '',
-        elink:                                  '',
+        linkType:                               '',
+        link:                                   '',
 
         imageW:                                 0,
         imageH:                                 0,

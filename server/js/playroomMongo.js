@@ -25,7 +25,7 @@ async function mongoFunction() {
                 break;
             }
             case 'existingNodeProp': {
-                let dataElemField = 'ilink';
+                let dataElemField = 'NODPROPNAME';
                 await collectionMaps.aggregate(
                     [
                         {

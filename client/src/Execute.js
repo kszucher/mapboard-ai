@@ -57,6 +57,7 @@ export function execute(command) {
         'insertMapFromClipboard',
         'insertTextFromClipboardAsText',
         'insertTextFromClipboardAsNode',
+        'insertElinkFromClipboardAsNode',
         'insertEquationFromClipboardAsNode',
         'insertImageFromLinkAsNode',
         'insertIlinkFromMongo',
@@ -64,7 +65,7 @@ export function execute(command) {
         'transposeMe',
         'transpose',
         'makeGrid',
-        'openAfterMapSelect',
+        'openAfterNodeSelect',
         'latexify',
         'createMapInMap',
     ].includes(command)) {
@@ -256,15 +257,27 @@ export function execute(command) {
             break;
         }
         case 'insertTextFromClipboardAsNode': {
+            lm.contentType =                        'text';
             lm.content =                            lastEvent.props.data;
+            lm.isDimAssigned =                      0;
+            lm.isContentAssigned =                  0;
+            break;
+        }
+        case 'insertElinkFromClipboardAsNode': {
+            lm.contentType =                        'text';
+            lm.content =                            lastEvent.props.data;
+            lm.linkType =                           'external';
+            lm.link =                               lastEvent.props.data;
             lm.isDimAssigned =                      0;
             lm.isContentAssigned =                  0;
             break;
         }
         case 'insertIlinkFromMongo': {
             let s2c =                               lastEvent.ref;
-            lm.contentType =                        'ilink';
-            lm.ilink =                              s2c.newMapId;
+            lm.linkType =                           'internal';
+            lm.link =                               s2c.newMapId;
+            lm.isDimAssigned =                      0;
+            lm.isContentAssigned =                  0;
             break;
         }
         case 'insertEquationFromClipboardAsNode': {
@@ -375,15 +388,19 @@ export function execute(command) {
             communication.sender(c2s);
             break;
         }
-        case 'openAfterMapSelect': {
+        case 'openAfterNodeSelect': {
             shouldAddToHistory = 1;
-            if(lm.ilink !== '') {
+            if(lm.linkType === 'internal') {
                 let c2s = {
                     'cmd':                          'openMapRequest',
                     'cred':                         JSON.parse(localStorage.getItem('cred')),
-                    'mapName':                      lm.ilink
+                    'mapName':                      lm.link
                 };
                 communication.sender(c2s);
+            }
+            else if (lm.linkType === 'external') {
+                window.open(lm.link, '_blank');
+                window.focus();
             }
             break;
         }

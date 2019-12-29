@@ -6,6 +6,7 @@ import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
 import {lastEvent}                              from "./EventListener";
+import {isUrl}                                  from "./Utils"
 
 class EventRouter {
     constructor() {
@@ -37,7 +38,7 @@ class EventRouter {
                     }
                     else {
                        e.ctrlKey? execute('selectMeStructToo') : execute('selectMeStruct');
-                        execute('openAfterMapSelect');
+                        execute('openAfterNodeSelect');
 
                         redraw();
                         // redraw here is unconditional, todo make key version conditional with the help of the table
@@ -143,38 +144,29 @@ class EventRouter {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
 
-                        let mainType;
-                        let subType;
                         if (text.substring(0, 1) === '[') {
-                            mainType = 'map';
-                        }
-                        else if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                            mainType = 'node';
-                            subType = 'equation'
+                            execute('insertMapFromClipboard');
+                            rebuild();
+                            redraw();
                         }
                         else {
-                            mainType = 'node';
-                            subType = 'text';
-                        }
-
-                        if (mainType === 'node') {
                             execute('newChild');
                             rebuild();
-                            if (subType === 'text') {
-                                execute('insertTextFromClipboardAsNode');
-                                rebuild();
-                                redraw();
-                            }
-                            else if (subType === 'equation') {
+                            if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                                 execute('insertEquationFromClipboardAsNode');
                                 rebuild();
                                 redraw();
                             }
-                        }
-                        else if (mainType === 'map') {
-                            execute('insertMapFromClipboard');
-                            rebuild();
-                            redraw();
+                            else if (isUrl(text)) {
+                                execute('insertElinkFromClipboardAsNode');
+                                rebuild();
+                                redraw();
+                            }
+                            else {
+                                execute('insertTextFromClipboardAsNode');
+                                rebuild();
+                                redraw();
+                            }
                         }
                     }
                     else if(lastEvent.props.dataType === 'image') {

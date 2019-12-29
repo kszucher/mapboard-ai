@@ -83,21 +83,9 @@ export function makeGrid() {
     }
 }
 
-// https://stackoverflow.com/questions/1500260/detect-targetUrls-in-text-with-javascript
-// https://stackoverflow.com/questions/4907843/open-a-targetUrl-in-a-new-tab-and-not-a-new-window-using-javascript
-// https://stackoverflow.com/questions/1070760/javascript-function-in-href-vs-onclick
-// https://stackoverflow.com/questions/9643311/pass-string-parameter-in-an-onclick-function
-export function linkify(text) {
-    var targetUrlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return text.replace(targetUrlRegex, function(targetUrl) {
-        a = ('<a href="' + targetUrl + '" onclick = "openInNewTab(\'' + targetUrl + '\'); return false;">' + targetUrl + '</a>');
-        return a;
-    });
-}
-
-export function openInNewTab(targetUrl) {
-    var win = window.open(targetUrl, '_blank');
-    win.focus();
+export function isUrl (string) {
+    try { return Boolean(new URL(string)); }
+    catch(e){ return false; }
 }
 
 // https://stackoverflow.com/questions/17428587/transposing-a-2d-array-in-javascript

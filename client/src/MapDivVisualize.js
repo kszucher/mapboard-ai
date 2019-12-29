@@ -26,16 +26,13 @@ class MapDivVisualize {
                     borderRadius:                           8 +                                             'px',
                     fontSize:                               cm.sTextFontSize +                              'px',
                     fontFamily:                             'Roboto',
-                    textDecoration:     cm.ilink !== ""?    "underline"              : "",
+                    textDecoration:     cm.linkType !== ""? "underline"              : "",
                     cursor:                                 'default',
                     color:                                  cm.sTextColor,
                     backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
                 };
 
-                if (mapMem.density === 'small' && (
-                    cm.contentType === 'text' ||
-                    cm.contentType === 'ilink' ||
-                    cm.contentType === 'elink')) {
+                if (mapMem.density === 'small' && cm.contentType === 'text') {
                     divStyle.width =                        parseInt(divStyle.width, 10)       - 3 + 'px';
                     divStyle.paddingLeft =                  parseInt(divStyle.paddingLeft, 10) + 3 + 'px';
                 }
@@ -94,9 +91,7 @@ class MapDivVisualize {
                 if (cm.isContentAssigned === 0) {
                     cm.isContentAssigned = 1;
 
-                    if (cm.contentType === 'text' ||
-                        cm.contentType === 'ilink' ||
-                        cm.contentType === 'elink') {
+                    if (cm.contentType === 'text') {
                         div.innerHTML =                     cm.content;
                     }
                     else if (cm.contentType === 'image') {
