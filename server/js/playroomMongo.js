@@ -25,7 +25,7 @@ async function mongoFunction() {
                 break;
             }
             case 'existingNodeProp': {
-                let dataElemField = 'NODEPROPNAME';
+                let dataElemField = 'ilink';
                 await collectionMaps.aggregate(
                     [
                         {
@@ -69,7 +69,7 @@ async function mongoFunction() {
                 for (let i = 0; i < filter.length; i++) {
                     await collectionMaps.updateOne(
                         {_id: filter[i]._id},
-                        {$set: {'contentType' : 'text'}}
+                        {$set: {"MAPROPNAME" : "MAPROPVALUE"}}
                     );
                 }
                 break;
@@ -78,7 +78,7 @@ async function mongoFunction() {
                 for (let i = 0; i < filter.length; i++) {
                     await collectionMaps.updateOne(
                         {_id: filter[i]._id},
-                        {$unset: {'MAPROPNAME' : ""}}
+                        {$unset: {"MAPROPNAME" : ""}}
                         );
                 }
                 // note: unable to use aggregation unset from mongodb v4.2, as mongodb free tier only supports mongodb 4.0
@@ -88,7 +88,7 @@ async function mongoFunction() {
                 for (let i = 0; i < filter.length; i++) {
                     await collectionMaps.updateOne(
                         { _id: filter[i]._id },
-                        { $set: { "data.$[elem].NODEPROPNAME" : "VALUE" } },
+                        { $set: { "data.$[elem].NODEPROPNAME" : "NODEPROPVALUE" } },
                         { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true }
                     )
                 }
