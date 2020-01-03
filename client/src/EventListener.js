@@ -23,6 +23,12 @@ class EventListener {
     }
 
     click(event) {
+
+        // sscce for katex
+        // let str = katex.renderToString('\A', {throwOnError: false});
+        // let hsl = document.getElementById('header-sidebar-left');
+        // hsl.innerHTML = str;
+
         lastEvent = {
             type:                                       'windowClick',
             ref:                                        event,
