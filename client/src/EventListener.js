@@ -18,7 +18,7 @@ class EventListener {
         window.addEventListener("resize",               event =>    this.resize()                   );
         window.addEventListener("keydown",              event =>    this.keydown(event)             );
         window.addEventListener("keyup",                event =>    this.keyup(event)               );
-        window.addEventListener("paste",                event =>    this.paste()                    );
+        window.addEventListener("paste",                event =>    this.paste(event)               );
         window.addEventListener("popstate",             event =>    this.popstate(event)            );
     }
 
@@ -55,7 +55,9 @@ class EventListener {
 
     };
 
-    paste() {
+    paste(e) {
+        e.preventDefault();
+
         console.log('PASTE');
         navigator.permissions.query({name: "clipboard-write"}).then(result => {
             if (result.state === "granted" || result.state === "prompt") {

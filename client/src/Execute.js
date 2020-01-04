@@ -249,11 +249,7 @@ export function execute(command) {
         // PASTE
         // -------------------------------------------------------------------------------------------------------------
         case 'insertTextFromClipboardAsText': {
-            // TODO
-            // - calculate new width and adjust style.width
-            // - remove formatting
-            // https://stackoverflow.com/questions/12027137/javascript-trick-for-paste-as-plain-item-in-execcommand
-            // let holderElement = document.getElementById(sc.lm.divId);
+            document.execCommand("insertHTML", false, lastEvent.props.data);
             break;
         }
         case 'insertTextFromClipboardAsNode': {
