@@ -62,15 +62,11 @@ class MapCanvasVisualize {
                         [
                                                         [cm.centerX - cm.selfW/2,                       cm.centerY      + cm.selfH/2        ],
                                                         [cm.centerX + cm.selfW/2,                       cm.centerY      + cm.familyH/2 + 5  ],
-                                                        [1200 - 500 - 30,                               cm.centerY      + cm.familyH/2 + 5  ],
-                                                        [1200 - 500 - 30,                               cm.centerY      - cm.familyH/2 - 5  ],
+                                                        [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      + cm.familyH/2 + 5  ],
+                                                        [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      - cm.familyH/2 - 5  ],
                                                         [cm.centerX + cm.selfW/2,                       cm.centerY      - cm.familyH/2 - 5  ],
                                                         [cm.centerX - cm.selfW/2,                       cm.centerY      - cm.selfH/2        ],
                         ]);
-
-                    cm.ellipseFill =                    1;
-                    cm.ellipseFillColor =               cm.polygonBorderColor;
-                    cm.lineColor =                      cm.polygonBorderColor;
                 }
             }
         }

@@ -66,7 +66,7 @@ export function execute(command) {
         'transpose',
         'makeGrid',
         'openAfterNodeSelect',
-        'latexify',
+        'polygonFill',
         'createMapInMap',
     ].includes(command)) {
         sc = getSelectionContext();
@@ -318,9 +318,10 @@ export function execute(command) {
             makeGrid();
             break;
         }
-        case 'latexify': {
-            lm.contentType = 'equation';
-            lm.isDimAssigned = 0;
+        case 'polygonFill': {
+            lm.polygonFill = 1;
+            lm.polygonLineWidth = 1;
+            lm.polygonBorderColor = '#00ffff';
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

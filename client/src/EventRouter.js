@@ -78,7 +78,7 @@ class EventRouter {
                     [ 0,  0,  0,  e.key === 'Delete',             ['s'          ], 0,  1,  ['deleteNode'                          ], 1 ],
                     [ 0,  0,  0,  e.key === 'Delete',             [     'c'     ], 0,  1,  ['deleteCellBlock'                     ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyE',              ['s', 'c', 'm'], 0,  1,  ['createMapInMap'                      ], 1 ],
-                    [ 1,  0,  0,  e.code === 'KeyL',              ['s', 'c', 'm'], 0,  1,  ['latexify'                            ], 1 ],
+                    [ 1,  0,  0,  e.code === 'KeyP',              ['s', 'c', 'm'], 0,  1,  ['polygonFill'                         ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyG',              ['s', 'c', 'm'], 0,  1,  ['makeGrid'                            ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyO',              ['s', 'c', 'm'], 0,  1,  ['normalize'                           ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyC',              ['s', 'c', 'm'], 0,  1,  ['copySelection'                       ], 1 ],
