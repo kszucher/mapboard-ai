@@ -1,7 +1,7 @@
 import {initDim}                                                                                from "./Dim";
 import {communication}                                                                          from "./Communication";
 import {eventListener, lastEvent}                                                               from "./EventListener"
-import {eventRouter}                                                                            from "./EventRouter";
+import {currColorToPaint, eventRouter} from "./EventRouter";
 import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut}                             from "./Map";
 import {hasCell}                                                                                from "./Node";
 import {cellNavigate, structNavigate}                                                           from "./NodeNavigate";
@@ -66,7 +66,8 @@ export function execute(command) {
         'transpose',
         'makeGrid',
         'openAfterNodeSelect',
-        'polygonFill',
+        'applyColor',
+        'applyParameter',
         'createMapInMap',
     ].includes(command)) {
         sc = getSelectionContext();
@@ -318,10 +319,23 @@ export function execute(command) {
             makeGrid();
             break;
         }
-        case 'polygonFill': {
-            lm.content = 'sl';
-            lm.isDimAssigned =                      0;
-            lm.isContentAssigned =                  0;
+        case 'applyColor': {
+            switch (currColorToPaint) {
+                case 0: lm.sTextColor = '#000000'; break;
+                case 1: lm.sTextColor = '#999999'; break;
+                case 2: lm.sTextColor = '#bbbbbb'; break;
+                case 3: lm.sTextColor = '#dddddd'; break;
+                case 4: lm.sTextColor = '#d5802a'; break;
+                case 5: lm.sTextColor = '#1c8e1c'; break;
+                case 6: lm.sTextColor = '#8e1c8e'; break;
+                case 7: lm.sTextColor = '#ff0000'; break;
+                case 8: lm.sTextColor = '#0000ff'; break;
+                case 9: lm.sTextColor = '#ffffff'; break;
+            }
+            break;
+        }
+        case 'applyParameter': {
+            lm.sTextColor = '#8e1c8e';
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
