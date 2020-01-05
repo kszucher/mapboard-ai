@@ -20,7 +20,7 @@ export function execute(command) {
 
     // console.log('execute: ' + command);
 
-    let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath;
+    let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath, structSelectedPathList;
 
     if (lastEvent.type === 'windowKeyDown') {
         keyStr = lastEvent.ref.code;
@@ -78,6 +78,7 @@ export function execute(command) {
         geomHighRef = sc.geomHighRef;
         geomLowPath = sc.geomLowPath;
         // geomLowRef = sc.geomLowRef;
+        structSelectedPathList = sc.structSelectedPathList;
     }
 
     switch (command) {
@@ -320,17 +321,20 @@ export function execute(command) {
             break;
         }
         case 'applyColor': {
-            switch (currColorToPaint) {
-                case 0: lm.sTextColor = '#000000'; break;
-                case 1: lm.sTextColor = '#999999'; break;
-                case 2: lm.sTextColor = '#bbbbbb'; break;
-                case 3: lm.sTextColor = '#dddddd'; break;
-                case 4: lm.sTextColor = '#d5802a'; break;
-                case 5: lm.sTextColor = '#1c8e1c'; break;
-                case 6: lm.sTextColor = '#8e1c8e'; break;
-                case 7: lm.sTextColor = '#ff0000'; break;
-                case 8: lm.sTextColor = '#0000ff'; break;
-                case 9: lm.sTextColor = '#ffffff'; break;
+            for (let i = 0; i < structSelectedPathList.length; i++) {
+                let cm = mapref(structSelectedPathList[i]);
+                switch (currColorToPaint) {
+                    case 0: cm.sTextColor = '#000000'; break;
+                    case 1: cm.sTextColor = '#999999'; break;
+                    case 2: cm.sTextColor = '#bbbbbb'; break;
+                    case 3: cm.sTextColor = '#dddddd'; break;
+                    case 4: cm.sTextColor = '#d5802a'; break;
+                    case 5: cm.sTextColor = '#1c8e1c'; break;
+                    case 6: cm.sTextColor = '#8e1c8e'; break;
+                    case 7: cm.sTextColor = '#ff0000'; break;
+                    case 8: cm.sTextColor = '#0000ff'; break;
+                    case 9: cm.sTextColor = '#ffffff'; break;
+                }
             }
             break;
         }
