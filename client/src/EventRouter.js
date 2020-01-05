@@ -38,7 +38,8 @@ class EventRouter {
                     }
                     else {
                        e.ctrlKey? execute('selectMeStructToo') : execute('selectMeStruct');
-                        execute('openAfterNodeSelect');
+
+                       if (!e.shiftKey) execute('openAfterNodeSelect');
 
                         redraw();
                         // redraw here is unconditional, todo make key version conditional with the help of the table
@@ -71,12 +72,12 @@ class EventRouter {
                     [ 0,  0,  0,  e.key === 'Insert',             ['s'          ], 1,  1,  ['finishEdit', 'newChild', 'startEdit' ], 1 ],
                     [ 0,  0,  0,  e.key === 'Insert',             ['s'          ], 0,  1,  ['newChild', 'startEdit'               ], 1 ],
                     [ 0,  0,  0,  e.key === 'Insert',             [          'm'], 0,  1,  ['selectRightMixed'                    ], 1 ],
-                    [ 0,  0,  0,  e.key === 'Space',              ['s'          ], 0,  1,  ['selectForwardStruct'                 ], 1 ],
-                    [ 0,  0,  0,  e.key === 'Space',              [          'm'], 0,  1,  ['selectForwardMixed'                  ], 1 ],
-                    [ 0,  0,  0,  e.key === 'Backspace',          ['s'          ], 0,  1,  ['selectBackwardStruct',               ], 1 ],
-                    [ 0,  0,  0,  e.key === 'Backspace',          [          'm'], 0,  1,  ['selectBackwardMixed'                 ], 1 ],
                     [ 0,  0,  0,  e.key === 'Delete',             ['s'          ], 0,  1,  ['deleteNode'                          ], 1 ],
                     [ 0,  0,  0,  e.key === 'Delete',             [     'c'     ], 0,  1,  ['deleteCellBlock'                     ], 1 ],
+                    [ 0,  0,  0,  e.code === 'Space',             ['s'          ], 0,  1,  ['selectForwardStruct'                 ], 1 ],
+                    [ 0,  0,  0,  e.code === 'Space',             [          'm'], 0,  1,  ['selectForwardMixed'                  ], 1 ],
+                    [ 0,  0,  0,  e.code === 'Backspace',         ['s'          ], 0,  1,  ['selectBackwardStruct',               ], 1 ],
+                    [ 0,  0,  0,  e.code === 'Backspace',         [          'm'], 0,  1,  ['selectBackwardMixed'                 ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyE',              ['s', 'c', 'm'], 0,  1,  ['createMapInMap'                      ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyP',              ['s', 'c', 'm'], 0,  1,  ['polygonFill'                         ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyG',              ['s', 'c', 'm'], 0,  1,  ['makeGrid'                            ], 1 ],

@@ -13,6 +13,8 @@ class EventListener {
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
         window.addEventListener('click',                event =>    this.click(event)               );
+        window.addEventListener('mousemove',            event =>    this.mousemove(event)           );
+        window.addEventListener('mousedown',            event =>    this.mousedown(event)           );
         window.addEventListener("focusout",             event =>    this.focusout()                 );
         window.addEventListener("focus",                event =>    this.focus()                    );
         window.addEventListener("resize",               event =>    this.resize()                   );
@@ -28,6 +30,14 @@ class EventListener {
             ref:                                        event,
         };
         eventRouter.processEvent();
+    }
+
+    mousemove(event) {
+        // event.preventDefault();
+    }
+
+    mousedown(event) {
+        event.preventDefault();
     }
 
     focusout() {

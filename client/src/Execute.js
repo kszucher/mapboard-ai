@@ -319,9 +319,9 @@ export function execute(command) {
             break;
         }
         case 'polygonFill': {
-            lm.polygonFill = 1;
-            lm.polygonLineWidth = 1;
-            lm.polygonBorderColor = '#00ffff';
+            lm.content = 'sl';
+            lm.isDimAssigned =                      0;
+            lm.isContentAssigned =                  0;
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
