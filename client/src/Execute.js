@@ -10,6 +10,7 @@ import {structInsert, cellInsert}                                               
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
 import {setClipboard, structMove}                                                               from "./NodeMove";
 import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
+import {mapPrint} from "./MapPrint";
 
 // these will be part of state
 let headerData = {};
@@ -68,6 +69,7 @@ export function execute(command) {
         'openAfterNodeSelect',
         'applyColor',
         'applyParameter',
+        'prettyPrint',
         'createMapInMap',
     ].includes(command)) {
         sc = getSelectionContext();
@@ -340,6 +342,10 @@ export function execute(command) {
         }
         case 'applyParameter': {
             lm.sTextColor = '#8e1c8e';
+            break;
+        }
+        case 'prettyPrint': {
+            mapPrint.start(lm);
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
