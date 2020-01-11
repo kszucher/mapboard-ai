@@ -1,16 +1,21 @@
 import './../css/Layout.css'
-import React                                                from 'react'
-import ReactMaterialToolBar                                 from "../material/ReactMaterialToolBar";
-import {SimpleTabs}                             from "../material/ReactMaterialTabs";
-import {mindBoardApi}                                       from "./MindBoardApi";
+import React                                        from 'react'
+import ReactMaterialToolBar                         from "../material/ReactMaterialToolBar";
+import {SimpleTabs}                                 from "../material/ReactMaterialTabs";
+import {eventListener} from "./EventListener";
+import {eventRouter} from "./EventRouter";
 
 export function Layout() {
 
-    mindBoardApi.init();
-    mindBoardApi.request({
-        'cmd': 'signIn',
-        'user': 'kryss',
-        'pass': 'mncvmncv'
+    eventListener.addListeners();
+
+    eventRouter.processEvent({
+        type:                                       'materialEvent',
+        ref: {
+            'cmd':                                  'signIn',
+            'user':                                 'kryss',
+            'pass':                                 'mncvmncv'
+        },
     });
 
     return (

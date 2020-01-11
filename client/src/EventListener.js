@@ -16,19 +16,18 @@ class EventListener {
         window.addEventListener("popstate",             event =>    this.popstate(event)            );
     }
 
-    click(event) {
+    click(e) {
         eventRouter.processEvent({
             type:                                       'windowClick',
-            ref:                                        event,
+            ref:                                        e,
         });
     }
 
-    mousemove(event) {
-        // event.preventDefault();
+    mousemove(e) {
     }
 
-    mousedown(event) {
-        event.preventDefault();
+    mousedown(e) {
+        e.preventDefault();
     }
 
     focusout() {
@@ -44,10 +43,10 @@ class EventListener {
         initDim();
     }
 
-    keydown(event) {
+    keydown(e) {
         eventRouter.processEvent({
             type:                                       'windowKeyDown',
-            ref:                                        event,
+            ref:                                        e,
         });
     };
 
@@ -91,31 +90,10 @@ class EventListener {
         });
     }
 
-    popstate(event) {
+    popstate(e) {
         eventRouter.processEvent({
             type:                                       'windowPopState',
-            ref:                                        event,
-        });
-    }
-
-    receiveFromReact(r2c) {
-        eventRouter.processEvent({
-            type:                                       'reactEvent',
-            ref:                                        r2c,
-        });
-    }
-
-    receiveFromServer(s2c) {
-        eventRouter.processEvent({
-            type:                                       'serverEvent',
-            ref:                                        s2c,
-        });
-    }
-
-    receiveFromServerFetch(sf2c) {
-        eventRouter.processEvent({
-            type:                                       'serverFetchEvent',
-            ref:                                        sf2c,
+            ref:                                        e,
         });
     }
 }

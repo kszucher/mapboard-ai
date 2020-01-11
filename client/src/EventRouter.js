@@ -192,7 +192,7 @@ class EventRouter {
                 rebuild();
                 redraw();
             }
-            else if (lastEvent.type === 'reactEvent') {
+            else if (lastEvent.type === 'materialEvent') {
                 let r2c = lastEvent.ref;
                 // TODO see it all here in a switch
                 execute(r2c.cmd);

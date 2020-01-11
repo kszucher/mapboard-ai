@@ -500,7 +500,10 @@ export function execute(command) {
                 body:       formData
             }).then(function(response) {
                 response.json().then(function(sf2c) {
-                    eventListener.receiveFromServerFetch(sf2c)
+                    eventRouter.processEvent({
+                        type:                       'serverFetchEvent',
+                        ref:                        sf2c,
+                    });
                 });
             });
             break;

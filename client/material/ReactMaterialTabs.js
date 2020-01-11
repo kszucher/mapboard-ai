@@ -3,8 +3,8 @@ import {createMuiTheme }                                    from '@material-ui/c
 import MuiThemeProvider                                     from '@material-ui/core/styles/MuiThemeProvider';
 import Tabs                                                 from '@material-ui/core/Tabs';
 import Tab                                                  from '@material-ui/core/Tab';
-import {mindBoardApi}                                       from "../src/MindBoardApi";
 import {updateStateProp} from "../src/Utils";
+import {eventRouter} from "../src/EventRouter";
 
 const theme = createMuiTheme({
     palette: {
@@ -37,22 +37,26 @@ export function SimpleTabs() {
 
         updateStateProp(state, setState, 'tabId', newValue);
 
-        mindBoardApi.request({
-            'cmd':      'openAfterTabSelect',
-            'tabId':     newValue
-        })
+        eventRouter.processEvent({
+            type:                                           'materialEvent',
+            ref: {
+                'cmd':                                      'openAfterTabSelect',
+                'tabId':                                    newValue,
+            },
+        });
+
     };
 
     return (
         <MuiThemeProvider theme={theme}>
             <Tabs
-                value=                              {state.tabId}
-                onChange=                           {handleChange}
-                indicatorColor=                     "primary">
+                value=                                      {state.tabId}
+                onChange=                                   {handleChange}
+                indicatorColor=                             "primary">
                 {state.tabNames.map(name => (
                     <Tab
-                        label=                      {name}
-                        key=                        {name}
+                        label=                              {name}
+                        key=                                {name}
                     />
                 ))}
             </Tabs>

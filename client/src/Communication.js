@@ -1,4 +1,5 @@
 import {eventListener} from "./EventListener"
+import {eventRouter} from "./EventRouter";
 
 class Communication {
     constructor() {
@@ -24,7 +25,10 @@ class Communication {
 
     receiver(s2c) {
         this.eventsEnabled = 1;
-        eventListener.receiveFromServer(s2c);
+        eventRouter.processEvent({
+            type:                       'serverEvent',
+            ref:                        s2c,
+        });
     }
 }
 
