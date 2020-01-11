@@ -1,5 +1,5 @@
-import {eventRouter}        from "./EventRouter"
 import {initDim}            from "./Dim";
+import {eventRouter}        from "./EventRouter"
 
 export let lastEvent = {};
 

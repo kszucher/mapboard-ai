@@ -1,7 +1,7 @@
 import './../css/Layout.css'
 import React                                                from 'react'
 import ReactMaterialToolBar                                 from "../material/ReactMaterialToolBar";
-import {ReactMaterialTabHolder}                             from "../material/ReactMaterialTab";
+import {SimpleTabs}                             from "../material/ReactMaterialTabs";
 import {mindBoardApi}                                       from "./MindBoardApi";
 
 export function Layout() {
@@ -21,8 +21,8 @@ export function Layout() {
                     <main id="header-main">
                         <ReactMaterialToolBar>
                         </ReactMaterialToolBar>
-                        <ReactMaterialTabHolder>
-                        </ReactMaterialTabHolder>
+                        <SimpleTabs>
+                        </SimpleTabs>
                     </main>
                     <aside id="header-sidebar-right">
                     </aside>

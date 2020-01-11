@@ -1,14 +1,14 @@
-import {initDim}                                                                                from "./Dim";
 import {communication}                                                                          from "./Communication";
+import {initDim}                                                                                from "./Dim";
 import {eventListener, lastEvent}                                                               from "./EventListener"
-import {currColorToPaint, eventRouter} from "./EventRouter";
+import {currColorToPaint, eventRouter}                                                          from "./EventRouter";
 import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut}                             from "./Map";
 import {hasCell}                                                                                from "./Node";
+import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
+import {structInsert, cellInsert}                                                               from "./NodeInsert";
+import {setClipboard, structMove}                                                               from "./NodeMove";
 import {cellNavigate, structNavigate}                                                           from "./NodeNavigate";
 import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelectionContext}     from "./NodeSelect"
-import {structInsert, cellInsert}                                                               from "./NodeInsert";
-import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";
-import {setClipboard, structMove}                                                               from "./NodeMove";
 import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
 import {mapPrint} from "./MapPrint";
 
@@ -349,20 +349,6 @@ export function execute(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // REACT TX
-        // -------------------------------------------------------------------------------------------------------------
-        case 'updateReactTabs': {
-            let s2c =                               lastEvent.ref;
-            let c2r = {
-                tabData: {
-                    tabNames:                       s2c.headerData.headerMapNameList,
-                    tabId:                          s2c.headerData.headerMapSelected,
-                }
-            };
-            document.dispatchEvent(new CustomEvent( "event", {"detail": c2r}));
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
         // SERVER TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
@@ -485,6 +471,20 @@ export function execute(command) {
                     eventListener.receiveFromServerFetch(sf2c)
                 });
             });
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        // TO MATERIAL
+        // -------------------------------------------------------------------------------------------------------------
+        case 'updateReactTabs': {
+            let s2c =                               lastEvent.ref;
+            document.dispatchEvent(new CustomEvent( 'toMaterial', {
+                'detail': {
+                    tabData: {
+                        tabNames:                       s2c.headerData.headerMapNameList,
+                        tabId:                          s2c.headerData.headerMapSelected,
+                    }
+                }}));
             break;
         }
     }

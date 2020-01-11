@@ -177,3 +177,9 @@ export function isMouseInsideRectangle(centerX, centerY, selfW, selfH) {
 
     return x > leftX &  x < rightX && y < topY && y > bottomY;
 }
+
+export function updateStateProp(state, setState, field, value) {
+    let newState =  JSON.parse(JSON.stringify(state));
+    newState[field] = value;
+    setState(newState);
+}
