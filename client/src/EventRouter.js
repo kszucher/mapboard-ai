@@ -5,7 +5,7 @@ import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
-import {isUrl}                                  from "./Utils"
+import {isUrl, copy}                                  from "./Utils"
 
 export let currColorToPaint = 0;
 export let lastEvent = {};
@@ -18,7 +18,7 @@ class EventRouter {
 
     processEvent(lastEventArg) {
 
-        lastEvent = lastEventArg;
+        lastEvent = (lastEventArg); // should not copy because it can contain a reference
 
         if (communication.eventsEnabled === 0) {
             console.log('unfinished server communication')
@@ -57,6 +57,11 @@ class EventRouter {
                     }
 
                 }
+            }
+            else if (lastEvent.type === 'windowPopState') {
+                execute('openAfterHistory');
+                rebuild();
+                redraw();
             }
             else if (lastEvent.type === 'windowKeyDown') {
                 let sc = getSelectionContext();
@@ -186,11 +191,6 @@ class EventRouter {
                         execute('sendImage');
                     }
                 }
-            }
-            else if (lastEvent.type === 'windowPopState') {
-                execute('openAfterHistory');
-                rebuild();
-                redraw();
             }
             else if (lastEvent.type === 'materialEvent') {
                 let r2c = lastEvent.ref;

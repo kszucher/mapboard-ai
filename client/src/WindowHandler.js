@@ -1,7 +1,7 @@
 import {initDim}            from "./Dim";
 import {eventRouter}        from "./EventRouter"
 
-class EventListener {
+class WindowHandler {
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
         window.addEventListener('click',                event =>    this.click(event)               );
@@ -9,11 +9,11 @@ class EventListener {
         window.addEventListener('mousedown',            event =>    this.mousedown(event)           );
         window.addEventListener("focusout",             event =>    this.focusout()                 );
         window.addEventListener("focus",                event =>    this.focus()                    );
+        window.addEventListener("popstate",             event =>    this.popstate(event)            );
         window.addEventListener("resize",               event =>    this.resize()                   );
         window.addEventListener("keydown",              event =>    this.keydown(event)             );
         window.addEventListener("keyup",                event =>    this.keyup(event)               );
         window.addEventListener("paste",                event =>    this.paste(event)               );
-        window.addEventListener("popstate",             event =>    this.popstate(event)            );
     }
 
     click(e) {
@@ -36,6 +36,13 @@ class EventListener {
 
     focus() {
         console.log('FOCUS');
+    }
+
+    popstate(e) {
+        eventRouter.processEvent({
+            type:                                       'windowPopState',
+            ref:                                        e,
+        });
     }
 
     resize() {
@@ -89,13 +96,6 @@ class EventListener {
             }
         });
     }
-
-    popstate(e) {
-        eventRouter.processEvent({
-            type:                                       'windowPopState',
-            ref:                                        e,
-        });
-    }
 }
 
-export let eventListener = new EventListener();
+export let windowHandler = new WindowHandler();

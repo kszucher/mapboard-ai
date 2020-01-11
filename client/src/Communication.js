@@ -1,4 +1,4 @@
-import {eventListener} from "./EventListener"
+import {windowHandler} from "./WindowHandler"
 import {eventRouter} from "./EventRouter";
 
 class Communication {

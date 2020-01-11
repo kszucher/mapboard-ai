@@ -2,12 +2,12 @@ import './../css/Layout.css'
 import React                                        from 'react'
 import ReactMaterialToolBar                         from "../material/ReactMaterialToolBar";
 import {SimpleTabs}                                 from "../material/ReactMaterialTabs";
-import {eventListener} from "./EventListener";
+import {windowHandler} from "./WindowHandler";
 import {eventRouter} from "./EventRouter";
 
 export function Layout() {
 
-    eventListener.addListeners();
+    windowHandler.addListeners();
 
     eventRouter.processEvent({
         type:                                       'materialEvent',

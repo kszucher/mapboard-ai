@@ -1,6 +1,5 @@
 import {communication}                                                                          from "./Communication";
 import {initDim}                                                                                from "./Dim";
-import {eventListener}                                                                          from "./EventListener"
 import {currColorToPaint, eventRouter, lastEvent}                                               from "./EventRouter";
 import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut}                             from "./Map";
 import {hasCell}                                                                                from "./Node";
