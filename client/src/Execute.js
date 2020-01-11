@@ -27,60 +27,92 @@ export function execute(command) {
         keyStr = lastEvent.ref.code;
     }
 
-    if ([
-        'selectMeStruct',
-        'selectMeStructToo',
-        'selectForwardStruct',
-        'selectForwardMixed',
-        'selectBackwardStruct',
-        'selectBackwardMixed',
-        'selectNeighborMixed',
-        'selectDownMixed',
-        'selectRightMixed',
-        'selectNeighborNode',
-        'selectNeighborNodeToo',
-        'selectCellRow',
-        'selectCellCol',
-        'selectFirstMixed',
-        'eraseContent',
-        'typeText',
-        'startEdit',
-        'finishEdit',
-        'newSiblingUp',
-        'newSiblingDown',
-        'newChild',
-        'newCellBlock',
-        'deleteNode',
-        'deleteCellBlock',
-        'moveNodeSelection',
-        'copySelection',
-        'cutSelection',
-        'insertMapFromClipboard',
-        'insertTextFromClipboardAsText',
-        'insertTextFromClipboardAsNode',
-        'insertElinkFromClipboardAsNode',
-        'insertEquationFromClipboardAsNode',
-        'insertImageFromLinkAsNode',
-        'insertIlinkFromMongo',
-        'cellifyMulti',
-        'transposeMe',
-        'transpose',
-        'makeGrid',
-        'openAfterNodeSelect',
-        'applyColor',
-        'applyParameter',
-        'prettyPrint',
-        'createMapInMap',
-    ].includes(command)) {
-        sc = getSelectionContext();
-        maxSel = sc.maxSel;
-        lastPath = sc.lastPath;
-        lm = sc.lm;
-        geomHighPath = sc.geomHighPath;
-        geomHighRef = sc.geomHighRef;
-        geomLowPath = sc.geomLowPath;
-        // geomLowRef = sc.geomLowRef;
-        structSelectedPathList = sc.structSelectedPathList;
+    let executeStateMachineDb = [
+        ['cmd',                                        'usesS',                                 ],
+        // open --------------------------------------------------------------------------------------------------------
+        ['openMap',                                     0,                                      ],
+        // select ------------------------------------------------------------------------------------------------------
+        ['selectMeStruct',                              1,                                      ],
+        ['selectMeStructToo',                           1,                                      ],
+        ['selectForwardStruct',                         1,                                      ],
+        ['selectForwardMixed',                          1,                                      ],
+        ['selectBackwardStruct',                        1,                                      ],
+        ['selectBackwardMixed',                         1,                                      ],
+        ['selectNeighborMixed',                         1,                                      ],
+        ['selectDownMixed',                             1,                                      ],
+        ['selectRightMixed',                            1,                                      ],
+        ['selectNeighborNode',                          1,                                      ],
+        ['selectNeighborNodeToo',                       1,                                      ],
+        ['selectCellRow',                               1,                                      ],
+        ['selectCellCol',                               1,                                      ],
+        ['selectFirstMixed',                            1,                                      ],
+        // edit --------------------------------------------------------------------------------------------------------
+        ['eraseContent',                                1,                                      ],
+        ['typeText',                                    1,                                      ],
+        ['startEdit',                                   1,                                      ],
+        ['finishEdit',                                  1,                                      ],
+        // insert ------------------------------------------------------------------------------------------------------
+        ['newSiblingUp',                                1,                                      ],
+        ['newSiblingDown',                              1,                                      ],
+        ['newChild',                                    1,                                      ],
+        ['newCellBlock',                                1,                                      ],
+        // delete ------------------------------------------------------------------------------------------------------
+        ['deleteNode',                                  1,                                      ],
+        ['deleteCellBlock',                             1,                                      ],
+        // move --------------------------------------------------------------------------------------------------------
+        ['moveNodeSelection',                           1,                                      ],
+        ['copySelection',                               1,                                      ],
+        ['cutSelection',                                1,                                      ],
+        // paste -------------------------------------------------------------------------------------------------------
+        ['insertMapFromClipboard',                      1,                                      ],
+        ['insertTextFromClipboardAsText',               1,                                      ],
+        ['insertTextFromClipboardAsNode',               1,                                      ],
+        ['insertElinkFromClipboardAsNode',              1,                                      ],
+        ['insertEquationFromClipboardAsNode',           1,                                      ],
+        ['insertImageFromLinkAsNode',                   1,                                      ],
+        ['insertIlinkFromMongo',                        1,                                      ],
+        // misc --------------------------------------------------------------------------------------------------------
+        ['cellifyMulti',                                1,                                      ],
+        ['transpose',                                   1,                                      ],
+        ['makeGrid',                                    1,                                      ],
+        ['applyColor',                                  1,                                      ],
+        ['applyParameter',                              1,                                      ],
+        ['prettyPrint',                                 1,                                      ],
+        // server tx ---------------------------------------------------------------------------------------------------
+        ['signIn',                                      0,                                      ],
+        ['signOut',                                     0,                                      ],
+        ['openAfterInit ',                              0,                                      ],
+        ['openAfterTabSelect',                          0,                                      ],
+        ['openAfterNodeSelect',                         1,                                      ],
+        ['openAfterHistory',                            0,                                      ],
+        ['save',                                        0,                                      ],
+        ['createMapInTab',                              0,                                      ],
+        ['createMapInMap',                              1,                                      ],
+        // server fetch tx ---------------------------------------------------------------------------------------------
+        ['sendImage',                                   0,                                      ],
+        // to material -------------------------------------------------------------------------------------------------
+        ['updateReactTabs',                             0,                                      ],
+    ];
+
+    let executeStateMachine = {};
+    for (let i = 0; i < executeStateMachineDb.length; i++) {
+        for (let h = 0; h < executeStateMachineDb[0].length; h++) {
+            executeStateMachine[executeStateMachineDb[0][h]] = executeStateMachineDb[i][h];
+        }
+
+        if (executeStateMachine.cmd === command &&
+            executeStateMachine.usesS === 1) {
+
+            sc = getSelectionContext();
+            maxSel = sc.maxSel;
+            lastPath = sc.lastPath;
+            lm = sc.lm;
+            geomHighPath = sc.geomHighPath;
+            geomHighRef = sc.geomHighRef;
+            geomLowPath = sc.geomLowPath;
+            // geomLowRef = sc.geomLowRef;
+            structSelectedPathList = sc.structSelectedPathList;
+        }
     }
 
     switch (command) {
@@ -301,13 +333,13 @@ export function execute(command) {
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
+        // -------------------------------------------------------------------------------------------------------------
+        // MISC
+        // -------------------------------------------------------------------------------------------------------------
         case 'cellifyMulti': {
             structMove(sc, 'struct2cell', 'multiRow');
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // MISC
-        // -------------------------------------------------------------------------------------------------------------
         case 'transposeMe': {
             if (hasCell(lm)) {
                 lm.c = transposeArray(lm.c);
