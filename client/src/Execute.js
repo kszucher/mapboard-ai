@@ -1,7 +1,7 @@
 import {communication}                                                                          from "./Communication";
 import {initDim}                                                                                from "./Dim";
-import {eventListener, lastEvent}                                                               from "./EventListener"
-import {currColorToPaint, eventRouter}                                                          from "./EventRouter";
+import {eventListener}                                                                          from "./EventListener"
+import {currColorToPaint, eventRouter, lastEvent}                                               from "./EventRouter";
 import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut}                             from "./Map";
 import {hasCell}                                                                                from "./Node";
 import {structDeleteReselect, cellBlockDeleteReselect}                                          from "./NodeDelete";

@@ -5,17 +5,21 @@ import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
-import {lastEvent}                              from "./EventListener";
 import {isUrl}                                  from "./Utils"
 
 export let currColorToPaint = 0;
+export let lastEvent = {};
 
 class EventRouter {
     constructor() {
         this.isEditing = 0;
+        lastEvent = {};
     }
 
-    processEvent() {
+    processEvent(lastEventArg) {
+
+        lastEvent = lastEventArg;
+
         if (communication.eventsEnabled === 0) {
             console.log('unfinished server communication')
         }

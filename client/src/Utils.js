@@ -1,4 +1,4 @@
-import {lastEvent} from "./EventListener";
+import {lastEvent} from "./EventRouter";
 import {getDim} from "./Dim";
 
 export function getBgc() {

@@ -1,15 +1,7 @@
 import {initDim}            from "./Dim";
 import {eventRouter}        from "./EventRouter"
 
-export let lastEvent = {};
-
 class EventListener {
-    constructor() {
-        lastEvent = {};
-    }
-
-    // WINDOW, ROUTE, EXECUTE
-
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
         window.addEventListener('click',                event =>    this.click(event)               );
@@ -25,11 +17,10 @@ class EventListener {
     }
 
     click(event) {
-        lastEvent = {
+        eventRouter.processEvent({
             type:                                       'windowClick',
             ref:                                        event,
-        };
-        eventRouter.processEvent();
+        });
     }
 
     mousemove(event) {
@@ -54,11 +45,10 @@ class EventListener {
     }
 
     keydown(event) {
-        lastEvent = {
+        eventRouter.processEvent({
             type:                                       'windowKeyDown',
             ref:                                        event,
-        };
-        eventRouter.processEvent();
+        });
     };
 
     keyup(event) {
@@ -75,27 +65,25 @@ class EventListener {
                     let type = item[0].types[0];
                     if (type === 'text/plain') {
                         navigator.clipboard.readText().then(text => {
-                            lastEvent = {
+                            eventRouter.processEvent({
                                 type:                   'windowPaste',
                                 props: {
                                     dataType:           'text',
                                     data:               text
                                 }
-                            };
-                            eventRouter.processEvent();
+                            });
                         });
                     }
                     if (type === 'image/png') {
                         item[0].getType('image/png').then(image => {
-                            lastEvent = {
+                            eventRouter.processEvent({
                                 type:                   'windowPaste',
                                 props: {
                                     dataType:           'image',
                                     data:               image
                                 }
 
-                            };
-                            eventRouter.processEvent();
+                            });
                         })
                     }
                 })
@@ -104,35 +92,31 @@ class EventListener {
     }
 
     popstate(event) {
-        lastEvent = {
+        eventRouter.processEvent({
             type:                                       'windowPopState',
             ref:                                        event,
-        };
-        eventRouter.processEvent();
+        });
     }
 
     receiveFromReact(r2c) {
-        lastEvent = {
+        eventRouter.processEvent({
             type:                                       'reactEvent',
             ref:                                        r2c,
-        };
-        eventRouter.processEvent();
+        });
     }
 
     receiveFromServer(s2c) {
-        lastEvent = {
+        eventRouter.processEvent({
             type:                                       'serverEvent',
             ref:                                        s2c,
-        };
-        eventRouter.processEvent();
+        });
     }
 
     receiveFromServerFetch(sf2c) {
-        lastEvent = {
+        eventRouter.processEvent({
             type:                                       'serverFetchEvent',
             ref:                                        sf2c,
-        };
-        eventRouter.processEvent();
+        });
     }
 }
 
