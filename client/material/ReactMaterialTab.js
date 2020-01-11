@@ -3,7 +3,7 @@ import {createMuiTheme }                                    from '@material-ui/c
 import MuiThemeProvider                                     from '@material-ui/core/styles/MuiThemeProvider';
 import Tabs                                                 from '@material-ui/core/Tabs';
 import Tab                                                  from '@material-ui/core/Tab';
-import {mindBoardApi}                                       from "./MindBoardApi";
+import {mindBoardApi}                                       from "../src/MindBoardApi";
 
 const theme = createMuiTheme({
     palette: {

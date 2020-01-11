@@ -1,7 +1,7 @@
 import './../css/Layout.css'
 import React                                                from 'react'
-import ReactMaterialToolBar                                 from "./ReactMaterialToolBar";
-import {ReactMaterialTabHolder}                             from "./ReactMaterialTab";
+import ReactMaterialToolBar                                 from "../material/ReactMaterialToolBar";
+import {ReactMaterialTabHolder}                             from "../material/ReactMaterialTab";
 import {mindBoardApi}                                       from "./MindBoardApi";
 
 export function Layout() {
