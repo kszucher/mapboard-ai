@@ -150,7 +150,7 @@ export  function genHash (len) {
 export function isOdd(num) { return num % 2;}
 
 export function getLatexString(rawString) {
-    return '\\LARGE ' + rawString.substring(2, rawString.length - 2).replace(/\s/g, '')
+    return '\\Large ' + rawString.substring(2, rawString.length - 2).replace(/\s/g, '')
 }
 
 // https://stackoverflow.com/questions/6393943/convert-javascript-string-in-dot-notation-into-an-object-reference
