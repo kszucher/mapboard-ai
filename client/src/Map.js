@@ -1,17 +1,17 @@
-import {copy, subsref, subsasgn}            from "./Utils"
-import {mapInit}                            from './MapInit'
-import {mapChain}                           from './MapChain'
-import {mapMeasure}                         from './MapMeasure'
-import {mapPlace}                           from './MapPlace'
-import {mapTaskColor}                       from './MapTaskColor'
-import {mapCollect}                         from './MapCollect'
-import {mapDivVisualize}                    from './MapDivVisualize'
-import {mapCanvasVisualize}                 from './MapCanvasVisualize'
-import {mapNodePropRemove}                  from "./MapNodePropRemove";
-import {mapDisassembly, nodeCopyList}       from "./MapDisassembly";
-import {mapTaskCalc}                        from './MapTaskCalc';
-import {taskCanvasVisualize}                from "./TaskCanvasVisualize";
-import {mapAssembly}                        from "./MapAssembly";
+import {copy, subsref, subsasgn}                            from "./Utils"
+import {mapAssembly}                                        from "./MapAssembly";
+import {mapCanvasVisualize}                                 from './MapCanvasVisualize'
+import {mapChain}                                           from './MapChain'
+import {mapCollect}                                         from './MapCollect'
+import {mapDisassembly, nodeCopyList}                       from "./MapDisassembly";
+import {mapDivVisualize}                                    from './MapDivVisualize'
+import {mapInit}                                            from './MapInit'
+import {mapMeasure}                                         from './MapMeasure'
+import {mapNodePropRemove}                                  from "./MapNodePropRemove";
+import {mapPlace}                                           from './MapPlace'
+import {mapTaskCalc}                                        from './MapTaskCalc';
+import {mapTaskColor}                                       from './MapTaskColor'
+import {taskCanvasVisualize}                                from "./TaskCanvasVisualize";
 
 export let mapMem = {};
 export let mapStorageOut = {};

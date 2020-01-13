@@ -22,14 +22,14 @@ class MapDivVisualize {
                     paddingLeft :                           mapMem.padding - 2 +                            'px',
                     paddingTop :                            mapMem.padding - 2 +                            'px',
                     position:                               'absolute',
-                    border:             cm.selected?        '1px solid black'       : '1px solid' + getBgc(),
+                    border:             cm.selected?        '1px solid black' : '1px solid' + getBgc(),
                     borderRadius:                           8 +                                             'px',
                     fontSize:                               cm.sTextFontSize +                              'px',
                     fontFamily:                             'Roboto',
-                    textDecoration:     cm.linkType !== ""? "underline"              : "",
+                    textDecoration:     cm.linkType !== ""? "underline" : "",
                     cursor:                                 'default',
                     color:                                  cm.sTextColor,
-                    backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor     : getBgc(),
+                    backgroundColor:    cm.ellipseFill?     cm.ellipseFillColor : getBgc(),
                 };
 
                 if (mapMem.density === 'small' && cm.contentType === 'text') {
