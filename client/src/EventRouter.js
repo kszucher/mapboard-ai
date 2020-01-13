@@ -5,7 +5,7 @@ import {mapMem, redraw, rebuild}                from "./Map"
 import {mapLocalize}                            from "./MapLocalize";
 import {getSelectionContext}                    from "./NodeSelect";
 import {taskCanvasLocalize}                     from "./TaskCanvasLocalize";
-import {isUrl, copy}                                  from "./Utils"
+import {isUrl}                                  from "./Utils"
 
 export let currColorToPaint = 0;
 export let lastEvent = {};
@@ -17,17 +17,20 @@ class EventRouter {
     }
 
     processEvent(lastEventArg) {
-
         lastEvent = (lastEventArg); // should not copy because it can contain a reference
-
         if (communication.eventsEnabled === 0) {
             console.log('unfinished server communication')
         }
         else {
-            if (lastEvent.type === 'windowClick') {
-                let e = lastEvent.ref;
+            this.processEventReal();
+        }
+    }
 
-                if (! (e.pageX > getDim().lw && e.pageX <= getDim().lw + getDim().mw && e.pageY > getDim().uh)) {
+    processEventReal() {
+        let e = lastEvent.ref;
+        switch (lastEvent.type) {
+            case 'windowClick': {
+                if (!(e.pageX > getDim().lw && e.pageX <= getDim().lw + getDim().mw && e.pageY > getDim().uh)) {
                     console.log('not within region')
                 }
                 else {
@@ -41,11 +44,10 @@ class EventRouter {
 
                     if (mapMem.deepestSelectablePath.length === 0) {
                         console.log('not localizable')
-                    }
-                    else {
-                       e.ctrlKey? execute('selectMeStructToo') : execute('selectMeStruct');
+                    } else {
+                        e.ctrlKey ? execute('selectMeStructToo') : execute('selectMeStruct');
 
-                       if (!e.shiftKey) execute('openAfterNodeSelect');
+                        if (!e.shiftKey) execute('openAfterNodeSelect');
 
                         redraw();
                         // redraw here is unconditional, todo make key version conditional with the help of the table
@@ -57,15 +59,16 @@ class EventRouter {
                     }
 
                 }
+                break;
             }
-            else if (lastEvent.type === 'windowPopState') {
+            case 'windowPopState': {
                 execute('openAfterHistory');
                 rebuild();
                 redraw();
+                break;
             }
-            else if (lastEvent.type === 'windowKeyDown') {
+            case 'windowKeyDown': {
                 let sc = getSelectionContext();
-                let e = lastEvent.ref;
 
                 // console.log(e);
 
@@ -119,11 +122,11 @@ class EventRouter {
                     }
 
                     if (keyStateMachine.scope.includes(sc.scope) &&
-                        keyStateMachine.e ===           this.isEditing &&
-                        keyStateMachine.c ===           +e.ctrlKey &&
-                        keyStateMachine.s ===           +e.shiftKey &&
-                        keyStateMachine.a ===           +e.altKey &&
-                        keyStateMachine.keyMatch ===    true) {
+                        keyStateMachine.e === this.isEditing &&
+                        keyStateMachine.c === +e.ctrlKey &&
+                        keyStateMachine.s === +e.shiftKey &&
+                        keyStateMachine.a === +e.altKey &&
+                        keyStateMachine.keyMatch === true) {
 
                         if (keyStateMachine.p) {
                             e.preventDefault();
@@ -151,14 +154,14 @@ class EventRouter {
                         break;
                     }
                 }
+                break;
             }
-            else if (lastEvent.type === 'windowPaste') {
+            case 'windowPaste': {
                 if (this.isEditing === 1) {
                     if (lastEvent.props.dataType === 'text') {
                         execute('insertTextFromClipboardAsText');
                     }
-                }
-                else {
+                } else {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
 
@@ -166,41 +169,39 @@ class EventRouter {
                             execute('insertMapFromClipboard');
                             rebuild();
                             redraw();
-                        }
-                        else {
+                        } else {
                             execute('newChild');
                             rebuild();
                             if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                                 execute('insertEquationFromClipboardAsNode');
                                 rebuild();
                                 redraw();
-                            }
-                            else if (isUrl(text)) {
+                            } else if (isUrl(text)) {
                                 execute('insertElinkFromClipboardAsNode');
                                 rebuild();
                                 redraw();
-                            }
-                            else {
+                            } else {
                                 execute('insertTextFromClipboardAsNode');
                                 rebuild();
                                 redraw();
                             }
                         }
-                    }
-                    else if(lastEvent.props.dataType === 'image') {
+                    } else if (lastEvent.props.dataType === 'image') {
                         execute('sendImage');
                     }
                 }
+                break;
             }
-            else if (lastEvent.type === 'materialEvent') {
+            case 'materialEvent': {
                 let r2c = lastEvent.ref;
                 // TODO see it all here in a switch
                 execute(r2c.cmd);
+                break;
             }
-            else if (lastEvent.type === 'serverEvent') {
+            case 'serverEvent': {
                 let s2c = lastEvent.ref;
                 console.log('server: ' + s2c.cmd);
-                switch(s2c.cmd) {
+                switch (s2c.cmd) {
                     case 'signInSuccess': {
                         execute('updateReactTabs');
                         execute('openAfterInit');
@@ -232,8 +233,9 @@ class EventRouter {
                         break;
                     }
                 }
+                break;
             }
-            else if (lastEvent.type === 'serverFetchEvent') {
+            case 'serverFetchEvent': {
                 let sf2c = lastEvent.ref;
                 if (sf2c.cmd === 'imageSaveSuccess') {
                     execute('newChild');
@@ -242,6 +244,7 @@ class EventRouter {
                     rebuild();
                     redraw();
                 }
+                break;
             }
         }
     }
