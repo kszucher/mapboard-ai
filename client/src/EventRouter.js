@@ -103,7 +103,7 @@ class EventRouter {
                     [ 1,  0,  0,  e.code === 'KeyR',               [          'm'], 0,  1,  ['selectCellRow'                       ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyT',               [          'm'], 0,  1,  ['selectCellCol'                       ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  ['prettyPrint'                         ], 1 ],
-                    [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s'          ], 0,  1,  ['applyColor'                          ], 1 ],
+                    [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  ['applyColor'                          ], 1 ],
                     [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['selectNeighborNode'                  ], 1 ],
                     [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  ['selectNeighborMixed'                 ], 1 ],
                     [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['selectNeighborNodeToo'               ], 1 ],
