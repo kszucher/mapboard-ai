@@ -14,7 +14,7 @@ class MapCanvasVisualize {
         let canvasContext =                             document.getElementById('mapCanvas').getContext('2d');
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
-            cm.type === 'cell' && cm.index[0] > 0 && cm.index[1] === 0)) {
+            cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             canvasContext.beginPath();
             canvasContext.strokeStyle =                 cm.lineColor;
             canvasContext.lineWidth =                   1;

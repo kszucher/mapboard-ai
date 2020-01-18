@@ -364,8 +364,8 @@ export function execute(command) {
                     case 4: cm.sTextColor = '#d5802a'; break;
                     case 5: cm.sTextColor = '#1c8e1c'; break;
                     case 6: cm.sTextColor = '#8e1c8e'; break;
-                    case 7: cm.sTextColor = '#ff0000'; break;
-                    case 8: cm.sTextColor = '#0000ff'; break;
+                    case 7: cm.sTextColor = '#990000'; break;
+                    case 8: cm.sTextColor = '#000099'; break;
                     case 9: cm.sTextColor = '#ffffff'; break;
                 }
             }
