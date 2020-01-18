@@ -5,6 +5,7 @@ class WindowHandler {
     addListeners() {
         // https://www.tutorialspoint.com/es6/es6_events.htm
         window.addEventListener('click',                event =>    this.click(event)               );
+        window.addEventListener('dblclick',             event =>    this.dblclick(event)            );
         window.addEventListener('mousemove',            event =>    this.mousemove(event)           );
         window.addEventListener('mousedown',            event =>    this.mousedown(event)           );
         window.addEventListener("focusout",             event =>    this.focusout()                 );
@@ -19,6 +20,13 @@ class WindowHandler {
     click(e) {
         eventRouter.processEvent({
             type:                                       'windowClick',
+            ref:                                        e,
+        });
+    }
+
+    dblclick(e) {
+        eventRouter.processEvent({
+            type:                                       'windowDoubleClick',
             ref:                                        e,
         });
     }

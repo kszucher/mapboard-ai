@@ -44,7 +44,8 @@ class EventRouter {
 
                     if (mapMem.deepestSelectablePath.length === 0) {
                         console.log('not localizable')
-                    } else {
+                    }
+                    else {
                         e.ctrlKey ? execute('selectMeStructToo') : execute('selectMeStruct');
 
                         if (!e.shiftKey) execute('openAfterNodeSelect');
@@ -59,6 +60,12 @@ class EventRouter {
                     }
 
                 }
+                break;
+            }
+            case 'windowDoubleClick': {
+                execute('startEdit');
+                rebuild();
+                redraw();
                 break;
             }
             case 'windowPopState': {
