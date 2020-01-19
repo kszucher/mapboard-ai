@@ -47,8 +47,8 @@ class MapCanvasVisualize {
                 for (let j = 1; j < colCount; j++) {
                     canvasContext.beginPath();
                     canvasContext.strokeStyle =         '#dddddd';
-                    canvasContext.moveTo(               cm.nodeStartX + cm.sumMaxColWidth[j] + 0.5,     cm.nodeStartY   - selfHadj/2 );
-                    canvasContext.lineTo(               cm.nodeStartX + cm.sumMaxColWidth[j] + 0.5,     cm.nodeEndY     + selfHadj/2 );
+                    canvasContext.moveTo(               cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5,     cm.nodeStartY   - selfHadj/2 );
+                    canvasContext.lineTo(               cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5,     cm.nodeEndY     + selfHadj/2 );
                     canvasContext.stroke();
                 }
             }
