@@ -77,7 +77,7 @@ class EventRouter {
             case 'windowKeyDown': {
                 let sc = getSelectionContext();
 
-                // console.log(e);
+                console.log(e);
 
                 let keyStateMachineDb = [
                     ['c','s','a', 'keyMatch',                       'scope',       'e','p',  'executionList',                        'd'],
@@ -107,8 +107,10 @@ class EventRouter {
                     [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'], 0,  1,  ['cutSelection', 'selectHighOrigin'    ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 0,  1,  ['save'                                ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 1,  1,  ['finishEdit', 'save'                  ], 1 ],
-                    [ 0,  0,  1,  e.code === 'KeyR',               [          'm'], 0,  1,  ['selectCellRowMixed'                  ], 1 ],
-                    [ 0,  0,  1,  e.code === 'KeyC',               [          'm'], 0,  1,  ['selectCellColMixed'                  ], 1 ],
+                    [ 0,  1,  0,  e.code === 'ArrowUp',            [          'm'], 0,  1,  ['selectCellColMixed'                  ], 1 ],
+                    [ 0,  1,  0,  e.code === 'ArrowDown',          [          'm'], 0,  1,  ['selectCellColMixed'                  ], 1 ],
+                    [ 0,  1,  0,  e.code === 'ArrowLeft',          [          'm'], 0,  1,  ['selectCellRowMixed'                  ], 1 ],
+                    [ 0,  1,  0,  e.code === 'ArrowRight',         [          'm'], 0,  1,  ['selectCellRowMixed'                  ], 1 ],
                     [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  ['prettyPrint'                         ], 1 ],
                     [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  ['applyColor'                          ], 1 ],
                     [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['selectNeighborNode'                  ], 1 ],
