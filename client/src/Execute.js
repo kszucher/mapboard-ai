@@ -7,7 +7,13 @@ import {structDeleteReselect, cellBlockDeleteReselect}                          
 import {structInsert, cellInsert}                                                               from "./NodeInsert";
 import {setClipboard, structMove}                                                               from "./NodeMove";
 import {cellNavigate, structNavigate}                                                           from "./NodeNavigate";
-import {applyMixedSelection, applyStructSelection, clearCellSelection, getSelectionContext}     from "./NodeSelect"
+import {
+    applyMixedSelection,
+    applyStructSelection,
+    clearCellSelection,
+    clearStructSelection,
+    getSelectionContext
+} from "./NodeSelect"
 import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
 import {mapPrint} from "./MapPrint";
 
@@ -45,11 +51,6 @@ export function execute(command) {
         ['selectCellRow',                               1,                                      ],
         ['selectCellCol',                               1,                                      ],
         ['selectFirstMixed',                            1,                                      ],
-        // edit --------------------------------------------------------------------------------------------------------
-        ['eraseContent',                                1,                                      ],
-        ['typeText',                                    1,                                      ],
-        ['startEdit',                                   1,                                      ],
-        ['finishEdit',                                  1,                                      ],
         // insert ------------------------------------------------------------------------------------------------------
         ['newSiblingUp',                                1,                                      ],
         ['newSiblingDown',                              1,                                      ],
@@ -70,6 +71,11 @@ export function execute(command) {
         ['insertEquationFromClipboardAsNode',           1,                                      ],
         ['insertImageFromLinkAsNode',                   1,                                      ],
         ['insertIlinkFromMongo',                        1,                                      ],
+        // edit --------------------------------------------------------------------------------------------------------
+        ['eraseContent',                                1,                                      ],
+        ['typeText',                                    1,                                      ],
+        ['startEdit',                                   1,                                      ],
+        ['finishEdit',                                  1,                                      ],
         // misc --------------------------------------------------------------------------------------------------------
         ['cellifyMulti',                                1,                                      ],
         ['transpose',                                   1,                                      ],
@@ -223,37 +229,6 @@ export function execute(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // EDIT
-        // -------------------------------------------------------------------------------------------------------------
-        case 'eraseContent': {
-            lm.content = '';
-            let holderElement = document.getElementById(lm.divId);
-            holderElement.innerHTML = '';
-            break;
-        }
-        case 'typeText': {
-            let holderElement = document.getElementById(lm.divId);
-            holderElement.style.width = 1000 + 'px'; // long enough
-            break;
-        }
-        case 'startEdit': {
-            eventRouter.isEditing = 1;
-            let holderElement = document.getElementById(lm.divId);
-            holderElement.contentEditable = 'true';
-            setEndOfContenteditable(holderElement);
-            break;
-        }
-        case 'finishEdit' : {
-            let holderElement = document.getElementById(lm.divId);
-            holderElement.contentEditable = 'false';
-
-            lm.content = holderElement.textContent;
-            lm.isDimAssigned = 0;
-
-            eventRouter.isEditing = 0;
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
         case 'newSiblingUp':                        structInsert(lm, 'up');                                     break;
@@ -330,6 +305,37 @@ export function execute(command) {
             let text = lastEvent.props.data;
             setClipboard(JSON.parse(text));
             structMove(sc, 'clipboard2struct', 'PASTE');
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        // EDIT
+        // -------------------------------------------------------------------------------------------------------------
+        case 'eraseContent': {
+            lm.content = '';
+            let holderElement = document.getElementById(lm.divId);
+            holderElement.innerHTML = '';
+            break;
+        }
+        case 'typeText': {
+            let holderElement = document.getElementById(lm.divId);
+            holderElement.style.width = 1000 + 'px'; // long enough
+            break;
+        }
+        case 'startEdit': {
+            eventRouter.isEditing = 1;
+            let holderElement = document.getElementById(lm.divId);
+            holderElement.contentEditable = 'true';
+            setEndOfContenteditable(holderElement);
+            break;
+        }
+        case 'finishEdit' : {
+            let holderElement = document.getElementById(lm.divId);
+            holderElement.contentEditable = 'false';
+
+            lm.content = holderElement.textContent;
+            lm.isDimAssigned = 0;
+
+            eventRouter.isEditing = 0;
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
