@@ -1,5 +1,6 @@
 import {mapMem, mapref, mapasgn, pathMerge}                 from "./Map";
 import {mapCollect}                                         from "./MapCollect";
+import {arrayValuesSame} from "./Utils";
 
 export function getSelectionContext () {
 
@@ -87,7 +88,7 @@ export function clearStructSelection () {
 }
 
 export function checkSelection (parentRef) {
-    mapSearcher();
+    mapCollect.start();
     let filter = mapMem.filter;
 
     let rowSelected = false;

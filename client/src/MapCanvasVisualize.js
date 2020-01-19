@@ -70,6 +70,18 @@ class MapCanvasVisualize {
                 }
             }
         }
+        else if (cm.type === 'cell') {
+
+            if (cm.selected) {
+
+                let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
+
+                paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, selfHadj, cm.cBorderColor, 'partial');
+
+
+            }
+
+        }
 
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;

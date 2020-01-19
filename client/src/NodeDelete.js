@@ -1,5 +1,6 @@
 import {mapref}                     from "./Map";
 import {mapDivRemove}               from "./MapDivRemove";
+import {checkSelection} from "./NodeSelect";
 
 export function structDeleteReselect(sc) {
     // calculate jumpback
@@ -56,6 +57,5 @@ export function cellBlockDeleteReselect (lm) {
             lastParentRef.c[i].splice(lm.index[1], 1);
         }
     }
-    // TODO better after deletion rules
     lastParentRef.selected = 1;
 }

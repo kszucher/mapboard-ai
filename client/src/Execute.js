@@ -48,8 +48,8 @@ export function execute(command) {
         ['selectRightMixed',                            1,                                      ],
         ['selectNeighborNode',                          1,                                      ],
         ['selectNeighborNodeToo',                       1,                                      ],
-        ['selectCellRow',                               1,                                      ],
-        ['selectCellCol',                               1,                                      ],
+        ['selectCellRowMixed',                          1,                                      ],
+        ['selectCellColMixed',                          1,                                      ],
         ['selectFirstMixed',                            1,                                      ],
         // insert ------------------------------------------------------------------------------------------------------
         ['newSiblingUp',                                1,                                      ],
@@ -196,31 +196,28 @@ export function execute(command) {
             mapref(structNavigate(lastPath, keyStr)).selected = maxSel + 1;
             break;
         }
-        case 'selectCellRow': {
+        case 'selectCellRowMixed': {
             clearStructSelection();
             clearCellSelection();
-            let parentRef = mapref(lm.parentPath);
-            let currRow = lm.index[0];
-            let colLen = parentRef.c[0].length;
-
+            let parentRef =                         mapref(lm.parentPath);
+            let parentParentRef =                   mapref(parentRef.parentPath);
+            let currRow =                           parentRef.index[0];
+            let colLen =                            parentParentRef.c[0].length;
             for (let i = 0; i < colLen; i++) {
-                parentRef.c[currRow][i].selected = 1;
+                parentParentRef.c[currRow][i].selected = 1;
             }
-
             break;
         }
-        case 'selectCellCol': {
+        case 'selectCellColMixed': {
             clearStructSelection();
             clearCellSelection();
-
-            let parentRef = mapref(lm.parentPath);
-            let currCol = lm.index[1];
-            let rowLen = parentRef.c.length;
-
+            let parentRef =                         mapref(lm.parentPath);
+            let parentParentRef =                   mapref(parentRef.parentPath);
+            let currCol =                           parentRef.index[1];
+            let rowLen =                            parentParentRef.c.length;
             for (let i = 0; i < rowLen; i++) {
-                parentRef.c[i][currCol].selected = 1;
+                parentParentRef.c[i][currCol].selected = 1;
             }
-
             break;
         }
         case 'selectFirstMixed': {
