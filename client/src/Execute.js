@@ -205,6 +205,7 @@ export function execute(command) {
             let colLen =                            parentParentRef.c[0].length;
             for (let i = 0; i < colLen; i++) {
                 parentParentRef.c[currRow][i].selected = 1;
+                parentParentRef.c[currRow][i].s[0].selected = 1;
             }
             break;
         }
@@ -217,6 +218,7 @@ export function execute(command) {
             let rowLen =                            parentParentRef.c.length;
             for (let i = 0; i < rowLen; i++) {
                 parentParentRef.c[i][currCol].selected = 1;
+                parentParentRef.c[i][currCol].s[0].selected = 1;
             }
             break;
         }

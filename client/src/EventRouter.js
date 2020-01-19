@@ -46,7 +46,12 @@ class EventRouter {
                         console.log('not localizable')
                     }
                     else {
-                        e.ctrlKey ? execute('selectMeStructToo') : execute('selectMeStruct');
+                        if (e.ctrlKey === true) {
+                            execute('selectMeStructToo');
+                        }
+                        else {
+                            execute('selectMeStruct');
+                        }
 
                         if (!e.shiftKey) execute('openAfterNodeSelect');
 
@@ -77,7 +82,8 @@ class EventRouter {
             case 'windowKeyDown': {
                 let sc = getSelectionContext();
 
-                console.log(e);
+                // console.log(e);
+                // TODO merge "mixed" mode into "cell" mode, but not vice versa
 
                 let keyStateMachineDb = [
                     ['c','s','a', 'keyMatch',                       'scope',       'e','p',  'executionList',                        'd'],
