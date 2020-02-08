@@ -1,7 +1,7 @@
 import {mapMem}                                             from "./Map";
-import {hasCell}                                            from "./Node";
-import {getDim}                                             from "./Dim";
-import {isOdd} from "./Utils";
+import {hasCell}                                            from "../node/Node";
+import {getDim}                                             from "../src/Dim";
+import {isOdd} from "../src/Utils";
 
 class MapPlace {
     start() {

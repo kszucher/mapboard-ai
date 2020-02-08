@@ -1,10 +1,10 @@
 import {getDim}                                             from "./Dim"
 import {communication}                                      from "./Communication"
 import {execute}                                            from "./Execute";
-import {mapMem, redraw, rebuild}                            from "./Map"
-import {mapLocalize}                                        from "./MapLocalize";
-import {getSelectionContext}                                from "./NodeSelect";
-import {taskCanvasLocalize}                                 from "./TaskCanvasLocalize";
+import {mapMem, redraw, rebuild}                            from "../map/Map"
+import {mapLocalize}                                        from "../map/MapLocalize";
+import {getSelectionContext}                                from "../node/NodeSelect";
+import {taskCanvasLocalize}                                 from "../task/TaskCanvasLocalize";
 import {isUrl}                                              from "./Utils"
 
 export let currColorToPaint = 0;

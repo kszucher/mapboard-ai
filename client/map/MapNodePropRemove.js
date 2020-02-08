@@ -1,4 +1,4 @@
-import {props} from "./Node";
+import {props} from "../node/Node";
 
 class MapNodePropRemove {
     start(cml) {

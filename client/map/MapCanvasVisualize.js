@@ -1,7 +1,7 @@
 import {mapMem}                                         from "./Map";
-import {hasCell}                                        from "./Node";
-import {paintPolygon, paintSelection}                   from "./Ellipse";
-import {getBgc, isOdd} from "./Utils";
+import {hasCell}                                        from "../node/Node";
+import {paintPolygon, paintSelection}                   from "../src/Ellipse";
+import {getBgc, isOdd} from "../src/Utils";
 
 class MapCanvasVisualize {
     start () {

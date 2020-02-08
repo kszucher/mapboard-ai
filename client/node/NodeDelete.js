@@ -1,5 +1,5 @@
-import {mapref}                     from "./Map";
-import {mapDivRemove}               from "./MapDivRemove";
+import {mapref}                     from "../map/Map";
+import {mapDivRemove}               from "../map/MapDivRemove";
 import {checkSelection}             from "./NodeSelect";
 
 export function structDeleteReselect(sc) {

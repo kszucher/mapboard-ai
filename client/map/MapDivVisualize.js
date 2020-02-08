@@ -1,6 +1,6 @@
 import {mapMem}                                             from "./Map";
-import {genHash, getLatexString, copy, getBgc}              from "./Utils";
-import {hasCell}                                            from "./Node";
+import {genHash, getLatexString, copy, getBgc}              from "../src/Utils";
+import {hasCell}                                            from "../node/Node";
 
 class MapDivVisualize {
     start() {

@@ -1,4 +1,4 @@
-import {hasCell} from "./Node";
+import {hasCell} from "../node/Node";
 import {clearDiv} from "./Map";
 
 class MapDivRemove {

@@ -1,5 +1,5 @@
 import {clearStructSelection}                           from "./NodeSelect";
-import {mapref}                                         from "./Map";
+import {mapref}                                         from "../map/Map";
 import {getDefaultNode}                                 from "./Node";
 
 export function structInsert(lm, direction) {

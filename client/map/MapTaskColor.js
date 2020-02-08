@@ -1,5 +1,5 @@
 import {mapMem}                                             from "./Map";
-import {getBgc}                                             from "./Utils";
+import {getBgc}                                             from "../src/Utils";
 
 class MapColor {
     start () {

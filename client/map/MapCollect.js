@@ -1,6 +1,6 @@
 import {mapMem} from "./Map";
-import {copy} from "./Utils"
-import {hasCell} from "./Node";
+import {copy} from "../src/Utils"
+import {hasCell} from "../node/Node";
 
 class MapCollect {
     start() {

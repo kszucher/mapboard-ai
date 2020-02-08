@@ -1,4 +1,4 @@
-import {copy, subsref, subsasgn}                            from "./Utils"
+import {copy, subsref, subsasgn}                            from "../src/Utils"
 import {mapAssembly}                                        from "./MapAssembly";
 import {mapCanvasVisualize}                                 from './MapCanvasVisualize'
 import {mapChain}                                           from './MapChain'
@@ -11,7 +11,7 @@ import {mapNodePropRemove}                                  from "./MapNodePropR
 import {mapPlace}                                           from './MapPlace'
 import {mapTaskCalc}                                        from './MapTaskCalc';
 import {mapTaskColor}                                       from './MapTaskColor'
-import {taskCanvasVisualize}                                from "./TaskCanvasVisualize";
+import {taskCanvasVisualize}                                from "../task/TaskCanvasVisualize";
 
 export let mapMem = {};
 export let mapStorageOut = {};

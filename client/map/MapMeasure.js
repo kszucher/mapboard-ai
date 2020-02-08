@@ -1,6 +1,6 @@
 import {mapMem} from "./Map";
-import {hasCell} from "./Node";
-import {createArray, getEquationDim, getTextDim} from "./Utils";
+import {hasCell} from "../node/Node";
+import {createArray, getEquationDim, getTextDim} from "../src/Utils";
 
 class MapMeasure {
     start() {

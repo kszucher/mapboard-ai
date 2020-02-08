@@ -1,6 +1,6 @@
 import {checkMapBuilt, mapMem}                  from "./Map";
-import {props}                                  from "./Node"
-import {copy, shallowCopy}                      from "./Utils"
+import {props}                                  from "../node/Node"
+import {copy, shallowCopy}                      from "../src/Utils"
 
 class MapInit {
     start() {

@@ -1,5 +1,5 @@
-import {mapMem, mapref}                                     from './Map'
-import {getDim}                                             from "./Dim";
+import {mapMem, mapref}                                     from '../map/Map'
+import {getDim}                                             from "../src/Dim";
 
 export let sphereRadius =                                   10;
 export let sphereLut =                                      [];

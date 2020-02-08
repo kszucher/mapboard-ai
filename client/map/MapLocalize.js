@@ -1,5 +1,5 @@
 import {mapMem, mapref}                                     from "./Map";
-import {copy, isMouseInsideRectangle}                       from "./Utils"
+import {copy, isMouseInsideRectangle}                       from "../src/Utils"
 
 class MapLocalize {
     start() {

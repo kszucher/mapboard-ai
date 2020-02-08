@@ -1,6 +1,6 @@
-import {isMouseInsideRectangle}                                 from "./Utils";
-import {mapref}                                                 from "./Map";
-import {clearStructSelection}                                   from "./NodeSelect";
+import {isMouseInsideRectangle}                                 from "../src/Utils";
+import {mapref}                                                 from "../map/Map";
+import {clearStructSelection}                                   from "../node/NodeSelect";
 import {sphereLut, sphereRadius}                                from "./TaskCanvasVisualize"
 
 export function taskCanvasLocalize() {
