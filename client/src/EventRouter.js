@@ -2,7 +2,7 @@ import {getDim}                                             from "./Dim"
 import {communication}                                      from "./Communication"
 import {execute}                                            from "./Execute";
 import {mapMem, redraw, rebuild}                            from "../map/Map"
-import {mapLocalize}                                        from "../map/MapLocalize";
+import {mapCanvasLocalize}                                        from "../map/MapCanvasLocalize";
 import {getSelectionContext}                                from "../node/NodeSelect";
 import {taskCanvasLocalize}                                 from "../task/TaskCanvasLocalize";
 import {isUrl}                                              from "./Utils"
@@ -40,7 +40,7 @@ class EventRouter {
                         redraw();
                     }
 
-                    mapLocalize.start();
+                    mapCanvasLocalize.start();
 
                     if (mapMem.deepestSelectablePath.length === 0) {
                         console.log('not localizable')

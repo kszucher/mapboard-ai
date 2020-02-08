@@ -3,14 +3,13 @@ import {hasCell}                                        from "../node/Node";
 import {paintPolygon, paintSelection}                   from "../src/Ellipse";
 import {getBgc, isOdd} from "../src/Utils";
 
-class MapCanvasVisualize {
-    start () {
+export const mapCanvasVisualize = {
+    start: () => {
         let cm =                                        mapMem.data.s[0];
-        this.iterate(cm);
-    }
+        mapCanvasVisualize.iterate(cm);
+    },
 
-    iterate(cm) {
-
+    iterate: (cm) => {
         let canvasContext =                             document.getElementById('mapCanvas').getContext('2d');
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
@@ -37,9 +36,9 @@ class MapCanvasVisualize {
                 let rowCount = Object.keys(cm.c).length;
                 for (let i = 1; i < rowCount; i++) {
                     canvasContext.beginPath();
-                    canvasContext.strokeStyle =         '#dddddd';
-                    canvasContext.moveTo(               cm.nodeStartX,                                  cm.nodeStartY   - selfHadj/2    + cm.sumMaxRowHeight[i] );
-                    canvasContext.lineTo(               cm.nodeEndX,                                    cm.nodeEndY     - selfHadj/2    + cm.sumMaxRowHeight[i] );
+                    canvasContext.strokeStyle = '#dddddd';
+                    canvasContext.moveTo(cm.nodeStartX, cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i] );
+                    canvasContext.lineTo(cm.nodeEndX, cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i] );
                     canvasContext.stroke();
                 }
 
@@ -87,15 +86,13 @@ class MapCanvasVisualize {
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                this.iterate(cm.c[i][j]);
+                mapCanvasVisualize.iterate(cm.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            this.iterate(cm.s[i]);
+            mapCanvasVisualize.iterate(cm.s[i]);
         }
     }
-}
-
-export let mapCanvasVisualize = new MapCanvasVisualize();
+};
