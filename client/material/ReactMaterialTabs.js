@@ -1,8 +1,8 @@
-import React, {useCallback, useState, useEffect}            from 'react';
-import {createMuiTheme }                                    from '@material-ui/core/styles';
-import MuiThemeProvider                                     from '@material-ui/core/styles/MuiThemeProvider';
-import Tabs                                                 from '@material-ui/core/Tabs';
-import Tab                                                  from '@material-ui/core/Tab';
+import React, {useCallback, useState, useEffect} from 'react';
+import {createMuiTheme } from '@material-ui/core/styles';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import {updateStateProp} from "../src/Utils";
 import {eventRouter} from "../src/EventRouter";
 
@@ -17,8 +17,8 @@ const theme = createMuiTheme({
 export function SimpleTabs() {
 
     const [state, setState] = useState({
-        tabNames:   [],
-        tabId:      0
+        tabNames: [],
+        tabId: 0
     });
 
     useEffect(() => {
@@ -28,8 +28,8 @@ export function SimpleTabs() {
 
     const handleChangeExt = useCallback((e) => {
         setState({
-            tabNames:   e.detail.tabData.tabNames,
-            tabId:      e.detail.tabData.tabId
+            tabNames: e.detail.tabData.tabNames,
+            tabId: e.detail.tabData.tabId
         });
     });
 
@@ -38,10 +38,10 @@ export function SimpleTabs() {
         updateStateProp(state, setState, 'tabId', newValue);
 
         eventRouter.processEvent({
-            type:                                           'materialEvent',
+            type: 'materialEvent',
             ref: {
-                'cmd':                                      'openAfterTabSelect',
-                'tabId':                                    newValue,
+                'cmd': 'openAfterTabSelect',
+                'tabId': newValue,
             },
         });
 
@@ -50,13 +50,13 @@ export function SimpleTabs() {
     return (
         <MuiThemeProvider theme={theme}>
             <Tabs
-                value=                                      {state.tabId}
-                onChange=                                   {handleChange}
-                indicatorColor=                             "primary">
+                value={state.tabId}
+                onChange={handleChange}
+                indicatorColor="primary">
                 {state.tabNames.map(name => (
                     <Tab
-                        label=                              {name}
-                        key=                                {name}
+                        label={name}
+                        key={name}
                     />
                 ))}
             </Tabs>

@@ -7,9 +7,9 @@ class MapCollect {
         let cm = mapMem.data.s[0];
         let params = {
             filter: {
-                structSelectedPathList:                     [],
-                cellSelectedPathList:                       [],
-                taskEndPathList:                            [],
+                structSelectedPathList: [],
+                cellSelectedPathList: [],
+                taskEndPathList: [],
             }
         };
         this.iterate(cm, params);
