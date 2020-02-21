@@ -2,13 +2,13 @@ import {mapMem} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../src/Utils";
 import {hasCell} from "../node/Node";
 
-class MapDivVisualize {
-    start() {
+export const mapDivVisualize = {
+    start: () => {
         let cm = mapMem.data.s[0];
-        this.iterate(cm);
-    }
+        mapDivVisualize.iterate(cm);
+    },
 
-    iterate(cm) {
+    iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
             let divStyle = {
                 left: cm.nodeStartX + 'px',
@@ -103,15 +103,13 @@ class MapDivVisualize {
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                this.iterate(cm.c[i][j]);
+                mapDivVisualize.iterate(cm.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            this.iterate(cm.s[i]);
+            mapDivVisualize.iterate(cm.s[i]);
         }
     }
-}
-
-export let mapDivVisualize = new MapDivVisualize();
+};

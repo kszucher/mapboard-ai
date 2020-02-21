@@ -1,13 +1,13 @@
 import {mapMem}                                             from "./Map";
 import {getBgc}                                             from "../src/Utils";
 
-class MapColor {
-    start () {
+export const mapTaskColor = {
+    start: () => {
         let cm =                                            mapMem.data.s[0];
-        this.iterate(cm);
-    }
+        mapTaskColor.iterate(cm);
+    },
 
-    iterate(cm) {
+    iterate: (cm) => {
         if (cm.taskStatus !== -1) {
 
             cm.sTextColor =                                 '#000000';
@@ -41,9 +41,7 @@ class MapColor {
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            this.iterate(cm.s[i]);
+            mapTaskColor.iterate(cm.s[i]);
         }
     }
-}
-
-export let mapTaskColor = new MapColor();
+};

@@ -1,22 +1,22 @@
 import {props} from "../node/Node";
 
-class MapNodePropRemove {
-    start(cml) {
-        this.iterate(cml);
-    }
+export const mapNodePropRemove = {
+    start: (cml) => {
+        mapNodePropRemove.iterate(cml);
+    },
 
-    iterate(cml) {
+    iterate: (cml) => {
         let rowCount = Object.keys(cml.c).length;
         let colCount = Object.keys(cml.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                this.iterate(cml.c[i][j]);
+                mapNodePropRemove.iterate(cml.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cml.s).length;
         for (let i = 0; i < sCount; i++) {
-            this.iterate(cml.s[i]);
+            mapNodePropRemove.iterate(cml.s[i]);
         }
 
         let currKeys = Object.keys(cml);
@@ -42,6 +42,4 @@ class MapNodePropRemove {
             }
         }
     }
-}
-
-export let mapNodePropRemove = new MapNodePropRemove();
+};

@@ -1,11 +1,11 @@
-class MapNodePropChange {
-    start(cml, propName, propValue) {
+export const mapNodePropChange = {
+    start: (cml, propName, propValue) => {
         this.propName = propName;
         this.propValue = propValue;
         this.iterate(cml);
-    }
+    },
 
-    iterate(cm) {
+    iterate: (cm) => {
         cm[this.propName]  = this.propValue;
 
         let rowCount = Object.keys(cm.c).length;
@@ -21,6 +21,4 @@ class MapNodePropChange {
             this.iterate(cm.s[i]);
         }
     }
-}
-
-export let mapNodePropChange = new MapNodePropChange();
+};
