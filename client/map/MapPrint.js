@@ -1,20 +1,16 @@
-import {mapMem} from "./Map";
+export const mapPrint = {
+    start: (cml) => {
+        mapPrint.str = '';
+        mapPrint.iterate(cml);
+        console.log(mapPrint.str)
+    },
 
-class MapPrint {
-    start(cml) {
-        this.str = '';
-        this.iterate(cml);
-        console.log(this.str)
-    }
-
-    iterate(cm) {
-        this.str += ('\n' + '\t'.repeat(cm.path.length) + cm.content);
+    iterate: (cm) => {
+        mapPrint.str += ('\n' + '\t'.repeat(cm.path.length) + cm.content);
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            this.iterate(cm.s[i]);
+            mapPrint.iterate(cm.s[i]);
         }
     }
-}
-
-export let mapPrint = new MapPrint();
+};

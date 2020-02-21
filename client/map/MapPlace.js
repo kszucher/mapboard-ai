@@ -1,10 +1,9 @@
 import {mapMem}                                             from "./Map";
 import {hasCell}                                            from "../node/Node";
 import {getDim}                                             from "../src/Dim";
-import {isOdd} from "../src/Utils";
 
-class MapPlace {
-    start() {
+export const mapPlace = {
+    start: () => {
         let cm =                                            mapMem.data.s[0];
 
         let available =                                     getDim().mw;
@@ -27,10 +26,10 @@ class MapPlace {
         cm.lineDeltaX =                                     mapMem.sLineDeltaXDefault;
         cm.lineDeltaY =                                     cm.familyH > cm.selfH? cm.familyH/2 + 20 - 0.5 : cm.selfH/2 + 20 - 0.5;
 
-        this.iterate(cm);
-    }
+        mapPlace.iterate(cm);
+    },
 
-    iterate(cm) {
+    iterate: (cm) => {
 
         cm.nodeStartX =                                     cm.parentNodeEndX + cm.lineDeltaX;
         cm.nodeStartY =                                     cm.parentNodeEndY + cm.lineDeltaY;
@@ -62,7 +61,7 @@ class MapPlace {
                         cm.c[i][j].lineDeltaX =             cm.nodeStartX + cm.sumMaxColWidth[j] - cm.parentNodeEndX;
                         cm.c[i][j].lineDeltaY =             cm.nodeStartY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeEndY;
 
-                        this.iterate(cm.c[i][j]);
+                        mapPlace.iterate(cm.c[i][j]);
                     }
                 }
             }
@@ -76,7 +75,7 @@ class MapPlace {
             cm.s[i].lineDeltaX =                            mapMem.sLineDeltaXDefault;
             cm.s[i].lineDeltaY =                            cm.familyH*(-1/2) + elapsedY + cm.s[i].maxH/2;
 
-            this.iterate(cm.s[i]);
+            mapPlace.iterate(cm.s[i]);
 
             elapsedY +=                                     cm.s[i].maxH + (cm.spacingActivated + 2*cm.s[i].polygonFill)*cm.spacing;
         }
@@ -84,6 +83,4 @@ class MapPlace {
         cm.centerX =                                        cm.nodeStartX + cm.selfW/2;
         cm.centerY =                                        cm.nodeStartY;
     }
-}
-
-export let mapPlace = new MapPlace();
+};

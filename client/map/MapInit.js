@@ -2,13 +2,13 @@ import {checkMapBuilt, mapMem}                  from "./Map";
 import {props}                                  from "../node/Node"
 import {copy, shallowCopy}                      from "../src/Utils"
 
-class MapInit {
-    start() {
+export const mapInit = {
+    start: () => {
         let cm = mapMem.data.s[0];
-        this.iterate(cm);
-    }
+        mapInit.iterate(cm);
+    },
 
-    iterate(cm) {
+    iterate: (cm) => {
         Object.keys(props.saveOptional).map(currProperty => {
             if (!cm.hasOwnProperty(currProperty)) {
                 cm[currProperty] = ['s', 'c', 'path'].includes(currProperty)?
@@ -31,15 +31,13 @@ class MapInit {
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                this.iterate(cm.c[i][j]);
+                mapInit.iterate(cm.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            this.iterate(cm.s[i]);
+            mapInit.iterate(cm.s[i]);
         }
     }
-}
-
-export let mapInit = new MapInit();
+};

@@ -1,12 +1,12 @@
 import {mapMem} from "./Map";
 
-class MapTaskCalc {
-    start() {
+export const mapTaskCalc = {
+    start: () => {
         let cm = mapMem.data.s[0];
-        this.iterate(cm);
-    }
+        mapTaskCalc.iterate(cm);
+    },
 
-    iterate(cm) {
+    iterate: (cm) => {
         let sCount = Object.keys(cm.s).length;
         if (sCount === 0) {
             if (cm.taskStatusInherited === 1) {
@@ -21,7 +21,7 @@ class MapTaskCalc {
 
             for (let i = 0; i < sCount; i++) {
 
-                this.iterate(cm.s[i]);
+                mapTaskCalc.iterate(cm.s[i]);
 
                 if (i === 0) {
                     firstTaskStatus = cm.s[0].taskStatus
@@ -39,6 +39,4 @@ class MapTaskCalc {
             }
         }
     }
-}
-
-export let mapTaskCalc = new MapTaskCalc();
+};

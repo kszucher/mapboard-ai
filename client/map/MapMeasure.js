@@ -2,18 +2,17 @@ import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
 import {createArray, getEquationDim, getTextDim} from "../src/Utils";
 
-class MapMeasure {
-    start() {
+export const mapMeasure = {
+    start: () => {
         let cm = mapMem.data.s[0];
         let params = {
             hasMultipleChild:                               0,
             hasMultipleContentRow:                          0,
         };
-        this.iterate(cm, params);
-    }
+        mapMeasure.iterate(cm, params);
+    },
 
-    iterate(cm, params) {
-
+    iterate: (cm, params) => {
         params.hasMultipleChild =                           0;
         params.hasMultipleContentRow =                      0;
 
@@ -29,7 +28,7 @@ class MapMeasure {
 
                 for (let i = 0; i < rowCount; i++) {
                     for (let j = 0; j < colCount; j++) {
-                        this.iterate(cm.c[i][j], params);
+                        mapMeasure.iterate(cm.c[i][j], params);
 
                         maxCellHeightMat[i][j] =            cm.c[i][j].maxH;
                         maxCellWidthMat[i][j] =             cm.c[i][j].maxW;
@@ -111,7 +110,7 @@ class MapMeasure {
             let sMaxW =                                     0;
 
             for (let i = 0; i < sCount; i++) {
-                this.iterate(cm.s[i], params);
+                mapMeasure.iterate(cm.s[i], params);
 
                 cm.familyH +=                               cm.s[i].maxH;
 
@@ -138,6 +137,4 @@ class MapMeasure {
         cm.maxW =                                           cm.selfW + cm.familyW;
         cm.maxH =                                           Math.max(...[cm.selfH, cm.familyH]);
     }
-}
-
-export let mapMeasure = new MapMeasure();
+};
