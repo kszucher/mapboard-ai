@@ -1,6 +1,6 @@
 import {mapMem}                                         from "./Map";
 import {hasCell}                                        from "../node/Node";
-import {paintPolygon, paintSelection}                   from "../src/Ellipse";
+import {paintPolygon, paintSelection}                   from "../connection/Ellipse";
 import {getBgc, isOdd} from "../src/Utils";
 
 export const mapCanvasVisualize = {
