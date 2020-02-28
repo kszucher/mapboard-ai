@@ -1,6 +1,6 @@
 import {getDim}                                             from "./Dim"
 import {communication}                                      from "./Communication"
-import {execute}                                            from "./Execute";
+import {eventEmitter}                                            from "./EventEmitter";
 import {mapMem, redraw, rebuild}                            from "../map/Map"
 import {mapCanvasLocalize}                                        from "../map/MapCanvasLocalize";
 import {getSelectionContext}                                from "../node/NodeSelect";
@@ -36,7 +36,7 @@ class EventRouter {
                 else {
 
                     if (this.isEditing === 1) {
-                        execute('finishEdit');
+                        eventEmitter('finishEdit');
                         redraw();
                     }
 
@@ -47,13 +47,13 @@ class EventRouter {
                     }
                     else {
                         if (e.ctrlKey === true) {
-                            execute('selectMeStructToo');
+                            eventEmitter('selectMeStructToo');
                         }
                         else {
-                            execute('selectMeStruct');
+                            eventEmitter('selectMeStruct');
                         }
 
-                        if (!e.shiftKey) execute('openAfterNodeSelect');
+                        if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
 
                         redraw();
                         // redraw here is unconditional, todo make key version conditional with the help of the table
@@ -68,13 +68,13 @@ class EventRouter {
                 break;
             }
             case 'windowDoubleClick': {
-                execute('startEdit');
+                eventEmitter('startEdit');
                 rebuild();
                 redraw();
                 break;
             }
             case 'windowPopState': {
-                execute('openAfterHistory');
+                eventEmitter('openAfterHistory');
                 rebuild();
                 redraw();
                 break;
@@ -154,7 +154,7 @@ class EventRouter {
                                 currColorToPaint = e.which - 96;
                             }
 
-                            execute(currExecution);
+                            eventEmitter(currExecution);
 
                             // build execution-wise
                             if (currExecution !== 'typeText') {
@@ -174,35 +174,35 @@ class EventRouter {
             case 'windowPaste': {
                 if (this.isEditing === 1) {
                     if (lastEvent.props.dataType === 'text') {
-                        execute('insertTextFromClipboardAsText');
+                        eventEmitter('insertTextFromClipboardAsText');
                     }
                 } else {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
 
                         if (text.substring(0, 1) === '[') {
-                            execute('insertMapFromClipboard');
+                            eventEmitter('insertMapFromClipboard');
                             rebuild();
                             redraw();
                         } else {
-                            execute('newChild');
+                            eventEmitter('newChild');
                             rebuild();
                             if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                                execute('insertEquationFromClipboardAsNode');
+                                eventEmitter('insertEquationFromClipboardAsNode');
                                 rebuild();
                                 redraw();
                             } else if (isUrl(text)) {
-                                execute('insertElinkFromClipboardAsNode');
+                                eventEmitter('insertElinkFromClipboardAsNode');
                                 rebuild();
                                 redraw();
                             } else {
-                                execute('insertTextFromClipboardAsNode');
+                                eventEmitter('insertTextFromClipboardAsNode');
                                 rebuild();
                                 redraw();
                             }
                         }
                     } else if (lastEvent.props.dataType === 'image') {
-                        execute('sendImage');
+                        eventEmitter('sendImage');
                     }
                 }
                 break;
@@ -210,7 +210,7 @@ class EventRouter {
             case 'materialEvent': {
                 let r2c = lastEvent.ref;
                 // TODO see it all here in a switch
-                execute(r2c.cmd);
+                eventEmitter(r2c.cmd);
                 break;
             }
             case 'serverEvent': {
@@ -218,8 +218,8 @@ class EventRouter {
                 console.log('server: ' + s2c.cmd);
                 switch (s2c.cmd) {
                     case 'signInSuccess': {
-                        execute('updateReactTabs');
-                        execute('openAfterInit');
+                        eventEmitter('updateReactTabs');
+                        eventEmitter('openAfterInit');
                         break;
                     }
                     case 'signInFail': {
@@ -231,7 +231,7 @@ class EventRouter {
                         break;
                     }
                     case 'openMapSuccess': {
-                        execute('openMap');
+                        eventEmitter('openMap');
                         rebuild();
                         redraw();
                         break;
@@ -240,9 +240,9 @@ class EventRouter {
                         break;
                     }
                     case 'createMapInMapSuccess': {
-                        execute('insertIlinkFromMongo');
+                        eventEmitter('insertIlinkFromMongo');
                         rebuild();
-                        execute('save');
+                        eventEmitter('save');
                         rebuild();
                         redraw();
                         break;
@@ -253,9 +253,9 @@ class EventRouter {
             case 'serverFetchEvent': {
                 let sf2c = lastEvent.ref;
                 if (sf2c.cmd === 'imageSaveSuccess') {
-                    execute('newChild');
+                    eventEmitter('newChild');
                     rebuild();
-                    execute('insertImageFromLinkAsNode');
+                    eventEmitter('insertImageFromLinkAsNode');
                     rebuild();
                     redraw();
                 }

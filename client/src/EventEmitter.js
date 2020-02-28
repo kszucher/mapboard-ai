@@ -22,9 +22,9 @@ let headerData = {};
 let lastUserMap = '';
 let shouldAddToHistory = 0;
 
-export function execute(command) {
+export function eventEmitter(command) {
 
-    // console.log('execute: ' + command);
+    // console.log('eventEmitter: ' + command);
 
     let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath, structSelectedPathList;
 
