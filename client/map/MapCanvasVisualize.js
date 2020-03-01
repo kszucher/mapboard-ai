@@ -1,6 +1,7 @@
-import {mapMem}                                         from "./Map";
-import {hasCell}                                        from "../node/Node";
-import {paintPolygon, paintSelection}                   from "../connection/Ellipse";
+import {mapMem} from "./Map";
+import {hasCell} from "../node/Node";
+import {paintHighlight} from "../paint/PaintHighlight";
+import {paintSelection} from "../paint/PaintSelection";
 import {getBgc, isOdd} from "../src/Utils";
 
 export const mapCanvasVisualize = {
@@ -53,7 +54,7 @@ export const mapCanvasVisualize = {
             }
             else {
                 if (cm.polygonFill === 1) {
-                    paintPolygon(
+                    paintHighlight(
                         canvasContext,
                         cm.polygonBorderColor,
                         getBgc(),
