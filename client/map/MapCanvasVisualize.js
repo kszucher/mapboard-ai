@@ -1,7 +1,7 @@
 import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
-import {paintHighlight} from "../paint/PaintHighlight";
 import {paintSelection} from "../paint/PaintSelection";
+import {paintHighlight} from "../paint/PaintHighlight";
 import {getBgc, isOdd} from "../src/Utils";
 
 export const mapCanvasVisualize = {
@@ -15,6 +15,7 @@ export const mapCanvasVisualize = {
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
+
             canvasContext.beginPath();
             canvasContext.strokeStyle =                 cm.lineColor;
             canvasContext.lineWidth =                   1;
@@ -23,8 +24,6 @@ export const mapCanvasVisualize = {
                                                         cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
                                                         cm.nodeStartX,                                  cm.nodeStartY);
             canvasContext.stroke();
-
-            // TODO svg
         }
 
         if (cm.type === "struct") {
@@ -60,12 +59,12 @@ export const mapCanvasVisualize = {
                         getBgc(),
                         cm.polygonLineWidth,
                         [
-                                                        [cm.centerX - cm.selfW/2,                       cm.centerY      + cm.selfH/2        ],
-                                                        [cm.centerX + cm.selfW/2,                       cm.centerY      + cm.familyH/2 + 5  ],
-                                                        [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      + cm.familyH/2 + 5  ],
-                                                        [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      - cm.familyH/2 - 5  ],
-                                                        [cm.centerX + cm.selfW/2,                       cm.centerY      - cm.familyH/2 - 5  ],
-                                                        [cm.centerX - cm.selfW/2,                       cm.centerY      - cm.selfH/2        ],
+                            [cm.centerX - cm.selfW/2,                       cm.centerY      + cm.selfH/2        ],
+                            [cm.centerX + cm.selfW/2,                       cm.centerY      + cm.familyH/2 + 5  ],
+                            [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      + cm.familyH/2 + 5  ],
+                            [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      - cm.familyH/2 - 5  ],
+                            [cm.centerX + cm.selfW/2,                       cm.centerY      - cm.familyH/2 - 5  ],
+                            [cm.centerX - cm.selfW/2,                       cm.centerY      - cm.selfH/2        ],
                         ]);
                 }
             }
