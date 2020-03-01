@@ -11,21 +11,21 @@ export const mapDivVisualize = {
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
             let divStyle = {
-                left: cm.nodeStartX + 'px',
-                top: cm.nodeStartY - cm.selfH / 2 + 'px',
-                width: cm.selfW - mapMem.padding - 2 + 'px',
-                height: cm.selfH - mapMem.padding - 2 + 'px',
-                paddingLeft: mapMem.padding - 2 + 'px',
-                paddingTop: mapMem.padding - 2 + 'px',
-                position: 'absolute',
-                border: cm.selected ? '1px solid black' : '1px solid' + getBgc(),
-                borderRadius: 8 + 'px',
-                fontSize: cm.sTextFontSize + 'px',
-                fontFamily: 'Roboto',
-                textDecoration: cm.linkType !== "" ? "underline" : "",
-                cursor: 'default',
-                color: cm.sTextColor,
-                backgroundColor: cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
+                left:               cm.nodeStartX + 'px',
+                top:                cm.nodeStartY - cm.selfH / 2 + 'px',
+                width:              cm.selfW - mapMem.padding - 2 + 'px',
+                height:             cm.selfH - mapMem.padding - 2 + 'px',
+                paddingLeft:        mapMem.padding - 2 + 'px',
+                paddingTop:         mapMem.padding - 2 + 'px',
+                position:           'absolute',
+                border:             cm.selected ? '1px solid black' : '1px solid' + getBgc(),
+                borderRadius:       8 + 'px',
+                fontSize:           cm.sTextFontSize + 'px',
+                fontFamily:         'Roboto',
+                textDecoration:     cm.linkType !== "" ? "underline" : "",
+                cursor:             'default',
+                color:              cm.sTextColor,
+                backgroundColor:    cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
@@ -54,7 +54,8 @@ export const mapDivVisualize = {
                         div.style[styleName] = divStyle[styleName];
                     }
                 }
-            } else {
+            }
+            else {
                 div = document.getElementById(cm.divId);
 
                 for (let i = 0; i < Object.keys(divStyle).length; i++) {
@@ -88,12 +89,15 @@ export const mapDivVisualize = {
 
                 if (cm.contentType === 'text') {
                     div.innerHTML = cm.content;
-                } else if (cm.contentType === 'image') {
+                }
+                else if (cm.contentType === 'image') {
                     div.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
-                } else if (cm.contentType === 'equation') {
+                }
+                else if (cm.contentType === 'equation') {
                     // div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});
                     katex.render(getLatexString(cm.content), div, {throwOnError: false});
-                } else {
+                }
+                else {
 
                 }
             }

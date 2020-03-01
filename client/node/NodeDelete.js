@@ -1,6 +1,6 @@
-import {mapref}                     from "../map/Map";
-import {mapDivRemove}               from "../map/MapDivRemove";
-import {checkSelection}             from "./NodeSelect";
+import {mapref} from "../map/Map";
+import {mapDivRemove} from "../map/MapDivRemove";
+import {checkSelection} from "./NodeSelect";
 
 export function structDeleteReselect(sc) {
     // calculate jumpback
@@ -38,8 +38,7 @@ export function structDeleteReselect(sc) {
                 } else {
                     lastParentRef.selected = 1;
                 }
-            }
-            else {
+            } else {
                 lastParentRef.s[lm.index - lastParentRefDelChildCntr].selected = 1;
             }
         }

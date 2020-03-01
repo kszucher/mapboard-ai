@@ -1,11 +1,11 @@
-import {getDim}                                             from "./Dim"
-import {communication}                                      from "./Communication"
-import {eventEmitter}                                            from "./EventEmitter";
-import {mapMem, redraw, rebuild}                            from "../map/Map"
-import {mapCanvasLocalize}                                        from "../map/MapCanvasLocalize";
-import {getSelectionContext}                                from "../node/NodeSelect";
-import {taskCanvasLocalize}                                 from "../task/TaskCanvasLocalize";
-import {isUrl}                                              from "./Utils"
+import {getDim} from "./Dim"
+import {communication} from "./Communication"
+import {eventEmitter} from "./EventEmitter";
+import {mapMem, redraw, rebuild} from "../map/Map"
+import {mapCanvasLocalize} from "../map/MapCanvasLocalize";
+import {getSelectionContext} from "../node/NodeSelect";
+import {taskCanvasLocalize} from "../task/TaskCanvasLocalize";
+import {isUrl} from "./Utils"
 
 export let currColorToPaint = 0;
 export let lastEvent = {};

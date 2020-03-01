@@ -1,20 +1,14 @@
-import {communication}                                                                          from "./Communication";
-import {initDim}                                                                                from "./Dim";
-import {currColorToPaint, eventRouter, lastEvent}                                               from "./EventRouter";
-import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut}                             from "../map/Map";
-import {hasCell}                                                                                from "../node/Node";
-import {structDeleteReselect, cellBlockDeleteReselect}                                          from "../node/NodeDelete";
-import {structInsert, cellInsert}                                                               from "../node/NodeInsert";
-import {setClipboard, structMove}                                                               from "../node/NodeMove";
-import {cellNavigate, structNavigate}                                                           from "../node/NodeNavigate";
-import {
-    applyMixedSelection,
-    applyStructSelection,
-    clearCellSelection,
-    clearStructSelection,
-    getSelectionContext
-} from "../node/NodeSelect"
-import {copy, setEndOfContenteditable, transposeArray}                                          from "./Utils";
+import {communication} from "./Communication";
+import {initDim} from "./Dim";
+import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
+import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut} from "../map/Map";
+import {hasCell} from "../node/Node";
+import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
+import {structInsert, cellInsert} from "../node/NodeInsert";
+import {setClipboard, structMove} from "../node/NodeMove";
+import {cellNavigate, structNavigate} from "../node/NodeNavigate";
+import {applyMixedSelection,  applyStructSelection, clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
+import {copy, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
 
 // these will be part of state

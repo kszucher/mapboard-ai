@@ -1,5 +1,5 @@
-import {mapMem, mapref, mapasgn, pathMerge}                 from "../map/Map";
-import {mapCollect}                                         from "../map/MapCollect";
+import {mapMem, mapref, mapasgn, pathMerge} from "../map/Map";
+import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "../src/Utils";
 
 export function getSelectionContext () {
@@ -107,6 +107,7 @@ export function checkSelection (parentRef) {
     if (selectionRows.length === colLen && arrayValuesSame(selectionRows)) { // warning: arrayValuesSame has changed!!!
         rowSelected = true;
     }
+
     if (selectionCols.length === rowLen && arrayValuesSame(selectionCols)) {
         colSelected = true;
     }

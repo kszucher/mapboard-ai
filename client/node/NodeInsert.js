@@ -34,28 +34,36 @@ export function cellInsert (lastPath, direction) {
     let rowLen = parentRef.c.length;
     let colLen = parentRef.c[0].length;
 
-    if (direction === 'ArrowDown') {
-        let newRow = new Array(colLen);
-        for (let i = 0; i < colLen; i++) {
-            newRow[i] = getDefaultNode({s:[getDefaultNode()]});
+    switch (direction) {
+        case 'ArrowDown': {
+            let newRow = new Array(colLen);
+            for (let i = 0; i < colLen; i++) {
+                newRow[i] = getDefaultNode({s: [getDefaultNode()]});
+            }
+            parentRef.c.splice(currRow + 1, 0, newRow);
+            break;
         }
-        parentRef.c.splice(currRow + 1, 0, newRow);
-    } else if (direction === 'ArrowRight') {
-        for (let i = 0; i < rowLen; i++) {
-            parentRef.c[i].splice(currCol + 1, 0, getDefaultNode({s:[getDefaultNode()]}));
+        case 'ArrowRight': {
+            for (let i = 0; i < rowLen; i++) {
+                parentRef.c[i].splice(currCol + 1, 0, getDefaultNode({s: [getDefaultNode()]}));
+            }
+            break;
         }
-    } else if (direction === 'ArrowUp') {
-        let newRow = new Array(colLen);
-        for (let i = 0; i < colLen; i++) {
-            newRow[i] = getDefaultNode({s:[getDefaultNode()]});
+        case 'ArrowUp': {
+            let newRow = new Array(colLen);
+            for (let i = 0; i < colLen; i++) {
+                newRow[i] = getDefaultNode({s: [getDefaultNode()]});
+            }
+            parentRef.c.splice(currRow, 0, newRow);
+            break;
         }
-        parentRef.c.splice(currRow, 0, newRow);
-    } else if (direction === 'ArrowLeft') {
-        for (let i = 0; i < rowLen; i++) {
-            parentRef.c[i].splice(currCol, 0, getDefaultNode({s:[getDefaultNode()]}));
+        case 'ArrowLeft': {
+            for (let i = 0; i < rowLen; i++) {
+                parentRef.c[i].splice(currCol, 0, getDefaultNode({s: [getDefaultNode()]}));
+            }
+            break;
         }
-    }
-    else {
-
+        default:
+            break;
     }
 }
