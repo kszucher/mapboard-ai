@@ -1,6 +1,6 @@
-import {checkMapBuilt, mapMem}                  from "./Map";
-import {props}                                  from "../node/Node"
-import {copy, shallowCopy}                      from "../src/Utils"
+import {checkMapBuilt, mapMem} from "./Map";
+import {props} from "../node/Node"
+import {copy, shallowCopy} from "../src/Utils"
 
 export const mapInit = {
     start: () => {

@@ -19,7 +19,6 @@ export const mapTaskColor = {
                 case 3: cm.lineColor = '#25bf25';  break;
             }
 
-
             if (cm.taskStatus === 0) {
                 cm.ellipseFill = 0;
             }
