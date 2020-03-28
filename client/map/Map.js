@@ -45,18 +45,18 @@ export function loadMap(mapStorage) {
 
     mapMem = {
         // saveOptional
-        data:                               mapAssembly((mapStorage.data)),
-        density:                            copy(mapStorage.density),
-        task:                               copy(mapStorage.task),
+        data: mapAssembly((mapStorage.data)),
+        density: copy(mapStorage.density),
+        task: copy(mapStorage.task),
 
         // saveNever
-        sLineDeltaXDefault:                 mapStorage.density === 'large'? 30:20,
-        padding:                            mapStorage.density === 'large'? 8:3,
-        defaultH:                           mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
-        filter:                             [],
-        deepestSelectablePath:              [],
-        deepestSelectableRef:               [],
-        divData:                            [],
+        sLineDeltaXDefault: mapStorage.density === 'large'? 30:20,
+        padding: mapStorage.density === 'large'? 8:3,
+        defaultH: mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
+        filter: [],
+        deepestSelectablePath: [],
+        deepestSelectableRef: [],
+        divData: [],
     };
 
     isMapLoaded = 1;
