@@ -3,27 +3,32 @@ import {hasCell} from "../node/Node";
 import {paintSelection} from "../paint/PaintSelection";
 import {paintHighlight} from "../paint/PaintHighlight";
 import {getBgc, isOdd} from "../src/Utils";
+import {paintConnection} from "../paint/PaintConnection";
 
 export const mapCanvasVisualize = {
     start: () => {
-        let cm =                                        mapMem.data.s[0];
+        let cm = mapMem.data.s[0];
         mapCanvasVisualize.iterate(cm);
     },
 
     iterate: (cm) => {
-        let canvasContext =                             document.getElementById('mapCanvas').getContext('2d');
+        let canvasContext = document.getElementById('mapCanvas').getContext('2d');
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
-            canvasContext.beginPath();
-            canvasContext.strokeStyle =                 cm.lineColor;
-            canvasContext.lineWidth =                   1;
-            canvasContext.moveTo(                       cm.parentNodeEndX ,                             cm.parentNodeEndY);
-            canvasContext.bezierCurveTo(                cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY,
-                                                        cm.parentNodeEndX  + cm.lineDeltaX *1/4,        cm.parentNodeEndY + cm.lineDeltaY,
-                                                        cm.nodeStartX,                                  cm.nodeStartY);
-            canvasContext.stroke();
+            paintConnection(
+                canvasContext,
+                cm.lineColor,
+                cm.parentNodeEndX,
+                cm.parentNodeEndY,
+                cm.parentNodeEndX  + cm.lineDeltaX/4,
+                cm.parentNodeEndY,
+                cm.parentNodeEndX  + cm.lineDeltaX/4,
+                cm.parentNodeEndY + cm.lineDeltaY,
+                cm.nodeStartX,
+                cm.nodeStartY
+            );
         }
 
         if (cm.type === "struct") {
