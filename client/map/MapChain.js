@@ -3,11 +3,12 @@ import {mapMem} from "./Map";
 export const mapChain = {
     start: () => {
         let cm = mapMem.data.s[0];
-        cm.parentPath = [];
-        cm.isRoot = 1;
-        cm.type = 'struct';
-        cm.index = undefined;
-
+        Object.assign(cm, {
+            parentPath: [],
+            isRoot: 1,
+            type: 'struct',
+            index: undefined,
+        });
         mapChain.iterate(cm);
     },
 
@@ -31,22 +32,24 @@ export const mapChain = {
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                cm.c[i][j].parentPath = cm.path.slice(0);
-                cm.c[i][j].parentType = cm.type;
-                cm.c[i][j].type = 'cell';
-                cm.c[i][j].index = [i, j];
-
+                Object.assign(cm.c[i][j], {
+                    parentPath: cm.path.slice(0),
+                    parentType: cm.type,
+                    type: 'cell',
+                    index: [i, j],
+                });
                 mapChain.iterate(cm.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            cm.s[i].parentPath = cm.path.slice(0);
-            cm.s[i].parentType = cm.type;
-            cm.s[i].type = 'struct';
-            cm.s[i].index = i;
-
+            Object.assign(cm.s[i], {
+                parentPath: cm.path.slice(0),
+                parentType: cm.type,
+                type: 'struct',
+                index: i,
+            });
             mapChain.iterate(cm.s[i]);
         }
     }
