@@ -1,20 +1,18 @@
 import './../css/Layout.css'
-import React                                        from 'react'
-import ReactMaterialToolBar                         from "../material/ReactMaterialToolBar";
-import {SimpleTabs}                                 from "../material/ReactMaterialTabs";
+import React from 'react'
+import ReactMaterialToolBar from "../material/ReactMaterialToolBar";
+import {SimpleTabs} from "../material/ReactMaterialTabs";
 import {windowHandler} from "./WindowHandler";
 import {eventRouter} from "./EventRouter";
 
 export function Layout() {
-
     windowHandler.addListeners();
-
     eventRouter.processEvent({
-        type:                                       'materialEvent',
+        type: 'materialEvent',
         ref: {
-            'cmd':                                  'signIn',
-            'user':                                 'kryss',
-            'pass':                                 'mncvmncv'
+            'cmd': 'signIn',
+            'user': 'kryss',
+            'pass': 'mncvmncv'
         },
     });
 

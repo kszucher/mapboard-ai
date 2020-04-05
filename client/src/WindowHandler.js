@@ -1,5 +1,5 @@
-import {initDim}            from "./Dim";
-import {eventRouter}        from "./EventRouter"
+import {initDim} from "./Dim";
+import {eventRouter} from "./EventRouter"
 
 class WindowHandler {
     addListeners() {
@@ -19,15 +19,15 @@ class WindowHandler {
 
     click(e) {
         eventRouter.processEvent({
-            type:                                       'windowClick',
-            ref:                                        e,
+            type: 'windowClick',
+            ref: e,
         });
     }
 
     dblclick(e) {
         eventRouter.processEvent({
-            type:                                       'windowDoubleClick',
-            ref:                                        e,
+            type: 'windowDoubleClick',
+            ref: e,
         });
     }
 
@@ -48,8 +48,8 @@ class WindowHandler {
 
     popstate(e) {
         eventRouter.processEvent({
-            type:                                       'windowPopState',
-            ref:                                        e,
+            type: 'windowPopState',
+            ref: e,
         });
     }
 
@@ -60,8 +60,8 @@ class WindowHandler {
 
     keydown(e) {
         eventRouter.processEvent({
-            type:                                       'windowKeyDown',
-            ref:                                        e,
+            type: 'windowKeyDown',
+            ref: e,
         });
     };
 
@@ -80,10 +80,10 @@ class WindowHandler {
                     if (type === 'text/plain') {
                         navigator.clipboard.readText().then(text => {
                             eventRouter.processEvent({
-                                type:                   'windowPaste',
+                                type: 'windowPaste',
                                 props: {
-                                    dataType:           'text',
-                                    data:               text
+                                    dataType: 'text',
+                                    data: text
                                 }
                             });
                         });
@@ -91,10 +91,10 @@ class WindowHandler {
                     if (type === 'image/png') {
                         item[0].getType('image/png').then(image => {
                             eventRouter.processEvent({
-                                type:                   'windowPaste',
+                                type: 'windowPaste',
                                 props: {
-                                    dataType:           'image',
-                                    data:               image
+                                    dataType: 'image',
+                                    data: image
                                 }
 
                             });
