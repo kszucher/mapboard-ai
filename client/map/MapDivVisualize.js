@@ -70,15 +70,17 @@ export const mapDivVisualize = {
                 let leftDelta = parseInt(div.style.left, 10) - parseInt(divStyle.left);
                 let topDelta = parseInt(div.style.top, 10) - parseInt(divStyle.top);
 
+                if (cm.selected) {
+                    div.style.transform = '';
+                    div.style.transition = '';
+                }
+
                 if (leftDelta !== 0 || topDelta !== 0) {
                     div.style.transform = "translate(" + leftDelta + ',' + topDelta + ")";
                     div.style.transition = '0.5s ease-out';
 
                     div.style.left = divStyle.left;
                     div.style.top = divStyle.top;
-                } else {
-                    div.style.transform = '';
-                    div.style.transition = '';
                 }
             }
 
