@@ -50,7 +50,6 @@ export const mapSvgVisualize = {
 
                 if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
                     svgPath.setAttribute("d", svgPathStyle);
-                    svgPath.style.transition = '0.5s ease-out';
                 }
             }
             mapMem.svgPathData[cm.svgPathId].svgPathStyle = copy(svgPathStyle);
