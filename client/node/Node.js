@@ -49,6 +49,10 @@ export let props = {
 
             // mapDivVisualize
             isDivAssigned:                      0,
+
+            // mapSvgVisualize
+            isSvgAssigned:                      0,
+
             isContentAssigned:                  0,
         },
         initAlways: {

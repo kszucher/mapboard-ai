@@ -19,7 +19,7 @@ export const mapCanvasVisualize = {
 
             paintConnection(
                 canvasContext,
-                cm.lineColor,
+                '#ff0000',
                 cm.parentNodeEndX,
                 cm.parentNodeEndY,
                 cm.parentNodeEndX  + cm.lineDeltaX/4,

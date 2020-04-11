@@ -10,65 +10,67 @@ export const mapSvgVisualize = {
 
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
-            let svgStyle = {
-                x1:     cm.parentNodeEndX,
-                y1:     cm.parentNodeEndY,
-                cp1x:   cm.parentNodeEndX  + cm.lineDeltaX/4,
-                cp1y:   cm.parentNodeEndY,
-                cp2x:   cm.parentNodeEndX  + cm.lineDeltaX/4,
-                cp2y:   cm.parentNodeEndY + cm.lineDeltaY,
-                x2:     cm.nodeStartX,
-                y2:     cm.nodeStartY,
-            };
 
+            let x1 = cm.parentNodeEndX;
+            let y1 = cm.parentNodeEndY;
+            let cp1x = cm.parentNodeEndX  + cm.lineDeltaX/4;
+            let cp1y = cm.parentNodeEndY;
+            let cp2x = cm.parentNodeEndX  + cm.lineDeltaX/4;
+            let cp2y = cm.parentNodeEndY + cm.lineDeltaY;
+            let x2 = cm.nodeStartX;
+            let y2 = cm.nodeStartY;
 
+            let svgPathStyle = "M"+x1+','+y1+' '+"C"+cp1x+','+cp1y+' '+cp2x+','+cp2y+' '+x2+','+y2;
 
-            let svg;
+            let svgPath;
             if (cm.isSvgAssigned === 0) {
                 cm.isSvgAssigned = 1;
 
-                cm.svgId = 'svg' + genHash(8);
-                mapMem.svgData[cm.svgId] = {svgStyle: {}};
+                cm.svgPathId = 'svgPath' + genHash(8);
+                mapMem.svgPathData[cm.svgPathId] = {svgPathStyle: ""};
 
-                svg = document.createElement('svg');
-                svg.id = cm.svgId;
-                document.getElementById('mapSvg').appendChild(svg);
+                svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                // svgPath.setAttribute("d", "M375,261 C403,261 397,77 425,75");
+                svgPath.setAttribute("fill", "transparent");
+                svgPath.setAttribute("stroke", "#bbbbbb");
+                svgPath.setAttribute("stroke-width", "1");
+                svgPath.setAttribute("vector-effect", "non-scaling-stroke");
+                svgPath.setAttribute("id", cm.svgPathId);
 
-                for (let i = 0; i < Object.keys(svgStyle).length; i++) {
-                    let styleName = Object.keys(svgStyle)[i];
-                    if (svgStyle[styleName] !== mapMem.svgData[cm.svgId].svgStyle[styleName]) {
-                        svg.style[styleName] = svgStyle[styleName];
-                    }
+                let svg = document.getElementById('mapSvg');
+                svg.appendChild(svgPath);
+
+                if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
+                    svgPath.setAttribute("d", svgPathStyle);
                 }
+
+                console.log('PATHED')
+
             }
             else {
-                svg = document.getElementById(cm.svgId);
+                svgPath = document.getElementById(cm.svgPathId);
 
-                for (let i = 0; i < Object.keys(svgStyle).length; i++) {
-                    let styleName = Object.keys(svgStyle)[i];
-                    if (styleName !== 'left' && styleName !== 'top') {
-                        if (svgStyle[styleName] !== mapMem.svgData[cm.svgId].svgStyle[styleName]) {
-                            svg.style[styleName] = svgStyle[styleName];
-                        }
-                    }
+                if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
+                    // svgPath.setAttribute("d", svgPathStyle);
                 }
 
-                let leftDelta = parseInt(svg.style.left, 10) - parseInt(svgStyle.left);
-                let topDelta = parseInt(svg.style.top, 10) - parseInt(svgStyle.top);
-
-                if (leftDelta !== 0 || topDelta !== 0) {
-                    svg.style.transform = "translate(" + leftDelta + ',' + topDelta + ")";
-                    svg.style.transition = '0.5s ease-out';
-
-                    svg.style.left = svgStyle.left;
-                    svg.style.top = svgStyle.top;
-                } else {
-                    svg.style.transform = '';
-                    svg.style.transition = '';
-                }
+                // AND SHALL BE ABLE TO USE DYNAMISM -- get back to this in a jiffy
+                // let leftDelta = parseInt(svgPath.style.left, 10) - parseInt(svgPathStyle.left);
+                // let topDelta = parseInt(svgPath.style.top, 10) - parseInt(svgPathStyle.top);
+                //
+                // if (leftDelta !== 0 || topDelta !== 0) {
+                //     svgPath.style.transform = "translate(" + leftDelta + ',' + topDelta + ")";
+                //     svgPath.style.transition = '0.5s ease-out';
+                //
+                //     svgPath.style.left = svgPathStyle.left;
+                //     svgPath.style.top = svgPathStyle.top;
+                // } else {
+                //     svgPath.style.transform = '';
+                //     svgPath.style.transition = '';
+                // }
             }
 
-            mapMem.svgData[cm.svgId].svgStyle = copy(svgStyle);
+            // mapMem.svgPathData[cm.svgPathId].svgPathStyle = copy(svgPathStyle);
 
         }
 

@@ -12,6 +12,7 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {taskCanvasVisualize} from "../task/TaskCanvasVisualize";
+import {mapSvgVisualize} from "./MapSvgVisualize";
 
 export let mapMem = {};
 export let mapStorageOut = {};
@@ -32,7 +33,7 @@ let mapSaveNever = [
     'deepestSelectableRef',
     'div',
     'divData',
-    'svgData',
+    'svgPathData',
     'canvas',
     'canvasContext'
 ];
@@ -58,7 +59,7 @@ export function loadMap(mapStorage) {
         deepestSelectablePath: [],
         deepestSelectableRef: [],
         divData: [],
-        svgData: [],
+        svgPathData: [],
     };
 
     isMapLoaded = 1;
@@ -85,6 +86,7 @@ export function redraw() {
     clearCanvas();
     mapDivVisualize.start();
     mapCanvasVisualize.start();
+    mapSvgVisualize.start();
 
     if (mapMem.task) {
         taskCanvasVisualize();

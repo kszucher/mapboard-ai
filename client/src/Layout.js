@@ -9,16 +9,6 @@ export function Layout() {
 
 
     useEffect(() => {
-
-        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d",           "M375,261 C403,261 397,77 425,75");
-        path.setAttribute("fill",            "transparent");
-        path.setAttribute("stroke",            "#bbbbbb");
-        path.setAttribute("stroke-width",            "1"  );
-        path.setAttribute("vector-effect",            "non-scaling-stroke"  );
-
-        let svg = document.getElementById('mapSvg');
-        svg.appendChild(path);
     });
 
     windowHandler.addListeners();
