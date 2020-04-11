@@ -21,6 +21,9 @@ export const mapPlace = {
         div.style.height = "" + mapHeight + "px";
         div.style.width = "" + mapWidth + "px";
 
+        let svg = document.getElementById('mapSvg');
+        svg.setAttribute("viewBox", "0" + " " + "0" + " " + mapWidth + " " + mapHeight);
+
         cm.parentNodeEndX = 0;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = mapMem.sLineDeltaXDefault;

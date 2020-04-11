@@ -1,5 +1,5 @@
 import {mapMem} from "./Map";
-import {genHash, getLatexString, copy, getBgc} from "../src/Utils";
+import {genHash, copy} from "../src/Utils";
 import {hasCell} from "../node/Node";
 
 export const mapSvgVisualize = {
@@ -11,16 +11,17 @@ export const mapSvgVisualize = {
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
             let svgStyle = {
-
-                
-                
-                
+                x1:     cm.parentNodeEndX,
+                y1:     cm.parentNodeEndY,
+                cp1x:   cm.parentNodeEndX  + cm.lineDeltaX/4,
+                cp1y:   cm.parentNodeEndY,
+                cp2x:   cm.parentNodeEndX  + cm.lineDeltaX/4,
+                cp2y:   cm.parentNodeEndY + cm.lineDeltaY,
+                x2:     cm.nodeStartX,
+                y2:     cm.nodeStartY,
             };
 
-            if (mapMem.density === 'small' && cm.contentType === 'text') {
-                svgStyle.width = parseInt(svgStyle.width, 10) - 3 + 'px';
-                svgStyle.paddingLeft = parseInt(svgStyle.paddingLeft, 10) + 3 + 'px';
-            }
+
 
             let svg;
             if (cm.isSvgAssigned === 0) {
@@ -69,23 +70,6 @@ export const mapSvgVisualize = {
 
             mapMem.svgData[cm.svgId].svgStyle = copy(svgStyle);
 
-            if (cm.isContentAssigned === 0) {
-                cm.isContentAssigned = 1;
-
-                if (cm.contentType === 'text') {
-                    svg.innerHTML = cm.content;
-                }
-                else if (cm.contentType === 'image') {
-                    svg.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
-                }
-                else if (cm.contentType === 'equation') {
-                    // svg.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});
-                    katex.render(getLatexString(cm.content), svg, {throwOnError: false});
-                }
-                else {
-
-                }
-            }
         }
 
         let rowCount = Object.keys(cm.c).length;

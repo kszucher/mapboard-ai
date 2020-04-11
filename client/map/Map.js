@@ -32,6 +32,7 @@ let mapSaveNever = [
     'deepestSelectableRef',
     'div',
     'divData',
+    'svgData',
     'canvas',
     'canvasContext'
 ];
@@ -57,6 +58,7 @@ export function loadMap(mapStorage) {
         deepestSelectablePath: [],
         deepestSelectableRef: [],
         divData: [],
+        svgData: [],
     };
 
     isMapLoaded = 1;

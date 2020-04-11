@@ -10,11 +10,6 @@ export function Layout() {
 
     useEffect(() => {
 
-        let mapDiv = document.getElementById('mapDiv');
-
-        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("viewBox", "0 0 600 600");
-
         let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("d",           "M375,261 C403,261 397,77 425,75");
         path.setAttribute("fill",            "transparent");
@@ -22,10 +17,8 @@ export function Layout() {
         path.setAttribute("stroke-width",            "1"  );
         path.setAttribute("vector-effect",            "non-scaling-stroke"  );
 
-
+        let svg = document.getElementById('mapSvg');
         svg.appendChild(path);
-
-        mapDiv.appendChild(svg)
     });
 
     windowHandler.addListeners();
@@ -56,9 +49,11 @@ export function Layout() {
             <aside id="left"> </aside>,
             <aside id="right"> </aside>,
             <div id="center">
-                <div id = 'mapDiv' >
-                    <canvas id = 'mapCanvas'>
+                <div id='mapDiv'>
+                    <canvas id='mapCanvas'>
                     </canvas>
+                    <svg id="mapSvg">
+                    </svg>
                 </div>
             </div>
         </div>
