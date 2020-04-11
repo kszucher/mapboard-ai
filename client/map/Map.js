@@ -113,7 +113,7 @@ export function clearDivs() {
 export function clearSvg(svgPathId) {
     let currSvgPath = document.getElementById(svgPathId);
     currSvgPath.parentNode.removeChild(currSvgPath);
-    delete mapMem.divData[svgPathId];
+    delete mapMem.svgPathData[svgPathId];
 }
 
 export function clearSvgs() {
@@ -122,7 +122,7 @@ export function clearSvgs() {
         let svgPathId = currKeys[i];
         let currSvgPathId = document.getElementById(svgPathId);
         currSvgPathId.parentNode.removeChild(currSvgPathId);
-        delete mapMem.divData[svgPathId];
+        delete mapMem.svgPathData[svgPathId];
     }
 }
 

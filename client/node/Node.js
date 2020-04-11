@@ -49,9 +49,11 @@ export let props = {
 
             // mapDivVisualize
             isDivAssigned:                      0,
+            divId:                              '',
 
             // mapSvgVisualize
             isSvgAssigned:                      0,
+            svgPathId:                          '',
 
             isContentAssigned:                  0,
         },
