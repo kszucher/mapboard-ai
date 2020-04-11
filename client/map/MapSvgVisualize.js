@@ -9,7 +9,8 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
-        if (cm.type === 'struct' && ! hasCell(cm)) {
+        if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
+            cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
@@ -30,7 +31,6 @@ export const mapSvgVisualize = {
                 mapMem.svgPathData[cm.svgPathId] = {svgPathStyle: ""};
 
                 svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                // svgPath.setAttribute("d", "M375,261 C403,261 397,77 425,75");
                 svgPath.setAttribute("fill", "transparent");
                 svgPath.setAttribute("stroke", "#bbbbbb");
                 svgPath.setAttribute("stroke-width", "1");
@@ -43,35 +43,16 @@ export const mapSvgVisualize = {
                 if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
                     svgPath.setAttribute("d", svgPathStyle);
                 }
-
-                console.log('PATHED')
-
             }
             else {
                 svgPath = document.getElementById(cm.svgPathId);
 
                 if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
-                    // svgPath.setAttribute("d", svgPathStyle);
+                    svgPath.setAttribute("d", svgPathStyle);
+                    svgPath.style.transition = '0.5s ease-out';
                 }
-
-                // AND SHALL BE ABLE TO USE DYNAMISM -- get back to this in a jiffy
-                // let leftDelta = parseInt(svgPath.style.left, 10) - parseInt(svgPathStyle.left);
-                // let topDelta = parseInt(svgPath.style.top, 10) - parseInt(svgPathStyle.top);
-                //
-                // if (leftDelta !== 0 || topDelta !== 0) {
-                //     svgPath.style.transform = "translate(" + leftDelta + ',' + topDelta + ")";
-                //     svgPath.style.transition = '0.5s ease-out';
-                //
-                //     svgPath.style.left = svgPathStyle.left;
-                //     svgPath.style.top = svgPathStyle.top;
-                // } else {
-                //     svgPath.style.transform = '';
-                //     svgPath.style.transition = '';
-                // }
             }
-
-            // mapMem.svgPathData[cm.svgPathId].svgPathStyle = copy(svgPathStyle);
-
+            mapMem.svgPathData[cm.svgPathId].svgPathStyle = copy(svgPathStyle);
         }
 
         let rowCount = Object.keys(cm.c).length;

@@ -1,5 +1,5 @@
 import {hasCell} from "../node/Node";
-import {clearDiv} from "./Map";
+import {clearDiv, clearSvg} from "./Map";
 
 export const mapDivRemove = {
     start: (cm) => {
@@ -24,6 +24,7 @@ export const mapDivRemove = {
             if (hasCell(cm)) {
             }
             else {
+                clearSvg(cm.svgPathId);
                 clearDiv(cm.divId);
             }
         }

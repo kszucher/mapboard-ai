@@ -17,18 +17,18 @@ export const mapCanvasVisualize = {
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
-            paintConnection(
-                canvasContext,
-                '#ff0000',
-                cm.parentNodeEndX,
-                cm.parentNodeEndY,
-                cm.parentNodeEndX  + cm.lineDeltaX/4,
-                cm.parentNodeEndY,
-                cm.parentNodeEndX  + cm.lineDeltaX/4,
-                cm.parentNodeEndY + cm.lineDeltaY,
-                cm.nodeStartX,
-                cm.nodeStartY
-            );
+            // paintConnection(
+            //     canvasContext,
+            //     '#ff0000',
+            //     cm.parentNodeEndX,
+            //     cm.parentNodeEndY,
+            //     cm.parentNodeEndX  + cm.lineDeltaX/4,
+            //     cm.parentNodeEndY,
+            //     cm.parentNodeEndX  + cm.lineDeltaX/4,
+            //     cm.parentNodeEndY + cm.lineDeltaY,
+            //     cm.nodeStartX,
+            //     cm.nodeStartY
+            // );
         }
 
         if (cm.type === "struct") {

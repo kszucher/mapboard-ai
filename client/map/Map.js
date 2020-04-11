@@ -43,6 +43,7 @@ export function loadMap(mapStorage) {
     if (isMapLoaded === 1) {
         clearCanvas();
         clearDivs();
+        clearSvgs();
     }
 
     mapMem = {
@@ -108,6 +109,23 @@ export function clearDivs() {
         delete mapMem.divData[divId];
     }
 }
+
+export function clearSvg(svgPathId) {
+    let currSvgPath = document.getElementById(svgPathId);
+    currSvgPath.parentNode.removeChild(currSvgPath);
+    delete mapMem.divData[svgPathId];
+}
+
+export function clearSvgs() {
+    let currKeys = Object.keys(mapMem.svgPathData);
+    for (let i = 0; i < currKeys.length; i++) {
+        let svgPathId = currKeys[i];
+        let currSvgPathId = document.getElementById(svgPathId);
+        currSvgPathId.parentNode.removeChild(currSvgPathId);
+        delete mapMem.divData[svgPathId];
+    }
+}
+
 
 export function clearCanvas() {
     let canvas =            document.getElementById('mapCanvas');
