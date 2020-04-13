@@ -1,6 +1,6 @@
 import {mapMem} from "./Map";
-import {genHash, copy} from "../src/Utils";
 import {hasCell} from "../node/Node";
+import {genHash, copy, isOdd} from "../src/Utils";
 
 export const mapSvgVisualize = {
     start: () => {
@@ -9,20 +9,48 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
+
+        let svgStyle = '';
+
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
-            let cp1x = cm.parentNodeEndX  + cm.lineDeltaX/4;
+            let cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
             let cp1y = cm.parentNodeEndY;
-            let cp2x = cm.parentNodeEndX  + cm.lineDeltaX/4;
+            let cp2x = cm.parentNodeEndX + cm.lineDeltaX / 4;
             let cp2y = cm.parentNodeEndY + cm.lineDeltaY;
             let x2 = cm.nodeStartX;
             let y2 = cm.nodeStartY;
 
-            let svgStyle = "M"+x1+','+y1+' '+"C"+cp1x+','+cp1y+' '+cp2x+','+cp2y+' '+x2+','+y2;
+            svgStyle = "M" + x1 + ',' + y1 + ' ' +
+                "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
+                x2 + ',' + y2;
+        }
+        else if (cm.type === "struct" && hasCell(cm)) {
+            let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
 
+            let round = 8;
+
+            let x1 = cm.centerX - (cm.selfW + 1)/2;
+            let y1 = cm.centerY - selfHadj/2 + round;
+
+            let h = cm.selfW - 2*round;
+            let v = cm.selfH - 2*round;
+
+            svgStyle = "M" + x1 + ',' + y1 + ' ' +
+                'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' +(-round) + ' ' +
+                'h' + h + ' ' +
+                'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
+                'v' + v + ' ' +
+                'a' + round + ',' + round + ' 0 0 1 ' +(-round) + ',' + (round) + ' ' +
+                'h' + (-h) + ' ' +
+                'a' + round + ',' + round + ' 0 0 1 ' +(-round) + ',' +(-round) + ' '
+            ;
+        }
+
+        if (svgStyle !== '') {
             let svgElement;
             if (cm.isSvgAssigned === 0) {
                 cm.isSvgAssigned = 1;
@@ -31,6 +59,7 @@ export const mapSvgVisualize = {
                 mapMem.svgData[cm.svgId] = {svgStyle: ""};
 
                 svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
                 svgElement.setAttribute("fill", "transparent");
                 svgElement.setAttribute("stroke", "#bbbbbb");
                 svgElement.setAttribute("stroke-width", "1");
