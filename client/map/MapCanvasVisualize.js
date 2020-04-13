@@ -1,8 +1,6 @@
 import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
-import {paintSelection} from "../paint/PaintSelection";
 import {getBgc, isOdd} from "../src/Utils";
-import {paintConnection} from "../paint/PaintConnection";
 
 export const mapCanvasVisualize = {
     start: () => {
@@ -62,8 +60,7 @@ export const mapCanvasVisualize = {
 
                 let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
 
-                paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, selfHadj, cm.cBorderColor, 'partial');
-
+                // paintSelection(canvasContext, cm.centerX, cm.centerY, cm.selfW, selfHadj, cm.cBorderColor, 'partial');
 
             }
 

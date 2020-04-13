@@ -11,6 +11,7 @@ export const mapSvgVisualize = {
     iterate: (cm) => {
 
         let svgStyle = '';
+        let svgColor = '';
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
@@ -27,6 +28,8 @@ export const mapSvgVisualize = {
             svgStyle = "M" + x1 + ',' + y1 + ' ' +
                 "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
                 x2 + ',' + y2;
+
+            svgColor = '#bbbbbb';
         }
         else if (cm.type === "struct" && hasCell(cm)) {
             let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
@@ -48,6 +51,8 @@ export const mapSvgVisualize = {
                 'h' + (-h) + ' ' +
                 'a' + round + ',' + round + ' 0 0 1 ' +(-round) + ',' +(-round) + ' '
             ;
+
+            svgColor = '#50dfff';
         }
 
         if (svgStyle !== '') {
@@ -61,7 +66,7 @@ export const mapSvgVisualize = {
                 svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
                 svgElement.setAttribute("fill", "transparent");
-                svgElement.setAttribute("stroke", "#bbbbbb");
+                svgElement.setAttribute("stroke", svgColor);
                 svgElement.setAttribute("stroke-width", "1");
                 svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                 svgElement.setAttribute("id", cm.svgId);
