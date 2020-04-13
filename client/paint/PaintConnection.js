@@ -8,7 +8,6 @@ export function paintConnection (canvasContext, color, x1, y1, cp1x, cp1y, cp2x,
 }
 
 // TOOD
-// egyrészt, a polygon fill-t deprecated státuszúvá változtathatom, ugyanis NEM használ... ugyanaz ez mint a minimap
 // másrészt, a paintSelection lefty megcsinálható szépen rounded rect path segítségével!!!
 // továbbá, egy cellát tartalmazó struct SOHASEM fog svg line-t tartalmazni, és mivel a két dolog diszjunkt, ezért beleillik a rendszerbe
 // tehát rename svgPath to svg, aztán

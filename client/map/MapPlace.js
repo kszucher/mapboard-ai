@@ -80,7 +80,7 @@ export const mapPlace = {
 
             mapPlace.iterate(cm.s[i]);
 
-            elapsedY += cm.s[i].maxH + (cm.spacingActivated + 2*cm.s[i].polygonFill)*cm.spacing;
+            elapsedY += cm.s[i].maxH + cm.spacingActivated*cm.spacing;
         }
 
         cm.centerX = cm.nodeStartX + cm.selfW/2;

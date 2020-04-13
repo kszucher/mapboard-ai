@@ -56,23 +56,6 @@ export const mapCanvasVisualize = {
                     canvasContext.stroke();
                 }
             }
-            else {
-                if (cm.polygonFill === 1) {
-                    paintHighlight(
-                        canvasContext,
-                        cm.polygonBorderColor,
-                        getBgc(),
-                        cm.polygonLineWidth,
-                        [
-                            [cm.centerX - cm.selfW/2,                       cm.centerY      + cm.selfH/2        ],
-                            [cm.centerX + cm.selfW/2,                       cm.centerY      + cm.familyH/2 + 5  ],
-                            [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      + cm.familyH/2 + 5  ],
-                            [cm.nodeStartX + cm.selfW + cm.familyW,         cm.centerY      - cm.familyH/2 - 5  ],
-                            [cm.centerX + cm.selfW/2,                       cm.centerY      - cm.familyH/2 - 5  ],
-                            [cm.centerX - cm.selfW/2,                       cm.centerY      - cm.selfH/2        ],
-                        ]);
-                }
-            }
         }
         else if (cm.type === 'cell') {
 

@@ -25,11 +25,6 @@ export let props = {
 
         lineColor:                              '#bbbbbb',
 
-        polygonFill:                            0,
-        polygonBorderColor:                     '#50dfff',
-        polygonFillColor:                       getBgc(),
-        polygonLineWidth:                       1,
-
         ellipseFill:                            0,
         ellipseBorderColor:                     '#ffffff',
         ellipseFillColor:                       getBgc(),
