@@ -21,38 +21,38 @@ export const mapSvgVisualize = {
             let x2 = cm.nodeStartX;
             let y2 = cm.nodeStartY;
 
-            let svgPathStyle = "M"+x1+','+y1+' '+"C"+cp1x+','+cp1y+' '+cp2x+','+cp2y+' '+x2+','+y2;
+            let svgStyle = "M"+x1+','+y1+' '+"C"+cp1x+','+cp1y+' '+cp2x+','+cp2y+' '+x2+','+y2;
 
-            let svgPath;
+            let svgElement;
             if (cm.isSvgAssigned === 0) {
                 cm.isSvgAssigned = 1;
 
-                cm.svgPathId = 'svgPath' + genHash(8);
-                mapMem.svgPathData[cm.svgPathId] = {svgPathStyle: ""};
+                cm.svgId = 'svg' + genHash(8);
+                mapMem.svgData[cm.svgId] = {svgStyle: ""};
 
-                svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                svgPath.setAttribute("fill", "transparent");
-                svgPath.setAttribute("stroke", "#bbbbbb");
-                svgPath.setAttribute("stroke-width", "1");
-                svgPath.setAttribute("vector-effect", "non-scaling-stroke");
-                svgPath.setAttribute("id", cm.svgPathId);
+                svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                svgElement.setAttribute("fill", "transparent");
+                svgElement.setAttribute("stroke", "#bbbbbb");
+                svgElement.setAttribute("stroke-width", "1");
+                svgElement.setAttribute("vector-effect", "non-scaling-stroke");
+                svgElement.setAttribute("id", cm.svgId);
 
-                let svg = document.getElementById('mapSvg');
-                svg.appendChild(svgPath);
+                let mapSvg = document.getElementById('mapSvg');
+                mapSvg.appendChild(svgElement);
 
-                if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
-                    svgPath.setAttribute("d", svgPathStyle);
-                    svgPath.style.transition = '0.5s ease-out';
+                if (svgStyle !== mapMem.svgData[cm.svgId].svgStyle) {
+                    svgElement.setAttribute("d", svgStyle);
+                    svgElement.style.transition = '0.5s ease-out';
                 }
             }
             else {
-                svgPath = document.getElementById(cm.svgPathId);
+                svgElement = document.getElementById(cm.svgId);
 
-                if (svgPathStyle !== mapMem.svgPathData[cm.svgPathId].svgPathStyle) {
-                    svgPath.setAttribute("d", svgPathStyle);
+                if (svgStyle !== mapMem.svgData[cm.svgId].svgStyle) {
+                    svgElement.setAttribute("d", svgStyle);
                 }
             }
-            mapMem.svgPathData[cm.svgPathId].svgPathStyle = copy(svgPathStyle);
+            mapMem.svgData[cm.svgId].svgStyle = copy(svgStyle);
         }
 
         let rowCount = Object.keys(cm.c).length;

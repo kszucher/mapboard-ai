@@ -24,7 +24,7 @@ export const mapDivRemove = {
             if (hasCell(cm)) {
             }
             else {
-                clearSvg(cm.svgPathId);
+                clearSvg(cm.svgId);
                 clearDiv(cm.divId);
             }
         }

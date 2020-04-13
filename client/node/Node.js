@@ -53,7 +53,7 @@ export let props = {
 
             // mapSvgVisualize
             isSvgAssigned:                      0,
-            svgPathId:                          '',
+            svgId:                              '',
 
             isContentAssigned:                  0,
         },

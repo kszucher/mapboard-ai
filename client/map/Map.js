@@ -33,7 +33,7 @@ let mapSaveNever = [
     'deepestSelectableRef',
     'div',
     'divData',
-    'svgPathData',
+    'svgData',
     'canvas',
     'canvasContext'
 ];
@@ -60,7 +60,7 @@ export function loadMap(mapStorage) {
         deepestSelectablePath: [],
         deepestSelectableRef: [],
         divData: [],
-        svgPathData: [],
+        svgData: [],
     };
 
     isMapLoaded = 1;
@@ -110,19 +110,19 @@ export function clearDivs() {
     }
 }
 
-export function clearSvg(svgPathId) {
-    let currSvgPath = document.getElementById(svgPathId);
-    currSvgPath.parentNode.removeChild(currSvgPath);
-    delete mapMem.svgPathData[svgPathId];
+export function clearSvg(svgId) {
+    let currSvg = document.getElementById(svgId);
+    currSvg.parentNode.removeChild(currSvg);
+    delete mapMem.svgData[svgId];
 }
 
 export function clearSvgs() {
-    let currKeys = Object.keys(mapMem.svgPathData);
+    let currKeys = Object.keys(mapMem.svgData);
     for (let i = 0; i < currKeys.length; i++) {
-        let svgPathId = currKeys[i];
-        let currSvgPathId = document.getElementById(svgPathId);
-        currSvgPathId.parentNode.removeChild(currSvgPathId);
-        delete mapMem.svgPathData[svgPathId];
+        let svgId = currKeys[i];
+        let currSvgId = document.getElementById(svgId);
+        currSvgId.parentNode.removeChild(currSvgId);
+        delete mapMem.svgData[svgId];
     }
 }
 
