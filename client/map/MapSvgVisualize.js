@@ -16,6 +16,8 @@ export const mapSvgVisualize = {
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
+            svgShouldRender = true;
+
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
             let cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
@@ -25,7 +27,6 @@ export const mapSvgVisualize = {
             let x2 = cm.nodeStartX;
             let y2 = cm.nodeStartY;
 
-            svgShouldRender = true;
             svgGroupData.push({
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
@@ -36,7 +37,37 @@ export const mapSvgVisualize = {
         }
 
         if (cm.type === "struct" && hasCell(cm)) {
+            svgShouldRender = true;
+
             let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
+
+            let rowCount = Object.keys(cm.c).length;
+            for (let i = 1; i < rowCount; i++) {
+                let x1 = cm.nodeStartX;
+                let y1 = cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                let x2 = cm.nodeEndX;
+                let y2 = cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i];
+
+                svgGroupData.push({
+                    path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
+                    color: '#dddddd',
+                    id: 'cellFrame' + 'Row' + i
+                });
+            }
+
+            let colCount = Object.keys(cm.c[0]).length;
+            for (let j = 1; j < colCount; j++) {
+                let x1 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
+                let y1 = cm.nodeStartY   - selfHadj/2;
+                let x2 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
+                let y2 = cm.nodeEndY     + selfHadj/2;
+
+                svgGroupData.push({
+                    path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
+                    color: '#dddddd',
+                    id: 'cellFrame' + 'Col' + j
+                });
+            }
 
             let round = 8;
 
@@ -46,7 +77,6 @@ export const mapSvgVisualize = {
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
-            svgShouldRender = true;
             svgGroupData.push({
                 path: "M" + x1 + ',' + y1 + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
@@ -56,12 +86,9 @@ export const mapSvgVisualize = {
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
                     'h' + (-h) + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                color: '#50dfff',
+                color: cm.selected? '#000000' : '#50dfff',
                 id: 'cellFrame'
-            })
-
-            // FURTHER STUFF
-
+            });
         }
 
         if (svgShouldRender) {
@@ -98,7 +125,8 @@ export const mapSvgVisualize = {
                 svgGroup = document.getElementById(cm.svgId);
                 if (JSON.stringify(svgGroupData) !== JSON.stringify(mapMem.svgData[cm.svgId].svgGroupData)) {
                     for (const svgGroupDataElement of svgGroupData) {
-                        let svgElement = svgGroup.childNodes.item(svgGroupDataElement.id);
+                        let svgElement = svgGroup.querySelector('#' + svgGroupDataElement.id);
+
                         svgElement.setAttribute("d",            svgGroupDataElement.path);
                         svgElement.setAttribute("stroke",       svgGroupDataElement.color);
                     }

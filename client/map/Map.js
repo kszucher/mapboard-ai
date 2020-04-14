@@ -1,6 +1,5 @@
 import {copy, subsref, subsasgn} from "../src/Utils"
 import {mapAssembly} from "./MapAssembly";
-import {mapCanvasVisualize} from './MapCanvasVisualize'
 import {mapChain} from './MapChain'
 import {mapCollect} from './MapCollect'
 import {mapDisassembly, nodeCopyList} from "./MapDisassembly";
@@ -86,7 +85,6 @@ export function rebuild() {
 export function redraw() {
     clearCanvas();
     mapDivVisualize.start();
-    mapCanvasVisualize.start();
     mapSvgVisualize.start();
 
     if (mapMem.task) {
