@@ -120,8 +120,8 @@ export function clearSvgs() {
     let currKeys = Object.keys(mapMem.svgData);
     for (let i = 0; i < currKeys.length; i++) {
         let svgId = currKeys[i];
-        let currSvgId = document.getElementById(svgId);
-        currSvgId.parentNode.removeChild(currSvgId);
+        let currSvg = document.getElementById(svgId);
+        currSvg.parentNode.removeChild(currSvg);
         delete mapMem.svgData[svgId];
     }
 }

@@ -99,8 +99,8 @@ export const mapSvgVisualize = {
                 if (JSON.stringify(svgGroupData) !== JSON.stringify(mapMem.svgData[cm.svgId].svgGroupData)) {
                     for (const svgGroupDataElement of svgGroupData) {
                         let svgElement = svgGroup.childNodes.item(svgGroupDataElement.id);
-                        svgElement.setAttribute("d", svgGroupDataElement.path);
-                        svgElement.setAttribute("stroke", svgGroupDataElement.color);
+                        svgElement.setAttribute("d",            svgGroupDataElement.path);
+                        svgElement.setAttribute("stroke",       svgGroupDataElement.color);
                     }
                 }
             }

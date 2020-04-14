@@ -1,5 +1,5 @@
 import {hasCell} from "../node/Node";
-import {clearDiv, clearSvg} from "./Map";
+import {clearDiv, clearSvg, mapMem} from "./Map";
 
 export const mapDivRemove = {
     start: (cm) => {
@@ -20,13 +20,12 @@ export const mapDivRemove = {
             mapDivRemove.iterate(cm.s[i]);
         }
 
-        if (cm.type === 'struct') {
-            if (hasCell(cm)) {
-            }
-            else {
-                clearSvg(cm.svgId);
-                clearDiv(cm.divId);
-            }
+        if (cm.isSvgAssigned) {
+            clearSvg(cm.svgId);
+        }
+
+        if (cm.isDivAssigned) {
+            clearDiv(cm.divId);
         }
     }
 };
