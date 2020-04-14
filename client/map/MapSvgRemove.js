@@ -1,8 +1,8 @@
-import {clearDiv} from "./Map";
+import {clearSvg} from "./Map";
 
-export const mapDivRemove = {
+export const mapSvgRemove = {
     start: (cm) => {
-        mapDivRemove.iterate(cm);
+        mapSvgRemove.iterate(cm);
     },
 
     iterate: (cm) => {
@@ -10,17 +10,17 @@ export const mapDivRemove = {
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                mapDivRemove.iterate(cm.c[i][j]);
+                mapSvgRemove.iterate(cm.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
-            mapDivRemove.iterate(cm.s[i]);
+            mapSvgRemove.iterate(cm.s[i]);
         }
 
-        if (cm.isDivAssigned) {
-            clearDiv(cm.divId);
+        if (cm.isSvgAssigned) {
+            clearSvg(cm.svgId);
         }
     }
 };

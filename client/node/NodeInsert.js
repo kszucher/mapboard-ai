@@ -1,6 +1,8 @@
 import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
 import {clearStructSelection} from "./NodeSelect";
+import {mapSvgRemove} from "../map/MapSvgRemove";
+import {mapNodePropChange} from "../map/MapNodePropChange";
 
 export function structInsert(lm, direction) {
     clearStructSelection();
@@ -28,6 +30,9 @@ export function structInsert(lm, direction) {
 export function cellInsert (lastPath, direction) {
     let lm = mapref(lastPath);
     let parentRef = mapref(lm.parentPath);
+
+    mapSvgRemove.start(parentRef);
+    mapNodePropChange.start(parentRef, 'isSvgAssigned', 0);
 
     let currRow = lm.index[0];
     let currCol = lm.index[1];
