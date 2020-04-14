@@ -10,8 +10,8 @@ export const mapSvgVisualize = {
 
     iterate: (cm) => {
 
-        let svgStyle = '';
-        let svgColor = '';
+        let svgGroupData = [];
+        let svgShouldRender = false;
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
@@ -25,13 +25,17 @@ export const mapSvgVisualize = {
             let x2 = cm.nodeStartX;
             let y2 = cm.nodeStartY;
 
-            svgStyle = "M" + x1 + ',' + y1 + ' ' +
-                "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
-                x2 + ',' + y2;
-
-            svgColor = '#bbbbbb';
+            svgShouldRender = true;
+            svgGroupData.push({
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
+                    x2 + ',' + y2,
+                color: '#bbbbbb',
+                id: 'connection'
+            })
         }
-        else if (cm.type === "struct" && hasCell(cm)) {
+
+        if (cm.type === "struct" && hasCell(cm)) {
             let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
 
             let round = 8;
@@ -42,51 +46,66 @@ export const mapSvgVisualize = {
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
-            svgStyle = "M" + x1 + ',' + y1 + ' ' +
-                'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' +(-round) + ' ' +
-                'h' + h + ' ' +
-                'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
-                'v' + v + ' ' +
-                'a' + round + ',' + round + ' 0 0 1 ' +(-round) + ',' + (round) + ' ' +
-                'h' + (-h) + ' ' +
-                'a' + round + ',' + round + ' 0 0 1 ' +(-round) + ',' +(-round) + ' '
-            ;
+            svgShouldRender = true;
+            svgGroupData.push({
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
+                    'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
+                    'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
+                    'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                color: '#50dfff',
+                id: 'cellFrame'
+            })
 
-            svgColor = '#50dfff';
+            // FURTHER STUFF
+
         }
 
-        if (svgStyle !== '') {
-            let svgElement;
+        if (svgShouldRender) {
+            let svgGroup;
             if (cm.isSvgAssigned === 0) {
                 cm.isSvgAssigned = 1;
 
                 cm.svgId = 'svg' + genHash(8);
-                mapMem.svgData[cm.svgId] = {svgStyle: ""};
 
-                svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                mapMem.svgData[cm.svgId] = {svgGroupData: []};
 
-                svgElement.setAttribute("fill", "transparent");
-                svgElement.setAttribute("stroke", svgColor);
-                svgElement.setAttribute("stroke-width", "1");
-                svgElement.setAttribute("vector-effect", "non-scaling-stroke");
-                svgElement.setAttribute("id", cm.svgId);
+                svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                svgGroup.setAttribute("id", cm.svgId);
 
                 let mapSvg = document.getElementById('mapSvg');
-                mapSvg.appendChild(svgElement);
+                mapSvg.appendChild(svgGroup);
 
-                if (svgStyle !== mapMem.svgData[cm.svgId].svgStyle) {
-                    svgElement.setAttribute("d", svgStyle);
+                for (const svgGroupDataElement of svgGroupData) {
+                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+                    svgElement.setAttribute("fill",             "transparent");
+                    svgElement.setAttribute("stroke-width",     "1");
+                    svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                    svgElement.setAttribute("d",                svgGroupDataElement.path);
+                    svgElement.setAttribute("stroke",           svgGroupDataElement.color);
+                    svgElement.setAttribute("id",               svgGroupDataElement.id);
+
                     svgElement.style.transition = '0.5s ease-out';
+
+                    svgGroup.appendChild(svgElement);
                 }
             }
             else {
-                svgElement = document.getElementById(cm.svgId);
-
-                if (svgStyle !== mapMem.svgData[cm.svgId].svgStyle) {
-                    svgElement.setAttribute("d", svgStyle);
+                svgGroup = document.getElementById(cm.svgId);
+                if (JSON.stringify(svgGroupData) !== JSON.stringify(mapMem.svgData[cm.svgId].svgGroupData)) {
+                    for (const svgGroupDataElement of svgGroupData) {
+                        let svgElement = svgGroup.childNodes.item(svgGroupDataElement.id);
+                        svgElement.setAttribute("d", svgGroupDataElement.path);
+                        svgElement.setAttribute("stroke", svgGroupDataElement.color);
+                    }
                 }
             }
-            mapMem.svgData[cm.svgId].svgStyle = copy(svgStyle);
+            
+            mapMem.svgData[cm.svgId].svgGroupData = copy(svgGroupData);
         }
 
         let rowCount = Object.keys(cm.c).length;

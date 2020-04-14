@@ -126,7 +126,6 @@ export function clearSvgs() {
     }
 }
 
-
 export function clearCanvas() {
     let canvas =            document.getElementById('mapCanvas');
     let canvasContext =     document.getElementById('mapCanvas').getContext('2d');
