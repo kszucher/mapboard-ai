@@ -76,6 +76,8 @@ export let props = {
             spacingActivated:                   0,
 
             // mapPlace
+            parentNodeStartX:                   0,
+            parentNodeStartY:                   0,
             parentNodeEndX:                     0,
             parentNodeEndY:                     0,
             lineDeltaX:                         0,

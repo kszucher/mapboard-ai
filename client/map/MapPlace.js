@@ -24,6 +24,8 @@ export const mapPlace = {
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0" + " " + "0" + " " + mapWidth + " " + mapHeight);
 
+        cm.parentNodeStartX = 0;
+        cm.parentNodeStartY = 0;
         cm.parentNodeEndX = 0;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = mapMem.sLineDeltaXDefault;
@@ -38,7 +40,7 @@ export const mapPlace = {
         cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
 
         if (cm.parentType === 'cell') {
-            cm.nodeStartX = cm.parentNodeEndX;
+            cm.nodeStartX = cm.parentNodeStartX;
         }
 
         cm.nodeEndX = cm.nodeStartX + cm.selfW;
@@ -57,7 +59,8 @@ export const mapPlace = {
                 let colCount = Object.keys(cm.c[0]).length;
                 for (let i = 0; i < rowCount; i++) {
                     for (let j = 0; j < colCount; j++) {
-
+                        cm.c[i][j].parentNodeStartX = cm.parentNodeStartX;
+                        cm.c[i][j].parentNodeStartY = cm.parentNodeStartY;
                         cm.c[i][j].parentNodeEndX = cm.parentNodeEndX;
                         cm.c[i][j].parentNodeEndY = cm.parentNodeEndY;
 
@@ -73,6 +76,8 @@ export const mapPlace = {
         let elapsedY = 0;
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
+            cm.s[i].parentNodeStartX = cm.nodeStartX;
+            cm.s[i].parentNodeStartY = cm.nodeStartY;
             cm.s[i].parentNodeEndX = cm.nodeEndX;
             cm.s[i].parentNodeEndY = cm.nodeEndY;
             cm.s[i].lineDeltaX = mapMem.sLineDeltaXDefault;

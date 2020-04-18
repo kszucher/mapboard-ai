@@ -52,7 +52,7 @@ export const mapMeasure = {
                     for (let j = 0; j < colCount; j++) {
                         let cellHeight = maxCellHeightMat[i][j];
                         if (cellHeight >= maxRowHeight)
-                            maxRowHeight =                  cellHeight;
+                            maxRowHeight = cellHeight;
                     }
                     cm.maxRowHeight.push(maxRowHeight);
                     cm.sumMaxRowHeight.push(maxRowHeight + cm.sumMaxRowHeight.slice(-1)[0]);
@@ -69,6 +69,13 @@ export const mapMeasure = {
                     cm.maxColWidth.push(maxColWidth);
                     cm.sumMaxColWidth.push(maxColWidth + cm.sumMaxColWidth.slice(-1)[0]);
                     cm.selfW += maxColWidth;
+                }
+
+                for (let j = 0; j < colCount; j++) {
+                    for (let i = 0; i < rowCount; i++) {
+                        cm.c[i][j].selfW = cm.maxColWidth[j];
+                        cm.c[i][j].selfH = cm.maxRowHeight[i];
+                    }
                 }
 
                 if (rowCount > 1) {
@@ -103,6 +110,7 @@ export const mapMeasure = {
                 cm.selfH = cm.contentH + mapMem.padding*2;
             }
         }
+
 
 
         let sCount = Object.keys(cm.s).length;

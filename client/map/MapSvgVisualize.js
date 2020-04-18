@@ -13,6 +13,7 @@ export const mapSvgVisualize = {
         let svgGroupData = [];
         let svgShouldRender = false;
 
+        // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
@@ -36,6 +37,35 @@ export const mapSvgVisualize = {
             })
         }
 
+        // cell highlight
+        if (cm.type === 'cell') {
+            svgShouldRender = true;
+
+            let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
+
+            let round = 8;
+
+            let x1 = cm.centerX - (cm.selfW + 1)/2;
+            let y1 = cm.centerY - selfHadj/2 + round;
+
+            let h = cm.selfW - 2*round;
+            let v = cm.selfH - 2*round;
+
+            svgGroupData.push({
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
+                    'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
+                    'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
+                    'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                color: cm.selected? '#000000' : '#50dfff',
+                id: 'tableFrame'
+            });
+        }
+
+        // table frame and grid
         if (cm.type === "struct" && hasCell(cm)) {
             svgShouldRender = true;
 
@@ -51,7 +81,7 @@ export const mapSvgVisualize = {
                 svgGroupData.push({
                     path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
                     color: '#dddddd',
-                    id: 'cellFrame' + 'Row' + i
+                    id: 'tableFrame' + 'GridRow' + i
                 });
             }
 
@@ -65,7 +95,7 @@ export const mapSvgVisualize = {
                 svgGroupData.push({
                     path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
                     color: '#dddddd',
-                    id: 'cellFrame' + 'Col' + j
+                    id: 'tableFrame' + 'GridCol' + j
                 });
             }
 
@@ -87,7 +117,7 @@ export const mapSvgVisualize = {
                     'h' + (-h) + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
                 color: cm.selected? '#000000' : '#50dfff',
-                id: 'cellFrame'
+                id: 'tableFrame'
             });
         }
 
