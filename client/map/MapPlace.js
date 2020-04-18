@@ -47,10 +47,8 @@ export const mapPlace = {
         cm.nodeEndY = cm.nodeStartY;
 
         if (Number.isInteger(cm.nodeStartY)) {
-            // should NOT use this, because in case of deleting an odd node, this will trigger movement
-            // everything should be handled with the svg/canvas
-            // cm.nodeStartY -= 0.5;
-            // cm.nodeEndY -= 0.5;
+            cm.nodeStartY -= 0.5;
+            cm.nodeEndY -= 0.5;
         }
 
         if (cm.type === 'struct') {

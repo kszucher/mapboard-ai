@@ -43,12 +43,10 @@ export const mapSvgVisualize = {
 
             if (cm.selected) {
 
-                let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
-
                 let round = 8;
 
                 let x1 = cm.centerX - (cm.selfW + 1) / 2;
-                let y1 = cm.centerY - selfHadj / 2 + round;
+                let y1 = cm.centerY - cm.selfH / 2 + round;
 
                 let h = cm.selfW - 2 * round;
                 let v = cm.selfH - 2 * round;
@@ -79,14 +77,12 @@ export const mapSvgVisualize = {
         if (cm.type === "struct" && hasCell(cm)) {
             svgShouldRender = true;
 
-            let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
-
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
                 let x1 = cm.nodeStartX;
-                let y1 = cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                let y1 = cm.nodeStartY - cm.selfH/2 + cm.sumMaxRowHeight[i];
                 let x2 = cm.nodeEndX;
-                let y2 = cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                let y2 = cm.nodeEndY - cm.selfH/2 + cm.sumMaxRowHeight[i];
 
                 svgGroupData.push({
                     path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
@@ -98,9 +94,9 @@ export const mapSvgVisualize = {
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
                 let x1 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
-                let y1 = cm.nodeStartY   - selfHadj/2;
+                let y1 = cm.nodeStartY   - cm.selfH/2;
                 let x2 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
-                let y2 = cm.nodeEndY     + selfHadj/2;
+                let y2 = cm.nodeEndY     + cm.selfH/2;
 
                 svgGroupData.push({
                     path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
@@ -112,7 +108,7 @@ export const mapSvgVisualize = {
             let round = 8;
 
             let x1 = cm.centerX - (cm.selfW + 1)/2;
-            let y1 = cm.centerY - selfHadj/2 + round;
+            let y1 = cm.centerY - cm.selfH/2 + round;
 
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
