@@ -11,7 +11,7 @@ export const mapCanvasLocalize = {
     },
 
     iterate: (cm) => {
-        if (isMouseInsideRectangle(cm.centerX, cm.centerY, cm.selfW, cm.selfH)) {
+        if (cm.type !== 'cell' && isMouseInsideRectangle(cm.centerX, cm.centerY, cm.selfW, cm.selfH)) {
             mapMem.deepestSelectablePath = copy(cm.path);
             mapMem.deepestSelectableRef = mapref(cm.path);
         }
