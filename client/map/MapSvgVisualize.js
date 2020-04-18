@@ -41,28 +41,38 @@ export const mapSvgVisualize = {
         if (cm.type === 'cell') {
             svgShouldRender = true;
 
-            let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
+            if (cm.selected) {
 
-            let round = 8;
+                let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
 
-            let x1 = cm.centerX - (cm.selfW + 1)/2;
-            let y1 = cm.centerY - selfHadj/2 + round;
+                let round = 8;
 
-            let h = cm.selfW - 2*round;
-            let v = cm.selfH - 2*round;
+                let x1 = cm.centerX - (cm.selfW + 1) / 2;
+                let y1 = cm.centerY - selfHadj / 2 + round;
 
-            svgGroupData.push({
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
-                    'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
-                    'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
-                    'h' + (-h) + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                color: cm.selected? '#000000' : '#50dfff',
-                id: 'tableFrame'
-            });
+                let h = cm.selfW - 2 * round;
+                let v = cm.selfH - 2 * round;
+
+                svgGroupData.push({
+                    path: "M" + x1 + ',' + y1 + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
+                        'h' + h + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
+                        'v' + v + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
+                        'h' + (-h) + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                    color: '#000000',
+                    id: 'cellHighlight'
+                });
+            }
+            else {
+                svgGroupData.push({
+                    path: "M0,0 L0,0",
+                    color:'#000000',
+                    id: 'cellHighlight'
+                });
+            }
         }
 
         // table frame and grid
