@@ -11,13 +11,13 @@ export const mapSvgVisualize = {
     iterate: (cm) => {
 
         let svgGroupData = [];
-        let svgShouldRender = false;
+        let svgShouldUpdate = false;
 
         // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
 
-            svgShouldRender = true;
+            svgShouldUpdate = true;
 
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
@@ -39,7 +39,7 @@ export const mapSvgVisualize = {
 
         // cell highlight
         if (cm.type === 'cell') {
-            svgShouldRender = true;
+            svgShouldUpdate = true;
 
             if (cm.selected) {
 
@@ -75,7 +75,7 @@ export const mapSvgVisualize = {
 
         // table frame and grid
         if (cm.type === "struct" && hasCell(cm)) {
-            svgShouldRender = true;
+            svgShouldUpdate = true;
 
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
@@ -127,7 +127,7 @@ export const mapSvgVisualize = {
             });
         }
 
-        if (svgShouldRender) {
+        if (svgShouldUpdate) {
             let svgGroup;
             if (cm.isSvgAssigned === 0) {
                 cm.isSvgAssigned = 1;
@@ -168,7 +168,12 @@ export const mapSvgVisualize = {
                     }
                 }
             }
-            
+
+            // isRendered === 0, shouldRender === 0 --> default
+            // isRendered === 0, shouldRender === 1 --> init
+            // isRendered === 1, shouldRender === 1 --> update
+            // isRendered === 1, shouldRender === 0 --> delete
+
             mapMem.svgData[cm.svgId].svgGroupData = copy(svgGroupData);
         }
 
@@ -186,3 +191,7 @@ export const mapSvgVisualize = {
         }
     }
 };
+
+// make table grid ONE path only --> this will allow us to know all id a priori
+// then we can iterate through this KNOWN list --> the shouldRender prop will tell whether this is present or not
+// the group will assign itself SEPARATELY
