@@ -1,6 +1,8 @@
 import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
-import {genHash, copy, isOdd} from "../src/Utils";
+import {genHash, copy, isObjectEmpty} from "../src/Utils";
+
+let svgGroupElementList = ['connection', 'tableGrid', 'tableFrame', 'cellFrame'];
 
 export const mapSvgVisualize = {
     start: () => {
@@ -10,15 +12,11 @@ export const mapSvgVisualize = {
 
     iterate: (cm) => {
 
-        let svgGroupData = [];
-        let svgShouldUpdate = false;
+        let svgGroupData = {};
 
-        // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-
-            svgShouldUpdate = true;
-
+            // connection
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
             let cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
@@ -28,19 +26,15 @@ export const mapSvgVisualize = {
             let x2 = cm.nodeStartX;
             let y2 = cm.nodeStartY;
 
-            svgGroupData.push({
+            svgGroupData.connection = {
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
                     x2 + ',' + y2,
                 color: '#bbbbbb',
-                id: 'connection'
-            })
+            }
         }
 
-        // table grid and table frame
         if (cm.type === "struct" && hasCell(cm)) {
-            svgShouldUpdate = true;
-
             // table grid
             let path = '';
             let rowCount = Object.keys(cm.c).length;
@@ -61,22 +55,19 @@ export const mapSvgVisualize = {
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
-            svgGroupData.push({
+            svgGroupData.tableGrid = {
                 path: path,
                 color: '#dddddd',
-                id: 'tableGrid'
-            });
+            };
 
             // table frame
             let round = 8;
-
             let x1 = cm.centerX - (cm.selfW + 1)/2;
             let y1 = cm.centerY - cm.selfH/2 + round;
-
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
-            svgGroupData.push({
+            svgGroupData.tableFrame = {
                 path: "M" + x1 + ',' + y1 + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
                     'h' + h + ' ' +
@@ -86,95 +77,96 @@ export const mapSvgVisualize = {
                     'h' + (-h) + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
                 color: cm.selected? '#000000' : '#50dfff',
-                id: 'tableFrame'
-            });
+            };
         }
 
         // cell highlight
-        if (cm.type === 'cell') {
-            svgShouldUpdate = true;
+        if (cm.type === 'cell' && cm.selected) {
+            let round = 8;
+            let x1 = cm.centerX - (cm.selfW + 1) / 2;
+            let y1 = cm.centerY - cm.selfH / 2 + round;
+            let h = cm.selfW - 2 * round;
+            let v = cm.selfH - 2 * round;
 
-            if (cm.selected) {
+            svgGroupData.cellFrame = {
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
+                    'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
+                    'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
+                    'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                color: '#000000',
+            };
 
-                let round = 8;
-
-                let x1 = cm.centerX - (cm.selfW + 1) / 2;
-                let y1 = cm.centerY - cm.selfH / 2 + round;
-
-                let h = cm.selfW - 2 * round;
-                let v = cm.selfH - 2 * round;
-
-                svgGroupData.push({
-                    path: "M" + x1 + ',' + y1 + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
-                        'h' + h + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
-                        'v' + v + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
-                        'h' + (-h) + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                    color: '#000000',
-                    id: 'cellFrame'
-                });
-            }
-            else {
-                svgGroupData.push({
-                    path: "M0,0 L0,0",
-                    color:'#000000',
-                    id: 'cellFrame'
-                });
-            }
         }
 
-        if (svgShouldUpdate) {
-            let svgGroup;
-            if (cm.isSvgAssigned === 0) {
-                cm.isSvgAssigned = 1;
+        let svgGroup;
+        if (cm.isSvgAssigned === 0) {
+            cm.isSvgAssigned = 1;
 
-                cm.svgId = 'svg' + genHash(8);
+            cm.svgId = 'svg' + genHash(8);
 
-                mapMem.svgData[cm.svgId] = {svgGroupData: []};
+            mapMem.svgData[cm.svgId] = {svgGroupData: {}};
 
-                svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                svgGroup.setAttribute("id", cm.svgId);
+            svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            svgGroup.setAttribute("id", cm.svgId);
 
-                let mapSvg = document.getElementById('mapSvg');
-                mapSvg.appendChild(svgGroup);
+            let mapSvg = document.getElementById('mapSvg');
+            mapSvg.appendChild(svgGroup);
+        }
+        else {
+            svgGroup = document.getElementById(cm.svgId);
+        }
 
-                for (const svgGroupDataElement of svgGroupData) {
+        for (const svgGroupElement of svgGroupElementList) {
+            let hadBefore = mapMem.svgData[cm.svgId].svgGroupData.hasOwnProperty(svgGroupElement);
+            let hasNow = svgGroupData.hasOwnProperty(svgGroupElement);
+
+            let op = '';
+            if (hadBefore === false && hasNow === true) op = 'init';
+            if (hadBefore === true && hasNow === false) op = 'delete';
+            if (hadBefore === true && hasNow === true) {
+                if (JSON.stringify(svgGroupData[svgGroupElement]) !==
+                    JSON.stringify(mapMem.svgData[cm.svgId].svgGroupData[svgGroupElement])) {
+                    op = 'update';
+                }
+            }
+
+            switch (op) {
+                case 'init': {
                     let svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
                     svgElement.setAttribute("fill",             "transparent");
                     svgElement.setAttribute("stroke-width",     "1");
                     svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                    svgElement.setAttribute("d",                svgGroupDataElement.path);
-                    svgElement.setAttribute("stroke",           svgGroupDataElement.color);
-                    svgElement.setAttribute("id",               svgGroupDataElement.id);
+                    svgElement.setAttribute("d",                svgGroupData[svgGroupElement].path);
+                    svgElement.setAttribute("stroke",           svgGroupData[svgGroupElement].color);
+                    svgElement.setAttribute("id",               svgGroupElement);
 
                     svgElement.style.transition = '0.5s ease-out';
 
                     svgGroup.appendChild(svgElement);
+                    break;
+                }
+                case 'update': {
+                    let svgElement = svgGroup.querySelector('#' + svgGroupElement);
+
+                    svgElement.setAttribute("d",                svgGroupData[svgGroupElement].path);
+                    svgElement.setAttribute("stroke",           svgGroupData[svgGroupElement].color);
+                    break;
+                }
+                case 'delete': {
+                    let svgElement = svgGroup.querySelector('#' + svgGroupElement);
+
+                    svgElement.parentNode.removeChild(svgElement);
+                    break;
                 }
             }
-            else {
-                svgGroup = document.getElementById(cm.svgId);
-                if (JSON.stringify(svgGroupData) !== JSON.stringify(mapMem.svgData[cm.svgId].svgGroupData)) {
-                    for (const svgGroupDataElement of svgGroupData) {
-                        let svgElement = svgGroup.querySelector('#' + svgGroupDataElement.id);
-
-                        svgElement.setAttribute("d",            svgGroupDataElement.path);
-                        svgElement.setAttribute("stroke",       svgGroupDataElement.color);
-                    }
-                }
-            }
-
-            // isRendered === 0, shouldRender === 0 --> default
-            // isRendered === 0, shouldRender === 1 --> init
-            // isRendered === 1, shouldRender === 1 --> update
-            // isRendered === 1, shouldRender === 0 --> delete
-
-            mapMem.svgData[cm.svgId].svgGroupData = copy(svgGroupData);
         }
+
+        mapMem.svgData[cm.svgId].svgGroupData = copy(svgGroupData);
 
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
