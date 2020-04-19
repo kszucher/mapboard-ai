@@ -1,8 +1,8 @@
 import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
-import {genHash, copy, isObjectEmpty} from "../src/Utils";
+import {genHash, copy} from "../src/Utils";
 
-let svgGroupElementList = ['connection', 'tableGrid', 'tableFrame', 'cellFrame'];
+let svgElementNameList = ['connection', 'tableGrid', 'tableFrame', 'cellFrame'];
 
 export const mapSvgVisualize = {
     start: () => {
@@ -12,7 +12,7 @@ export const mapSvgVisualize = {
 
     iterate: (cm) => {
 
-        let svgGroupData = {};
+        let svgElementData = {};
 
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
             cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
@@ -26,7 +26,7 @@ export const mapSvgVisualize = {
             let x2 = cm.nodeStartX;
             let y2 = cm.nodeStartY;
 
-            svgGroupData.connection = {
+            svgElementData.connection = {
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
                     x2 + ',' + y2,
@@ -55,7 +55,7 @@ export const mapSvgVisualize = {
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
-            svgGroupData.tableGrid = {
+            svgElementData.tableGrid = {
                 path: path,
                 color: '#dddddd',
             };
@@ -67,7 +67,7 @@ export const mapSvgVisualize = {
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
-            svgGroupData.tableFrame = {
+            svgElementData.tableFrame = {
                 path: "M" + x1 + ',' + y1 + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
                     'h' + h + ' ' +
@@ -88,7 +88,7 @@ export const mapSvgVisualize = {
             let h = cm.selfW - 2 * round;
             let v = cm.selfH - 2 * round;
 
-            svgGroupData.cellFrame = {
+            svgElementData.cellFrame = {
                 path: "M" + x1 + ',' + y1 + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
                     'h' + h + ' ' +
@@ -108,7 +108,7 @@ export const mapSvgVisualize = {
 
             cm.svgId = 'svg' + genHash(8);
 
-            mapMem.svgData[cm.svgId] = {svgGroupData: {}};
+            mapMem.svgData[cm.svgId] = {svgElementData: {}};
 
             svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             svgGroup.setAttribute("id", cm.svgId);
@@ -120,16 +120,16 @@ export const mapSvgVisualize = {
             svgGroup = document.getElementById(cm.svgId);
         }
 
-        for (const svgGroupElement of svgGroupElementList) {
-            let hadBefore = mapMem.svgData[cm.svgId].svgGroupData.hasOwnProperty(svgGroupElement);
-            let hasNow = svgGroupData.hasOwnProperty(svgGroupElement);
+        for (const svgElementName of svgElementNameList) {
+            let hadBefore = mapMem.svgData[cm.svgId].svgElementData.hasOwnProperty(svgElementName);
+            let hasNow = svgElementData.hasOwnProperty(svgElementName);
 
             let op = '';
             if (hadBefore === false && hasNow === true) op = 'init';
             if (hadBefore === true && hasNow === false) op = 'delete';
             if (hadBefore === true && hasNow === true) {
-                if (JSON.stringify(svgGroupData[svgGroupElement]) !==
-                    JSON.stringify(mapMem.svgData[cm.svgId].svgGroupData[svgGroupElement])) {
+                if (JSON.stringify(svgElementData[svgElementName]) !==
+                    JSON.stringify(mapMem.svgData[cm.svgId].svgElementData[svgElementName])) {
                     op = 'update';
                 }
             }
@@ -141,9 +141,9 @@ export const mapSvgVisualize = {
                     svgElement.setAttribute("fill",             "transparent");
                     svgElement.setAttribute("stroke-width",     "1");
                     svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                    svgElement.setAttribute("d",                svgGroupData[svgGroupElement].path);
-                    svgElement.setAttribute("stroke",           svgGroupData[svgGroupElement].color);
-                    svgElement.setAttribute("id",               svgGroupElement);
+                    svgElement.setAttribute("d",                svgElementData[svgElementName].path);
+                    svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
+                    svgElement.setAttribute("id",               svgElementName);
 
                     svgElement.style.transition = '0.5s ease-out';
 
@@ -151,14 +151,14 @@ export const mapSvgVisualize = {
                     break;
                 }
                 case 'update': {
-                    let svgElement = svgGroup.querySelector('#' + svgGroupElement);
+                    let svgElement = svgGroup.querySelector('#' + svgElementName);
 
-                    svgElement.setAttribute("d",                svgGroupData[svgGroupElement].path);
-                    svgElement.setAttribute("stroke",           svgGroupData[svgGroupElement].color);
+                    svgElement.setAttribute("d",                svgElementData[svgElementName].path);
+                    svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                     break;
                 }
                 case 'delete': {
-                    let svgElement = svgGroup.querySelector('#' + svgGroupElement);
+                    let svgElement = svgGroup.querySelector('#' + svgElementName);
 
                     svgElement.parentNode.removeChild(svgElement);
                     break;
@@ -166,7 +166,7 @@ export const mapSvgVisualize = {
             }
         }
 
-        mapMem.svgData[cm.svgId].svgGroupData = copy(svgGroupData);
+        mapMem.svgData[cm.svgId].svgElementData = copy(svgElementData);
 
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
