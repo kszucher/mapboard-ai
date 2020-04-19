@@ -37,6 +37,59 @@ export const mapSvgVisualize = {
             })
         }
 
+        // table grid and table frame
+        if (cm.type === "struct" && hasCell(cm)) {
+            svgShouldUpdate = true;
+
+            // table grid
+            let path = '';
+            let rowCount = Object.keys(cm.c).length;
+            for (let i = 1; i < rowCount; i++) {
+                let x1 = cm.nodeStartX;
+                let y1 = cm.nodeStartY - cm.selfH/2 + cm.sumMaxRowHeight[i];
+                let x2 = cm.nodeEndX;
+                let y2 = cm.nodeEndY - cm.selfH/2 + cm.sumMaxRowHeight[i];
+                path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
+            }
+
+            let colCount = Object.keys(cm.c[0]).length;
+            for (let j = 1; j < colCount; j++) {
+                let x1 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
+                let y1 = cm.nodeStartY   - cm.selfH/2;
+                let x2 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
+                let y2 = cm.nodeEndY     + cm.selfH/2;
+                path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
+            }
+
+            svgGroupData.push({
+                path: path,
+                color: '#dddddd',
+                id: 'tableGrid'
+            });
+
+            // table frame
+            let round = 8;
+
+            let x1 = cm.centerX - (cm.selfW + 1)/2;
+            let y1 = cm.centerY - cm.selfH/2 + round;
+
+            let h = cm.selfW - 2*round;
+            let v = cm.selfH - 2*round;
+
+            svgGroupData.push({
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
+                    'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
+                    'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
+                    'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                color: cm.selected? '#000000' : '#50dfff',
+                id: 'tableFrame'
+            });
+        }
+
         // cell highlight
         if (cm.type === 'cell') {
             svgShouldUpdate = true;
@@ -71,60 +124,6 @@ export const mapSvgVisualize = {
                     id: 'cellHighlight'
                 });
             }
-        }
-
-        // table frame and grid
-        if (cm.type === "struct" && hasCell(cm)) {
-            svgShouldUpdate = true;
-
-            let rowCount = Object.keys(cm.c).length;
-            for (let i = 1; i < rowCount; i++) {
-                let x1 = cm.nodeStartX;
-                let y1 = cm.nodeStartY - cm.selfH/2 + cm.sumMaxRowHeight[i];
-                let x2 = cm.nodeEndX;
-                let y2 = cm.nodeEndY - cm.selfH/2 + cm.sumMaxRowHeight[i];
-
-                svgGroupData.push({
-                    path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
-                    color: '#dddddd',
-                    id: 'tableFrame' + 'GridRow' + i
-                });
-            }
-
-            let colCount = Object.keys(cm.c[0]).length;
-            for (let j = 1; j < colCount; j++) {
-                let x1 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
-                let y1 = cm.nodeStartY   - cm.selfH/2;
-                let x2 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
-                let y2 = cm.nodeEndY     + cm.selfH/2;
-
-                svgGroupData.push({
-                    path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
-                    color: '#dddddd',
-                    id: 'tableFrame' + 'GridCol' + j
-                });
-            }
-
-            let round = 8;
-
-            let x1 = cm.centerX - (cm.selfW + 1)/2;
-            let y1 = cm.centerY - cm.selfH/2 + round;
-
-            let h = cm.selfW - 2*round;
-            let v = cm.selfH - 2*round;
-
-            svgGroupData.push({
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
-                    'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
-                    'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
-                    'h' + (-h) + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                color: cm.selected? '#000000' : '#50dfff',
-                id: 'tableFrame'
-            });
         }
 
         if (svgShouldUpdate) {
@@ -191,7 +190,3 @@ export const mapSvgVisualize = {
         }
     }
 };
-
-// make table grid ONE path only --> this will allow us to know all id a priori
-// then we can iterate through this KNOWN list --> the shouldRender prop will tell whether this is present or not
-// the group will assign itself SEPARATELY
