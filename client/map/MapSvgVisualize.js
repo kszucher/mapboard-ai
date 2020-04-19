@@ -99,7 +99,11 @@ export const mapSvgVisualize = {
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
                 color: '#000000',
             };
+        }
 
+        if (Object.keys(cm.s).length === 0 && !hasCell(cm) && cm.parentType !== 'cell' && cm.contentType !== 'image') {
+            // visualize task related stuff, add onclick to circles, modify mapCollect to mapSelect, remove taskcanvasloc taskcanvasvis
+            // warning: this is a subgroup with its own state, so think about it
         }
 
         let svgGroup;
