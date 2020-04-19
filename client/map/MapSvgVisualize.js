@@ -114,14 +114,14 @@ export const mapSvgVisualize = {
                         'h' + (-h) + ' ' +
                         'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
                     color: '#000000',
-                    id: 'cellHighlight'
+                    id: 'cellFrame'
                 });
             }
             else {
                 svgGroupData.push({
                     path: "M0,0 L0,0",
                     color:'#000000',
-                    id: 'cellHighlight'
+                    id: 'cellFrame'
                 });
             }
         }
