@@ -109,7 +109,7 @@ export function getTextDim(innerHTML, fontSize) {
     var element = document.getElementById("Test");
     element.parentNode.removeChild(element);
 
-    return width;
+    return [width, height];
 }
 
 export function getEquationDim (content) {

@@ -86,10 +86,16 @@ export const mapMeasure = {
                 if (cm.contentType === 'text') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
-                        let x = getTextDim(cm.content, cm.sTextFontSize);
+                        let dimVec = getTextDim(cm.content, cm.sTextFontSize);
+                        let x = dimVec[0];
+                        let y = dimVec[1];
+
+                        let lineCount = y/17;
+                        let realY = lineCount <= 1 ? mapMem.defaultH : y + mapMem.padding*2;
+
                         cm.contentW = mapMem.density === 'large' ? x : x + 8;
                         let yc = mapMem.density === 'large' ? 1 : 2;
-                        cm.contentH = mapMem.defaultH - mapMem.padding*2 + yc;
+                        cm.contentH = realY - mapMem.padding*2 + yc;
                     }
                 }
                 else if (cm.contentType === 'equation') {

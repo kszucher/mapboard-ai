@@ -249,7 +249,7 @@ export function eventEmitter(command) {
             let holderElement = document.getElementById(lm.divId);
             holderElement.contentEditable = 'false';
 
-            lm.content = holderElement.textContent;
+            lm.content = holderElement.innerHTML;
             lm.isDimAssigned = 0;
 
             eventRouter.isEditing = 0;
