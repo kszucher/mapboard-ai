@@ -48,24 +48,14 @@ export const mapDivVisualize = {
                 div.appendChild(document.createTextNode(''));
                 document.getElementById('mapDiv').appendChild(div);
 
-                // for (let i = 0; i < Object.keys(divStyle).length; i++) {
-                //     let styleName = Object.keys(divStyle)[i];
-                //     if (divStyle[styleName] !== mapMem.divData[cm.divId].divStyle[styleName]) {
-                //         div.style[styleName] = divStyle[styleName];
-                //     }
-                // }
-
-                // TO TEST:
                 for (const styleName in divStyle) {
                     div.style[styleName] = divStyle[styleName];
                 }
-
             }
             else {
                 div = document.getElementById(cm.divId);
 
-                for (let i = 0; i < Object.keys(divStyle).length; i++) {
-                    let styleName = Object.keys(divStyle)[i];
+                for (const styleName in divStyle) {
                     if (styleName !== 'left' && styleName !== 'top') {
                         if (divStyle[styleName] !== mapMem.divData[cm.divId].divStyle[styleName]) {
                             div.style[styleName] = divStyle[styleName];
@@ -97,11 +87,10 @@ export const mapDivVisualize = {
                     div.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
                 }
                 else if (cm.contentType === 'equation') {
-                    // div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});
-                    katex.render(getLatexString(cm.content), div, {throwOnError: false});
+                    div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});
                 }
                 else {
-
+                    console.log('unknown contentType');
                 }
             }
         }
