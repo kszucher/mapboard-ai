@@ -14,8 +14,8 @@ export const mapSvgVisualize = {
 
         let svgElementData = {};
 
-        if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (cm.type === 'struct' && !hasCell(cm)  ||
-            cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
+        if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' &&
+            (cm.type === 'struct' && !hasCell(cm) || cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             // connection
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
@@ -101,7 +101,10 @@ export const mapSvgVisualize = {
             };
         }
 
-        if (Object.keys(cm.s).length === 0 && !hasCell(cm) && cm.parentType !== 'cell' && cm.contentType !== 'image') {
+        if (Object.keys(cm.s).length === 0 &&
+            !hasCell(cm) &&
+            cm.parentType !== 'cell'
+            && cm.contentType !== 'image') {
             // visualize task related stuff, add onclick to circles, modify mapCollect to mapSelect, remove taskcanvasloc taskcanvasvis
             // warning: this is a subgroup with its own state, so think about it
         }
@@ -142,14 +145,14 @@ export const mapSvgVisualize = {
                 case 'init': {
                     let svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
-                    svgElement.setAttribute("fill",             "transparent");
-                    svgElement.setAttribute("stroke-width",     "1");
+                    svgElement.setAttribute("fill",             "none");
                     svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                     svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                     svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                     svgElement.setAttribute("id",               svgElementName);
 
                     svgElement.style.transition = '0.5s ease-out';
+                    svgElement.style.transitionProperty = 'd';
 
                     svgGroup.appendChild(svgElement);
                     break;
