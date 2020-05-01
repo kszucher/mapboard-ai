@@ -7,7 +7,12 @@ export const mapPrint = {
     },
 
     iterate: (cm) => {
-        mapPrint.str += ('  '.repeat(cm.path.length - mapPrint.entryLength) + cm.content + '\n');
+
+        let indentationCount = cm.path.length - mapPrint.entryLength;
+
+        mapPrint.str += ('  '.repeat(indentationCount));
+        mapPrint.str += cm.content.replace(/<br\s*[\/]?>/gi, '\n' + '  '.repeat(indentationCount));
+        mapPrint.str += '\n';
 
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
