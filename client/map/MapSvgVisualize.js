@@ -28,8 +28,7 @@ export const mapSvgVisualize = {
 
             svgElementData.connection = {
                 path: "M" + x1 + ',' + y1 + ' ' +
-                    "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' +
-                    x2 + ',' + y2,
+                    "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
                 color: '#bbbbbb',
             }
         }
@@ -69,12 +68,9 @@ export const mapSvgVisualize = {
 
             svgElementData.tableFrame = {
                 path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
-                    'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
-                    'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
-                    'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
                 color: cm.selected? '#000000' : '#50dfff',
             };
@@ -90,12 +86,9 @@ export const mapSvgVisualize = {
 
             svgElementData.cellFrame = {
                 path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' +
-                    'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +
-                    'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' +
-                    'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
                 color: '#000000',
             };
