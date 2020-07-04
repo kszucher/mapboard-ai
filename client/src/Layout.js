@@ -21,20 +21,24 @@ export function Layout() {
     });
 
     return (
-        <div id="wrapper">
+        <div id="page">
             <div id="left">
-                <ReactMaterialToolBar>
-                </ReactMaterialToolBar>
-                <ReactMaterialVerticalTabs/>
-            </div>,
-            <div id="center">
-                <div id='mapDiv'>
-                    <canvas id='mapCanvas'/>
-                    <svg id="mapSvg"/>
+                <div id = 'left-top'>
+                    <ReactMaterialToolBar/>
+                </div>
+                <div id='left-bottom'>
+                    <ReactMaterialVerticalTabs/>
                 </div>
             </div>
             <div id="right">
-            </div>,
+                <div id = "right-top"/>
+                <div id = "right-bottom">
+                    <div id='mapDiv'>
+                        <svg id="mapSvg"/>
+                        {/*<canvas id='mapCanvas'/>*/}
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

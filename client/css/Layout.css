@@ -3,74 +3,98 @@ html, body, div, canvas, table, td, tr {
     margin:                 0;
     padding:                0;
 }
+
 [contenteditable="true"]:focus {
     outline:                none;
 }
-#Test
-{
+
+#Test {
     position:               absolute;
     visibility:             hidden;
     height:                 auto;
     width:                  auto;
     white-space:            nowrap; /* Thanks to Herb Caudill comment */
 }
+
 .katex {
     display:                inline-block
 }
-body{
-    overflow-y:             scroll
+
+#page {
+    height: 100vh;
+    /*child*/
+    display: flex;
+    align-content: flex-start;
 }
-#wrapper{
+
+#left {
+    flex-grow: 0;
+    width: 300px;
+
+    position: sticky;
+
+    /*child*/
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+#left-top {
+    flex-grow: 0;
+    height: 48px;
+    background-color: #cc0;
+}
+
+#left-bottom {
+    flex-grow: 1;
+    background-color: #cd0
+}
+
+#right {
+    flex-grow: 1;
+    /*child*/
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+}
+
+#right-top {
+    flex-grow: 0;
+    height: 48px;
+    background-color: #ffccff;
+}
+
+#right-bottom {
+    flex-grow: 1;
+    height: calc(100% - 48px);
+
+    overflow-y: scroll;
+    background-color: #ff0cff;
+}
+
+#mapDiv {
+    position: relative;
+    background: #fbfafc;
+}
+
+#mapSvg {
 
 }
-/*#header {*/
-/*    position:               fixed;*/
-/*    width:                  100%;*/
-/*    z-index:                999;*/
-/*    background:             #747CA8;*/
-/*    color:                  #fff;*/
-/*    height:                 48px;*/
-/*    left:                   0;*/
-/*}*/
-#header-columns{
-    display:                flex;
-    flex:                   1;
+
+#mapCanvas {
+
 }
-#header-main{
-    background:             #747CA8;
-    width:                  1366px;
-}
-#header-sidebar-left, #header-sidebar-right{
-    flex:                   1;
-    background:             #747CA8;
-}
-#left, #right {
-    height:                 100%;
-    position:               fixed;
-    top:                    0px;
-    width:                  calc(50% - 683px);
-}
-#left {
-    background:             #d5d7e4;
-    left:                   0;
-}
-#right {
-    background:             #d5d7e4;
-    right:                  0;
-}
-#center {
-    position:relative;
-    top:                    30px;
-    left:                   calc(50% - 683px);
-    width:                  1366px;
-    height:                 100%;
-}
-#mapDiv{
-    background:             #fbfafc;
-}
-#mapCanvas{
-    position:               absolute;
-}
+
+
 img {
-    border-radius:          8px;
+    border-radius: 8px;
 }
+
+/* TODO
+   - mapDiv container with frame center aligned, but sticking to the top
+   - fixing the wrong way of localizing
+   - fixing the wrong way of setting svg width, height
+   - removing canvas and bringing all stuff to svg
+   - make the matui login, now that we are working on the layout anyways
+   - could also do the animated div adoption to new size, so basically all layout related task
+ */

@@ -13,16 +13,16 @@ export const mapPlace = {
         let mapHeight = 500 + cm.familyH > cm.selfH? cm.familyH + 2*20 : cm.selfH + 2*20;
         mapHeight += 0; // TODO: only use this, when insertion happens at the bottom
 
-        let canvas = document.getElementById('mapCanvas');
-        canvas.width = mapWidth;
-        canvas.height = mapHeight;
+        // let canvas = document.getElementById('mapCanvas');
+        // canvas.width = mapWidth;
+        // canvas.height = mapHeight;
 
         let div = document.getElementById('mapDiv');
         div.style.height = "" + mapHeight + "px";
-        div.style.width = "" + mapWidth + "px";
+        div.style.width = "" + (mapWidth) +"px";
 
         let svg = document.getElementById('mapSvg');
-        svg.setAttribute("viewBox", "0" + " " + "0" + " " + mapWidth + " " + mapHeight);
+        svg.setAttribute("viewBox", "0" + " " + "0" + " " + mapWidth+ " " + mapHeight);
 
         cm.parentNodeStartX = 0;
         cm.parentNodeStartY = 0;

@@ -40,7 +40,7 @@ let mapSaveNever = [
 export function loadMap(mapStorage) {
 
     if (isMapLoaded === 1) {
-        clearCanvas();
+        // clearCanvas();
         clearDivs();
         clearSvgs();
     }
@@ -83,7 +83,7 @@ export function rebuild() {
 }
 
 export function redraw() {
-    clearCanvas();
+    // clearCanvas();
     mapDivVisualize.start();
     mapSvgVisualize.start();
 
