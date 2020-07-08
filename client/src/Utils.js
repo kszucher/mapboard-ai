@@ -1,6 +1,3 @@
-import {lastEvent} from "./EventRouter";
-import {getDim} from "./Dim";
-
 export function getBgc() {
     return '#fbfafc';
 }
@@ -164,18 +161,6 @@ export function subsasgn(obj, path, value) {
         obj = obj[path[i]] = obj[path[i]] || []; // I am a genius
     }
     obj[ pathEnd ] = value;
-}
-
-export function isMouseInsideRectangle(centerX, centerY, selfW, selfH) {
-    let x = lastEvent.ref.pageX - getDim().lw + document.getElementById('mapDiv').scrollLeft;
-    let y = lastEvent.ref.pageY - getDim().uh + document.getElementById('mapDiv').scrollTop +48;
-
-    let leftX =     centerX - selfW/2;
-    let rightX =    centerX + selfW/2;
-    let topY =      centerY + selfH/2;
-    let bottomY =   centerY - selfH/2;
-
-    return x > leftX &  x < rightX && y < topY && y > bottomY;
 }
 
 export function updateStateProp(state, setState, field, value) {

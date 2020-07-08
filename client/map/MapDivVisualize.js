@@ -38,7 +38,10 @@ export const mapDivVisualize = {
                 cm.isDivAssigned = 1;
 
                 cm.divId = 'div' + genHash(8);
-                mapMem.divData[cm.divId] = {divStyle: {}};
+                mapMem.divData[cm.divId] = {
+                    divStyle: {},
+                    path: [],
+                };
 
                 div = document.createElement('div');
                 div.id = cm.divId;
@@ -76,21 +79,16 @@ export const mapDivVisualize = {
             }
 
             mapMem.divData[cm.divId].divStyle = copy(divStyle);
+            mapMem.divData[cm.divId].path = cm.path;
 
             if (cm.isContentAssigned === 0) {
                 cm.isContentAssigned = 1;
 
-                if (cm.contentType === 'text') {
-                    div.innerHTML = cm.content;
-                }
-                else if (cm.contentType === 'image') {
-                    div.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';
-                }
-                else if (cm.contentType === 'equation') {
-                    div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});
-                }
-                else {
-                    console.log('unknown contentType');
+                switch (cm.contentType) {
+                    case 'text':        div.innerHTML = cm.content;                                                                 break;
+                    case 'image':       div.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '">';           break;
+                    case 'equation':    div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});    break;
+                    default:            console.log('unknown contentType');                                                         break;
                 }
             }
         }

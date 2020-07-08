@@ -1,5 +1,4 @@
 import {mapMem, mapref} from '../map/Map'
-import {getDim} from "../src/Dim";
 
 export let sphereRadius = 10;
 export let sphereLut = [];
@@ -15,7 +14,8 @@ export function taskCanvasVisualize() {
         let currTaskEndPath = filter.taskEndPathList[i];
 
         let cm = mapref(currTaskEndPath);
-        let startX = getDim().mw - 136;
+        // let startX = getDim().mw - 136;
+        let startX = 1300;
 
         canvasContext.beginPath();
         canvasContext.strokeStyle = '#eeeeee';

@@ -1,8 +1,6 @@
-import {getDim} from "./Dim"
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
 import {mapMem, redraw, rebuild} from "../map/Map"
-import {mapCanvasLocalize} from "../map/MapCanvasLocalize";
 import {getSelectionContext} from "../node/NodeSelect";
 import {taskCanvasLocalize} from "../task/TaskCanvasLocalize";
 import {isUrl} from "./Utils"
@@ -10,61 +8,55 @@ import {isUrl} from "./Utils"
 export let currColorToPaint = 0;
 export let lastEvent = {};
 
-class EventRouter {
-    constructor() {
-        this.isEditing = 0;
-        lastEvent = {};
-    }
+export const eventRouter = {
 
-    processEvent(lastEventArg) {
+    isEditing: 0,
+
+    processEvent: (lastEventArg) => {
         lastEvent = (lastEventArg); // should not copy because it can contain a reference
         if (communication.eventsEnabled === 0) {
             console.log('unfinished server communication')
         }
         else {
-            this.processEventReal();
+            eventRouter.processEventReal();
         }
-    }
+    },
 
-    processEventReal() {
+    processEventReal: () => {
         let e = lastEvent.ref;
         switch (lastEvent.type) {
             case 'windowClick': {
-                if (!(e.pageX > getDim().lw && e.pageX <= getDim().lw + getDim().mw && e.pageY > getDim().uh)) {
-                    console.log('not within region')
+                /*https://stackoverflow.com/questions/20788604/recognize-pointx-y-is-inside-svg-path-or-outside*/
+
+
+
+                if (eventRouter.isEditing === 1) {
+                    eventEmitter('finishEdit');
+                    redraw();
                 }
-                else {
 
-                    if (this.isEditing === 1) {
-                        eventEmitter('finishEdit');
-                        redraw();
-                    }
 
-                    mapCanvasLocalize.start();
+                let found = 0;
 
-                    if (mapMem.deepestSelectablePath.length === 0) {
-                        console.log('not localizable')
-                    }
-                    else {
-                        if (e.ctrlKey === true) {
-                            eventEmitter('selectMeStructToo');
-                        }
-                        else {
-                            eventEmitter('selectMeStruct');
-                        }
+                console.log(e.path[0].id)
+                console.log(mapMem.divData[e.path[0].id].path)
 
-                        if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
+                // TODO: folyt köv
 
-                        redraw();
-                        // redraw here is unconditional, todo make key version conditional with the help of the table
-                    }
+                if (found) {
+                    // TODO: should add value to mapMem.deepestSelectablePath
 
-                    if (taskCanvasLocalize()) {
-                        rebuild();
-                        redraw();
-                    }
-
+                    e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
+                    if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
+                    redraw();
+                    // redraw here is unconditional, todo make key version conditional with the help of the table
                 }
+
+                if (taskCanvasLocalize()) {
+                    rebuild();
+                    redraw();
+                }
+
                 break;
             }
             case 'windowDoubleClick': {
@@ -137,7 +129,7 @@ class EventRouter {
                     }
 
                     if (keyStateMachine.scope.includes(sc.scope) &&
-                        keyStateMachine.e === this.isEditing &&
+                        keyStateMachine.e === eventRouter.isEditing &&
                         keyStateMachine.c === +e.ctrlKey &&
                         keyStateMachine.s === +e.shiftKey &&
                         keyStateMachine.a === +e.altKey &&
@@ -172,7 +164,7 @@ class EventRouter {
                 break;
             }
             case 'windowPaste': {
-                if (this.isEditing === 1) {
+                if (eventRouter.isEditing === 1) {
                     if (lastEvent.props.dataType === 'text') {
                         eventEmitter('insertTextFromClipboardAsText');
                     }
@@ -263,6 +255,4 @@ class EventRouter {
             }
         }
     }
-}
-
-export let eventRouter = new EventRouter();
+};

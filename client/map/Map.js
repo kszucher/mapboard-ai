@@ -29,7 +29,6 @@ let mapSaveNever = [
     'padding',
     'filter',
     'deepestSelectablePath',
-    'deepestSelectableRef',
     'div',
     'divData',
     'svgData',
@@ -57,7 +56,6 @@ export function loadMap(mapStorage) {
         defaultH: mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
         filter: [],
         deepestSelectablePath: [],
-        deepestSelectableRef: [],
         divData: [],
         svgData: [],
     };

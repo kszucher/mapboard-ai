@@ -1,4 +1,3 @@
-import {initDim} from "./Dim";
 import {eventRouter} from "./EventRouter"
 
 class WindowHandler {
@@ -55,7 +54,6 @@ class WindowHandler {
 
     resize() {
         console.log('RESIZE');
-        initDim();
     }
 
     keydown(e) {

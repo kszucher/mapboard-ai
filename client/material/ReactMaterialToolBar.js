@@ -4,6 +4,8 @@ import Toolbar                                              from '@material-ui/c
 import Typography                                           from '@material-ui/core/Typography';
 import IconButton                                           from '@material-ui/core/IconButton';
 import MenuIcon                                             from '@material-ui/icons/Menu';
+import {MuiThemeProvider} from "@material-ui/core";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -14,25 +16,36 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#ffffff',
+        },
+    },
+});
+
+
 function ReactMaterialToolBar() {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <Toolbar variant="dense">
-                <IconButton
-                    edge="start"
-                    className={classes.menuButton}
-                    color="inherit"
-                    aria-label="menu">
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" color="inherit">
-                    MindBoard
-                </Typography>
+        <MuiThemeProvider theme={theme}>
+            <div className={classes.root}>
+                <Toolbar variant="dense">
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        color="inherit"
+                        aria-label="menu">
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" color="primary">
+                        MindBoard
+                    </Typography>
 
-            </Toolbar>
-        </div>
+                </Toolbar>
+            </div>
+        </MuiThemeProvider>
     );
 }
 

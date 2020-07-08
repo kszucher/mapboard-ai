@@ -1,5 +1,4 @@
 import {communication} from "./Communication";
-import {initDim} from "./Dim";
 import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
 import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut} from "../map/Map";
 import {hasCell} from "../node/Node";
@@ -61,7 +60,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectMeStructToo': {
-            mapMem.deepestSelectableRef.selected = maxSel + 1;
+            mapref(mapMem.deepestSelectablePath).selected = maxSel + 1;
             break;
         }
         case 'selectForwardStruct': {
@@ -306,7 +305,6 @@ export function eventEmitter(command) {
         // SERVER TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
-            initDim();
             let r2c =                               lastEvent.ref;
             localStorage.setItem('cred', JSON.stringify({
                 name:                               r2c.user,
