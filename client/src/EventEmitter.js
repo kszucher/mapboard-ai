@@ -20,7 +20,7 @@ export function eventEmitter(command) {
 
     // console.log('eventEmitter: ' + command);
 
-    let keyStr, sc, maxSel, lastPath, lm, geomHighPath, geomHighRef, geomLowPath, structSelectedPathList;
+    let keyStr, sc;
 
     if (lastEvent.type === 'windowKeyDown') {
         keyStr = lastEvent.ref.code;
@@ -28,13 +28,6 @@ export function eventEmitter(command) {
 
     if (eventLut.shouldUseSelection(command)) {
         sc = getSelectionContext();
-        maxSel = sc.maxSel;
-        lastPath = sc.lastPath;
-        lm = sc.lm;
-        geomHighPath = sc.geomHighPath;
-        geomHighRef = sc.geomHighRef;
-        geomLowPath = sc.geomLowPath;
-        structSelectedPathList = sc.structSelectedPathList;
     }
 
     switch (command) {
@@ -60,12 +53,12 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectMeStructToo': {
-            mapref(mapMem.deepestSelectablePath).selected = maxSel + 1;
+            mapref(mapMem.deepestSelectablePath).selected = sc.maxSel + 1;
             break;
         }
         case 'selectForwardStruct': {
-            if (hasCell(lm)) {
-                applyMixedSelection(pathMerge(lastPath, ['c', 0, 0]));
+            if (hasCell(sc.lm)) {
+                applyMixedSelection(pathMerge(sc.lastPath, ['c', 0, 0]));
             }
             break;
         }
@@ -74,49 +67,49 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectBackwardStruct': {
-            for (let i = lm.path.length - 2; i > 0; i--) {
-                if (Number.isInteger(lm.path[i]) &&
-                    Number.isInteger(lm.path[i+1])) {
-                    applyMixedSelection(lm.path.slice(0, i + 2));
+            for (let i = sc.lm.path.length - 2; i > 0; i--) {
+                if (Number.isInteger(sc.lm.path[i]) &&
+                    Number.isInteger(sc.lm.path[i+1])) {
+                    applyMixedSelection(sc.lm.path.slice(0, i + 2));
                     break;
                 }
             }
             break;
         }
         case 'selectBackwardMixed': {
-            let parentRef = mapref(lm.parentPath);
+            let parentRef = mapref(sc.lm.parentPath);
             let parentParentRef = mapref(parentRef.parentPath);
             applyStructSelection(parentParentRef.path);
             break;
         }
         case 'selectNeighborMixed': {
-            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), keyStr));
+            applyMixedSelection(cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr));
             break;
         }
         case 'selectDownMixed': {
-            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), 'ArrowDown'));
+            applyMixedSelection(cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'ArrowDown'));
             break;
         }
         case 'selectRightMixed': {
-            applyMixedSelection(cellNavigate(lastPath.slice(0, lastPath.length - 2), 'ArrowRight'));
+            applyMixedSelection(cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'ArrowRight'));
             break;
         }
         case 'selectNeighborNode': {
             let toPath = [];
-            if (        keyStr === 'ArrowUp') {       toPath = geomHighPath   }
-            else if (   keyStr === 'ArrowDown') {     toPath = geomLowPath    }
-            else {                                    toPath = lastPath       }
+            if (        keyStr === 'ArrowUp') {       toPath = sc.geomHighPath   }
+            else if (   keyStr === 'ArrowDown') {     toPath = sc.geomLowPath    }
+            else {                                    toPath = sc.lastPath       }
             applyStructSelection(structNavigate(toPath, keyStr));
             break;
         }
         case 'selectNeighborNodeToo': {
-            mapref(structNavigate(lastPath, keyStr)).selected = maxSel + 1;
+            mapref(structNavigate(sc.lastPath, keyStr)).selected = sc.maxSel + 1;
             break;
         }
         case 'selectCellRowMixed': {
             clearStructSelection();
             clearCellSelection();
-            let parentRef =                         mapref(lm.parentPath);
+            let parentRef =                         mapref(sc.lm.parentPath);
             let parentParentRef =                   mapref(parentRef.parentPath);
             let currRow =                           parentRef.index[0];
             let colLen =                            parentParentRef.c[0].length;
@@ -129,7 +122,7 @@ export function eventEmitter(command) {
         case 'selectCellColMixed': {
             clearStructSelection();
             clearCellSelection();
-            let parentRef =                         mapref(lm.parentPath);
+            let parentRef =                         mapref(sc.lm.parentPath);
             let parentParentRef =                   mapref(parentRef.parentPath);
             let currCol =                           parentRef.index[1];
             let rowLen =                            parentParentRef.c.length;
@@ -147,15 +140,15 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp':                        structInsert(lm, 'up');                                     break;
-        case 'newSiblingDown':                      structInsert(lm, 'down');                                   break;
-        case 'newChild':                            structInsert(lm, 'right');                                  break;
-        case 'newCellBlock':                        cellInsert(lastPath.slice(0, lastPath.length -2), keyStr);  break;
+        case 'newSiblingUp':                        structInsert(sc.lm, 'up');                                     break;
+        case 'newSiblingDown':                      structInsert(sc.lm, 'down');                                   break;
+        case 'newChild':                            structInsert(sc.lm, 'right');                                  break;
+        case 'newCellBlock':                        cellInsert(sc.lastPath.slice(0, sc.lastPath.length -2), keyStr);  break;
         // -------------------------------------------------------------------------------------------------------------
         // DELETE
         // -------------------------------------------------------------------------------------------------------------
         case 'deleteNode':                          structDeleteReselect(sc);                                   break;
-        case 'deleteCellBlock':                     cellBlockDeleteReselect(lm);                                break;
+        case 'deleteCellBlock':                     cellBlockDeleteReselect(sc.lm);                                break;
         // -------------------------------------------------------------------------------------------------------------
         // MOVE
         // -------------------------------------------------------------------------------------------------------------
@@ -179,42 +172,42 @@ export function eventEmitter(command) {
             break;
         }
         case 'insertTextFromClipboardAsNode': {
-            lm.contentType =                        'text';
-            lm.content =                            lastEvent.props.data;
-            lm.isDimAssigned =                      0;
-            lm.isContentAssigned =                  0;
+            sc.lm.contentType =                        'text';
+            sc.lm.content =                            lastEvent.props.data;
+            sc.lm.isDimAssigned =                      0;
+            sc.lm.isContentAssigned =                  0;
             break;
         }
         case 'insertElinkFromClipboardAsNode': {
-            lm.contentType =                        'text';
-            lm.content =                            lastEvent.props.data;
-            lm.linkType =                           'external';
-            lm.link =                               lastEvent.props.data;
-            lm.isDimAssigned =                      0;
-            lm.isContentAssigned =                  0;
+            sc.lm.contentType =                        'text';
+            sc.lm.content =                            lastEvent.props.data;
+            sc.lm.linkType =                           'external';
+            sc.lm.link =                               lastEvent.props.data;
+            sc.lm.isDimAssigned =                      0;
+            sc.lm.isContentAssigned =                  0;
             break;
         }
         case 'insertIlinkFromMongo': {
             let s2c =                               lastEvent.ref;
-            lm.linkType =                           'internal';
-            lm.link =                               s2c.newMapId;
-            lm.isDimAssigned =                      0;
-            lm.isContentAssigned =                  0;
+            sc.lm.linkType =                           'internal';
+            sc.lm.link =                               s2c.newMapId;
+            sc.lm.isDimAssigned =                      0;
+            sc.lm.isContentAssigned =                  0;
             break;
         }
         case 'insertEquationFromClipboardAsNode': {
-            lm.contentType =                        'equation';
-            lm.content =                            lastEvent.props.data;
-            lm.isDimAssigned =                      0;
-            lm.isContentAssigned =                  0;
+            sc.lm.contentType =                        'equation';
+            sc.lm.content =                            lastEvent.props.data;
+            sc.lm.isDimAssigned =                      0;
+            sc.lm.isContentAssigned =                  0;
             break;
         }
         case 'insertImageFromLinkAsNode': {
             let sf2c =                              lastEvent.ref;
-            lm.contentType =                        'image';
-            lm.content =                            sf2c.imageId;
-            lm.imageW =                             sf2c.imageSize.width;
-            lm.imageH =                             sf2c.imageSize.height;
+            sc.lm.contentType =                        'image';
+            sc.lm.content =                            sf2c.imageId;
+            sc.lm.imageW =                             sf2c.imageSize.width;
+            sc.lm.imageH =                             sf2c.imageSize.height;
             break;
         }
         case 'insertMapFromClipboard': {
@@ -227,29 +220,29 @@ export function eventEmitter(command) {
         // EDIT
         // -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
-            lm.content = '';
-            let holderElement = document.getElementById(lm.divId);
+            sc.lm.content = '';
+            let holderElement = document.getElementById(sc.lm.divId);
             holderElement.innerHTML = '';
             break;
         }
         case 'typeText': {
-            let holderElement = document.getElementById(lm.divId);
+            let holderElement = document.getElementById(sc.lm.divId);
             holderElement.style.width = 1000 + 'px'; // long enough
             break;
         }
         case 'startEdit': {
             eventRouter.isEditing = 1;
-            let holderElement = document.getElementById(lm.divId);
+            let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'true';
             setEndOfContenteditable(holderElement);
             break;
         }
         case 'finishEdit' : {
-            let holderElement = document.getElementById(lm.divId);
+            let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'false';
 
-            lm.content = holderElement.innerHTML;
-            lm.isDimAssigned = 0;
+            sc.lm.content = holderElement.innerHTML;
+            sc.lm.isDimAssigned = 0;
 
             eventRouter.isEditing = 0;
             break;
@@ -262,13 +255,13 @@ export function eventEmitter(command) {
             break;
         }
         case 'transposeMe': {
-            if (hasCell(lm)) {
-                lm.c = transposeArray(lm.c);
+            if (hasCell(sc.lm)) {
+                sc.lm.c = transposeArray(sc.lm.c);
             }
             break;
         }
         case 'transpose': {
-            lm.c = transposeArray(lm.c);
+            sc.lm.c = transposeArray(sc.lm.c);
             break;
         }
         case 'makeGrid': {
@@ -276,8 +269,8 @@ export function eventEmitter(command) {
             break;
         }
         case 'applyColor': {
-            for (let i = 0; i < structSelectedPathList.length; i++) {
-                let cm = mapref(structSelectedPathList[i]);
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
                 switch (currColorToPaint) {
                     case 0: cm.sTextColor = '#000000'; break;
                     case 1: cm.sTextColor = '#999999'; break;
@@ -294,11 +287,11 @@ export function eventEmitter(command) {
             break;
         }
         case 'applyParameter': {
-            lm.sTextColor = '#8e1c8e';
+            sc.lm.sTextColor = '#8e1c8e';
             break;
         }
         case 'prettyPrint': {
-            mapPrint.start(lm);
+            mapPrint.start(sc.lm);
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
@@ -349,16 +342,16 @@ export function eventEmitter(command) {
         }
         case 'openAfterNodeSelect': {
             shouldAddToHistory = 1;
-            if(lm.linkType === 'internal') {
+            if(sc.lm.linkType === 'internal') {
                 let c2s = {
                     'cmd':                          'openMapRequest',
                     'cred':                         JSON.parse(localStorage.getItem('cred')),
-                    'mapName':                      lm.link
+                    'mapName':                      sc.lm.link
                 };
                 communication.sender(c2s);
             }
-            else if (lm.linkType === 'external') {
-                window.open(lm.link, '_blank');
+            else if (sc.lm.linkType === 'external') {
+                window.open(sc.lm.link, '_blank');
                 window.focus();
             }
             break;
@@ -392,7 +385,7 @@ export function eventEmitter(command) {
                 data: [
                     {
                         path:                       ['s', 0],
-                        content:                    lm.content,
+                        content:                    sc.lm.content,
                         selected:                   1
                     }
                 ],

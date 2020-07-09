@@ -26,25 +26,17 @@ export const eventRouter = {
         let e = lastEvent.ref;
         switch (lastEvent.type) {
             case 'windowClick': {
-                /*https://stackoverflow.com/questions/20788604/recognize-pointx-y-is-inside-svg-path-or-outside*/
-
-
 
                 if (eventRouter.isEditing === 1) {
                     eventEmitter('finishEdit');
                     redraw();
                 }
 
+                if (e.path[0].id.substring(0, 3) === 'div') {
 
-                let found = 0;
+                    /*https://stackoverflow.com/questions/20788604/recognize-pointx-y-is-inside-svg-path-or-outside*/
 
-                console.log(e.path[0].id)
-                console.log(mapMem.divData[e.path[0].id].path)
-
-                // TODO: folyt köv
-
-                if (found) {
-                    // TODO: should add value to mapMem.deepestSelectablePath
+                    mapMem.deepestSelectablePath = mapMem.divData[e.path[0].id].path;
 
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
