@@ -191,16 +191,15 @@ export const mapSvgVisualize = {
             switch (op) {
                 case 'init': {
                     let svgElement = document.createElementNS("http://www.w3.org/2000/svg", svgElementData[svgElementName].type);
-                    
                     svgElement.setAttribute("id", svgElementName);
-                    
                     switch (svgElementData[svgElementName].type) {
                         case 'path':
                             svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                             svgElement.setAttribute("fill",             "none");
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                            svgElement.style.transitionProperty = 'd';
+                            svgElement.style.transition =               '0.5s ease-out';
+                            svgElement.style.transitionProperty =       'd';
                             break;
                         case 'circle':
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
@@ -208,11 +207,9 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            svgElement.style.transition =               '0.5s ease-out';
                             break;
                     }
-
-                    svgElement.style.transition = '0.5s ease-out';
-
                     svgGroup.appendChild(svgElement);
                     break;
                 }
@@ -234,7 +231,6 @@ export const mapSvgVisualize = {
                 }
                 case 'delete': {
                     let svgElement = svgGroup.querySelector('#' + svgElementName);
-
                     svgElement.parentNode.removeChild(svgElement);
                     break;
                 }
