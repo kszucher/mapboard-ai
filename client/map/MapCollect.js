@@ -1,6 +1,5 @@
 import {mapMem} from "./Map";
 import {copy} from "../src/Utils"
-import {hasCell} from "../node/Node";
 
 export const mapCollect = {
     start: () => {
@@ -9,7 +8,6 @@ export const mapCollect = {
             filter: {
                 structSelectedPathList: [],
                 cellSelectedPathList: [],
-                taskEndPathList: [],
             }
         };
         mapCollect.iterate(cm, params);
@@ -38,10 +36,6 @@ export const mapCollect = {
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
             mapCollect.iterate(cm.s[i], params);
-        }
-
-        if (sCount === 0 && !hasCell(cm) && cm.parentType !== 'cell' && cm.contentType !== 'image') {
-            params.filter.taskEndPathList.push(cm.path.slice(0));
         }
     }
 };

@@ -10,7 +10,6 @@ import {mapNodePropRemove} from "./MapNodePropRemove";
 import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
-import {taskCanvasVisualize} from "../task/TaskCanvasVisualize";
 import {mapSvgVisualize} from "./MapSvgVisualize";
 
 export let mapMem = {};
@@ -32,14 +31,11 @@ let mapSaveNever = [
     'div',
     'divData',
     'svgData',
-    'canvas',
-    'canvasContext'
 ];
 
 export function loadMap(mapStorage) {
 
     if (isMapLoaded === 1) {
-        // clearCanvas();
         clearDivs();
         clearSvgs();
     }
@@ -81,13 +77,8 @@ export function rebuild() {
 }
 
 export function redraw() {
-    // clearCanvas();
     mapDivVisualize.start();
     mapSvgVisualize.start();
-
-    if (mapMem.task) {
-        taskCanvasVisualize();
-    }
 }
 
 export function clearDiv(divId) {
@@ -120,16 +111,6 @@ export function clearSvgs() {
         currSvg.parentNode.removeChild(currSvg);
         delete mapMem.svgData[svgId];
     }
-}
-
-export function clearCanvas() {
-    let canvas =            document.getElementById('mapCanvas');
-    let canvasContext =     document.getElementById('mapCanvas').getContext('2d');
-
-    canvasContext.save();
-    canvasContext.setTransform(1, 0, 0, 1, 0, 0);
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    canvasContext.restore();
 }
 
 export function mapref(path) {

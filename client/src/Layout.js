@@ -35,7 +35,6 @@ export function Layout() {
                 <div id = "right-bottom">
                     <div id='mapDiv'>
                         <svg id="mapSvg"/>
-                        {/*<canvas id='mapCanvas'/>*/}
                     </div>
                 </div>
             </div>

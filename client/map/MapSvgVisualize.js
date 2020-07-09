@@ -2,7 +2,17 @@ import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
 import {genHash, copy} from "../src/Utils";
 
-let svgElementNameList = ['connection', 'tableGrid', 'tableFrame', 'cellFrame'];
+let svgElementNameList = [
+    'connection',
+    'tableGrid',
+    'tableFrame',
+    'cellFrame',
+    'taskLine',
+    'taskCircle0',
+    'taskCircle1',
+    'taskCircle2',
+    'taskCircle3',
+];
 
 export const mapSvgVisualize = {
     start: () => {
@@ -11,12 +21,11 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
-
         let svgElementData = {};
 
+        // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' &&
             (cm.type === 'struct' && !hasCell(cm) || cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-            // connection
             let x1 = cm.parentNodeEndX;
             let y1 = cm.parentNodeEndY;
             let cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
@@ -27,14 +36,16 @@ export const mapSvgVisualize = {
             let y2 = cm.nodeStartY;
 
             svgElementData.connection = {
+                type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
                 color: '#bbbbbb',
             }
         }
 
+        // table
         if (cm.type === "struct" && hasCell(cm)) {
-            // table grid
+            // grid
             let path = '';
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
@@ -55,11 +66,12 @@ export const mapSvgVisualize = {
             }
 
             svgElementData.tableGrid = {
+                type: 'path',
                 path: path,
                 color: '#dddddd',
             };
 
-            // table frame
+            // frame
             let round = 8;
             let x1 = cm.centerX - (cm.selfW + 1)/2;
             let y1 = cm.centerY - cm.selfH/2 + round;
@@ -67,6 +79,7 @@ export const mapSvgVisualize = {
             let v = cm.selfH - 2*round;
 
             svgElementData.tableFrame = {
+                type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
@@ -76,7 +89,7 @@ export const mapSvgVisualize = {
             };
         }
 
-        // cell highlight
+        // cell frame
         if (cm.type === 'cell' && cm.selected) {
             let round = 8;
             let x1 = cm.centerX - (cm.selfW + 1) / 2;
@@ -85,6 +98,7 @@ export const mapSvgVisualize = {
             let v = cm.selfH - 2 * round;
 
             svgElementData.cellFrame = {
+                type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
                     'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
@@ -94,12 +108,52 @@ export const mapSvgVisualize = {
             };
         }
 
-        if (Object.keys(cm.s).length === 0 &&
-            !hasCell(cm) &&
-            cm.parentType !== 'cell'
-            && cm.contentType !== 'image') {
-            // visualize task related stuff, add onclick to circles, modify mapCollect to mapSelect, remove taskcanvasloc taskcanvasvis
-            // warning: this is a subgroup with its own state, so think about it
+        // task
+        if (mapMem.task && Object.keys(cm.s).length === 0 && !hasCell(cm) && cm.parentType !== 'cell' && cm.contentType !== 'image') {
+            let startX = 1230;
+
+            let x1 = cm.nodeEndX;
+            let y1 = cm.nodeEndY;
+            let x2 = startX;
+            let y2 = cm.nodeEndY;
+
+            svgElementData.taskLine = {
+                type: 'path',
+                path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
+                color: '#eeeeee',
+            };
+
+            let sphereOffset = 32;
+            for (let i = 0; i < 4; i++) {
+                let centerX = startX + i * sphereOffset;
+                let centerY = cm.nodeEndY;
+
+                let fill;
+                if (cm.taskStatus === i) {
+                    switch (i) {
+                        case 0: fill = '#eeeeee'; break;
+                        case 1: fill = '#2c9dfc'; break;
+                        case 2: fill = '#d5802a'; break;
+                        case 3: fill = '#25bf25'; break;
+                    }
+                }
+                else {
+                    switch (i) {
+                        case 0: fill = '#eeeeee'; break;
+                        case 1: fill = '#e5f3fe'; break;
+                        case 2: fill = '#f6e5d4'; break;
+                        case 3: fill = '#e5f9e5'; break;
+                    }
+                }
+
+                svgElementData['taskCircle' + i] = {
+                    type: 'circle',
+                    cx: centerX,
+                    cy: centerY,
+                    r: 11,
+                    fill: fill,
+                }
+            }
         }
 
         let svgGroup;
@@ -136,16 +190,28 @@ export const mapSvgVisualize = {
 
             switch (op) {
                 case 'init': {
-                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
-
-                    svgElement.setAttribute("fill",             "none");
-                    svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                    svgElement.setAttribute("d",                svgElementData[svgElementName].path);
-                    svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
-                    svgElement.setAttribute("id",               svgElementName);
+                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", svgElementData[svgElementName].type);
+                    
+                    svgElement.setAttribute("id", svgElementName);
+                    
+                    switch (svgElementData[svgElementName].type) {
+                        case 'path':
+                            svgElement.setAttribute("d",                svgElementData[svgElementName].path);
+                            svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
+                            svgElement.setAttribute("fill",             "none");
+                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            svgElement.style.transitionProperty = 'd';
+                            break;
+                        case 'circle':
+                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
+                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            svgElement.setAttribute("r",                svgElementData[svgElementName].r);
+                            svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
+                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            break;
+                    }
 
                     svgElement.style.transition = '0.5s ease-out';
-                    svgElement.style.transitionProperty = 'd';
 
                     svgGroup.appendChild(svgElement);
                     break;
@@ -153,8 +219,17 @@ export const mapSvgVisualize = {
                 case 'update': {
                     let svgElement = svgGroup.querySelector('#' + svgElementName);
 
-                    svgElement.setAttribute("d",                svgElementData[svgElementName].path);
-                    svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
+                    switch (svgElementData[svgElementName].type) {
+                        case 'path':
+                            svgElement.setAttribute("d",                svgElementData[svgElementName].path);
+                            svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
+                            break;
+                        case 'circle':
+                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
+                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            svgElement.setAttribute("r",                svgElementData[svgElementName].r);
+                            svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
+                    }
                     break;
                 }
                 case 'delete': {

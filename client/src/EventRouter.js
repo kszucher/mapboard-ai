@@ -2,7 +2,6 @@ import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
 import {mapMem, redraw, rebuild} from "../map/Map"
 import {getSelectionContext} from "../node/NodeSelect";
-import {taskCanvasLocalize} from "../task/TaskCanvasLocalize";
 import {isUrl} from "./Utils"
 
 export let currColorToPaint = 0;
@@ -44,10 +43,10 @@ export const eventRouter = {
                     // redraw here is unconditional, todo make key version conditional with the help of the table
                 }
 
-                if (taskCanvasLocalize()) {
-                    rebuild();
-                    redraw();
-                }
+                // if (taskCanvasLocalize()) {
+                //     rebuild();
+                //     redraw();
+                // }
 
                 break;
             }
