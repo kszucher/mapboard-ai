@@ -60,7 +60,7 @@ export function loadMap(mapStorage) {
     isMapBuilt = 0;
 }
 
-export function rebuild() {
+export function recalc() {
     mapInit.start();
     mapChain.start();
     mapMeasure.start();

@@ -1,6 +1,6 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
-import {mapMem, redraw, rebuild} from "../map/Map"
+import {mapMem, redraw, recalc} from "../map/Map"
 import {getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 
@@ -44,7 +44,7 @@ export const eventRouter = {
                 }
 
                 // if (taskCanvasLocalize()) {
-                //     rebuild();
+                //     recalc();
                 //     redraw();
                 // }
 
@@ -52,13 +52,13 @@ export const eventRouter = {
             }
             case 'windowDoubleClick': {
                 eventEmitter('startEdit');
-                rebuild();
+                recalc();
                 redraw();
                 break;
             }
             case 'windowPopState': {
                 eventEmitter('openAfterHistory');
-                rebuild();
+                recalc();
                 redraw();
                 break;
             }
@@ -141,7 +141,7 @@ export const eventRouter = {
 
                             // build execution-wise
                             if (currExecution !== 'typeText') {
-                                rebuild();
+                                recalc();
                             }
 
                             // draw group-wise
@@ -165,22 +165,22 @@ export const eventRouter = {
 
                         if (text.substring(0, 1) === '[') {
                             eventEmitter('insertMapFromClipboard');
-                            rebuild();
+                            recalc();
                             redraw();
                         } else {
                             eventEmitter('newChild');
-                            rebuild();
+                            recalc();
                             if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                                 eventEmitter('insertEquationFromClipboardAsNode');
-                                rebuild();
+                                recalc();
                                 redraw();
                             } else if (isUrl(text)) {
                                 eventEmitter('insertElinkFromClipboardAsNode');
-                                rebuild();
+                                recalc();
                                 redraw();
                             } else {
                                 eventEmitter('insertTextFromClipboardAsNode');
-                                rebuild();
+                                recalc();
                                 redraw();
                             }
                         }
@@ -215,7 +215,7 @@ export const eventRouter = {
                     }
                     case 'openMapSuccess': {
                         eventEmitter('openMap');
-                        rebuild();
+                        recalc();
                         redraw();
                         break;
                     }
@@ -224,9 +224,9 @@ export const eventRouter = {
                     }
                     case 'createMapInMapSuccess': {
                         eventEmitter('insertIlinkFromMongo');
-                        rebuild();
+                        recalc();
                         eventEmitter('save');
-                        rebuild();
+                        recalc();
                         redraw();
                         break;
                     }
@@ -237,9 +237,9 @@ export const eventRouter = {
                 let sf2c = lastEvent.ref;
                 if (sf2c.cmd === 'imageSaveSuccess') {
                     eventEmitter('newChild');
-                    rebuild();
+                    recalc();
                     eventEmitter('insertImageFromLinkAsNode');
-                    rebuild();
+                    recalc();
                     redraw();
                 }
                 break;
