@@ -34,7 +34,7 @@ export const eventRouter = {
                 if (e.path[0].id.substring(0, 3) === 'div') {
 
                     /*https://stackoverflow.com/questions/20788604/recognize-pointx-y-is-inside-svg-path-or-outside*/
-
+                    // https://codepen.io/miguelra/pen/NAjNYA
                     mapMem.deepestSelectablePath = mapMem.divData[e.path[0].id].path;
 
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');

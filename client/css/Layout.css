@@ -74,10 +74,13 @@ html, body, div, table, td, tr {
 #mapDiv {
     position: relative;
     background: #fbfafc;
+    /*child*/
+    display: flex;
+    align-content: flex-start;
 }
 
 #mapSvg {
-
+    flex-grow: 1;
 }
 
 img {
