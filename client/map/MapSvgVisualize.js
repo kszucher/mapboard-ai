@@ -1,6 +1,6 @@
 import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
-import {genHash, copy} from "../src/Utils";
+import {genHash, copy} from "../core/Utils";
 
 let svgElementNameList = [
     'connection',
@@ -151,6 +151,7 @@ export const mapSvgVisualize = {
                     cx: centerX,
                     cy: centerY,
                     r: 11,
+                    onclick: "alert('You have clicked the circle.')",
                     fill: fill,
                 }
             }
@@ -205,6 +206,7 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
+                            svgElement.setAttribute("onclick",          svgElementData[svgElementName].onclick);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             svgElement.style.transition =               '0.5s ease-out';
@@ -224,7 +226,6 @@ export const mapSvgVisualize = {
                         case 'circle':
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
-                            svgElement.setAttribute("r",                svgElementData[svgElementName].r);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
                     }
                     break;

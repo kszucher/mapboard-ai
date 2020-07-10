@@ -66,7 +66,7 @@ export const eventLut = {
             ['createMapInMap', 1,],
             // server fetch tx
             ['sendImage', 0,],
-            // to material
+            // to components
             ['updateReactTabs', 0,],
         ];
 

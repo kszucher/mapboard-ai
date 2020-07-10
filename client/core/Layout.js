@@ -1,9 +1,9 @@
 import './../css/Layout.css'
 import React, {useEffect} from 'react'
-import ReactMaterialToolBar from "../material/ReactMaterialToolBar";
+import ReactMaterialToolBar from "../components/ReactMaterialToolBar";
 import {windowHandler} from "./WindowHandler";
 import {eventRouter} from "./EventRouter";
-import ReactMaterialVerticalTabs from "../material/ReactMaterialVerticalTabs";
+import ReactMaterialVerticalTabs from "../components/ReactMaterialVerticalTabs";
 
 export function Layout() {
 

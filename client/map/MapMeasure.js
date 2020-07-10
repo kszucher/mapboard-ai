@@ -1,6 +1,6 @@
 import {mapMem} from "./Map";
 import {hasCell} from "../node/Node";
-import {createArray, getEquationDim, getTextDim} from "../src/Utils";
+import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 
 export const mapMeasure = {
     start: () => {

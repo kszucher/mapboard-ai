@@ -1,4 +1,4 @@
-import {copy, subsref, subsasgn} from "../src/Utils"
+import {copy, subsref, subsasgn} from "../core/Utils"
 import {mapAssembly} from "./MapAssembly";
 import {mapChain} from './MapChain'
 import {mapCollect} from './MapCollect'

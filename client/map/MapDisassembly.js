@@ -1,4 +1,4 @@
-import {copy} from "../src/Utils";
+import {copy} from "../core/Utils";
 
 export let nodeCopyList = [];
 

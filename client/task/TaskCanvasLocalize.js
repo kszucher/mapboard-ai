@@ -1,4 +1,4 @@
-import {isMouseInsideRectangle} from "../src/Utils";
+import {isMouseInsideRectangle} from "../core/Utils";
 import {mapref} from "../map/Map";
 import {clearStructSelection} from "../node/NodeSelect";
 import {sphereLut, sphereRadius} from "./TaskCanvasVisualize"

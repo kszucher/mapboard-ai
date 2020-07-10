@@ -1,5 +1,5 @@
 import {mapMem} from "./Map";
-import {copy} from "../src/Utils"
+import {copy} from "../core/Utils"
 
 export const mapCollect = {
     start: () => {

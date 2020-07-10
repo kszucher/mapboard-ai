@@ -3,7 +3,7 @@ import {mapNodePropChange} from "../map/MapNodePropChange";
 import {clearStructSelection} from "./NodeSelect";
 import {getDefaultNode} from "./Node";
 import {structDeleteReselect} from "./NodeDelete";
-import {arrayValuesSame, copy, transpose} from "../src/Utils";
+import {arrayValuesSame, copy, transpose} from "../core/Utils";
 
 let clipboard = [];
 

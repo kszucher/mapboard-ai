@@ -1,5 +1,5 @@
 import {mapMem} from "./Map";
-import {getBgc} from "../src/Utils";
+import {getBgc} from "../core/Utils";
 
 export const mapTaskColor = {
     start: () => {

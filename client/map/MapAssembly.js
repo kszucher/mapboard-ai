@@ -1,4 +1,4 @@
-import {copy, subsasgn} from "../src/Utils";
+import {copy, subsasgn} from "../core/Utils";
 
 export function mapAssembly(dataLinear) {
 

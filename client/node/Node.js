@@ -1,4 +1,4 @@
-import {getBgc}                                 from '../src/Utils'
+import {getBgc}                                 from '../core/Utils'
 
 export let props = {
     saveOptional: {

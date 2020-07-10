@@ -1,6 +1,6 @@
 import {mapMem, mapref, mapasgn, pathMerge} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
-import {arrayValuesSame} from "../src/Utils";
+import {arrayValuesSame} from "../core/Utils";
 
 export function getSelectionContext () {
 
