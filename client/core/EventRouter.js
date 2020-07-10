@@ -1,7 +1,7 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
-import {mapMem, redraw, recalc} from "../map/Map"
-import {getSelectionContext} from "../node/NodeSelect";
+import {mapMem, redraw, recalc, mapref} from "../map/Map"
+import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 
 export let currColorToPaint = 0;
@@ -32,22 +32,29 @@ export const eventRouter = {
                 }
 
                 if (e.path[0].id.substring(0, 3) === 'div') {
-
                     /*https://stackoverflow.com/questions/20788604/recognize-pointx-y-is-inside-svg-path-or-outside*/
                     // https://codepen.io/miguelra/pen/NAjNYA
                     mapMem.deepestSelectablePath = mapMem.divData[e.path[0].id].path;
 
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
-                    redraw();
-                    // redraw here is unconditional, todo make key version conditional with the help of the table
+                    redraw(); // redraw here is unconditional, todo make key version conditional with the help of the table
                 }
+                else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
 
-                // if (taskCanvasLocalize()) {
-                //     recalc();
-                //     redraw();
-                // }
+                    let x = parseInt(e.path[0].id.charAt(10), 10);
+                    let cm =  mapref(mapMem.svgData[e.path[1].id].path);
 
+                    clearStructSelection();
+
+                    cm.selected = 1;
+                    cm.taskStatus = x ;
+                    cm.taskStatusInherited = -1;
+
+                    recalc();
+                    redraw();
+
+                }
                 break;
             }
             case 'windowDoubleClick': {

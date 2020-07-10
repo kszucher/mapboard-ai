@@ -151,7 +151,6 @@ export const mapSvgVisualize = {
                     cx: centerX,
                     cy: centerY,
                     r: 11,
-                    onclick: "alert('You have clicked the circle.')",
                     fill: fill,
                 }
             }
@@ -163,7 +162,10 @@ export const mapSvgVisualize = {
 
             cm.svgId = 'svg' + genHash(8);
 
-            mapMem.svgData[cm.svgId] = {svgElementData: {}};
+            mapMem.svgData[cm.svgId] = {
+                svgElementData: {},
+                path: [],
+            };
 
             svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             svgGroup.setAttribute("id", cm.svgId);
@@ -206,7 +208,6 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
-                            svgElement.setAttribute("onclick",          svgElementData[svgElementName].onclick);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             svgElement.style.transition =               '0.5s ease-out';
@@ -226,6 +227,7 @@ export const mapSvgVisualize = {
                         case 'circle':
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            svgElement.setAttribute("r",                svgElementData[svgElementName].r);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
                     }
                     break;
@@ -239,6 +241,7 @@ export const mapSvgVisualize = {
         }
 
         mapMem.svgData[cm.svgId].svgElementData = copy(svgElementData);
+        mapMem.svgData[cm.svgId].path = cm.path;
 
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
