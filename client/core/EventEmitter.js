@@ -35,8 +35,8 @@ export function eventEmitter(command) {
         // OPEN
         // -------------------------------------------------------------------------------------------------------------
         case 'openMap': {
-            let s2c =                               lastEvent.ref;
-            lastUserMap =                           s2c.mapName;
+            let s2c = lastEvent.ref;
+            lastUserMap = s2c.mapName;
 
             if (shouldAddToHistory === 1) {
                 let stateObj = {lastUserMap: lastUserMap};
@@ -69,7 +69,7 @@ export function eventEmitter(command) {
         case 'selectBackwardStruct': {
             for (let i = sc.lm.path.length - 2; i > 0; i--) {
                 if (Number.isInteger(sc.lm.path[i]) &&
-                    Number.isInteger(sc.lm.path[i+1])) {
+                    Number.isInteger(sc.lm.path[i + 1])) {
                     applyMixedSelection(sc.lm.path.slice(0, i + 2));
                     break;
                 }
@@ -96,9 +96,13 @@ export function eventEmitter(command) {
         }
         case 'selectNeighborNode': {
             let toPath = [];
-            if (        keyStr === 'ArrowUp') {       toPath = sc.geomHighPath   }
-            else if (   keyStr === 'ArrowDown') {     toPath = sc.geomLowPath    }
-            else {                                    toPath = sc.lastPath       }
+            if (keyStr === 'ArrowUp') {
+                toPath = sc.geomHighPath
+            } else if (keyStr === 'ArrowDown') {
+                toPath = sc.geomLowPath
+            } else {
+                toPath = sc.lastPath
+            }
             applyStructSelection(structNavigate(toPath, keyStr));
             break;
         }
@@ -109,10 +113,10 @@ export function eventEmitter(command) {
         case 'selectCellRowMixed': {
             clearStructSelection();
             clearCellSelection();
-            let parentRef =                         mapref(sc.lm.parentPath);
-            let parentParentRef =                   mapref(parentRef.parentPath);
-            let currRow =                           parentRef.index[0];
-            let colLen =                            parentParentRef.c[0].length;
+            let parentRef = mapref(sc.lm.parentPath);
+            let parentParentRef = mapref(parentRef.parentPath);
+            let currRow = parentRef.index[0];
+            let colLen = parentParentRef.c[0].length;
             for (let i = 0; i < colLen; i++) {
                 parentParentRef.c[currRow][i].selected = 1;
                 parentParentRef.c[currRow][i].s[0].selected = 1;
@@ -122,10 +126,10 @@ export function eventEmitter(command) {
         case 'selectCellColMixed': {
             clearStructSelection();
             clearCellSelection();
-            let parentRef =                         mapref(sc.lm.parentPath);
-            let parentParentRef =                   mapref(parentRef.parentPath);
-            let currCol =                           parentRef.index[1];
-            let rowLen =                            parentParentRef.c.length;
+            let parentRef = mapref(sc.lm.parentPath);
+            let parentParentRef = mapref(parentRef.parentPath);
+            let currCol = parentRef.index[1];
+            let rowLen = parentParentRef.c.length;
             for (let i = 0; i < rowLen; i++) {
                 parentParentRef.c[i][currCol].selected = 1;
                 parentParentRef.c[i][currCol].s[0].selected = 1;
@@ -140,15 +144,33 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp':                        structInsert(sc.lm, 'up');                                     break;
-        case 'newSiblingDown':                      structInsert(sc.lm, 'down');                                   break;
-        case 'newChild':                            structInsert(sc.lm, 'right');                                  break;
-        case 'newCellBlock':                        cellInsert(sc.lastPath.slice(0, sc.lastPath.length -2), keyStr);  break;
+        case 'newSiblingUp': {
+            structInsert(sc.lm, 'up');
+            break;
+        }
+        case 'newSiblingDown': {
+            structInsert(sc.lm, 'down');
+            break;
+        }
+        case 'newChild': {
+            structInsert(sc.lm, 'right');
+            break;
+        }
+        case 'newCellBlock': {
+            cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr);
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
         // DELETE
         // -------------------------------------------------------------------------------------------------------------
-        case 'deleteNode':                          structDeleteReselect(sc);                                   break;
-        case 'deleteCellBlock':                     cellBlockDeleteReselect(sc.lm);                                break;
+        case 'deleteNode': {
+            structDeleteReselect(sc);
+            break;
+        }
+        case 'deleteCellBlock': {
+            cellBlockDeleteReselect(sc.lm);
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
         // MOVE
         // -------------------------------------------------------------------------------------------------------------
@@ -172,42 +194,42 @@ export function eventEmitter(command) {
             break;
         }
         case 'insertTextFromClipboardAsNode': {
-            sc.lm.contentType =                        'text';
-            sc.lm.content =                            lastEvent.props.data;
-            sc.lm.isDimAssigned =                      0;
-            sc.lm.isContentAssigned =                  0;
+            sc.lm.contentType = 'text';
+            sc.lm.content = lastEvent.props.data;
+            sc.lm.isDimAssigned = 0;
+            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertElinkFromClipboardAsNode': {
-            sc.lm.contentType =                        'text';
-            sc.lm.content =                            lastEvent.props.data;
-            sc.lm.linkType =                           'external';
-            sc.lm.link =                               lastEvent.props.data;
-            sc.lm.isDimAssigned =                      0;
-            sc.lm.isContentAssigned =                  0;
+            sc.lm.contentType = 'text';
+            sc.lm.content = lastEvent.props.data;
+            sc.lm.linkType = 'external';
+            sc.lm.link = lastEvent.props.data;
+            sc.lm.isDimAssigned = 0;
+            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertIlinkFromMongo': {
-            let s2c =                               lastEvent.ref;
-            sc.lm.linkType =                           'internal';
-            sc.lm.link =                               s2c.newMapId;
-            sc.lm.isDimAssigned =                      0;
-            sc.lm.isContentAssigned =                  0;
+            let s2c = lastEvent.ref;
+            sc.lm.linkType = 'internal';
+            sc.lm.link = s2c.newMapId;
+            sc.lm.isDimAssigned = 0;
+            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertEquationFromClipboardAsNode': {
-            sc.lm.contentType =                        'equation';
-            sc.lm.content =                            lastEvent.props.data;
-            sc.lm.isDimAssigned =                      0;
-            sc.lm.isContentAssigned =                  0;
+            sc.lm.contentType = 'equation';
+            sc.lm.content = lastEvent.props.data;
+            sc.lm.isDimAssigned = 0;
+            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertImageFromLinkAsNode': {
-            let sf2c =                              lastEvent.ref;
-            sc.lm.contentType =                        'image';
-            sc.lm.content =                            sf2c.imageId;
-            sc.lm.imageW =                             sf2c.imageSize.width;
-            sc.lm.imageH =                             sf2c.imageSize.height;
+            let sf2c = lastEvent.ref;
+            sc.lm.contentType = 'image';
+            sc.lm.content = sf2c.imageId;
+            sc.lm.imageW = sf2c.imageSize.width;
+            sc.lm.imageH = sf2c.imageSize.height;
             break;
         }
         case 'insertMapFromClipboard': {
@@ -298,22 +320,22 @@ export function eventEmitter(command) {
         // SERVER TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signIn': {
-            let r2c =                               lastEvent.ref;
+            let r2c = lastEvent.ref;
             localStorage.setItem('cred', JSON.stringify({
-                name:                               r2c.user,
-                pass:                               r2c.pass,
+                name: r2c.user,
+                pass: r2c.pass,
             }));
             let c2s = {
-                'cmd':                              'signInRequest',
-                'cred':                             JSON.parse(localStorage.getItem('cred')),
+                'cmd': 'signInRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
             };
             communication.sender(c2s);
             break;
         }
         case 'signOut': {
             let c2s = {
-                'cmd':                              'signOutRequest',
-                'cred':                             JSON.parse(localStorage.getItem('cred')),
+                'cmd': 'signOutRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
             };
             localStorage.setItem('cred', {});
             communication.sender(c2s);
@@ -321,11 +343,11 @@ export function eventEmitter(command) {
         }
         case 'openAfterInit': {
             shouldAddToHistory = 1;
-            headerData =                            copy(lastEvent.ref.headerData);
+            headerData = copy(lastEvent.ref.headerData);
             let c2s = {
-                'cmd':                              'openMapRequest',
-                'cred':                             JSON.parse(localStorage.getItem('cred')),
-                'mapName':                          headerData.headerMapIdList[headerData.headerMapSelected]
+                'cmd': 'openMapRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'mapName': headerData.headerMapIdList[headerData.headerMapSelected]
             };
             communication.sender(c2s);
             break;
@@ -333,9 +355,9 @@ export function eventEmitter(command) {
         case 'openAfterTabSelect': {
             shouldAddToHistory = 1;
             let c2s = {
-                'cmd':                              'openMapRequest',
-                'cred':                             JSON.parse(localStorage.getItem('cred')),
-                'mapName':                          headerData.headerMapIdList[lastEvent.ref.tabId]
+                'cmd': 'openMapRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'mapName': headerData.headerMapIdList[lastEvent.ref.tabId]
             };
             communication.sender(c2s);
             break;
@@ -344,9 +366,9 @@ export function eventEmitter(command) {
             shouldAddToHistory = 1;
             if(sc.lm.linkType === 'internal') {
                 let c2s = {
-                    'cmd':                          'openMapRequest',
-                    'cred':                         JSON.parse(localStorage.getItem('cred')),
-                    'mapName':                      sc.lm.link
+                    'cmd': 'openMapRequest',
+                    'cred': JSON.parse(localStorage.getItem('cred')),
+                    'mapName': sc.lm.link
                 };
                 communication.sender(c2s);
             }
@@ -359,9 +381,9 @@ export function eventEmitter(command) {
         case 'openAfterHistory': {
             shouldAddToHistory = 0;
             let c2s = {
-                'cmd':                              'openMapRequest',
-                'cred':                             JSON.parse(localStorage.getItem('cred')),
-                'mapName':                          lastEvent.ref.state.lastUserMap
+                'cmd': 'openMapRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'mapName': lastEvent.ref.state.lastUserMap
             };
             communication.sender(c2s);
             break;
@@ -369,10 +391,10 @@ export function eventEmitter(command) {
         case 'save': {
             saveMap();
             let c2s = {
-                cmd:                                'writeMapRequest',
-                cred:                               JSON.parse(localStorage.getItem('cred')),
-                mapName:                            lastUserMap,
-                mapStorage:                         mapStorageOut
+                cmd: 'writeMapRequest',
+                cred: JSON.parse(localStorage.getItem('cred')),
+                mapName: lastUserMap,
+                mapStorage: mapStorageOut
             };
             communication.sender(c2s);
             break;
@@ -382,21 +404,19 @@ export function eventEmitter(command) {
         }
         case 'createMapInMap': {
             let newMap = {
-                data: [
-                    {
-                        path:                       ['s', 0],
-                        content:                    sc.lm.content,
-                        selected:                   1
-                    }
-                ],
+                data: [{
+                    path: ['s', 0],
+                    content: sc.lm.content,
+                    selected: 1
+                }],
                 density: 'small',
                 task: 0
             };
 
             let c2s = {
-                'cmd':                              'createMapInMapRequest',
-                'cred':                             JSON.parse(localStorage.getItem('cred')),
-                'newMap':                           newMap
+                'cmd': 'createMapInMapRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'newMap': newMap
             };
             communication.sender(c2s);
             break;
@@ -414,8 +434,8 @@ export function eventEmitter(command) {
             }).then(function(response) {
                 response.json().then(function(sf2c) {
                     eventRouter.processEvent({
-                        type:                       'serverFetchEvent',
-                        ref:                        sf2c,
+                        type: 'serverFetchEvent',
+                        ref: sf2c,
                     });
                 });
             });
@@ -429,8 +449,8 @@ export function eventEmitter(command) {
             document.dispatchEvent(new CustomEvent( 'toMaterial', {
                 'detail': {
                     tabData: {
-                        tabNames:                       s2c.headerData.headerMapNameList,
-                        tabId:                          s2c.headerData.headerMapSelected,
+                        tabNames: s2c.headerData.headerMapNameList,
+                        tabId: s2c.headerData.headerMapSelected,
                     }
                 }}));
             break;
