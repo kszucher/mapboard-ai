@@ -113,9 +113,9 @@ export const eventRouter = {
 
                     if (keyStateMachine.scope.includes(sc.scope) &&
                         keyStateMachine.e === eventRouter.isEditing &&
-                        keyStateMachine.c === e.ctrlKey &&
-                        keyStateMachine.s === e.shiftKey &&
-                        keyStateMachine.a === e.altKey &&
+                        keyStateMachine.c === +e.ctrlKey &&
+                        keyStateMachine.s === +e.shiftKey &&
+                        keyStateMachine.a === +e.altKey &&
                         keyStateMachine.keyMatch === true) {
 
                         if (keyStateMachine.p) {
