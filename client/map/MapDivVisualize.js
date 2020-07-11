@@ -26,6 +26,8 @@ export const mapDivVisualize = {
                 cursor:             'default',
                 color:              cm.sTextColor,
                 backgroundColor:    cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
+                transition:         '0.5s ease-out',
+                transitionProperty: 'left, top, background-color',
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
@@ -68,11 +70,7 @@ export const mapDivVisualize = {
 
                 let leftDelta = parseInt(div.style.left, 10) - parseInt(divStyle.left);
                 let topDelta = parseInt(div.style.top, 10) - parseInt(divStyle.top);
-
                 if (leftDelta !== 0 || topDelta !== 0) {
-                    div.style.transition = '0.5s ease-out';
-                    div.style.transitionProperty = 'left, top';
-
                     div.style.left = divStyle.left;
                     div.style.top = divStyle.top;
                 }
