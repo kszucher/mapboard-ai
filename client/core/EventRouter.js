@@ -1,7 +1,7 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
 import {mapMem, redraw, recalc, mapref} from "../map/Map"
-import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
+import {getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 
 export let currColorToPaint = 0;
@@ -33,7 +33,7 @@ export const eventRouter = {
                     mapMem.deepestSelectablePath = mapMem.divData[e.path[0].id].path;
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
-                    redraw(); // redraw here is unconditional, todo make key version conditional with the help of the table
+                    redraw();
                 }
                 else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
                     let x = parseInt(e.path[0].id.charAt(10), 10);
@@ -115,9 +115,9 @@ export const eventRouter = {
 
                     if (keyStateMachine.scope.includes(sc.scope) &&
                         keyStateMachine.e === eventRouter.isEditing &&
-                        keyStateMachine.c === +e.ctrlKey &&
-                        keyStateMachine.s === +e.shiftKey &&
-                        keyStateMachine.a === +e.altKey &&
+                        keyStateMachine.c === e.ctrlKey &&
+                        keyStateMachine.s === e.shiftKey &&
+                        keyStateMachine.a === e.altKey &&
                         keyStateMachine.keyMatch === true) {
 
                         if (keyStateMachine.p) {
