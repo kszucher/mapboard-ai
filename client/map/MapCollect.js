@@ -18,8 +18,7 @@ export const mapCollect = {
         if (cm.selected) {
             if (Number.isInteger(cm.path[cm.path.length - 2])) {
                 params.filter.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
-            }
-            else {
+            } else {
                 params.filter.structSelectedPathList.push(cm.path.slice(0));
 
             }

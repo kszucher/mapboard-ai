@@ -371,8 +371,7 @@ export function eventEmitter(command) {
                     'mapName': sc.lm.link
                 };
                 communication.sender(c2s);
-            }
-            else if (sc.lm.linkType === 'external') {
+            } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();
             }

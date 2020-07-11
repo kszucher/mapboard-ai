@@ -81,8 +81,7 @@ export const mapMeasure = {
                 if (rowCount > 1) {
                     params.hasMultipleContentRow = 1;
                 }
-            }
-            else {
+            } else {
                 if (cm.contentType === 'text') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
@@ -97,20 +96,17 @@ export const mapMeasure = {
                         let yc = mapMem.density === 'large' ? 1 : 2;
                         cm.contentH = realY - mapMem.padding*2 + yc;
                     }
-                }
-                else if (cm.contentType === 'equation') {
+                } else if (cm.contentType === 'equation') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
                         let dim = getEquationDim(cm.content);
                         cm.contentW = dim.w;
                         cm.contentH = dim.h;
                     }
-                }
-                else if (cm.contentType === 'image') {
+                } else if (cm.contentType === 'image') {
                     cm.contentW = cm.imageW;
                     cm.contentH = cm.imageH;
-                }
-                else {console.log('unknown contentType')}
+                } else {console.log('unknown contentType')}
 
                 cm.selfW = cm.contentW + mapMem.padding*2;
                 cm.selfH = cm.contentH + mapMem.padding*2;

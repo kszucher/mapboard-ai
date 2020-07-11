@@ -99,8 +99,7 @@ async function sendResponse(c2s) {
                 break;
             }
         }
-    }
-    else {
+    } else {
         s2c = {
             cmd: 'signInFail',
         };

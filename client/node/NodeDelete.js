@@ -32,8 +32,7 @@ export function structDeleteReselect(sc) {
     if (lm.isRoot === 0) {
         if (lastParentRefChildCntr === lastParentRefDelChildCntr) {
             lastParentRef.selected = 1;
-        }
-        else {
+        } else {
             if (lm.index === 0) {
                 if (lastParentRef.s.length > 0) {
                     lastParentRef.s[0].selected = 1;

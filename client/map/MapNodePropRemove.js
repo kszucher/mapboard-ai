@@ -27,17 +27,14 @@ export const mapNodePropRemove = {
                     if (cml.c.length === 1 && cml.c[0].length === 0) {
                         // delete cml['c'];
                     }
-                }
-                else if (currProperty === 's') {
+                } else if (currProperty === 's') {
                     if (cml.s.length === 0) {
                         // delete cml['s'];
                     }
-                }
-                else if (cml[currProperty] === props.saveOptional[currProperty]) {
+                } else if (cml[currProperty] === props.saveOptional[currProperty]) {
                     delete cml[currProperty];
                 }
-            }
-            else {
+            } else {
                 delete cml[currProperty];
             }
         }

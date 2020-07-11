@@ -15,15 +15,12 @@ export const mapChain = {
     iterate: (cm) => {
         if (cm.isRoot) {
             cm.path = ["s", 0];
-        }
-        else {
+        } else {
             if (cm.type === 'struct') {
                 cm.path = cm.parentPath.concat(["s", cm.index]);
-            }
-            else if (cm.type === 'cell') {
+            } else if (cm.type === 'cell') {
                 cm.path = cm.parentPath.concat(["c", cm.index[0], cm.index[1]]);
-            }
-            else {
+            } else {
 
             }
         }

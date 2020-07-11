@@ -73,8 +73,7 @@ export function structNavigate (lastPath, direction) {
                 else if (currDirection === 'rm') {
                     if (currRef.lastSelectedChild >= 0 && currRef.lastSelectedChild < currChildCount) { // if valid
                         // keep it
-                    }
-                    else {
+                    } else {
                         currRef.lastSelectedChild = currChildCount % 2 ? Math.floor(currChildCount / 2) : currChildCount / 2 - 1
                     }
                     currPath.push('s', currRef.lastSelectedChild);

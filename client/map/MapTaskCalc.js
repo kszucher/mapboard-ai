@@ -12,8 +12,7 @@ export const mapTaskCalc = {
             if (cm.taskStatusInherited === 1) {
                 cm.taskStatus = 0;
             }
-        }
-        else {
+        } else {
             cm.taskStatus = 0;
 
             let firstTaskStatus = 0;

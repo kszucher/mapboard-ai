@@ -60,8 +60,7 @@ export function copy(thing) {
 export function shallowCopy(thing) {
     if (typeof thing === 'number' && isFinite(thing)) {
         return thing;
-    }
-    else {
+    } else {
         return thing.slice();
     }
 }

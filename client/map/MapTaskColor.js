@@ -21,8 +21,7 @@ export const mapTaskColor = {
 
             if (cm.taskStatus === 0) {
                 cm.ellipseFill = 0;
-            }
-            else {
+            } else {
                 cm.ellipseFill = 1;
                 cm.ellipseBorderColor = getBgc();
 
@@ -33,8 +32,7 @@ export const mapTaskColor = {
                     case 3: cm.ellipseFillColor = '#d4f6d4';  break;
                 }
             }
-        }
-        else {
+        } else {
             cm.ellipseFill = 0;
         }
 

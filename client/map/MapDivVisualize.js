@@ -56,8 +56,7 @@ export const mapDivVisualize = {
                 for (const styleName in divStyle) {
                     div.style[styleName] = divStyle[styleName];
                 }
-            }
-            else {
+            } else {
                 div = document.getElementById(cm.divId);
 
                 for (const styleName in divStyle) {

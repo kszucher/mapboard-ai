@@ -15,8 +15,7 @@ export const eventRouter = {
         lastEvent = (lastEventArg); // should not copy because it can contain a reference
         if (communication.eventsEnabled === 0) {
             console.log('unfinished server communication')
-        }
-        else {
+        } else {
             eventRouter.processEventReal();
         }
     },
@@ -34,8 +33,7 @@ export const eventRouter = {
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
                     redraw();
-                }
-                else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
+                } else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
                     let x = parseInt(e.path[0].id.charAt(10), 10);
                     let cm =  mapref(mapMem.svgData[e.path[1].id].path);
                     cm.taskStatus = x ;
