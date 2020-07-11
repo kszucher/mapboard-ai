@@ -25,42 +25,32 @@ export const eventRouter = {
         let e = lastEvent.ref;
         switch (lastEvent.type) {
             case 'windowClick': {
-
                 if (eventRouter.isEditing === 1) {
                     eventEmitter('finishEdit');
                     redraw();
                 }
-
                 if (e.path[0].id.substring(0, 3) === 'div') {
-                    /*https://stackoverflow.com/questions/20788604/recognize-pointx-y-is-inside-svg-path-or-outside*/
-                    // https://codepen.io/miguelra/pen/NAjNYA
                     mapMem.deepestSelectablePath = mapMem.divData[e.path[0].id].path;
-
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
                     redraw(); // redraw here is unconditional, todo make key version conditional with the help of the table
                 }
                 else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
-
                     let x = parseInt(e.path[0].id.charAt(10), 10);
                     let cm =  mapref(mapMem.svgData[e.path[1].id].path);
-
-                    clearStructSelection();
-
-                    cm.selected = 1;
                     cm.taskStatus = x ;
                     cm.taskStatusInherited = -1;
-
                     recalc();
                     redraw();
-
                 }
                 break;
             }
             case 'windowDoubleClick': {
-                eventEmitter('startEdit');
-                recalc();
-                redraw();
+                if (e.path[0].id.substring(0, 3) === 'div') {
+                    eventEmitter('startEdit');
+                    recalc();
+                    redraw();
+                }
                 break;
             }
             case 'windowPopState': {
@@ -71,9 +61,6 @@ export const eventRouter = {
             }
             case 'windowKeyDown': {
                 let sc = getSelectionContext();
-
-                // console.log(e);
-                // TODO merge "mixed" mode into "cell" mode, but not vice versa
 
                 let keyStateMachineDb = [
                     ['c','s','a', 'keyMatch',                       'scope',       'e','p',  'executionList',                        'd'],
