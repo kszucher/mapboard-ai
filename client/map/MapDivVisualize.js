@@ -86,7 +86,7 @@ export const mapDivVisualize = {
 
                 switch (cm.contentType) {
                     case 'text':        div.innerHTML = cm.content;                                                                 break;
-                    case 'image':       div.innerHTML = '<img core="' + 'http://localhost:8082/file/' + cm.content + '">';           break;
+                    case 'image':       div.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '" alt="">';    break;
                     case 'equation':    div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});    break;
                     default:            console.log('unknown contentType');                                                         break;
                 }
