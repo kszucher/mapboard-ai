@@ -7,7 +7,7 @@ import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
 import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {applyMixedSelection,  applyStructSelection, clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
-import {copy, setEndOfContenteditable, transposeArray} from "./Utils";
+import {copy, getTextDim, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
 import {eventLut} from "./EventLut";
 
@@ -247,25 +247,32 @@ export function eventEmitter(command) {
             holderElement.innerHTML = '';
             break;
         }
-        case 'typeText': {
-            let holderElement = document.getElementById(sc.lm.divId);
-            holderElement.style.width = 1000 + 'px'; // long enough
-            break;
-        }
         case 'startEdit': {
-            eventRouter.isEditing = 1;
             let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'true';
             setEndOfContenteditable(holderElement);
+            eventRouter.isEditing = 1;
             break;
         }
+        case 'typeText': {
+            let holderElement = document.getElementById(sc.lm.divId);
+
+            sc.lm.content = holderElement.innerHTML + lastEvent.ref.key;
+
+            // KNOWN ISSUES:
+            // - new line doesnt work
+            // - deleting characters messes up everything
+
+
+            sc.lm.isDimAssigned = 0;
+            sc.lm.isEditing = 1;
+            break;
+        }
+
         case 'finishEdit' : {
             let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'false';
-
-            sc.lm.content = holderElement.innerHTML;
-            sc.lm.isDimAssigned = 0;
-
+            sc.lm.isEditing = 0;
             eventRouter.isEditing = 0;
             break;
         }

@@ -34,6 +34,9 @@ export let props = {
     },
     saveNever: {
         initOnce: {
+            // UNSORTED
+            isEditing:                          0,
+
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,
@@ -101,7 +104,7 @@ export function getDefaultNode(attributes) {
         ...{
             c: [[]],
             s: [],
-            content: ''
+            content: '',
         },
         ...attributes
     };
