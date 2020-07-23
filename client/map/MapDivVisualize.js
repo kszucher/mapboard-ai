@@ -13,8 +13,8 @@ export const mapDivVisualize = {
             let divStyle = {
                 left:                       cm.nodeStartX + 'px',
                 top:                        cm.nodeStartY - cm.selfH / 2 + 'px',
-                width:                      cm.content.length === 0 ? '20px' : cm.selfW - mapMem.padding - 2 + 'px',
-                height:                     cm.selfH - mapMem.padding - 2 + 'px',
+                minWidth:                   cm.content.length === 0 ? '20px' : cm.selfW - mapMem.padding - 2 + 'px',
+                minHeight:                  cm.selfH - mapMem.padding - 2 + 'px',
                 paddingLeft:                mapMem.padding - 2 + 'px',
                 paddingTop:                 mapMem.padding - 2 + 'px',
                 position:                   'absolute',

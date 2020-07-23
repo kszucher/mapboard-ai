@@ -1,6 +1,6 @@
 import {communication} from "./Communication";
 import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
-import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut} from "../map/Map";
+import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut, redraw, recalc} from "../map/Map";
 import {hasCell} from "../node/Node";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
@@ -15,6 +15,7 @@ import {eventLut} from "./EventLut";
 let headerData = {};
 let lastUserMap = '';
 let shouldAddToHistory = 0;
+let observer;
 
 export function eventEmitter(command) {
 
@@ -252,24 +253,25 @@ export function eventEmitter(command) {
             holderElement.contentEditable = 'true';
             setEndOfContenteditable(holderElement);
             eventRouter.isEditing = 1;
+
+            const config = { attributes: false, childList: false, subtree:true, characterData:true };
+            const callback = function(mutationsList, observer) {
+                for(let mutation of mutationsList) {
+                    if (mutation.type === 'characterData') {
+                        sc.lm.content = holderElement.innerHTML;
+                        sc.lm.isDimAssigned = 0;
+                        sc.lm.isEditing = 1;
+                        recalc();
+                        redraw();
+                    }
+                }
+            };
+            observer = new MutationObserver(callback);
+            observer.observe(holderElement, config);
             break;
         }
-        case 'typeText': {
-            let holderElement = document.getElementById(sc.lm.divId);
-
-            sc.lm.content = holderElement.innerHTML + lastEvent.ref.key;
-
-            // KNOWN ISSUES:
-            // - new line doesnt work
-            // - deleting characters messes up everything
-
-
-            sc.lm.isDimAssigned = 0;
-            sc.lm.isEditing = 1;
-            break;
-        }
-
         case 'finishEdit' : {
+            observer.disconnect();
             let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'false';
             sc.lm.isEditing = 0;

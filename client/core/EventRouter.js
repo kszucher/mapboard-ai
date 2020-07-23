@@ -70,7 +70,6 @@ export const eventRouter = {
                     [ 0,  0,  0,  e.key === 'Enter',               ['s'          ], 0,  1,  ['newSiblingDown', 'startEdit'         ]],
                     [ 0,  0,  0,  e.key === 'Enter',               [          'm'], 0,  1,  ['selectDownMixed'                     ]],
                     [ 0,  1,  0,  e.key === 'Enter',               ['s',      'm'], 0,  1,  ['newSiblingUp', 'startEdit'           ]],
-                    [ 0,  1,  0,  e.key === 'Enter',               ['s',         ], 1,  0,  ['typeText'  ]],
                     [ 0,  0,  1,  e.key === 'Enter',               ['s',         ], 0,  1,  ['cellifyMulti', 'selectFirstMixed'    ]],
                     [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 1,  1,  ['finishEdit', 'newChild', 'startEdit' ]],
                     [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 0,  1,  ['newChild', 'startEdit'               ]],
@@ -101,9 +100,7 @@ export const eventRouter = {
                     [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['moveNodeSelection'                   ]],
                     [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  ['newCellBlock'                        ]],
                     [ 0,  0,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  ['eraseContent', 'startEdit'           ]],
-                    [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  ['eraseContent','startEdit'            ]],
-                    [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 1,  0,  ['typeText',                           ]],
-                    [ 0,  0,  0,  true,                            ['s',      'm'], 1,  0,  ['typeText'                            ]],
+                    [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  ['eraseContent', 'startEdit'           ]],
                 ];
 
                 let keyStateMachine = {};

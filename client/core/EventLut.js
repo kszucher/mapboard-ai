@@ -45,6 +45,7 @@ export const eventLut = {
             // edit
             ['eraseContent', 1,],
             ['typeText', 1,],
+            ['typeTextRendered', 1,],
             ['startEdit', 1,],
             ['finishEdit', 1,],
             // misc
