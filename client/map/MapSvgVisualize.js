@@ -207,8 +207,8 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
-                            // svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                            // svgElement.style.transition =               '0.5s ease-out';
+                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            svgElement.style.transition =               '0.5s ease-out';
                             break;
                     }
                     svgGroup.appendChild(svgElement);

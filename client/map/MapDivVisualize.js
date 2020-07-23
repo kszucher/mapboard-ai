@@ -33,7 +33,7 @@ export const mapDivVisualize = {
                 color:                      cm.sTextColor,
                 backgroundColor:            cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
                 transition:                 '0.5s ease-out',
-                transitionProperty:         'left, top' // 'background-color'
+                transitionProperty:         'left, top, background-color',
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
