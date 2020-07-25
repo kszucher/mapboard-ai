@@ -9,8 +9,8 @@ export const mapPlace = {
         let mapHeight = cm.familyH > cm.selfH? cm.familyH + 2*20: cm.selfH + 2*20;
 
         let div = document.getElementById('mapDiv');
-        div.style.height = "" + mapHeight + "px";
         div.style.width = "" + mapWidth +"px";
+        div.style.height = "" + mapHeight + "px";
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
@@ -27,13 +27,8 @@ export const mapPlace = {
 
     iterate: (cm) => {
 
-        cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
+        cm.nodeStartX = cm.parentType === 'cell' ? cm.parentNodeStartX : cm.parentNodeEndX + cm.lineDeltaX;
         cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
-
-        if (cm.parentType === 'cell') {
-            cm.nodeStartX = cm.parentNodeStartX;
-        }
-
         cm.nodeEndX = cm.nodeStartX + cm.selfW;
         cm.nodeEndY = cm.nodeStartY;
 

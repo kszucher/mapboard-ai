@@ -37,7 +37,7 @@ export const mapDivVisualize = {
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
-                divStyle.width = parseInt(divStyle.width, 10) - 3 + 'px';
+                divStyle.minWidth = parseInt(divStyle.minWidth, 10) - 3 + 'px';
                 divStyle.paddingLeft = parseInt(divStyle.paddingLeft, 10) + 3 + 'px';
             }
 
