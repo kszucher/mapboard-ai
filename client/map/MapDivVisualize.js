@@ -11,8 +11,8 @@ export const mapDivVisualize = {
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
             let styleTransformData = {
-                prevLeft:                   cm.isDivAssigned ? mapMem.divData[cm.divId].styleData.currLeft : 0,
-                prevTop:                    cm.isDivAssigned ? mapMem.divData[cm.divId].styleData.currTop : 0,
+                prevLeft:                   cm.isDivAssigned ? mapMem.divData[cm.divId].styleTransformData.currLeft : 0,
+                prevTop:                    cm.isDivAssigned ? mapMem.divData[cm.divId].styleTransformData.currTop : 0,
                 currLeft:                   cm.nodeStartX,
                 currTop:                    cm.nodeStartY - cm.selfH / 2
             };
@@ -85,6 +85,7 @@ export const mapDivVisualize = {
             }
 
             mapMem.divData[cm.divId].styleData = copy(styleData);
+            mapMem.divData[cm.divId].styleTransformData = copy(styleTransformData);
             mapMem.divData[cm.divId].path = cm.path;
 
             if (cm.isContentAssigned === 0) {
