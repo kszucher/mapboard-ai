@@ -82,6 +82,7 @@ export const eventRouter = {
                     [ 0,  0,  0,  e.code === 'Space',              [          'm'], 0,  1,  ['selectForwardMixed'                  ]],
                     [ 0,  0,  0,  e.code === 'Backspace',          ['s'          ], 0,  1,  ['selectBackwardStruct',               ]],
                     [ 0,  0,  0,  e.code === 'Backspace',          [          'm'], 0,  1,  ['selectBackwardMixed'                 ]],
+                    [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'], 0,  1,  [                                      ]],
                     [ 1,  0,  0,  e.code === 'KeyE',               ['s', 'c', 'm'], 0,  1,  ['createMapInMap'                      ]],
                     [ 1,  0,  0,  e.code === 'KeyP',               ['s', 'c', 'm'], 0,  1,  ['applyParameter'                      ]],
                     [ 1,  0,  0,  e.code === 'KeyG',               ['s', 'c', 'm'], 0,  1,  ['makeGrid'                            ]],
