@@ -9,21 +9,28 @@ export function structInsert(lm, direction) {
     let parentRef = mapref(lm.parentPath);
     if (direction === 'up') {
         parentRef.s.splice(lm.index, 0, getDefaultNode({
-            'selected': 1,
-            'taskStatus': parentRef.taskStatus
+            selected: 1,
+            taskStatus: parentRef.taskStatus,
+            parentNodeEndXFrom: parentRef.nodeEndX,
+            parentNodeEndYFrom: parentRef.nodeEndY,
+            twoStepAnimationRequested: 1,
         }))
     } else if (direction === 'down') {
         parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
-            'selected': 1,
-            'taskStatus': parentRef.taskStatus
+            selected: 1,
+            taskStatus: parentRef.taskStatus,
+            parentNodeEndXFrom: parentRef.nodeEndX,
+            parentNodeEndYFrom: parentRef.nodeEndY,
+            twoStepAnimationRequested: 1,
         }));
     } else if (direction === 'right') {
         lm.s.splice(lm.s.length, 0, getDefaultNode({
-            'selected': 1,
-            'taskStatus': lm.taskStatus
+            selected: 1,
+            taskStatus: lm.taskStatus,
+            parentNodeEndXFrom: lm.nodeEndX,
+            parentNodeEndYFrom: lm.nodeEndY,
+            twoStepAnimationRequested: 1,
         }));
-    } else {
-
     }
 }
 

@@ -21,19 +21,55 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
+        if (cm.twoStepAnimationRequested) {
+            mapSvgVisualize.animate(cm, 0);
+            cm.twoStepAnimationRequested = 0;
+        } else {
+            mapSvgVisualize.animate(cm, 1);
+        }
+
+        let rowCount = Object.keys(cm.c).length;
+        let colCount = Object.keys(cm.c[0]).length;
+        for (let i = 0; i < rowCount; i++) {
+            for (let j = 0; j < colCount; j++) {
+                mapSvgVisualize.iterate(cm.c[i][j]);
+            }
+        }
+
+        let sCount = Object.keys(cm.s).length;
+        for (let i = 0; i < sCount; i++) {
+            mapSvgVisualize.iterate(cm.s[i]);
+        }
+    },
+
+    animate: (cm, step) => {
+
         let svgElementData = {};
 
         // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' &&
             (cm.type === 'struct' && !hasCell(cm) || cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-            let x1 = cm.parentNodeEndX;
-            let y1 = cm.parentNodeEndY;
-            let cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
-            let cp1y = cm.parentNodeEndY;
-            let cp2x = cm.parentNodeEndX + cm.lineDeltaX / 4;
-            let cp2y = cm.parentNodeEndY + cm.lineDeltaY;
-            let x2 = cm.nodeStartX;
-            let y2 = cm.nodeStartY;
+            let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
+            if (step === 0) {
+                x1 = cm.parentNodeEndXFrom;
+                y1 = cm.parentNodeEndYFrom;
+                cp1x = cm.parentNodeEndXFrom;
+                cp1y = cm.parentNodeEndYFrom;
+                cp2x = cm.parentNodeEndXFrom;
+                cp2y = cm.parentNodeEndYFrom;
+                x2 = cm.parentNodeEndXFrom;
+                y2 = cm.parentNodeEndYFrom;
+            }
+            else if (step === 1) {
+                x1 = cm.parentNodeEndX;
+                y1 = cm.parentNodeEndY;
+                cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
+                cp1y = cm.parentNodeEndY;
+                cp2x = cm.parentNodeEndX + cm.lineDeltaX / 4;
+                cp2y = cm.parentNodeEndY + cm.lineDeltaY;
+                x2 = cm.nodeStartX;
+                y2 = cm.nodeStartY;
+            }
 
             svgElementData.connection = {
                 type: 'path',
@@ -240,18 +276,5 @@ export const mapSvgVisualize = {
 
         mapMem.svgData[cm.svgId].svgElementData = copy(svgElementData);
         mapMem.svgData[cm.svgId].path = cm.path;
-
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapSvgVisualize.iterate(cm.c[i][j]);
-            }
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapSvgVisualize.iterate(cm.s[i]);
-        }
     }
 };

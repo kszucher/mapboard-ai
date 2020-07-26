@@ -33,6 +33,11 @@ export let props = {
         taskStatus:                             -1,
     },
     saveNever: {
+        // initNever: {
+        //     parentNodeEndXFrom:                 0,
+        //     parentNodeEndYFrom:                 0,
+        //     twoStepAnimationRequested:          0,
+        // },
         initOnce: {
             // UNSORTED
             isEditing:                          0,
