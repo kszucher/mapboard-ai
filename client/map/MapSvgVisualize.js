@@ -53,12 +53,12 @@ export const mapSvgVisualize = {
             if (step === 0) {
                 x1 = cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeEndYFrom;
-                cp1x = cm.parentNodeEndXFrom;
+                cp1x = cm.parentNodeEndXFrom + cm.lineDeltaX / 4;
                 cp1y = cm.parentNodeEndYFrom;
-                cp2x = cm.parentNodeEndXFrom;
-                cp2y = cm.parentNodeEndYFrom;
-                x2 = cm.parentNodeEndXFrom;
-                y2 = cm.parentNodeEndYFrom;
+                cp2x = cm.parentNodeEndXFrom + cm.lineDeltaX / 4;
+                cp2y = cm.parentNodeEndYFrom + cm.lineDeltaY;
+                x2 = cm.nodeStartX;
+                y2 = cm.nodeStartY;
             }
             else if (step === 1) {
                 x1 = cm.parentNodeEndX;
