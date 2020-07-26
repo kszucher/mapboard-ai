@@ -33,7 +33,7 @@ export let props = {
         taskStatus:                             -1,
     },
     saveNever: {
-        // initNever: {
+        // these do no work when called under initOnce or initAlways: {
         //     parentNodeEndXFrom:                 0,
         //     parentNodeEndYFrom:                 0,
         //     twoStepAnimationRequested:          0,

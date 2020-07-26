@@ -253,6 +253,7 @@ export function eventEmitter(command) {
             holderElement.contentEditable = 'true';
             setEndOfContenteditable(holderElement);
             eventRouter.isEditing = 1;
+            sc.lm.isEditing = 1;
 
             const config = { attributes: false, childList: false, subtree:true, characterData:true };
             const callback = function(mutationsList, observer) {
@@ -260,7 +261,6 @@ export function eventEmitter(command) {
                     if (mutation.type === 'characterData') {
                         sc.lm.content = holderElement.innerHTML;
                         sc.lm.isDimAssigned = 0;
-                        sc.lm.isEditing = 1;
                         recalc();
                         redraw();
                     }
