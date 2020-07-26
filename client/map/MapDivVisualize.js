@@ -10,9 +10,14 @@ export const mapDivVisualize = {
 
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
-            let divStyle = {
-                left:                       cm.nodeStartX + 'px',
-                top:                        cm.nodeStartY - cm.selfH / 2 + 'px',
+            let styleTransformData = {
+                prevLeft:                   cm.isDivAssigned ? mapMem.divData[cm.divId].styleData.currLeft : 0,
+                prevTop:                    cm.isDivAssigned ? mapMem.divData[cm.divId].styleData.currTop : 0,
+                currLeft:                   cm.nodeStartX,
+                currTop:                    cm.nodeStartY - cm.selfH / 2
+            };
+            
+            let styleData = {
                 minWidth:                   cm.content.length === 0 ? '20px' : cm.selfW - mapMem.padding - 2 + 'px',
                 minHeight:                  cm.selfH - mapMem.padding - 2 + 'px',
                 paddingLeft:                mapMem.padding - 2 + 'px',
@@ -33,12 +38,12 @@ export const mapDivVisualize = {
                 color:                      cm.sTextColor,
                 backgroundColor:            cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
                 transition:                 '0.5s ease-out',
-                transitionProperty:         'left, top, background-color',
+                transitionProperty:         'transform, background-color',
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
-                divStyle.minWidth = parseInt(divStyle.minWidth, 10) - 3 + 'px';
-                divStyle.paddingLeft = parseInt(divStyle.paddingLeft, 10) + 3 + 'px';
+                styleData.minWidth = parseInt(styleData.minWidth, 10) - 3 + 'px';
+                styleData.paddingLeft = parseInt(styleData.paddingLeft, 10) + 3 + 'px';
             }
 
             let div;
@@ -47,7 +52,7 @@ export const mapDivVisualize = {
 
                 cm.divId = 'div' + genHash(8);
                 mapMem.divData[cm.divId] = {
-                    divStyle: {},
+                    styleData: {},
                     path: [],
                 };
 
@@ -59,29 +64,27 @@ export const mapDivVisualize = {
                 div.appendChild(document.createTextNode(''));
                 document.getElementById('mapDiv').appendChild(div);
 
-                for (const styleName in divStyle) {
-                    div.style[styleName] = divStyle[styleName];
+                div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
+                
+                for (const styleName in styleData) {
+                    div.style[styleName] = styleData[styleName];
                 }
             } else {
                 div = document.getElementById(cm.divId);
 
-                for (const styleName in divStyle) {
-                    if (styleName !== 'left' && styleName !== 'top') {
-                        if (divStyle[styleName] !== mapMem.divData[cm.divId].divStyle[styleName]) {
-                            div.style[styleName] = divStyle[styleName];
-                        }
+                for (const styleName in styleData) {
+                    if (styleData[styleName] !== mapMem.divData[cm.divId].styleData[styleName]) {
+                        div.style[styleName] = styleData[styleName];
                     }
                 }
 
-                let leftDelta = parseInt(div.style.left, 10) - parseInt(divStyle.left);
-                let topDelta = parseInt(div.style.top, 10) - parseInt(divStyle.top);
-                if (leftDelta !== 0 || topDelta !== 0) {
-                    div.style.left = divStyle.left;
-                    div.style.top = divStyle.top;
+                if (styleTransformData.prevLeft !== styleTransformData.currLeft ||
+                    styleTransformData.prevTop !== styleTransformData.currTop) {
+                    div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
                 }
             }
 
-            mapMem.divData[cm.divId].divStyle = copy(divStyle);
+            mapMem.divData[cm.divId].styleData = copy(styleData);
             mapMem.divData[cm.divId].path = cm.path;
 
             if (cm.isContentAssigned === 0) {
