@@ -14,9 +14,13 @@ export const mapDivVisualize = {
                 prevLeft:                   cm.isDivAssigned ? mapMem.divData[cm.divId].styleTransformData.currLeft : 0,
                 prevTop:                    cm.isDivAssigned ? mapMem.divData[cm.divId].styleTransformData.currTop : 0,
                 currLeft:                   cm.nodeStartX,
-                currTop:                    cm.nodeStartY - cm.selfH / 2
+                currTop:                    cm.nodeStartY - cm.selfH / 2,
             };
-            
+
+            if ((Number.isInteger(cm.nodeStartY) && mapMem.density === 'large')) {
+                styleTransformData.currTop -= .5;
+            }
+
             let styleData = {
                 minWidth:                   cm.content.length === 0 ? '14px' : cm.selfW - mapMem.padding - 2 + 'px',
                 minHeight:                  cm.selfH - mapMem.padding - 2 + 'px',

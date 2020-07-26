@@ -51,24 +51,24 @@ export const mapSvgVisualize = {
             (cm.type === 'struct' && !hasCell(cm) || cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
-                x1 = cm.parentNodeEndXFrom;
-                y1 = cm.parentNodeEndYFrom;
-                cp1x = cm.parentNodeEndXFrom + cm.lineDeltaX / 4;
-                cp1y = cm.parentNodeEndYFrom;
-                cp2x = cm.parentNodeEndXFrom + cm.lineDeltaX / 4;
-                cp2y = cm.parentNodeEndYFrom + cm.lineDeltaY;
-                x2 = cm.nodeStartX;
-                y2 = cm.nodeStartY;
+                x1 =    cm.parentNodeEndXFrom;
+                y1 =    cm.parentNodeEndYFrom;
+                cp1x =  cm.parentNodeEndXFrom + cm.lineDeltaX / 4;
+                cp1y =  cm.parentNodeEndYFrom;
+                cp2x =  cm.parentNodeEndXFrom + cm.lineDeltaX / 4;
+                cp2y =  cm.parentNodeEndYFrom + cm.lineDeltaY;
+                x2 =    cm.nodeStartX;
+                y2 =    cm.nodeStartY;
             }
             else if (step === 1) {
-                x1 = cm.parentNodeEndX;
-                y1 = cm.parentNodeEndY;
-                cp1x = cm.parentNodeEndX + cm.lineDeltaX / 4;
-                cp1y = cm.parentNodeEndY;
-                cp2x = cm.parentNodeEndX + cm.lineDeltaX / 4;
-                cp2y = cm.parentNodeEndY + cm.lineDeltaY;
-                x2 = cm.nodeStartX;
-                y2 = cm.nodeStartY;
+                x1 =    cm.parentNodeEndX;
+                y1 =    cm.parentNodeEndY;
+                cp1x =  cm.parentNodeEndX + cm.lineDeltaX / 4;
+                cp1y =  cm.parentNodeEndY;
+                cp2x =  cm.parentNodeEndX + cm.lineDeltaX / 4;
+                cp2y =  cm.parentNodeEndY + cm.lineDeltaY;
+                x2 =    cm.nodeStartX;
+                y2 =    cm.nodeStartY;
             }
 
             svgElementData.connection = {
