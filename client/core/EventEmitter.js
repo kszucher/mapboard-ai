@@ -142,6 +142,11 @@ export function eventEmitter(command) {
             applyMixedSelection(geomHighRefParentRef.path);
             break;
         }
+        case 'selectRoot': {
+            clearStructSelection();
+            mapMem.data.s[0].selected = 1;
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
