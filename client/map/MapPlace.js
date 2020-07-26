@@ -20,22 +20,16 @@ export const mapPlace = {
         cm.parentNodeEndX = 0;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = mapMem.sLineDeltaXDefault;
-        cm.lineDeltaY = cm.familyH > cm.selfH? cm.familyH/2 + 20 - 0.5 : cm.selfH/2 + 20 - 0.5;
+        cm.lineDeltaY = cm.familyH > cm.selfH? cm.familyH/2 + 20 : cm.selfH/2 + 20;
 
         mapPlace.iterate(cm);
     },
 
     iterate: (cm) => {
-
         cm.nodeStartX = cm.parentType === 'cell' ? cm.parentNodeStartX : cm.parentNodeEndX + cm.lineDeltaX;
         cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
         cm.nodeEndX = cm.nodeStartX + cm.selfW;
         cm.nodeEndY = cm.nodeStartY;
-
-        if (Number.isInteger(cm.nodeStartY)) {
-            cm.nodeStartY -= 0.5;
-            cm.nodeEndY -= 0.5;
-        }
 
         if (cm.type === 'struct') {
             if (hasCell(cm)) {
