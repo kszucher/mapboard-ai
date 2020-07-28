@@ -264,6 +264,7 @@ export function eventEmitter(command) {
             const callback = function(mutationsList, observer) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
+                        // itt hívjunk rá az eventRouter processeventére, ami meghív itt egy typeText-et, az egységesítés kedvéért
                         sc.lm.content = holderElement.innerHTML;
                         sc.lm.isDimAssigned = 0;
                         recalc();
