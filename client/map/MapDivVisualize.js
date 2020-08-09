@@ -17,7 +17,7 @@ export const mapDivVisualize = {
                 currTop:                    cm.nodeStartY - cm.selfH / 2,
             };
 
-            if ((Number.isInteger(cm.nodeStartY) && mapMem.density === 'large')) {
+            if (Number.isInteger(cm.nodeStartY) || mapMem.density === 'small') {
                 styleTransformData.currTop -= .5;
             }
 
@@ -43,8 +43,8 @@ export const mapDivVisualize = {
                 color:                      cm.sTextColor,
                 backgroundColor:            cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
                 transition:                 '0.5s ease-out',
-                transitionProperty:         'left, top, background-color',
-                // transitionProperty:         'transform, background-color',
+                // transitionProperty:         'left, top, background-color',
+                transitionProperty:         'transform, background-color',
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
@@ -70,9 +70,9 @@ export const mapDivVisualize = {
                 div.appendChild(document.createTextNode(''));
                 document.getElementById('mapDiv').appendChild(div);
 
-                // div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
-                div.style.left = styleTransformData.currLeft + 'px';
-                div.style.top = styleTransformData.currTop + 'px';
+                div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
+                // div.style.left = styleTransformData.currLeft + 'px';
+                // div.style.top = styleTransformData.currTop + 'px';
 
                 for (const styleName in styleData) {
                     div.style[styleName] = styleData[styleName];
@@ -88,9 +88,9 @@ export const mapDivVisualize = {
 
                 if (styleTransformData.prevLeft !== styleTransformData.currLeft ||
                     styleTransformData.prevTop !== styleTransformData.currTop) {
-                    // div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
-                    div.style.left = styleTransformData.currLeft + 'px';
-                    div.style.top = styleTransformData.currTop + 'px';
+                    div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
+                    // div.style.left = styleTransformData.currLeft + 'px';
+                    // div.style.top = styleTransformData.currTop + 'px';
                 }
             }
 
