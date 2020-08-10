@@ -10,16 +10,12 @@ export const mapDivVisualize = {
 
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
-            if (Number.isInteger(cm.nodeStartY) || mapMem.density === 'small') {
-                styleData.currTop -= .5;
-            }
-
             let styleData = {
                 left:                       cm.nodeStartX + 'px',
                 top:                        cm.nodeStartY - cm.selfH / 2 + 'px',
-                minWidth:                   cm.content.length === 0 ? '14px' : cm.selfW - mapMem.padding - 2 + 'px',
-                minHeight:                  (mapMem.density === 'large'? - 2 : - 1)  + cm.selfH - mapMem.padding + 'px',
-                paddingLeft:                mapMem.padding - 2 + 'px',
+                minWidth:                   (mapMem.density === 'large'?   0 : - 3) + (cm.content.length === 0 ? '14px' : cm.selfW - mapMem.padding - 2) + 'px',
+                minHeight:                  (mapMem.density === 'large'? - 2 : - 1) + cm.selfH - mapMem.padding + 'px',
+                paddingLeft:                (mapMem.density === 'large'?   0 : + 3) + mapMem.padding - 2 + 'px',
                 paddingTop:                 mapMem.padding - 2 + 'px',
                 position:                   'absolute',
                 border:                     cm.selected ? '1px solid black' : '1px solid' + getBgc(),
@@ -34,11 +30,6 @@ export const mapDivVisualize = {
                 transition:                 '0.5s ease-out',
                 transitionProperty:         'left, top, background-color',
             };
-
-            if (mapMem.density === 'small' && cm.contentType === 'text') {
-                styleData.minWidth = parseInt(styleData.minWidth, 10) - 3 + 'px';
-                styleData.paddingLeft = parseInt(styleData.paddingLeft, 10) + 3 + 'px';
-            }
 
             let div;
             if (cm.isDivAssigned === 0) {
