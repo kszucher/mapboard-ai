@@ -44,7 +44,6 @@ export const mapDivVisualize = {
                 backgroundColor:            cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
                 transition:                 '0.5s ease-out',
                 transitionProperty:         'left, top, background-color',
-                // transitionProperty:         'transform, background-color',
             };
 
             if (mapMem.density === 'small' && cm.contentType === 'text') {
@@ -70,7 +69,6 @@ export const mapDivVisualize = {
                 div.appendChild(document.createTextNode(''));
                 document.getElementById('mapDiv').appendChild(div);
 
-                // div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
                 div.style.left = styleTransformData.currLeft + 'px';
                 div.style.top = styleTransformData.currTop + 'px';
 
@@ -88,7 +86,6 @@ export const mapDivVisualize = {
 
                 if (styleTransformData.prevLeft !== styleTransformData.currLeft ||
                     styleTransformData.prevTop !== styleTransformData.currTop) {
-                    // div.style.transform = 'translate(' + styleTransformData.currLeft + 'px,' + styleTransformData.currTop + 'px)';
                     div.style.left = styleTransformData.currLeft + 'px';
                     div.style.top = styleTransformData.currTop + 'px';
                 }
