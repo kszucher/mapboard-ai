@@ -4,7 +4,7 @@ import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 
 export const mapMeasure = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
         let params = {
             hasMultipleChild: 0,
             hasMultipleContentRow: 0,

@@ -3,7 +3,7 @@ import {copy} from "../core/Utils"
 
 export const mapCollect = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
         let params = {
             filter: {
                 structSelectedPathList: [],

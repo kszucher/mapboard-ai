@@ -144,7 +144,7 @@ export function eventEmitter(command) {
         }
         case 'selectRoot': {
             clearStructSelection();
-            mapMem.data.s[0].selected = 1;
+            mapMem.getData().s[0].selected = 1;
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

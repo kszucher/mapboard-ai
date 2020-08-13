@@ -2,7 +2,7 @@ import {mapMem} from "./Map";
 
 export const mapTaskCalc = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
         mapTaskCalc.iterate(cm);
     },
 

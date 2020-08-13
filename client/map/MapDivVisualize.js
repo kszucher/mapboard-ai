@@ -4,7 +4,7 @@ import {hasCell} from "../node/Node";
 
 export const mapDivVisualize = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
         mapDivVisualize.iterate(cm);
     },
 

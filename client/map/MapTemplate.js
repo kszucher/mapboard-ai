@@ -2,7 +2,7 @@ import {mapMem} from "./Map";
 
 export const mapTemplate = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
         mapTemplate.iterate(cm);
     },
 

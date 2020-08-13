@@ -22,17 +22,6 @@ export function checkMapBuilt() {
     return isMapBuilt;
 }
 
-let mapSaveNever = [
-    'defaultH',
-    'sLineDeltaXDefault',
-    'padding',
-    'filter',
-    'deepestSelectablePath',
-    'div',
-    'divData',
-    'svgData',
-];
-
 export function loadMap(mapStorage) {
 
     if (isMapLoaded === 1) {
@@ -42,16 +31,23 @@ export function loadMap(mapStorage) {
 
     mapMem = {
         // saveOptional
-        data: mapAssembly((mapStorage.data)),
+        data: [mapAssembly((mapStorage.data))], // TODO: egyelőre ez az egy dolog legyen undo-redo követve!!!
         density: copy(mapStorage.density),
         task: copy(mapStorage.task),
 
+        getData: () => {
+            return mapMem.data[0];
+        },
+
         // saveNever
-        sLineDeltaXDefault: mapStorage.density === 'large'? 30:20,
-        padding: mapStorage.density === 'large'? 8:3,
-        defaultH: mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
+        sLineDeltaXDefault:     mapStorage.density === 'large'? 30:20,
+        padding:                mapStorage.density === 'large'? 8:3,
+        defaultH:               mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
+
         filter: [],
         deepestSelectablePath: [],
+
+        // TODO: separate this from mapMem!!! --> very easy, don't overthing, implement and move forward, bug fixing shall drive dev instead!!!
         divData: [],
         svgData: [],
     };
@@ -114,11 +110,11 @@ export function clearSvgs() {
 }
 
 export function mapref(path) {
-    return subsref(mapMem.data, path)
+    return subsref(mapMem.getData(), path)
 }
 
 export function mapasgn(path, value) {
-    subsasgn(mapMem.data, path, value)
+    subsasgn(mapMem.getData(), path, value)
 }
 
 export function pathMerge(path1, path2) {
@@ -130,19 +126,13 @@ export function pathMerge(path1, path2) {
 }
 
 export function saveMap () {
-
-    mapStorageOut = JSON.parse(JSON.stringify(mapMem));
-
-    // genMapNodePropRemove
-    let cm = mapStorageOut.data.s[0];
+    let cm = JSON.parse(JSON.stringify(mapMem.getData())).s[0];
     let cml = JSON.parse(JSON.stringify(cm));
     mapNodePropRemove.start(cml);
     mapDisassembly.start(cml);
-
-    mapStorageOut.data = nodeCopyList;
-
-    // genMapPropRemove
-    for (let i = 0; i < mapSaveNever.length; i++) {
-        delete mapStorageOut[mapSaveNever[i]];
-    }
+    mapStorageOut ={
+        data: nodeCopyList,
+        density: mapMem.density,
+        task: mapMem.task,
+    };
 }

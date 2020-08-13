@@ -4,7 +4,7 @@ import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
         mapInit.iterate(cm);
     },
 

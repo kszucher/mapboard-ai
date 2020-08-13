@@ -3,7 +3,7 @@ import {hasCell} from "../node/Node";
 
 export const mapPlace = {
     start: () => {
-        let cm = mapMem.data.s[0];
+        let cm = mapMem.getData().s[0];
 
         let mapWidth = mapMem.task? 1366 : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1;
         let mapHeight = cm.familyH > cm.selfH? cm.familyH + 2*20: cm.selfH + 2*20;
