@@ -30,13 +30,13 @@ export function loadMap(mapStorage) {
     }
 
     mapMem = {
-        // saveOptional
+        dataIndex: 0,
         data: [mapAssembly((mapStorage.data))], // TODO: egyelőre ez az egy dolog legyen undo-redo követve!!!
         density: copy(mapStorage.density),
         task: copy(mapStorage.task),
 
         getData: () => {
-            return mapMem.data[0];
+            return mapMem.data[mapMem.dataIndex];
         },
 
         // saveNever
@@ -75,6 +75,21 @@ export function recalc() {
 export function redraw() {
     mapDivVisualize.start();
     mapSvgVisualize.start();
+}
+
+export function push() {
+    if (mapMem.data.length > mapMem.dataIndex + 1) {
+        mapMem.data.length = mapMem.dataIndex + 1;
+    }
+    mapMem.data.push(JSON.parse(JSON.stringify(mapMem.getData())));
+    mapMem.dataIndex++;
+}
+
+export function checkPop() {
+    if (JSON.stringify(mapMem.data[mapMem.dataIndex]) === JSON.stringify(mapMem.data[mapMem.dataIndex - 1])) {
+        mapMem.data.length--;
+        mapMem.dataIndex--;
+    }
 }
 
 export function clearDiv(divId) {

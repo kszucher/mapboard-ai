@@ -301,10 +301,6 @@ export function eventEmitter(command) {
             sc.lm.c = transposeArray(sc.lm.c);
             break;
         }
-        case 'makeGrid': {
-            makeGrid();
-            break;
-        }
         case 'applyColor': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
@@ -323,12 +319,22 @@ export function eventEmitter(command) {
             }
             break;
         }
-        case 'applyParameter': {
-            sc.lm.sTextColor = '#8e1c8e';
-            break;
-        }
         case 'prettyPrint': {
             mapPrint.start(sc.lm);
+            break;
+        }
+
+        case 'redo': {
+            if (mapMem.dataIndex < mapMem.data.length - 1) {
+                mapMem.dataIndex++;
+            }
+            break;
+        }
+
+        case 'undo': {
+            if (mapMem.dataIndex > 0) {
+                mapMem.dataIndex--;
+            }
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

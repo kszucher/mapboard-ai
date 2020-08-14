@@ -1,6 +1,6 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
-import {mapMem, redraw, recalc, mapref} from "../map/Map"
+import {mapMem, redraw, recalc, mapref, push, checkPop} from "../map/Map"
 import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 
@@ -63,48 +63,47 @@ export const eventRouter = {
                 let sc = getSelectionContext();
 
                 let keyStateMachineDb = [
-                    ['c','s','a', 'keyMatch',                       'scope',       'e','p',  'executionList',                       ],
-                    [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'], 0,  1,  [                                      ]],
-                    [ 0,  0,  0,  e.key === 'F2',                  ['s',      'm'], 0,  1,  ['startEdit'                           ]],
-                    [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'], 0,  1,  [                                      ]],
-                    [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'], 0,  0,  [                                      ]],
-                    [ 0,  0,  0,  e.key === 'Enter',               ['s',      'm'], 1,  1,  ['finishEdit'                          ]],
-                    [ 0,  0,  0,  e.key === 'Enter',               ['s'          ], 0,  1,  ['newSiblingDown', 'startEdit'         ]],
-                    [ 0,  0,  0,  e.key === 'Enter',               [          'm'], 0,  1,  ['selectDownMixed'                     ]],
-                    [ 0,  1,  0,  e.key === 'Enter',               ['s',      'm'], 0,  1,  ['newSiblingUp', 'startEdit'           ]],
-                    [ 0,  0,  1,  e.key === 'Enter',               ['s',         ], 0,  1,  ['cellifyMulti', 'selectFirstMixed'    ]],
-                    [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 1,  1,  ['finishEdit', 'newChild', 'startEdit' ]],
-                    [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 0,  1,  ['newChild', 'startEdit'               ]],
-                    [ 0,  0,  0,  e.key === 'Insert',              [          'm'], 0,  1,  ['selectRightMixed'                    ]],
-                    [ 0,  0,  0,  e.key === 'Delete',              ['s'          ], 0,  1,  ['deleteNode'                          ]],
-                    [ 0,  0,  0,  e.key === 'Delete',              [     'c'     ], 0,  1,  ['deleteCellBlock'                     ]],
-                    [ 0,  0,  0,  e.code === 'Space',              ['s'          ], 0,  1,  ['selectForwardStruct'                 ]],
-                    [ 0,  0,  0,  e.code === 'Space',              [          'm'], 0,  1,  ['selectForwardMixed'                  ]],
-                    [ 0,  0,  0,  e.code === 'Backspace',          ['s'          ], 0,  1,  ['selectBackwardStruct',               ]],
-                    [ 0,  0,  0,  e.code === 'Backspace',          [          'm'], 0,  1,  ['selectBackwardMixed'                 ]],
-                    [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'], 0,  1,  ['selectRoot'                          ]],
-                    [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'], 0,  1,  [                                      ]],
-                    [ 1,  0,  0,  e.code === 'KeyE',               ['s', 'c', 'm'], 0,  1,  ['createMapInMap'                      ]],
-                    [ 1,  0,  0,  e.code === 'KeyP',               ['s', 'c', 'm'], 0,  1,  ['applyParameter'                      ]],
-                    [ 1,  0,  0,  e.code === 'KeyG',               ['s', 'c', 'm'], 0,  1,  ['makeGrid'                            ]],
-                    [ 1,  0,  0,  e.code === 'KeyO',               ['s', 'c', 'm'], 0,  1,  ['normalize'                           ]],
-                    [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'], 0,  1,  ['copySelection'                       ]],
-                    [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'], 0,  1,  ['cutSelection', 'selectHighOrigin'    ]],
-                    [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 0,  1,  ['save'                                ]],
-                    [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 1,  1,  ['finishEdit', 'save'                  ]],
-                    [ 0,  1,  0,  e.code === 'ArrowUp',            [          'm'], 0,  1,  ['selectCellColMixed'                  ]],
-                    [ 0,  1,  0,  e.code === 'ArrowDown',          [          'm'], 0,  1,  ['selectCellColMixed'                  ]],
-                    [ 0,  1,  0,  e.code === 'ArrowLeft',          [          'm'], 0,  1,  ['selectCellRowMixed'                  ]],
-                    [ 0,  1,  0,  e.code === 'ArrowRight',         [          'm'], 0,  1,  ['selectCellRowMixed'                  ]],
-                    [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  ['prettyPrint'                         ]],
-                    [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  ['applyColor'                          ]],
-                    [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['selectNeighborNode'                  ]],
-                    [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  ['selectNeighborMixed'                 ]],
-                    [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['selectNeighborNodeToo'               ]],
-                    [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  ['moveNodeSelection'                   ]],
-                    [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  ['newCellBlock'                        ]],
-                    [ 0,  0,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  ['eraseContent', 'startEdit'           ]],
-                    [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  ['eraseContent', 'startEdit'           ]],
+                    ['c','s','a', 'keyMatch',                       'scope',       'e','p','m',  'executionList',                       ],
+                    [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ]],
+                    [ 0,  0,  0,  e.key === 'F2',                  ['s',      'm'], 0,  1,  0, ['startEdit'                           ]],
+                    [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ]],
+                    [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'], 0,  0,  0, [                                      ]],
+                    [ 0,  0,  0,  e.key === 'Enter',               ['s',      'm'], 1,  1,  0, ['finishEdit'                          ]],
+                    [ 0,  0,  0,  e.key === 'Enter',               ['s'          ], 0,  1,  1, ['newSiblingDown', 'startEdit'         ]],
+                    [ 0,  0,  0,  e.key === 'Enter',               [          'm'], 0,  1,  1, ['selectDownMixed'                     ]],
+                    [ 0,  1,  0,  e.key === 'Enter',               ['s',      'm'], 0,  1,  1, ['newSiblingUp', 'startEdit'           ]],
+                    [ 0,  0,  1,  e.key === 'Enter',               ['s',         ], 0,  1,  1, ['cellifyMulti', 'selectFirstMixed'    ]],
+                    [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ]],
+                    [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ]],
+                    [ 0,  0,  0,  e.key === 'Insert',              [          'm'], 0,  1,  1, ['selectRightMixed'                    ]],
+                    [ 0,  0,  0,  e.key === 'Delete',              ['s'          ], 0,  1,  1, ['deleteNode'                          ]],
+                    [ 0,  0,  0,  e.key === 'Delete',              [     'c'     ], 0,  1,  1, ['deleteCellBlock'                     ]],
+                    [ 0,  0,  0,  e.code === 'Space',              ['s'          ], 0,  1,  1, ['selectForwardStruct'                 ]],
+                    [ 0,  0,  0,  e.code === 'Space',              [          'm'], 0,  1,  1, ['selectForwardMixed'                  ]],
+                    [ 0,  0,  0,  e.code === 'Backspace',          ['s'          ], 0,  1,  1, ['selectBackwardStruct',               ]],
+                    [ 0,  0,  0,  e.code === 'Backspace',          [          'm'], 0,  1,  1, ['selectBackwardMixed'                 ]],
+                    [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'], 0,  1,  1, ['selectRoot'                          ]],
+                    [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'], 0,  1,  0, [                                      ]],
+                    [ 1,  0,  0,  e.code === 'KeyE',               ['s', 'c', 'm'], 0,  1,  0, ['createMapInMap'                      ]],
+                    [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'], 0,  1,  1, ['copySelection'                       ]],
+                    [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'], 0,  1,  1, ['cutSelection', 'selectHighOrigin'    ]],
+                    [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 0,  1,  0, ['save'                                ]],
+                    [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 1,  1,  0, ['finishEdit', 'save'                  ]],
+                    [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm'], 0,  1,  0, ['redo'                                ]],
+                    [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm'], 0,  1,  0, ['undo'                                ]],
+                    [ 0,  1,  0,  e.code === 'ArrowUp',            [          'm'], 0,  1,  1, ['selectCellColMixed'                  ]],
+                    [ 0,  1,  0,  e.code === 'ArrowDown',          [          'm'], 0,  1,  1, ['selectCellColMixed'                  ]],
+                    [ 0,  1,  0,  e.code === 'ArrowLeft',          [          'm'], 0,  1,  1, ['selectCellRowMixed'                  ]],
+                    [ 0,  1,  0,  e.code === 'ArrowRight',         [          'm'], 0,  1,  1, ['selectCellRowMixed'                  ]],
+                    [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  0, ['prettyPrint'                         ]],
+                    [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ]],
+                    [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ]],
+                    [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['selectNeighborMixed'                 ]],
+                    [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNodeToo'               ]],
+                    [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['moveNodeSelection'                   ]],
+                    [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['newCellBlock'                        ]],
+                    [ 0,  0,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ]],
+                    [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ]],
                 ];
 
                 let keyStateMachine = {};
@@ -123,15 +122,26 @@ export const eventRouter = {
                             e.preventDefault();
                         }
 
+
+                        if (keyStateMachine.m === 1) { // TODO: make it for all map event
+                            push();
+                        }
+
                         for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                             let currExecution = keyStateMachine.executionList[j];
                             if (currExecution === 'applyColor') {
                                 currColorToPaint = e.which - 96;
                             }
                             eventEmitter(currExecution);
+
                             recalc();
                             redraw();
                         }
+
+                        if (keyStateMachine.m === 1) { // TODO: make this work for all map event
+                            checkPop();
+                        }
+
                         break;
                     }
                 }

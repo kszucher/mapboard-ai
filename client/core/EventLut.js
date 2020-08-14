@@ -51,10 +51,10 @@ export const eventLut = {
             // misc
             ['cellifyMulti', 1,],
             ['transpose', 1,],
-            ['makeGrid', 1,],
             ['applyColor', 1,],
-            ['applyParameter', 1,],
             ['prettyPrint', 1,],
+            ['redo', 0,],
+            ['undo', 0,],
             // server tx
             ['signIn', 0,],
             ['signOut', 0,],
