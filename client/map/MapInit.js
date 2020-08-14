@@ -1,6 +1,5 @@
-import {checkMapBuilt, mapMem} from "./Map";
+import {mapMem} from "./Map";
 import {props} from "../node/Node"
-import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
     start: () => {
@@ -11,20 +10,18 @@ export const mapInit = {
     iterate: (cm) => {
         Object.keys(props.saveOptional).map(currProperty => {
             if (!cm.hasOwnProperty(currProperty)) {
-                cm[currProperty] = ['s', 'c', 'path'].includes(currProperty)?
-                    copy(props.saveOptional[currProperty]) :
-                    shallowCopy(props.saveOptional[currProperty])
+                cm[currProperty] = props.saveOptional[currProperty];
             }
         });
 
-        if(checkMapBuilt() === 0 || !cm.hasOwnProperty('isDivAssigned')) {
-            Object.keys(props.saveNever.initOnce).map(currProperty => {
-                cm[currProperty] = shallowCopy(props.saveNever.initOnce[currProperty])
-            });
-        }
+        Object.keys(props.saveNever.initOnce).map(currProperty => {
+            if (!cm.hasOwnProperty(currProperty)) {
+                cm[currProperty] = props.saveNever.initOnce[currProperty];
+            }
+        });
 
         Object.keys(props.saveNever.initAlways).map(currProperty => {
-            cm[currProperty] = shallowCopy(props.saveNever.initAlways[currProperty])
+            cm[currProperty] = props.saveNever.initAlways[currProperty];
         });
 
         let rowCount = Object.keys(cm.c).length;

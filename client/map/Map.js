@@ -16,11 +16,6 @@ export let mapMem = {};
 export let mapStorageOut = {};
 
 let isMapLoaded = 0;
-let isMapBuilt = 0;
-
-export function checkMapBuilt() {
-    return isMapBuilt;
-}
 
 export function loadMap(mapStorage) {
 
@@ -53,7 +48,6 @@ export function loadMap(mapStorage) {
     };
 
     isMapLoaded = 1;
-    isMapBuilt = 0;
 }
 
 export function recalc() {
@@ -68,11 +62,12 @@ export function recalc() {
     }
 
     mapCollect.start();
-
-    isMapBuilt = 1;
 }
 
 export function redraw() {
+
+    // végig kéne menni szépen a
+
     mapDivVisualize.start();
     mapSvgVisualize.start();
 }
