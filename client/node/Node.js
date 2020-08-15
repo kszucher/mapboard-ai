@@ -33,6 +33,7 @@ export let props = {
         taskStatus:                             -1,
     },
     saveNever: {
+        // TODO: ha van push-pop, akkor talán ez nem is kell, sőt generalizálható
         // these do no work when called under initOnce or initAlways: {
         //     parentNodeEndXFrom:                 0,
         //     parentNodeEndYFrom:                 0,

@@ -43,6 +43,7 @@ export function loadMap(mapStorage) {
         filter: [],
         deepestSelectablePath: [],
 
+        // if these are not initialized when loading a map, they could be used for deletion, and make clearDivs, clearSvgs obsolete
         divData: [],
         svgData: [],
     };
