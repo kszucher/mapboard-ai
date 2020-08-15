@@ -194,7 +194,8 @@ export const mapSvgVisualize = {
         }
 
         let svgGroup;
-        if (!mapMem.svgData.hasOwnProperty(cm.svgId)) {
+        if (!mapMem.svgData.hasOwnProperty(cm.svgId) ||
+            ((mapMem.svgData.hasOwnProperty(cm.svgId) && mapMem.svgData[cm.svgId].keepHash === keepHash))) {
             cm.svgId = 'svg' + genHash(8);
             mapMem.svgData[cm.svgId] = {
                 svgElementData: {},

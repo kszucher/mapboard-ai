@@ -32,7 +32,16 @@ export const mapDivVisualize = {
             };
 
             let div;
-            if (!mapMem.divData.hasOwnProperty(cm.divId) ) {
+
+
+            // 2) a cleardivs, clearsvgs dolog megoldása, hiszen ezt ki kell használni
+            // 3) a dupla editable megoldása, problémát nem viszünk tovább
+            // 4) a .THEN (eventRouter) meg a .CALLBACK (startEdit), egyszóval az async eseményekre is tesztelni
+            // 5) a cellás dolgok újra működhetővé tétele, meg az undo-redoval tesztelés ÉS
+
+
+            if (!mapMem.divData.hasOwnProperty(cm.divId) ||
+                (mapMem.divData.hasOwnProperty(cm.divId) && mapMem.divData[cm.divId].keepHash === keepHash)) {
                 cm.divId = 'div' + genHash(8);
                 mapMem.divData[cm.divId] = {
                     keepHash: '',
