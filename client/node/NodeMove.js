@@ -94,8 +94,6 @@ export function structMove(sc, target, mode) {
                 clipboard.splice(0, 0, copy(currRef));
                 for (let j = 0; j < clipboard.length; j++) {
                     mapNodePropChange.start(clipboard[j], 'isSvgAssigned', 0);
-                    mapNodePropChange.start(clipboard[j], 'isDivAssigned', 0);
-                    mapNodePropChange.start(clipboard[j], 'isContentAssigned', 0);
                 }
             }
 

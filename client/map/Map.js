@@ -1,4 +1,4 @@
-import {copy, subsref, subsasgn} from "../core/Utils"
+import {copy, subsref, subsasgn, genHash} from "../core/Utils"
 import {mapAssembly} from "./MapAssembly";
 import {mapChain} from './MapChain'
 import {mapCollect} from './MapCollect'
@@ -16,6 +16,7 @@ export let mapMem = {};
 export let mapStorageOut = {};
 
 let isMapLoaded = 0;
+export let keepHash = '';
 
 export function loadMap(mapStorage) {
 
@@ -65,11 +66,16 @@ export function recalc() {
 }
 
 export function redraw() {
-
-    // végig kéne menni szépen a
+    keepHash = genHash(8);
 
     mapDivVisualize.start();
     mapSvgVisualize.start();
+
+    for (const divId in mapMem.divData) {
+        if (mapMem.divData[divId].keepHash !== keepHash) {
+            clearDiv(divId)
+        }
+    }
 }
 
 export function push() {

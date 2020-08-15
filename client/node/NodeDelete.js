@@ -1,5 +1,4 @@
 import {mapref} from "../map/Map";
-import {mapDivRemove} from "../map/MapDivRemove";
 import {checkSelection} from "./NodeSelect";
 import {mapSvgRemove} from "../map/MapSvgRemove";
 
@@ -22,7 +21,6 @@ export function structDeleteReselect(sc) {
             let currParentRef = mapref(currRef.parentPath);
             currParentRef.taskStatus = currRef.taskStatus;
             currParentRef.taskStatusInherited = 0;
-            mapDivRemove.start(currParentRef.s[currRef.index]);
             mapSvgRemove.start(currParentRef.s[currRef.index]);
             currParentRef.s.splice(currRef.index, 1);
         }
@@ -51,14 +49,12 @@ export function cellBlockDeleteReselect(lm) {
     let rcSelected = checkSelection(lastParentRef); // we could store this info in the cell holder struct instead
     if (rcSelected[0]) {
         for (let i = 0; i < lastParentRef.c[0].length; i++) {
-            mapDivRemove.start(lastParentRef.c[lm.index[0]][i]);
             mapSvgRemove.start(lastParentRef.c[lm.index[0]][i]);
         }
         lastParentRef.c.splice(lm.index[0], 1);
     }
     if (rcSelected[1]) {
         for (let i = 0; i < lastParentRef.c.length; i++) {
-            mapDivRemove.start(lastParentRef.c[i][lm.index[1]]);
             mapSvgRemove.start(lastParentRef.c[i][lm.index[1]]);
         }
         for (let i = 0; i < lastParentRef.c.length; i++) {

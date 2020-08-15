@@ -1,4 +1,4 @@
-import {mapMem} from "./Map";
+import {keepHash, mapMem} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
 import {hasCell} from "../node/Node";
 
@@ -11,33 +11,40 @@ export const mapDivVisualize = {
     iterate: (cm) => {
         if (cm.type === 'struct' && ! hasCell(cm)) {
             let styleData = {
-                left:                       cm.nodeStartX + 'px',
-                top:                        cm.nodeStartY - cm.selfH / 2 + 'px',
-                minWidth:                   (mapMem.density === 'large'?   0 : - 3) + (cm.content.length === 0 ? '14px' : cm.selfW - mapMem.padding - 2) + 'px',
-                minHeight:                  (mapMem.density === 'large'? - 2 : - 1) + cm.selfH - mapMem.padding + 'px',
-                paddingLeft:                (mapMem.density === 'large'?   0 : + 3) + mapMem.padding - 2 + 'px',
-                paddingTop:                 mapMem.padding - 2 + 'px',
-                position:                   'absolute',
-                border:                     cm.selected ? '1px solid black' : '1px solid' + getBgc(),
-                borderRadius:               '8px',
-                borderColor:                cm.selected? (cm.isEditing? getBgc() : '#000000' ) : 'none',
-                fontSize:                   cm.sTextFontSize + 'px',
-                fontFamily:                 'Roboto',
-                textDecoration:             cm.linkType !== "" ? "underline" : "",
-                cursor:                     'default',
-                color:                      cm.sTextColor,
-                backgroundColor:            cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
-                transition:                 '0.5s ease-out',
-                transitionProperty:         'left, top, background-color',
+                left:                   cm.nodeStartX + 'px',
+                top:                    cm.nodeStartY - cm.selfH / 2 + 'px',
+                minWidth:               (mapMem.density === 'large'?   0 : - 3) + (cm.content.length === 0 ? '14px' : cm.selfW - mapMem.padding - 2) + 'px',
+                minHeight:              (mapMem.density === 'large'? - 2 : - 1) + cm.selfH - mapMem.padding + 'px',
+                paddingLeft:            (mapMem.density === 'large'?   0 : + 3) + mapMem.padding - 2 + 'px',
+                paddingTop:             mapMem.padding - 2 + 'px',
+                position:               'absolute',
+                border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
+                borderRadius:           '8px',
+                borderColor:            cm.selected? (cm.isEditing? getBgc() : '#000000' ) : 'none',
+                fontSize:               cm.sTextFontSize + 'px',
+                fontFamily:             'Roboto',
+                textDecoration:         cm.linkType !== "" ? "underline" : "",
+                cursor:                 'default',
+                color:                  cm.sTextColor,
+                backgroundColor:        cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
+                transition:             '0.5s ease-out',
+                transitionProperty:     'left, top, background-color',
             };
 
-            let div;
-            if (cm.isDivAssigned === 0) {
-                cm.isDivAssigned = 1;
+            let innerHTMLData;
+            switch (cm.contentType) {
+                case 'text':            innerHTMLData = cm.content;                                                                 break;
+                case 'equation':        innerHTMLData = katex.renderToString(getLatexString(cm.content), {throwOnError: false});    break;
+                case 'image':           innerHTMLData = '<img src="' + 'http://localhost:8082/file/' + cm.content + '" alt="">';    break;
+                default:                console.log('unknown contentType');                                                         break;
+            }
 
+            let div;
+            if (!mapMem.divData.hasOwnProperty(cm.divId)) {
                 cm.divId = 'div' + genHash(8);
                 mapMem.divData[cm.divId] = {
                     styleData: {},
+                    innerHTMLData: '',
                     path: [],
                 };
 
@@ -52,29 +59,26 @@ export const mapDivVisualize = {
                 for (const styleName in styleData) {
                     div.style[styleName] = styleData[styleName];
                 }
-            } else {
-                div = document.getElementById(cm.divId);
 
+                div.innerText = innerHTMLData;
+            }
+            else {
+                div = document.getElementById(cm.divId);
                 for (const styleName in styleData) {
                     if (styleData[styleName] !== mapMem.divData[cm.divId].styleData[styleName]) {
                         div.style[styleName] = styleData[styleName];
                     }
                 }
-            }
 
-            mapMem.divData[cm.divId].styleData = copy(styleData);
-            mapMem.divData[cm.divId].path = cm.path;
-
-            if (cm.isContentAssigned === 0) {
-                cm.isContentAssigned = 1;
-
-                switch (cm.contentType) {
-                    case 'text':        div.innerHTML = cm.content;                                                                 break;
-                    case 'equation':    div.innerHTML = katex.renderToString(getLatexString(cm.content), {throwOnError: false});    break;
-                    case 'image':       div.innerHTML = '<img src="' + 'http://localhost:8082/file/' + cm.content + '" alt="">';    break;
-                    default:            console.log('unknown contentType');                                                         break;
+                if (div.innerHTML !== innerHTMLData) {
+                    div.innerText = innerHTMLData;
                 }
             }
+
+            mapMem.divData[cm.divId].keepHash = keepHash;
+            mapMem.divData[cm.divId].styleData = copy(styleData);
+            mapMem.divData[cm.divId].innerHTMLData = copy(innerHTMLData);
+            mapMem.divData[cm.divId].path = cm.path;
         }
 
         let rowCount = Object.keys(cm.c).length;

@@ -203,7 +203,6 @@ export function eventEmitter(command) {
             sc.lm.contentType = 'text';
             sc.lm.content = lastEvent.props.data;
             sc.lm.isDimAssigned = 0;
-            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertElinkFromClipboardAsNode': {
@@ -212,7 +211,6 @@ export function eventEmitter(command) {
             sc.lm.linkType = 'external';
             sc.lm.link = lastEvent.props.data;
             sc.lm.isDimAssigned = 0;
-            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertIlinkFromMongo': {
@@ -220,14 +218,12 @@ export function eventEmitter(command) {
             sc.lm.linkType = 'internal';
             sc.lm.link = s2c.newMapId;
             sc.lm.isDimAssigned = 0;
-            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertEquationFromClipboardAsNode': {
             sc.lm.contentType = 'equation';
             sc.lm.content = lastEvent.props.data;
             sc.lm.isDimAssigned = 0;
-            sc.lm.isContentAssigned = 0;
             break;
         }
         case 'insertImageFromLinkAsNode': {

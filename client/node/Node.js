@@ -51,14 +51,11 @@ export let props = {
             taskStatusInherited:                0,
 
             // mapDivVisualize
-            isDivAssigned:                      0,
             divId:                              '',
 
             // mapSvgVisualize
             isSvgAssigned:                      0,
             svgId:                              '',
-
-            isContentAssigned:                  0,
         },
         initAlways: {
             // mapChain
