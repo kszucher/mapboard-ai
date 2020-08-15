@@ -54,7 +54,6 @@ export let props = {
             divId:                              '',
 
             // mapSvgVisualize
-            isSvgAssigned:                      0,
             svgId:                              '',
         },
         initAlways: {

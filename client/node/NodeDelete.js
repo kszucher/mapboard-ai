@@ -1,6 +1,5 @@
 import {mapref} from "../map/Map";
 import {checkSelection} from "./NodeSelect";
-import {mapSvgRemove} from "../map/MapSvgRemove";
 
 export function structDeleteReselect(sc) {
     // calculate jumpback
@@ -21,7 +20,6 @@ export function structDeleteReselect(sc) {
             let currParentRef = mapref(currRef.parentPath);
             currParentRef.taskStatus = currRef.taskStatus;
             currParentRef.taskStatusInherited = 0;
-            mapSvgRemove.start(currParentRef.s[currRef.index]);
             currParentRef.s.splice(currRef.index, 1);
         }
     }
@@ -48,15 +46,9 @@ export function cellBlockDeleteReselect(lm) {
     let lastParentRef = mapref(lm.parentPath);
     let rcSelected = checkSelection(lastParentRef); // we could store this info in the cell holder struct instead
     if (rcSelected[0]) {
-        for (let i = 0; i < lastParentRef.c[0].length; i++) {
-            mapSvgRemove.start(lastParentRef.c[lm.index[0]][i]);
-        }
         lastParentRef.c.splice(lm.index[0], 1);
     }
     if (rcSelected[1]) {
-        for (let i = 0; i < lastParentRef.c.length; i++) {
-            mapSvgRemove.start(lastParentRef.c[i][lm.index[1]]);
-        }
         for (let i = 0; i < lastParentRef.c.length; i++) {
             lastParentRef.c[i].splice(lm.index[1], 1);
         }

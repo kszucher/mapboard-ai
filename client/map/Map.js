@@ -43,7 +43,6 @@ export function loadMap(mapStorage) {
         filter: [],
         deepestSelectablePath: [],
 
-        // TODO: separate this from mapMem!!! --> very easy, don't overthing, implement and move forward, bug fixing shall drive dev instead!!!
         divData: [],
         svgData: [],
     };
@@ -74,6 +73,12 @@ export function redraw() {
     for (const divId in mapMem.divData) {
         if (mapMem.divData[divId].keepHash !== keepHash) {
             clearDiv(divId)
+        }
+    }
+
+    for (const svgId in mapMem.svgData) {
+        if (mapMem.svgData[svgId].keepHash !== keepHash) {
+            clearSvg(svgId)
         }
     }
 }

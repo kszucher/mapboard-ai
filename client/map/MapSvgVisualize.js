@@ -1,4 +1,4 @@
-import {mapMem} from "./Map";
+import {keepHash, mapMem} from "./Map";
 import {hasCell} from "../node/Node";
 import {genHash, copy} from "../core/Utils";
 
@@ -24,7 +24,8 @@ export const mapSvgVisualize = {
         if (cm.twoStepAnimationRequested) {
             mapSvgVisualize.animate(cm, 0);
             cm.twoStepAnimationRequested = 0;
-        } else {
+        }
+        else {
             mapSvgVisualize.animate(cm, 1);
         }
 
@@ -172,7 +173,8 @@ export const mapSvgVisualize = {
                         case 2: fill = '#d5802a'; break;
                         case 3: fill = '#25bf25'; break;
                     }
-                } else {
+                }
+                else {
                     switch (i) {
                         case 0: fill = '#eeeeee'; break;
                         case 1: fill = '#e5f3fe'; break;
@@ -192,11 +194,8 @@ export const mapSvgVisualize = {
         }
 
         let svgGroup;
-        if (cm.isSvgAssigned === 0) {
-            cm.isSvgAssigned = 1;
-
+        if (!mapMem.svgData.hasOwnProperty(cm.svgId)) {
             cm.svgId = 'svg' + genHash(8);
-
             mapMem.svgData[cm.svgId] = {
                 svgElementData: {},
                 path: [],
@@ -207,7 +206,8 @@ export const mapSvgVisualize = {
 
             let mapSvg = document.getElementById('mapSvg');
             mapSvg.appendChild(svgGroup);
-        } else {
+        }
+        else {
             svgGroup = document.getElementById(cm.svgId);
         }
 
@@ -274,6 +274,7 @@ export const mapSvgVisualize = {
             }
         }
 
+        mapMem.svgData[cm.svgId].keepHash = keepHash;
         mapMem.svgData[cm.svgId].svgElementData = copy(svgElementData);
         mapMem.svgData[cm.svgId].path = cm.path;
     }

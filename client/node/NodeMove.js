@@ -1,5 +1,4 @@
 import {mapref} from "../map/Map";
-import {mapNodePropChange} from "../map/MapNodePropChange";
 import {clearStructSelection} from "./NodeSelect";
 import {getDefaultNode} from "./Node";
 import {structDeleteReselect} from "./NodeDelete";
@@ -92,9 +91,6 @@ export function structMove(sc, target, mode) {
             for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(sc.structSelectedPathList[i]);
                 clipboard.splice(0, 0, copy(currRef));
-                for (let j = 0; j < clipboard.length; j++) {
-                    mapNodePropChange.start(clipboard[j], 'isSvgAssigned', 0);
-                }
             }
 
             navigator.permissions.query({name: "clipboard-write"}).then(result => {
