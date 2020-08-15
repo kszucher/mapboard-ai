@@ -65,10 +65,9 @@ export const mapDivVisualize = {
                     }
                 }
 
-                if (div.textContent !== mapDivData[cm.divId].textContent) {
-                    div.innerHTML = renderContent(cm.contentType, cm.content);
-                    if (cm.contentType === 'text') {
-                        setEndOfContenteditable(div);
+                if (!cm.isEditing) {
+                    if (div.textContent !== mapDivData[cm.divId].textContent) {
+                        div.innerHTML = renderContent(cm.contentType, cm.content);
                     }
                 }
             }
