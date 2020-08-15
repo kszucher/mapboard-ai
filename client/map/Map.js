@@ -61,13 +61,17 @@ export function redraw() {
 
     for (const divId in mapDivData) {
         if (mapDivData[divId].keepHash !== keepHash) {
-            clearDiv(divId)
+            let currDiv = document.getElementById(divId);
+            currDiv.parentNode.removeChild(currDiv);
+            delete mapDivData[divId];
         }
     }
 
     for (const svgId in mapSvgData) {
         if (mapSvgData[svgId].keepHash !== keepHash) {
-            clearSvg(svgId)
+            let currSvg = document.getElementById(svgId);
+            currSvg.parentNode.removeChild(currSvg);
+            delete mapSvgData[svgId];
         }
     }
 }
@@ -85,18 +89,6 @@ export function checkPop() {
         mapMem.data.length--;
         mapMem.dataIndex--;
     }
-}
-
-export function clearDiv(divId) {
-    let currDiv = document.getElementById(divId);
-    currDiv.parentNode.removeChild(currDiv);
-    delete mapDivData[divId];
-}
-
-export function clearSvg(svgId) {
-    let currSvg = document.getElementById(svgId);
-    currSvg.parentNode.removeChild(currSvg);
-    delete mapSvgData[svgId];
 }
 
 export function mapref(path) {

@@ -1,6 +1,6 @@
 import {communication} from "./Communication";
 import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
-import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut, redraw, recalc} from "../map/Map";
+import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut} from "../map/Map";
 import {hasCell} from "../node/Node";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
@@ -260,16 +260,20 @@ export function eventEmitter(command) {
             const callback = function(mutationsList, observer) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
-                        // itt hívjunk rá az eventRouter processeventére, ami meghív itt egy typeText-et, az egységesítés kedvéért
-                        sc.lm.content = holderElement.innerHTML;
-                        sc.lm.isDimAssigned = 0;
-                        recalc();
-                        redraw();
+                        eventRouter.processEvent({
+                            type: 'typeTextEvent'
+                        });
                     }
                 }
             };
             observer = new MutationObserver(callback);
             observer.observe(holderElement, config);
+            break;
+        }
+        case 'typeText': {
+            let holderElement = document.getElementById(sc.lm.divId);
+            sc.lm.content = holderElement.innerHTML;
+            sc.lm.isDimAssigned = 0;
             break;
         }
         case 'finishEdit' : {

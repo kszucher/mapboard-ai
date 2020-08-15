@@ -147,6 +147,12 @@ export const eventRouter = {
                 }
                 break;
             }
+            case 'typeTextEvent': {
+                eventEmitter('typeText');
+                recalc();
+                redraw();
+                break;
+            }
             case 'windowPaste': {
                 if (eventRouter.isEditing === 1) {
                     if (lastEvent.props.dataType === 'text') {
