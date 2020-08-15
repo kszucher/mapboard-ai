@@ -1,4 +1,4 @@
-import {keepHash, mapMem} from "./Map";
+import {keepHash, mapMem, mapSvgData} from "./Map";
 import {hasCell} from "../node/Node";
 import {genHash, copy} from "../core/Utils";
 
@@ -194,10 +194,10 @@ export const mapSvgVisualize = {
         }
 
         let svgGroup;
-        if (!mapMem.svgData.hasOwnProperty(cm.svgId) ||
-            ((mapMem.svgData.hasOwnProperty(cm.svgId) && mapMem.svgData[cm.svgId].keepHash === keepHash))) {
+        if (!mapSvgData.hasOwnProperty(cm.svgId) ||
+            ((mapSvgData.hasOwnProperty(cm.svgId) && mapSvgData[cm.svgId].keepHash === keepHash))) {
             cm.svgId = 'svg' + genHash(8);
-            mapMem.svgData[cm.svgId] = {
+            mapSvgData[cm.svgId] = {
                 svgElementData: {},
                 path: [],
             };
@@ -213,7 +213,7 @@ export const mapSvgVisualize = {
         }
 
         for (const svgElementName of svgElementNameList) {
-            let hadBefore = mapMem.svgData[cm.svgId].svgElementData.hasOwnProperty(svgElementName);
+            let hadBefore = mapSvgData[cm.svgId].svgElementData.hasOwnProperty(svgElementName);
             let hasNow = svgElementData.hasOwnProperty(svgElementName);
 
             let op = '';
@@ -221,7 +221,7 @@ export const mapSvgVisualize = {
             if (hadBefore === true && hasNow === false) op = 'delete';
             if (hadBefore === true && hasNow === true) {
                 if (JSON.stringify(svgElementData[svgElementName]) !==
-                    JSON.stringify(mapMem.svgData[cm.svgId].svgElementData[svgElementName])) {
+                    JSON.stringify(mapSvgData[cm.svgId].svgElementData[svgElementName])) {
                     op = 'update';
                 }
             }
@@ -275,8 +275,8 @@ export const mapSvgVisualize = {
             }
         }
 
-        mapMem.svgData[cm.svgId].keepHash = keepHash;
-        mapMem.svgData[cm.svgId].svgElementData = copy(svgElementData);
-        mapMem.svgData[cm.svgId].path = cm.path;
+        mapSvgData[cm.svgId].keepHash = keepHash;
+        mapSvgData[cm.svgId].svgElementData = copy(svgElementData);
+        mapSvgData[cm.svgId].path = cm.path;
     }
 };

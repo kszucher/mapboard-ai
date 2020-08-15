@@ -1,4 +1,4 @@
-import {keepHash, mapMem} from "./Map";
+import {keepHash, mapDivData, mapMem} from "./Map";
 import {genHash, getLatexString, copy, getBgc, setEndOfContenteditable} from "../core/Utils";
 import {hasCell} from "../node/Node";
 
@@ -33,10 +33,10 @@ export const mapDivVisualize = {
 
             let div;
 
-            if (!mapMem.divData.hasOwnProperty(cm.divId) ||
-                (mapMem.divData.hasOwnProperty(cm.divId) && mapMem.divData[cm.divId].keepHash === keepHash)) {
+            if (!mapDivData.hasOwnProperty(cm.divId) ||
+                (mapDivData.hasOwnProperty(cm.divId) && mapDivData[cm.divId].keepHash === keepHash)) {
                 cm.divId = 'div' + genHash(8);
-                mapMem.divData[cm.divId] = {
+                mapDivData[cm.divId] = {
                     keepHash: '',
                     styleData: {},
                     textContent: '',
@@ -60,12 +60,12 @@ export const mapDivVisualize = {
             else {
                 div = document.getElementById(cm.divId);
                 for (const styleName in styleData) {
-                    if (styleData[styleName] !== mapMem.divData[cm.divId].styleData[styleName]) {
+                    if (styleData[styleName] !== mapDivData[cm.divId].styleData[styleName]) {
                         div.style[styleName] = styleData[styleName];
                     }
                 }
 
-                if (div.textContent !== mapMem.divData[cm.divId].textContent) {
+                if (div.textContent !== mapDivData[cm.divId].textContent) {
                     div.innerHTML = renderContent(cm.contentType, cm.content);
                     if (cm.contentType === 'text') {
                         setEndOfContenteditable(div); // todo: investigate why duplication is needed
@@ -73,10 +73,10 @@ export const mapDivVisualize = {
                 }
             }
 
-            mapMem.divData[cm.divId].keepHash = keepHash;
-            mapMem.divData[cm.divId].styleData = copy(styleData);
-            mapMem.divData[cm.divId].textContent = copy(div.textContent);
-            mapMem.divData[cm.divId].path = cm.path;
+            mapDivData[cm.divId].keepHash = keepHash;
+            mapDivData[cm.divId].styleData = copy(styleData);
+            mapDivData[cm.divId].textContent = copy(div.textContent);
+            mapDivData[cm.divId].path = cm.path;
         }
 
         let rowCount = Object.keys(cm.c).length;

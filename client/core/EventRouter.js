@@ -1,6 +1,6 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
-import {mapMem, redraw, recalc, mapref, push, checkPop} from "../map/Map"
+import {mapMem, redraw, recalc, mapref, push, checkPop, mapDivData, mapSvgData} from "../map/Map"
 import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 
@@ -29,13 +29,13 @@ export const eventRouter = {
                     redraw();
                 }
                 if (e.path[0].id.substring(0, 3) === 'div') {
-                    mapMem.deepestSelectablePath = mapMem.divData[e.path[0].id].path;
+                    mapMem.deepestSelectablePath = mapDivData[e.path[0].id].path;
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
                     redraw();
                 } else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
                     let x = parseInt(e.path[0].id.charAt(10), 10);
-                    let cm =  mapref(mapMem.svgData[e.path[1].id].path);
+                    let cm =  mapref(mapSvgData[e.path[1].id].path);
                     clearStructSelection();
                     cm.selected = 1;
                     cm.taskStatus = x ;

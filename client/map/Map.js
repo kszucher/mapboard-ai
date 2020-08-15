@@ -14,17 +14,11 @@ import {mapSvgVisualize} from "./MapSvgVisualize";
 
 export let mapMem = {};
 export let mapStorageOut = {};
-
-let isMapLoaded = 0;
+export let mapDivData = [];
+export let mapSvgData = [];
 export let keepHash = '';
 
 export function loadMap(mapStorage) {
-
-    if (isMapLoaded === 1) {
-        clearDivs();
-        clearSvgs();
-    }
-
     mapMem = {
         dataIndex: 0,
         data: [mapAssembly((mapStorage.data))], // TODO: egyelőre ez az egy dolog legyen undo-redo követve!!!
@@ -42,13 +36,7 @@ export function loadMap(mapStorage) {
 
         filter: [],
         deepestSelectablePath: [],
-
-        // if these are not initialized when loading a map, they could be used for deletion, and make clearDivs, clearSvgs obsolete
-        divData: [],
-        svgData: [],
     };
-
-    isMapLoaded = 1;
 }
 
 export function recalc() {
@@ -71,14 +59,14 @@ export function redraw() {
     mapDivVisualize.start();
     mapSvgVisualize.start();
 
-    for (const divId in mapMem.divData) {
-        if (mapMem.divData[divId].keepHash !== keepHash) {
+    for (const divId in mapDivData) {
+        if (mapDivData[divId].keepHash !== keepHash) {
             clearDiv(divId)
         }
     }
 
-    for (const svgId in mapMem.svgData) {
-        if (mapMem.svgData[svgId].keepHash !== keepHash) {
+    for (const svgId in mapSvgData) {
+        if (mapSvgData[svgId].keepHash !== keepHash) {
             clearSvg(svgId)
         }
     }
@@ -102,33 +90,13 @@ export function checkPop() {
 export function clearDiv(divId) {
     let currDiv = document.getElementById(divId);
     currDiv.parentNode.removeChild(currDiv);
-    delete mapMem.divData[divId];
-}
-
-export function clearDivs() {
-    let currKeys = Object.keys(mapMem.divData);
-    for (let i = 0; i < currKeys.length; i++) {
-        let divId = currKeys[i];
-        let currDiv = document.getElementById(divId);
-        currDiv.parentNode.removeChild(currDiv);
-        delete mapMem.divData[divId];
-    }
+    delete mapDivData[divId];
 }
 
 export function clearSvg(svgId) {
     let currSvg = document.getElementById(svgId);
     currSvg.parentNode.removeChild(currSvg);
-    delete mapMem.svgData[svgId];
-}
-
-export function clearSvgs() {
-    let currKeys = Object.keys(mapMem.svgData);
-    for (let i = 0; i < currKeys.length; i++) {
-        let svgId = currKeys[i];
-        let currSvg = document.getElementById(svgId);
-        currSvg.parentNode.removeChild(currSvg);
-        delete mapMem.svgData[svgId];
-    }
+    delete mapSvgData[svgId];
 }
 
 export function mapref(path) {
