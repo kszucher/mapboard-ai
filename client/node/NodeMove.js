@@ -85,8 +85,7 @@ export function structMove(sc, target, mode) {
             }
         }
     } else if (target === 'struct2clipboard') {
-        if (mode === 'CUT' && sc.lm.isRoot !== 1 ||
-            mode === 'COPY') {
+        if (mode === 'CUT' && sc.lm.isRoot !== 1 || mode === 'COPY') {
             clipboard = [];
             for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(sc.structSelectedPathList[i]);
@@ -100,7 +99,7 @@ export function structMove(sc, target, mode) {
                             console.log('map copied to clipboard');
                         })
                         .catch(err => {
-                            console.error('Could not copy text: ', err);
+                            console.error('could not copy text: ', err);
                         });
                 }
             });

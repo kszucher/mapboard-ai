@@ -1,5 +1,5 @@
 import {keepHash, mapMem} from "./Map";
-import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
+import {genHash, getLatexString, copy, getBgc, setEndOfContenteditable} from "../core/Utils";
 import {hasCell} from "../node/Node";
 
 export const mapDivVisualize = {
@@ -31,20 +31,13 @@ export const mapDivVisualize = {
                 transitionProperty:     'left, top, background-color',
             };
 
-            let innerHTMLData;
-            switch (cm.contentType) {
-                case 'text':            innerHTMLData = cm.content;                                                                 break;
-                case 'equation':        innerHTMLData = katex.renderToString(getLatexString(cm.content), {throwOnError: false});    break;
-                case 'image':           innerHTMLData = '<img src="' + 'http://localhost:8082/file/' + cm.content + '" alt="">';    break;
-                default:                console.log('unknown contentType');                                                         break;
-            }
-
             let div;
-            if (!mapMem.divData.hasOwnProperty(cm.divId)) {
+            if (!mapMem.divData.hasOwnProperty(cm.divId) ) {
                 cm.divId = 'div' + genHash(8);
                 mapMem.divData[cm.divId] = {
+                    keepHash: '',
                     styleData: {},
-                    innerHTMLData: '',
+                    textContent: '',
                     path: [],
                 };
 
@@ -60,7 +53,7 @@ export const mapDivVisualize = {
                     div.style[styleName] = styleData[styleName];
                 }
 
-                div.innerText = innerHTMLData;
+                div.innerHTML = renderContent(cm.contentType, cm.content);
             }
             else {
                 div = document.getElementById(cm.divId);
@@ -70,14 +63,17 @@ export const mapDivVisualize = {
                     }
                 }
 
-                if (div.innerHTML !== innerHTMLData) {
-                    div.innerText = innerHTMLData;
+                if (div.textContent !== mapMem.divData[cm.divId].textContent) {
+                    div.innerHTML = renderContent(cm.contentType, cm.content);
+                    if (cm.contentType === 'text') {
+                        setEndOfContenteditable(div); // todo: investigate why duplication is needed
+                    }
                 }
             }
 
             mapMem.divData[cm.divId].keepHash = keepHash;
             mapMem.divData[cm.divId].styleData = copy(styleData);
-            mapMem.divData[cm.divId].innerHTMLData = copy(innerHTMLData);
+            mapMem.divData[cm.divId].textContent = copy(div.textContent);
             mapMem.divData[cm.divId].path = cm.path;
         }
 
@@ -95,3 +91,11 @@ export const mapDivVisualize = {
         }
     }
 };
+
+function renderContent (contentType, content) {
+    switch (contentType) {
+        case 'text':            return content;
+        case 'equation':        return katex.renderToString(getLatexString(content), {throwOnError: false});
+        case 'image':           return '<img src="' + 'http://localhost:8082/file/' + content + '" alt="">';
+    }
+}
