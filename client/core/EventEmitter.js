@@ -138,7 +138,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectFirstMixed': {
-            let geomHighRefParentRef = mapref(geomHighRef.parentPath);
+            let geomHighRefParentRef = mapref(sc.geomHighRef.parentPath);
             applyMixedSelection(geomHighRefParentRef.path);
             break;
         }
