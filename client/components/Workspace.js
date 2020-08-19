@@ -1,23 +1,12 @@
-import './../css/Layout.css'
-import React, {useEffect} from 'react'
+import '../css/Layout.css'
+import React, { useEffect,} from 'react'
 import ReactMaterialToolBar from "../components/ReactMaterialToolBar";
-import {windowHandler} from "./WindowHandler";
-import {eventRouter} from "./EventRouter";
 import ReactMaterialVerticalTabs from "../components/ReactMaterialVerticalTabs";
+import {windowHandler} from "../core/WindowHandler";
 
-export function Layout() {
-
+export function Workspace() {
     useEffect(() => {
-    });
-
-    windowHandler.addListeners();
-    eventRouter.processEvent({
-        type: 'materialEvent',
-        ref: {
-            'cmd': 'signIn',
-            'user': 'kryss',
-            'pass': 'mncvmncv'
-        },
+        windowHandler.addListeners();
     });
 
     return (

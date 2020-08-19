@@ -200,6 +200,13 @@ export const eventRouter = {
                 console.log('server: ' + s2c.cmd);
                 switch (s2c.cmd) {
                     case 'signInSuccess': {
+
+                        document.dispatchEvent(new CustomEvent( 'toPage', {
+                            'detail': {
+                                isLoggedIn: 1
+                            }}));
+
+
                         eventEmitter('updateReactTabs');
                         eventEmitter('openAfterInit');
                         break;

@@ -465,7 +465,7 @@ export function eventEmitter(command) {
         // TO MATERIAL
         // -------------------------------------------------------------------------------------------------------------
         case 'updateReactTabs': {
-            let s2c =                               lastEvent.ref;
+            let s2c = lastEvent.ref;
             document.dispatchEvent(new CustomEvent( 'toMaterial', {
                 'detail': {
                     tabData: {
