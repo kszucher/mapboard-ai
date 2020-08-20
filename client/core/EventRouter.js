@@ -189,10 +189,14 @@ export const eventRouter = {
                 }
                 break;
             }
-            case 'materialEvent': {
-                let r2c = lastEvent.ref;
-                // TODO see it all here in a switch
-                eventEmitter(r2c.cmd);
+            case 'componentEvent': {
+                let c2c = lastEvent.ref;
+                console.log('component: ' + c2c.cmd);
+                switch  (c2c.cmd) {
+                    case 'signInAuto':  eventEmitter('signInAuto');     break;
+                    case 'signIn':      eventEmitter('signIn');         break;
+                    case 'signOut':     eventEmitter('signOut');        break;
+                }
                 break;
             }
             case 'serverEvent': {
@@ -200,14 +204,8 @@ export const eventRouter = {
                 console.log('server: ' + s2c.cmd);
                 switch (s2c.cmd) {
                     case 'signInSuccess': {
-
-                        document.dispatchEvent(new CustomEvent( 'toPage', {
-                            'detail': {
-                                isLoggedIn: 1
-                            }}));
-
-
-                        eventEmitter('updateReactTabs');
+                        eventEmitter('updatePage');
+                        eventEmitter('updateTabs');
                         eventEmitter('openAfterInit');
                         break;
                     }

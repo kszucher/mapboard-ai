@@ -75,7 +75,7 @@ export default function VerticalTabs() {
     const handleChange = (event, newValue) =>  {
         updateStateProp(state, setState, 'tabId', newValue);
         eventRouter.processEvent({
-            type: 'materialEvent',
+            type: 'componentEvent',
             ref: {
                 'cmd': 'openAfterTabSelect',
                 'tabId': newValue,

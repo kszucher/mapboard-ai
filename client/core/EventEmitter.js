@@ -340,17 +340,22 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // SERVER TX
         // -------------------------------------------------------------------------------------------------------------
-        case 'signIn': {
-            let r2c = lastEvent.ref;
-            localStorage.setItem('cred', JSON.stringify({
-                name: r2c.user,
-                pass: r2c.pass,
-            }));
-            let c2s = {
+        case 'signInAuto': {
+            communication.sender({
                 'cmd': 'signInRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
-            };
-            communication.sender(c2s);
+            });
+            break;
+        }
+        case 'signIn': {
+            localStorage.setItem('cred', JSON.stringify({
+                name: lastEvent.ref.user,
+                pass: lastEvent.ref.pass,
+            }));
+            communication.sender({
+                'cmd': 'signInRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+            });
             break;
         }
         case 'signOut': {
@@ -464,7 +469,14 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // TO MATERIAL
         // -------------------------------------------------------------------------------------------------------------
-        case 'updateReactTabs': {
+        case 'updatePage': {
+            document.dispatchEvent(new CustomEvent( 'toPage', {
+                'detail': {
+                    isLoggedIn: true
+                }}));
+            break;
+        }
+        case 'updateTabs': {
             let s2c = lastEvent.ref;
             document.dispatchEvent(new CustomEvent( 'toMaterial', {
                 'detail': {

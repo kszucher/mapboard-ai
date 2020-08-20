@@ -64,7 +64,7 @@ export default function SignIn() {
     const signInHandler = () => {
         console.log('sign in attempt');
         eventRouter.processEvent({
-            type: 'materialEvent',
+            type: 'componentEvent',
             ref: {
                 'cmd': 'signIn',
                 'user': email,
