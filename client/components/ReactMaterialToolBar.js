@@ -52,11 +52,11 @@ export default function MenuAppBar() {
             {/*</FormGroup>*/}
             {/*<AppBar position="static">*/}
                 <Toolbar variant={"dense"}>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <IconButton edge="start" className={classes.menuButton} aria-label="menu">
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        Photos
+                        MindBoard
                     </Typography>
                     {auth && (
                         <div>
@@ -65,7 +65,6 @@ export default function MenuAppBar() {
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 onClick={handleMenu}
-                                color="inherit"
                             >
                                 <AccountCircle />
                             </IconButton>
