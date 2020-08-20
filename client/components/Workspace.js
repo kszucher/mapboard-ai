@@ -4,8 +4,6 @@ import ReactMaterialToolBar from "../components/ReactMaterialToolBar";
 import ReactMaterialVerticalTabs from "../components/ReactMaterialVerticalTabs";
 import {windowHandler} from "../core/WindowHandler";
 import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
-import green from '@material-ui/core/colors/green';
 
 import {MuiThemeProvider} from "@material-ui/core";
 
@@ -31,19 +29,16 @@ export function Workspace() {
 
     return (
         <div id="page">
-            <div id="left">
-                <div id = 'left-top'>
-                    <MuiThemeProvider theme={theme}>
-                        <ReactMaterialToolBar/>
-                    </MuiThemeProvider>
-                </div>
-                <div id='left-bottom'>
+            <div id="top">
+                <MuiThemeProvider theme={theme}>
+                    <ReactMaterialToolBar/>
+                </MuiThemeProvider>
+            </div>
+            <div id="bottom">
+                <div id='bottom-left'>
                     <ReactMaterialVerticalTabs/>
                 </div>
-            </div>
-            <div id="right">
-                <div id = "right-top"/>
-                <div id = "right-bottom">
+                <div id = "bottom-right">
                     <div id='mapDiv'>
                         <svg id="mapSvg"/>
                     </div>

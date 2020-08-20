@@ -24,47 +24,29 @@ html, body, div, table, td, tr {
     height: 100vh;
     /*child*/
     display: flex;
-    align-content: flex-start;
-}
-
-#left {
-    flex-grow: 0;
-    width: 220px;
-    /*child*/
-    display: flex;
     flex-direction: column;
-    align-content: flex-start;
 }
 
-#left-top {
+#top {
     flex-grow: 0;
     height: 48px;
     background-color: #747ca8;
 }
 
-#left-bottom {
-    flex-grow: 1;
-    background-color: #d5d7e4
-}
-
-#right {
+#bottom {
     flex-grow: 1;
     /*child*/
     display: flex;
-    flex-direction: column;
-    align-content: flex-start;
 }
 
-#right-top {
+#bottom-left {
     flex-grow: 0;
-    height: 48px;
-    background-color: #747ca8;
+    background-color: #d5d7e4;
+    width: 220px
 }
 
-#right-bottom {
+#bottom-right {
     flex-grow: 1;
-    height: calc(100% - 48px);
-    overflow-y: scroll;
     background-color: #ccc;
     /*child*/
     display: flex;

@@ -193,9 +193,10 @@ export const eventRouter = {
                 let c2c = lastEvent.ref;
                 console.log('component: ' + c2c.cmd);
                 switch  (c2c.cmd) {
-                    case 'signInAuto':  eventEmitter('signInAuto');     break;
-                    case 'signIn':      eventEmitter('signIn');         break;
-                    case 'signOut':     eventEmitter('signOut');        break;
+                    case 'signInAuto':          eventEmitter('signInAuto');             break;
+                    case 'signIn':              eventEmitter('signIn');                 break;
+                    case 'signOut':             eventEmitter('signOut');                break;
+                    case 'openAfterTabSelect':  eventEmitter('openAfterTabSelect');     break;
                 }
                 break;
             }
