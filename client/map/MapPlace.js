@@ -16,6 +16,7 @@ export const mapPlace = {
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
+        svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
         cm.parentNodeStartX = 0;
         cm.parentNodeStartY = 0;
