@@ -48,12 +48,11 @@ html, body, div, table, td, tr {
 #bottom-right {
     flex-grow: 1;
     background-color: #ccc;
+    overflow-y: scroll;
+    height: calc(100vh - 48px);
     /*child*/
     display: flex;
     justify-content: center;
-
-    overflow-y: scroll;
-    height: calc(100vh - 48px);
 }
 
 #mapDiv {
