@@ -96,10 +96,8 @@ export default function VerticalTabs() {
                 {state.tabNames.map(name => (
                     <Tab
                         label={name}
-                        key={name}
-                    />
-                ))}
-            >
+                        key={name}/>
+                ))}>
             </Tabs>
         </div>
     );
