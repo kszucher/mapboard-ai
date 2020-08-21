@@ -54,6 +54,12 @@ class WindowHandler {
 
     resize() {
         console.log('RESIZE');
+
+
+
+        let mapDiv = document.getElementById('mapDiv');
+        console.log(mapDiv.scrollWidth)
+
     }
 
     keydown(e) {

@@ -51,11 +51,13 @@ html, body, div, table, td, tr {
     overflow-y: scroll;
     height: calc(100vh - 48px);
     /*child*/
-    display: flex;
-    justify-content: center;
+    /*https://stackoverflow.com/questions/33454533/cant-scroll-to-top-of-flex-item-that-is-overflowing-container*/
 }
 
 #mapDiv {
+    width: 0;
+    height: 0;
+    margin:auto;
     position: relative;
     background: #fbfafc;
     /*child*/

@@ -5,14 +5,15 @@ export const mapPlace = {
     start: () => {
         let cm = mapMem.getData().s[0];
 
-        let mapWidth = mapMem.task? 1366 : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1;
+        let mapDiv = document.getElementById('mapDiv');
+        
+        let mapWidth = mapMem.task? 1366 : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
         let mapHeight = cm.familyH > cm.selfH? cm.familyH + 2*20: cm.selfH + 2*20;
 
         mapHeight += 500;
 
-        let div = document.getElementById('mapDiv');
-        div.style.width = "" + mapWidth +"px";
-        div.style.height = "" + mapHeight + "px";
+        mapDiv.style.minWidth = "" + mapWidth +"px";
+        mapDiv.style.height = "" + mapHeight + "px";
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
