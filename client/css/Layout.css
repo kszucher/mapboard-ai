@@ -42,7 +42,15 @@ html, body, div, table, td, tr {
 #bottom-left {
     flex-grow: 0;
     background-color: #d5d7e4;
-    width: 220px
+    width: 220px;
+}
+
+#bottom-left-down {
+    /*child*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #bottom-right {

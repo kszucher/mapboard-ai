@@ -3,11 +3,33 @@ import React, { useEffect,} from 'react'
 import ReactMaterialToolBar from "../components/ReactMaterialToolBar";
 import ReactMaterialVerticalTabs from "../components/ReactMaterialVerticalTabs";
 import {windowHandler} from "../core/WindowHandler";
-import { createMuiTheme } from '@material-ui/core/styles';
+import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 
 import {MuiThemeProvider} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Toolbar from "@material-ui/core/Toolbar";
+import AddIcon from '@material-ui/icons/Add';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        // marginRight: theme.spacing(2),
+        margin:'auto',
+
+    },
+    title: {
+        flexGrow: 1,
+    },
+}));
+
 
 export function Workspace() {
+
+    const classes = useStyles();
+
     useEffect(() => {
         windowHandler.addListeners();
     });
@@ -29,21 +51,29 @@ export function Workspace() {
 
     return (
         <div id="page">
-            <div id="top">
-                <MuiThemeProvider theme={theme}>
+            <MuiThemeProvider theme={theme}>
+                <div id="top">
                     <ReactMaterialToolBar/>
-                </MuiThemeProvider>
-            </div>
-            <div id="bottom">
-                <div id='bottom-left'>
-                    <ReactMaterialVerticalTabs/>
                 </div>
-                <div id = "bottom-right">
-                    <div id='mapDiv'>
-                        <svg id="mapSvg"/>
+                <div id="bottom">
+                    <div id='bottom-left'>
+                        <div id = 'bottom-left-up'>
+                            <ReactMaterialVerticalTabs/>
+                        </div>
+                        <div id = 'bottom-left-down'>
+                            <IconButton edge="start" className={classes.menuButton}  color='inherit' aria-label="menu">
+                                <AddIcon />
+                            </IconButton>
+                        </div>
+
+                    </div>
+                    <div id = "bottom-right">
+                        <div id='mapDiv'>
+                            <svg id="mapSvg"/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </MuiThemeProvider>
         </div>
     )
 }
