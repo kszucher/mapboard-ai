@@ -18,6 +18,11 @@ export let mapDivData = [];
 export let mapSvgData = [];
 export let keepHash = '';
 
+export function initDomData() {
+    mapDivData = [];
+    mapSvgData = [];
+}
+
 export function loadMap(mapStorage) {
     mapMem = {
         dataIndex: 0,

@@ -1,6 +1,6 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
-import {mapMem, redraw, recalc, mapref, push, checkPop, mapDivData, mapSvgData} from "../map/Map"
+import {mapMem, redraw, recalc, mapref, push, checkPop, mapDivData, mapSvgData, initDomData} from "../map/Map"
 import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 import {windowHandler} from "./WindowHandler";
@@ -206,6 +206,7 @@ export const eventRouter = {
                 console.log('server: ' + s2c.cmd);
                 switch (s2c.cmd) {
                     case 'signInSuccess': {
+                        initDomData();
                         eventEmitter('updatePageToWorkspace');
                         eventEmitter('updateTabs');
                         eventEmitter('openAfterInit');
@@ -216,8 +217,6 @@ export const eventRouter = {
                         break;
                     }
                     case 'signOutSuccess': {
-                        console.log('REMOVVEEE????')
-
                         windowHandler.removeListeners();
                         localStorage.clear();
                         eventEmitter('updatePageToSignIn');
