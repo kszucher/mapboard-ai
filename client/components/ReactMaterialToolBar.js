@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import {eventRouter} from "../core/EventRouter";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,6 +41,16 @@ export default function MenuAppBar() {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleSignOut = () => {
+        console.log('sign out attempt');
+        eventRouter.processEvent({
+            type: 'componentEvent',
+            ref: {
+                'cmd': 'signOut',
+            },
+        });
     };
 
     return (
@@ -84,7 +95,7 @@ export default function MenuAppBar() {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>Sign out</MenuItem>
+                                <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
                             </Menu>
                         </div>
                     )}

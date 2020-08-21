@@ -341,10 +341,13 @@ export function eventEmitter(command) {
         // SERVER TX
         // -------------------------------------------------------------------------------------------------------------
         case 'signInAuto': {
-            communication.sender({
-                'cmd': 'signInRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-            });
+            if (JSON.parse(localStorage.getItem('cred')) !== null) {
+                console.log('sign in auto attempt');
+                communication.sender({
+                    'cmd': 'signInRequest',
+                    'cred': JSON.parse(localStorage.getItem('cred')),
+                });
+            }
             break;
         }
         case 'signIn': {
@@ -363,7 +366,7 @@ export function eventEmitter(command) {
                 'cmd': 'signOutRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
             };
-            localStorage.setItem('cred', {});
+            localStorage.setItem('cred', null);
             communication.sender(c2s);
             break;
         }
@@ -469,10 +472,17 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // TO MATERIAL
         // -------------------------------------------------------------------------------------------------------------
-        case 'updatePage': {
+        case 'updatePageToWorkspace': {
             document.dispatchEvent(new CustomEvent( 'toPage', {
                 'detail': {
                     isLoggedIn: true
+                }}));
+            break;
+        }
+        case 'updatePageToSignIn': {
+            document.dispatchEvent(new CustomEvent( 'toPage', {
+                'detail': {
+                    isLoggedIn: false
                 }}));
             break;
         }

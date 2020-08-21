@@ -205,7 +205,7 @@ export const eventRouter = {
                 console.log('server: ' + s2c.cmd);
                 switch (s2c.cmd) {
                     case 'signInSuccess': {
-                        eventEmitter('updatePage');
+                        eventEmitter('updatePageToWorkspace');
                         eventEmitter('updateTabs');
                         eventEmitter('openAfterInit');
                         break;
@@ -216,6 +216,7 @@ export const eventRouter = {
                     }
                     case 'signOutSuccess': {
                         localStorage.clear();
+                        eventEmitter('updatePageToSignIn');
                         break;
                     }
                     case 'openMapSuccess': {

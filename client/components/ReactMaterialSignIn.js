@@ -18,7 +18,7 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
+            <Link color="inherit" href="http://mindboard.io/">
                 MindBoard
             </Link>{' '}
             {new Date().getFullYear()}
@@ -108,10 +108,10 @@ export default function SignIn() {
                         autoComplete="current-password"
                         onChange={typePassword}
                     />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                    />
+                    {/*<FormControlLabel*/}
+                    {/*    control={<Checkbox value="remember" color="primary" />}*/}
+                    {/*    label="Remember me"*/}
+                    {/*/>*/}
                     <Button
                         type="submit"
                         fullWidth
