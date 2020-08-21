@@ -1,7 +1,7 @@
 import '../css/Layout.css'
 import React, { useEffect,} from 'react'
-import ReactMaterialToolBar from "../components/ReactMaterialToolBar";
-import ReactMaterialVerticalTabs from "../components/ReactMaterialVerticalTabs";
+import ReactMaterialToolBar from "./Toolbar";
+import ReactMaterialVerticalTabs from "./Tabs";
 import {windowHandler} from "../core/WindowHandler";
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 

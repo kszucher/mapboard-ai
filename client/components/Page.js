@@ -1,6 +1,6 @@
 import '../css/Layout.css'
 import React, {useEffect, useState} from 'react'
-import SignIn from "../components/ReactMaterialSignIn";
+import SignIn from "./SignIn";
 import {Workspace} from "./Workspace";
 import {eventRouter, lastEvent} from "../core/EventRouter";
 
