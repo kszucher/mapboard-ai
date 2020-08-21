@@ -1,10 +1,9 @@
-let express =           require('express');
-let cors =              require('cors');
-var multer  =           require('multer');
-var path =              require('path');
-let app =               express();
-
-var { promisify } =     require('util');
+let express = require('express');
+let cors = require('cors');
+var multer = require('multer');
+var path = require('path');
+let app = express();
+var { promisify } = require('util');
 var sizeOf = promisify( require('image-size'));
 
 // improvement for later times
@@ -43,9 +42,9 @@ var type = upload.single('upl');
 app.post('/feta', type, async function (req, res) {
     let dimensions = await sizeOf('../uploads/' + req.file.filename);
     let sf2c = {
-            cmd:                'imageSaveSuccess',
-            imageId:            req.file.filename,
-            imageSize:          dimensions
+            cmd: 'imageSaveSuccess',
+            imageId: req.file.filename,
+            imageSize: dimensions
     };
     res.json(sf2c)
 });
@@ -63,38 +62,38 @@ async function sendResponse(c2s) {
             case 'signInRequest': {
                 let m2s = await mongoFunction(c2s, 'getUserMaps');
                 s2c = {
-                    cmd:                'signInSuccess',
-                    headerData:         m2s,
+                    cmd: 'signInSuccess',
+                    headerData: m2s,
                 };
                 break;
             }
             case 'signOutRequest': {
                 s2c = {
-                    cmd:                'signOutSuccess',
+                    cmd: 'signOutSuccess',
                 };
                 break;
             }
             case 'openMapRequest': {
                 let m2s = await mongoFunction(c2s, 'openMap');
                 s2c = {
-                    cmd:                'openMapSuccess',
-                    mapName:            c2s.mapName,
-                    mapStorage:         m2s,
+                    cmd: 'openMapSuccess',
+                    mapName: c2s.mapName,
+                    mapStorage: m2s,
                 };
                 break;
             }
             case 'writeMapRequest': {
                 await mongoFunction(c2s, 'writeMap');
                 s2c = {
-                    cmd:                'writeMapRequestSuccess',
+                    cmd: 'writeMapRequestSuccess',
                 };
                 break;
             }
             case 'createMapInMapRequest': {
                 let m2s = await mongoFunction(c2s, 'createMapInMap');
                 s2c = {
-                    cmd:                'createMapInMapSuccess',
-                    newMapId:           m2s.insertedId
+                    cmd: 'createMapInMapSuccess',
+                    newMapId: m2s.insertedId
                 };
                 break;
             }
