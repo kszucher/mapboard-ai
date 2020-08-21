@@ -57,7 +57,7 @@ async function sendResponse(c2s) {
         'ERROR': 'error',
     };
 
-    if (auth(c2s)) {
+    if (await auth(c2s)) {
         switch (c2s.cmd) {
             case 'signInRequest': {
                 let m2s = await mongoFunction(c2s, 'getUserMaps');
@@ -107,12 +107,15 @@ async function sendResponse(c2s) {
     return s2c;
 }
 
-function auth(c2s) {
-    let authOk = 0;
-    if (c2s.cred.name === 'kryss' && c2s.cred.pass === 'mncvmncv') {
-        authOk = 1;
-    }
-    return authOk;
+async function auth(c2s) {
+    // let authOk = 0;
+    // if (c2s.cred.name === 'kryss' && c2s.cred.pass === 'mncvmncv') {
+    //     authOk = 1;
+    // }
+    // return authOk;
+
+    let m2s = await mongoFunction(c2s, 'auth');
+    return m2s.authenticationSuccess;
 }
 
 const MongoClient = require('mongodb').MongoClient;
@@ -133,8 +136,13 @@ async function mongoFunction(c2s, operation) {
         const collectionMaps =      client.db("app").collection("maps");
 
         switch (operation) {
+            case 'auth': {
+                let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
+                m2s.authenticationSuccess = currUser !== null;
+                break;
+            }
             case 'getUserMaps': {
-                let currUser = await collectionUsers.findOne({_id: ObjectId('5d88c99f1935c83e84ca263d')});
+                let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
                 let headerMapIdList = currUser.headerMapIdList;
                 let headerMapNameList = [];
                 await collectionMaps.aggregate([
