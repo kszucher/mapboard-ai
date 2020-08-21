@@ -31,7 +31,6 @@ export function Workspace() {
     const classes = useStyles();
 
     useEffect(() => {
-        windowHandler.addListeners();
     });
 
     const theme = createMuiTheme({

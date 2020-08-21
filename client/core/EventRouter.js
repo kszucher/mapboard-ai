@@ -3,6 +3,7 @@ import {eventEmitter} from "./EventEmitter";
 import {mapMem, redraw, recalc, mapref, push, checkPop, mapDivData, mapSvgData} from "../map/Map"
 import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
+import {windowHandler} from "./WindowHandler";
 
 export let currColorToPaint = 0;
 export let lastEvent = {};
@@ -215,11 +216,16 @@ export const eventRouter = {
                         break;
                     }
                     case 'signOutSuccess': {
+                        console.log('REMOVVEEE????')
+
+                        windowHandler.removeListeners();
                         localStorage.clear();
                         eventEmitter('updatePageToSignIn');
                         break;
                     }
                     case 'openMapSuccess': {
+                        windowHandler.removeListeners();
+                        windowHandler.addListeners();
                         eventEmitter('openMap');
                         recalc();
                         redraw();

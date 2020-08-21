@@ -1,58 +1,67 @@
 import {eventRouter} from "./EventRouter"
 
-class WindowHandler {
-    addListeners() {
+export let windowHandler = {
+    addListeners: () => {
         // https://www.tutorialspoint.com/es6/es6_events.htm
-        window.addEventListener('click',                event =>    this.click(event)               );
-        window.addEventListener('dblclick',             event =>    this.dblclick(event)            );
-        window.addEventListener('mousemove',            event =>    this.mousemove(event)           );
-        window.addEventListener('mousedown',            event =>    this.mousedown(event)           );
-        window.addEventListener("focusout",             event =>    this.focusout()                 );
-        window.addEventListener("focus",                event =>    this.focus()                    );
-        window.addEventListener("popstate",             event =>    this.popstate(event)            );
-        window.addEventListener("resize",               event =>    this.resize()                   );
-        window.addEventListener("keydown",              event =>    this.keydown(event)             );
-        window.addEventListener("keyup",                event =>    this.keyup(event)               );
-        window.addEventListener("paste",                event =>    this.paste(event)               );
-    }
+        window.addEventListener('click',        windowHandler.click);
+        window.addEventListener('dblclick',     windowHandler.dblclick);
+        window.addEventListener('mousedown',    windowHandler.mousedown);
+        window.addEventListener("focusout",     windowHandler.focusout);
+        window.addEventListener("focus",        windowHandler.focus);
+        window.addEventListener("popstate",     windowHandler.popstate);
+        window.addEventListener("resize",       windowHandler.resize);
+        window.addEventListener("keydown",      windowHandler.keydown);
+        window.addEventListener("keyup",        windowHandler.keyup);
+        window.addEventListener("paste",        windowHandler.paste);
+    },
 
-    click(e) {
+    removeListeners: () => {
+        window.removeEventListener('click',     windowHandler.click);
+        window.removeEventListener('dblclick',  windowHandler.dblclick);
+        window.removeEventListener('mousedown', windowHandler.mousedown);
+        window.removeEventListener("focusout",  windowHandler.focusout);
+        window.removeEventListener("focus",     windowHandler.focus);
+        window.removeEventListener("popstate",  windowHandler.popstate);
+        window.removeEventListener("resize",    windowHandler.resize);
+        window.removeEventListener("keydown",   windowHandler.keydown);
+        window.removeEventListener("keyup",     windowHandler.keyup);
+        window.removeEventListener("paste",     windowHandler.paste);
+    },
+
+    click: (e) => {
         eventRouter.processEvent({
             type: 'windowClick',
             ref: e,
         });
-    }
+    },
 
-    dblclick(e) {
+    dblclick: (e) => {
         eventRouter.processEvent({
             type: 'windowDoubleClick',
             ref: e,
         });
-    }
-
-    mousemove(e) {
-    }
+    },
 
     mousedown(e) {
         e.preventDefault();
-    }
+    },
 
-    focusout() {
+    focusout: () => {
 
-    }
+    },
 
-    focus() {
+    focus: () => {
         console.log('FOCUS');
-    }
+    },
 
-    popstate(e) {
+    popstate: (e) => {
         eventRouter.processEvent({
             type: 'windowPopState',
             ref: e,
         });
-    }
+    },
 
-    resize() {
+    resize: () => {
         let bottomRightDiv = document.getElementById('bottom-right');
         let mapDiv = document.getElementById('mapDiv');
 
@@ -63,20 +72,20 @@ class WindowHandler {
             // recalc();
             // redraw();
         }
-    }
+    },
 
-    keydown(e) {
+    keydown: (e) => {
         eventRouter.processEvent({
             type: 'windowKeyDown',
             ref: e,
         });
-    };
+    },
 
-    keyup(event) {
+    keyup: (e) => {
 
-    };
+    },
 
-    paste(e) {
+    paste: (e) => {
         e.preventDefault();
 
         console.log('PASTE');
@@ -110,7 +119,5 @@ class WindowHandler {
                 })
             }
         });
-    }
-}
-
-export let windowHandler = new WindowHandler();
+    },
+};
