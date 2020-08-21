@@ -53,13 +53,16 @@ class WindowHandler {
     }
 
     resize() {
-        console.log('RESIZE');
-
-
-
+        let bottomRightDiv = document.getElementById('bottom-right');
         let mapDiv = document.getElementById('mapDiv');
-        console.log(mapDiv.scrollWidth)
 
+        if (bottomRightDiv.clientWidth < mapDiv.clientWidth) {
+            // egészen addig, amíg az extra távolság el nem éri a nullát, közelítünk
+            // illetve, ha egészen sok helyünk van is megtartjuk az 1366-ot
+
+            // recalc();
+            // redraw();
+        }
     }
 
     keydown(e) {
