@@ -2,8 +2,12 @@ import {eventRouter} from "./EventRouter";
 
 class Communication {
     constructor() {
-        this.myUrl = "http://127.0.0.1:8082/beta";
-        // this.myUrl = "http://mindboard.io/beta";
+        if (process.env.NODE_ENV==='development') {
+            this.myUrl = "http://127.0.0.1:8082/beta";
+        }
+        else if (process.env.NODE_ENV === 'production'){
+            this.myUrl = "http://mindboard.io/beta";
+        }
         this.eventsEnabled = 1;
     }
 

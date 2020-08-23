@@ -87,7 +87,7 @@ export default function SignIn() {
                     <TextField
                         variant="outlined"
                         margin="normal"
-                        required
+                        // required
                         fullWidth
                         id="email"
                         label="Email Address"
@@ -99,7 +99,7 @@ export default function SignIn() {
                     <TextField
                         variant="outlined"
                         margin="normal"
-                        required
+                        // required
                         fullWidth
                         name="password"
                         label="Password"
