@@ -160,7 +160,7 @@ export const mapSvgVisualize = {
                 color: '#eeeeee',
             };
 
-            let sphereOffset = 32;
+            let sphereOffset = 28;
             for (let i = 0; i < 4; i++) {
                 let centerX = startX + i * sphereOffset;
                 let centerY = cm.nodeEndY;
