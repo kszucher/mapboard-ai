@@ -10,6 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import AddIcon from '@material-ui/icons/Add';
+import {eventRouter} from "../core/EventRouter";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,6 +33,15 @@ export function Workspace() {
 
     useEffect(() => {
     });
+
+    const mapAdd = () => {
+        eventRouter.processEvent({
+            type: 'componentEvent',
+            ref: {
+                'cmd': 'createMapInTab',
+            },
+        })
+    };
 
     const theme = createMuiTheme({
         overrides: {
@@ -60,7 +70,7 @@ export function Workspace() {
                             <ReactMaterialVerticalTabs/>
                         </div>
                         <div id = 'bottom-left-down'>
-                            <IconButton edge="start" className={classes.menuButton}  color='inherit' aria-label="menu">
+                            <IconButton edge="start" className={classes.menuButton}  color='inherit' aria-label="menu" onClick={mapAdd}>
                                 <AddIcon />
                             </IconButton>
                         </div>

@@ -198,6 +198,7 @@ export const eventRouter = {
                     case 'signIn':              eventEmitter('signIn');                 break;
                     case 'signOut':             eventEmitter('signOut');                break;
                     case 'openAfterTabSelect':  eventEmitter('openAfterTabSelect');     break;
+                    case 'createMapInTab':      eventEmitter('createMapInTab');         break;
                 }
                 break;
             }
@@ -231,6 +232,10 @@ export const eventRouter = {
                         break;
                     }
                     case 'writeMapRequestSuccess': {
+                        break;
+                    }
+                    case 'createMapInTabSuccess': {
+                        eventEmitter('updateTabs');
                         break;
                     }
                     case 'createMapInMapSuccess': {

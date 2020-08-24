@@ -7,7 +7,7 @@ import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
 import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {applyMixedSelection,  applyStructSelection, clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
-import {copy, setEndOfContenteditable, transposeArray} from "./Utils";
+import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
 import {eventLut} from "./EventLut";
 
@@ -371,7 +371,6 @@ export function eventEmitter(command) {
         }
         case 'openAfterInit': {
             shouldAddToHistory = 1;
-            headerData = copy(lastEvent.ref.headerData);
             communication.sender({
                 'cmd': 'openMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
@@ -422,6 +421,19 @@ export function eventEmitter(command) {
             break;
         }
         case 'createMapInTab': {
+            communication.sender({
+                'cmd': 'createMapInTabRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'newMap': {
+                    data: [{
+                        path: ['s', 0],
+                        content: 'New map ' + genHash(4),
+                        selected: 1
+                    }],
+                    density: 'small',
+                    task: 0
+                }
+            });
             break;
         }
         case 'createMapInMap': {
@@ -477,6 +489,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'updateTabs': {
+            headerData = copy(lastEvent.ref.headerData);
             document.dispatchEvent(new CustomEvent( 'toMaterial', {
                 'detail': {
                     tabData: {

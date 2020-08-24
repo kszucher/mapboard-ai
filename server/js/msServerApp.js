@@ -89,8 +89,19 @@ async function sendResponse(c2s) {
                 };
                 break;
             }
+            case 'createMapInTabRequest': {
+                let m2s1 = await mongoFunction(c2s, 'createMap');
+                Object.assign(c2s, {insertedId: m2s1.insertedId});
+                await mongoFunction(c2s, 'addUserMap');
+                let m2s2 = await mongoFunction(c2s, 'getUserMaps');
+                s2c = {
+                    cmd: 'createMapInTabSuccess',
+                    headerData: m2s2,
+                };
+                break;
+            }
             case 'createMapInMapRequest': {
-                let m2s = await mongoFunction(c2s, 'createMapInMap');
+                let m2s = await mongoFunction(c2s, 'createMap');
                 s2c = {
                     cmd: 'createMapInMapSuccess',
                     newMapId: m2s.insertedId
@@ -108,12 +119,6 @@ async function sendResponse(c2s) {
 }
 
 async function auth(c2s) {
-    // let authOk = 0;
-    // if (c2s.cred.name === 'kryss' && c2s.cred.pass === 'mncvmncv') {
-    //     authOk = 1;
-    // }
-    // return authOk;
-
     let m2s = await mongoFunction(c2s, 'auth');
     return m2s.authenticationSuccess;
 }
@@ -161,11 +166,19 @@ async function mongoFunction(c2s, operation) {
 
                 break;
             }
-            case 'createMapInMap': {
+            case 'createMap': {
                 let result = await collectionMaps.insertOne(c2s.newMap);
                 m2s = {
                     insertedId: result.insertedId
                 };
+                break;
+            }
+            case 'addUserMap': {
+                let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
+                await collectionUsers.updateOne(
+                    {_id: ObjectId(currUser._id)},
+                    {$push: {"headerMapIdList" : c2s.insertedId}}
+                );
                 break;
             }
             case 'openMap': {
