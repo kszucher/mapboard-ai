@@ -362,44 +362,40 @@ export function eventEmitter(command) {
             break;
         }
         case 'signOut': {
-            let c2s = {
+            localStorage.setItem('cred', null);
+            communication.sender({
                 'cmd': 'signOutRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
-            };
-            localStorage.setItem('cred', null);
-            communication.sender(c2s);
+            });
             break;
         }
         case 'openAfterInit': {
             shouldAddToHistory = 1;
             headerData = copy(lastEvent.ref.headerData);
-            let c2s = {
+            communication.sender({
                 'cmd': 'openMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
                 'mapName': headerData.headerMapIdList[headerData.headerMapSelected]
-            };
-            communication.sender(c2s);
+            });
             break;
         }
         case 'openAfterTabSelect': {
             shouldAddToHistory = 1;
-            let c2s = {
+            communication.sender({
                 'cmd': 'openMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
                 'mapName': headerData.headerMapIdList[lastEvent.ref.tabId]
-            };
-            communication.sender(c2s);
+            });
             break;
         }
         case 'openAfterNodeSelect': {
             shouldAddToHistory = 1;
             if(sc.lm.linkType === 'internal') {
-                let c2s = {
+                communication.sender({
                     'cmd': 'openMapRequest',
                     'cred': JSON.parse(localStorage.getItem('cred')),
                     'mapName': sc.lm.link
-                };
-                communication.sender(c2s);
+                });
             } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();
@@ -408,45 +404,40 @@ export function eventEmitter(command) {
         }
         case 'openAfterHistory': {
             shouldAddToHistory = 0;
-            let c2s = {
+            communication.sender({
                 'cmd': 'openMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
                 'mapName': lastEvent.ref.state.lastUserMap
-            };
-            communication.sender(c2s);
+            });
             break;
         }
         case 'save': {
             saveMap();
-            let c2s = {
+            communication.sender({
                 cmd: 'writeMapRequest',
                 cred: JSON.parse(localStorage.getItem('cred')),
                 mapName: lastUserMap,
                 mapStorage: mapStorageOut
-            };
-            communication.sender(c2s);
+            });
             break;
         }
         case 'createMapInTab': {
             break;
         }
         case 'createMapInMap': {
-            let newMap = {
-                data: [{
-                    path: ['s', 0],
-                    content: sc.lm.content,
-                    selected: 1
-                }],
-                density: 'small',
-                task: 0
-            };
-
-            let c2s = {
+            communication.sender({
                 'cmd': 'createMapInMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
-                'newMap': newMap
-            };
-            communication.sender(c2s);
+                'newMap': {
+                    data: [{
+                        path: ['s', 0],
+                        content: sc.lm.content,
+                        selected: 1
+                    }],
+                    density: 'small',
+                    task: 0
+                }
+            });
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
@@ -455,7 +446,6 @@ export function eventEmitter(command) {
         case 'sendImage': {
             var formData = new FormData();
             formData.append('upl', lastEvent.props.data, 'image.png');
-
             fetch('http://127.0.0.1:8082/feta', {
                 method:     'post',
                 body:       formData
@@ -487,12 +477,11 @@ export function eventEmitter(command) {
             break;
         }
         case 'updateTabs': {
-            let s2c = lastEvent.ref;
             document.dispatchEvent(new CustomEvent( 'toMaterial', {
                 'detail': {
                     tabData: {
-                        tabNames: s2c.headerData.headerMapNameList,
-                        tabId: s2c.headerData.headerMapSelected,
+                        tabNames: lastEvent.ref.headerData.headerMapNameList,
+                        tabId: lastEvent.ref.headerData.headerMapSelected,
                     }
                 }}));
             break;
