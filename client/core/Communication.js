@@ -6,7 +6,7 @@ class Communication {
             this.myUrl = "http://127.0.0.1:8082/beta";
         }
         else if (process.env.NODE_ENV === 'production'){
-            this.myUrl = "http://mindboard.io/beta";
+            this.myUrl = "https://mindboard.io/beta";
         }
         this.eventsEnabled = 1;
     }
