@@ -144,6 +144,7 @@ export function eventEmitter(command) {
         }
         case 'selectRoot': {
             clearStructSelection();
+            clearCellSelection();
             mapMem.getData().s[0].selected = 1;
             break;
         }
@@ -430,7 +431,7 @@ export function eventEmitter(command) {
                         content: 'New map ' + genHash(4),
                         selected: 1
                     }],
-                    density: 'small',
+                    density: 'large',
                     task: 0
                 }
             });
@@ -446,7 +447,7 @@ export function eventEmitter(command) {
                         content: sc.lm.content,
                         selected: 1
                     }],
-                    density: 'small',
+                    density: 'large',
                     task: 0
                 }
             });
