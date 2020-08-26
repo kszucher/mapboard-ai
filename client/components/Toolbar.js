@@ -28,19 +28,31 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuAppBar() {
     const classes = useStyles();
     const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+
+    const [anchorElA, setAnchorElA] = React.useState(null);
+    const openA = Boolean(anchorElA);
+
+    const [anchorElB, setAnchorElB] = React.useState(null);
+    const openB = Boolean(anchorElB);
 
     const handleChange = (event) => {
         setAuth(event.target.checked);
     };
 
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
+    const handleMenuA = (event) => {
+        setAnchorElA(event.currentTarget);
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleMenuB = (event) => {
+        setAnchorElB(event.currentTarget);
+    };
+
+    const handleCloseA = () => {
+        setAnchorElA(null);
+    };
+
+    const handleCloseB = () => {
+        setAnchorElB(null);
     };
 
     const handleSignOut = () => {
@@ -53,6 +65,27 @@ export default function MenuAppBar() {
         });
     };
 
+    const handleAddMap = () => {
+        eventRouter.processEvent({
+            type: 'componentEvent',
+            ref: {
+                'cmd': 'createMapInTab',
+                'task': 0,
+            },
+        })
+    };
+
+    const handleAddTaskMap = () => {
+        eventRouter.processEvent({
+            type: 'componentEvent',
+            ref: {
+                'cmd': 'createMapInTab',
+                'task': 1,
+            },
+        })
+    };
+
+
     return (
         <div className={classes.root}>
             {/*<FormGroup>*/}
@@ -63,42 +96,64 @@ export default function MenuAppBar() {
             {/*</FormGroup>*/}
             {/*<AppBar position="static">*/}
                 <Toolbar variant={"dense"}>
-                    <IconButton edge="start" className={classes.menuButton} aria-label="menu">
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        aria-label="menu"
+                        onClick={handleMenuA}
+                    >
                         <MenuIcon />
                     </IconButton>
+                    <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorElA}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={openA}
+                        onClose={handleCloseA}
+                    >
+                        <MenuItem onClick={handleAddMap}>Add map</MenuItem>
+                        <MenuItem onClick={handleAddTaskMap}>Add task map</MenuItem>
+                    </Menu>
                     <Typography variant="h6" className={classes.title}>
                         MindBoard
                     </Typography>
-                    {auth && (
-                        <div>
-                            <IconButton
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={handleClose}
-                            >
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-                            </Menu>
-                        </div>
-                    )}
+                    <div>
+                        <IconButton
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenuB}
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElB}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={openB}
+                            onClose={handleCloseB}
+                        >
+                            {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
+                            <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
+                        </Menu>
+                    </div>
+
                 </Toolbar>
             {/*</AppBar>*/}
         </div>

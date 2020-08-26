@@ -432,7 +432,7 @@ export function eventEmitter(command) {
                         selected: 1
                     }],
                     density: 'large',
-                    task: 0
+                    task: lastEvent.ref.task
                 }
             });
             break;

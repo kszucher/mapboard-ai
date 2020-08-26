@@ -34,14 +34,14 @@ export function Workspace() {
     useEffect(() => {
     });
 
-    const mapAdd = () => {
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'createMapInTab',
-            },
-        })
-    };
+    // const mapAdd = () => {
+    //     eventRouter.processEvent({
+    //         type: 'componentEvent',
+    //         ref: {
+    //             'cmd': 'createMapInTab',
+    //         },
+    //     })
+    // };
 
     const theme = createMuiTheme({
         overrides: {
@@ -70,9 +70,9 @@ export function Workspace() {
                             <ReactMaterialVerticalTabs/>
                         </div>
                         <div id = 'bottom-left-down'>
-                            <IconButton edge="start" className={classes.menuButton}  color='inherit' aria-label="menu" onClick={mapAdd}>
-                                <AddIcon />
-                            </IconButton>
+                            {/*<IconButton edge="start" className={classes.menuButton}  color='inherit' aria-label="menu" onClick={mapAdd}>*/}
+                            {/*    <AddIcon />*/}
+                            {/*</IconButton>*/}
                         </div>
 
                     </div>

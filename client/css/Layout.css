@@ -45,13 +45,13 @@ html, body, div, table, td, tr {
     width: 220px;
 }
 
-#bottom-left-down {
-    /*child*/
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+/*#bottom-left-down {*/
+/*    !*child*!*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
 
 #bottom-right {
     flex-grow: 1;
