@@ -30,19 +30,28 @@ export const eventRouter = {
                     redraw();
                 }
                 if (e.path[0].id.substring(0, 3) === 'div') {
+                    push();
+
                     mapMem.deepestSelectablePath = mapDivData[e.path[0].id].path;
                     e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
                     if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
                     redraw();
+                    checkPop();
                 } else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
                     let x = parseInt(e.path[0].id.charAt(10), 10);
                     let cm =  mapref(mapSvgData[e.path[1].id].path);
+
+                    push();
+
                     clearStructSelection();
                     cm.selected = 1;
                     cm.taskStatus = x ;
                     cm.taskStatusInherited = -1;
+
                     recalc();
                     redraw();
+
+                    checkPop();
                 }
                 break;
             }
@@ -162,7 +171,7 @@ export const eventRouter = {
                 } else {
                     if (lastEvent.props.dataType === 'text') {
                         let text = lastEvent.props.data;
-
+                        push();
                         if (text.substring(0, 1) === '[') {
                             eventEmitter('insertMapFromClipboard');
                             recalc();
@@ -184,6 +193,7 @@ export const eventRouter = {
                                 redraw();
                             }
                         }
+                        checkPop();
                     } else if (lastEvent.props.dataType === 'image') {
                         eventEmitter('sendImage');
                     }
@@ -252,11 +262,13 @@ export const eventRouter = {
             case 'serverFetchEvent': {
                 let sf2c = lastEvent.ref;
                 if (sf2c.cmd === 'imageSaveSuccess') {
+                    push();
                     eventEmitter('newChild');
                     recalc();
                     eventEmitter('insertImageFromLinkAsNode');
                     recalc();
                     redraw();
+                    checkPop();
                 }
                 break;
             }
