@@ -95,8 +95,12 @@ export const mapDivVisualize = {
 
 function renderContent (contentType, content) {
     switch (contentType) {
-        case 'text':            return content;
-        case 'equation':        return katex.renderToString(getLatexString(content), {throwOnError: false});
-        case 'image':           return '<img src="' + 'http://localhost:8082/file/' + content + '" alt="">';
+        case 'text':
+            return content;
+        case 'equation':
+            return katex.renderToString(getLatexString(content), {throwOnError: false});
+        case 'image':
+            let imageLink = process.env.NODE_ENV === 'development'? 'http://localhost:8082/file/' : 'https://mindboard.io/file/';
+            return '<img src="' + imageLink + content + '" alt="">';
     }
 }

@@ -459,7 +459,8 @@ export function eventEmitter(command) {
         case 'sendImage': {
             var formData = new FormData();
             formData.append('upl', lastEvent.props.data, 'image.png');
-            fetch('http://127.0.0.1:8082/feta', {
+            let address = process.env.NODE_ENV === 'development'? 'http://127.0.0.1:8082/feta' : 'https://mindboard.io/feta';
+            fetch(address, {
                 method:     'post',
                 body:       formData
             }).then(function(response) {
