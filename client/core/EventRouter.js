@@ -47,10 +47,10 @@ export const eventRouter = {
                     checkPop();
                 }
                 else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
+                    push();
+
                     let x = parseInt(e.path[0].id.charAt(10), 10);
                     let cm =  mapref(mapSvgData[e.path[1].id].path);
-
-                    push();
 
                     clearStructSelection();
                     cm.selected = 1;
