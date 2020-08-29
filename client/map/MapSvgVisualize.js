@@ -1,6 +1,6 @@
 import {keepHash, mapMem, mapSvgData} from "./Map";
 import {hasCell} from "../node/Node";
-import {genHash, copy} from "../core/Utils";
+import {genHash, copy, isOdd} from "../core/Utils";
 
 let svgElementNameList = [
     'connection',
@@ -84,21 +84,24 @@ export const mapSvgVisualize = {
         if (cm.type === "struct" && hasCell(cm)) {
             // grid
             let path = '';
+
+            let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
+
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
                 let x1 = cm.nodeStartX;
-                let y1 = cm.nodeStartY - cm.selfH/2 + cm.sumMaxRowHeight[i];
+                let y1 = cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 let x2 = cm.nodeEndX;
-                let y2 = cm.nodeEndY - cm.selfH/2 + cm.sumMaxRowHeight[i];
+                let y2 = cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
                 let x1 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
-                let y1 = cm.nodeStartY   - cm.selfH/2;
+                let y1 = cm.nodeStartY   - selfHadj/2;
                 let x2 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
-                let y2 = cm.nodeEndY     + cm.selfH/2;
+                let y2 = cm.nodeEndY     + selfHadj/2;
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
@@ -111,7 +114,7 @@ export const mapSvgVisualize = {
             // frame
             let round = 8;
             let x1 = cm.centerX - (cm.selfW + 1)/2;
-            let y1 = cm.centerY - cm.selfH/2 + round;
+            let y1 = cm.centerY - selfHadj/2 + round;
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
@@ -128,9 +131,11 @@ export const mapSvgVisualize = {
 
         // cell frame
         if (cm.type === 'cell' && cm.selected) {
+            let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
+
             let round = 8;
             let x1 = cm.centerX - (cm.selfW + 1) / 2;
-            let y1 = cm.centerY - cm.selfH / 2 + round;
+            let y1 = cm.centerY - selfHadj / 2 + round;
             let h = cm.selfW - 2 * round;
             let v = cm.selfH - 2 * round;
 
