@@ -46,6 +46,7 @@ export const mapSvgVisualize = {
     animate: (cm, step) => {
 
         let svgElementData = {};
+        let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
 
         // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' &&
@@ -84,9 +85,6 @@ export const mapSvgVisualize = {
         if (cm.type === "struct" && hasCell(cm)) {
             // grid
             let path = '';
-
-            let selfHadj = isOdd(cm.selfH)? cm.selfH + 1 : cm.selfH;
-
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
                 let x1 = cm.nodeStartX;
@@ -131,8 +129,6 @@ export const mapSvgVisualize = {
 
         // cell frame
         if (cm.type === 'cell' && cm.selected) {
-            let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
-
             let round = 8;
             let x1 = cm.centerX - (cm.selfW + 1) / 2;
             let y1 = cm.centerY - selfHadj / 2 + round;
