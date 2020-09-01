@@ -16,6 +16,7 @@ let headerData = {};
 let lastUserMap = '';
 let shouldAddToHistory = 0;
 let observer;
+let observerEquation;
 
 export function eventEmitter(command) {
 
@@ -284,10 +285,10 @@ export function eventEmitter(command) {
             sc.lm.isEditing = 0;
             eventRouter.isEditing = 0;
 
-            // if (sc.lm.content.substring(0, 2) === '\\[') {
-            //     sc.lm.contentType = 'equation';
-            //     sc.lm.isDimAssigned = 0;
-            // }
+            if (sc.lm.content.substring(0, 2) === '\\[') {
+                sc.lm.contentType = 'equation';
+                sc.lm.isDimAssigned = 0;
+            }
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

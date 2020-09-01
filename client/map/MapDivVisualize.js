@@ -39,6 +39,7 @@ export const mapDivVisualize = {
                 mapDivData[cm.divId] = {
                     keepHash: '',
                     styleData: {},
+                    contentType: '',
                     textContent: '',
                     path: [],
                 };
@@ -66,7 +67,8 @@ export const mapDivVisualize = {
                 }
 
                 if (!cm.isEditing) {
-                    if (div.textContent !== mapDivData[cm.divId].textContent) {
+                    if ((div.contentType !== mapDivData[cm.divId].contentType) ||
+                        (div.textContent !== mapDivData[cm.divId].textContent)) {
                         div.innerHTML = renderContent(cm.contentType, cm.content);
                     }
                 }
@@ -74,6 +76,7 @@ export const mapDivVisualize = {
 
             mapDivData[cm.divId].keepHash = keepHash;
             mapDivData[cm.divId].styleData = copy(styleData);
+            mapDivData[cm.divId].contentType = cm.contentType;
             mapDivData[cm.divId].textContent = copy(div.textContent);
             mapDivData[cm.divId].path = cm.path;
         }
