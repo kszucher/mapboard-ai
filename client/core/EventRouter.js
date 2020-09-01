@@ -27,6 +27,7 @@ export const eventRouter = {
             case 'windowClick': {
                 if (eventRouter.isEditing === 1) {
                     eventEmitter('finishEdit');
+                    recalc();
                     redraw();
                 }
 

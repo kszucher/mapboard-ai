@@ -258,7 +258,7 @@ export function eventEmitter(command) {
             sc.lm.isEditing = 1;
 
             const config = { attributes: false, childList: false, subtree:true, characterData:true };
-            const callback = function(mutationsList, observer) {
+            const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
                         eventRouter.processEvent({
@@ -283,6 +283,11 @@ export function eventEmitter(command) {
             holderElement.contentEditable = 'false';
             sc.lm.isEditing = 0;
             eventRouter.isEditing = 0;
+
+            // if (sc.lm.content.substring(0, 2) === '\\[') {
+            //     sc.lm.contentType = 'equation';
+            //     sc.lm.isDimAssigned = 0;
+            // }
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
