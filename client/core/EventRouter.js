@@ -22,6 +22,7 @@ export const eventRouter = {
     },
 
     processEventReal: () => {
+        // TODO instead of using lastEvent, use actions with payload
         let e = lastEvent.ref;
         switch (lastEvent.type) {
             case 'windowClick': {
@@ -31,37 +32,30 @@ export const eventRouter = {
                     redraw();
                 }
 
-                if (e.path[0].id.substring(0, 3) === 'div') {
-                    push();
-                    mapMem.deepestSelectablePath = mapDivData[e.path[0].id].path;
-                    e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
-                    if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
-                    redraw();
-                    checkPop();
-                }
-                else if (e.path[0].id === 'img') {
-                    push();
-                    mapMem.deepestSelectablePath = mapDivData[e.path[1].id].path;
-                    e.ctrlKey === true ? eventEmitter('selectMeStructToo') : eventEmitter('selectMeStruct');
-                    if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
-                    redraw();
-                    checkPop();
-                }
-                else if (e.path[0].id.substring(0, 10) === 'taskCircle') {
-                    push();
-
-                    let x = parseInt(e.path[0].id.charAt(10), 10);
-                    let cm =  mapref(mapSvgData[e.path[1].id].path);
-
-                    clearStructSelection();
-                    cm.selected = 1;
-                    cm.taskStatus = x ;
-                    cm.taskStatusInherited = -1;
-
-                    recalc();
-                    redraw();
-
-                    checkPop();
+                for (const pathItem of e.path) {
+                    if (pathItem.id) {
+                        if (pathItem.id.substring(0, 3) === 'div') {
+                            push();
+                            mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
+                            if (!e.ctrlKey) eventEmitter('selectMeStruct'); else eventEmitter('selectMeStructToo');
+                            if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
+                            redraw();
+                            checkPop();
+                            break;
+                        } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
+                            push();
+                            let x = parseInt(e.path[0].id.charAt(10), 10);
+                            let cm = mapref(mapSvgData[e.path[1].id].path);
+                            // clearStructSelection();
+                            // cm.selected = 1;
+                            cm.taskStatus = x;
+                            cm.taskStatusInherited = -1;
+                            recalc();
+                            redraw();
+                            checkPop();
+                            break;
+                        }
+                    }
                 }
                 break;
             }
@@ -142,8 +136,7 @@ export const eventRouter = {
                             e.preventDefault();
                         }
 
-
-                        if (keyStateMachine.m === 1) { // TODO: make it for all map event
+                        if (keyStateMachine.m === 1) {
                             push();
                         }
 
@@ -153,12 +146,11 @@ export const eventRouter = {
                                 currColorToPaint = e.which - 96;
                             }
                             eventEmitter(currExecution);
-
                             recalc();
                             redraw();
                         }
 
-                        if (keyStateMachine.m === 1) { // TODO: make this work for all map event
+                        if (keyStateMachine.m === 1) {
                             checkPop();
                         }
 
