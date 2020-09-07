@@ -54,8 +54,6 @@ export function recalc() {
         mapTaskCalc.start();
         mapTaskColor.start();
     }
-
-    mapCollect.start();
 }
 
 export function redraw() {
