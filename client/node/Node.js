@@ -33,15 +33,12 @@ export let props = {
         taskStatus:                             -1,
     },
     saveNever: {
-        // TODO: ha van push-pop, akkor talán ez nem is kell, sőt generalizálható
-        // these do no work when called under initOnce or initAlways: {
-        //     parentNodeEndXFrom:                 0,
-        //     parentNodeEndYFrom:                 0,
-        //     twoStepAnimationRequested:          0,
-        // },
         initOnce: {
             // UNSORTED
             isEditing:                          0,
+            parentNodeEndXFrom:                 0,
+            parentNodeEndYFrom:                 0,
+            twoStepAnimationRequested:          0,
 
             // mapMeasure
             isDimAssigned:                      0,
@@ -58,6 +55,7 @@ export let props = {
             svgId:                              '',
         },
         initAlways: {
+
             // mapChain
             isRoot:                             0,
             parentPath:                         [],
