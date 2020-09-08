@@ -20,19 +20,15 @@ export const mapMeasure = {
             if (hasCell(cm)) {
                 let rowCount = Object.keys(cm.c).length;
                 let colCount = Object.keys(cm.c[0]).length;
-
                 let maxCellHeightMat = createArray(rowCount, colCount);
                 let maxCellWidthMat = createArray(rowCount, colCount);
-
                 let isCellSpacingActivated = 0;
 
                 for (let i = 0; i < rowCount; i++) {
                     for (let j = 0; j < colCount; j++) {
                         mapMeasure.iterate(cm.c[i][j], params);
-
                         maxCellHeightMat[i][j] = cm.c[i][j].maxH;
                         maxCellWidthMat[i][j] = cm.c[i][j].maxW;
-
                         if (cm.c[i][j].maxH > mapMem.defaultH) {
                             isCellSpacingActivated = 1;
                         }
@@ -81,69 +77,62 @@ export const mapMeasure = {
                 if (rowCount > 1) {
                     params.hasMultipleContentRow = 1;
                 }
-            } else {
+            }
+            else {
                 if (cm.contentType === 'text') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
                         let dimVec = getTextDim(cm.content, cm.sTextFontSize);
                         let x = dimVec[0];
                         let y = dimVec[1];
-
                         let lineCount = y/17;
                         let realY = lineCount <= 1 ? mapMem.defaultH : y + mapMem.padding*2;
-
                         cm.contentW = mapMem.density === 'large' ? x : x + 8;
                         let yc = mapMem.density === 'large' ? 1 : 2;
                         cm.contentH = realY - mapMem.padding*2 + yc;
                     }
-                } else if (cm.contentType === 'equation') {
+                }
+                else if (cm.contentType === 'equation') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
                         let dim = getEquationDim(cm.content);
                         cm.contentW = dim.w;
                         cm.contentH = dim.h;
                     }
-                } else if (cm.contentType === 'image') {
+                }
+                else if (cm.contentType === 'image') {
                     cm.contentW = cm.imageW;
                     cm.contentH = cm.imageH;
-                } else {console.log('unknown contentType')}
+                }
+                else {console.log('unknown contentType')}
 
                 cm.selfW = cm.contentW + mapMem.padding*2;
                 cm.selfH = cm.contentH + mapMem.padding*2;
             }
         }
 
-
-
         let sCount = Object.keys(cm.s).length;
         if (sCount) {
             let sMaxW = 0;
-
             for (let i = 0; i < sCount; i++) {
                 mapMeasure.iterate(cm.s[i], params);
-
                 cm.familyH += cm.s[i].maxH;
-
                 let currMaxW = cm.s[i].maxW;
                 if (currMaxW >= sMaxW) {
                     sMaxW = currMaxW;
                 }
-
                 if (params.hasMultipleChild || params.hasMultipleContentRow) {
                     cm.spacingActivated = 1;
                 }
             }
-
             if (cm.spacingActivated) {
                 cm.familyH += (sCount - 1)*cm.spacing;
             }
-
             cm.familyW = sMaxW + mapMem.sLineDeltaXDefault;
         }
-        if(sCount > 1) {
+        if (sCount > 1) {
             params.hasMultipleChild = 1;
         }
-
         cm.maxW = cm.selfW + cm.familyW;
         cm.maxH = Math.max(...[cm.selfH, cm.familyH]);
     }
