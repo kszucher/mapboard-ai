@@ -5,7 +5,7 @@ export function structDeleteReselect(sc) {
     let lm = sc.lm;
     let lastParentRef = mapref(lm.parentPath);
 
-    if (lastParentRef.type !== 'cell') {
+    if (lastParentRef.type !== 'cell' || (lastParentRef.type === 'cell' && lastParentRef.s.length > 1)) {
         // calculate jumpback
         let lastParentRefChildCntr = lastParentRef.s.length;
         let lastParentRefDelChildCntr = 0;
