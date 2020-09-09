@@ -9,42 +9,63 @@ import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
 import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
-import {eventLut} from "./EventLut";
 
 // these will be part of state
 let headerData = {};
 let lastUserMap = '';
 let shouldAddToHistory = 0;
-let observer;
-let observerEquation;
+let mutationObserver;
 
 export function eventEmitter(command) {
+    console.log('emit: ' + command);
 
-    // console.log('eventEmitter: ' + command);
-
-    let keyStr, sc;
-
+    let keyStr;
     if (lastEvent.type === 'windowKeyDown') {
         keyStr = lastEvent.ref.code;
     }
 
-    if (eventLut.shouldUseSelection(command)) {
-        sc = getSelectionContext();
+    // TODO: lastEvent context getter, also selectively
+
+    let sc;
+    if (!['openMap', 'undo', 'redo', 'signInAuto', 'signIn',  'signOut',
+        'openAfterInit', 'openAfterTabSelect', 'openAfterHistory', 'createMapInTab', 'save',
+        'sendImage', 'updatePageToWorkspace', 'updatePageToSignIn', 'updateTabs'].includes(command)) {
+        try {
+            sc = getSelectionContext();
+        }
+        catch {
+            console.log('selection context not available using command:' + command);
+        }
     }
 
     switch (command) {
         // -------------------------------------------------------------------------------------------------------------
-        // OPEN
+        // TO MAP
         // -------------------------------------------------------------------------------------------------------------
         case 'openMap': {
             let s2c = lastEvent.ref;
             lastUserMap = s2c.mapName;
-
             if (shouldAddToHistory === 1) {
                 let stateObj = {lastUserMap: lastUserMap};
                 history.pushState(stateObj, lastUserMap, '');
             }
             loadMap(s2c.mapStorage);
+            break;
+        }
+        case 'undo': {
+            if (mapMem.dataIndex > 0) {
+                mapMem.dataIndex--;
+            }
+            break;
+        }
+        case 'redo': {
+            if (mapMem.dataIndex < mapMem.data.length - 1) {
+                mapMem.dataIndex++;
+            }
+            break;
+        }
+        case 'prettyPrint': {
+            mapPrint.start(sc.lm);
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
@@ -220,6 +241,10 @@ export function eventEmitter(command) {
             structDeleteReselect(sc);
             break;
         }
+        case 'cellifyMulti': {
+            structMove(sc, 'struct2cell', 'multiRow');
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
         // PASTE
         // -------------------------------------------------------------------------------------------------------------
@@ -264,6 +289,7 @@ export function eventEmitter(command) {
         }
         case 'insertMapFromClipboard': {
             clearStructSelection();
+            clearCellSelection();
             let text = lastEvent.props.data;
             setClipboard(JSON.parse(text));
             structMove(sc, 'clipboard2struct', 'PASTE');
@@ -285,7 +311,6 @@ export function eventEmitter(command) {
             eventRouter.isEditing = 1;
             sc.lm.isEditing = 1;
 
-            const config = { attributes: false, childList: false, subtree:true, characterData:true };
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
@@ -295,8 +320,13 @@ export function eventEmitter(command) {
                     }
                 }
             };
-            observer = new MutationObserver(callback);
-            observer.observe(holderElement, config);
+            mutationObserver = new MutationObserver(callback);
+            mutationObserver.observe(holderElement, {
+                attributes: false,
+                childList: false,
+                subtree: true,
+                characterData: true
+            });
             break;
         }
         case 'typeText': {
@@ -306,7 +336,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'finishEdit' : {
-            observer.disconnect();
+            mutationObserver.disconnect();
             let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'false';
             sc.lm.isEditing = 0;
@@ -319,22 +349,8 @@ export function eventEmitter(command) {
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // MISC
+        // FORMAT
         // -------------------------------------------------------------------------------------------------------------
-        case 'cellifyMulti': {
-            structMove(sc, 'struct2cell', 'multiRow');
-            break;
-        }
-        case 'transposeMe': {
-            if (hasCell(sc.lm)) {
-                sc.lm.c = transposeArray(sc.lm.c);
-            }
-            break;
-        }
-        case 'transpose': {
-            sc.lm.c = transposeArray(sc.lm.c);
-            break;
-        }
         case 'applyColor': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
@@ -353,30 +369,21 @@ export function eventEmitter(command) {
             }
             break;
         }
-        case 'prettyPrint': {
-            mapPrint.start(sc.lm);
-            break;
-        }
-
-        case 'redo': {
-            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                mapMem.dataIndex++;
+        case 'transposeMe': {
+            if (hasCell(sc.lm)) {
+                sc.lm.c = transposeArray(sc.lm.c);
             }
             break;
         }
-
-        case 'undo': {
-            if (mapMem.dataIndex > 0) {
-                mapMem.dataIndex--;
-            }
+        case 'transpose': {
+            sc.lm.c = transposeArray(sc.lm.c);
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
-        // SERVER TX
+        // TO SERVER
         // -------------------------------------------------------------------------------------------------------------
         case 'signInAuto': {
             if (JSON.parse(localStorage.getItem('cred')) !== null) {
-                console.log('sign in auto attempt');
                 communication.sender({
                     'cmd': 'signInRequest',
                     'cred': JSON.parse(localStorage.getItem('cred')),
@@ -444,16 +451,6 @@ export function eventEmitter(command) {
             });
             break;
         }
-        case 'save': {
-            saveMap();
-            communication.sender({
-                cmd: 'writeMapRequest',
-                cred: JSON.parse(localStorage.getItem('cred')),
-                mapName: lastUserMap,
-                mapStorage: mapStorageOut
-            });
-            break;
-        }
         case 'createMapInTab': {
             communication.sender({
                 'cmd': 'createMapInTabRequest',
@@ -486,13 +483,25 @@ export function eventEmitter(command) {
             });
             break;
         }
+        case 'save': {
+            saveMap();
+            communication.sender({
+                cmd: 'writeMapRequest',
+                cred: JSON.parse(localStorage.getItem('cred')),
+                mapName: lastUserMap,
+                mapStorage: mapStorageOut
+            });
+            break;
+        }
         // -------------------------------------------------------------------------------------------------------------
-        // SERVER FETCH TX
+        // TO FETCH SERVER
         // -------------------------------------------------------------------------------------------------------------
         case 'sendImage': {
             var formData = new FormData();
             formData.append('upl', lastEvent.props.data, 'image.png');
-            let address = process.env.NODE_ENV === 'development'? 'http://127.0.0.1:8082/feta' : 'https://mindboard.io/feta';
+            let address = process.env.NODE_ENV === 'development'?
+                'http://127.0.0.1:8082/feta' :
+                'https://mindboard.io/feta';
             fetch(address, {
                 method:     'post',
                 body:       formData

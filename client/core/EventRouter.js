@@ -75,7 +75,7 @@ export const eventRouter = {
                 let sc = getSelectionContext();
 
                 let keyStateMachineDb = [
-                    ['c','s','a', 'keyMatch',                       'scope',       'e','p','m',  'executionList',                       ],
+                    ['c','s','a', 'keyMatch',                       'scope',       'e','p','m',  'executionList',                      ],
                     [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ]],
                     [ 0,  0,  0,  e.key === 'F2',                  ['s',      'm'], 0,  1,  0, ['startEdit'                           ]],
                     [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ]],
@@ -202,7 +202,7 @@ export const eventRouter = {
             }
             case 'componentEvent': {
                 let c2c = lastEvent.ref;
-                console.log('component: ' + c2c.cmd);
+                console.log('route: ' + c2c.cmd);
                 switch  (c2c.cmd) {
                     case 'signInAuto':          eventEmitter('signInAuto');             break;
                     case 'signIn':              eventEmitter('signIn');                 break;
@@ -214,7 +214,7 @@ export const eventRouter = {
             }
             case 'serverEvent': {
                 let s2c = lastEvent.ref;
-                console.log('server: ' + s2c.cmd);
+                console.log('route: ' + s2c.cmd);
                 switch (s2c.cmd) {
                     case 'signInSuccess': {
                         initDomData();

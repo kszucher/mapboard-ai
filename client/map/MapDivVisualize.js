@@ -1,5 +1,5 @@
 import {keepHash, mapDivData, mapMem} from "./Map";
-import {genHash, getLatexString, copy, getBgc, setEndOfContenteditable} from "../core/Utils";
+import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
 import {hasCell} from "../node/Node";
 
 export const mapDivVisualize = {
