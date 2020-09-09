@@ -118,11 +118,3 @@ export function applyMixedSelection(toPath) {
     toRef.selected = 1;
     toRef.s[0].selected = 1;
 }
-
-export function applyStructSelection(toPath) {
-    clearStructSelection();
-    clearCellSelection(); // because of mouse selection
-
-    let toRef = mapref(toPath);
-    toRef.selected = 1;
-}

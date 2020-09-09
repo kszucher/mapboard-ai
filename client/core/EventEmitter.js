@@ -6,7 +6,7 @@ import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete"
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
 import {cellNavigate, structNavigate} from "../node/NodeNavigate";
-import {applyMixedSelection,  applyStructSelection, clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
+import {applyMixedSelection,  clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
 import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
 import {eventLut} from "./EventLut";
@@ -51,7 +51,9 @@ export function eventEmitter(command) {
         // SELECT
         // -------------------------------------------------------------------------------------------------------------
         case 'selectMeStruct': {
-            applyStructSelection(mapMem.deepestSelectablePath);
+            clearStructSelection();
+            clearCellSelection();
+            mapref(mapMem.deepestSelectablePath).selected = 1;
             break;
         }
         case 'selectMeStructToo': {
@@ -79,9 +81,9 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectBackwardMixed': {
-            let parentRef = mapref(sc.lm.parentPath);
-            let parentParentRef = mapref(parentRef.parentPath);
-            applyStructSelection(parentParentRef.path);
+            clearStructSelection();
+            clearCellSelection();
+            mapref(mapref(mapref(sc.lm.parentPath).parentPath).path).selected = 1;
             break;
         }
         case 'selectNeighborMixed': {
@@ -97,15 +99,12 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectNeighborNode': {
-            let toPath = [];
-            if (keyStr === 'ArrowUp') {
-                toPath = sc.geomHighPath
-            } else if (keyStr === 'ArrowDown') {
-                toPath = sc.geomLowPath
-            } else {
-                toPath = sc.lastPath
-            }
-            applyStructSelection(structNavigate(toPath, keyStr));
+            clearStructSelection();
+            clearCellSelection();
+            let toPath = sc.lastPath;
+            if (keyStr === 'ArrowUp') toPath = sc.geomHighPath;
+            if (keyStr === 'ArrowDown') toPath = sc.geomLowPath;
+            mapref(structNavigate(toPath, keyStr)).selected = 1;
             break;
         }
         case 'selectNeighborNodeToo': {
