@@ -17,7 +17,7 @@ let shouldAddToHistory = 0;
 let mutationObserver;
 
 export function eventEmitter(command) {
-    console.log('emit: ' + command);
+    // console.log('emit: ' + command);
 
     let keyStr;
     if (lastEvent.type === 'windowKeyDown') {

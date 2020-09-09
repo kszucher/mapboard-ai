@@ -30,15 +30,23 @@ export function structDeleteReselect(sc) {
         if (lm.isRoot === 0) {
             if (lastParentRefChildCntr === lastParentRefDelChildCntr) {
                 lastParentRef.selected = 1;
-            } else {
+            }
+            else {
                 if (lm.index === 0) {
                     if (lastParentRef.s.length > 0) {
                         lastParentRef.s[0].selected = 1;
-                    } else {
+                    }
+                    else {
                         lastParentRef.selected = 1;
                     }
-                } else {
-                    lastParentRef.s[lm.index - lastParentRefDelChildCntr].selected = 1;
+                }
+                else {
+                    if (lm.index - lastParentRefDelChildCntr >= 0) {
+                        lastParentRef.s[lm.index - lastParentRefDelChildCntr].selected = 1;
+                    }
+                    else {
+                        lastParentRef.s[0].selected = 1;
+                    }
                 }
             }
         }
