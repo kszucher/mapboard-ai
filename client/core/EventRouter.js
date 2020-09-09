@@ -1,7 +1,7 @@
 import {communication} from "./Communication"
 import {eventEmitter} from "./EventEmitter";
 import {mapMem, redraw, recalc, mapref, push, checkPop, mapDivData, mapSvgData, initDomData} from "../map/Map"
-import {clearStructSelection, getSelectionContext} from "../node/NodeSelect";
+import {getSelectionContext} from "../node/NodeSelect";
 import {isUrl} from "./Utils"
 import {windowHandler} from "./WindowHandler";
 
@@ -46,8 +46,6 @@ export const eventRouter = {
                             push();
                             let x = parseInt(e.path[0].id.charAt(10), 10);
                             let cm = mapref(mapSvgData[e.path[1].id].path);
-                            // clearStructSelection();
-                            // cm.selected = 1;
                             cm.taskStatus = x;
                             cm.taskStatusInherited = -1;
                             recalc();

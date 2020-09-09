@@ -1,7 +1,5 @@
 import {mapref} from "../map/Map";
-import {clearStructSelection} from "./NodeSelect";
 import {getDefaultNode} from "./Node";
-import {structDeleteReselect} from "./NodeDelete";
 import {arrayValuesSame, copy, transpose} from "../core/Utils";
 
 let clipboard = [];
@@ -103,13 +101,9 @@ export function structMove(sc, target, mode) {
                         });
                 }
             });
-
-            if (mode === 'CUT') {
-                structDeleteReselect(sc);
-            }
         }
-    } else if (target === 'clipboard2struct') {
-        clearStructSelection();
+    }
+    else if (target === 'clipboard2struct') {
         let toIndex = sc.lm.s.length;
         for (let i = 0; i < clipboard.length; i++) {
             sc.lm.s.splice(toIndex + i, 0, copy(clipboard[i]));

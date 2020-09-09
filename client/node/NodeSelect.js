@@ -109,12 +109,3 @@ export function checkSelection (parentRef) {
 
     return [rowSelected, colSelected];
 }
-
-export function applyMixedSelection(toPath) {
-    clearStructSelection();
-    clearCellSelection();
-
-    let toRef = mapref(toPath);
-    toRef.selected = 1;
-    toRef.s[0].selected = 1;
-}

@@ -6,7 +6,7 @@ import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete"
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
 import {cellNavigate, structNavigate} from "../node/NodeNavigate";
-import {applyMixedSelection,  clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
+import {clearCellSelection, clearStructSelection, getSelectionContext} from "../node/NodeSelect"
 import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
 import {eventLut} from "./EventLut";
@@ -62,7 +62,11 @@ export function eventEmitter(command) {
         }
         case 'selectForwardStruct': {
             if (hasCell(sc.lm)) {
-                applyMixedSelection(pathMerge(sc.lastPath, ['c', 0, 0]));
+                clearStructSelection();
+                clearCellSelection();
+                let toPath = pathMerge(sc.lastPath, ['c', 0, 0]);
+                mapref(toPath).selected = 1;
+                mapref(toPath).s[0].selected = 1;
             }
             break;
         }
@@ -74,7 +78,11 @@ export function eventEmitter(command) {
             for (let i = sc.lm.path.length - 2; i > 0; i--) {
                 if (Number.isInteger(sc.lm.path[i]) &&
                     Number.isInteger(sc.lm.path[i + 1])) {
-                    applyMixedSelection(sc.lm.path.slice(0, i + 2));
+                    clearStructSelection();
+                    clearCellSelection();
+                    let toPath = sc.lm.path.slice(0, i + 2);
+                    mapref(toPath).selected = 1;
+                    mapref(toPath).s[0].selected = 1;
                     break;
                 }
             }
@@ -87,15 +95,27 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectNeighborMixed': {
-            applyMixedSelection(cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr));
+            clearStructSelection();
+            clearCellSelection();
+            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr);
+            mapref(toPath).selected = 1;
+            mapref(toPath).s[0].selected = 1;
             break;
         }
         case 'selectDownMixed': {
-            applyMixedSelection(cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'ArrowDown'));
+            clearStructSelection();
+            clearCellSelection();
+            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'ArrowDown');
+            mapref(toPath).selected = 1;
+            mapref(toPath).s[0].selected = 1;
             break;
         }
         case 'selectRightMixed': {
-            applyMixedSelection(cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'ArrowRight'));
+            clearStructSelection();
+            clearCellSelection();
+            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'ArrowRight');
+            mapref(toPath).selected = 1;
+            mapref(toPath).s[0].selected = 1;
             break;
         }
         case 'selectNeighborNode': {
@@ -138,8 +158,11 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectFirstMixed': {
-            let geomHighRefParentRef = mapref(sc.geomHighRef.parentPath);
-            applyMixedSelection(geomHighRefParentRef.path);
+            clearStructSelection();
+            clearCellSelection();
+            let toPath = mapref(sc.geomHighRef.parentPath).path;
+            mapref(toPath).selected = 1;
+            mapref(toPath).s[0].selected = 1;
             break;
         }
         case 'selectRoot': {
@@ -152,14 +175,17 @@ export function eventEmitter(command) {
         // INSERT
         // -------------------------------------------------------------------------------------------------------------
         case 'newSiblingUp': {
+            clearStructSelection();
             structInsert(sc.lm, 'up');
             break;
         }
         case 'newSiblingDown': {
+            clearStructSelection();
             structInsert(sc.lm, 'down');
             break;
         }
         case 'newChild': {
+            clearStructSelection();
             structInsert(sc.lm, 'right');
             break;
         }
@@ -191,6 +217,7 @@ export function eventEmitter(command) {
         }
         case 'cutSelection': {
             structMove(sc, 'struct2clipboard', 'CUT');
+            structDeleteReselect(sc);
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
@@ -236,6 +263,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'insertMapFromClipboard': {
+            clearStructSelection();
             let text = lastEvent.props.data;
             setClipboard(JSON.parse(text));
             structMove(sc, 'clipboard2struct', 'PASTE');

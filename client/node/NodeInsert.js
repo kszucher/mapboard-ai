@@ -1,9 +1,7 @@
 import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
-import {clearStructSelection} from "./NodeSelect";
 
 export function structInsert(lm, direction) {
-    clearStructSelection();
     let parentRef = mapref(lm.parentPath);
     if (direction === 'up') {
         parentRef.s.splice(lm.index, 0, getDefaultNode({
