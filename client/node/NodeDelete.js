@@ -56,6 +56,9 @@ export function structDeleteReselect(sc) {
 export function cellBlockDeleteReselect(lm) {
     let lastParentRef = mapref(lm.parentPath);
     let rcSelected = checkSelection(lastParentRef); // we could store this info in the cell holder struct instead
+
+    console.log('rc:'+rcSelected)
+
     if (rcSelected[0]) {
         lastParentRef.c.splice(lm.index[0], 1);
     }

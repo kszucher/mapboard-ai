@@ -17,13 +17,16 @@ export function getSelectionContext () {
 
     if (filter.structSelectedPathList.length === 0 && filter.cellSelectedPathList.length === 0) {
         console.log('no selection');
-    } else if (filter.structSelectedPathList.length === 1 && filter.cellSelectedPathList.length === 1) {
+    }
+    else if (filter.structSelectedPathList.length === filter.cellSelectedPathList.length) {
+        // TODO also check if they are of the same parent
         scope = 'm';
 
         lastPath =      filter.structSelectedPathList[0]; // this should be equal to the only cell selected as well
         geomHighPath =  lastPath;
         geomLowPath =   lastPath;
-    } else if (filter.structSelectedPathList.length !== 0) {
+    }
+    else if (filter.structSelectedPathList.length !== 0) {
         scope = 's';
         for (let i = 0; i < filter.structSelectedPathList.length; i++) {
             let currSelectedNumber = mapref(filter.structSelectedPathList[i]).selected;
@@ -35,7 +38,8 @@ export function getSelectionContext () {
         lastPath =      filter.structSelectedPathList[maxSelIndex];
         geomHighPath =  filter.structSelectedPathList[0];
         geomLowPath =   filter.structSelectedPathList[filter.structSelectedPathList.length - 1];
-    } else if (filter.cellSelectedPathList.length !== 0) {
+    }
+    else if (filter.cellSelectedPathList.length !== 0) {
         scope = 'c';
         for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
             let currSelectedNumber = mapref(filter.cellSelectedPathList[i]).selected;
@@ -45,9 +49,9 @@ export function getSelectionContext () {
             }
         }
         lastPath = filter.cellSelectedPathList[maxSelIndex];
-    } else {
+    }
+    else {
         console.log('ambivalent selection');
-        console.log(filter)
     }
 
     return {
