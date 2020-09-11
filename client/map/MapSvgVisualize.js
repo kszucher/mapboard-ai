@@ -49,8 +49,9 @@ export const mapSvgVisualize = {
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
 
         // connection
-        if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' &&
-            (cm.type === 'struct' && !hasCell(cm) || cm.type === 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
+        if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (
+                cm.type === 'struct' && !hasCell(cm) ||
+                cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
                 x1 =    cm.parentNodeEndXFrom;

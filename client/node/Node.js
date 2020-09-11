@@ -59,8 +59,9 @@ export let props = {
             // mapChain
             isRoot:                             0,
             parentPath:                         [],
-            type:                               '', // struct or cell
+            type:                               '',
             parentType:                         '',
+            parentParentType:                   '',
             subType:                            '',
             index:                              [],
 
@@ -95,18 +96,11 @@ export let props = {
     }
 };
 
-export function hasCell(cm) { // beware: it returns logical
+export function hasCell(cm) { // maybe save this is childType
     return !(cm.c.length === 1 && cm.c[0].length === 0);
 }
 
 export function getDefaultNode(attributes) {
-    let defaultNode = {
-        ...{
-            c: [[]],
-            s: [],
-            content: '',
-        },
-        ...attributes
-    };
+    let defaultNode = { ...{c: [[]], s: [], content: ''}, ...attributes};
     return JSON.parse(JSON.stringify(defaultNode));
 }

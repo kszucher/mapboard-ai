@@ -32,6 +32,7 @@ export const mapChain = {
                 Object.assign(cm.c[i][j], {
                     parentPath: cm.path.slice(0),
                     parentType: cm.type,
+                    parentParentType: cm.parentType,
                     type: 'cell',
                     index: [i, j],
                 });
@@ -44,6 +45,7 @@ export const mapChain = {
             Object.assign(cm.s[i], {
                 parentPath: cm.path.slice(0),
                 parentType: cm.type,
+                parentParentType: cm.parentType,
                 type: 'struct',
                 index: i,
             });
