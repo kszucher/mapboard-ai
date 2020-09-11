@@ -85,6 +85,23 @@ export default function MenuAppBar() {
         })
     };
 
+    const handleDensitySmall = () => {
+        eventRouter.processEvent({
+            type: 'componentEvent',
+            ref: {
+                'cmd': 'mapAttributeDensitySmall'
+            },
+        })
+    };
+
+    const handleDensityLarge = () => {
+        eventRouter.processEvent({
+            type: 'componentEvent',
+            ref: {
+                'cmd': 'mapAttributeDensityLarge'
+            },
+        })
+    };
 
     return (
         <div className={classes.root}>
@@ -121,6 +138,8 @@ export default function MenuAppBar() {
                     >
                         <MenuItem onClick={handleAddMap}>Add map</MenuItem>
                         <MenuItem onClick={handleAddTaskMap}>Add task map</MenuItem>
+                        <MenuItem onClick={handleDensitySmall}>Density: small</MenuItem>
+                        <MenuItem onClick={handleDensityLarge}>Density: large</MenuItem>
                     </Menu>
                     <Typography variant="h6" className={classes.title}>
                         MindBoard

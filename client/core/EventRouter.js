@@ -204,11 +204,21 @@ export const eventRouter = {
                 let c2c = lastEvent.ref;
                 console.log('route: ' + c2c.cmd);
                 switch  (c2c.cmd) {
-                    case 'signInAuto':          eventEmitter('signInAuto');             break;
-                    case 'signIn':              eventEmitter('signIn');                 break;
-                    case 'signOut':             eventEmitter('signOut');                break;
-                    case 'openAfterTabSelect':  eventEmitter('openAfterTabSelect');     break;
-                    case 'createMapInTab':      eventEmitter('createMapInTab');         break;
+                    case 'signInAuto':                  eventEmitter('signInAuto');                 break;
+                    case 'signIn':                      eventEmitter('signIn');                     break;
+                    case 'signOut':                     eventEmitter('signOut');                    break;
+                    case 'openAfterTabSelect':          eventEmitter('openAfterTabSelect');         break;
+                    case 'createMapInTab':              eventEmitter('createMapInTab');             break;
+                    case 'mapAttributeDensitySmall':
+                        eventEmitter('mapAttributeDensitySmall');
+                        recalc();
+                        redraw();
+                        break;
+                    case 'mapAttributeDensityLarge':
+                        eventEmitter('mapAttributeDensityLarge');
+                        recalc();
+                        redraw();
+                        break;
                 }
                 break;
             }

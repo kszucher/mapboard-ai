@@ -542,5 +542,13 @@ export function eventEmitter(command) {
                 }}));
             break;
         }
+        case 'mapAttributeDensitySmall': {
+            mapMem.density = 'small';
+            break;
+        }
+        case 'mapAttributeDensityLarge': {
+            mapMem.density = 'large';
+            break;
+        }
     }
 }
