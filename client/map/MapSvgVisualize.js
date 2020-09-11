@@ -1,5 +1,4 @@
 import {keepHash, mapMem, mapSvgData} from "./Map";
-import {hasCell} from "../node/Node";
 import {genHash, copy, isOdd} from "../core/Utils";
 
 let svgElementNameList = [
@@ -50,7 +49,7 @@ export const mapSvgVisualize = {
 
         // connection
         if (cm.isRoot !== 1 &&  cm.parentType !== 'cell' && (
-                cm.type === 'struct' && !hasCell(cm) ||
+                cm.type === 'struct' && cm.childType !== 'cell' ||
                 cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
@@ -83,7 +82,7 @@ export const mapSvgVisualize = {
         }
 
         // table
-        if (cm.type === "struct" && hasCell(cm)) {
+        if (cm.type === "struct" && cm.childType === 'cell') {
             // grid
             let path = '';
             let rowCount = Object.keys(cm.c).length;
@@ -148,7 +147,7 @@ export const mapSvgVisualize = {
         }
 
         // task
-        if (mapMem.task && Object.keys(cm.s).length === 0 && !hasCell(cm) && cm.parentType !== 'cell' && cm.contentType !== 'image') {
+        if (mapMem.task && cm.childType!== 'struct' && cm.childType !== 'cell' && cm.parentType !== 'cell' && cm.contentType !== 'image') {
             let startX = 1230;
 
             let x1 = cm.nodeEndX;

@@ -1,5 +1,4 @@
 import {mapMem} from "./Map";
-import {hasCell} from "../node/Node";
 import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 
 export const mapMeasure = {
@@ -17,7 +16,7 @@ export const mapMeasure = {
         params.hasMultipleContentRow = 0;
 
         if (cm.type === 'struct') {
-            if (hasCell(cm)) {
+            if (cm.childType === 'cell') {
                 let rowCount = Object.keys(cm.c).length;
                 let colCount = Object.keys(cm.c[0]).length;
                 let maxCellHeightMat = createArray(rowCount, colCount);

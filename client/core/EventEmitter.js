@@ -1,7 +1,6 @@
 import {communication} from "./Communication";
 import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
 import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut} from "../map/Map";
-import {hasCell} from "../node/Node";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
@@ -82,7 +81,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'selectForwardStruct': {
-            if (hasCell(sc.lm)) {
+            if (sc.lm.childType === 'cell') {
                 clearStructSelection();
                 clearCellSelection();
                 let toPath = pathMerge(sc.lastPath, ['c', 0, 0]);
@@ -370,7 +369,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'transposeMe': {
-            if (hasCell(sc.lm)) {
+            if (sc.lm.childType === 'cell') {
                 sc.lm.c = transposeArray(sc.lm.c);
             }
             break;

@@ -1,5 +1,4 @@
 import {mapMem} from "./Map";
-import {hasCell} from "../node/Node";
 
 export const mapPlace = {
     start: () => {
@@ -41,23 +40,18 @@ export const mapPlace = {
             cm.nodeEndY -= 0.5;
         }
 
-        if (cm.type === 'struct') {
-            if (hasCell(cm)) {
-                let rowCount = Object.keys(cm.c).length;
-                let colCount = Object.keys(cm.c[0]).length;
-                for (let i = 0; i < rowCount; i++) {
-                    for (let j = 0; j < colCount; j++) {
-                        cm.c[i][j].parentNodeStartX = cm.parentNodeStartX;
-                        cm.c[i][j].parentNodeStartY = cm.parentNodeStartY;
-                        cm.c[i][j].parentNodeEndX = cm.parentNodeEndX;
-                        cm.c[i][j].parentNodeEndY = cm.parentNodeEndY;
+        let rowCount = Object.keys(cm.c).length;
+        let colCount = Object.keys(cm.c[0]).length;
+        for (let i = 0; i < rowCount; i++) {
+            for (let j = 0; j < colCount; j++) {
+                cm.c[i][j].parentNodeStartX = cm.parentNodeStartX;
+                cm.c[i][j].parentNodeStartY = cm.parentNodeStartY;
+                cm.c[i][j].parentNodeEndX = cm.parentNodeEndX;
+                cm.c[i][j].parentNodeEndY = cm.parentNodeEndY;
+                cm.c[i][j].lineDeltaX = cm.nodeStartX + cm.sumMaxColWidth[j] - cm.parentNodeEndX;
+                cm.c[i][j].lineDeltaY = cm.nodeStartY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeEndY;
 
-                        cm.c[i][j].lineDeltaX = cm.nodeStartX + cm.sumMaxColWidth[j] - cm.parentNodeEndX;
-                        cm.c[i][j].lineDeltaY = cm.nodeStartY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeEndY;
-
-                        mapPlace.iterate(cm.c[i][j]);
-                    }
-                }
+                mapPlace.iterate(cm.c[i][j]);
             }
         }
 

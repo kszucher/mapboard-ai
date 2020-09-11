@@ -62,7 +62,7 @@ export let props = {
             type:                               '',
             parentType:                         '',
             parentParentType:                   '',
-            subType:                            '',
+            childType:                          '',
             index:                              [],
 
             // mapMeasure
@@ -95,10 +95,6 @@ export let props = {
         }
     }
 };
-
-export function hasCell(cm) { // maybe save this is childType
-    return !(cm.c.length === 1 && cm.c[0].length === 0);
-}
 
 export function getDefaultNode(attributes) {
     let defaultNode = { ...{c: [[]], s: [], content: ''}, ...attributes};

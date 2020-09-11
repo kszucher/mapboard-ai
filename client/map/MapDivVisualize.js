@@ -1,6 +1,5 @@
 import {keepHash, mapDivData, mapMem} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
-import {hasCell} from "../node/Node";
 
 export const mapDivVisualize = {
     start: () => {
@@ -9,7 +8,7 @@ export const mapDivVisualize = {
     },
 
     iterate: (cm) => {
-        if (cm.type === 'struct' && ! hasCell(cm)) {
+        if (cm.type === 'struct' && cm.childType !== 'cell') {
             let styleData = {
                 left:                   cm.nodeStartX + 'px',
                 top:                    cm.nodeStartY - cm.selfH / 2 + 'px',
