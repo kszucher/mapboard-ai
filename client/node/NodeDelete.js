@@ -1,5 +1,4 @@
 import {mapref} from "../map/Map";
-import {checkSelection} from "./NodeSelect";
 
 export function structDeleteReselect(sc) {
     let lm = sc.lm;
@@ -7,11 +6,11 @@ export function structDeleteReselect(sc) {
 
     if (lastParentRef.type !== 'cell' || (lastParentRef.type === 'cell' && lastParentRef.s.length > 1)) {
         // calculate jumpback
-        let lastParentRefChildCntr = lastParentRef.s.length;
-        let lastParentRefDelChildCntr = 0;
+        let lastParentRefChildLen = lastParentRef.s.length;
+        let lastParentRefDelChildLen = 0;
         for (let i = lm.index; i > -1; i--) {
             if (lastParentRef.s[i].selected > 0) {
-                lastParentRefDelChildCntr++;
+                lastParentRefDelChildLen++;
             }
         }
 
@@ -28,23 +27,19 @@ export function structDeleteReselect(sc) {
 
         // reselect on jumpback
         if (lm.isRoot === 0) {
-            if (lastParentRefChildCntr === lastParentRefDelChildCntr) {
+            if (lastParentRefChildLen === lastParentRefDelChildLen) {
                 lastParentRef.selected = 1;
-            }
-            else {
+            } else {
                 if (lm.index === 0) {
                     if (lastParentRef.s.length > 0) {
                         lastParentRef.s[0].selected = 1;
-                    }
-                    else {
+                    } else {
                         lastParentRef.selected = 1;
                     }
-                }
-                else {
-                    if (lm.index - lastParentRefDelChildCntr >= 0) {
-                        lastParentRef.s[lm.index - lastParentRefDelChildCntr].selected = 1;
-                    }
-                    else {
+                } else {
+                    if (lm.index - lastParentRefDelChildLen >= 0) {
+                        lastParentRef.s[lm.index - lastParentRefDelChildLen].selected = 1;
+                    } else {
                         lastParentRef.s[0].selected = 1;
                     }
                 }
@@ -53,19 +48,17 @@ export function structDeleteReselect(sc) {
     }
 }
 
-export function cellBlockDeleteReselect(lm) {
-    let lastParentRef = mapref(lm.parentPath);
-    let rcSelected = checkSelection(lastParentRef); // we could store this info in the cell holder struct instead
-
-    console.log('rc:'+rcSelected)
-
-    if (rcSelected[0]) {
-        lastParentRef.c.splice(lm.index[0], 1);
-    }
-    if (rcSelected[1]) {
-        for (let i = 0; i < lastParentRef.c.length; i++) {
-            lastParentRef.c[i].splice(lm.index[1], 1);
+export function cellBlockDeleteReselect(sc) {
+    if (sc.haveSameParent) {
+        let parentRef = mapref(sc.sameParentPath);
+        if (sc.cellColDetected) {
+            parentRef.c.splice(sc.firstParentRowIndex, 1);
+            parentRef.selected = 1;
+        } else if (sc.cellRowDetected) {
+            for (let i = 0; i < parentRef.c.length; i++) {
+                parentRef.c[i].splice(sc.firstParentColIndex, 1);
+            }
+            parentRef.selected = 1;
         }
     }
-    lastParentRef.selected = 1;
 }

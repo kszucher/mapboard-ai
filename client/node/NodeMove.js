@@ -14,7 +14,7 @@ export function structMove(sc, target, mode) {
         parentPathList.push(mapref(sc.structSelectedPathList[i]).parentPath);
     }
     if (target === 'struct2struct' || target === 'struct2cell') {
-        if (arrayValuesSame(parentPathList) && sc.lm.isRoot === 0) {
+        if (arrayValuesSame(parentPathList) && sc.lm.isRoot === 0) { // TODO: move arrayValuesSame logic to nodeSelect
             let currParentPath = parentPathList[0];
             let currParentRef = mapref(currParentPath);
 

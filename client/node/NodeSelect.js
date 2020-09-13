@@ -1,9 +1,8 @@
 import {mapMem, mapref, mapasgn, pathMerge} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
-import {arrayValuesSame} from "../core/Utils";
+import {copy, objectsSame} from "../core/Utils";
 
 export function getSelectionContext () {
-
     mapCollect.start();
     let filter = mapMem.filter;
 
@@ -15,18 +14,24 @@ export function getSelectionContext () {
     let geomHighPath = [];
     let geomLowPath = [];
 
-    if (filter.structSelectedPathList.length === 0 && filter.cellSelectedPathList.length === 0) {
-        console.log('no selection');
-    }
-    else if (filter.structSelectedPathList.length === filter.cellSelectedPathList.length) {
-        // TODO also check if they are of the same parent
-        scope = 'm';
+    let haveSameParent = false;
+    let sameParentPath = [];
 
-        lastPath =      filter.structSelectedPathList[0]; // this should be equal to the only cell selected as well
+    let haveSameRow = false;
+    let firstParentRowIndex = 0;
+    let haveSameCol = false;
+    let firstParentColIndex = 0;
+
+    let cellRowDetected = false;
+    let cellColDetected = false;
+
+    if (filter.structSelectedPathList.length && filter.cellSelectedPathList.length) {
+        scope = 'm';
+        lastPath =      filter.structSelectedPathList[0];
         geomHighPath =  lastPath;
         geomLowPath =   lastPath;
     }
-    else if (filter.structSelectedPathList.length !== 0) {
+    else if (filter.structSelectedPathList.length) {
         scope = 's';
         for (let i = 0; i < filter.structSelectedPathList.length; i++) {
             let currSelectedNumber = mapref(filter.structSelectedPathList[i]).selected;
@@ -39,9 +44,24 @@ export function getSelectionContext () {
         geomHighPath =  filter.structSelectedPathList[0];
         geomLowPath =   filter.structSelectedPathList[filter.structSelectedPathList.length - 1];
     }
-    else if (filter.cellSelectedPathList.length !== 0) {
+    else if (filter.cellSelectedPathList.length) {
         scope = 'c';
+        let firstParentPath = filter.cellSelectedPathList[0].slice(0, -3);
+        firstParentRowIndex = filter.cellSelectedPathList[0].slice(-2)[0];
+        firstParentColIndex = filter.cellSelectedPathList[0].slice(-1)[0];
         for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
+            let currParentPath = filter.cellSelectedPathList[i].slice(0, -3);
+            let currParentRowIndex = filter.cellSelectedPathList[i].slice(-2)[0];
+            let currParentColIndex = filter.cellSelectedPathList[i].slice(-1)[0];
+            if (objectsSame(firstParentPath, currParentPath)) {
+                haveSameParent = true;
+                if (firstParentRowIndex === currParentRowIndex) {
+                    haveSameRow = true;
+                }
+                if (firstParentColIndex === currParentColIndex) {
+                    haveSameCol = true;
+                }
+            }
             let currSelectedNumber = mapref(filter.cellSelectedPathList[i]).selected;
             if (currSelectedNumber > maxSel) {
                 maxSel = currSelectedNumber;
@@ -49,67 +69,52 @@ export function getSelectionContext () {
             }
         }
         lastPath = filter.cellSelectedPathList[maxSelIndex];
+        if (haveSameParent) {
+            sameParentPath = copy(firstParentPath);
+            if (haveSameRow && filter.cellSelectedPathList.length === mapref(firstParentPath).c.length) {
+                cellRowDetected = true;
+            }
+            if (haveSameCol && filter.cellSelectedPathList.length === mapref(firstParentPath).c[0].length) {
+                cellColDetected = true;
+            }
+        }
     }
     else {
-        console.log('ambivalent selection');
+        console.log('no selection');
     }
 
     return {
-        'maxSel':                   maxSel,
-        'scope':                    scope,
-        'lastPath':                 lastPath,
-        'lm':                       mapref(lastPath),
-        'geomHighPath':             geomHighPath,
-        'geomHighRef':              mapref(geomHighPath),
-        'geomLowPath':              geomLowPath,
-        'geomLowRef':               mapref(geomLowPath),
-        'structSelectedPathList':   filter.structSelectedPathList,
-        'cellSelectedPathList':     filter.cellSelectedPathList,
+        maxSel:                 maxSel,
+        scope:                  scope,
+        lastPath:               lastPath,
+        lm:                     mapref(lastPath),
+        geomHighPath:           geomHighPath,
+        geomHighRef:            mapref(geomHighPath),
+        geomLowPath:            geomLowPath,
+        geomLowRef:             mapref(geomLowPath),
+        structSelectedPathList: filter.structSelectedPathList,
+        cellSelectedPathList:   filter.cellSelectedPathList,
+        haveSameParent:         haveSameParent,
+        sameParentPath:         sameParentPath,
+        cellColDetected:        cellColDetected,
+        cellRowDetected:        cellRowDetected,
+        firstParentRowIndex:    firstParentRowIndex,
+        firstParentColIndex:    firstParentColIndex,
     }
 }
 
-export function clearCellSelection () {
+export function clearStructSelectionContext () {
     mapCollect.start();
     let filter = mapMem.filter;
-
-    for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
-        mapasgn(pathMerge(filter.cellSelectedPathList[i], ['selected']), 0);
-    }
-}
-
-export function clearStructSelection () {
-    mapCollect.start();
-    let filter = mapMem.filter;
-
     for (let i = 0; i < filter.structSelectedPathList.length; i++) {
         mapasgn(pathMerge(filter.structSelectedPathList[i], ['selected']), 0);
     }
 }
 
-export function checkSelection (parentRef) {
+export function clearCellSelectionContext () {
     mapCollect.start();
     let filter = mapMem.filter;
-
-    let rowSelected = false;
-    let colSelected = false;
-
-    let rowLen = parentRef.c.length;
-    let colLen = parentRef.c[0].length;
-    let selectionRows = [];
-    let selectionCols = [];
-
     for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
-        selectionRows.push(mapref(filter.cellSelectedPathList[i]).index[0]);
-        selectionCols.push(mapref(filter.cellSelectedPathList[i]).index[1]);
+        mapasgn(pathMerge(filter.cellSelectedPathList[i], ['selected']), 0);
     }
-
-    if (selectionRows.length === colLen && arrayValuesSame(selectionRows)) { // warning: arrayValuesSame has changed!!!
-        rowSelected = true;
-    }
-
-    if (selectionCols.length === rowLen && arrayValuesSame(selectionCols)) {
-        colSelected = true;
-    }
-
-    return [rowSelected, colSelected];
 }
