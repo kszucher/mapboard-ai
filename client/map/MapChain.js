@@ -54,9 +54,10 @@ export const mapChain = {
 
         if (!(rowCount === 1 && colCount === 0)) {
             cm.childType = 'cell';
-        }
-        if (sCount > 0) {
+        } else if (sCount > 0) {
             cm.childType = 'struct';
+        } else {
+            cm.childType = '';
         }
     }
 };
