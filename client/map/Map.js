@@ -47,8 +47,8 @@ export function loadMap(mapStorage) {
         mapMem.rightCount = mapStorage.rightCount;
         mapMem.leftCount = mapStorage.leftCount;
     } else {
-        mapMem.rightCount = mapMem.getData().s[0].length - 1;
-        mapMem.leftCount = 1;
+        mapMem.rightCount = (mapMem.getData().s[0].s).length - 2;
+        mapMem.leftCount = 2;
     }
 }
 

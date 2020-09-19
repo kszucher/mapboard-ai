@@ -34,11 +34,15 @@ export const mapPlace = {
     },
 
     iterate: (cm) => {
+        if (cm.orientation === 'right') {
+            cm.nodeStartX = cm.parentType === 'cell' ? cm.parentNodeStartX : cm.parentNodeEndX + cm.lineDeltaX;
+            cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
+            cm.nodeEndX = cm.nodeStartX + cm.selfW;
+            cm.nodeEndY = cm.nodeStartY;
+        }
+        else if (cm.orientation === 'left') {
 
-        cm.nodeStartX = cm.parentType === 'cell' ? cm.parentNodeStartX : cm.parentNodeEndX + cm.lineDeltaX;
-        cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
-        cm.nodeEndX = cm.nodeStartX + cm.selfW;
-        cm.nodeEndY = cm.nodeStartY;
+        }
 
         if (Number.isInteger(cm.nodeStartY)) {
             cm.nodeStartY -= 0.5;

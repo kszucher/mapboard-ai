@@ -80,7 +80,7 @@ export let props = {
             spacingActivated:                   0,
 
             // mapOrient
-            orientation:                        'r',
+            orientation:                        'right',
 
             // mapPlace
             parentNodeStartX:                   0,
