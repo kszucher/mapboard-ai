@@ -3,8 +3,10 @@ import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
 
 export const mapDivVisualize = {
     start: () => {
-        let cm = mapMem.getData().s[0];
-        mapDivVisualize.iterate(cm);
+        let cm = mapMem.getData();
+        for (let i = 0; i < cm.s.length; i++) {
+            mapDivVisualize.iterate(cm.s[i]);
+        }
     },
 
     iterate: (cm) => {

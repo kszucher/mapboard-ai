@@ -2,8 +2,10 @@ import {mapMem} from "./Map";
 
 export const mapTemplate = {
     start: () => {
-        let cm = mapMem.getData().s[0];
-        mapTemplate.iterate(cm);
+        let cm = mapMem.getData();
+        for (let i = 0; i < cm.s.length; i++) {
+            mapTemplate.iterate(cm.s[i]);
+        }
     },
 
     iterate: (cm) => {

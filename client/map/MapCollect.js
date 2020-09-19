@@ -3,14 +3,16 @@ import {copy} from "../core/Utils"
 
 export const mapCollect = {
     start: () => {
-        let cm = mapMem.getData().s[0];
+        let cm = mapMem.getData();
         let params = {
             filter: {
                 structSelectedPathList: [],
                 cellSelectedPathList: [],
             }
         };
-        mapCollect.iterate(cm, params);
+        for (let i = 0; i < cm.s.length; i++) {
+            mapCollect.iterate(cm.s[i], params);
+        }
         mapMem.filter = copy(params.filter);
     },
 
