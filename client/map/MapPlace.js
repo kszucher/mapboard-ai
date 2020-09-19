@@ -4,6 +4,8 @@ export const mapPlace = {
     start: () => {
         let cm = mapMem.getData().s[0];
 
+        // TODO continue in here
+
         let mapWidth;
         if (mapMem.task) {
             mapWidth = 1366;

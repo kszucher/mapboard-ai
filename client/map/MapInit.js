@@ -4,8 +4,10 @@ import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
     start: () => {
-        let cm = mapMem.getData().s[0];
-        mapInit.iterate(cm);
+        let cm = mapMem.getData();
+        for (let i = 0; i < cm.s.length; i++) {
+            mapInit.iterate(cm.s[i]);
+        }
     },
 
     iterate: (cm) => {

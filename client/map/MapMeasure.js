@@ -3,12 +3,14 @@ import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 
 export const mapMeasure = {
     start: () => {
-        let cm = mapMem.getData().s[0];
-        let params = {
-            hasMultipleChild: 0,
-            hasMultipleContentRow: 0,
-        };
-        mapMeasure.iterate(cm, params);
+        let cm = mapMem.getData();
+        for (let i = 0; i < cm.s.length; i++) {
+            let params = {
+                hasMultipleChild: 0,
+                hasMultipleContentRow: 0,
+            };
+            mapMeasure.iterate(cm.s[i], params);
+        }
     },
 
     iterate: (cm, params) => {

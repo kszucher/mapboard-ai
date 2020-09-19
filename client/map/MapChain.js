@@ -2,14 +2,16 @@ import {mapMem} from "./Map";
 
 export const mapChain = {
     start: () => {
-        let cm = mapMem.getData().s[0];
-        Object.assign(cm, {
-            parentPath: [],
-            isRoot: 1,
-            type: 'struct',
-            index: undefined,
-        });
-        mapChain.iterate(cm);
+        let cm = mapMem.getData();
+        for (let i = 0; i < cm.s.length; i++) {
+            Object.assign(cm.s[i], {
+                parentPath: [],
+                isRoot: 1,
+                type: 'struct',
+                index: undefined,
+            });
+            mapChain.iterate(cm.s[i]);
+        }
     },
 
     iterate: (cm) => {
