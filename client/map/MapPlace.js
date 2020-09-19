@@ -4,18 +4,6 @@ export const mapPlace = {
     start: () => {
         let cm = mapMem.getData().s[0];
 
-        let rightFamilyH = 0;
-        let leftFamilyH = 0;
-        let rootChildCount = mapMem.rightCount + mapMem.leftCount;
-        for (let i = 0; i < rootChildCount; i++) {
-            let currMaxH = Math.max(...[cm.s[i].selfH, cm.s[i].familyH]);
-            if (i < mapMem.rightCount) {
-                rightFamilyH += currMaxH + cm.spacing;
-            } else {
-                leftFamilyH += currMaxH + cm.spacing;
-            }
-        }
-
         let mapWidth;
         if (mapMem.task) {
             mapWidth = 1366;
@@ -24,8 +12,8 @@ export const mapPlace = {
         }
 
         let mapHeight;
-        if (leftFamilyH > cm.selfH || rightFamilyH > cm.selfH) {
-            mapHeight = Math.max(...[rightFamilyH, leftFamilyH]) + 2 * 20;
+        if (cm.familyH > cm.selfH) {
+            mapHeight = cm.familyH + 2 * 20;
         } else {
             mapHeight = cm.selfH + 2 * 20;
         }
@@ -56,10 +44,10 @@ export const mapPlace = {
             cm.nodeStartX = cm.parentNodeStartX;
             cm.nodeEndX = cm.nodeStartX + cm.selfW;
         } else {
-            if (cm.orientation === 'right') {
+            if (cm.path[1] === 0) { // right orientation
                 cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
                 cm.nodeEndX = cm.nodeStartX + cm.selfW;
-            } else {
+            } else { // left orientation
                 cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
                 cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
             }

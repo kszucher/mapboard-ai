@@ -10,7 +10,6 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
-import {mapOrient} from "./MapOrient";
 
 export let mapMem = {};
 export let mapStorageOut = {};
@@ -41,22 +40,12 @@ export function loadMap(mapStorage) {
         filter: [],
         deepestSelectablePath: [],
     };
-
-    if (mapStorage.hasOwnProperty('rightCount') &&
-        mapStorage.hasOwnProperty('leftCount')) {
-        mapMem.rightCount = mapStorage.rightCount;
-        mapMem.leftCount = mapStorage.leftCount;
-    } else {
-        mapMem.rightCount = (mapMem.getData().s[0].s).length - 2;
-        mapMem.leftCount = 2;
-    }
 }
 
 export function recalc() {
     mapInit.start();
     mapChain.start();
     mapMeasure.start();
-    mapOrient.start();
     mapPlace.start();
 
     if (mapMem.task) {

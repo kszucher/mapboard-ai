@@ -79,8 +79,6 @@ export let props = {
             spacing:                            10,
             spacingActivated:                   0,
 
-            // mapOrient
-            orientation:                        'right',
 
             // mapPlace
             parentNodeStartX:                   0,
