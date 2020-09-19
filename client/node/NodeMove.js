@@ -29,6 +29,9 @@ export function structMove(sc, target, mode) {
                             currParentParentRef.s.splice(currParentRef.index + 1, 0, copy(currRef));
                         }
                     }
+                    else {
+
+                    }
                 } else if (mode === 'ArrowRight') {
                     if (sc.geomHighRef.index > 0) {
                         let upperSibling = currParentRef.s[sc.geomHighRef.index - 1];

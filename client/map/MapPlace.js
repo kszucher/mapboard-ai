@@ -7,7 +7,12 @@ export const mapPlace = {
         let mapDiv = document.getElementById('mapDiv');
         
         let mapWidth = mapMem.task? 1366 : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
+
+
+
         let mapHeight = cm.familyH > cm.selfH? cm.familyH + 2*20: cm.selfH + 2*20;
+
+
 
         mapHeight += 500;
 

@@ -10,6 +10,7 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
+import {mapOrient} from "./MapOrient";
 
 export let mapMem = {};
 export let mapStorageOut = {};
@@ -28,7 +29,6 @@ export function loadMap(mapStorage) {
         data: [mapAssembly((mapStorage.data))], // TODO: egyelőre ez az egy dolog legyen undo-redo követve!!!
         density: copy(mapStorage.density),
         task: copy(mapStorage.task),
-
         getData: () => {
             return mapMem.data[mapMem.dataIndex];
         },
@@ -41,12 +41,22 @@ export function loadMap(mapStorage) {
         filter: [],
         deepestSelectablePath: [],
     };
+
+    if (mapStorage.hasOwnProperty('rightCount') &&
+        mapStorage.hasOwnProperty('leftCount')) {
+        mapMem.rightCount = mapStorage.rightCount;
+        mapMem.leftCount = mapStorage.leftCount;
+    } else {
+        mapMem.rightCount = mapMem.getData().s[0].length - 1;
+        mapMem.leftCount = 1;
+    }
 }
 
 export function recalc() {
     mapInit.start();
     mapChain.start();
     mapMeasure.start();
+    mapOrient.start();
     mapPlace.start();
 
     if (mapMem.task) {
