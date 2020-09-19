@@ -8,22 +8,21 @@ export const mapPlace = {
         let cm = mapMem.getData();
         for (let i = 0; i < cm.s.length; i++) {
 
+            // TO CHANGE BEGIN
+            let cml = cm.s[0];
+            if (mapMem.task) {
+                mapWidth = 1366;
+            } else {
+                mapWidth = cml.selfW + cml.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
+            }
 
-            let cml = cm.s[i];
-
-            // if (mapMem.task) {
-            //     mapWidth = 1366;
-            // } else {
-            //     mapWidth = cml.selfW + cml.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
-            // }
-            //
-            // if (cml.familyH > cml.selfH) {
-            //     mapHeight = cml.familyH + 2 * 20;
-            // } else {
-            //     mapHeight = cml.selfH + 2 * 20;
-            // }
-
-            // mapHeight += 500;
+            if (cml.familyH > cml.selfH) {
+                mapHeight = cml.familyH + 2 * 20;
+            } else {
+                mapHeight = cml.selfH + 2 * 20;
+            }
+            mapHeight += 500;
+            // TO CHANGE END
 
             cm.s[i].parentNodeStartX = 0;
             cm.s[i].parentNodeStartY = 0;
