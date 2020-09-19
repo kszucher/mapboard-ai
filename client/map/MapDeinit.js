@@ -1,8 +1,8 @@
 import {props} from "../node/Node";
 
-export const mapNodePropRemove = {
+export const mapDeinit = {
     start: (cml) => {
-        mapNodePropRemove.iterate(cml);
+        mapDeinit.iterate(cml);
     },
 
     iterate: (cml) => {
@@ -10,13 +10,13 @@ export const mapNodePropRemove = {
         let colCount = Object.keys(cml.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-                mapNodePropRemove.iterate(cml.c[i][j]);
+                mapDeinit.iterate(cml.c[i][j]);
             }
         }
 
         let sCount = Object.keys(cml.s).length;
         for (let i = 0; i < sCount; i++) {
-            mapNodePropRemove.iterate(cml.s[i]);
+            mapDeinit.iterate(cml.s[i]);
         }
 
         let currKeys = Object.keys(cml);

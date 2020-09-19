@@ -6,7 +6,7 @@ import {mapDisassembly, nodeCopyList} from "./MapDisassembly";
 import {mapDivVisualize} from './MapDivVisualize'
 import {mapInit} from './MapInit'
 import {mapMeasure} from './MapMeasure'
-import {mapNodePropRemove} from "./MapNodePropRemove";
+import {mapDeinit} from "./MapDeinit";
 import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
@@ -113,7 +113,7 @@ export function pathMerge(path1, path2) {
 export function saveMap () {
     let cm = JSON.parse(JSON.stringify(mapMem.getData())).s[0];
     let cml = JSON.parse(JSON.stringify(cm));
-    mapNodePropRemove.start(cml);
+    mapDeinit.start(cml);
     mapDisassembly.start(cml);
     mapStorageOut ={
         data: nodeCopyList,
