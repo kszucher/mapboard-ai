@@ -2,42 +2,51 @@ import {mapMem} from "./Map";
 
 export const mapPlace = {
     start: () => {
-        let cm = mapMem.getData().s[0];
+        let mapWidth = 1200;
+        let mapHeight = 1200;
 
-        // TODO continue in here
+        let cm = mapMem.getData();
+        for (let i = 0; i < cm.s.length; i++) {
 
-        let mapWidth;
-        if (mapMem.task) {
-            mapWidth = 1366;
-        } else {
-            mapWidth = cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
+
+            let cml = cm.s[i];
+
+            // if (mapMem.task) {
+            //     mapWidth = 1366;
+            // } else {
+            //     mapWidth = cml.selfW + cml.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
+            // }
+            //
+            // if (cml.familyH > cml.selfH) {
+            //     mapHeight = cml.familyH + 2 * 20;
+            // } else {
+            //     mapHeight = cml.selfH + 2 * 20;
+            // }
+
+            // mapHeight += 500;
+
+            cm.s[i].parentNodeStartX = 0;
+            cm.s[i].parentNodeStartY = 0;
+            cm.s[i].parentNodeEndX = 0;
+            cm.s[i].parentNodeEndY = 0;
+            cm.s[i].lineDeltaX = -cm.s[i].selfW /2;
+
+            if (i === 0) {
+                cm.s[i].lineDeltaY = cm.s[i].familyH > cm.s[i].selfH ? cm.s[i].familyH / 2 + 20 - 0.5 : cm.s[i].selfH / 2 + 20 - 0.5;
+            } else {
+                cm.s[i].lineDeltaY = cm.s[i].familyH > cm.s[i].selfH ? cm.s[i].familyH / 2 + 20 - 0.5 : cm.s[i].selfH / 2 + 20 - 0.5;
+            }
+
+            mapPlace.iterate(cm.s[i]);
         }
-
-        let mapHeight;
-        if (cm.familyH > cm.selfH) {
-            mapHeight = cm.familyH + 2 * 20;
-        } else {
-            mapHeight = cm.selfH + 2 * 20;
-        }
-
-        // mapHeight += 500;
 
         let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.minWidth = "" + mapWidth +"px";
+        mapDiv.style.minWidth = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
-
-        cm.parentNodeStartX = 0;
-        cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = 0;
-        cm.parentNodeEndY = 0;
-        cm.lineDeltaX = mapMem.sLineDeltaXDefault;
-        cm.lineDeltaY = cm.familyH > cm.selfH? cm.familyH/2 + 20 - 0.5 : cm.selfH/2 + 20 - 0.5;
-
-        mapPlace.iterate(cm);
     },
 
     iterate: (cm) => {

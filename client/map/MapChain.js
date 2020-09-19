@@ -6,6 +6,7 @@ export const mapChain = {
         for (let i = 0; i < cm.s.length; i++) {
             Object.assign(cm.s[i], {
                 parentPath: [],
+                path: ["s",i],
                 isRoot: 1,
                 type: 'struct',
                 index: undefined,
@@ -15,15 +16,11 @@ export const mapChain = {
     },
 
     iterate: (cm) => {
-        if (cm.isRoot) {
-            cm.path = ["s", 0];
-        } else {
+        if (!cm.isRoot) {
             if (cm.type === 'struct') {
                 cm.path = cm.parentPath.concat(["s", cm.index]);
             } else if (cm.type === 'cell') {
                 cm.path = cm.parentPath.concat(["c", cm.index[0], cm.index[1]]);
-            } else {
-
             }
         }
 

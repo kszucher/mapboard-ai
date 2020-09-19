@@ -33,13 +33,15 @@ export function structMove(sc, target, mode) {
                         let rootRootRef = mapref(['s']);
                         if (rootRootRef.length === 1) {
                             rootRootRef.push([]);
-                            rootRootRef[1] = getDefaultNode();
+                            rootRootRef[1] = getDefaultNode({content: 'mba'});
                         }
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
                             currParentRef.s.splice(currRef.index, 1);
                             rootRootRef[1].s.splice(0, 0, copy(currRef));
                         }
+
+                        console.log(rootRootRef)
                     }
                 } else if (mode === 'ArrowRight') {
                     if (sc.geomHighRef.index > 0) {
