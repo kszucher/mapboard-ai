@@ -1,7 +1,6 @@
 import {copy, subsref, subsasgn, genHash} from "../core/Utils"
 import {mapAssembly} from "./MapAssembly";
 import {mapChain} from './MapChain'
-import {mapCollect} from './MapCollect'
 import {mapDisassembly, nodeCopyList} from "./MapDisassembly";
 import {mapDivVisualize} from './MapDivVisualize'
 import {mapInit} from './MapInit'
