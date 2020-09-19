@@ -4,18 +4,35 @@ export const mapPlace = {
     start: () => {
         let cm = mapMem.getData().s[0];
 
+        let rightFamilyH = 0;
+        let leftFamilyH = 0;
+        let rootChildCount = mapMem.rightCount + mapMem.leftCount;
+        for (let i = 0; i < rootChildCount; i++) {
+            let currMaxH = Math.max(...[cm.s[i].selfH, cm.s[i].familyH]);
+            if (i < mapMem.rightCount) {
+                rightFamilyH += currMaxH + cm.spacing;
+            } else {
+                leftFamilyH += currMaxH + cm.spacing;
+            }
+        }
+
+        let mapWidth;
+        if (mapMem.task) {
+            mapWidth = 1366;
+        } else {
+            mapWidth = cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
+        }
+
+        let mapHeight;
+        if (leftFamilyH > cm.selfH || rightFamilyH > cm.selfH) {
+            mapHeight = Math.max(...[rightFamilyH, leftFamilyH]) + 2 * 20;
+        } else {
+            mapHeight = cm.selfH + 2 * 20;
+        }
+
+        // mapHeight += 500;
+
         let mapDiv = document.getElementById('mapDiv');
-        
-        let mapWidth = mapMem.task? 1366 : cm.selfW + cm.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
-
-
-
-        let mapHeight = cm.familyH > cm.selfH? cm.familyH + 2*20: cm.selfH + 2*20;
-
-
-
-        mapHeight += 500;
-
         mapDiv.style.minWidth = "" + mapWidth +"px";
         mapDiv.style.height = "" + mapHeight + "px";
 
@@ -34,15 +51,21 @@ export const mapPlace = {
     },
 
     iterate: (cm) => {
-        if (cm.orientation === 'right') {
-            cm.nodeStartX = cm.parentType === 'cell' ? cm.parentNodeStartX : cm.parentNodeEndX + cm.lineDeltaX;
-            cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
-            cm.nodeEndX = cm.nodeStartX + cm.selfW;
-            cm.nodeEndY = cm.nodeStartY;
-        }
-        else if (cm.orientation === 'left') {
 
+        if (cm.parentType === 'cell') {
+            cm.nodeStartX = cm.parentNodeStartX;
+            cm.nodeEndX = cm.nodeStartX + cm.selfW;
+        } else {
+            if (cm.orientation === 'right') {
+                cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
+                cm.nodeEndX = cm.nodeStartX + cm.selfW;
+            } else {
+                cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
+                cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
+            }
         }
+        cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
+        cm.nodeEndY = cm.nodeStartY;
 
         if (Number.isInteger(cm.nodeStartY)) {
             cm.nodeStartY -= 0.5;
