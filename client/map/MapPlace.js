@@ -6,46 +6,40 @@ export const mapPlace = {
         let mapHeight = 1200;
 
         let cm = mapMem.getData();
+
+        let minWidth = 2*mapMem.sLineDeltaXDefault +
+            cm.s[0].selfW + cm.s[0].familyW +
+            cm.s[1].selfW + cm.s[1].familyW;
+
+        let minRightHeight = cm.s[0].familyH > cm.s[0].selfH ? cm.s[0].familyH : cm.s[0].selfH;
+        let minLeftHeight = cm.s[1].familyH > cm.s[1].selfH ? cm.s[1].familyH : cm.s[1].selfH;
+        let minHeight = Math.max(...[minRightHeight, minLeftHeight]);
+
         for (let i = 0; i < cm.s.length; i++) {
-
-            // TO CHANGE BEGIN
-            let cml = cm.s[0];
-            if (mapMem.task) {
-                mapWidth = 1366;
-            } else {
-                mapWidth = cml.selfW + cml.familyW + mapMem.sLineDeltaXDefault + 1 + 20;
-            }
-
-            if (cml.familyH > cml.selfH) {
-                mapHeight = cml.familyH + 2 * 20;
-            } else {
-                mapHeight = cml.selfH + 2 * 20;
-            }
-            mapHeight += 500;
-            // TO CHANGE END
-
             cm.s[i].parentNodeStartX = 0;
             cm.s[i].parentNodeStartY = 0;
             cm.s[i].parentNodeEndX = 0;
             cm.s[i].parentNodeEndY = 0;
-            cm.s[i].lineDeltaX = -cm.s[i].selfW /2;
-
-            if (i === 0) {
-                cm.s[i].lineDeltaY = cm.s[i].familyH > cm.s[i].selfH ? cm.s[i].familyH / 2 + 20 - 0.5 : cm.s[i].selfH / 2 + 20 - 0.5;
-            } else {
-                cm.s[i].lineDeltaY = cm.s[i].familyH > cm.s[i].selfH ? cm.s[i].familyH / 2 + 20 - 0.5 : cm.s[i].selfH / 2 + 20 - 0.5;
-            }
-
-            mapPlace.iterate(cm.s[i]);
+            cm.s[i].lineDeltaX = -cm.s[i].selfW / 2;
+            cm.s[i].lineDeltaY = minHeight / 2 + 20;
         }
+
+        mapHeight = minHeight + 500;
+        mapWidth = minWidth;
 
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.minWidth = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
         let svg = document.getElementById('mapSvg');
-        svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
+        svg.setAttribute("viewBox", "0 0 "
+            + mapWidth + " "
+            + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
+
+        for (let i = 0; i < cm.s.length; i++) {
+            mapPlace.iterate(cm.s[i]);
+        }
     },
 
     iterate: (cm) => {

@@ -27,81 +27,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuAppBar() {
     const classes = useStyles();
-    const [auth, setAuth] = React.useState(true);
-
     const [anchorElA, setAnchorElA] = React.useState(null);
     const openA = Boolean(anchorElA);
 
     const [anchorElB, setAnchorElB] = React.useState(null);
     const openB = Boolean(anchorElB);
 
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
+    const handleMenuA = (event) => {setAnchorElA(event.currentTarget)};
+    const handleMenuB = (event) => {setAnchorElB(event.currentTarget)};
+    const handleCloseA = () => {setAnchorElA(null)};
+    const handleCloseB = () => {setAnchorElB(null)};
 
-    const handleMenuA = (event) => {
-        setAnchorElA(event.currentTarget);
-    };
-
-    const handleMenuB = (event) => {
-        setAnchorElB(event.currentTarget);
-    };
-
-    const handleCloseA = () => {
-        setAnchorElA(null);
-    };
-
-    const handleCloseB = () => {
-        setAnchorElB(null);
-    };
-
-    const handleSignOut = () => {
-        console.log('sign out attempt');
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'signOut',
-            },
-        });
-    };
-
-    const handleAddMap = () => {
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'createMapInTab',
-                'task': 0,
-            },
-        })
-    };
-
-    const handleAddTaskMap = () => {
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'createMapInTab',
-                'task': 1,
-            },
-        })
-    };
-
-    const handleDensitySmall = () => {
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'mapAttributeDensitySmall'
-            },
-        })
-    };
-
-    const handleDensityLarge = () => {
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'mapAttributeDensityLarge'
-            },
-        })
-    };
+    const handleSignOut = () => {       eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}})};
+    const handleAddMap = () => {        eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
+    const handleAddTaskMap = () => {    eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
+    const handleDensitySmall = () => {  eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
+    const handleDensityLarge = () => {  eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
 
     return (
         <div className={classes.root}>

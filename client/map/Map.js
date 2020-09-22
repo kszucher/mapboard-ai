@@ -10,6 +10,7 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
+import {getDefaultNode} from "../node/Node";
 
 export let mapMem = {};
 export let mapStorageOut = {};
@@ -36,10 +37,13 @@ export function loadMap(mapStorage) {
         sLineDeltaXDefault:     mapStorage.density === 'large'? 30:20,
         padding:                mapStorage.density === 'large'? 8:3,
         defaultH:               mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
-
         filter: [],
         deepestSelectablePath: [],
     };
+
+    if (mapMem.getData().s.length === 1) {
+        mapMem.getData().s.push(getDefaultNode({content:mapMem.getData().s[0].content}));
+    }
 }
 
 export function recalc() {
