@@ -21,7 +21,7 @@ export const mapPlace = {
             cm.s[i].parentNodeEndX = 0;
             cm.s[i].parentNodeEndY = 0;
             cm.s[i].lineDeltaX = -cm.s[i].selfW / 2;
-            cm.s[i].lineDeltaY = minHeight / 2 + 20;
+            cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
         }
 
         mapHeight = minHeight + 500;
