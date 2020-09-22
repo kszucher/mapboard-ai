@@ -98,9 +98,9 @@ export const mapSvgVisualize = {
 
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
-                let x1 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
+                let x1 = cm.nodeStartX + cm.sumMaxColWidth[j];
                 let y1 = cm.nodeStartY   - selfHadj/2;
-                let x2 = cm.nodeStartX + cm.sumMaxColWidth[j] - 0.5;
+                let x2 = cm.nodeStartX + cm.sumMaxColWidth[j];
                 let y2 = cm.nodeEndY     + selfHadj/2;
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
@@ -113,7 +113,7 @@ export const mapSvgVisualize = {
 
             // frame
             let round = 8;
-            let x1 = cm.nodeStartX -0.5;
+            let x1 = cm.nodeStartX;
             let y1 = cm.nodeStartY - selfHadj/2 + round;
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
@@ -132,7 +132,7 @@ export const mapSvgVisualize = {
         // cell frame
         if (cm.type === 'cell' && cm.selected) {
             let round = 8;
-            let x1 = cm.nodeStartX -0.5;
+            let x1 = cm.nodeStartX;
             let y1 = cm.nodeStartY - selfHadj / 2 + round;
             let h = cm.selfW - 2 * round;
             let v = cm.selfH - 2 * round;

@@ -64,10 +64,10 @@ export const mapPlace = {
             cm.nodeEndY -= 0.5;
         }
 
-        // if (Number.isInteger(cm.nodeStartX)) {
-        //     cm.nodeStartX -= 0.5;
-        //     cm.nodeEndX -= 0.5;
-        // }
+        if (Number.isInteger(cm.nodeStartX)) {
+            cm.nodeStartX -= 0.5;
+            cm.nodeEndX -= 0.5;
+        }
 
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
