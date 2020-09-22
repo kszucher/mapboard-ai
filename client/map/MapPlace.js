@@ -64,6 +64,11 @@ export const mapPlace = {
             cm.nodeEndY -= 0.5;
         }
 
+        // if (Number.isInteger(cm.nodeStartX)) {
+        //     cm.nodeStartX -= 0.5;
+        //     cm.nodeEndX -= 0.5;
+        // }
+
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
@@ -93,8 +98,5 @@ export const mapPlace = {
 
             elapsedY += cm.s[i].maxH + cm.spacingActivated*cm.spacing;
         }
-
-        cm.centerX = cm.nodeStartX + cm.selfW/2;
-        cm.centerY = cm.nodeStartY;
     }
 };

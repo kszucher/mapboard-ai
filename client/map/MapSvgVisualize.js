@@ -113,8 +113,8 @@ export const mapSvgVisualize = {
 
             // frame
             let round = 8;
-            let x1 = cm.centerX - (cm.selfW + 1)/2;
-            let y1 = cm.centerY - selfHadj/2 + round;
+            let x1 = cm.nodeStartX -0.5;
+            let y1 = cm.nodeStartY - selfHadj/2 + round;
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
@@ -132,8 +132,8 @@ export const mapSvgVisualize = {
         // cell frame
         if (cm.type === 'cell' && cm.selected) {
             let round = 8;
-            let x1 = cm.centerX - (cm.selfW + 1) / 2;
-            let y1 = cm.centerY - selfHadj / 2 + round;
+            let x1 = cm.nodeStartX -0.5;
+            let y1 = cm.nodeStartY - selfHadj / 2 + round;
             let h = cm.selfW - 2 * round;
             let v = cm.selfH - 2 * round;
 
