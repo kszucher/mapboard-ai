@@ -15,15 +15,6 @@ export const mapPlace = {
         let minLeftHeight = cm.s[1].familyH > cm.s[1].selfH ? cm.s[1].familyH : cm.s[1].selfH;
         let minHeight = Math.max(...[minRightHeight, minLeftHeight]);
 
-        for (let i = 0; i < cm.s.length; i++) {
-            cm.s[i].parentNodeStartX = 0;
-            cm.s[i].parentNodeStartY = 0;
-            cm.s[i].parentNodeEndX = 0;
-            cm.s[i].parentNodeEndY = 0;
-            cm.s[i].lineDeltaX = -cm.s[i].selfW / 2;
-            cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
-        }
-
         mapHeight = minHeight + 500;
         mapWidth = minWidth;
 
@@ -38,6 +29,13 @@ export const mapPlace = {
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
         for (let i = 0; i < cm.s.length; i++) {
+            cm.s[i].parentNodeStartX = 0;
+            cm.s[i].parentNodeStartY = 0;
+            cm.s[i].parentNodeEndX = 0;
+            cm.s[i].parentNodeEndY = 0;
+            cm.s[i].lineDeltaX = -cm.s[i].selfW / 2;
+            cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
+
             mapPlace.iterate(cm.s[i]);
         }
     },
