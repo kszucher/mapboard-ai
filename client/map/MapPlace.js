@@ -7,16 +7,16 @@ export const mapPlace = {
 
         let cm = mapMem.getData();
 
-        let minWidth = 2*mapMem.sLineDeltaXDefault +
-            cm.s[0].selfW + cm.s[0].familyW +
-            cm.s[1].selfW + cm.s[1].familyW;
+        let minRightWidth = cm.s[0].selfW + cm.s[0].familyW + mapMem.sLineDeltaXDefault;
+        let minLeftWidth = cm.s[1].selfW + cm.s[1].familyW + mapMem.sLineDeltaXDefault;
+        let minWidth = mapMem.flow === 'right'? minRightWidth : Math.max(...[minRightWidth, minLeftWidth])*2;
 
         let minRightHeight = cm.s[0].familyH > cm.s[0].selfH ? cm.s[0].familyH : cm.s[0].selfH;
         let minLeftHeight = cm.s[1].familyH > cm.s[1].selfH ? cm.s[1].familyH : cm.s[1].selfH;
-        let minHeight = Math.max(...[minRightHeight, minLeftHeight]);
+        let minHeight = mapMem.flow === 'right'? minRightHeight : Math.max(...[minRightHeight, minLeftHeight]);
 
         mapHeight = minHeight + 500;
-        mapWidth = minWidth;
+        mapWidth = minWidth; // add custom values to achive custom column widths
 
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.minWidth = "" + mapWidth + "px";
@@ -33,7 +33,8 @@ export const mapPlace = {
             cm.s[i].parentNodeStartY = 0;
             cm.s[i].parentNodeEndX = 0;
             cm.s[i].parentNodeEndY = 0;
-            cm.s[i].lineDeltaX = -cm.s[i].selfW / 2;
+            // TODO start here, by testing 'center' instead of 'right'
+            cm.s[i].lineDeltaX = -cm.s[i].selfW / 2 + (mapMem.flow === 'right'? 0 : mapWidth/2);
             cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
 
             mapPlace.iterate(cm.s[i]);

@@ -1,35 +1,26 @@
-import {getBgc}                                 from '../core/Utils'
+import {getBgc} from '../core/Utils'
 
 export let props = {
     saveOptional: {
         path:                                   [],
-
         contentType:                            'text',
         content:                                '',
-
         linkType:                               '',
         link:                                   '',
-
         imageW:                                 0,
         imageH:                                 0,
-
         s:                                      [],
         sTextColor:                             '#222222',
         sTextFontSize:                          14,
-
         c:                                      [[]],
         cBorderColor:                           '#50dfff',
-
         selected:                               0,
         lastSelectedChild:                      -1, // -1 means not selected ever
-
         lineColor:                              '#bbbbbb',
-
         ellipseFill:                            0,
         ellipseBorderColor:                     '#ffffff',
         ellipseFillColor:                       getBgc(),
         ellipseLineWidth:                       1,
-
         taskStatus:                             -1,
     },
     saveNever: {
@@ -39,23 +30,18 @@ export let props = {
             parentNodeEndXFrom:                 0,
             parentNodeEndYFrom:                 0,
             twoStepAnimationRequested:          0,
-
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,
             contentH:                           0,
-
             // mapTaskCalc
             taskStatusInherited:                0,
-
             // mapDivVisualize
             divId:                              '',
-
             // mapSvgVisualize
             svgId:                              '',
         },
         initAlways: {
-
             // mapChain
             isRoot:                             0,
             parentPath:                         [],
@@ -64,7 +50,6 @@ export let props = {
             parentParentType:                   '',
             childType:                          '',
             index:                              [],
-
             // mapMeasure
             selfW:                              0,
             selfH:                              0,
@@ -78,8 +63,6 @@ export let props = {
             maxH:                               0,
             spacing:                            10,
             spacingActivated:                   0,
-
-
             // mapPlace
             parentNodeStartX:                   0,
             parentNodeStartY:                   0,
@@ -96,6 +79,6 @@ export let props = {
 };
 
 export function getDefaultNode(attributes) {
-    let defaultNode = { ...{c: [[]], s: [], content: ''}, ...attributes};
+    let defaultNode = { ...{c: [[]], s: [], content: ''}, ...attributes}; // simply return this as it copies already
     return JSON.parse(JSON.stringify(defaultNode));
 }

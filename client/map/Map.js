@@ -26,9 +26,10 @@ export function initDomData() {
 export function loadMap(mapStorage) {
     mapMem = {
         dataIndex: 0,
-        data: [mapAssembly((mapStorage.data))], // TODO: egyelőre ez az egy dolog legyen undo-redo követve!!!
+        data: [mapAssembly((mapStorage.data))],
         density: copy(mapStorage.density),
         task: copy(mapStorage.task),
+
         getData: () => {
             return mapMem.data[mapMem.dataIndex];
         },
@@ -44,6 +45,9 @@ export function loadMap(mapStorage) {
     if (mapMem.getData().s.length === 1) {
         mapMem.getData().s.push(getDefaultNode({content:mapMem.getData().s[0].content}));
     }
+
+    mapMem.flow = mapStorage.hasOwnProperty('flow')? copy(mapStorage.flow) : 'right';
+    // TODO: figure out the relation between changing map props and undo redo
 }
 
 export function recalc() {
@@ -121,5 +125,6 @@ export function saveMap () {
         data: nodeCopyList,
         density: mapMem.density,
         task: mapMem.task,
+        flow: mapMem.flow,
     };
 }
