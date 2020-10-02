@@ -38,11 +38,13 @@ export default function MenuAppBar() {
     const handleCloseA = () => {setAnchorElA(null)};
     const handleCloseB = () => {setAnchorElB(null)};
 
-    const handleSignOut = () => {       eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}})};
-    const handleAddMap = () => {        eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
-    const handleAddTaskMap = () => {    eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
-    const handleDensitySmall = () => {  eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
-    const handleDensityLarge = () => {  eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
+    const handleSignOut = () => {       handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}})};
+    const handleAddMap = () => {        handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
+    const handleAddTaskMap = () => {    handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
+    const handleDensitySmall = () => {  handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
+    const handleDensityLarge = () => {  handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
+    const handleFlowRight = () => {     handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeFlowRight'}})};
+    const handleFlowCenter = () => {    handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeFlowCenter'}})};
 
     return (
         <div className={classes.root}>
@@ -81,6 +83,8 @@ export default function MenuAppBar() {
                         <MenuItem onClick={handleAddTaskMap}>Add task map</MenuItem>
                         <MenuItem onClick={handleDensitySmall}>Density: small</MenuItem>
                         <MenuItem onClick={handleDensityLarge}>Density: large</MenuItem>
+                        <MenuItem onClick={handleFlowRight}>Flow: right</MenuItem>
+                        <MenuItem onClick={handleFlowCenter}>Flow: center</MenuItem>
                     </Menu>
                     <Typography variant="h6" className={classes.title}>
                         MindBoard

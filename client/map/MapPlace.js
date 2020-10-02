@@ -7,8 +7,6 @@ export const mapPlace = {
 
         let cm = mapMem.getData();
 
-        // mapMem.flow = 'center'
-
         let minRightWidth = cm.s[0].selfW + cm.s[0].familyW + mapMem.sLineDeltaXDefault;
         let minLeftWidth = cm.s[1].selfW + cm.s[1].familyW + mapMem.sLineDeltaXDefault;
         let minWidth = mapMem.flow === 'right'? minRightWidth : Math.max(...[minRightWidth, minLeftWidth])*2;
@@ -35,7 +33,7 @@ export const mapPlace = {
             cm.s[i].parentNodeStartY = 0;
             cm.s[i].parentNodeEndX = 0;
             cm.s[i].parentNodeEndY = 0;
-            cm.s[i].lineDeltaX = -cm.s[i].selfW / 2 + (mapMem.flow === 'right'? 0 : mapWidth/2);
+            cm.s[i].lineDeltaX = 20 + (mapMem.flow === 'right'? 0 : mapWidth/2);
             cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
 
             mapPlace.iterate(cm.s[i]);
