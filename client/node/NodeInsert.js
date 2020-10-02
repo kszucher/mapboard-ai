@@ -9,6 +9,8 @@ export function structInsert(lm, direction) {
             taskStatus: parentRef.taskStatus,
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeEndYFrom: parentRef.nodeEndY,
+            parentNodeStartXFrom: parentRef.nodeStartX,
+            parentNodeStartYFrom: parentRef.nodeStartY,
             twoStepAnimationRequested: 1,
         }))
     } else if (direction === 'down') {
@@ -17,6 +19,8 @@ export function structInsert(lm, direction) {
             taskStatus: parentRef.taskStatus,
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeEndYFrom: parentRef.nodeEndY,
+            parentNodeStartXFrom: parentRef.nodeStartX,
+            parentNodeStartYFrom: parentRef.nodeStartY,
             twoStepAnimationRequested: 1,
         }));
     } else if (direction === 'right') {
@@ -25,6 +29,8 @@ export function structInsert(lm, direction) {
             taskStatus: lm.taskStatus,
             parentNodeEndXFrom: lm.nodeEndX,
             parentNodeEndYFrom: lm.nodeEndY,
+            parentNodeStartXFrom: lm.nodeStartX,
+            parentNodeStartYFrom: lm.nodeStartY,
             twoStepAnimationRequested: 1,
         }));
     }

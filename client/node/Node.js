@@ -29,6 +29,8 @@ export let props = {
             isEditing:                          0,
             parentNodeEndXFrom:                 0,
             parentNodeEndYFrom:                 0,
+            parentNodeStartXFrom:               0,
+            parentNodeStartYFrom:               0,
             twoStepAnimationRequested:          0,
             // mapMeasure
             isDimAssigned:                      0,
