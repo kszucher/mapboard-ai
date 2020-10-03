@@ -51,8 +51,13 @@ export const mapPlace = {
 
     iterate: (cm) => {
         if (cm.parentType === 'cell') {
-            cm.nodeStartX = cm.parentNodeStartX;
-            cm.nodeEndX = cm.nodeStartX + cm.selfW;
+            if (cm.path[1] === 0) {
+                cm.nodeStartX = cm.parentNodeStartX;
+                cm.nodeEndX = cm.nodeStartX + cm.selfW;
+            } else {
+                cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
+                cm.nodeEndX = cm.parentNodeEndX;
+            }
         } else {
             if (cm.isRoot) {
                 if (mapMem.flow === 'right') {
