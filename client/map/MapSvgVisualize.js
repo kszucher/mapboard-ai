@@ -92,19 +92,17 @@ export const mapSvgVisualize = {
             let path = '';
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
-                let x1 = cm.nodeStartX;
-                let y1 = cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i];
-                let x2 = cm.nodeEndX;
-                let y2 = cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                let x1, y1, x2, y2;
+                x1 = cm.nodeStartX;  y1 = cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                x2 = cm.nodeEndX;    y2 = cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
-                let x1 = cm.nodeStartX + cm.sumMaxColWidth[j];
-                let y1 = cm.nodeStartY   - selfHadj/2;
-                let x2 = cm.nodeStartX + cm.sumMaxColWidth[j];
-                let y2 = cm.nodeEndY     + selfHadj/2;
+                let x1, y1, x2, y2;
+                x1 = cm.path[1] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y1 = cm.nodeStartY - selfHadj/2;
+                x2 = cm.path[1] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y2 = cm.nodeEndY + selfHadj/2;
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
