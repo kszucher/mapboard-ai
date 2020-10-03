@@ -33,7 +33,7 @@ export const mapPlace = {
                 cm.s[i].parentNodeStartY = 0;
                 cm.s[i].parentNodeEndX = 0;
                 cm.s[i].parentNodeEndY = 0;
-                cm.s[i].lineDeltaX = 32;
+                cm.s[i].lineDeltaX = 20;
                 cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
             }
             else if (mapMem.flow === 'center') {
@@ -93,7 +93,7 @@ export const mapPlace = {
                 cm.c[i][j].parentNodeStartY = cm.parentNodeStartY;
                 cm.c[i][j].parentNodeEndX = cm.parentNodeEndX;
                 cm.c[i][j].parentNodeEndY = cm.parentNodeEndY;
-                cm.c[i][j].lineDeltaX = cm.nodeStartX + cm.sumMaxColWidth[j] - cm.parentNodeEndX;
+                cm.c[i][j].lineDeltaX = cm.sumMaxColWidth[j] + 20;
                 cm.c[i][j].lineDeltaY = cm.nodeStartY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeEndY;
 
                 mapPlace.iterate(cm.c[i][j]);
