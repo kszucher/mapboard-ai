@@ -8,7 +8,35 @@ var sizeOf = promisify( require('image-size'));
 
 // improvement for later times
 // https://flaviocopes.com/node-request-data/
+// https://stackoverflow.com/questions/39677993/send-blob-data-to-node-using-fetch-multer-express
 
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '../uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+    }
+});
+
+var upload = multer({ storage: storage });
+var type = upload.single('upl');
+
+const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
+const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
+
+app.post('/feta', type, async function (req, res) {
+    let dimensions = await sizeOf('../uploads/' + req.file.filename);
+    let sf2c = {
+            cmd: 'imageSaveSuccess',
+            imageId: req.file.filename,
+            imageSize: dimensions
+    };
+    res.json(sf2c)
+});
+
+app.use('/file', express.static(path.join(__dirname, '../uploads')));
 app.use(cors());
 app.post('/beta', function (req, res) {
     let inputStream =       [];
@@ -25,32 +53,22 @@ app.post('/beta', function (req, res) {
     })
 });
 
-// https://stackoverflow.com/questions/39677993/send-blob-data-to-node-using-fetch-multer-express
+let collectionUsers;
+let collectionMaps;
+var db;
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '../uploads/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+MongoClient.connect(uri, {useNewUrlParser: true}, function(err, client) {
+    if (err) {
+        console.log(err);
+    }
+    else {
+        console.log('connected');
+        db = client.db("app");
+        collectionUsers = db.collection('users');
+        collectionMaps =db.collection('maps');
+        app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
     }
 });
-
-var upload = multer({ storage: storage });
-var type = upload.single('upl');
-
-app.post('/feta', type, async function (req, res) {
-    let dimensions = await sizeOf('../uploads/' + req.file.filename);
-    let sf2c = {
-            cmd: 'imageSaveSuccess',
-            imageId: req.file.filename,
-            imageSize: dimensions
-    };
-    res.json(sf2c)
-});
-
-app.use('/file', express.static(path.join(__dirname, '../uploads')));
-app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 
 async function sendResponse(c2s) {
     let s2c = {
@@ -114,7 +132,6 @@ async function sendResponse(c2s) {
             cmd: 'signInFail',
         };
     }
-
     return s2c;
 }
 
@@ -123,23 +140,10 @@ async function auth(c2s) {
     return m2s.authenticationSuccess;
 }
 
-const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectId;
-const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
-
 async function mongoFunction(c2s, operation) {
-
     let m2s = {};
-
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-
     try {
-        await client.connect();
         console.log('connected to server...');
-
-        const collectionUsers =     client.db("app").collection("users");
-        const collectionMaps =      client.db("app").collection("maps");
-
         switch (operation) {
             case 'auth': {
                 let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
@@ -195,8 +199,6 @@ async function mongoFunction(c2s, operation) {
         console.log('mongo error');
         console.log(err.stack);
     }
-    client.close();
-
     return m2s;
 }
 
