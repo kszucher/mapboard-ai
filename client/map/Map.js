@@ -12,6 +12,10 @@ import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
 import {getDefaultNode} from "../node/Node";
 
+// algo
+// IF path === s,0 --> rename it to r
+// ELSE add r to the beginning
+
 export let mapMem = {};
 export let mapStorageOut = {};
 export let mapDivData = [];

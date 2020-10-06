@@ -57,7 +57,12 @@ let collectionUsers;
 let collectionMaps;
 var db;
 
-MongoClient.connect(uri, {useNewUrlParser: true}, function(err, client) {
+MongoClient.connect(uri, {
+    useNewUrlParser: true,
+
+    // https://stackoverflow.com/questions/24880412/nodejs-mongodb-driver-drops-connection-when-idle
+
+}, function(err, client) {
     if (err) {
         console.log(err);
     }
