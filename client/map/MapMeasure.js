@@ -21,6 +21,29 @@ export const mapMeasure = {
             mapMeasure.iterate(cm.d[i], params);
         }
 
+        let sCount = Object.keys(cm.s).length;
+        if (sCount) {
+            let sMaxW = 0;
+            for (let i = 0; i < sCount; i++) {
+                mapMeasure.iterate(cm.s[i], params);
+                cm.familyH += cm.s[i].maxH;
+                let currMaxW = cm.s[i].maxW;
+                if (currMaxW >= sMaxW) {
+                    sMaxW = currMaxW;
+                }
+                if (params.hasMultipleChild || params.hasMultipleContentRow) {
+                    cm.spacingActivated = 1;
+                }
+            }
+            if (cm.spacingActivated) {
+                cm.familyH += (sCount - 1)*cm.spacing;
+            }
+            cm.familyW = sMaxW + mapMem.sLineDeltaXDefault;
+        }
+        if (sCount > 1) {
+            params.hasMultipleChild = 1;
+        }
+
         if (cm.type === 'struct') {
             if (cm.childType === 'cell') {
                 let rowCount = Object.keys(cm.c).length;
@@ -114,29 +137,6 @@ export const mapMeasure = {
                 cm.selfW = cm.contentW + mapMem.padding*2;
                 cm.selfH = cm.contentH + mapMem.padding*2;
             }
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        if (sCount) {
-            let sMaxW = 0;
-            for (let i = 0; i < sCount; i++) {
-                mapMeasure.iterate(cm.s[i], params);
-                cm.familyH += cm.s[i].maxH;
-                let currMaxW = cm.s[i].maxW;
-                if (currMaxW >= sMaxW) {
-                    sMaxW = currMaxW;
-                }
-                if (params.hasMultipleChild || params.hasMultipleContentRow) {
-                    cm.spacingActivated = 1;
-                }
-            }
-            if (cm.spacingActivated) {
-                cm.familyH += (sCount - 1)*cm.spacing;
-            }
-            cm.familyW = sMaxW + mapMem.sLineDeltaXDefault;
-        }
-        if (sCount > 1) {
-            params.hasMultipleChild = 1;
         }
 
         cm.maxW = cm.selfW + cm.familyW;

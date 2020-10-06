@@ -24,6 +24,16 @@ export const mapCollect = {
             }
         }
 
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            mapCollect.iterate(cm.d[i]);
+        }
+
+        let sCount = Object.keys(cm.s).length;
+        for (let i = 0; i < sCount; i++) {
+            mapCollect.iterate(cm.s[i], params);
+        }
+
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
@@ -32,9 +42,5 @@ export const mapCollect = {
             }
         }
 
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapCollect.iterate(cm.s[i], params);
-        }
     }
 };
