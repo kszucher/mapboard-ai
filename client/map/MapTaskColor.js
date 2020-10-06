@@ -3,24 +3,19 @@ import {getBgc} from "../core/Utils";
 
 export const mapTaskColor = {
     start: () => {
-        let cm = mapMem.getData();
-        for (let i = 0; i < cm.s.length; i++) {
-            mapTaskColor.iterate(cm.s[i]);
-        }
+        let cm = mapMem.getData().r;
+        mapTaskColor.iterate(cm);
     },
 
     iterate: (cm) => {
         if (cm.taskStatus !== -1) {
-
             cm.sTextColor = '#000000';
-
             switch (cm.taskStatus) {
                 case 0: cm.lineColor = '#bbbbbb';  break;
                 case 1: cm.lineColor = '#2c9dfc';  break;
                 case 2: cm.lineColor = '#d5802a';  break;
                 case 3: cm.lineColor = '#25bf25';  break;
             }
-
             if (cm.taskStatus === 0) {
                 cm.ellipseFill = 0;
             } else {
@@ -36,6 +31,11 @@ export const mapTaskColor = {
             }
         } else {
             cm.ellipseFill = 0;
+        }
+
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            mapTaskColor.iterate(cm.d[i]);
         }
 
         let sCount = Object.keys(cm.s).length;

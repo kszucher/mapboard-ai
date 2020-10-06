@@ -3,19 +3,23 @@ import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 
 export const mapMeasure = {
     start: () => {
-        let cm = mapMem.getData();
-        for (let i = 0; i < cm.s.length; i++) {
-            let params = {
-                hasMultipleChild: 0,
-                hasMultipleContentRow: 0,
-            };
-            mapMeasure.iterate(cm.s[i], params);
-        }
+        let cm = mapMem.getData().r;
+        let params = {
+            hasMultipleChild: 0,
+            hasMultipleContentRow: 0,
+        };
+        mapMeasure.iterate(cm, params);
+
     },
 
     iterate: (cm, params) => {
         params.hasMultipleChild = 0;
         params.hasMultipleContentRow = 0;
+
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            mapMeasure.iterate(cm.d[i], params);
+        }
 
         if (cm.type === 'struct') {
             if (cm.childType === 'cell') {
@@ -134,6 +138,7 @@ export const mapMeasure = {
         if (sCount > 1) {
             params.hasMultipleChild = 1;
         }
+
         cm.maxW = cm.selfW + cm.familyW;
         cm.maxH = Math.max(...[cm.selfH, cm.familyH]);
     }

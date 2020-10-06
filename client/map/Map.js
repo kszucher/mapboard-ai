@@ -46,10 +46,6 @@ export function loadMap(mapStorage) {
         deepestSelectablePath: [],
     };
 
-    if (mapMem.getData().s.length === 1) {
-        mapMem.getData().s.push(getDefaultNode({content:mapMem.getData().s[0].content}));
-    }
-
     mapMem.flow = mapStorage.hasOwnProperty('flow')? copy(mapStorage.flow) : 'right';
     // TODO: figure out the relation between changing map props and undo redo
 }

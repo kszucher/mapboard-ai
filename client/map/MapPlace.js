@@ -1,15 +1,18 @@
 import {mapMem} from "./Map";
 
+let minWidth;
+let minHeight;
+
 export const mapPlace = {
     start: () => {
-        let cm = mapMem.getData();
+        let cm = mapMem.getData().r;
 
-        let minRightWidth = cm.s[0].selfW + cm.s[0].familyW + mapMem.sLineDeltaXDefault;
-        let minLeftWidth = cm.s[1].selfW + cm.s[1].familyW + mapMem.sLineDeltaXDefault;
+        let minRightWidth =     cm.d.length > 0? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 0;
+        let minLeftWidth =      cm.d.length > 1? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 0;
         let minWidth = mapMem.flow === 'right'? minRightWidth : Math.max(...[minRightWidth, minLeftWidth])*2;
 
-        let minRightHeight = cm.s[0].familyH > cm.s[0].selfH ? cm.s[0].familyH : cm.s[0].selfH;
-        let minLeftHeight = cm.s[1].familyH > cm.s[1].selfH ? cm.s[1].familyH : cm.s[1].selfH;
+        let minRightHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
+        let minLeftHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
         let minHeight = mapMem.flow === 'right'? minRightHeight : Math.max(...[minRightHeight, minLeftHeight]);
 
         let mapHeight = minHeight + 500;
@@ -27,56 +30,58 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        for (let i = 0; i < cm.s.length; i++) {
-            if (mapMem.flow === 'right') {
-                cm.s[i].parentNodeStartX = 0;
-                cm.s[i].parentNodeStartY = 0;
-                cm.s[i].parentNodeEndX = 0;
-                cm.s[i].parentNodeEndY = 0;
-                cm.s[i].lineDeltaX = 20;
-                cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
-            }
-            else if (mapMem.flow === 'center') {
-                cm.s[i].parentNodeStartX = mapWidth / 2;
-                cm.s[i].parentNodeStartY = 0;
-                cm.s[i].parentNodeEndX = mapWidth / 2;
-                cm.s[i].parentNodeEndY = 0;
-                cm.s[i].lineDeltaX = 0;
-                cm.s[i].lineDeltaY = minHeight / 2 + 20 - 0.5;
-            }
 
-            mapPlace.iterate(cm.s[i]);
-        }
+        console.log(minHeight)
+        // TODO: why is MBA not center aligned?
+
+        mapPlace.iterate(cm);
     },
 
     iterate: (cm) => {
-        if (cm.parentType === 'cell') {
-            if (cm.path[1] === 0) {
-                cm.nodeStartX = cm.parentNodeStartX;
+        if (cm.isRoot) {
+            if (mapMem.flow === 'right') {
+                cm.parentNodeStartX = 0;
+                cm.parentNodeEndX = 0;
+                cm.lineDeltaX = 20;
+                cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
+                cm.nodeStartX = cm.parentNodeStartX + cm.lineDeltaX;
                 cm.nodeEndX = cm.nodeStartX + cm.selfW;
-            } else {
-                cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
+            } else if (mapMem.flow === 'center') {
+                cm.parentNodeStartX = minWidth / 2;
+                cm.parentNodeEndX = minWidth / 2;
+                cm.lineDeltaX = 0;
+                cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
+                cm.nodeStartX = cm.parentNodeStartX - cm.selfW / 2;
+                cm.nodeEndX = cm.nodeStartX + cm.selfW;
+            }
+        } else if (cm.isRootChild) {
+            if (mapMem.flow === 'right') {
+                cm.nodeStartX = cm.parentNodeEndX;
                 cm.nodeEndX = cm.parentNodeEndX;
+            } else if (mapMem.flow === 'center') {
+                cm.nodeStartX = cm.parentNodeStartX;
+                cm.nodeEndX = cm.parentNodeStartX;
             }
         } else {
-            if (cm.isRoot) {
-                if (mapMem.flow === 'right') {
-                    cm.nodeStartX = cm.parentNodeStartX + cm.lineDeltaX;
-                    cm.nodeEndX = cm.nodeStartX + cm.selfW;
-                } else if (mapMem.flow === 'center') {
-                    cm.nodeStartX = cm.parentNodeStartX - cm.selfW / 2;
-                    cm.nodeEndX = cm.nodeStartX + cm.selfW;
-                }
-            } else {
-                if (cm.path[1] === 0) { // right
+            if (cm.parentType === 'struct' || cm.parentType === 'dir') {
+                if (cm.path[2] === 0) { // right
                     cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
                     cm.nodeEndX = cm.nodeStartX + cm.selfW;
                 } else { // left
                     cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
                     cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
                 }
+            } else if (cm.parentType === 'cell') {
+                if (cm.path[2] === 0) {
+                    cm.nodeStartX = cm.parentNodeStartX;
+                    cm.nodeEndX = cm.nodeStartX + cm.selfW;
+                } else {
+                    cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
+                    cm.nodeEndX = cm.parentNodeEndX;
+                }
             }
         }
+
         cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
         cm.nodeEndY = cm.nodeStartY;
 
@@ -88,6 +93,11 @@ export const mapPlace = {
         if (Number.isInteger(cm.nodeStartX)) {
             cm.nodeStartX -= 0.5;
             cm.nodeEndX -= 0.5;
+        }
+
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            mapPlace.iterate(cm.d[i]);
         }
 
         let rowCount = Object.keys(cm.c).length;

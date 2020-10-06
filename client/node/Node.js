@@ -22,6 +22,7 @@ export let props = {
         ellipseFillColor:                       getBgc(),
         ellipseLineWidth:                       1,
         taskStatus:                             -1,
+        d:                                      [],
     },
     saveNever: {
         initOnce: {
@@ -46,6 +47,7 @@ export let props = {
         initAlways: {
             // mapChain
             isRoot:                             0,
+            isRootChild:                        0,
             parentPath:                         [],
             type:                               '',
             parentType:                         '',
@@ -81,6 +83,6 @@ export let props = {
 };
 
 export function getDefaultNode(attributes) {
-    let defaultNode = { ...{c: [[]], s: [], content: ''}, ...attributes}; // simply return this as it copies already
+    let defaultNode = { ...{c: [[]], s: [], d:[], content: ''}, ...attributes}; // simply return this as it copies already
     return JSON.parse(JSON.stringify(defaultNode));
 }

@@ -2,26 +2,38 @@ import {mapMem} from "./Map";
 
 export const mapChain = {
     start: () => {
-        let cm = mapMem.getData();
-        for (let i = 0; i < cm.s.length; i++) {
-            Object.assign(cm.s[i], {
+        let cm = mapMem.getData().r;
+        mapChain.iterate(cm);
+    },
+
+    iterate: (cm) => {
+        if (cm.path.length === 1) {
+            Object.assign(cm, {
                 parentPath: [],
-                path: ["s",i],
+                path: ['r'],
                 isRoot: 1,
                 type: 'struct',
                 index: undefined,
             });
-            mapChain.iterate(cm.s[i]);
-        }
-    },
-
-    iterate: (cm) => {
-        if (!cm.isRoot) {
-            if (cm.type === 'struct') {
+        } else {
+            if (cm.type === 'dir') {
+                cm.path = cm.parentPath.concat(["d", cm.index]);
+            } else if (cm.type === 'struct') {
                 cm.path = cm.parentPath.concat(["s", cm.index]);
             } else if (cm.type === 'cell') {
                 cm.path = cm.parentPath.concat(["c", cm.index[0], cm.index[1]]);
             }
+        }
+
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            Object.assign(cm.d[i], {
+                parentPath: ['r'],
+                isRootChild: 1,
+                type: 'dir',
+                index: i,
+            });
+            mapChain.iterate(cm.d[i]);
         }
 
         let rowCount = Object.keys(cm.c).length;
@@ -51,10 +63,12 @@ export const mapChain = {
             mapChain.iterate(cm.s[i]);
         }
 
-        if (!(rowCount === 1 && colCount === 0)) {
-            cm.childType = 'cell';
+        if (dirCount > 0) {
+            cm.childType = 'dir';
         } else if (sCount > 0) {
             cm.childType = 'struct';
+        } else if (!(rowCount === 1 && colCount === 0)) {
+            cm.childType = 'cell';
         } else {
             cm.childType = '';
         }

@@ -2,13 +2,16 @@ import {mapMem} from "./Map";
 
 export const mapTaskCalc = {
     start: () => {
-        let cm = mapMem.getData();
-        for (let i = 0; i < cm.s.length; i++) {
-            mapTaskCalc.iterate(cm.s[i]);
-        }
+        let cm = mapMem.getData().r;
+        mapTaskCalc.iterate(cm);
     },
 
     iterate: (cm) => {
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            mapTaskCalc.iterate(cm.d[i]);
+        }
+
         let sCount = Object.keys(cm.s).length;
         if (sCount === 0) {
             if (cm.taskStatusInherited === 1) {

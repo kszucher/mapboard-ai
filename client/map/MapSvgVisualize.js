@@ -15,10 +15,8 @@ let svgElementNameList = [
 
 export const mapSvgVisualize = {
     start: () => {
-        let cm = mapMem.getData();
-        for (let i = 0; i < cm.s.length; i++) {
-            mapSvgVisualize.iterate(cm.s[i]);
-        }
+        let cm = mapMem.getData().r;
+        mapSvgVisualize.iterate(cm);
     },
 
     iterate: (cm) => {
@@ -42,6 +40,11 @@ export const mapSvgVisualize = {
         for (let i = 0; i < sCount; i++) {
             mapSvgVisualize.iterate(cm.s[i]);
         }
+
+        let dirCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dirCount; i++) {
+            mapSvgVisualize.iterate(cm.d[i]);
+        }
     },
 
     animate: (cm, step) => {
@@ -50,12 +53,12 @@ export const mapSvgVisualize = {
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
 
         // connection
-        if (!cm.isRoot &&  cm.parentType !== 'cell' && (
+        if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && cm.childType !== 'cell' ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
-                if (cm.path[1] === 0) {
+                if (cm.path[2] === 0) {
                     x1 = cp1x = cp2x = x2 = cm.parentNodeEndXFrom;
                     y1 = cp1y = cp2y = y2 = cm.parentNodeEndYFrom;
 
@@ -65,7 +68,7 @@ export const mapSvgVisualize = {
                 }
             }
             else if (step === 1) {
-                if (cm.path[1] === 0) {
+                if (cm.path[2] === 0) {
                     x1 =    cm.parentNodeEndX;                              y1 =    cm.parentNodeEndY;
                     cp1x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp1y =  cm.parentNodeEndY;
                     cp2x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp2y =  cm.parentNodeEndY + cm.lineDeltaY;
@@ -101,8 +104,8 @@ export const mapSvgVisualize = {
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
                 let x1, y1, x2, y2;
-                x1 = cm.path[1] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y1 = cm.nodeStartY - selfHadj/2;
-                x2 = cm.path[1] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y2 = cm.nodeEndY + selfHadj/2;
+                x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y1 = cm.nodeStartY - selfHadj/2;
+                x2 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y2 = cm.nodeEndY + selfHadj/2;
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
@@ -150,7 +153,14 @@ export const mapSvgVisualize = {
         }
 
         // task
-        if (mapMem.task && cm.childType!== 'struct' && cm.childType !== 'cell' && cm.parentType !== 'cell' && cm.contentType !== 'image') {
+        if (mapMem.task &&
+            cm.childType!== 'struct' &&
+            cm.childType !== 'cell' &&
+            cm.parentType !== 'cell' &&
+            cm.contentType !== 'image' &&
+            !cm.isRoot &&
+            !cm.isRootChild
+        ) {
             let startX = 1230;
 
             let x1 = cm.nodeEndX;
