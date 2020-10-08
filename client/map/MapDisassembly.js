@@ -11,6 +11,7 @@ export const mapDisassembly = {
 
     iterate: (cml) => {
         let nodeCopy = copy(cml);
+        delete nodeCopy['d'];
         delete nodeCopy['s'];
         delete nodeCopy['c'];
         nodeCopyList.push(nodeCopy);

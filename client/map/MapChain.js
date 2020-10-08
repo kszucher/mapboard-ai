@@ -8,18 +8,19 @@ export const mapChain = {
             path: ['r'],
             isRoot: 1,
             type: 'struct',
-            index: undefined,
         });
         mapChain.iterate(cm);
     },
 
     iterate: (cm) => {
-        if (cm.type === 'dir') {
-            cm.path = cm.parentPath.concat(["d", cm.index]);
-        } else if (cm.type === 'struct') {
-            cm.path = cm.parentPath.concat(["s", cm.index]);
-        } else if (cm.type === 'cell') {
-            cm.path = cm.parentPath.concat(["c", cm.index[0], cm.index[1]]);
+        if (!cm.isRoot) {
+            if (cm.type === 'dir') {
+                cm.path = cm.parentPath.concat(["d", cm.index]);
+            } else if (cm.type === 'struct') {
+                cm.path = cm.parentPath.concat(["s", cm.index]);
+            } else if (cm.type === 'cell') {
+                cm.path = cm.parentPath.concat(["c", cm.index[0], cm.index[1]]);
+            }
         }
 
         let dirCount = Object.keys(cm.d).length;

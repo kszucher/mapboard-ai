@@ -11,7 +11,7 @@ export const mapInit = {
     iterate: (cm) => {
         Object.keys(props.saveOptional).map(currProperty => {
             if (!cm.hasOwnProperty(currProperty)) {
-                cm[currProperty] = ['s', 'c', 'path'].includes(currProperty)?
+                cm[currProperty] = ['d', 's', 'c', 'path'].includes(currProperty)?
                     copy(props.saveOptional[currProperty]) :
                     shallowCopy(props.saveOptional[currProperty])
             }
