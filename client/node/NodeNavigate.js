@@ -1,6 +1,22 @@
 import {mapref} from "../map/Map";
 
 export function structNavigate (lastPath, direction) {
+    if (lastPath.length === 1) {
+        if (direction === 'ArrowRight') {
+            structNavigateInner(['r', 'd', 0], direction);
+        } else if (direction === 'ArrowLeft') {
+            structNavigateInner(['r', 'd', 1], direction);
+        }
+    } else if (lastPath.length === 5 && lastPath[2] === 0 && direction === 'ArrowLeft') {
+        return ['r'];
+    } else if (lastPath.length === 5 && lastPath[2] === 1 && direction === 'ArrowRight') {
+        return ['r']
+    } else {
+        structNavigateInner(lastPath, direction);
+    }
+}
+
+function structNavigateInner (lastPath, direction) {
 
     let leftDepth = - 1;
     let currPath = [];

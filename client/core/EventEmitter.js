@@ -141,10 +141,11 @@ export function eventEmitter(command) {
         case 'selectNeighborNode': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let toPath = sc.lastPath;
-            if (keyStr === 'ArrowUp') toPath = sc.geomHighPath;
-            if (keyStr === 'ArrowDown') toPath = sc.geomLowPath;
-            mapref(structNavigate(toPath, keyStr)).selected = 1;
+            let fromPath = sc.lastPath;
+            if (keyStr === 'ArrowUp') fromPath = sc.geomHighPath;
+            if (keyStr === 'ArrowDown') fromPath = sc.geomLowPath;
+            let toPath = structNavigate(fromPath, keyStr);
+            mapref(toPath).selected = 1;
             break;
         }
         case 'selectNeighborNodeToo': {
