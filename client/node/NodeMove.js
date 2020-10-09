@@ -20,21 +20,20 @@ export function structMove(sc, target, mode) {
 
             if (target === 'struct2struct') {
                 if (mode === 'ArrowLeft') {
-                    if (currParentRef.isRoot === 0) {
+                    if (currParentRef.isRootChild) {
+                        let rootRef = mapref(['r']);
+                        for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
+                            let currRef = mapref(sc.structSelectedPathList[i]);
+                            currParentRef.s.splice(currRef.index, 1);
+                            rootRef.d[1].s.splice(0, 0, copy(currRef));
+                        }
+                    } else {
                         let currParentParentPath = mapref(currParentPath).parentPath;
                         let currParentParentRef = mapref(currParentParentPath);
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
                             currParentRef.s.splice(currRef.index, 1);
                             currParentParentRef.s.splice(currParentRef.index + 1, 0, copy(currRef));
-                        }
-                    }
-                    else {
-                        let rootRootRef = mapref(['s']);
-                        for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-                            let currRef = mapref(sc.structSelectedPathList[i]);
-                            currParentRef.s.splice(currRef.index, 1);
-                            rootRootRef[1].s.splice(0, 0, copy(currRef));
                         }
                     }
                 } else if (mode === 'ArrowRight') {
