@@ -159,9 +159,14 @@ export const mapSvgVisualize = {
             cm.parentType !== 'cell' &&
             cm.contentType !== 'image' &&
             !cm.isRoot &&
-            !cm.isRootChild
-        ) {
-            let startX = 1230;
+            !cm.isRootChild) {
+
+            let n = 4;
+            let d = 24;
+            let gap = 4;
+            let wrapWidth = n*d + (n-1)*gap;
+
+            let startX = cm.path[2] === 0 ? mapMem.mapWidth - wrapWidth - 20 : 20;
 
             let x1 = cm.nodeEndX;
             let y1 = cm.nodeEndY;
@@ -174,9 +179,8 @@ export const mapSvgVisualize = {
                 color: '#eeeeee',
             };
 
-            let sphereOffset = 28;
-            for (let i = 0; i < 4; i++) {
-                let centerX = startX + i * sphereOffset;
+            for (let i = 0; i < n; i++) {
+                let centerX = startX + d/2 + i * (d + gap);
                 let centerY = cm.nodeEndY;
 
                 let fill;
@@ -201,7 +205,7 @@ export const mapSvgVisualize = {
                     type: 'circle',
                     cx: centerX,
                     cy: centerY,
-                    r: 12,
+                    r: d/2,
                     fill: fill,
                 }
             }
