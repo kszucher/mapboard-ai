@@ -1,19 +1,16 @@
 import {mapMem} from "./Map";
 
-let minWidth;
-let minHeight;
-
 export const mapPlace = {
     start: () => {
         let cm = mapMem.getData().r;
 
         let minRightWidth =     cm.d.length > 0? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 0;
         let minLeftWidth =      cm.d.length > 1? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 0;
-        minWidth = minRightWidth + minLeftWidth;
+        let minWidth = minRightWidth + minLeftWidth + cm.selfW;
 
         let minRightHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
         let minLeftHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
-        minHeight = Math.max(...[minRightHeight, minLeftHeight]);
+        let minHeight = Math.max(...[minRightHeight, minLeftHeight]);
 
         let mapHeight = minHeight + 500;
         let mapWidth = minWidth; // add custom values to achive custom column widths
@@ -30,13 +27,12 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        cm.parentNodeStartX = minLeftWidth + 20;
+        cm.parentNodeStartX = minLeftWidth + cm.selfW / 2;
         cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = minLeftWidth + 20;
+        cm.parentNodeEndX = minLeftWidth + cm.selfW / 2;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = 0;
         cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
-
         mapPlace.iterate(cm);
     },
 
