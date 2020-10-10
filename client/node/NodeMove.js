@@ -18,6 +18,11 @@ export function structMove(sc, target, mode) {
             let currParentPath = parentPathList[0];
             let currParentRef = mapref(currParentPath);
 
+            // TODO
+            // make virtualClipboard
+            // use nodeNavigate for FROM and TO
+            // also nodeSelect for hasSameParent
+
             if (target === 'struct2struct') {
                 if (mode === 'ArrowLeft') {
                     if (currParentRef.isRootChild) {
