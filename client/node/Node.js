@@ -1,4 +1,4 @@
-import {getBgc} from '../core/Utils'
+import {copy, getBgc} from '../core/Utils'
 
 export let props = {
     saveAlways: {
@@ -85,6 +85,5 @@ export let props = {
 };
 
 export function getDefaultNode(attributes) {
-    let defaultNode = { ...{d:[], s: [],  c: [[]], content: ''}, ...attributes}; // simply return this as it copies already, or is it?
-    return JSON.parse(JSON.stringify(defaultNode));
+    return copy({ ...{d:[], s: [],  c: [[]], content: ''}, ...attributes});
 }
