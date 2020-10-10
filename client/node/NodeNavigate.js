@@ -1,24 +1,37 @@
 import {mapref} from "../map/Map";
 
-export function structNavigate (lastPath, direction) {
-    if (lastPath.length === 1) {
-        if (direction === 'ArrowRight') {
-            return structNavigateInner(['r', 'd', 0], direction);
-        } else if (direction === 'ArrowLeft') {
-            return structNavigateInner(['r', 'd', 1], direction);
+export function structNavigate (lastPath, key) {
+    let truePath = lastPath;
+    let direction = '';
+    if (key === 'ArrowRight') {
+        if (lastPath.length === 1) {
+            truePath = ['r', 'd', 0];
+            direction = 'out';
+            if (!mapref(truePath).s.length) {
+                return ['r'];
+            }
+        } else {
+            direction = lastPath[2] === 0 ? 'out' : 'in';
         }
-    } else if (lastPath.length === 5 && lastPath[2] === 0 && direction === 'ArrowLeft') {
-        return ['r'];
-    } else if (lastPath.length === 5 && lastPath[2] === 1 && direction === 'ArrowRight') {
-        return ['r']
-    } else {
-        return structNavigateInner(lastPath, direction);
+    } else if (key === 'ArrowLeft') {
+        if (lastPath.length === 1) {
+            truePath = ['r', 'd', 1];
+            direction = 'out';
+            if (!mapref(truePath).s.length) {
+                return ['r'];
+            }
+        } else {
+            direction = lastPath[2] === 0 ? 'in' : 'out';
+        }
+    } else if (key === 'ArrowUp') {
+        direction = 'up';
+    } else if (key === 'ArrowDown') {
+        direction = 'down';
     }
-}
 
-function structNavigateInner (lastPath, direction) {
+    console.log('FROM: ' + [truePath, direction]);
 
-    let leftDepth = - 1;
+    let inDepth = - 1;
     let currPath = [];
 
     // sequenceGenerator
@@ -33,79 +46,72 @@ function structNavigateInner (lastPath, direction) {
     // l l l v r
     // l l l v
     sequenceGenerator: while (true) {
-        leftDepth++;
-        if (leftDepth > 10) {console.log('recursion error'); break}
-        for (let rightDepth = leftDepth; rightDepth > - 1; rightDepth--) {
+        inDepth++;
+        if (inDepth > 10) {console.log('recursion error'); break}
+        for (let outDepth = inDepth; outDepth > - 1; outDepth--) {
 
-            // sequence string based on depths nums
             let sequence = [];
             switch (direction) {
-                case 'ArrowDown':     sequence = Array(leftDepth).fill('l').concat('d').concat(Array(rightDepth).fill('ru')); break;
-                case 'ArrowUp':       sequence = Array(leftDepth).fill('l').concat('u').concat(Array(rightDepth).fill('rd')); break;
-                case 'ArrowLeft':     sequence = ['l']; break;
-                case 'ArrowRight':    sequence = ['rm']; break;
-                default:            console.log('sequence_err');
+                case 'down': sequence = Array(inDepth).fill('i').concat('d').concat(Array(outDepth).fill('ou')); break;
+                case 'up': sequence = Array(inDepth).fill('i').concat('u').concat(Array(outDepth).fill('od')); break;
+                case 'in': sequence = ['i']; break;
+                case 'out': sequence = ['om']; break;
+                default: console.log('sequence error');
             }
 
-            // sequence acceptance
             let sequenceOk = Array(sequence.length).fill(false);
 
-            // currPath init
-            currPath = lastPath.slice();
+            currPath = truePath.slice();
 
-            // sequenceProcessor
             for (let i = 0; i < sequence.length; i++) {
-                // naming ease
                 let currDirection = sequence[i];
                 let currRef = mapref(currPath);
                 let currChildCount = currRef.s.length;
                 let parentRef = mapref(currRef.parentPath);
 
-                // stop sequenceGenerator - no solution
-                if (currRef.isRoot === 1 && ['l','u','d'].includes(currDirection) || // left edge
-                    parentRef.type === 'cell' && ['l'].includes(currDirection) || // left edge
-                    currDirection === 'rm' && currChildCount === 0) { // right edge
-                    currPath = lastPath.slice(); // reinit
+                if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
+                    parentRef.type === 'cell' && ['i'].includes(currDirection) ||
+                    currDirection === 'om' && currChildCount === 0) {
+                    currPath = truePath.slice();
                     break sequenceGenerator;
                 }
 
-                // stop sequenceProcessor
                 if (currDirection === 'u' && currRef.index === 0 ||
                     currDirection === 'd' && parentRef.s.length === currRef.index + 1 ||
-                    currDirection === 'ru' && currChildCount === 0 ||
-                    currDirection === 'rd' && currChildCount === 0) {
+                    currDirection === 'ou' && currChildCount === 0 ||
+                    currDirection === 'od' && currChildCount === 0) {
                     break;
                 }
 
-                // currPath loop
-                if (currDirection === 'l') {
-                    currPath = currPath.slice(0, currPath.length - 2);
+                if (currDirection === 'i') {
+                    if (currPath.length === 5) {
+                        currPath = currPath.slice(0, currPath.length - 4);
+                    } else {
+                        currPath = currPath.slice(0, currPath.length - 2);
+                    }
+
                     parentRef.lastSelectedChild = currRef.index;
                 }
                 else if (currDirection === 'u') currPath[currPath.length - 1] -= 1;
                 else if (currDirection === 'd') currPath[currPath.length - 1] += 1;
-                else if (currDirection === 'ru') currPath.push('s', 0);
-                else if (currDirection === 'rd') currPath.push('s', currChildCount - 1);
-                else if (currDirection === 'rm') {
-                    if (currRef.lastSelectedChild >= 0 && currRef.lastSelectedChild < currChildCount) { // if valid
-                        // keep it
-                    } else {
+                else if (currDirection === 'ou') currPath.push('s', 0);
+                else if (currDirection === 'od') currPath.push('s', currChildCount - 1);
+                else if (currDirection === 'om') {
+                    if (!(currRef.lastSelectedChild >= 0 && currRef.lastSelectedChild < currChildCount)) {
                         currRef.lastSelectedChild = currChildCount % 2 ? Math.floor(currChildCount / 2) : currChildCount / 2 - 1
                     }
                     currPath.push('s', currRef.lastSelectedChild);
                 }
-
                 sequenceOk[i] = true;
             }
 
-            // stop sequenceGenerator - solution
             if (sequenceOk[sequenceOk.length - 1] === true) {
                 break sequenceGenerator;
             }
         }
     }
 
-    console.log(currPath)
+    // console.log('TO: ' + currPath);
 
     return currPath;
 }
