@@ -85,6 +85,6 @@ export let props = {
 };
 
 export function getDefaultNode(attributes) {
-    let defaultNode = { ...{c: [[]], s: [], d:[], content: ''}, ...attributes}; // simply return this as it copies already
+    let defaultNode = { ...{d:[], s: [],  c: [[]], content: ''}, ...attributes}; // simply return this as it copies already, or is it?
     return JSON.parse(JSON.stringify(defaultNode));
 }

@@ -10,11 +10,6 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
-import {getDefaultNode} from "../node/Node";
-
-// algo
-// IF path === s,0 --> rename it to r
-// ELSE add r to the beginning
 
 export let mapMem = {};
 export let mapStorageOut = {};
@@ -117,10 +112,9 @@ export function pathMerge(path1, path2) {
 }
 
 export function saveMap () {
-    let cm = JSON.parse(JSON.stringify(mapMem.getData()));
-    let cml = JSON.parse(JSON.stringify(cm));
-    mapDeinit.start(cml);
-    mapDisassembly.start(cml);
+    let cm = copy(mapMem.getData());
+    mapDeinit.start(cm);
+    mapDisassembly.start(cm);
     mapStorageOut ={
         data: nodeCopyList,
         density: mapMem.density,

@@ -29,7 +29,7 @@ export function structNavigate (lastPath, key) {
         direction = 'down';
     }
 
-    console.log('FROM: ' + [truePath, direction]);
+    // console.log('FROM: ' + [truePath, direction]);
 
     let inDepth = - 1;
     let currPath = [];
