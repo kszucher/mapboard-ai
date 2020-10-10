@@ -9,7 +9,7 @@ export const mapPlace = {
 
         let minRightWidth =     cm.d.length > 0? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 0;
         let minLeftWidth =      cm.d.length > 1? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 0;
-        minWidth = mapMem.flow === 'right'? minRightWidth : Math.max(...[minRightWidth, minLeftWidth])*2;
+        minWidth = mapMem.flow === 'right'? minRightWidth : minRightWidth + minLeftWidth;
 
         let minRightHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
         let minLeftHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
@@ -38,9 +38,9 @@ export const mapPlace = {
             cm.lineDeltaX = 20;
             cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
         } else if (mapMem.flow === 'center') {
-            cm.parentNodeStartX = minWidth / 2;
+            cm.parentNodeStartX = minLeftWidth + 20;
             cm.parentNodeStartY = 0;
-            cm.parentNodeEndX = minWidth / 2;
+            cm.parentNodeEndX = minLeftWidth + 20;
             cm.parentNodeEndY = 0;
             cm.lineDeltaX = 0;
             cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
