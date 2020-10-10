@@ -16,8 +16,8 @@ export const mapMeasure = {
         params.hasMultipleChild = 0;
         params.hasMultipleContentRow = 0;
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapMeasure.iterate(cm.d[i], params);
         }
 

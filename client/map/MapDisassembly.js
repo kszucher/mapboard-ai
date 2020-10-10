@@ -16,8 +16,8 @@ export const mapDisassembly = {
         delete nodeCopy['c'];
         nodeCopyList.push(nodeCopy);
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapDisassembly.iterate(cm.d[i]);
         }
 

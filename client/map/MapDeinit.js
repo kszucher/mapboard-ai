@@ -6,6 +6,16 @@ export const mapDeinit = {
     },
 
     iterate: (cml) => {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
+            mapDeinit.iterate(cm.d[i]);
+        }
+
+        let sCount = Object.keys(cml.s).length;
+        for (let i = 0; i < sCount; i++) {
+            mapDeinit.iterate(cml.s[i]);
+        }
+
         let rowCount = Object.keys(cml.c).length;
         let colCount = Object.keys(cml.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
@@ -14,28 +24,15 @@ export const mapDeinit = {
             }
         }
 
-        let sCount = Object.keys(cml.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapDeinit.iterate(cml.s[i]);
-        }
+        for (const prop of cml) {
+            if (props.saveAlways.hasOwnProperty(prop)) {
 
-        let currKeys = Object.keys(cml);
-        for (let i = 0; i < currKeys.length; i++) {
-            let currProperty = currKeys[i];
-            if (props.saveOptional.hasOwnProperty(currProperty)) {
-                if (currProperty === 'c') {
-                    if (cml.c.length === 1 && cml.c[0].length === 0) {
-                        // delete cml['c'];
-                    }
-                } else if (currProperty === 's') {
-                    if (cml.s.length === 0) {
-                        // delete cml['s'];
-                    }
-                } else if (cml[currProperty] === props.saveOptional[currProperty]) {
-                    delete cml[currProperty];
+            } else if (props.saveOptional.hasOwnProperty(prop)) {
+                if (cml[prop] === props.saveOptional[prop]) {
+                    delete cml[prop]
                 }
             } else {
-                delete cml[currProperty];
+                delete cml[prop];
             }
         }
     }

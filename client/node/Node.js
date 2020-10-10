@@ -1,18 +1,21 @@
 import {getBgc} from '../core/Utils'
 
 export let props = {
-    saveOptional: {
+    saveAlways: {
         path:                                   [],
+        d:                                      [],
+        s:                                      [],
+        c:                                      [[]],
+    },
+    saveOptional: {
         contentType:                            'text',
         content:                                '',
         linkType:                               '',
         link:                                   '',
         imageW:                                 0,
         imageH:                                 0,
-        s:                                      [],
         sTextColor:                             '#222222',
         sTextFontSize:                          14,
-        c:                                      [[]],
         cBorderColor:                           '#50dfff',
         selected:                               0,
         lastSelectedChild:                      -1, // -1 means not selected ever
@@ -22,7 +25,6 @@ export let props = {
         ellipseFillColor:                       getBgc(),
         ellipseLineWidth:                       1,
         taskStatus:                             -1,
-        d:                                      [],
     },
     saveNever: {
         initOnce: {

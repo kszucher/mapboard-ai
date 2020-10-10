@@ -9,26 +9,30 @@ export const mapInit = {
     },
 
     iterate: (cm) => {
-        Object.keys(props.saveOptional).map(currProperty => {
-            if (!cm.hasOwnProperty(currProperty)) {
-                cm[currProperty] = ['d', 's', 'c', 'path'].includes(currProperty)?
-                    copy(props.saveOptional[currProperty]) :
-                    shallowCopy(props.saveOptional[currProperty])
+        for (const prop in props.saveAlways) {
+            if (!cm.hasOwnProperty(prop)) {
+                cm[prop] = copy(props.saveAlways[prop]);
             }
-        });
+        }
 
-        Object.keys(props.saveNever.initOnce).map(currProperty => {
-            if (!cm.hasOwnProperty(currProperty)) {
-                cm[currProperty] = shallowCopy(props.saveNever.initOnce[currProperty])
+        for (const prop in props.saveOptional) {
+            if (!cm.hasOwnProperty(prop)) {
+                cm[prop] = shallowCopy(props.saveOptional[prop])
             }
-        });
+        }
 
-        Object.keys(props.saveNever.initAlways).map(currProperty => {
-            cm[currProperty] = shallowCopy(props.saveNever.initAlways[currProperty])
-        });
+        for (const prop in props.saveNever.initOnce) {
+            if (!cm.hasOwnProperty(prop)) {
+                cm[prop] = shallowCopy(props.saveNever.initOnce[prop])
+            }
+        }
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        for (const prop in props.saveNever.initAlways) {
+            cm[prop] = shallowCopy(props.saveNever.initAlways[prop])
+        }
+
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapInit.iterate(cm.d[i]);
         }
 

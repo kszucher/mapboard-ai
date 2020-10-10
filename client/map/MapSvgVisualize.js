@@ -41,8 +41,8 @@ export const mapSvgVisualize = {
             mapSvgVisualize.iterate(cm.s[i]);
         }
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapSvgVisualize.iterate(cm.d[i]);
         }
     },

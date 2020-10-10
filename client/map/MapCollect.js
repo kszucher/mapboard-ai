@@ -24,8 +24,8 @@ export const mapCollect = {
             }
         }
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapCollect.iterate(cm.d[i], params);
         }
 

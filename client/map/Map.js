@@ -117,7 +117,7 @@ export function pathMerge(path1, path2) {
 }
 
 export function saveMap () {
-    let cm = JSON.parse(JSON.stringify(mapMem.getData())).s[0];
+    let cm = JSON.parse(JSON.stringify(mapMem.getData()));
     let cml = JSON.parse(JSON.stringify(cm));
     mapDeinit.start(cml);
     mapDisassembly.start(cml);

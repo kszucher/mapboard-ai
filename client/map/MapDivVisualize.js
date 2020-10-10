@@ -80,8 +80,8 @@ export const mapDivVisualize = {
             mapDivData[cm.divId].path = cm.path;
         }
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapDivVisualize.iterate(cm.d[i]);
         }
 

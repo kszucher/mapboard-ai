@@ -91,8 +91,8 @@ export const mapPlace = {
             cm.nodeEndX -= 0.5;
         }
 
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             cm.d[i].parentNodeStartX = cm.nodeStartX;
             cm.d[i].parentNodeStartY = cm.nodeStartY;
             cm.d[i].parentNodeEndX = cm.nodeEndX;

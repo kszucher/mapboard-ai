@@ -7,8 +7,8 @@ export const mapTaskCalc = {
     },
 
     iterate: (cm) => {
-        let dirCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dirCount; i++) {
+        let dCount = Object.keys(cm.d).length;
+        for (let i = 0; i < dCount; i++) {
             mapTaskCalc.iterate(cm.d[i]);
         }
 
