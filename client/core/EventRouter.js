@@ -214,8 +214,6 @@ export const eventRouter = {
                     case 'createMapInTab':              eventEmitter('createMapInTab');             break;
                     case 'mapAttributeDensitySmall':    eventEmitter('mapAttributeDensitySmall');   recalc(); redraw(); break;
                     case 'mapAttributeDensityLarge':    eventEmitter('mapAttributeDensityLarge');   recalc(); redraw(); break;
-                    case 'mapAttributeFlowRight':       eventEmitter('mapAttributeFlowRight');      recalc(); redraw(); break;
-                    case 'mapAttributeFlowCenter':      eventEmitter('mapAttributeFlowCenter');     recalc(); redraw(); break;
                 }
                 break;
             }

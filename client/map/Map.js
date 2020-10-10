@@ -41,7 +41,6 @@ export function loadMap(mapStorage) {
         deepestSelectablePath: [],
     };
 
-    mapMem.flow = 'center';
     // TODO: figure out the relation between changing map props and undo redo
 }
 
@@ -119,6 +118,5 @@ export function saveMap () {
         data: nodeCopyList,
         density: mapMem.density,
         task: mapMem.task,
-        flow: mapMem.flow,
     };
 }

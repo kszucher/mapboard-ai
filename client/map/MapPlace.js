@@ -9,11 +9,11 @@ export const mapPlace = {
 
         let minRightWidth =     cm.d.length > 0? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 0;
         let minLeftWidth =      cm.d.length > 1? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 0;
-        minWidth = mapMem.flow === 'right'? minRightWidth : minRightWidth + minLeftWidth;
+        minWidth = minRightWidth + minLeftWidth;
 
         let minRightHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
         let minLeftHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
-        minHeight = mapMem.flow === 'right'? minRightHeight : Math.max(...[minRightHeight, minLeftHeight]);
+        minHeight = Math.max(...[minRightHeight, minLeftHeight]);
 
         let mapHeight = minHeight + 500;
         let mapWidth = minWidth; // add custom values to achive custom column widths
@@ -30,40 +30,27 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        if (mapMem.flow === 'right') {
-            cm.parentNodeStartX = 0;
-            cm.parentNodeStartY = 0;
-            cm.parentNodeEndX = 0;
-            cm.parentNodeEndY = 0;
-            cm.lineDeltaX = 20;
-            cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
-        } else if (mapMem.flow === 'center') {
-            cm.parentNodeStartX = minLeftWidth + 20;
-            cm.parentNodeStartY = 0;
-            cm.parentNodeEndX = minLeftWidth + 20;
-            cm.parentNodeEndY = 0;
-            cm.lineDeltaX = 0;
-            cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
-        }
+        cm.parentNodeStartX = minLeftWidth + 20;
+        cm.parentNodeStartY = 0;
+        cm.parentNodeEndX = minLeftWidth + 20;
+        cm.parentNodeEndY = 0;
+        cm.lineDeltaX = 0;
+        cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
+
         mapPlace.iterate(cm);
     },
 
     iterate: (cm) => {
         if (cm.isRoot) {
-            if (mapMem.flow === 'right') {
-                cm.nodeStartX = cm.parentNodeStartX + cm.lineDeltaX;
-                cm.nodeEndX = cm.nodeStartX + cm.selfW;
-            } else if (mapMem.flow === 'center') {
-                cm.nodeStartX = cm.parentNodeStartX - cm.selfW / 2;
-                cm.nodeEndX = cm.nodeStartX + cm.selfW;
-            }
+            cm.nodeStartX = cm.parentNodeStartX - cm.selfW / 2;
+            cm.nodeEndX = cm.nodeStartX + cm.selfW;
         }
         else {
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
-                if (cm.path[2] === 0) { // right
+                if (cm.path[2] === 0) {
                     cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
                     cm.nodeEndX = cm.nodeStartX + cm.selfW;
-                } else { // left
+                } else {
                     cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
                     cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
                 }

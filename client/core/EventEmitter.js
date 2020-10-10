@@ -543,7 +543,5 @@ export function eventEmitter(command) {
         }
         case 'mapAttributeDensitySmall': {  mapMem.density = 'small';   break; }
         case 'mapAttributeDensityLarge': {  mapMem.density = 'large';   break; }
-        case 'mapAttributeFlowRight': {     mapMem.flow = 'right';      break; }
-        case 'mapAttributeFlowCenter': {    mapMem.flow = 'center';     break; }
     }
 }
