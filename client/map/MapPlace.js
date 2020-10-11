@@ -9,11 +9,13 @@ export const mapPlace = {
         let gap = 4;
         let wrapWidth = n*d + (n-1)*gap;
 
+        let leftMargin = 32;
         let wrapLeftWidth =     cm.d[1].s.length > 0 && mapMem.task ? wrapWidth: 0;
-        let minLeftWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 32;
-        let minRightWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 32;
+        let minLeftWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW  : 0;
+        let minRightWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
         let wrapRightWidth =    cm.d[0].s.length > 0 && mapMem.task ? wrapWidth : 0;
-        let minWidth = wrapLeftWidth + minLeftWidth + cm.selfW + minRightWidth + wrapRightWidth;
+        let rightMargin = 32;
+        let minWidth = leftMargin + wrapLeftWidth + minLeftWidth + cm.selfW + minRightWidth + wrapRightWidth + rightMargin;
 
         let minRightHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
         let minLeftHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
@@ -43,9 +45,9 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        cm.parentNodeStartX = corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
+        cm.parentNodeStartX = leftMargin + corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
         cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
+        cm.parentNodeEndX = leftMargin + corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = 0;
         cm.lineDeltaY = minHeight / 2 + 30 - 0.5;
