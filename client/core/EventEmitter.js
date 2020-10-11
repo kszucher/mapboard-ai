@@ -187,7 +187,7 @@ export function eventEmitter(command) {
         case 'selectRoot': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            mapMem.getData().s[0].selected = 1;
+            mapMem.getData().r.selected = 1;
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
