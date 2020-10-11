@@ -10,8 +10,8 @@ export const mapPlace = {
         let wrapWidth = n*d + (n-1)*gap;
 
         let wrapLeftWidth =     cm.d[1].s.length > 0 && mapMem.task ? wrapWidth: 0;
-        let minLeftWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 20;
-        let minRightWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 20;
+        let minLeftWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + cm.d[1].familyW + mapMem.sLineDeltaXDefault : 32;
+        let minRightWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + cm.d[0].familyW + mapMem.sLineDeltaXDefault : 32;
         let wrapRightWidth =    cm.d[0].s.length > 0 && mapMem.task ? wrapWidth : 0;
         let minWidth = wrapLeftWidth + minLeftWidth + cm.selfW + minRightWidth + wrapRightWidth;
 
@@ -48,7 +48,7 @@ export const mapPlace = {
         cm.parentNodeEndX = corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = 0;
-        cm.lineDeltaY = minHeight / 2 + 20 - 0.5;
+        cm.lineDeltaY = minHeight / 2 + 30 - 0.5;
         mapPlace.iterate(cm);
     },
 
