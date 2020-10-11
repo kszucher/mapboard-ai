@@ -86,8 +86,8 @@ export const mapPlace = {
         }
 
         if (Number.isInteger(cm.nodeStartX)) {
-            cm.nodeStartX -= 0.5;
-            cm.nodeEndX -= 0.5;
+            cm.nodeStartX += 0.5;
+            cm.nodeEndX += 0.5;
         }
 
         let dCount = Object.keys(cm.d).length;
