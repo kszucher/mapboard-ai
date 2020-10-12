@@ -19,43 +19,56 @@ export function structMove(sc, target, mode) {
             let currParentRef = mapref(currParentPath);
 
             if (target === 'struct2struct') {
-                if (mode === 'ArrowLeft') {
-                    if (currParentRef.isRootChild) {
-                        let rootRef = mapref(['r']);
+                let effect = '';
+                if (
+                    mode === 'ArrowLeft' && sc.lm.path[2] === 0 && currParentRef.isRootChild ||
+                    mode === 'ArrowRight' && sc.lm.path[2] === 1 && currParentRef.isRootChild) {
+                    effect = 'through'
+                } else if (
+                    mode === 'ArrowLeft' && sc.lm.path[2] === 0 ||
+                    mode === 'ArrowRight' && sc.lm.path[2] === 1) {
+                    effect = 'in';
+                } else if (
+                    mode === 'ArrowLeft' && sc.lm.path[2] === 1 ||
+                    mode === 'ArrowRight' && sc.lm.path[2] === 0) {
+                    effect = 'out';
+                } else if (
+                    mode === 'ArrowUp') {
+                    effect = 'up';
+                } else if (
+                    mode === 'ArrowDown') {
+                    effect = 'down';
+                } else {
+                    console.log('unknown move direction');
+                }
+
+                if (effect === 'through') {
+                    let rootRef = mapref(['r']);
+                    let dir = sc.lm.path[2];
+                    let revDir = 1 - dir;
+                    for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
+                        let currRef = mapref(sc.structSelectedPathList[i]);
+                        currParentRef.s.splice(currRef.index, 1);
+                        rootRef.d[revDir].s.splice(rootRef.d[revDir].s.length, 0, copy(currRef));
+                    }
+                } else if (effect === 'in') {
+                    let currParentParentPath = mapref(currParentPath).parentPath;
+                    let currParentParentRef = mapref(currParentParentPath);
+                    for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
+                        let currRef = mapref(sc.structSelectedPathList[i]);
+                        currParentRef.s.splice(currRef.index, 1);
+                        currParentParentRef.s.splice(currParentRef.index + 1, 0, copy(currRef));
+                    }
+                } else if (effect === 'out') {
+                    if (sc.geomHighRef.index > 0) {
+                        let upperSibling = currParentRef.s[sc.geomHighRef.index - 1];
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
                             currParentRef.s.splice(currRef.index, 1);
-                            rootRef.d[1].s.splice(rootRef.d[1].s.length, 0, copy(currRef));
-                        }
-                    } else {
-                        let currParentParentPath = mapref(currParentPath).parentPath;
-                        let currParentParentRef = mapref(currParentParentPath);
-                        for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-                            let currRef = mapref(sc.structSelectedPathList[i]);
-                            currParentRef.s.splice(currRef.index, 1);
-                            currParentParentRef.s.splice(currParentRef.index + 1, 0, copy(currRef));
+                            upperSibling.s.splice(upperSibling.s.length - sc.structSelectedPathList.length + i + 1, 0, copy(currRef));
                         }
                     }
-                } else if (mode === 'ArrowRight') {
-                    if (currParentRef.isRootChild) {
-                        let rootRef = mapref(['r']);
-                        for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-                            let currRef = mapref(sc.structSelectedPathList[i]);
-                            currParentRef.s.splice(currRef.index, 1);
-                            rootRef.d[0].s.splice(rootRef.d[0].s.length, 0, copy(currRef));
-                        }
-                    }
-                    else {
-                        if (sc.geomHighRef.index > 0) {
-                            let upperSibling = currParentRef.s[sc.geomHighRef.index - 1];
-                            for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-                                let currRef = mapref(sc.structSelectedPathList[i]);
-                                currParentRef.s.splice(currRef.index, 1);
-                                upperSibling.s.splice(upperSibling.s.length - sc.structSelectedPathList.length + i + 1, 0, copy(currRef));
-                            }
-                        }
-                    }
-                } else if (mode === 'ArrowUp') {
+                } else if (effect === 'up') {
                     if (sc.geomHighRef.index > 0) {
                         for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
@@ -69,7 +82,7 @@ export function structMove(sc, target, mode) {
                             currParentRef.s.splice(currParentRef.s.length - sc.structSelectedPathList.length + i + 1, 0, copy(currRef));
                         }
                     }
-                } else if (mode === 'ArrowDown') {
+                } else if (effect === 'down') {
                     if (sc.geomLowRef.index !== currParentRef.s.length - 1) {
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
