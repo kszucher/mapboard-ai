@@ -18,11 +18,6 @@ export function structMove(sc, target, mode) {
             let currParentPath = parentPathList[0];
             let currParentRef = mapref(currParentPath);
 
-            // TODO
-            // make virtualClipboard
-            // use nodeNavigate for FROM and TO
-            // also nodeSelect for hasSameParent
-
             if (target === 'struct2struct') {
                 if (mode === 'ArrowLeft') {
                     if (currParentRef.isRootChild) {
@@ -30,7 +25,7 @@ export function structMove(sc, target, mode) {
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
                             currParentRef.s.splice(currRef.index, 1);
-                            rootRef.d[1].s.splice(0, 0, copy(currRef));
+                            rootRef.d[1].s.splice(rootRef.d[1].s.length, 0, copy(currRef));
                         }
                     } else {
                         let currParentParentPath = mapref(currParentPath).parentPath;
@@ -42,12 +37,22 @@ export function structMove(sc, target, mode) {
                         }
                     }
                 } else if (mode === 'ArrowRight') {
-                    if (sc.geomHighRef.index > 0) {
-                        let upperSibling = currParentRef.s[sc.geomHighRef.index - 1];
+                    if (currParentRef.isRootChild) {
+                        let rootRef = mapref(['r']);
                         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
                             let currRef = mapref(sc.structSelectedPathList[i]);
                             currParentRef.s.splice(currRef.index, 1);
-                            upperSibling.s.splice(upperSibling.s.length - sc.structSelectedPathList.length + i + 1, 0, copy(currRef));
+                            rootRef.d[0].s.splice(rootRef.d[0].s.length, 0, copy(currRef));
+                        }
+                    }
+                    else {
+                        if (sc.geomHighRef.index > 0) {
+                            let upperSibling = currParentRef.s[sc.geomHighRef.index - 1];
+                            for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
+                                let currRef = mapref(sc.structSelectedPathList[i]);
+                                currParentRef.s.splice(currRef.index, 1);
+                                upperSibling.s.splice(upperSibling.s.length - sc.structSelectedPathList.length + i + 1, 0, copy(currRef));
+                            }
                         }
                     }
                 } else if (mode === 'ArrowUp') {
