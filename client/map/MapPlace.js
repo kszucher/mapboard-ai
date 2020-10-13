@@ -25,7 +25,7 @@ export const mapPlace = {
         let corr = 0;
         if (minWidth < minExpectedWidth) {
             if (cm.d[1].s.length > 0) {
-                corr = (minExpectedWidth - minWidth) / 2;
+                corr = minExpectedWidth - minWidth;
             }
             minWidth = minExpectedWidth;
         }
