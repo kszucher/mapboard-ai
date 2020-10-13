@@ -166,7 +166,7 @@ export const mapSvgVisualize = {
             let gap = 4;
             let wrapWidth = n*d + (n-1)*gap;
 
-            let startX = cm.path[2] === 0 ? mapMem.mapWidth - wrapWidth - 32 : 32;
+            let startX = cm.path[2] === 0 ? mapMem.mapWidth - wrapWidth - 32 : 32 + wrapWidth;
 
             let x1 = cm.nodeEndX;
             let y1 = cm.nodeEndY;
@@ -180,7 +180,7 @@ export const mapSvgVisualize = {
             };
 
             for (let i = 0; i < n; i++) {
-                let centerX = startX + d/2 + i * (d + gap);
+                let centerX = cm.path[2] === 0 ? startX + d/2 + i * (d + gap) : startX - d/2 - i * (d + gap);
                 let centerY = cm.nodeEndY;
 
                 let fill;
