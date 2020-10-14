@@ -89,9 +89,27 @@ export const mapSvgVisualize = {
             }
         }
 
-        // table
+        // table frame
         if (cm.type === "struct" && cm.childType === 'cell') {
-            // grid
+            let round = 8;
+            let x1 = cm.nodeStartX;
+            let y1 = cm.nodeStartY - selfHadj/2 + round;
+            let h = cm.selfW - 2*round;
+            let v = cm.selfH - 2*round;
+
+            svgElementData.tableFrame = {
+                type: 'path',
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
+                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                color: cm.selected? '#000000' : '#50dfff',
+            };
+        }
+
+        // table grid
+        if (cm.type === "struct" && cm.childType === 'cell') {
             let path = '';
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
@@ -114,26 +132,9 @@ export const mapSvgVisualize = {
                 path: path,
                 color: '#dddddd',
             };
-
-            // frame
-            let round = 8;
-            let x1 = cm.nodeStartX;
-            let y1 = cm.nodeStartY - selfHadj/2 + round;
-            let h = cm.selfW - 2*round;
-            let v = cm.selfH - 2*round;
-
-            svgElementData.tableFrame = {
-                type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                color: cm.selected? '#000000' : '#50dfff',
-            };
         }
 
-        // cell frame
+        // table cell frame
         if (cm.type === 'cell' && cm.selected) {
             let round = 8;
             let x1 = cm.nodeStartX;
