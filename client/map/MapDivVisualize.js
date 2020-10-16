@@ -107,7 +107,7 @@ function renderContent (contentType, content) {
         case 'equation':
             return katex.renderToString(getLatexString(content), {throwOnError: false});
         case 'image':
-            let imageLink = process.env.NODE_ENV === 'development'? 'http://localhost:8082/file/' : 'https://mindboard.io/file/';
+            let imageLink = 'https://mindboard.io/file/';
             return '<img src="' + imageLink + content + '" alt="" id="img">';
     }
 }
