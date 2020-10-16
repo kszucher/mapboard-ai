@@ -454,11 +454,20 @@ export function eventEmitter(command) {
                 'cmd': 'createMapInTabRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
                 'newMap': {
-                    data: [{
-                        path: ['s', 0],
-                        content: 'New map ' + genHash(4),
-                        selected: 1
-                    }],
+                    data: [
+                        {
+                            path: ['r'],
+                            content: 'New map ' + genHash(4),
+                            selected: 1
+                        },
+                        {
+                            path: ['r', 'd', 0],
+                        },
+                        {
+                            path: ['r', 'd', 0, 's', 0],
+                            content: 'x'
+                        }
+                    ],
                     density: 'large',
                     task: lastEvent.ref.task
                 }
@@ -470,11 +479,20 @@ export function eventEmitter(command) {
                 'cmd': 'createMapInMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
                 'newMap': {
-                    data: [{
-                        path: ['s', 0],
-                        content: sc.lm.content,
-                        selected: 1
-                    }],
+                    data: [
+                        {
+                            path: ['r'],
+                            content: sc.lm.content,
+                            selected: 1
+                        },
+                        {
+                            path: ['r', 'd', 0],
+                        },
+                        {
+                            path: ['r', 'd', 0, 's', 0],
+                            content: 'x'
+                        }
+                    ],
                     density: 'large',
                     task: 0
                 }
