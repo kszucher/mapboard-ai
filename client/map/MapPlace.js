@@ -61,16 +61,27 @@ export const mapPlace = {
         }
         else {
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
-                if (cm.path[2] === 0) {
-                    cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
-                    cm.nodeEndX = cm.nodeStartX + cm.selfW;
-                } else {
-                    cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
-                    cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
+                if (cm.type === 'struct' || cm.type === 'dir') {
+                    if (cm.path[2] === 0) {
+                        cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
+                        cm.nodeEndX = cm.parentNodeEndX + cm.lineDeltaX + cm.selfW;
+                    } else {
+                        cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
+                        cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
+                    }
+                } else if (cm.type === 'cell') {
+                    let diff = mapMem.sLineDeltaXDefault - 20;
+                    if (cm.path[2] === 0) {
+                        cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
+                        cm.nodeEndX = cm.parentNodeEndX + cm.lineDeltaX + cm.selfW + diff;
+                    } else {
+                        cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW - diff;
+                        cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX - diff;
+                    }
                 }
             } else if (cm.parentType === 'cell') {
                 if (cm.path[2] === 0) {
-                    cm.nodeStartX = cm.parentNodeStartX;
+                    cm.nodeStartX = cm.parentNodeStartX + 1;
                     cm.nodeEndX = cm.nodeStartX + cm.selfW;
                 } else {
                     cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
@@ -83,8 +94,8 @@ export const mapPlace = {
         cm.nodeEndY = cm.nodeStartY;
 
         if (Number.isInteger(cm.nodeStartY)) {
-            cm.nodeStartY -= 0.5;
-            cm.nodeEndY -= 0.5;
+            cm.nodeStartY += 0.5;
+            cm.nodeEndY += 0.5;
         }
 
         if (Number.isInteger(cm.nodeStartX)) {
