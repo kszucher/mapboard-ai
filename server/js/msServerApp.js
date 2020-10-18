@@ -5,6 +5,8 @@ var path = require('path');
 let app = express();
 var { promisify } = require('util');
 var sizeOf = promisify( require('image-size'));
+var MongoHeartbeat = require('mongo-heartbeat');
+
 
 // improvement for later times
 // https://flaviocopes.com/node-request-data/
@@ -56,6 +58,7 @@ app.post('/beta', function (req, res) {
 let collectionUsers;
 let collectionMaps;
 var db;
+var hb;
 
 MongoClient.connect(uri, {
     useNewUrlParser: true,
@@ -72,8 +75,24 @@ MongoClient.connect(uri, {
         collectionUsers = db.collection('users');
         collectionMaps =db.collection('maps');
         app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
+
+        hb = MongoHeartbeat(db, {
+            interval: 5000, //defaults to 5000 ms,
+            timeout: 10000,  //defaults to 10000 ms
+            tolerance: 2    //defaults to 1 attempt
+        });
+
+        hb.on('error', function (err) {
+            console.error('mongodb didnt respond the heartbeat message');
+            process.nextTick(function () {
+                process.exit(1);
+            });
+        });
+
     }
 });
+
+
 
 async function sendResponse(c2s) {
     let s2c = {
