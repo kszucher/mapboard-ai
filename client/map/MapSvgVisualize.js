@@ -202,13 +202,18 @@ export const mapSvgVisualize = {
                     }
                 }
 
+                let r = d/4;
+                if (cm.taskStatus === i) {
+                    r  = d/2;
+                }
+
                 svgElementData['taskCircle' + i] = {
                     type: 'circle',
                     cx: centerX,
                     cy: centerY,
-                    r: d/2,
+                    r,
                     fill: fill,
-                }
+                };
             }
         }
 
