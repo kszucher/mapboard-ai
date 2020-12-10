@@ -28,12 +28,28 @@ html, body, div, table, td, tr {
 }
 
 #top {
-    flex-grow: 0;
+    display: flex;
+    /*flex-grow: 0;*/
     height: 48px;
+
+
+}
+
+#top-left {
     width: 220px;
+
     background-color: #a4508b;
     background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
     border-radius: 16px;
+}
+
+#top-right {
+    flex-grow: 1;
+    /*background-color: #ffaada;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
 }
 
 #bottom {

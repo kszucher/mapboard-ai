@@ -2,15 +2,10 @@ import '../css/Layout.css'
 import React, { useEffect,} from 'react'
 import ReactMaterialToolBar from "./Toolbar";
 import ReactMaterialVerticalTabs from "./Tabs";
-import {windowHandler} from "../core/WindowHandler";
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
-
 import {MuiThemeProvider} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Toolbar from "@material-ui/core/Toolbar";
-import AddIcon from '@material-ui/icons/Add';
-import {eventRouter} from "../core/EventRouter";
+import WorkspaceBreadcrumbs from "./Breadcrumbs";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,7 +53,12 @@ export function Workspace() {
         <div id="page">
             <MuiThemeProvider theme={theme}>
                 <div id="top">
-                    <ReactMaterialToolBar/>
+                    <div id = "top-left">
+                        <ReactMaterialToolBar/>
+                    </div>
+                    <div id = "top-right">
+                        <WorkspaceBreadcrumbs/>
+                    </div>
                 </div>
                 <div id="bottom">
                     <div id='bottom-left'>

@@ -44,6 +44,15 @@ export default function MenuAppBar() {
     const handleDensitySmall = () => {  handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
     const handleDensityLarge = () => {  handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
 
+
+    const handleMenu = param => e => {
+        handleCloseA();
+        switch(param) {
+            case 'ADD_MAP': eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}}); break;
+        }
+    };
+
+
     return (
         <div className={classes.root}>
             {/*<FormGroup>*/}
@@ -77,42 +86,42 @@ export default function MenuAppBar() {
                         open={openA}
                         onClose={handleCloseA}
                     >
-                        <MenuItem onClick={handleAddMap}>Add map</MenuItem>
-                        <MenuItem onClick={handleAddTaskMap}>Add task map</MenuItem>
-                        <MenuItem onClick={handleDensitySmall}>Density: small</MenuItem>
-                        <MenuItem onClick={handleDensityLarge}>Density: large</MenuItem>
+                        <MenuItem onClick={handleMenu('ADD_MAP')}>Add map</MenuItem>
+                        <MenuItem onClick={handleMenu('ADD_TASK_MAP')}>Add task map</MenuItem>
+                        <MenuItem onClick={handleMenu('DENSITY_SMALL')}>Density: small</MenuItem>
+                        <MenuItem onClick={handleMenu('DENSITY_LARGE')}>Density: large</MenuItem>
                     </Menu>
                     <Typography variant="h6" className={classes.title}>
                         MindBoard
                     </Typography>
-                    <div>
-                        <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenuB}
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElB}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={openB}
-                            onClose={handleCloseB}
-                        >
-                            {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
-                            <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-                        </Menu>
-                    </div>
+                    {/*<div>*/}
+                    {/*    <IconButton*/}
+                    {/*        aria-label="account of current user"*/}
+                    {/*        aria-controls="menu-appbar"*/}
+                    {/*        aria-haspopup="true"*/}
+                    {/*        onClick={handleMenuB}*/}
+                    {/*    >*/}
+                    {/*        <AccountCircle />*/}
+                    {/*    </IconButton>*/}
+                    {/*    <Menu*/}
+                    {/*        id="menu-appbar"*/}
+                    {/*        anchorEl={anchorElB}*/}
+                    {/*        anchorOrigin={{*/}
+                    {/*            vertical: 'top',*/}
+                    {/*            horizontal: 'right',*/}
+                    {/*        }}*/}
+                    {/*        keepMounted*/}
+                    {/*        transformOrigin={{*/}
+                    {/*            vertical: 'top',*/}
+                    {/*            horizontal: 'right',*/}
+                    {/*        }}*/}
+                    {/*        open={openB}*/}
+                    {/*        onClose={handleCloseB}*/}
+                    {/*    >*/}
+                    {/*        /!*<MenuItem onClick={handleClose}>Profile</MenuItem>*!/*/}
+                    {/*        <MenuItem onClick={handleSignOut}>Sign out</MenuItem>*/}
+                    {/*    </Menu>*/}
+                    {/*</div>*/}
 
                 </Toolbar>
             {/*</AppBar>*/}
