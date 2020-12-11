@@ -1,12 +1,15 @@
-// TODO: itt be lehetne vezetni szépen a state-et
 
+export const State = {
 
-export let mapState = {
+    email: '',
+    password: '',
 
-    history: [],
+    isLoggedIn: false,
 
-    // ez alapján breadcrumbs, ami nagyon hiányzik.. kezdjük egy új feature-rel, mert az felemelőbb, mint a hibajavítás
+    historyLastState: {},
 
+    eventsEnabled: true,
 
+    serverResponse: {},
 
 };

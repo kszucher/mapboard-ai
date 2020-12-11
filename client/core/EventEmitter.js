@@ -45,8 +45,13 @@ export function eventEmitter(command) {
             let s2c = lastEvent.ref;
             lastUserMap = s2c.mapName;
             if (shouldAddToHistory === 1) {
-                let stateObj = {lastUserMap: lastUserMap};
+                let stateObj = {
+                    lastUserMap: lastUserMap,
+                };
                 history.pushState(stateObj, lastUserMap, '');
+
+                console.log(history)
+
             }
             loadMap(s2c.mapStorage);
             break;
@@ -381,23 +386,23 @@ export function eventEmitter(command) {
         // TO SERVER
         // -------------------------------------------------------------------------------------------------------------
         case 'signInAuto': {
-            if (JSON.parse(localStorage.getItem('cred')) !== null) {
-                communication.sender({
-                    'cmd': 'signInRequest',
-                    'cred': JSON.parse(localStorage.getItem('cred')),
-                });
-            }
+            // if (JSON.parse(localStorage.getItem('cred')) !== null) {
+            //     communication.sender({
+            //         'cmd': 'signInRequest',
+            //         'cred': JSON.parse(localStorage.getItem('cred')),
+            //     });
+            // }
             break;
         }
         case 'signIn': {
-            localStorage.setItem('cred', JSON.stringify({
-                name: lastEvent.ref.user,
-                pass: lastEvent.ref.pass,
-            }));
-            communication.sender({
-                'cmd': 'signInRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-            });
+            // localStorage.setItem('cred', JSON.stringify({
+            //     name: lastEvent.ref.user,
+            //     pass: lastEvent.ref.pass,
+            // }));
+            // communication.sender({
+            //     'cmd': 'signInRequest',
+            //     'cred': JSON.parse(localStorage.getItem('cred')),
+            // });
             break;
         }
         case 'signOut': {

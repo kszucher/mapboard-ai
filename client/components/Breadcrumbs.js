@@ -21,19 +21,22 @@ function handleClick(event) {
 export default function WorkspaceBreadcrumbs() {
     const classes = useStyles();
 
+    // const [state, dispatch] =
+
     return (
         <div className={classes.root}>
 
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
 
-                <Link color="inherit" href="/" onClick={handleClick}>
-                    Material-UI
-                </Link>
-                <Link color="inherit" href="/" onClick={handleClick}>
-                    Core
-                </Link>
+                {/*{state.tabNames.map(name => (*/}
+                {/*    <Link color="inherit" href="/" onClick={handleClick}>*/}
+                {/*        Books*/}
+                {/*    </Link>*/}
+                {/*))}>*/}
 
-                <Typography color="textPrimary">Breadcrumb</Typography>
+                <Typography color="textPrimary">
+                    Straight talk for startups
+                </Typography>
 
             </Breadcrumbs>
 

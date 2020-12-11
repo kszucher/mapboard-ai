@@ -6,7 +6,6 @@ import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
 import WorkspaceBreadcrumbs from "./Breadcrumbs";
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -66,9 +65,7 @@ export function Workspace() {
                             <ReactMaterialVerticalTabs/>
                         </div>
                         <div id = 'bottom-left-down'>
-                            {/*<IconButton edge="start" className={classes.menuButton}  color='inherit' aria-label="menu" onClick={mapAdd}>*/}
-                            {/*    <AddIcon />*/}
-                            {/*</IconButton>*/}
+                        {/*    MINIMAP PROBABLY*/}
                         </div>
 
                     </div>

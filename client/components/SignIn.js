@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {eventRouter} from "../core/EventRouter";
+import {Context} from "../core/Store";
 
 function Copyright() {
     return (
@@ -61,16 +62,10 @@ export default function SignIn() {
         password = e.target.value;
     };
 
+    const [state, dispatch] = useContext(Context);
+
     const signInHandler = () => {
-        console.log('sign in attempt');
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'signIn',
-                'user': email,
-                'pass': password
-            },
-        });
+        dispatch({type: 'SIGN_IN', payload: {email, password}})
     };
 
     return (
