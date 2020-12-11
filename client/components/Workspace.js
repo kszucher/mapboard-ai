@@ -1,10 +1,11 @@
 import '../css/Layout.css'
 import React, { useEffect,} from 'react'
-import ReactMaterialToolBar from "./Toolbar";
-import ReactMaterialVerticalTabs from "./Tabs";
+import Toolbar from "./Toolbar";
+import Tabs from "./Tabs";
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
-import WorkspaceBreadcrumbs from "./Breadcrumbs";
+import Breadcrumbs from "./Breadcrumbs";
+import {MapComponent} from "./MapComponent";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,26 +54,23 @@ export function Workspace() {
             <MuiThemeProvider theme={theme}>
                 <div id="top">
                     <div id = "top-left">
-                        <ReactMaterialToolBar/>
+                        <Toolbar/>
                     </div>
                     <div id = "top-right">
-                        <WorkspaceBreadcrumbs/>
+                        <Breadcrumbs/>
                     </div>
                 </div>
                 <div id="bottom">
                     <div id='bottom-left'>
                         <div id = 'bottom-left-up'>
-                            <ReactMaterialVerticalTabs/>
+                            <Tabs/>
                         </div>
                         <div id = 'bottom-left-down'>
-                        {/*    MINIMAP PROBABLY*/}
                         </div>
 
                     </div>
                     <div id = "bottom-right">
-                        <div id='mapDiv'>
-                            <svg id="mapSvg"/>
-                        </div>
+                        <MapComponent/>
                     </div>
                 </div>
             </MuiThemeProvider>

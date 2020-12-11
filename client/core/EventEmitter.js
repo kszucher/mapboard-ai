@@ -26,7 +26,7 @@ export function eventEmitter(command) {
     // TODO: lastEvent context getter, also selectively
 
     let sc;
-    if (!['openMap', 'undo', 'redo', 'signInAuto', 'signIn',  'signOut',
+    if (!['undo', 'redo', 'signInAuto', 'signIn',  'signOut',
         'openAfterInit', 'openAfterTabSelect', 'openAfterHistory', 'createMapInTab', 'save',
         'sendImage', 'updatePageToSignIn', 'updateTabs'].includes(command)) {
         try {
@@ -41,25 +41,6 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // TO MAP
         // -------------------------------------------------------------------------------------------------------------
-        case 'openMap': {
-            // let s2c = lastEvent.ref;
-            // lastUserMap = s2c.mapName;
-            // if (shouldAddToHistory === 1) {
-            //     let stateObj = {
-            //         lastUserMap: lastUserMap,
-            //     };
-            //     history.pushState(stateObj, lastUserMap, '');
-            //
-            //     console.log(history)
-            //
-            // }
-            // loadMap(s2c.mapStorage);
-            break;
-        }
-
-
-
-
         case 'undo': {
             if (mapMem.dataIndex > 0) {
                 mapMem.dataIndex--;
@@ -397,32 +378,36 @@ export function eventEmitter(command) {
             });
             break;
         }
-        case 'openAfterInit': {
-            shouldAddToHistory = 1;
-            communication.sender({
-                'cmd': 'openMapRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'mapName': headerData.headerMapIdList[headerData.headerMapSelected]
-            });
-            break;
-        }
-        case 'openAfterTabSelect': {
-            shouldAddToHistory = 1;
-            communication.sender({
-                'cmd': 'openMapRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'mapName': headerData.headerMapIdList[lastEvent.ref.tabId]
-            });
-            break;
-        }
+        // case 'openAfterInit': {
+        //     shouldAddToHistory = 1;
+        //     communication.sender({
+        //         'cmd': 'openMapRequest',
+        //         'cred': JSON.parse(localStorage.getItem('cred')),
+        //         'mapName': headerData.headerMapIdList[headerData.headerMapSelected]
+        //     });
+        //     break;
+        // }
+        // case 'openAfterTabSelect': {
+        //     shouldAddToHistory = 1;
+        //     communication.sender({
+        //         'cmd': 'openMapRequest',
+        //         'cred': JSON.parse(localStorage.getItem('cred')),
+        //         'mapName': headerData.headerMapIdList[lastEvent.ref.tabId]
+        //     });
+        //     break;
+        // }
         case 'openAfterNodeSelect': {
             shouldAddToHistory = 1;
             if(sc.lm.linkType === 'internal') {
+
+
                 communication.sender({
                     'cmd': 'openMapRequest',
                     'cred': JSON.parse(localStorage.getItem('cred')),
                     'mapName': sc.lm.link
                 });
+
+
             } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();
