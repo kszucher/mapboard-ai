@@ -12,4 +12,9 @@ export const State = {
 
     serverResponse: {},
 
+    headerData: {
+        headerMapNameList: [],
+        headerMapSelected: 0,
+    }
+
 };

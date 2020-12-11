@@ -28,7 +28,7 @@ export function eventEmitter(command) {
     let sc;
     if (!['openMap', 'undo', 'redo', 'signInAuto', 'signIn',  'signOut',
         'openAfterInit', 'openAfterTabSelect', 'openAfterHistory', 'createMapInTab', 'save',
-        'sendImage', 'updatePageToWorkspace', 'updatePageToSignIn', 'updateTabs'].includes(command)) {
+        'sendImage', 'updatePageToSignIn', 'updateTabs'].includes(command)) {
         try {
             sc = getSelectionContext();
         }
@@ -385,26 +385,6 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // TO SERVER
         // -------------------------------------------------------------------------------------------------------------
-        case 'signInAuto': {
-            // if (JSON.parse(localStorage.getItem('cred')) !== null) {
-            //     communication.sender({
-            //         'cmd': 'signInRequest',
-            //         'cred': JSON.parse(localStorage.getItem('cred')),
-            //     });
-            // }
-            break;
-        }
-        case 'signIn': {
-            // localStorage.setItem('cred', JSON.stringify({
-            //     name: lastEvent.ref.user,
-            //     pass: lastEvent.ref.pass,
-            // }));
-            // communication.sender({
-            //     'cmd': 'signInRequest',
-            //     'cred': JSON.parse(localStorage.getItem('cred')),
-            // });
-            break;
-        }
         case 'signOut': {
             localStorage.setItem('cred', null);
             communication.sender({
@@ -539,28 +519,10 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // TO MATERIAL
         // -------------------------------------------------------------------------------------------------------------
-        case 'updatePageToWorkspace': {
-            document.dispatchEvent(new CustomEvent( 'toPage', {
-                'detail': {
-                    isLoggedIn: true
-                }}));
-            break;
-        }
         case 'updatePageToSignIn': {
             document.dispatchEvent(new CustomEvent( 'toPage', {
                 'detail': {
                     isLoggedIn: false
-                }}));
-            break;
-        }
-        case 'updateTabs': {
-            headerData = copy(lastEvent.ref.headerData);
-            document.dispatchEvent(new CustomEvent( 'toMaterial', {
-                'detail': {
-                    tabData: {
-                        tabNames: lastEvent.ref.headerData.headerMapNameList,
-                        tabId: lastEvent.ref.headerData.headerMapSelected,
-                    }
                 }}));
             break;
         }

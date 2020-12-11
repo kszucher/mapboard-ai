@@ -1,11 +1,12 @@
 import '../css/Layout.css'
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 import SignIn from "./SignIn";
 import {Workspace} from "./Workspace";
 import {Context} from "../core/Store";
 import {windowHandler} from "../core/WindowHandler";
 import {initDomData, recalc, redraw} from "../map/Map";
 import {eventEmitter} from "../core/EventEmitter";
+
 
 export function Page() {
 
@@ -25,7 +26,7 @@ export function Page() {
     };
 
     const commSend = (obj) => {
-        post(obj, response => dispatch({type: 'SERVER_RESPONSE', payload:response}));
+        post(obj, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     };
 
     useEffect(() => {
@@ -58,11 +59,11 @@ export function Page() {
         switch (serverResponse.cmd) {
             case 'signInSuccess': {
                 initDomData();
-                // eventEmitter('updatePageToWorkspace');
-                // eventEmitter('updateTabs');
-                // eventEmitter('openAfterInit');
 
+                dispatch({type: 'SET_HEADER_DATA', payload: serverResponse.headerData});
                 dispatch({type: 'IS_LOGGED_IN_TRUE'});
+
+                // eventEmitter('openAfterInit');
 
                 break;
             }
@@ -73,7 +74,7 @@ export function Page() {
             case 'signOutSuccess': {
                 windowHandler.removeListeners();
                 localStorage.clear();
-                eventEmitter('updatePageToSignIn');
+                eventEmitter('updatePageToSignIn'); // LOGOUT magyarul
                 break;
             }
             case 'openMapSuccess': {
@@ -100,6 +101,7 @@ export function Page() {
                 break;
             }
         }
+
     }, [serverResponse]);
 
     return(

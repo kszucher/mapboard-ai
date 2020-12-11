@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {updateStateProp} from "../core/Utils";
 import {eventRouter} from "../core/EventRouter";
+import {Context} from "../core/Store";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -55,22 +56,9 @@ const useStyles = makeStyles((theme) => ({
 export default function VerticalTabs() {
     const classes = useStyles();
 
-    const [state, setState] = useState({
-        tabNames: [],
-        tabId: 0
-    });
+    const [state, dispatch] = useContext(Context);
 
-    useEffect(() => {
-        document.addEventListener('toMaterial', handleChangeExt);
-        return () => {document.removeEventListener('toMaterial', handleChangeExt)}
-    });
-
-    const handleChangeExt = useCallback((e) => {
-        setState({
-            tabNames: e.detail.tabData.tabNames,
-            tabId: e.detail.tabData.tabId
-        });
-    });
+    const {headerData} = state;
 
     const handleChange = (event, newValue) =>  {
         updateStateProp(state, setState, 'tabId', newValue);
@@ -90,10 +78,10 @@ export default function VerticalTabs() {
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
-                value={state.tabId}
+                value={headerData.headerMapSelected}
                 onChange={handleChange}
                 indicatorColor="primary">
-                {state.tabNames.map(name => (
+                {headerData.headerMapNameList.map(name => (
                     <Tab
                         label={name}
                         key={name}/>

@@ -217,53 +217,6 @@ export const eventRouter = {
                 }
                 break;
             }
-            case 'serverEvent': {
-                let s2c = lastEvent.ref;
-                console.log('route: ' + s2c.cmd);
-                switch (s2c.cmd) {
-                    // case 'signInSuccess': {
-                    //     initDomData();
-                    //     eventEmitter('updatePageToWorkspace');
-                    //     eventEmitter('updateTabs');
-                    //     eventEmitter('openAfterInit');
-                    //     break;
-                    // }
-                    // case 'signInFail': {
-                    //     console.log(localStorage);
-                    //     break;
-                    // }
-                    // case 'signOutSuccess': {
-                    //     // windowHandler.removeListeners();
-                    //     localStorage.clear();
-                    //     eventEmitter('updatePageToSignIn');
-                    //     break;
-                    // }
-                    // case 'openMapSuccess': {
-                    //     // windowHandler.removeListeners();
-                    //     // windowHandler.addListeners();
-                    //     eventEmitter('openMap');
-                    //     recalc();
-                    //     redraw();
-                    //     break;
-                    // }
-                    // case 'writeMapRequestSuccess': {
-                    //     break;
-                    // }
-                    // case 'createMapInTabSuccess': {
-                    //     eventEmitter('updateTabs');
-                    //     break;
-                    // }
-                    // case 'createMapInMapSuccess': {
-                    //     eventEmitter('insertIlinkFromMongo');
-                    //     recalc();
-                    //     eventEmitter('save');
-                    //     recalc();
-                    //     redraw();
-                    //     break;
-                    // }
-                }
-                break;
-            }
             case 'serverFetchEvent': {
                 let sf2c = lastEvent.ref;
                 if (sf2c.cmd === 'imageSaveSuccess') {
