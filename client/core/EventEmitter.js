@@ -42,20 +42,24 @@ export function eventEmitter(command) {
         // TO MAP
         // -------------------------------------------------------------------------------------------------------------
         case 'openMap': {
-            let s2c = lastEvent.ref;
-            lastUserMap = s2c.mapName;
-            if (shouldAddToHistory === 1) {
-                let stateObj = {
-                    lastUserMap: lastUserMap,
-                };
-                history.pushState(stateObj, lastUserMap, '');
-
-                console.log(history)
-
-            }
-            loadMap(s2c.mapStorage);
+            // let s2c = lastEvent.ref;
+            // lastUserMap = s2c.mapName;
+            // if (shouldAddToHistory === 1) {
+            //     let stateObj = {
+            //         lastUserMap: lastUserMap,
+            //     };
+            //     history.pushState(stateObj, lastUserMap, '');
+            //
+            //     console.log(history)
+            //
+            // }
+            // loadMap(s2c.mapStorage);
             break;
         }
+
+
+
+
         case 'undo': {
             if (mapMem.dataIndex > 0) {
                 mapMem.dataIndex--;

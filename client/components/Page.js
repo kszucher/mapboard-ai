@@ -4,15 +4,14 @@ import SignIn from "./SignIn";
 import {Workspace} from "./Workspace";
 import {Context} from "../core/Store";
 import {windowHandler} from "../core/WindowHandler";
-import {initDomData, recalc, redraw} from "../map/Map";
+import {initDomData, loadMap, recalc, redraw} from "../map/Map";
 import {eventEmitter} from "../core/EventEmitter";
-
 
 export function Page() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {isLoggedIn, email, password, serverResponse} = state;
+    const {isLoggedIn, email, password, serverResponse, tabListIds, tabListSelected, lastUserMap, mapStorage} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -47,24 +46,14 @@ export function Page() {
         });
     }, [email, password]);
 
-    // useEffect(() => {
-    //     if (isLoggedIn) {
-    //         windowHandler.addListeners();
-    //     } else {
-    //         windowHandler.removeListeners();
-    //     }
-    // }, [isLoggedIn]);
-
     useEffect(() => {
         switch (serverResponse.cmd) {
             case 'signInSuccess': {
                 initDomData();
-
-                dispatch({type: 'SET_HEADER_DATA', payload: serverResponse.headerData});
                 dispatch({type: 'IS_LOGGED_IN_TRUE'});
-
-                // eventEmitter('openAfterInit');
-
+                dispatch({type: 'SET_TAB_LIST_IDS', payload: serverResponse.headerData.headerMapIdList});
+                dispatch({type: 'SET_TAB_LIST_NAMES', payload: serverResponse.headerData.headerMapNameList});
+                dispatch({type: 'SET_TAB_LIST_SELECTED', payload: serverResponse.headerData.headerMapSelected});
                 break;
             }
             case 'signInFail': {
@@ -72,17 +61,14 @@ export function Page() {
                 break;
             }
             case 'signOutSuccess': {
-                windowHandler.removeListeners();
                 localStorage.clear();
                 eventEmitter('updatePageToSignIn'); // LOGOUT magyarul
                 break;
             }
             case 'openMapSuccess': {
-                windowHandler.removeListeners();
-                windowHandler.addListeners();
-                eventEmitter('openMap');
-                recalc();
-                redraw();
+                dispatch({type: 'SET_LAST_USER_MAP', payload: serverResponse.mapName});
+                dispatch({type: 'SET_MAP_STORAGE', payload: serverResponse.mapStorage});
+
                 break;
             }
             case 'writeMapRequestSuccess': {
@@ -103,6 +89,40 @@ export function Page() {
         }
 
     }, [serverResponse]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            windowHandler.addListeners();
+        } else {
+            windowHandler.removeListeners();
+        }
+    }, [isLoggedIn]);
+
+    useEffect(() => {
+        // shouldAddToHistory = 1; // TODO!!!
+        if (isLoggedIn) {
+            commSend({
+                'cmd': 'openMapRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'mapName': tabListIds[tabListSelected]
+            });
+        }
+    }, [tabListSelected]);
+
+    useEffect(() => {
+        if (mapStorage.hasOwnProperty('data')) {
+
+            // if (shouldAddToHistory === 1) { // TODO!!!
+            //     history.pushState({lastUserMap: lastUserMap}, lastUserMap, '');
+            // }
+
+            loadMap(mapStorage);
+            recalc();
+            redraw();
+        }
+
+    }, [mapStorage]);
+
 
     return(
         isLoggedIn

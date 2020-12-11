@@ -1,12 +1,10 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, { useContext} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import {updateStateProp} from "../core/Utils";
-import {eventRouter} from "../core/EventRouter";
 import {Context} from "../core/Store";
 
 function TabPanel(props) {
@@ -58,17 +56,10 @@ export default function VerticalTabs() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {headerData} = state;
+    const {tabListNames, tabListSelected} = state;
 
-    const handleChange = (event, newValue) =>  {
-        updateStateProp(state, setState, 'tabId', newValue);
-        eventRouter.processEvent({
-            type: 'componentEvent',
-            ref: {
-                'cmd': 'openAfterTabSelect',
-                'tabId': newValue,
-            },
-        });
+    const handleChange = (e, value) =>  {
+        dispatch({type: 'SET_TAB_LIST_SELECTED', payload: value});
     };
 
     return (
@@ -78,10 +69,10 @@ export default function VerticalTabs() {
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
-                value={headerData.headerMapSelected}
+                value={tabListSelected}
                 onChange={handleChange}
                 indicatorColor="primary">
-                {headerData.headerMapNameList.map(name => (
+                {tabListNames.map(name => (
                     <Tab
                         label={name}
                         key={name}/>

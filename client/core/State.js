@@ -1,4 +1,3 @@
-
 export const State = {
 
     email: '',
@@ -12,9 +11,11 @@ export const State = {
 
     serverResponse: {},
 
-    headerData: {
-        headerMapNameList: [],
-        headerMapSelected: 0,
-    }
+    tabListIds: [],
+    tabListNames: [],
+    tabListSelected: undefined,
+
+    lastUserMap: '',
+    mapStorage: {},
 
 };
