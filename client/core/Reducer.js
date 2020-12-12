@@ -23,13 +23,28 @@ const Reducer = (state, action) => {
         case 'SET_TAB_LIST_SELECTED': return {...state, tabListSelected: payload};
         case 'SET_MAP_STORAGE': return {...state, mapStorage: payload};
         case 'SET_MAP_ID':
+
+            const {breadcrumbsOp, mapId, mapName} = payload;
+
             let breadcrumbsHistory = state.breadcrumbsHistory;
-            if (['reset', 'resetPush'].includes(payload.breadcrumbsOp)) {
+
+            if (['reset', 'resetPush'].includes(breadcrumbsOp)) {
                 breadcrumbsHistory = [];
             }
-            if (['resetPush', 'push'].includes(payload.breadcrumbsOp)) {
-                breadcrumbsHistory.push({mapId: payload.mapId, mapName: payload.mapName})
+            if (['resetPush', 'push'].includes(breadcrumbsOp)) {
+                breadcrumbsHistory.push({mapId, mapName})
             }
+            if (['splice'].includes(breadcrumbsOp)) {
+                let cutIndex = 0;
+                for (const i in breadcrumbsHistory) {
+                    if (breadcrumbsHistory[i].mapId === mapId) {
+                        cutIndex = i;
+                    }
+                }
+                breadcrumbsHistory.length = parseInt(cutIndex) + 1;
+            }
+
+            // TODO: az aktuális teljes breadhistorynak az aktuális értékét pusholjuk így jó lesz és tökéletes a history!!!
             if (payload.pushHistory) {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }

@@ -4,7 +4,6 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import {windowHandler} from "../core/WindowHandler";
 import {Context} from "../core/Store";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,40 +14,36 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function handleClick(event) {
-    event.preventDefault();
-    console.info('You clicked a breadcrumb.');
-}
-
 export default function WorkspaceBreadcrumbs() {
     const classes = useStyles();
 
     const [state, dispatch] = useContext(Context);
 
-    const {isLoggedIn, breadcrumbsHistory, mapId} = state;
+    const {breadcrumbsHistory} = state;
+
+    const handleClick = param => event => {
+        event.preventDefault();
+        dispatch({type: 'SET_MAP_ID', payload: {
+                mapId: param.mapId,
+                mapName: param.mapName,
+                pushHistory: true,
+                breadcrumbsOp: 'splice'}});
+    };
 
     return (
         <div className={classes.root}>
-
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-
                 {breadcrumbsHistory.map(item => (
                     <Link
                         color="inherit"
                         href="/"
-                        onClick={handleClick}
+                        onClick={handleClick(item)}
                         key={item.mapName}
                     >
                         {item.mapName}
                     </Link>
                 ))}>
-
-                {/*<Typography color="textPrimary">*/}
-                {/*    Straight talk for startups*/}
-                {/*</Typography>*/}
-
             </Breadcrumbs>
-
         </div>
     );
 }
