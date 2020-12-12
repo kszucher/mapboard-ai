@@ -12,7 +12,7 @@ export function Page() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {credentialsChanged, isLoggedIn, serverResponse, tabListIds, tabListSelected,
+    const {credentialsChanged, isLoggedIn, serverResponse, tabListIds, tabListNames, tabListSelected,
         mapId, mapStorage, isSaved, mapStorageOut} = state;
 
     const post = (message, callback) => {
@@ -57,7 +57,11 @@ export function Page() {
 
     useEffect(() => {
         if (isLoggedIn) {
-            dispatch({type: 'SET_MAP_ID', payload: {mapId: tabListIds[tabListSelected], pushHistory: true}})
+            dispatch({type: 'SET_MAP_ID', payload: {
+                    mapId: tabListIds[tabListSelected],
+                    mapName: tabListNames[tabListSelected],
+                    pushHistory: true,
+                    breadcrumbsOp: 'resetPush'}})
         }
     }, [tabListSelected]);
 

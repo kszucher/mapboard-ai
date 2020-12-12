@@ -4,7 +4,7 @@ export const State = {
 
     isLoggedIn: false,
 
-    historyLastState: {},
+    breadcrumbsHistory: [],
 
     eventsEnabled: true,
 

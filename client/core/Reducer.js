@@ -23,10 +23,17 @@ const Reducer = (state, action) => {
         case 'SET_TAB_LIST_SELECTED': return {...state, tabListSelected: payload};
         case 'SET_MAP_STORAGE': return {...state, mapStorage: payload};
         case 'SET_MAP_ID':
+            let breadcrumbsHistory = state.breadcrumbsHistory;
+            if (['reset', 'resetPush'].includes(payload.breadcrumbsOp)) {
+                breadcrumbsHistory = [];
+            }
+            if (['resetPush', 'push'].includes(payload.breadcrumbsOp)) {
+                breadcrumbsHistory.push({mapId: payload.mapId, mapName: payload.mapName})
+            }
             if (payload.pushHistory) {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
-            return {...state, mapId: payload.mapId};
+            return {...state, mapId: payload.mapId, breadcrumbsHistory};
         case 'SET_MAP_STORAGE_OUT': return {...state, mapStorageOut: payload};
         case 'SAVE_MAP': return {...state, isSaved: state.isSaved + 1};
 

@@ -368,7 +368,11 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'openLink': {
             if(sc.lm.linkType === 'internal') {
-                remoteDispatch({type: 'SET_MAP_ID', payload: {mapId: sc.lm.link, pushHistory: true}})
+                remoteDispatch({ type: 'SET_MAP_ID', payload: {
+                        mapId: sc.lm.link,
+                        mapName: sc.lm.content,
+                        pushHistory: true,
+                        breadcrumbsOp: 'push'}})
             } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();
@@ -376,7 +380,11 @@ export function eventEmitter(command) {
             break;
         }
         case 'openAfterHistory': {
-            remoteDispatch({type: 'SET_MAP_ID', payload: {mapId: lastEvent.ref.state.mapId, pushHistory: false}});
+            remoteDispatch({type: 'SET_MAP_ID', payload: {
+                    mapId: lastEvent.ref.state.mapId,
+                    mapName: mapMem.getData().r[0].content,
+                    pushHistory: false,
+                    breadcrumbsOp: 'x'}});
             break;
         }
         case 'createMapInTab': {
