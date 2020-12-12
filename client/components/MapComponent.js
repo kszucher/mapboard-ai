@@ -7,10 +7,6 @@ export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
 
-
-
-
-
     return(
         <div id='mapDiv'>
             <svg id="mapSvg"/>

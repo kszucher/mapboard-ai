@@ -62,6 +62,7 @@ export function Page() {
             }
             case 'signOutSuccess': {
                 localStorage.clear();
+
                 eventEmitter('updatePageToSignIn'); // LOGOUT magyarul
                 break;
             }
@@ -94,6 +95,10 @@ export function Page() {
         if (isLoggedIn) {
             windowHandler.addListeners();
         } else {
+            localStorage.setItem('cred', null);
+
+            dispatch({type: 'RESET_STATE'});
+
             windowHandler.removeListeners();
         }
     }, [isLoggedIn]);

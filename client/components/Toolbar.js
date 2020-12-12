@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +12,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {eventRouter} from "../core/EventRouter";
+import {Context} from "../core/Store";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,104 +28,66 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuAppBar() {
     const classes = useStyles();
-    const [anchorElA, setAnchorElA] = React.useState(null);
-    const openA = Boolean(anchorElA);
 
-    const [anchorElB, setAnchorElB] = React.useState(null);
-    const openB = Boolean(anchorElB);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
 
-    const handleMenuA = (event) => {setAnchorElA(event.currentTarget)};
-    const handleMenuB = (event) => {setAnchorElB(event.currentTarget)};
-    const handleCloseA = () => {setAnchorElA(null)};
-    const handleCloseB = () => {setAnchorElB(null)};
+    const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
+    const handleClose = () => {setAnchorEl(null)};
 
-    const handleSignOut = () => {       handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}})};
-    const handleAddMap = () => {        handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
-    const handleAddTaskMap = () => {    handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
-    const handleDensitySmall = () => {  handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
-    const handleDensityLarge = () => {  handleCloseA(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
+    const handleSignOut = () => {       handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}})};
+    const handleAddMap = () => {        handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
+    const handleAddTaskMap = () => {    handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
+    const handleDensitySmall = () => {  handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
+    const handleDensityLarge = () => {  handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
 
+    const [state, dispatch] = useContext(Context);
 
-    const handleMenu = param => e => {
-        handleCloseA();
+    const handleSelect = param => e => {
+        handleClose();
         switch(param) {
-            case 'ADD_MAP': eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}}); break;
+            case 'SIGN_OUT':
+                dispatch({type: 'IS_LOGGED_IN_FALSE'});
+                break;
         }
     };
 
-
     return (
         <div className={classes.root}>
-            {/*<FormGroup>*/}
-            {/*    <FormControlLabel*/}
-            {/*        control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}*/}
-            {/*        label={auth ? 'Logout' : 'Login'}*/}
-            {/*    />*/}
-            {/*</FormGroup>*/}
-            {/*<AppBar position="static">*/}
-                <Toolbar variant={"dense"}>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        aria-label="menu"
-                        onClick={handleMenuA}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorElA}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={openA}
-                        onClose={handleCloseA}
-                    >
-                        <MenuItem onClick={handleMenu('ADD_MAP')}>Add map</MenuItem>
-                        <MenuItem onClick={handleMenu('ADD_TASK_MAP')}>Add task map</MenuItem>
-                        <MenuItem onClick={handleMenu('DENSITY_SMALL')}>Density: small</MenuItem>
-                        <MenuItem onClick={handleMenu('DENSITY_LARGE')}>Density: large</MenuItem>
-                    </Menu>
-                    <Typography variant="h6" className={classes.title}>
-                        MindBoard
-                    </Typography>
-                    {/*<div>*/}
-                    {/*    <IconButton*/}
-                    {/*        aria-label="account of current user"*/}
-                    {/*        aria-controls="menu-appbar"*/}
-                    {/*        aria-haspopup="true"*/}
-                    {/*        onClick={handleMenuB}*/}
-                    {/*    >*/}
-                    {/*        <AccountCircle />*/}
-                    {/*    </IconButton>*/}
-                    {/*    <Menu*/}
-                    {/*        id="menu-appbar"*/}
-                    {/*        anchorEl={anchorElB}*/}
-                    {/*        anchorOrigin={{*/}
-                    {/*            vertical: 'top',*/}
-                    {/*            horizontal: 'right',*/}
-                    {/*        }}*/}
-                    {/*        keepMounted*/}
-                    {/*        transformOrigin={{*/}
-                    {/*            vertical: 'top',*/}
-                    {/*            horizontal: 'right',*/}
-                    {/*        }}*/}
-                    {/*        open={openB}*/}
-                    {/*        onClose={handleCloseB}*/}
-                    {/*    >*/}
-                    {/*        /!*<MenuItem onClick={handleClose}>Profile</MenuItem>*!/*/}
-                    {/*        <MenuItem onClick={handleSignOut}>Sign out</MenuItem>*/}
-                    {/*    </Menu>*/}
-                    {/*</div>*/}
-
-                </Toolbar>
-            {/*</AppBar>*/}
+            <Toolbar variant={"dense"}>
+                <IconButton
+                    edge="start"
+                    className={classes.menuButton}
+                    aria-label="menu"
+                    onClick={handleMenu}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={handleSelect('ADD_MAP')}>Add map</MenuItem>
+                    <MenuItem onClick={handleSelect('ADD_TASK_MAP')}>Add task map</MenuItem>
+                    <MenuItem onClick={handleSelect('DENSITY_SMALL')}>Density: small</MenuItem>
+                    <MenuItem onClick={handleSelect('DENSITY_LARGE')}>Density: large</MenuItem>
+                    <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign out</MenuItem>
+                </Menu>
+                <Typography variant="h6" className={classes.title}>
+                    MindBoard
+                </Typography>
+            </Toolbar>
         </div>
     );
 }

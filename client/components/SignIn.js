@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -51,21 +51,22 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
     const classes = useStyles();
 
-    let email = '';
-    let password = '';
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
 
     const typeEmail = (e) => {
-        email = e.target.value;
+        setEmail(e.target.value);
     };
 
     const typePassword = (e) => {
-        password = e.target.value;
+        setPassword(e.target.value);
     };
 
     const [state, dispatch] = useContext(Context);
 
     const signInHandler = () => {
-        dispatch({type: 'SIGN_IN', payload: {email, password}})
+        dispatch({type: 'UPDATE_CREDENTIALS', payload: {email, password}})
     };
 
     return (

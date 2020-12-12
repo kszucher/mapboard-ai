@@ -19,3 +19,5 @@ export const State = {
     mapStorage: {},
 
 };
+
+export const InitState = JSON.stringify(State);
