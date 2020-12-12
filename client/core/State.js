@@ -16,6 +16,9 @@ export const State = {
 
     mapId: '',
     mapStorage: {},
+    mapStorageOut: {},
+
+    isSaved: 0,
 
 };
 

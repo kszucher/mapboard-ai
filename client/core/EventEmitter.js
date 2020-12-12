@@ -1,6 +1,6 @@
 import {communication} from "./Communication";
 import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
-import {mapMem, mapref, pathMerge, loadMap, saveMap, mapStorageOut} from "../map/Map";
+import {mapMem, mapref, pathMerge, loadMap, saveMap} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
@@ -8,7 +8,7 @@ import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
-import {remoteDispatch} from "./Store";
+import {remoteDispatch, remoteGetState} from "./Store";
 
 let mutationObserver;
 
@@ -431,12 +431,7 @@ export function eventEmitter(command) {
         }
         case 'save': {
             saveMap();
-            communication.sender({
-                cmd: 'writeMapRequest',
-                cred: JSON.parse(localStorage.getItem('cred')),
-                mapName: lastUserMap,
-                mapStorage: mapStorageOut
-            });
+            remoteDispatch({type: 'SAVE_MAP'});
             break;
         }
         // -------------------------------------------------------------------------------------------------------------

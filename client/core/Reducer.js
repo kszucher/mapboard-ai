@@ -7,7 +7,9 @@ const Reducer = (state, action) => {
     // console.log(action.type)
 
     switch (action.type) {
-        case 'RESET_STATE': return JSON.parse(InitState);
+        case 'RESET_STATE':
+            localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
+            return JSON.parse(InitState);
         case 'UPDATE_CREDENTIALS':
             localStorage.setItem('cred', JSON.stringify({
                 email: payload.email,
@@ -25,6 +27,9 @@ const Reducer = (state, action) => {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
             return {...state, mapId: payload.mapId};
+        case 'SET_MAP_STORAGE_OUT': return {...state, mapStorageOut: payload};
+        case 'SAVE_MAP': return {...state, isSaved: state.isSaved + 1};
+
         default: return state;
     }
 };

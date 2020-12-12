@@ -10,9 +10,9 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
+import {remoteDispatch} from "../core/Store";
 
 export let mapMem = {};
-export let mapStorageOut = {};
 export let mapDivData = [];
 export let mapSvgData = [];
 export let keepHash = '';
@@ -114,9 +114,10 @@ export function saveMap () {
     let cm = copy(mapMem.getData());
     mapDeinit.start(cm);
     mapDisassembly.start(cm);
-    mapStorageOut ={
-        data: nodeCopyList,
-        density: mapMem.density,
-        task: mapMem.task,
-    };
+
+    remoteDispatch({type: 'SET_MAP_STORAGE_OUT', payload: {
+            data: nodeCopyList,
+            density: mapMem.density,
+            task: mapMem.task,
+        }});
 }

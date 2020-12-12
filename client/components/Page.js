@@ -2,16 +2,18 @@ import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import SignIn from "./SignIn";
 import {Workspace} from "./Workspace";
-import {Context} from "../core/Store";
+import {Context, remoteGetState} from "../core/Store";
 import {windowHandler} from "../core/WindowHandler";
 import {initDomData, loadMap, recalc, redraw} from "../map/Map";
 import {eventEmitter} from "../core/EventEmitter";
+import {communication} from "../core/Communication";
 
 export function Page() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {credentialsChanged, isLoggedIn, serverResponse, tabListIds, tabListSelected, mapId, mapStorage} = state;
+    const {credentialsChanged, isLoggedIn, serverResponse, tabListIds, tabListSelected,
+        mapId, mapStorage, isSaved, mapStorageOut} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -98,6 +100,7 @@ export function Page() {
                 break;
             }
             case 'writeMapRequestSuccess': {
+                console.log('save success');
                 break;
             }
             case 'createMapInTabSuccess': {
@@ -114,6 +117,17 @@ export function Page() {
             }
         }
     }, [serverResponse]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            commSend({
+                cmd: 'writeMapRequest',
+                cred: JSON.parse(localStorage.getItem('cred')),
+                mapName: remoteGetState().mapId,
+                mapStorage: mapStorageOut
+            });
+        }
+    }, [isSaved]);
 
     return(
         isLoggedIn
