@@ -29,18 +29,8 @@ export function Page() {
     };
 
     useEffect(() => {
-        if (isLoggedIn) {
-            windowHandler.addListeners();
-        } else {
-            // localStorage.setItem('cred', null); // TODO: elfelejteni
-            dispatch({type: 'RESET_STATE'});
-            windowHandler.removeListeners();
-        }
-    }, [isLoggedIn]);
-
-    useEffect(() => {
         let cred = JSON.parse(localStorage.getItem('cred'));
-        if (cred !== null) {
+        if (cred.used) {
             dispatch({type: 'UPDATE_CREDENTIALS', payload: {email: cred.name, password: cred.pass}})
         }
     }, []);
@@ -50,6 +40,7 @@ export function Page() {
             localStorage.setItem('cred', JSON.stringify({
                 name: email,
                 pass: password,
+                used: 1,
             }));
             commSend({
                 'cmd': 'signInRequest',
@@ -57,6 +48,14 @@ export function Page() {
             });
         }
     }, [email, password]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            windowHandler.addListeners();
+        } else {
+            windowHandler.removeListeners();
+        }
+    }, [isLoggedIn]);
 
     useEffect(() => {
         switch (serverResponse.cmd) {

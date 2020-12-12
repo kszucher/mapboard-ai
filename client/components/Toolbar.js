@@ -47,7 +47,9 @@ export default function MenuAppBar() {
         handleClose();
         switch(param) {
             case 'SIGN_OUT':
-                dispatch({type: 'IS_LOGGED_IN_FALSE'});
+                // dispatch({type: 'IS_LOGGED_IN_FALSE'});
+                dispatch({type: 'RESET_STATE'});
+                localStorage.setItem('cred', JSON.stringify({name: '', pass: '', used: 0}));
                 break;
         }
     };
