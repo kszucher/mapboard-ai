@@ -1,7 +1,6 @@
 export const State = {
 
-    email: '',
-    password: '',
+    credentialsChanged: 0,
 
     isLoggedIn: false,
 
@@ -15,9 +14,7 @@ export const State = {
     tabListNames: [],
     tabListSelected: undefined,
 
-    mapSelected: '',
-
-    lastUserMap: '',
+    mapId: '',
     mapStorage: {},
 
 };

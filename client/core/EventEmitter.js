@@ -10,10 +10,6 @@ import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
 import {remoteDispatch} from "./Store";
 
-// these will be part of state
-let headerData = {};
-let lastUserMap = '';
-let shouldAddToHistory = 0;
 let mutationObserver;
 
 export function eventEmitter(command) {
@@ -371,9 +367,8 @@ export function eventEmitter(command) {
         // TO SERVER
         // -------------------------------------------------------------------------------------------------------------
         case 'openLink': {
-            shouldAddToHistory = 1;
             if(sc.lm.linkType === 'internal') {
-                remoteDispatch({type: 'SET_MAP', payload: sc.lm.link})
+                remoteDispatch({type: 'SET_MAP_ID', payload: {mapId: sc.lm.link, pushHistory: true}})
             } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();
@@ -381,12 +376,7 @@ export function eventEmitter(command) {
             break;
         }
         case 'openAfterHistory': {
-            shouldAddToHistory = 0;
-            communication.sender({
-                'cmd': 'openMapRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'mapName': lastEvent.ref.state.lastUserMap
-            });
+            remoteDispatch({type: 'SET_MAP_ID', payload: {mapId: lastEvent.ref.state.mapId, pushHistory: false}});
             break;
         }
         case 'createMapInTab': {

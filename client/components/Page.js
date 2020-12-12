@@ -11,7 +11,7 @@ export function Page() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {isLoggedIn, email, password, serverResponse, tabListIds, tabListSelected, mapSelected, lastUserMap, mapStorage} = state;
+    const {credentialsChanged, isLoggedIn, serverResponse, tabListIds, tabListSelected, mapId, mapStorage} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -30,24 +30,20 @@ export function Page() {
 
     useEffect(() => {
         let cred = JSON.parse(localStorage.getItem('cred'));
-        if (cred.used) {
-            dispatch({type: 'UPDATE_CREDENTIALS', payload: {email: cred.name, password: cred.pass}})
+        if (cred && cred.email && cred.password) {
+            dispatch({type: 'UPDATE_CREDENTIALS', payload: {email: cred.email, password: cred.password}})
         }
     }, []);
 
     useEffect(() => {
-        if (email !== '' && password !== '') {
-            localStorage.setItem('cred', JSON.stringify({
-                name: email,
-                pass: password,
-                used: 1,
-            }));
+        let cred = JSON.parse(localStorage.getItem('cred'));
+        if (cred && cred.email && cred.password) {
             commSend({
                 'cmd': 'signInRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
+                'cred': cred
             });
         }
-    }, [email, password]);
+    }, [credentialsChanged]);
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -56,6 +52,30 @@ export function Page() {
             windowHandler.removeListeners();
         }
     }, [isLoggedIn]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch({type: 'SET_MAP_ID', payload: {mapId: tabListIds[tabListSelected], pushHistory: true}})
+        }
+    }, [tabListSelected]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            commSend({
+                'cmd': 'openMapRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+                'mapName': mapId
+            });
+        }
+    }, [mapId]);
+
+    useEffect(() => {
+        if (mapStorage.hasOwnProperty('data')) {
+            loadMap(mapStorage);
+            recalc();
+            redraw();
+        }
+    }, [mapStorage]);
 
     useEffect(() => {
         switch (serverResponse.cmd) {
@@ -68,13 +88,13 @@ export function Page() {
                 break;
             }
             case 'signInFail': {
-                console.log(localStorage);
+                console.log('sign in attempt failed');
+                // console.log(localStorage);
+                // localStorage.clear();
                 break;
             }
             case 'openMapSuccess': {
-                dispatch({type: 'SET_LAST_USER_MAP', payload: serverResponse.mapName});
                 dispatch({type: 'SET_MAP_STORAGE', payload: serverResponse.mapStorage});
-
                 break;
             }
             case 'writeMapRequestSuccess': {
@@ -94,35 +114,6 @@ export function Page() {
             }
         }
     }, [serverResponse]);
-
-    useEffect(() => {
-        dispatch({type: 'SET_MAP', payload: tabListIds[tabListSelected]})
-    }, [tabListSelected]);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            commSend({
-                'cmd': 'openMapRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'mapName': mapSelected
-            });
-        }
-    }, [mapSelected]);
-
-    useEffect(() => {
-        if (mapStorage.hasOwnProperty('data')) {
-
-            // if (shouldAddToHistory === 1) { // TODO!!!
-            //     history.pushState({lastUserMap: lastUserMap}, lastUserMap, '');
-            // }
-
-            loadMap(mapStorage);
-            recalc();
-            redraw();
-        }
-
-    }, [mapStorage]);
-
 
     return(
         isLoggedIn

@@ -169,12 +169,12 @@ async function mongoFunction(c2s, operation) {
         console.log('connected to server...');
         switch (operation) {
             case 'auth': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
+                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 m2s.authenticationSuccess = currUser !== null;
                 break;
             }
             case 'getUserMaps': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
+                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 let headerMapIdList = currUser.headerMapIdList;
                 let headerMapNameList = [];
                 await collectionMaps.aggregate([
@@ -201,7 +201,7 @@ async function mongoFunction(c2s, operation) {
                 break;
             }
             case 'addUserMap': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.name, password: c2s.cred.pass});
+                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 await collectionUsers.updateOne(
                     {_id: ObjectId(currUser._id)},
                     {$push: {"headerMapIdList" : c2s.insertedId}}

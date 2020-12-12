@@ -47,7 +47,7 @@ export default function MenuAppBar() {
         switch(param) {
             case 'SIGN_OUT':
                 dispatch({type: 'RESET_STATE'});
-                localStorage.setItem('cred', JSON.stringify({name: '', pass: '', used: 0}));
+                localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
                 break;
         }
     };
