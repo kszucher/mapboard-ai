@@ -8,6 +8,7 @@ import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
+import {remoteDispatch} from "./Store";
 
 // these will be part of state
 let headerData = {};
@@ -26,8 +27,7 @@ export function eventEmitter(command) {
     // TODO: lastEvent context getter, also selectively
 
     let sc;
-    if (!['undo', 'redo', 'signInAuto', 'signIn',  'signOut',
-        'openAfterInit', 'openAfterTabSelect', 'openAfterHistory', 'createMapInTab', 'save',
+    if (!['undo', 'redo', 'signInAuto', 'signIn', 'createMapInTab', 'save',
         'sendImage', 'updatePageToSignIn', 'updateTabs'].includes(command)) {
         try {
             sc = getSelectionContext();
@@ -370,44 +370,10 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // TO SERVER
         // -------------------------------------------------------------------------------------------------------------
-        case 'signOut': {
-            // localStorage.setItem('cred', null);
-            // communication.sender({
-            //     'cmd': 'signOutRequest',
-            //     'cred': JSON.parse(localStorage.getItem('cred')),
-            // });
-            break;
-        }
-        // case 'openAfterInit': {
-        //     shouldAddToHistory = 1;
-        //     communication.sender({
-        //         'cmd': 'openMapRequest',
-        //         'cred': JSON.parse(localStorage.getItem('cred')),
-        //         'mapName': headerData.headerMapIdList[headerData.headerMapSelected]
-        //     });
-        //     break;
-        // }
-        // case 'openAfterTabSelect': {
-        //     shouldAddToHistory = 1;
-        //     communication.sender({
-        //         'cmd': 'openMapRequest',
-        //         'cred': JSON.parse(localStorage.getItem('cred')),
-        //         'mapName': headerData.headerMapIdList[lastEvent.ref.tabId]
-        //     });
-        //     break;
-        // }
-        case 'openAfterNodeSelect': {
+        case 'openLink': {
             shouldAddToHistory = 1;
             if(sc.lm.linkType === 'internal') {
-
-
-                communication.sender({
-                    'cmd': 'openMapRequest',
-                    'cred': JSON.parse(localStorage.getItem('cred')),
-                    'mapName': sc.lm.link
-                });
-
-
+                remoteDispatch({type: 'SET_MAP', payload: sc.lm.link})
             } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();

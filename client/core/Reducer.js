@@ -16,6 +16,7 @@ const Reducer = (state, action) => {
         case 'SET_TAB_LIST_SELECTED': return {...state, tabListSelected: payload};
         case 'SET_LAST_USER_MAP': return {...state, lastUserMap: payload};
         case 'SET_MAP_STORAGE': return {...state, mapStorage: payload};
+        case 'SET_MAP': return {...state, mapSelected: payload};
         default: return state;
     }
 };

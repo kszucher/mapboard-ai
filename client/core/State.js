@@ -15,6 +15,8 @@ export const State = {
     tabListNames: [],
     tabListSelected: undefined,
 
+    mapSelected: '',
+
     lastUserMap: '',
     mapStorage: {},
 

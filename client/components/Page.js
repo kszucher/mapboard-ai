@@ -11,7 +11,7 @@ export function Page() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {isLoggedIn, email, password, serverResponse, tabListIds, tabListSelected, lastUserMap, mapStorage} = state;
+    const {isLoggedIn, email, password, serverResponse, tabListIds, tabListSelected, mapSelected, lastUserMap, mapStorage} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -93,19 +93,21 @@ export function Page() {
                 break;
             }
         }
-
     }, [serverResponse]);
 
     useEffect(() => {
-        // shouldAddToHistory = 1; // TODO!!!
+        dispatch({type: 'SET_MAP', payload: tabListIds[tabListSelected]})
+    }, [tabListSelected]);
+
+    useEffect(() => {
         if (isLoggedIn) {
             commSend({
                 'cmd': 'openMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
-                'mapName': tabListIds[tabListSelected]
+                'mapName': mapSelected
             });
         }
-    }, [tabListSelected]);
+    }, [mapSelected]);
 
     useEffect(() => {
         if (mapStorage.hasOwnProperty('data')) {

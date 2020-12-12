@@ -38,7 +38,7 @@ export const eventRouter = {
                             push();
                             mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
                             if (!e.ctrlKey) eventEmitter('selectMeStruct'); else eventEmitter('selectMeStructToo');
-                            if (!e.shiftKey) eventEmitter('openAfterNodeSelect');
+                            if (!e.shiftKey) eventEmitter('openLink');
                             redraw();
                             checkPop();
                             break;

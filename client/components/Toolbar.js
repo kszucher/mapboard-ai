@@ -35,7 +35,6 @@ export default function MenuAppBar() {
     const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
     const handleClose = () => {setAnchorEl(null)};
 
-    const handleSignOut = () => {       handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'signOut'}})};
     const handleAddMap = () => {        handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
     const handleAddTaskMap = () => {    handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
     const handleDensitySmall = () => {  handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
