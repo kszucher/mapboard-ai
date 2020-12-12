@@ -61,7 +61,7 @@ export function Page() {
         switch (serverResponse.cmd) {
             case 'signInSuccess': {
                 initDomData();
-                dispatch({type: 'IS_LOGGED_IN_TRUE'});
+                dispatch({type: 'LOG_IN'});
                 dispatch({type: 'SET_TAB_LIST_IDS', payload: serverResponse.headerData.headerMapIdList});
                 dispatch({type: 'SET_TAB_LIST_NAMES', payload: serverResponse.headerData.headerMapNameList});
                 dispatch({type: 'SET_TAB_LIST_SELECTED', payload: serverResponse.headerData.headerMapSelected});
@@ -69,12 +69,6 @@ export function Page() {
             }
             case 'signInFail': {
                 console.log(localStorage);
-                break;
-            }
-            case 'signOutSuccess': {
-                // localStorage.clear();
-
-                // eventEmitter('updatePageToSignIn'); // LOGOUT magyarul
                 break;
             }
             case 'openMapSuccess': {

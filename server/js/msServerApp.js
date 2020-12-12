@@ -114,12 +114,6 @@ async function sendResponse(c2s) {
                 };
                 break;
             }
-            case 'signOutRequest': {
-                s2c = {
-                    cmd: 'signOutSuccess',
-                };
-                break;
-            }
             case 'openMapRequest': {
                 let m2s = await mongoFunction(c2s, 'openMap');
                 s2c = {
