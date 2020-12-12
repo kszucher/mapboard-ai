@@ -371,11 +371,11 @@ export function eventEmitter(command) {
         // TO SERVER
         // -------------------------------------------------------------------------------------------------------------
         case 'signOut': {
-            localStorage.setItem('cred', null);
-            communication.sender({
-                'cmd': 'signOutRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-            });
+            // localStorage.setItem('cred', null);
+            // communication.sender({
+            //     'cmd': 'signOutRequest',
+            //     'cred': JSON.parse(localStorage.getItem('cred')),
+            // });
             break;
         }
         // case 'openAfterInit': {

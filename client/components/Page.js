@@ -29,21 +29,33 @@ export function Page() {
     };
 
     useEffect(() => {
+        if (isLoggedIn) {
+            windowHandler.addListeners();
+        } else {
+            // localStorage.setItem('cred', null); // TODO: elfelejteni
+            dispatch({type: 'RESET_STATE'});
+            windowHandler.removeListeners();
+        }
+    }, [isLoggedIn]);
+
+    useEffect(() => {
         let cred = JSON.parse(localStorage.getItem('cred'));
         if (cred !== null) {
-            dispatch({type: 'SIGN_IN', payload: {email: cred.name, password: cred.pass}})
+            dispatch({type: 'UPDATE_CREDENTIALS', payload: {email: cred.name, password: cred.pass}})
         }
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('cred', JSON.stringify({
-            name: email,
-            pass: password,
-        }));
-        commSend({
-            'cmd': 'signInRequest',
-            'cred': JSON.parse(localStorage.getItem('cred')),
-        });
+        if (email !== '' && password !== '') {
+            localStorage.setItem('cred', JSON.stringify({
+                name: email,
+                pass: password,
+            }));
+            commSend({
+                'cmd': 'signInRequest',
+                'cred': JSON.parse(localStorage.getItem('cred')),
+            });
+        }
     }, [email, password]);
 
     useEffect(() => {
@@ -61,9 +73,9 @@ export function Page() {
                 break;
             }
             case 'signOutSuccess': {
-                localStorage.clear();
+                // localStorage.clear();
 
-                eventEmitter('updatePageToSignIn'); // LOGOUT magyarul
+                // eventEmitter('updatePageToSignIn'); // LOGOUT magyarul
                 break;
             }
             case 'openMapSuccess': {
@@ -90,18 +102,6 @@ export function Page() {
         }
 
     }, [serverResponse]);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            windowHandler.addListeners();
-        } else {
-            localStorage.setItem('cred', null);
-
-            dispatch({type: 'RESET_STATE'});
-
-            windowHandler.removeListeners();
-        }
-    }, [isLoggedIn]);
 
     useEffect(() => {
         // shouldAddToHistory = 1; // TODO!!!

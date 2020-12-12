@@ -4,6 +4,8 @@ const Reducer = (state, action) => {
 
     const {payload} = action;
 
+    // console.log(action.type)
+
     switch (action.type) {
         case 'RESET_STATE': return JSON.parse(InitState);
         case 'UPDATE_CREDENTIALS': return {...state, email: payload.email, password: payload.password};
