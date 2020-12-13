@@ -32,33 +32,6 @@ export function eventEmitter(command) {
 
     switch (command) {
         // -------------------------------------------------------------------------------------------------------------
-        // TO MAP
-        // -------------------------------------------------------------------------------------------------------------
-        case 'undo': {
-            if (mapMem.dataIndex > 0) {
-                mapMem.dataIndex--;
-            }
-            break;
-        }
-        case 'redo': {
-            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                mapMem.dataIndex++;
-            }
-            break;
-        }
-        case 'prettyPrint': {
-            mapPrint.start(sc.lm);
-            break;
-        }
-        case 'mapAttributeDensitySmall': {
-            mapMem.density = 'small';
-            break;
-        }
-        case 'mapAttributeDensityLarge': {
-            mapMem.density = 'large';
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
         // SELECT
         // -------------------------------------------------------------------------------------------------------------
         case 'selectMeStruct': {
@@ -338,6 +311,14 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         // FORMAT
         // -------------------------------------------------------------------------------------------------------------
+        case 'mapAttributeDensitySmall': {
+            mapMem.density = 'small';
+            break;
+        }
+        case 'mapAttributeDensityLarge': {
+            mapMem.density = 'large';
+            break;
+        }
         case 'applyColor': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
@@ -364,6 +345,28 @@ export function eventEmitter(command) {
         }
         case 'transpose': {
             sc.lm.c = transposeArray(sc.lm.c);
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        // UNDO-REDO
+        // -------------------------------------------------------------------------------------------------------------
+        case 'undo': {
+            if (mapMem.dataIndex > 0) {
+                mapMem.dataIndex--;
+            }
+            break;
+        }
+        case 'redo': {
+            if (mapMem.dataIndex < mapMem.data.length - 1) {
+                mapMem.dataIndex++;
+            }
+            break;
+        }
+        // -------------------------------------------------------------------------------------------------------------
+        // EXPORT
+        // -------------------------------------------------------------------------------------------------------------
+        case 'prettyPrint': {
+            mapPrint.start(sc.lm);
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
