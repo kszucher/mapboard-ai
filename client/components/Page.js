@@ -57,16 +57,6 @@ export function Page() {
 
     useEffect(() => {
         if (isLoggedIn) {
-            dispatch({type: 'SET_MAP_ID', payload: {
-                    mapId: tabListIds[tabListSelected],
-                    mapName: tabListNames[tabListSelected],
-                    pushHistory: true,
-                    breadcrumbsOp: 'resetPush'}})
-        }
-    }, [tabListSelected]);
-
-    useEffect(() => {
-        if (isLoggedIn) {
             commSend({
                 'cmd': 'openMapRequest',
                 'cred': JSON.parse(localStorage.getItem('cred')),
@@ -87,10 +77,16 @@ export function Page() {
         switch (serverResponse.cmd) {
             case 'signInSuccess': {
                 initDomData();
+                const {headerMapIdList, headerMapNameList, headerMapSelected} = serverResponse.headerData;
                 dispatch({type: 'LOG_IN'});
-                dispatch({type: 'SET_TAB_LIST_IDS', payload: serverResponse.headerData.headerMapIdList});
-                dispatch({type: 'SET_TAB_LIST_NAMES', payload: serverResponse.headerData.headerMapNameList});
-                dispatch({type: 'SET_TAB_LIST_SELECTED', payload: serverResponse.headerData.headerMapSelected});
+                dispatch({type: 'SET_TAB_LIST_IDS', payload: headerMapIdList});
+                dispatch({type: 'SET_TAB_LIST_NAMES', payload: headerMapNameList});
+                dispatch({type: 'SET_TAB_LIST_SELECTED', payload: headerMapSelected});
+                dispatch({type: 'SET_MAP_ID', payload: {
+                        mapId: headerMapIdList[headerMapSelected],
+                        mapName: headerMapNameList[headerMapSelected],
+                        pushHistory: true,
+                        breadcrumbsOp: 'resetPush'}});
                 break;
             }
             case 'signInFail': {

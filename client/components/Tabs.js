@@ -1,4 +1,4 @@
-import React, { useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -53,13 +53,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VerticalTabs() {
     const classes = useStyles();
-
     const [state, dispatch] = useContext(Context);
-
-    const {tabListNames, tabListSelected} = state;
+    const {tabListIds, tabListNames, tabListSelected} = state;
+    const [val, setVal] = useState(tabListSelected);
 
     const handleChange = (e, value) =>  {
-        dispatch({type: 'SET_TAB_LIST_SELECTED', payload: value});
+        setVal(value);
+        dispatch({type: 'SET_MAP_ID', payload: {
+                mapId: tabListIds[value],
+                mapName: tabListNames[value],
+                pushHistory: true,
+                breadcrumbsOp: 'resetPush'}});
     };
 
     return (
@@ -69,7 +73,7 @@ export default function VerticalTabs() {
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
-                value={tabListSelected}
+                value={val}
                 onChange={handleChange}
                 indicatorColor="primary">
                 {tabListNames.map(name => (
