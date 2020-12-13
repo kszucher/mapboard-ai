@@ -20,11 +20,8 @@ export function eventEmitter(command) {
         keyStr = lastEvent.ref.code;
     }
 
-    // TODO: lastEvent context getter, also selectively
-
     let sc;
-    if (!['undo', 'redo', 'signInAuto', 'signIn', 'createMapInTab', 'save',
-        'sendImage', 'updatePageToSignIn', 'updateTabs'].includes(command)) {
+    if (!['undo', 'redo', 'createMapInTab', 'save', 'sendImage', 'updateTabs'].includes(command)) {
         try {
             sc = getSelectionContext();
         }
@@ -51,6 +48,14 @@ export function eventEmitter(command) {
         }
         case 'prettyPrint': {
             mapPrint.start(sc.lm);
+            break;
+        }
+        case 'mapAttributeDensitySmall': {
+            mapMem.density = 'small';
+            break;
+        }
+        case 'mapAttributeDensityLarge': {
+            mapMem.density = 'large';
             break;
         }
         // -------------------------------------------------------------------------------------------------------------
@@ -294,7 +299,6 @@ export function eventEmitter(command) {
             setEndOfContenteditable(holderElement);
             eventRouter.isEditing = 1;
             sc.lm.isEditing = 1;
-
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
@@ -325,7 +329,6 @@ export function eventEmitter(command) {
             holderElement.contentEditable = 'false';
             sc.lm.isEditing = 0;
             eventRouter.isEditing = 0;
-
             if (sc.lm.content.substring(0, 2) === '\\[') {
                 sc.lm.contentType = 'equation';
                 sc.lm.isDimAssigned = 0;
@@ -368,11 +371,15 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'openLink': {
             if(sc.lm.linkType === 'internal') {
-                remoteDispatch({ type: 'SET_MAP_ID', payload: {
+                remoteDispatch({
+                    type: 'SET_MAP_ID',
+                    payload: {
                         mapId: sc.lm.link,
                         mapName: sc.lm.content,
                         pushHistory: true,
-                        breadcrumbsOp: 'push'}})
+                        breadcrumbsOp: 'push'
+                    }
+                })
             } else if (sc.lm.linkType === 'external') {
                 window.open(sc.lm.link, '_blank');
                 window.focus();
@@ -464,17 +471,5 @@ export function eventEmitter(command) {
             });
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // TO MATERIAL
-        // -------------------------------------------------------------------------------------------------------------
-        case 'updatePageToSignIn': {
-            document.dispatchEvent(new CustomEvent( 'toPage', {
-                'detail': {
-                    isLoggedIn: false
-                }}));
-            break;
-        }
-        case 'mapAttributeDensitySmall': {  mapMem.density = 'small';   break; }
-        case 'mapAttributeDensityLarge': {  mapMem.density = 'large';   break; }
     }
 }
