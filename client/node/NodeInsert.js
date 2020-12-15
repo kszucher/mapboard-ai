@@ -1,9 +1,10 @@
 import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
 
-export function structInsert(lm, direction) {
-    let parentRef = mapref(lm.parentPath);
-    if (direction === 'up') {
+export function structInsert(lm, mode) {
+    let parentRef;
+    if (mode === 'siblingUp') {
+        parentRef = mapref(lm.parentPath);
         parentRef.s.splice(lm.index, 0, getDefaultNode({
             selected: 1,
             taskStatus: parentRef.taskStatus,
@@ -13,7 +14,8 @@ export function structInsert(lm, direction) {
             parentNodeStartYFrom: parentRef.nodeStartY,
             twoStepAnimationRequested: 1,
         }))
-    } else if (direction === 'down') {
+    } else if (mode === 'siblingDown') {
+        parentRef = mapref(lm.parentPath);
         parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
             selected: 1,
             taskStatus: parentRef.taskStatus,
@@ -23,14 +25,15 @@ export function structInsert(lm, direction) {
             parentNodeStartYFrom: parentRef.nodeStartY,
             twoStepAnimationRequested: 1,
         }));
-    } else if (direction === 'right') {
-        lm.s.splice(lm.s.length, 0, getDefaultNode({
+    } else if (mode === 'child') {
+        parentRef = lm.isRoot? lm.d[0] : lm;
+        parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
             selected: 1,
-            taskStatus: lm.taskStatus,
-            parentNodeEndXFrom: lm.nodeEndX,
-            parentNodeEndYFrom: lm.nodeEndY,
-            parentNodeStartXFrom: lm.nodeStartX,
-            parentNodeStartYFrom: lm.nodeStartY,
+            taskStatus: parentRef.taskStatus,
+            parentNodeEndXFrom: parentRef.nodeEndX,
+            parentNodeEndYFrom: parentRef.nodeEndY,
+            parentNodeStartXFrom: parentRef.nodeStartX,
+            parentNodeStartYFrom: parentRef.nodeStartY,
             twoStepAnimationRequested: 1,
         }));
     }

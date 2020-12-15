@@ -159,17 +159,17 @@ export function eventEmitter(command) {
         // -------------------------------------------------------------------------------------------------------------
         case 'newSiblingUp': {
             clearStructSelectionContext();
-            structInsert(sc.lm, 'up');
+            structInsert(sc.lm, 'siblingUp');
             break;
         }
         case 'newSiblingDown': {
             clearStructSelectionContext();
-            structInsert(sc.lm, 'down');
+            structInsert(sc.lm, 'siblingDown');
             break;
         }
         case 'newChild': {
             clearStructSelectionContext();
-            structInsert(sc.lm, 'right');
+            structInsert(sc.lm, 'child');
             break;
         }
         case 'newCellBlock': {
