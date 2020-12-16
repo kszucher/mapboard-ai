@@ -7,36 +7,36 @@ export const mapPlace = {
         let n = 4;
         let d = 24;
         let gap = 4;
-        let wrapWidth = n*d + (n-1)*gap;
+        let taskWidth = n*d + (n-1)*gap;
 
-        let leftMargin = 32;
-        let wrapLeftWidth =     cm.d[1].s.length > 0 && mapMem.task ? wrapWidth: 0;
-        let minLeftWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW  : 0;
-        let minRightWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
-        let wrapRightWidth =    cm.d[0].s.length > 0 && mapMem.task ? wrapWidth : 0;
-        let rightMargin = 32;
-        let minWidth = leftMargin + wrapLeftWidth + minLeftWidth + cm.selfW + minRightWidth + wrapRightWidth + rightMargin;
+        let leftMarginWidth = 32;
+        let leftTaskWidth =     cm.d[1].s.length > 0 && mapMem.task ? taskWidth: 0;
+        let leftMapWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW  : 0;
+        let rightMapWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
+        let rightTaskWidth =    cm.d[0].s.length > 0 && mapMem.task ? taskWidth : 0;
+        let rightMarginWidth = 32;
+        let sumWidth = leftMarginWidth + leftTaskWidth + leftMapWidth + cm.selfW + rightMapWidth + rightTaskWidth + rightMarginWidth;
 
-        let minRightHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
-        let minLeftHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
-        let minHeight = Math.max(...[minRightHeight, minLeftHeight]);
+        let rightMapHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
+        let leftMapHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
+        let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
 
-        let minExpectedWidth = 1366;
+        let minWidth = 1366;
         let corr = 0;
-        if (minWidth < minExpectedWidth) {
+        if (sumWidth < minWidth) {
             if (cm.d[1].s.length > 0) {
-                corr = minExpectedWidth - minWidth;
+                corr = minWidth - sumWidth;
             }
-            minWidth = minExpectedWidth;
+            sumWidth = minWidth;
         }
 
-        let mapWidth = minWidth;
+        let mapWidth = sumWidth;
         let mapHeight = minHeight + 500;
 
         mapMem.mapWidth = mapWidth;
 
         let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.minWidth = "" + mapWidth + "px";
+        mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
         let svg = document.getElementById('mapSvg');
@@ -45,9 +45,9 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        cm.parentNodeStartX = leftMargin + corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
+        cm.parentNodeStartX = leftMarginWidth + corr + leftTaskWidth + leftMapWidth + cm.selfW / 2;
         cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = leftMargin + corr + wrapLeftWidth + minLeftWidth + cm.selfW / 2;
+        cm.parentNodeEndX = leftMarginWidth + corr + leftTaskWidth + leftMapWidth + cm.selfW / 2;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = 0;
         cm.lineDeltaY = minHeight / 2 + 30 - 0.5;
