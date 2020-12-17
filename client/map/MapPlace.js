@@ -4,6 +4,12 @@ export const mapPlace = {
     start: () => {
         let cm = mapMem.getData().r;
 
+        let arrangement = 'left'; // left or center, comes from user preference
+        if (cm.d[1].s.length > 0) {
+            arrangement = 'center' // this overwrites user preference
+        }
+
+        // WIDTH
         let n = 4;
         let d = 24;
         let gap = 4;
@@ -15,26 +21,36 @@ export const mapPlace = {
         let rightMapWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
         let rightTaskWidth =    cm.d[0].s.length > 0 && mapMem.task ? taskWidth : 0;
         let rightMarginWidth = 32;
-        let sumWidth = leftMarginWidth + leftTaskWidth + leftMapWidth + cm.selfW + rightMapWidth + rightTaskWidth + rightMarginWidth;
-
-        let rightMapHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
-        let leftMapHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
-        let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
+        
+        let leftWidth = leftMarginWidth + leftTaskWidth + leftMapWidth;
+        let rightWidth = rightMapWidth + rightTaskWidth + rightMarginWidth;
+        let sumWidth = leftWidth + cm.selfW + rightWidth;
 
         let minWidth = 1366;
-        let corr = 0;
-        if (sumWidth < minWidth) {
-            if (cm.d[1].s.length > 0) {
-                corr = minWidth - sumWidth;
-            }
-            sumWidth = minWidth;
-        }
+        let mapWidth = sumWidth < minWidth ? minWidth : sumWidth;
 
-        let mapWidth = sumWidth;
-        let mapHeight = minHeight + 500;
+        let mapStartCenterX = 0;
+        if (arrangement === 'left') {
+            mapStartCenterX = leftMarginWidth + cm.selfW / 2;
+        } else if (arrangement === 'center') {
+            let leftSpace = 0;
+            if (sumWidth < minWidth) {
+                leftSpace = (minWidth - sumWidth) / 2;
+            } else {
+                leftSpace = 0;
+            }
+            mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace +  leftMapWidth + cm.selfW/2;
+        }
 
         mapMem.mapWidth = mapWidth;
 
+        // HEIGHT
+        let rightMapHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
+        let leftMapHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
+        let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
+        let mapHeight = minHeight + 500;
+
+        // APPLY
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
@@ -45,9 +61,9 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        cm.parentNodeStartX = leftMarginWidth + corr + leftTaskWidth + leftMapWidth + cm.selfW / 2;
+        cm.parentNodeStartX = mapStartCenterX;
         cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = leftMarginWidth + corr + leftTaskWidth + leftMapWidth + cm.selfW / 2;
+        cm.parentNodeEndX = mapStartCenterX;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = 0;
         cm.lineDeltaY = minHeight / 2 + 30 - 0.5;
