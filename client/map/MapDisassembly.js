@@ -1,11 +1,12 @@
 import {copy} from "../core/Utils";
 
-export let nodeCopyList = [];
+let dcm = [];
 
 export const mapDisassembly = {
     start: (cm) => {
-        nodeCopyList = [];
+        dcm = [];
         mapDisassembly.iterate(cm.r);
+        return dcm;
     },
 
     iterate: (cm) => {
@@ -13,7 +14,7 @@ export const mapDisassembly = {
         delete nodeCopy['d'];
         delete nodeCopy['s'];
         delete nodeCopy['c'];
-        nodeCopyList.push(nodeCopy);
+        dcm.push(nodeCopy);
 
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {

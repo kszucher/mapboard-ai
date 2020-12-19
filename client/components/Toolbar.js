@@ -11,7 +11,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import {eventRouter} from "../core/EventRouter";
 import {Context} from "../core/Store";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,11 +34,6 @@ export default function MenuAppBar() {
     const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
     const handleClose = () => {setAnchorEl(null)};
 
-    const handleAddMap = () => {        handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 0}})};
-    const handleAddTaskMap = () => {    handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'createMapInTab', 'task': 1}})};
-    const handleDensitySmall = () => {  handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensitySmall'}})};
-    const handleDensityLarge = () => {  handleClose(); eventRouter.processEvent({type: 'componentEvent', ref: {'cmd': 'mapAttributeDensityLarge'}})};
-
     const [state, dispatch] = useContext(Context);
 
     const handleSelect = param => e => {
@@ -48,6 +42,10 @@ export default function MenuAppBar() {
             case 'SIGN_OUT':
                 dispatch({type: 'RESET_STATE'});
                 break;
+            case 'ADD_MAP':
+                dispatch({type: 'CREATE_MAP_IN_TAB'});
+                break;
+            // TODO: mapAttributeDensity change
         }
     };
 
@@ -78,7 +76,6 @@ export default function MenuAppBar() {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add map</MenuItem>
-                    <MenuItem onClick={handleSelect('ADD_TASK_MAP')}>Add task map</MenuItem>
                     <MenuItem onClick={handleSelect('DENSITY_SMALL')}>Density: small</MenuItem>
                     <MenuItem onClick={handleSelect('DENSITY_LARGE')}>Density: large</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign out</MenuItem>
@@ -90,3 +87,4 @@ export default function MenuAppBar() {
         </div>
     );
 }
+

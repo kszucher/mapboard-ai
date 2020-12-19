@@ -59,7 +59,7 @@ export default function VerticalTabs() {
 
     const handleChange = (e, value) =>  {
         setVal(value);
-        dispatch({type: 'SET_MAP_ID', payload: {
+        dispatch({type: 'OPEN_MAP', payload: {
                 mapId: tabListIds[value],
                 mapName: tabListNames[value],
                 pushHistory: true,

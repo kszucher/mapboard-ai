@@ -23,7 +23,7 @@ export default function WorkspaceBreadcrumbs() {
 
     const handleClick = param => event => {
         event.preventDefault();
-        dispatch({type: 'SET_MAP_ID', payload: {
+        dispatch({type: 'OPEN_MAP', payload: {
                 mapId: param.mapId,
                 mapName: param.mapName,
                 pushHistory: true,

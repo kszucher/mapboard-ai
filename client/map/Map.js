@@ -113,11 +113,26 @@ export function pathMerge(path1, path2) {
 export function saveMap () {
     let cm = copy(mapMem.getData());
     mapDeinit.start(cm);
-    mapDisassembly.start(cm);
+    return mapDisassembly.start(cm);
+}
 
-    remoteDispatch({type: 'SET_MAP_STORAGE_OUT', payload: {
-            data: nodeCopyList,
-            density: mapMem.density,
-            task: mapMem.task,
-        }});
+export function getDefaultMap (mapNameToSave) {
+    return {
+        data: [
+            {
+                path: ['r'],
+                content: mapNameToSave,
+                selected: 1
+            },
+            {
+                path: ['r', 'd', 0],
+            },
+            {
+                path: ['r', 'd', 0, 's', 0],
+                content: 'x'
+            }
+        ],
+        density: 'large',
+        task: 0
+    }
 }

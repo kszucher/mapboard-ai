@@ -1,6 +1,5 @@
-import {communication} from "./Communication";
 import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
-import {mapMem, mapref, pathMerge, loadMap, saveMap} from "../map/Map";
+import {mapMem, mapref, pathMerge, loadMap, saveMap, getDefaultMap, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
@@ -12,7 +11,7 @@ import {remoteDispatch, remoteGetState} from "./Store";
 
 let mutationObserver;
 
-export function eventEmitter(command) {
+export function eventEmitter(command) { // NODE REDUCER, és kell egy MAP REDUCER vagy gLobal state
     // console.log('emit: ' + command);
 
     let keyStr;
@@ -20,20 +19,21 @@ export function eventEmitter(command) {
         keyStr = lastEvent.ref.code;
     }
 
+    // ITT CSAK OLYAN ESEMÉNYEK LEHETNEK, amik a MAP-on belüli dolgokhoz szólnak, tehát NODE-LEVEL
+
     let sc;
-    if (!['undo', 'redo', 'createMapInTab', 'save', 'sendImage', 'updateTabs'].includes(command)) {
-        try {
-            sc = getSelectionContext();
-        }
-        catch {
-            console.log('selection context not available using command:' + command);
-        }
+    try {
+        sc = getSelectionContext();
+    }
+    catch {
+        console.log('selection context not available using command:' + command);
     }
 
     switch (command) {
         // -------------------------------------------------------------------------------------------------------------
-        // SELECT
+        // NODE-LEVEL
         // -------------------------------------------------------------------------------------------------------------
+        // SELECT --> ezt a részt jobban fel lehetne switch-elni egy jó payload-dal hogy könnyebben befogadható legyen!!!
         case 'selectMeStruct': {
             clearStructSelectionContext();
             clearCellSelectionContext();
@@ -154,9 +154,7 @@ export function eventEmitter(command) {
             mapMem.getData().r.selected = 1;
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // INSERT
-        // -------------------------------------------------------------------------------------------------------------
+        // INSERT ------------------------------------------------------------------------------------------------------
         case 'newSiblingUp': {
             clearStructSelectionContext();
             structInsert(sc.lm, 'siblingUp');
@@ -176,9 +174,7 @@ export function eventEmitter(command) {
             cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr);
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // DELETE
-        // -------------------------------------------------------------------------------------------------------------
+        // DELETE ------------------------------------------------------------------------------------------------------
         case 'deleteNode': {
             structDeleteReselect(sc);
             break;
@@ -187,9 +183,7 @@ export function eventEmitter(command) {
             cellBlockDeleteReselect(sc);
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // MOVE
-        // -------------------------------------------------------------------------------------------------------------
+        // MOVE --------------------------------------------------------------------------------------------------------
         case 'moveNodeSelection': {
             structMove(sc, 'struct2struct', keyStr);
             break;
@@ -207,9 +201,6 @@ export function eventEmitter(command) {
             structMove(sc, 'struct2cell', 'multiRow');
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // PASTE
-        // -------------------------------------------------------------------------------------------------------------
         case 'insertTextFromClipboardAsText': {
             document.execCommand("insertHTML", false, lastEvent.props.data);
             break;
@@ -257,9 +248,36 @@ export function eventEmitter(command) {
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // EDIT
-        // -------------------------------------------------------------------------------------------------------------
+        // FORMAT ------------------------------------------------------------------------------------------------------
+        case 'applyColor': {
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                switch (currColorToPaint) {
+                    case 0: cm.sTextColor = '#000000'; break;
+                    case 1: cm.sTextColor = '#999999'; break;
+                    case 2: cm.sTextColor = '#bbbbbb'; break;
+                    case 3: cm.sTextColor = '#dddddd'; break;
+                    case 4: cm.sTextColor = '#d5802a'; break;
+                    case 5: cm.sTextColor = '#1c8e1c'; break;
+                    case 6: cm.sTextColor = '#8e1c8e'; break;
+                    case 7: cm.sTextColor = '#990000'; break;
+                    case 8: cm.sTextColor = '#000099'; break;
+                    case 9: cm.sTextColor = '#ffffff'; break;
+                }
+            }
+            break;
+        }
+        case 'transposeMe': {
+            if (sc.lm.childType === 'cell') {
+                sc.lm.c = transposeArray(sc.lm.c);
+            }
+            break;
+        }
+        case 'transpose': {
+            sc.lm.c = transposeArray(sc.lm.c);
+            break;
+        }
+        // EDIT -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             sc.lm.content = '';
             let holderElement = document.getElementById(sc.lm.divId);
@@ -308,171 +326,6 @@ export function eventEmitter(command) {
             }
             break;
         }
-        // -------------------------------------------------------------------------------------------------------------
-        // FORMAT
-        // -------------------------------------------------------------------------------------------------------------
-        case 'mapAttributeDensitySmall': {
-            mapMem.density = 'small';
-            break;
-        }
-        case 'mapAttributeDensityLarge': {
-            mapMem.density = 'large';
-            break;
-        }
-        case 'applyColor': {
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i]);
-                switch (currColorToPaint) {
-                    case 0: cm.sTextColor = '#000000'; break;
-                    case 1: cm.sTextColor = '#999999'; break;
-                    case 2: cm.sTextColor = '#bbbbbb'; break;
-                    case 3: cm.sTextColor = '#dddddd'; break;
-                    case 4: cm.sTextColor = '#d5802a'; break;
-                    case 5: cm.sTextColor = '#1c8e1c'; break;
-                    case 6: cm.sTextColor = '#8e1c8e'; break;
-                    case 7: cm.sTextColor = '#990000'; break;
-                    case 8: cm.sTextColor = '#000099'; break;
-                    case 9: cm.sTextColor = '#ffffff'; break;
-                }
-            }
-            break;
-        }
-        case 'transposeMe': {
-            if (sc.lm.childType === 'cell') {
-                sc.lm.c = transposeArray(sc.lm.c);
-            }
-            break;
-        }
-        case 'transpose': {
-            sc.lm.c = transposeArray(sc.lm.c);
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
-        // UNDO-REDO
-        // -------------------------------------------------------------------------------------------------------------
-        case 'undo': {
-            if (mapMem.dataIndex > 0) {
-                mapMem.dataIndex--;
-            }
-            break;
-        }
-        case 'redo': {
-            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                mapMem.dataIndex++;
-            }
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
-        // EXPORT
-        // -------------------------------------------------------------------------------------------------------------
-        case 'prettyPrint': {
-            mapPrint.start(sc.lm);
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
-        // TO SERVER
-        // -------------------------------------------------------------------------------------------------------------
-        case 'openLink': {
-            if(sc.lm.linkType === 'internal') {
-                remoteDispatch({
-                    type: 'SET_MAP_ID',
-                    payload: {
-                        mapId: sc.lm.link,
-                        mapName: sc.lm.content,
-                        pushHistory: true,
-                        breadcrumbsOp: 'push'
-                    }
-                })
-            } else if (sc.lm.linkType === 'external') {
-                window.open(sc.lm.link, '_blank');
-                window.focus();
-            }
-            break;
-        }
-        case 'openAfterHistory': {
-            remoteDispatch({type: 'SET_MAP_ID', payload: {
-                    mapId: lastEvent.ref.state.mapId,
-                    mapName: mapMem.getData().r[0].content,
-                    pushHistory: false,
-                    breadcrumbsOp: 'x'}});
-            break;
-        }
-        case 'createMapInTab': {
-            communication.sender({
-                'cmd': 'createMapInTabRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'newMap': {
-                    data: [
-                        {
-                            path: ['r'],
-                            content: 'New map ' + genHash(4),
-                            selected: 1
-                        },
-                        {
-                            path: ['r', 'd', 0],
-                        },
-                        {
-                            path: ['r', 'd', 0, 's', 0],
-                            content: 'x'
-                        }
-                    ],
-                    density: 'large',
-                    task: lastEvent.ref.task
-                }
-            });
-            break;
-        }
-        case 'createMapInMap': {
-            communication.sender({
-                'cmd': 'createMapInMapRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'newMap': {
-                    data: [
-                        {
-                            path: ['r'],
-                            content: sc.lm.content,
-                            selected: 1
-                        },
-                        {
-                            path: ['r', 'd', 0],
-                        },
-                        {
-                            path: ['r', 'd', 0, 's', 0],
-                            content: 'x'
-                        }
-                    ],
-                    density: 'large',
-                    task: 0
-                }
-            });
-            break;
-        }
-        case 'save': {
-            saveMap();
-            remoteDispatch({type: 'SAVE_MAP'});
-            break;
-        }
-        // -------------------------------------------------------------------------------------------------------------
-        // TO FETCH SERVER
-        // -------------------------------------------------------------------------------------------------------------
-        case 'sendImage': {
-            var formData = new FormData();
-            formData.append('upl', lastEvent.props.data, 'image.png');
-            let address = process.env.NODE_ENV === 'development'?
-                'http://127.0.0.1:8082/feta' :
-                'https://mindboard.io/feta';
-            fetch(address, {
-                method:     'post',
-                body:       formData
-            }).then(function(response) {
-                response.json().then(function(sf2c) {
-                    eventRouter.processEvent({
-                        type: 'serverFetchEvent',
-                        ref: sf2c,
-                    });
-                });
-            });
-            break;
-        }
+        // FIND --------------------------------------------------------------------------------------------------------
     }
 }

@@ -66,7 +66,7 @@ export default function SignIn() {
     const [state, dispatch] = useContext(Context);
 
     const signInHandler = () => {
-        dispatch({type: 'UPDATE_CREDENTIALS', payload: {email, password}})
+        dispatch({type: 'SIGN_IN', payload: {email, password}})
     };
 
     return (

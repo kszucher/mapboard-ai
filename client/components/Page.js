@@ -4,16 +4,15 @@ import SignIn from "./SignIn";
 import {Workspace} from "./Workspace";
 import {Context, remoteGetState} from "../core/Store";
 import {windowHandler} from "../core/WindowHandler";
-import {initDomData, loadMap, recalc, redraw} from "../map/Map";
+import {checkPop, getDefaultMap, initDomData, loadMap, push, recalc, redraw} from "../map/Map";
+import {eventRouter, lastEvent} from "../core/EventRouter";
 import {eventEmitter} from "../core/EventEmitter";
-import {communication} from "../core/Communication";
 
 export function Page() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {credentialsChanged, isLoggedIn, serverResponse, tabListIds, tabListNames, tabListSelected,
-        mapId, mapStorage, isSaved, mapStorageOut} = state;
+    const {isLoggedIn, serverAction, serverResponse, mapId, mapStorage, mapStorageOut, mapNameToSave} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -24,69 +23,55 @@ export function Page() {
         };
         xmlHttp.open("POST", myUrl, true); // true for asynchronous
         xmlHttp.send(JSON.stringify(message));
+        // TODO: simplify this to fetch
     };
 
+    // TODO FETCH SERVER COMMUNICATOR IMPLEMENTATION AS WELL
+    
     const commSend = (obj) => {
         post(obj, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     };
+    
+    const fetchSend = (obj) => {
+        // TODO  
+    };
 
     useEffect(() => {
         let cred = JSON.parse(localStorage.getItem('cred'));
         if (cred && cred.email && cred.password) {
-            dispatch({type: 'UPDATE_CREDENTIALS', payload: {email: cred.email, password: cred.password}})
+            dispatch({type: 'SIGN_IN', payload: {email: cred.email, password: cred.password}})
         }
     }, []);
 
-    useEffect(() => {
-        let cred = JSON.parse(localStorage.getItem('cred'));
-        if (cred && cred.email && cred.password) {
-            commSend({
-                'cmd': 'signInRequest',
-                'cred': cred
-            });
-        }
-    }, [credentialsChanged]);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            windowHandler.addListeners();
-        } else {
-            windowHandler.removeListeners();
-        }
+    useEffect(() => { // igazából ez nem is itt lesz de tényleg... a WORKSPACE-re kell rátenni, mert oda való
+        isLoggedIn ? windowHandler.addListeners() : windowHandler.removeListeners();
     }, [isLoggedIn]);
 
     useEffect(() => {
-        if (isLoggedIn) {
-            commSend({
-                'cmd': 'openMapRequest',
-                'cred': JSON.parse(localStorage.getItem('cred')),
-                'mapName': mapId
-            });
+        let cred = JSON.parse(localStorage.getItem('cred'));
+        if (isLoggedIn && cred && cred.password) {
+            switch (serverAction) {
+                case 'signIn':          commSend({cmd: 'signInRequest',         cred}); break;
+                case 'openMap':         commSend({cmd: 'openMapRequest',        cred, mapName: mapId}); break;
+                case 'createMapInMap':  commSend({cmd: 'createMapInMapRequest', cred, newMap: getDefaultMap(mapNameToSave)}); break;
+                case 'createMapInTab':  commSend({cmd: 'createMapInTabRequest', cred, newMap: getDefaultMap(mapNameToSave)}); break;
+                case 'saveMap':         commSend({cmd: 'saveMapRequest',        cred, mapName: mapId, mapStorage: mapStorageOut}); break;
+            }
         }
-    }, [mapId]);
+    }, [serverAction]);
 
     useEffect(() => {
-        if (mapStorage.hasOwnProperty('data')) {
-            loadMap(mapStorage);
-            recalc();
-            redraw();
-        }
-    }, [mapStorage]);
-
-    useEffect(() => {
+        console.log('SERVER: ' + serverResponse.cmd);
         switch (serverResponse.cmd) {
             case 'signInSuccess': {
                 initDomData();
                 const {headerMapIdList, headerMapNameList, headerMapSelected} = serverResponse.headerData;
-                dispatch({type: 'LOG_IN'});
-                dispatch({type: 'SET_TAB_LIST_IDS', payload: headerMapIdList});
-                dispatch({type: 'SET_TAB_LIST_NAMES', payload: headerMapNameList});
-                dispatch({type: 'SET_TAB_LIST_SELECTED', payload: headerMapSelected});
-                dispatch({type: 'SET_MAP_ID', payload: {
-                        mapId: headerMapIdList[headerMapSelected],
-                        mapName: headerMapNameList[headerMapSelected],
-                        pushHistory: true,
-                        breadcrumbsOp: 'resetPush'}});
+                dispatch({type: 'SIGN_IN_SUCCESS', payload: {headerMapIdList, headerMapNameList, headerMapSelected}});
+                dispatch({type: 'OPEN_MAP', payload: {
+                    mapId: headerMapIdList[headerMapSelected],
+                    mapName: headerMapNameList[headerMapSelected],
+                    pushHistory: true,
+                    breadcrumbsOp: 'resetPush'}});
                 break;
             }
             case 'signInFail': {
@@ -96,15 +81,13 @@ export function Page() {
                 break;
             }
             case 'openMapSuccess': {
-                dispatch({type: 'SET_MAP_STORAGE', payload: serverResponse.mapStorage});
-                break;
-            }
-            case 'writeMapRequestSuccess': {
-                console.log('save success');
-                break;
-            }
-            case 'createMapInTabSuccess': {
-                eventEmitter('updateTabs');
+                // ITT TELJESN NORMÁLIS A NODEREDUCER-nek küldött NODEDISPATCH
+                loadMap(serverResponse.mapStorage);
+                recalc();
+                redraw();
+                
+                
+                
                 break;
             }
             case 'createMapInMapSuccess': {
@@ -115,21 +98,33 @@ export function Page() {
                 redraw();
                 break;
             }
+            case 'createMapInTabSuccess': {
+                break;
+            }
+            case 'saveMapRequestSuccess': {
+                eventRouter.processEvent({
+                    type: 'serverEvent',
+
+                })
+                console.log('save success');
+                break;
+            }
+            case 'imageSaveSuccess': {
+                // FELTÉVE, hogy továbbfejlesztettük az alaprendszert is fetch-essé...
+                // VAGY pedig külön kell szedni
+
+                //         push();
+                //         eventEmitter('newChild');
+                //         recalc();
+                //         eventEmitter('insertImageFromLinkAsNode');
+                //         recalc();
+                //         redraw();
+                //         checkPop();
+            }
         }
     }, [serverResponse]);
 
-    useEffect(() => {
-        if (isLoggedIn) {
-            commSend({
-                cmd: 'writeMapRequest',
-                cred: JSON.parse(localStorage.getItem('cred')),
-                mapName: remoteGetState().mapId,
-                mapStorage: mapStorageOut
-            });
-        }
-    }, [isSaved]);
-
-    return(
+    return( // meg majd ugye a loader is, annak függvényében, hogy...
         isLoggedIn
             ? <Workspace/>
             : <SignIn/>

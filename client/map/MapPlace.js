@@ -33,12 +33,7 @@ export const mapPlace = {
         if (arrangement === 'left') {
             mapStartCenterX = leftMarginWidth + cm.selfW / 2;
         } else if (arrangement === 'center') {
-            let leftSpace = 0;
-            if (sumWidth < minWidth) {
-                leftSpace = (minWidth - sumWidth) / 2;
-            } else {
-                leftSpace = 0;
-            }
+            let leftSpace = sumWidth < minWidth ? (minWidth - sumWidth) / 2 : 0;
             mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace +  leftMapWidth + cm.selfW/2;
         }
 

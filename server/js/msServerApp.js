@@ -123,10 +123,11 @@ async function sendResponse(c2s) {
                 };
                 break;
             }
-            case 'writeMapRequest': {
-                await mongoFunction(c2s, 'writeMap');
+            case 'createMapInMapRequest': {
+                let m2s = await mongoFunction(c2s, 'createMap');
                 s2c = {
-                    cmd: 'writeMapRequestSuccess',
+                    cmd: 'createMapInMapSuccess',
+                    newMapId: m2s.insertedId
                 };
                 break;
             }
@@ -141,11 +142,10 @@ async function sendResponse(c2s) {
                 };
                 break;
             }
-            case 'createMapInMapRequest': {
-                let m2s = await mongoFunction(c2s, 'createMap');
+            case 'saveMapRequest': {
+                await mongoFunction(c2s, 'saveMap');
                 s2c = {
-                    cmd: 'createMapInMapSuccess',
-                    newMapId: m2s.insertedId
+                    cmd: 'saveMapRequestSuccess',
                 };
                 break;
             }
@@ -193,6 +193,10 @@ async function mongoFunction(c2s, operation) {
 
                 break;
             }
+            case 'openMap': {
+                m2s = await collectionMaps.findOne({_id: ObjectId(c2s.mapName)});
+                break;
+            }
             case 'createMap': {
                 let result = await collectionMaps.insertOne(c2s.newMap);
                 m2s = {
@@ -208,11 +212,7 @@ async function mongoFunction(c2s, operation) {
                 );
                 break;
             }
-            case 'openMap': {
-                m2s = await collectionMaps.findOne({_id: ObjectId(c2s.mapName)});
-                break;
-            }
-            case 'writeMap': {
+            case 'saveMap': {
                 await collectionMaps.replaceOne({_id: ObjectId(c2s.mapName)}, c2s.mapStorage);
                 break;
             }

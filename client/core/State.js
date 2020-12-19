@@ -1,13 +1,12 @@
 export const State = {
 
-    credentialsChanged: 0,
-
     isLoggedIn: false,
 
     breadcrumbsHistory: [],
 
-    eventsEnabled: true,
+    // eventsEnabled: true, // we won't need this once we'll prevent screen to be active in case of loading server
 
+    serverAction: '',
     serverResponse: {},
 
     tabListIds: [],
@@ -15,10 +14,8 @@ export const State = {
     tabListSelected: undefined,
 
     mapId: '',
-    mapStorage: {},
-    mapStorageOut: {},
-
-    isSaved: 0,
+    // not ideal incremental variables to trigger server communication
+    mapNameToSave: '',
 
 };
 
