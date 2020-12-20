@@ -7,7 +7,6 @@ import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapPrint} from "../map/MapPrint";
-import {remoteDispatch, remoteGetState} from "./Store";
 
 let mutationObserver;
 

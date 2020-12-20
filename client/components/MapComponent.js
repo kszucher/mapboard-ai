@@ -1,19 +1,23 @@
 import React, {useContext, useEffect} from "react";
-import {Context, remoteDispatch} from "../core/Store";
-import {Workspace} from "./Workspace";
-import SignIn from "./SignIn";
-import {windowHandler} from "../core/WindowHandler";
+import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
-import {currColorToPaint, eventRouter, lastEvent} from "../core/EventRouter";
+import {currColorToPaint, eventRouter} from "../core/EventRouter";
 import {eventEmitter} from "../core/EventEmitter";
-import {checkPop, mapDivData, mapMem, mapref, mapSvgData, push, recalc, redraw} from "../map/Map";
+import {mapDivData, mapSvgData, mapMem, mapref, checkPop, push, recalc, redraw} from "../map/Map";
 import {isUrl} from "../core/Utils";
 
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {isLoggedIn} = state;
+    useEffect(() => {
+        window.addEventListener("popstate", popstate);
+        return window.removeEventListener("popstate",  popstate);
+    }, []);
+
+    const popstate = (e) => {
+        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', val: ''}})
+    };
 
     const click = (e) => {
         let sc = getSelectionContext();
@@ -151,11 +155,8 @@ export function MapComponent() {
                                 let address = process.env.NODE_ENV === 'development' ?
                                     'http://127.0.0.1:8082/feta' :
                                     'https://mindboard.io/feta';
-                                fetch(address, {
-                                    method: 'post',
-                                    body: formData
-                                }).then(function (response) {
-                                    response.json().then(function (sf2c) {
+                                fetch(address, {method: 'post', body: formData}).then(response => {
+                                    response.json().then(sf2c => {
                                         eventEmitter('insertImageFromLinkAsNode', sf2c); // TODO: pass this properly
                                     });
                                 });

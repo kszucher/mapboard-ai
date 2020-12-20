@@ -10,7 +10,6 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
-import {remoteDispatch} from "../core/Store";
 
 export let mapMem = {};
 export let mapDivData = [];
