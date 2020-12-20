@@ -7,7 +7,6 @@ import {nodeDispatch} from "../core/NodeReducer";
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-
     const {serverAction, serverResponse, mapId, mapStorageOut, mapNameToSave} = state;
 
     const post = (message, callback) => {

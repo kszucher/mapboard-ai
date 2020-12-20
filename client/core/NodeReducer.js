@@ -66,7 +66,7 @@ export function nodeReducer(action, payload) {
         case 'selectNeighborMixed': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyStr);
+            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode);
             mapref(toPath).selected = 1;
             mapref(toPath).s[0].selected = 1;
             break;
@@ -91,14 +91,14 @@ export function nodeReducer(action, payload) {
             clearStructSelectionContext();
             clearCellSelectionContext();
             let fromPath = sc.lastPath;
-            if (payload.keyStr === 'ArrowUp') fromPath = sc.geomHighPath;
-            if (payload.keyStr === 'ArrowDown') fromPath = sc.geomLowPath;
-            let toPath = structNavigate(fromPath, payload.keyStr);
+            if (payload.keyCode === 'ArrowUp') fromPath = sc.geomHighPath;
+            if (payload.keyCode === 'ArrowDown') fromPath = sc.geomLowPath;
+            let toPath = structNavigate(fromPath, payload.keyCode);
             mapref(toPath).selected = 1;
             break;
         }
         case 'selectNeighborNodeToo': {
-            mapref(structNavigate(sc.lastPath, payload.keyStr)).selected = sc.maxSel + 1;
+            mapref(structNavigate(sc.lastPath, payload.keyCode)).selected = sc.maxSel + 1;
             break;
         }
         case 'selectCellRow': {
@@ -156,7 +156,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'newCellBlock': {
-            cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyStr);
+            cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode);
             break;
         }
         // DELETE ------------------------------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ export function nodeReducer(action, payload) {
         }
         // MOVE --------------------------------------------------------------------------------------------------------
         case 'moveNodeSelection': {
-            structMove(sc, 'struct2struct', payload.keyStr);
+            structMove(sc, 'struct2struct', payload.keyCode);
             break;
         }
         case 'copySelection': {

@@ -17,7 +17,7 @@ const MapReducer = (state, action) => {
         case 'UPDATE_TABS':
             const {mapNameList, mapIdList, mapSelected} = payload;
             return {...state, mapNameList, mapIdList, mapSelected};
-        // MAP OPEN ----------------------------------------------------------------------------------------------------
+        // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
             let mapId;
             let mapName;
@@ -60,57 +60,57 @@ const MapReducer = (state, action) => {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
             return {...state, mapId, mapName, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
-        // MAP CREATE --------------------------------------------------------------------------------------------------
+        // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP': return {...state, serverAction: [...state.serverAction, 'createMapInMap']};
         case 'CREATE_MAP_IN_TAB': return {...state, serverAction: [...state.serverAction, 'createMapInTab']};
 
-        // MAP SAVE ----------------------------------------------------------------------------------------------------
+        // SAVE --------------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
             //         data: saveMap(),
             //         density: mapMem.density,
             //         task: mapMem.task,
             return {...state, serverAction: [...state.serverAction, 'saveMap']};
-        // MAP DELETE --------------------------------------------------------------------------------------------------
+        // DELETE ------------------------------------------------------------------------------------------------------
         case 'DELETE_MAP_FROM_TAB': {
-            break;
+            return state;
         }
-        // MAP MOVE ----------------------------------------------------------------------------------------------------
+        // MOVE --------------------------------------------------------------------------------------------------------
         case 'MOVE_MAP_TO_SUBMAP': {
-            break;
+            return state;
         }
         case 'MOVE_SUBMAP_TO_MAP': {
-            break;
+            return state;
         }
         case 'MOVE_TAB_TO_SUBMAP': {
-            break;
+            return state;
         }
         case 'MOVE_SUBMAP_TO_TAB': {
-            break;
+            return state;
         }
-        // MAP FORMAT --------------------------------------------------------------------------------------------------
+        // FORMAT ------------------------------------------------------------------------------------------------------
         case 'CHANGE_MAP_DENSITY': {
             mapMem.density = 'small'; // or 'large'
-            break;
+            return state;
         }
-        // MAP UNDO/REDO -----------------------------------------------------------------------------------------------
+        // UNDO/REDO ---------------------------------------------------------------------------------------------------
         case 'UNDO': {
             if (mapMem.dataIndex > 0) {
                 mapMem.dataIndex--;
             }
-            break;
+            return state;
         }
         case 'REDO': {
             if (mapMem.dataIndex < mapMem.data.length - 1) {
                 mapMem.dataIndex++;
             }
-            break;
+            return state;
         }
-        // MAP IMPORT/EXPORT -------------------------------------------------------------------------------------------
+        // IMPORT/EXPORT -----------------------------------------------------------------------------------------------
         case 'PRINT': {
             mapPrint.start(sc.lm);
-            break;
+            return state;
         }
-        // SHARE
+        // SHARE -------------------------------------------------------------------------------------------------------
 
         default: return state;
     }

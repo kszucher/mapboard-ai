@@ -35,7 +35,6 @@ export function MapComponent() {
             nodeDispatch('finishEdit');
             redraw();
         }
-
         for (const pathItem of e.path) {
             if (pathItem.id) {
                 if (pathItem.id.substring(0, 3) === 'div') {
@@ -49,7 +48,6 @@ export function MapComponent() {
                     }
                     redraw();
                     checkPop();
-
                     if (!e.shiftKey) {
                         let sc = getSelectionContext();
                         if(sc.lm.linkType === 'internal') {
@@ -141,30 +139,31 @@ export function MapComponent() {
                 keyStateMachine.s === +e.shiftKey &&
                 keyStateMachine.a === +e.altKey &&
                 keyStateMachine.keyMatch === true) {
-
-                if (keyStateMachine.p) e.preventDefault();
-                if (keyStateMachine.m) push();
-
+                if (keyStateMachine.p) {
+                    e.preventDefault();
+                }
+                if (keyStateMachine.m) {
+                    push();
+                }
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j];
                     if (currExecution === 'applyColor') {
                         nodeDispatch(currExecution, {currColorToPaint: e.which - 96});
                     } else {
-                        nodeDispatch(currExecution, {keyStr: e.code});
+                        nodeDispatch(currExecution, {keyCode: e.code});
                         if (['newChild', 'newSiblingUp', 'newSiblingDown'].includes(currExecution)) {
                             redraw();
                         }
                     }
                 }
-
                 redraw();
-                if (keyStateMachine.m) checkPop();
-
+                if (keyStateMachine.m) {
+                    checkPop();
+                }
                 for (let j = 0; j < keyStateMachine.reducerList.length; j++) {
                     let currReducer = keyStateMachine.reducerList[j];
                     dispatch({type: currReducer});
                 }
-                
                 break;
             }
         }
@@ -172,7 +171,6 @@ export function MapComponent() {
 
     const paste = (e) => {
         e.preventDefault();
-        console.log('PASTE');
         navigator.permissions.query({name: "clipboard-write"}).then(result => {
             if (result.state === "granted" || result.state === "prompt") {
                 navigator.clipboard.read().then(item => {
@@ -201,7 +199,7 @@ export function MapComponent() {
                         });
                     }
                     if (type === 'image/png') {
-                        if (isEditing) { // TODO get isEditing
+                        if (isEditing) {
 
                         } else {
                             item[0].getType('image/png').then(image => {
@@ -210,11 +208,11 @@ export function MapComponent() {
                                 let address = process.env.NODE_ENV === 'development' ?
                                     'http://127.0.0.1:8082/feta' :
                                     'https://mindboard.io/feta';
-                                fetch(address, {method: 'post', body: formData}).then(response => {
-                                    response.json().then(resp => {
-                                        nodeDispatch('insertImageFromLinkAsNode', resp); // TODO: pass this properly
-                                    });
-                                });
+                                fetch(address, {method: 'post', body: formData}).then(response =>
+                                    response.json().then(response =>
+                                        nodeDispatch('insertImageFromLinkAsNode', response)
+                                    )
+                                );
                             })
                         }
                     }
