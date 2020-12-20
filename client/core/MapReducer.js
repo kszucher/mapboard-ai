@@ -17,7 +17,7 @@ const MapReducer = (state, action) => {
         case 'UPDATE_TABS':
             const {mapNameList, mapIdList, mapSelected} = payload;
             return {...state, mapNameList, mapIdList, mapSelected};
-        // OPEN --------------------------------------------------------------------------------------------------------
+        // MAP OPEN ----------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
             let mapId;
             let mapName;
@@ -60,21 +60,21 @@ const MapReducer = (state, action) => {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
             return {...state, mapId, mapName, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
-        // CREATE ------------------------------------------------------------------------------------------------------
+        // MAP CREATE --------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP': return {...state, serverAction: [...state.serverAction, 'createMapInMap']};
         case 'CREATE_MAP_IN_TAB': return {...state, serverAction: [...state.serverAction, 'createMapInTab']};
 
-        // SAVE --------------------------------------------------------------------------------------------------------
+        // MAP SAVE ----------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
             //         data: saveMap(),
             //         density: mapMem.density,
             //         task: mapMem.task,
             return {...state, serverAction: [...state.serverAction, 'saveMap']};
-        // DELETE ------------------------------------------------------------------------------------------------------
+        // MAP DELETE --------------------------------------------------------------------------------------------------
         case 'DELETE_MAP_FROM_TAB': {
             break;
         }
-        // MOVE --------------------------------------------------------------------------------------------------------
+        // MAP MOVE ----------------------------------------------------------------------------------------------------
         case 'MOVE_MAP_TO_SUBMAP': {
             break;
         }
@@ -87,12 +87,12 @@ const MapReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB': {
             break;
         }
-        // FORMAT ------------------------------------------------------------------------------------------------------
+        // MAP FORMAT --------------------------------------------------------------------------------------------------
         case 'CHANGE_MAP_DENSITY': {
             mapMem.density = 'small'; // or 'large'
             break;
         }
-        // UNDO/REDO ---------------------------------------------------------------------------------------------------
+        // MAP UNDO/REDO -----------------------------------------------------------------------------------------------
         case 'undo': {
             if (mapMem.dataIndex > 0) {
                 mapMem.dataIndex--;
@@ -105,7 +105,7 @@ const MapReducer = (state, action) => {
             }
             break;
         }
-        // IMPORT/EXPORT -----------------------------------------------------------------------------------------------
+        // MAP IMPORT/EXPORT -------------------------------------------------------------------------------------------
         case 'prettyPrint': {
             mapPrint.start(sc.lm);
             break;

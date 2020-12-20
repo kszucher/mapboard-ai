@@ -1,9 +1,8 @@
 import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {getDefaultMap, initDomData, loadMap, recalc, redraw} from "../map/Map";
-import {eventRouter} from "../core/EventRouter";
-import {nodeReducer} from "../core/NodeReducer";
+import {checkPop, getDefaultMap, initDomData, loadMap, recalc, redraw} from "../map/Map";
+import {nodeDispatch} from "../core/NodeReducer";
 
 export function Communication() {
 
@@ -83,11 +82,11 @@ export function Communication() {
                     break;
                 }
                 case 'createMapInMapSuccess': {
-                    nodeReducer('insertIlinkFromMongo');
-                    recalc();
-                    nodeReducer('save');
-                    recalc();
+                    push();
+                    nodeDispatch('insertIlinkFromMongo');
+                    nodeDispatch('save');
                     redraw();
+                    checkPop();
                     break;
                 }
                 case 'createMapInTabSuccess': {
@@ -102,10 +101,8 @@ export function Communication() {
                     // VAGY pedig külön kell szedni
 
                     //         push();
-                    //         nodeReducer('newChild');
-                    //         recalc();
-                    //         nodeReducer('insertImageFromLinkAsNode');
-                    //         recalc();
+                    //         nodeDispatch('newChild');
+                    //         nodeDispatch('insertImageFromLinkAsNode');
                     //         redraw();
                     //         checkPop();
                 }

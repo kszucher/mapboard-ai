@@ -4,8 +4,6 @@ export const State = {
 
     breadcrumbsHistory: [],
 
-    // eventsEnabled: true, // we won't need this once we'll prevent screen to be active in case of loading server
-
     serverAction: ['ping'],
     serverResponse: {},
 
@@ -14,7 +12,6 @@ export const State = {
     mapSelected: undefined,
 
     mapId: '',
-    // not ideal incremental variables to trigger server communication
     mapNameToSave: '',
 
 };

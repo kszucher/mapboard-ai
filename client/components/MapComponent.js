@@ -1,8 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
-import {currColorToPaint, eventRouter} from "../core/EventRouter";
-import {nodeReducer} from "../core/NodeReducer";
+import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {mapDivData, mapSvgData, mapMem, mapref, checkPop, push, recalc, redraw} from "../map/Map";
 import {isUrl} from "../core/Utils";
 
@@ -32,18 +31,25 @@ export function MapComponent() {
     };
 
     const click = (e) => {
-        if (eventRouter.isEditing === 1) {
-            nodeReducer('finishEdit');
-            recalc();
+        if (isEditing === 1) {
+            nodeDispatch('finishEdit');
             redraw();
         }
 
         for (const pathItem of e.path) {
             if (pathItem.id) {
                 if (pathItem.id.substring(0, 3) === 'div') {
-                    push();
                     mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
-                    if (!e.ctrlKey) nodeReducer('selectMeStruct'); else nodeReducer('selectMeStructToo');
+                    push();
+                    if (!e.ctrlKey) {
+                        nodeDispatch('selectMeStruct');
+                    }
+                    else {
+                        nodeDispatch('selectMeStructToo');
+                    }
+                    redraw();
+                    checkPop();
+
                     if (!e.shiftKey) {
                         let sc = getSelectionContext();
                         if(sc.lm.linkType === 'internal') {
@@ -53,16 +59,9 @@ export function MapComponent() {
                             window.focus();
                         }
                     }
-                    redraw();
-                    checkPop();
-                    break;
                 } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
                     push();
-                    let x = parseInt(e.path[0].id.charAt(10), 10);
-                    let cm = mapref(mapSvgData[e.path[1].id].path);
-                    cm.taskStatus = x;
-                    cm.taskStatusInherited = -1;
-                    recalc();
+                    nodeDispatch('setTaskStatus', {taskStatus: parseInt(e.path[0].id.charAt(10), 10), svgId: e.path[1].id});
                     redraw();
                     checkPop();
                     break;
@@ -73,8 +72,7 @@ export function MapComponent() {
 
     const dblclick = (e) => {
         if (e.path[0].id.substring(0, 3) === 'div') {
-            nodeReducer('startEdit');
-            recalc();
+            nodeDispatch('startEdit');
             redraw();
         }
     };
@@ -87,50 +85,50 @@ export function MapComponent() {
         let sc = getSelectionContext();
 
         let keyStateMachineDb = [
-            ['c','s','a', 'keyMatch',                       'scope',       'e','p','m',  'executionList',                       'reduceList'],
-            [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ], []],
-            [ 0,  0,  0,  e.key === 'F2',                  ['s',      'm'], 0,  1,  0, ['startEdit'                           ], []],
-            [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ], []],
-            [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'], 0,  0,  0, [                                      ], []],
-            [ 0,  0,  0,  e.key === 'Enter',               ['s',      'm'], 1,  1,  0, ['finishEdit'                          ], []],
-            [ 0,  0,  0,  e.key === 'Enter',               ['s'          ], 0,  1,  1, ['newSiblingDown', 'startEdit'         ], []],
-            [ 0,  0,  0,  e.key === 'Enter',               [          'm'], 0,  1,  1, ['selectDownMixed'                     ], []],
-            [ 0,  1,  0,  e.key === 'Enter',               ['s',      'm'], 0,  1,  1, ['newSiblingUp', 'startEdit'           ], []],
-            [ 0,  0,  1,  e.key === 'Enter',               ['s',         ], 0,  1,  1, ['cellifyMulti', 'selectFirstMixed'    ], []],
-            [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ], []],
-            [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ], []],
-            [ 0,  0,  0,  e.key === 'Insert',              [          'm'], 0,  1,  1, ['selectRightMixed'                    ], []],
-            [ 0,  0,  0,  e.key === 'Tab',                 ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ], []],
-            [ 0,  0,  0,  e.key === 'Tab',                 ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ], []],
-            [ 0,  0,  0,  e.key === 'Tab',                 [          'm'], 0,  1,  1, ['selectRightMixed'                    ], []],
-            [ 0,  0,  0,  e.key === 'Delete',              ['s'          ], 0,  1,  1, ['deleteNode'                          ], []],
-            [ 0,  0,  0,  e.key === 'Delete',              [     'c'     ], 0,  1,  1, ['deleteCellBlock'                     ], []],
-            [ 0,  0,  0,  e.code === 'Space',              ['s'          ], 0,  1,  1, ['selectForwardStruct'                 ], []],
-            [ 0,  0,  0,  e.code === 'Space',              [          'm'], 0,  1,  1, ['selectForwardMixed'                  ], []],
-            [ 0,  0,  0,  e.code === 'Backspace',          ['s'          ], 0,  1,  1, ['selectBackwardStruct',               ], []],
-            [ 0,  0,  0,  e.code === 'Backspace',          [          'm'], 0,  1,  1, ['selectBackwardMixed'                 ], []],
-            [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'], 0,  1,  1, ['selectRoot'                          ], []],
-            [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], []],
-            [ 1,  0,  0,  e.code === 'KeyM',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['CREATE_MAP_IN_MAP']],
-            [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'], 0,  1,  1, ['copySelection'                       ], []],
-            [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'], 0,  1,  1, ['cutSelection'                        ], []],
-            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['SAVE_MAP']],
-            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 1,  1,  0, ['finishEdit',                         ], ['SAVE_MAP']],
-            [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['REDO']],
-            [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['UNDO']],
-            [ 0,  1,  0,  e.code === 'ArrowUp',            [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []],
-            [ 0,  1,  0,  e.code === 'ArrowDown',          [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []],
-            [ 0,  1,  0,  e.code === 'ArrowLeft',          [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []],
-            [ 0,  1,  0,  e.code === 'ArrowRight',         [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []],
-            [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  0, ['prettyPrint'                         ], []],
-            [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ], []],
-            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ], []],
-            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['selectNeighborMixed'                 ], []],
-            [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNodeToo'               ], []],
-            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['moveNodeSelection'                   ], []],
-            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['newCellBlock'                        ], []],
-            [ 0,  0,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ], []],
-            [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ], []],
+            ['c','s','a', 'keyMatch',                       'scope',       'e','p','m',  'executionList',                       'reducerList'           ],
+            [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ], []                     ],
+            [ 0,  0,  0,  e.key === 'F2',                  ['s',      'm'], 0,  1,  0, ['startEdit'                           ], []                     ],
+            [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ], []                     ],
+            [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'], 0,  0,  0, [                                      ], []                     ],
+            [ 0,  0,  0,  e.key === 'Enter',               ['s',      'm'], 1,  1,  0, ['finishEdit'                          ], []                     ],
+            [ 0,  0,  0,  e.key === 'Enter',               ['s'          ], 0,  1,  1, ['newSiblingDown', 'startEdit'         ], []                     ],
+            [ 0,  0,  0,  e.key === 'Enter',               [          'm'], 0,  1,  1, ['selectDownMixed'                     ], []                     ],
+            [ 0,  1,  0,  e.key === 'Enter',               ['s',      'm'], 0,  1,  1, ['newSiblingUp', 'startEdit'           ], []                     ],
+            [ 0,  0,  1,  e.key === 'Enter',               ['s',         ], 0,  1,  1, ['cellifyMulti', 'selectFirstMixed'    ], []                     ],
+            [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ], []                     ],
+            [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ], []                     ],
+            [ 0,  0,  0,  e.key === 'Insert',              [          'm'], 0,  1,  1, ['selectRightMixed'                    ], []                     ],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ], []                     ],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ], []                     ],
+            [ 0,  0,  0,  e.key === 'Tab',                 [          'm'], 0,  1,  1, ['selectRightMixed'                    ], []                     ],
+            [ 0,  0,  0,  e.key === 'Delete',              ['s'          ], 0,  1,  1, ['deleteNode'                          ], []                     ],
+            [ 0,  0,  0,  e.key === 'Delete',              [     'c'     ], 0,  1,  1, ['deleteCellBlock'                     ], []                     ],
+            [ 0,  0,  0,  e.code === 'Space',              ['s'          ], 0,  1,  1, ['selectForwardStruct'                 ], []                     ],
+            [ 0,  0,  0,  e.code === 'Space',              [          'm'], 0,  1,  1, ['selectForwardMixed'                  ], []                     ],
+            [ 0,  0,  0,  e.code === 'Backspace',          ['s'          ], 0,  1,  1, ['selectBackwardStruct',               ], []                     ],
+            [ 0,  0,  0,  e.code === 'Backspace',          [          'm'], 0,  1,  1, ['selectBackwardMixed'                 ], []                     ],
+            [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'], 0,  1,  1, ['selectRoot'                          ], []                     ],
+            [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], []                     ],
+            [ 1,  0,  0,  e.code === 'KeyM',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['CREATE_MAP_IN_MAP']  ],
+            [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'], 0,  1,  1, ['copySelection'                       ], []                     ],
+            [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'], 0,  1,  1, ['cutSelection'                        ], []                     ],
+            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['SAVE_MAP']           ],
+            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 1,  1,  0, ['finishEdit',                         ], ['SAVE_MAP']           ],
+            [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['REDO']               ],
+            [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['UNDO']               ],
+            [ 0,  1,  0,  e.code === 'ArrowUp',            [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []                     ],
+            [ 0,  1,  0,  e.code === 'ArrowDown',          [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []                     ],
+            [ 0,  1,  0,  e.code === 'ArrowLeft',          [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
+            [ 0,  1,  0,  e.code === 'ArrowRight',         [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
+            [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  0, ['prettyPrint'                         ], []                     ],
+            [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ], []                     ],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ], []                     ],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['selectNeighborMixed'                 ], []                     ],
+            [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNodeToo'               ], []                     ],
+            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['moveNodeSelection'                   ], []                     ],
+            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['newCellBlock'                        ], []                     ],
+            [ 0,  0,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ], []                     ],
+            [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ], []                     ],
         ];
 
         let keyStateMachine = {};
@@ -139,34 +137,33 @@ export function MapComponent() {
                 keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h];
             }
             if (keyStateMachine.scope.includes(sc.scope) &&
-                keyStateMachine.e === eventRouter.isEditing &&
+                keyStateMachine.e === isEditing &&
                 keyStateMachine.c === +e.ctrlKey &&
                 keyStateMachine.s === +e.shiftKey &&
                 keyStateMachine.a === +e.altKey &&
                 keyStateMachine.keyMatch === true) {
 
-                if (keyStateMachine.p) {
-                    e.preventDefault();
-                }
-
-                if (keyStateMachine.m === 1) {
-                    push();
-                }
+                if (keyStateMachine.p) e.preventDefault();
+                if (keyStateMachine.m) push();
 
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j];
                     if (currExecution === 'applyColor') {
-                        currColorToPaint = e.which - 96;
+                        nodeDispatch(currExecution, {currColorToPaint: e.which - 96});
+                    } else {
+                        console.log(e.key.code)
+                        nodeDispatch(currExecution, {keyStr: e.key.code});
                     }
-                    nodeReducer(currExecution);
-                    recalc();
-                    redraw();
                 }
 
-                if (keyStateMachine.m === 1) {
-                    checkPop();
-                }
+                redraw();
+                if (keyStateMachine.m) checkPop();
 
+                for (let j = 0; j < keyStateMachine.reducerList.length; j++) {
+                    let currReducer = keyStateMachine.reducerList[j];
+                    dispatch({type: currReducer});
+                }
+                
                 break;
             }
         }
@@ -181,22 +178,23 @@ export function MapComponent() {
                     let type = item[0].types[0];
                     if (type === 'text/plain') {
                         navigator.clipboard.readText().then(text => {
-                            if (isEditing) {// /TODO get isEditing
-                                nodeReducer('insertTextFromClipboardAsText'); // TODO: pass text
+                            if (isEditing) {
+                                nodeDispatch('insertTextFromClipboardAsText', text);
                             } else {
                                 push();
                                 if (text.substring(0, 1) === '[') {
-                                    nodeReducer('insertMapFromClipboard'); recalc(); redraw();
+                                    nodeDispatch('insertMapFromClipboard', text);
                                 } else {
-                                    nodeReducer('newChild'); recalc();
+                                    nodeDispatch('newChild');
                                     if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                                        nodeReducer('insertEquationFromClipboardAsNode'); recalc(); redraw();
+                                        nodeDispatch('insertEquationFromClipboardAsNode', text);
                                     } else if (isUrl(text)) {
-                                        nodeReducer('insertElinkFromClipboardAsNode'); recalc(); redraw();
+                                        nodeDispatch('insertElinkFromClipboardAsNode', text);
                                     } else {
-                                        nodeReducer('insertTextFromClipboardAsNode'); recalc(); redraw();
+                                        nodeDispatch('insertTextFromClipboardAsNode', text);
                                     }
                                 }
+                                redraw();
                                 checkPop();
                             }
                         });
@@ -212,8 +210,8 @@ export function MapComponent() {
                                     'http://127.0.0.1:8082/feta' :
                                     'https://mindboard.io/feta';
                                 fetch(address, {method: 'post', body: formData}).then(response => {
-                                    response.json().then(sf2c => {
-                                        nodeReducer('insertImageFromLinkAsNode', sf2c); // TODO: pass this properly
+                                    response.json().then(resp => {
+                                        nodeDispatch('insertImageFromLinkAsNode', resp); // TODO: pass this properly
                                     });
                                 });
                             })

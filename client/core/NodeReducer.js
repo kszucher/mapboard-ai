@@ -1,29 +1,24 @@
-import {currColorToPaint, eventRouter, lastEvent} from "./EventRouter";
-import {mapMem, mapref, pathMerge, loadMap, saveMap, getDefaultMap, recalc, redraw} from "../map/Map";
+import {mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, structMove} from "../node/NodeMove";
 import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
-import {copy, genHash, setEndOfContenteditable, transposeArray} from "./Utils";
-import {mapPrint} from "../map/MapPrint";
+import {setEndOfContenteditable, transposeArray} from "./Utils";
 
 let mutationObserver;
+export let isEditing = 0;
 
-export function nodeReducer(action) {
-    // console.log('emit: ' + action);
+export function nodeDispatch(action, payload) {
+    // console.log('NODEDISPATCH: ' + action);
+    nodeReducer(action, payload);
+    recalc();
+}
 
-    let keyStr;
-    if (lastEvent.type === 'windowKeyDown') {
-        keyStr = lastEvent.ref.code;
-    }
-
+export function nodeReducer(action, payload) {
     let sc = getSelectionContext();
     switch (action) {
-        // -------------------------------------------------------------------------------------------------------------
-        // NODE-LEVEL
-        // -------------------------------------------------------------------------------------------------------------
-        // SELECT --> ezt a részt jobban fel lehetne switch-elni egy jó payload-dal hogy könnyebben befogadható legyen!!!
+        // SELECT ------------------------------------------------------------------------------------------------------
         case 'selectMeStruct': {
             clearStructSelectionContext();
             clearCellSelectionContext();
@@ -71,7 +66,7 @@ export function nodeReducer(action) {
         case 'selectNeighborMixed': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr);
+            let toPath = cellNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyStr);
             mapref(toPath).selected = 1;
             mapref(toPath).s[0].selected = 1;
             break;
@@ -96,14 +91,14 @@ export function nodeReducer(action) {
             clearStructSelectionContext();
             clearCellSelectionContext();
             let fromPath = sc.lastPath;
-            if (keyStr === 'ArrowUp') fromPath = sc.geomHighPath;
-            if (keyStr === 'ArrowDown') fromPath = sc.geomLowPath;
-            let toPath = structNavigate(fromPath, keyStr);
+            if (payload.keyStr === 'ArrowUp') fromPath = sc.geomHighPath;
+            if (payload.keyStr === 'ArrowDown') fromPath = sc.geomLowPath;
+            let toPath = structNavigate(fromPath, payload.keyStr);
             mapref(toPath).selected = 1;
             break;
         }
         case 'selectNeighborNodeToo': {
-            mapref(structNavigate(sc.lastPath, keyStr)).selected = sc.maxSel + 1;
+            mapref(structNavigate(sc.lastPath, payload.keyStr)).selected = sc.maxSel + 1;
             break;
         }
         case 'selectCellRow': {
@@ -161,7 +156,7 @@ export function nodeReducer(action) {
             break;
         }
         case 'newCellBlock': {
-            cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), keyStr);
+            cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyStr);
             break;
         }
         // DELETE ------------------------------------------------------------------------------------------------------
@@ -175,7 +170,7 @@ export function nodeReducer(action) {
         }
         // MOVE --------------------------------------------------------------------------------------------------------
         case 'moveNodeSelection': {
-            structMove(sc, 'struct2struct', keyStr);
+            structMove(sc, 'struct2struct', payload.keyStr);
             break;
         }
         case 'copySelection': {
@@ -197,15 +192,15 @@ export function nodeReducer(action) {
         }
         case 'insertTextFromClipboardAsNode': {
             sc.lm.contentType = 'text';
-            sc.lm.content = lastEvent.props.data;
+            sc.lm.content = payload;
             sc.lm.isDimAssigned = 0;
             break;
         }
         case 'insertElinkFromClipboardAsNode': {
             sc.lm.contentType = 'text';
-            sc.lm.content = lastEvent.props.data;
+            sc.lm.content = payload;
             sc.lm.linkType = 'external';
-            sc.lm.link = lastEvent.props.data;
+            sc.lm.link = payload;
             sc.lm.isDimAssigned = 0;
             break;
         }
@@ -218,23 +213,21 @@ export function nodeReducer(action) {
         }
         case 'insertEquationFromClipboardAsNode': {
             sc.lm.contentType = 'equation';
-            sc.lm.content = lastEvent.props.data;
+            sc.lm.content = payload;
             sc.lm.isDimAssigned = 0;
             break;
         }
         case 'insertImageFromLinkAsNode': {
-            let sf2c = lastEvent.ref;
             sc.lm.contentType = 'image';
-            sc.lm.content = sf2c.imageId;
-            sc.lm.imageW = sf2c.imageSize.width;
-            sc.lm.imageH = sf2c.imageSize.height;
+            sc.lm.content = payload.imageId;
+            sc.lm.imageW = payload.imageSize.width;
+            sc.lm.imageH = payload.imageSize.height;
             break;
         }
         case 'insertMapFromClipboard': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let text = lastEvent.props.data;
-            setClipboard(JSON.parse(text));
+            setClipboard(JSON.parse(payload));
             structMove(sc, 'clipboard2struct', 'PASTE');
             break;
         }
@@ -242,7 +235,7 @@ export function nodeReducer(action) {
         case 'applyColor': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                switch (currColorToPaint) {
+                switch (payload.currColorToPaint) {
                     case 0: cm.sTextColor = '#000000'; break;
                     case 1: cm.sTextColor = '#999999'; break;
                     case 2: cm.sTextColor = '#bbbbbb'; break;
@@ -267,6 +260,12 @@ export function nodeReducer(action) {
             sc.lm.c = transposeArray(sc.lm.c);
             break;
         }
+        case 'setTaskStatus': {
+            let cm = mapref(mapSvgData[payload.svgId].path);
+            cm.taskStatus = payload.taskStatus;
+            cm.taskStatusInherited = -1;
+            break;
+        }
         // EDIT -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             sc.lm.content = '';
@@ -278,12 +277,12 @@ export function nodeReducer(action) {
             let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'true';
             setEndOfContenteditable(holderElement);
-            eventRouter.isEditing = 1;
+            isEditing = 1;
             sc.lm.isEditing = 1;
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
-                        nodeReducer('typeText');
+                        nodeDispatch('typeText');
                         recalc();
                         redraw();
                     }
@@ -309,7 +308,7 @@ export function nodeReducer(action) {
             let holderElement = document.getElementById(sc.lm.divId);
             holderElement.contentEditable = 'false';
             sc.lm.isEditing = 0;
-            eventRouter.isEditing = 0;
+            isEditing = 0;
             if (sc.lm.content.substring(0, 2) === '\\[') {
                 sc.lm.contentType = 'equation';
                 sc.lm.isDimAssigned = 0;
