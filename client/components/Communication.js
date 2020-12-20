@@ -51,13 +51,13 @@ export function Communication() {
                 }
             }
         }
-        console.log('SERVER_MESSAGE: ' + JSON.stringify(msg));
+        console.log('SERVER_MESSAGE: ' + msg.cmd);
         commSend(msg);
     }, [serverAction]);
 
     useEffect(() => {
         if (serverResponse.cmd) {
-            console.log('SERVER_RESPONSE: ' + JSON.stringify(serverResponse.cmd));
+            console.log('SERVER_RESPONSE: ' + serverResponse.cmd);
             switch (serverResponse.cmd) {
                 case 'pingSuccess': {
                     const cred = JSON.parse(localStorage.getItem('cred'));

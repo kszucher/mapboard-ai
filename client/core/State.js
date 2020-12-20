@@ -14,6 +14,8 @@ export const State = {
     mapId: '',
     mapNameToSave: '',
 
+    mapStorageOut: [],
+
 };
 
 export const InitState = JSON.stringify(State);

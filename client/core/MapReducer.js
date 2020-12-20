@@ -66,10 +66,13 @@ const MapReducer = (state, action) => {
 
         // SAVE --------------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
-            //         data: saveMap(),
-            //         density: mapMem.density,
-            //         task: mapMem.task,
-            return {...state, serverAction: [...state.serverAction, 'saveMap']};
+            let mapStorageOut ={
+                data: saveMap(),
+                density: mapMem.density,
+                task: mapMem.task,
+                flow: mapMem.flow,
+            };
+            return {...state, mapStorageOut, serverAction: [...state.serverAction, 'saveMap']};
         // DELETE ------------------------------------------------------------------------------------------------------
         case 'DELETE_MAP_FROM_TAB': {
             return state;
