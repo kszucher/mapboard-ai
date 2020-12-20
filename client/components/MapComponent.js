@@ -120,7 +120,6 @@ export function MapComponent() {
             [ 0,  1,  0,  e.code === 'ArrowDown',          [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []                     ],
             [ 0,  1,  0,  e.code === 'ArrowLeft',          [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
             [ 0,  1,  0,  e.code === 'ArrowRight',         [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
-            [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  0, ['prettyPrint'                         ], []                     ],
             [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ], []                     ],
             [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ], []                     ],
             [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['selectNeighborMixed'                 ], []                     ],
@@ -152,6 +151,9 @@ export function MapComponent() {
                         nodeDispatch(currExecution, {currColorToPaint: e.which - 96});
                     } else {
                         nodeDispatch(currExecution, {keyStr: e.code});
+                        if (['newChild', 'newSiblingUp', 'newSiblingDown'].includes(currExecution)) {
+                            redraw();
+                        }
                     }
                 }
 

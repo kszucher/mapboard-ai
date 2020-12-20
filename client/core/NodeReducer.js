@@ -283,7 +283,6 @@ export function nodeReducer(action, payload) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
                         nodeDispatch('typeText');
-                        recalc();
                         redraw();
                     }
                 }

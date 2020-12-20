@@ -93,20 +93,20 @@ const MapReducer = (state, action) => {
             break;
         }
         // MAP UNDO/REDO -----------------------------------------------------------------------------------------------
-        case 'undo': {
+        case 'UNDO': {
             if (mapMem.dataIndex > 0) {
                 mapMem.dataIndex--;
             }
             break;
         }
-        case 'redo': {
+        case 'REDO': {
             if (mapMem.dataIndex < mapMem.data.length - 1) {
                 mapMem.dataIndex++;
             }
             break;
         }
         // MAP IMPORT/EXPORT -------------------------------------------------------------------------------------------
-        case 'prettyPrint': {
+        case 'PRINT': {
             mapPrint.start(sc.lm);
             break;
         }

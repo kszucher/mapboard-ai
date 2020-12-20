@@ -39,13 +39,17 @@ export default function MenuAppBar() {
     const handleSelect = param => e => {
         handleClose();
         switch(param) {
-            case 'SIGN_OUT':
-                dispatch({type: 'RESET_STATE'});
-                break;
+
             case 'ADD_MAP':
                 dispatch({type: 'CREATE_MAP_IN_TAB'});
                 break;
-            // TODO: mapAttributeDensity change
+            case 'PRINT_MAP': {
+                dispatch({type: 'PRINT'});
+                break;
+            }
+            case 'SIGN_OUT':
+                dispatch({type: 'RESET_STATE'});
+                break;
         }
     };
 
@@ -78,6 +82,7 @@ export default function MenuAppBar() {
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add map</MenuItem>
                     <MenuItem onClick={handleSelect('DENSITY_SMALL')}>Density: small</MenuItem>
                     <MenuItem onClick={handleSelect('DENSITY_LARGE')}>Density: large</MenuItem>
+                    <MenuItem onClick={handleSelect('PRINT_MAP')}>Print Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign out</MenuItem>
                 </Menu>
                 <Typography variant="h6" className={classes.title}>

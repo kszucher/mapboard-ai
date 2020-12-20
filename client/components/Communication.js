@@ -8,7 +8,7 @@ export function Communication() {
 
     const [state, dispatch] = useContext(Context);
 
-    const {isLoggedIn, serverAction, serverResponse, mapId, mapStorageOut, mapNameToSave} = state;
+    const {serverAction, serverResponse, mapId, mapStorageOut, mapNameToSave} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
