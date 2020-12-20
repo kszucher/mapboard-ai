@@ -151,8 +151,7 @@ export function MapComponent() {
                     if (currExecution === 'applyColor') {
                         nodeDispatch(currExecution, {currColorToPaint: e.which - 96});
                     } else {
-                        console.log(e.key.code)
-                        nodeDispatch(currExecution, {keyStr: e.key.code});
+                        nodeDispatch(currExecution, {keyStr: e.code});
                     }
                 }
 
