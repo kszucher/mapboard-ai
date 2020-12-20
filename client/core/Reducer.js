@@ -15,7 +15,7 @@ const Reducer = (state, action) => {
         case 'SERVER_RESPONSE': return {...state, serverResponse: payload};
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
-            return {...state, serverAction: 'signIn'};
+            return {...state, serverAction: [...state.serverAction, 'signIn']};
         case 'SIGN_IN_SUCCESS':
             const {mapNameList, mapIdList, mapSelected} = payload;
             return {...state, isLoggedIn: true, mapNameList, mapIdList, mapSelected};
@@ -61,17 +61,17 @@ const Reducer = (state, action) => {
             if (payload.source !== 'HISTORY') {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
-            return {...state, mapId, mapName, breadcrumbsHistory, serverAction: 'openMap'};
+            return {...state, mapId, mapName, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
         // CREATE ------------------------------------------------------------------------------------------------------
-        case 'CREATE_MAP_IN_MAP': return {...state, serverAction: 'createMapInMap'};
-        case 'CREATE_MAP_IN_TAB': return {...state, serverAction: 'createMapInTab'};
+        case 'CREATE_MAP_IN_MAP': return {...state, serverAction: [...state.serverAction, 'createMapInMap']};
+        case 'CREATE_MAP_IN_TAB': return {...state, serverAction: [...state.serverAction, 'createMapInTab']};
 
         // SAVE --------------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
             //         data: saveMap(),
             //         density: mapMem.density,
             //         task: mapMem.task,
-            return {...state, serverAction: 'saveMap'};
+            return {...state, serverAction: [...state.serverAction, 'saveMap']};
         // DELETE ------------------------------------------------------------------------------------------------------
         case 'DELETE_MAP_FROM_TAB': {
             break;

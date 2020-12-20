@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function VerticalTabs() {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {mapIdList, mapNameList, mapSelected} = state;
+    const {mapNameList, mapSelected} = state;
     const [val, setVal] = useState(mapSelected);
 
     const handleChange = (e, value) =>  {
@@ -72,10 +72,11 @@ export default function VerticalTabs() {
                 value={val}
                 onChange={handleChange}
                 indicatorColor="primary">
-                {mapNameList.map(name => (
+                {mapNameList.map((name, index) => (
                     <Tab
                         label={name}
-                        key={name}/>
+                        key={index}
+                    />
                 ))}>
             </Tabs>
         </div>

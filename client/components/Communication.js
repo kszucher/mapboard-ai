@@ -34,13 +34,14 @@ export function Communication() {
     };
 
     useEffect(() => {
+        let lastAction = [...serverAction].pop();
         let msg = {};
-        if (serverAction === 'ping') {
+        if (lastAction === 'ping') {
             msg = {cmd: 'pingRequest'};
         } else {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
-                switch (serverAction) {
+                switch (lastAction) {
                     case 'signIn':          msg = {cmd: 'signInRequest',            cred};                                              break;
                     case 'openMap':         msg = {cmd: 'openMapRequest',           cred, mapName: mapId};                              break;
                     case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest',    cred, newMap: getDefaultMap(mapNameToSave)};        break;
@@ -92,11 +93,6 @@ export function Communication() {
                     break;
                 }
                 case 'saveMapRequestSuccess': {
-                    eventRouter.processEvent({
-                        type: 'serverEvent',
-
-                    })
-                    console.log('save success');
                     break;
                 }
                 case 'imageSaveSuccess': {
