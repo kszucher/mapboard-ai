@@ -10,9 +10,21 @@ export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
 
-    useEffect(() => {
-        window.addEventListener("popstate", popstate);
-        return window.removeEventListener("popstate",  popstate);
+    useEffect(() => { // if everything will be handled by react, this could be enabled as onXXX events
+        window.addEventListener('popstate',     popstate);
+        window.addEventListener('click',        click);
+        window.addEventListener('dblclick',     dblclick);
+        window.addEventListener('mousedown',    mousedown);
+        window.addEventListener("keydown",      keydown);
+        window.addEventListener("paste",        paste);
+        return () => {
+            window.removeEventListener('popstate',     popstate);
+            window.removeEventListener('click',        click);
+            window.removeEventListener('dblclick',     dblclick);
+            window.removeEventListener('mousedown',    mousedown);
+            window.removeEventListener("keydown",      keydown);
+            window.removeEventListener("paste",        paste);
+        };
     }, []);
 
     const popstate = (e) => {
@@ -20,8 +32,6 @@ export function MapComponent() {
     };
 
     const click = (e) => {
-        let sc = getSelectionContext();
-
         if (eventRouter.isEditing === 1) {
             eventEmitter('finishEdit');
             recalc();
@@ -35,6 +45,7 @@ export function MapComponent() {
                     mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
                     if (!e.ctrlKey) eventEmitter('selectMeStruct'); else eventEmitter('selectMeStructToo');
                     if (!e.shiftKey) {
+                        let sc = getSelectionContext();
                         if(sc.lm.linkType === 'internal') {
                             dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm: sc.lm}})
                         } else if (sc.lm.linkType === 'external') {
@@ -171,11 +182,11 @@ export function MapComponent() {
     return(
         <div
             id='mapDiv'
-            onClick={click}
-            onDoubleClick={dblclick}
-            onMouseDown={mousedown}
-            onKeyDown={keydown}
-            onPaste={paste}
+            // onClick={click}
+            // onDoubleClick={dblclick}
+            // onMouseDown={mousedown}
+            // onKeyDown={keydown}
+            // onPaste={paste}
         >
             <svg id="mapSvg"/>
         </div>
