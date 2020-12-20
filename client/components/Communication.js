@@ -4,6 +4,9 @@ import {Context} from "../core/Store";
 import {checkPop, getDefaultMap, initDomData, loadMap, recalc, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 
+/**
+ * @return {null}
+ */
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
@@ -86,13 +89,15 @@ export function Communication() {
                     nodeDispatch('save');
                     redraw();
                     checkPop();
+                    // TODO
                     break;
                 }
                 case 'createMapInTabSuccess': {
-
+                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
                     break;
                 }
                 case 'saveMapRequestSuccess': {
+                    // TODO
                     break;
                 }
                 case 'imageSaveSuccess': {

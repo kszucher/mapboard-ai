@@ -156,13 +156,13 @@ export function MapComponent() {
                         }
                     }
                 }
-                redraw();
-                if (keyStateMachine.m) {
-                    checkPop();
-                }
                 for (let j = 0; j < keyStateMachine.reducerList.length; j++) {
                     let currReducer = keyStateMachine.reducerList[j];
                     dispatch({type: currReducer});
+                }
+                redraw();
+                if (keyStateMachine.m) {
+                    checkPop();
                 }
                 break;
             }
