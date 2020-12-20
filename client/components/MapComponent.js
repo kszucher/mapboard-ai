@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {currColorToPaint, eventRouter} from "../core/EventRouter";
-import {eventEmitter} from "../core/EventEmitter";
+import {nodeReducer} from "../core/NodeReducer";
 import {mapDivData, mapSvgData, mapMem, mapref, checkPop, push, recalc, redraw} from "../map/Map";
 import {isUrl} from "../core/Utils";
 
@@ -33,7 +33,7 @@ export function MapComponent() {
 
     const click = (e) => {
         if (eventRouter.isEditing === 1) {
-            eventEmitter('finishEdit');
+            nodeReducer('finishEdit');
             recalc();
             redraw();
         }
@@ -43,7 +43,7 @@ export function MapComponent() {
                 if (pathItem.id.substring(0, 3) === 'div') {
                     push();
                     mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
-                    if (!e.ctrlKey) eventEmitter('selectMeStruct'); else eventEmitter('selectMeStructToo');
+                    if (!e.ctrlKey) nodeReducer('selectMeStruct'); else nodeReducer('selectMeStructToo');
                     if (!e.shiftKey) {
                         let sc = getSelectionContext();
                         if(sc.lm.linkType === 'internal') {
@@ -73,7 +73,7 @@ export function MapComponent() {
 
     const dblclick = (e) => {
         if (e.path[0].id.substring(0, 3) === 'div') {
-            eventEmitter('startEdit');
+            nodeReducer('startEdit');
             recalc();
             redraw();
         }
@@ -86,7 +86,52 @@ export function MapComponent() {
     const keydown = (e) => {
         let sc = getSelectionContext();
 
-        // TODO: move this out to a new file
+        let keyStateMachineDb = [
+            ['c','s','a', 'keyMatch',                       'scope',       'e','p','m',  'executionList',                       'reduceList'],
+            [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ], []],
+            [ 0,  0,  0,  e.key === 'F2',                  ['s',      'm'], 0,  1,  0, ['startEdit'                           ], []],
+            [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'], 0,  1,  0, [                                      ], []],
+            [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'], 0,  0,  0, [                                      ], []],
+            [ 0,  0,  0,  e.key === 'Enter',               ['s',      'm'], 1,  1,  0, ['finishEdit'                          ], []],
+            [ 0,  0,  0,  e.key === 'Enter',               ['s'          ], 0,  1,  1, ['newSiblingDown', 'startEdit'         ], []],
+            [ 0,  0,  0,  e.key === 'Enter',               [          'm'], 0,  1,  1, ['selectDownMixed'                     ], []],
+            [ 0,  1,  0,  e.key === 'Enter',               ['s',      'm'], 0,  1,  1, ['newSiblingUp', 'startEdit'           ], []],
+            [ 0,  0,  1,  e.key === 'Enter',               ['s',         ], 0,  1,  1, ['cellifyMulti', 'selectFirstMixed'    ], []],
+            [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ], []],
+            [ 0,  0,  0,  e.key === 'Insert',              ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ], []],
+            [ 0,  0,  0,  e.key === 'Insert',              [          'm'], 0,  1,  1, ['selectRightMixed'                    ], []],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['s'          ], 1,  1,  1, ['finishEdit', 'newChild', 'startEdit' ], []],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['s'          ], 0,  1,  1, ['newChild', 'startEdit'               ], []],
+            [ 0,  0,  0,  e.key === 'Tab',                 [          'm'], 0,  1,  1, ['selectRightMixed'                    ], []],
+            [ 0,  0,  0,  e.key === 'Delete',              ['s'          ], 0,  1,  1, ['deleteNode'                          ], []],
+            [ 0,  0,  0,  e.key === 'Delete',              [     'c'     ], 0,  1,  1, ['deleteCellBlock'                     ], []],
+            [ 0,  0,  0,  e.code === 'Space',              ['s'          ], 0,  1,  1, ['selectForwardStruct'                 ], []],
+            [ 0,  0,  0,  e.code === 'Space',              [          'm'], 0,  1,  1, ['selectForwardMixed'                  ], []],
+            [ 0,  0,  0,  e.code === 'Backspace',          ['s'          ], 0,  1,  1, ['selectBackwardStruct',               ], []],
+            [ 0,  0,  0,  e.code === 'Backspace',          [          'm'], 0,  1,  1, ['selectBackwardMixed'                 ], []],
+            [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'], 0,  1,  1, ['selectRoot'                          ], []],
+            [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], []],
+            [ 1,  0,  0,  e.code === 'KeyM',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['CREATE_MAP_IN_MAP']],
+            [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'], 0,  1,  1, ['copySelection'                       ], []],
+            [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'], 0,  1,  1, ['cutSelection'                        ], []],
+            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['SAVE_MAP']],
+            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'], 1,  1,  0, ['finishEdit',                         ], ['SAVE_MAP']],
+            [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['REDO']],
+            [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm'], 0,  1,  0, [                                      ], ['UNDO']],
+            [ 0,  1,  0,  e.code === 'ArrowUp',            [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []],
+            [ 0,  1,  0,  e.code === 'ArrowDown',          [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []],
+            [ 0,  1,  0,  e.code === 'ArrowLeft',          [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []],
+            [ 0,  1,  0,  e.code === 'ArrowRight',         [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []],
+            [ 1,  0,  0,  e.code === 'KeyL',               ['s', 'c', 'm'], 0,  1,  0, ['prettyPrint'                         ], []],
+            [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ], []],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ], []],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['selectNeighborMixed'                 ], []],
+            [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNodeToo'               ], []],
+            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['moveNodeSelection'                   ], []],
+            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['newCellBlock'                        ], []],
+            [ 0,  0,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ], []],
+            [ 0,  1,  0,  e.which >= 48,                   ['s',      'm'], 0,  0,  0, ['eraseContent', 'startEdit'           ], []],
+        ];
 
         let keyStateMachine = {};
         for (let i = 0; i < keyStateMachineDb.length; i++) {
@@ -113,7 +158,7 @@ export function MapComponent() {
                     if (currExecution === 'applyColor') {
                         currColorToPaint = e.which - 96;
                     }
-                    eventEmitter(currExecution);
+                    nodeReducer(currExecution);
                     recalc();
                     redraw();
                 }
@@ -137,19 +182,19 @@ export function MapComponent() {
                     if (type === 'text/plain') {
                         navigator.clipboard.readText().then(text => {
                             if (isEditing) {// /TODO get isEditing
-                                eventEmitter('insertTextFromClipboardAsText'); // TODO: pass text
+                                nodeReducer('insertTextFromClipboardAsText'); // TODO: pass text
                             } else {
                                 push();
                                 if (text.substring(0, 1) === '[') {
-                                    eventEmitter('insertMapFromClipboard'); recalc(); redraw();
+                                    nodeReducer('insertMapFromClipboard'); recalc(); redraw();
                                 } else {
-                                    eventEmitter('newChild'); recalc();
+                                    nodeReducer('newChild'); recalc();
                                     if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                                        eventEmitter('insertEquationFromClipboardAsNode'); recalc(); redraw();
+                                        nodeReducer('insertEquationFromClipboardAsNode'); recalc(); redraw();
                                     } else if (isUrl(text)) {
-                                        eventEmitter('insertElinkFromClipboardAsNode'); recalc(); redraw();
+                                        nodeReducer('insertElinkFromClipboardAsNode'); recalc(); redraw();
                                     } else {
-                                        eventEmitter('insertTextFromClipboardAsNode'); recalc(); redraw();
+                                        nodeReducer('insertTextFromClipboardAsNode'); recalc(); redraw();
                                     }
                                 }
                                 checkPop();
@@ -168,7 +213,7 @@ export function MapComponent() {
                                     'https://mindboard.io/feta';
                                 fetch(address, {method: 'post', body: formData}).then(response => {
                                     response.json().then(sf2c => {
-                                        eventEmitter('insertImageFromLinkAsNode', sf2c); // TODO: pass this properly
+                                        nodeReducer('insertImageFromLinkAsNode', sf2c); // TODO: pass this properly
                                     });
                                 });
                             })

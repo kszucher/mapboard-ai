@@ -3,7 +3,7 @@ import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
 import {getDefaultMap, initDomData, loadMap, recalc, redraw} from "../map/Map";
 import {eventRouter} from "../core/EventRouter";
-import {eventEmitter} from "../core/EventEmitter";
+import {nodeReducer} from "../core/NodeReducer";
 
 export function Communication() {
 
@@ -83,9 +83,9 @@ export function Communication() {
                     break;
                 }
                 case 'createMapInMapSuccess': {
-                    eventEmitter('insertIlinkFromMongo');
+                    nodeReducer('insertIlinkFromMongo');
                     recalc();
-                    eventEmitter('save');
+                    nodeReducer('save');
                     recalc();
                     redraw();
                     break;
@@ -102,9 +102,9 @@ export function Communication() {
                     // VAGY pedig külön kell szedni
 
                     //         push();
-                    //         eventEmitter('newChild');
+                    //         nodeReducer('newChild');
                     //         recalc();
-                    //         eventEmitter('insertImageFromLinkAsNode');
+                    //         nodeReducer('insertImageFromLinkAsNode');
                     //         recalc();
                     //         redraw();
                     //         checkPop();

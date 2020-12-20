@@ -2,13 +2,9 @@ import {InitState} from "./State";
 import {mapMem, saveMap} from "../map/Map";
 import {mapPrint} from "../map/MapPrint";
 
-const Reducer = (state, action) => {
-
+const MapReducer = (state, action) => {
     const {payload} = action;
-
-    // console.log('ACTION: ' + action.type);
-
-    switch (action.type) { // action = what do I want to do, not what happened (event)
+    switch (action.type) {
         case 'RESET_STATE':
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
             return JSON.parse(InitState);
@@ -120,4 +116,4 @@ const Reducer = (state, action) => {
     }
 };
 
-export default Reducer;
+export default MapReducer;

@@ -10,25 +10,16 @@ import {mapPrint} from "../map/MapPrint";
 
 let mutationObserver;
 
-export function eventEmitter(command) { // NODE REDUCER, és kell egy MAP REDUCER vagy gLobal state
-    // console.log('emit: ' + command);
+export function nodeReducer(action) {
+    // console.log('emit: ' + action);
 
     let keyStr;
     if (lastEvent.type === 'windowKeyDown') {
         keyStr = lastEvent.ref.code;
     }
 
-    // ITT CSAK OLYAN ESEMÉNYEK LEHETNEK, amik a MAP-on belüli dolgokhoz szólnak, tehát NODE-LEVEL
-
-    let sc;
-    try {
-        sc = getSelectionContext();
-    }
-    catch {
-        console.log('selection context not available using command:' + command);
-    }
-
-    switch (command) {
+    let sc = getSelectionContext();
+    switch (action) {
         // -------------------------------------------------------------------------------------------------------------
         // NODE-LEVEL
         // -------------------------------------------------------------------------------------------------------------
@@ -292,7 +283,7 @@ export function eventEmitter(command) { // NODE REDUCER, és kell egy MAP REDUCE
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
-                        eventEmitter('typeText');
+                        nodeReducer('typeText');
                         recalc();
                         redraw();
                     }
