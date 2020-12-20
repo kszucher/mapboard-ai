@@ -67,8 +67,9 @@ export function Communication() {
                 }
                 case 'signInSuccess': {
                     initDomData();
-                    dispatch({type: 'SIGN_IN_SUCCESS', payload: serverResponse.headerData});
-                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_SIGN_IN_SUCCESS'}});
+                    dispatch({type: 'OPEN_WORKSPACE'});
+                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
+                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
                     break;
                 }
                 case 'signInFail': {
@@ -90,6 +91,7 @@ export function Communication() {
                     break;
                 }
                 case 'createMapInTabSuccess': {
+
                     break;
                 }
                 case 'saveMapRequestSuccess': {

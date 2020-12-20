@@ -8,7 +8,7 @@ const Reducer = (state, action) => {
 
     // console.log('ACTION: ' + action.type);
 
-    switch (action.type) {
+    switch (action.type) { // action = what do I want to do, not what happened (event)
         case 'RESET_STATE':
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
             return JSON.parse(InitState);
@@ -16,16 +16,18 @@ const Reducer = (state, action) => {
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: [...state.serverAction, 'signIn']};
-        case 'SIGN_IN_SUCCESS':
+        case 'OPEN_WORKSPACE':
+            return {...state, isLoggedIn: true};
+        case 'UPDATE_TABS':
             const {mapNameList, mapIdList, mapSelected} = payload;
-            return {...state, isLoggedIn: true, mapNameList, mapIdList, mapSelected};
+            return {...state, mapNameList, mapIdList, mapSelected};
         // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
             let mapId;
             let mapName;
             let breadcrumbsHistory = state.breadcrumbsHistory;
             switch (payload.source) {
-                case 'SERVER_SIGN_IN_SUCCESS':
+                case 'SERVER':
                     mapId = state.mapIdList[state.mapSelected];
                     mapName = state.mapNameList[state.mapSelected];
                     breadcrumbsHistory = [{mapId, mapName}];
