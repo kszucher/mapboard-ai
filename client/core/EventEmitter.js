@@ -293,9 +293,9 @@ export function eventEmitter(command) { // NODE REDUCER, és kell egy MAP REDUCE
             const callback = function(mutationsList) {
                 for(let mutation of mutationsList) {
                     if (mutation.type === 'characterData') {
-                        eventRouter.processEvent({
-                            type: 'typeTextEvent'
-                        });
+                        eventEmitter('typeText');
+                        recalc();
+                        redraw();
                     }
                 }
             };

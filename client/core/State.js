@@ -9,9 +9,9 @@ export const State = {
     serverAction: 'ping',
     serverResponse: {},
 
-    tabIdList: [],
-    tabNameList: [],
-    tabSelected: undefined,
+    mapIdList: [],
+    mapNameList: [],
+    mapSelected: undefined,
 
     mapId: '',
     // not ideal incremental variables to trigger server communication

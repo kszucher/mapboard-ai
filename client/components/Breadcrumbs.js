@@ -18,29 +18,24 @@ export default function WorkspaceBreadcrumbs() {
     const classes = useStyles();
 
     const [state, dispatch] = useContext(Context);
-
     const {breadcrumbsHistory} = state;
 
-    const handleClick = param => event => {
+    const handleClick = index => event => {
         event.preventDefault();
-        dispatch({type: 'OPEN_MAP', payload: {
-                mapId: param.mapId,
-                mapName: param.mapName,
-                pushHistory: true,
-                breadcrumbsOp: 'splice'}});
+        dispatch({type: 'OPEN_MAP', payload: {source: 'BREADCRUMBS', index}});
     };
 
     return (
         <div className={classes.root}>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                {breadcrumbsHistory.map(item => (
+                {breadcrumbsHistory.map((currElement, index) => (
                     <Link
                         color="inherit"
                         href="/"
-                        onClick={handleClick(item)}
-                        key={item.mapName}
+                        onClick={handleClick(index)}
+                        key={index}
                     >
-                        {item.mapName}
+                        {currElement.mapName}
                     </Link>
                 ))}>
             </Breadcrumbs>

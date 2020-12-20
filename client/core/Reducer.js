@@ -1,6 +1,4 @@
 import {InitState} from "./State";
-import {remoteDispatch} from "./Store";
-import {lastEvent} from "./EventRouter";
 import {mapMem, saveMap} from "../map/Map";
 import {mapPrint} from "../map/MapPrint";
 
@@ -16,110 +14,84 @@ const Reducer = (state, action) => {
             return JSON.parse(InitState);
         case 'SERVER_RESPONSE': return {...state, serverResponse: payload};
         case 'SIGN_IN':
-            localStorage.setItem('cred', JSON.stringify({
-                email: payload.email,
-                password: payload.password,
-            }));
+            localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: 'signIn'};
         case 'SIGN_IN_SUCCESS':
-            const {tabNameList, tabIdList, tabSelected} = payload;
-            return {...state, isLoggedIn: true, tabNameList, tabIdList, tabSelected};
+            const {mapNameList, mapIdList, mapSelected} = payload;
+            return {...state, isLoggedIn: true, mapNameList, mapIdList, mapSelected};
+        // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
-            const {breadcrumbsOp, mapId, mapName} = payload;
+            let mapId;
+            let mapName;
             let breadcrumbsHistory = state.breadcrumbsHistory;
-            if (['reset', 'resetPush'].includes(breadcrumbsOp)) {
-                breadcrumbsHistory = [];
-            }
-            if (['resetPush', 'push'].includes(breadcrumbsOp)) {
-                breadcrumbsHistory.push({mapId, mapName})
-            }
-            if (['splice'].includes(breadcrumbsOp)) {
-                let cutIndex = 0;
-                for (const i in breadcrumbsHistory) {
-                    if (breadcrumbsHistory[i].mapId === mapId) {
-                        cutIndex = i;
+            switch (payload.source) {
+                case 'SERVER_SIGN_IN_SUCCESS':
+                    mapId = state.mapIdList[state.mapSelected];
+                    mapName = state.mapNameList[state.mapSelected];
+                    breadcrumbsHistory = [{mapId, mapName}];
+                    break;
+                case 'TAB':
+                    mapId = state.mapIdList[payload.value];
+                    mapName = state.mapNameList[payload.value];
+                    breadcrumbsHistory = [{mapId, mapName}];
+                    break;
+                case 'BREADCRUMBS':
+                    mapId = breadcrumbsHistory[payload.index].mapId;
+                    mapName = breadcrumbsHistory[payload.index].mapName;
+                    breadcrumbsHistory.length = parseInt(payload.index) + 1; // még mindig kell a parseInt vajon?
+                    break;
+                case 'MOUSE':
+                    mapId = payload.lm.link;
+                    mapName = payload.lm.content;
+                    breadcrumbsHistory.push({mapId, mapName});
+                    break;
+                case 'KEY':
+                    switch (payload.key) { // will automatically have this prop for keyboard based command, so no need for additional columns
+                        case 'SPACE': break;
+                        case 'BACKSPACE': break;
                     }
-                }
-                breadcrumbsHistory.length = parseInt(cutIndex) + 1;
+                    break;
+                case 'HISTORY':
+                    //             mapId: lastEvent.ref.state.mapId,
+                    //             mapName: mapMem.getData().r[0].content,
+                    //             breadcrumbsOp: 'x'}});
+                    break;
             }
-            // TODO: az aktuális teljes breadhistorynak az aktuális értékét pusholjuk így jó lesz és tökéletes a history!!!
-            if (payload.pushHistory) {
+
+            if (payload.source !== 'HISTORY') {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
-            return {...state, mapId, breadcrumbsHistory, serverAction: 'openMap'};
+            return {...state, mapId, mapName, breadcrumbsHistory, serverAction: 'openMap'};
+        // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP': return {...state, serverAction: 'createMapInMap'};
         case 'CREATE_MAP_IN_TAB': return {...state, serverAction: 'createMapInTab'};
-        case 'SAVE_MAP':
 
-
-            return {...state, serverAction: 'saveMap'};
-
-
-
-        // TODO start here
-        // EZEKET KELL MAJD MIND IDE BETENNI!!!! MERGE-elni, szimbionizáltatni!!!!!!
-        // ez azt is hozza magával, hogy a teljes map state ide jön, de ez már elkerülhetetlen amúgyis. nincs ok ELLENE
-            // amit még érdemes figyelembe venni, hogy push-pop mindenhol lehet
-
-
-        // OPEN --------------------------------------------------------------------------------------------------------
-        case 'openParentMap' : { // using backspace
-            // KEYBOARD eventként keletkezik, de nem ide jön, hanem dispacth-el majd ez is
-            break;
-        }
-        case 'openChildMap': { // using space
-
-            break;
-        }
-        // CREATE ------------------------------------------------------------------------------------------------------
-        case 'createMapInMap': {
-            remoteDispatch({type: 'CREATE_MAP_IN_MAP'});
-            break;
-        }
-        case 'createMapInTab': {
-            remoteDispatch({type: 'CREATE_MAP_IN_TAB'});
-            break;
-        }
         // SAVE --------------------------------------------------------------------------------------------------------
-        case 'saveMap': {
-            // remoteDispatch({type: 'SAVE_MAP', payload: {
+        case 'SAVE_MAP':
             //         data: saveMap(),
             //         density: mapMem.density,
             //         task: mapMem.task,
-            //     }});
-
-
-            // NEM!!! ehelyett a következő lesz majd a faszaság:
-            // a data, density, task a state-ben fognak szépen lakni, és ezek itt kerülnek megerálásra
-            // ez azé' gecire zseniális.
-
-            break;
-        }
+            return {...state, serverAction: 'saveMap'};
         // DELETE ------------------------------------------------------------------------------------------------------
-        case 'deleteMapFromTab': {
+        case 'DELETE_MAP_FROM_TAB': {
             break;
         }
-
         // MOVE --------------------------------------------------------------------------------------------------------
-        case 'moveMapToSubMap': {
+        case 'MOVE_MAP_TO_SUBMAP': {
             break;
         }
-        case 'moveSubMapToMap': {
+        case 'MOVE_SUBMAP_TO_MAP': {
             break;
         }
-        case 'moveTabToSubMap': {
+        case 'MOVE_TAB_TO_SUBMAP': {
             break;
         }
-        case 'moveSubMapToTab': {
+        case 'MOVE_SUBMAP_TO_TAB': {
             break;
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
-        case 'mapAttributeDensitySmall': {
-            mapMem.density = 'small';
-            break;
-        }
-        case 'mapAttributeDensityLarge': {
-            mapMem.density = 'large';
+        case 'CHANGE_MAP_DENSITY': {
+            mapMem.density = 'small'; // or 'large'
             break;
         }
         // UNDO/REDO ---------------------------------------------------------------------------------------------------
@@ -141,10 +113,6 @@ const Reducer = (state, action) => {
             break;
         }
         // SHARE
-
-
-
-
 
         default: return state;
     }
