@@ -6,12 +6,12 @@ export const State = {
 
     // eventsEnabled: true, // we won't need this once we'll prevent screen to be active in case of loading server
 
-    serverAction: '',
+    serverAction: 'ping',
     serverResponse: {},
 
-    tabListIds: [],
-    tabListNames: [],
-    tabListSelected: undefined,
+    tabIdList: [],
+    tabNameList: [],
+    tabSelected: undefined,
 
     mapId: '',
     // not ideal incremental variables to trigger server communication

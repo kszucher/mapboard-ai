@@ -104,56 +104,62 @@ async function sendResponse(c2s) {
         'ERROR': 'error',
     };
 
-    if (await auth(c2s)) {
-        switch (c2s.cmd) {
-            case 'signInRequest': {
-                let m2s = await mongoFunction(c2s, 'getUserMaps');
-                s2c = {
-                    cmd: 'signInSuccess',
-                    headerData: m2s,
-                };
-                break;
-            }
-            case 'openMapRequest': {
-                let m2s = await mongoFunction(c2s, 'openMap');
-                s2c = {
-                    cmd: 'openMapSuccess',
-                    mapName: c2s.mapName,
-                    mapStorage: m2s,
-                };
-                break;
-            }
-            case 'createMapInMapRequest': {
-                let m2s = await mongoFunction(c2s, 'createMap');
-                s2c = {
-                    cmd: 'createMapInMapSuccess',
-                    newMapId: m2s.insertedId
-                };
-                break;
-            }
-            case 'createMapInTabRequest': {
-                let m2s1 = await mongoFunction(c2s, 'createMap');
-                Object.assign(c2s, {insertedId: m2s1.insertedId});
-                await mongoFunction(c2s, 'addUserMap');
-                let m2s2 = await mongoFunction(c2s, 'getUserMaps');
-                s2c = {
-                    cmd: 'createMapInTabSuccess',
-                    headerData: m2s2,
-                };
-                break;
-            }
-            case 'saveMapRequest': {
-                await mongoFunction(c2s, 'saveMap');
-                s2c = {
-                    cmd: 'saveMapRequestSuccess',
-                };
-                break;
-            }
-        }
-    } else {
+    if (c2s.cmd === 'pingRequest') {
         s2c = {
-            cmd: 'signInFail',
+            cmd: 'pingSuccess',
         };
+    } else {
+        if (await auth(c2s)) {
+            switch (c2s.cmd) {
+                case 'signInRequest': {
+                    let m2s = await mongoFunction(c2s, 'getUserMaps');
+                    s2c = {
+                        cmd: 'signInSuccess',
+                        headerData: m2s,
+                    };
+                    break;
+                }
+                case 'openMapRequest': {
+                    let m2s = await mongoFunction(c2s, 'openMap');
+                    s2c = {
+                        cmd: 'openMapSuccess',
+                        mapName: c2s.mapName,
+                        mapStorage: m2s,
+                    };
+                    break;
+                }
+                case 'createMapInMapRequest': {
+                    let m2s = await mongoFunction(c2s, 'createMap');
+                    s2c = {
+                        cmd: 'createMapInMapSuccess',
+                        newMapId: m2s.insertedId
+                    };
+                    break;
+                }
+                case 'createMapInTabRequest': {
+                    let m2s1 = await mongoFunction(c2s, 'createMap');
+                    Object.assign(c2s, {insertedId: m2s1.insertedId});
+                    await mongoFunction(c2s, 'addUserMap');
+                    let m2s2 = await mongoFunction(c2s, 'getUserMaps');
+                    s2c = {
+                        cmd: 'createMapInTabSuccess',
+                        headerData: m2s2,
+                    };
+                    break;
+                }
+                case 'saveMapRequest': {
+                    await mongoFunction(c2s, 'saveMap');
+                    s2c = {
+                        cmd: 'saveMapRequestSuccess',
+                    };
+                    break;
+                }
+            }
+        } else {
+            s2c = {
+                cmd: 'signInFail',
+            };
+        }
     }
     return s2c;
 }
@@ -186,9 +192,9 @@ async function mongoFunction(c2s, operation) {
                 });
 
                 m2s = {
-                    headerMapIdList: headerMapIdList,
-                    headerMapNameList: headerMapNameList,
-                    headerMapSelected: currUser.headerMapSelected
+                    mapIdList: headerMapIdList,
+                    mapNameList: headerMapNameList,
+                    mapSelected: currUser.headerMapSelected
                 };
 
                 break;

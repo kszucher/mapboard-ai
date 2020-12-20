@@ -54,14 +54,14 @@ const useStyles = makeStyles((theme) => ({
 export default function VerticalTabs() {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {tabListIds, tabListNames, tabListSelected} = state;
-    const [val, setVal] = useState(tabListSelected);
+    const {tabIdList, tabNameList, tabSelected} = state;
+    const [val, setVal] = useState(tabSelected);
 
     const handleChange = (e, value) =>  {
         setVal(value);
         dispatch({type: 'OPEN_MAP', payload: {
-                mapId: tabListIds[value],
-                mapName: tabListNames[value],
+                mapId: tabIdList[value],
+                mapName: tabNameList[value],
                 pushHistory: true,
                 breadcrumbsOp: 'resetPush'}});
     };
@@ -76,7 +76,7 @@ export default function VerticalTabs() {
                 value={val}
                 onChange={handleChange}
                 indicatorColor="primary">
-                {tabListNames.map(name => (
+                {tabNameList.map(name => (
                     <Tab
                         label={name}
                         key={name}/>

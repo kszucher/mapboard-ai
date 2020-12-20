@@ -8,7 +8,7 @@ const Reducer = (state, action) => {
 
     const {payload} = action;
 
-    // console.log(action.type)
+    // console.log('ACTION: ' + action.type);
 
     switch (action.type) {
         case 'RESET_STATE':
@@ -22,8 +22,8 @@ const Reducer = (state, action) => {
             }));
             return {...state, serverAction: 'signIn'};
         case 'SIGN_IN_SUCCESS':
-            const {tabListNames, tabListIds, tabListSelected} = payload;
-            return {...state, isLoggedIn: true, tabListNames, tabListIds, tabListSelected};
+            const {tabNameList, tabIdList, tabSelected} = payload;
+            return {...state, isLoggedIn: true, tabNameList, tabIdList, tabSelected};
         case 'OPEN_MAP':
             const {breadcrumbsOp, mapId, mapName} = payload;
             let breadcrumbsHistory = state.breadcrumbsHistory;
@@ -46,7 +46,7 @@ const Reducer = (state, action) => {
             if (payload.pushHistory) {
                 history.pushState({mapId: payload.mapId}, payload.mapId, '');
             }
-            return {...state, mapId, breadcrumbsHistory, serverAction: 'openMapRequest'};
+            return {...state, mapId, breadcrumbsHistory, serverAction: 'openMap'};
         case 'CREATE_MAP_IN_MAP': return {...state, serverAction: 'createMapInMap'};
         case 'CREATE_MAP_IN_TAB': return {...state, serverAction: 'createMapInTab'};
         case 'SAVE_MAP':
