@@ -30,10 +30,6 @@ export function Communication() {
         post(obj, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     };
 
-    const fetchSend = (obj) => {
-        // TODO
-    };
-
     useEffect(() => {
         let lastAction = [...serverAction].pop();
         let msg = {};

@@ -10,7 +10,7 @@ let mutationObserver;
 export let isEditing = 0;
 
 export function nodeDispatch(action, payload) {
-    // console.log('NODEDISPATCH: ' + action);
+    console.log('NODEDISPATCH: ' + action);
     nodeReducer(action, payload);
     recalc();
 }
@@ -187,7 +187,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'insertTextFromClipboardAsText': {
-            document.execCommand("insertHTML", false, lastEvent.props.data);
+            document.execCommand("insertHTML", false, payload);
             break;
         }
         case 'insertTextFromClipboardAsNode': {

@@ -189,6 +189,7 @@ export function MapComponent() {
                                     nodeDispatch('insertMapFromClipboard', text);
                                 } else {
                                     nodeDispatch('newChild');
+                                    redraw();
                                     if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                                         nodeDispatch('insertEquationFromClipboardAsNode', text);
                                     } else if (isUrl(text)) {
@@ -213,8 +214,13 @@ export function MapComponent() {
                                     'http://127.0.0.1:8082/feta' :
                                     'https://mindboard.io/feta';
                                 fetch(address, {method: 'post', body: formData}).then(response =>
-                                    response.json().then(response =>
-                                        nodeDispatch('insertImageFromLinkAsNode', response)
+                                    response.json().then(response => {
+                                            push();
+                                            nodeDispatch('newChild');
+                                            nodeDispatch('insertImageFromLinkAsNode', response);
+                                            redraw();
+                                            checkPop();
+                                        }
                                     )
                                 );
                             })
