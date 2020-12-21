@@ -39,12 +39,8 @@ export default function MenuAppBar() {
     const handleSelect = param => e => {
         handleClose();
         switch(param) {
-
             case 'ADD_MAP':
                 dispatch({type: 'CREATE_MAP_IN_TAB', payload: 'New Map'});
-                break;
-            case 'PRINT_MAP':
-                dispatch({type: 'PRINT'});
                 break;
             case 'SIGN_OUT':
                 dispatch({type: 'RESET_STATE'});
@@ -79,10 +75,7 @@ export default function MenuAppBar() {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add Map</MenuItem>
-                    {/*<MenuItem onClick={handleSelect('DENSITY_SMALL')}>Density: small</MenuItem>*/}
-                    {/*<MenuItem onClick={handleSelect('DENSITY_LARGE')}>Density: large</MenuItem>*/}
-                    {/*<MenuItem onClick={handleSelect('PRINT_MAP')}>Print Map</MenuItem>*/}
-                    <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign out</MenuItem>
+                    <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>
                 <Typography variant="h6" className={classes.title}>
                     MindBoard

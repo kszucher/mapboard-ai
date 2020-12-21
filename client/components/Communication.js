@@ -1,7 +1,7 @@
 import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {checkPop, getDefaultMap, initDomData, loadMap, push, recalc, redraw} from "../map/Map";
+import {checkPop, initDomData, loadMap, push, recalc, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 
 /**
@@ -21,13 +21,6 @@ export function Communication() {
         };
         xmlHttp.open("POST", myUrl, true); // true for asynchronous
         xmlHttp.send(JSON.stringify(message));
-        // TODO: simplify this to fetch
-    };
-
-    // TODO FETCH SERVER COMMUNICATOR IMPLEMENTATION AS WELL
-
-    const commSend = (obj) => {
-        post(obj, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     };
 
     useEffect(() => {
@@ -39,16 +32,16 @@ export function Communication() {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
                 switch (lastAction) {
-                    case 'signIn':          msg = {cmd: 'signInRequest',            cred};                          break;
-                    case 'openMap':         msg = {cmd: 'openMapRequest',           cred, mapId};                   break;
-                    case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest',    cred, mapStorageOut};           break;
-                    case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest',    cred, mapStorageOut};           break;
-                    case 'saveMap':         msg = {cmd: 'saveMapRequest',           cred, mapId, mapStorageOut};    break;
+                    case 'signIn':          msg = {cmd: 'signInRequest',         cred};                       break;
+                    case 'openMap':         msg = {cmd: 'openMapRequest',        cred, mapId};                break;
+                    case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest', cred, mapStorageOut};        break;
+                    case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest', cred, mapStorageOut};        break;
+                    case 'saveMap':         msg = {cmd: 'saveMapRequest',        cred, mapId, mapStorageOut}; break;
                 }
             }
         }
         console.log('SERVER_MESSAGE: ' + msg.cmd);
-        commSend(msg);
+        post(msg, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     }, [serverAction]);
 
     useEffect(() => {
@@ -93,16 +86,6 @@ export function Communication() {
                 }
                 case 'saveMapRequestSuccess': {
                     break;
-                }
-                case 'imageSaveSuccess': {
-                    // FELTÉVE, hogy továbbfejlesztettük az alaprendszert is fetch-essé...
-                    // VAGY pedig külön kell szedni
-
-                    //         push();
-                    //         nodeDispatch('newChild');
-                    //         nodeDispatch('insertImageFromLinkAsNode');
-                    //         redraw();
-                    //         checkPop();
                 }
             }
         }

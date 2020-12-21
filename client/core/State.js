@@ -1,8 +1,5 @@
 export const State = {
-
     isLoggedIn: false,
-
-    breadcrumbsHistory: [],
 
     serverAction: ['ping'],
     serverResponse: {},
@@ -12,10 +9,9 @@ export const State = {
     mapSelected: undefined,
 
     mapId: '',
-    mapNameToSave: '',
-
     mapStorageOut: [],
 
+    breadcrumbsHistory: [],
 };
 
 export const InitState = JSON.stringify(State);

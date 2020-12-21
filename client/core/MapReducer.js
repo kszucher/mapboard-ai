@@ -15,8 +15,7 @@ const MapReducer = (state, action) => {
         case 'OPEN_WORKSPACE':
             return {...state, isLoggedIn: true};
         case 'UPDATE_TABS':
-            const {mapNameList, mapIdList, mapSelected} = payload;
-            return {...state, mapNameList, mapIdList, mapSelected};
+            return {...state, ...payload};
         // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
             let mapId;
@@ -36,7 +35,7 @@ const MapReducer = (state, action) => {
                 case 'BREADCRUMBS':
                     mapId = breadcrumbsHistory[payload.index].mapId;
                     mapName = breadcrumbsHistory[payload.index].mapName;
-                    breadcrumbsHistory.length = parseInt(payload.index) + 1; // még mindig kell a parseInt vajon?
+                    breadcrumbsHistory.length = payload.index + 1;
                     break;
                 case 'MOUSE':
                     mapId = payload.lm.link;
@@ -44,7 +43,7 @@ const MapReducer = (state, action) => {
                     breadcrumbsHistory.push({mapId, mapName});
                     break;
                 case 'KEY':
-                    switch (payload.key) { // will automatically have this prop for keyboard based command, so no need for additional columns
+                    switch (payload.key) {
                         case 'SPACE': break;
                         case 'BACKSPACE': break;
                     }
@@ -111,7 +110,7 @@ const MapReducer = (state, action) => {
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
         case 'CHANGE_MAP_DENSITY': {
-            mapMem.density = 'small'; // or 'large'
+            mapMem.density = payload; // small or large
             return state;
         }
         // UNDO/REDO ---------------------------------------------------------------------------------------------------
@@ -129,7 +128,7 @@ const MapReducer = (state, action) => {
         }
         // IMPORT/EXPORT -----------------------------------------------------------------------------------------------
         case 'PRINT': {
-            mapPrint.start(sc.lm);
+            mapPrint.start(payload.lm);
             return state;
         }
         // SHARE -------------------------------------------------------------------------------------------------------

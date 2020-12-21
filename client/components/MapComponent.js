@@ -2,14 +2,14 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapSvgData, mapMem, mapref, checkPop, push, recalc, redraw} from "../map/Map";
+import {mapDivData, mapMem, checkPop, push, redraw} from "../map/Map";
 import {isUrl} from "../core/Utils";
 
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
 
-    useEffect(() => { // if everything will be handled by react, this could be enabled as onXXX events
+    useEffect(() => {
         window.addEventListener('popstate',     popstate);
         window.addEventListener('click',        click);
         window.addEventListener('dblclick',     dblclick);
