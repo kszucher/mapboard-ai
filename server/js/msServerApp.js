@@ -97,8 +97,6 @@ MongoClient.connect(uri, {
     }
 });
 
-
-
 async function sendResponse(c2s) {
     let s2c = {
         'ERROR': 'error',
