@@ -205,9 +205,8 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'insertIlinkFromMongo': {
-            let s2c = lastEvent.ref;
             sc.lm.linkType = 'internal';
-            sc.lm.link = s2c.newMapId;
+            sc.lm.link = payload;
             sc.lm.isDimAssigned = 0;
             break;
         }

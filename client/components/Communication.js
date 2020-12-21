@@ -1,7 +1,7 @@
 import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {checkPop, getDefaultMap, initDomData, loadMap, recalc, redraw} from "../map/Map";
+import {checkPop, getDefaultMap, initDomData, loadMap, push, recalc, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 
 /**
@@ -10,7 +10,7 @@ import {nodeDispatch} from "../core/NodeReducer";
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapId, mapStorageOut, mapNameToSave} = state;
+    const {serverAction, serverResponse, mapId, mapStorageOut} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -43,11 +43,11 @@ export function Communication() {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
                 switch (lastAction) {
-                    case 'signIn':          msg = {cmd: 'signInRequest',            cred};                                              break;
-                    case 'openMap':         msg = {cmd: 'openMapRequest',           cred, mapName: mapId};                              break;
-                    case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest',    cred, newMap: getDefaultMap(mapNameToSave)};        break;
-                    case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest',    cred, newMap: getDefaultMap(mapNameToSave)};        break;
-                    case 'saveMap':         msg = {cmd: 'saveMapRequest',           cred, mapName: mapId, mapStorage: mapStorageOut};   break;
+                    case 'signIn':          msg = {cmd: 'signInRequest',            cred};                          break;
+                    case 'openMap':         msg = {cmd: 'openMapRequest',           cred, mapId};                   break;
+                    case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest',    cred, mapStorageOut};           break;
+                    case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest',    cred, mapStorageOut};           break;
+                    case 'saveMap':         msg = {cmd: 'saveMapRequest',           cred, mapId, mapStorageOut};    break;
                 }
             }
         }
@@ -85,11 +85,10 @@ export function Communication() {
                 }
                 case 'createMapInMapSuccess': {
                     push();
-                    nodeDispatch('insertIlinkFromMongo');
-                    nodeDispatch('save');
+                    nodeDispatch('insertIlinkFromMongo', serverResponse.newMapId);
                     redraw();
                     checkPop();
-                    // TODO
+                    dispatch({type: 'SAVE_MAP'});
                     break;
                 }
                 case 'createMapInTabSuccess': {
@@ -97,7 +96,6 @@ export function Communication() {
                     break;
                 }
                 case 'saveMapRequestSuccess': {
-                    // TODO
                     break;
                 }
                 case 'imageSaveSuccess': {

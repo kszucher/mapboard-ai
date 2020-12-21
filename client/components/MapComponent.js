@@ -158,7 +158,11 @@ export function MapComponent() {
                 }
                 for (let j = 0; j < keyStateMachine.reducerList.length; j++) {
                     let currReducer = keyStateMachine.reducerList[j];
-                    dispatch({type: currReducer});
+                    if (currReducer === 'CREATE_MAP_IN_MAP') {
+                        dispatch({type: currReducer, payload: sc.lm.content});
+                    } else {
+                        dispatch({type: currReducer});
+                    }
                 }
                 redraw();
                 if (keyStateMachine.m) {

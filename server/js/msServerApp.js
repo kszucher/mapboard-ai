@@ -123,7 +123,7 @@ async function sendResponse(c2s) {
                     let m2s = await mongoFunction(c2s, 'openMap');
                     s2c = {
                         cmd: 'openMapSuccess',
-                        mapName: c2s.mapName,
+                        mapId: c2s.mapId,
                         mapStorage: m2s,
                     };
                     break;
@@ -138,7 +138,9 @@ async function sendResponse(c2s) {
                 }
                 case 'createMapInTabRequest': {
                     let m2s1 = await mongoFunction(c2s, 'createMap');
-                    Object.assign(c2s, {insertedId: m2s1.insertedId});
+                    Object.assign(c2s, {
+                        insertedId: m2s1.insertedId
+                    });
                     await mongoFunction(c2s, 'addUserMap');
                     let m2s2 = await mongoFunction(c2s, 'getUserMaps');
                     s2c = {
@@ -200,11 +202,11 @@ async function mongoFunction(c2s, operation) {
                 break;
             }
             case 'openMap': {
-                m2s = await collectionMaps.findOne({_id: ObjectId(c2s.mapName)});
+                m2s = await collectionMaps.findOne({_id: ObjectId(c2s.mapId)});
                 break;
             }
             case 'createMap': {
-                let result = await collectionMaps.insertOne(c2s.newMap);
+                let result = await collectionMaps.insertOne(c2s.mapStorageOut);
                 m2s = {
                     insertedId: result.insertedId
                 };
@@ -219,7 +221,7 @@ async function mongoFunction(c2s, operation) {
                 break;
             }
             case 'saveMap': {
-                await collectionMaps.replaceOne({_id: ObjectId(c2s.mapName)}, c2s.mapStorage);
+                await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
                 break;
             }
         }

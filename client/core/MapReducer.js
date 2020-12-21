@@ -1,5 +1,5 @@
 import {InitState} from "./State";
-import {mapMem, saveMap} from "../map/Map";
+import {getDefaultMap, mapMem, saveMap} from "../map/Map";
 import {mapPrint} from "../map/MapPrint";
 
 const MapReducer = (state, action) => {
@@ -61,18 +61,37 @@ const MapReducer = (state, action) => {
             }
             return {...state, mapId, mapName, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
         // CREATE ------------------------------------------------------------------------------------------------------
-        case 'CREATE_MAP_IN_MAP': return {...state, serverAction: [...state.serverAction, 'createMapInMap']};
-        case 'CREATE_MAP_IN_TAB': return {...state, serverAction: [...state.serverAction, 'createMapInTab']};
-
+        case 'CREATE_MAP_IN_MAP':
+            return {...state,
+                mapStorageOut: {
+                    data: getDefaultMap(payload),
+                    density: mapMem.density,
+                    task: mapMem.task,
+                    flow: mapMem.flow,
+                },
+                serverAction: [...state.serverAction, 'createMapInMap']
+            };
+        case 'CREATE_MAP_IN_TAB':
+            return {...state,
+                mapStorageOut: {
+                    data: getDefaultMap(),
+                    density: mapMem.density,
+                    task: mapMem.task,
+                    flow: mapMem.flow,
+                },
+                serverAction: [...state.serverAction, 'createMapInTab']
+            };
         // SAVE --------------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
-            let mapStorageOut ={
-                data: saveMap(),
-                density: mapMem.density,
-                task: mapMem.task,
-                flow: mapMem.flow,
+            return {...state,
+                mapStorageOut: {
+                    data: saveMap(),
+                    density: mapMem.density,
+                    task: mapMem.task,
+                    flow: mapMem.flow,
+                },
+                serverAction: [...state.serverAction, 'saveMap']
             };
-            return {...state, mapStorageOut, serverAction: [...state.serverAction, 'saveMap']};
         // DELETE ------------------------------------------------------------------------------------------------------
         case 'DELETE_MAP_FROM_TAB': {
             return state;
