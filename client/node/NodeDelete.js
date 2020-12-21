@@ -2,6 +2,15 @@ import {mapref} from "../map/Map";
 
 export function structDeleteReselect(sc) {
     let lm = sc.lm;
+
+    if (lm.isRoot) return;
+    for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
+        let currRef = mapref(sc.structSelectedPathList[i]);
+        if (currRef.isRoot) {
+            return;
+        }
+    }
+
     let lastParentRef = mapref(lm.parentPath);
 
     if (lastParentRef.type !== 'cell' || (lastParentRef.type === 'cell' && lastParentRef.s.length > 1)) {
@@ -17,31 +26,35 @@ export function structDeleteReselect(sc) {
         // delete
         for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
             let currRef = mapref(sc.structSelectedPathList[i]);
-            if (currRef.isRoot === 0) {
-                let currParentRef = mapref(currRef.parentPath);
-                currParentRef.taskStatus = currRef.taskStatus;
-                currParentRef.taskStatusInherited = 0;
-                currParentRef.s.splice(currRef.index, 1);
-            }
+            let currParentRef = mapref(currRef.parentPath);
+            currParentRef.taskStatus = currRef.taskStatus;
+            currParentRef.taskStatusInherited = 0;
+            currParentRef.s.splice(currRef.index, 1);
         }
 
         // reselect on jumpback
-        if (lm.isRoot === 0) {
-            if (lastParentRefChildLen === lastParentRefDelChildLen) {
-                lastParentRef.selected = 1;
+        if (lastParentRefChildLen === lastParentRefDelChildLen) {
+            if (lastParentRef.isRootChild) {
+                mapref(['r']).selected = 1;
             } else {
-                if (lm.index === 0) {
-                    if (lastParentRef.s.length > 0) {
-                        lastParentRef.s[0].selected = 1;
+                lastParentRef.selected = 1;
+            }
+        } else {
+            if (lm.index === 0) {
+                if (lastParentRef.s.length > 0) {
+                    lastParentRef.s[0].selected = 1;
+                } else {
+                    if (lastParentRef.isRootChild) {
+                        mapref(['r']).selected = 1;
                     } else {
                         lastParentRef.selected = 1;
                     }
+                }
+            } else {
+                if (lm.index - lastParentRefDelChildLen >= 0) {
+                    lastParentRef.s[lm.index - lastParentRefDelChildLen].selected = 1;
                 } else {
-                    if (lm.index - lastParentRefDelChildLen >= 0) {
-                        lastParentRef.s[lm.index - lastParentRefDelChildLen].selected = 1;
-                    } else {
-                        lastParentRef.s[0].selected = 1;
-                    }
+                    lastParentRef.s[0].selected = 1;
                 }
             }
         }
