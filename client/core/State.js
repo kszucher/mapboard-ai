@@ -6,9 +6,9 @@ export const State = {
 
     mapIdList: [],
     mapNameList: [],
-    mapSelected: undefined,
-
+    mapSelected: 0,
     mapId: '',
+    mapName: '',
     mapStorageOut: [],
 
     breadcrumbsHistory: [],

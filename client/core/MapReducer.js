@@ -20,6 +20,7 @@ const MapReducer = (state, action) => {
         case 'OPEN_MAP':
             let mapId = state.mapId;
             let mapName = state.mapName;
+            let mapSelected = state.mapSelected;
             let breadcrumbsHistory = state.breadcrumbsHistory;
             switch (payload.source) {
                 case 'SERVER':
@@ -30,6 +31,7 @@ const MapReducer = (state, action) => {
                 case 'TAB':
                     mapId = state.mapIdList[payload.value];
                     mapName = state.mapNameList[payload.value];
+                    mapSelected = payload.value;
                     breadcrumbsHistory = [{mapId, mapName}];
                     break;
                 case 'BREADCRUMBS':
@@ -51,14 +53,15 @@ const MapReducer = (state, action) => {
                 case 'HISTORY':
                     mapId = payload.event.state.mapId;
                     mapName = payload.event.state.mapName;
+                    mapSelected = payload.event.state.mapSelected;
                     breadcrumbsHistory = payload.event.state.breadcrumbsHistory;
                     break;
             }
 
             if (payload.source !== 'HISTORY') {
-                history.pushState({mapId, mapName, breadcrumbsHistory}, mapId, '');
+                history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
-            return {...state, mapId, mapName, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
+            return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
         // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP':
             return {...state,

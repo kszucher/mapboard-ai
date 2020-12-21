@@ -55,10 +55,8 @@ export default function VerticalTabs() {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
     const {mapNameList, mapSelected} = state;
-    const [val, setVal] = useState(mapSelected);
 
     const handleChange = (e, value) =>  {
-        setVal(value);
         dispatch({type: 'OPEN_MAP', payload: {source: 'TAB', value}});
     };
 
@@ -69,7 +67,7 @@ export default function VerticalTabs() {
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
-                value={val}
+                value={mapSelected}
                 onChange={handleChange}
                 indicatorColor="primary">
                 {mapNameList.map((name, index) => (
