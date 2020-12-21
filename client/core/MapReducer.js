@@ -18,8 +18,8 @@ const MapReducer = (state, action) => {
             return {...state, ...payload};
         // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
-            let mapId;
-            let mapName;
+            let mapId = state.mapId;
+            let mapName = state.mapName;
             let breadcrumbsHistory = state.breadcrumbsHistory;
             switch (payload.source) {
                 case 'SERVER':
@@ -49,14 +49,14 @@ const MapReducer = (state, action) => {
                     }
                     break;
                 case 'HISTORY':
-                    //             mapId: lastEvent.ref.state.mapId,
-                    //             mapName: mapMem.getData().r[0].content,
-                    //             breadcrumbsOp: 'x'}});
+                    mapId = payload.event.state.mapId;
+                    mapName = payload.event.state.mapName;
+                    breadcrumbsHistory = payload.event.state.breadcrumbsHistory;
                     break;
             }
 
             if (payload.source !== 'HISTORY') {
-                history.pushState({mapId: payload.mapId}, payload.mapId, '');
+                history.pushState({mapId, mapName, breadcrumbsHistory}, mapId, '');
             }
             return {...state, mapId, mapName, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
         // CREATE ------------------------------------------------------------------------------------------------------
@@ -66,7 +66,6 @@ const MapReducer = (state, action) => {
                     data: getDefaultMap(payload),
                     density: mapMem.density,
                     task: mapMem.task,
-                    flow: mapMem.flow,
                 },
                 serverAction: [...state.serverAction, 'createMapInMap']
             };
@@ -76,7 +75,6 @@ const MapReducer = (state, action) => {
                     data: getDefaultMap(payload),
                     density: mapMem.density,
                     task: mapMem.task,
-                    flow: mapMem.flow,
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
@@ -87,7 +85,6 @@ const MapReducer = (state, action) => {
                     data: saveMap(),
                     density: mapMem.density,
                     task: mapMem.task,
-                    flow: mapMem.flow,
                 },
                 serverAction: [...state.serverAction, 'saveMap']
             };

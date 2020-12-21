@@ -27,7 +27,7 @@ export function MapComponent() {
     }, []);
 
     const popstate = (e) => {
-        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', val: ''}})
+        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
     };
 
     const click = (e) => {
