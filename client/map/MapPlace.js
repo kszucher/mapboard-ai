@@ -83,11 +83,21 @@ export const mapPlace = {
                 } else if (cm.type === 'cell') {
                     let diff = mapMem.sLineDeltaXDefault - 20;
                     if (cm.path[2] === 0) {
-                        cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
-                        cm.nodeEndX = cm.parentNodeEndX + cm.lineDeltaX + cm.selfW + diff;
+                        if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
+                            cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
+                            cm.nodeEndX = cm.parentNodeEndX + cm.lineDeltaX + cm.selfW + diff;
+                        } else if (cm.parentParentType === 'cell') {
+                            cm.nodeStartX = cm.parentNodeStartX + 1;
+                            cm.nodeEndX = cm.nodeStartX + cm.selfW;
+                        }
                     } else {
-                        cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW - diff;
-                        cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX - diff;
+                        if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
+                            cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW - diff;
+                            cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX - diff;
+                        } else if (cm.parentParentType === 'cell') {
+                            cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
+                            cm.nodeEndX = cm.parentNodeEndX;
+                        }
                     }
                 }
             } else if (cm.parentType === 'cell') {
