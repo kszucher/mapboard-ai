@@ -54,7 +54,7 @@ export const mapSvgVisualize = {
 
         // connection
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
-            cm.type === 'struct' && cm.childType !== 'cell' ||
+            cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
@@ -93,7 +93,7 @@ export const mapSvgVisualize = {
         }
 
         // table frame
-        if (cm.type === "struct" && cm.childType === 'cell') {
+        if (cm.type === "struct" && cm.hasCell) {
             let round = 8;
             let x1 = cm.nodeStartX;
             let y1 = cm.nodeStartY - selfHadj/2 + round;
@@ -112,7 +112,7 @@ export const mapSvgVisualize = {
         }
 
         // table grid
-        if (cm.type === "struct" && cm.childType === 'cell') {
+        if (cm.type === "struct" && cm.hasCell) {
             let path = '';
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
@@ -158,8 +158,9 @@ export const mapSvgVisualize = {
 
         // task
         if (mapMem.task &&
-            cm.childType!== 'struct' &&
-            cm.childType !== 'cell' &&
+            !cm.hasDir &&
+            !cm.hasStruct &&
+            !cm.hasCell &&
             cm.parentType !== 'cell' &&
             cm.contentType !== 'image' &&
             !cm.isRoot &&

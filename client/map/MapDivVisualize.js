@@ -8,7 +8,7 @@ export const mapDivVisualize = {
     },
 
     iterate: (cm) => {
-        if (cm.type === 'struct' && cm.childType !== 'cell') {
+        if (cm.type === 'struct' && !cm.hasCell) {
             let styleData = {
                 left:                   cm.nodeStartX + 'px',
                 top:                    cm.nodeStartY - cm.selfH / 2 + 'px',

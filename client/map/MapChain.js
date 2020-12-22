@@ -62,14 +62,8 @@ export const mapChain = {
             }
         }
 
-        if (dCount > 0) {
-            cm.childType = 'dir';
-        } else if (sCount > 0) {
-            cm.childType = 'struct';
-        } else if (!(rowCount === 1 && colCount === 0)) {
-            cm.childType = 'cell';
-        } else {
-            cm.childType = '';
-        }
+        cm.hasDir = dCount > 0 ? 1 : 0;
+        cm.hasStruct = sCount > 0? 1 : 0;
+        cm.hasCell = (rowCount === 1 && colCount === 0) ? 0 : 1;
     }
 };

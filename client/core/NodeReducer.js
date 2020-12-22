@@ -30,7 +30,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'selectForwardStruct': {
-            if (sc.lm.childType === 'cell') {
+            if (sc.lm.hasCell) {
                 clearStructSelectionContext();
                 clearCellSelectionContext();
                 let toPath = pathMerge(sc.lastPath, ['c', 0, 0]);
@@ -250,7 +250,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'transposeMe': {
-            if (sc.lm.childType === 'cell') {
+            if (sc.lm.hasCell) {
                 sc.lm.c = transposeArray(sc.lm.c);
             }
             break;

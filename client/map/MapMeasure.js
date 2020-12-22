@@ -45,7 +45,7 @@ export const mapMeasure = {
         }
 
         if (cm.type === 'struct') {
-            if (cm.childType === 'cell') {
+            if (cm.hasCell) {
                 let rowCount = Object.keys(cm.c).length;
                 let colCount = Object.keys(cm.c[0]).length;
                 let maxCellHeightMat = createArray(rowCount, colCount);

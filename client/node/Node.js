@@ -54,7 +54,9 @@ export let props = {
             type:                               '',
             parentType:                         '',
             parentParentType:                   '',
-            childType:                          '',
+            hasDir:                             0,
+            hasStruct:                          0,
+            hasCell:                            0,
             index:                              [],
             // mapMeasure
             selfW:                              0,
