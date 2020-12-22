@@ -1,4 +1,5 @@
 import {mapref} from "../map/Map";
+import {arrayValuesSame} from "../core/Utils";
 
 export function structDeleteReselect(sc) {
     let lm = sc.lm;
@@ -62,16 +63,22 @@ export function structDeleteReselect(sc) {
 }
 
 export function cellBlockDeleteReselect(sc) {
-    if (sc.haveSameParent) {
-        let parentRef = mapref(sc.sameParentPath);
-        if (sc.cellColDetected) {
-            parentRef.c.splice(sc.firstParentRowIndex, 1);
-            parentRef.selected = 1;
-        } else if (sc.cellRowDetected) {
-            for (let i = 0; i < parentRef.c.length; i++) {
-                parentRef.c[i].splice(sc.firstParentColIndex, 1);
-            }
-            parentRef.selected = 1;
+    const {cellSelectedPathList} = sc;
+    let [haveSameParentPath, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
+    if (haveSameParentPath) {
+        let [haveSameRow, sameRow] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 2]));
+        let [haveSameCol, sameCol] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 1]));
+        let sameParent = mapref(JSON.parse(sameParentPath));
+        if (haveSameRow && cellSelectedPathList.length === sameParent.c[0].length) {
+            sameParent.c.splice(sameRow, 1);
+            sameParent.selected = 1;
         }
+        if (haveSameCol && cellSelectedPathList.length === sameParent.c.length) {
+            for (let i = 0; i < sameParent.c.length; i++) {
+                sameParent.c[i].splice(sameCol, 1);
+            }
+            sameParent.selected = 1;
+        }
+
     }
 }

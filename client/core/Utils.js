@@ -6,10 +6,10 @@ export function arrayValuesSame(array) {
     let first = JSON.stringify(array[0]);
     for (let i = 1; i < array.length; i++) {
         if (JSON.stringify(array[i]) !== first) {
-            return false;
+            return [false, null];
         }
     }
-    return true;
+    return [true, array[0]];
 }
 
 export function objectsSame(obj1, obj2) {
