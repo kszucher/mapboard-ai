@@ -75,9 +75,9 @@ const MapReducer = (state, action) => {
         case 'CREATE_MAP_IN_TAB':
             return {...state,
                 mapStorageOut: {
-                    data: getDefaultMap(payload),
+                    data: getDefaultMap(payload.mapName),
                     density: mapMem.density,
-                    task: mapMem.task,
+                    task: payload.task,
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };

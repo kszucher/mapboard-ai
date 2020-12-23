@@ -40,7 +40,10 @@ export default function MenuAppBar() {
         handleClose();
         switch(param) {
             case 'ADD_MAP':
-                dispatch({type: 'CREATE_MAP_IN_TAB', payload: 'New Map'});
+                dispatch({type: 'CREATE_MAP_IN_TAB', payload: {mapName: 'New Map', task: 0}});
+                break;
+            case 'ADD_TASK_MAP':
+                dispatch({type: 'CREATE_MAP_IN_TAB', payload: {mapName: 'New Map', task: 1}});
                 break;
             case 'SIGN_OUT':
                 dispatch({type: 'RESET_STATE'});
@@ -75,6 +78,7 @@ export default function MenuAppBar() {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add Map</MenuItem>
+                    <MenuItem onClick={handleSelect('ADD_TASK_MAP')}>Add Task Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>
                 <Typography variant="h6" className={classes.title}>
