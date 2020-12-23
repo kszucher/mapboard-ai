@@ -17,6 +17,7 @@ export function nodeDispatch(action, payload) {
 
 export function nodeReducer(action, payload) {
     let sc = getSelectionContext();
+    let {lm} = sc;
     switch (action) {
         // SELECT ------------------------------------------------------------------------------------------------------
         case 'selectMeStruct': {
@@ -30,7 +31,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'selectForwardStruct': {
-            if (sc.lm.hasCell) {
+            if (lm.hasCell) {
                 clearStructSelectionContext();
                 clearCellSelectionContext();
                 let toPath = pathMerge(sc.lastPath, ['c', 0, 0]);
@@ -44,12 +45,12 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'selectBackwardStruct': {
-            for (let i = sc.lm.path.length - 2; i > 0; i--) {
-                if (Number.isInteger(sc.lm.path[i]) &&
-                    Number.isInteger(sc.lm.path[i + 1])) {
+            for (let i = lm.path.length - 2; i > 0; i--) {
+                if (Number.isInteger(lm.path[i]) &&
+                    Number.isInteger(lm.path[i + 1])) {
                     clearStructSelectionContext();
                     clearCellSelectionContext();
-                    let toPath = sc.lm.path.slice(0, i + 2);
+                    let toPath = lm.path.slice(0, i + 2);
                     mapref(toPath).selected = 1;
                     mapref(toPath).s[0].selected = 1;
                     break;
@@ -60,7 +61,7 @@ export function nodeReducer(action, payload) {
         case 'selectBackwardMixed': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            mapref(mapref(mapref(sc.lm.parentPath).parentPath).path).selected = 1;
+            mapref(mapref(mapref(lm.parentPath).parentPath).path).selected = 1;
             break;
         }
         case 'selectNeighborMixed': {
@@ -104,7 +105,7 @@ export function nodeReducer(action, payload) {
         case 'selectCellRow': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let parentRef = mapref(sc.lm.parentPath);
+            let parentRef = mapref(lm.parentPath);
             let parentParentRef = mapref(parentRef.parentPath);
             let currRow = parentRef.index[0];
             let colLen = parentParentRef.c[0].length;
@@ -116,7 +117,7 @@ export function nodeReducer(action, payload) {
         case 'selectCellCol': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let parentRef = mapref(sc.lm.parentPath);
+            let parentRef = mapref(lm.parentPath);
             let parentParentRef = mapref(parentRef.parentPath);
             let currCol = parentRef.index[1];
             let rowLen = parentParentRef.c.length;
@@ -142,17 +143,17 @@ export function nodeReducer(action, payload) {
         // INSERT ------------------------------------------------------------------------------------------------------
         case 'newSiblingUp': {
             clearStructSelectionContext();
-            structInsert(sc.lm, 'siblingUp');
+            structInsert(lm, 'siblingUp');
             break;
         }
         case 'newSiblingDown': {
             clearStructSelectionContext();
-            structInsert(sc.lm, 'siblingDown');
+            structInsert(lm, 'siblingDown');
             break;
         }
         case 'newChild': {
             clearStructSelectionContext();
-            structInsert(sc.lm, 'child');
+            structInsert(lm, 'child');
             break;
         }
         case 'newCellBlock': {
@@ -191,36 +192,36 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'insertTextFromClipboardAsNode': {
-            sc.lm.contentType = 'text';
-            sc.lm.content = payload;
-            sc.lm.isDimAssigned = 0;
+            lm.contentType = 'text';
+            lm.content = payload;
+            lm.isDimAssigned = 0;
             break;
         }
         case 'insertElinkFromClipboardAsNode': {
-            sc.lm.contentType = 'text';
-            sc.lm.content = payload;
-            sc.lm.linkType = 'external';
-            sc.lm.link = payload;
-            sc.lm.isDimAssigned = 0;
+            lm.contentType = 'text';
+            lm.content = payload;
+            lm.linkType = 'external';
+            lm.link = payload;
+            lm.isDimAssigned = 0;
             break;
         }
         case 'insertIlinkFromMongo': {
-            sc.lm.linkType = 'internal';
-            sc.lm.link = payload;
-            sc.lm.isDimAssigned = 0;
+            lm.linkType = 'internal';
+            lm.link = payload;
+            lm.isDimAssigned = 0;
             break;
         }
         case 'insertEquationFromClipboardAsNode': {
-            sc.lm.contentType = 'equation';
-            sc.lm.content = payload;
-            sc.lm.isDimAssigned = 0;
+            lm.contentType = 'equation';
+            lm.content = payload;
+            lm.isDimAssigned = 0;
             break;
         }
         case 'insertImageFromLinkAsNode': {
-            sc.lm.contentType = 'image';
-            sc.lm.content = payload.imageId;
-            sc.lm.imageW = payload.imageSize.width;
-            sc.lm.imageH = payload.imageSize.height;
+            lm.contentType = 'image';
+            lm.content = payload.imageId;
+            lm.imageW = payload.imageSize.width;
+            lm.imageH = payload.imageSize.height;
             break;
         }
         case 'insertMapFromClipboard': {
@@ -250,13 +251,13 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'transposeMe': {
-            if (sc.lm.hasCell) {
-                sc.lm.c = transposeArray(sc.lm.c);
+            if (lm.hasCell) {
+                lm.c = transposeArray(lm.c);
             }
             break;
         }
         case 'transpose': {
-            sc.lm.c = transposeArray(sc.lm.c);
+            lm.c = transposeArray(lm.c);
             break;
         }
         case 'setTaskStatus': {
@@ -267,49 +268,53 @@ export function nodeReducer(action, payload) {
         }
         // EDIT -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
-            sc.lm.content = '';
-            let holderElement = document.getElementById(sc.lm.divId);
-            holderElement.innerHTML = '';
+            if (!lm.hasCell) {
+                lm.content = '';
+                let holderElement = document.getElementById(lm.divId);
+                holderElement.innerHTML = '';
+            }
             break;
         }
         case 'startEdit': {
-            let holderElement = document.getElementById(sc.lm.divId);
-            holderElement.contentEditable = 'true';
-            setEndOfContenteditable(holderElement);
-            isEditing = 1;
-            sc.lm.isEditing = 1;
-            const callback = function(mutationsList) {
-                for(let mutation of mutationsList) {
-                    if (mutation.type === 'characterData') {
-                        nodeDispatch('typeText');
-                        redraw();
+            if (!lm.hasCell) {
+                let holderElement = document.getElementById(lm.divId);
+                holderElement.contentEditable = 'true';
+                setEndOfContenteditable(holderElement);
+                isEditing = 1;
+                lm.isEditing = 1;
+                const callback = function (mutationsList) {
+                    for (let mutation of mutationsList) {
+                        if (mutation.type === 'characterData') {
+                            nodeDispatch('typeText');
+                            redraw();
+                        }
                     }
-                }
-            };
-            mutationObserver = new MutationObserver(callback);
-            mutationObserver.observe(holderElement, {
-                attributes: false,
-                childList: false,
-                subtree: true,
-                characterData: true
-            });
+                };
+                mutationObserver = new MutationObserver(callback);
+                mutationObserver.observe(holderElement, {
+                    attributes: false,
+                    childList: false,
+                    subtree: true,
+                    characterData: true
+                });
+            }
             break;
         }
         case 'typeText': {
-            let holderElement = document.getElementById(sc.lm.divId);
-            sc.lm.content = holderElement.innerHTML;
-            sc.lm.isDimAssigned = 0;
+            let holderElement = document.getElementById(lm.divId);
+            lm.content = holderElement.innerHTML;
+            lm.isDimAssigned = 0;
             break;
         }
         case 'finishEdit' : {
             mutationObserver.disconnect();
-            let holderElement = document.getElementById(sc.lm.divId);
+            let holderElement = document.getElementById(lm.divId);
             holderElement.contentEditable = 'false';
-            sc.lm.isEditing = 0;
+            lm.isEditing = 0;
             isEditing = 0;
-            if (sc.lm.content.substring(0, 2) === '\\[') {
-                sc.lm.contentType = 'equation';
-                sc.lm.isDimAssigned = 0;
+            if (lm.content.substring(0, 2) === '\\[') {
+                lm.contentType = 'equation';
+                lm.isDimAssigned = 0;
             }
             break;
         }
