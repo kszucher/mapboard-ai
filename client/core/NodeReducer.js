@@ -278,6 +278,11 @@ export function nodeReducer(action, payload) {
         }
         case 'startEdit': {
             if (!lm.hasCell) {
+                if (lm.contentType === 'equation') {
+                    lm.contentType = 'text';
+                    lm.isDimAssigned = 0;
+                    redraw();
+                }
                 let holderElement = document.getElementById(lm.divId);
                 holderElement.contentEditable = 'true';
                 setEndOfContenteditable(holderElement);
