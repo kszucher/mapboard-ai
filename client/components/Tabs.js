@@ -47,7 +47,22 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex-start',
     },
     tabs: {
-        borderRight: `1px solid ${theme.palette.divider}`,
+        borderRight: `0px solid ${theme.palette.divider}`,
+    },
+    indicator: {
+        // left: "500px",
+        width: "2px",
+        // borderTopRightRadius: "32px",
+        // borderBottomRightRadius: "32px",
+        //
+        //
+        //
+        backgroundColor: "#a4508b",
+        backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)"
+
+        // backgroundColor: "#fbfafc"
+
+        // padding: "-10px"
     },
 }));
 
@@ -63,6 +78,9 @@ export default function VerticalTabs() {
     return (
         <div className={classes.root}>
             <Tabs
+                classes={{
+                    indicator: classes.indicator
+                }}
                 orientation="vertical"
                 variant="scrollable"
                 aria-label="Vertical tabs example"
