@@ -69,10 +69,8 @@ export function MapComponent() {
     };
 
     const dblclick = (e) => {
-        if (e.path[0].id.substring(0, 3) === 'div') {
-            nodeDispatch('startEdit');
-            redraw();
-        }
+        nodeDispatch('startEdit');
+        redraw();
     };
 
     const mousedown = (e) => {
