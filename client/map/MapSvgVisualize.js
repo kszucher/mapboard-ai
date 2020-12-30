@@ -158,6 +158,7 @@ export const mapSvgVisualize = {
 
         // task
         if (mapMem.task &&
+            !cm.path.includes('c') &&
             !cm.hasDir &&
             !cm.hasStruct &&
             !cm.hasCell &&
