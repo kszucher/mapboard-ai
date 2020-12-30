@@ -42,5 +42,13 @@ export const mapTaskCalc = {
                 cm.taskStatusInherited = 1;
             }
         }
+
+        let rowCount = Object.keys(cm.c).length;
+        let colCount = Object.keys(cm.c[0]).length;
+        for (let i = 0; i < rowCount; i++) {
+            for (let j = 0; j < colCount; j++) {
+                mapTaskCalc.iterate(cm.c[i][j]);
+            }
+        }
     }
 };

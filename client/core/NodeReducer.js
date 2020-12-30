@@ -236,7 +236,7 @@ export function nodeReducer(action, payload) {
         case 'applyColor': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                switch (payload.currColorToPaint) {
+                switch (payload.currColor) {
                     case 0: cm.sTextColor = '#000000'; break;
                     case 1: cm.sTextColor = '#999999'; break;
                     case 2: cm.sTextColor = '#bbbbbb'; break;
@@ -247,6 +247,20 @@ export function nodeReducer(action, payload) {
                     case 7: cm.sTextColor = '#990000'; break;
                     case 8: cm.sTextColor = '#000099'; break;
                     case 9: cm.sTextColor = '#ffffff'; break;
+                }
+            }
+            break;
+        }
+        case 'applyTaskStatus': {
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                cm.taskStatus = 2;
+                cm.taskStatusInherited = -1;
+                switch (payload.currTaskStatus) {
+                    case 0: cm.taskStatus = 0; break;
+                    case 1: cm.taskStatus = 1; break;
+                    case 2: cm.taskStatus = 2; break;
+                    case 3: cm.taskStatus = 3; break;
                 }
             }
             break;

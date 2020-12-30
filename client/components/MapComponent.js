@@ -117,6 +117,7 @@ export function MapComponent() {
             [ 0,  1,  0,  e.code === 'ArrowLeft',          [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
             [ 0,  1,  0,  e.code === 'ArrowRight',         [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
             [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ], []                     ],
+            [ 1,  0,  1,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyTaskStatus'                     ], []                     ],
             [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ], []                     ],
             [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  [          'm'], 0,  1,  1, ['selectNeighborMixed'                 ], []                     ],
             [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNodeToo'               ], []                     ],
@@ -146,7 +147,9 @@ export function MapComponent() {
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j];
                     if (currExecution === 'applyColor') {
-                        nodeDispatch(currExecution, {currColorToPaint: e.which - 96});
+                        nodeDispatch(currExecution, {currColor: e.which - 96});
+                    } else if (currExecution === 'applyTaskStatus') {
+                        nodeDispatch(currExecution, {currTaskStatus: e.which - 96});
                     } else {
                         nodeDispatch(currExecution, {keyCode: e.code});
                         if (['newChild', 'newSiblingUp', 'newSiblingDown'].includes(currExecution)) {
