@@ -162,7 +162,18 @@ export function MapComponent() {
                     if (currReducer === 'CREATE_MAP_IN_MAP') {
                         dispatch({type: currReducer, payload: sc.lm.content});
                     } else {
-                        dispatch({type: currReducer});
+                        // only move these under mapReducer once they will really change state
+                        if (currReducer === 'UNDO') {
+                            if (mapMem.dataIndex > 0) {
+                                mapMem.dataIndex--;
+                            }
+                        } else if (currReducer === 'REDO') {
+                            if (mapMem.dataIndex < mapMem.data.length - 1) {
+                                mapMem.dataIndex++;
+                            }
+                        } else {
+                            dispatch({type: currReducer});
+                        }
                     }
                 }
                 redraw();

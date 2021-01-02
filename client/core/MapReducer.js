@@ -110,20 +110,13 @@ const MapReducer = (state, action) => {
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
         case 'CHANGE_MAP_DENSITY': {
-            mapMem.density = payload; // small or large
             return state;
         }
         // UNDO/REDO ---------------------------------------------------------------------------------------------------
         case 'UNDO': {
-            if (mapMem.dataIndex > 0) {
-                mapMem.dataIndex--;
-            }
             return state;
         }
         case 'REDO': {
-            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                mapMem.dataIndex++;
-            }
             return state;
         }
         // IMPORT/EXPORT -----------------------------------------------------------------------------------------------
