@@ -95,20 +95,32 @@ export const mapSvgVisualize = {
         // table frame
         if (cm.type === "struct" && cm.hasCell) {
             let round = 8;
-            let x1 = cm.nodeStartX;
+            let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
             let y1 = cm.nodeStartY - selfHadj/2 + round;
             let h = cm.selfW - 2*round;
             let v = cm.selfH - 2*round;
 
-            svgElementData.tableFrame = {
-                type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                color: cm.selected? '#000000' : '#50dfff',
-            };
+            if (cm.path[2] === 0) {
+                svgElementData.tableFrame = {
+                    type: 'path',
+                    path: "M" + x1 + ',' + y1 + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + (h) + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' + 'v' + (v) + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
+                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                    color: cm.selected? '#000000' : '#50dfff',
+                };
+            } else {
+                svgElementData.tableFrame = {
+                    type: 'path',
+                    path: "M" + x1 + ',' + y1 + ' ' +
+                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (-round) + ',' + (-round) + ' ' + 'h' + (-h) + ' ' +
+                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (-round) + ',' + (round) + ' ' + 'v' + (v) + ' ' +
+                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (round) + ',' + (round) + ' ' + 'h' + (h) + ' ' +
+                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (+round) + ',' + (-round) + ' ',
+                    color: cm.selected? '#000000' : '#50dfff',
+                };
+            }
         }
 
         // table grid
