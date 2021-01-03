@@ -134,9 +134,9 @@ export function structMove(sc, target, mode) {
         }
     }
     else if (target === 'clipboard2struct') {
-        let toIndex = sc.lm.s.length;
+        let nodeTarget = sc.lm.isRoot? sc.lm.d[0] : sc.lm;
         for (let i = 0; i < clipboard.length; i++) {
-            sc.lm.s.splice(toIndex + i, 0, copy(clipboard[i]));
+            nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(clipboard[i]));
         }
     }
 }
