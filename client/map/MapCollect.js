@@ -24,8 +24,8 @@ export const mapCollect = {
             }
         }
 
-        cm.d.map(i => mapCollect.iterate(i));
-        cm.s.map(i => mapCollect.iterate(i));
-        cm.c.map(i => i.map(j => mapCollect.iterate(j)));
+        cm.d.map(i => mapCollect.iterate(i, params));
+        cm.s.map(i => mapCollect.iterate(i, params));
+        cm.c.map(i => i.map(j => mapCollect.iterate(j, params)));
     }
 };

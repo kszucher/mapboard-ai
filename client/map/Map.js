@@ -1,7 +1,7 @@
 import {copy, subsref, subsasgn, genHash} from "../core/Utils"
 import {mapAssembly} from "./MapAssembly";
 import {mapChain} from './MapChain'
-import {mapDisassembly, nodeCopyList} from "./MapDisassembly";
+import {mapDisassembly} from "./MapDisassembly";
 import {mapDivVisualize} from './MapDivVisualize'
 import {mapInit} from './MapInit'
 import {mapMeasure} from './MapMeasure'
@@ -39,8 +39,6 @@ export function loadMap(mapStorage) {
         filter: [],
         deepestSelectablePath: [],
     };
-
-    // TODO: figure out the relation between changing map props and undo redo
 }
 
 export function recalc() {
@@ -128,9 +126,5 @@ export function getDefaultMap (mapName) {
         {
             path: ['r', 'd', 1],
         },
-        // {
-        //     path: ['r', 'd', 0, 's', 0],
-        //     content: 'x'
-        // }
     ]
 }
