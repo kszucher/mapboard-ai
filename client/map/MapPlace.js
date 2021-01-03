@@ -17,7 +17,7 @@ export const mapPlace = {
 
         let leftMarginWidth = 32;
         let leftTaskWidth =     cm.d[1].s.length > 0 && mapMem.task ? taskWidth: 0;
-        let leftMapWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW  : 0;
+        let leftMapWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW + 16 : 0;
         let rightMapWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
         let rightTaskWidth =    cm.d[0].s.length > 0 && mapMem.task ? taskWidth : 0;
         let rightMarginWidth = 32;
