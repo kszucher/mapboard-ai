@@ -42,9 +42,6 @@ export function structInsert(lm, mode) {
 export function cellInsert (lastPath, direction) {
     let lm = mapref(lastPath);
     let parentRef = mapref(lm.parentPath);
-
-    // NOTE: itt egy rekurzív svg eltávoltítás és újracsinálás szerepelt, nemtudni hogy ez kell-e még
-
     let currRow = lm.index[0];
     let currCol = lm.index[1];
     let rowLen = parentRef.c.length;

@@ -12,10 +12,6 @@ export function arrayValuesSame(array) {
     return [true, array[0]];
 }
 
-export function objectsSame(obj1, obj2) {
-    return JSON.stringify(obj1) === JSON.stringify(obj2);
-}
-
 // https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
 export function createArray(length) {
     let arr = new Array(length || 0),
@@ -69,20 +65,6 @@ export function shallowCopy(thing) {
     }
 }
 
-export function makeGrid() {
-    let numStuff = 54;
-    let ctx = xxx.getContext('2d');
-    for (let i = 0; i < numStuff; i++) {
-        let coordY = 540.5 - (i - 16) * 20 + 20 * 20 / 2;
-        ctx.beginPath();
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 1;
-        ctx.moveTo(0, coordY-1);
-        ctx.lineTo(1600, coordY-1);
-        ctx.stroke();
-    }
-}
-
 export function isUrl (string) {
     try { return Boolean(new URL(string)); }
     catch(e){ return false; }
@@ -108,6 +90,8 @@ export function getTextDim(innerHTML, fontSize) {
 
     var element = document.getElementById("Test");
     element.parentNode.removeChild(element);
+
+    if (width === 0) width = 14;
 
     return [width, height];
 }
@@ -164,10 +148,4 @@ export function subsasgn(obj, path, value) {
         obj = obj[path[i]] = obj[path[i]] || []; // I am a genius
     }
     obj[ pathEnd ] = value;
-}
-
-export function updateStateProp(state, setState, field, value) {
-    let newState =  JSON.parse(JSON.stringify(state));
-    newState[field] = value;
-    setState(newState);
 }
