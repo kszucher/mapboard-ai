@@ -17,7 +17,7 @@ export const mapPlace = {
 
         let leftMarginWidth = 32;
         let leftTaskWidth =     cm.d[1].s.length > 0 && mapMem.task ? taskWidth: 0;
-        let leftMapWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW + 16 : 0;
+        let leftMapWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW + 12 : 0;
         let rightMapWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
         let rightTaskWidth =    cm.d[0].s.length > 0 && mapMem.task ? taskWidth : 0;
         let rightMarginWidth = 32;
@@ -56,9 +56,9 @@ export const mapPlace = {
             + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        cm.parentNodeStartX = mapStartCenterX;
+        cm.parentNodeStartX = mapStartCenterX - cm.selfW/2 + 2;
         cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = mapStartCenterX;
+        cm.parentNodeEndX = mapStartCenterX + cm.selfW/2;
         cm.parentNodeEndY = 0;
         cm.lineDeltaX = 0;
         cm.lineDeltaY = minHeight / 2 + 30 - 0.5;
@@ -67,45 +67,39 @@ export const mapPlace = {
 
     iterate: (cm) => {
         if (cm.isRoot) {
-            cm.nodeStartX = cm.parentNodeStartX - cm.selfW / 2;
-            cm.nodeEndX = cm.nodeStartX + cm.selfW;
+            cm.nodeStartX = cm.parentNodeStartX;
+            cm.nodeEndX = cm.parentNodeEndX;
         } else {
+            if (cm.type === 'cell' && cm.parentParentType === 'cell' || cm.parentType === 'cell') {
+                if (cm.path[2] === 0) {
+                    cm.nodeStartX = cm.parentNodeStartX + 2;
+                    cm.nodeEndX = cm.nodeStartX + cm.selfW;
+                } else {
+                    cm.nodeEndX = cm.parentNodeEndX;
+                    cm.nodeStartX = cm.nodeEndX - cm.selfW;
+                }
+            }
+
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
                 if (cm.type === 'struct' || cm.type === 'dir') {
                     if (cm.path[2] === 0) {
                         cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
                         cm.nodeEndX = cm.nodeStartX + cm.selfW;
                     } else {
-                        cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
                         cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
+                        cm.nodeStartX = cm.nodeEndX - cm.selfW;
                     }
                 } else if (cm.type === 'cell') {
                     if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
                         let diff = mapMem.sLineDeltaXDefault - 20;
                         if (cm.path[2] === 0) {
                             cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
-                            cm.nodeEndX = cm.parentNodeEndX + cm.lineDeltaX + cm.selfW + diff;
-                        } else {
-                            cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW - diff;
-                            cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX - diff;
-                        }
-                    } else if (cm.parentParentType === 'cell') {
-                        if (cm.path[2] === 0) {
-                            cm.nodeStartX = cm.parentNodeStartX + 1;
                             cm.nodeEndX = cm.nodeStartX + cm.selfW;
                         } else {
-                            cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
-                            cm.nodeEndX = cm.parentNodeEndX;
+                            cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX - diff;
+                            cm.nodeStartX = cm.nodeEndX - cm.selfW;
                         }
                     }
-                }
-            } else if (cm.parentType === 'cell') {
-                if (cm.path[2] === 0) {
-                    cm.nodeStartX = cm.parentNodeStartX + 1;
-                    cm.nodeEndX = cm.nodeStartX + cm.selfW;
-                } else {
-                    cm.nodeStartX = cm.parentNodeEndX - cm.selfW;
-                    cm.nodeEndX = cm.parentNodeEndX;
                 }
             }
         }
@@ -119,8 +113,13 @@ export const mapPlace = {
         }
 
         if (Number.isInteger(cm.nodeStartX)) {
-            cm.nodeStartX += 0.5;
-            cm.nodeEndX += 0.5;
+            if (cm.path[2] === 0) {
+                cm.nodeStartX += 0.5;
+                cm.nodeEndX += 0.5;
+            } else {
+                cm.nodeStartX -= 0.5;
+                cm.nodeEndX -= 0.5;
+            }
         }
 
         let dCount = Object.keys(cm.d).length;
