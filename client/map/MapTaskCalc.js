@@ -7,10 +7,7 @@ export const mapTaskCalc = {
     },
 
     iterate: (cm) => {
-        let dCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dCount; i++) {
-            mapTaskCalc.iterate(cm.d[i]);
-        }
+        cm.d.map(i => mapTaskCalc.iterate(i));
 
         let sCount = Object.keys(cm.s).length;
         if (sCount === 0) {
@@ -43,12 +40,6 @@ export const mapTaskCalc = {
             }
         }
 
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapTaskCalc.iterate(cm.c[i][j]);
-            }
-        }
+        cm.c.map(i => i.map(j => mapTaskCalc.iterate(j)));
     }
 };

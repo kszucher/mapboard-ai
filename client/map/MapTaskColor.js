@@ -33,22 +33,8 @@ export const mapTaskColor = {
             cm.ellipseFill = 0;
         }
 
-        let dCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dCount; i++) {
-            mapTaskColor.iterate(cm.d[i]);
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapTaskColor.iterate(cm.s[i]);
-        }
-
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapTaskColor.iterate(cm.c[i][j]);
-            }
-        }
+        cm.d.map(i => mapTaskColor.iterate(i));
+        cm.s.map(i => mapTaskColor.iterate(i));
+        cm.c.map(i => i.map(j => mapTaskColor.iterate(j)));
     }
 };

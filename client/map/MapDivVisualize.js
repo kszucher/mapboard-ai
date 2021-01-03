@@ -80,23 +80,9 @@ export const mapDivVisualize = {
             mapDivData[cm.divId].path = cm.path;
         }
 
-        let dCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dCount; i++) {
-            mapDivVisualize.iterate(cm.d[i]);
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapDivVisualize.iterate(cm.s[i]);
-        }
-
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapDivVisualize.iterate(cm.c[i][j]);
-            }
-        }
+        cm.d.map(i => mapDivVisualize.iterate(i));
+        cm.s.map(i => mapDivVisualize.iterate(i));
+        cm.c.map(i => i.map(j => mapDivVisualize.iterate(j)));
     }
 };
 

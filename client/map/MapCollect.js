@@ -24,23 +24,8 @@ export const mapCollect = {
             }
         }
 
-        let dCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dCount; i++) {
-            mapCollect.iterate(cm.d[i], params);
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapCollect.iterate(cm.s[i], params);
-        }
-
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapCollect.iterate(cm.c[i][j], params);
-            }
-        }
-
+        cm.d.map(i => mapCollect.iterate(i));
+        cm.s.map(i => mapCollect.iterate(i));
+        cm.c.map(i => i.map(j => mapCollect.iterate(j)));
     }
 };

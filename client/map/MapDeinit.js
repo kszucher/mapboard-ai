@@ -6,23 +6,9 @@ export const mapDeinit = {
     },
 
     iterate: (cm) => {
-        let dCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dCount; i++) {
-            mapDeinit.iterate(cm.d[i]);
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapDeinit.iterate(cm.s[i]);
-        }
-
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapDeinit.iterate(cm.c[i][j]);
-            }
-        }
+        cm.d.map(i => mapDeinit.iterate(i));
+        cm.s.map(i => mapDeinit.iterate(i));
+        cm.c.map(i => i.map(j => mapDeinit.iterate(j)));
 
         for (const prop in cm) {
             if (props.saveAlways.hasOwnProperty(prop)) {

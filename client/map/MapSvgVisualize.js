@@ -28,23 +28,9 @@ export const mapSvgVisualize = {
             mapSvgVisualize.animate(cm, 1);
         }
 
-        let rowCount = Object.keys(cm.c).length;
-        let colCount = Object.keys(cm.c[0]).length;
-        for (let i = 0; i < rowCount; i++) {
-            for (let j = 0; j < colCount; j++) {
-                mapSvgVisualize.iterate(cm.c[i][j]);
-            }
-        }
-
-        let sCount = Object.keys(cm.s).length;
-        for (let i = 0; i < sCount; i++) {
-            mapSvgVisualize.iterate(cm.s[i]);
-        }
-
-        let dCount = Object.keys(cm.d).length;
-        for (let i = 0; i < dCount; i++) {
-            mapSvgVisualize.iterate(cm.d[i]);
-        }
+        cm.d.map(i => mapSvgVisualize.iterate(i));
+        cm.s.map(i => mapSvgVisualize.iterate(i));
+        cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
     },
 
     animate: (cm, step) => {
