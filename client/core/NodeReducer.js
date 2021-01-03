@@ -171,7 +171,6 @@ export function nodeReducer(action, payload) {
         }
         // MOVE --------------------------------------------------------------------------------------------------------
         case 'moveNodeSelection': {
-            if (lm.type === 'struct' && lm.parentType === 'cell') return; // TODO: do this in structMove, just with cut
             structMove(sc, 'struct2struct', payload.keyCode);
             break;
         }

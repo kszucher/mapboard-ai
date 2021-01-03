@@ -14,7 +14,7 @@ export function structDeleteReselect(sc) {
 
     let lastParentRef = mapref(lm.parentPath);
 
-    if (lastParentRef.type !== 'cell' || (lastParentRef.type === 'cell' && lastParentRef.s.length > 1)) {
+    // if (lastParentRef.type !== 'cell' || (lastParentRef.type === 'cell' && lastParentRef.s.length > 1)) {
         // calculate jumpback
         let lastParentRefChildLen = lastParentRef.s.length;
         let lastParentRefDelChildLen = 0;
@@ -59,7 +59,7 @@ export function structDeleteReselect(sc) {
                 }
             }
         }
-    }
+    // }
 }
 
 export function cellBlockDeleteReselect(sc) {
