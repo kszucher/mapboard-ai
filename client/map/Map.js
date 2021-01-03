@@ -10,6 +10,7 @@ import {mapPlace} from './MapPlace'
 import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
+import {mapRestore} from "./MapRestore";
 
 export let mapMem = {};
 export let mapDivData = [];
@@ -42,6 +43,7 @@ export function loadMap(mapStorage) {
 }
 
 export function recalc() {
+    mapRestore.start();
     mapInit.start();
     mapChain.start();
     mapMeasure.start();
