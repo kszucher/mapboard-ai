@@ -94,33 +94,17 @@ export const mapSvgVisualize = {
 
         // table frame
         if (cm.type === "struct" && cm.hasCell) {
-            let round = 8;
+            let r = 8;
             let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
-            let y1 = cm.nodeStartY - selfHadj/2 + round;
-            let h = cm.selfW - 2*round;
-            let v = cm.selfH - 2*round;
+            let y1 = cm.nodeStartY - selfHadj / 2 + r;
+            let h = cm.selfW - 2 * r;
+            let v = cm.selfH - 2 * r;
 
-            if (cm.path[2] === 0) {
-                svgElementData.tableFrame = {
-                    type: 'path',
-                    path: "M" + x1 + ',' + y1 + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + (h) + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' + 'v' + (v) + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
-                        'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
-                    color: cm.selected? '#000000' : '#50dfff',
-                };
-            } else {
-                svgElementData.tableFrame = {
-                    type: 'path',
-                    path: "M" + x1 + ',' + y1 + ' ' +
-                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (-round) + ',' + (-round) + ' ' + 'h' + (-h) + ' ' +
-                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (-round) + ',' + (round) + ' ' + 'v' + (v) + ' ' +
-                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (round) + ',' + (round) + ' ' + 'h' + (h) + ' ' +
-                        'a' + (round) + ',' + (round) + ' 0 0 0 ' + (+round) + ',' + (-round) + ' ',
-                    color: cm.selected? '#000000' : '#50dfff',
-                };
-            }
+            svgElementData.tableFrame = {
+                type: 'path',
+                path: getArc(x1, y1, v, h, r, cm.path[2]),
+                color: cm.selected? '#000000' : '#50dfff',
+            };
         }
 
         // table grid
@@ -151,19 +135,15 @@ export const mapSvgVisualize = {
 
         // table cell frame
         if (cm.type === 'cell' && cm.selected) {
-            let round = 8;
-            let x1 = cm.nodeStartX;
-            let y1 = cm.nodeStartY - selfHadj / 2 + round;
-            let h = cm.selfW - 2 * round;
-            let v = cm.selfH - 2 * round;
+            let r = 8;
+            let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
+            let y1 = cm.nodeStartY - selfHadj / 2 + r;
+            let h = cm.selfW - 2 * r;
+            let v = cm.selfH - 2 * r;
 
             svgElementData.cellFrame = {
                 type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (-round) + ' ' + 'h' + h + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (round) + ',' + (round) + ' ' +  'v' + v + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (round) + ' ' + 'h' + (-h) + ' ' +
-                    'a' + round + ',' + round + ' 0 0 1 ' + (-round) + ',' + (-round),
+                path: getArc(x1, y1, v, h, r, cm.path[2]),
                 color: '#000000',
             };
         }
@@ -321,3 +301,19 @@ export const mapSvgVisualize = {
         mapSvgData[cm.svgId].path = cm.path;
     }
 };
+
+function getArc(x1, y1, v, h, r, dir) {
+    if (dir === 0) {
+        return 'M' + x1 + ',' + y1 + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 1 ' + (+r) + ',' + (-r) + ' ' + 'h' + (+h) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 1 ' + (+r) + ',' + (+r) + ' ' + 'v' + (+v) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 1 ' + (-r) + ',' + (+r) + ' ' + 'h' + (-h) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 1 ' + (-r) + ',' + (-r);
+    } else {
+        return 'M' + (x1) + ',' + (y1) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 0 ' + (-r) + ',' + (-r) + ' ' + 'h' + (-h) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 0 ' + (-r) + ',' + (+r) + ' ' + 'v' + (+v) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 0 ' + (+r) + ',' + (+r) + ' ' + 'h' + (+h) + ' ' +
+        'a' + (+r) + ',' + (+r) + ' 0 0 0 ' + (+r) + ',' + (-r) + ' ';
+    }
+}

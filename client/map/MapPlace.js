@@ -69,13 +69,12 @@ export const mapPlace = {
         if (cm.isRoot) {
             cm.nodeStartX = cm.parentNodeStartX - cm.selfW / 2;
             cm.nodeEndX = cm.nodeStartX + cm.selfW;
-        }
-        else {
+        } else {
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
                 if (cm.type === 'struct' || cm.type === 'dir') {
                     if (cm.path[2] === 0) {
                         cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
-                        cm.nodeEndX = cm.parentNodeEndX + cm.lineDeltaX + cm.selfW;
+                        cm.nodeEndX = cm.nodeStartX + cm.selfW;
                     } else {
                         cm.nodeStartX = cm.parentNodeStartX - cm.lineDeltaX - cm.selfW;
                         cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX;
