@@ -5,6 +5,7 @@ import {setClipboard, structMove} from "../node/NodeMove";
 import {cellNavigate, structNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {setEndOfContenteditable, transposeArray} from "./Utils";
+import {mapChangeProp} from "../map/MapChangeProp";
 
 let mutationObserver;
 export let isEditing = 0;
@@ -138,6 +139,18 @@ export function nodeReducer(action, payload) {
             clearStructSelectionContext();
             clearCellSelectionContext();
             mapMem.getData().r.selected = 1;
+            break;
+        }
+        case 'selectLeft': {
+            if (lm.path[2] === 1) {
+                mapChangeProp.start(lm, 'selected', 1);
+            }
+            break;
+        }
+        case 'selectRight': {
+            if (lm.path[2] === 0) {
+                mapChangeProp.start(lm, 'selected', 1);
+            }
             break;
         }
         // INSERT ------------------------------------------------------------------------------------------------------

@@ -116,6 +116,8 @@ export function MapComponent() {
             [ 0,  1,  0,  e.code === 'ArrowDown',          [     'c', 'm'], 0,  1,  1, ['selectCellCol'                       ], []                     ],
             [ 0,  1,  0,  e.code === 'ArrowLeft',          [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
             [ 0,  1,  0,  e.code === 'ArrowRight',         [     'c', 'm'], 0,  1,  1, ['selectCellRow'                       ], []                     ],
+            [ 1,  0,  1,  e.code === 'ArrowLeft',          ['s',         ], 0,  1,  1, ['selectLeft'                          ], []                     ],
+            [ 1,  0,  1,  e.code === 'ArrowRight',         ['s',         ], 0,  1,  1, ['selectRight'                         ], []                     ],
             [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyColor'                          ], []                     ],
             [ 1,  0,  1,  e.which >= 96 && e.which <= 105, ['s',      'm'], 0,  1,  1, ['applyTaskStatus'                     ], []                     ],
             [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'          ], 0,  1,  1, ['selectNeighborNode'                  ], []                     ],
