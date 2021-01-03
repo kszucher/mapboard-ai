@@ -68,7 +68,6 @@ const MapReducer = (state, action) => {
                 mapStorageOut: {
                     data: getDefaultMap(payload),
                     density: mapMem.density,
-                    task: mapMem.task,
                 },
                 serverAction: [...state.serverAction, 'createMapInMap']
             };
@@ -77,7 +76,6 @@ const MapReducer = (state, action) => {
                 mapStorageOut: {
                     data: getDefaultMap(payload.mapName),
                     density: mapMem.density,
-                    task: payload.task,
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
@@ -87,7 +85,6 @@ const MapReducer = (state, action) => {
                 mapStorageOut: {
                     data: saveMap(),
                     density: mapMem.density,
-                    task: mapMem.task,
                 },
                 serverAction: [...state.serverAction, 'saveMap']
             };

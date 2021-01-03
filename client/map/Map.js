@@ -27,7 +27,8 @@ export function loadMap(mapStorage) {
         dataIndex: 0,
         data: [mapAssembly((mapStorage.data))],
         density: copy(mapStorage.density),
-        task: copy(mapStorage.task),
+        taskLeft: 0,
+        taskRight: 0,
 
         getData: () => {
             return mapMem.data[mapMem.dataIndex];
@@ -48,11 +49,8 @@ export function recalc() {
     mapChain.start();
     mapMeasure.start();
     mapPlace.start();
-
-    if (mapMem.task) {
-        mapTaskCalc.start();
-        mapTaskColor.start();
-    }
+    mapTaskCalc.start();
+    mapTaskColor.start();
 }
 
 export function redraw() {

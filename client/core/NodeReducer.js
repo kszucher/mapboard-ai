@@ -293,6 +293,10 @@ export function nodeReducer(action, payload) {
             cm.taskStatusInherited = -1;
             break;
         }
+        case 'taskSwitch': {
+            mapChangeProp.start(lm, 'task', !lm.task);
+            break;
+        }
         // EDIT -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             if (!lm.hasCell) {

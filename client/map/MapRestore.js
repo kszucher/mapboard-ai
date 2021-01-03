@@ -3,6 +3,9 @@ import {getDefaultNode} from "../node/Node";
 
 export const mapRestore = {
     start: () => {
+        mapMem.taskLeft = 0;
+        mapMem.taskRight = 0;
+
         let cm = mapMem.getData().r;
         mapRestore.iterate(cm);
     },
@@ -10,6 +13,14 @@ export const mapRestore = {
     iterate: (cm) => {
         if (cm.type === 'cell' && !cm.s.length) {
             cm.s.push(getDefaultNode());
+        }
+
+        if (cm.task) {
+            if (cm.path[2] === 0) {
+                mapMem.taskLeft = 1;
+            } else {
+                mapMem.taskRight = 1;
+            }
         }
 
         if (cm.d) cm.d.map(i => mapRestore.iterate(i));

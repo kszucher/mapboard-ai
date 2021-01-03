@@ -18,6 +18,7 @@ export let props = {
         sTextFontSize:                          14,
         cBorderColor:                           '#50dfff',
         selected:                               0,
+        task:                                   0,
         lastSelectedChild:                      -1, // -1 means not selected ever
         lineColor:                              '#bbbbbb',
         ellipseFill:                            0,

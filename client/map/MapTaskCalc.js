@@ -16,14 +16,10 @@ export const mapTaskCalc = {
             }
         } else {
             cm.taskStatus = 0;
-
             let firstTaskStatus = 0;
             let isSameTaskStatus = true;
-
             for (let i = 0; i < sCount; i++) {
-
                 mapTaskCalc.iterate(cm.s[i]);
-
                 if (i === 0) {
                     firstTaskStatus = cm.s[0].taskStatus
                 } else {
@@ -33,7 +29,6 @@ export const mapTaskCalc = {
                     }
                 }
             }
-
             if (isSameTaskStatus) {
                 cm.taskStatus = firstTaskStatus;
                 cm.taskStatusInherited = 1;
