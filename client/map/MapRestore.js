@@ -15,7 +15,7 @@ export const mapRestore = {
             cm.s.push(getDefaultNode());
         }
 
-        if (cm.task) {
+        if (cm.task === 1) {
             if (cm.path[2] === 0) {
                 mapMem.taskLeft = 1;
             } else {
