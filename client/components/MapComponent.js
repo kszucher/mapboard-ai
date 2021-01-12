@@ -114,6 +114,7 @@ export function MapComponent() {
             [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, [],                                      ['REDO']             ],
             [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, [],                                      ['UNDO']             ],
             [ 1,  0,  1,  e.code === 'KeyT',               ['s', 'c', 'm'],               0,  1,  1, ['taskSwitch'],                          []                   ],
+            [ 1,  0,  0,  e.code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose'],                           []                   ],
             [ 0,  1,  0,  e.code === 'ArrowUp',            ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       []                   ],
             [ 0,  1,  0,  e.code === 'ArrowDown',          ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       []                   ],
             [ 0,  1,  0,  e.code === 'ArrowLeft',          ['c', 'm'],                    0,  1,  1, ['selectCellRow'],                       []                   ],

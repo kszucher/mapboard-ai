@@ -207,6 +207,12 @@ export function nodeReducer(action, payload) {
             nodeMove(sc, 'cellBlock2CellBlock', payload.keyCode);
             break;
         }
+        case 'transpose': {
+            if (lm.hasCell) {
+                lm.c = transposeArray(lm.c);
+            }
+            break;
+        }
         case 'copySelection': {
             nodeMove(sc, 'struct2clipboard', '', 'COPY');
             break;
@@ -295,16 +301,6 @@ export function nodeReducer(action, payload) {
                     case 3: cm.taskStatus = 3; break;
                 }
             }
-            break;
-        }
-        case 'transposeMe': {
-            if (lm.hasCell) {
-                lm.c = transposeArray(lm.c);
-            }
-            break;
-        }
-        case 'transpose': {
-            lm.c = transposeArray(lm.c);
             break;
         }
         case 'setTaskStatus': {
