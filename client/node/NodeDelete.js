@@ -62,6 +62,14 @@ export function structDeleteReselect(sc) {
 export function cellBlockDeleteReselect(sc) {
     const {cellRowSelected, cellRow, cellColSelected, cellCol, sameParent} = sc;
 
+    if (cellRowSelected && mapref(sc.lm.parentPath).c.length === 1 ||
+        cellColSelected && mapref(sc.lm.parentPath).c[0].length === 1) {
+        let sameParentParent = mapref(sameParent.parentPath);
+        sameParentParent.s.splice(sameParent.index, 1);
+        sameParentParent.selected = 1;
+        return;
+    }
+
     if (cellRowSelected) {
         sameParent.c.splice(cellRow, 1);
         sameParent.selected = 1;
