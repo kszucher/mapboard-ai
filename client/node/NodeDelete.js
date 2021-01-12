@@ -1,59 +1,63 @@
 import {mapref} from "../map/Map";
+import {arrayValuesSame} from "../core/Utils";
 
 export function structDeleteReselect(sc) {
     let lm = sc.lm;
 
-    if (lm.isRoot) return;
-    for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-        let currRef = mapref(sc.structSelectedPathList[i]);
-        if (currRef.isRoot) {
-            return;
-        }
+    for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+        let cm = mapref(sc.structSelectedPathList[i]);
+        if (cm.isRoot) return;
     }
 
-    let lastParentRef = mapref(lm.parentPath);
-
     // calculate jumpback
-    let lastParentRefChildLen = lastParentRef.s.length;
-    let lastParentRefDelChildLen = 0;
-    for (let i = lm.index; i > -1; i--) {
-        if (lastParentRef.s[i].selected > 0) {
-            lastParentRefDelChildLen++;
+    let im = lm;
+    for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+        let cm = mapref(sc.structSelectedPathList[i]);
+        if (cm.path.length < lm.path.length && arrayValuesSame(cm.path.slice(0, lm.path.length), lm.path)) {
+            im = cm;
+        }
+    }
+    let imParent = mapref(im.parentPath);
+    let imParentChildLen = imParent.s.length;
+    let imParentChildDelLen = 0;
+    for (let i = im.index; i > -1; i--) {
+        if (imParent.s[i].selected > 0) {
+            imParentChildDelLen++;
         }
     }
 
     // delete
     for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-        let currRef = mapref(sc.structSelectedPathList[i]);
-        let currParentRef = mapref(currRef.parentPath);
-        currParentRef.taskStatus = currRef.taskStatus;
-        currParentRef.taskStatusInherited = 0;
-        currParentRef.s.splice(currRef.index, 1);
+        let cm = mapref(sc.structSelectedPathList[i]);
+        let cmParent = mapref(cm.parentPath);
+        cmParent.taskStatus = cm.taskStatus;
+        cmParent.taskStatusInherited = 0;
+        cmParent.s.splice(cm.index, 1);
     }
 
     // reselect on jumpback
-    if (lastParentRefChildLen === lastParentRefDelChildLen) {
-        if (lastParentRef.isRootChild) {
+    if (imParentChildLen === imParentChildDelLen) {
+        if (imParent.isRootChild) {
             mapref(['r']).selected = 1;
         } else {
-            lastParentRef.selected = 1;
+            imParent.selected = 1;
         }
     } else {
-        if (lm.index === 0) {
-            if (lastParentRef.s.length > 0) {
-                lastParentRef.s[0].selected = 1;
+        if (im.index === 0) {
+            if (imParent.s.length > 0) {
+                imParent.s[0].selected = 1;
             } else {
-                if (lastParentRef.isRootChild) {
+                if (imParent.isRootChild) {
                     mapref(['r']).selected = 1;
                 } else {
-                    lastParentRef.selected = 1;
+                    imParent.selected = 1;
                 }
             }
         } else {
-            if (lm.index - lastParentRefDelChildLen >= 0) {
-                lastParentRef.s[lm.index - lastParentRefDelChildLen].selected = 1;
+            if (im.index - imParentChildDelLen >= 0) {
+                imParent.s[im.index - imParentChildDelLen].selected = 1;
             } else {
-                lastParentRef.s[0].selected = 1;
+                imParent.s[0].selected = 1;
             }
         }
     }
@@ -61,7 +65,6 @@ export function structDeleteReselect(sc) {
 
 export function cellBlockDeleteReselect(sc) {
     const {cellRowSelected, cellRow, cellColSelected, cellCol, sameParent} = sc;
-
     if (cellRowSelected && mapref(sc.lm.parentPath).c.length === 1 ||
         cellColSelected && mapref(sc.lm.parentPath).c[0].length === 1) {
         let sameParentParent = mapref(sameParent.parentPath);
@@ -69,12 +72,10 @@ export function cellBlockDeleteReselect(sc) {
         sameParentParent.selected = 1;
         return;
     }
-
     if (cellRowSelected) {
         sameParent.c.splice(cellRow, 1);
         sameParent.selected = 1;
     }
-
     if (cellColSelected) {
         for (let i = 0; i < sameParent.c.length; i++) {
             sameParent.c[i].splice(cellCol, 1);
