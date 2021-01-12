@@ -171,13 +171,17 @@ export function nodeReducer(action, payload) {
         }
         // INSERT ------------------------------------------------------------------------------------------------------
         case 'newSiblingUp': {
-            clearStructSelectionContext();
-            structInsert(lm, 'siblingUp');
+            if (!lm.isRoot) {
+                clearStructSelectionContext();
+                structInsert(lm, 'siblingUp');
+            }
             break;
         }
         case 'newSiblingDown': {
-            clearStructSelectionContext();
-            structInsert(lm, 'siblingDown');
+            if (!lm.isRoot) {
+                clearStructSelectionContext();
+                structInsert(lm, 'siblingDown');
+            }
             break;
         }
         case 'newChild': {
