@@ -40,10 +40,9 @@ export function MapComponent() {
                 if (pathItem.id.substring(0, 3) === 'div') {
                     mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
                     push();
-                    if (!e.ctrlKey) {
+                    if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                         nodeDispatch('selectStruct');
-                    }
-                    else {
+                    } else {
                         nodeDispatch('selectStructToo');
                     }
                     redraw();
