@@ -42,7 +42,7 @@ export function structInsert(lm, mode) {
     }
 }
 
-export function cellInsert (lastPath, direction) {
+export function cellInsert (lastPath, key) {
     let lm = mapref(lastPath);
     let parentRef = mapref(lm.parentPath);
     let currRow = lm.index[0];
@@ -50,22 +50,27 @@ export function cellInsert (lastPath, direction) {
     let rowLen = parentRef.c.length;
     let colLen = parentRef.c[0].length;
 
+    let direction;
+    if (        key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {  direction = 'in';
+    } else if ( key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {  direction = 'out';
+    } else if ( key === 'ArrowUp') {                                                                    direction = 'up';
+    } else if ( key === 'ArrowDown') {                                                                  direction = 'down';
+    }
+
     switch (direction) {
-        case 'ArrowDown': {
-            let newRow = new Array(colLen);
-            for (let i = 0; i < colLen; i++) {
-                newRow[i] = getDefaultNode({s: [getDefaultNode()]});
+        case 'in': {
+            for (let i = 0; i < rowLen; i++) {
+                parentRef.c[i].splice(currCol, 0, getDefaultNode({s: [getDefaultNode()]}));
             }
-            parentRef.c.splice(currRow + 1, 0, newRow);
             break;
         }
-        case 'ArrowRight': {
+        case 'out': {
             for (let i = 0; i < rowLen; i++) {
                 parentRef.c[i].splice(currCol + 1, 0, getDefaultNode({s: [getDefaultNode()]}));
             }
             break;
         }
-        case 'ArrowUp': {
+        case 'up': {
             let newRow = new Array(colLen);
             for (let i = 0; i < colLen; i++) {
                 newRow[i] = getDefaultNode({s: [getDefaultNode()]});
@@ -73,12 +78,15 @@ export function cellInsert (lastPath, direction) {
             parentRef.c.splice(currRow, 0, newRow);
             break;
         }
-        case 'ArrowLeft': {
-            for (let i = 0; i < rowLen; i++) {
-                parentRef.c[i].splice(currCol, 0, getDefaultNode({s: [getDefaultNode()]}));
+        case 'down': {
+            let newRow = new Array(colLen);
+            for (let i = 0; i < colLen; i++) {
+                newRow[i] = getDefaultNode({s: [getDefaultNode()]});
             }
+            parentRef.c.splice(currRow + 1, 0, newRow);
             break;
         }
+
         default:
             break;
     }
