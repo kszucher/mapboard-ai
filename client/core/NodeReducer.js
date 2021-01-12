@@ -51,6 +51,12 @@ export function nodeReducer(action, payload) {
         case 'selectBackwardStruct': {
             clearStructSelectionContext();
             clearCellSelectionContext();
+            mapref(mapref(lm.parentPath).path).selected = 1;
+            break;
+        }
+        case 'selectBackwardBackwardStruct': {
+            clearStructSelectionContext();
+            clearCellSelectionContext();
             mapref(mapref(mapref(lm.parentPath).parentPath).path).selected = 1;
             break;
         }
