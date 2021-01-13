@@ -127,7 +127,7 @@ export function MapComponent() {
             [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['cr', 'cc'],                  0,  1,  1, ['moveCellBlock'],                       []                   ],
             [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['selectNeighborStructToo'],             []                   ],
             [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['m'],                         0,  1,  1, ['newCellBlock'],                        []                   ],
-            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['s', 'c'],                    0,  1,  0, [],                                      []                   ],
+            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['s', 'c', 'cr', 'cc'],        0,  1,  0, [],                                      []                   ],
             [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s', 'm'],                    0,  1,  1, ['applyColor'],                          []                   ],
             [ 1,  0,  1,  e.which >= 96 && e.which <= 105, ['s', 'm'],                    0,  1,  1, ['applyTaskStatus'],                     []                   ],
             [ 0,  0,  0,  e.which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit'],           []                   ],
