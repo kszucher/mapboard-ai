@@ -31,9 +31,6 @@ export function nodeMove(sc, target, key, mode) {
     } else if (
         key === 'ArrowDown') {
         direction = 'down';
-    } else {
-        console.log('unknown move direction');
-        return;
     }
 
     if (target === 'struct2struct') {
