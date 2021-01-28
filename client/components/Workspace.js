@@ -31,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 let isDown = false;
-let startX;
-let scrollLeft;
-let velX = 0;
+let startX, startY;
+let scrollLeft, scrollTop;
+let velX = 0, velY = 0;
 let momentumID;
 
 function beginMomentumTracking(){
@@ -48,8 +48,11 @@ function cancelMomentumTracking(){
 function momentumLoop(){
     let el = document.getElementById('bottom-right');
     el.scrollLeft += velX;
+    el.scrollTop += velY;
+
     velX *= 0.95;
-    if (Math.abs(velX) > 0.5){
+    velY *= 0.95;
+    if (Math.abs(velX) > 0.5 || Math.abs(velY) > 0.5){
         momentumID = requestAnimationFrame(momentumLoop);
     }
 }
@@ -59,7 +62,9 @@ const mouseDown = (e) => {
     isDown = true;
     // slider.classList.add('active');
     startX = e.pageX - el.offsetLeft;
+    startY = e.pageY - el.offsetTop;
     scrollLeft = el.scrollLeft;
+    scrollTop = el.scrollTop;
     cancelMomentumTracking();
 };
 
@@ -68,10 +73,16 @@ const mouseMove = (e) => {
     if(!isDown) return;
     e.preventDefault();
     const x = e.pageX - el.offsetLeft;
-    const walk = (x - startX) * 3; //scroll-fast
+    const y = e.pageY - el.offsetTop;
+    const walkX = (x - startX) * 3; //scroll-fast
+    const walkY = (y - startY) * 3; //scroll-fast
+
     var prevScrollLeft = el.scrollLeft;
-    el.scrollLeft = scrollLeft - walk;
+    var prevScrollTop = el.scrollTop;
+    el.scrollLeft= scrollLeft - walkX;
+    el.scrollTop = scrollTop - walkY;
     velX = el.scrollLeft - prevScrollLeft;
+    velY = el.scrollTop - prevScrollTop;
 };
 
 const mouseUp = () => {
