@@ -21,53 +21,71 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-let pos = { top: 0, left: 0, x: 0, y: 0 };
-let isActive = false;
+
+
+
+
+
+
+
+
+
+let isDown = false;
+let startX;
+let scrollLeft;
+let velX = 0;
+let momentumID;
+
+function beginMomentumTracking(){
+    cancelMomentumTracking();
+    momentumID = requestAnimationFrame(momentumLoop);
+}
+
+function cancelMomentumTracking(){
+    cancelAnimationFrame(momentumID);
+}
+
+function momentumLoop(){
+    let el = document.getElementById('bottom-right');
+    el.scrollLeft += velX;
+    velX *= 0.95;
+    if (Math.abs(velX) > 0.5){
+        momentumID = requestAnimationFrame(momentumLoop);
+    }
+}
 
 const mouseDown = (e) => {
     let el = document.getElementById('bottom-right');
-    el.style.cursor = 'grabbing';
-    el.style.userSelect = 'none';
-
-    pos = {
-        // The current scroll
-        left: el.scrollLeft,
-        top: el.scrollTop,
-        // Get the current mouse position
-        x: e.clientX,
-        y: e.clientY,
-    };
-
-    isActive = true;
+    isDown = true;
+    // slider.classList.add('active');
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+    cancelMomentumTracking();
 };
 
 const mouseMove = (e) => {
-    if (isActive) {
-        let el = document.getElementById('bottom-right');
-
-        // How far the mouse has been moved
-        const dx = e.clientX - pos.x;
-        const dy = e.clientY - pos.y;
-
-
-        let speed = 0.1;
-
-        // Scroll the element
-        if (el.scrollTop !== e.clientY - pos.y) {
-            el.scrollTop -= dy * speed;
-        }
-        // el.scrollLeft = pos.left - dx*speed;
-
-        // annyi kell, hogy közelítünk oda, ahova kell, de speed értékenként, ez. nem kell ehhez tutorialok
-    }
+    let el = document.getElementById('bottom-right');
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startX) * 3; //scroll-fast
+    var prevScrollLeft = el.scrollLeft;
+    el.scrollLeft = scrollLeft - walk;
+    velX = el.scrollLeft - prevScrollLeft;
 };
 
 const mouseUp = () => {
-    let el = document.getElementById('bottom-right');
-    el.style.cursor = 'default' ;
-    el.style.removeProperty('user-select');
+    isDown = false;
+    // slider.classList.remove('active');
+    beginMomentumTracking();
+};
 
-    isActive = false;
+const mouseLeave = () => {
+    isDown = false;
+};
+
+const wheel = () => {
+    cancelMomentumTracking();
 };
 
 export function Workspace() {
@@ -122,7 +140,8 @@ export function Workspace() {
                         onMouseDown={mouseDown}
                         onMouseMove={mouseMove}
                         onMouseUp={mouseUp}
-                        onMouseLeave={mouseUp}>
+                        onWheel={wheel}
+                        onMouseLeave={mouseLeave}>
                         <MapComponent/>
                     </div>
                 </div>
