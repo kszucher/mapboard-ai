@@ -21,6 +21,54 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+let pos = { top: 0, left: 0, x: 0, y: 0 };
+let isActive = false;
+
+const mouseDown = (e) => {
+    let el = document.getElementById('bottom-right');
+    el.style.cursor = 'grabbing';
+    el.style.userSelect = 'none';
+
+    pos = {
+        // The current scroll
+        left: el.scrollLeft,
+        top: el.scrollTop,
+        // Get the current mouse position
+        x: e.clientX,
+        y: e.clientY,
+    };
+
+    isActive = true;
+};
+
+const mouseMove = (e) => {
+    if (isActive) {
+        let el = document.getElementById('bottom-right');
+
+        // How far the mouse has been moved
+        const dx = e.clientX - pos.x;
+        const dy = e.clientY - pos.y;
+
+
+        let speed = 0.1;
+
+        // Scroll the element
+        if (el.scrollTop !== e.clientY - pos.y) {
+            el.scrollTop -= dy * speed;
+        }
+        // el.scrollLeft = pos.left - dx*speed;
+
+        // annyi kell, hogy közelítünk oda, ahova kell, de speed értékenként, ez. nem kell ehhez tutorialok
+    }
+};
+
+const mouseUp = () => {
+    let el = document.getElementById('bottom-right');
+    el.style.cursor = 'default' ;
+    el.style.removeProperty('user-select');
+
+    isActive = false;
+};
 
 export function Workspace() {
 
@@ -69,7 +117,12 @@ export function Workspace() {
                         </div>
 
                     </div>
-                    <div id = "bottom-right">
+                    <div
+                        id = "bottom-right"
+                        onMouseDown={mouseDown}
+                        onMouseMove={mouseMove}
+                        onMouseUp={mouseUp}
+                        onMouseLeave={mouseUp}>
                         <MapComponent/>
                     </div>
                 </div>
