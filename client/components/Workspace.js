@@ -74,8 +74,8 @@ const mouseMove = (e) => {
     e.preventDefault();
     const x = e.pageX - el.offsetLeft;
     const y = e.pageY - el.offsetTop;
-    const walkX = (x - startX) * 3; //scroll-fast
-    const walkY = (y - startY) * 3; //scroll-fast
+    const walkX = (x - startX) * 0.5; //scroll-fast
+    const walkY = (y - startY) * 0.5; //scroll-fast
 
     var prevScrollLeft = el.scrollLeft;
     var prevScrollTop = el.scrollTop;
