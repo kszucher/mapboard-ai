@@ -49,7 +49,7 @@ export default function MenuAppBar() {
     };
 
     return (
-        <div className={classes.root}>
+        <div id = 'toolbar' className={classes.root}>
             <Toolbar variant={"dense"}>
                 <IconButton
                     edge="start"
@@ -84,4 +84,3 @@ export default function MenuAppBar() {
         </div>
     );
 }
-

@@ -43,7 +43,7 @@ export const mapPlace = {
         let rightMapHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
         let leftMapHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
-        let mapHeight = minHeight + 500;
+        let mapHeight = minHeight + 60;
 
         // APPLY
         let mapDiv = document.getElementById('mapDiv');

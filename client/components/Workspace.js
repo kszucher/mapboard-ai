@@ -39,19 +39,19 @@ function cancelMomentumTracking(){
 }
 
 function momentumLoop(){
-    let el = document.getElementById('bottom-right');
+    let el = document.getElementById('mapHolderDiv');
     el.scrollLeft += velX;
     el.scrollTop += velY;
 
-    velX *= 0.95;
-    velY *= 0.95;
+    velX *= 1;
+    velY *= 1;
     if (Math.abs(velX) > 0.5 || Math.abs(velY) > 0.5){
         momentumID = requestAnimationFrame(momentumLoop);
     }
 }
 
 const mouseDown = (e) => {
-    let el = document.getElementById('bottom-right');
+    let el = document.getElementById('mapHolderDiv');
     isDown = true;
     // slider.classList.add('active');
     startX = e.pageX - el.offsetLeft;
@@ -69,13 +69,13 @@ const mouseDown = (e) => {
 };
 
 const mouseMove = (e) => {
-    let el = document.getElementById('bottom-right');
+    let el = document.getElementById('mapHolderDiv');
     if(!isDown) return;
     e.preventDefault();
     const x = e.pageX - el.offsetLeft;
     const y = e.pageY - el.offsetTop;
-    const walkX = (x - startX) * 0.5; //scroll-fast
-    const walkY = (y - startY) * 0.5; //scroll-fast
+    const walkX = (x - startX) * 1; //scroll-fast
+    const walkY = (y - startY) * 1; //scroll-fast
 
     var prevScrollLeft = el.scrollLeft;
     var prevScrollTop = el.scrollTop;
@@ -88,7 +88,7 @@ const mouseMove = (e) => {
 const mouseUp = (e) => {
     isDown = false;
     // slider.classList.remove('active');
-    let el = document.getElementById('bottom-right');
+    let el = document.getElementById('mapHolderDiv');
 
     let x = e.pageX - el.offsetLeft;
     let y = e.pageY - el.offsetTop;
@@ -97,7 +97,11 @@ const mouseUp = (e) => {
     // console.log([x,y,lastPos.x, lastPos.y])
 
     if (Math.abs(lastPos.x - x) > 5 && Math.abs(lastPos.y - y) > 5) {
-        beginMomentumTracking()
+
+        // probably do this, if the amount of time spent holding the mouse is SMALL
+        // or do nothing while move, but once done, do the transform maybe?
+
+        // beginMomentumTracking()
     } else {
         console.log('prevented')
     }
@@ -143,34 +147,21 @@ export function Workspace() {
     return (
         <div id="page">
             <MuiThemeProvider theme={theme}>
-                <div id="top">
-                    <div id = "top-left">
-                        <Toolbar/>
-                    </div>
-                    <div id = "top-right">
-                        <Breadcrumbs/>
-                    </div>
-                </div>
-                <div id="bottom">
-                    <div id='bottom-left'>
-                        <div id = 'bottom-left-up'>
-                            <Tabs/>
-                        </div>
-                        <div id = 'bottom-left-down'>
-                        </div>
-
-                    </div>
-                    <div
-                        id = "bottom-right"
-                        onMouseDown={mouseDown}
-                        onMouseMove={mouseMove}
-                        onMouseUp={mouseUp}
-                        onWheel={wheel}
-                        onMouseLeave={mouseLeave}>
-                        <MapComponent/>
-                    </div>
-                </div>
+                <Toolbar/>
+                <Breadcrumbs/>
+                <Tabs/>
             </MuiThemeProvider>
+            <div id = "mapHolderDiv" onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}>
+                <div id = 'mapSpaceColumns' >
+                    <div id = 'mapSpaceLeft'/>
+                    <div id = 'mapSpaceCenter'>
+                        <div id = 'mapSpaceTop'/>
+                        <MapComponent/>
+                        <div id = 'mapSpaceBottom'/>
+                    </div>
+                    <div id = 'mapSpaceRight'/>
+                </div>
+            </div>
         </div>
     )
 }

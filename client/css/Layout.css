@@ -22,51 +22,76 @@ html, body, div, table, td, tr {
 
 #page {
     height: 100vh;
-    /*child*/
     display: flex;
     flex-direction: column;
+
+
 }
 
-#top {
-    display: flex;
+#toolbar {
+    position: fixed;
+    width: 200px;
     height: 48px;
-}
-
-#top-left {
-    width: 220px;
     background-color: #a4508b;
     background-image: linear-gradient(330deg, #a4508b 0%, #5f0a87 74%);
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
 }
 
-#top-right {
-    flex-grow: 1;
+#tabsContainer {
+    position: fixed;
+    height: 100vh;
     display: flex;
     align-items: center;
-    align-content: flex-start;
+}
+
+#tabs {
+    width: 200px;
+    height: auto;
+    background-color: #fbfafc;
+    /*opacity: 0.5;*/
+    /*border-width: 2px;*/
+    /*border-color: #a4508b;*/
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+
+
+    /*box-shadow: 5px 10px;*/
+}
+
+#breadcrumbsContainer {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 48px;
+}
+
+#breadcrumbs {
+
+    align-items: center;
     justify-content: center;
-}
-
-#bottom {
-    flex-grow: 1;
-    /*child*/
     display: flex;
+    top: 20px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /*width: auto;*/
+    /*height: auto;*/
+    /*background-color: #a4508b;*/
 }
 
-#bottom-left {
-    flex-grow: 0;
-    width: 220px;
-}
-
-
-#bottom-right {
-    flex-grow: 1;
+#mapHolderDiv {
     overflow-y: scroll;
     overflow-x: scroll;
-    height: calc(100vh - 48px);
-    /*child*/
-    /*https://stackoverflow.com/questions/33454533/cant-scroll-to-top-of-flex-item-that-is-overflowing-container*/
+
+    /*height: calc(200vh);*/
+
+    display: flex;
+    justify-content: center;
+    /*flex-grow: 1;*/
+
+    /*background-color: coral;*/
+
 }
 
 #mapDiv {
@@ -75,10 +100,45 @@ html, body, div, table, td, tr {
     margin:auto;
     position: relative;
     background: #fbfafc;
-    /*child*/
     display: flex;
-    align-content: flex-start;
+    /*align-content: flex-start;*/
     border-radius: 32px;
+}
+
+#mapSpaceColumns {
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    /*overflow-x: scroll;*/
+    /*width: 100vw;*/
+    /*width: auto;*/
+    /*background-color: bisque;*/
+}
+
+#mapSpaceLeft {
+    /*flex-grow: 0;*/
+    width: 300vw;
+    /*background-color: aqua;*/
+}
+
+#mapSpaceCenter {
+    /*flex-grow: 1;*/
+}
+
+#mapSpaceTop {
+    height: 100vh;
+    /*background-color: azure;*/
+}
+
+#mapSpaceBottom {
+    height: 100vh;
+    /*background-color: beige;*/
+}
+
+#mapSpaceRight {
+    /*flex-grow: 0;*/
+    width: 100vw;
+    /*background-color: #5f0a87;*/
 }
 
 #mapSvg {
@@ -88,7 +148,6 @@ html, body, div, table, td, tr {
 img {
     border-radius: 8px;
 }
-
 
 .noise {
     z-index: 4;
@@ -107,12 +166,4 @@ body:before {
 
 ::-webkit-scrollbar {
     display: none;
-}
-
-#mapDiv {
-    /*scroll-behavior: smooth;*/
-}
-
-#bottom-right {
-    /*scroll-behavior: smooth;*/
 }

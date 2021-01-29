@@ -33,12 +33,12 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired,
 };
 
-function a11yProps(index) {
-    return {
-        id: `vertical-tab-${index}`,
-        'aria-controls': `vertical-tabpanel-${index}`,
-    };
-}
+// function a11yProps(index) {
+//     return {
+//         id: `vertical-tab-${index}`,
+//         'aria-controls': `vertical-tabpanel-${index}`,
+//     };
+// }
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,15 +50,21 @@ const useStyles = makeStyles((theme) => ({
         borderRight: `0px solid ${theme.palette.divider}`,
     },
     indicator: {
-        // left: "500px",
-        width: "2px",
-        // borderTopRightRadius: "32px",
-        // borderBottomRightRadius: "32px",
+        left: "0px",
+        width: "8px",
+
+
+
+        // borderTopLeftRadius: "16px",
+        // borderBottomLeftRadius: "16px",
         //
+        borderTopRightRadius: "16px",
+        borderBottomRightRadius: "16px",
+
         //
         //
         backgroundColor: "#a4508b",
-        backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)"
+        backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
 
         // backgroundColor: "#fbfafc"
 
@@ -76,25 +82,29 @@ export default function VerticalTabs() {
     };
 
     return (
-        <div className={classes.root}>
-            <Tabs
-                classes={{
-                    indicator: classes.indicator
-                }}
-                orientation="vertical"
-                variant="scrollable"
-                aria-label="Vertical tabs example"
-                className={classes.tabs}
-                value={mapSelected}
-                onChange={handleChange}
-                indicatorColor="primary">
-                {mapNameList.map((name, index) => (
-                    <Tab
-                        label={name}
-                        key={index}
-                    />
-                ))}>
-            </Tabs>
+        <div id = 'tabsContainer'>
+            <div id = 'tabs'>
+                <div className={classes.root}>
+                    <Tabs
+                        classes={{
+                            indicator: classes.indicator
+                        }}
+                        orientation="vertical"
+                        variant="scrollable"
+                        aria-label="Vertical tabs example"
+                        className={classes.tabs}
+                        value={mapSelected}
+                        onChange={handleChange}
+                        indicatorColor="primary">
+                        {mapNameList.map((name, index) => (
+                            <Tab
+                                label={name}
+                                key={index}
+                            />
+                        ))}>
+                    </Tabs>
+                </div>
+            </div>
         </div>
     );
 }
