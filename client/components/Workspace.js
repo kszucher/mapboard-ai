@@ -154,7 +154,7 @@ export function Workspace() {
             <div id = "mapHolderDiv" onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}>
                 <div id = 'mapSpaceColumns' >
                     <div id = 'mapSpaceLeft'/>
-                    <div id = 'mapSpaceCenter'>
+                    <div>
                         <div id = 'mapSpaceTop'/>
                         <MapComponent/>
                         <div id = 'mapSpaceBottom'/>
