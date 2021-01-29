@@ -21,14 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-
-
-
-
-
-
-
+let lastPos = {x:0, y:0};
 
 let isDown = false;
 let startX, startY;
@@ -63,6 +56,13 @@ const mouseDown = (e) => {
     // slider.classList.add('active');
     startX = e.pageX - el.offsetLeft;
     startY = e.pageY - el.offsetTop;
+
+    lastPos = {
+        x: startX,
+        y: startY,
+    };
+
+
     scrollLeft = el.scrollLeft;
     scrollTop = el.scrollTop;
     cancelMomentumTracking();
@@ -85,10 +85,24 @@ const mouseMove = (e) => {
     velY = el.scrollTop - prevScrollTop;
 };
 
-const mouseUp = () => {
+const mouseUp = (e) => {
     isDown = false;
     // slider.classList.remove('active');
-    beginMomentumTracking();
+    let el = document.getElementById('bottom-right');
+
+    let x = e.pageX - el.offsetLeft;
+    let y = e.pageY - el.offsetTop;
+
+
+    // console.log([x,y,lastPos.x, lastPos.y])
+
+    if (Math.abs(lastPos.x - x) > 5 && Math.abs(lastPos.y - y) > 5) {
+        beginMomentumTracking()
+    } else {
+        console.log('prevented')
+    }
+
+    // beginMomentumTracking();
 };
 
 const mouseLeave = () => {
