@@ -146,11 +146,7 @@ export function Workspace() {
 
     return (
         <div id="page">
-            <MuiThemeProvider theme={theme}>
-                <Toolbar/>
-                <Breadcrumbs/>
-                <Tabs/>
-            </MuiThemeProvider>
+
             <div id = "mapHolderDiv" onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}>
                 <div id = 'mapSpaceColumns' >
                     <div id = 'mapSpaceLeft'/>
@@ -162,6 +158,11 @@ export function Workspace() {
                     <div id = 'mapSpaceRight'/>
                 </div>
             </div>
+            <MuiThemeProvider theme={theme}>
+                <Toolbar/>
+                <Breadcrumbs/>
+                <Tabs/>
+            </MuiThemeProvider>
         </div>
     )
 }

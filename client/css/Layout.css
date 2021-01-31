@@ -36,6 +36,7 @@ html, body, div, table, td, tr {
     background-image: linear-gradient(330deg, #a4508b 0%, #5f0a87 74%);
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
+
 }
 
 #tabsContainer {
@@ -51,26 +52,40 @@ html, body, div, table, td, tr {
     background-color: #fbfafc;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
-    /*border-width: 2px;*/
-    /*border-color: #a4508b;*/
-    /*box-shadow: 5px 10px;*/
+
+    border-style: solid;
+    /*border-width: 1px;*/
+    border-color: #dddddd;
+
+    box-shadow: 5px 5px 5px #dddddd;
 }
 
 #breadcrumbsContainer {
     position: fixed;
-    width: 100%;
-    top: 0;
-    height: 48px;
+    width: 100vw;
+    /*top: 10px;*/
+    display: flex;
+    justify-content: center;
 }
 
 #breadcrumbs {
-    align-items: center;
-    justify-content: center;
     display: flex;
-    top: 20px;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    align-items: center;
+    height: 48px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #fbfafc;
+
+    /*border-top-left-radius: 16px;*/
+    /*border-top-right-radius: 16px;*/
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+
+    border-style: solid;
+    /*border-width: 1px;*/
+    border-color: #dddddd;
+
+    box-shadow: 5px 5px 5px #dddddd;
 }
 
 #mapHolderDiv {
