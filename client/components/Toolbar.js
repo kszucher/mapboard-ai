@@ -51,12 +51,7 @@ export default function MenuAppBar() {
     return (
         <div id = 'toolbar' className={classes.root}>
             <Toolbar variant={"dense"}>
-                <IconButton
-                    edge="start"
-                    className={classes.menuButton}
-                    aria-label="menu"
-                    onClick={handleMenu}
-                >
+                <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleMenu} color = "inherit">
                     <MenuIcon />
                 </IconButton>
                 <Menu

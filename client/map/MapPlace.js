@@ -55,8 +55,8 @@ export const mapPlace = {
         // console.log([window.innerWidth, mapWidth])
         // console.log([window.innerWidth, mapHeight])
         //
-        // mapHolderDiv.scrollLeft = 0;
-        // mapHolderDiv.scrollTop = 0;
+        mapHolderDiv.scrollLeft = 1580;
+        mapHolderDiv.scrollTop = 1200;
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 "

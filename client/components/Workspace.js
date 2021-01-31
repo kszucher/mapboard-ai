@@ -6,6 +6,7 @@ import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
 import Breadcrumbs from "./Breadcrumbs";
 import {MapComponent} from "./MapComponent";
+import {Preferences} from "./Preferences";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -129,17 +130,19 @@ export function Workspace() {
                 disableRipple: true // No more ripple, on the whole application!
             }
         },
-
-        overrides: {
-            MuiIconButton: {
-                root: { // Name of the rule
-                    color: 'white', // Some CSS
-                },
+        // https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=5f0a87&secondary.color=FAFAFA&primary.text.color=ffffff&secondary.text.color=000000
+        palette: {
+            primary: {
+                light: '#9040b8',
+                main: '#5f0a87',
+                dark: '#2e0059',
+                contrastText: '#fff',
             },
-            MuiTypography: { // Name of the component ⚛️ / style sheet
-                root: { // Name of the rule
-                    color: 'white', // Some CSS
-                },
+            secondary: {
+                light: '#ffffff',
+                main: '#c7c7c7',
+                dark: '#dddddd',
+                contrastText: '#000000',
             },
         },
     });
@@ -159,10 +162,12 @@ export function Workspace() {
                 </div>
             </div>
             <MuiThemeProvider theme={theme}>
-                <Toolbar/>
-                <Breadcrumbs/>
                 <Tabs/>
+                <Breadcrumbs/>
+                <Preferences/>
+                <Toolbar/>
             </MuiThemeProvider>
+
         </div>
     )
 }
