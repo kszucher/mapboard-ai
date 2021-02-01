@@ -85,7 +85,7 @@ html, body, div, table, td, tr {
 
 #preferences {
     width: 200px;
-    height: 400px;
+    height: auto;
     background-color: #fbfafc;
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;

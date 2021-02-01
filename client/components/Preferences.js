@@ -6,6 +6,13 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Divider from "@material-ui/core/Divider";
+import Switch from "@material-ui/core/Switch";
+import Button from "@material-ui/core/Button";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Radio from "@material-ui/core/Radio";
+import CropFreeIcon from '@material-ui/icons/CropFree';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,17 +24,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function Preferences () {
-
     const classes = useStyles();
-
     const [checked, setChecked] = useState(true);
-
-
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
-
-    const error = ()=>{}
 
     return (
         <div id = 'preferencesContainer'>
@@ -35,41 +36,19 @@ export function Preferences () {
 
                 <div className={classes.root}>
                     <FormControl component="fieldset" className={classes.formControl}>
-                        <FormLabel component="legend">Assign responsibility</FormLabel>
+                        <FormLabel component="legend">Map Density</FormLabel>
+                        <RadioGroup aria-label="mapDensity" name="mapDensity" value={'Small'} onChange={handleChange}>
+                            <FormControlLabel value="Small" control={<Radio />} label="Small" />
+                            <FormControlLabel value="Large" control={<Radio />} label="Large" />
+                        </RadioGroup>
+                        <FormLabel component="legend">View</FormLabel>
                         <FormGroup>
-                            <FormControlLabel
-                                control={<Checkbox checked={checked} onChange={handleChange} name="gilad" />}
-                                label="Gilad Gray"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox checked={checked} onChange={handleChange} name="jason" />}
-                                label="Jason Killian"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox checked={checked} onChange={handleChange} name="antoine" />}
-                                label="Antoine Llorca"
-                            />
+                            <FormControlLabel control={<Switch checked={checked} onChange={handleChange} name="gilad" />} label="Locked"/>
+                            <FormControlLabel control={<Switch checked={checked} onChange={handleChange} name="jason" />} label="Centered"/>
                         </FormGroup>
-                        <FormHelperText>Be careful</FormHelperText>
                     </FormControl>
-                    {/*<FormControl required error={error} component="fieldset" className={classes.formControl}>*/}
-                    {/*    <FormLabel component="legend">Pick two</FormLabel>*/}
-                    {/*    <FormGroup>*/}
-                    {/*        <FormControlLabel*/}
-                    {/*            control={<Checkbox checked={checked} onChange={handleChange} name="gilad" />}*/}
-                    {/*            label="Gilad Gray"*/}
-                    {/*        />*/}
-                    {/*        <FormControlLabel*/}
-                    {/*            control={<Checkbox checked={checked} onChange={handleChange} name="jason" />}*/}
-                    {/*            label="Jason Killian"*/}
-                    {/*        />*/}
-                    {/*        <FormControlLabel*/}
-                    {/*            control={<Checkbox checked={checked} onChange={handleChange} name="antoine" />}*/}
-                    {/*            label="Antoine Llorca"*/}
-                    {/*        />*/}
-                    {/*    </FormGroup>*/}
-                    {/*    <FormHelperText>You can display an error</FormHelperText>*/}
-                    {/*</FormControl>*/}
+
+                    {/*import CropFreeIcon from '@material-ui/icons/CropFree';*/}
                 </div>
 
             </div>

@@ -139,9 +139,9 @@ export function Workspace() {
                 contrastText: '#fff',
             },
             secondary: {
-                light: '#ffffff',
-                main: '#c7c7c7',
-                dark: '#dddddd',
+                light: '#9040b8',
+                main: '#5f0a87',
+                dark: '#2e0059',
                 contrastText: '#000000',
             },
         },
@@ -167,7 +167,6 @@ export function Workspace() {
                 <Preferences/>
                 <Toolbar/>
             </MuiThemeProvider>
-
         </div>
     )
 }
