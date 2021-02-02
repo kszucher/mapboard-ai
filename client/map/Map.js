@@ -34,14 +34,19 @@ export function loadMap(mapStorage) {
             return mapMem.data[mapMem.dataIndex];
         },
 
-        // saveNever
-        sLineDeltaXDefault:     mapStorage.density === 'large'? 30:20,
-        padding:                mapStorage.density === 'large'? 8:3,
-        defaultH:               mapStorage.density === 'large'? 30:20, // 30 = 14 + 2*8, 20 = 14 + 2*3
         filter: [],
         deepestSelectablePath: [],
     };
+
+    loadMapDensity(mapStorage.density);
 }
+
+export const loadMapDensity = (density) => {
+    mapMem.density = density;
+    mapMem.sLineDeltaXDefault = density === 'large'? 30:20;
+    mapMem.padding = density === 'large'? 8:3;
+    mapMem.defaultH = density === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
+};
 
 export function recalc() {
     mapRestore.start();

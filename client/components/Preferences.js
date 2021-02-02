@@ -36,8 +36,8 @@ export function Preferences () {
     };
 
     const handleDensity = (event) => {
-        console.log(event.target.value)
-        // dispatch({type: 'SET_DENSITY', payload: e.value}
+        // console.log(event.target.value)
+        dispatch({type: 'SET_DENSITY', payload: event.target.value});
     };
 
     return (

@@ -29,7 +29,8 @@ export function MapComponent() {
 
     useEffect(() => {
         if (isMapLoaded && density !== mapMem.density) {
-            nodeDispatch('setDensity', {payload: density});
+            nodeDispatch('setDensity', density);
+            redraw();
         }
     }, [density]);
 
