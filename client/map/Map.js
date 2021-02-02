@@ -36,16 +36,23 @@ export function loadMap(mapStorage) {
 
         filter: [],
         deepestSelectablePath: [],
+
+        isLocked: true,
     };
 
-    loadMapDensity(mapStorage.density);
+    setMapDensity(mapStorage.density);
+    setMapIsLocked(true);
 }
 
-export const loadMapDensity = (density) => {
+export const setMapDensity = (density) => {
     mapMem.density = density;
     mapMem.sLineDeltaXDefault = density === 'large'? 30:20;
     mapMem.padding = density === 'large'? 8:3;
     mapMem.defaultH = density === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
+};
+
+export const setMapIsLocked = (isLocked) => {
+    mapMem.isLocked = isLocked;
 };
 
 export function recalc() {

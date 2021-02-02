@@ -1,4 +1,4 @@
-import {loadMapDensity, mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
+import {setMapDensity, mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, nodeMove} from "../node/NodeMove";
@@ -318,7 +318,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'setDensity': {
-            loadMapDensity(payload);
+            setMapDensity(payload);
             mapChangeProp.start(mapMem.getData().r, 'isDimAssigned', 0);
             break;
         }

@@ -54,7 +54,6 @@ export function Preferences () {
                         <FormLabel component="legend">View</FormLabel>
                         <FormGroup>
                             <FormControlLabel control={<Switch checked={checked} onChange={handleChange} name="gilad" />} label="Locked"/>
-                            <FormControlLabel control={<Switch checked={checked} onChange={handleChange} name="jason" />} label="Centered"/>
                         </FormGroup>
                     </FormControl>
 

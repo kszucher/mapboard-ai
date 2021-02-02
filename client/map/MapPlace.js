@@ -50,13 +50,11 @@ export const mapPlace = {
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
-        let mapHolderDiv = document.getElementById('mapHolderDiv');
-
-        // console.log([window.innerWidth, mapWidth])
-        // console.log([window.innerWidth, mapHeight])
-        //
-        mapHolderDiv.scrollLeft = 1580;
-        mapHolderDiv.scrollTop = 1200;
+        if (mapMem.isLocked) {
+            let mapHolderDiv = document.getElementById('mapHolderDiv');
+            mapHolderDiv.scrollLeft = (window.innerWidth + mapWidth) / 2;
+            mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
+        }
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 "
