@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import CropFreeIcon from '@material-ui/icons/CropFree';
+import {Context} from "../core/Store";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,9 +26,18 @@ const useStyles = makeStyles((theme) => ({
 
 export function Preferences () {
     const classes = useStyles();
+
     const [checked, setChecked] = useState(true);
+
+    const [state, dispatch] = useContext(Context);
+
     const handleChange = (event) => {
         setChecked(event.target.checked);
+    };
+
+    const handleDensity = (event) => {
+        console.log(event.target.value)
+        // dispatch({type: 'SET_DENSITY', payload: e.value}
     };
 
     return (
@@ -37,9 +47,9 @@ export function Preferences () {
                 <div className={classes.root}>
                     <FormControl component="fieldset" className={classes.formControl}>
                         <FormLabel component="legend">Map Density</FormLabel>
-                        <RadioGroup aria-label="mapDensity" name="mapDensity" value={'Small'} onChange={handleChange}>
-                            <FormControlLabel value="Small" control={<Radio />} label="Small" />
-                            <FormControlLabel value="Large" control={<Radio />} label="Large" />
+                        <RadioGroup aria-label="mapDensity" name="mapDensity" value={state.density} onChange={handleDensity}>
+                            <FormControlLabel value="small" control={<Radio />} label="Small" />
+                            <FormControlLabel value="large" control={<Radio />} label="Large" />
                         </RadioGroup>
                         <FormLabel component="legend">View</FormLabel>
                         <FormGroup>

@@ -8,6 +8,7 @@ import {isUrl} from "../core/Utils";
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
+    const {isMapLoaded, density} = state;
 
     useEffect(() => {
         window.addEventListener('popstate',     popstate);
@@ -25,6 +26,12 @@ export function MapComponent() {
             window.removeEventListener("paste",        paste);
         };
     }, []);
+
+    useEffect(() => {
+        if (isMapLoaded && density !== mapMem.density) {
+            nodeDispatch('setDensity', {payload: density});
+        }
+    }, [density]);
 
     const popstate = (e) => {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})

@@ -317,6 +317,10 @@ export function nodeReducer(action, payload) {
             mapChangeProp.start(lm, 'task', !lm.task);
             break;
         }
+        case 'setDensity': {
+            console.log('attempt...')
+            break;
+        }
         // EDIT -------------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             if (!lm.hasCell) {

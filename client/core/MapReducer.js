@@ -62,6 +62,8 @@ const MapReducer = (state, action) => {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
             return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
+        case 'SET_IS_MAP_LOADED':
+            return {...state, isMapLoaded: payload};
         // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP':
             return {...state,
@@ -106,8 +108,8 @@ const MapReducer = (state, action) => {
             return state;
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
-        case 'CHANGE_MAP_DENSITY': {
-            return state;
+        case 'SET_DENSITY': {
+            return {...state, density: payload};
         }
         // UNDO/REDO ---------------------------------------------------------------------------------------------------
         case 'UNDO': {
