@@ -54,11 +54,6 @@ export const mapPlace = {
         mapDivBackground.style.width = "" + mapWidth + "px";
         mapDivBackground.style.height = "" + mapHeight + "px";
 
-        let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.width = "" + mapWidth + "px";
-        mapDiv.style.height = "" + mapHeight + "px";
-
-
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
