@@ -95,31 +95,6 @@ html, body, div, table, td, tr {
 #mapHolderDiv {
     overflow-y: scroll;
     overflow-x: scroll;
-    display: flex;
-}
-
-#mapDiv {
-    height: 0;
-    position: relative;
-    background: #fbfafc;
-    display: flex;
-    border-radius: 32px;
-}
-
-#mapSpaceColumns {
-    display: flex;
-}
-
-#mapSpaceLeft, #mapSpaceRight {
-    width: 100vw;
-}
-
-#mapSpaceTop, #mapSpaceBottom {
-    height: 100vh;
-}
-
-#mapSvg {
-    flex-grow: 1;
 }
 
 img {

@@ -4,6 +4,7 @@ import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment} from "../map/Map";
 import {isUrl} from "../core/Utils";
+import '../css/MapComponent.css'
 
 export function MapComponent() {
 
@@ -265,15 +266,19 @@ export function MapComponent() {
     };
 
     return(
-        <div
-            id='mapDiv'
-            // onClick={click}
-            // onDoubleClick={dblclick}
-            // onMouseDown={mousedown}
-            // onKeyDown={keydown}
-            // onPaste={paste}
-        >
-            <svg id="mapSvg"/>
+        <div id = 'mapSpaceColumns' >
+            <div id = 'mapSpaceLeft'/>
+            <div>
+                <div id = 'mapSpaceTop'/>
+                <div id = 'mapWrap'>
+                    <div id='mapDivBackground'/>
+                    <div id='mapDiv'>
+                        <svg id="mapSvg"/>
+                    </div>
+                </div>
+                <div id = 'mapSpaceBottom'/>
+            </div>
+            <div id = 'mapSpaceRight'/>
         </div>
     )
 }

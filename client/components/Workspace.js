@@ -161,17 +161,8 @@ export function Workspace() {
 
     return (
         <div id="page">
-
             <div id = "mapHolderDiv" /*onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}*/>
-                <div id = 'mapSpaceColumns' >
-                    <div id = 'mapSpaceLeft'/>
-                    <div>
-                        <div id = 'mapSpaceTop'/>
-                        <MapComponent/>
-                        <div id = 'mapSpaceBottom'/>
-                    </div>
-                    <div id = 'mapSpaceRight'/>
-                </div>
+                <MapComponent/>
             </div>
             <MuiThemeProvider theme={theme}>
                 <Tabs/>

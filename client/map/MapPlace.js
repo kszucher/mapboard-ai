@@ -46,14 +46,21 @@ export const mapPlace = {
         let mapHeight = minHeight + 60;
 
         // APPLY
+        let mapWrap = document.getElementById('mapWrap');
+        mapWrap.style.width = "" + mapWidth + "px";
+        mapWrap.style.height = "" + mapHeight + "px";
+
+        let mapDivBackground = document.getElementById('mapDivBackground');
+        mapDivBackground.style.width = "" + mapWidth + "px";
+        mapDivBackground.style.height = "" + mapHeight + "px";
+
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
+
         let svg = document.getElementById('mapSvg');
-        svg.setAttribute("viewBox", "0 0 "
-            + mapWidth + " "
-            + mapHeight);
+        svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
         cm.parentNodeStartX = mapStartCenterX - cm.selfW/2 + 2;

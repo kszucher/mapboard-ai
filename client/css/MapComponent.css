@@ -1,0 +1,31 @@
+#mapSpaceColumns {
+    display: flex;
+}
+
+#mapSpaceLeft, #mapSpaceRight {
+    width: 100vw;
+}
+
+#mapSpaceTop, #mapSpaceBottom {
+    height: 100vh;
+}
+
+#mapWrap {
+    position: relative;
+}
+
+#mapDivBackground {
+    position: absolute;
+    border-radius: 32px;
+    background-color: #fbfafc;
+    transition: 0.5s ease-out;
+    transition-property: width, height;
+}
+
+#mapDiv {
+    position: absolute;
+}
+
+#mapSvg {
+    flex-grow: 1;
+}
