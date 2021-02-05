@@ -18,7 +18,6 @@
     position: absolute;
     border-radius: 32px;
     background-color: #fbfafc;
-    transition: 0.5s ease-out;
     transition-property: width, height;
 }
 

@@ -68,10 +68,16 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
+
+                    let mapDivBackground = document.getElementById('mapDivBackground');
+                    mapDivBackground.style.transition = 'none';
+
                     loadMap(serverResponse.mapStorage);
                     recalc();
                     redraw();
                     setMapAlignment();
+
+                    mapDivBackground.style.transition = '0.5s ease-out';
 
                     dispatch({type: 'SET_IS_MAP_LOADED', payload: true});
                     dispatch({type: 'SET_DENSITY', payload: mapMem.density});
