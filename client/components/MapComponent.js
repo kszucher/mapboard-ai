@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw} from "../map/Map";
+import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment} from "../map/Map";
 import {isUrl} from "../core/Utils";
 
 export function MapComponent() {
@@ -11,6 +11,7 @@ export function MapComponent() {
     const {isMapLoaded, density} = state;
 
     useEffect(() => {
+        window.addEventListener("resize",       resize);
         window.addEventListener('popstate',     popstate);
         window.addEventListener('click',        click);
         window.addEventListener('dblclick',     dblclick);
@@ -18,6 +19,7 @@ export function MapComponent() {
         window.addEventListener("keydown",      keydown);
         window.addEventListener("paste",        paste);
         return () => {
+            window.removeEventListener("resize",       resize);
             window.removeEventListener('popstate',     popstate);
             window.removeEventListener('click',        click);
             window.removeEventListener('dblclick',     dblclick);
@@ -33,6 +35,10 @@ export function MapComponent() {
             redraw();
         }
     }, [density]);
+
+    const resize = (e) => {
+        setMapAlignment();
+    };
 
     const popstate = (e) => {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
