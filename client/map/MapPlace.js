@@ -50,12 +50,6 @@ export const mapPlace = {
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
-        if (mapMem.isLocked) {
-            let mapHolderDiv = document.getElementById('mapHolderDiv');
-            mapHolderDiv.scrollLeft = (window.innerWidth + mapWidth) / 2;
-            mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
-        }
-
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 "
             + mapWidth + " "

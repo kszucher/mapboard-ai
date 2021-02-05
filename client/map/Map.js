@@ -55,6 +55,14 @@ export const setMapIsLocked = (isLocked) => {
     mapMem.isLocked = isLocked;
 };
 
+export const setMapAlignment = () => {
+    if (mapMem.isLocked) {
+        let mapHolderDiv = document.getElementById('mapHolderDiv');
+        mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
+        mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
+    }
+};
+
 export function recalc() {
     mapRestore.start();
     mapInit.start();

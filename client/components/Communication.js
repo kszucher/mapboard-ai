@@ -1,7 +1,7 @@
 import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {checkPop, initDomData, loadMap, push, recalc, redraw} from "../map/Map";
+import {checkPop, initDomData, loadMap, push, recalc, redraw, setMapAlignment} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 import {mapMem} from "../map/Map";
 
@@ -71,6 +71,8 @@ export function Communication() {
                     loadMap(serverResponse.mapStorage);
                     recalc();
                     redraw();
+                    setMapAlignment();
+
                     dispatch({type: 'SET_IS_MAP_LOADED', payload: true});
                     dispatch({type: 'SET_DENSITY', payload: mapMem.density});
                     break;

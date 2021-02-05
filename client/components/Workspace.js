@@ -77,7 +77,7 @@ export function Workspace() {
 
 
 
-        cancelMomentumTracking();
+        // cancelMomentumTracking();
     };
 
     const mouseMove = (e) => {
@@ -91,8 +91,8 @@ export function Workspace() {
 
         var prevScrollLeft = el.scrollLeft;
         var prevScrollTop = el.scrollTop;
-        el.scrollLeft= scrollLeft - walkX;
-        el.scrollTop = scrollTop - walkY;
+        // el.scrollLeft= scrollLeft - walkX;
+        // el.scrollTop = scrollTop - walkY;
         velX = el.scrollLeft - prevScrollLeft;
         velY = el.scrollTop - prevScrollTop;
 
@@ -131,7 +131,7 @@ export function Workspace() {
     };
 
     const wheel = () => {
-        cancelMomentumTracking();
+        // cancelMomentumTracking();
     };
 
     const theme = createMuiTheme({
@@ -162,7 +162,7 @@ export function Workspace() {
     return (
         <div id="page">
 
-            <div id = "mapHolderDiv" onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}>
+            <div id = "mapHolderDiv" /*onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}*/>
                 <div id = 'mapSpaceColumns' >
                     <div id = 'mapSpaceLeft'/>
                     <div>
