@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
-import {isEditing, nodeDispatch} from "../core/NodeReducer";
+import {isEditing, nodeDispatch} from "../core/MapReducer";
 import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment} from "../map/Map";
 import {isUrl} from "../core/Utils";
 import '../css/MapComponent.css'

@@ -2,7 +2,7 @@ import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
 import {checkPop, initDomData, loadMap, push, recalc, redraw, setMapAlignment} from "../map/Map";
-import {nodeDispatch} from "../core/NodeReducer";
+import {nodeDispatch} from "../core/MapReducer";
 import {mapMem} from "../map/Map";
 
 /**
