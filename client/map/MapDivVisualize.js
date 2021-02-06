@@ -25,7 +25,7 @@ export const mapDivVisualize = {
                 textDecoration:         cm.linkType !== "" ? "underline" : "",
                 cursor:                 'default',
                 color:                  cm.sTextColor,
-                backgroundColor:        cm.ellipseFill ? cm.ellipseFillColor : getBgc(),
+                backgroundColor:        cm.ellipseFill ? cm.ellipseFillColor : 'none',
                 transition:             '0.5s ease-out',
                 transitionProperty:     'left, top, background-color',
             };
