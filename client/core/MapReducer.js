@@ -317,8 +317,7 @@ export function mapReducer(action, payload) {
             mapChangeProp.start(lm, 'task', !lm.task);
             break;
         }
-        case 'setDensity': {
-            setMapDensity(payload);
+        case 'resetDim': {
             mapChangeProp.start(mapMem.getData().r, 'isDimAssigned', 0);
             break;
         }
