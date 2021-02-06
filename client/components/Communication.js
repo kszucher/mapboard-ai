@@ -11,7 +11,7 @@ import {
     setMapAlignment,
     setMapDensity,
 } from "../map/Map";
-import {nodeDispatch} from "../core/MapReducer";
+import {nodeDispatch} from "../core/NodeReducer";
 import {mapMem} from "../map/Map";
 
 /**

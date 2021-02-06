@@ -12,11 +12,11 @@ export let isEditing = 0;
 
 export function nodeDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action);
-    mapReducer(action, payload);
+    nodeReducer(action, payload);
     recalc();
 }
 
-export function mapReducer(action, payload) {
+export function nodeReducer(action, payload) {
     let sc = getSelectionContext();
     let {lm} = sc;
     switch (action) {

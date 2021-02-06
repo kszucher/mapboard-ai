@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
-import {isEditing, nodeDispatch} from "../core/MapReducer";
+import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment, setMapDensity} from "../map/Map";
 import {isUrl} from "../core/Utils";
 import '../css/MapComponent.css'
@@ -185,7 +185,7 @@ export function MapComponent() {
                     if (currReducer === 'CREATE_MAP_IN_MAP') {
                         dispatch({type: currReducer, payload: sc.lm.content});
                     } else {
-                        // only move these under mapReducer once they will really change state
+                        // only move these under nodeReducer once they will really change state
                         if (currReducer === 'UNDO') {
                             if (mapMem.dataIndex > 0) {
                                 mapMem.dataIndex--;
