@@ -1,7 +1,16 @@
 import '../css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {checkPop, initDomData, loadMap, push, recalc, redraw, setMapAlignment} from "../map/Map";
+import {
+    checkPop,
+    initDomData,
+    loadMap,
+    push,
+    recalc,
+    redraw,
+    setMapAlignment,
+    setMapDensity,
+} from "../map/Map";
 import {nodeDispatch} from "../core/MapReducer";
 import {mapMem} from "../map/Map";
 
@@ -68,19 +77,17 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-
+                    // TO MAP STATE
                     let mapDivBackground = document.getElementById('mapDivBackground');
                     mapDivBackground.style.transition = 'none';
-
                     loadMap(serverResponse.mapStorage);
+                    setMapDensity(serverResponse.mapStorage.density);
                     recalc();
                     redraw();
-                    setMapAlignment();
-
+                    setMapAlignment(); // needs recalc redraw
                     mapDivBackground.style.transition = '0.5s ease-out';
-
-                    dispatch({type: 'SET_IS_MAP_LOADED', payload: true});
-                    dispatch({type: 'SET_DENSITY', payload: mapMem.density});
+                    // TO WORKSPACE STATE
+                    dispatch({type: 'SET_MAPSTORAGE', payload: serverResponse.mapStorage});
                     break;
                 }
                 case 'createMapInMapSuccess': {

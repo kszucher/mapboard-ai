@@ -36,12 +36,7 @@ export function loadMap(mapStorage) {
 
         filter: [],
         deepestSelectablePath: [],
-
-        isLocked: true,
     };
-
-    setMapDensity(mapStorage.density);
-    setMapIsLocked(true);
 }
 
 export const setMapDensity = (density) => {
@@ -51,16 +46,10 @@ export const setMapDensity = (density) => {
     mapMem.defaultH = density === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
 };
 
-export const setMapIsLocked = (isLocked) => {
-    mapMem.isLocked = isLocked;
-};
-
 export const setMapAlignment = () => {
-    if (mapMem.isLocked) {
-        let mapHolderDiv = document.getElementById('mapHolderDiv');
-        mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
-        mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
-    }
+    let mapHolderDiv = document.getElementById('mapHolderDiv');
+    mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
+    mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
 };
 
 export function recalc() {

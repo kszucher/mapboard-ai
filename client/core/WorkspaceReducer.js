@@ -62,8 +62,11 @@ const WorkspaceReducer = (state, action) => {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
             return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
-        case 'SET_IS_MAP_LOADED':
-            return {...state, isMapLoaded: payload};
+        case 'SET_MAPSTORAGE':
+            return {...state,
+                mapStorage: payload,
+                density: payload.density,
+            };
         // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP':
             return {...state,

@@ -9,7 +9,7 @@ import '../css/MapComponent.css'
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
-    const {isMapLoaded, density} = state;
+    const {density} = state;
 
     useEffect(() => {
         window.addEventListener("resize",       resize);
@@ -31,7 +31,7 @@ export function MapComponent() {
     }, []);
 
     useEffect(() => {
-        if (isMapLoaded) {
+        if (density !== '') {
             setMapDensity(density);
             nodeDispatch('resetDim');
             redraw();
