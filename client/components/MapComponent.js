@@ -39,7 +39,7 @@ export function MapComponent() {
     }, [density]);
 
     const resize = (e) => {
-        setMapAlignment();
+        // setMapAlignment();
     };
 
     const popstate = (e) => {
