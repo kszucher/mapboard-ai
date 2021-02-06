@@ -313,6 +313,12 @@ export function mapReducer(action, payload) {
             cm.taskStatusInherited = -1;
             break;
         }
+        case 'taskCheckReset': {
+            if (lm.task) {
+                mapChangeProp.start(lm, 'taskStatus', -1);
+            }
+            break;
+        }
         case 'taskSwitch': {
             mapChangeProp.start(lm, 'task', !lm.task);
             break;
