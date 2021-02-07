@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme) => ({
 
         //
         //
-        backgroundColor: "#a4508b",
-        backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
+        backgroundColor: "#5f0a87",
+        // backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
 
         // backgroundColor: "#fbfafc"
 
