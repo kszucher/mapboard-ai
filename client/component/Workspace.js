@@ -1,4 +1,4 @@
-import '../css/Layout.css'
+import '../component-css/Layout.css'
 import React, { useEffect,} from 'react'
 import Toolbar from "./Toolbar";
 import Tabs from "./Tabs";

@@ -4,7 +4,7 @@ import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment, setMapDensity} from "../map/Map";
 import {isUrl} from "../core/Utils";
-import '../css/MapComponent.css'
+import '../component-css/MapComponent.css'
 
 export function MapComponent() {
 

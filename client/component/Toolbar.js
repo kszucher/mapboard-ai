@@ -12,7 +12,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {Context} from "../core/Store";
-import '../css/Toolbar.css'
+import '../component-css/Toolbar.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {

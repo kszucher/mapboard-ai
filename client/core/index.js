@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Page} from "../components/Page";
+import {Page} from "../component/Page";
 import Store from "./Store";
-import {Communication} from "../components/Communication";
+import {Communication} from "../component/Communication";
 
 ReactDOM.render(
     <Store>

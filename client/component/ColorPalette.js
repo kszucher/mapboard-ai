@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {Context} from '../core/Store';
-import '../css/ColorPalette.css'
+import '../component-css/ColorPalette.css'
 
 export function ColorPalette () {
 
@@ -24,13 +24,13 @@ export function ColorPalette () {
 
     return (
         <div id = 'color-palette'>
-            <svg viewBox='0 0 200 600'>
+            <svg viewBox='0 0 400 250'>
                 {colorList.map((iEl, i) => (
                     iEl.map((jEl, j) => (
                         <circle
-                            cx={10 + j * 10}
-                            cy={10 + i * 10}
-                            r={1}
+                            cx={10 + j * 32}
+                            cy={10 + i * 32}
+                            r={12}
                             key={'key'+i*10+j}
                             fill={jEl}
                             onClick={() => handleClick}

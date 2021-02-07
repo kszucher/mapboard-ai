@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {Context} from "../core/Store";
-import '../css/Breadcrumbs.css'
+import '../component-css/Breadcrumbs.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
