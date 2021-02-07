@@ -1,0 +1,8 @@
+#color-palette {
+    position: fixed;
+    width: 400px;
+    height: 200px;
+    bottom: 0;
+    right: 0;
+    background-color: coral;
+}
