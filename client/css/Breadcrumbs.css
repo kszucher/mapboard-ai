@@ -1,0 +1,18 @@
+#breadcrumbsContainer {
+    position: fixed;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#breadcrumbs {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #fbfafc;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    box-shadow: 5px 5px 5px #dddddd;
+}

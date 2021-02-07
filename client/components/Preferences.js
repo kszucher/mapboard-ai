@@ -13,7 +13,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import {Context} from "../core/Store";
-
+import '../css/Preferences.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {

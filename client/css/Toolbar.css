@@ -1,0 +1,13 @@
+#toolbar {
+    position: fixed;
+    width: 200px;
+    height: 48px;
+    background-color: #a4508b;
+    background-image: linear-gradient(330deg, #a4508b 0%, #5f0a87 74%);
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    color: #fff;
+
+    display: flex;
+    justify-content: center;
+}

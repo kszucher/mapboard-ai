@@ -1,0 +1,15 @@
+#tabsContainer {
+    position: fixed;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+#tabs {
+    width: 200px;
+    height: auto;
+    background-color: #fbfafc;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    box-shadow: 5px 5px 5px #dddddd;
+}
