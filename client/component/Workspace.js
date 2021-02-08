@@ -7,7 +7,7 @@ import {MuiThemeProvider} from "@material-ui/core";
 import Breadcrumbs from "./Breadcrumbs";
 import {MapComponent} from "./MapComponent";
 import {Preferences} from "./Preferences";
-import {ColorPalette} from "./ColorPalette";
+import {Palette} from "./Palette";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -170,7 +170,7 @@ export function Workspace() {
                 <Breadcrumbs/>
                 <Preferences/>
                 <Toolbar/>
-                <ColorPalette/>
+                <Palette/>
             </MuiThemeProvider>
         </div>
     )

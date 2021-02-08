@@ -11,6 +11,8 @@ export const State = {
     density: '',
     mapStorageOut: [],
     breadcrumbsHistory: [],
+    // preferences
+    isPaletteVisible: false,
 };
 
 export const InitState = JSON.stringify(State);

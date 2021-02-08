@@ -1,19 +1,16 @@
 import React, {useContext, useState} from 'react';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Divider from "@material-ui/core/Divider";
 import Switch from "@material-ui/core/Switch";
-import Button from "@material-ui/core/Button";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
-import CropFreeIcon from '@material-ui/icons/CropFree';
 import {Context} from "../core/Store";
 import '../component-css/Preferences.css'
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,18 +24,11 @@ const useStyles = makeStyles((theme) => ({
 export function Preferences () {
     const classes = useStyles();
 
-    const [checked, setChecked] = useState(true);
+    const [colorMode, setColorMode] = useState('text');
 
     const [state, dispatch] = useContext(Context);
 
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
-
-    const handleDensity = (event) => {
-        // console.log(event.target.value)
-        dispatch({type: 'SET_DENSITY', payload: event.target.value});
-    };
+    const {density, isPaletteVisible} = state;
 
     return (
         <div id = 'preferencesContainer'>
@@ -47,19 +37,53 @@ export function Preferences () {
                 <div className={classes.root}>
                     <FormControl component="fieldset" className={classes.formControl}>
                         <FormLabel component="legend">Map Density</FormLabel>
-                        <RadioGroup aria-label="mapDensity" name="mapDensity" value={state.density} onChange={handleDensity}>
-                            <FormControlLabel value="small" control={<Radio />} label="Small" />
-                            <FormControlLabel value="large" control={<Radio />} label="Large" />
+                        <RadioGroup
+                            aria-label="mapDensity"
+                            name="mapDensity"
+                            value={density}
+                            onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
+                            <FormControlLabel
+                                value="small"
+                                control={<Radio />}
+                                label="Small" />
+                            <FormControlLabel
+                                value="large"
+                                control={<Radio />}
+                                label="Large" />
                         </RadioGroup>
-                        <FormLabel component="legend">View</FormLabel>
+                        <FormLabel component="legend">Colors</FormLabel>
                         <FormGroup>
-                            <FormControlLabel control={<Switch checked={checked} onChange={handleChange} name="gilad" />} label="Locked"/>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={isPaletteVisible}
+                                        onChange={e => dispatch({type: 'SET_IS_PALETTE_VISIBLE', payload: e.target.checked})}
+                                        name="paletteSwitch" />}
+                                label="Palette"/>
                         </FormGroup>
+                        {/*<Select*/}
+                        {/*    labelId="demo-simple-select-label"*/}
+                        {/*    id="demo-simple-select"*/}
+                        {/*    value={colorMode}*/}
+                        {/*    onChange={event => setColorMode(event.target.value)}>*/}
+                        {/*    <MenuItem value={'text'}>Text</MenuItem>*/}
+                        {/*    <MenuItem value={'border'}>Border</MenuItem>*/}
+                        {/*    <MenuItem value={'highlight'}>Highlight</MenuItem>*/}
+                        {/*    <MenuItem value={'line'}>Line</MenuItem>*/}
+                        {/*</Select>*/}
+                        <RadioGroup
+                            aria-label="colorModes"
+                            name="colorModes"
+                            value={colorMode}
+                            onChange={event => setColorMode(event.target.value)}>
+                            <FormControlLabel value="text" control={<Radio />} label="Text" />
+                            <FormControlLabel value="border" control={<Radio />} label="Border" />
+                            <FormControlLabel value="highlight" control={<Radio />} label="Highlight" />
+                            <FormControlLabel value="line" control={<Radio />} label="Line" />
+                        </RadioGroup>
+
                     </FormControl>
-
-                    {/*import CropFreeIcon from '@material-ui/icons/CropFree';*/}
                 </div>
-
             </div>
         </div>
     );

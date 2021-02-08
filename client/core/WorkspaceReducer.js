@@ -126,7 +126,12 @@ const WorkspaceReducer = (state, action) => {
             mapPrint.start(payload.lm);
             return state;
         }
-        // SHARE -------------------------------------------------------------------------------------------------------
+        // PREFERENCES
+        case 'SET_IS_PALETTE_VISIBLE': {
+            return {...state, isPaletteVisible: payload}
+        }
+
+
 
         default: return state;
     }

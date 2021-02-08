@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Context} from '../core/Store';
-import '../component-css/ColorPalette.css'
+import '../component-css/Palette.css'
 
-export function ColorPalette () {
+export function Palette () {
 
     // https://yagisanatode.com/2019/08/06/google-apps-script-hexadecimal-color-codes-for-google-docs-sheets-and-slides-standart-palette/
     // const colorList = [
@@ -25,6 +25,7 @@ export function ColorPalette () {
 
 
     const [state, dispatch] = useContext(Context);
+    const {isPaletteVisible} = state;
 
     const [sel, setSel] = useState({
         x: 0,
@@ -39,7 +40,7 @@ export function ColorPalette () {
     };
 
     return (
-        <div id = 'color-palette'>
+        isPaletteVisible && <div id = 'color-palette'>
             <svg viewBox='0 0 400 140'>
                 {colorList.map((iEl, i) => (
                     iEl.map((jEl, j) => (
