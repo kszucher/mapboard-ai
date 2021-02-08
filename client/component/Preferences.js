@@ -23,13 +23,8 @@ const useStyles = makeStyles((theme) => ({
 
 export function Preferences () {
     const classes = useStyles();
-
-    const [colorMode, setColorMode] = useState('text');
-
     const [state, dispatch] = useContext(Context);
-
-    const {density, isPaletteVisible} = state;
-
+    const {density, isPaletteVisible, colorMode} = state;
     return (
         <div id = 'preferencesContainer'>
             <div id = 'preferences'>
@@ -75,13 +70,12 @@ export function Preferences () {
                             aria-label="colorModes"
                             name="colorModes"
                             value={colorMode}
-                            onChange={event => setColorMode(event.target.value)}>
+                            onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
                             <FormControlLabel value="text" control={<Radio />} label="Text" />
                             <FormControlLabel value="border" control={<Radio />} label="Border" />
                             <FormControlLabel value="highlight" control={<Radio />} label="Highlight" />
                             <FormControlLabel value="line" control={<Radio />} label="Line" />
                         </RadioGroup>
-
                     </FormControl>
                 </div>
             </div>

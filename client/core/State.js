@@ -13,6 +13,7 @@ export const State = {
     breadcrumbsHistory: [],
     // preferences
     isPaletteVisible: false,
+    colorMode: 'text',
 };
 
 export const InitState = JSON.stringify(State);

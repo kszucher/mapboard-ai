@@ -130,9 +130,9 @@ const WorkspaceReducer = (state, action) => {
         case 'SET_IS_PALETTE_VISIBLE': {
             return {...state, isPaletteVisible: payload}
         }
-
-
-
+        case 'SET_COLOR_MODE': {
+            return {...state, colorMode: payload}
+        }
         default: return state;
     }
 };
