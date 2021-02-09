@@ -94,7 +94,7 @@ export function Palette () {
     };
 
     return (
-        <div id = 'color-palette'>
+        <div id = 'palette'>
             <svg viewBox='0 0 140 520'>
                 {colorList.map((iEl, i) => (
                     iEl.map((jEl, j) => (
