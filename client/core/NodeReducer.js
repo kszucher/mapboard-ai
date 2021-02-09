@@ -279,7 +279,7 @@ export function nodeReducer(action, payload) {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 switch (payload.currColor) {
-                    case 0: cm.sTextColor = '#000000'; break;
+                    case 0: cm.sTextColor = '#222222'; break;
                     case 1: cm.sTextColor = '#999999'; break;
                     case 2: cm.sTextColor = '#bbbbbb'; break;
                     case 3: cm.sTextColor = '#dddddd'; break;

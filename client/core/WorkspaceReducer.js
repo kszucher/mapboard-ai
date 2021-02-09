@@ -133,6 +133,14 @@ const WorkspaceReducer = (state, action) => {
         case 'SET_COLOR_MODE': {
             return {...state, colorMode: payload}
         }
+        case 'SET_COLORS': {
+            return {...state,
+                colorText: payload.sTextColor,
+                colorBorder: payload.ellipseBorderColor,
+                colorHighlight: payload.ellipseFillColor,
+                colorLine: payload.lineColor,
+            };
+        }
         default: return state;
     }
 };

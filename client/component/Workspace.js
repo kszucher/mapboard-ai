@@ -149,13 +149,13 @@ export function Workspace() {
                 light: '#9040b8',
                 main: '#5f0a87',
                 dark: '#2e0059',
-                contrastText: '#fff',
+                contrastText: '#fbfafc',
             },
             secondary: {
                 light: '#9040b8',
                 main: '#5f0a87',
                 dark: '#2e0059',
-                contrastText: '#000000',
+                contrastText: '#222',
             },
         },
     });

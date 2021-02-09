@@ -12,8 +12,12 @@ export const State = {
     mapStorageOut: [],
     breadcrumbsHistory: [],
     // preferences
-    isPaletteVisible: false,
-    colorMode: 'text',
+    isPaletteVisible: true,
+    colorMode: 'highlight',
+    colorText: '',
+    colorBorder: '',
+    colorHighlight: '',
+    colorLine: '',
 };
 
 export const InitState = JSON.stringify(State);

@@ -89,7 +89,7 @@ export const mapSvgVisualize = {
             svgElementData.tableFrame = {
                 type: 'path',
                 path: getArc(x1, y1, v, h, r, cm.path[2]),
-                color: cm.selected? '#000000' : '#eac6fb',
+                color: cm.selected? '#000000' : cm.cBorderColor,
             };
         }
 

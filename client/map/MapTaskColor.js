@@ -10,7 +10,7 @@ export const mapTaskColor = {
     iterate: (cm) => {
         if (cm.task) {
             if (cm.taskStatus !== -1) {
-                cm.sTextColor = '#000000';
+                cm.sTextColor = '#222222';
                 switch (cm.taskStatus) {
                     case 0: cm.lineColor = '#bbbbbb';  break;
                     case 1: cm.lineColor = '#2c9dfc';  break;

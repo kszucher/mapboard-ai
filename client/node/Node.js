@@ -16,7 +16,7 @@ export let props = {
         imageH:                                 0,
         sTextColor:                             '#222222',
         sTextFontSize:                          14,
-        cBorderColor:                           '#50dfff',
+        cBorderColor:                           '#eac6fb',
         selected:                               0,
         task:                                   0,
         lastSelectedChild:                      -1, // -1 means not selected ever

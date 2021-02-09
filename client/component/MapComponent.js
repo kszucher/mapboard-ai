@@ -63,15 +63,17 @@ export function MapComponent() {
                     }
                     redraw();
                     checkPop();
+                    let sc = getSelectionContext();
+                    let {lm} = sc;
                     if (!e.shiftKey) {
-                        let sc = getSelectionContext();
-                        if(sc.lm.linkType === 'internal') {
-                            dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm: sc.lm}})
-                        } else if (sc.lm.linkType === 'external') {
-                            window.open(sc.lm.link, '_blank');
+                        if(lm.linkType === 'internal') {
+                            dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
+                        } else if (lm.linkType === 'external') {
+                            window.open(lm.link, '_blank');
                             window.focus();
                         }
                     }
+                    dispatch({type: 'SET_COLORS', payload: lm});
                 } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
                     push();
                     nodeDispatch('setTaskStatus', {taskStatus: parseInt(e.path[0].id.charAt(10), 10), svgId: e.path[1].id});
