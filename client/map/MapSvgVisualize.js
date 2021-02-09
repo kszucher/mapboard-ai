@@ -74,7 +74,7 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
-                color: '#bbbbbb',
+                color: cm.lineColor,
             }
         }
 

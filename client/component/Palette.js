@@ -1,6 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Context, remoteDispatch, remoteGetState} from '../core/Store';
 import '../component-css/Palette.css'
+import {nodeDispatch} from "../core/NodeReducer";
+import {checkPop, push, redraw} from "../map/Map";
 
 export function Palette () {
 
@@ -65,21 +67,25 @@ export function Palette () {
         }
     }, [colorMode, isPaletteVisible]);
     useEffect(() => {
-        if (colorMode === 'text') {
-            setSel(findSel(colorText))}
-        }, [colorText]);
+        if (colorMode === 'text' && colorText!== '') {
+            setSel(findSel(colorText))
+        }
+    }, [colorText]);
     useEffect(() => {
-        if (colorMode === 'border') {
-            setSel(findSel(colorBorder))}
-        }, [colorBorder]);
+        if (colorMode === 'border' && colorBorder !== '') {
+            setSel(findSel(colorBorder))
+        }
+    }, [colorBorder]);
     useEffect(() => {
-        if (colorMode === 'highlight') {
-            setSel(findSel(colorHighlight))}
-        }, [colorHighlight]);
+        if (colorMode === 'highlight' && colorHighlight !== '') {
+            setSel(findSel(colorHighlight));
+        }
+    }, [colorHighlight]);
     useEffect(() => {
-        if (colorMode === 'line') {
-            setSel(findSel(colorLine))}
-        }, [colorLine]);
+        if (colorMode === 'line' && colorLine !== '') {
+            setSel(findSel(colorLine))
+        }
+    }, [colorLine]);
 
     const [sel, setSel] = useState({
         x: 0,
@@ -91,6 +97,10 @@ export function Palette () {
             x: i,
             y: j
         });
+        push();
+        nodeDispatch('applyColorFromPalette', {colorMode, color:colorList[i][j]});
+        redraw();
+        checkPop();
     };
 
     return (
