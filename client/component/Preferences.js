@@ -11,6 +11,9 @@ import {Context} from "../core/Store";
 import '../component-css/Preferences.css'
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import {Palette} from "./Palette";
+import {MuiThemeProvider} from "@material-ui/core";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,57 +31,34 @@ export function Preferences () {
     return (
         <div id = 'preferencesContainer'>
             <div id = 'preferences'>
-
-                <div className={classes.root}>
+                {/*<div className={classes.root}>*/}
                     <FormControl component="fieldset" className={classes.formControl}>
-                        <FormLabel component="legend">Map Density</FormLabel>
-                        <RadioGroup
-                            aria-label="mapDensity"
-                            name="mapDensity"
+                        <InputLabel id="demo-simple-select-label">Map Density</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={density}
                             onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
-                            <FormControlLabel
-                                value="small"
-                                control={<Radio />}
-                                label="Small" />
-                            <FormControlLabel
-                                value="large"
-                                control={<Radio />}
-                                label="Large" />
-                        </RadioGroup>
-                        <FormLabel component="legend">Colors</FormLabel>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={isPaletteVisible}
-                                        onChange={e => dispatch({type: 'SET_IS_PALETTE_VISIBLE', payload: e.target.checked})}
-                                        name="paletteSwitch" />}
-                                label="Palette"/>
-                        </FormGroup>
-                        {/*<Select*/}
-                        {/*    labelId="demo-simple-select-label"*/}
-                        {/*    id="demo-simple-select"*/}
-                        {/*    value={colorMode}*/}
-                        {/*    onChange={event => setColorMode(event.target.value)}>*/}
-                        {/*    <MenuItem value={'text'}>Text</MenuItem>*/}
-                        {/*    <MenuItem value={'border'}>Border</MenuItem>*/}
-                        {/*    <MenuItem value={'highlight'}>Highlight</MenuItem>*/}
-                        {/*    <MenuItem value={'line'}>Line</MenuItem>*/}
-                        {/*</Select>*/}
-                        <RadioGroup
-                            aria-label="colorModes"
-                            name="colorModes"
+                            <MenuItem value={'small'}>Small</MenuItem>
+                            <MenuItem value={'large'}>Large</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl component="fieldset" className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-label">Color</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={colorMode}
                             onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
-                            <FormControlLabel value="text" control={<Radio />} label="Text" />
-                            <FormControlLabel value="border" control={<Radio />} label="Border" />
-                            <FormControlLabel value="highlight" control={<Radio />} label="Highlight" />
-                            <FormControlLabel value="line" control={<Radio />} label="Line" />
-                        </RadioGroup>
+                            <MenuItem value={'text'}>Text</MenuItem>
+                            <MenuItem value={'border'}>Border</MenuItem>
+                            <MenuItem value={'highlight'}>Highlight</MenuItem>
+                            <MenuItem value={'line'}>Line</MenuItem>
+                        </Select>
+                        <Palette/>
                     </FormControl>
                 </div>
-            </div>
+            {/*</div>*/}
         </div>
     );
 }

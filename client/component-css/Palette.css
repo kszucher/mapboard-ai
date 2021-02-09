@@ -1,10 +1,10 @@
 #color-palette {
-    position: fixed;
-    width: 520px;
-    height: 140px;
-    bottom: 0;
-    right: 0;
+    /*position: fixed;*/
+    width: 140px;
+    height: 520px;
+    /*bottom: 0;*/
+    /*right: 0;*/
     background-color: rgba(251,250,252,1);
     border-top-left-radius: 16px;
-    box-shadow: -5px 5px 5px #dddddd;
+    /*box-shadow: -5px 5px 5px #dddddd;*/
 }

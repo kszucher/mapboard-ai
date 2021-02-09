@@ -13,4 +13,7 @@
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
     box-shadow: -5px 5px 5px #dddddd;
+    display: flex;
+    flex-direction: column;
+
 }
