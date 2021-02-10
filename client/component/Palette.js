@@ -39,6 +39,10 @@ export function Palette () {
     const [state, dispatch] = useContext(Context);
     const {colorMode, colorText, colorBorder, colorHighlight, colorLine} = state;
 
+    const [sel, setSel] = useState({
+        x: 0,
+        y: 0,
+    });
 
     const findSel = (color) => {
         let sel = {
@@ -84,11 +88,6 @@ export function Palette () {
             setSel(findSel(colorLine))
         }
     }, [colorLine]);
-
-    const [sel, setSel] = useState({
-        x: 0,
-        y: 0,
-    });
 
     const handleClick = (i, j) => {
         setSel({

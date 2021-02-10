@@ -112,12 +112,21 @@ const WorkspaceReducer = (state, action) => {
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
         case 'SET_NODE_PROPS': {
+            let fontSize = 0;
+            switch (payload.sTextFontSize) {
+                case 54: fontSize = 'h1'; break;
+                case 36: fontSize = 'h2'; break;
+                case 24: fontSize = 'h3'; break;
+                case 18: fontSize = 'h4'; break;
+                case 16: fontSize = 'h5'; break;
+                case 14: fontSize = 'h6'; break;
+            }
             return {...state,
                 colorText: payload.sTextColor,
                 colorBorder: payload.ellipseBorderColor,
                 colorHighlight: payload.ellipseFillColor,
                 colorLine: payload.lineColor,
-                nodeFontSize: payload.sTextFontSize,
+                fontSize,
             };
         }
         case 'SET_DENSITY': {

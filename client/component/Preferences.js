@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -14,6 +14,8 @@ import Select from "@material-ui/core/Select";
 import {Palette} from "./Palette";
 import {MuiThemeProvider} from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
+import {checkPop, push, redraw} from "../map/Map";
+import {nodeDispatch} from "../core/NodeReducer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +31,14 @@ export function Preferences () {
     const [state, dispatch] = useContext(Context);
     const {density, colorMode, fontSize} = state;
 
-    // TODO useState to handle nodeFontSize
+    useEffect(() => {
+        if (fontSize !== '') {
+            push();
+            nodeDispatch('applyFontSize', fontSize);
+            redraw();
+            checkPop();
+        }
+    }, [fontSize]);
 
     return (
         <div id = 'preferencesContainer'>
@@ -71,8 +80,8 @@ export function Preferences () {
                         <MenuItem value={'h2'}>H2</MenuItem>
                         <MenuItem value={'h3'}>H3</MenuItem>
                         <MenuItem value={'h4'}>H4</MenuItem>
-                        <MenuItem value={'h5'}>H4</MenuItem>
-                        <MenuItem value={'h6'}>H4</MenuItem>
+                        <MenuItem value={'h5'}>H5</MenuItem>
+                        <MenuItem value={'h6'}>H6</MenuItem>
                     </Select>
                 </FormControl>
             </div>

@@ -11,15 +11,13 @@ export const State = {
     density: '',
     mapStorageOut: [],
     breadcrumbsHistory: [],
-    // node props
+    // preferences
     colorText: '',
     colorBorder: '',
     colorHighlight: '',
     colorLine: '',
-    nodeFontSize: 0,
-    // node prop modifiers
     colorMode: 'highlight',
-    fontSize: 'h1',
+    fontSize: '',
 };
 
 export const InitState = JSON.stringify(State);

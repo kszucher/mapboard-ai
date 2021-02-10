@@ -303,7 +303,6 @@ export function nodeReducer(action, payload) {
                     case 'border':
                         cm.ellipseFill = 1;
                         cm.ellipseBorderColor = payload.color;
-                        console.log(payload.color)
                         break;
                     case 'highlight':
                         cm.ellipseFill = 1;
@@ -312,6 +311,22 @@ export function nodeReducer(action, payload) {
                     case 'line': cm.lineColor = payload.color;
                     break;
                 }
+            }
+            break;
+        }
+        case 'applyFontSize': {
+            let fontMapping = {
+                h1: 54,
+                h2: 36,
+                h3: 24,
+                h4: 18,
+                h5: 16,
+                h6: 14
+            };
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                cm.sTextFontSize = fontMapping[payload];
+                cm.isDimAssigned = 0;
             }
             break;
         }
