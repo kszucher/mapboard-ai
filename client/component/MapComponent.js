@@ -47,6 +47,7 @@ export function MapComponent() {
     };
 
     const click = (e) => {
+        if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
         if (isEditing === 1) {
             nodeDispatch('finishEdit');
             redraw();
@@ -86,6 +87,7 @@ export function MapComponent() {
     };
 
     const dblclick = (e) => {
+        if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
         nodeDispatch('startEdit');
         redraw();
     };
