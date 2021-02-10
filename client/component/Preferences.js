@@ -16,6 +16,14 @@ import {MuiThemeProvider} from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import {checkPop, push, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Toolbar from "@material-ui/core/Toolbar";
+import DeleteIcon from '@material-ui/icons/Delete';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import UndoIcon from '@material-ui/icons/Undo';
+import RedoIcon from '@material-ui/icons/Redo';
+import SaveIcon from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -84,6 +92,23 @@ export function Preferences () {
                         <MenuItem value={'h6'}>H6</MenuItem>
                     </Select>
                 </FormControl>
+
+                <div className={'buttons'}>
+                    <IconButton aria-label="delete">
+                        <UndoIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete">
+                        <RedoIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete">
+                        <SaveIcon />
+                    </IconButton>
+                </div>
+                <div className={'buttons'}>
+                    <IconButton aria-label="delete">
+                        <AssignmentTurnedInIcon />
+                    </IconButton>
+                </div>
             </div>
             {/*</div>*/}
         </div>
