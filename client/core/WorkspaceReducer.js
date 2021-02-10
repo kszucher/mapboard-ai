@@ -111,8 +111,24 @@ const WorkspaceReducer = (state, action) => {
             return state;
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
+        case 'SET_NODE_PROPS': {
+            return {...state,
+                colorText: payload.sTextColor,
+                colorBorder: payload.ellipseBorderColor,
+                colorHighlight: payload.ellipseFillColor,
+                colorLine: payload.lineColor,
+                nodeFontSize: payload.sTextFontSize,
+            };
+        }
         case 'SET_DENSITY': {
             return {...state, density: payload};
+        }
+        case 'SET_COLOR_MODE': {
+            return {...state, colorMode: payload}
+        }
+
+        case 'SET_FONT_SIZE': {
+            return {...state, fontSize: payload}
         }
         // UNDO/REDO ---------------------------------------------------------------------------------------------------
         case 'UNDO': {
@@ -125,21 +141,6 @@ const WorkspaceReducer = (state, action) => {
         case 'PRINT': {
             mapPrint.start(payload.lm);
             return state;
-        }
-        // PREFERENCES
-        case 'SET_IS_PALETTE_VISIBLE': {
-            return {...state, isPaletteVisible: payload}
-        }
-        case 'SET_COLOR_MODE': {
-            return {...state, colorMode: payload}
-        }
-        case 'SET_COLORS': {
-            return {...state,
-                colorText: payload.sTextColor,
-                colorBorder: payload.ellipseBorderColor,
-                colorHighlight: payload.ellipseFillColor,
-                colorLine: payload.lineColor,
-            };
         }
         default: return state;
     }

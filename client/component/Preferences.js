@@ -27,37 +27,55 @@ const useStyles = makeStyles((theme) => ({
 export function Preferences () {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {density, isPaletteVisible, colorMode} = state;
+    const {density, colorMode, fontSize} = state;
+
+    // TODO useState to handle nodeFontSize
+
     return (
         <div id = 'preferencesContainer'>
             <div id = 'preferences'>
                 {/*<div className={classes.root}>*/}
-                    <FormControl component="fieldset" className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-label">Map Density</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={density}
-                            onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
-                            <MenuItem value={'small'}>Small</MenuItem>
-                            <MenuItem value={'large'}>Large</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl component="fieldset" className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-label">Color</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={colorMode}
-                            onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
-                            <MenuItem value={'text'}>Text</MenuItem>
-                            <MenuItem value={'border'}>Border</MenuItem>
-                            <MenuItem value={'highlight'}>Highlight</MenuItem>
-                            <MenuItem value={'line'}>Line</MenuItem>
-                        </Select>
-                        <Palette/>
-                    </FormControl>
-                </div>
+                <FormControl component="fieldset" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Map Density</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={density}
+                        onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
+                        <MenuItem value={'small'}>Small</MenuItem>
+                        <MenuItem value={'large'}>Large</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl component="fieldset" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Color</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={colorMode}
+                        onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
+                        <MenuItem value={'text'}>Text</MenuItem>
+                        <MenuItem value={'border'}>Border</MenuItem>
+                        <MenuItem value={'highlight'}>Highlight</MenuItem>
+                        <MenuItem value={'line'}>Line</MenuItem>
+                    </Select>
+                    <Palette/>
+                </FormControl>
+                <FormControl component="fieldset" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Font Size</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={fontSize}
+                        onChange={e => dispatch({type: 'SET_FONT_SIZE', payload: e.target.value})}>
+                        <MenuItem value={'h1'}>H1</MenuItem>
+                        <MenuItem value={'h2'}>H2</MenuItem>
+                        <MenuItem value={'h3'}>H3</MenuItem>
+                        <MenuItem value={'h4'}>H4</MenuItem>
+                        <MenuItem value={'h5'}>H4</MenuItem>
+                        <MenuItem value={'h6'}>H4</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
             {/*</div>*/}
         </div>
     );

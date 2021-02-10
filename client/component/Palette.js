@@ -37,7 +37,7 @@ export function Palette () {
     ];
 
     const [state, dispatch] = useContext(Context);
-    const {isPaletteVisible, colorMode, colorText, colorBorder, colorHighlight, colorLine} = state;
+    const {colorMode, colorText, colorBorder, colorHighlight, colorLine} = state;
 
 
     const findSel = (color) => {
@@ -59,13 +59,11 @@ export function Palette () {
     };
 
     useEffect(() => {
-        if (isPaletteVisible) {
-            if (colorMode === 'text') {                     setSel(findSel(colorText));
-            } else if (colorMode === 'border') {            setSel(findSel(colorBorder))
-            } else if (colorMode === 'highlight') {         setSel(findSel(colorHighlight))
-            } else if (colorMode === 'line') {              setSel(findSel(colorLine))}
-        }
-    }, [colorMode, isPaletteVisible]);
+        if (colorMode === 'text') {                     setSel(findSel(colorText));
+        } else if (colorMode === 'border') {            setSel(findSel(colorBorder))
+        } else if (colorMode === 'highlight') {         setSel(findSel(colorHighlight))
+        } else if (colorMode === 'line') {              setSel(findSel(colorLine))}
+    }, [colorMode]);
     useEffect(() => {
         if (colorMode === 'text' && colorText!== '') {
             setSel(findSel(colorText))
