@@ -25,6 +25,8 @@ import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import SaveIcon from '@material-ui/icons/Save';
 
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -105,8 +107,14 @@ export function Preferences () {
                     </IconButton>
                 </div>
                 <div className={'buttons'}>
-                    <IconButton aria-label="delete">
-                        <AssignmentTurnedInIcon />
+
+
+
+                    <IconButton aria-label="alarm" color="primary" >
+                        {/*<AssignmentTurnedInIcon />*/}
+
+                        {/*<i className="material-icons">cloud_upload</i>*/}
+                        <span className="material-icons">alarm</span>
                     </IconButton>
                 </div>
             </div>
