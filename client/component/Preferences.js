@@ -66,20 +66,6 @@ export function Preferences () {
                     </Select>
                 </FormControl>
                 <FormControl component="fieldset" className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Color</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={colorMode}
-                        onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
-                        <MenuItem value={'text'}>Text</MenuItem>
-                        <MenuItem value={'border'}>Border</MenuItem>
-                        <MenuItem value={'highlight'}>Highlight</MenuItem>
-                        <MenuItem value={'line'}>Line</MenuItem>
-                    </Select>
-                    <Palette/>
-                </FormControl>
-                <FormControl component="fieldset" className={classes.formControl}>
                     <InputLabel id="demo-simple-select-label">Font Size</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
@@ -94,7 +80,20 @@ export function Preferences () {
                         <MenuItem value={'h6'}>H6</MenuItem>
                     </Select>
                 </FormControl>
-
+                <FormControl component="fieldset" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Color</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={colorMode}
+                        onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
+                        <MenuItem value={'text'}>Text</MenuItem>
+                        <MenuItem value={'border'}>Border</MenuItem>
+                        <MenuItem value={'highlight'}>Highlight</MenuItem>
+                        <MenuItem value={'line'}>Line</MenuItem>
+                    </Select>
+                    <Palette/>
+                </FormControl>
                 <div className={'buttons'}>
                     <IconButton aria-label="delete">
                         <UndoIcon />
