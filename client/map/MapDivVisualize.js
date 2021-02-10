@@ -19,7 +19,7 @@ export const mapDivVisualize = {
                 position:               'absolute',
                 border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
                 borderRadius:           '8px',
-                borderColor:            cm.selected? (cm.isEditing? getBgc() : '#000000' ) : 'none',
+                borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
                 fontSize:               cm.sTextFontSize + 'px',
                 fontFamily:             'Roboto',
                 textDecoration:         cm.linkType !== "" ? "underline" : "",

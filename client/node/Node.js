@@ -22,7 +22,7 @@ export let props = {
         lastSelectedChild:                      -1, // -1 means not selected ever
         lineColor:                              '#bbbbbb',
         ellipseFill:                            0,
-        ellipseBorderColor:                     '#ffffff',
+        ellipseBorderColor:                     getBgc(),
         ellipseFillColor:                       getBgc(),
         ellipseLineWidth:                       1,
         taskStatus:                             -1,

@@ -303,6 +303,7 @@ export function nodeReducer(action, payload) {
                     case 'border':
                         cm.ellipseFill = 1;
                         cm.ellipseBorderColor = payload.color;
+                        console.log(payload.color)
                         break;
                     case 'highlight':
                         cm.ellipseFill = 1;
