@@ -110,7 +110,7 @@ const WorkspaceReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB': {
             return state;
         }
-        // FORMAT ------------------------------------------------------------------------------------------------------
+        // PREFERENCES -------------------------------------------------------------------------------------------------
         case 'SET_NODE_PROPS': {
             let fontSize = 0;
             switch (payload.sTextFontSize) {
@@ -132,24 +132,14 @@ const WorkspaceReducer = (state, action) => {
         case 'SET_DENSITY': {
             return {...state, density: payload};
         }
-        case 'SET_COLOR_MODE': {
-            return {...state, colorMode: payload}
-        }
-
         case 'SET_FONT_SIZE': {
             return {...state, fontSize: payload}
         }
-        // UNDO/REDO ---------------------------------------------------------------------------------------------------
-        case 'UNDO': {
-            return state;
+        case 'SET_COLOR_MODE': {
+            return {...state, colorMode: payload}
         }
-        case 'REDO': {
-            return state;
-        }
-        // IMPORT/EXPORT -----------------------------------------------------------------------------------------------
-        case 'PRINT': {
-            mapPrint.start(payload.lm);
-            return state;
+        case 'SET_MAP_ACTION': {
+            return {...state, mapAction: [...state.mapAction, payload]};
         }
         default: return state;
     }

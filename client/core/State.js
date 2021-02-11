@@ -18,6 +18,8 @@ export const State = {
     colorLine: '',
     colorMode: 'highlight',
     fontSize: '',
+
+    mapAction: ''
 };
 
 export const InitState = JSON.stringify(State);

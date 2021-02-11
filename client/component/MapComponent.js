@@ -9,7 +9,7 @@ import '../component-css/MapComponent.css'
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
-    const {density, fontSize} = state;
+    const {density, fontSize, mapAction} = state;
 
     useEffect(() => {
         window.addEventListener("resize",       resize);
@@ -46,6 +46,24 @@ export function MapComponent() {
             checkPop();
         }
     }, [fontSize]);
+
+    useEffect(() => {
+        let lastAction = [...mapAction].pop();
+        if (lastAction && lastAction !== '') {
+            // push();
+            console.log(lastAction);
+            // switch (lastAction) {
+            //     case 'undo':    break;
+            //     case 'redo':    break;
+            //     case 'save':    break;
+            //     case 'cut':     nodeDispatch('cutSelection'); break;
+            //     case 'copy':    break;
+            //     case 'print':  /*  mapPrint.start(payload.lm); */ break;
+            // }
+            // redraw();
+            // checkPop();
+        }
+    }, [mapAction]);
 
     const resize = (e) => {
         // setMapAlignment();

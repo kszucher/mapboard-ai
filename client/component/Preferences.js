@@ -1,31 +1,13 @@
-import React, {useContext, useEffect, useState} from 'react';
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import React, {useContext} from 'react';
+import {Context} from "../core/Store";
+import {Palette} from "./Palette";
+import '../component-css/Preferences.css'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import Switch from "@material-ui/core/Switch";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import {Context} from "../core/Store";
-import '../component-css/Preferences.css'
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
-import {Palette} from "./Palette";
-import {MuiThemeProvider} from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
-import {checkPop, push, redraw} from "../map/Map";
-import {nodeDispatch} from "../core/NodeReducer";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Toolbar from "@material-ui/core/Toolbar";
-import DeleteIcon from '@material-ui/icons/Delete';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
-import SaveIcon from '@material-ui/icons/Save';
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -86,32 +68,32 @@ export function Preferences () {
                     <Palette/>
                 </FormControl>
                 <div className={'buttons'}>
-                    <IconButton aria-label="delete">
-                        <UndoIcon />
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'undo'})}>
+                        <span className="material-icons">undo</span>
                     </IconButton>
-                    <IconButton aria-label="delete">
-                        <RedoIcon />
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'redo'})}>
+                        <span className="material-icons">redo</span>
                     </IconButton>
-                    <IconButton aria-label="delete">
-                        <SaveIcon />
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'save'})}>
+                        <span className="material-icons">save</span>
                     </IconButton>
                 </div>
                 <div className={'buttons'}>
-                    <IconButton aria-label="alarm" >
+                    <IconButton >
                         <span className="material-icons">content_cut</span>
                     </IconButton>
-                    <IconButton aria-label="alarm" >
+                    <IconButton >
                         <span className="material-icons">content_copy</span>
                     </IconButton>
-                    <IconButton aria-label="alarm" >
+                    <IconButton >
                         <span className="material-icons">content_paste</span>
                     </IconButton>
                 </div>
                 <div className={'buttons'}>
-                    <IconButton aria-label="alarm" >
+                    <IconButton >
                         <span className="material-icons">grid_on</span>
                     </IconButton>
-                    <IconButton aria-label="alarm">
+                    <IconButton>
                         <span className="material-icons">assignment_turned_in</span>
                     </IconButton>
                 </div>
