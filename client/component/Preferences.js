@@ -41,15 +41,6 @@ export function Preferences () {
     const [state, dispatch] = useContext(Context);
     const {density, colorMode, fontSize} = state;
 
-    useEffect(() => {
-        if (fontSize !== '') {
-            push();
-            nodeDispatch('applyFontSize', fontSize);
-            redraw();
-            checkPop();
-        }
-    }, [fontSize]);
-
     return (
         <div id = 'preferencesContainer'>
             <div id = 'preferences'>
@@ -106,14 +97,22 @@ export function Preferences () {
                     </IconButton>
                 </div>
                 <div className={'buttons'}>
-
-
-
-                    <IconButton aria-label="alarm" color="primary" >
-                        {/*<AssignmentTurnedInIcon />*/}
-
-                        {/*<i className="material-icons">cloud_upload</i>*/}
-                        <span className="material-icons">alarm</span>
+                    <IconButton aria-label="alarm" >
+                        <span className="material-icons">content_cut</span>
+                    </IconButton>
+                    <IconButton aria-label="alarm" >
+                        <span className="material-icons">content_copy</span>
+                    </IconButton>
+                    <IconButton aria-label="alarm" >
+                        <span className="material-icons">content_paste</span>
+                    </IconButton>
+                </div>
+                <div className={'buttons'}>
+                    <IconButton aria-label="alarm" >
+                        <span className="material-icons">grid_on</span>
+                    </IconButton>
+                    <IconButton aria-label="alarm">
+                        <span className="material-icons">assignment_turned_in</span>
                     </IconButton>
                 </div>
             </div>

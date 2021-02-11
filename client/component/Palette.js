@@ -98,6 +98,10 @@ export function Palette () {
         nodeDispatch('applyColorFromPalette', {colorMode, color:colorList[i][j]});
         redraw();
         checkPop();
+
+        // instead of setSel
+        // dispatch to state-nek, which will refresh color, which will call useEffects, which well setSel and
+        // put the nodeDispatch into the mapComponent
     };
 
     return (

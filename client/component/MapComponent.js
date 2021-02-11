@@ -9,7 +9,7 @@ import '../component-css/MapComponent.css'
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
-    const {density} = state;
+    const {density, fontSize} = state;
 
     useEffect(() => {
         window.addEventListener("resize",       resize);
@@ -37,6 +37,15 @@ export function MapComponent() {
             redraw();
         }
     }, [density]);
+
+    useEffect(() => {
+        if (fontSize !== '') {
+            push();
+            nodeDispatch('applyFontSize', fontSize);
+            redraw();
+            checkPop();
+        }
+    }, [fontSize]);
 
     const resize = (e) => {
         // setMapAlignment();
