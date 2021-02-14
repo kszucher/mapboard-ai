@@ -5,6 +5,7 @@ import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment, setMapDensity, mapref, recalc} from "../map/Map";
 import {copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
+import {mapChangeProp} from "../map/MapChangeProp";
 
 const checkDistance = (x, y) => {
     // TODO make x,y relative
@@ -12,10 +13,13 @@ const checkDistance = (x, y) => {
     let minDistIndex = 0;
     for (let i = 0; i < mapMem.filter.unselectedPlacementList.length; i++) {
         let {endX, endY} = mapMem.filter.unselectedPlacementList[i];
-        let currDist = Math.sqrt(Math.pow(x - endX, 2) + Math.pow(y - endY, 2));
-        if (currDist < minDist) {
-            minDist = currDist;
-            minDistIndex = i;
+
+        if (x > endX && Math.abs(y - endY) < mapMem.sLineDeltaXDefault) {
+            let currDist = Math.sqrt(Math.pow(x - endX, 2) + Math.pow(y - endY, 2));
+            if (currDist < minDist) {
+                minDist = currDist;
+                minDistIndex = i;
+            }
         }
     }
     return copy(mapMem.filter.unselectedPlacementList[minDistIndex].path);
@@ -149,10 +153,13 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
+            let el = document.getElementById('mapHolderDiv');
+            // console.log(el.offsetTop)
+            let nearestPath = checkDistance(e.pageX - 307, e.pageY - 96);
+            let nearestRef = mapref(nearestPath);
 
-            let nearestPath = checkDistance(e.pageX, e.pageY);
-
-            mapref(nearestPath).sTextColor = '#ff0000';
+            mapChangeProp.start(mapref(['r']), 'sTextColor', '#000000');
+            nearestRef.sTextColor = '#ff0000';
             redraw();
         }
     };
