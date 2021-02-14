@@ -17,6 +17,8 @@ export function MapComponent() {
         window.addEventListener('click',        click);
         window.addEventListener('dblclick',     dblclick);
         window.addEventListener('mousedown',    mousedown);
+        window.addEventListener('mousemove',    mousemove);
+        window.addEventListener('mouseup',      mouseup);
         window.addEventListener("keydown",      keydown);
         window.addEventListener("paste",        paste);
         return () => {
@@ -25,6 +27,8 @@ export function MapComponent() {
             window.removeEventListener('click',        click);
             window.removeEventListener('dblclick',     dblclick);
             window.removeEventListener('mousedown',    mousedown);
+            window.removeEventListener('mousemove',    mousemove);
+            window.removeEventListener('mouseup',      mouseup);
             window.removeEventListener("keydown",      keydown);
             window.removeEventListener("paste",        paste);
         };
@@ -74,6 +78,7 @@ export function MapComponent() {
     };
 
     const click = (e) => {
+        mapMem.isNodeClicked = false;
         if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
         if (isEditing === 1) {
             nodeDispatch('finishEdit');
@@ -83,6 +88,7 @@ export function MapComponent() {
             if (pathItem.id) {
                 if (pathItem.id.substring(0, 3) === 'div') {
                     mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
+                    mapMem.isNodeClicked = true;
                     push();
                     if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                         nodeDispatch('selectStruct');
@@ -121,6 +127,20 @@ export function MapComponent() {
 
     const mousedown = (e) => {
         e.preventDefault();
+        mapMem.isMouseDown = true;
+
+    };
+
+    const mousemove = (e) => {
+        e.preventDefault();
+        if (mapMem.isMouseDown && mapMem.isNodeClicked) {
+            console.log('dragging now')
+        }
+    };
+
+    const mouseup = (e) => {
+        e.preventDefault();
+        mapMem.isMouseDown = false;
     };
 
     const keydown = (e) => {

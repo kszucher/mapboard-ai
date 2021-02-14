@@ -8,6 +8,7 @@ export const mapCollect = {
             filter: {
                 structSelectedPathList: [],
                 cellSelectedPathList: [],
+                endCoords: [],
             }
         };
         mapCollect.iterate(cm, params);
@@ -22,6 +23,11 @@ export const mapCollect = {
                 params.filter.structSelectedPathList.push(cm.path.slice(0));
 
             }
+        }
+
+        if (cm.type === 'struct') {
+            // TODO different case for the left side of the map
+            params.filter.endCoords.push({path: cm.path.slice(0), endCoord:[cm.nodeEndX, cm.nodeEndY]});
         }
 
         cm.d.map(i => mapCollect.iterate(i, params));

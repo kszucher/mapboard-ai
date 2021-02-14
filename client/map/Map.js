@@ -36,6 +36,9 @@ export function loadMap(mapStorage) {
 
         filter: [],
         deepestSelectablePath: [],
+
+        isNodeClicked: false,
+        isMouseDown: false,
     };
 }
 
