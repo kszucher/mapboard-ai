@@ -1,10 +1,25 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
-import {getSelectionContext} from "../node/NodeSelect";
+import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment, setMapDensity} from "../map/Map";
-import {isUrl} from "../core/Utils";
+import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment, setMapDensity, mapref, recalc} from "../map/Map";
+import {copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
+
+const checkDistance = (x, y) => {
+    // TODO make x,y relative
+    let minDist = Infinity;
+    let minDistIndex = 0;
+    for (let i = 0; i < mapMem.filter.unselectedPlacementList.length; i++) {
+        let {endX, endY} = mapMem.filter.unselectedPlacementList[i];
+        let currDist = Math.sqrt(Math.pow(x - endX, 2) + Math.pow(y - endY, 2));
+        if (currDist < minDist) {
+            minDist = currDist;
+            minDistIndex = i;
+        }
+    }
+    return copy(mapMem.filter.unselectedPlacementList[minDistIndex].path);
+};
 
 export function MapComponent() {
 
@@ -78,7 +93,12 @@ export function MapComponent() {
     };
 
     const click = (e) => {
+
+    };
+
+    const mousedown = (e) => {
         mapMem.isNodeClicked = false;
+        mapMem.isMouseDown = true;
         if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
         if (isEditing === 1) {
             nodeDispatch('finishEdit');
@@ -120,21 +140,20 @@ export function MapComponent() {
     };
 
     const dblclick = (e) => {
+        e.preventDefault();
         if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
         nodeDispatch('startEdit');
         redraw();
     };
 
-    const mousedown = (e) => {
-        e.preventDefault();
-        mapMem.isMouseDown = true;
-
-    };
-
     const mousemove = (e) => {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
-            console.log('dragging now')
+
+            let nearestPath = checkDistance(e.pageX, e.pageY);
+
+            mapref(nearestPath).sTextColor = '#ff0000';
+            redraw();
         }
     };
 

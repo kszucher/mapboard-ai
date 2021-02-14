@@ -8,7 +8,7 @@ export const mapCollect = {
             filter: {
                 structSelectedPathList: [],
                 cellSelectedPathList: [],
-                endCoords: [],
+                unselectedPlacementList: [],
             }
         };
         mapCollect.iterate(cm, params);
@@ -25,9 +25,15 @@ export const mapCollect = {
             }
         }
 
-        if (cm.type === 'struct') {
+        if (!cm.selected && cm.type === 'struct') {
+            // TODO prevent to collect ANY child of ANY selected node --> smart recursion required
             // TODO different case for the left side of the map
-            params.filter.endCoords.push({path: cm.path.slice(0), endCoord:[cm.nodeEndX, cm.nodeEndY]});
+            params.filter.unselectedPlacementList.push({
+                path: cm.path.slice(0),
+                endX: cm.nodeEndX,
+                endY: cm.nodeEndY,
+                // TODO topCoords, bottomCords
+            });
         }
 
         cm.d.map(i => mapCollect.iterate(i, params));
