@@ -27,11 +27,11 @@ export const mapCollect = {
 
         if (!cm.selected && cm.type === 'struct') {
             // TODO prevent to collect ANY child of ANY selected node --> smart recursion required
-            // TODO different case for the left side of the map
             params.filter.unselectedPlacementList.push({
                 path: cm.path.slice(0),
-                endX: cm.nodeEndX,
-                endY: cm.nodeEndY,
+                equalX: cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
+                equalY: cm.nodeStartY,
+                nonEqualX: cm.path[2] === 0 ? cm.nodeEndX : cm.nodeStartX,
                 // TODO topCoords, bottomCords
             });
         }

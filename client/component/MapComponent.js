@@ -7,24 +7,6 @@ import {copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
 
-const checkDistance = (x, y) => {
-    // TODO make x,y relative
-    let minDist = Infinity;
-    let minDistIndex = 0;
-    for (let i = 0; i < mapMem.filter.unselectedPlacementList.length; i++) {
-        let {endX, endY} = mapMem.filter.unselectedPlacementList[i];
-
-        if (x > endX && Math.abs(y - endY) < mapMem.sLineDeltaXDefault) {
-            let currDist = Math.sqrt(Math.pow(x - endX, 2) + Math.pow(y - endY, 2));
-            if (currDist < minDist) {
-                minDist = currDist;
-                minDistIndex = i;
-            }
-        }
-    }
-    return copy(mapMem.filter.unselectedPlacementList[minDistIndex].path);
-};
-
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
@@ -153,13 +135,28 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
-            let el = document.getElementById('mapHolderDiv');
-            // console.log(el.offsetTop)
-            let nearestPath = checkDistance(e.pageX - 307, e.pageY - 96);
-            let nearestRef = mapref(nearestPath);
-
             mapChangeProp.start(mapref(['r']), 'sTextColor', '#000000');
-            nearestRef.sTextColor = '#ff0000';
+            let x = e.pageX - 307;
+            let y = e.pageY - 96;
+            let minDist = Infinity;
+            let minDistIndex = -1;
+            for (let i = 0; i < mapMem.filter.unselectedPlacementList.length; i++) {
+                let {path, equalX, equalY, nonEqualX} = mapMem.filter.unselectedPlacementList[i];
+                if (Math.abs(y - equalY) < mapMem.sLineDeltaXDefault) {
+                    if ((path[2] === 0 && x > nonEqualX) || (path[2] === 1 && x < nonEqualX)) {
+                        let currDist = Math.sqrt(Math.pow(x - equalX, 2) + Math.pow(y - equalY, 2)  );
+                        if (currDist < minDist) {
+                            minDist = currDist;
+                            minDistIndex = i;
+                        }
+                    }
+                }
+            }
+            if (minDistIndex !== -1) {
+                let nearestPath = copy(mapMem.filter.unselectedPlacementList[minDistIndex].path);
+                let nearestRef = mapref(nearestPath);
+                nearestRef.sTextColor = '#ff0000';
+            }
             redraw();
         }
     };
