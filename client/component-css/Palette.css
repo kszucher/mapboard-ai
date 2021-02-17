@@ -1,12 +1,9 @@
 #palette {
-    /*position: fixed;*/
-    /*width: auto;*/
-    /*height: auto;*/
-    /*bottom: 0;*/
-    /*right: 0;*/
-    /*background-color: rgba(251,250,252,1);*/
-    /*border-top-left-radius: 16px;*/
-    /*box-shadow: -5px 5px 5px #dddddd;*/
-    display: flex;
-    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 460px;
+    height: 180px;
+    background-color: rgba(251,250,252,1);
+    border-top-left-radius: 16px;
 }
