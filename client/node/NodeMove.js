@@ -4,7 +4,6 @@ import {copy, transpose} from "../core/Utils";
 import {mapMem} from "../map/Map";
 
 let clipboard = [];
-let vClipboard = [];
 
 export function setClipboard(clipboardIn) {
     clipboard = clipboardIn;
@@ -12,17 +11,10 @@ export function setClipboard(clipboardIn) {
 
 export function nodeMoveMouse (sc) {
     let {structSelectedPathList, sameParent} = sc;
-    vClipboard = [];
-    for (let i = 0; i < structSelectedPathList.length; i++) {
-        let currRef = mapref(structSelectedPathList[i]);
-        vClipboard.push(copy(currRef));
-    }
     let nodeTarget = mapref(mapMem.movePath);
-    for (let i = 0; i < vClipboard.length; i++) {
-        nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(vClipboard[i]));
-    }
     for (let i = 0; i < structSelectedPathList.length; i++) {
         let currRef = mapref(structSelectedPathList[i]);
+        nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(currRef));
         sameParent.s.splice(currRef.index, 1);
     }
 }
