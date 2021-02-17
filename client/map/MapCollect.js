@@ -33,7 +33,7 @@ export const mapCollect = {
     },
 
     iterateHover: (cm, params) => {
-        if (!cm.isRoot && !cm.selected && cm.type === 'struct') {
+        if (!cm.selected) {
             params.filter.unselectedPlacementList.push({
                 path: cm.path.slice(0),
                 equalX: cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
@@ -41,9 +41,7 @@ export const mapCollect = {
                 nonEqualX: cm.path[2] === 0 ? cm.nodeEndX : cm.nodeStartX,
                 // TODO topCoords, bottomCords
             });
-        }
 
-        if (!cm.selected) {
             cm.d.map(i => mapCollect.iterateHover(i, params));
             cm.s.map(i => mapCollect.iterateHover(i, params));
             cm.c.map(i => i.map(j => mapCollect.iterateHover(j, params)));
