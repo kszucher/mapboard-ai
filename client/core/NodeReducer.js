@@ -1,7 +1,7 @@
 import {setMapDensity, mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
-import {setClipboard, nodeMove} from "../node/NodeMove";
+import {setClipboard, nodeMove, nodeMoveMouse} from "../node/NodeMove";
 import {nodeNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {setEndOfContenteditable, transposeArray} from "./Utils";
@@ -227,7 +227,7 @@ export function nodeReducer(action, payload) {
             break;
         }
         case 'moveSelection': {
-            nodeMove(sc, 'struct2struct', 'Mouse');
+            nodeMoveMouse(sc);
             break;
         }
         case 'cellifyMulti': {

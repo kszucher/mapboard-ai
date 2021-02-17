@@ -10,6 +10,23 @@ export function setClipboard(clipboardIn) {
     clipboard = clipboardIn;
 }
 
+export function nodeMoveMouse (sc) {
+    let {structSelectedPathList, sameParent} = sc;
+    vClipboard = [];
+    for (let i = 0; i < structSelectedPathList.length; i++) {
+        let currRef = mapref(structSelectedPathList[i]);
+        vClipboard.push(copy(currRef));
+    }
+    let nodeTarget = mapref(mapMem.movePath);
+    for (let i = 0; i < vClipboard.length; i++) {
+        nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(vClipboard[i]));
+    }
+    for (let i = 0; i < structSelectedPathList.length; i++) {
+        let currRef = mapref(structSelectedPathList[i]);
+        sameParent.s.splice(currRef.index, 1);
+    }
+}
+
 export function nodeMove(sc, target, key, mode) {
     let {geomHighRef, geomLowRef, structSelectedPathList, lm, haveSameParent, sameParent,
         cellRowSelected, cellRow, cellColSelected, cellCol} = sc;
@@ -33,9 +50,6 @@ export function nodeMove(sc, target, key, mode) {
     } else if (
         key === 'ArrowDown') {
         direction = 'down';
-    } else if (
-        key === 'Mouse') {
-        direction = 'free'
     }
 
     if (target === 'struct2struct') {
@@ -93,17 +107,6 @@ export function nodeMove(sc, target, key, mode) {
                         sameParent.s.splice(i, 0, copy(currRef));
                     }
                 }
-            } else if (direction === 'free') {
-                vClipboard = [];
-                for (let i = 0; i < structSelectedPathList.length; i++) {
-                    let currRef = mapref(structSelectedPathList[i]);
-                    sameParent.s.splice(currRef.index, 1);
-                    vClipboard.push(copy(currRef));
-                }
-                let nodeTarget = mapref(mapMem.movePath);
-                for (let i = 0; i < vClipboard.length; i++) {
-                    nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(vClipboard[i]));
-                }
             }
         }
     } else if (target === 'struct2cell') {
@@ -157,8 +160,7 @@ export function nodeMove(sc, target, key, mode) {
                 }
             });
         }
-    }
-    else if (target === 'clipboard2struct') {
+    } else if (target === 'clipboard2struct') {
         let nodeTarget = lm.isRoot? lm.d[0] : lm;
         for (let i = 0; i < clipboard.length; i++) {
             nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(clipboard[i]));
