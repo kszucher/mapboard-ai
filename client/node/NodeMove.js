@@ -1,8 +1,10 @@
 import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
 import {copy, transpose} from "../core/Utils";
+import {mapMem} from "../map/Map";
 
 let clipboard = [];
+let vClipboard = [];
 
 export function setClipboard(clipboardIn) {
     clipboard = clipboardIn;
@@ -31,6 +33,9 @@ export function nodeMove(sc, target, key, mode) {
     } else if (
         key === 'ArrowDown') {
         direction = 'down';
+    } else if (
+        key === 'Mouse') {
+        direction = 'free'
     }
 
     if (target === 'struct2struct') {
@@ -87,6 +92,17 @@ export function nodeMove(sc, target, key, mode) {
                         sameParent.s.splice(currRef.index, 1);
                         sameParent.s.splice(i, 0, copy(currRef));
                     }
+                }
+            } else if (direction === 'free') {
+                vClipboard = [];
+                for (let i = 0; i < structSelectedPathList.length; i++) {
+                    let currRef = mapref(structSelectedPathList[i]);
+                    sameParent.s.splice(currRef.index, 1);
+                    vClipboard.push(copy(currRef));
+                }
+                let nodeTarget = mapref(mapMem.movePath);
+                for (let i = 0; i < vClipboard.length; i++) {
+                    nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(vClipboard[i]));
                 }
             }
         }

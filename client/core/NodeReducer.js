@@ -226,6 +226,10 @@ export function nodeReducer(action, payload) {
             structDeleteReselect(sc);
             break;
         }
+        case 'moveSelection': {
+            nodeMove(sc, 'struct2struct', 'Mouse');
+            break;
+        }
         case 'cellifyMulti': {
             nodeMove(sc, 'struct2cell', '', 'multiRow');
             break;

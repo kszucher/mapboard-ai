@@ -9,13 +9,15 @@ export const mapCollect = {
                 structSelectedPathList: [],
                 cellSelectedPathList: [],
                 unselectedPlacementList: [],
-            }
+            },
+
         };
-        mapCollect.iterate(cm, params);
+        mapCollect.iterateSelection(cm, params);
+        mapCollect.iterateHover(cm, params);
         mapMem.filter = copy(params.filter);
     },
 
-    iterate: (cm, params) => {
+    iterateSelection: (cm, params) => {
         if (cm.selected) {
             if (Number.isInteger(cm.path[cm.path.length - 2])) {
                 params.filter.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
@@ -25,8 +27,13 @@ export const mapCollect = {
             }
         }
 
-        if (!cm.selected && cm.type === 'struct') {
-            // TODO prevent to collect ANY child of ANY selected node --> smart recursion required
+        cm.d.map(i => mapCollect.iterateSelection(i, params));
+        cm.s.map(i => mapCollect.iterateSelection(i, params));
+        cm.c.map(i => i.map(j => mapCollect.iterateSelection(j, params)));
+    },
+
+    iterateHover: (cm, params) => {
+        if (!cm.isRoot && !cm.selected && cm.type === 'struct') {
             params.filter.unselectedPlacementList.push({
                 path: cm.path.slice(0),
                 equalX: cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
@@ -36,8 +43,10 @@ export const mapCollect = {
             });
         }
 
-        cm.d.map(i => mapCollect.iterate(i, params));
-        cm.s.map(i => mapCollect.iterate(i, params));
-        cm.c.map(i => i.map(j => mapCollect.iterate(j, params)));
+        if (!cm.selected) {
+            cm.d.map(i => mapCollect.iterateHover(i, params));
+            cm.s.map(i => mapCollect.iterateHover(i, params));
+            cm.c.map(i => i.map(j => mapCollect.iterateHover(j, params)));
+        }
     }
 };

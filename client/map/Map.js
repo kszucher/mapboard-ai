@@ -39,6 +39,8 @@ export function loadMap(mapStorage) {
 
         isNodeClicked: false,
         isMouseDown: false,
+        shouldMove: false,
+        movePath: [],
     };
 }
 

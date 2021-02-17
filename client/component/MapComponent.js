@@ -135,9 +135,23 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
-            mapChangeProp.start(mapref(['r']), 'sTextColor', '#000000');
-            let x = e.pageX - 307;
-            let y = e.pageY - 96;
+            mapChangeProp.start(mapref(['r']), 'nearest', 0);
+
+            let winWidth = window.innerWidth
+                || document.documentElement.clientWidth
+                || document.body.clientWidth;
+
+            let winHeight = window.innerHeight
+                || document.documentElement.clientHeight
+                || document.body.clientHeight;
+
+            let mapHolderDiv = document.getElementById('mapHolderDiv');
+            let mapWrap = document.getElementById('mapWrap');
+
+            // console.log([winWidth, winHeight, mapWrap.clientWidth, mapHolderDiv.scrollTop])
+
+            let x = e.pageX - (winWidth - mapWrap.clientWidth) / 2;
+            let y = e.pageY - (winHeight - mapHolderDiv.scrollTop);
             let minDist = Infinity;
             let minDistIndex = -1;
             for (let i = 0; i < mapMem.filter.unselectedPlacementList.length; i++) {
@@ -154,8 +168,10 @@ export function MapComponent() {
             }
             if (minDistIndex !== -1) {
                 let nearestPath = copy(mapMem.filter.unselectedPlacementList[minDistIndex].path);
+                mapMem.movePath = copy(nearestPath);
                 let nearestRef = mapref(nearestPath);
-                nearestRef.sTextColor = '#ff0000';
+                nearestRef.nearest = 1;
+                mapMem.shouldMove = true;
             }
             redraw();
         }
@@ -164,6 +180,14 @@ export function MapComponent() {
     const mouseup = (e) => {
         e.preventDefault();
         mapMem.isMouseDown = false;
+        if (mapMem.shouldMove) {
+            mapMem.shouldMove = false;
+            mapChangeProp.start(mapref(['r']), 'nearest', 0);
+            push();
+            nodeDispatch('moveSelection');
+            redraw();
+            checkPop();
+        }
     };
 
     const keydown = (e) => {

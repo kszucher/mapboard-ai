@@ -11,6 +11,7 @@ let svgElementNameList = [
     'taskCircle1',
     'taskCircle2',
     'taskCircle3',
+    'moveEllipse'
 ];
 
 export const mapSvgVisualize = {
@@ -200,6 +201,17 @@ export const mapSvgVisualize = {
             }
         }
 
+        // move indicator
+        if (cm.nearest) {
+            svgElementData['moveEllipse'] = {
+                type: 'ellipse',
+                cx: cm.path[2] === 0 ? cm.nodeEndX +10 : cm.nodeStartX - 10,
+                cy: cm.nodeStartY,
+                rx: 8,
+                ry: 12,
+            }
+        }
+
         let svgGroup;
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
             ((mapSvgData.hasOwnProperty(cm.svgId) && mapSvgData[cm.svgId].keepHash === keepHash))) {
@@ -254,6 +266,14 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             svgElement.style.transition =               '0.5s ease-out';
                             break;
+                        case 'ellipse':
+                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
+                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
+                            svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
+                            svgElement.setAttribute("fill",             '#222222');
+                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            break;
                     }
                     svgGroup.appendChild(svgElement);
                     break;
@@ -271,6 +291,11 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
+                            break;
+                        case 'ellipse':
+                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
+                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            break;
                     }
                     break;
                 }
