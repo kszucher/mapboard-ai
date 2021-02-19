@@ -14,7 +14,13 @@
     background-color: rgba(251,250,252,1);
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
-    box-shadow: -5px 5px 5px #dddddd;
+    /*box-shadow: -5px 5px 5px #dddddd;*/
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    border-right: 0;
+
     display: flex;
     flex-direction: column;
 

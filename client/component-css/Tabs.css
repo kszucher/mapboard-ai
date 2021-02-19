@@ -11,5 +11,11 @@
     background-color: #fbfafc;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
-    box-shadow: 5px 5px 5px #dddddd;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    border-left: 0;
+
+    /*box-shadow: inset 0px 0px 2px 2px #dddddd;*/
 }

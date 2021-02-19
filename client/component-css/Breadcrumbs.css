@@ -14,5 +14,12 @@
     background-color: #fbfafc;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
+
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    border-top: 0;
+
     box-shadow: 5px 5px 5px #dddddd;
 }

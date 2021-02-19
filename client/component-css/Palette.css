@@ -6,4 +6,10 @@
     height: 180px;
     background-color: rgba(251,250,252,1);
     border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    border-right: 0;
 }
