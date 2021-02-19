@@ -202,7 +202,7 @@ export const mapSvgVisualize = {
         }
 
         // move indicator
-        if (cm.nearest) {
+        if (cm.moveIndicator) {
             svgElementData['moveEllipse'] = {
                 type: 'ellipse',
                 cx: cm.path[2] === 0 ? cm.nodeEndX +10 : cm.nodeStartX - 10,

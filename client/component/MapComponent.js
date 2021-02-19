@@ -137,7 +137,7 @@ export function MapComponent() {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
             mapMem.shouldMove = false;
-            mapChangeProp.start(mapref(['r']), 'nearest', 0);
+            mapChangeProp.start(mapref(['r']), 'moveIndicator', 0);
 
             let winWidth = window.innerWidth
                 || document.documentElement.clientWidth
@@ -157,39 +157,28 @@ export function MapComponent() {
 
             let lastFoundPath = mapFind.start(x, y);
             if (lastFoundPath.length > 3) {
-                let lastFoundRef = mapref(lastFoundPath);
-                // let lastFoundParentRef = mapref(lastFoundRef.parentPath);
+                let lastFound = mapref(lastFoundPath);
 
-                console.log(lastFoundRef.content)
-                // console.log(lastFoundParentRef.s.length)
-
-                if (lastFoundRef.s.length === 0 ) {
+                if (lastFound.s.length === 0 ) {
                     mapMem.movePath = copy(lastFoundPath);
-                    lastFoundRef.nearest = 1;
-                    mapMem.shouldMove = true;
-
                 } else {
-
+                    let lastFoundParentPath = copy(lastFound.parentPath);
+                    let lastFoundParent = mapref(lastFoundParentPath);
+                    let currIndex = lastFound.index;
+                    let maxIndex = lastFoundParent.s.length;
+                    let newIndex = 0;
+                    if (y <= lastFound.nodeStartY) {
+                        newIndex = currIndex === 0 ? 0 : currIndex - 1;
+                    } else {
+                        newIndex = currIndex === maxIndex ? maxIndex : currIndex + 1;
+                    }
+                    mapMem.movePath = lastFoundParentPath.push('s', newIndex);
                 }
-
-
-
-
-                // mapMem.movePath = copy(lastFoundPath);
-                // lastFoundRef.nearest = 1;
-                // mapMem.shouldMove = true;
-
-                // NOT BAD... TODO: find middle and finish
-
+                lastFound.moveIndicator = 1;
+                mapMem.shouldMove = true;
+                redraw();
             }
-
         }
-
-        // NEW RECURSIVE ALGORITHM IDEA
-        // menjünk és nézzük végig a node-okat rekurzívan, mégpedig az alábbi módon
-        // ha a node startjától jobbra (vagy balra), a pont a pluszminusz family height-ban van, akkor (ÉS CSAK AKKOR) tovább számolunk!!!
-        // ha már nem tudunk jobbra lejjebb menni, megnézni, hogy a középvonalhoz képest lejjebb vagy feljebb vagyunk,
-        // és ha feljebb, akkor fölé, ha lejjebb, akkor pedig alá rakjuk a mannát
     };
 
     const mouseup = (e) => {
@@ -197,7 +186,7 @@ export function MapComponent() {
         mapMem.isMouseDown = false;
         if (mapMem.shouldMove) {
             mapMem.shouldMove = false;
-            mapChangeProp.start(mapref(['r']), 'nearest', 0);
+            mapChangeProp.start(mapref(['r']), 'moveIndicator', 0);
             push();
             nodeDispatch('moveSelection');
             redraw();
