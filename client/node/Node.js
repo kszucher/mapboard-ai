@@ -36,7 +36,8 @@ export let props = {
             parentNodeStartXFrom:               0,
             parentNodeStartYFrom:               0,
             twoStepAnimationRequested:          0,
-            moveIndicator:                      0,
+            moveEllipse:                        0,
+            moveLine:                           [],
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,

@@ -137,7 +137,8 @@ export function MapComponent() {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
             mapMem.shouldMove = false;
-            mapChangeProp.start(mapref(['r']), 'moveIndicator', 0);
+            mapChangeProp.start(mapref(['r']), 'moveEllipse', 0);
+            mapChangeProp.start(mapref(['r']), 'moveLine', []);
 
             let winWidth = window.innerWidth
                 || document.documentElement.clientWidth
@@ -161,6 +162,7 @@ export function MapComponent() {
 
                 if (lastFound.s.length === 0 ) {
                     mapMem.movePath = copy(lastFoundPath);
+                    lastFound.moveEllipse = 1;
                 } else {
                     let lastFoundParentPath = copy(lastFound.parentPath);
                     let lastFoundParent = mapref(lastFoundParentPath);
@@ -173,8 +175,9 @@ export function MapComponent() {
                         newIndex = currIndex === maxIndex ? maxIndex : currIndex + 1;
                     }
                     mapMem.movePath = lastFoundParentPath.push('s', newIndex);
+                    lastFound.moveLine = [0,1];
                 }
-                lastFound.moveIndicator = 1;
+
                 mapMem.shouldMove = true;
                 redraw();
             }
@@ -186,7 +189,8 @@ export function MapComponent() {
         mapMem.isMouseDown = false;
         if (mapMem.shouldMove) {
             mapMem.shouldMove = false;
-            mapChangeProp.start(mapref(['r']), 'moveIndicator', 0);
+            mapChangeProp.start(mapref(['r']), 'moveEllipse', 0);
+            mapChangeProp.start(mapref(['r']), 'moveLine', []);
             push();
             nodeDispatch('moveSelection');
             redraw();

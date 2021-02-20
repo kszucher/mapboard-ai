@@ -2,7 +2,7 @@ import {keepHash, mapMem, mapSvgData} from "./Map";
 import {genHash, copy, isOdd} from "../core/Utils";
 
 let svgElementNameList = [
-    'connection',
+    'connectionLine',
     'tableGrid',
     'tableFrame',
     'cellFrame',
@@ -11,7 +11,8 @@ let svgElementNameList = [
     'taskCircle1',
     'taskCircle2',
     'taskCircle3',
-    'moveEllipse'
+    'moveEllipse',
+    'moveLine'
 ];
 
 export const mapSvgVisualize = {
@@ -39,7 +40,7 @@ export const mapSvgVisualize = {
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
 
-        // connection
+        // connectionLine
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
@@ -71,7 +72,7 @@ export const mapSvgVisualize = {
                 }
             }
 
-            svgElementData.connection = {
+            svgElementData.connectionLine = {
                 type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
@@ -202,13 +203,35 @@ export const mapSvgVisualize = {
         }
 
         // move indicator
-        if (cm.moveIndicator) {
+        if (cm.moveEllipse) {
             svgElementData['moveEllipse'] = {
                 type: 'ellipse',
                 cx: cm.path[2] === 0 ? cm.nodeEndX +10 : cm.nodeStartX - 10,
                 cy: cm.nodeStartY,
                 rx: 8,
                 ry: 12,
+            }
+        }
+
+        if (cm.moveLine.length) {
+            let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
+            if (cm.path[2] === 0) {
+                x1 =    cm.parentNodeEndX;                              y1 =    cm.parentNodeEndY;
+                cp1x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp1y =  cm.parentNodeEndY;
+                cp2x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp2y =  cm.parentNodeEndY + cm.lineDeltaY;
+                x2 =    cm.nodeStartX;                                  y2 =    cm.nodeStartY;
+            } else {
+                x1 =    cm.parentNodeStartX;                            y1 =    cm.parentNodeStartY;
+                cp1x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp1y =  cm.parentNodeStartY;
+                cp2x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp2y =  cm.parentNodeStartY + cm.lineDeltaY;
+                x2 =    cm.nodeEndX;                                    y2 =    cm.nodeEndY;
+            }
+
+            svgElementData['moveLine'] = {
+                type: 'path',
+                path: "M" + x1 + ',' + y1 + ' ' +
+                    "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
+                color: '#ff0000',
             }
         }
 
