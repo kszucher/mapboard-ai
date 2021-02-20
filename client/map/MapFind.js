@@ -15,12 +15,18 @@ export const mapFind = {
     },
 
     iterate: (cm) => {
-        cm.d.map(i => mapFind.iterate(i));
-        if (Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 && (
-            (cm.path[2] === 0 && (currX > (cm.nodeStartX - mapMem.sLineDeltaXDefault))) ||
-            (cm.path[2] === 1 && (currX < (cm.nodeEndX + mapMem.sLineDeltaXDefault))))) {
-            lastFoundPath = copy(cm.path);
-            cm.s.map(i => mapFind.iterate(i));
+        if (!cm.selected) {
+            cm.d.map(i => mapFind.iterate(i));
+            if (cm.type === 'cell') {
+                cm.s.map(i => mapFind.iterate(i));
+            } else {
+                if (Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 && (
+                    (cm.path[2] === 0 && (currX > (cm.nodeEndX))) ||
+                    (cm.path[2] === 1 && (currX < (cm.nodeStartX))))) {
+                    lastFoundPath = copy(cm.path);
+                    cm.s.map(i => mapFind.iterate(i));
+                }
+            }
             cm.c.map(i => i.map(j => mapFind.iterate(j)));
         }
     }
