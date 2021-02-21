@@ -202,7 +202,7 @@ export const mapSvgVisualize = {
             }
         }
 
-        // move indicator
+        // move ellipse
         if (cm.moveEllipse) {
             svgElementData['moveEllipse'] = {
                 type: 'ellipse',
@@ -213,19 +213,16 @@ export const mapSvgVisualize = {
             }
         }
 
+        // move line
         if (cm.moveLine.length) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
-            if (cm.path[2] === 0) {
-                x1 =    cm.parentNodeEndX;                              y1 =    cm.parentNodeEndY;
-                cp1x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp1y =  cm.parentNodeEndY;
-                cp2x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp2y =  cm.parentNodeEndY + cm.lineDeltaY;
-                x2 =    cm.nodeStartX;                                  y2 =    cm.nodeStartY;
-            } else {
-                x1 =    cm.parentNodeStartX;                            y1 =    cm.parentNodeStartY;
-                cp1x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp1y =  cm.parentNodeStartY;
-                cp2x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp2y =  cm.parentNodeStartY + cm.lineDeltaY;
-                x2 =    cm.nodeEndX;                                    y2 =    cm.nodeEndY;
-            }
+            let deltaX = cm.moveLine[2] - cm.moveLine[0];
+            let deltaY = cm.moveLine[3] - cm.moveLine[1];
+
+            x1 =    cm.moveLine[0];                 y1 =    cm.moveLine[1];
+            cp1x =  cm.moveLine[0] + deltaX / 4;    cp1y =  cm.moveLine[1];
+            cp2x =  cm.moveLine[0] + deltaX / 4;    cp2y =  cm.moveLine[1] + deltaY;
+            x2 =    cm.moveLine[2];                 y2 =    cm.moveLine[3];
 
             svgElementData['moveLine'] = {
                 type: 'path',
@@ -294,7 +291,7 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
                             svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
-                            svgElement.setAttribute("fill",             '#222222');
+                            svgElement.setAttribute("fill",             '#ff0000');
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             break;
                     }

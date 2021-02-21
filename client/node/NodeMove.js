@@ -11,12 +11,11 @@ export function setClipboard(clipboardIn) {
 
 export function nodeMoveMouse (sc) {
     let {structSelectedPathList, sameParent} = sc;
-    let nodeTarget = mapref(mapMem.movePath);
-    for (let i = 0; i < structSelectedPathList.length; i++) {
-        let currRef = mapref(structSelectedPathList[i]);
-        nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(currRef));
-        sameParent.s.splice(currRef.index, 1);
-    }
+    let moveSource = mapref(structSelectedPathList[0]);
+    let moveTarget = mapref(mapMem.moveTarget.path);
+    let moveTargetIndex = mapMem.moveTarget.index;
+    moveTarget.s.splice(moveTargetIndex, 0, copy(moveSource));
+    sameParent.s.splice(moveSource.index, 1);
 }
 
 export function nodeMove(sc, target, key, mode) {
@@ -153,9 +152,9 @@ export function nodeMove(sc, target, key, mode) {
             });
         }
     } else if (target === 'clipboard2struct') {
-        let nodeTarget = lm.isRoot? lm.d[0] : lm;
+        let moveTarget = lm.isRoot? lm.d[0] : lm;
         for (let i = 0; i < clipboard.length; i++) {
-            nodeTarget.s.splice(nodeTarget.s.length + i, 0, copy(clipboard[i]));
+            moveTarget.s.splice(moveTarget.s.length + i, 0, copy(clipboard[i]));
         }
     }
 }
