@@ -20,7 +20,7 @@ export const mapFind = {
             if (cm.type === 'cell') {
                 cm.s.map(i => mapFind.iterate(i));
             } else {
-                if (Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 && (
+                if (Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 + 10 && ( // 10 comes from density, should be adjusted
                     (cm.path[2] === 0 && (currX > (cm.nodeEndX))) ||
                     (cm.path[2] === 1 && (currX < (cm.nodeStartX))))) {
                     lastFoundPath = copy(cm.path);
