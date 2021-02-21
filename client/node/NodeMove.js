@@ -14,8 +14,9 @@ export function nodeMoveMouse (sc) {
     let moveSource = mapref(structSelectedPathList[0]);
     let moveTarget = mapref(mapMem.moveTarget.path);
     let moveTargetIndex = mapMem.moveTarget.index;
-    moveTarget.s.splice(moveTargetIndex, 0, copy(moveSource));
+    let tempClipboard = copy(moveSource);
     sameParent.s.splice(moveSource.index, 1);
+    moveTarget.s.splice(moveTargetIndex, 0, tempClipboard);
 }
 
 export function nodeMove(sc, target, key, mode) {
