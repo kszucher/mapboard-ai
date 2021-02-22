@@ -304,8 +304,9 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
                             svgElement.setAttribute("width",            svgElementData[svgElementName].width);
                             svgElement.setAttribute("height",           svgElementData[svgElementName].height);
-                            svgElement.setAttribute("fill",             '#5f0a87');
-                            svgElement.setAttribute("stroke",           '#fbfafc');
+                            svgElement.setAttribute("fill",             '#fbfafc');
+                            svgElement.setAttribute("stroke",           '#5f0a87');
+                            svgElement.setAttribute("stroke-width",      5);
                             break;
                     }
                     svgGroup.appendChild(svgElement);

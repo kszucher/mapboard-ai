@@ -20,9 +20,9 @@ export const mapFind = {
             if (cm.type === 'cell') {
                 cm.s.map(i => mapFind.iterate(i));
             } else {
-                if (Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 + 10 && ( // 10 comes from density, should be adjusted
-                    (cm.path[2] === 0 && (currX > (cm.nodeEndX))) ||
-                    (cm.path[2] === 1 && (currX < (cm.nodeStartX))))) {
+                if (Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 + 12 && ( // 12 is slightly smaller than smallest font
+                    cm.path[2] === 0 && currX > cm.nodeEndX ||
+                    cm.path[2] === 1 && currX < cm.nodeStartX )) {
                     lastFoundPath = copy(cm.path);
                     cm.s.map(i => mapFind.iterate(i));
                 }

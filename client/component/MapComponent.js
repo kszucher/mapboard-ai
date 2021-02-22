@@ -136,40 +136,23 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked) {
-
             mapMem.shouldMove = false;
             mapChangeProp.start(mapref(['r']), 'moveLine', []);
             mapChangeProp.start(mapref(['r']), 'moveRect', []);
-
-            let winWidth = window.innerWidth
-                || document.documentElement.clientWidth
-                || document.body.clientWidth;
-
-            let winHeight = window.innerHeight
-                || document.documentElement.clientHeight
-                || document.body.clientHeight;
-
+            let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
             let mapWrap = document.getElementById('mapWrap');
-
-            // console.log([winWidth, winHeight, mapWrap.clientWidth, mapHolderDiv.scrollTop])
-
             let x = e.pageX - (winWidth - mapWrap.clientWidth) / 2;
             let y = e.pageY - (winHeight - mapHolderDiv.scrollTop);
-
             let lastFoundPath = mapFind.start(x, y);
             if (lastFoundPath.length > 1) {
-
-                // let sc = getSelectionContext();
-                // let {lm} = sc;
-
+                mapMem.shouldMove = true;
                 let lastFound = mapref(lastFoundPath);
-
                 let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                 let fromY = lastFound.nodeStartY;
-                let toX = x;
-                let toY = y;
-
+                lastFound.moveLine = [fromX, fromY, x, y];
+                lastFound.moveRect = [x,  y];
                 if (lastFound.s.length === 0 ) {
                     mapMem.moveTarget = {
                         path: copy(lastFoundPath),
@@ -190,14 +173,8 @@ export function MapComponent() {
                         index: insertIndex,
                     };
                 }
-                lastFound.moveLine = [fromX, fromY, toX, toY];
-                lastFound.moveRect = [toX,  toY];
-                mapMem.shouldMove = true;
             }
-
-            // if (mapMem.shouldMove) {
-                redraw();
-            // }
+            redraw();
         }
     };
 
