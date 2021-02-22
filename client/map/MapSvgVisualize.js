@@ -11,8 +11,8 @@ let svgElementNameList = [
     'taskCircle1',
     'taskCircle2',
     'taskCircle3',
-    'moveEllipse',
-    'moveLine'
+    'moveLine',
+    'moveRect',
 ];
 
 export const mapSvgVisualize = {
@@ -202,17 +202,6 @@ export const mapSvgVisualize = {
             }
         }
 
-        // move ellipse
-        if (cm.moveEllipse) {
-            svgElementData['moveEllipse'] = {
-                type: 'ellipse',
-                cx: cm.path[2] === 0 ? cm.nodeEndX +10 : cm.nodeStartX - 10,
-                cy: cm.nodeStartY,
-                rx: 8,
-                ry: 12,
-            }
-        }
-
         // move line
         if (cm.moveLine.length) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
@@ -231,6 +220,21 @@ export const mapSvgVisualize = {
                 color: '#ff0000',
             }
         }
+
+        // move rect
+        if (cm.moveRect.length) {
+            svgElementData.moveRect = {
+                type: 'path',
+                path: getArc(
+                    cm.moveRect[0],
+                    cm.moveRect[1],
+                    40,
+                    20,
+                    8,
+                    cm.moveRect[2]),
+                color: '#ff0000',
+            };
+        } // rect lesz, ami egészen egyszerűen nem animálódik majd
 
         let svgGroup;
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
