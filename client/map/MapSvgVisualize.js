@@ -217,24 +217,23 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
-                color: '#ff0000',
+                color: '#5f0a87',
+                preventTransition: 1,
             }
         }
 
         // move rect
         if (cm.moveRect.length) {
             svgElementData.moveRect = {
-                type: 'path',
-                path: getArc(
-                    cm.moveRect[0],
-                    cm.moveRect[1],
-                    40,
-                    20,
-                    8,
-                    cm.moveRect[2]),
-                color: '#ff0000',
+                type: 'rect',
+                x: cm.moveRect[0] - 10,
+                y: cm.moveRect[1] - 10,
+                rx: 8,
+                ry: 8,
+                width: 20,
+                height: 20
             };
-        } // rect lesz, ami egészen egyszerűen nem animálódik majd
+        }
 
         let svgGroup;
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
@@ -279,7 +278,7 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                             svgElement.setAttribute("fill",             "none");
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                            svgElement.style.transition =               '0.5s ease-out';
+                            svgElement.style.transition =               svgElementData[svgElementName].preventTransition ? '' : '0.5s ease-out';
                             svgElement.style.transitionProperty =       'd';
                             break;
                         case 'circle':
@@ -295,8 +294,18 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
                             svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
-                            svgElement.setAttribute("fill",             '#ff0000');
+                            svgElement.setAttribute("fill",             '#5f0a87');
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            break;
+                        case 'rect':
+                            svgElement.setAttribute("x",                svgElementData[svgElementName].x);
+                            svgElement.setAttribute("y",                svgElementData[svgElementName].y);
+                            svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
+                            svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
+                            svgElement.setAttribute("width",            svgElementData[svgElementName].width);
+                            svgElement.setAttribute("height",           svgElementData[svgElementName].height);
+                            svgElement.setAttribute("fill",             '#5f0a87');
+                            svgElement.setAttribute("stroke",           '#fbfafc');
                             break;
                     }
                     svgGroup.appendChild(svgElement);
@@ -319,6 +328,10 @@ export const mapSvgVisualize = {
                         case 'ellipse':
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            break;
+                        case 'rect':
+                            svgElement.setAttribute("x",                svgElementData[svgElementName].x);
+                            svgElement.setAttribute("y",                svgElementData[svgElementName].y);
                             break;
                     }
                     break;

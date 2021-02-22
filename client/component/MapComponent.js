@@ -191,7 +191,7 @@ export function MapComponent() {
                     };
                 }
                 lastFound.moveLine = [fromX, fromY, toX, toY];
-                lastFound.moveRect = [toX,  toY, lastFound.path[2]];
+                lastFound.moveRect = [toX,  toY];
                 mapMem.shouldMove = true;
             }
 
