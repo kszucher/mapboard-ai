@@ -1,9 +1,9 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
-import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect";
+import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw, setMapAlignment, setMapDensity, mapref, recalc} from "../map/Map";
-import {copy, isUrl} from "../core/Utils";
+import {mapDivData, mapMem, checkPop, push, redraw, setMapDensity, mapref} from "../map/Map";
+import {arraysSame, arrayValuesSameSimple, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFind} from "../map/MapFind";
@@ -152,7 +152,7 @@ export function MapComponent() {
                 let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                 let fromY = lastFound.nodeStartY;
                 lastFound.moveLine = [fromX, fromY, x, y];
-                lastFound.moveRect = [x,  y];
+                lastFound.moveRect = [x, y];
                 if (lastFound.s.length === 0 ) {
                     mapMem.moveTarget = {
                         path: copy(lastFoundPath),
@@ -167,6 +167,14 @@ export function MapComponent() {
                     }
                     if (y > lastFound.s[lastFound.s.length - 1].nodeStartY) {
                         insertIndex = lastFound.s.length;
+                    }
+                    let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
+                    let lastSelected = mapref(lastSelectedPath);
+                    let lastSelectedParentPath = lastSelected.parentPath;
+                    if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+                        if (lastSelected.index < insertIndex) {
+                            insertIndex -= 1;
+                        }
                     }
                     mapMem.moveTarget = {
                         path: copy(lastFoundPath),

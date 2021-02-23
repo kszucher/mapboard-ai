@@ -1,5 +1,5 @@
 import {mapref} from "../map/Map";
-import {arrayValuesSame} from "../core/Utils";
+import {arrayValuesSameSimple} from "../core/Utils";
 
 export function structDeleteReselect(sc) {
     let lm = sc.lm;
@@ -13,7 +13,7 @@ export function structDeleteReselect(sc) {
     let im = lm;
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         let cm = mapref(sc.structSelectedPathList[i]);
-        if (cm.path.length < lm.path.length && arrayValuesSame(cm.path.slice(0, lm.path.length), lm.path)) {
+        if (cm.path.length < lm.path.length && arrayValuesSameSimple(cm.path.slice(0, lm.path.length), lm.path)) {
             im = cm;
         }
     }

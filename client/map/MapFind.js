@@ -23,19 +23,20 @@ export const mapFind = {
             if (cm.type === 'cell') {
                 cm.s.map(i => mapFind.iterate(i));
             } else {
-                let condition = Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 + 12; // 12 is slightly smaller than smallest font
+                let overlap = 6;
+                let vCondition;
                 if (cm.isTop && belowRoot) {
-                    condition = currY < (cm.nodeStartY + cm.maxH / 2 + 12)
+                    vCondition = currY < (cm.nodeStartY + cm.maxH / 2 + overlap)
+                } else if (cm.isBottom && aboveRoot) {
+                    vCondition = currY > (cm.nodeStartY - cm.maxH / 2 - overlap)
+                } else {
+                    vCondition = Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 + overlap;
                 }
-                if (cm.isBottom && aboveRoot) {
-                    condition = currY > (cm.nodeStartY - cm.maxH / 2 - 12)
-                }
-
-                if (condition && (
-                    cm.path[2] === 0 && currX > cm.nodeEndX ||
-                    cm.path[2] === 1 && currX < cm.nodeStartX )) {
+                let hCondition =
+                    (cm.path[2] === 0 && currX > cm.nodeEndX) ||
+                    (cm.path[2] === 1 && currX < cm.nodeStartX);
+                if (vCondition && hCondition) {
                     lastFoundPath = copy(cm.path);
-
                     cm.s.map(i => mapFind.iterate(i));
                 }
             }
