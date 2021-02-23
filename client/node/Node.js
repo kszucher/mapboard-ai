@@ -85,6 +85,8 @@ export let props = {
             nodeStartY:                         0,
             nodeEndX:                           0,
             nodeEndY:                           0,
+            isTop:                              0,
+            isBottom:                           0,
         }
     }
 };

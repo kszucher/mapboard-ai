@@ -132,6 +132,10 @@ export const mapPlace = {
             cm.d[i].parentNodeEndY = cm.nodeEndY;
             cm.d[i].lineDeltaX = 0;
             cm.d[i].lineDeltaY = 0;
+
+            cm.d[i].isTop = 1;
+            cm.d[i].isBottom = 1;
+
             mapPlace.iterate(cm.d[i]);
         }
 
@@ -158,6 +162,10 @@ export const mapPlace = {
             cm.s[i].parentNodeEndY = cm.nodeEndY;
             cm.s[i].lineDeltaX = mapMem.sLineDeltaXDefault;
             cm.s[i].lineDeltaY = cm.familyH*(-1/2) + elapsedY + cm.s[i].maxH/2;
+
+            if (i === 0 && cm.isTop) cm.s[i].isTop = 1;
+            if (i === sCount - 1 && cm.isBottom === 1) cm.s[i].isBottom = 1;
+
             mapPlace.iterate(cm.s[i]);
             elapsedY += cm.s[i].maxH + cm.spacingActivated*cm.spacing;
         }
