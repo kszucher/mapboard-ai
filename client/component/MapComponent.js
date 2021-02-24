@@ -58,14 +58,14 @@ export function MapComponent() {
         if (lastAction && lastAction !== '') {
             // push();
             console.log(lastAction);
-            // switch (lastAction) {
-            //     case 'undo':    break;
-            //     case 'redo':    break;
-            //     case 'save':    break;
-            //     case 'cut':     nodeDispatch('cutSelection'); break;
-            //     case 'copy':    break;
-            //     case 'print':  /*  mapPrint.start(payload.lm); */ break;
-            // }
+            switch (lastAction) {
+                case 'undo':    break;
+                case 'redo':    break;
+                case 'save':    break;
+                case 'cut':     nodeDispatch('cutSelection'); break;
+                case 'copy':    break;
+                case 'print':  /*  mapPrint.start(payload.lm); */ break;
+            }
             // redraw();
             // checkPop();
         }

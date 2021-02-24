@@ -16,7 +16,7 @@ export function nodeDispatch(action, payload) {
     recalc();
 }
 
-export function nodeReducer(action, payload) {
+function nodeReducer(action, payload) {
     let sc = getSelectionContext();
     let {lm} = sc;
     switch (action) {
