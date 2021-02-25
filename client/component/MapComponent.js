@@ -58,17 +58,21 @@ export function MapComponent() {
             if (['undo', 'redo'].includes(lastAction)) {
                 mapDispatch(lastAction);
                 redraw();
-
-            } else {
+            } else if (['save'].includes(lastAction)) {
+                dispatch({type: 'SAVE_MAP'});
+                redraw();
+            } else if (['cut', 'copy', 'paste', 'print'].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'save':    break;
                     case 'cut':     nodeDispatch('cutSelection'); break;
-                    case 'copy':    break;
+                    case 'copy':    nodeDispatch('copySelection'); break;
+                    case 'paste':   console.log('attemptopast');paste({preventDefault: ()=> {}}); break;
                     case 'print':  /*  mapPrint.start(payload.lm); */ break;
                 }
                 redraw();
                 checkPop();
+            } else {
+                console.log('unknown action: ' + lastAction);
             }
         }
     }, [mapAction]);

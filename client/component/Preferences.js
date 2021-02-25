@@ -79,13 +79,13 @@ export function Preferences () {
                     </IconButton>
                 </div>
                 <div className={'buttons'}>
-                    <IconButton >
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'cut'})}>
                         <span className="material-icons">content_cut</span>
                     </IconButton>
-                    <IconButton >
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'copy'})}>
                         <span className="material-icons">content_copy</span>
                     </IconButton>
-                    <IconButton >
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'paste'})}>
                         <span className="material-icons">content_paste</span>
                     </IconButton>
                 </div>
