@@ -7,6 +7,7 @@ import {arraysSame, arrayValuesSameSimple, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFind} from "../map/MapFind";
+import {mapDispatch} from "../core/MapReducer";
 
 export function MapComponent() {
 
@@ -204,58 +205,58 @@ export function MapComponent() {
         let sc = getSelectionContext();
 
         let keyStateMachineDb = [
-            ['c','s','a', 'keyMatch',                       'scope',                     'e','p','m',  'executionList',                       'reducerList'        ],
-            [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'],               0,  1,  0, [],                                      []                   ],
-            [ 0,  0,  0,  e.key === 'F2',                  ['s', 'm'],                    0,  1,  0, ['startEdit'],                           []                   ],
-            [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'],               0,  1,  0, [],                                      []                   ],
-            [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'],               0,  0,  0, [],                                      []                   ],
-            [ 0,  0,  0,  e.key === 'Enter',               ['s', 'm'],                    1,  1,  0, ['finishEdit'],                          []                   ],
-            [ 0,  0,  0,  e.key === 'Enter',               ['s'],                         0,  1,  1, ['newSiblingDown', 'startEdit'],         []                   ],
-            [ 0,  0,  0,  e.key === 'Enter',               ['m'],                         0,  1,  1, ['selectDownMixed'],                     []                   ],
-            [ 0,  1,  0,  e.key === 'Enter',               ['s', 'm'],                    0,  1,  1, ['newSiblingUp', 'startEdit'],           []                   ],
-            [ 0,  0,  1,  e.key === 'Enter',               ['s'],                         0,  1,  1, ['cellifyMulti', 'selectFirstMixed'],    []                   ],
-            [ 0,  0,  0,  e.key === 'Insert',              ['s'],                         1,  1,  1, ['finishEdit', 'newChild', 'startEdit'], []                   ],
-            [ 0,  0,  0,  e.key === 'Insert',              ['s'],                         0,  1,  1, ['newChild', 'startEdit'],               []                   ],
-            [ 0,  0,  0,  e.key === 'Insert',              ['m'],                         0,  1,  1, ['selectOutMixed'],                      []                   ],
-            [ 0,  0,  0,  e.key === 'Tab',                 ['s'],                         1,  1,  1, ['finishEdit', 'newChild', 'startEdit'], []                   ],
-            [ 0,  0,  0,  e.key === 'Tab',                 ['s'],                         0,  1,  1, ['newChild', 'startEdit'],               []                   ],
-            [ 0,  0,  0,  e.key === 'Tab',                 ['m'],                         0,  1,  1, ['selectOutMixed'],                      []                   ],
-            [ 0,  0,  0,  e.key === 'Delete',              ['s'],                         0,  1,  1, ['deleteNode'],                          []                   ],
-            [ 0,  0,  0,  e.key === 'Delete',              ['cr', 'cc'],                  0,  1,  1, ['deleteCellBlock'],                     []                   ],
-            [ 0,  0,  0,  e.code === 'Space',              ['s'],                         0,  1,  1, ['selectForwardMixed'],                  []                   ],
-            [ 0,  0,  0,  e.code === 'Space',              ['m'],                         0,  1,  1, ['selectForwardStruct'],                 []                   ],
-            [ 0,  0,  0,  e.code === 'Backspace',          ['s'],                         0,  1,  1, ['selectBackwardMixed'],                 []                   ],
-            [ 0,  0,  0,  e.code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['selectBackwardStruct'],                []                   ],
-            [ 0,  0,  0,  e.code === 'Backspace',          ['m'],                         0,  1,  1, ['selectBackwardBackwardStruct'],        []                   ],
-            [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['selectRoot'],                          []                   ],
-            [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, [],                                      []                   ],
-            [ 1,  0,  0,  e.code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, [],                                      ['CREATE_MAP_IN_MAP']],
-            [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection'],                       []                   ],
-            [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection'],                        []                   ],
-            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, [],                                      ['SAVE_MAP']         ],
-            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit'],                          ['SAVE_MAP']         ],
-            [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, [],                                      ['REDO']             ],
-            [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, [],                                      ['UNDO']             ],
-            [ 1,  0,  1,  e.code === 'KeyT',               ['s', 'c', 'm'],               0,  1,  1, ['taskCheckReset', 'taskSwitch'],        []                   ],
-            [ 1,  0,  0,  e.code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose'],                           []                   ],
-            [ 0,  1,  0,  e.code === 'ArrowUp',            ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       []                   ],
-            [ 0,  1,  0,  e.code === 'ArrowDown',          ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       []                   ],
-            [ 0,  1,  0,  e.code === 'ArrowLeft',          ['c', 'm'],                    0,  1,  1, ['selectCellRow'],                       []                   ],
-            [ 0,  1,  0,  e.code === 'ArrowRight',         ['c', 'm'],                    0,  1,  1, ['selectCellRow'],                       []                   ],
-            [ 0,  1,  1,  e.code === 'ArrowLeft',          ['s'],                         0,  1,  1, ['selectDescendantsOut'],                []                   ],
-            [ 0,  1,  1,  e.code === 'ArrowRight',         ['s'],                         0,  1,  1, ['selectDescendantsOut'],                []                   ],
-            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['selectNeighborStruct'],                []                   ],
-            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['m'],                         0,  1,  1, ['selectNeighborMixed'],                 []                   ],
-            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['cr', 'cc'],                  0,  1,  1, ['selectCellBlock'],                     []                   ],
-            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['moveNodeSelection'],                   []                   ],
-            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['cr', 'cc'],                  0,  1,  1, ['moveCellBlock'],                       []                   ],
-            [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['selectNeighborStructToo'],             []                   ],
-            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['m'],                         0,  1,  1, ['newCellBlock'],                        []                   ],
-            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['s', 'c', 'cr', 'cc'],        0,  1,  0, [],                                      []                   ],
-            [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s', 'm'],                    0,  1,  1, ['applyColor'],                          []                   ],
-            [ 1,  0,  1,  e.which >= 96 && e.which <= 105, ['s', 'm'],                    0,  1,  1, ['applyTaskStatus'],                     []                   ],
-            [ 0,  0,  0,  e.which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit'],           []                   ],
-            [ 0,  1,  0,  e.which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit'],           []                   ],
+            ['c','s','a', 'keyMatch',                       'scope',                     'e','p','m',  'executionList',                       ],
+            [ 0,  0,  0,  e.key === 'F1',                  ['s', 'c', 'm'],               0,  1,  0, [],                                      ],
+            [ 0,  0,  0,  e.key === 'F2',                  ['s', 'm'],                    0,  1,  0, ['startEdit'],                           ],
+            [ 0,  0,  0,  e.key === 'F3',                  ['s', 'c', 'm'],               0,  1,  0, [],                                      ],
+            [ 0,  0,  0,  e.key === 'F5',                  ['s', 'c', 'm'],               0,  0,  0, [],                                      ],
+            [ 0,  0,  0,  e.key === 'Enter',               ['s', 'm'],                    1,  1,  0, ['finishEdit'],                          ],
+            [ 0,  0,  0,  e.key === 'Enter',               ['s'],                         0,  1,  1, ['newSiblingDown', 'startEdit'],         ],
+            [ 0,  0,  0,  e.key === 'Enter',               ['m'],                         0,  1,  1, ['selectDownMixed'],                     ],
+            [ 0,  1,  0,  e.key === 'Enter',               ['s', 'm'],                    0,  1,  1, ['newSiblingUp', 'startEdit'],           ],
+            [ 0,  0,  1,  e.key === 'Enter',               ['s'],                         0,  1,  1, ['cellifyMulti', 'selectFirstMixed'],    ],
+            [ 0,  0,  0,  e.key === 'Insert',              ['s'],                         1,  1,  1, ['finishEdit', 'newChild', 'startEdit'], ],
+            [ 0,  0,  0,  e.key === 'Insert',              ['s'],                         0,  1,  1, ['newChild', 'startEdit'],               ],
+            [ 0,  0,  0,  e.key === 'Insert',              ['m'],                         0,  1,  1, ['selectOutMixed'],                      ],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['s'],                         1,  1,  1, ['finishEdit', 'newChild', 'startEdit'], ],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['s'],                         0,  1,  1, ['newChild', 'startEdit'],               ],
+            [ 0,  0,  0,  e.key === 'Tab',                 ['m'],                         0,  1,  1, ['selectOutMixed'],                      ],
+            [ 0,  0,  0,  e.key === 'Delete',              ['s'],                         0,  1,  1, ['deleteNode'],                          ],
+            [ 0,  0,  0,  e.key === 'Delete',              ['cr', 'cc'],                  0,  1,  1, ['deleteCellBlock'],                     ],
+            [ 0,  0,  0,  e.code === 'Space',              ['s'],                         0,  1,  1, ['selectForwardMixed'],                  ],
+            [ 0,  0,  0,  e.code === 'Space',              ['m'],                         0,  1,  1, ['selectForwardStruct'],                 ],
+            [ 0,  0,  0,  e.code === 'Backspace',          ['s'],                         0,  1,  1, ['selectBackwardMixed'],                 ],
+            [ 0,  0,  0,  e.code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['selectBackwardStruct'],                ],
+            [ 0,  0,  0,  e.code === 'Backspace',          ['m'],                         0,  1,  1, ['selectBackwardBackwardStruct'],        ],
+            [ 0,  0,  0,  e.code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['selectRoot'],                          ],
+            [ 1,  0,  0,  e.code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, [],                                      ],
+            [ 1,  0,  0,  e.code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                    ],
+            [ 1,  0,  0,  e.code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection'],                       ],
+            [ 1,  0,  0,  e.code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection'],                        ],
+            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['SAVE_MAP']                             ],
+            [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'SAVE_MAP']               ],
+            [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                 ],
+            [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                 ],
+            [ 1,  0,  1,  e.code === 'KeyT',               ['s', 'c', 'm'],               0,  1,  1, ['taskCheckReset', 'taskSwitch'],        ],
+            [ 1,  0,  0,  e.code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose'],                           ],
+            [ 0,  1,  0,  e.code === 'ArrowUp',            ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       ],
+            [ 0,  1,  0,  e.code === 'ArrowDown',          ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       ],
+            [ 0,  1,  0,  e.code === 'ArrowLeft',          ['c', 'm'],                    0,  1,  1, ['selectCellRow'],                       ],
+            [ 0,  1,  0,  e.code === 'ArrowRight',         ['c', 'm'],                    0,  1,  1, ['selectCellRow'],                       ],
+            [ 0,  1,  1,  e.code === 'ArrowLeft',          ['s'],                         0,  1,  1, ['selectDescendantsOut'],                ],
+            [ 0,  1,  1,  e.code === 'ArrowRight',         ['s'],                         0,  1,  1, ['selectDescendantsOut'],                ],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['selectNeighborStruct'],                ],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['m'],                         0,  1,  1, ['selectNeighborMixed'],                 ],
+            [ 0,  0,  0,  e.which >= 37 && e.which <= 40,  ['cr', 'cc'],                  0,  1,  1, ['selectCellBlock'],                     ],
+            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['moveNodeSelection'],                   ],
+            [ 1,  0,  0,  e.which >= 37 && e.which <= 40,  ['cr', 'cc'],                  0,  1,  1, ['moveCellBlock'],                       ],
+            [ 0,  1,  0,  e.which >= 37 && e.which <= 40,  ['s'],                         0,  1,  1, ['selectNeighborStructToo'],             ],
+            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['m'],                         0,  1,  1, ['newCellBlock'],                        ],
+            [ 0,  0,  1,  e.which >= 37 && e.which <= 40,  ['s', 'c', 'cr', 'cc'],        0,  1,  0, [],                                      ],
+            [ 1,  0,  0,  e.which >= 96 && e.which <= 105, ['s', 'm'],                    0,  1,  1, ['applyColor'],                          ],
+            [ 1,  0,  1,  e.which >= 96 && e.which <= 105, ['s', 'm'],                    0,  1,  1, ['applyTaskStatus'],                     ],
+            [ 0,  0,  0,  e.which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit'],           ],
+            [ 0,  1,  0,  e.which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit'],           ],
         ];
 
         let keyStateMachine = {};
@@ -281,29 +282,16 @@ export function MapComponent() {
                         nodeDispatch(currExecution, {currColor: e.which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
                         nodeDispatch(currExecution, {currTaskStatus: e.which - 96});
+                    } else if (['undo', 'redo'].includes(currExecution)) {
+                        mapDispatch(currExecution)
+                    } else if (currExecution === 'CREATE_MAP_IN_MAP') {
+                        dispatch({type: currExecution, payload: sc.lm.content});
+                    } else if (currExecution === 'SAVE_MAP') {
+                        dispatch({type: currExecution});
                     } else {
                         nodeDispatch(currExecution, {keyCode: e.code});
                         if (['newChild', 'newSiblingUp', 'newSiblingDown'].includes(currExecution)) {
                             redraw();
-                        }
-                    }
-                }
-                for (let j = 0; j < keyStateMachine.reducerList.length; j++) {
-                    let currReducer = keyStateMachine.reducerList[j];
-                    if (currReducer === 'CREATE_MAP_IN_MAP') {
-                        dispatch({type: currReducer, payload: sc.lm.content});
-                    } else {
-                        // only move these under nodeReducer once they will really change state
-                        if (currReducer === 'UNDO') {
-                            if (mapMem.dataIndex > 0) {
-                                mapMem.dataIndex--;
-                            }
-                        } else if (currReducer === 'REDO') {
-                            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                                mapMem.dataIndex++;
-                            }
-                        } else {
-                            dispatch({type: currReducer});
                         }
                     }
                 }

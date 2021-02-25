@@ -1,17 +1,20 @@
-import {recalc} from "../map/Map";
-import {getSelectionContext} from "../node/NodeSelect"
+import {mapMem, recalc} from "../map/Map";
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    recalc();
 }
 
 function mapReducer(action, payload) {
-    // let sc = getSelectionContext();
-    // let {lm} = sc;
     switch (action) {
-        // A -----------------------------------------------------------------------------------------------------------
-        // B -----------------------------------------------------------------------------------------------------------
+        case 'undo':
+            if (mapMem.dataIndex > 0) {
+                mapMem.dataIndex--;
+            }
+            break;
+        case 'redo':
+            if (mapMem.dataIndex < mapMem.data.length - 1) {
+                mapMem.dataIndex++;
+            }
     }
 }
