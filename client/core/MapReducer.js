@@ -1,4 +1,5 @@
 import {mapMem, recalc} from "../map/Map";
+import {getSelectionContext} from "../node/NodeSelect"
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
@@ -16,5 +17,7 @@ function mapReducer(action, payload) {
             if (mapMem.dataIndex < mapMem.data.length - 1) {
                 mapMem.dataIndex++;
             }
+        // A -----------------------------------------------------------------------------------------------------------
+        // B -----------------------------------------------------------------------------------------------------------
     }
 }

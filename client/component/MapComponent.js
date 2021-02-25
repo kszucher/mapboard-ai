@@ -3,7 +3,7 @@ import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {mapDivData, mapMem, checkPop, push, redraw, setMapDensity, mapref} from "../map/Map";
-import {arraysSame, arrayValuesSameSimple, copy, isUrl} from "../core/Utils";
+import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFind} from "../map/MapFind";
@@ -15,7 +15,6 @@ export function MapComponent() {
     const {density, fontSize, mapAction} = state;
 
     useEffect(() => {
-        window.addEventListener("resize",       resize);
         window.addEventListener('popstate',     popstate);
         window.addEventListener('click',        click);
         window.addEventListener('dblclick',     dblclick);
@@ -25,7 +24,6 @@ export function MapComponent() {
         window.addEventListener("keydown",      keydown);
         window.addEventListener("paste",        paste);
         return () => {
-            window.removeEventListener("resize",       resize);
             window.removeEventListener('popstate',     popstate);
             window.removeEventListener('click',        click);
             window.removeEventListener('dblclick',     dblclick);
@@ -57,24 +55,23 @@ export function MapComponent() {
     useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
-            // push();
-            console.log(lastAction);
-            switch (lastAction) {
-                case 'undo':    break;
-                case 'redo':    break;
-                case 'save':    break;
-                case 'cut':     nodeDispatch('cutSelection'); break;
-                case 'copy':    break;
-                case 'print':  /*  mapPrint.start(payload.lm); */ break;
+            if (['undo', 'redo'].includes(lastAction)) {
+                mapDispatch(lastAction);
+                redraw();
+
+            } else {
+                push();
+                switch (lastAction) {
+                    case 'save':    break;
+                    case 'cut':     nodeDispatch('cutSelection'); break;
+                    case 'copy':    break;
+                    case 'print':  /*  mapPrint.start(payload.lm); */ break;
+                }
+                redraw();
+                checkPop();
             }
-            // redraw();
-            // checkPop();
         }
     }, [mapAction]);
-
-    const resize = (e) => {
-        // setMapAlignment();
-    };
 
     const popstate = (e) => {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
@@ -283,7 +280,7 @@ export function MapComponent() {
                     } else if (currExecution === 'applyTaskStatus') {
                         nodeDispatch(currExecution, {currTaskStatus: e.which - 96});
                     } else if (['undo', 'redo'].includes(currExecution)) {
-                        mapDispatch(currExecution)
+                        mapDispatch(currExecution);
                     } else if (currExecution === 'CREATE_MAP_IN_MAP') {
                         dispatch({type: currExecution, payload: sc.lm.content});
                     } else if (currExecution === 'SAVE_MAP') {
