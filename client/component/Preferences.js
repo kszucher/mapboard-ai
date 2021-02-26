@@ -96,6 +96,9 @@ export function Preferences () {
                     <IconButton>
                         <span className="material-icons">assignment_turned_in</span>
                     </IconButton>
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'formatColorReset'})}>
+                        <span className="material-icons">format_color_reset</span>
+                    </IconButton>
                 </div>
             </div>
             {/*</div>*/}

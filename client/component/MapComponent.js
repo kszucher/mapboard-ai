@@ -61,12 +61,13 @@ export function MapComponent() {
             } else if (['save'].includes(lastAction)) {
                 dispatch({type: 'SAVE_MAP'});
                 redraw();
-            } else if (['cut', 'copy', 'paste', 'print'].includes(lastAction)) {
+            } else if (['cut', 'copy', 'paste', 'formatColorReset', 'print'].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'cut':     nodeDispatch('cutSelection'); break;
-                    case 'copy':    nodeDispatch('copySelection'); break;
-                    case 'paste':   console.log('attemptopast');paste({preventDefault: ()=> {}}); break;
+                    case 'cut':                 nodeDispatch('cutSelection'); break;
+                    case 'copy':                nodeDispatch('copySelection'); break;
+                    case 'paste':               console.log('attemptopast');paste({preventDefault: ()=> {}}); break;
+                    case 'formatColorReset':    nodeDispatch('formatColorReset'); break;
                     case 'print':  /*  mapPrint.start(payload.lm); */ break;
                 }
                 redraw();

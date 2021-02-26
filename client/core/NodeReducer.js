@@ -6,6 +6,7 @@ import {nodeNavigate} from "../node/NodeNavigate";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
+import {props} from "../node/Node";
 
 let mutationObserver;
 export let isEditing = 0;
@@ -316,6 +317,15 @@ function nodeReducer(action, payload) {
                     break;
                 }
             }
+            break;
+        }
+        case 'formatColorReset': {
+            mapChangeProp.start(lm, 'sTextColor', props.saveOptional.sTextColor);
+            mapChangeProp.start(lm, 'cBorderColor', props.saveOptional.cBorderColor);
+            mapChangeProp.start(lm, 'ellipseFill', props.saveOptional.ellipseFill);
+            mapChangeProp.start(lm, 'ellipseFillColor', props.saveOptional.ellipseFillColor);
+            mapChangeProp.start(lm, 'ellipseBorderColor', props.saveOptional.ellipseBorderColor);
+            mapChangeProp.start(lm, 'lineColor', props.saveOptional.lineColor);
             break;
         }
         case 'applyFontSize': {
