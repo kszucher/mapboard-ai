@@ -61,14 +61,28 @@ export function MapComponent() {
             } else if (['save'].includes(lastAction)) {
                 dispatch({type: 'SAVE_MAP'});
                 redraw();
-            } else if (['cut', 'copy', 'paste', 'formatColorReset', 'print'].includes(lastAction)) {
+            } else if (['cut', 'copy', 'paste', 'task', 'formatColorReset', 'print'].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'cut':                 nodeDispatch('cutSelection'); break;
-                    case 'copy':                nodeDispatch('copySelection'); break;
-                    case 'paste':               console.log('attemptopast');paste({preventDefault: ()=> {}}); break;
-                    case 'formatColorReset':    nodeDispatch('formatColorReset'); break;
-                    case 'print':  /*  mapPrint.start(payload.lm); */ break;
+                    case 'cut':
+                        nodeDispatch('cutSelection');
+                        break;
+                    case 'copy':
+                        nodeDispatch('copySelection');
+                        break;
+                    case 'paste':
+                        paste({preventDefault: ()=> {}});
+                        break;
+                    case 'task':
+                        nodeDispatch('taskCheckReset');
+                        nodeDispatch('taskSwitch');
+                        break;
+                    case 'formatColorReset':
+                        nodeDispatch('formatColorReset');
+                        break;
+                    case 'print':
+                        /*  mapPrint.start(payload.lm); */
+                        break;
                 }
                 redraw();
                 checkPop();
@@ -239,7 +253,6 @@ export function MapComponent() {
             [ 1,  0,  0,  e.code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'SAVE_MAP']               ],
             [ 1,  0,  0,  e.code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                 ],
             [ 1,  0,  0,  e.code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                 ],
-            [ 1,  0,  1,  e.code === 'KeyT',               ['s', 'c', 'm'],               0,  1,  1, ['taskCheckReset', 'taskSwitch'],        ],
             [ 1,  0,  0,  e.code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose'],                           ],
             [ 0,  1,  0,  e.code === 'ArrowUp',            ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       ],
             [ 0,  1,  0,  e.code === 'ArrowDown',          ['c', 'm'],                    0,  1,  1, ['selectCellCol'],                       ],

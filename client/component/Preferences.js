@@ -93,7 +93,7 @@ export function Preferences () {
                     <IconButton >
                         <span className="material-icons">grid_on</span>
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'task'})}>
                         <span className="material-icons">assignment_turned_in</span>
                     </IconButton>
                     <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'formatColorReset'})}>

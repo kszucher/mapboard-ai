@@ -30,8 +30,6 @@ export const mapTaskColor = {
                         case 3: cm.ellipseFillColor = '#d4f6d4';  break;
                     }
                 }
-            } else {
-                cm.ellipseFill = 0;
             }
         }
 
