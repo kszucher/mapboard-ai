@@ -9,10 +9,10 @@ import {
     recalc,
     redraw,
     setMapAlignment,
-    setMapDensity,
 } from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 import {mapMem} from "../map/Map";
+import {mapDispatch} from "../core/MapReducer";
 
 /**
  * @return {null}
@@ -81,7 +81,7 @@ export function Communication() {
                     let mapDivBackground = document.getElementById('mapDivBackground');
                     mapDivBackground.style.transition = 'none';
                     loadMap(serverResponse.mapStorage);
-                    setMapDensity(serverResponse.mapStorage.density);
+                    mapDispatch('setDensity', serverResponse.mapStorage.density);
                     recalc();
                     redraw();
                     setMapAlignment(); // needs recalc redraw

@@ -132,6 +132,9 @@ const WorkspaceReducer = (state, action) => {
         case 'SET_DENSITY': {
             return {...state, density: payload};
         }
+        case 'SET_': {
+            return {...state, density: payload};
+        }
         case 'SET_FONT_SIZE': {
             return {...state, fontSize: payload}
         }

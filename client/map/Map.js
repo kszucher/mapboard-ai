@@ -44,15 +44,15 @@ export function loadMap(mapStorage) {
             path: [],
             index: 0,
         },
+
+        taskConfig: {
+            n: 4,
+            d: 24,
+            gap: 4,
+            width: 0,
+        },
     };
 }
-
-export const setMapDensity = (density) => {
-    mapMem.density = density;
-    mapMem.sLineDeltaXDefault = density === 'large'? 30:20;
-    mapMem.padding = density === 'large'? 8:3;
-    mapMem.defaultH = density === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
-};
 
 export const setMapAlignment = () => {
     let mapHolderDiv = document.getElementById('mapHolderDiv');

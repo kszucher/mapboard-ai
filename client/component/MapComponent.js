@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw, setMapDensity, mapref} from "../map/Map";
+import {mapDivData, mapMem, checkPop, push, redraw, mapref} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
@@ -37,7 +37,7 @@ export function MapComponent() {
 
     useEffect(() => {
         if (density !== '') {
-            setMapDensity(density);
+            mapDispatch('setDensity', density);
             nodeDispatch('resetDim');
             redraw();
         }

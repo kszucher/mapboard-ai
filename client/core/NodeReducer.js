@@ -1,4 +1,4 @@
-import {setMapDensity, mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
+import {mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, nodeMove, nodeMoveMouse} from "../node/NodeMove";

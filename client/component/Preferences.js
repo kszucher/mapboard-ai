@@ -39,6 +39,17 @@ export function Preferences () {
                     </Select>
                 </FormControl>
                 <FormControl component="fieldset" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Map Alignment</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={density}
+                        onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
+                        <MenuItem value={'small'}>Adaptive</MenuItem>
+                        <MenuItem value={'large'}>Symmetrical</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl component="fieldset" className={classes.formControl}>
                     <InputLabel id="demo-simple-select-label">Font Size</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
