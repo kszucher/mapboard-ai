@@ -9,6 +9,7 @@ export const State = {
     mapName: '',
     mapStorage: [],
     density: '',
+    alignment: '',
     mapStorageOut: [],
     breadcrumbsHistory: [],
     // preferences

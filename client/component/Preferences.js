@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export function Preferences () {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {density, colorMode, fontSize} = state;
+    const {density, alignment, colorMode, fontSize} = state;
 
     return (
         <div id = 'preferencesContainer'>
@@ -43,10 +43,10 @@ export function Preferences () {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={density}
-                        onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
-                        <MenuItem value={'small'}>Adaptive</MenuItem>
-                        <MenuItem value={'large'}>Symmetrical</MenuItem>
+                        value={alignment}
+                        onChange={e => dispatch({type: 'SET_ALIGNMENT', payload: e.target.value})}>
+                        <MenuItem value={'adaptive'}>Adaptive</MenuItem>
+                        <MenuItem value={'symmetrical'}>Symmetrical</MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl component="fieldset" className={classes.formControl}>

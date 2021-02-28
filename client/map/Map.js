@@ -26,7 +26,10 @@ export function loadMap(mapStorage) {
     mapMem = {
         dataIndex: 0,
         data: [mapAssembly((mapStorage.data))],
-        density: copy(mapStorage.density),
+
+        density: '',
+        alignment: '',
+
         taskLeft: 0,
         taskRight: 0,
 

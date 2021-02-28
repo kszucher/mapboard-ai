@@ -7,19 +7,22 @@ export const mapPlace = {
             flow = 'center' // this overwrites user preference
         }
 
-        let leftMarginWidth = mapMem.margin;
-        let leftTaskWidth =     r.d[1].s.length > 0 && mapMem.taskLeft ? mapMem.taskConfig.width: 0;
-        let leftMapWidth =      r.d[1].s.length > 0 ? r.d[1].selfW + mapMem.sLineDeltaXDefault + r.d[1].familyW : 0;
-        let rightMapWidth =     r.d[0].s.length > 0 ? r.d[0].selfW + mapMem.sLineDeltaXDefault + r.d[0].familyW : 0;
-        let rightTaskWidth =    r.d[0].s.length > 0 && mapMem.taskRight ? mapMem.taskConfig.width : 0;
-        let rightMarginWidth = mapMem.margin;
+        let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapMem;
+
+        let leftMarginWidth = margin;
+        let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfig.width: 0;
+        let leftMapWidth =      r.d[1].s.length > 0 ? r.d[1].selfW + sLineDeltaXDefault + r.d[1].familyW : 0;
+        let rightMapWidth =     r.d[0].s.length > 0 ? r.d[0].selfW + sLineDeltaXDefault + r.d[0].familyW : 0;
+        let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfig.width : 0;
+        let rightMarginWidth = margin;
         
         let leftWidth = leftMarginWidth + leftTaskWidth + leftMapWidth;
         let rightWidth = rightMapWidth + rightTaskWidth + rightMarginWidth;
 
         let minWidth = Math.max(...[leftWidth, rightWidth]);
 
-        let alignment = 'adaptive';
+        console.log(alignment)
+        // let alignment = 'symmetrical'
 
         let sumWidth;
         if (alignment === 'adaptive') {

@@ -23,6 +23,9 @@ function mapReducer(action, payload) {
             mapMem.padding = payload === 'large'? 8:3;
             mapMem.defaultH = payload === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
             break;
+        case 'setAlignment':
+            mapMem.alignment = payload;
+            break;
         case 'setTaskConfigWidth':
             let {n, d, gap} = mapMem.taskConfig;
             mapMem.taskConfig.width = n*d + (n-1)*gap;

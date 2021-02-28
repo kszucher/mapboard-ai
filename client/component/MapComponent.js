@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw, mapref, getMapData} from "../map/Map";
+import {mapDivData, mapMem, checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
@@ -12,7 +12,7 @@ import {mapDispatch} from "../core/MapReducer";
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
-    const {density, fontSize, mapAction} = state;
+    const {density, alignment, fontSize, mapAction} = state;
 
     useEffect(() => {
         window.addEventListener('popstate',     popstate);
@@ -42,6 +42,14 @@ export function MapComponent() {
             redraw();
         }
     }, [density]);
+
+    useEffect(() => {
+        if (alignment !== '') {
+            mapDispatch('setAlignment', alignment);
+            recalc(); // warning, this is required because map refers to node, maybe auto recalc after mapDispatch?
+            redraw();
+        }
+    }, [alignment]);
 
     useEffect(() => {
         if (fontSize !== '') {
