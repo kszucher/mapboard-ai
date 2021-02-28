@@ -162,7 +162,7 @@ export function Workspace() {
 
     return (
         <div id="page">
-            <div id = "mapHolderDiv" /*onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}*/>
+            <div id = "mapHolderDiv" onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onWheel={wheel} onMouseLeave={mouseLeave}>
                 <MapComponent/>
             </div>
             <MuiThemeProvider theme={theme}>
