@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw, mapref} from "../map/Map";
+import {mapDivData, mapMem, checkPop, push, redraw, mapref, getMapData} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
@@ -162,7 +162,8 @@ export function MapComponent() {
             let mapWrap = document.getElementById('mapWrap');
             let x = e.pageX - (winWidth - mapWrap.clientWidth) / 2;
             let y = e.pageY - (winHeight - mapHolderDiv.scrollTop);
-            let lastFoundPath = mapFind.start(x, y);
+            let r = getMapData().r;
+            let lastFoundPath = mapFind.start(r, x, y);
             if (lastFoundPath.length > 1) {
                 mapMem.shouldMove = true;
                 let lastFound = mapref(lastFoundPath);

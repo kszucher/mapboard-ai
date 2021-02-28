@@ -2,14 +2,11 @@ import {mapMem} from "./Map";
 import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 
 export const mapMeasure = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        let params = {
+    start: (r) => {
+        mapMeasure.iterate(r, {
             hasMultipleChild: 0,
             hasMultipleContentRow: 0,
-        };
-        mapMeasure.iterate(cm, params);
-
+        });
     },
 
     iterate: (cm, params) => {

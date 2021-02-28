@@ -16,9 +16,8 @@ let svgElementNameList = [
 ];
 
 export const mapSvgVisualize = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        mapSvgVisualize.iterate(cm);
+    start: (r) => {
+        mapSvgVisualize.iterate(r);
     },
 
     iterate: (cm) => {

@@ -1,9 +1,10 @@
-import {mapMem, mapref, mapasgn, pathMerge} from "../map/Map";
+import {mapMem, mapref, mapasgn, pathMerge, getMapData} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "../core/Utils";
 
 export function getSelectionContext () {
-    mapCollect.start();
+    let r = getMapData().r;
+    mapCollect.start(r);
 
     let maxSel = 0;
     let maxSelIndex = undefined;
@@ -111,7 +112,8 @@ export function getSelectionContext () {
 }
 
 export function clearStructSelectionContext () {
-    mapCollect.start();
+    let r = getMapData().r;
+    mapCollect.start(r);
     let filter = mapMem.filter;
     for (let i = 0; i < filter.structSelectedPathList.length; i++) {
         mapasgn(pathMerge(filter.structSelectedPathList[i], ['selected']), 0);
@@ -119,7 +121,8 @@ export function clearStructSelectionContext () {
 }
 
 export function clearCellSelectionContext () {
-    mapCollect.start();
+    let r = getMapData().r;
+    mapCollect.start(r);
     let filter = mapMem.filter;
     for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
         mapasgn(pathMerge(filter.cellSelectedPathList[i], ['selected']), 0);

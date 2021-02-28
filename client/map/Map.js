@@ -54,6 +54,10 @@ export function loadMap(mapStorage) {
     };
 }
 
+export const getMapData = () => {
+    return mapMem.data[mapMem.dataIndex];
+};
+
 export const setMapAlignment = () => {
     let mapHolderDiv = document.getElementById('mapHolderDiv');
     mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
@@ -61,20 +65,22 @@ export const setMapAlignment = () => {
 };
 
 export function recalc() {
-    mapRestore.start();
-    mapInit.start();
-    mapChain.start();
-    mapMeasure.start();
-    mapPlace.start();
-    mapTaskCalc.start();
-    mapTaskColor.start();
+    let r = getMapData().r;
+    mapRestore.start(r);
+    mapInit.start(r);
+    mapChain.start(r);
+    mapMeasure.start(r);
+    mapPlace.start(r);
+    mapTaskCalc.start(r);
+    mapTaskColor.start(r);
 }
 
 export function redraw() {
     keepHash = genHash(8);
 
-    mapDivVisualize.start();
-    mapSvgVisualize.start();
+    let r = getMapData().r;
+    mapDivVisualize.start(r);
+    mapSvgVisualize.start(r);
 
     for (const divId in mapDivData) {
         if (mapDivData[divId].keepHash !== keepHash) {
@@ -97,7 +103,7 @@ export function push() {
     if (mapMem.data.length > mapMem.dataIndex + 1) {
         mapMem.data.length = mapMem.dataIndex + 1;
     }
-    mapMem.data.push(JSON.parse(JSON.stringify(mapMem.getData())));
+    mapMem.data.push(JSON.parse(JSON.stringify(getMapData())));
     mapMem.dataIndex++;
 }
 
@@ -109,11 +115,11 @@ export function checkPop() {
 }
 
 export function mapref(path) {
-    return subsref(mapMem.getData(), path)
+    return subsref(getMapData(), path)
 }
 
 export function mapasgn(path, value) {
-    subsasgn(mapMem.getData(), path, value)
+    subsasgn(getMapData(), path, value)
 }
 
 export function pathMerge(path1, path2) {
@@ -125,7 +131,7 @@ export function pathMerge(path1, path2) {
 }
 
 export function saveMap () {
-    let cm = copy(mapMem.getData());
+    let cm = copy(getMapData());
     mapDeinit.start(cm);
     return mapDisassembly.start(cm);
 }

@@ -167,7 +167,7 @@ function nodeReducer(action, payload) {
         case 'selectRoot': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            mapMem.getData().r.selected = 1;
+            mapref(['r']).selected = 1;
             break;
         }
         // INSERT ------------------------------------------------------------------------------------------------------
@@ -375,7 +375,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'resetDim': {
-            mapChangeProp.start(mapMem.getData().r, 'isDimAssigned', 0);
+            mapChangeProp.start(mapref(['r']), 'isDimAssigned', 0);
             break;
         }
         // EDIT -------------------------------------------------------------------------------------------------------------

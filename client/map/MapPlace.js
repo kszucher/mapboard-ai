@@ -1,41 +1,39 @@
 import {mapMem} from "./Map";
 
 export const mapPlace = {
-    start: () => {
-        let cm = mapMem.getData().r;
-
+    start: (r) => {
         let arrangement = 'left'; // left or center, comes from user preference
-        if (cm.d[1].s.length > 0) {
+        if (r.d[1].s.length > 0) {
             arrangement = 'center' // this overwrites user preference
         }
 
         let leftMarginWidth = 32;
-        let leftTaskWidth =     cm.d[1].s.length > 0 && mapMem.taskLeft ? mapMem.taskConfig.width: 0;
-        let leftMapWidth =      cm.d[1].s.length > 0 ? cm.d[1].selfW + mapMem.sLineDeltaXDefault + cm.d[1].familyW + 16 : 0;
-        let rightMapWidth =     cm.d[0].s.length > 0 ? cm.d[0].selfW + mapMem.sLineDeltaXDefault + cm.d[0].familyW  : 0;
-        let rightTaskWidth =    cm.d[0].s.length > 0 && mapMem.taskRight ? mapMem.taskConfig.width : 0;
+        let leftTaskWidth =     r.d[1].s.length > 0 && mapMem.taskLeft ? mapMem.taskConfig.width: 0;
+        let leftMapWidth =      r.d[1].s.length > 0 ? r.d[1].selfW + mapMem.sLineDeltaXDefault + r.d[1].familyW + 16 : 0;
+        let rightMapWidth =     r.d[0].s.length > 0 ? r.d[0].selfW + mapMem.sLineDeltaXDefault + r.d[0].familyW  : 0;
+        let rightTaskWidth =    r.d[0].s.length > 0 && mapMem.taskRight ? mapMem.taskConfig.width : 0;
         let rightMarginWidth = 32;
         
         let leftWidth = leftMarginWidth + leftTaskWidth + leftMapWidth;
         let rightWidth = rightMapWidth + rightTaskWidth + rightMarginWidth;
-        let sumWidth = leftWidth + cm.selfW + rightWidth;
+        let sumWidth = leftWidth + r.selfW + rightWidth;
 
         let minWidth = 1366;
         let mapWidth = sumWidth < minWidth ? minWidth : sumWidth;
 
         let mapStartCenterX = 0;
         if (arrangement === 'left') {
-            mapStartCenterX = leftMarginWidth + cm.selfW / 2;
+            mapStartCenterX = leftMarginWidth + r.selfW / 2;
         } else if (arrangement === 'center') {
             let leftSpace = sumWidth < minWidth ? (minWidth - sumWidth) / 2 : 0;
-            mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace +  leftMapWidth + cm.selfW/2;
+            mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace +  leftMapWidth + r.selfW/2;
         }
 
         mapMem.mapWidth = mapWidth;
 
         // HEIGHT
-        let rightMapHeight =    cm.d.length > 0? cm.d[0].familyH > cm.d[0].selfH ? cm.d[0].familyH : cm.d[0].selfH : 0;
-        let leftMapHeight =     cm.d.length > 1? cm.d[1].familyH > cm.d[1].selfH ? cm.d[1].familyH : cm.d[1].selfH : 0;
+        let rightMapHeight =    r.d.length > 0? r.d[0].familyH > r.d[0].selfH ? r.d[0].familyH : r.d[0].selfH : 0;
+        let leftMapHeight =     r.d.length > 1? r.d[1].familyH > r.d[1].selfH ? r.d[1].familyH : r.d[1].selfH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
 
@@ -52,13 +50,13 @@ export const mapPlace = {
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        cm.parentNodeStartX = mapStartCenterX - cm.selfW/2 + 2;
-        cm.parentNodeStartY = 0;
-        cm.parentNodeEndX = mapStartCenterX + cm.selfW/2;
-        cm.parentNodeEndY = 0;
-        cm.lineDeltaX = 0;
-        cm.lineDeltaY = minHeight / 2 + 30 - 0.5;
-        mapPlace.iterate(cm);
+        r.parentNodeStartX = mapStartCenterX - r.selfW/2 + 2;
+        r.parentNodeStartY = 0;
+        r.parentNodeEndX = mapStartCenterX + r.selfW/2;
+        r.parentNodeEndY = 0;
+        r.lineDeltaX = 0;
+        r.lineDeltaY = minHeight / 2 + 30 - 0.5;
+        mapPlace.iterate(r);
     },
 
     iterate: (cm) => {

@@ -1,9 +1,6 @@
-import {mapMem} from "./Map";
-
 export const mapTemplate = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        mapTemplate.iterate(cm);
+    start: (r) => {
+        mapTemplate.iterate(r);
     },
 
     iterate: (cm) => {

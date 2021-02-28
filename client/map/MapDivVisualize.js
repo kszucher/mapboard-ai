@@ -2,9 +2,8 @@ import {keepHash, mapDivData, mapMem} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
 
 export const mapDivVisualize = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        mapDivVisualize.iterate(cm);
+    start: (r) => {
+        mapDivVisualize.iterate(r);
     },
 
     iterate: (cm) => {

@@ -1,11 +1,9 @@
-import {mapMem} from "./Map";
 import {props} from "../node/Node"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        mapInit.iterate(cm);
+    start: (r) => {
+        mapInit.iterate(r);
     },
 
     iterate: (cm) => {

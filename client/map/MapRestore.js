@@ -2,12 +2,10 @@ import {mapMem} from "./Map";
 import {getDefaultNode} from "../node/Node";
 
 export const mapRestore = {
-    start: () => {
+    start: (r) => {
         mapMem.taskLeft = 0;
         mapMem.taskRight = 0;
-
-        let cm = mapMem.getData().r;
-        mapRestore.iterate(cm);
+        mapRestore.iterate(r);
     },
 
     iterate: (cm) => {

@@ -1,10 +1,8 @@
-import {mapMem} from "./Map";
 import {getBgc} from "../core/Utils";
 
 export const mapTaskColor = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        mapTaskColor.iterate(cm);
+    start: (r) => {
+        mapTaskColor.iterate(r);
     },
 
     iterate: (cm) => {

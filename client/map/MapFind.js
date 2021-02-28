@@ -1,4 +1,3 @@
-import {mapMem, mapref} from "./Map";
 import {copy} from "../core/Utils";
 
 let currX, currY = 0;
@@ -6,14 +5,13 @@ let aboveRoot, belowRoot = 0;
 let lastFoundPath = [];
 
 export const mapFind = {
-    start: (x, y) => {
+    start: (r, x, y) => {
         currX = x;
         currY = y;
-        let cm = mapMem.getData().r;
-        aboveRoot = cm.nodeStartY < y;
-        belowRoot = cm.nodeStartY > y;
+        aboveRoot = r.nodeStartY < y;
+        belowRoot = r.nodeStartY > y;
         lastFoundPath = [];
-        mapFind.iterate(cm);
+        mapFind.iterate(r);
         return lastFoundPath;
     },
 

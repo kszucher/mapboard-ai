@@ -1,9 +1,6 @@
-import {mapMem} from "./Map";
-
 export const mapTaskCalc = {
-    start: () => {
-        let cm = mapMem.getData().r;
-        mapTaskCalc.iterate(cm, cm.task);
+    start: (r) => {
+        mapTaskCalc.iterate(r, r.task);
     },
 
     iterate: (cm, task) => {

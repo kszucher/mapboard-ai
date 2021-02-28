@@ -1,5 +1,4 @@
-import {mapMem, recalc} from "../map/Map";
-import {getSelectionContext} from "../node/NodeSelect"
+import {mapMem} from "../map/Map";
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
