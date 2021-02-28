@@ -11,6 +11,7 @@ import {mapTaskCalc} from './MapTaskCalc';
 import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
 import {mapRestore} from "./MapRestore";
+import {mapTaskCheck} from "./MapTaskCheck";
 
 export let mapMem = {};
 export let mapDivData = [];
@@ -63,6 +64,7 @@ export function recalc() {
     mapRestore.start(r);
     mapInit.start(r);
     mapChain.start(r);
+    mapTaskCheck.start(r);
     mapMeasure.start(r);
     mapPlace.start(r);
     mapTaskCalc.start(r);
