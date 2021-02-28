@@ -2,11 +2,6 @@ import {mapMem} from "./Map";
 
 export const mapPlace = {
     start: (r) => {
-        let flow = 'right'; // left or center, comes from user preference
-        if (r.d[1].s.length > 0) {
-            flow = 'center' // this overwrites user preference
-        }
-
         let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapMem;
 
         let leftMarginWidth = margin;
@@ -21,18 +16,21 @@ export const mapPlace = {
 
         let minWidth = Math.max(...[leftWidth, rightWidth]);
 
-        console.log(alignment)
-        // let alignment = 'symmetrical'
+        let flow = r.d[1].s.length > 0 ? 'center' : 'right';
 
-        let sumWidth;
+        let sumWidth = 0;
         if (alignment === 'adaptive') {
             sumWidth = leftWidth + r.selfW + rightWidth;
         } else if (alignment === 'symmetrical') {
-            sumWidth = minWidth + r.selfW + minWidth;
+            if (flow === 'right') {
+                sumWidth = leftMarginWidth + r.selfW + rightWidth;
+            } else if (flow === 'center') {
+                sumWidth = minWidth + r.selfW + minWidth;
+            }
         }
 
         let divMinWidth = 1366;
-        let mapWidth = sumWidth < divMinWidth ? divMinWidth : sumWidth;
+        let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth;
 
         let mapStartCenterX = 0;
         if (flow === 'right') {
