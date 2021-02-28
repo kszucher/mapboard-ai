@@ -66,6 +66,7 @@ const WorkspaceReducer = (state, action) => {
             return {...state,
                 mapStorage: payload,
                 density: payload.density,
+                alignment: payload.alignment,
             };
         // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP':
@@ -73,6 +74,7 @@ const WorkspaceReducer = (state, action) => {
                 mapStorageOut: {
                     data: getDefaultMap(payload),
                     density: mapMem.density,
+                    alignment: mapMem.alignment,
                 },
                 serverAction: [...state.serverAction, 'createMapInMap']
             };
@@ -81,6 +83,7 @@ const WorkspaceReducer = (state, action) => {
                 mapStorageOut: {
                     data: getDefaultMap(payload.mapName),
                     density: mapMem.density,
+                    alignment: mapMem.alignment,
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
@@ -90,6 +93,7 @@ const WorkspaceReducer = (state, action) => {
                 mapStorageOut: {
                     data: saveMap(),
                     density: mapMem.density,
+                    alignment: mapMem.alignment,
                 },
                 serverAction: [...state.serverAction, 'saveMap']
             };

@@ -82,7 +82,7 @@ export function Communication() {
                     mapDivBackground.style.transition = 'none';
                     loadMap(serverResponse.mapStorage);
                     mapDispatch('setDensity', serverResponse.mapStorage.density);
-                    mapDispatch('setAlignment', serverResponse.mapStorage.alignment ? serverResponse.mapStorage.alignment:'adaptive');
+                    mapDispatch('setAlignment', serverResponse.mapStorage.alignment);
                     mapDispatch('setTaskConfigWidth');
                     recalc();
                     redraw();
