@@ -30,10 +30,6 @@ export function loadMap(mapStorage) {
         taskLeft: 0,
         taskRight: 0,
 
-        getData: () => {
-            return mapMem.data[mapMem.dataIndex];
-        },
-
         filter: [],
         deepestSelectablePath: [],
 
@@ -56,12 +52,6 @@ export function loadMap(mapStorage) {
 
 export const getMapData = () => {
     return mapMem.data[mapMem.dataIndex];
-};
-
-export const setMapAlignment = () => {
-    let mapHolderDiv = document.getElementById('mapHolderDiv');
-    mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
-    mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
 };
 
 export function recalc() {

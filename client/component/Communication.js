@@ -77,16 +77,17 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    // TO MAP STATE
                     let mapDivBackground = document.getElementById('mapDivBackground');
+                    let mapHolderDiv = document.getElementById('mapHolderDiv');
                     mapDivBackground.style.transition = 'none';
                     loadMap(serverResponse.mapStorage);
                     mapDispatch('setDensity', serverResponse.mapStorage.density);
+                    mapDispatch('setTaskConfigWidth');
                     recalc();
                     redraw();
-                    setMapAlignment(); // needs recalc redraw
+                    mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
+                    mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
                     mapDivBackground.style.transition = '0.5s ease-out';
-                    // TO WORKSPACE STATE
                     dispatch({type: 'SET_MAPSTORAGE', payload: serverResponse.mapStorage});
                     break;
                 }
