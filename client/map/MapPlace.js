@@ -2,9 +2,9 @@ import {mapMem} from "./Map";
 
 export const mapPlace = {
     start: (r) => {
-        let arrangement = 'left'; // left or center, comes from user preference
+        let flow = 'right'; // left or center, comes from user preference
         if (r.d[1].s.length > 0) {
-            arrangement = 'center' // this overwrites user preference
+            flow = 'center' // this overwrites user preference
         }
 
         let leftMarginWidth = mapMem.margin;
@@ -16,17 +16,31 @@ export const mapPlace = {
         
         let leftWidth = leftMarginWidth + leftTaskWidth + leftMapWidth;
         let rightWidth = rightMapWidth + rightTaskWidth + rightMarginWidth;
-        let sumWidth = leftWidth + r.selfW + rightWidth;
 
-        let minWidth = 1366;
-        let mapWidth = sumWidth < minWidth ? minWidth : sumWidth;
+        let minWidth = Math.max(...[leftWidth, rightWidth]);
+
+        let alignment = 'adaptive';
+
+        let sumWidth;
+        if (alignment === 'adaptive') {
+            sumWidth = leftWidth + r.selfW + rightWidth;
+        } else if (alignment === 'symmetrical') {
+            sumWidth = minWidth + r.selfW + minWidth;
+        }
+
+        let divMinWidth = 1366;
+        let mapWidth = sumWidth < divMinWidth ? divMinWidth : sumWidth;
 
         let mapStartCenterX = 0;
-        if (arrangement === 'left') {
+        if (flow === 'right') {
             mapStartCenterX = leftMarginWidth + r.selfW / 2;
-        } else if (arrangement === 'center') {
-            let leftSpace = sumWidth < minWidth ? (minWidth - sumWidth) / 2 : 0;
-            mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace +  leftMapWidth + r.selfW/2;
+        } else if (flow === 'center') {
+            if (alignment === 'adaptive') {
+                let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0;
+                mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace + leftMapWidth + r.selfW / 2;
+            } else if (alignment === 'symmetrical') {
+                mapStartCenterX = mapWidth / 2;
+            }
         }
 
         mapMem.mapWidth = mapWidth;
