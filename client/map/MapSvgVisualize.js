@@ -146,12 +146,11 @@ export const mapSvgVisualize = {
             !cm.isRoot &&
             !cm.isRootChild) {
 
-            let n = 4;
-            let d = 24;
-            let gap = 4;
-            let wrapWidth = n*d + (n-1)*gap;
 
-            let startX = cm.path[2] === 0 ? mapMem.mapWidth - wrapWidth - 32 : 32 + wrapWidth;
+            let {mapWidth, margin} = mapMem;
+            let {n, d, gap, width} = mapMem.taskConfig;
+
+            let startX = cm.path[2] === 0 ? mapWidth - width - margin : margin + width;
 
             let x1 = cm.nodeEndX;
             let y1 = cm.nodeEndY;

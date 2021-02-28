@@ -7,12 +7,12 @@ export const mapPlace = {
             arrangement = 'center' // this overwrites user preference
         }
 
-        let leftMarginWidth = 32;
+        let leftMarginWidth = mapMem.margin;
         let leftTaskWidth =     r.d[1].s.length > 0 && mapMem.taskLeft ? mapMem.taskConfig.width: 0;
         let leftMapWidth =      r.d[1].s.length > 0 ? r.d[1].selfW + mapMem.sLineDeltaXDefault + r.d[1].familyW + 16 : 0;
         let rightMapWidth =     r.d[0].s.length > 0 ? r.d[0].selfW + mapMem.sLineDeltaXDefault + r.d[0].familyW  : 0;
         let rightTaskWidth =    r.d[0].s.length > 0 && mapMem.taskRight ? mapMem.taskConfig.width : 0;
-        let rightMarginWidth = 32;
+        let rightMarginWidth = mapMem.margin;
         
         let leftWidth = leftMarginWidth + leftTaskWidth + leftMapWidth;
         let rightWidth = rightMapWidth + rightTaskWidth + rightMarginWidth;
@@ -31,13 +31,11 @@ export const mapPlace = {
 
         mapMem.mapWidth = mapWidth;
 
-        // HEIGHT
         let rightMapHeight =    r.d.length > 0? r.d[0].familyH > r.d[0].selfH ? r.d[0].familyH : r.d[0].selfH : 0;
         let leftMapHeight =     r.d.length > 1? r.d[1].familyH > r.d[1].selfH ? r.d[1].familyH : r.d[1].selfH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
 
-        // APPLY
         let mapWrap = document.getElementById('mapWrap');
         mapWrap.style.width = "" + mapWidth + "px";
         mapWrap.style.height = "" + mapHeight + "px";

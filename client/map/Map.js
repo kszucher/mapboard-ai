@@ -41,6 +41,7 @@ export function loadMap(mapStorage) {
             index: 0,
         },
 
+        margin: 32,
         taskConfig: {
             n: 4,
             d: 24,
