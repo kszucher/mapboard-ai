@@ -34,6 +34,8 @@ export function loadMap(mapStorage) {
         taskLeft: 0,
         taskRight: 0,
 
+        mapWidth: 0,
+
         filter: [],
         deepestSelectablePath: [],
 

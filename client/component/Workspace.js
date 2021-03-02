@@ -92,8 +92,8 @@ export function Workspace() {
 
         var prevScrollLeft = el.scrollLeft;
         var prevScrollTop = el.scrollTop;
-        // el.scrollLeft= scrollLeft - walkX;
-        // el.scrollTop = scrollTop - walkY;
+        el.scrollLeft= scrollLeft - walkX;
+        el.scrollTop = scrollTop - walkY;
         velX = el.scrollLeft - prevScrollLeft;
         velY = el.scrollTop - prevScrollTop;
 

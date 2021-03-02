@@ -44,7 +44,6 @@ export const mapPlace = {
             }
         }
 
-        mapMem.mapWidth = mapWidth;
 
         let rightMapHeight =    r.d.length > 0? r.d[0].familyH > r.d[0].selfH ? r.d[0].familyH : r.d[0].selfH : 0;
         let leftMapHeight =     r.d.length > 1? r.d[1].familyH > r.d[1].selfH ? r.d[1].familyH : r.d[1].selfH : 0;
@@ -62,6 +61,11 @@ export const mapPlace = {
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
+
+        let el = document.getElementById('mapHolderDiv');
+        el.scrollLeft = (window.innerWidth + mapWidth) / 2;
+
+        mapMem.mapWidth = mapWidth;
 
         r.parentNodeStartX = mapStartCenterX - r.selfW/2 + 2;
         r.parentNodeStartY = 0;
