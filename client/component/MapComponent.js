@@ -167,9 +167,8 @@ export function MapComponent() {
             let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
-            let mapWrap = document.getElementById('mapWrap');
-            let x = e.pageX - (winWidth - mapWrap.clientWidth) / 2;
-            let y = e.pageY - (winHeight - mapHolderDiv.scrollTop);
+            let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
+            let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
             let r = getMapData().r;
             let lastFoundPath = mapFind.start(r, x, y);
             if (lastFoundPath.length > 1) {

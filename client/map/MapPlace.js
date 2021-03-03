@@ -96,7 +96,9 @@ export const mapPlace = {
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
         let currScrollLeft = (window.innerWidth + mapWidth) / 2;
-        scrollTo(currScrollLeft, 500);
+        if (!mapMem.isMouseDown) {
+            scrollTo(currScrollLeft, 500);
+        }
 
         mapMem.mapWidth = mapWidth;
 
