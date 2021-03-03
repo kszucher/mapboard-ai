@@ -1,5 +1,38 @@
 import {mapMem} from "./Map";
 
+const scrollTo = function(to, duration) {
+    const
+        element = document.getElementById('mapHolderDiv'),
+        start = element.scrollLeft,
+        change = to - start,
+        startDate = +new Date(),
+        // t = current time
+        // b = start value
+        // c = change in value
+        // d = duration
+        easeOut = function(t, b, c, d) {
+            //https://www.gizma.com/easing/
+            // https://easings.net/
+            // https://css-tricks.com/ease-out-in-ease-in-out/
+            // TODO: trying to set if for everything
+            t /= d;
+            t--;
+            return c*(t*t*t + 1) + b;
+        },
+        animateScroll = function() {
+            const currentDate = +new Date();
+            const currentTime = currentDate - startDate;
+            element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration));
+            if(currentTime < duration) {
+                requestAnimationFrame(animateScroll);
+            }
+            else {
+                element.scrollLeft = to;
+            }
+        };
+    animateScroll();
+};
+
 export const mapPlace = {
     start: (r) => {
         let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapMem;
@@ -62,8 +95,8 @@ export const mapPlace = {
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
-        let el = document.getElementById('mapHolderDiv');
-        el.scrollLeft = (window.innerWidth + mapWidth) / 2;
+        let currScrollLeft = (window.innerWidth + mapWidth) / 2;
+        scrollTo(currScrollLeft, 500);
 
         mapMem.mapWidth = mapWidth;
 
