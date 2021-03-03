@@ -96,8 +96,17 @@ export const mapPlace = {
         svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
 
         let currScrollLeft = (window.innerWidth + mapWidth) / 2;
-        if (!mapMem.isMouseDown) {
-            scrollTo(currScrollLeft, 500);
+
+        if (mapMem.isLoading) {
+            mapMem.isLoading = false;
+            let mapHolderDiv = document.getElementById('mapHolderDiv');
+            mapHolderDiv.scrollLeft = currScrollLeft;
+            let mapDivBackground = document.getElementById('mapDivBackground');
+            mapDivBackground.style.transition = 'none';
+        } else {
+            if (!mapMem.isMouseDown) {
+                scrollTo(currScrollLeft, 500);
+            }
         }
 
         mapMem.mapWidth = mapWidth;

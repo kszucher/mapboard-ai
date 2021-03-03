@@ -25,6 +25,8 @@ export function initDomData() {
 
 export function loadMap(mapStorage) {
     mapMem = {
+        isLoading: true,
+
         dataIndex: 0,
         data: [mapAssembly((mapStorage.data))],
 
