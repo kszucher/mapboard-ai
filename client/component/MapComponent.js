@@ -171,6 +171,8 @@ export function MapComponent() {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked ) {
             mapMem.shouldMove = false;
+            let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
+            let lastSelected = mapref(lastSelectedPath);
             mapChangeProp.start(mapref(['r']), 'moveLine', []);
             mapChangeProp.start(mapref(['r']), 'moveRect', []);
             let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -178,42 +180,46 @@ export function MapComponent() {
             let mapHolderDiv = document.getElementById('mapHolderDiv');
             let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
             let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
-            let r = getMapData().r;
-            let lastFoundPath = mapFind.start(r, x, y);
-            if (lastFoundPath.length > 1) {
-                mapMem.shouldMove = true;
-                let lastFound = mapref(lastFoundPath);
-                let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
-                let fromY = lastFound.nodeStartY;
-                lastFound.moveLine = [fromX, fromY, x, y];
-                lastFound.moveRect = [x, y];
-                if (lastFound.s.length === 0 ) {
-                    mapMem.moveTarget = {
-                        path: copy(lastFoundPath),
-                        index: 0,
-                    };
-                } else {
-                    let insertIndex = 0;
-                    for (let i = 0; i < lastFound.s.length - 1; i++) {
-                        if (y > lastFound.s[i].nodeStartY && y <= lastFound.s[i+1].nodeStartY) {
-                            insertIndex = i + 1;
+            if (!(lastSelected.nodeStartX < x &&
+                x < lastSelected.nodeEndX &&
+                lastSelected.nodeStartY - lastSelected.selfH/2 < y &&
+                y < lastSelected.nodeStartY + lastSelected.selfH/2)
+            ) {
+                let r = getMapData().r;
+                let lastFoundPath = mapFind.start(r, x, y);
+                if (lastFoundPath.length > 1) {
+                    mapMem.shouldMove = true;
+                    let lastFound = mapref(lastFoundPath);
+                    let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
+                    let fromY = lastFound.nodeStartY;
+                    lastFound.moveLine = [fromX, fromY, x, y];
+                    lastFound.moveRect = [x, y];
+                    if (lastFound.s.length === 0) {
+                        mapMem.moveTarget = {
+                            path: copy(lastFoundPath),
+                            index: 0,
+                        };
+                    } else {
+                        let insertIndex = 0;
+                        for (let i = 0; i < lastFound.s.length - 1; i++) {
+                            if (y > lastFound.s[i].nodeStartY && y <= lastFound.s[i + 1].nodeStartY) {
+                                insertIndex = i + 1;
+                            }
                         }
-                    }
-                    if (y > lastFound.s[lastFound.s.length - 1].nodeStartY) {
-                        insertIndex = lastFound.s.length;
-                    }
-                    let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
-                    let lastSelected = mapref(lastSelectedPath);
-                    let lastSelectedParentPath = lastSelected.parentPath;
-                    if (arraysSame(lastFound.path, lastSelectedParentPath)) {
-                        if (lastSelected.index < insertIndex) {
-                            insertIndex -= 1;
+                        if (y > lastFound.s[lastFound.s.length - 1].nodeStartY) {
+                            insertIndex = lastFound.s.length;
                         }
+                        let lastSelectedParentPath = lastSelected.parentPath;
+                        if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+                            if (lastSelected.index < insertIndex) {
+                                insertIndex -= 1;
+                            }
+                        }
+                        mapMem.moveTarget = {
+                            path: copy(lastFoundPath),
+                            index: insertIndex,
+                        };
                     }
-                    mapMem.moveTarget = {
-                        path: copy(lastFoundPath),
-                        index: insertIndex,
-                    };
                 }
             }
             redraw();
