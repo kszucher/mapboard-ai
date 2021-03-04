@@ -15,6 +15,7 @@ export function MapComponent() {
     const {density, alignment, fontSize, mapAction} = state;
 
     useEffect(() => {
+        window.addEventListener('resize',       resize);
         window.addEventListener('popstate',     popstate);
         window.addEventListener('click',        click);
         window.addEventListener('dblclick',     dblclick);
@@ -24,6 +25,7 @@ export function MapComponent() {
         window.addEventListener("keydown",      keydown);
         window.addEventListener("paste",        paste);
         return () => {
+            window.removeEventListener('resize',       resize);
             window.removeEventListener('popstate',     popstate);
             window.removeEventListener('click',        click);
             window.removeEventListener('dblclick',     dblclick);
@@ -99,6 +101,11 @@ export function MapComponent() {
             }
         }
     }, [mapAction]);
+
+    const resize = (e) => {
+        mapMem.isLoading = true;
+        recalc();
+    };
 
     const popstate = (e) => {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
