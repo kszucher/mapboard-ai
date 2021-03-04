@@ -169,7 +169,7 @@ export function MapComponent() {
 
     const mousemove = (e) => {
         e.preventDefault();
-        if (mapMem.isMouseDown && mapMem.isNodeClicked && Math.abs(mapMem.mouseDownX - e.pageX) > 14 && Math.abs(mapMem.mouseDownY - e.pageY) > 14) {
+        if (mapMem.isMouseDown && mapMem.isNodeClicked ) {
             mapMem.shouldMove = false;
             mapChangeProp.start(mapref(['r']), 'moveLine', []);
             mapChangeProp.start(mapref(['r']), 'moveRect', []);
