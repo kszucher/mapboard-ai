@@ -158,6 +158,8 @@ export function Workspace() {
                 contrastText: '#222',
             },
         },
+
+        spacing: 2
     });
 
     return (
