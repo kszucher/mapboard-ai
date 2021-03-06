@@ -129,8 +129,28 @@ export function MapComponent() {
 
         let lastOverPath = mapFindOver.start(r, x, y);
         if (lastOverPath.length > 1) {
-            console.log('FOUND!!!')
-            console.log(mapref(lastOverPath).content)
+            mapMem.isNodeClicked = true;
+            mapMem.deepestSelectablePath = copy(lastOverPath);
+            push();
+            if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                nodeDispatch('selectStruct');
+            } else {
+                nodeDispatch('selectStructToo');
+            }
+            redraw();
+            checkPop();
+            let sc = getSelectionContext();
+            let {lm} = sc;
+            if (!e.shiftKey) {
+                if (lm.linkType === 'internal') {
+                    dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
+                } else if (lm.linkType === 'external') {
+                    mapMem.isMouseDown = false;
+                    window.open(lm.link, '_blank');
+                    window.focus();
+                }
+            }
+            dispatch({type: 'SET_NODE_PROPS', payload: lm});
         }
 
         if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
@@ -141,28 +161,7 @@ export function MapComponent() {
             for (const pathItem of e.path) {
                 if (pathItem.id) {
                     if (pathItem.id.substring(0, 3) === 'div') {
-                        mapMem.isNodeClicked = true;
-                        mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
-                        push();
-                        if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                            nodeDispatch('selectStruct');
-                        } else {
-                            nodeDispatch('selectStructToo');
-                        }
-                        redraw();
-                        checkPop();
-                        let sc = getSelectionContext();
-                        let {lm} = sc;
-                        if (!e.shiftKey) {
-                            if (lm.linkType === 'internal') {
-                                dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
-                            } else if (lm.linkType === 'external') {
-                                mapMem.isMouseDown = false;
-                                window.open(lm.link, '_blank');
-                                window.focus();
-                            }
-                        }
-                        dispatch({type: 'SET_NODE_PROPS', payload: lm});
+
                     } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
                         push();
                         nodeDispatch('setTaskStatus', {

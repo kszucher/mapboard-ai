@@ -19,8 +19,6 @@ export const mapFindOver = {
             currY < cm.nodeStartY + cm.selfH  / 2 ) {
             lastOverPath = copy(cm.path);
         }
-
-
         cm.d.map(i => mapFindOver.iterate(i));
         cm.s.map(i => mapFindOver.iterate(i));
         cm.c.map(i => i.map(j => mapFindOver.iterate(j)));
