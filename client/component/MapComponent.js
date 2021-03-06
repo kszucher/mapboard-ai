@@ -8,6 +8,7 @@ import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
+import {mapFindOver} from "../map/MapFindOver";
 
 export function MapComponent() {
 
@@ -125,6 +126,12 @@ export function MapComponent() {
 
         let r = getMapData().r;
         let [x, y] = getCoords(e);
+
+        let lastOverPath = mapFindOver.start(r, x, y);
+        if (lastOverPath.length > 1) {
+            console.log('FOUND!!!')
+            console.log(mapref(lastOverPath).content)
+        }
 
         if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
             if (isEditing === 1) {
