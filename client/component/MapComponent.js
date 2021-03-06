@@ -115,42 +115,46 @@ export function MapComponent() {
         mapMem.isMouseDown = true;
         mapMem.mouseDownX = e.pageX;
         mapMem.mouseDownY = e.pageY;
-        if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
-        if (isEditing === 1) {
-            nodeDispatch('finishEdit');
-            redraw();
-        }
-        for (const pathItem of e.path) {
-            if (pathItem.id) {
-                if (pathItem.id.substring(0, 3) === 'div') {
-                    mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
-                    mapMem.isNodeClicked = true;
-                    push();
-                    if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                        nodeDispatch('selectStruct');
-                    } else {
-                        nodeDispatch('selectStructToo');
-                    }
-                    redraw();
-                    checkPop();
-                    let sc = getSelectionContext();
-                    let {lm} = sc;
-                    if (!e.shiftKey) {
-                        if(lm.linkType === 'internal') {
-                            dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
-                        } else if (lm.linkType === 'external') {
-                            mapMem.isMouseDown = false;
-                            window.open(lm.link, '_blank');
-                            window.focus();
+        if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
+            if (isEditing === 1) {
+                nodeDispatch('finishEdit');
+                redraw();
+            }
+            for (const pathItem of e.path) {
+                if (pathItem.id) {
+                    if (pathItem.id.substring(0, 3) === 'div') {
+                        mapMem.isNodeClicked = true;
+                        mapMem.deepestSelectablePath = mapDivData[pathItem.id].path;
+                        push();
+                        if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                            nodeDispatch('selectStruct');
+                        } else {
+                            nodeDispatch('selectStructToo');
                         }
+                        redraw();
+                        checkPop();
+                        let sc = getSelectionContext();
+                        let {lm} = sc;
+                        if (!e.shiftKey) {
+                            if (lm.linkType === 'internal') {
+                                dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
+                            } else if (lm.linkType === 'external') {
+                                mapMem.isMouseDown = false;
+                                window.open(lm.link, '_blank');
+                                window.focus();
+                            }
+                        }
+                        dispatch({type: 'SET_NODE_PROPS', payload: lm});
+                    } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
+                        push();
+                        nodeDispatch('setTaskStatus', {
+                            taskStatus: parseInt(e.path[0].id.charAt(10), 10),
+                            svgId: e.path[1].id
+                        });
+                        redraw();
+                        checkPop();
+                        break;
                     }
-                    dispatch({type: 'SET_NODE_PROPS', payload: lm});
-                } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
-                    push();
-                    nodeDispatch('setTaskStatus', {taskStatus: parseInt(e.path[0].id.charAt(10), 10), svgId: e.path[1].id});
-                    redraw();
-                    checkPop();
-                    break;
                 }
             }
         }
@@ -158,10 +162,11 @@ export function MapComponent() {
 
     const dblclick = (e) => {
         e.preventDefault();
-        if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
+        if (mapMem.isNodeClicked) {
             nodeDispatch('startEdit');
+        } else {
+            recalc(); // centers map
         }
-        recalc();
         redraw();
     };
 
