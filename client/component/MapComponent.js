@@ -128,7 +128,7 @@ export function MapComponent() {
         let [x, y] = getCoords(e);
 
         let lastOverPath = mapFindOver.start(r, x, y);
-        if (lastOverPath.length > 1) {
+        if (lastOverPath.length) {
             mapMem.isNodeClicked = true;
             mapMem.deepestSelectablePath = copy(lastOverPath);
             push();
