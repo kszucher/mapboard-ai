@@ -144,6 +144,7 @@ export function MapComponent() {
                         if(lm.linkType === 'internal') {
                             dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
                         } else if (lm.linkType === 'external') {
+                            mapMem.isMouseDown = false;
                             window.open(lm.link, '_blank');
                             window.focus();
                         }
@@ -171,10 +172,10 @@ export function MapComponent() {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked ) {
             mapMem.shouldMove = false;
-            let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
-            let lastSelected = mapref(lastSelectedPath);
             mapChangeProp.start(mapref(['r']), 'moveLine', []);
             mapChangeProp.start(mapref(['r']), 'moveRect', []);
+            let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
+            let lastSelected = mapref(lastSelectedPath);
             let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
