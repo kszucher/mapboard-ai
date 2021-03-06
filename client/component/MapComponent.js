@@ -169,8 +169,9 @@ export function MapComponent() {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked ) {
             mapMem.shouldMove = false;
-            mapChangeProp.start(mapref(['r']), 'moveLine', []);
-            mapChangeProp.start(mapref(['r']), 'moveRect', []);
+            let r = getMapData().r;
+            mapChangeProp.start(r, 'moveLine', []);
+            mapChangeProp.start(r, 'moveRect', []);
             let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
             let lastSelected = mapref(lastSelectedPath);
             let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -183,7 +184,6 @@ export function MapComponent() {
                 lastSelected.nodeStartY - lastSelected.selfH/2 < y &&
                 y < lastSelected.nodeStartY + lastSelected.selfH/2)
             ) {
-                let r = getMapData().r;
                 let lastFoundPath = mapFind.start(r, x, y);
                 if (lastFoundPath.length > 1) {
                     mapMem.shouldMove = true;
