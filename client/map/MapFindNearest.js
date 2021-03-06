@@ -2,24 +2,24 @@ import {copy} from "../core/Utils";
 
 let currX, currY = 0;
 let aboveRoot, belowRoot = 0;
-let lastFoundPath = [];
+let lastNearestPath = [];
 
-export const mapFind = {
+export const mapFindNearest = {
     start: (r, x, y) => {
         currX = x;
         currY = y;
         aboveRoot = r.nodeStartY < y;
         belowRoot = r.nodeStartY > y;
-        lastFoundPath = [];
-        mapFind.iterate(r);
-        return lastFoundPath;
+        lastNearestPath = [];
+        mapFindNearest.iterate(r);
+        return lastNearestPath;
     },
 
     iterate: (cm) => {
         if (!cm.selected) {
-            cm.d.map(i => mapFind.iterate(i));
+            cm.d.map(i => mapFindNearest.iterate(i));
             if (cm.type === 'cell') {
-                cm.s.map(i => mapFind.iterate(i));
+                cm.s.map(i => mapFindNearest.iterate(i));
             } else {
                 let overlap = 6;
                 let vCondition;
@@ -34,11 +34,11 @@ export const mapFind = {
                     (cm.path[2] === 0 && currX > cm.nodeEndX) ||
                     (cm.path[2] === 1 && currX < cm.nodeStartX);
                 if (vCondition && hCondition) {
-                    lastFoundPath = copy(cm.path);
-                    cm.s.map(i => mapFind.iterate(i));
+                    lastNearestPath = copy(cm.path);
+                    cm.s.map(i => mapFindNearest.iterate(i));
                 }
             }
-            cm.c.map(i => i.map(j => mapFind.iterate(j)));
+            cm.c.map(i => i.map(j => mapFindNearest.iterate(j)));
         }
     }
 };

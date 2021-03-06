@@ -6,7 +6,7 @@ import {mapDivData, mapMem, checkPop, push, redraw, mapref, getMapData, recalc} 
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
-import {mapFind} from "../map/MapFind";
+import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
 
 export function MapComponent() {
@@ -189,17 +189,17 @@ export function MapComponent() {
                 lastSelected.nodeStartY - lastSelected.selfH/2 < y &&
                 y < lastSelected.nodeStartY + lastSelected.selfH/2)
             ) {
-                let lastFoundPath = mapFind.start(r, x, y);
-                if (lastFoundPath.length > 1) {
+                let lastNearestPath = mapFindNearest.start(r, x, y);
+                if (lastNearestPath.length > 1) {
                     mapMem.shouldMove = true;
-                    let lastFound = mapref(lastFoundPath);
+                    let lastFound = mapref(lastNearestPath);
                     let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                     let fromY = lastFound.nodeStartY;
                     lastFound.moveLine = [fromX, fromY, x, y];
                     lastFound.moveRect = [x, y];
                     if (lastFound.s.length === 0) {
                         mapMem.moveTarget = {
-                            path: copy(lastFoundPath),
+                            path: copy(lastNearestPath),
                             index: 0,
                         };
                     } else {
@@ -219,7 +219,7 @@ export function MapComponent() {
                             }
                         }
                         mapMem.moveTarget = {
-                            path: copy(lastFoundPath),
+                            path: copy(lastNearestPath),
                             index: insertIndex,
                         };
                     }
