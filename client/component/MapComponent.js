@@ -109,12 +109,23 @@ export function MapComponent() {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
     };
 
+    const getCoords = (e) => {
+        let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        let mapHolderDiv = document.getElementById('mapHolderDiv');
+        let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
+        let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
+        return [x, y]
+    };
+
     const mousedown = (e) => {
         e.preventDefault();
         mapMem.isNodeClicked = false;
         mapMem.isMouseDown = true;
-        mapMem.mouseDownX = e.pageX;
-        mapMem.mouseDownY = e.pageY;
+
+        let r = getMapData().r;
+        let [x, y] = getCoords(e);
+
         if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
             if (isEditing === 1) {
                 nodeDispatch('finishEdit');
@@ -179,11 +190,7 @@ export function MapComponent() {
             mapChangeProp.start(r, 'moveRect', []);
             let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
             let lastSelected = mapref(lastSelectedPath);
-            let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            let mapHolderDiv = document.getElementById('mapHolderDiv');
-            let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
-            let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
+            let [x, y] = getCoords(e);
             if (!(lastSelected.nodeStartX < x &&
                 x < lastSelected.nodeEndX &&
                 lastSelected.nodeStartY - lastSelected.selfH/2 < y &&
