@@ -17,7 +17,6 @@ export function MapComponent() {
     useEffect(() => {
         window.addEventListener('resize',       resize);
         window.addEventListener('popstate',     popstate);
-        window.addEventListener('click',        click);
         window.addEventListener('dblclick',     dblclick);
         window.addEventListener('mousedown',    mousedown);
         window.addEventListener('mousemove',    mousemove);
@@ -27,7 +26,6 @@ export function MapComponent() {
         return () => {
             window.removeEventListener('resize',       resize);
             window.removeEventListener('popstate',     popstate);
-            window.removeEventListener('click',        click);
             window.removeEventListener('dblclick',     dblclick);
             window.removeEventListener('mousedown',    mousedown);
             window.removeEventListener('mousemove',    mousemove);
@@ -111,11 +109,8 @@ export function MapComponent() {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
     };
 
-    const click = (e) => {
-
-    };
-
     const mousedown = (e) => {
+        e.preventDefault();
         mapMem.isNodeClicked = false;
         mapMem.isMouseDown = true;
         mapMem.mouseDownX = e.pageX;
@@ -163,8 +158,10 @@ export function MapComponent() {
 
     const dblclick = (e) => {
         e.preventDefault();
-        if (!e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) return;
-        nodeDispatch('startEdit');
+        if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
+            nodeDispatch('startEdit');
+        }
+        recalc();
         redraw();
     };
 
