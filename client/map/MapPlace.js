@@ -82,10 +82,6 @@ export const mapPlace = {
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
 
-        let mapWrap = document.getElementById('mapWrap');
-        mapWrap.style.width = "" + mapWidth + "px";
-        mapWrap.style.height = "" + mapHeight + "px";
-
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
@@ -113,6 +109,7 @@ export const mapPlace = {
         }
 
         mapMem.mapWidth = mapWidth;
+        mapMem.mapHeight = mapHeight;
 
         r.parentNodeStartX = mapStartCenterX - r.selfW/2 + 2;
         r.parentNodeStartY = 0;
