@@ -420,6 +420,7 @@ export function MapComponent() {
         <div id = 'mapWrap'>
             <div id='mapDiv'/>
             <svg id="mapSvg"/>
+            <svg id="mapSvgFull"/>
         </div>
     )
 }

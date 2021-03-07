@@ -16,3 +16,12 @@
 #mapSvg {
     position: absolute;
 }
+
+#mapSvgFull {
+    position: relative;
+    background-color: #a4508b;
+    left: -100px;
+    top: -100px;
+    width: 200px;
+    height: 200px;
+}
