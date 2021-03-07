@@ -85,15 +85,12 @@ export const mapPlace = {
         let mapWrap = document.getElementById('mapWrap');
         mapWrap.style.width = "" + mapWidth + "px";
         mapWrap.style.height = "" + mapHeight + "px";
-        // mapWrap.style.paddingRight = 'calc(100vw + ' + mapWidth + 'px)'; // evil hack
 
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
         let mapSvg = document.getElementById('mapSvg');
-        // mapSvg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
-        // mapSvg.setAttribute("preserveAspectRatio", "xMinYMin slice");
         mapSvg.style.width = mapWidth;
         mapSvg.style.height = mapHeight;
 
