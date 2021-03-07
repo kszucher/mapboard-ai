@@ -422,7 +422,7 @@ export function MapComponent() {
             <div id='mapDiv'>
                 <svg id="mapSvg"/>
             </div>
-            <svg id="mapSvgFull">
+            <svg pointerEvents="none" id="mapSvgFull">
                 <NodeMoveVis/>
             </svg>
         </div>
