@@ -418,7 +418,6 @@ export function MapComponent() {
 
     return (
         <div id = 'mapWrap'>
-            <div id='mapDivBackground'/>
             <div id='mapDiv'/>
             <svg id="mapSvg"/>
         </div>

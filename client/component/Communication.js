@@ -87,8 +87,8 @@ export function Communication() {
                     let mapHolderDiv = document.getElementById('mapHolderDiv');
                     mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
-                    let mapDivBackground = document.getElementById('mapDivBackground');
-                    mapDivBackground.style.transition = '0.5s ease-out';
+                    let mapDiv = document.getElementById('mapDiv');
+                    mapDiv.style.transition = '0.5s ease-out';
                     dispatch({type: 'SET_MAPSTORAGE', payload: serverResponse.mapStorage});
                     break;
                 }

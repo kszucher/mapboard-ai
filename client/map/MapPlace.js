@@ -87,9 +87,9 @@ export const mapPlace = {
         mapWrap.style.height = "" + mapHeight + "px";
         mapWrap.style.paddingRight = 'calc(100vw + ' + mapWidth + 'px)';
 
-        let mapDivBackground = document.getElementById('mapDivBackground');
-        mapDivBackground.style.width = "" + mapWidth + "px";
-        mapDivBackground.style.height = "" + mapHeight + "px";
+        let mapDiv = document.getElementById('mapDiv');
+        mapDiv.style.width = "" + mapWidth + "px";
+        mapDiv.style.height = "" + mapHeight + "px";
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
@@ -103,8 +103,8 @@ export const mapPlace = {
             mapMem.isLoading = false;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
             mapHolderDiv.scrollLeft = currScrollLeft;
-            let mapDivBackground = document.getElementById('mapDivBackground');
-            mapDivBackground.style.transition = 'none';
+            let mapDiv = document.getElementById('mapDiv');
+            mapDiv.style.transition = 'none';
         } else {
             if (!mapMem.isMouseDown) {
                 scrollTo(currScrollLeft, 500);
