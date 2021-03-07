@@ -77,7 +77,6 @@ export const mapPlace = {
             }
         }
 
-
         let rightMapHeight =    r.d.length > 0? r.d[0].familyH > r.d[0].selfH ? r.d[0].familyH : r.d[0].selfH : 0;
         let leftMapHeight =     r.d.length > 1? r.d[1].familyH > r.d[1].selfH ? r.d[1].familyH : r.d[1].selfH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
@@ -86,6 +85,7 @@ export const mapPlace = {
         let mapWrap = document.getElementById('mapWrap');
         mapWrap.style.width = "" + mapWidth + "px";
         mapWrap.style.height = "" + mapHeight + "px";
+        mapWrap.style.paddingRight = 'calc(100vw + ' + mapWidth + 'px)';
 
         let mapDivBackground = document.getElementById('mapDivBackground');
         mapDivBackground.style.width = "" + mapWidth + "px";
@@ -93,7 +93,9 @@ export const mapPlace = {
 
         let svg = document.getElementById('mapSvg');
         svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
-        svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
+        // svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
+        svg.style.width = mapWidth;
+        svg.style.height = mapHeight;
 
         let currScrollLeft = (window.innerWidth + mapWidth) / 2;
 

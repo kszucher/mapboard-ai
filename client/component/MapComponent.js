@@ -416,20 +416,11 @@ export function MapComponent() {
         });
     };
 
-    return(
-        <div id = 'mapSpaceColumns' >
-            <div id = 'mapSpaceLeft'/>
-            <div>
-                <div id = 'mapSpaceTop'/>
-                <div id = 'mapWrap'>
-                    <div id='mapDivBackground'/>
-                    <div id='mapDiv'>
-                        <svg id="mapSvg"/>
-                    </div>
-                </div>
-                <div id = 'mapSpaceBottom'/>
-            </div>
-            <div id = 'mapSpaceRight'/>
+    return (
+        <div id = 'mapWrap'>
+            <div id='mapDivBackground'/>
+            <div id='mapDiv'/>
+            <svg id="mapSvg"/>
         </div>
     )
 }
