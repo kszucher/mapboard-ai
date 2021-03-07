@@ -85,17 +85,21 @@ export const mapPlace = {
         let mapWrap = document.getElementById('mapWrap');
         mapWrap.style.width = "" + mapWidth + "px";
         mapWrap.style.height = "" + mapHeight + "px";
-        mapWrap.style.paddingRight = 'calc(100vw + ' + mapWidth + 'px)';
+        // mapWrap.style.paddingRight = 'calc(100vw + ' + mapWidth + 'px)'; // evil hack
 
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
-        let svg = document.getElementById('mapSvg');
-        svg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
-        // svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
-        svg.style.width = mapWidth;
-        svg.style.height = mapHeight;
+        let mapSvg = document.getElementById('mapSvg');
+        // mapSvg.setAttribute("viewBox", "0 0 " + mapWidth + " " + mapHeight);
+        // mapSvg.setAttribute("preserveAspectRatio", "xMinYMin slice");
+        mapSvg.style.width = mapWidth;
+        mapSvg.style.height = mapHeight;
+
+        let mapSvgFull = document.getElementById('mapSvgFull');
+        mapSvgFull.style.width = 'calc(200vw + ' + mapWidth + 'px)';
+        mapSvgFull.style.height = 'calc(200vh + ' + mapHeight + 'px)';
 
         let currScrollLeft = (window.innerWidth + mapWidth) / 2;
 
