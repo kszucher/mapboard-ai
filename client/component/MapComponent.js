@@ -191,39 +191,36 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         if (mapMem.isMouseDown && mapMem.isNodeClicked ) {
-            mapMem.shouldMove = false;
+            mapMem.moveTarget.path = [];
             let r = getMapData().r;
             mapChangeProp.start(r, 'moveLine', []);
             mapChangeProp.start(r, 'moveRect', []);
             let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
             let lastSelected = mapref(lastSelectedPath);
-            let [x, y] = getCoords(e);
-            if (!(lastSelected.nodeStartX < x &&
-                x < lastSelected.nodeEndX &&
-                lastSelected.nodeStartY - lastSelected.selfH/2 < y &&
-                y < lastSelected.nodeStartY + lastSelected.selfH/2)
+            let [toX, toY] = getCoords(e);
+            if (!(lastSelected.nodeStartX < toX &&
+                toX < lastSelected.nodeEndX &&
+                lastSelected.nodeStartY - lastSelected.selfH/2 < toY &&
+                toY < lastSelected.nodeStartY + lastSelected.selfH/2)
             ) {
-                let lastNearestPath = mapFindNearest.start(r, x, y);
+                let lastNearestPath = mapFindNearest.start(r, toX, toY);
                 if (lastNearestPath.length > 1) {
-                    mapMem.shouldMove = true;
+                    mapMem.moveTarget.path = copy(lastNearestPath);
                     let lastFound = mapref(lastNearestPath);
                     let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                     let fromY = lastFound.nodeStartY;
-                    lastFound.moveLine = [fromX, fromY, x, y];
-                    lastFound.moveRect = [x, y];
+                    lastFound.moveLine = [fromX, fromY, toX, toY];
+                    lastFound.moveRect = [toX, toY];
                     if (lastFound.s.length === 0) {
-                        mapMem.moveTarget = {
-                            path: copy(lastNearestPath),
-                            index: 0,
-                        };
+                        mapMem.moveTarget.index = 0;
                     } else {
                         let insertIndex = 0;
                         for (let i = 0; i < lastFound.s.length - 1; i++) {
-                            if (y > lastFound.s[i].nodeStartY && y <= lastFound.s[i + 1].nodeStartY) {
+                            if (toY > lastFound.s[i].nodeStartY && toY <= lastFound.s[i + 1].nodeStartY) {
                                 insertIndex = i + 1;
                             }
                         }
-                        if (y > lastFound.s[lastFound.s.length - 1].nodeStartY) {
+                        if (toY > lastFound.s[lastFound.s.length - 1].nodeStartY) {
                             insertIndex = lastFound.s.length;
                         }
                         let lastSelectedParentPath = lastSelected.parentPath;
@@ -232,10 +229,7 @@ export function MapComponent() {
                                 insertIndex -= 1;
                             }
                         }
-                        mapMem.moveTarget = {
-                            path: copy(lastNearestPath),
-                            index: insertIndex,
-                        };
+                        mapMem.moveTarget.index = insertIndex;
                     }
                 }
             }
@@ -246,8 +240,7 @@ export function MapComponent() {
     const mouseup = (e) => {
         e.preventDefault();
         mapMem.isMouseDown = false;
-        if (mapMem.shouldMove) {
-            mapMem.shouldMove = false;
+        if (mapMem.moveTarget.path.length) {
             mapChangeProp.start(mapref(['r']), 'moveLine', []);
             mapChangeProp.start(mapref(['r']), 'moveRect', []);
             push();
