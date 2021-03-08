@@ -9,7 +9,6 @@ import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
 import {mapFindOver} from "../map/MapFindOver";
-import {NodeMoveVis} from "./NodeMoveVis";
 
 export function MapComponent() {
 
@@ -415,9 +414,7 @@ export function MapComponent() {
             <div id='mapDiv'>
                 <svg id="mapSvg"/>
             </div>
-            <svg pointerEvents="none" id="mapSvgFull">
-                <NodeMoveVis/>
-            </svg>
+            <svg pointerEvents="none" id="mapSvgFull"/>
         </div>
     )
 }
