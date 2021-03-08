@@ -15,7 +15,7 @@
     position: absolute;
 }
 
-#mapSvgFull {
+#mapSvgOuter {
     position: absolute;
     left: 0;
     top: 0;

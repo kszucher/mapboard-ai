@@ -86,13 +86,16 @@ export const mapPlace = {
         mapDiv.style.width = "" + mapWidth + "px";
         mapDiv.style.height = "" + mapHeight + "px";
 
-        let mapSvg = document.getElementById('mapSvg');
-        mapSvg.style.width = mapWidth;
-        mapSvg.style.height = mapHeight;
+        let mapSvgOuter = document.getElementById('mapSvgOuter');
+        mapSvgOuter.style.width = 'calc(200vw + ' + mapWidth + 'px)';
+        mapSvgOuter.style.height = 'calc(200vh + ' + mapHeight + 'px)';
 
-        let mapSvgFull = document.getElementById('mapSvgFull');
-        mapSvgFull.style.width = 'calc(200vw + ' + mapWidth + 'px)';
-        mapSvgFull.style.height = 'calc(200vh + ' + mapHeight + 'px)';
+        let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+        let mapSvgInner = document.getElementById('mapSvgInner');
+        mapSvgInner.setAttribute("x", winWidth);
+        mapSvgInner.setAttribute("y", winHeight);
 
         let currScrollLeft = (window.innerWidth + mapWidth) / 2;
 

@@ -412,9 +412,22 @@ export function MapComponent() {
     return (
         <div id = 'mapWrap'>
             <div id='mapDiv'>
-                <svg id="mapSvg"/>
+
             </div>
-            <svg pointerEvents="none" id="mapSvgFull"/>
+
+            <svg pointerEvents="none" id="mapSvgOuter">
+                <svg pointerEvents="none" id = "mapSvgInner">
+
+                </svg>
+            </svg>
         </div>
     )
 }
+
+// wins:
+// - resize without cut
+// - free move anim
+// problems:
+// - no proper alignment back when reloading by click on bread --> ???
+// - unable to click circles --> ???
+// - anim doesnt work over padding --> probably solvable by the old css

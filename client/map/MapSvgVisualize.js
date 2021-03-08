@@ -246,7 +246,7 @@ export const mapSvgVisualize = {
             svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             svgGroup.setAttribute("id", cm.svgId);
 
-            let mapSvg = document.getElementById('mapSvg');
+            let mapSvg = document.getElementById('mapSvgInner');
             mapSvg.appendChild(svgGroup);
         }
         else {
@@ -273,6 +273,7 @@ export const mapSvgVisualize = {
                     svgElement.setAttribute("id", svgElementName);
                     switch (svgElementData[svgElementName].type) {
                         case 'path':
+                            svgElement.setAttribute("x",                1980);
                             svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                             svgElement.setAttribute("fill",             "none");
