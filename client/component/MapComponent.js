@@ -47,7 +47,7 @@ export function MapComponent() {
     useEffect(() => {
         if (alignment !== '') {
             mapDispatch('setAlignment', alignment);
-            recalc(); // warning, this is required because map refers to node, maybe auto recalc after mapDispatch?
+            recalc();
             redraw();
         }
     }, [alignment]);
