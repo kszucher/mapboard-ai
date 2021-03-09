@@ -9,11 +9,14 @@
     border-radius: 32px;
     background-color: #fbfafc;
     transition-property: width, height;
-    pointer-events: none;
 }
 
 #mapSvgOuter {
     position: absolute;
     left: 0;
     top: 0;
+}
+
+#mapSvgInner {
+    overflow: visible;
 }

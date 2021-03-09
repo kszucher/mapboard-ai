@@ -429,4 +429,3 @@ export function MapComponent() {
 // - free move anim
 // problems:
 // - no proper alignment back when reloading by click on bread --> ???
-// - anim doesnt work over padding --> probably solvable by the old css
