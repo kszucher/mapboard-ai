@@ -22,6 +22,7 @@ function mapReducer(action, payload) {
             mapMem.sLineDeltaXDefault = payload === 'large'? 30:20;
             mapMem.padding = payload === 'large'? 8:3;
             mapMem.defaultH = payload === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
+            mapMem.taskConfig.d = payload === 'large'? 24 : 20;
             break;
         case 'setAlignment':
             mapMem.alignment = payload;
