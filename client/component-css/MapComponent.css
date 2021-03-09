@@ -9,10 +9,7 @@
     border-radius: 32px;
     background-color: #fbfafc;
     transition-property: width, height;
-}
-
-#mapSvg {
-    position: absolute;
+    pointer-events: none;
 }
 
 #mapSvgOuter {

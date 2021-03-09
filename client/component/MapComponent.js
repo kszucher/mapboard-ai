@@ -2,7 +2,7 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
-import {mapDivData, mapMem, checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
+import {mapMem, checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapChangeProp} from "../map/MapChangeProp";
@@ -153,7 +153,7 @@ export function MapComponent() {
             dispatch({type: 'SET_NODE_PROPS', payload: lm});
         }
 
-        if (e.path.map(i => i.id === 'mapDiv').reduce((acc,item) => {return acc || item})) {
+        if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc,item) => {return acc || item})) {
             if (isEditing === 1) {
                 nodeDispatch('finishEdit');
                 redraw();
@@ -415,8 +415,8 @@ export function MapComponent() {
 
             </div>
 
-            <svg pointerEvents="none" id="mapSvgOuter">
-                <svg pointerEvents="none" id = "mapSvgInner">
+            <svg  id="mapSvgOuter">
+                <svg  id = "mapSvgInner">
 
                 </svg>
             </svg>
@@ -429,5 +429,4 @@ export function MapComponent() {
 // - free move anim
 // problems:
 // - no proper alignment back when reloading by click on bread --> ???
-// - unable to click circles --> ???
 // - anim doesnt work over padding --> probably solvable by the old css
