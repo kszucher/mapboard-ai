@@ -49,28 +49,28 @@ export const mapSvgVisualize = {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
                 if (cm.path[2] === 0) {
-                    x1 =    cm.parentNodeEndXFrom;                          y1 =    cm.parentNodeEndYFrom;
-                    cp1x =  cm.parentNodeEndXFrom + cm.lineDeltaX / 4;      cp1y =  cm.parentNodeEndYFrom;
-                    cp2x =  cm.parentNodeEndXFrom + cm.lineDeltaX / 4;      cp2y =  cm.parentNodeEndYFrom + cm.lineDeltaY;
-                    x2 =    cm.nodeStartX;                                  y2 =    cm.nodeStartY;
+                    x1 =    cm.parentNodeEndXFrom;                          y1 =    cm.parentNodeYFrom;
+                    cp1x =  cm.parentNodeEndXFrom + cm.lineDeltaX / 4;      cp1y =  cm.parentNodeYFrom;
+                    cp2x =  cm.parentNodeEndXFrom + cm.lineDeltaX / 4;      cp2y =  cm.parentNodeYFrom + cm.lineDeltaY;
+                    x2 =    cm.nodeStartX;                                  y2 =    cm.nodeY;
                 } else {
-                    x1 =    cm.parentNodeStartXFrom;                        y1 =    cm.parentNodeStartYFrom;
-                    cp1x =  cm.parentNodeStartXFrom - cm.lineDeltaX / 4;    cp1y =  cm.parentNodeStartYFrom;
-                    cp2x =  cm.parentNodeStartXFrom - cm.lineDeltaX / 4;    cp2y =  cm.parentNodeStartYFrom + cm.lineDeltaY;
-                    x2 =    cm.nodeStartX;                                  y2 =    cm.nodeStartY;
+                    x1 =    cm.parentNodeStartXFrom;                        y1 =    cm.parentNodeYFrom;
+                    cp1x =  cm.parentNodeStartXFrom - cm.lineDeltaX / 4;    cp1y =  cm.parentNodeYFrom;
+                    cp2x =  cm.parentNodeStartXFrom - cm.lineDeltaX / 4;    cp2y =  cm.parentNodeYFrom + cm.lineDeltaY;
+                    x2 =    cm.nodeStartX;                                  y2 =    cm.nodeY;
                 }
             }
             else if (step === 1) {
                 if (cm.path[2] === 0) {
-                    x1 =    cm.parentNodeEndX;                              y1 =    cm.parentNodeEndY;
-                    cp1x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp1y =  cm.parentNodeEndY;
-                    cp2x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp2y =  cm.parentNodeEndY + cm.lineDeltaY;
-                    x2 =    cm.nodeStartX;                                  y2 =    cm.nodeStartY;
+                    x1 =    cm.parentNodeEndX;                              y1 =    cm.parentNodeY;
+                    cp1x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp1y =  cm.parentNodeY;
+                    cp2x =  cm.parentNodeEndX + cm.lineDeltaX / 4;          cp2y =  cm.parentNodeY + cm.lineDeltaY;
+                    x2 =    cm.nodeStartX;                                  y2 =    cm.nodeY;
                 } else {
-                    x1 =    cm.parentNodeStartX;                            y1 =    cm.parentNodeStartY;
-                    cp1x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp1y =  cm.parentNodeStartY;
-                    cp2x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp2y =  cm.parentNodeStartY + cm.lineDeltaY;
-                    x2 =    cm.nodeEndX;                                    y2 =    cm.nodeEndY;
+                    x1 =    cm.parentNodeStartX;                            y1 =    cm.parentNodeY;
+                    cp1x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp1y =  cm.parentNodeY;
+                    cp2x =  cm.parentNodeStartX - cm.lineDeltaX / 4;        cp2y =  cm.parentNodeY + cm.lineDeltaY;
+                    x2 =    cm.nodeEndX;                                    y2 =    cm.nodeY;
                 }
             }
 
@@ -86,7 +86,7 @@ export const mapSvgVisualize = {
         if (cm.type === "struct" && cm.hasCell) {
             let r = 8;
             let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
-            let y1 = cm.nodeStartY - selfHadj / 2 + r;
+            let y1 = cm.nodeY - selfHadj / 2 + r;
             let h = cm.selfW - 2 * r;
             let v = cm.selfH - 2 * r;
 
@@ -103,16 +103,18 @@ export const mapSvgVisualize = {
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
                 let x1, y1, x2, y2;
-                x1 = cm.nodeStartX;  y1 = cm.nodeStartY - selfHadj/2 + cm.sumMaxRowHeight[i];
-                x2 = cm.nodeEndX;    y2 = cm.nodeEndY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                x1 = cm.nodeStartX;  y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                x2 = cm.nodeEndX;    y2 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
                 let x1, y1, x2, y2;
-                x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y1 = cm.nodeStartY - selfHadj/2;
-                x2 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j]; y2 = cm.nodeEndY + selfHadj/2;
+                x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
+                y1 = cm.nodeY - selfHadj/2;
+                x2 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
+                y2 = cm.nodeY + selfHadj/2;
                 path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
             }
 
@@ -127,7 +129,7 @@ export const mapSvgVisualize = {
         if (cm.type === 'cell' && cm.selected) {
             let r = 8;
             let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
-            let y1 = cm.nodeStartY - selfHadj / 2 + r;
+            let y1 = cm.nodeY - selfHadj / 2 + r;
             let h = cm.selfW - 2 * r;
             let v = cm.selfH - 2 * r;
 
@@ -156,9 +158,9 @@ export const mapSvgVisualize = {
             let startX = cm.path[2] === 0 ? mapWidth - width - margin : margin + width;
 
             let x1 = cm.nodeEndX;
-            let y1 = cm.nodeEndY;
+            let y1 = cm.nodeY;
             let x2 = startX;
-            let y2 = cm.nodeEndY;
+            let y2 = cm.nodeY;
 
             svgElementData.taskLine = {
                 type: 'path',
@@ -168,7 +170,7 @@ export const mapSvgVisualize = {
 
             for (let i = 0; i < n; i++) {
                 let centerX = cm.path[2] === 0 ? startX + d/2 + i * (d + gap) : startX - d/2 - i * (d + gap);
-                let centerY = cm.nodeEndY;
+                let centerY = cm.nodeY;
 
                 let fill;
                 if (cm.taskStatus === i) {

@@ -201,15 +201,15 @@ export function MapComponent() {
             let [toX, toY] = getCoords(e);
             if (!(lastSelected.nodeStartX < toX &&
                 toX < lastSelected.nodeEndX &&
-                lastSelected.nodeStartY - lastSelected.selfH/2 < toY &&
-                toY < lastSelected.nodeStartY + lastSelected.selfH/2)
+                lastSelected.nodeY - lastSelected.selfH/2 < toY &&
+                toY < lastSelected.nodeY + lastSelected.selfH/2)
             ) {
                 let lastNearestPath = mapFindNearest.start(r, toX, toY);
                 if (lastNearestPath.length > 1) {
                     mapMem.moveTarget.path = copy(lastNearestPath);
                     let lastFound = mapref(lastNearestPath);
                     let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
-                    let fromY = lastFound.nodeStartY;
+                    let fromY = lastFound.nodeY;
                     lastFound.moveLine = [fromX, fromY, toX, toY];
                     lastFound.moveRect = [toX, toY];
                     if (lastFound.s.length === 0) {
@@ -217,11 +217,11 @@ export function MapComponent() {
                     } else {
                         let insertIndex = 0;
                         for (let i = 0; i < lastFound.s.length - 1; i++) {
-                            if (toY > lastFound.s[i].nodeStartY && toY <= lastFound.s[i + 1].nodeStartY) {
+                            if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
                                 insertIndex = i + 1;
                             }
                         }
-                        if (toY > lastFound.s[lastFound.s.length - 1].nodeStartY) {
+                        if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
                             insertIndex = lastFound.s.length;
                         }
                         let lastSelectedParentPath = lastSelected.parentPath;

@@ -15,8 +15,8 @@ export const mapFindOver = {
     iterate: (cm) => {
         if (cm.nodeStartX < currX &&
             currX < cm.nodeEndX &&
-            cm.nodeStartY - cm.selfH / 2 < currY &&
-            currY < cm.nodeStartY + cm.selfH  / 2 ) {
+            cm.nodeY - cm.selfH / 2 < currY &&
+            currY < cm.nodeY + cm.selfH  / 2 ) {
             if (cm.index.length !== 2) {
                 lastOverPath = copy(cm.path);
             }

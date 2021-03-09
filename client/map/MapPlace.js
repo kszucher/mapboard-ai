@@ -53,9 +53,8 @@ export const mapPlace = {
         mapMem.mapHeight = mapHeight;
 
         r.parentNodeStartX = mapStartCenterX - r.selfW/2 + 2;
-        r.parentNodeStartY = 0;
         r.parentNodeEndX = mapStartCenterX + r.selfW/2;
-        r.parentNodeEndY = 0;
+        r.parentNodeY = 0;
         r.lineDeltaX = 0;
         r.lineDeltaY = minHeight / 2 + 30 - 0.5;
         mapPlace.iterate(r);
@@ -100,12 +99,10 @@ export const mapPlace = {
             }
         }
 
-        cm.nodeStartY = cm.parentNodeEndY + cm.lineDeltaY;
-        cm.nodeEndY = cm.nodeStartY;
+        cm.nodeY = cm.parentNodeY + cm.lineDeltaY;
 
-        if (Number.isInteger(cm.nodeStartY)) {
-            cm.nodeStartY += 0.5;
-            cm.nodeEndY += 0.5;
+        if (Number.isInteger(cm.nodeY)) {
+            cm.nodeY += 0.5;
         }
 
         if (Number.isInteger(cm.nodeStartX)) {
@@ -121,9 +118,8 @@ export const mapPlace = {
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {
             cm.d[i].parentNodeStartX = cm.nodeStartX;
-            cm.d[i].parentNodeStartY = cm.nodeStartY;
             cm.d[i].parentNodeEndX = cm.nodeEndX;
-            cm.d[i].parentNodeEndY = cm.nodeEndY;
+            cm.d[i].parentNodeY = cm.nodeY;
             cm.d[i].lineDeltaX = 0;
             cm.d[i].lineDeltaY = 0;
 
@@ -138,11 +134,10 @@ export const mapPlace = {
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
                 cm.c[i][j].parentNodeStartX = cm.parentNodeStartX;
-                cm.c[i][j].parentNodeStartY = cm.parentNodeStartY;
                 cm.c[i][j].parentNodeEndX = cm.parentNodeEndX;
-                cm.c[i][j].parentNodeEndY = cm.parentNodeEndY;
+                cm.c[i][j].parentNodeY = cm.parentNodeY;
                 cm.c[i][j].lineDeltaX = cm.sumMaxColWidth[j] + 20;
-                cm.c[i][j].lineDeltaY = cm.nodeStartY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeEndY;
+                cm.c[i][j].lineDeltaY = cm.nodeY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeY;
                 mapPlace.iterate(cm.c[i][j]);
             }
         }
@@ -151,9 +146,8 @@ export const mapPlace = {
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
             cm.s[i].parentNodeStartX = cm.nodeStartX;
-            cm.s[i].parentNodeStartY = cm.nodeStartY;
             cm.s[i].parentNodeEndX = cm.nodeEndX;
-            cm.s[i].parentNodeEndY = cm.nodeEndY;
+            cm.s[i].parentNodeY = cm.nodeY;
             cm.s[i].lineDeltaX = mapMem.sLineDeltaXDefault;
             cm.s[i].lineDeltaY = cm.familyH*(-1/2) + elapsedY + cm.s[i].maxH/2;
 

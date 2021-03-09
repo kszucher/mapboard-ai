@@ -10,9 +10,8 @@ export function structInsert(lm, mode) {
             task: parentRef.task,
             taskStatus: parentRef.taskStatus,
             parentNodeEndXFrom: parentRef.nodeEndX,
-            parentNodeEndYFrom: parentRef.nodeEndY,
             parentNodeStartXFrom: parentRef.nodeStartX,
-            parentNodeStartYFrom: parentRef.nodeStartY,
+            parentNodeYFrom: parentRef.nodeY,
             twoStepAnimationRequested: 1,
         }))
     } else if (mode === 'siblingDown') {
@@ -22,9 +21,8 @@ export function structInsert(lm, mode) {
             task: parentRef.task,
             taskStatus: parentRef.taskStatus,
             parentNodeEndXFrom: parentRef.nodeEndX,
-            parentNodeEndYFrom: parentRef.nodeEndY,
             parentNodeStartXFrom: parentRef.nodeStartX,
-            parentNodeStartYFrom: parentRef.nodeStartY,
+            parentNodeYFrom: parentRef.nodeY,
             twoStepAnimationRequested: 1,
         }));
     } else if (mode === 'child') {
@@ -34,9 +32,8 @@ export function structInsert(lm, mode) {
             task: parentRef.task,
             taskStatus: parentRef.taskStatus,
             parentNodeEndXFrom: parentRef.nodeEndX,
-            parentNodeEndYFrom: parentRef.nodeEndY,
             parentNodeStartXFrom: parentRef.nodeStartX,
-            parentNodeStartYFrom: parentRef.nodeStartY,
+            parentNodeYFrom: parentRef.nodeY,
             twoStepAnimationRequested: 1,
         }));
     }

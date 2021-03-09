@@ -32,9 +32,8 @@ export let props = {
             // UNSORTED
             isEditing:                          0,
             parentNodeEndXFrom:                 0,
-            parentNodeEndYFrom:                 0,
             parentNodeStartXFrom:               0,
-            parentNodeStartYFrom:               0,
+            parentNodeYFrom:                    0,
             twoStepAnimationRequested:          0,
             moveLine:                           [],
             moveRect:                           [],
@@ -76,15 +75,13 @@ export let props = {
             spacingActivated:                   0,
             // mapPlace
             parentNodeStartX:                   0,
-            parentNodeStartY:                   0,
             parentNodeEndX:                     0,
-            parentNodeEndY:                     0,
+            parentNodeY:                        0,
             lineDeltaX:                         0,
             lineDeltaY:                         0,
             nodeStartX:                         0,
-            nodeStartY:                         0,
             nodeEndX:                           0,
-            nodeEndY:                           0,
+            nodeY:                              0,
             isTop:                              0,
             isBottom:                           0,
         }

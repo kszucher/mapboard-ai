@@ -58,7 +58,7 @@ export const mapDivVisualize = {
         if (cm.type === 'struct' && !cm.hasCell) {
             let styleData = {
                 left:                   cm.nodeStartX + 'px',
-                top:                    cm.nodeStartY - cm.selfH / 2 + 'px',
+                top:                    cm.nodeY - cm.selfH / 2 + 'px',
                 minWidth:               (mapMem.density === 'large'?  0 : -3) + cm.selfW - mapMem.padding - 2  + 'px',
                 minHeight:              (mapMem.density === 'large'? -2 : -1) + cm.selfH - mapMem.padding      + 'px',
                 paddingLeft:            (mapMem.density === 'large'?  0 :  3) +            mapMem.padding - 2  + 'px',

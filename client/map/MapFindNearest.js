@@ -8,8 +8,8 @@ export const mapFindNearest = {
     start: (r, x, y) => {
         currX = x;
         currY = y;
-        aboveRoot = r.nodeStartY < y;
-        belowRoot = r.nodeStartY > y;
+        aboveRoot = y >= r.nodeY;
+        belowRoot = y < r.nodeY;
         lastNearestPath = [];
         mapFindNearest.iterate(r);
         return lastNearestPath;
@@ -24,11 +24,11 @@ export const mapFindNearest = {
                 let overlap = 6;
                 let vCondition;
                 if (cm.isTop && belowRoot) {
-                    vCondition = currY < (cm.nodeStartY + cm.maxH / 2 + overlap)
+                    vCondition = currY < (cm.nodeY + cm.maxH / 2 + overlap)
                 } else if (cm.isBottom && aboveRoot) {
-                    vCondition = currY > (cm.nodeStartY - cm.maxH / 2 - overlap)
+                    vCondition = currY > (cm.nodeY - cm.maxH / 2 - overlap)
                 } else {
-                    vCondition = Math.abs(currY - cm.nodeStartY) <= cm.maxH / 2 + overlap;
+                    vCondition = Math.abs(currY - cm.nodeY) <= cm.maxH / 2 + overlap;
                 }
                 let hCondition =
                     (cm.path[2] === 0 && currX > cm.nodeEndX) ||
