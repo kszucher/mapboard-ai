@@ -418,9 +418,3 @@ export function MapComponent() {
         </div>
     )
 }
-
-// wins:
-// - resize without cut
-// - free move anim
-// problems:
-// - no proper alignment back when reloading by click on bread --> ???
