@@ -90,10 +90,6 @@ export const mapPlace = {
         mapSvgOuter.style.width = 'calc(200vw + ' + mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + mapHeight + 'px)';
 
-        let mapSvgInner = document.getElementById('mapSvgInner');
-        mapSvgInner.setAttribute("x", '100vw');
-        mapSvgInner.setAttribute("y", '100vh');
-
         let currScrollLeft = (window.innerWidth + mapWidth) / 2;
 
         if (mapMem.isLoading) {

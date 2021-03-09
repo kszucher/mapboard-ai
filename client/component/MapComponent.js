@@ -411,14 +411,9 @@ export function MapComponent() {
 
     return (
         <div id = 'mapWrap'>
-            <div id='mapDiv'>
-
-            </div>
-
-            <svg  id="mapSvgOuter">
-                <svg  id = "mapSvgInner">
-
-                </svg>
+            <div id='mapDiv'/>
+            <svg id="mapSvgOuter">
+                <svg id="mapSvgInner" x='100vw' y='100vh'/>
             </svg>
         </div>
     )
