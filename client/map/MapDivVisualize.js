@@ -1,8 +1,56 @@
 import {keepHash, mapDivData, mapMem} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
 
+const scrollTo = function(to, duration) {
+    const
+        element = document.getElementById('mapHolderDiv'),
+        start = element.scrollLeft,
+        change = to - start,
+        startDate = +new Date(),
+        // t = current time
+        // b = start value
+        // c = change in value
+        // d = duration
+        easeOut = function(t, b, c, d) {
+            //https://www.gizma.com/easing/
+            // https://easings.net/
+            // https://css-tricks.com/ease-out-in-ease-in-out/
+            // TODO: trying to set if for everything
+            t /= d;
+            t--;
+            return c*(t*t*t + 1) + b;
+        },
+        animateScroll = function() {
+            const currentDate = +new Date();
+            const currentTime = currentDate - startDate;
+            element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration));
+            if(currentTime < duration) {
+                requestAnimationFrame(animateScroll);
+            }
+            else {
+                element.scrollLeft = to;
+            }
+        };
+    animateScroll();
+};
+
 export const mapDivVisualize = {
     start: (r) => {
+        let mapDiv = document.getElementById('mapDiv');
+        mapDiv.style.width = "" + mapMem.mapWidth + "px";
+        mapDiv.style.height = "" + mapMem.mapHeight + "px";
+        let currScrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
+        if (mapMem.isLoading) {
+            mapMem.isLoading = false;
+            let mapHolderDiv = document.getElementById('mapHolderDiv');
+            mapHolderDiv.scrollLeft = currScrollLeft;
+            let mapDiv = document.getElementById('mapDiv');
+            mapDiv.style.transition = 'none';
+        } else {
+            if (!mapMem.isMouseDown) {
+                scrollTo(currScrollLeft, 500);
+            }
+        }
         mapDivVisualize.iterate(r);
     },
 

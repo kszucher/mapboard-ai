@@ -1,38 +1,5 @@
 import {mapMem} from "./Map";
 
-const scrollTo = function(to, duration) {
-    const
-        element = document.getElementById('mapHolderDiv'),
-        start = element.scrollLeft,
-        change = to - start,
-        startDate = +new Date(),
-        // t = current time
-        // b = start value
-        // c = change in value
-        // d = duration
-        easeOut = function(t, b, c, d) {
-            //https://www.gizma.com/easing/
-            // https://easings.net/
-            // https://css-tricks.com/ease-out-in-ease-in-out/
-            // TODO: trying to set if for everything
-            t /= d;
-            t--;
-            return c*(t*t*t + 1) + b;
-        },
-        animateScroll = function() {
-            const currentDate = +new Date();
-            const currentTime = currentDate - startDate;
-            element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration));
-            if(currentTime < duration) {
-                requestAnimationFrame(animateScroll);
-            }
-            else {
-                element.scrollLeft = to;
-            }
-        };
-    animateScroll();
-};
-
 export const mapPlace = {
     start: (r) => {
         let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapMem;
@@ -81,28 +48,6 @@ export const mapPlace = {
         let leftMapHeight =     r.d.length > 1? r.d[1].familyH > r.d[1].selfH ? r.d[1].familyH : r.d[1].selfH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
-
-        let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.width = "" + mapWidth + "px";
-        mapDiv.style.height = "" + mapHeight + "px";
-
-        let mapSvgOuter = document.getElementById('mapSvgOuter');
-        mapSvgOuter.style.width = 'calc(200vw + ' + mapWidth + 'px)';
-        mapSvgOuter.style.height = 'calc(200vh + ' + mapHeight + 'px)';
-
-        let currScrollLeft = (window.innerWidth + mapWidth) / 2;
-
-        if (mapMem.isLoading) {
-            mapMem.isLoading = false;
-            let mapHolderDiv = document.getElementById('mapHolderDiv');
-            mapHolderDiv.scrollLeft = currScrollLeft;
-            let mapDiv = document.getElementById('mapDiv');
-            mapDiv.style.transition = 'none';
-        } else {
-            if (!mapMem.isMouseDown) {
-                scrollTo(currScrollLeft, 500);
-            }
-        }
 
         mapMem.mapWidth = mapWidth;
         mapMem.mapHeight = mapHeight;

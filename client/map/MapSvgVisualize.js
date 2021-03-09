@@ -17,6 +17,9 @@ let svgElementNameList = [
 
 export const mapSvgVisualize = {
     start: (r) => {
+        let mapSvgOuter = document.getElementById('mapSvgOuter');
+        mapSvgOuter.style.width = 'calc(200vw + ' + mapMem.mapWidth + 'px)';
+        mapSvgOuter.style.height = 'calc(200vh + ' + mapMem.mapHeight + 'px)';
         mapSvgVisualize.iterate(r);
     },
 
