@@ -121,6 +121,12 @@ export function MapComponent() {
 
     const mousedown = (e) => {
         e.preventDefault();
+
+        if (isEditing === 1) {
+            nodeDispatch('finishEdit');
+            redraw();
+        }
+
         mapMem.isNodeClicked = false;
         mapMem.isMouseDown = true;
 
@@ -154,10 +160,6 @@ export function MapComponent() {
         }
 
         if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc,item) => {return acc || item})) {
-            if (isEditing === 1) {
-                nodeDispatch('finishEdit');
-                redraw();
-            }
             for (const pathItem of e.path) {
                 if (pathItem.id) {
                     if (pathItem.id.substring(0, 3) === 'div') {
