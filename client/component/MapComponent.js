@@ -132,10 +132,9 @@ export function MapComponent() {
 
         mapMem.isMouseDown = true;
 
+        mapMem.isNodeClicked = false;
         let r = getMapData().r;
         let [x, y] = getCoords(e);
-
-        mapMem.isNodeClicked = false;
         let lastOverPath = mapFindOver.start(r, x, y);
         if (lastOverPath.length) {
             mapMem.isNodeClicked = true;
