@@ -104,6 +104,7 @@ export function MapComponent() {
     const resize = (e) => {
         mapMem.isLoading = true;
         recalc();
+        redraw();
     };
 
     const popstate = (e) => {
@@ -415,7 +416,7 @@ export function MapComponent() {
         <div id = 'mapWrap'>
             <div id='mapDiv'/>
             <svg id="mapSvgOuter">
-                <svg id="mapSvgInner" x='100vw' y='100vh'/>
+                <svg id="mapSvgInner" x='calc(100vw)' y='calc(100vh)'/>
             </svg>
         </div>
     )
