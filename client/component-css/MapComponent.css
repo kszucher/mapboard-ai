@@ -1,3 +1,9 @@
+#mapHolderDiv {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    /*display: flex;*/
+}
+
 #mapWrap {
     position: relative;
     padding-top: 100vh;

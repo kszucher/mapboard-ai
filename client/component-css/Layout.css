@@ -26,13 +26,6 @@ html, body, div, table, td, tr {
     flex-direction: column;
 }
 
-#mapHolderDiv {
-    overflow-y: scroll;
-    overflow-x: scroll;
-
-    display: flex;
-}
-
 img {
     border-radius: 8px;
 }

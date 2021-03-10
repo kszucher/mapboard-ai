@@ -39,9 +39,7 @@ export function Workspace() {
 
     return (
         <div id="page">
-            <div id = "mapHolderDiv">
-                <MapComponent/>
-            </div>
+            <MapComponent/>
             <MuiThemeProvider theme={theme}>
                 <Tabs/>
                 <Breadcrumbs/>
