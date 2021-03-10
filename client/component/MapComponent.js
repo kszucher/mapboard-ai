@@ -128,6 +128,15 @@ export function MapComponent() {
             redraw();
         }
 
+        let mouseMode = 'drag';
+        if (mouseMode === 'drag') {
+
+        } else if (mouseMode === 'move') {
+
+        } else if (mouseMode === 'select' ) {
+
+        }
+
         mapMem.isNodeClicked = false;
         mapMem.isMouseDown = true;
 

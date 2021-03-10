@@ -37,6 +37,7 @@ export let props = {
             twoStepAnimationRequested:          0,
             moveLine:                           [],
             moveRect:                           [],
+            selectionRect:                      [],
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,

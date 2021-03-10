@@ -13,6 +13,7 @@ let svgElementNameList = [
     'taskCircle3',
     'moveLine',
     'moveRect',
+    'selectionRect'
 ];
 
 export const mapSvgVisualize = {
@@ -227,10 +228,23 @@ export const mapSvgVisualize = {
                 type: 'rect',
                 x: cm.moveRect[0] - 10,
                 y: cm.moveRect[1] - 10,
+                width: 20,
+                height: 20,
                 rx: 8,
                 ry: 8,
-                width: 20,
-                height: 20
+            };
+        }
+
+        // selection rect
+        if (cm.selectionRect.length) {
+            svgElementData.selectionRect = {
+                type: 'rect',
+                x: cm.selectionRect[0],
+                y: cm.selectionRect[1],
+                width: cm.selectionRect[2],
+                height: cm.selectionRect[3],
+                rx: 8,
+                ry: 8,
             };
         }
 
@@ -299,10 +313,10 @@ export const mapSvgVisualize = {
                         case 'rect':
                             svgElement.setAttribute("x",                svgElementData[svgElementName].x);
                             svgElement.setAttribute("y",                svgElementData[svgElementName].y);
-                            svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
-                            svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
                             svgElement.setAttribute("width",            svgElementData[svgElementName].width);
                             svgElement.setAttribute("height",           svgElementData[svgElementName].height);
+                            svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
+                            svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
                             svgElement.setAttribute("fill",             '#fbfafc');
                             svgElement.setAttribute("stroke",           '#5f0a87');
                             svgElement.setAttribute("stroke-width",      5);
