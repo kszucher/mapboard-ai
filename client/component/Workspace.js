@@ -10,37 +10,6 @@ import {Preferences} from "./Preferences";
 import {Palette} from "./Palette";
 
 export function Workspace() {
-
-    let isDown = false;
-    let pageX, pageY, scrollLeft, scrollTop;
-
-    const mouseDown = (e) => {
-        let el = document.getElementById('mapHolderDiv');
-        isDown = true;
-        pageX = e.pageX ;
-        pageY = e.pageY;
-        scrollLeft = el.scrollLeft;
-        scrollTop = el.scrollTop;
-
-    };
-
-    const mouseMove = (e) => {
-        e.preventDefault();
-        let el = document.getElementById('mapHolderDiv');
-        if(!isDown) return;
-        el.scrollLeft = scrollLeft - e.pageX  + pageX;
-        el.scrollTop = scrollTop -  e.pageY  + pageY;
-    };
-
-    const mouseUp = (e) => {
-        isDown = false;
-    };
-
-    const mouseLeave = () => {
-        isDown = false;
-    };
-
-
     const theme = createMuiTheme({
         props: {
             // Name of the component
@@ -70,7 +39,7 @@ export function Workspace() {
 
     return (
         <div id="page">
-            <div id = "mapHolderDiv" onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp}  onMouseLeave={mouseLeave}>
+            <div id = "mapHolderDiv">
                 <MapComponent/>
             </div>
             <MuiThemeProvider theme={theme}>

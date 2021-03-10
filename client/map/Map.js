@@ -43,6 +43,7 @@ export function loadMap(mapStorage) {
         deepestSelectablePath: [],
 
         isNodeClicked: false,
+        isTaskClicked: false,
         isMouseDown: false,
         moveTarget: {
             path: [],

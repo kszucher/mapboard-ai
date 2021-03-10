@@ -10,6 +10,8 @@ import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
 import {mapFindOver} from "../map/MapFindOver";
 
+let pageX, pageY, scrollLeft, scrollTop;
+
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
@@ -128,21 +130,12 @@ export function MapComponent() {
             redraw();
         }
 
-        let mouseMode = 'drag';
-        if (mouseMode === 'drag') {
-
-        } else if (mouseMode === 'move') {
-
-        } else if (mouseMode === 'select' ) {
-
-        }
-
-        mapMem.isNodeClicked = false;
         mapMem.isMouseDown = true;
 
         let r = getMapData().r;
         let [x, y] = getCoords(e);
 
+        mapMem.isNodeClicked = false;
         let lastOverPath = mapFindOver.start(r, x, y);
         if (lastOverPath.length) {
             mapMem.isNodeClicked = true;
@@ -169,12 +162,12 @@ export function MapComponent() {
             dispatch({type: 'SET_NODE_PROPS', payload: lm});
         }
 
+        mapMem.isTaskClicked = false;
         if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc,item) => {return acc || item})) {
             for (const pathItem of e.path) {
                 if (pathItem.id) {
-                    if (pathItem.id.substring(0, 3) === 'div') {
-
-                    } else if (pathItem.id.substring(0, 10) === 'taskCircle') {
+                    if (pathItem.id.substring(0, 10) === 'taskCircle') {
+                        mapMem.isTaskClicked = true;
                         push();
                         nodeDispatch('setTaskStatus', {
                             taskStatus: parseInt(e.path[0].id.charAt(10), 10),
@@ -186,6 +179,14 @@ export function MapComponent() {
                     }
                 }
             }
+        }
+
+        if (!mapMem.isNodeClicked && !mapMem.isTaskClicked) {
+            let el = document.getElementById('mapHolderDiv');
+            pageX = e.pageX ;
+            pageY = e.pageY;
+            scrollLeft = el.scrollLeft;
+            scrollTop = el.scrollTop;
         }
     };
 
@@ -201,50 +202,58 @@ export function MapComponent() {
 
     const mousemove = (e) => {
         e.preventDefault();
-        if (mapMem.isMouseDown && mapMem.isNodeClicked ) {
-            mapMem.moveTarget.path = [];
-            let r = getMapData().r;
-            mapChangeProp.start(r, 'moveLine', []);
-            mapChangeProp.start(r, 'moveRect', []);
-            let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
-            let lastSelected = mapref(lastSelectedPath);
-            let [toX, toY] = getCoords(e);
-            if (!(lastSelected.nodeStartX < toX &&
-                toX < lastSelected.nodeEndX &&
-                lastSelected.nodeY - lastSelected.selfH/2 < toY &&
-                toY < lastSelected.nodeY + lastSelected.selfH/2)
-            ) {
-                let lastNearestPath = mapFindNearest.start(r, toX, toY);
-                if (lastNearestPath.length > 1) {
-                    mapMem.moveTarget.path = copy(lastNearestPath);
-                    let lastFound = mapref(lastNearestPath);
-                    let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
-                    let fromY = lastFound.nodeY;
-                    lastFound.moveLine = [fromX, fromY, toX, toY];
-                    lastFound.moveRect = [toX, toY];
-                    if (lastFound.s.length === 0) {
-                        mapMem.moveTarget.index = 0;
-                    } else {
-                        let insertIndex = 0;
-                        for (let i = 0; i < lastFound.s.length - 1; i++) {
-                            if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
-                                insertIndex = i + 1;
+        if (mapMem.isMouseDown) {
+            if (mapMem.isNodeClicked) {
+                mapMem.moveTarget.path = [];
+                let r = getMapData().r;
+                mapChangeProp.start(r, 'moveLine', []);
+                mapChangeProp.start(r, 'moveRect', []);
+                let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
+                let lastSelected = mapref(lastSelectedPath);
+                let [toX, toY] = getCoords(e);
+                if (!(lastSelected.nodeStartX < toX &&
+                    toX < lastSelected.nodeEndX &&
+                    lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
+                    toY < lastSelected.nodeY + lastSelected.selfH / 2)
+                ) {
+                    let lastNearestPath = mapFindNearest.start(r, toX, toY);
+                    if (lastNearestPath.length > 1) {
+                        mapMem.moveTarget.path = copy(lastNearestPath);
+                        let lastFound = mapref(lastNearestPath);
+                        let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
+                        let fromY = lastFound.nodeY;
+                        lastFound.moveLine = [fromX, fromY, toX, toY];
+                        lastFound.moveRect = [toX, toY];
+                        if (lastFound.s.length === 0) {
+                            mapMem.moveTarget.index = 0;
+                        } else {
+                            let insertIndex = 0;
+                            for (let i = 0; i < lastFound.s.length - 1; i++) {
+                                if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
+                                    insertIndex = i + 1;
+                                }
                             }
-                        }
-                        if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-                            insertIndex = lastFound.s.length;
-                        }
-                        let lastSelectedParentPath = lastSelected.parentPath;
-                        if (arraysSame(lastFound.path, lastSelectedParentPath)) {
-                            if (lastSelected.index < insertIndex) {
-                                insertIndex -= 1;
+                            if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
+                                insertIndex = lastFound.s.length;
                             }
+                            let lastSelectedParentPath = lastSelected.parentPath;
+                            if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+                                if (lastSelected.index < insertIndex) {
+                                    insertIndex -= 1;
+                                }
+                            }
+                            mapMem.moveTarget.index = insertIndex;
                         }
-                        mapMem.moveTarget.index = insertIndex;
                     }
                 }
+                redraw();
             }
-            redraw();
+
+            if (!mapMem.isNodeClicked && !mapMem.isTaskClicked) {
+                let el = document.getElementById('mapHolderDiv');
+                el.scrollLeft = scrollLeft - e.pageX  + pageX;
+                el.scrollTop = scrollTop -  e.pageY  + pageY;
+            }
         }
     };
 
