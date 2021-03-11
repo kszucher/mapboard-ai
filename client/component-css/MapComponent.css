@@ -14,6 +14,7 @@
     border-radius: 32px;
     background-color: #fbfafc;
     transition-property: width, height;
+    display: flex;
 }
 
 #mapSvgOuter {
