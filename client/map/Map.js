@@ -45,6 +45,9 @@ export function loadMap(mapStorage) {
         isNodeClicked: false,
         isTaskClicked: false,
         isMouseDown: false,
+
+        mouseMode: '',
+
         moveTarget: {
             path: [],
             index: 0,

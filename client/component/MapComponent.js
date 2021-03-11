@@ -249,9 +249,15 @@ export function MapComponent() {
             }
 
             if (!mapMem.isNodeClicked && !mapMem.isTaskClicked) {
+
+                // TODO: if mouseMode === dragMap
+
                 let el = document.getElementById('mapHolderDiv');
                 el.scrollLeft = scrollLeft - e.pageX  + pageX;
                 el.scrollTop = scrollTop -  e.pageY  + pageY;
+
+                // TODO: else if mouseMode === dragRectangle
+                // the endpoint will update the selectionRect's end position
             }
         }
     };
