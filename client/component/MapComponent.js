@@ -5,7 +5,6 @@ import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
-import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
 import {mapFindOver} from "../map/MapFindOver";
@@ -205,8 +204,8 @@ export function MapComponent() {
             if (mapState.isNodeClicked) {
                 mapState.moveTarget.path = [];
                 let r = getMapData().r;
-                mapChangeProp.start(r, 'moveLine', []);
-                mapChangeProp.start(r, 'moveRect', []);
+                r.moveLine = [];
+                r.moveRect = [];
                 let lastSelectedPath = mapState.filter.structSelectedPathList[0];
                 let lastSelected = mapref(lastSelectedPath);
                 let [toX, toY] = getCoords(e);
@@ -221,8 +220,8 @@ export function MapComponent() {
                         let lastFound = mapref(lastNearestPath);
                         let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                         let fromY = lastFound.nodeY;
-                        lastFound.moveLine = [fromX, fromY, toX, toY];
-                        lastFound.moveRect = [toX, toY];
+                        r.moveLine = [fromX, fromY, toX, toY];
+                        r.moveRect = [toX, toY];
                         if (lastFound.s.length === 0) {
                             mapState.moveTarget.index = 0;
                         } else {
@@ -252,6 +251,9 @@ export function MapComponent() {
                 let mouseMode = remoteGetState().mouseMode;
                 if (mouseMode === 'select') {
                     // the endpoint will update the selectionRect's end position
+
+                    let [toX, toY] = getCoords(e);
+
                 } else if (mouseMode === 'drag') {
                     let el = document.getElementById('mapHolderDiv');
                     el.scrollLeft = scrollLeft - e.pageX  + pageX;
@@ -267,8 +269,9 @@ export function MapComponent() {
         e.preventDefault();
         mapState.isMouseDown = false;
         if (mapState.moveTarget.path.length) {
-            mapChangeProp.start(mapref(['r']), 'moveLine', []);
-            mapChangeProp.start(mapref(['r']), 'moveRect', []);
+            let r = getMapData().r;
+            r.moveLine = [];
+            r.moveRect = [];
             push();
             nodeDispatch('moveSelection');
             redraw();
