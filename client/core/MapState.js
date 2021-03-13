@@ -24,8 +24,6 @@ export let mapState = {
     isTaskClicked: false,
     isMouseDown: false,
 
-    mouseMode: '', // inherit
-
     moveTarget: {
         path: [],
         index: 0,

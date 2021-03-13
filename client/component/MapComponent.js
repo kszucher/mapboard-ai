@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react";
-import {Context} from "../core/Store";
+import {Context, remoteGetState} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
@@ -41,12 +41,6 @@ export function MapComponent() {
             checkPop();
         }
     }, [fontSize]);
-
-    useEffect(() => {
-        if (mouseMode !== '') {
-            mapDispatch('setMouseMode', mouseMode);
-        }
-    }, [mouseMode]);
 
     useEffect(() => {
         let lastAction = [...mapAction].pop();
@@ -255,15 +249,16 @@ export function MapComponent() {
             }
 
             if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-
-                // TODO: if mouseMode === dragMap
-
-                let el = document.getElementById('mapHolderDiv');
-                el.scrollLeft = scrollLeft - e.pageX  + pageX;
-                el.scrollTop = scrollTop -  e.pageY  + pageY;
-
-                // TODO: else if mouseMode === dragRectangle
-                // the endpoint will update the selectionRect's end position
+                let mouseMode = remoteGetState().mouseMode;
+                if (mouseMode === 'select') {
+                    // the endpoint will update the selectionRect's end position
+                } else if (mouseMode === 'drag') {
+                    let el = document.getElementById('mapHolderDiv');
+                    el.scrollLeft = scrollLeft - e.pageX  + pageX;
+                    el.scrollTop = scrollTop -  e.pageY  + pageY;
+                } else {
+                    console.log('unknown mouseMode');
+                }
             }
         }
     };
