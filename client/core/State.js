@@ -8,17 +8,19 @@ export const State = {
     mapId: '',
     mapName: '',
     mapStorage: [],
-    density: '',
-    alignment: '',
     mapStorageOut: [],
     breadcrumbsHistory: [],
     // preferences
+    density: '',
+    alignment: '',
+    fontSize: '',
+    colorMode: 'highlight',
+    mouseMode: 'select',
+
     colorText: '',
     colorBorder: '',
     colorHighlight: '',
     colorLine: '',
-    colorMode: 'highlight',
-    fontSize: '',
 
     mapAction: ''
 };

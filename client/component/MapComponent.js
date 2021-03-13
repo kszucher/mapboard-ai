@@ -18,27 +18,6 @@ export function MapComponent() {
     const {density, alignment, fontSize, mapAction} = state;
 
     useEffect(() => {
-        window.addEventListener('resize',       resize);
-        window.addEventListener('popstate',     popstate);
-        window.addEventListener('dblclick',     dblclick);
-        window.addEventListener('mousedown',    mousedown);
-        window.addEventListener('mousemove',    mousemove);
-        window.addEventListener('mouseup',      mouseup);
-        window.addEventListener("keydown",      keydown);
-        window.addEventListener("paste",        paste);
-        return () => {
-            window.removeEventListener('resize',       resize);
-            window.removeEventListener('popstate',     popstate);
-            window.removeEventListener('dblclick',     dblclick);
-            window.removeEventListener('mousedown',    mousedown);
-            window.removeEventListener('mousemove',    mousemove);
-            window.removeEventListener('mouseup',      mouseup);
-            window.removeEventListener("keydown",      keydown);
-            window.removeEventListener("paste",        paste);
-        };
-    }, []);
-
-    useEffect(() => {
         if (density !== '') {
             mapDispatch('setDensity', density);
             nodeDispatch('resetDim');
@@ -101,6 +80,27 @@ export function MapComponent() {
             }
         }
     }, [mapAction]);
+
+    useEffect(() => {
+        window.addEventListener('resize',       resize);
+        window.addEventListener('popstate',     popstate);
+        window.addEventListener('dblclick',     dblclick);
+        window.addEventListener('mousedown',    mousedown);
+        window.addEventListener('mousemove',    mousemove);
+        window.addEventListener('mouseup',      mouseup);
+        window.addEventListener("keydown",      keydown);
+        window.addEventListener("paste",        paste);
+        return () => {
+            window.removeEventListener('resize',       resize);
+            window.removeEventListener('popstate',     popstate);
+            window.removeEventListener('dblclick',     dblclick);
+            window.removeEventListener('mousedown',    mousedown);
+            window.removeEventListener('mousemove',    mousemove);
+            window.removeEventListener('mouseup',      mouseup);
+            window.removeEventListener("keydown",      keydown);
+            window.removeEventListener("paste",        paste);
+        };
+    }, []);
 
     const resize = (e) => {
         mapMem.isLoading = true;

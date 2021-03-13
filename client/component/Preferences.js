@@ -21,12 +21,13 @@ const useStyles = makeStyles((theme) => ({
 export function Preferences () {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, colorMode} = state;
+    const {density, alignment, fontSize, colorMode, mouseMode} = state;
 
     const setDensity =        e => dispatch({type: 'SET_DENSITY',     payload: e.target.value});
     const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',   payload: e.target.value});
     const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',   payload: e.target.value});
     const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE',  payload: e.target.value});
+    const setMouseMode =      e => dispatch({type: 'SET_MOUSE_MODE',  payload: e.target.value});
 
     const undo =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'undo'});
     const redo =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'redo'});
@@ -45,6 +46,7 @@ export function Preferences () {
                 <MaterialSelector input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
                 <MaterialSelector input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
                 <MaterialSelector input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
+                <MaterialSelector input = {['Mouse Mode',       mouseMode,  setMouseMode,   ['select', 'drag']]}/>
 
                 <Palette/>
 
