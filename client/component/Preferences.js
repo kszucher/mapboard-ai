@@ -21,63 +21,24 @@ const useStyles = makeStyles((theme) => ({
 export function Preferences () {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, colorMode, fontSize} = state;
+    const {density, alignment, fontSize, colorMode} = state;
+
+    const setDensity =      e => dispatch({type: 'SET_DENSITY',     payload: e.target.value});
+    const setAlignment =    e => dispatch({type: 'SET_ALIGNMENT',   payload: e.target.value});
+    const setFontSize =     e => dispatch({type: 'SET_FONT_SIZE',   payload: e.target.value});
+    const setColorMode =    e => dispatch({type: 'SET_COLOR_MODE',  payload: e.target.value});
 
     return (
         <div id = 'preferencesContainer'>
             <div id = 'preferences'>
-                {/*<div className={classes.root}>*/}
-                <FormControl component="fieldset" className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Map Density</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={density}
-                        onChange={e => dispatch({type: 'SET_DENSITY', payload: e.target.value})}>
-                        <MenuItem value={'small'}>Small</MenuItem>
-                        <MenuItem value={'large'}>Large</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl component="fieldset" className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Map Alignment</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={alignment}
-                        onChange={e => dispatch({type: 'SET_ALIGNMENT', payload: e.target.value})}>
-                        <MenuItem value={'adaptive'}>Adaptive</MenuItem>
-                        <MenuItem value={'symmetrical'}>Symmetrical</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl component="fieldset" className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Font Size</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={fontSize}
-                        onChange={e => dispatch({type: 'SET_FONT_SIZE', payload: e.target.value})}>
-                        <MenuItem value={'h1'}>H1</MenuItem>
-                        <MenuItem value={'h2'}>H2</MenuItem>
-                        <MenuItem value={'h3'}>H3</MenuItem>
-                        <MenuItem value={'h4'}>H4</MenuItem>
-                        <MenuItem value={'h5'}>H5</MenuItem>
-                        <MenuItem value={'h6'}>H6</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl component="fieldset" className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Color</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={colorMode}
-                        onChange={e => dispatch({type: 'SET_COLOR_MODE', payload: e.target.value})}>
-                        <MenuItem value={'text'}>Text</MenuItem>
-                        <MenuItem value={'border'}>Border</MenuItem>
-                        <MenuItem value={'highlight'}>Highlight</MenuItem>
-                        <MenuItem value={'line'}>Line</MenuItem>
-                    </Select>
-                    <Palette/>
-                </FormControl>
+
+                <MaterialSelector input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
+                <MaterialSelector input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
+                <MaterialSelector input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
+                <MaterialSelector input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
+
+                <Palette/>
+
                 <div className={'buttons'}>
                     <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'undo'})}>
                         <span className="material-icons">undo</span>
@@ -116,3 +77,21 @@ export function Preferences () {
         </div>
     );
 }
+
+const MaterialSelector = (arg) => {
+    const classes = useStyles();
+    return (
+        <FormControl component="fieldset" className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">{arg.input[0]}</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={arg.input[1]}
+                onChange={arg.input[2]}>
+                {arg.input[3].map((name, index) =>
+                    <MenuItem value={name} key={index}>{name}</MenuItem>
+                )}
+            </Select>
+        </FormControl>
+    )
+};
