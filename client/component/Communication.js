@@ -1,7 +1,7 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {checkPop, initDomData, loadMap, push, redraw} from "../map/Map";
+import {checkPop, initDomData, push, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 import {mapDispatch} from "../core/MapReducer";
 import {mapState} from "../core/MapState";
@@ -70,7 +70,7 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     mapState.isLoading = true;
-                    loadMap(serverResponse.mapStorage);
+                    mapDispatch('setData', serverResponse.mapStorage.data);
                     mapDispatch('setDensity', serverResponse.mapStorage.density);
                     mapDispatch('setAlignment', serverResponse.mapStorage.alignment);
                     mapDispatch('setTaskConfigWidth');

@@ -1,5 +1,4 @@
 import {copy, genHash, subsasgn, subsref} from "../core/Utils"
-import {mapAssembly} from "./MapAssembly";
 import {mapChain} from './MapChain'
 import {mapDisassembly} from "./MapDisassembly";
 import {mapDivVisualize} from './MapDivVisualize'
@@ -12,7 +11,7 @@ import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
 import {mapRestore} from "./MapRestore";
 import {mapTaskCheck} from "./MapTaskCheck";
-import {loadInitMapState, mapState} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export let mapDivData = [];
 export let mapSvgData = [];
@@ -21,11 +20,6 @@ export let keepHash = '';
 export function initDomData() {
     mapDivData = [];
     mapSvgData = [];
-}
-
-export function loadMap(mapStorage) {
-    loadInitMapState();
-    mapState.data = [mapAssembly((mapStorage.data))];
 }
 
 export const getMapData = () => {

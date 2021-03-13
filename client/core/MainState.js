@@ -15,7 +15,7 @@ export const MainState = {
     alignment: '',
     fontSize: '',
     colorMode: 'highlight',
-    mouseMode: '',
+    mouseMode: 'select',
 
     colorText: '',
     colorBorder: '',

@@ -1,14 +1,21 @@
 import {recalc} from "../map/Map";
-import {mapState} from "./MapState";
+import {loadInitMapState, mapState} from "./MapState";
+import {mapAssembly} from "../map/MapAssembly";
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    recalc();
+    if (['setDensity', 'setAlignment', 'setTaskConfigWidth', 'undo', 'redo'].includes(action)) {
+        recalc();
+    }
 }
 
 function mapReducer(action, payload) {
     switch (action) {
+        case 'setData':
+            loadInitMapState();
+            mapState.data = [mapAssembly(payload)];
+            break;
         case 'setDensity':
             mapState.density = payload;
             mapState.sLineDeltaXDefault = payload === 'large'? 30:20;
