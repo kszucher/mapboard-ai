@@ -2,7 +2,7 @@ import {InitState} from "./State";
 import {getDefaultMap, saveMap} from "../map/Map";
 import {mapState} from "./MapState";
 
-const WorkspaceReducer = (state, action) => {
+const MainReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'RESET_STATE':
@@ -143,4 +143,4 @@ const WorkspaceReducer = (state, action) => {
     }
 };
 
-export default WorkspaceReducer;
+export default MainReducer;
