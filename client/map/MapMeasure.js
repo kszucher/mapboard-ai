@@ -1,5 +1,5 @@
 import {createArray, getEquationDim, getTextDim} from "../core/Utils";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export const mapMeasure = {
     start: (r) => {
@@ -35,7 +35,7 @@ export const mapMeasure = {
             if (cm.spacingActivated) {
                 cm.familyH += (sCount - 1)*cm.spacing;
             }
-            cm.familyW = sMaxW + mapMem.sLineDeltaXDefault;
+            cm.familyW = sMaxW + mapState.sLineDeltaXDefault;
         }
         if (sCount > 1) {
             params.hasMultipleChild = 1;
@@ -54,7 +54,7 @@ export const mapMeasure = {
                         mapMeasure.iterate(cm.c[i][j], params);
                         maxCellHeightMat[i][j] = cm.c[i][j].maxH;
                         maxCellWidthMat[i][j] = cm.c[i][j].maxW;
-                        if (cm.c[i][j].maxH > mapMem.defaultH) {
+                        if (cm.c[i][j].maxH > mapState.defaultH) {
                             isCellSpacingActivated = 1;
                         }
                     }
@@ -111,10 +111,10 @@ export const mapMeasure = {
                         let x = dimVec[0];
                         let y = dimVec[1];
                         let lineCount = y/17;
-                        let realY = lineCount <= 1 ? mapMem.defaultH : y + mapMem.padding*2;
-                        cm.contentW = mapMem.density === 'large' ? x : x + 8;
-                        let yc = mapMem.density === 'large' ? 1 : 2;
-                        cm.contentH = realY - mapMem.padding*2 + yc;
+                        let realY = lineCount <= 1 ? mapState.defaultH : y + mapState.padding*2;
+                        cm.contentW = mapState.density === 'large' ? x : x + 8;
+                        let yc = mapState.density === 'large' ? 1 : 2;
+                        cm.contentH = realY - mapState.padding*2 + yc;
                     }
                 } else if (cm.contentType === 'equation') {
                     if (cm.isDimAssigned === 0) {
@@ -129,8 +129,8 @@ export const mapMeasure = {
                 }
                 else {console.log('unknown contentType')}
 
-                cm.selfW = cm.contentW + mapMem.padding*2;
-                cm.selfH = cm.contentH + mapMem.padding*2;
+                cm.selfW = cm.contentW + mapState.padding*2;
+                cm.selfH = cm.contentH + mapState.padding*2;
             }
         }
 

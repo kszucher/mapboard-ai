@@ -1,5 +1,5 @@
 import {copy} from "../core/Utils"
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export const mapCollect = {
     start: (r) => {
@@ -10,7 +10,7 @@ export const mapCollect = {
             },
         };
         mapCollect.iterate(r, params);
-        mapMem.filter = copy(params.filter);
+        mapState.filter = copy(params.filter);
     },
 
     iterate: (cm, params) => {

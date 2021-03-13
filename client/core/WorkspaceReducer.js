@@ -1,6 +1,6 @@
 import {InitState} from "./State";
 import {getDefaultMap, saveMap} from "../map/Map";
-import {mapMem} from "./MapState";
+import {mapState} from "./MapState";
 
 const WorkspaceReducer = (state, action) => {
     const {payload} = action;
@@ -73,8 +73,8 @@ const WorkspaceReducer = (state, action) => {
             return {...state,
                 mapStorageOut: {
                     data: getDefaultMap(payload),
-                    density: mapMem.density,
-                    alignment: mapMem.alignment,
+                    density: mapState.density,
+                    alignment: mapState.alignment,
                 },
                 serverAction: [...state.serverAction, 'createMapInMap']
             };
@@ -82,8 +82,8 @@ const WorkspaceReducer = (state, action) => {
             return {...state,
                 mapStorageOut: {
                     data: getDefaultMap(payload.mapName),
-                    density: mapMem.density,
-                    alignment: mapMem.alignment,
+                    density: mapState.density,
+                    alignment: mapState.alignment,
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
@@ -92,8 +92,8 @@ const WorkspaceReducer = (state, action) => {
             return {...state,
                 mapStorageOut: {
                     data: saveMap(),
-                    density: mapMem.density,
-                    alignment: mapMem.alignment,
+                    density: mapState.density,
+                    alignment: mapState.alignment,
                 },
                 serverAction: [...state.serverAction, 'saveMap']
             };

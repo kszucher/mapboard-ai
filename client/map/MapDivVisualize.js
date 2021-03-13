@@ -1,6 +1,6 @@
 import {keepHash, mapDivData} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 const scrollTo = function(to, duration) {
     const
@@ -38,17 +38,17 @@ const scrollTo = function(to, duration) {
 export const mapDivVisualize = {
     start: (r) => {
         let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.width = "" + mapMem.mapWidth + "px";
-        mapDiv.style.height = "" + mapMem.mapHeight + "px";
-        let currScrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
-        if (mapMem.isLoading) {
-            mapMem.isLoading = false;
+        mapDiv.style.width = "" + mapState.mapWidth + "px";
+        mapDiv.style.height = "" + mapState.mapHeight + "px";
+        let currScrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
+        if (mapState.isLoading) {
+            mapState.isLoading = false;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
             mapHolderDiv.scrollLeft = currScrollLeft;
             let mapDiv = document.getElementById('mapDiv');
             mapDiv.style.transition = 'none';
         } else {
-            if (!mapMem.isMouseDown) {
+            if (!mapState.isMouseDown) {
                 scrollTo(currScrollLeft, 500);
             }
         }
@@ -60,10 +60,10 @@ export const mapDivVisualize = {
             let styleData = {
                 left:                   cm.nodeStartX + 'px',
                 top:                    cm.nodeY - cm.selfH / 2 + 'px',
-                minWidth:               (mapMem.density === 'large'?  0 : -3) + cm.selfW - mapMem.padding - 2  + 'px',
-                minHeight:              (mapMem.density === 'large'? -2 : -1) + cm.selfH - mapMem.padding      + 'px',
-                paddingLeft:            (mapMem.density === 'large'?  0 :  3) +            mapMem.padding - 2  + 'px',
-                paddingTop:             (mapMem.density === 'large'?  0 :  0) +            mapMem.padding - 2  + 'px',
+                minWidth:               (mapState.density === 'large'?  0 : -3) + cm.selfW - mapState.padding - 2  + 'px',
+                minHeight:              (mapState.density === 'large'? -2 : -1) + cm.selfH - mapState.padding      + 'px',
+                paddingLeft:            (mapState.density === 'large'?  0 :  3) +            mapState.padding - 2  + 'px',
+                paddingTop:             (mapState.density === 'large'?  0 :  0) +            mapState.padding - 2  + 'px',
                 position:               'absolute',
                 border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
                 borderRadius:           '8px',

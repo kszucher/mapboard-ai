@@ -1,5 +1,5 @@
 import {recalc} from "../map/Map";
-import {loadInitMapState, mapMem} from "./MapState";
+import {loadInitMapState, mapState} from "./MapState";
 import {mapAssembly} from "../map/MapAssembly";
 
 export function mapDispatch(action, payload) {
@@ -12,33 +12,33 @@ function mapReducer(action, payload) {
     switch (action) {
         case 'setData':
             loadInitMapState();
-            mapMem.data = [mapAssembly((payload))];
+            mapState.data = [mapAssembly((payload))];
             break;
         case 'setDensity':
-            mapMem.density = payload;
-            mapMem.sLineDeltaXDefault = payload === 'large'? 30:20;
-            mapMem.padding = payload === 'large'? 8:3;
-            mapMem.defaultH = payload === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
-            mapMem.taskConfig.d = payload === 'large'? 24 : 20;
+            mapState.density = payload;
+            mapState.sLineDeltaXDefault = payload === 'large'? 30:20;
+            mapState.padding = payload === 'large'? 8:3;
+            mapState.defaultH = payload === 'large'? 30:20; // 30 = 14 + 2*8, 20 = 14 + 2*3
+            mapState.taskConfig.d = payload === 'large'? 24 : 20;
             break;
         case 'setAlignment':
-            mapMem.alignment = payload;
+            mapState.alignment = payload;
             break;
         case 'setTaskConfigWidth':
-            let {n, d, gap} = mapMem.taskConfig;
-            mapMem.taskConfig.width = n*d + (n-1)*gap;
+            let {n, d, gap} = mapState.taskConfig;
+            mapState.taskConfig.width = n*d + (n-1)*gap;
             break;
         case 'setMouseMode':
-            mapMem.mouseMode = payload;
+            mapState.mouseMode = payload;
             break;
         case 'undo':
-            if (mapMem.dataIndex > 0) {
-                mapMem.dataIndex--;
+            if (mapState.dataIndex > 0) {
+                mapState.dataIndex--;
             }
             break;
         case 'redo':
-            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                mapMem.dataIndex++;
+            if (mapState.dataIndex < mapState.data.length - 1) {
+                mapState.dataIndex++;
             }
             break;
     }

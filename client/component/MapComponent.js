@@ -9,7 +9,7 @@ import {mapChangeProp} from "../map/MapChangeProp";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
 import {mapFindOver} from "../map/MapFindOver";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 let pageX, pageY, scrollLeft, scrollTop;
 
@@ -110,7 +110,7 @@ export function MapComponent() {
     }, []);
 
     const resize = (e) => {
-        mapMem.isLoading = true;
+        mapState.isLoading = true;
         recalc();
         redraw();
     };
@@ -136,15 +136,15 @@ export function MapComponent() {
             redraw();
         }
 
-        mapMem.isMouseDown = true;
+        mapState.isMouseDown = true;
 
-        mapMem.isNodeClicked = false;
+        mapState.isNodeClicked = false;
         let r = getMapData().r;
         let [x, y] = getCoords(e);
         let lastOverPath = mapFindOver.start(r, x, y);
         if (lastOverPath.length) {
-            mapMem.isNodeClicked = true;
-            mapMem.deepestSelectablePath = copy(lastOverPath);
+            mapState.isNodeClicked = true;
+            mapState.deepestSelectablePath = copy(lastOverPath);
             push();
             if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                 nodeDispatch('selectStruct');
@@ -159,7 +159,7 @@ export function MapComponent() {
                 if (lm.linkType === 'internal') {
                     dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
                 } else if (lm.linkType === 'external') {
-                    mapMem.isMouseDown = false;
+                    mapState.isMouseDown = false;
                     window.open(lm.link, '_blank');
                     window.focus();
                 }
@@ -167,12 +167,12 @@ export function MapComponent() {
             dispatch({type: 'SET_NODE_PROPS', payload: lm});
         }
 
-        mapMem.isTaskClicked = false;
+        mapState.isTaskClicked = false;
         if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc,item) => {return acc || item})) {
             for (const pathItem of e.path) {
                 if (pathItem.id) {
                     if (pathItem.id.substring(0, 10) === 'taskCircle') {
-                        mapMem.isTaskClicked = true;
+                        mapState.isTaskClicked = true;
                         push();
                         nodeDispatch('setTaskStatus', {
                             taskStatus: parseInt(e.path[0].id.charAt(10), 10),
@@ -186,7 +186,7 @@ export function MapComponent() {
             }
         }
 
-        if (!mapMem.isNodeClicked && !mapMem.isTaskClicked) {
+        if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
             let el = document.getElementById('mapHolderDiv');
             pageX = e.pageX ;
             pageY = e.pageY;
@@ -197,7 +197,7 @@ export function MapComponent() {
 
     const dblclick = (e) => {
         e.preventDefault();
-        if (mapMem.isNodeClicked) {
+        if (mapState.isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
             recalc(); // centers map
@@ -207,13 +207,13 @@ export function MapComponent() {
 
     const mousemove = (e) => {
         e.preventDefault();
-        if (mapMem.isMouseDown) {
-            if (mapMem.isNodeClicked) {
-                mapMem.moveTarget.path = [];
+        if (mapState.isMouseDown) {
+            if (mapState.isNodeClicked) {
+                mapState.moveTarget.path = [];
                 let r = getMapData().r;
                 mapChangeProp.start(r, 'moveLine', []);
                 mapChangeProp.start(r, 'moveRect', []);
-                let lastSelectedPath = mapMem.filter.structSelectedPathList[0];
+                let lastSelectedPath = mapState.filter.structSelectedPathList[0];
                 let lastSelected = mapref(lastSelectedPath);
                 let [toX, toY] = getCoords(e);
                 if (!(lastSelected.nodeStartX < toX &&
@@ -223,14 +223,14 @@ export function MapComponent() {
                 ) {
                     let lastNearestPath = mapFindNearest.start(r, toX, toY);
                     if (lastNearestPath.length > 1) {
-                        mapMem.moveTarget.path = copy(lastNearestPath);
+                        mapState.moveTarget.path = copy(lastNearestPath);
                         let lastFound = mapref(lastNearestPath);
                         let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                         let fromY = lastFound.nodeY;
                         lastFound.moveLine = [fromX, fromY, toX, toY];
                         lastFound.moveRect = [toX, toY];
                         if (lastFound.s.length === 0) {
-                            mapMem.moveTarget.index = 0;
+                            mapState.moveTarget.index = 0;
                         } else {
                             let insertIndex = 0;
                             for (let i = 0; i < lastFound.s.length - 1; i++) {
@@ -247,14 +247,14 @@ export function MapComponent() {
                                     insertIndex -= 1;
                                 }
                             }
-                            mapMem.moveTarget.index = insertIndex;
+                            mapState.moveTarget.index = insertIndex;
                         }
                     }
                 }
                 redraw();
             }
 
-            if (!mapMem.isNodeClicked && !mapMem.isTaskClicked) {
+            if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
 
                 // TODO: if mouseMode === dragMap
 
@@ -270,8 +270,8 @@ export function MapComponent() {
 
     const mouseup = (e) => {
         e.preventDefault();
-        mapMem.isMouseDown = false;
-        if (mapMem.moveTarget.path.length) {
+        mapState.isMouseDown = false;
+        if (mapState.moveTarget.path.length) {
             mapChangeProp.start(mapref(['r']), 'moveLine', []);
             mapChangeProp.start(mapref(['r']), 'moveRect', []);
             push();

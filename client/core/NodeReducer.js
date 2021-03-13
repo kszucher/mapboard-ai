@@ -7,7 +7,7 @@ import {clearCellSelectionContext, clearStructSelectionContext, getSelectionCont
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
-import {mapMem} from "./MapState";
+import {mapState} from "./MapState";
 
 let mutationObserver;
 export let isEditing = 0;
@@ -26,11 +26,11 @@ function nodeReducer(action, payload) {
         case 'selectStruct': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            mapref(mapMem.deepestSelectablePath).selected = 1;
+            mapref(mapState.deepestSelectablePath).selected = 1;
             break;
         }
         case 'selectStructToo': {
-            mapref(mapMem.deepestSelectablePath).selected = sc.maxSel + 1;
+            mapref(mapState.deepestSelectablePath).selected = sc.maxSel + 1;
             break;
         }
         case 'selectDescendantsOut': {

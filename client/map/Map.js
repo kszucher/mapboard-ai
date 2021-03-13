@@ -12,7 +12,7 @@ import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
 import {mapRestore} from "./MapRestore";
 import {mapTaskCheck} from "./MapTaskCheck";
-import {loadInitMapState, mapMem} from "../core/MapState";
+import {loadInitMapState, mapState} from "../core/MapState";
 
 export let mapDivData = [];
 export let mapSvgData = [];
@@ -25,11 +25,11 @@ export function initDomData() {
 
 export function loadMap(mapStorage) {
     loadInitMapState();
-    mapMem.data = [mapAssembly((mapStorage.data))];
+    mapState.data = [mapAssembly((mapStorage.data))];
 }
 
 export const getMapData = () => {
-    return mapMem.data[mapMem.dataIndex];
+    return mapState.data[mapState.dataIndex];
 };
 
 export function recalc() {
@@ -69,17 +69,17 @@ export function redraw() {
 }
 
 export function push() {
-    if (mapMem.data.length > mapMem.dataIndex + 1) {
-        mapMem.data.length = mapMem.dataIndex + 1;
+    if (mapState.data.length > mapState.dataIndex + 1) {
+        mapState.data.length = mapState.dataIndex + 1;
     }
-    mapMem.data.push(JSON.parse(JSON.stringify(getMapData())));
-    mapMem.dataIndex++;
+    mapState.data.push(JSON.parse(JSON.stringify(getMapData())));
+    mapState.dataIndex++;
 }
 
 export function checkPop() {
-    if (JSON.stringify(mapMem.data[mapMem.dataIndex]) === JSON.stringify(mapMem.data[mapMem.dataIndex - 1])) {
-        mapMem.data.length--;
-        mapMem.dataIndex--;
+    if (JSON.stringify(mapState.data[mapState.dataIndex]) === JSON.stringify(mapState.data[mapState.dataIndex - 1])) {
+        mapState.data.length--;
+        mapState.dataIndex--;
     }
 }
 

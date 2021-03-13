@@ -1,4 +1,4 @@
-export let mapMem = {
+export let mapState = {
     isLoading: true,
 
     dataIndex: 0,
@@ -36,5 +36,5 @@ export let mapMem = {
     },
 };
 
-const InitMapState = JSON.stringify(mapMem);
-export const loadInitMapState = _ => {mapMem = JSON.parse(InitMapState)};
+const InitMapState = JSON.stringify(mapState);
+export const loadInitMapState = _ => {mapState = JSON.parse(InitMapState)};

@@ -1,4 +1,4 @@
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export const mapChain = {
     start: (r) => {

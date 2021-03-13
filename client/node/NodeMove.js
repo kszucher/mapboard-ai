@@ -1,7 +1,7 @@
 import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
 import {copy, transpose} from "../core/Utils";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 let clipboard = [];
 
@@ -12,9 +12,9 @@ export function setClipboard(clipboardIn) {
 export function nodeMoveMouse (sc) {
     let {structSelectedPathList, sameParent} = sc;
     let moveSource = mapref(structSelectedPathList[0]);
-    let moveTarget = mapref(mapMem.moveTarget.path);
-    mapMem.moveTarget.path = [];
-    let moveTargetIndex = mapMem.moveTarget.index;
+    let moveTarget = mapref(mapState.moveTarget.path);
+    mapState.moveTarget.path = [];
+    let moveTargetIndex = mapState.moveTarget.index;
     let tempClipboard = copy(moveSource);
     sameParent.s.splice(moveSource.index, 1);
     moveTarget.s.splice(moveTargetIndex, 0, tempClipboard);

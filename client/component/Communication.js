@@ -4,7 +4,7 @@ import {Context} from "../core/Store";
 import {checkPop, initDomData, loadMap, push, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
 import {mapDispatch} from "../core/MapReducer";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 /**
  * @return {null}
@@ -69,14 +69,14 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    mapMem.isLoading = true;
+                    mapState.isLoading = true;
                     loadMap(serverResponse.mapStorage);
                     mapDispatch('setDensity', serverResponse.mapStorage.density);
                     mapDispatch('setAlignment', serverResponse.mapStorage.alignment);
                     mapDispatch('setTaskConfigWidth');
                     redraw();
                     let mapHolderDiv = document.getElementById('mapHolderDiv');
-                    mapHolderDiv.scrollLeft = (window.innerWidth + mapMem.mapWidth) / 2;
+                    mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
                     let mapDiv = document.getElementById('mapDiv');
                     mapDiv.style.transition = '0.5s ease-out';

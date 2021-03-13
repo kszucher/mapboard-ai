@@ -1,9 +1,9 @@
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export const mapTaskCheck = {
     start: (r) => {
-        mapMem.taskLeft = 0;
-        mapMem.taskRight = 0;
+        mapState.taskLeft = 0;
+        mapState.taskRight = 0;
         mapTaskCheck.iterate(r);
     },
 
@@ -11,9 +11,9 @@ export const mapTaskCheck = {
         if (cm.task) {
             try {
                 if (cm.path[2] === 0) {
-                    mapMem.taskRight = 1;
+                    mapState.taskRight = 1;
                 } else {
-                    mapMem.taskLeft = 1;
+                    mapState.taskLeft = 1;
                 }
             } catch {
                 console.log(cm.path)

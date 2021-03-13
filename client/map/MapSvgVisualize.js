@@ -1,6 +1,6 @@
 import {keepHash, mapSvgData} from "./Map";
 import {genHash, copy, isOdd} from "../core/Utils";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 let svgElementNameList = [
     'connectionLine',
@@ -20,8 +20,8 @@ let svgElementNameList = [
 export const mapSvgVisualize = {
     start: (r) => {
         let mapSvgOuter = document.getElementById('mapSvgOuter');
-        mapSvgOuter.style.width = 'calc(200vw + ' + mapMem.mapWidth + 'px)';
-        mapSvgOuter.style.height = 'calc(200vh + ' + mapMem.mapHeight + 'px)';
+        mapSvgOuter.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
+        mapSvgOuter.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
         mapSvgVisualize.iterate(r);
     },
 
@@ -154,8 +154,8 @@ export const mapSvgVisualize = {
             !cm.isRootChild) {
 
 
-            let {mapWidth, margin} = mapMem;
-            let {n, d, gap, width} = mapMem.taskConfig;
+            let {mapWidth, margin} = mapState;
+            let {n, d, gap, width} = mapState.taskConfig;
 
             let startX = cm.path[2] === 0 ? mapWidth - width - margin : margin + width;
 

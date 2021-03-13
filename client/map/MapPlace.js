@@ -1,8 +1,8 @@
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export const mapPlace = {
     start: (r) => {
-        let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapMem;
+        let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
 
         let leftMarginWidth = margin;
         let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfig.width: 0;
@@ -49,8 +49,8 @@ export const mapPlace = {
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
 
-        mapMem.mapWidth = mapWidth;
-        mapMem.mapHeight = mapHeight;
+        mapState.mapWidth = mapWidth;
+        mapState.mapHeight = mapHeight;
 
         r.parentNodeStartX = mapStartCenterX - r.selfW/2 + 2;
         r.parentNodeEndX = mapStartCenterX + r.selfW/2;
@@ -86,7 +86,7 @@ export const mapPlace = {
                     }
                 } else if (cm.type === 'cell') {
                     if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
-                        let diff = mapMem.sLineDeltaXDefault - 20;
+                        let diff = mapState.sLineDeltaXDefault - 20;
                         if (cm.path[2] === 0) {
                             cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
                             cm.nodeEndX = cm.nodeStartX + cm.selfW;
@@ -148,7 +148,7 @@ export const mapPlace = {
             cm.s[i].parentNodeStartX = cm.nodeStartX;
             cm.s[i].parentNodeEndX = cm.nodeEndX;
             cm.s[i].parentNodeY = cm.nodeY;
-            cm.s[i].lineDeltaX = mapMem.sLineDeltaXDefault;
+            cm.s[i].lineDeltaX = mapState.sLineDeltaXDefault;
             cm.s[i].lineDeltaY = cm.familyH*(-1/2) + elapsedY + cm.s[i].maxH/2;
 
             if (i === 0 && cm.isTop) cm.s[i].isTop = 1;

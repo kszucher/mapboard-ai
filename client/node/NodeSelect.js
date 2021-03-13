@@ -1,7 +1,7 @@
 import {mapref, mapasgn, pathMerge, getMapData} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "../core/Utils";
-import {mapMem} from "../core/MapState";
+import {mapState} from "../core/MapState";
 
 export function getSelectionContext () {
     let r = getMapData().r;
@@ -23,7 +23,7 @@ export function getSelectionContext () {
     let haveSameParent = 0;
     let sameParent;
 
-    let {structSelectedPathList, cellSelectedPathList} = mapMem.filter;
+    let {structSelectedPathList, cellSelectedPathList} = mapState.filter;
 
     // INDICATORS
     if (structSelectedPathList.length && cellSelectedPathList.length) {
@@ -115,7 +115,7 @@ export function getSelectionContext () {
 export function clearStructSelectionContext () {
     let r = getMapData().r;
     mapCollect.start(r);
-    let filter = mapMem.filter;
+    let filter = mapState.filter;
     for (let i = 0; i < filter.structSelectedPathList.length; i++) {
         mapasgn(pathMerge(filter.structSelectedPathList[i], ['selected']), 0);
     }
@@ -124,7 +124,7 @@ export function clearStructSelectionContext () {
 export function clearCellSelectionContext () {
     let r = getMapData().r;
     mapCollect.start(r);
-    let filter = mapMem.filter;
+    let filter = mapState.filter;
     for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
         mapasgn(pathMerge(filter.cellSelectedPathList[i], ['selected']), 0);
     }
