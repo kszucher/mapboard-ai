@@ -347,6 +347,8 @@ export const mapSvgVisualize = {
                         case 'rect':
                             svgElement.setAttribute("x",                svgElementData[svgElementName].x);
                             svgElement.setAttribute("y",                svgElementData[svgElementName].y);
+                            svgElement.setAttribute("width",            svgElementData[svgElementName].width);
+                            svgElement.setAttribute("height",           svgElementData[svgElementName].height);
                             break;
                     }
                     break;

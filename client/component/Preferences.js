@@ -41,12 +41,11 @@ export function Preferences () {
     return (
         <div id = 'preferencesContainer'>
             <div id = 'preferences'>
-
+                <MaterialSelector input = {['Mouse Mode Out',   mouseMode,  setMouseMode,   ['select', 'drag']]}/>
                 <MaterialSelector input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
                 <MaterialSelector input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
                 <MaterialSelector input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
                 <MaterialSelector input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
-                <MaterialSelector input = {['Mouse Mode',       mouseMode,  setMouseMode,   ['select', 'drag']]}/>
 
                 <Palette/>
 

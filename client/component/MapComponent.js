@@ -133,6 +133,7 @@ export function MapComponent() {
 
         mapState.isNodeClicked = false;
         let r = getMapData().r;
+        r.selectionRect = [];
         let [x, y] = getCoords(e);
         let lastOverPath = mapFindOver.start(r, x, y);
         if (lastOverPath.length) {
@@ -180,11 +181,18 @@ export function MapComponent() {
         }
 
         if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-            let el = document.getElementById('mapHolderDiv');
-            pageX = e.pageX ;
+            let mouseMode = remoteGetState().mouseMode;
+            pageX = e.pageX;
             pageY = e.pageY;
-            scrollLeft = el.scrollLeft;
-            scrollTop = el.scrollTop;
+            if (mouseMode === 'select') {
+
+            } else if (mouseMode === 'drag') {
+                let el = document.getElementById('mapHolderDiv');
+                scrollLeft = el.scrollLeft;
+                scrollTop = el.scrollTop;
+            } else {
+                console.log('unknown mouseMode');
+            }
         }
     };
 
@@ -201,6 +209,7 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         if (mapState.isMouseDown) {
+            let [toX, toY] = getCoords(e);
             if (mapState.isNodeClicked) {
                 mapState.moveTarget.path = [];
                 let r = getMapData().r;
@@ -208,7 +217,6 @@ export function MapComponent() {
                 r.moveRect = [];
                 let lastSelectedPath = mapState.filter.structSelectedPathList[0];
                 let lastSelected = mapref(lastSelectedPath);
-                let [toX, toY] = getCoords(e);
                 if (!(lastSelected.nodeStartX < toX &&
                     toX < lastSelected.nodeEndX &&
                     lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
@@ -250,10 +258,14 @@ export function MapComponent() {
             if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
                 let mouseMode = remoteGetState().mouseMode;
                 if (mouseMode === 'select') {
-                    // the endpoint will update the selectionRect's end position
-
-                    let [toX, toY] = getCoords(e);
-
+                    let r = getMapData().r;
+                    r.selectionRect = [
+                        pageX,
+                        pageY,
+                        Math.abs(e.pageX - pageX),
+                        Math.abs(e.pageY - pageY),
+                    ];
+                    redraw();
                 } else if (mouseMode === 'drag') {
                     let el = document.getElementById('mapHolderDiv');
                     el.scrollLeft = scrollLeft - e.pageX  + pageX;
@@ -276,6 +288,15 @@ export function MapComponent() {
             nodeDispatch('moveSelection');
             redraw();
             checkPop();
+        }
+
+        let mouseMode = remoteGetState().mouseMode;
+        if (mouseMode === 'select') {
+
+        } else if (mouseMode === 'drag') {
+
+        } else {
+            console.log('unknown mouseMode');
         }
     };
 
