@@ -23,10 +23,19 @@ export function Preferences () {
     const [state, dispatch] = useContext(Context);
     const {density, alignment, fontSize, colorMode} = state;
 
-    const setDensity =      e => dispatch({type: 'SET_DENSITY',     payload: e.target.value});
-    const setAlignment =    e => dispatch({type: 'SET_ALIGNMENT',   payload: e.target.value});
-    const setFontSize =     e => dispatch({type: 'SET_FONT_SIZE',   payload: e.target.value});
-    const setColorMode =    e => dispatch({type: 'SET_COLOR_MODE',  payload: e.target.value});
+    const setDensity =        e => dispatch({type: 'SET_DENSITY',     payload: e.target.value});
+    const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',   payload: e.target.value});
+    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',   payload: e.target.value});
+    const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE',  payload: e.target.value});
+
+    const undo =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'undo'});
+    const redo =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'redo'});
+    const save =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'save'});
+    const cut =               _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'cut'});
+    const copy =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'copy'});
+    const paste =             _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'paste'});
+    const task =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'task'});
+    const formatColorReset =  _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'formatColorReset'});
 
     return (
         <div id = 'preferencesContainer'>
@@ -40,40 +49,20 @@ export function Preferences () {
                 <Palette/>
 
                 <div className={'buttons'}>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'undo'})}>
-                        <span className="material-icons">undo</span>
-                    </IconButton>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'redo'})}>
-                        <span className="material-icons">redo</span>
-                    </IconButton>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'save'})}>
-                        <span className="material-icons">save</span>
-                    </IconButton>
+                    <MaterialButton input = {[undo, 'undo']}/>
+                    <MaterialButton input = {[redo, 'redo']}/>
+                    <MaterialButton input = {[save, 'save']}/>
                 </div>
                 <div className={'buttons'}>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'cut'})}>
-                        <span className="material-icons">content_cut</span>
-                    </IconButton>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'copy'})}>
-                        <span className="material-icons">content_copy</span>
-                    </IconButton>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'paste'})}>
-                        <span className="material-icons">content_paste</span>
-                    </IconButton>
+                    <MaterialButton input = {[cut, 'content_cut']}/>
+                    <MaterialButton input = {[copy, 'content_copy']}/>
+                    <MaterialButton input = {[paste, 'content_paste']}/>
                 </div>
                 <div className={'buttons'}>
-                    <IconButton >
-                        <span className="material-icons">grid_on</span>
-                    </IconButton>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'task'})}>
-                        <span className="material-icons">assignment_turned_in</span>
-                    </IconButton>
-                    <IconButton onClick={e => dispatch({type: 'SET_MAP_ACTION', payload: 'formatColorReset'})}>
-                        <span className="material-icons">format_color_reset</span>
-                    </IconButton>
+                    <MaterialButton input = {[task, 'assignment_turned_in']}/>
+                    <MaterialButton input = {[formatColorReset, 'format_color_reset']}/>
                 </div>
             </div>
-            {/*</div>*/}
         </div>
     );
 }
@@ -93,5 +82,13 @@ const MaterialSelector = (arg) => {
                 )}
             </Select>
         </FormControl>
+    )
+};
+
+const MaterialButton = (arg) => {
+    return (
+        <IconButton onClick={arg.input[0]}>
+            <span className="material-icons">{arg.input[1]}</span>
+        </IconButton>
     )
 };
