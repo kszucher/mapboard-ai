@@ -5,6 +5,10 @@ export let mapState = {
     data: [],
 
     density: '',
+    sLineDeltaXDefault: 0,
+    padding: 0,
+    defaultH: 0,
+
     alignment: '',
 
     taskLeft: 0,
