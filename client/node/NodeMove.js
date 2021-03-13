@@ -1,7 +1,7 @@
 import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
 import {copy, transpose} from "../core/Utils";
-import {mapMem} from "../map/Map";
+import {mapMem} from "../core/MapState";
 
 let clipboard = [];
 

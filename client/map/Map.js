@@ -1,4 +1,4 @@
-import {copy, subsref, subsasgn, genHash} from "../core/Utils"
+import {copy, genHash, subsasgn, subsref} from "../core/Utils"
 import {mapAssembly} from "./MapAssembly";
 import {mapChain} from './MapChain'
 import {mapDisassembly} from "./MapDisassembly";
@@ -12,10 +12,7 @@ import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
 import {mapRestore} from "./MapRestore";
 import {mapTaskCheck} from "./MapTaskCheck";
-
-export let mapMem = {};
-
-
+import {loadInitMapState, mapMem} from "../core/MapState";
 
 export let mapDivData = [];
 export let mapSvgData = [];
@@ -27,43 +24,8 @@ export function initDomData() {
 }
 
 export function loadMap(mapStorage) {
-    mapMem = {
-        isLoading: true,
-
-        dataIndex: 0,
-        data: [mapAssembly((mapStorage.data))],
-
-        density: '',
-        alignment: '',
-
-        taskLeft: 0,
-        taskRight: 0,
-
-        mapWidth: 0,
-        mapHeight: 0,
-
-        filter: [],
-        deepestSelectablePath: [],
-
-        isNodeClicked: false,
-        isTaskClicked: false,
-        isMouseDown: false,
-
-        mouseMode: '',
-
-        moveTarget: {
-            path: [],
-            index: 0,
-        },
-
-        margin: 32,
-        taskConfig: {
-            n: 4,
-            d: 24,
-            gap: 4,
-            width: 0,
-        },
-    };
+    loadInitMapState();
+    mapMem.data = [mapAssembly((mapStorage.data))];
 }
 
 export const getMapData = () => {

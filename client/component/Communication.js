@@ -3,8 +3,8 @@ import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
 import {checkPop, initDomData, loadMap, push, redraw} from "../map/Map";
 import {nodeDispatch} from "../core/NodeReducer";
-import {mapMem} from "../map/Map";
 import {mapDispatch} from "../core/MapReducer";
+import {mapMem} from "../core/MapState";
 
 /**
  * @return {null}

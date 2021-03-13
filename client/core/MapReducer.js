@@ -1,4 +1,6 @@
-import {mapMem, recalc} from "../map/Map";
+import {recalc} from "../map/Map";
+import {loadInitMapState, mapMem} from "./MapState";
+import {mapAssembly} from "../map/MapAssembly";
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
@@ -8,15 +10,9 @@ export function mapDispatch(action, payload) {
 
 function mapReducer(action, payload) {
     switch (action) {
-        case 'undo':
-            if (mapMem.dataIndex > 0) {
-                mapMem.dataIndex--;
-            }
-            break;
-        case 'redo':
-            if (mapMem.dataIndex < mapMem.data.length - 1) {
-                mapMem.dataIndex++;
-            }
+        case 'setData':
+            loadInitMapState();
+            mapMem.data = [mapAssembly((payload))];
             break;
         case 'setDensity':
             mapMem.density = payload;
@@ -34,6 +30,16 @@ function mapReducer(action, payload) {
             break;
         case 'setMouseMode':
             mapMem.mouseMode = payload;
+            break;
+        case 'undo':
+            if (mapMem.dataIndex > 0) {
+                mapMem.dataIndex--;
+            }
+            break;
+        case 'redo':
+            if (mapMem.dataIndex < mapMem.data.length - 1) {
+                mapMem.dataIndex++;
+            }
             break;
     }
 }

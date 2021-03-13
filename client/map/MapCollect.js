@@ -1,5 +1,5 @@
-import {mapMem} from "./Map";
 import {copy} from "../core/Utils"
+import {mapMem} from "../core/MapState";
 
 export const mapCollect = {
     start: (r) => {

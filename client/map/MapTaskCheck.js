@@ -1,4 +1,4 @@
-import {mapMem} from "./Map";
+import {mapMem} from "../core/MapState";
 
 export const mapTaskCheck = {
     start: (r) => {

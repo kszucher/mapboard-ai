@@ -1,5 +1,5 @@
-import {mapMem} from "./Map";
 import {createArray, getEquationDim, getTextDim} from "../core/Utils";
+import {mapMem} from "../core/MapState";
 
 export const mapMeasure = {
     start: (r) => {

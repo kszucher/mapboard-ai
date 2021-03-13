@@ -1,5 +1,6 @@
 import {InitState} from "./State";
-import {getDefaultMap, mapMem, saveMap} from "../map/Map";
+import {getDefaultMap, saveMap} from "../map/Map";
+import {mapMem} from "./MapState";
 
 const WorkspaceReducer = (state, action) => {
     const {payload} = action;

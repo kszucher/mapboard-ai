@@ -1,4 +1,4 @@
-import {mapMem, mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
+import {mapref, mapSvgData, pathMerge, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, nodeMove, nodeMoveMouse} from "../node/NodeMove";
@@ -7,6 +7,7 @@ import {clearCellSelectionContext, clearStructSelectionContext, getSelectionCont
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
+import {mapMem} from "./MapState";
 
 let mutationObserver;
 export let isEditing = 0;
