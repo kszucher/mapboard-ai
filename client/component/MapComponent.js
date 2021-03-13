@@ -10,7 +10,7 @@ import {mapDispatch} from "../core/MapReducer";
 import {mapFindOver} from "../map/MapFindOver";
 import {mapState} from "../core/MapState";
 
-let pageX, pageY, scrollLeft, scrollTop;
+let pageX, pageY, scrollLeft, scrollTop, myX, myY;
 
 export function MapComponent() {
 
@@ -134,8 +134,8 @@ export function MapComponent() {
         mapState.isNodeClicked = false;
         let r = getMapData().r;
         r.selectionRect = [];
-        let [x, y] = getCoords(e);
-        let lastOverPath = mapFindOver.start(r, x, y);
+        let [fromX, fromY] = getCoords(e);
+        let lastOverPath = mapFindOver.start(r, fromX, fromY);
         if (lastOverPath.length) {
             mapState.isNodeClicked = true;
             mapState.deepestSelectablePath = copy(lastOverPath);
@@ -182,14 +182,15 @@ export function MapComponent() {
 
         if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
             let mouseMode = remoteGetState().mouseMode;
-            pageX = e.pageX;
-            pageY = e.pageY;
             if (mouseMode === 'select') {
-
+                myX = fromX;
+                myY = fromY;
             } else if (mouseMode === 'drag') {
                 let el = document.getElementById('mapHolderDiv');
                 scrollLeft = el.scrollLeft;
                 scrollTop = el.scrollTop;
+                pageX = e.pageX;
+                pageY = e.pageY;
             } else {
                 console.log('unknown mouseMode');
             }
@@ -260,10 +261,10 @@ export function MapComponent() {
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
                     r.selectionRect = [
-                        pageX,
-                        pageY,
-                        Math.abs(e.pageX - pageX),
-                        Math.abs(e.pageY - pageY),
+                        myX,
+                        myY,
+                        Math.abs(myX - toX),
+                        Math.abs(myY - toY),
                     ];
                     redraw();
                 } else if (mouseMode === 'drag') {
@@ -280,8 +281,8 @@ export function MapComponent() {
     const mouseup = (e) => {
         e.preventDefault();
         mapState.isMouseDown = false;
+        let r = getMapData().r;
         if (mapState.moveTarget.path.length) {
-            let r = getMapData().r;
             r.moveLine = [];
             r.moveRect = [];
             push();
@@ -292,7 +293,8 @@ export function MapComponent() {
 
         let mouseMode = remoteGetState().mouseMode;
         if (mouseMode === 'select') {
-
+            r.selectionRect = [];
+            redraw();
         } else if (mouseMode === 'drag') {
 
         } else {
