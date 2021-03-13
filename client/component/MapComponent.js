@@ -49,7 +49,6 @@ export function MapComponent() {
     useEffect(() => {
         if (alignment !== '') {
             mapDispatch('setAlignment', alignment);
-            recalc();
             redraw();
         }
     }, [alignment]);

@@ -1,8 +1,9 @@
-import {mapMem} from "../map/Map";
+import {mapMem, recalc} from "../map/Map";
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
+    recalc();
 }
 
 function mapReducer(action, payload) {
