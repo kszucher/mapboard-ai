@@ -233,6 +233,9 @@ export const mapSvgVisualize = {
                 height: 20,
                 rx: 8,
                 ry: 8,
+                fill: '#fbfafc',
+                fillOpacity: 1,
+                strokeWidth: 5,
             };
         }
 
@@ -246,6 +249,9 @@ export const mapSvgVisualize = {
                 height: cm.selectionRect[3],
                 rx: 8,
                 ry: 8,
+                fill: '#5f0a87',
+                fillOpacity: 0.05,
+                strokeWidth: 2,
             };
         }
 
@@ -318,9 +324,10 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("height",           svgElementData[svgElementName].height);
                             svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
                             svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
-                            svgElement.setAttribute("fill",             '#fbfafc');
+                            svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
+                            svgElement.setAttribute("fill-opacity",     svgElementData[svgElementName].fillOpacity);
                             svgElement.setAttribute("stroke",           '#5f0a87');
-                            svgElement.setAttribute("stroke-width",      5);
+                            svgElement.setAttribute("stroke-width",      svgElementData[svgElementName].strokeWidth);
                             break;
                     }
                     svgGroup.appendChild(svgElement);

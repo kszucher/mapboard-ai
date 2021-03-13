@@ -260,11 +260,18 @@ export function MapComponent() {
                 let mouseMode = remoteGetState().mouseMode;
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
+
+                    let fromX = myX;
+                    let fromY = myY;
+
+                    let startX = fromX < toX ? fromX : toX;
+                    let startY = fromY < toY ? fromY : toY;
+
                     r.selectionRect = [
-                        myX,
-                        myY,
-                        Math.abs(myX - toX),
-                        Math.abs(myY - toY),
+                        startX,
+                        startY,
+                        Math.abs(toX - fromX),
+                        Math.abs(toY - fromY),
                     ];
                     redraw();
                 } else if (mouseMode === 'drag') {
