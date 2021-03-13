@@ -1,4 +1,4 @@
-export const State = {
+export const MainState = {
     isLoggedIn: false,
     serverAction: ['ping'],
     serverResponse: {},
@@ -25,4 +25,4 @@ export const State = {
     mapAction: ''
 };
 
-export const InitState = JSON.stringify(State);
+export const InitState = JSON.stringify(MainState);

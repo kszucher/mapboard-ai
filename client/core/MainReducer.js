@@ -1,4 +1,4 @@
-import {InitState} from "./State";
+import {InitState} from "./MainState";
 import {getDefaultMap, saveMap} from "../map/Map";
 import {mapState} from "./MapState";
 

@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useReducer, useRef, useCallback} from 'react'
 import MainReducer from "./MainReducer";
-import {State} from "./State";
+import {MainState} from "./MainState";
 
 export let remoteDispatch;
 export let remoteGetState;
@@ -19,7 +19,7 @@ const useEnhancedReducer = (reducer, initState, initializer) => {
 };
 
 const Store = ({children}) => {
-    const [state, dispatch, getState] = useEnhancedReducer(MainReducer, State);
+    const [state, dispatch, getState] = useEnhancedReducer(MainReducer, MainState);
 
     useEffect(() => {
         remoteDispatch = dispatch;
@@ -33,6 +33,6 @@ const Store = ({children}) => {
     )
 };
 
-export const Context = createContext(State);
+export const Context = createContext(MainState);
 
 export default Store;
