@@ -4,12 +4,12 @@ export let mapState = {
     dataIndex: 0,
     data: [],
 
-    density: '',
+    density: '', // inherit
     sLineDeltaXDefault: 0,
     padding: 0,
     defaultH: 0,
 
-    alignment: '',
+    alignment: '', // inherit
 
     taskLeft: 0,
     taskRight: 0,
@@ -24,7 +24,7 @@ export let mapState = {
     isTaskClicked: false,
     isMouseDown: false,
 
-    mouseMode: '',
+    mouseMode: '', // inherit
 
     moveTarget: {
         path: [],
