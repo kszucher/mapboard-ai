@@ -1,6 +1,5 @@
 import {InitState} from "./State";
 import {getDefaultMap, mapMem, saveMap} from "../map/Map";
-import {mapPrint} from "../map/MapPrint";
 
 const WorkspaceReducer = (state, action) => {
     const {payload} = action;
@@ -133,21 +132,12 @@ const WorkspaceReducer = (state, action) => {
                 fontSize,
             };
         }
-        case 'SET_DENSITY': {
-            return {...state, density: payload};
-        }
-        case 'SET_ALIGNMENT': {
-            return {...state, alignment: payload};
-        }
-        case 'SET_FONT_SIZE': {
-            return {...state, fontSize: payload}
-        }
-        case 'SET_COLOR_MODE': {
-            return {...state, colorMode: payload}
-        }
-        case 'SET_MAP_ACTION': {
-            return {...state, mapAction: [...state.mapAction, payload]};
-        }
+        case 'SET_DENSITY':     return {...state, density: payload};
+        case 'SET_ALIGNMENT':   return {...state, alignment: payload};
+        case 'SET_FONT_SIZE':   return {...state, fontSize: payload};
+        case 'SET_COLOR_MODE':  return {...state, colorMode: payload};
+        case 'SET_MOUSE_MODE':  return {...state, mouseMode: payload};
+        case 'SET_MAP_ACTION':  return {...state, mapAction: [...state.mapAction, payload]};
         default: return state;
     }
 };

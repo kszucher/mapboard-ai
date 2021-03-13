@@ -14,6 +14,9 @@ import {mapRestore} from "./MapRestore";
 import {mapTaskCheck} from "./MapTaskCheck";
 
 export let mapMem = {};
+
+
+
 export let mapDivData = [];
 export let mapSvgData = [];
 export let keepHash = '';

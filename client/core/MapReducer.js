@@ -32,5 +32,8 @@ function mapReducer(action, payload) {
             let {n, d, gap} = mapMem.taskConfig;
             mapMem.taskConfig.width = n*d + (n-1)*gap;
             break;
+        case 'setMouseMode':
+            mapMem.mouseMode = payload;
+            break;
     }
 }

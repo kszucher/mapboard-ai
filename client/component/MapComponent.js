@@ -15,7 +15,7 @@ let pageX, pageY, scrollLeft, scrollTop;
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, mapAction} = state;
+    const {density, alignment, fontSize, mouseMode, mapAction} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -40,6 +40,12 @@ export function MapComponent() {
             checkPop();
         }
     }, [fontSize]);
+
+    useEffect(() => {
+        if (mouseMode !== '') {
+            mapDispatch('setMouseMode', mouseMode);
+        }
+    }, [mouseMode]);
 
     useEffect(() => {
         let lastAction = [...mapAction].pop();
