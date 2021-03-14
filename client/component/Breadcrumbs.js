@@ -1,7 +1,6 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {Context} from "../core/Store";
@@ -36,8 +35,7 @@ export default function WorkspaceBreadcrumbs() {
                                 color="inherit"
                                 href="/"
                                 onClick={handleClick(index)}
-                                key={index}
-                            >
+                                key={index}>
                                 {currElement.mapName}
                             </Link>
                         ))}>

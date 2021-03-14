@@ -1,0 +1,24 @@
+#toolbar-container {
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    display: flex;
+    justify-content: center;
+
+}
+
+#toolbar {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #fbfafc;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dddddd;
+    border-top: 0;
+}
