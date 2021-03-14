@@ -181,7 +181,11 @@ export function MapComponent() {
         }
 
         if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-            let mouseMode = remoteGetState().mouseMode;
+            // let mouseMode = remoteGetState().mouseMode;
+            let mouseMode;
+            if (e.which === 1) mouseMode = 'select';
+            if (e.which === 2) mouseMode = 'drag';
+
             if (mouseMode === 'select') {
                 myX = fromX;
                 myY = fromY;
@@ -257,7 +261,11 @@ export function MapComponent() {
             }
 
             if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-                let mouseMode = remoteGetState().mouseMode;
+                // let mouseMode = remoteGetState().mouseMode;
+                let mouseMode;
+                if (e.which === 1) mouseMode = 'select';
+                if (e.which === 2) mouseMode = 'drag';
+
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
 
@@ -298,7 +306,10 @@ export function MapComponent() {
             checkPop();
         }
 
-        let mouseMode = remoteGetState().mouseMode;
+        // let mouseMode = remoteGetState().mouseMode;
+        let mouseMode;
+        if (e.which === 1) mouseMode = 'select';
+        if (e.which === 2) mouseMode = 'drag';
         if (mouseMode === 'select') {
             r.selectionRect = [];
             redraw();
