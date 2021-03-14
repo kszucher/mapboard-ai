@@ -28,10 +28,10 @@ export function Workspace() {
                 contrastText: '#fbfafc',
             },
             secondary: {
-                light: '#9040b8',
-                main: '#5f0a87',
-                dark: '#2e0059',
-                contrastText: '#222',
+                light: '#dddddd',
+                main: '#6f6e6f',
+                dark: '#000000',
+                contrastText: '#000000',
             },
         },
 

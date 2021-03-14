@@ -24,25 +24,25 @@ export function ToolBar () {
         <div id = 'toolbar-container'>
             <div id = 'toolbar'>
                 <div className={'buttons'}>
-                    <StyledButton input = {[undo, 'undo']}/>
-                    <StyledButton input = {[redo, 'redo']}/>
-                    <StyledButton input = {[save, 'save']}/>
+                    <StyledButton input = {[undo, 'undo', 0]}/>
+                    <StyledButton input = {[redo, 'redo', 0]}/>
+                    <StyledButton input = {[save, 'save', 0]}/>
 
                     <Divider orientation="vertical" flexItem />
 
-                    <StyledButton input = {[mouseSelect, 'crop_free']}/>
-                    <StyledButton input = {[mouseDrag, 'open_with']}/>
+                    <StyledButton input = {[mouseSelect, 'crop_free', state.mouseMode === 'select']}/>
+                    <StyledButton input = {[mouseDrag, 'open_with', state.mouseMode === 'drag']}/>
 
                     <Divider orientation="vertical" flexItem />
 
-                    <StyledButton input = {[cut, 'content_cut']}/>
-                    <StyledButton input = {[copy, 'content_copy']}/>
-                    <StyledButton input = {[paste, 'content_paste']}/>
+                    <StyledButton input = {[cut, 'content_cut', 0]}/>
+                    <StyledButton input = {[copy, 'content_copy', 0]}/>
+                    <StyledButton input = {[paste, 'content_paste', 0]}/>
 
                     <Divider orientation="vertical" flexItem />
 
-                    <StyledButton input = {[task, 'check_circle']}/>
-                    <StyledButton input = {[formatColorReset, 'format_color_reset']}/>
+                    <StyledButton input = {[task, 'check_circle', 0]}/>
+                    <StyledButton input = {[formatColorReset, 'format_color_reset', 0]}/>
                 </div>
             </div>
         </div>
