@@ -1,18 +1,13 @@
 import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {Context} from "../core/Store";
-import '../component-css/Toolbar.css'
+import '../component-css/Logo.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function MenuAppBar() {
+export default function Logo() {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -50,7 +45,7 @@ export default function MenuAppBar() {
     };
 
     return (
-        <div id = 'toolbar' className={classes.root}>
+        <div id = 'logo' className={classes.root}>
             <Toolbar variant={"dense"}>
                 <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleMenu} color = "inherit">
                     <MenuIcon />
@@ -68,8 +63,7 @@ export default function MenuAppBar() {
                         horizontal: 'right',
                     }}
                     open={open}
-                    onClose={handleClose}
-                >
+                    onClose={handleClose}>
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>

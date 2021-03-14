@@ -1,6 +1,6 @@
 import '../component-css/Layout.css'
 import React, { useEffect,} from 'react'
-import Toolbar from "./Logo";
+import Logo from "./Logo";
 import Tabs from "./Tabs";
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
@@ -44,7 +44,7 @@ export function Workspace() {
                 <Tabs/>
                 <Breadcrumbs/>
                 <Preferences/>
-                <Toolbar/>
+                <Logo/>
                 <Palette/>
             </MuiThemeProvider>
         </div>
