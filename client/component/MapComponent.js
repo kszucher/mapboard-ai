@@ -206,7 +206,8 @@ export function MapComponent() {
         if (mapState.isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
-            recalc(); // centers map
+            mapState.shouldCenter = true;
+            recalc();
         }
         redraw();
     };

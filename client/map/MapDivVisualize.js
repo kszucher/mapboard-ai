@@ -47,10 +47,10 @@ export const mapDivVisualize = {
             mapHolderDiv.scrollLeft = currScrollLeft;
             let mapDiv = document.getElementById('mapDiv');
             mapDiv.style.transition = 'none';
-        } else {
-            if (!mapState.isMouseDown) {
-                // scrollTo(currScrollLeft, 0);
-            }
+        }
+        if (mapState.shouldCenter) {
+            mapState.shouldCenter = false;
+            scrollTo(currScrollLeft, 500);
         }
         mapDivVisualize.iterate(r);
     },
