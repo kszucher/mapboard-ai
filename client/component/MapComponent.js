@@ -301,6 +301,7 @@ export function MapComponent() {
         if (mapState.moveTarget.path.length) {
             r.moveLine = [];
             r.moveRect = [];
+            // mapState.shouldCenter = true;
             push();
             nodeDispatch('moveSelection');
             redraw();
