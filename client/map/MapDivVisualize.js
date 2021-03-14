@@ -49,7 +49,7 @@ export const mapDivVisualize = {
             mapDiv.style.transition = 'none';
         } else {
             if (!mapState.isMouseDown) {
-                scrollTo(currScrollLeft, 500);
+                // scrollTo(currScrollLeft, 0);
             }
         }
         mapDivVisualize.iterate(r);
