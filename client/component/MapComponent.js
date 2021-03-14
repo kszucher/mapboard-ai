@@ -60,7 +60,7 @@ export function MapComponent() {
                         nodeDispatch('copySelection');
                         break;
                     case 'paste':
-                        paste({preventDefault: ()=> {}});
+                        paste({preventDefault: () => {}});
                         break;
                     case 'task':
                         nodeDispatch('taskCheckReset');
