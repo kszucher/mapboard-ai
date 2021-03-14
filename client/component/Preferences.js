@@ -47,8 +47,6 @@ export function Preferences () {
                 <MaterialSelector input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
                 <MaterialSelector input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
 
-                <Palette/>
-
                 <div className={'buttons'}>
                     <MaterialButton input = {[undo, 'undo']}/>
                     <MaterialButton input = {[redo, 'redo']}/>
