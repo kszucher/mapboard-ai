@@ -1,6 +1,6 @@
 import '../component-css/Layout.css'
 import React, { useEffect,} from 'react'
-import Toolbar from "./Toolbar";
+import Toolbar from "./Logo";
 import Tabs from "./Tabs";
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
