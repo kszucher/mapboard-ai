@@ -53,23 +53,9 @@ const useStyles = makeStyles((theme) => ({
     indicator: {
         left: "0px",
         width: "8px",
-
-
-
-        // borderTopLeftRadius: "16px",
-        // borderBottomLeftRadius: "16px",
-        //
         borderTopRightRadius: "16px",
         borderBottomRightRadius: "16px",
-
-        //
-        //
-        // backgroundColor: "#5f0a87",
         backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
-
-        // backgroundColor: "#fbfafc"
-
-        // padding: "-10px"
     },
 }));
 
@@ -83,7 +69,7 @@ export default function VerticalTabs() {
     };
 
     return (
-        <div id = 'tabsContainer'>
+        // <div id = 'tabsContainer'>
             <div id = 'tabs'>
                 <div className={classes.root}>
                     <Tabs
@@ -100,12 +86,11 @@ export default function VerticalTabs() {
                         {mapNameList.map((name, index) => (
                             <Tab
                                 label={name}
-                                key={index}
-                            />
+                                key={index}/>
                         ))}>
                     </Tabs>
                 </div>
             </div>
-        </div>
+        // </div>
     );
 }
