@@ -21,7 +21,7 @@ export function ToolBar () {
     const formatColorReset =  _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'formatColorReset'});
 
     return (
-        <div id = 'toolbar-container'>
+        // <div id = 'toolbar-container'>
             <div id = 'toolbar'>
                 <div className={'buttons'}>
                     <StyledButton input = {[undo, 'undo', 0]}/>
@@ -45,6 +45,6 @@ export function ToolBar () {
                     <StyledButton input = {[formatColorReset, 'format_color_reset', 0]}/>
                 </div>
             </div>
-        </div>
+        // </div>
     );
 }
