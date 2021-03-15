@@ -14,3 +14,8 @@
     border-color: #dddddd;
     border-top: 0;
 }
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
