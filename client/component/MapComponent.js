@@ -7,7 +7,7 @@ import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
-import {mapFindOver} from "../map/MapFindOver";
+import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 
@@ -136,7 +136,7 @@ export function MapComponent() {
         let r = getMapData().r;
         r.selectionRect = [];
         let [fromX, fromY] = getCoords(e);
-        let lastOverPath = mapFindOver.start(r, fromX, fromY);
+        let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
         if (lastOverPath.length) {
             mapState.isNodeClicked = true;
             mapState.deepestSelectablePath = copy(lastOverPath);

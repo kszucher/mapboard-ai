@@ -3,12 +3,12 @@ import {copy} from "../core/Utils";
 let currX, currY = 0;
 let lastOverPath = [];
 
-export const mapFindOver = {
+export const mapFindOverPoint = {
     start: (r, x, y) => {
         currX = x;
         currY = y;
         lastOverPath = [];
-        mapFindOver.iterate(r);
+        mapFindOverPoint.iterate(r);
         return lastOverPath;
     },
 
@@ -22,8 +22,8 @@ export const mapFindOver = {
             }
         }
 
-        cm.d.map(i => mapFindOver.iterate(i));
-        cm.s.map(i => mapFindOver.iterate(i));
-        cm.c.map(i => i.map(j => mapFindOver.iterate(j)));
+        cm.d.map(i => mapFindOverPoint.iterate(i));
+        cm.s.map(i => mapFindOverPoint.iterate(i));
+        cm.c.map(i => i.map(j => mapFindOverPoint.iterate(j)));
     }
 };
