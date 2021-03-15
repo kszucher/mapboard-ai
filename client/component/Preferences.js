@@ -12,16 +12,14 @@ export function Preferences () {
     const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',   payload: e.target.value});
     const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE',  payload: e.target.value});
     // const setMouseMode =      e => dispatch({type: 'SET_MOUSE_MODE',  payload: e.target.value});
-    
+
     return (
-        <div id = 'preferencesContainer'>
-            <div id = 'preferences'>
-                {/*<StyledSelect input = {['Mouse Mode Out',   mouseMode,  setMouseMode,   ['select', 'drag']]}/>*/}
-                <StyledSelect input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
-                <StyledSelect input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
-                <StyledSelect input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
-                <StyledSelect input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
-            </div>
+        <div id = 'preferences'>
+            {/*<StyledSelect input = {['Mouse Mode Out',   mouseMode,  setMouseMode,   ['select', 'drag']]}/>*/}
+            <StyledSelect input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
+            <StyledSelect input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
+            <StyledSelect input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
+            <StyledSelect input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
         </div>
     );
 }
