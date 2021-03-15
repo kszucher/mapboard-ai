@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react";
-import {Context, remoteGetState} from "../core/Store";
+import {Context} from "../core/Store";
 import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
@@ -9,13 +9,14 @@ import {mapFindNearest} from "../map/MapFindNearest";
 import {mapDispatch} from "../core/MapReducer";
 import {mapFindOver} from "../map/MapFindOver";
 import {mapState} from "../core/MapState";
+import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 
 let pageX, pageY, scrollLeft, scrollTop, myX, myY;
 
 export function MapComponent() {
 
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, mouseMode, mapAction} = state;
+    const {density, alignment, fontSize, mapAction} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -269,19 +270,14 @@ export function MapComponent() {
 
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
-
                     let fromX = myX;
                     let fromY = myY;
-
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
-
-                    r.selectionRect = [
-                        startX,
-                        startY,
-                        Math.abs(toX - fromX),
-                        Math.abs(toY - fromY),
-                    ];
+                    let width = Math.abs(toX - fromX);
+                    let height = Math.abs(toY - fromY);
+                    r.selectionRect = [startX, startY, width, height ];
+                    mapFindOverRectangle.start(r, startX, startY, width, height);
                     redraw();
                 } else if (mouseMode === 'drag') {
                     let el = document.getElementById('mapHolderDiv');
