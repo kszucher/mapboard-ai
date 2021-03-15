@@ -1,5 +1,5 @@
 #logo {
-    position: fixed;
+    position: absolute;
     width: 200px;
     height: 48px;
     background-color: #a4508b;
@@ -7,7 +7,6 @@
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     color: #fff;
-
     display: flex;
     justify-content: center;
 }

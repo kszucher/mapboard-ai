@@ -1,12 +1,7 @@
-#breadcrumbsContainer {
-    position: fixed;
-    width: 100vw;
-    top: 48px;
-    display: flex;
-    justify-content: center;
-}
-
 #breadcrumbs {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
     display: flex;
     align-items: center;
     height: 48px;
@@ -15,7 +10,6 @@
     background-color: #fbfafc;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
-
     border-width: 1px;
     border-style: solid;
     border-color: #dddddd;

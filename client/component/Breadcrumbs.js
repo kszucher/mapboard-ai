@@ -26,21 +26,19 @@ export default function WorkspaceBreadcrumbs() {
     };
 
     return (
-        <div id = 'breadcrumbsContainer'>
-            <div id = 'breadcrumbs'>
-                <div className={classes.root}>
-                    <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                        {breadcrumbsHistory.map((currElement, index) => (
-                            <Link
-                                color="inherit"
-                                href="/"
-                                onClick={handleClick(index)}
-                                key={index}>
-                                {currElement.mapName}
-                            </Link>
-                        ))}>
-                    </Breadcrumbs>
-                </div>
+        <div id = 'breadcrumbs'>
+            <div className={classes.root}>
+                <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+                    {breadcrumbsHistory.map((currElement, index) => (
+                        <Link
+                            color="inherit"
+                            href="/"
+                            onClick={handleClick(index)}
+                            key={index}>
+                            {currElement.mapName}
+                        </Link>
+                    ))}>
+                </Breadcrumbs>
             </div>
         </div>
     );
