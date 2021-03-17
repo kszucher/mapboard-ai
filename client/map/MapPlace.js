@@ -4,28 +4,28 @@ export const mapPlace = {
     start: (r) => {
         let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
 
-        let leftMarginWidth = margin;
         let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfig.width: 0;
         let leftMapWidth =      r.d[1].s.length > 0 ? r.d[1].selfW + sLineDeltaXDefault + r.d[1].familyW : 0;
         let rightMapWidth =     r.d[0].s.length > 0 ? r.d[0].selfW + sLineDeltaXDefault + r.d[0].familyW : 0;
         let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfig.width : 0;
-        let rightMarginWidth = margin;
+
+        let leftWidth = leftMapWidth + leftTaskWidth + margin;
+        let rightWidth = rightMapWidth + rightTaskWidth + margin;
         
-        let leftWidth = leftMarginWidth + leftTaskWidth + leftMapWidth;
-        let rightWidth = rightMapWidth + rightTaskWidth + rightMarginWidth;
-
-        let minWidth = Math.max(...[leftWidth, rightWidth]);
-
-        let flow = r.d[1].s.length > 0 ? 'center' : 'right';
+        let flow = 'center';
+        if (r.d[0].s.length && !r.d[1].s.length) flow = 'right';
+        if (!r.d[0].s.length && r.d[1].s.length) flow = 'left';
 
         let sumWidth = 0;
         if (alignment === 'adaptive') {
             sumWidth = leftWidth + r.selfW + rightWidth;
         } else if (alignment === 'symmetrical') {
-            if (flow === 'right') {
-                sumWidth = leftMarginWidth + r.selfW + rightWidth;
-            } else if (flow === 'center') {
-                sumWidth = minWidth + r.selfW + minWidth;
+            if (flow === 'center') {
+                sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
+            } else if (flow === 'right') {
+                sumWidth = margin + r.selfW + rightWidth;
+            } else if (flow === 'left') {
+                sumWidth = leftWidth + r.selfW + margin;
             }
         }
 
@@ -33,15 +33,17 @@ export const mapPlace = {
         let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth;
 
         let mapStartCenterX = 0;
-        if (flow === 'right') {
-            mapStartCenterX = leftMarginWidth + r.selfW / 2;
-        } else if (flow === 'center') {
+        if (flow === 'center') {
             if (alignment === 'adaptive') {
                 let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0;
-                mapStartCenterX = leftMarginWidth + leftTaskWidth + leftSpace + leftMapWidth + r.selfW / 2;
+                mapStartCenterX = leftSpace + leftWidth + r.selfW / 2;
             } else if (alignment === 'symmetrical') {
                 mapStartCenterX = mapWidth / 2;
             }
+        } else if (flow === 'right') {
+            mapStartCenterX = margin + r.selfW / 2;
+        } else if (flow === 'left') {
+            mapStartCenterX = mapWidth - margin - r.selfW / 2;
         }
 
         let rightMapHeight =    r.d.length > 0? r.d[0].familyH > r.d[0].selfH ? r.d[0].familyH : r.d[0].selfH : 0;
