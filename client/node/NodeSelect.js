@@ -1,7 +1,7 @@
 import {mapref, mapasgn, pathMerge, getMapData} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "../core/Utils";
-import {selectionState} from "../core/SelectionState";
+import {selectionState, setSelectionState} from "../core/SelectionState";
 
 export function getSelectionContext () {
     let r = getMapData().r;
@@ -73,11 +73,13 @@ export function getSelectionContext () {
         if (cellColSelected) scope = 'cc';
     }
 
-    return {
+    setSelectionState({
         structSelectedPathList, cellSelectedPathList,
         maxSel, scope, lastPath, geomHighPath, geomLowPath,
         haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
-    };
+    })
+
+    return selectionState;
 }
 
 export function clearStructSelectionContext () {

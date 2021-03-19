@@ -10,7 +10,7 @@ import {mapDispatch} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {selectionState} from "../core/SelectionState";
+import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionState";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY;
 
@@ -181,6 +181,7 @@ export function MapComponent() {
             if (e.which === 2) mouseMode = 'drag';
 
             if (mouseMode === 'select') {
+                pushSelectionState();
             } else if (mouseMode === 'drag') {
                 let el = document.getElementById('mapHolderDiv');
                 scrollLeft = el.scrollLeft;
@@ -284,6 +285,7 @@ export function MapComponent() {
         if (e.which === 2) mouseMode = 'drag';
         if (mouseMode === 'select') {
             r.selectionRect = [];
+            checkPopSelectionState();
             redraw();
         } else if (mouseMode === 'drag') {
 
