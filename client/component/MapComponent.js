@@ -12,7 +12,7 @@ import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {selectionState} from "../core/SelectionState";
 
-let pageX, pageY, scrollLeft, scrollTop, myX, myY;
+let pageX, pageY, scrollLeft, scrollTop, fromX, fromY;
 
 export function MapComponent() {
 
@@ -135,7 +135,7 @@ export function MapComponent() {
         mapState.isNodeClicked = false;
         let r = getMapData().r;
         r.selectionRect = [];
-        let [fromX, fromY] = getCoords(e);
+        [fromX, fromY] = getCoords(e);
         let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
         if (lastOverPath.length) {
             mapState.isNodeClicked = true;
@@ -187,8 +187,6 @@ export function MapComponent() {
             if (e.which === 2) mouseMode = 'drag';
 
             if (mouseMode === 'select') {
-                myX = fromX;
-                myY = fromY;
             } else if (mouseMode === 'drag') {
                 let el = document.getElementById('mapHolderDiv');
                 scrollLeft = el.scrollLeft;
@@ -221,8 +219,8 @@ export function MapComponent() {
                     if (lastNearestPath.length > 1) {
                         mapState.moveTarget.path = copy(lastNearestPath);
                         let lastFound = mapref(lastNearestPath);
-                        let fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
-                        let fromY = lastFound.nodeY;
+                        fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
+                        fromY = lastFound.nodeY;
                         r.moveLine = [fromX, fromY, toX, toY];
                         r.moveRect = [toX, toY];
                         if (lastFound.s.length === 0) {
@@ -257,8 +255,6 @@ export function MapComponent() {
 
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
-                    let fromX = myX;
-                    let fromY = myY;
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
                     let width = Math.abs(toX - fromX);
