@@ -182,7 +182,6 @@ export function MapComponent() {
         }
 
         if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-            // let mouseMode = remoteGetState().mouseMode;
             let mouseMode;
             if (e.which === 1) mouseMode = 'select';
             if (e.which === 2) mouseMode = 'drag';
@@ -200,17 +199,6 @@ export function MapComponent() {
                 console.log('unknown mouseMode');
             }
         }
-    };
-
-    const dblclick = (e) => {
-        e.preventDefault();
-        if (mapState.isNodeClicked) {
-            nodeDispatch('startEdit');
-        } else {
-            mapState.shouldCenter = true;
-            recalc();
-        }
-        redraw();
     };
 
     const mousemove = (e) => {
@@ -263,7 +251,6 @@ export function MapComponent() {
             }
 
             if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-                // let mouseMode = remoteGetState().mouseMode;
                 let mouseMode;
                 if (e.which === 1) mouseMode = 'select';
                 if (e.which === 2) mouseMode = 'drag';
@@ -304,7 +291,6 @@ export function MapComponent() {
             checkPop();
         }
 
-        // let mouseMode = remoteGetState().mouseMode;
         let mouseMode;
         if (e.which === 1) mouseMode = 'select';
         if (e.which === 2) mouseMode = 'drag';
@@ -316,6 +302,17 @@ export function MapComponent() {
         } else {
             console.log('unknown mouseMode');
         }
+    };
+
+    const dblclick = (e) => {
+        e.preventDefault();
+        if (mapState.isNodeClicked) {
+            nodeDispatch('startEdit');
+        } else {
+            mapState.shouldCenter = true;
+            recalc();
+        }
+        redraw();
     };
 
     const keydown = (e) => {

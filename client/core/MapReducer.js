@@ -30,9 +30,6 @@ function mapReducer(action, payload) {
             let {n, d, gap} = mapState.taskConfig;
             mapState.taskConfig.width = n*d + (n-1)*gap;
             break;
-        case 'setMouseMode':
-            mapState.mouseMode = payload;
-            break;
         case 'undo':
             if (mapState.dataIndex > 0) {
                 mapState.dataIndex--;
