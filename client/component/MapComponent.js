@@ -15,7 +15,6 @@ import {selectionState} from "../core/SelectionState";
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY;
 
 export function MapComponent() {
-
     const [state, dispatch] = useContext(Context);
     const {density, alignment, fontSize, mapAction} = state;
 
@@ -124,14 +123,11 @@ export function MapComponent() {
 
     const mousedown = (e) => {
         e.preventDefault();
-
         if (isEditing === 1) {
             nodeDispatch('finishEdit');
             redraw();
         }
-
         mapState.isMouseDown = true;
-
         mapState.isNodeClicked = false;
         let r = getMapData().r;
         r.selectionRect = [];
@@ -161,7 +157,6 @@ export function MapComponent() {
             }
             dispatch({type: 'SET_NODE_PROPS', payload: lm});
         }
-
         mapState.isTaskClicked = false;
         if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc,item) => {return acc || item})) {
             for (const pathItem of e.path) {
@@ -180,7 +175,6 @@ export function MapComponent() {
                 }
             }
         }
-
         if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
             let mouseMode;
             if (e.which === 1) mouseMode = 'select';
@@ -213,8 +207,7 @@ export function MapComponent() {
                 if (!(lastSelected.nodeStartX < toX &&
                     toX < lastSelected.nodeEndX &&
                     lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
-                    toY < lastSelected.nodeY + lastSelected.selfH / 2)
-                ) {
+                    toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
                     let lastNearestPath = mapFindNearest.start(r, toX, toY);
                     if (lastNearestPath.length > 1) {
                         mapState.moveTarget.path = copy(lastNearestPath);
@@ -252,7 +245,6 @@ export function MapComponent() {
                 let mouseMode;
                 if (e.which === 1) mouseMode = 'select';
                 if (e.which === 2) mouseMode = 'drag';
-
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
                     let startX = fromX < toX ? fromX : toX;
