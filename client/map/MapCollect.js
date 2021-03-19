@@ -1,30 +1,25 @@
-import {copy} from "../core/Utils"
-import {mapState} from "../core/MapState";
+import {selectionState} from "../core/SelectionState";
 
 export const mapCollect = {
     start: (r) => {
-        let params = {
-            filter: {
-                structSelectedPathList: [],
-                cellSelectedPathList: [],
-            },
-        };
-        mapCollect.iterate(r, params);
-        mapState.filter = copy(params.filter);
+        selectionState.structSelectedPathList = [];
+        selectionState.cellSelectedPathList = [];
+
+        mapCollect.iterate(r);
     },
 
-    iterate: (cm, params) => {
+    iterate: (cm) => {
         if (cm.selected) {
             if (Number.isInteger(cm.path[cm.path.length - 2])) {
-                params.filter.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
+                selectionState.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
             } else {
-                params.filter.structSelectedPathList.push(cm.path.slice(0));
+                selectionState.structSelectedPathList.push(cm.path.slice(0));
 
             }
         }
 
-        cm.d.map(i => mapCollect.iterate(i, params));
-        cm.s.map(i => mapCollect.iterate(i, params));
-        cm.c.map(i => i.map(j => mapCollect.iterate(j, params)));
+        cm.d.map(i => mapCollect.iterate(i));
+        cm.s.map(i => mapCollect.iterate(i));
+        cm.c.map(i => i.map(j => mapCollect.iterate(j)));
     }
 };

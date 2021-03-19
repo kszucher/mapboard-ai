@@ -20,7 +20,7 @@ export function nodeDispatch(action, payload) {
 
 function nodeReducer(action, payload) {
     let sc = getSelectionContext();
-    let {lm} = sc;
+    let lm = mapref(sc.lastPath);
     switch (action) {
         // SELECT ------------------------------------------------------------------------------------------------------
         case 'selectStruct': {
@@ -83,7 +83,7 @@ function nodeReducer(action, payload) {
         case 'selectFirstMixed': {
             clearStructSelectionContext();
             clearCellSelectionContext();
-            let toPath = mapref(sc.geomHighRef.parentPath).path;
+            let toPath = mapref(mapref(sc.geomHighPath).parentPath).path;
             mapref(toPath).selected = 1;
             mapref(toPath).s[0].selected = 1;
             break;
@@ -210,6 +210,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'moveCellBlock': {
+            console.log(sc)
             nodeMove(sc, 'cellBlock2CellBlock', payload.keyCode);
             break;
         }

@@ -10,7 +10,8 @@ export function setClipboard(clipboardIn) {
 }
 
 export function nodeMoveMouse (sc) {
-    let {structSelectedPathList, sameParent} = sc;
+    let {structSelectedPathList, sameParentPath} = sc;
+    let sameParent = mapref(sameParentPath);
     let moveSource = mapref(structSelectedPathList[0]);
     let moveTarget = mapref(mapState.moveTarget.path);
     mapState.moveTarget.path = [];
@@ -21,8 +22,10 @@ export function nodeMoveMouse (sc) {
 }
 
 export function nodeMove(sc, target, key, mode) {
-    let {geomHighRef, geomLowRef, structSelectedPathList, lm, haveSameParent, sameParent,
+    let {structSelectedPathList, lastPath, haveSameParent, sameParentPath,
         cellRowSelected, cellRow, cellColSelected, cellCol} = sc;
+    let sameParent = mapref(sameParentPath);
+    let lm = mapref(lastPath);
 
     let direction = '';
     if (
@@ -64,6 +67,7 @@ export function nodeMove(sc, target, key, mode) {
                     sameParentParent.s.splice(sameParent.index + 1, 0, copy(currRef));
                 }
             } else if (direction === 'out') {
+                let geomHighRef = mapref(sc.geomHighPath);
                 if (geomHighRef.index > 0) {
                     let upperSibling = sameParent.s[geomHighRef.index - 1];
                     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
@@ -73,6 +77,7 @@ export function nodeMove(sc, target, key, mode) {
                     }
                 }
             } else if (direction === 'up') {
+                let geomHighRef = mapref(sc.geomHighPath);
                 if (geomHighRef.index > 0) {
                     for (let i = 0; i < structSelectedPathList.length; i++) {
                         let currRef = mapref(structSelectedPathList[i]);
@@ -87,6 +92,7 @@ export function nodeMove(sc, target, key, mode) {
                     }
                 }
             } else if (direction === 'down') {
+                let geomLowRef = mapref(sc.geomLowPath);
                 if (geomLowRef.index !== sameParent.s.length - 1) {
                     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                         let currRef = mapref(structSelectedPathList[i]);
@@ -103,6 +109,7 @@ export function nodeMove(sc, target, key, mode) {
             }
         }
     } else if (target === 'struct2cell') {
+        let geomLowRef = mapref(sc.geomLowPath);
         if (haveSameParent && !lm.isRoot) {
             sameParent.s.splice(geomLowRef.index + 1, 0, getDefaultNode());
             let newCellRef = sameParent.s[geomLowRef.index + 1];

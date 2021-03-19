@@ -2,7 +2,7 @@ import {mapref} from "../map/Map";
 import {arrayValuesSameSimple} from "../core/Utils";
 
 export function structDeleteReselect(sc) {
-    let lm = sc.lm;
+    let lm = mapref(sc.lastPath);
 
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         let cm = mapref(sc.structSelectedPathList[i]);
@@ -64,9 +64,11 @@ export function structDeleteReselect(sc) {
 }
 
 export function cellBlockDeleteReselect(sc) {
-    const {cellRowSelected, cellRow, cellColSelected, cellCol, sameParent} = sc;
-    if (cellRowSelected && mapref(sc.lm.parentPath).c.length === 1 ||
-        cellColSelected && mapref(sc.lm.parentPath).c[0].length === 1) {
+    const {lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath} = sc;
+    let sameParent = mapref(sameParentPath);
+    let lm = mapref(lastPath);
+    if (cellRowSelected && mapref(lm.parentPath).c.length === 1 ||
+        cellColSelected && mapref(lm.parentPath).c[0].length === 1) {
         let sameParentParent = mapref(sameParent.parentPath);
         sameParentParent.s.splice(sameParent.index, 1);
         sameParentParent.selected = 1;

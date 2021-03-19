@@ -1,29 +1,16 @@
 import {mapref, mapasgn, pathMerge, getMapData} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "../core/Utils";
-import {mapState} from "../core/MapState";
+import {selectionState} from "../core/SelectionState";
 
 export function getSelectionContext () {
     let r = getMapData().r;
     mapCollect.start(r);
 
-    let maxSel = 0;
-    let maxSelIndex = undefined;
-    let scope = '';
-
-    let lastPath = [];
-    let lm;
-    let geomHighPath = [];
-    let geomLowPath = [];
-    
-    let cellRowSelected = 0;
-    let cellRow = 0;
-    let cellColSelected = 0;
-    let cellCol = 0;
-    let haveSameParent = 0;
-    let sameParent;
-
-    let {structSelectedPathList, cellSelectedPathList} = mapState.filter;
+    let {structSelectedPathList, cellSelectedPathList,
+        maxSel, scope, lastPath, geomHighPath, geomLowPath,
+        haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol} = selectionState;
+    let maxSelIndex = 0;
 
     // INDICATORS
     if (structSelectedPathList.length && cellSelectedPathList.length) {
@@ -54,22 +41,16 @@ export function getSelectionContext () {
         console.log('no selection');
         return;
     }
-    lm  = mapref(lastPath);
 
     // INTERRELATIONS
     if (structSelectedPathList.length && !cellSelectedPathList.length) {
-        let [haveSameParentPath, sameParentPath] = arrayValuesSame(structSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
-        if (haveSameParentPath) {
-            haveSameParent = 1;
-            sameParent = mapref(JSON.parse(sameParentPath));
-        }
+        [haveSameParent, sameParentPath] = arrayValuesSame(structSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
     } else if (!structSelectedPathList.length && cellSelectedPathList.length) {
-        let [haveSameParentPath, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
-        if (haveSameParentPath) {
+        [haveSameParent, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
+        if (haveSameParent) {
             let [haveSameRow, sameRow] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 2]));
             let [haveSameCol, sameCol] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 1]));
-            haveSameParent = 1;
-            sameParent = mapref(JSON.parse(sameParentPath));
+            let sameParent = mapref(sameParentPath);
             if (haveSameRow && cellSelectedPathList.length === sameParent.c[0].length) {
                 cellRowSelected = 1;
                 cellRow = sameRow;
@@ -93,39 +74,24 @@ export function getSelectionContext () {
     }
 
     return {
-        maxSel,
-        scope,
-        lastPath,
-        lm,
-        geomHighPath,
-        geomHighRef: mapref(geomHighPath),
-        geomLowPath,
-        geomLowRef: mapref(geomLowPath),
-        structSelectedPathList,
-        cellSelectedPathList,
-        haveSameParent,
-        sameParent,
-        cellRowSelected,
-        cellRow,
-        cellColSelected,
-        cellCol,
-    }
+        structSelectedPathList, cellSelectedPathList,
+        maxSel, scope, lastPath, geomHighPath, geomLowPath,
+        haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
+    };
 }
 
 export function clearStructSelectionContext () {
     let r = getMapData().r;
     mapCollect.start(r);
-    let filter = mapState.filter;
-    for (let i = 0; i < filter.structSelectedPathList.length; i++) {
-        mapasgn(pathMerge(filter.structSelectedPathList[i], ['selected']), 0);
+    for (let i = 0; i < selectionState.structSelectedPathList.length; i++) {
+        mapasgn(pathMerge(selectionState.structSelectedPathList[i], ['selected']), 0);
     }
 }
 
 export function clearCellSelectionContext () {
     let r = getMapData().r;
     mapCollect.start(r);
-    let filter = mapState.filter;
-    for (let i = 0; i < filter.cellSelectedPathList.length; i++) {
-        mapasgn(pathMerge(filter.cellSelectedPathList[i], ['selected']), 0);
+    for (let i = 0; i < selectionState.cellSelectedPathList.length; i++) {
+        mapasgn(pathMerge(selectionState.cellSelectedPathList[i], ['selected']), 0);
     }
 }

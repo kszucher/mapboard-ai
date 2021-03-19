@@ -10,6 +10,7 @@ import {mapDispatch} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
+import {selectionState} from "../core/SelectionState";
 
 let pageX, pageY, scrollLeft, scrollTop, myX, myY;
 
@@ -71,7 +72,6 @@ export function MapComponent() {
                         nodeDispatch('formatColorReset');
                         break;
                     case 'print':
-                        /*  mapPrint.start(payload.lm); */
                         break;
                 }
                 redraw();
@@ -149,7 +149,7 @@ export function MapComponent() {
             redraw();
             checkPop();
             let sc = getSelectionContext();
-            let {lm} = sc;
+            let lm = mapref(sc.lastPath);
             if (!e.shiftKey) {
                 if (lm.linkType === 'internal') {
                     dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
@@ -222,7 +222,7 @@ export function MapComponent() {
                 let r = getMapData().r;
                 r.moveLine = [];
                 r.moveRect = [];
-                let lastSelectedPath = mapState.filter.structSelectedPathList[0];
+                let lastSelectedPath = selectionState.structSelectedPathList[0];
                 let lastSelected = mapref(lastSelectedPath);
                 if (!(lastSelected.nodeStartX < toX &&
                     toX < lastSelected.nodeEndX &&
@@ -401,7 +401,7 @@ export function MapComponent() {
                     } else if (['undo', 'redo'].includes(currExecution)) {
                         mapDispatch(currExecution);
                     } else if (currExecution === 'CREATE_MAP_IN_MAP') {
-                        dispatch({type: currExecution, payload: sc.lm.content});
+                        dispatch({type: currExecution, payload: mapref(sc.lastPath).content});
                     } else if (currExecution === 'SAVE_MAP') {
                         dispatch({type: currExecution});
                     } else {

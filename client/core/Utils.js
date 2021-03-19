@@ -9,7 +9,7 @@ export function arrayValuesSame(array) {
             return [false, null];
         }
     }
-    return [true, array[0]];
+    return [true, JSON.parse(array[0])];
 }
 
 export function arrayValuesSameSimple(array) {

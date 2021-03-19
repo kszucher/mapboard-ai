@@ -17,7 +17,6 @@ export let mapState = {
     mapWidth: 0,
     mapHeight: 0,
 
-    filter: [],
     deepestSelectablePath: [],
 
     isNodeClicked: false,
