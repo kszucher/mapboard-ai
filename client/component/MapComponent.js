@@ -120,6 +120,9 @@ export function MapComponent() {
 
     const mousedown = (e) => {
         e.preventDefault();
+        if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc,item) => {return acc || item})) {
+            return;
+        }
         if (isEditing === 1) {
             nodeDispatch('finishEdit');
             redraw();
