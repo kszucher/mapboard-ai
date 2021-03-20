@@ -3,11 +3,11 @@ import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete"
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, nodeMove, nodeMoveMouse} from "../node/NodeMove";
 import {nodeNavigate} from "../node/NodeNavigate";
-import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "../node/NodeSelect"
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
 import {mapState} from "./MapState";
+import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "./SelectionState";
 
 let mutationObserver;
 export let isEditing = 0;

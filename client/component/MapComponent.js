@@ -1,6 +1,5 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
-import {getSelectionContext} from "../node/NodeSelect";
 import {isEditing, nodeDispatch} from "../core/NodeReducer";
 import {checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
@@ -10,7 +9,7 @@ import {mapDispatch} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionState";
+import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionState} from "../core/SelectionState";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY;
 
