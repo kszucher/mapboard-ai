@@ -163,11 +163,13 @@ export const mapSvgVisualize = {
             let x2 = startX;
             let y2 = cm.nodeY;
 
-            svgElementData.taskLine = {
-                type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
-                color: '#eeeeee',
-            };
+            if (!cm.isEditing) {
+                svgElementData.taskLine = {
+                    type: 'path',
+                    path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
+                    color: '#eeeeee',
+                };
+            }
 
             for (let i = 0; i < n; i++) {
                 let centerX = cm.path[2] === 0 ? startX + d/2 + i * (d + gap) : startX - d/2 - i * (d + gap);
