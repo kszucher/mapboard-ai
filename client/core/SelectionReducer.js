@@ -2,7 +2,7 @@ import {getMapData, mapasgn, mapref, pathMerge} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "./Utils";
 
-export let selectionState = {
+export let selectionReducer = {
     structSelectedPathList: [],
     cellSelectedPathList: [],
     maxSel: 0,
@@ -20,17 +20,17 @@ export let selectionState = {
 
 let selectionStateCopy = '';
 export const pushSelectionState = () => {
-    selectionStateCopy = JSON.stringify(selectionState);
+    selectionStateCopy = JSON.stringify(selectionReducer);
 }
 
 export const checkPopSelectionState = () => {
     getSelectionContext();
-    if (!selectionState.structSelectedPathList.length && !selectionState.cellSelectedPathList.length) {
-        selectionState = JSON.parse(selectionStateCopy);
-        for (const currPath of selectionState.structSelectedPathList) {
+    if (!selectionReducer.structSelectedPathList.length && !selectionReducer.cellSelectedPathList.length) {
+        selectionReducer = JSON.parse(selectionStateCopy);
+        for (const currPath of selectionReducer.structSelectedPathList) {
             mapref(currPath).selected = 1;
         }
-        for (const currPath of selectionState.cellSelectedPathList) {
+        for (const currPath of selectionReducer.cellSelectedPathList) {
             mapref(currPath).selected = 1;
         }
     }
@@ -44,7 +44,7 @@ export function getSelectionContext() {
         structSelectedPathList, cellSelectedPathList,
         maxSel, scope, lastPath, geomHighPath, geomLowPath,
         haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
-    } = selectionState;
+    } = selectionReducer;
     let maxSelIndex = 0;
 
     // INDICATORS
@@ -108,27 +108,27 @@ export function getSelectionContext() {
         if (cellColSelected) scope = 'cc';
     }
 
-    selectionState = {...selectionState, ...{
+    selectionReducer = {...selectionReducer, ...{
             structSelectedPathList, cellSelectedPathList,
             maxSel, scope, lastPath, geomHighPath, geomLowPath,
             haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
         }}
 
-    return selectionState;
+    return selectionReducer;
 }
 
 export function clearStructSelectionContext() {
     let r = getMapData().r;
     mapCollect.start(r);
-    for (let i = 0; i < selectionState.structSelectedPathList.length; i++) {
-        mapasgn(pathMerge(selectionState.structSelectedPathList[i], ['selected']), 0);
+    for (let i = 0; i < selectionReducer.structSelectedPathList.length; i++) {
+        mapasgn(pathMerge(selectionReducer.structSelectedPathList[i], ['selected']), 0);
     }
 }
 
 export function clearCellSelectionContext() {
     let r = getMapData().r;
     mapCollect.start(r);
-    for (let i = 0; i < selectionState.cellSelectedPathList.length; i++) {
-        mapasgn(pathMerge(selectionState.cellSelectedPathList[i], ['selected']), 0);
+    for (let i = 0; i < selectionReducer.cellSelectedPathList.length; i++) {
+        mapasgn(pathMerge(selectionReducer.cellSelectedPathList[i], ['selected']), 0);
     }
 }

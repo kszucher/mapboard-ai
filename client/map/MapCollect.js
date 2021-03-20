@@ -1,9 +1,9 @@
-import {selectionState} from "../core/SelectionState";
+import {selectionReducer} from "../core/SelectionReducer";
 
 export const mapCollect = {
     start: (r) => {
-        selectionState.structSelectedPathList = [];
-        selectionState.cellSelectedPathList = [];
+        selectionReducer.structSelectedPathList = [];
+        selectionReducer.cellSelectedPathList = [];
 
         mapCollect.iterate(r);
     },
@@ -11,9 +11,9 @@ export const mapCollect = {
     iterate: (cm) => {
         if (cm.selected) {
             if (Number.isInteger(cm.path[cm.path.length - 2])) {
-                selectionState.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
+                selectionReducer.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
             } else {
-                selectionState.structSelectedPathList.push(cm.path.slice(0));
+                selectionReducer.structSelectedPathList.push(cm.path.slice(0));
 
             }
         }

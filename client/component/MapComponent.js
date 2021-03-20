@@ -9,7 +9,7 @@ import {mapDispatch} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionState} from "../core/SelectionState";
+import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionReducer} from "../core/SelectionReducer";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY;
 
@@ -202,7 +202,7 @@ export function MapComponent() {
                 let r = getMapData().r;
                 r.moveLine = [];
                 r.moveRect = [];
-                let lastSelectedPath = selectionState.structSelectedPathList[0];
+                let lastSelectedPath = selectionReducer.structSelectedPathList[0];
                 let lastSelected = mapref(lastSelectedPath);
                 if (!(lastSelected.nodeStartX < toX &&
                     toX < lastSelected.nodeEndX &&
