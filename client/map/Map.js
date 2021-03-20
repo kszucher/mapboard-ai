@@ -11,7 +11,7 @@ import {mapTaskColor} from './MapTaskColor'
 import {mapSvgVisualize} from "./MapSvgVisualize";
 import {mapRestore} from "./MapRestore";
 import {mapTaskCheck} from "./MapTaskCheck";
-import {mapState} from "../core/MapState";
+import {mapState} from "../core/MapReducer";
 
 export let mapDivData = [];
 export let mapSvgData = [];

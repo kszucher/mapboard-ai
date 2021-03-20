@@ -1,5 +1,5 @@
 import {createArray, getEquationDim, getTextDim} from "../core/Utils";
-import {mapState} from "../core/MapState";
+import {mapState} from "../core/MapReducer";
 
 export const mapMeasure = {
     start: (r) => {

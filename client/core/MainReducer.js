@@ -1,5 +1,5 @@
 import {getDefaultMap, saveMap} from "../map/Map";
-import {mapState} from "./MapState";
+import {mapState} from "./MapReducer";
 
 export const MainState = {
     isLoggedIn: false,

@@ -5,9 +5,8 @@ import {checkPop, push, redraw, mapref, getMapData, recalc} from "../map/Map";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapFindNearest} from "../map/MapFindNearest";
-import {mapDispatch} from "../core/MapReducer";
+import {mapDispatch, mapState} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
-import {mapState} from "../core/MapState";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionReducer} from "../core/SelectionReducer";
 

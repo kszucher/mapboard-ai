@@ -6,8 +6,8 @@ import {nodeNavigate} from "../node/NodeNavigate";
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
-import {mapState} from "./MapState";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "./SelectionReducer";
+import {mapState} from "./MapReducer";
 
 let mutationObserver;
 export let isEditing = 0;

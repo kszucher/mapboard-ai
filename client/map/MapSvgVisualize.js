@@ -1,6 +1,6 @@
 import {keepHash, mapSvgData} from "./Map";
 import {genHash, copy, isOdd} from "../core/Utils";
-import {mapState} from "../core/MapState";
+import {mapState} from "../core/MapReducer";
 
 let svgElementNameList = [
     'connectionLine',

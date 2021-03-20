@@ -1,6 +1,47 @@
 import {recalc} from "../map/Map";
-import {loadInitMapState, mapState} from "./MapState";
 import {mapAssembly} from "../map/MapAssembly";
+
+export let mapState = {
+    isLoading: true,
+
+    dataIndex: 0,
+    data: [],
+
+    density: '', // inherit
+    sLineDeltaXDefault: 0,
+    padding: 0,
+    defaultH: 0,
+
+    alignment: '', // inherit
+
+    taskLeft: 0,
+    taskRight: 0,
+
+    mapWidth: 0,
+    mapHeight: 0,
+
+    deepestSelectablePath: [],
+
+    isNodeClicked: false,
+    isTaskClicked: false,
+    isMouseDown: false,
+    shouldCenter: false,
+
+    moveTarget: {
+        path: [],
+        index: 0,
+    },
+
+    margin: 32,
+    taskConfig: {
+        n: 4,
+        d: 24,
+        gap: 4,
+        width: 0,
+    },
+};
+
+const initMapState = JSON.stringify(mapState);
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
@@ -13,7 +54,7 @@ export function mapDispatch(action, payload) {
 function mapReducer(action, payload) {
     switch (action) {
         case 'setData':
-            loadInitMapState();
+            mapState = JSON.parse(initMapState);
             mapState.data = [mapAssembly(payload)];
             break;
         case 'setDensity':
