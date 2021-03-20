@@ -1,6 +1,6 @@
-import {keepHash, mapDivData} from "./Map";
 import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
 import {mapState} from "../core/MapReducer";
+import {mapDivData, keepHash} from "../core/DomReducer";
 
 const scrollTo = function(to, duration) {
     const

@@ -1,4 +1,4 @@
-import {copy, genHash, subsasgn, subsref} from "../core/Utils"
+import {copy, subsasgn, subsref} from "../core/Utils"
 import {mapChain} from './MapChain'
 import {mapDisassembly} from "./MapDisassembly";
 import {mapDivVisualize} from './MapDivVisualize'
@@ -12,15 +12,7 @@ import {mapSvgVisualize} from "./MapSvgVisualize";
 import {mapRestore} from "./MapRestore";
 import {mapTaskCheck} from "./MapTaskCheck";
 import {mapState} from "../core/MapReducer";
-
-export let mapDivData = [];
-export let mapSvgData = [];
-export let keepHash = '';
-
-export function initDomData() {
-    mapDivData = [];
-    mapSvgData = [];
-}
+import {initDomHash, updateDomData} from "../core/DomReducer";
 
 export const getMapData = () => {
     return mapState.data[mapState.dataIndex];
@@ -39,27 +31,11 @@ export function recalc() {
 }
 
 export function redraw() {
-    keepHash = genHash(8);
-
+    initDomHash();
     let r = getMapData().r;
     mapDivVisualize.start(r);
     mapSvgVisualize.start(r);
-
-    for (const divId in mapDivData) {
-        if (mapDivData[divId].keepHash !== keepHash) {
-            let currDiv = document.getElementById(divId);
-            currDiv.parentNode.removeChild(currDiv);
-            delete mapDivData[divId];
-        }
-    }
-
-    for (const svgId in mapSvgData) {
-        if (mapSvgData[svgId].keepHash !== keepHash) {
-            let currSvg = document.getElementById(svgId);
-            currSvg.parentNode.removeChild(currSvg);
-            delete mapSvgData[svgId];
-        }
-    }
+    updateDomData();
 }
 
 export function push() {
