@@ -36,10 +36,6 @@ export const checkPopSelectionState = () => {
     }
 }
 
-export const setSelectionState = (payload) => {
-    selectionState = {...selectionState, ...payload}
-}
-
 export function getSelectionContext() {
     let r = getMapData().r;
     mapCollect.start(r);
@@ -112,11 +108,11 @@ export function getSelectionContext() {
         if (cellColSelected) scope = 'cc';
     }
 
-    setSelectionState({
-        structSelectedPathList, cellSelectedPathList,
-        maxSel, scope, lastPath, geomHighPath, geomLowPath,
-        haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
-    })
+    selectionState = {...selectionState, ...{
+            structSelectedPathList, cellSelectedPathList,
+            maxSel, scope, lastPath, geomHighPath, geomLowPath,
+            haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
+        }}
 
     return selectionState;
 }
