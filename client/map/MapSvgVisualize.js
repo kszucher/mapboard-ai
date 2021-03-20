@@ -158,7 +158,7 @@ export const mapSvgVisualize = {
 
             let startX = cm.path[2] === 0 ? mapWidth - width - margin : margin + width;
 
-            let x1 = cm.nodeEndX;
+            let x1 = cm.path[2] === 0 ? cm.nodeEndX : cm.nodeStartX;
             let y1 = cm.nodeY;
             let x2 = startX;
             let y2 = cm.nodeY;
