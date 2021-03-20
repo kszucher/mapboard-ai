@@ -1,4 +1,3 @@
-import {mapref, pathMerge, recalc, redraw} from "../map/Map";
 import {structDeleteReselect, cellBlockDeleteReselect} from "../node/NodeDelete";
 import {structInsert, cellInsert} from "../node/NodeInsert";
 import {setClipboard, nodeMove, nodeMoveMouse} from "../node/NodeMove";
@@ -7,7 +6,7 @@ import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
 import {clearCellSelectionContext, clearStructSelectionContext, getSelectionContext} from "./SelectionReducer";
-import {mapState} from "./MapReducer";
+import {mapref, mapState, pathMerge, recalc, redraw} from "./MapReducer";
 import {mapSvgData} from "./DomReducer";
 
 let mutationObserver;
@@ -438,6 +437,5 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        // FIND --------------------------------------------------------------------------------------------------------
     }
 }

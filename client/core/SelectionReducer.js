@@ -1,6 +1,6 @@
-import {getMapData, mapasgn, mapref, pathMerge} from "../map/Map";
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "./Utils";
+import {getMapData, mapasgn, mapref, pathMerge} from "./MapReducer";
 
 export let selectionReducer = {
     structSelectedPathList: [],

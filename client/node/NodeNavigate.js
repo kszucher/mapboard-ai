@@ -1,4 +1,4 @@
-import {mapref} from "../map/Map";
+import {mapref} from "../core/MapReducer";
 
 export function nodeNavigate (lastPath, target, key) {
     let truePath = lastPath;

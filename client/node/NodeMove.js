@@ -1,7 +1,6 @@
-import {mapref} from "../map/Map";
 import {getDefaultNode} from "./Node";
 import {copy, transpose} from "../core/Utils";
-import {mapState} from "../core/MapReducer";
+import {mapref, mapState} from "../core/MapReducer";
 
 let clipboard = [];
 
