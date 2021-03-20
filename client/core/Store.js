@@ -1,6 +1,5 @@
 import React, {createContext, useEffect, useReducer, useRef, useCallback} from 'react'
-import MainReducer from "./MainReducer";
-import {MainState} from "./MainState";
+import MainReducer, {MainState} from "./MainReducer";
 
 export let remoteDispatch;
 export let remoteGetState;
