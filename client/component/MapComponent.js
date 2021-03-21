@@ -7,7 +7,7 @@ import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionState} from "../core/SelectionReducer";
+import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionReducer";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
@@ -149,7 +149,7 @@ export function MapComponent() {
                 }
                 redraw();
                 checkPop();
-                let sc = getSelectionContext();
+                let sc = selectionState;
                 let lm = mapref(sc.lastPath);
                 if (!e.shiftKey) {
                     if (lm.linkType === 'internal') {
@@ -310,7 +310,7 @@ export function MapComponent() {
     };
 
     const keydown = (e) => {
-        let sc = getSelectionContext();
+        let sc = selectionState;
         let {key, code, which} = e;
         // [37,38,39,40] = [left,up,right,down]
         let keyStateMachineDb = [

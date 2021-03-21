@@ -5,7 +5,7 @@ import {nodeNavigate} from "../node/NodeNavigate";
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
-import {getSelectionContext} from "./SelectionReducer";
+import {selectionState} from "./SelectionReducer";
 import {getMapData, mapref, mapState, pathMerge, recalc, redraw} from "./MapReducer";
 import {mapSvgData} from "./DomReducer";
 
@@ -19,7 +19,7 @@ export function nodeDispatch(action, payload) {
 }
 
 function nodeReducer(action, payload) {
-    let sc = getSelectionContext();
+    let sc = selectionState;
     let lm = mapref(sc.lastPath);
     switch (action) {
         // SELECT ------------------------------------------------------------------------------------------------------
