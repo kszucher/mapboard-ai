@@ -99,9 +99,8 @@ export function MapComponent() {
         };
     }, []);
 
-    const resize = (e) => {
-        mapState.isLoading = true;
-        recalc();
+    const resize = () => {
+        mapDispatch('setIsLoading');
         redraw();
     };
 
