@@ -80,6 +80,7 @@ export const mapSvgVisualize = {
                 path: "M" + x1 + ',' + y1 + ' ' +
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
                 color: cm.lineColor,
+                strokeWidth: cm.lineWidth,
             }
         }
 
@@ -95,6 +96,7 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: getArc(x1, y1, v, h, r, cm.path[2]),
                 color: cm.selected? '#000000' : cm.cBorderColor,
+                strokeWidth: 1,
             };
         }
 
@@ -123,6 +125,7 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: path,
                 color: '#dddddd',
+                strokeWidth: 1,
             };
         }
 
@@ -138,6 +141,7 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: getArc(x1, y1, v, h, r, cm.path[2]),
                 color: '#000000',
+                strokeWidth: 1,
             };
         }
 
@@ -168,6 +172,7 @@ export const mapSvgVisualize = {
                     type: 'path',
                     path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
                     color: '#eeeeee',
+                    strokeWidth: 1,
                 };
             }
 
@@ -220,6 +225,7 @@ export const mapSvgVisualize = {
                     "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
                 color: '#5f0a87',
                 preventTransition: 1,
+                strokeWidth: 1,
             }
         }
 
@@ -295,6 +301,7 @@ export const mapSvgVisualize = {
                         case 'path':
                             svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
+                            svgElement.setAttribute("stroke-width",     svgElementData[svgElementName].strokeWidth);
                             svgElement.setAttribute("fill",             "none");
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             svgElement.style.transition =               svgElementData[svgElementName].preventTransition ? '' : '0.5s ease-out';
@@ -339,6 +346,7 @@ export const mapSvgVisualize = {
                         case 'path':
                             svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
+                            svgElement.setAttribute("stroke-width",     svgElementData[svgElementName].strokeWidth);
                             break;
                         case 'circle':
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
