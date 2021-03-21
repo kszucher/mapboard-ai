@@ -40,6 +40,8 @@ export const checkPopSelectionState = () => {
 }
 
 export function getSelectionContext() {
+    selectionState = JSON.parse(initSelectionState);
+
     let r = getMapData().r;
     mapCollect.start(r);
 
