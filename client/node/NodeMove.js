@@ -27,24 +27,12 @@ export function nodeMove(sc, target, key, mode) {
     let lm = mapref(lastPath);
 
     let direction = '';
-    if (
-        key === 'ArrowLeft' && lm.path[2] === 0 && sameParent.isRootChild ||
-        key === 'ArrowRight' && lm.path[2] === 1 && sameParent.isRootChild) {
-        direction = 'through'
-    } else if (
-        key === 'ArrowLeft' && lm.path[2] === 0 ||
-        key === 'ArrowRight' && lm.path[2] === 1) {
-        direction = 'in';
-    } else if (
-        key === 'ArrowLeft' && lm.path[2] === 1 ||
-        key === 'ArrowRight' && lm.path[2] === 0) {
-        direction = 'out';
-    } else if (
-        key === 'ArrowUp') {
-        direction = 'up';
-    } else if (
-        key === 'ArrowDown') {
-        direction = 'down';
+    if (key === 'ArrowLeft' && lm.path[2] === 0 && sameParent.isRootChild ||
+        key === 'ArrowRight' && lm.path[2] === 1 && sameParent.isRootChild) {                            direction = 'through'
+    } else if ( key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {   direction = 'in';
+    } else if ( key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {   direction = 'out';
+    } else if ( key === 'ArrowUp') {                                                                     direction = 'up';
+    } else if ( key === 'ArrowDown') {                                                                   direction = 'down';
     }
 
     if (target === 'struct2struct') {

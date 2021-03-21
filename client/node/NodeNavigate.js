@@ -1,9 +1,11 @@
 import {mapref} from "../core/MapReducer";
 
 export function nodeNavigate (lastPath, target, key) {
-    let truePath = lastPath;
     let direction = '';
     let currPath = [];
+
+
+    let truePath = lastPath;
     if (key === 'ArrowRight') {
         if (lastPath.length === 1) {
             truePath = ['r', 'd', 0];
@@ -29,6 +31,8 @@ export function nodeNavigate (lastPath, target, key) {
     } else if (key === 'ArrowDown') {
         direction = 'down';
     }
+
+
 
     if (target === 'struct2struct') {
         let inDepth = - 1;
