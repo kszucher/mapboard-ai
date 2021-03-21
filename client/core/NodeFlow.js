@@ -36,6 +36,10 @@ function nodeReducer(action, payload) {
             mapref(mapState.deepestSelectablePath).selected = sc.maxSel + 1;
             break;
         }
+        case 'selectAll': {
+            mapChangeProp.start(getMapData().r, {selected: 1}, 's');
+            break;
+        }
         case 'selectDescendantsOut': {
             if (lm.path.length === 1) {
                 if (payload.keyCode === 'ArrowRight') {mapChangeProp.start(lm.d[0], {selected: 1}, 's')}

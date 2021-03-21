@@ -340,7 +340,7 @@ export function MapComponent() {
             [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['selectBackwardStruct'],                ],
             [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['selectBackwardBackwardStruct'],        ],
             [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['selectRoot'],                          ],
-            [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, [],                                      ],
+            [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['selectAll'],                           ],
             [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                    ],
             [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection'],                       ],
             [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection'],                        ],
