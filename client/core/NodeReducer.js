@@ -34,12 +34,12 @@ function nodeReducer(action, payload) {
         }
         case 'selectDescendantsOut': {
             if (lm.path.length === 1) {
-                if (payload.keyCode === 'ArrowRight') {mapChangeProp.start(lm.d[0], 'selected', 1, 's')}
-                if (payload.keyCode === 'ArrowLeft') {mapChangeProp.start(lm.d[1], 'selected', 1, 's')}
+                if (payload.keyCode === 'ArrowRight') {mapChangeProp.start(lm.d[0], {selected: 1}, 's')}
+                if (payload.keyCode === 'ArrowLeft') {mapChangeProp.start(lm.d[1], {selected: 1}, 's')}
             } else if (
                 lm.path[2] === 0 && payload.keyCode === 'ArrowRight' ||
                 lm.path[2] === 1 && payload.keyCode === 'ArrowLeft') {
-                mapChangeProp.start(lm, 'selected', 1, 's');
+                mapChangeProp.start(lm, {selected: 1}, 's');
             }
             break;
         }
@@ -313,12 +313,14 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'formatColorReset': {
-            mapChangeProp.start(lm, 'sTextColor', props.saveOptional.sTextColor, '');
-            mapChangeProp.start(lm, 'cBorderColor', props.saveOptional.cBorderColor, '');
-            mapChangeProp.start(lm, 'ellipseFill', props.saveOptional.ellipseFill, '');
-            mapChangeProp.start(lm, 'ellipseFillColor', props.saveOptional.ellipseFillColor, '');
-            mapChangeProp.start(lm, 'ellipseBorderColor', props.saveOptional.ellipseBorderColor, '');
-            mapChangeProp.start(lm, 'lineColor', props.saveOptional.lineColor, '');
+            mapChangeProp.start(lm, {
+                sTextColor: props.saveOptional.sTextColor,
+                cBorderColor: props.saveOptional.cBorderColor,
+                ellipseFill: props.saveOptional.ellipseFill,
+                ellipseFillColor: props.saveOptional.ellipseFillColor,
+                ellipseBorderColor: props.saveOptional.ellipseBorderColor,
+                lineColor: props.saveOptional.lineColor
+            }, '');
             break;
         }
         case 'applyFontSize': {
@@ -359,16 +361,16 @@ function nodeReducer(action, payload) {
         }
         case 'taskCheckReset': {
             if (lm.task) {
-                mapChangeProp.start(lm, 'taskStatus', -1, '');
+                mapChangeProp.start(lm, {taskStatus: -1}, '');
             }
             break;
         }
         case 'taskSwitch': {
-            mapChangeProp.start(lm, 'task', !lm.task, '');
+            mapChangeProp.start(lm, {task: !lm.task}, '');
             break;
         }
         case 'resetDim': {
-            mapChangeProp.start(mapref(['r']), 'isDimAssigned', 0, '');
+            mapChangeProp.start(mapref(['r']), {isDimAssigned: 0}, '');
             break;
         }
         // EDIT -------------------------------------------------------------------------------------------------------------
