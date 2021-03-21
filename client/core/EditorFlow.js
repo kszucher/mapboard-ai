@@ -28,7 +28,7 @@ export const EditorState = {
 
 const InitEditorState = JSON.stringify(EditorState);
 
-const EditorFlow = (state, action) => {
+const EditorReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'RESET_STATE':
@@ -169,4 +169,4 @@ const EditorFlow = (state, action) => {
     }
 };
 
-export default EditorFlow;
+export default EditorReducer;

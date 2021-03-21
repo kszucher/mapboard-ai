@@ -14,11 +14,11 @@ export let isEditing = 0;
 
 export function nodeDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action);
-    nodeFlow(action, payload);
+    nodeReducer(action, payload);
     recalc();
 }
 
-function nodeFlow(action, payload) {
+function nodeReducer(action, payload) {
     let sc = selectionState;
     let lm = mapref(sc.lastPath);
     switch (action) {

@@ -55,20 +55,20 @@ export let mapState = {
     },
 };
 
-const initMapState = JSON.stringify(mapState);
+const InitMapState = JSON.stringify(mapState);
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
-    mapFlow(action, payload);
+    mapReducer(action, payload);
     if (['setDensity', 'setAlignment', 'setTaskConfigWidth', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
 
-function mapFlow(action, payload) {
+function mapReducer(action, payload) {
     switch (action) {
         case 'setData':
-            mapState = JSON.parse(initMapState);
+            mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload)];
             break;
         case 'setDensity':
