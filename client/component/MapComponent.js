@@ -158,7 +158,9 @@ export function MapComponent() {
                         window.focus();
                     }
                 }
-                dispatch({type: 'SET_NODE_PROPS', payload: lm});
+                if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                    dispatch({type: 'SET_NODE_PROPS', payload: lm});
+                }
             }
             mapState.isTaskClicked = false;
             if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
