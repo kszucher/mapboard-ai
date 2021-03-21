@@ -23,20 +23,20 @@ export function nodeMoveMouse (sc) {
 export function nodeMove(sc, target, key, mode) {
     let {structSelectedPathList, lastPath, haveSameParent, sameParentPath,
         cellRowSelected, cellRow, cellColSelected, cellCol} = sc;
-    let sameParent = mapref(sameParentPath);
     let lm = mapref(lastPath);
 
     let direction = '';
-    if (key === 'ArrowLeft' && lm.path[2] === 0 && sameParent.isRootChild ||
-        key === 'ArrowRight' && lm.path[2] === 1 && sameParent.isRootChild) {                            direction = 'through'
-    } else if ( key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {   direction = 'in';
-    } else if ( key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {   direction = 'out';
-    } else if ( key === 'ArrowUp') {                                                                     direction = 'up';
-    } else if ( key === 'ArrowDown') {                                                                   direction = 'down';
+    if (key === 'ArrowLeft' && lm.path[2] === 0 && haveSameParent && mapref(sameParentPath).isRootChild ||
+        key === 'ArrowRight' && lm.path[2] === 1 && haveSameParent && mapref(sameParentPath).isRootChild) { direction = 'through'
+    } else if ( key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {      direction = 'in';
+    } else if ( key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {      direction = 'out';
+    } else if ( key === 'ArrowUp') {                                                                        direction = 'up';
+    } else if ( key === 'ArrowDown') {                                                                      direction = 'down';
     }
 
     if (target === 'struct2struct') {
         if (haveSameParent && !lm.isRoot) {
+            let sameParent = mapref(sameParentPath);
             if (direction === 'through') {
                 let rootRef = mapref(['r']);
                 let dir = lm.path[2];
@@ -98,6 +98,7 @@ export function nodeMove(sc, target, key, mode) {
     } else if (target === 'struct2cell') {
         let geomLowRef = mapref(sc.geomLowPath);
         if (haveSameParent && !lm.isRoot) {
+            let sameParent = mapref(sameParentPath);
             sameParent.s.splice(geomLowRef.index + 1, 0, getDefaultNode());
             let newCellRef = sameParent.s[geomLowRef.index + 1];
             if (mode === 'multiRow') {
@@ -111,20 +112,23 @@ export function nodeMove(sc, target, key, mode) {
             }
         }
     } else if (target === 'cellBlock2CellBlock') {
-        if (direction === 'up' && cellRowSelected && cellRow > 0) {
-            [sameParent.c[cellRow], sameParent.c[cellRow - 1]] = [sameParent.c[cellRow - 1], sameParent.c[cellRow]]
-        }
-        if (direction === 'down' && cellRowSelected && cellRow < sameParent.c.length - 1) {
-            [sameParent.c[cellRow], sameParent.c[cellRow + 1]] = [sameParent.c[cellRow + 1], sameParent.c[cellRow]]
-        }
-        if (direction === 'in' && cellColSelected && cellCol > 0) {
-            for (let i = 0; i < sameParent.c.length; i++) {
-                [sameParent.c[i][cellCol], sameParent.c[i][cellCol - 1]] = [sameParent.c[i][cellCol - 1], sameParent.c[i][cellCol]]
+        if (haveSameParent) {
+            let sameParent = mapref(sameParentPath);
+            if (direction === 'up' && cellRowSelected && cellRow > 0) {
+                [sameParent.c[cellRow], sameParent.c[cellRow - 1]] = [sameParent.c[cellRow - 1], sameParent.c[cellRow]]
             }
-        }
-        if (direction === 'out' && cellColSelected && cellCol < sameParent.c[0].length - 1) {
-            for (let i = 0; i < sameParent.c.length; i++) {
-                [sameParent.c[i][cellCol], sameParent.c[i][cellCol + 1]] = [sameParent.c[i][cellCol + 1], sameParent.c[i][cellCol]]
+            if (direction === 'down' && cellRowSelected && cellRow < sameParent.c.length - 1) {
+                [sameParent.c[cellRow], sameParent.c[cellRow + 1]] = [sameParent.c[cellRow + 1], sameParent.c[cellRow]]
+            }
+            if (direction === 'in' && cellColSelected && cellCol > 0) {
+                for (let i = 0; i < sameParent.c.length; i++) {
+                    [sameParent.c[i][cellCol], sameParent.c[i][cellCol - 1]] = [sameParent.c[i][cellCol - 1], sameParent.c[i][cellCol]]
+                }
+            }
+            if (direction === 'out' && cellColSelected && cellCol < sameParent.c[0].length - 1) {
+                for (let i = 0; i < sameParent.c.length; i++) {
+                    [sameParent.c[i][cellCol], sameParent.c[i][cellCol + 1]] = [sameParent.c[i][cellCol + 1], sameParent.c[i][cellCol]]
+                }
             }
         }
     } else if (target === 'struct2clipboard') {
