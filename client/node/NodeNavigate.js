@@ -1,4 +1,4 @@
-import {mapref} from "../core/MapReducer";
+import {mapref} from "../core/MapFlow";
 
 export function nodeNavigate (lastPath, target, key) {
     let direction = '';

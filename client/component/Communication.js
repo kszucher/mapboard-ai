@@ -1,9 +1,9 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
-import {nodeDispatch} from "../core/NodeReducer";
-import {checkPop, mapDispatch, mapState, push, redraw} from "../core/MapReducer";
-import {initDomData} from "../core/DomReducer";
+import {nodeDispatch} from "../core/NodeFlow";
+import {checkPop, mapDispatch, mapState, push, redraw} from "../core/MapFlow";
+import {initDomData} from "../core/DomFlow";
 
 /**
  * @return {null}

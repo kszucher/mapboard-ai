@@ -1,4 +1,4 @@
-import {mapState} from "../core/MapReducer";
+import {mapState} from "../core/MapFlow";
 
 export const mapPlace = {
     start: (r) => {

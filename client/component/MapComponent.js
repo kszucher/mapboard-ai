@@ -1,13 +1,13 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
-import {isEditing, nodeDispatch} from "../core/NodeReducer";
+import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy, isUrl} from "../core/Utils";
 import '../component-css/MapComponent.css'
 import {mapFindNearest} from "../map/MapFindNearest";
-import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapReducer";
+import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionReducer";
+import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 

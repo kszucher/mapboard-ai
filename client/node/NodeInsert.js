@@ -1,5 +1,5 @@
 import {getDefaultNode} from "./Node";
-import {mapref} from "../core/MapReducer";
+import {mapref} from "../core/MapFlow";
 
 export function structInsert(lm, mode) {
     let parentRef;

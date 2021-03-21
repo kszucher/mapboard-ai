@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Context, remoteDispatch, remoteGetState} from '../core/Store';
 import '../component-css/Palette.css'
-import {nodeDispatch} from "../core/NodeReducer";
-import {checkPop, push, redraw} from "../core/MapReducer";
+import {nodeDispatch} from "../core/NodeFlow";
+import {checkPop, push, redraw} from "../core/MapFlow";
 
 // https://yagisanatode.com/2019/08/06/google-apps-script-hexadecimal-color-codes-for-google-docs-sheets-and-slides-standart-palette/
 // const colorList = [

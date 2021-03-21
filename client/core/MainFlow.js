@@ -1,4 +1,4 @@
-import {getDefaultMap, mapState, saveMap} from "./MapReducer";
+import {getDefaultMap, mapState, saveMap} from "./MapFlow";
 
 export const MainState = {
     isLoggedIn: false,
@@ -28,7 +28,7 @@ export const MainState = {
 
 const InitState = JSON.stringify(MainState);
 
-const MainReducer = (state, action) => {
+const MainFlow = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'RESET_STATE':
@@ -169,4 +169,4 @@ const MainReducer = (state, action) => {
     }
 };
 
-export default MainReducer;
+export default MainFlow;

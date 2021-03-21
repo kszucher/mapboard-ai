@@ -1,4 +1,4 @@
-import {selectionState} from "../core/SelectionReducer";
+import {selectionState} from "../core/SelectionFlow";
 
 export const mapCollect = {
     start: (r) => {

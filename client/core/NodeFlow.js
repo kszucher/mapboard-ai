@@ -5,20 +5,20 @@ import {nodeNavigate} from "../node/NodeNavigate";
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {props} from "../node/Node";
-import {selectionState} from "./SelectionReducer";
-import {getMapData, mapref, mapState, pathMerge, recalc, redraw} from "./MapReducer";
-import {mapSvgData} from "./DomReducer";
+import {selectionState} from "./SelectionFlow";
+import {getMapData, mapref, mapState, pathMerge, recalc, redraw} from "./MapFlow";
+import {mapSvgData} from "./DomFlow";
 
 let mutationObserver;
 export let isEditing = 0;
 
 export function nodeDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action);
-    nodeReducer(action, payload);
+    nodeFlow(action, payload);
     recalc();
 }
 
-function nodeReducer(action, payload) {
+function nodeFlow(action, payload) {
     let sc = selectionState;
     let lm = mapref(sc.lastPath);
     switch (action) {

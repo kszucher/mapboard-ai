@@ -10,10 +10,10 @@ import {mapTaskCalc} from "../map/MapTaskCalc";
 import {mapTaskColor} from "../map/MapTaskColor";
 import {mapDeinit} from "../map/MapDeinit";
 import {mapDisassembly} from "../map/MapDisassembly";
-import {initDomHash, updateDomData} from "./DomReducer";
+import {initDomHash, updateDomData} from "./DomFlow";
 import {mapDivVisualize} from "../map/MapDivVisualize";
 import {mapSvgVisualize} from "../map/MapSvgVisualize";
-import {initSelectionState, updateSelectionState} from "./SelectionReducer";
+import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
@@ -59,13 +59,13 @@ const initMapState = JSON.stringify(mapState);
 
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
-    mapReducer(action, payload);
+    mapFlow(action, payload);
     if (['setDensity', 'setAlignment', 'setTaskConfigWidth', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
 
-function mapReducer(action, payload) {
+function mapFlow(action, payload) {
     switch (action) {
         case 'setData':
             mapState = JSON.parse(initMapState);
