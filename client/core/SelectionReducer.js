@@ -1,6 +1,6 @@
 import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "./Utils";
-import {getMapData, mapasgn, mapref, pathMerge} from "./MapReducer";
+import {getMapData, mapref} from "./MapReducer";
 
 export let selectionState = {
     structSelectedPathList: [],
@@ -119,15 +119,4 @@ export function getSelectionContext() {
         }}
 
     return selectionState;
-}
-
-export function clearSelectionContext() {
-    let r = getMapData().r;
-    mapCollect.start(r);
-    for (let i = 0; i < selectionState.structSelectedPathList.length; i++) {
-        mapasgn(pathMerge(selectionState.structSelectedPathList[i], ['selected']), 0);
-    }
-    for (let i = 0; i < selectionState.cellSelectedPathList.length; i++) {
-        mapasgn(pathMerge(selectionState.cellSelectedPathList[i], ['selected']), 0);
-    }
 }
