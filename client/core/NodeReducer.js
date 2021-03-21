@@ -33,8 +33,12 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectDescendantsOut': {
-            if (lm.path[2] === 1 && payload.keyCode === 'ArrowLeft' ||
-                lm.path[2] === 0 && payload.keyCode === 'ArrowRight') {
+            if (lm.path.length === 1) {
+                if (payload.keyCode === 'ArrowRight') {mapChangeProp.start(lm.d[0], 'selected', 1)}
+                if (payload.keyCode === 'ArrowLeft') {mapChangeProp.start(lm.d[1], 'selected', 1)}
+            } else if (
+                lm.path[2] === 1 && payload.keyCode === 'ArrowRight' ||
+                lm.path[2] === 0 && payload.keyCode === 'ArrowLeft') {
                 mapChangeProp.start(lm, 'selected', 1);
             }
             break;
