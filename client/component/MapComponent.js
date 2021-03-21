@@ -304,8 +304,7 @@ export function MapComponent() {
         if (mapState.isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
-            mapState.shouldCenter = true;
-            recalc();
+            mapDispatch('setShouldCenter');
         }
         redraw();
     };

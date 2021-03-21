@@ -93,6 +93,10 @@ function mapReducer(action, payload) {
             mapState.isLoading = true;
             break;
         }
+        case 'setShouldCenter': {
+            mapState.shouldCenter = true;
+            break;
+        }
         case 'undo': {
             if (mapState.dataIndex > 0) {
                 mapState.dataIndex--;
