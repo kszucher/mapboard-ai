@@ -13,7 +13,8 @@ import {mapDisassembly} from "../map/MapDisassembly";
 import {initDomHash, updateDomData} from "./DomReducer";
 import {mapDivVisualize} from "../map/MapDivVisualize";
 import {mapSvgVisualize} from "../map/MapSvgVisualize";
-import {updateSelectionState} from "./SelectionReducer";
+import {initSelectionState, updateSelectionState} from "./SelectionReducer";
+import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
     isLoading: true,
@@ -102,6 +103,7 @@ export const getMapData = () => {
 };
 
 export function recalc() {
+    initSelectionState();
     let r = getMapData().r;
     mapRestore.start(r);
     mapInit.start(r);
@@ -111,6 +113,7 @@ export function recalc() {
     mapPlace.start(r);
     mapTaskCalc.start(r);
     mapTaskColor.start(r);
+    mapCollect.start(r);
     updateSelectionState();
 }
 

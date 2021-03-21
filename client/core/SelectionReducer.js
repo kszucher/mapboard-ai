@@ -1,6 +1,5 @@
-import {mapCollect} from "../map/MapCollect";
 import {arrayValuesSame} from "./Utils";
-import {getMapData, mapref} from "./MapReducer";
+import {mapref} from "./MapReducer";
 
 export let selectionState = {
     structSelectedPathList: [],
@@ -19,7 +18,7 @@ export let selectionState = {
     sameParentPath: [],
 }
 
-const initSelectionState = JSON.stringify(selectionState);
+const InitSelectionState = JSON.stringify(selectionState);
 
 let selectionStateCopy = '';
 export const pushSelectionState = () => {
@@ -39,12 +38,11 @@ export const checkPopSelectionState = () => {
     }
 }
 
+export function initSelectionState() {
+    selectionState = JSON.parse(InitSelectionState);
+}
+
 export function updateSelectionState() {
-    selectionState = JSON.parse(initSelectionState);
-
-    let r = getMapData().r;
-    mapCollect.start(r);
-
     let {
         structSelectedPathList, cellSelectedPathList,
         maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
