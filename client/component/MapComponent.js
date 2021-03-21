@@ -188,8 +188,6 @@ export function MapComponent() {
                 scrollTop = el.scrollTop;
                 pageX = e.pageX;
                 pageY = e.pageY;
-            } else {
-                console.log('unknown mouseMode');
             }
         }
     };
@@ -260,8 +258,6 @@ export function MapComponent() {
                     let el = document.getElementById('mapHolderDiv');
                     el.scrollLeft = scrollLeft - e.pageX  + pageX;
                     el.scrollTop = scrollTop -  e.pageY  + pageY;
-                } else {
-                    console.log('unknown mouseMode');
                 }
             }
         }
@@ -270,20 +266,20 @@ export function MapComponent() {
     const mouseup = (e) => {
         e.preventDefault();
         mapState.isMouseDown = false;
-        let r = getMapData().r;
-        if (mapState.moveTarget.path.length) {
-            r.moveLine = [];
-            r.moveRect = [];
-            // mapState.shouldCenter = true;
-            push();
-            nodeDispatch('moveSelection');
-            redraw();
-            checkPop();
-        }
         let mouseMode;
         if (e.which === 1) mouseMode = 'select';
         if (e.which === 2) mouseMode = 'drag';
         if (mouseMode === 'select') {
+            let r = getMapData().r;
+            if (mapState.moveTarget.path.length) {
+                r.moveLine = [];
+                r.moveRect = [];
+                // mapState.shouldCenter = true;
+                push();
+                nodeDispatch('moveSelection');
+                redraw();
+                checkPop();
+            }
             r.selectionRect = [];
             if (elapsed === 0) {
                 if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
@@ -298,8 +294,6 @@ export function MapComponent() {
             }
         } else if (mouseMode === 'drag') {
 
-        } else {
-            console.log('unknown mouseMode');
         }
     };
 
