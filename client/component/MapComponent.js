@@ -7,7 +7,7 @@ import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapReducer";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionReducer} from "../core/SelectionReducer";
+import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionState} from "../core/SelectionReducer";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
@@ -206,7 +206,7 @@ export function MapComponent() {
                     mapState.moveTarget.path = [];
                     r.moveLine = [];
                     r.moveRect = [];
-                    let lastSelectedPath = selectionReducer.structSelectedPathList[0];
+                    let lastSelectedPath = selectionState.structSelectedPathList[0];
                     let lastSelected = mapref(lastSelectedPath);
                     if (!(lastSelected.nodeStartX < toX &&
                         toX < lastSelected.nodeEndX &&
