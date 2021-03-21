@@ -117,18 +117,14 @@ export function getSelectionContext() {
     return selectionReducer;
 }
 
-export function clearStructSelectionContext() {
+export function clearSelectionContext() {
     let r = getMapData().r;
     mapCollect.start(r);
     for (let i = 0; i < selectionReducer.structSelectedPathList.length; i++) {
         mapasgn(pathMerge(selectionReducer.structSelectedPathList[i], ['selected']), 0);
     }
-}
-
-export function clearCellSelectionContext() {
-    let r = getMapData().r;
-    mapCollect.start(r);
     for (let i = 0; i < selectionReducer.cellSelectedPathList.length; i++) {
         mapasgn(pathMerge(selectionReducer.cellSelectedPathList[i], ['selected']), 0);
     }
 }
+
