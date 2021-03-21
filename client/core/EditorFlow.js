@@ -1,6 +1,6 @@
 import {getDefaultMap, mapState, saveMap} from "./MapFlow";
 
-export const EditorState = {
+export const editorState = {
     isLoggedIn: false,
     serverAction: ['ping'],
     serverResponse: {},
@@ -26,7 +26,7 @@ export const EditorState = {
     mapAction: ''
 };
 
-const InitEditorState = JSON.stringify(EditorState);
+const InitEditorState = JSON.stringify(editorState);
 
 const EditorReducer = (state, action) => {
     const {payload} = action;
