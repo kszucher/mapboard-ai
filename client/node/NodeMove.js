@@ -132,7 +132,7 @@ export function nodeMove(sc, target, key, mode) {
             }
         }
     } else if (target === 'struct2clipboard') {
-        if (mode === 'CUT' && lm.isRoot !== 1 || mode === 'COPY') {
+        if (!lm.isRoot && (mode === 'CUT' || mode === 'COPY')) {
             clipboard = [];
             for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(structSelectedPathList[i]);
