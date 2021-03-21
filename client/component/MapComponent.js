@@ -120,132 +120,135 @@ export function MapComponent() {
 
     const mousedown = (e) => {
         e.preventDefault();
+        isMouseDown = true;
         elapsed = 0;
         let mouseMode;
         if (e.which === 1) mouseMode = 'select';
         if (e.which === 2) mouseMode = 'drag';
-        if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc,item) => {return acc || item})) {
-            return;
-        }
-        if (isEditing === 1) {
-            nodeDispatch('finishEdit');
-            redraw();
-        }
-        isMouseDown = true;
-        mapState.isNodeClicked = false;
-        let r = getMapData().r;
-        r.selectionRect = [];
-        [fromX, fromY] = getCoords(e);
-        let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
-        if (lastOverPath.length) {
-            mapState.isNodeClicked = true;
-            mapState.deepestSelectablePath = copy(lastOverPath);
-            push();
-            if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                nodeDispatch('selectStruct');
-            } else {
-                nodeDispatch('selectStructToo');
+        if (mouseMode === 'select') {
+            if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {
+                return acc || item
+            })) {
+                return;
             }
-            redraw();
-            checkPop();
-            let sc = getSelectionContext();
-            let lm = mapref(sc.lastPath);
-            if (!e.shiftKey) {
-                if (lm.linkType === 'internal') {
-                    dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
-                } else if (lm.linkType === 'external') {
-                    isMouseDown = false;
-                    window.open(lm.link, '_blank');
-                    window.focus();
+            if (isEditing === 1) {
+                nodeDispatch('finishEdit');
+                redraw();
+            }
+            mapState.isNodeClicked = false;
+            let r = getMapData().r;
+            r.selectionRect = [];
+            [fromX, fromY] = getCoords(e);
+            let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
+            if (lastOverPath.length) {
+                mapState.isNodeClicked = true;
+                mapState.deepestSelectablePath = copy(lastOverPath);
+                push();
+                if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                    nodeDispatch('selectStruct');
+                } else {
+                    nodeDispatch('selectStructToo');
                 }
+                redraw();
+                checkPop();
+                let sc = getSelectionContext();
+                let lm = mapref(sc.lastPath);
+                if (!e.shiftKey) {
+                    if (lm.linkType === 'internal') {
+                        dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
+                    } else if (lm.linkType === 'external') {
+                        isMouseDown = false;
+                        window.open(lm.link, '_blank');
+                        window.focus();
+                    }
+                }
+                dispatch({type: 'SET_NODE_PROPS', payload: lm});
             }
-            dispatch({type: 'SET_NODE_PROPS', payload: lm});
-        }
-        mapState.isTaskClicked = false;
-        if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc,item) => {return acc || item})) {
-            for (const pathItem of e.path) {
-                if (pathItem.id) {
-                    if (pathItem.id.substring(0, 10) === 'taskCircle') {
-                        mapState.isTaskClicked = true;
-                        push();
-                        nodeDispatch('setTaskStatus', {
-                            taskStatus: parseInt(e.path[0].id.charAt(10), 10),
-                            svgId: e.path[1].id
-                        });
-                        redraw();
-                        checkPop();
-                        break;
+            mapState.isTaskClicked = false;
+            if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {
+                return acc || item
+            })) {
+                for (const pathItem of e.path) {
+                    if (pathItem.id) {
+                        if (pathItem.id.substring(0, 10) === 'taskCircle') {
+                            mapState.isTaskClicked = true;
+                            push();
+                            nodeDispatch('setTaskStatus', {
+                                taskStatus: parseInt(e.path[0].id.charAt(10), 10),
+                                svgId: e.path[1].id
+                            });
+                            redraw();
+                            checkPop();
+                            break;
+                        }
                     }
                 }
             }
-        }
-        if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-            if (mouseMode === 'select') {
+            if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
                 pushSelectionState();
-            } else if (mouseMode === 'drag') {
-                let el = document.getElementById('mapHolderDiv');
-                scrollLeft = el.scrollLeft;
-                scrollTop = el.scrollTop;
-                pageX = e.pageX;
-                pageY = e.pageY;
             }
+        } else if (mouseMode === 'drag') {
+            let el = document.getElementById('mapHolderDiv');
+            scrollLeft = el.scrollLeft;
+            scrollTop = el.scrollTop;
+            pageX = e.pageX;
+            pageY = e.pageY;
         }
     };
 
     const mousemove = (e) => {
         e.preventDefault();
-        elapsed++;
-        let mouseMode;
-        if (e.which === 1) mouseMode = 'select';
-        if (e.which === 2) mouseMode = 'drag';
         if (isMouseDown) {
-            let [toX, toY] = getCoords(e);
-            if (mapState.isNodeClicked) {
-                mapState.moveTarget.path = [];
-                let r = getMapData().r;
-                r.moveLine = [];
-                r.moveRect = [];
-                let lastSelectedPath = selectionReducer.structSelectedPathList[0];
-                let lastSelected = mapref(lastSelectedPath);
-                if (!(lastSelected.nodeStartX < toX &&
-                    toX < lastSelected.nodeEndX &&
-                    lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
-                    toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-                    let lastNearestPath = mapFindNearest.start(r, toX, toY);
-                    if (lastNearestPath.length > 1) {
-                        mapState.moveTarget.path = copy(lastNearestPath);
-                        let lastFound = mapref(lastNearestPath);
-                        fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
-                        fromY = lastFound.nodeY;
-                        r.moveLine = [fromX, fromY, toX, toY];
-                        r.moveRect = [toX, toY];
-                        if (lastFound.s.length === 0) {
-                            mapState.moveTarget.index = 0;
-                        } else {
-                            let insertIndex = 0;
-                            for (let i = 0; i < lastFound.s.length - 1; i++) {
-                                if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
-                                    insertIndex = i + 1;
+            elapsed++;
+            let mouseMode;
+            if (e.which === 1) mouseMode = 'select';
+            if (e.which === 2) mouseMode = 'drag';
+            if (mouseMode === 'select') {
+                let [toX, toY] = getCoords(e);
+                if (mapState.isNodeClicked) {
+                    mapState.moveTarget.path = [];
+                    let r = getMapData().r;
+                    r.moveLine = [];
+                    r.moveRect = [];
+                    let lastSelectedPath = selectionReducer.structSelectedPathList[0];
+                    let lastSelected = mapref(lastSelectedPath);
+                    if (!(lastSelected.nodeStartX < toX &&
+                        toX < lastSelected.nodeEndX &&
+                        lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
+                        toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
+                        let lastNearestPath = mapFindNearest.start(r, toX, toY);
+                        if (lastNearestPath.length > 1) {
+                            mapState.moveTarget.path = copy(lastNearestPath);
+                            let lastFound = mapref(lastNearestPath);
+                            fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
+                            fromY = lastFound.nodeY;
+                            r.moveLine = [fromX, fromY, toX, toY];
+                            r.moveRect = [toX, toY];
+                            if (lastFound.s.length === 0) {
+                                mapState.moveTarget.index = 0;
+                            } else {
+                                let insertIndex = 0;
+                                for (let i = 0; i < lastFound.s.length - 1; i++) {
+                                    if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
+                                        insertIndex = i + 1;
+                                    }
                                 }
-                            }
-                            if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-                                insertIndex = lastFound.s.length;
-                            }
-                            let lastSelectedParentPath = lastSelected.parentPath;
-                            if (arraysSame(lastFound.path, lastSelectedParentPath)) {
-                                if (lastSelected.index < insertIndex) {
-                                    insertIndex -= 1;
+                                if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
+                                    insertIndex = lastFound.s.length;
                                 }
+                                let lastSelectedParentPath = lastSelected.parentPath;
+                                if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+                                    if (lastSelected.index < insertIndex) {
+                                        insertIndex -= 1;
+                                    }
+                                }
+                                mapState.moveTarget.index = insertIndex;
                             }
-                            mapState.moveTarget.index = insertIndex;
                         }
                     }
+                    redraw();
                 }
-                redraw();
-            }
-
-            if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-                if (mouseMode === 'select') {
+                if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
                     let r = getMapData().r;
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
@@ -254,11 +257,11 @@ export function MapComponent() {
                     r.selectionRect = [startX, startY, width, height ];
                     mapFindOverRectangle.start(r, startX, startY, width, height);
                     redraw();
-                } else if (mouseMode === 'drag') {
-                    let el = document.getElementById('mapHolderDiv');
-                    el.scrollLeft = scrollLeft - e.pageX  + pageX;
-                    el.scrollTop = scrollTop -  e.pageY  + pageY;
                 }
+            } else if (mouseMode === 'drag') {
+                let el = document.getElementById('mapHolderDiv');
+                el.scrollLeft = scrollLeft - e.pageX  + pageX;
+                el.scrollTop = scrollTop -  e.pageY  + pageY;
             }
         }
     };
