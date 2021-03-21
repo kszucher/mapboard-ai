@@ -26,7 +26,6 @@ export const pushSelectionState = () => {
 }
 
 export const checkPopSelectionState = () => {
-    updateSelectionState();
     if (!selectionState.structSelectedPathList.length && !selectionState.cellSelectedPathList.length) {
         selectionState = JSON.parse(selectionStateCopy);
         for (const currPath of selectionState.structSelectedPathList) {

@@ -289,7 +289,9 @@ export function MapComponent() {
                     checkPop();
                 }
             } else {
+                recalc();
                 checkPopSelectionState();
+                recalc();
                 redraw();
             }
         } else if (mouseMode === 'drag') {
