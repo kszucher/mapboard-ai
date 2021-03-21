@@ -149,8 +149,7 @@ export function MapComponent() {
                 }
                 redraw();
                 checkPop();
-                let sc = selectionState;
-                let lm = mapref(sc.lastPath);
+                let lm = mapref(selectionState.lastPath);
                 if (!e.shiftKey) {
                     if (lm.linkType === 'internal') {
                         dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
