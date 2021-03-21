@@ -37,7 +37,6 @@ export let mapState = {
 
     isNodeClicked: false,
     isTaskClicked: false,
-    isMouseDown: false,
     shouldCenter: false,
 
     moveTarget: {

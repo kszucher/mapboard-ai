@@ -9,7 +9,7 @@ import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, getSelectionContext, pushSelectionState, selectionReducer} from "../core/SelectionReducer";
 
-let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, elapsed = 0;
+let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
@@ -128,7 +128,7 @@ export function MapComponent() {
             nodeDispatch('finishEdit');
             redraw();
         }
-        mapState.isMouseDown = true;
+        isMouseDown = true;
         mapState.isNodeClicked = false;
         let r = getMapData().r;
         r.selectionRect = [];
@@ -151,7 +151,7 @@ export function MapComponent() {
                 if (lm.linkType === 'internal') {
                     dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
                 } else if (lm.linkType === 'external') {
-                    mapState.isMouseDown = false;
+                    isMouseDown = false;
                     window.open(lm.link, '_blank');
                     window.focus();
                 }
@@ -195,7 +195,7 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         elapsed++;
-        if (mapState.isMouseDown) {
+        if (isMouseDown) {
             let [toX, toY] = getCoords(e);
             if (mapState.isNodeClicked) {
                 mapState.moveTarget.path = [];
@@ -265,7 +265,7 @@ export function MapComponent() {
 
     const mouseup = (e) => {
         e.preventDefault();
-        mapState.isMouseDown = false;
+        isMouseDown = false;
         let mouseMode;
         if (e.which === 1) mouseMode = 'select';
         if (e.which === 2) mouseMode = 'drag';
