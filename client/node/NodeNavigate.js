@@ -4,15 +4,11 @@ export function nodeNavigate (lastPath, target, key) {
     let direction = '';
     let currPath = [];
 
-
     let truePath = lastPath;
     if (key === 'ArrowRight') {
         if (lastPath.length === 1) {
             truePath = ['r', 'd', 0];
             direction = 'out';
-            if (!mapref(truePath).s.length) {
-                return ['r'];
-            }
         } else {
             direction = lastPath[2] === 0 ? 'out' : 'in';
         }
@@ -20,9 +16,6 @@ export function nodeNavigate (lastPath, target, key) {
         if (lastPath.length === 1) {
             truePath = ['r', 'd', 1];
             direction = 'out';
-            if (!mapref(truePath).s.length) {
-                return ['r'];
-            }
         } else {
             direction = lastPath[2] === 0 ? 'in' : 'out';
         }
@@ -32,7 +25,9 @@ export function nodeNavigate (lastPath, target, key) {
         direction = 'down';
     }
 
-
+    if (direction === 'out' && truePath.length === 3 && mapref(truePath).s.length === 0) {
+        return ['r'];
+    }
 
     if (target === 'struct2struct') {
         let inDepth = - 1;
