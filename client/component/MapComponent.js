@@ -13,7 +13,7 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, mapAction} = state;
+    const {density, alignment, fontSize, lineWidth, mapAction} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -29,6 +29,15 @@ export function MapComponent() {
             redraw();
         }
     }, [alignment]);
+
+    useEffect(() => {
+        if (lineWidth !== '') {
+            push();
+            nodeDispatch('applyLineWidth', lineWidth);
+            redraw();
+            checkPop();
+        }
+    }, [lineWidth]);
 
     useEffect(() => {
         if (fontSize !== '') {

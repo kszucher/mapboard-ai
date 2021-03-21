@@ -20,6 +20,7 @@ export let props = {
         selected:                               0,
         task:                                   0,
         lastSelectedChild:                      -1, // -1 means not selected ever
+        lineWidth:                              1,
         lineColor:                              '#bbbbbb',
         ellipseFill:                            0,
         ellipseBorderColor:                     getBgc(),

@@ -16,6 +16,7 @@ export const editorState = {
     density: '',
     alignment: '',
     fontSize: '',
+    lineWidth: '',
     colorMode: 'highlight',
 
     colorText: '',
@@ -152,17 +153,25 @@ const EditorReducer = (state, action) => {
                 case 16: fontSize = 'h5'; break;
                 case 14: fontSize = 'h6'; break;
             }
+            let lineWidth = 0;
+            switch (payload.lineWidth) {
+                case 1: lineWidth = 'p1'; break;
+                case 2: lineWidth = 'p2'; break;
+                case 3: lineWidth = 'p3'; break;
+            }
             return {...state,
+                fontSize,
+                lineWidth,
                 colorText: payload.sTextColor,
                 colorBorder: payload.ellipseBorderColor,
                 colorHighlight: payload.ellipseFillColor,
                 colorLine: payload.lineColor,
-                fontSize,
             };
         }
         case 'SET_DENSITY':     return {...state, density: payload};
         case 'SET_ALIGNMENT':   return {...state, alignment: payload};
         case 'SET_FONT_SIZE':   return {...state, fontSize: payload};
+        case 'SET_LINE_WIDTH':  return {...state, lineWidth: payload};
         case 'SET_COLOR_MODE':  return {...state, colorMode: payload};
         case 'SET_MOUSE_MODE':  return {...state, mouseMode: payload};
         case 'SET_MAP_ACTION':  return {...state, mapAction: [...state.mapAction, payload]};

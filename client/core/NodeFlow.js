@@ -329,7 +329,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyFontSize': {
-            let fontMapping = {
+            let fontSizeMapping = {
                 h1: 54,
                 h2: 36,
                 h3: 24,
@@ -339,8 +339,20 @@ function nodeReducer(action, payload) {
             };
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                cm.sTextFontSize = fontMapping[payload];
+                cm.sTextFontSize = fontSizeMapping[payload];
                 cm.isDimAssigned = 0;
+            }
+            break;
+        }
+        case 'applyLineWidth': {
+            let lineWidthMapping = {
+                'p1': 1,
+                'p2': 2,
+                'p3': 3,
+            }
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                cm.lineWidth = lineWidthMapping[payload];
             }
             break;
         }
