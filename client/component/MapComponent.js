@@ -120,21 +120,19 @@ export function MapComponent() {
 
     const mousedown = (e) => {
         e.preventDefault();
-        isMouseDown = true;
+        if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
+            return;
+        }
         elapsed = 0;
+        isMouseDown = true;
+        if (isEditing === 1) {
+            nodeDispatch('finishEdit');
+            redraw();
+        }
         let mouseMode;
         if (e.which === 1) mouseMode = 'select';
         if (e.which === 2) mouseMode = 'drag';
         if (mouseMode === 'select') {
-            if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {
-                return acc || item
-            })) {
-                return;
-            }
-            if (isEditing === 1) {
-                nodeDispatch('finishEdit');
-                redraw();
-            }
             mapState.isNodeClicked = false;
             let r = getMapData().r;
             r.selectionRect = [];
@@ -165,9 +163,7 @@ export function MapComponent() {
                 dispatch({type: 'SET_NODE_PROPS', payload: lm});
             }
             mapState.isTaskClicked = false;
-            if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {
-                return acc || item
-            })) {
+            if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
                 for (const pathItem of e.path) {
                     if (pathItem.id) {
                         if (pathItem.id.substring(0, 10) === 'taskCircle') {
@@ -204,10 +200,10 @@ export function MapComponent() {
             if (e.which === 1) mouseMode = 'select';
             if (e.which === 2) mouseMode = 'drag';
             if (mouseMode === 'select') {
-                let [toX, toY] = getCoords(e);
                 if (mapState.isNodeClicked) {
-                    mapState.moveTarget.path = [];
                     let r = getMapData().r;
+                    let [toX, toY] = getCoords(e);
+                    mapState.moveTarget.path = [];
                     r.moveLine = [];
                     r.moveRect = [];
                     let lastSelectedPath = selectionReducer.structSelectedPathList[0];
@@ -247,9 +243,11 @@ export function MapComponent() {
                         }
                     }
                     redraw();
-                }
-                if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
+                } else if (mapState.isTaskClicked) {
+
+                } else {
                     let r = getMapData().r;
+                    let [toX, toY] = getCoords(e);
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
                     let width = Math.abs(toX - fromX);
