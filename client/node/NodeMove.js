@@ -96,9 +96,9 @@ export function nodeMove(sc, target, key, mode) {
             }
         }
     } else if (target === 'struct2cell') {
-        let geomLowRef = mapref(sc.geomLowPath);
         if (haveSameParent && !lm.isRoot) {
             let sameParent = mapref(sameParentPath);
+            let geomLowRef = mapref(sc.geomLowPath);
             sameParent.s.splice(geomLowRef.index + 1, 0, getDefaultNode());
             let newCellRef = sameParent.s[geomLowRef.index + 1];
             if (mode === 'multiRow') {
