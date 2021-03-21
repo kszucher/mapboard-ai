@@ -314,15 +314,18 @@ function nodeReducer(action, payload) {
                         cm.ellipseFill = 1;
                         cm.ellipseFillColor = payload.color;
                         break;
-                    case 'line': cm.lineColor = payload.color;
-                    break;
+                    case 'line':
+                        cm.lineColor = payload.color;
+                        break;
+                    case 'cellFrame':
+                        cm.cBorderColor = payload.color;
                 }
             }
             break;
         }
         case 'formatColorReset': {
-            let {sTextColor, cBorderColor, ellipseFill, ellipseFillColor, lineColor} = props.saveOptional;
-            mapChangeProp.start(lm, {sTextColor, cBorderColor, ellipseFill, ellipseFillColor, lineColor}, '');
+            let {sTextColor, ellipseBorderColor, ellipseFill, ellipseFillColor, lineColor, cBorderColor} = props.saveOptional;
+            mapChangeProp.start(lm, {sTextColor, ellipseBorderColor, ellipseFill, ellipseFillColor, lineColor, cBorderColor}, '');
             break;
         }
         case 'applyFontSize': {

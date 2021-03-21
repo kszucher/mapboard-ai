@@ -22,6 +22,7 @@ export const editorState = {
     colorBorder: '',
     colorHighlight: '',
     colorLine: '',
+    colorCellFrame: '',
 
     mapAction: ''
 };

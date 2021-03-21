@@ -13,7 +13,7 @@ const colorList = [
 
 export function Palette () {
     const [state, dispatch] = useContext(Context);
-    const {colorMode, colorText, colorBorder, colorHighlight, colorLine} = state;
+    const {colorMode, colorText, colorBorder, colorHighlight, colorLine, colorCellFrame} = state;
     const [sel, setSel] = useState({
         x: 0,
         y: 0,
@@ -41,7 +41,8 @@ export function Palette () {
         if (colorMode === 'text') {                             setSel(findSel(colorText));
         } else if (colorMode === 'border') {                    setSel(findSel(colorBorder))
         } else if (colorMode === 'highlight') {                 setSel(findSel(colorHighlight))
-        } else if (colorMode === 'line') {                      setSel(findSel(colorLine))}
+        } else if (colorMode === 'line') {                      setSel(findSel(colorLine))
+        } else if (colorMode === 'cellFrame') {                 setSel(findSel(colorCellFrame))}
     }, [colorMode]);
 
     useEffect(() => {
@@ -59,6 +60,10 @@ export function Palette () {
     useEffect(() => {
         if (colorMode === 'line' && colorLine !== '')           setSel(findSel(colorLine))
     }, [colorLine]);
+
+    useEffect(() => {
+        if (colorMode === 'cellFrame' && colorCellFrame !== '') setSel(findSel(colorCellFrame))
+    }, [colorCellFrame]);
 
     const handleClick = (i, j) => {
         setSel({

@@ -17,7 +17,7 @@ export function Preferences () {
             <StyledSelect input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
             <StyledSelect input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
             <StyledSelect input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
-            <StyledSelect input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line']]}/>
+            <StyledSelect input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line', 'cellFrame']]}/>
         </div>
     );
 }
