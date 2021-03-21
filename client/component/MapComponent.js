@@ -181,6 +181,7 @@ export function MapComponent() {
             }
             if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
                 pushSelectionState();
+                nodeDispatch('clearSelection');
             }
         } else if (mouseMode === 'drag') {
             let el = document.getElementById('mapHolderDiv');

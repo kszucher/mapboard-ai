@@ -23,6 +23,10 @@ function nodeReducer(action, payload) {
     let lm = mapref(sc.lastPath);
     switch (action) {
         // SELECT ------------------------------------------------------------------------------------------------------
+        case 'clearSelection': {
+            clearSelection();
+            break;
+        }
         case 'selectStruct': {
             clearSelection();
             mapref(mapState.deepestSelectablePath).selected = 1;
