@@ -6,6 +6,7 @@ export let selectionReducer = {
     structSelectedPathList: [],
     cellSelectedPathList: [],
     maxSel: 0,
+    maxSelIndex: 0,
     scope: '',
     lastPath: [],
     geomHighPath: [],
@@ -42,10 +43,9 @@ export function getSelectionContext() {
 
     let {
         structSelectedPathList, cellSelectedPathList,
-        maxSel, scope, lastPath, geomHighPath, geomLowPath,
+        maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
         haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
     } = selectionReducer;
-    let maxSelIndex = 0;
 
     // INDICATORS
     if (structSelectedPathList.length && cellSelectedPathList.length) {
@@ -110,7 +110,7 @@ export function getSelectionContext() {
 
     selectionReducer = {...selectionReducer, ...{
             structSelectedPathList, cellSelectedPathList,
-            maxSel, scope, lastPath, geomHighPath, geomLowPath,
+            maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
             haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
         }}
 
@@ -127,4 +127,3 @@ export function clearSelectionContext() {
         mapasgn(pathMerge(selectionReducer.cellSelectedPathList[i], ['selected']), 0);
     }
 }
-
