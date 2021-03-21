@@ -121,6 +121,9 @@ export function MapComponent() {
     const mousedown = (e) => {
         e.preventDefault();
         elapsed = 0;
+        let mouseMode;
+        if (e.which === 1) mouseMode = 'select';
+        if (e.which === 2) mouseMode = 'drag';
         if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc,item) => {return acc || item})) {
             return;
         }
@@ -177,9 +180,6 @@ export function MapComponent() {
             }
         }
         if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-            let mouseMode;
-            if (e.which === 1) mouseMode = 'select';
-            if (e.which === 2) mouseMode = 'drag';
             if (mouseMode === 'select') {
                 pushSelectionState();
             } else if (mouseMode === 'drag') {
@@ -195,6 +195,9 @@ export function MapComponent() {
     const mousemove = (e) => {
         e.preventDefault();
         elapsed++;
+        let mouseMode;
+        if (e.which === 1) mouseMode = 'select';
+        if (e.which === 2) mouseMode = 'drag';
         if (isMouseDown) {
             let [toX, toY] = getCoords(e);
             if (mapState.isNodeClicked) {
@@ -242,9 +245,6 @@ export function MapComponent() {
             }
 
             if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
-                let mouseMode;
-                if (e.which === 1) mouseMode = 'select';
-                if (e.which === 2) mouseMode = 'drag';
                 if (mouseMode === 'select') {
                     let r = getMapData().r;
                     let startX = fromX < toX ? fromX : toX;
