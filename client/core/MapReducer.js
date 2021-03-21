@@ -13,7 +13,7 @@ import {mapDisassembly} from "../map/MapDisassembly";
 import {initDomHash, updateDomData} from "./DomReducer";
 import {mapDivVisualize} from "../map/MapDivVisualize";
 import {mapSvgVisualize} from "../map/MapSvgVisualize";
-import {getSelectionContext} from "./SelectionReducer";
+import {updateSelectionState} from "./SelectionReducer";
 
 export let mapState = {
     isLoading: true,
@@ -111,7 +111,7 @@ export function recalc() {
     mapPlace.start(r);
     mapTaskCalc.start(r);
     mapTaskColor.start(r);
-    getSelectionContext();
+    updateSelectionState();
 }
 
 export function redraw() {

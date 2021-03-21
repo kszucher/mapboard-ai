@@ -27,7 +27,7 @@ export const pushSelectionState = () => {
 }
 
 export const checkPopSelectionState = () => {
-    getSelectionContext();
+    updateSelectionState();
     if (!selectionState.structSelectedPathList.length && !selectionState.cellSelectedPathList.length) {
         selectionState = JSON.parse(selectionStateCopy);
         for (const currPath of selectionState.structSelectedPathList) {
@@ -39,7 +39,7 @@ export const checkPopSelectionState = () => {
     }
 }
 
-export function getSelectionContext() {
+export function updateSelectionState() {
     selectionState = JSON.parse(initSelectionState);
 
     let r = getMapData().r;
