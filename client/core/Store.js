@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useReducer, useRef, useCallback} from 'react'
-import MainFlow, {MainState} from "./MainFlow";
+import EditorFlow, {EditorState} from "./EditorFlow";
 
 export let remoteDispatch;
 export let remoteGetState;
@@ -18,7 +18,7 @@ const useEnhancedReducer = (reducer, initState, initializer) => {
 };
 
 const Store = ({children}) => {
-    const [state, dispatch, getState] = useEnhancedReducer(MainFlow, MainState);
+    const [state, dispatch, getState] = useEnhancedReducer(EditorFlow, EditorState);
 
     useEffect(() => {
         remoteDispatch = dispatch;
@@ -32,6 +32,6 @@ const Store = ({children}) => {
     )
 };
 
-export const Context = createContext(MainState);
+export const Context = createContext(EditorState);
 
 export default Store;

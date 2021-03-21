@@ -1,6 +1,6 @@
 import {getDefaultMap, mapState, saveMap} from "./MapFlow";
 
-export const MainState = {
+export const EditorState = {
     isLoggedIn: false,
     serverAction: ['ping'],
     serverResponse: {},
@@ -26,14 +26,14 @@ export const MainState = {
     mapAction: ''
 };
 
-const InitState = JSON.stringify(MainState);
+const InitEditorState = JSON.stringify(EditorState);
 
-const MainFlow = (state, action) => {
+const EditorFlow = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'RESET_STATE':
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
-            return JSON.parse(InitState);
+            return JSON.parse(InitEditorState);
         case 'SERVER_RESPONSE': return {...state, serverResponse: payload};
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
@@ -169,4 +169,4 @@ const MainFlow = (state, action) => {
     }
 };
 
-export default MainFlow;
+export default EditorFlow;
