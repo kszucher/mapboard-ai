@@ -313,14 +313,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'formatColorReset': {
-            mapChangeProp.start(lm, {
-                sTextColor: props.saveOptional.sTextColor,
-                cBorderColor: props.saveOptional.cBorderColor,
-                ellipseFill: props.saveOptional.ellipseFill,
-                ellipseFillColor: props.saveOptional.ellipseFillColor,
-                ellipseBorderColor: props.saveOptional.ellipseBorderColor,
-                lineColor: props.saveOptional.lineColor
-            }, '');
+            let {sTextColor, cBorderColor, ellipseFill, ellipseFillColor, lineColor} = props.saveOptional;
+            mapChangeProp.start(lm, {sTextColor, cBorderColor, ellipseFill, ellipseFillColor, lineColor}, '');
             break;
         }
         case 'applyFontSize': {
