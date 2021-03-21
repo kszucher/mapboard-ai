@@ -425,7 +425,7 @@ function nodeReducer(action, payload) {
             lm.isDimAssigned = 0;
             break;
         }
-        case 'finishEdit' : {
+        case 'finishEdit': {
             mutationObserver.disconnect();
             let holderElement = document.getElementById(lm.divId);
             holderElement.contentEditable = 'false';
