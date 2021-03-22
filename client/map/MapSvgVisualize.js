@@ -190,7 +190,7 @@ export const mapSvgVisualize = {
             c1x =   cm.moveLine[0] + deltaX / 4;    c1y =  cm.moveLine[1];
             c2x =   cm.moveLine[0] + deltaX / 4;    c2y =  cm.moveLine[1] + deltaY;
             x2 =    cm.moveLine[2];                 y2 =    cm.moveLine[3];
-            svgElementData['moveLine'] = {
+            svgElementData.moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
                 color: '#5f0a87',
