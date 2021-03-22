@@ -81,7 +81,7 @@ export const mapSvgVisualize = {
             let v = cm.selfH - 2 * r;
             svgElementData.tableFrame = {
                 type: 'path',
-                path: getArc(x1, y1, v, h, r, cm.path[2]),
+                path: getArc(x1, y1, h, v, r, cm.path[2]),
                 color: cm.selected? '#000000' : cm.cBorderColor,
                 strokeWidth: 1,
             };
@@ -122,7 +122,7 @@ export const mapSvgVisualize = {
 
             svgElementData.cellFrame = {
                 type: 'path',
-                path: getArc(x1, y1, v, h, r, cm.path[2]),
+                path: getArc(x1, y1, h, v, r, cm.path[2]),
                 color: '#000000',
                 strokeWidth: 1,
             };
@@ -368,7 +368,7 @@ function getEdge(sx, sy, deltaX, deltaY, dir) {
     return [m1x, m1y, m2x, m2y];
 }
 
-function getArc(x1, y1, v, h, r, dir) {
+function getArc(x1, y1, h, v, r, dir) {
     if (dir === 0) {
         return `M${x1},${y1} 
         a${+r},${+r} 0 0 1 ${+r},${-r} h${+h} 
