@@ -49,28 +49,33 @@ export const mapSvgVisualize = {
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
             if (step === 0) {
-                if (cm.path[2] === 0) {
-                    [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
-                        getBezier(cm.parentNodeEndXFrom, cm.parentNodeYFrom, cm.nodeStartX, cm.nodeY, cm.lineDeltaX, cm.lineDeltaY, 1);
-                } else {
-                    [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
-                        getBezier(cm.parentNodeStartXFrom, cm.parentNodeYFrom, cm.nodeStartX, cm.nodeY, cm.lineDeltaX, cm.lineDeltaY, -1);
-                }
+                [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
+                    getBezier(
+                        cm.path[2] === 0 ? cm.parentNodeEndXFrom : cm.parentNodeStartXFrom,
+                        cm.parentNodeYFrom,
+                        cm.nodeStartX,
+                        cm.nodeY,
+                        cm.lineDeltaX,
+                        cm.lineDeltaY,
+                        cm.path[2] === 0 ? 1 : -1
+                    );
             }
             else if (step === 1) {
-                if (cm.path[2] === 0) {
-                    [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
-                        getBezier(cm.parentNodeEndX, cm.parentNodeY, cm.nodeStartX, cm.nodeY, cm.lineDeltaX, cm.lineDeltaY, 1);
-                } else {
-                    [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
-                        getBezier(cm.parentNodeStartX, cm.parentNodeY, cm.nodeEndX, cm.nodeY, cm.lineDeltaX, cm.lineDeltaY, -1);
-                }
+                [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
+                    getBezier(
+                        cm.path[2] === 0 ? cm.parentNodeEndX : cm.parentNodeStartX,
+                        cm.parentNodeY,
+                        cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
+                        cm.nodeY,
+                        cm.lineDeltaX,
+                        cm.lineDeltaY,
+                        cm.path[2] === 0 ? 1 : -1
+                    );
             }
 
             svgElementData.connectionLine = {
                 type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
+                path: "M" + x1 + ',' + y1 + ' ' + "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
