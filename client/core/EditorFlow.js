@@ -145,7 +145,7 @@ const EditorReducer = (state, action) => {
         }
         // PREFERENCES -------------------------------------------------------------------------------------------------
         case 'SET_NODE_PROPS': {
-            let fontSize = 0;
+            let fontSize = '';
             switch (payload.sTextFontSize) {
                 case 54: fontSize = 'h1'; break;
                 case 36: fontSize = 'h2'; break;
@@ -154,13 +154,13 @@ const EditorReducer = (state, action) => {
                 case 16: fontSize = 'h5'; break;
                 case 14: fontSize = 'h6'; break;
             }
-            let lineWidth = 0;
+            let lineWidth = '';
             switch (payload.lineWidth) {
                 case 1: lineWidth = 'p1'; break;
                 case 2: lineWidth = 'p2'; break;
                 case 3: lineWidth = 'p3'; break;
             }
-            let lineType = 0;
+            let lineType = '';
             switch (payload.lineWidth) {
                 case 1: lineType = 'bezier'; break;
                 case 2: lineType = 'edge'; break;
