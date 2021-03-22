@@ -32,17 +32,14 @@ export const mapSvgVisualize = {
         } else {
             mapSvgVisualize.animate(cm, 1);
         }
-
         cm.d.map(i => mapSvgVisualize.iterate(i));
         cm.s.map(i => mapSvgVisualize.iterate(i));
         cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
     },
 
     animate: (cm, step) => {
-
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
-
         // connectionLine
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
@@ -58,7 +55,6 @@ export const mapSvgVisualize = {
             }
             x2 = cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX;
             y2 = cm.nodeY;
-
             let path;
             if (cm.lineType === 'b') {
                 let c1x, c1y, c2x, c2y;
@@ -69,7 +65,6 @@ export const mapSvgVisualize = {
                 [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1)
                 path = `M${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
             }
-
             svgElementData.connectionLine = {
                 type: 'path',
                 path,
@@ -77,7 +72,6 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-
         // table frame
         if (cm.type === "struct" && cm.hasCell) {
             let r = 8;
@@ -85,7 +79,6 @@ export const mapSvgVisualize = {
             let y1 = cm.nodeY - selfHadj / 2 + r;
             let h = cm.selfW - 2 * r;
             let v = cm.selfH - 2 * r;
-
             svgElementData.tableFrame = {
                 type: 'path',
                 path: getArc(x1, y1, v, h, r, cm.path[2]),
@@ -93,7 +86,6 @@ export const mapSvgVisualize = {
                 strokeWidth: 1,
             };
         }
-
         // table grid
         if (cm.type === "struct" && cm.hasCell) {
             let path = '';
@@ -104,7 +96,6 @@ export const mapSvgVisualize = {
                 x2 = cm.nodeEndX;    y2 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 path += `M${x1},${y1} L${x2},${y2}`;
             }
-
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
                 let x1, y1, x2, y2;
@@ -114,7 +105,6 @@ export const mapSvgVisualize = {
                 y2 = cm.nodeY + selfHadj/2;
                 path += `M${x1},${y1} L${x2},${y2}`;
             }
-
             svgElementData.tableGrid = {
                 type: 'path',
                 path: path,
@@ -122,7 +112,6 @@ export const mapSvgVisualize = {
                 strokeWidth: 1,
             };
         }
-
         // table cell frame
         if (cm.type === 'cell' && cm.selected) {
             let r = 8;
@@ -138,7 +127,6 @@ export const mapSvgVisualize = {
                 strokeWidth: 1,
             };
         }
-
         // task
         if (cm.task &&
             !cm.path.includes('c') &&
@@ -149,18 +137,13 @@ export const mapSvgVisualize = {
             cm.contentType !== 'image' &&
             !cm.isRoot &&
             !cm.isRootChild) {
-
-
             let {mapWidth, margin} = mapState;
             let {n, d, gap, width} = mapState.taskConfig;
-
             let startX = cm.path[2] === 0 ? mapWidth - width - margin : margin + width;
-
             let x1 = cm.path[2] === 0 ? cm.nodeEndX : cm.nodeStartX;
             let y1 = cm.nodeY;
             let x2 = startX;
             let y2 = cm.nodeY;
-
             if (!cm.isEditing) {
                 svgElementData.taskLine = {
                     type: 'path',
@@ -169,11 +152,9 @@ export const mapSvgVisualize = {
                     strokeWidth: 1,
                 };
             }
-
             for (let i = 0; i < n; i++) {
                 let centerX = cm.path[2] === 0 ? startX + d/2 + i * (d + gap) : startX - d/2 - i * (d + gap);
                 let centerY = cm.nodeY;
-
                 let fill;
                 if (cm.taskStatus === i) {
                     switch (i) {
@@ -190,7 +171,6 @@ export const mapSvgVisualize = {
                         case 3: fill = '#e5f9e5'; break;
                     }
                 }
-
                 let r = d/2;
                 svgElementData['taskCircle' + i] = {
                     type: 'circle',
@@ -201,18 +181,15 @@ export const mapSvgVisualize = {
                 };
             }
         }
-
         // move line
         if (cm.moveLine.length) {
             let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
             let deltaX = cm.moveLine[2] - cm.moveLine[0];
             let deltaY = cm.moveLine[3] - cm.moveLine[1];
-
             x1 =    cm.moveLine[0];                 y1 =    cm.moveLine[1];
-            c1x =  cm.moveLine[0] + deltaX / 4;    c1y =  cm.moveLine[1];
-            c2x =  cm.moveLine[0] + deltaX / 4;    c2y =  cm.moveLine[1] + deltaY;
+            c1x =   cm.moveLine[0] + deltaX / 4;    c1y =  cm.moveLine[1];
+            c2x =   cm.moveLine[0] + deltaX / 4;    c2y =  cm.moveLine[1] + deltaY;
             x2 =    cm.moveLine[2];                 y2 =    cm.moveLine[3];
-
             svgElementData['moveLine'] = {
                 type: 'path',
                 path: `M${x1},{y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
@@ -221,7 +198,6 @@ export const mapSvgVisualize = {
                 strokeWidth: 1,
             }
         }
-
         // move rect
         if (cm.moveRect.length) {
             svgElementData.moveRect = {
@@ -237,7 +213,6 @@ export const mapSvgVisualize = {
                 strokeWidth: 5,
             };
         }
-
         // selection rect
         if (cm.selectionRect.length) {
             svgElementData.selectionRect = {
@@ -253,7 +228,6 @@ export const mapSvgVisualize = {
                 strokeWidth: 2,
             };
         }
-
         let svgGroup;
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
             ((mapSvgData.hasOwnProperty(cm.svgId) && mapSvgData[cm.svgId].keepHash === keepHash))) {
@@ -262,20 +236,16 @@ export const mapSvgVisualize = {
                 svgElementData: {},
                 path: [],
             };
-
             svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
             svgGroup.setAttribute("id", cm.svgId);
-
             let mapSvg = document.getElementById('mapSvgInner');
             mapSvg.appendChild(svgGroup);
         } else {
             svgGroup = document.getElementById(cm.svgId);
         }
-
         for (const svgElementName of svgElementNameList) {
             let hadBefore = mapSvgData[cm.svgId].svgElementData.hasOwnProperty(svgElementName);
             let hasNow = svgElementData.hasOwnProperty(svgElementName);
-
             let op = '';
             if (hadBefore === false && hasNow === true) op = 'init';
             if (hadBefore === true && hasNow === false) op = 'delete';
@@ -285,13 +255,12 @@ export const mapSvgVisualize = {
                     op = 'update';
                 }
             }
-
             switch (op) {
                 case 'init': {
                     let svgElement = document.createElementNS("http://www.w3.org/2000/svg", svgElementData[svgElementName].type);
                     svgElement.setAttribute("id", svgElementName);
                     switch (svgElementData[svgElementName].type) {
-                        case 'path':
+                        case 'path': {
                             svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                             svgElement.setAttribute("stroke-width",     svgElementData[svgElementName].strokeWidth);
@@ -300,7 +269,8 @@ export const mapSvgVisualize = {
                             svgElement.style.transition =               svgElementData[svgElementName].preventTransition ? '' : '0.5s ease-out';
                             svgElement.style.transitionProperty =       'd';
                             break;
-                        case 'circle':
+                        }
+                        case 'circle': {
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
@@ -308,7 +278,8 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             svgElement.style.transition =               '0.5s ease-out';
                             break;
-                        case 'ellipse':
+                        }
+                        case 'ellipse': {
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
@@ -316,7 +287,8 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("fill",             '#5f0a87');
                             svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
                             break;
-                        case 'rect':
+                        }
+                        case 'rect': {
                             svgElement.setAttribute("x",                svgElementData[svgElementName].x);
                             svgElement.setAttribute("y",                svgElementData[svgElementName].y);
                             svgElement.setAttribute("width",            svgElementData[svgElementName].width);
@@ -328,6 +300,7 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("stroke",           '#5f0a87');
                             svgElement.setAttribute("stroke-width",      svgElementData[svgElementName].strokeWidth);
                             break;
+                        }
                     }
                     svgGroup.appendChild(svgElement);
                     break;
@@ -336,27 +309,31 @@ export const mapSvgVisualize = {
                     let svgElement = svgGroup.querySelector('#' + svgElementName);
 
                     switch (svgElementData[svgElementName].type) {
-                        case 'path':
+                        case 'path': {
                             svgElement.setAttribute("d",                svgElementData[svgElementName].path);
                             svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
                             svgElement.setAttribute("stroke-width",     svgElementData[svgElementName].strokeWidth);
                             break;
-                        case 'circle':
+                        }
+                        case 'circle': {
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             svgElement.setAttribute("r",                svgElementData[svgElementName].r);
                             svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
                             break;
-                        case 'ellipse':
+                        }
+                        case 'ellipse': {
                             svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
                             svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
                             break;
-                        case 'rect':
+                        }
+                        case 'rect': {
                             svgElement.setAttribute("x",                svgElementData[svgElementName].x);
                             svgElement.setAttribute("y",                svgElementData[svgElementName].y);
                             svgElement.setAttribute("width",            svgElementData[svgElementName].width);
                             svgElement.setAttribute("height",           svgElementData[svgElementName].height);
                             break;
+                        }
                     }
                     break;
                 }
@@ -367,7 +344,6 @@ export const mapSvgVisualize = {
                 }
             }
         }
-
         mapSvgData[cm.svgId].keepHash = keepHash;
         mapSvgData[cm.svgId].svgElementData = copy(svgElementData);
         mapSvgData[cm.svgId].path = cm.path;
