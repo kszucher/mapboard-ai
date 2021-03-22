@@ -53,7 +53,7 @@ export const mapSvgVisualize = {
                     getBezier(
                         cm.path[2] === 0 ? cm.parentNodeEndXFrom : cm.parentNodeStartXFrom,
                         cm.parentNodeYFrom,
-                        cm.nodeStartX,
+                        cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
                         cm.nodeY,
                         cm.lineDeltaX,
                         cm.lineDeltaY,
