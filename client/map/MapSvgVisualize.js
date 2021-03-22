@@ -102,7 +102,7 @@ export const mapSvgVisualize = {
                 let x1, y1, x2, y2;
                 x1 = cm.nodeStartX;  y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 x2 = cm.nodeEndX;    y2 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
-                path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
+                path += `M${x1},${y1} L${x2},${y2}`;
             }
 
             let colCount = Object.keys(cm.c[0]).length;
@@ -112,7 +112,7 @@ export const mapSvgVisualize = {
                 y1 = cm.nodeY - selfHadj/2;
                 x2 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
                 y2 = cm.nodeY + selfHadj/2;
-                path += "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2;
+                path += `M${x1},${y1} L${x2},${y2}`;
             }
 
             svgElementData.tableGrid = {
@@ -164,7 +164,7 @@ export const mapSvgVisualize = {
             if (!cm.isEditing) {
                 svgElementData.taskLine = {
                     type: 'path',
-                    path: "M" + x1 + ',' + y1 + ' ' + 'L' + x2 + ',' + y2,
+                    path: `M${x1},${y1} L${x2},${y2}`,
                     color: '#eeeeee',
                     strokeWidth: 1,
                 };
@@ -215,8 +215,7 @@ export const mapSvgVisualize = {
 
             svgElementData['moveLine'] = {
                 type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' +
-                    "C" + c1x + ',' + c1y + ' ' + c2x + ',' + c2y + ' ' + x2 + ',' + y2,
+                path: `M${x1},{y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
                 color: '#5f0a87',
                 preventTransition: 1,
                 strokeWidth: 1,
