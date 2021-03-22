@@ -47,36 +47,32 @@ export const mapSvgVisualize = {
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-            let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
+            let x1, y1, x2, y2;
             if (step === 0) {
-                [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
-                    getBezier(
-                        cm.path[2] === 0 ? cm.parentNodeEndXFrom : cm.parentNodeStartXFrom,
-                        cm.parentNodeYFrom,
-                        cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
-                        cm.nodeY,
-                        cm.lineDeltaX,
-                        cm.lineDeltaY,
-                        cm.path[2] === 0 ? 1 : -1
-                    );
+                x1 = cm.path[2] === 0 ? cm.parentNodeEndXFrom : cm.parentNodeStartXFrom;
+                y1 = cm.parentNodeYFrom;
             }
             else if (step === 1) {
-                [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2] =
-                    getBezier(
-                        cm.path[2] === 0 ? cm.parentNodeEndX : cm.parentNodeStartX,
-                        cm.parentNodeY,
-                        cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX,
-                        cm.nodeY,
-                        cm.lineDeltaX,
-                        cm.lineDeltaY,
-                        cm.path[2] === 0 ? 1 : -1
-                    );
+                x1 = cm.path[2] === 0 ? cm.parentNodeEndX : cm.parentNodeStartX;
+                y1 = cm.parentNodeY;
+            }
+            x2 = cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX;
+            y2 = cm.nodeY;
+
+            let type = 'b';
+
+            let path;
+            if (type === 'b') {
+                let cp1x, cp1y, cp2x, cp2y;
+                [cp1x, cp1y, cp2x, cp2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1);
+                path = `M${x1},${y1} C${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`;
+            } else if (type === 'e') {
+                // path: `M${x1},${y1}, L${(x2-x1)/2},${y1}, L${(x2-x1)/2},${(y2-y1)/2}, L${x2},${y2}`,
             }
 
             svgElementData.connectionLine = {
                 type: 'path',
-                path: `M${x1},${y1} C${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`,
-                // path: `M${x1},${y1}, L${(x2-x1)/2},${y1}, L${(x2-x1)/2},${(y2-y1)/2}, L${x2},${y2}`,
+                path,
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
@@ -379,17 +375,13 @@ export const mapSvgVisualize = {
     }
 };
 
-function getBezier(sx, sy, ex, ey, deltaX, deltaY, dir) {
-    let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
-    x1 =    sx;
-    y1 =    sy;
+function getBezier(sx, sy, deltaX, deltaY, dir) {
+    let cp1x, cp1y, cp2x, cp2y;
     cp1x =  sx + dir * deltaX / 4;
     cp1y =  sy;
     cp2x =  sx + dir * deltaX / 4;
     cp2y =  sy + deltaY;
-    x2 =    ex;
-    y2 =    ey;
-    return [x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2];
+    return [cp1x, cp1y, cp2x, cp2y];
 }
 
 function getArc(x1, y1, v, h, r, dir) {
