@@ -13,7 +13,7 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, lineWidth, mapAction} = state;
+    const {density, alignment, fontSize, lineWidth, lineType, mapAction} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -30,23 +30,9 @@ export function MapComponent() {
         }
     }, [alignment]);
 
-    useEffect(() => {
-        if (lineWidth !== '') {
-            push();
-            nodeDispatch('applyLineWidth', lineWidth);
-            redraw();
-            checkPop();
-        }
-    }, [lineWidth]);
-
-    useEffect(() => {
-        if (fontSize !== '') {
-            push();
-            nodeDispatch('applyFontSize', fontSize);
-            redraw();
-            checkPop();
-        }
-    }, [fontSize]);
+    useEffect(() => { if (fontSize !== '')  {push(); nodeDispatch('applyFontSize', fontSize);   redraw(); checkPop()}}, [fontSize]);
+    useEffect(() => { if (lineWidth !== '') {push(); nodeDispatch('applyLineWidth', lineWidth); redraw(); checkPop()}}, [lineWidth]);
+    useEffect(() => { if (lineType !== '')  {push(); nodeDispatch('applyLineType', lineType);   redraw(); checkPop()}}, [lineType]);
 
     useEffect(() => {
         let lastAction = [...mapAction].pop();

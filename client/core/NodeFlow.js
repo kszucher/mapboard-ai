@@ -356,6 +356,17 @@ function nodeReducer(action, payload) {
             }
             break;
         }
+        case 'applyLineType': {
+            let lineTypeMapping = {
+                'bezier': 'b',
+                'edge': 'e',
+            }
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                cm.lineType = lineTypeMapping[payload];
+            }
+            break;
+        }
         case 'applyTaskStatus': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);

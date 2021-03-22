@@ -17,6 +17,7 @@ export const editorState = {
     alignment: '',
     fontSize: '',
     lineWidth: '',
+    lineType: '',
     colorMode: 'highlight',
 
     colorText: '',
@@ -159,9 +160,15 @@ const EditorReducer = (state, action) => {
                 case 2: lineWidth = 'p2'; break;
                 case 3: lineWidth = 'p3'; break;
             }
+            let lineType = 0;
+            switch (payload.lineWidth) {
+                case 1: lineType = 'bezier'; break;
+                case 2: lineType = 'edge'; break;
+            }
             return {...state,
                 fontSize,
                 lineWidth,
+                lineType,
                 colorText: payload.sTextColor,
                 colorBorder: payload.ellipseBorderColor,
                 colorHighlight: payload.ellipseFillColor,
@@ -172,6 +179,7 @@ const EditorReducer = (state, action) => {
         case 'SET_ALIGNMENT':   return {...state, alignment: payload};
         case 'SET_FONT_SIZE':   return {...state, fontSize: payload};
         case 'SET_LINE_WIDTH':  return {...state, lineWidth: payload};
+        case 'SET_LINE_TYPE':   return {...state, lineType: payload};
         case 'SET_COLOR_MODE':  return {...state, colorMode: payload};
         case 'SET_MOUSE_MODE':  return {...state, mouseMode: payload};
         case 'SET_MAP_ACTION':  return {...state, mapAction: [...state.mapAction, payload]};

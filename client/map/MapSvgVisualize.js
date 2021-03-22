@@ -59,14 +59,12 @@ export const mapSvgVisualize = {
             x2 = cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX;
             y2 = cm.nodeY;
 
-            let type = 'e';
-
             let path;
-            if (type === 'b') {
+            if (cm.lineType === 'b') {
                 let c1x, c1y, c2x, c2y;
                 [c1x, c1y, c2x, c2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1);
                 path = `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
-            } else if (type === 'e') {
+            } else if (cm.lineType === 'e') {
                 let m1x, m1y, m2x, m2y;
                 [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1)
                 path = `M${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
