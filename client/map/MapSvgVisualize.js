@@ -59,15 +59,17 @@ export const mapSvgVisualize = {
             x2 = cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX;
             y2 = cm.nodeY;
 
-            let type = 'b';
+            let type = 'e';
 
             let path;
             if (type === 'b') {
-                let cp1x, cp1y, cp2x, cp2y;
-                [cp1x, cp1y, cp2x, cp2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1);
-                path = `M${x1},${y1} C${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`;
+                let c1x, c1y, c2x, c2y;
+                [c1x, c1y, c2x, c2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1);
+                path = `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
             } else if (type === 'e') {
-                // path: `M${x1},${y1}, L${(x2-x1)/2},${y1}, L${(x2-x1)/2},${(y2-y1)/2}, L${x2},${y2}`,
+                let m1x, m1y, m2x, m2y;
+                [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1)
+                path = `M${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
             }
 
             svgElementData.connectionLine = {
@@ -204,19 +206,19 @@ export const mapSvgVisualize = {
 
         // move line
         if (cm.moveLine.length) {
-            let x1, y1, cp1x, cp1y, cp2x, cp2y, x2, y2;
+            let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
             let deltaX = cm.moveLine[2] - cm.moveLine[0];
             let deltaY = cm.moveLine[3] - cm.moveLine[1];
 
             x1 =    cm.moveLine[0];                 y1 =    cm.moveLine[1];
-            cp1x =  cm.moveLine[0] + deltaX / 4;    cp1y =  cm.moveLine[1];
-            cp2x =  cm.moveLine[0] + deltaX / 4;    cp2y =  cm.moveLine[1] + deltaY;
+            c1x =  cm.moveLine[0] + deltaX / 4;    c1y =  cm.moveLine[1];
+            c2x =  cm.moveLine[0] + deltaX / 4;    c2y =  cm.moveLine[1] + deltaY;
             x2 =    cm.moveLine[2];                 y2 =    cm.moveLine[3];
 
             svgElementData['moveLine'] = {
                 type: 'path',
                 path: "M" + x1 + ',' + y1 + ' ' +
-                    "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
+                    "C" + c1x + ',' + c1y + ' ' + c2x + ',' + c2y + ' ' + x2 + ',' + y2,
                 color: '#5f0a87',
                 preventTransition: 1,
                 strokeWidth: 1,
@@ -376,12 +378,21 @@ export const mapSvgVisualize = {
 };
 
 function getBezier(sx, sy, deltaX, deltaY, dir) {
-    let cp1x, cp1y, cp2x, cp2y;
-    cp1x =  sx + dir * deltaX / 4;
-    cp1y =  sy;
-    cp2x =  sx + dir * deltaX / 4;
-    cp2y =  sy + deltaY;
-    return [cp1x, cp1y, cp2x, cp2y];
+    let c1x, c1y, c2x, c2y;
+    c1x =  sx + dir * deltaX / 4;
+    c1y =  sy;
+    c2x =  sx + dir * deltaX / 4;
+    c2y =  sy + deltaY;
+    return [c1x, c1y, c2x, c2y];
+}
+
+function getEdge(sx, sy, deltaX, deltaY, dir) {
+    let m1x, m1y, m2x, m2y;
+    m1x =  sx + dir * deltaX / 2;
+    m1y =  sy;
+    m2x =  sx + dir * deltaX / 2;
+    m2y =  sy + deltaY;
+    return [m1x, m1y, m2x, m2y];
 }
 
 function getArc(x1, y1, v, h, r, dir) {
