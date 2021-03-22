@@ -75,7 +75,8 @@ export const mapSvgVisualize = {
 
             svgElementData.connectionLine = {
                 type: 'path',
-                path: "M" + x1 + ',' + y1 + ' ' + "C" + cp1x + ',' + cp1y + ' ' + cp2x + ',' + cp2y + ' ' + x2 + ',' + y2,
+                path: `M${x1},${y1} C${cp1x},${cp1y} ${cp2x},${cp2y} ${x2},${y2}`,
+                // path: `M${x1},${y1}, L${(x2-x1)/2},${y1}, L${(x2-x1)/2},${(y2-y1)/2}, L${x2},${y2}`,
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
