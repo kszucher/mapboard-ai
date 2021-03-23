@@ -4,8 +4,9 @@ import {mapSvgData, keepHash} from "../core/DomFlow";
 
 let svgElementNameList = [
     'connectionLine',
-    'tableGrid',
+    'branchHighlight',
     'tableFrame',
+    'tableGrid',
     'cellFrame',
     'taskLine',
     'taskCircle0',
@@ -14,7 +15,7 @@ let svgElementNameList = [
     'taskCircle3',
     'moveLine',
     'moveRect',
-    'selectionRect'
+    'selectionRect',
 ];
 
 export const mapSvgVisualize = {
@@ -46,23 +47,23 @@ export const mapSvgVisualize = {
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, x2, y2;
             if (step === 0) {
-                x1 = cm.path[2] === 0 ? cm.parentNodeEndXFrom : cm.parentNodeStartXFrom;
+                x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
             }
             else if (step === 1) {
-                x1 = cm.path[2] === 0 ? cm.parentNodeEndX : cm.parentNodeStartX;
+                x1 = cm.path[2]? cm.parentNodeStartX : cm.parentNodeEndX;
                 y1 = cm.parentNodeY;
             }
-            x2 = cm.path[2] === 0 ? cm.nodeStartX : cm.nodeEndX;
+            x2 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
             y2 = cm.nodeY;
             let path;
             if (cm.lineType === 'b') {
                 let c1x, c1y, c2x, c2y;
-                [c1x, c1y, c2x, c2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1);
+                [c1x, c1y, c2x, c2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1);
                 path = `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
             } else if (cm.lineType === 'e') {
                 let m1x, m1y, m2x, m2y;
-                [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2] === 0 ? 1 : -1)
+                [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1)
                 path = `M${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
             }
             svgElementData.connectionLine = {
@@ -72,6 +73,16 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
+        // branch
+        // if (cm.hasBranchHighlight) {
+        //     let a = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+        //     svgElementData.branchHighlight = {
+        //         type: 'path',
+        //         path,
+        //         color: cm.lineColor,
+        //         strokeWidth: cm.lineWidth,
+        //     }
+        // }
         // table frame
         if (cm.type === "struct" && cm.hasCell) {
             let r = 8;
@@ -115,7 +126,7 @@ export const mapSvgVisualize = {
         // table cell frame
         if (cm.type === 'cell' && cm.selected) {
             let r = 8;
-            let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
+            let x1 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
             let y1 = cm.nodeY - selfHadj / 2 + r;
             let h = cm.selfW - 2 * r;
             let v = cm.selfH - 2 * r;
@@ -139,8 +150,8 @@ export const mapSvgVisualize = {
             !cm.isRootChild) {
             let {mapWidth, margin} = mapState;
             let {n, d, gap, width} = mapState.taskConfig;
-            let startX = cm.path[2] === 0 ? mapWidth - width - margin : margin + width;
-            let x1 = cm.path[2] === 0 ? cm.nodeEndX : cm.nodeStartX;
+            let startX = cm.path[2]? margin + width : mapWidth - width - margin;
+            let x1 = cm.path[2]? cm.nodeStartX : cm.nodeEndX;
             let y1 = cm.nodeY;
             let x2 = startX;
             let y2 = cm.nodeY;
@@ -153,7 +164,7 @@ export const mapSvgVisualize = {
                 };
             }
             for (let i = 0; i < n; i++) {
-                let centerX = cm.path[2] === 0 ? startX + d/2 + i * (d + gap) : startX - d/2 - i * (d + gap);
+                let centerX = cm.path[2]? startX - d/2 - i * (d + gap) : startX + d/2 + i * (d + gap);
                 let centerY = cm.nodeY;
                 let fill;
                 if (cm.taskStatus === i) {

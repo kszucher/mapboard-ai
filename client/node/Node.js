@@ -28,6 +28,7 @@ export let props = {
         ellipseFillColor:                       getBgc(),
         ellipseLineWidth:                       1,
         taskStatus:                             -1,
+        hasBranchHighlight:                     0,
     },
     saveNever: {
         initOnce: {
