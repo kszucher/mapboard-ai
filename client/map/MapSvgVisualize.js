@@ -41,6 +41,7 @@ export const mapSvgVisualize = {
     animate: (cm, step) => {
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
+        let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
         // connectionLine
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
@@ -75,14 +76,21 @@ export const mapSvgVisualize = {
         }
         // branch
         // if (cm.hasBranchHighlight) {
-        //     let a = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
-        //     svgElementData.branchHighlight = {
-        //         type: 'path',
-        //         path,
-        //         color: cm.lineColor,
-        //         strokeWidth: cm.lineWidth,
-        //     }
-        // }
+        if (cm.content === 'Equations') {
+            let ax = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+            let bx = cm.path[2]? cm.nodeStartX - cm.lineDeltaX: cm.nodeEndX + cm.lineDeltaX;
+            let cx = cm.path[2]? cm.nodeEndX - cm.familyW - cm.selfW: cm.nodeStartX + cm.familyW + cm.selfW;
+            let ayu = cm.nodeY - selfHadj / 2;
+            let ayd = cm.nodeY + selfHadj / 2;
+            let bcyu = cm.nodeY - maxHadj / 2;
+            let bcyd = cm.nodeY + maxHadj / 2;
+            svgElementData.branchHighlight = {
+                type: 'path',
+                path: `M${ax},${ayu} ${bx},${bcyu} ${cx},${bcyu} ${cx},${bcyd} ${bx},${bcyd} ${ax},${ayd}z`,
+                color: cm.lineColor,
+                strokeWidth: cm.lineWidth,
+            }
+        }
         // table frame
         if (cm.type === "struct" && cm.hasCell) {
             let r = 8;
