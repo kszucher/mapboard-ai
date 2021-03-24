@@ -61,11 +61,11 @@ export const mapSvgVisualize = {
             if (cm.lineType === 'b') {
                 let c1x, c1y, c2x, c2y;
                 [c1x, c1y, c2x, c2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1);
-                path = `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
+                path = getBezierPath('M', [x1,y1,c1x,c1y,c2x,c2y,x2,y2]);
             } else if (cm.lineType === 'e') {
                 let m1x, m1y, m2x, m2y;
                 [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1)
-                path = `M${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
+                path = getEdgePath('M', [x1,y1,m1x,m1y,m2x,m2y,x2,y2]);
             }
             svgElementData.connectionLine = {
                 type: 'path',
@@ -86,7 +86,7 @@ export const mapSvgVisualize = {
             let bcyd = cm.nodeY + maxHadj / 2;
             svgElementData.branchHighlight = {
                 type: 'path',
-                path: `M${ax},${ayu} ${bx},${bcyu} ${cx},${bcyu} ${cx},${bcyd} ${bx},${bcyd} ${ax},${ayd}z`,
+                path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]]),
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
@@ -378,6 +378,10 @@ function getBezier(sx, sy, deltaX, deltaY, dir) {
     return [c1x, c1y, c2x, c2y];
 }
 
+function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
+    return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
+}
+
 function getEdge(sx, sy, deltaX, deltaY, dir) {
     let m1x, m1y, m2x, m2y;
     m1x =  sx + dir * deltaX / 2;
@@ -385,6 +389,10 @@ function getEdge(sx, sy, deltaX, deltaY, dir) {
     m2x =  sx + dir * deltaX / 2;
     m2y =  sy + deltaY;
     return [m1x, m1y, m2x, m2y];
+}
+
+function getEdgePath(c, [x1,y1,m1x,m1y,m2x,m2y,x2,y2]) {
+    return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
 }
 
 function getArc(x1, y1, h, v, r, dir) {
@@ -401,4 +409,29 @@ function getArc(x1, y1, h, v, r, dir) {
         a${+r},${+r} 0 0 0 ${+r},${+r} h${+h} 
         a${+r},${+r} 0 0 0 ${+r},${-r}`
     }
+}
+
+function getCoordsInLine(x0,y0,x1,y1,dt) {
+    let xt,yt;
+    let d = Math.sqrt(Math.pow((x1-x0),2)+Math.pow((y1-y0),2));
+    let t = dt/d;
+    xt = (1-t)*x0+t*x1;
+    yt = (1-t)*y0+t*y1;
+    return [xt, yt];
+}
+
+function getRoundedPath(points) {
+    let path = '';
+    let radius = 30;
+    for (let i = 0; i < points.length; i++) {
+        let prevPoint = i === 0 ? points[points.length - 1] : points[i-1];
+        let currPoint = points[i];
+        let nextPoint = i === points.length - 1 ? points[0] : points[i+1];
+        let sx,sy; [sx,sy] = getCoordsInLine(currPoint[0], currPoint[1], prevPoint[0], prevPoint[1], radius);
+        let c1x, c1y; [c1x, c1y] = currPoint;
+        let c2x, c2y; [c2x, c2y] = currPoint;
+        let ex,ey; [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
+        path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
+    }
+    return path;
 }
