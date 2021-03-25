@@ -111,8 +111,10 @@ export const mapSvgVisualize = {
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
                 let x1, y1, x2, y2;
-                x1 = cm.nodeStartX;  y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
-                x2 = cm.nodeEndX;    y2 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                x1 = cm.nodeStartX;
+                y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                x2 = cm.nodeEndX;
+                y2 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
                 path += `M${x1},${y1} L${x2},${y2}`;
             }
             let colCount = Object.keys(cm.c[0]).length;
@@ -422,14 +424,14 @@ function getCoordsInLine(x0,y0,x1,y1,dt) {
 
 function getRoundedPath(points) {
     let path = '';
-    let radius = 30;
+    let radius = 14;
     for (let i = 0; i < points.length; i++) {
         let prevPoint = i === 0 ? points[points.length - 1] : points[i-1];
         let currPoint = points[i];
         let nextPoint = i === points.length - 1 ? points[0] : points[i+1];
-        let sx,sy; [sx,sy] = getCoordsInLine(currPoint[0], currPoint[1], prevPoint[0], prevPoint[1], radius);
-        let c1x, c1y; [c1x, c1y] = currPoint;
-        let c2x, c2y; [c2x, c2y] = currPoint;
+        let [sx,sy] = getCoordsInLine(currPoint[0], currPoint[1], prevPoint[0], prevPoint[1], radius);
+        let [c1x, c1y] = currPoint;
+        let [c2x, c2y] = currPoint;
         let ex,ey; [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
         path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
     }
