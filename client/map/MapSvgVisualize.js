@@ -63,9 +63,10 @@ export const mapSvgVisualize = {
             y2 = cm.nodeY;
             let path;
             if (cm.lineType === 'b') {
-                let c1x, c1y, c2x, c2y;
-                [c1x, c1y, c2x, c2y] = getBezier(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1);
-                path = getBezierPath('M', [x1,y1,c1x,c1y,c2x,c2y,x2,y2]);
+                path = getConnection(x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, cm.path[2]? -1 : 1);
+                // let c1x, c1y, c2x, c2y;
+                // [c1x, c1y, c2x, c2y] =
+                // path = getBezierPath('M', [x1,y1,c1x,c1y,c2x,c2y,x2,y2]);
             } else if (cm.lineType === 'e') {
                 let m1x, m1y, m2x, m2y;
                 [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1)
@@ -375,13 +376,13 @@ export const mapSvgVisualize = {
     }
 };
 
-function getBezier(sx, sy, deltaX, deltaY, dir) {
+function getConnection(sx, sy, deltaX, deltaY, ex, ey, dir) {
     let c1x, c1y, c2x, c2y;
     c1x =  sx + dir * deltaX / 4;
     c1y =  sy;
     c2x =  sx + dir * deltaX / 4;
     c2y =  sy + deltaY;
-    return [c1x, c1y, c2x, c2y];
+    return getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey]);
 }
 
 function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
