@@ -54,8 +54,7 @@ export const mapSvgVisualize = {
             if (step === 0) {
                 x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
-            }
-            else if (step === 1) {
+            } else if (step === 1) {
                 x1 = cm.path[2]? cm.parentNodeStartX : cm.parentNodeEndX;
                 y1 = cm.parentNodeY;
             }
@@ -365,21 +364,27 @@ export const mapSvgVisualize = {
     }
 };
 
-function getConnectionLine(lineType, sx, sy, deltaX, deltaY, ex, ey, dir) {
+function getConnectionLine(lineType, sx, sy, dx, dy, ex, ey, dir) {
     let path;
     if (lineType === 'b') {
-        let c1x, c1y, c2x, c2y;
-        c1x =  sx + dir * deltaX / 4;
-        c1y =  sy;
-        c2x =  sx + dir * deltaX / 4;
-        c2y =  sy + deltaY;
+        let c1x = sx + dir * dx / 4;
+        let c1y = sy;
+        let c2x = sx + dir * dx / 4;
+        let c2y = sy + dy;
         path = getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey]);
+    } else if (lineType === 'bc') {
+        let sxn = sx + dir*15;
+        let dxn  = dx / 2;
+        let c1x =  sxn + dir * dxn;
+        let c1y =  sy;
+        let c2x =  sxn + dir * dxn / 4;
+        let c2y =  sy + dy;
+        path = `M${sx},${sy} L${sxn},${sy} ` + getBezierPath('M', [sxn, sy, c1x, c1y, c2x, c2y, ex, ey]);
     } else if (lineType === 'e') {
-        let m1x, m1y, m2x, m2y;
-        m1x =  sx + dir * deltaX / 2;
-        m1y =  sy;
-        m2x =  sx + dir * deltaX / 2;
-        m2y =  sy + deltaY;
+        let m1x =  sx + dir * dx / 2;
+        let m1y =  sy;
+        let m2x =  sx + dir * dx / 2;
+        let m2y =  sy + dy;
         path = getEdgePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey]);
     }
     return path;
