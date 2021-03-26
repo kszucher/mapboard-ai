@@ -4,6 +4,7 @@ import {mapSvgData, keepHash} from "../core/DomFlow";
 
 let svgElementNameList = [
     'connectionLine',
+    'connectionCircle',
     'branchHighlight',
     'tableFrame',
     'tableGrid',
@@ -50,7 +51,7 @@ export const mapSvgVisualize = {
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-            let x1, y1, x2, y2;
+            let x1, y1, x2, y2, dir;
             if (step === 0) {
                 x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
@@ -60,13 +61,29 @@ export const mapSvgVisualize = {
             }
             x2 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
             y2 = cm.nodeY;
+            dir = cm.path[2]? -1 : 1;
             svgElementData.connectionLine = {
                 type: 'path',
-                path: getConnectionLine(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, cm.path[2]? -1 : 1),
+                path: getConnectionLine(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
         }
+
+        if (cm.lineType === 'bc' && cm.s.length > 0) {
+            let x1, y1, dir;
+            dir = cm.path[2]? -1 : 1;
+            x1 = cm.path[2] ? cm.nodeStartX : cm.nodeEndX;
+            y1 = cm.nodeY;
+            svgElementData.connectionCircle = {
+                type: 'circle',
+                cx: x1 + dir * 4,
+                cy: y1,
+                r: 4,
+                fill: cm.lineColor,
+            }
+        }
+
         // branch
         // if (cm.hasBranchHighlight) {
         if (cm.content === 'Equations') {
