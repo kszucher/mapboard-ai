@@ -467,6 +467,13 @@ export function MapComponent() {
     return (
         <div id = "mapHolderDiv">
             <div id = 'mapWrap'>
+
+                {/*<svg id="mapSvgOuter2">*/}
+                {/*    <svg  x = "1800" y = "900px" height="1600" width="1600">*/}
+                {/*        <circle  cx="800" cy="810" r="600" stroke="#E8FEFF"  fill="#E8FEFF" />*/}
+                {/*    </svg>*/}
+                {/*</svg>*/}
+
                 <div id='mapDiv'/>
                 <svg id="mapSvgOuter">
                     <svg id="mapSvgInner" x='calc(100vw)' y='calc(100vh)'/>

@@ -15,6 +15,9 @@
     background-color: #fbfafc;
     transition-property: width, height;
     display: flex;
+
+    /*background: inherit;*/
+    /*backdrop-filter: blur(20px);*/
 }
 
 #mapSvgOuter {
@@ -22,6 +25,12 @@
     left: 0;
     top: 0;
 }
+
+/*#mapSvgOuter2 {*/
+/*    position: absolute;*/
+/*    left: 0;*/
+/*    top: 0;*/
+/*}*/
 
 #mapSvgInner {
     overflow: visible;
