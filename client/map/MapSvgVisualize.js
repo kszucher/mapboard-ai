@@ -61,20 +61,9 @@ export const mapSvgVisualize = {
             }
             x2 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
             y2 = cm.nodeY;
-            let path;
-            if (cm.lineType === 'b') {
-                path = getConnection(x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, cm.path[2]? -1 : 1);
-                // let c1x, c1y, c2x, c2y;
-                // [c1x, c1y, c2x, c2y] =
-                // path = getBezierPath('M', [x1,y1,c1x,c1y,c2x,c2y,x2,y2]);
-            } else if (cm.lineType === 'e') {
-                let m1x, m1y, m2x, m2y;
-                [m1x, m1y, m2x, m2y] = getEdge(x1, y1, cm.lineDeltaX, cm.lineDeltaY, cm.path[2]? -1 : 1)
-                path = getEdgePath('M', [x1,y1,m1x,m1y,m2x,m2y,x2,y2]);
-            }
             svgElementData.connectionLine = {
                 type: 'path',
-                path,
+                path: getConnectionLine(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, cm.path[2]? -1 : 1),
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
@@ -376,30 +365,24 @@ export const mapSvgVisualize = {
     }
 };
 
-function getConnection(sx, sy, deltaX, deltaY, ex, ey, dir) {
-    let c1x, c1y, c2x, c2y;
-    c1x =  sx + dir * deltaX / 4;
-    c1y =  sy;
-    c2x =  sx + dir * deltaX / 4;
-    c2y =  sy + deltaY;
-    return getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey]);
-}
-
-function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
-    return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
-}
-
-function getEdge(sx, sy, deltaX, deltaY, dir) {
-    let m1x, m1y, m2x, m2y;
-    m1x =  sx + dir * deltaX / 2;
-    m1y =  sy;
-    m2x =  sx + dir * deltaX / 2;
-    m2y =  sy + deltaY;
-    return [m1x, m1y, m2x, m2y];
-}
-
-function getEdgePath(c, [x1,y1,m1x,m1y,m2x,m2y,x2,y2]) {
-    return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
+function getConnectionLine(lineType, sx, sy, deltaX, deltaY, ex, ey, dir) {
+    let path;
+    if (lineType === 'b') {
+        let c1x, c1y, c2x, c2y;
+        c1x =  sx + dir * deltaX / 4;
+        c1y =  sy;
+        c2x =  sx + dir * deltaX / 4;
+        c2y =  sy + deltaY;
+        path = getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey]);
+    } else if (lineType === 'e') {
+        let m1x, m1y, m2x, m2y;
+        m1x =  sx + dir * deltaX / 2;
+        m1y =  sy;
+        m2x =  sx + dir * deltaX / 2;
+        m2y =  sy + deltaY;
+        path = getEdgePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey]);
+    }
+    return path;
 }
 
 function getArc(x1, y1, h, v, r, dir) {
@@ -418,15 +401,6 @@ function getArc(x1, y1, h, v, r, dir) {
     }
 }
 
-function getCoordsInLine(x0,y0,x1,y1,dt) {
-    let xt,yt;
-    let d = Math.sqrt(Math.pow((x1-x0),2)+Math.pow((y1-y0),2));
-    let t = dt/d;
-    xt = (1-t)*x0+t*x1;
-    yt = (1-t)*y0+t*y1;
-    return [xt, yt];
-}
-
 function getRoundedPath(points) {
     let path = '';
     let radius = 14;
@@ -441,4 +415,21 @@ function getRoundedPath(points) {
         path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
     }
     return path;
+}
+
+function getCoordsInLine(x0,y0,x1,y1,dt) {
+    let xt,yt;
+    let d = Math.sqrt(Math.pow((x1-x0),2)+Math.pow((y1-y0),2));
+    let t = dt/d;
+    xt = (1-t)*x0+t*x1;
+    yt = (1-t)*y0+t*y1;
+    return [xt, yt];
+}
+
+function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
+    return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
+}
+
+function getEdgePath(c, [x1,y1,m1x,m1y,m2x,m2y,x2,y2]) {
+    return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
 }
