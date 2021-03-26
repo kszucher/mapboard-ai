@@ -425,7 +425,7 @@ function getArc(x1, y1, h, v, r, dir) {
 
 function getRoundedPath(points) {
     let path = '';
-    let radius = 14;
+    let radius = 16;
     for (let i = 0; i < points.length; i++) {
         let prevPoint = i === 0 ? points[points.length - 1] : points[i-1];
         let currPoint = points[i];
@@ -436,7 +436,7 @@ function getRoundedPath(points) {
         let ex,ey; [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
         path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
     }
-    return path;
+    return path + 'z';
 }
 
 function getCoordsInLine(x0,y0,x1,y1,dt) {
