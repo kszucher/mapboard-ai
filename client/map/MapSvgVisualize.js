@@ -1,6 +1,6 @@
-import {genHash, copy, isOdd} from "../core/Utils";
+import {copy, genHash, isOdd} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
-import {mapSvgData, keepHash} from "../core/DomFlow";
+import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 
 let svgElementNameList = [
@@ -48,11 +48,15 @@ export const mapSvgVisualize = {
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
+        let nsx = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+        let nsy = cm.nodeY - selfHadj/2;
+        let ney = cm.nodeY + selfHadj/2;
+        let dir = cm.path[2]? -1 : 1;
         // connectionLine
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-            let x1, y1, x2, y2, dir;
+            let x1, y1, x2, y2;
             if (step === 0) {
                 x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
@@ -60,9 +64,8 @@ export const mapSvgVisualize = {
                 x1 = cm.path[2]? cm.parentNodeStartX : cm.parentNodeEndX;
                 y1 = cm.parentNodeY;
             }
-            x2 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+            x2 = nsx;
             y2 = cm.nodeY;
-            dir = cm.path[2]? -1 : 1;
             svgElementData.connectionLine = {
                 type: 'path',
                 path: getConnectionLine(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
@@ -72,13 +75,12 @@ export const mapSvgVisualize = {
         }
 
         if (cm.lineType === 'bc' && cm.s.length > 0) {
-            let x1, y1, dir;
-            dir = cm.path[2]? -1 : 1;
+            let x1, y1;
             x1 = cm.path[2] ? cm.nodeStartX : cm.nodeEndX;
             y1 = cm.nodeY;
             svgElementData.connectionCircle = {
                 type: 'circle',
-                cx: x1 + dir * 4,
+                cx: x1 + dir*4,
                 cy: y1,
                 r: 4,
                 fill: cm.lineColor,
@@ -88,11 +90,11 @@ export const mapSvgVisualize = {
         // branch
         // if (cm.hasBranchHighlight) {
         if (cm.content === 'Equations') {
-            let ax = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+            let ax = nsx;
             let bx = cm.path[2]? cm.nodeStartX - cm.lineDeltaX: cm.nodeEndX + cm.lineDeltaX;
             let cx = cm.path[2]? cm.nodeEndX - cm.familyW - cm.selfW: cm.nodeStartX + cm.familyW + cm.selfW;
-            let ayu = cm.nodeY - selfHadj / 2;
-            let ayd = cm.nodeY + selfHadj / 2;
+            let ayu = nsy;
+            let ayd = ney;
             let bcyu = cm.nodeY - maxHadj / 2;
             let bcyd = cm.nodeY + maxHadj / 2;
             svgElementData.branchHighlight = {
@@ -107,7 +109,7 @@ export const mapSvgVisualize = {
             // frame
             let r = 8;
             let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
-            let y1 = cm.nodeY - selfHadj/2;
+            let y1 = nsy;
             let w = cm.selfW;
             let h = cm.selfH;
             svgElementData.tableFrame = {
@@ -122,15 +124,13 @@ export const mapSvgVisualize = {
             for (let i = 1; i < rowCount; i++) {
                 let x1 = cm.nodeStartX;
                 let x2 = cm.nodeEndX;
-                let y = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                let y = nsy + cm.sumMaxRowHeight[i];
                 path += `M${x1},${y} L${x2},${y}`;
             }
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
-                let x = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
-                let y1 = cm.nodeY - selfHadj/2;
-                let y2 = cm.nodeY + selfHadj/2;
-                path += `M${x},${y1} L${x},${y2}`;
+                let x = nsx + dir*cm.sumMaxColWidth[j];
+                path += `M${x},${nsy} L${x},${ney}`;
             }
             svgElementData.tableGrid = {
                 type: 'path',
@@ -145,18 +145,18 @@ export const mapSvgVisualize = {
                         let x1, y1, w, h;
                         let sc = selectionState;
                         if (sc.cellRowSelected) {
-                            x1 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
-                            y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                            x1 = nsx;
+                            y1 = nsy + cm.sumMaxRowHeight[i];
                             w = cm.selfW;
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         } else if (sc.cellColSelected) {
-                            x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
-                            y1 = cm.nodeY - selfHadj/2;
+                            x1 = nsx + dir*cm.sumMaxColWidth[j];
+                            y1 = nsy;
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.selfH;
                         } else {
-                            x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
-                            y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                            x1 = nsx + dir*cm.sumMaxColWidth[j];
+                            y1 = nsy + cm.sumMaxRowHeight[i];
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         }
