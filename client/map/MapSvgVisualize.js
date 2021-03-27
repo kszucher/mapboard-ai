@@ -226,6 +226,7 @@ export const mapSvgVisualize = {
             let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
             let deltaX = cm.moveLine[2] - cm.moveLine[0];
             let deltaY = cm.moveLine[3] - cm.moveLine[1];
+            // the elegant solution would be the inheritance of the target line type
             x1 = cm.moveLine[0];
             y1 = cm.moveLine[1];
             c1x = cm.moveLine[0] + deltaX / 4;
