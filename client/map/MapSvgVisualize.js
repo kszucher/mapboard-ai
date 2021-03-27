@@ -25,7 +25,6 @@ export const mapSvgVisualize = {
         // let mapSvgOuter2 = document.getElementById('mapSvgOuter2');
         // mapSvgOuter2.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
         // mapSvgOuter2.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
-
         let mapSvgOuter = document.getElementById('mapSvgOuter');
         mapSvgOuter.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
@@ -49,6 +48,7 @@ export const mapSvgVisualize = {
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
         let nsx = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+        let nex = cm.path[2]? cm.nodeStartX : cm.nodeEndX;
         let nsy = cm.nodeY - selfHadj/2;
         let ney = cm.nodeY + selfHadj/2;
         let dir = cm.path[2]? -1 : 1;
@@ -73,10 +73,9 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-
         if (cm.lineType === 'bc' && cm.s.length > 0) {
             let x1, y1;
-            x1 = cm.path[2] ? cm.nodeStartX : cm.nodeEndX;
+            x1 = nex;
             y1 = cm.nodeY;
             svgElementData.connectionCircle = {
                 type: 'circle',
@@ -86,13 +85,11 @@ export const mapSvgVisualize = {
                 fill: cm.lineColor,
             }
         }
-
         // branch
-        // if (cm.hasBranchHighlight) {
-        if (cm.content === 'Equations') {
+        if (cm.content === 'Equations') { // cm.hasBranchHighlight
             let ax = nsx;
-            let bx = cm.path[2]? cm.nodeStartX - cm.lineDeltaX: cm.nodeEndX + cm.lineDeltaX;
-            let cx = cm.path[2]? cm.nodeEndX - cm.familyW - cm.selfW: cm.nodeStartX + cm.familyW + cm.selfW;
+            let bx = nex + dir*cm.lineDeltaX;
+            let cx = nsx + dir*(cm.familyW + cm.selfW);
             let ayu = nsy;
             let ayd = ney;
             let bcyu = cm.nodeY - maxHadj / 2;
@@ -108,7 +105,7 @@ export const mapSvgVisualize = {
         if (cm.type === "struct" && cm.hasCell) {
             // frame
             let r = 8;
-            let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
+            let x1 = nsx;
             let y1 = nsy;
             let w = cm.selfW;
             let h = cm.selfH;
@@ -184,14 +181,13 @@ export const mapSvgVisualize = {
             let {mapWidth, margin} = mapState;
             let {n, d, gap, width} = mapState.taskConfig;
             let startX = cm.path[2]? margin + width : mapWidth - width - margin;
-            let x1 = cm.path[2]? cm.nodeStartX : cm.nodeEndX;
-            let y1 = cm.nodeY;
+            let x1 = nex;
             let x2 = startX;
-            let y2 = cm.nodeY;
+            let y = cm.nodeY;
             if (!cm.isEditing) {
                 svgElementData.taskLine = {
                     type: 'path',
-                    path: `M${x1},${y1} L${x2},${y2}`,
+                    path: `M${x1},${y} L${x2},${y}`,
                     color: '#eeeeee',
                     strokeWidth: 1,
                 };
@@ -230,10 +226,14 @@ export const mapSvgVisualize = {
             let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
             let deltaX = cm.moveLine[2] - cm.moveLine[0];
             let deltaY = cm.moveLine[3] - cm.moveLine[1];
-            x1 =    cm.moveLine[0];                 y1 =    cm.moveLine[1];
-            c1x =   cm.moveLine[0] + deltaX / 4;    c1y =  cm.moveLine[1];
-            c2x =   cm.moveLine[0] + deltaX / 4;    c2y =  cm.moveLine[1] + deltaY;
-            x2 =    cm.moveLine[2];                 y2 =    cm.moveLine[3];
+            x1 = cm.moveLine[0];
+            y1 = cm.moveLine[1];
+            c1x = cm.moveLine[0] + deltaX / 4;
+            c1y = cm.moveLine[1];
+            c2x = cm.moveLine[0] + deltaX / 4;
+            c2y = cm.moveLine[1] + deltaY;
+            x2 = cm.moveLine[2];
+            y2 = cm.moveLine[3];
             svgElementData.moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
