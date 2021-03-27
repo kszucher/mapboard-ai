@@ -101,8 +101,9 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-        // table frame
+        // table
         if (cm.type === "struct" && cm.hasCell) {
+            // frame
             let r = 8;
             let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
             let y1 = cm.nodeY - selfHadj / 2 + r;
@@ -114,27 +115,21 @@ export const mapSvgVisualize = {
                 color: cm.selected? '#000000' : cm.cBorderColor,
                 strokeWidth: 1,
             };
-        }
-        // table grid
-        if (cm.type === "struct" && cm.hasCell) {
+            // grid
             let path = '';
             let rowCount = Object.keys(cm.c).length;
             for (let i = 1; i < rowCount; i++) {
-                let x1, y1, x2, y2;
-                x1 = cm.nodeStartX;
-                y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
-                x2 = cm.nodeEndX;
-                y2 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
-                path += `M${x1},${y1} L${x2},${y2}`;
+                let x1 = cm.nodeStartX;
+                let x2 = cm.nodeEndX;
+                let y = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                path += `M${x1},${y} L${x2},${y}`;
             }
             let colCount = Object.keys(cm.c[0]).length;
             for (let j = 1; j < colCount; j++) {
-                let x1, y1, x2, y2;
-                x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
-                y1 = cm.nodeY - selfHadj/2;
-                x2 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
-                y2 = cm.nodeY + selfHadj/2;
-                path += `M${x1},${y1} L${x2},${y2}`;
+                let x = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
+                let y1 = cm.nodeY - selfHadj/2;
+                let y2 = cm.nodeY + selfHadj/2;
+                path += `M${x},${y1} L${x},${y2}`;
             }
             svgElementData.tableGrid = {
                 type: 'path',
