@@ -1,6 +1,7 @@
 import {genHash, copy, isOdd} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 import {mapSvgData, keepHash} from "../core/DomFlow";
+import {selectionState} from "../core/SelectionFlow";
 
 let svgElementNameList = [
     'connectionLine',
@@ -106,12 +107,12 @@ export const mapSvgVisualize = {
             // frame
             let r = 8;
             let x1 = cm.path[2] ? cm.nodeEndX : cm.nodeStartX;
-            let y1 = cm.nodeY - selfHadj / 2 + r;
-            let h = cm.selfW - 2 * r;
-            let v = cm.selfH - 2 * r;
+            let y1 = cm.nodeY - selfHadj/2;
+            let w = cm.selfW;
+            let h = cm.selfH;
             svgElementData.tableFrame = {
                 type: 'path',
-                path: getArc(x1, y1, h, v, r, cm.path[2]),
+                path: getArc(x1, y1, w, h, r, cm.path[2]),
                 color: cm.selected? '#000000' : cm.cBorderColor,
                 strokeWidth: 1,
             };
@@ -137,21 +138,38 @@ export const mapSvgVisualize = {
                 color: '#dddddd',
                 strokeWidth: 1,
             };
-        }
-        // table cell frame
-        if (cm.type === 'cell' && cm.selected) {
-            let r = 8;
-            let x1 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
-            let y1 = cm.nodeY - selfHadj / 2 + r;
-            let h = cm.selfW - 2 * r;
-            let v = cm.selfH - 2 * r;
-
-            svgElementData.cellFrame = {
-                type: 'path',
-                path: getArc(x1, y1, h, v, r, cm.path[2]),
-                color: '#000000',
-                strokeWidth: 1,
-            };
+            // cell
+            for (let i = 0; i < rowCount; i++) {
+                for (let j = 0; j < colCount; j++) {
+                    if (cm.c[i][j].selected) {
+                        let x1, y1, w, h;
+                        let sc = selectionState;
+                        if (sc.cellRowSelected) {
+                            x1 = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
+                            y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                            w = cm.selfW;
+                            h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
+                        } else if (sc.cellColSelected) {
+                            x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
+                            y1 = cm.nodeY - selfHadj/2;
+                            w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
+                            h = cm.selfH;
+                        } else {
+                            x1 = cm.path[2] ? cm.nodeEndX - cm.sumMaxColWidth[j] : cm.nodeStartX + cm.sumMaxColWidth[j];
+                            y1 = cm.nodeY - selfHadj/2 + cm.sumMaxRowHeight[i];
+                            w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
+                            h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
+                        }
+                        svgElementData.cellFrame = {
+                            type: 'path',
+                            path: getArc(x1, y1, w, h, r, cm.path[2]),
+                            color: '#000000',
+                            strokeWidth: 1,
+                        };
+                        break;
+                    }
+                }
+            }
         }
         // task
         if (cm.task &&
@@ -402,18 +420,22 @@ function getConnectionLine(lineType, sx, sy, dx, dy, ex, ey, dir) {
     return path;
 }
 
-function getArc(x1, y1, h, v, r, dir) {
+function getArc(sx, sy, w, h, r, dir) {
+    let x1 = sx;
+    let y1 = sy + r;
+    let horz = w - 2 * r;
+    let ver = h - 2 * r;
     if (dir === 0) {
         return `M${x1},${y1} 
-        a${+r},${+r} 0 0 1 ${+r},${-r} h${+h} 
-        a${+r},${+r} 0 0 1 ${+r},${+r} v${+v} 
-        a${+r},${+r} 0 0 1 ${-r},${+r} h${-h} 
+        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz} 
+        a${+r},${+r} 0 0 1 ${+r},${+r} v${+ver} 
+        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz} 
         a${+r},${+r} 0 0 1 ${-r},${-r}`
     } else {
         return `M${x1},${y1} 
-        a${+r},${+r} 0 0 0 ${-r},${-r} h${-h} 
-        a${+r},${+r} 0 0 0 ${-r},${+r} v${+v} 
-        a${+r},${+r} 0 0 0 ${+r},${+r} h${+h} 
+        a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
+        a${+r},${+r} 0 0 0 ${-r},${+r} v${+ver} 
+        a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
         a${+r},${+r} 0 0 0 ${+r},${-r}`
     }
 }
