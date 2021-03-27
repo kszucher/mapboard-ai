@@ -433,7 +433,7 @@ function getRoundedPath(points) {
         let [sx,sy] = getCoordsInLine(currPoint[0], currPoint[1], prevPoint[0], prevPoint[1], radius);
         let [c1x, c1y] = currPoint;
         let [c2x, c2y] = currPoint;
-        let ex,ey; [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
+        let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
         path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
     }
     return path + 'z';
