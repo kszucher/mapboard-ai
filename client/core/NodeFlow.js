@@ -210,7 +210,6 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'moveCellBlock': {
-            console.log(sc)
             nodeMove(sc, 'cellBlock2CellBlock', payload.keyCode);
             break;
         }
