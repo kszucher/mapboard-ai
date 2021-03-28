@@ -331,6 +331,7 @@ export function MapComponent() {
             [ 0,  0,  0,  key === 'Delete',              ['cr', 'cc'],                  0,  1,  1, ['deleteCellBlock'],                     ],
             [ 0,  0,  0,  code === 'Space',              ['s'],                         0,  1,  1, ['selectForwardMixed'],                  ],
             [ 0,  0,  0,  code === 'Space',              ['m'],                         0,  1,  1, ['selectForwardStruct'],                 ],
+            [ 0,  0,  0,  code === 'Space',              ['cr', 'cc'],                  0,  1,  1, ['selectForwardCrCc2M'],                 ],
             [ 0,  0,  0,  code === 'Backspace',          ['s'],                         0,  1,  1, ['selectBackwardMixed'],                 ],
             [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['selectBackwardStruct'],                ],
             [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['selectBackwardBackwardStruct'],        ],

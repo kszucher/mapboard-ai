@@ -75,6 +75,12 @@ function nodeReducer(action, payload) {
             lm.selected = 1;
             break;
         }
+        case 'selectForwardCrCc2M': {
+            clearSelection();
+            lm.selected = 1;
+            lm.s[0].selected = 1;
+            break;
+        }
         case 'selectBackwardMixed': {
             for (let i = lm.path.length - 2; i > 0; i--) {
                 if (Number.isInteger(lm.path[i]) &&
