@@ -281,7 +281,7 @@ export function MapComponent() {
             if (elapsed === 0) {
                 if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
                     push();
-                    nodeDispatch('selectRoot');
+                    nodeDispatch('select_root');
                     redraw();
                     checkPop();
                 }
@@ -317,10 +317,10 @@ export function MapComponent() {
             [ 0,  0,  0,  key === 'F3',                  ['s', 'c', 'm'],               0,  1,  0, [],                                      ],
             [ 0,  0,  0,  key === 'F5',                  ['s', 'c', 'm'],               0,  0,  0, [],                                      ],
             [ 0,  0,  0,  key === 'Enter',               ['s', 'm'],                    1,  1,  0, ['finishEdit'],                          ],
-            [ 0,  0,  0,  key === 'Enter',               ['s'],                         0,  1,  1, ['newSiblingDown', 'startEdit'],         ],
-            [ 0,  0,  0,  key === 'Enter',               ['m'],                         0,  1,  1, ['selectDownMixed'],                     ],
+            [ 0,  0,  0,  key === 'Enter',               ['s'],                         0,  1,  1, ['insert_D_S', 'startEdit'],             ],
+            [ 0,  0,  0,  key === 'Enter',               ['m'],                         0,  1,  1, ['select_D_M'],                          ],
             [ 0,  1,  0,  key === 'Enter',               ['s', 'm'],                    0,  1,  1, ['newSiblingUp', 'startEdit'],           ],
-            [ 0,  0,  1,  key === 'Enter',               ['s'],                         0,  1,  1, ['cellifyMulti', 'selectFirstMixed'],    ],
+            [ 0,  0,  1,  key === 'Enter',               ['s'],                         0,  1,  1, ['cellifyMulti', 'select_first_M'],      ],
             [ 0,  0,  0,  key === 'Insert',              ['s'],                         1,  1,  1, ['finishEdit', 'newChild', 'startEdit'], ],
             [ 0,  0,  0,  key === 'Insert',              ['s'],                         0,  1,  1, ['newChild', 'startEdit'],               ],
             [ 0,  0,  0,  key === 'Insert',              ['m'],                         0,  1,  1, ['select_O_M'],                          ],
@@ -335,8 +335,8 @@ export function MapComponent() {
             [ 0,  0,  0,  code === 'Backspace',          ['s'],                         0,  1,  1, ['select_S_B_M'],                        ],
             [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['select_CCRCC_B_S'],                    ],
             [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S'],                       ],
-            [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['selectRoot'],                          ],
-            [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['selectAll'],                           ],
+            [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_root'],                         ],
+            [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all'],                          ],
             [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                    ],
             [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection'],                       ],
             [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection'],                        ],
@@ -393,7 +393,7 @@ export function MapComponent() {
                         dispatch({type: currExecution});
                     } else {
                         nodeDispatch(currExecution, {keyCode: e.code});
-                        if (['newChild', 'newSiblingUp', 'newSiblingDown'].includes(currExecution)) {
+                        if (['newChild', 'newSiblingUp', 'insert_D_S'].includes(currExecution)) {
                             redraw();
                         }
                     }

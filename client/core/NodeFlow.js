@@ -36,7 +36,7 @@ function nodeReducer(action, payload) {
             mapref(mapState.deepestSelectablePath).selected = sc.maxSel + 1;
             break;
         }
-        case 'selectAll': {
+        case 'select_all': {
             mapChangeProp.start(getMapData().r, {selected: 1}, 's');
             break;
         }
@@ -94,14 +94,14 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'selectFirstMixed': {
+        case 'select_first_M': {
             clearSelection();
             let toPath = mapref(mapref(sc.geomHighPath).parentPath).path;
             mapref(toPath).selected = 1;
             mapref(toPath).s[0].selected = 1;
             break;
         }
-        case 'selectDownMixed': {
+        case 'select_D_M': {
             clearSelection();
             let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', 'ArrowDown');
             mapref(toPath).selected = 1;
@@ -172,7 +172,7 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'selectRoot': {
+        case 'select_root': {
             clearSelection();
             mapref(['r']).selected = 1;
             break;
@@ -185,7 +185,7 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'newSiblingDown': {
+        case 'insert_D_S': {
             if (!lm.isRoot) {
                 clearSelection();
                 structInsert(lm, 'siblingDown');
