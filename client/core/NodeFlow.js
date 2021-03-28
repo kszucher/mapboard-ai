@@ -51,7 +51,7 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'selectForwardMixed': {
+        case 'select_S_F_M': {
             if (lm.hasCell) {
                 clearSelection();
                 let toPath = pathMerge(sc.lastPath, ['c', 0, 0]);
@@ -60,28 +60,28 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'selectBackwardStruct': {
+        case 'select_CCRCC_B_S': {
             clearSelection();
             mapref(mapref(lm.parentPath).path).selected = 1;
             break;
         }
-        case 'selectBackwardBackwardStruct': {
+        case 'select_M_BB_S': {
             clearSelection();
             mapref(mapref(mapref(lm.parentPath).parentPath).path).selected = 1;
             break;
         }
-        case 'selectForwardStruct': {
+        case 'select_M_F_S': {
             clearSelection();
             lm.selected = 1;
             break;
         }
-        case 'selectForwardCrCc2M': {
+        case 'select_CRCC_F_M': {
             clearSelection();
             lm.selected = 1;
             lm.s[0].selected = 1;
             break;
         }
-        case 'selectBackwardMixed': {
+        case 'select_S_B_M': {
             for (let i = lm.path.length - 2; i > 0; i--) {
                 if (Number.isInteger(lm.path[i]) &&
                     Number.isInteger(lm.path[i + 1])) {
@@ -108,7 +108,7 @@ function nodeReducer(action, payload) {
             mapref(toPath).s[0].selected = 1;
             break;
         }
-        case 'selectOutMixed': {
+        case 'select_O_M': {
             clearSelection();
             let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[2] === 0 ? 'ArrowRight' : 'ArrowLeft');
             mapref(toPath).selected = 1;
@@ -136,7 +136,7 @@ function nodeReducer(action, payload) {
             mapref(toPath).s[0].selected = 1;
             break;
         }
-        case 'selectCellRow': {
+        case 'select_CR': {
             clearSelection();
             let parentRef = mapref(lm.parentPath);
             let parentParentRef = mapref(parentRef.parentPath);
@@ -147,7 +147,7 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'selectCellCol': {
+        case 'select_CC': {
             clearSelection();
             let parentRef = mapref(lm.parentPath);
             let parentParentRef = mapref(parentRef.parentPath);
@@ -158,7 +158,7 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'selectCellBlock': {
+        case 'select_CRCC': {
             if (payload.keyCode === 'ArrowLeft' && sc.cellColSelected ||
                 payload.keyCode === 'ArrowRight' && sc.cellColSelected ||
                 payload.keyCode === 'ArrowUp' && sc.cellRowSelected ||
@@ -202,11 +202,11 @@ function nodeReducer(action, payload) {
             break;
         }
         // DELETE ------------------------------------------------------------------------------------------------------
-        case 'deleteNode': {
+        case 'delete_S': {
             structDeleteReselect(sc);
             break;
         }
-        case 'deleteCellBlock': {
+        case 'delete_CRCC': {
             cellBlockDeleteReselect(sc);
             break;
         }
@@ -215,7 +215,7 @@ function nodeReducer(action, payload) {
             nodeMove(sc, 'struct2struct', payload.keyCode);
             break;
         }
-        case 'moveCellBlock': {
+        case 'move_CRCC': {
             nodeMove(sc, 'cellBlock2CellBlock', payload.keyCode);
             break;
         }
