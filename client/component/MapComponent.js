@@ -307,7 +307,7 @@ export function MapComponent() {
     };
 
     const keydown = (e) => {
-        let sc = selectionState;
+        let {scope, lastPath} = selectionState;
         let {key, code, which} = e;
         // [37,38,39,40] = [left,up,right,down]
         let keyStateMachineDb = [
@@ -366,7 +366,7 @@ export function MapComponent() {
             for (let h = 0; h < keyStateMachineDb[0].length; h++) {
                 keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h];
             }
-            if (keyStateMachine.scope.includes(sc.scope) &&
+            if (keyStateMachine.scope.includes(scope) &&
                 keyStateMachine.e === isEditing &&
                 keyStateMachine.c === +e.ctrlKey &&
                 keyStateMachine.s === +e.shiftKey &&
@@ -387,7 +387,7 @@ export function MapComponent() {
                     } else if (['undo', 'redo'].includes(currExecution)) {
                         mapDispatch(currExecution);
                     } else if (currExecution === 'CREATE_MAP_IN_MAP') {
-                        dispatch({type: currExecution, payload: mapref(sc.lastPath).content});
+                        dispatch({type: currExecution, payload: mapref(lastPath).content});
                     } else if (currExecution === 'SAVE_MAP') {
                         dispatch({type: currExecution});
                     } else {
