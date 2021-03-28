@@ -178,7 +178,7 @@ function nodeReducer(action, payload) {
             break;
         }
         // INSERT ------------------------------------------------------------------------------------------------------
-        case 'newSiblingUp': {
+        case 'insert_U_S': {
             if (!lm.isRoot) {
                 clearSelection();
                 structInsert(lm, 'siblingUp');
@@ -192,12 +192,12 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'newChild': {
+        case 'insert_O_S': {
             clearSelection();
             structInsert(lm, 'child');
             break;
         }
-        case 'newCellBlock': {
+        case 'insert_CRCC': {
             cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode);
             break;
         }
