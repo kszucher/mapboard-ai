@@ -197,8 +197,12 @@ function nodeReducer(action, payload) {
             structInsert(lm, 'child');
             break;
         }
-        case 'insert_CRCC': {
+        case 'insert_M_CRCC': {
             cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode);
+            break;
+        }
+        case 'insert_CX_CRCC': {
+            cellInsert(sc.lastPath, payload.keyCode);
             break;
         }
         // DELETE ------------------------------------------------------------------------------------------------------
