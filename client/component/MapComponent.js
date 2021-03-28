@@ -391,7 +391,9 @@ export function MapComponent() {
                     } else if (['undo', 'redo'].includes(currExecution)) {
                         mapDispatch(currExecution);
                     } else if (currExecution === 'CREATE_MAP_IN_MAP') {
-                        dispatch({type: currExecution, payload: mapref(lastPath).content});
+                        if (!mapref(lastPath).isRoot) {
+                            dispatch({type: currExecution, payload: mapref(lastPath).content});
+                        }
                     } else if (currExecution === 'SAVE_MAP') {
                         dispatch({type: currExecution});
                     } else {
