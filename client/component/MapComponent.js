@@ -123,6 +123,7 @@ export function MapComponent() {
             nodeDispatch('finishEdit');
             redraw();
         }
+        (window.getSelection ? window.getSelection() : document.selection).empty()
         let mouseMode;
         if (e.which === 1) mouseMode = 'select';
         if (e.which === 2) mouseMode = 'drag';
