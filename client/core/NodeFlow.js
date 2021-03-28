@@ -215,7 +215,7 @@ function nodeReducer(action, payload) {
             break;
         }
         // MOVE --------------------------------------------------------------------------------------------------------
-        case 'moveNodeSelection': {
+        case 'move_S': {
             nodeMove(sc, 'struct2struct', payload.keyCode);
             break;
         }
