@@ -37,7 +37,7 @@ export function Communication() {
                     case 'openMap':         msg = {cmd: 'openMapRequest',        cred, mapId};                break;
                     case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest', cred, mapStorageOut};        break;
                     case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest', cred, mapStorageOut};        break;
-                    case 'saveMapIdList':   msg = {cmd: 'saveMapIdListRequest',  cred, mapIdList};            break;
+                    case 'saveMapIdList':console.log(mapIdList);   msg = {cmd: 'saveMapIdListRequest',  cred, mapIdList};            break;
                     case 'saveMap':         msg = {cmd: 'saveMapRequest',        cred, mapId, mapStorageOut}; break;
                 }
             }
@@ -96,8 +96,6 @@ export function Communication() {
                     break;
                 }
                 case 'saveMapIdListSuccess': {
-                    console.log('succes...??')
-                    console.log(serverResponse)
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
                     break;
                 }

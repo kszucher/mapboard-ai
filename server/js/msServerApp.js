@@ -166,13 +166,11 @@ async function mfun(c2s, operation) {
                 ]).forEach(function (m) {
                     headerMapNameList.push(m.data[0].content)
                 });
-
                 m2s = {
                     mapIdList: headerMapIdList,
                     mapNameList: headerMapNameList,
                     mapSelected: currUser.headerMapSelected
                 };
-
                 break;
             }
             case 'openMap': {

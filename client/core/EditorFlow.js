@@ -133,8 +133,12 @@ const EditorReducer = (state, action) => {
                 serverAction: [...state.serverAction, 'saveMap']
             };
         // DELETE ------------------------------------------------------------------------------------------------------
-        case 'DELETE_MAP_FROM_TAB': {
-            return state;
+        case 'REMOVE_MAP_FROM_TAB': {
+            return {...state,
+                mapIdList: state.mapIdList.filter((val, i) => i !== state.mapSelected),
+                mapSelected: state.mapSelected -1,
+                serverAction: [...state.serverAction, 'saveMapIdList']
+            };
         }
         // MOVE --------------------------------------------------------------------------------------------------------
         case 'MOVE_MAP_TO_SUBMAP': {
