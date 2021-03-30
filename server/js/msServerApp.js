@@ -101,75 +101,32 @@ async function sendResponse(c2s) {
     let s2c = {
         'ERROR': 'error',
     };
-
     if (c2s.cmd === 'pingRequest') {
         s2c = {
             cmd: 'pingSuccess',
         };
     } else {
         if (await auth(c2s)) {
+            let m2s;
             switch (c2s.cmd) {
-                case 'signInRequest': {
-                    let m2s = await mongoFunction(c2s, 'getUserMaps');
-                    s2c = {
-                        cmd: 'signInSuccess',
-                        headerData: m2s,
-                    };
-                    break;
-                }
-                case 'openMapRequest': {
-                    let m2s = await mongoFunction(c2s, 'openMap');
-                    s2c = {
-                        cmd: 'openMapSuccess',
-                        mapId: c2s.mapId,
-                        mapStorage: m2s,
-                    };
-                    break;
-                }
-                case 'createMapInMapRequest': {
-                    let m2s = await mongoFunction(c2s, 'createMap');
-                    s2c = {
-                        cmd: 'createMapInMapSuccess',
-                        newMapId: m2s.insertedId
-                    };
-                    break;
-                }
-                case 'createMapInTabRequest': {
-                    let m2s1 = await mongoFunction(c2s, 'createMap');
-                    Object.assign(c2s, {
-                        insertedId: m2s1.insertedId
-                    });
-                    await mongoFunction(c2s, 'addUserMap');
-                    let m2s2 = await mongoFunction(c2s, 'getUserMaps');
-                    s2c = {
-                        cmd: 'createMapInTabSuccess',
-                        headerData: m2s2,
-                    };
-                    break;
-                }
-                case 'saveMapRequest': {
-                    await mongoFunction(c2s, 'saveMap');
-                    s2c = {
-                        cmd: 'saveMapRequestSuccess',
-                    };
-                    break;
-                }
-            }
-        } else {
-            s2c = {
-                cmd: 'signInFail',
-            };
+                case 'signInRequest':         m2s = await mfun(c2s, 'getUserMaps');   s2c = {cmd: 'signInSuccess', headerData: m2s};                    break
+                case 'openMapRequest':        m2s = await mfun(c2s, 'openMap');       s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: m2s}; break
+                case 'createMapInMapRequest': m2s = await mfun(c2s, 'createMap');     s2c = {cmd: 'createMapInMapSuccess', newMapId: m2s.insertedId};   break
+                case 'createMapInTabRequest': m2s = await mfun(c2s, 'createMap');     s2c = {cmd: 'createMapInTabSuccess', newMapId: m2s.insertedId};   break
+                case 'saveMapIdListRequest':  m2s = await mfun(c2s, 'saveMapIdList'); s2c = {cmd: 'saveMapIdListSuccess'};                              break
+                case 'saveMapRequest':        m2s = await mfun(c2s, 'saveMap');       s2c = {cmd: 'saveMapRequestSuccess'};                             break
+            }} else {                                                                 s2c = {cmd: 'signInFail',};
         }
     }
     return s2c;
 }
 
 async function auth(c2s) {
-    let m2s = await mongoFunction(c2s, 'auth');
+    let m2s = await mfun(c2s, 'auth');
     return m2s.authenticationSuccess;
 }
 
-async function mongoFunction(c2s, operation) {
+async function mfun(c2s, operation) {
     let m2s = {};
     try {
         console.log('connected to server...');
@@ -205,16 +162,14 @@ async function mongoFunction(c2s, operation) {
             }
             case 'createMap': {
                 let result = await collectionMaps.insertOne(c2s.mapStorageOut);
-                m2s = {
-                    insertedId: result.insertedId
-                };
+                m2s = {insertedId: result.insertedId};
                 break;
             }
-            case 'addUserMap': {
+            case 'saveMapIdList': {
                 let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 await collectionUsers.updateOne(
                     {_id: ObjectId(currUser._id)},
-                    {$push: {"headerMapIdList" : c2s.insertedId}}
+                    {$set: {"headerMapIdList" : c2s.mapIdList.map(el => ObjectId(el))}}
                 );
                 break;
             }

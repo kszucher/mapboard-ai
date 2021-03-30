@@ -116,6 +116,12 @@ const EditorReducer = (state, action) => {
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
+        case 'APPEND_MAP_ID_LIST': {
+            return {...state,
+                mapIdList: [...state.mapIdList, payload],
+                serverAction: [...state.serverAction, 'saveMapIdList']
+            };
+        }
         // SAVE --------------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
             return {...state,

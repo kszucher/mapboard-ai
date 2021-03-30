@@ -11,7 +11,7 @@ import {initDomData} from "../core/DomFlow";
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapId, mapStorageOut} = state;
+    const {serverAction, serverResponse, mapIdList, mapId, mapStorageOut} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -37,6 +37,7 @@ export function Communication() {
                     case 'openMap':         msg = {cmd: 'openMapRequest',        cred, mapId};                break;
                     case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest', cred, mapStorageOut};        break;
                     case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest', cred, mapStorageOut};        break;
+                    case 'saveMapIdList':   msg = {cmd: 'saveMapIdListRequest',  cred, mapIdList};            break;
                     case 'saveMap':         msg = {cmd: 'saveMapRequest',        cred, mapId, mapStorageOut}; break;
                 }
             }
@@ -60,6 +61,7 @@ export function Communication() {
                     initDomData();
                     dispatch({type: 'OPEN_WORKSPACE'});
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
+                    console.log(serverResponse.headerData)
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
                     break;
                 }
@@ -91,6 +93,10 @@ export function Communication() {
                     break;
                 }
                 case 'createMapInTabSuccess': {
+                    dispatch({type: 'APPEND_MAP_ID_LIST', payload: serverResponse.newMapId});
+                    break;
+                }
+                case 'saveMapIdListSuccess': {
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
                     break;
                 }
