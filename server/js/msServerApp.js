@@ -114,6 +114,7 @@ async function sendResponse(c2s) {
                     s2c = {cmd: 'signInSuccess', headerData: m2s};
                     break
                 case 'openMapRequest':
+                    m2s = await mfun(c2s, 'saveMapSelected');
                     m2s = await mfun(c2s, 'openMap');
                     s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: m2s};
                     break
@@ -180,6 +181,14 @@ async function mfun(c2s, operation) {
             case 'createMap': {
                 let result = await collectionMaps.insertOne(c2s.mapStorageOut);
                 m2s = {insertedId: result.insertedId};
+                break;
+            }
+            case 'saveMapSelected': {
+                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
+                await collectionUsers.updateOne(
+                    {_id: ObjectId(currUser._id)},
+                    {$set: {"headerMapSelected" : c2s.mapSelected}}
+                );
                 break;
             }
             case 'saveMapIdList': {
