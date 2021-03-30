@@ -109,14 +109,33 @@ async function sendResponse(c2s) {
         if (await auth(c2s)) {
             let m2s;
             switch (c2s.cmd) {
-                case 'signInRequest':         m2s = await mfun(c2s, 'getUserMaps');   s2c = {cmd: 'signInSuccess', headerData: m2s};                    break
-                case 'openMapRequest':        m2s = await mfun(c2s, 'openMap');       s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: m2s}; break
-                case 'createMapInMapRequest': m2s = await mfun(c2s, 'createMap');     s2c = {cmd: 'createMapInMapSuccess', newMapId: m2s.insertedId};   break
-                case 'createMapInTabRequest': m2s = await mfun(c2s, 'createMap');     s2c = {cmd: 'createMapInTabSuccess', newMapId: m2s.insertedId};   break
-                case 'saveMapIdListRequest':  m2s = await mfun(c2s, 'saveMapIdList'); s2c = {cmd: 'saveMapIdListSuccess'};                              break
-                case 'saveMapRequest':        m2s = await mfun(c2s, 'saveMap');       s2c = {cmd: 'saveMapRequestSuccess'};                             break
-            }} else {                                                                 s2c = {cmd: 'signInFail',};
-        }
+                case 'signInRequest':
+                    m2s = await mfun(c2s, 'getUserMaps');
+                    s2c = {cmd: 'signInSuccess', headerData: m2s};
+                    break
+                case 'openMapRequest':
+                    m2s = await mfun(c2s, 'openMap');
+                    s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: m2s};
+                    break
+                case 'createMapInMapRequest':
+                    m2s = await mfun(c2s, 'createMap');
+                    s2c = {cmd: 'createMapInMapSuccess', newMapId: m2s.insertedId};
+                    break
+                case 'createMapInTabRequest':
+                    m2s = await mfun(c2s, 'createMap');
+                    s2c = {cmd: 'createMapInTabSuccess', newMapId: m2s.insertedId};
+                    break
+                case 'saveMapRequest':
+                    m2s = await mfun(c2s, 'saveMap');
+                    s2c = {cmd: 'saveMapRequestSuccess'};
+                    break
+                case 'saveMapIdListRequest': {
+                    m2s = await mfun(c2s, 'saveMapIdList');
+                    m2s = await mfun(c2s, 'getUserMaps');
+                    s2c = {cmd: 'saveMapIdListSuccess', headerData: m2s};
+                    break
+                }
+            }} else { s2c = {cmd: 'signInFail'};}
     }
     return s2c;
 }

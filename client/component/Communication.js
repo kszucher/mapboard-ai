@@ -61,7 +61,6 @@ export function Communication() {
                     initDomData();
                     dispatch({type: 'OPEN_WORKSPACE'});
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
-                    console.log(serverResponse.headerData)
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
                     break;
                 }
@@ -97,6 +96,8 @@ export function Communication() {
                     break;
                 }
                 case 'saveMapIdListSuccess': {
+                    console.log('succes...??')
+                    console.log(serverResponse)
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
                     break;
                 }
