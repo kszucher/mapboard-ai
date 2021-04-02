@@ -12,20 +12,17 @@ export const editorState = {
     mapStorage: [],
     mapStorageOut: [],
     breadcrumbsHistory: [],
-    // preferences
     density: '',
     alignment: '',
     fontSize: '',
     lineWidth: '',
     lineType: '',
     colorMode: 'highlight',
-
     colorText: '',
     colorBorder: '',
     colorHighlight: '',
     colorLine: '',
     colorCellFrame: '',
-
     mapAction: ''
 };
 
@@ -47,10 +44,7 @@ const EditorReducer = (state, action) => {
             return {...state, ...payload};
         // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
-            let mapId = state.mapId;
-            let mapName = state.mapName;
-            let mapSelected = state.mapSelected;
-            let breadcrumbsHistory = state.breadcrumbsHistory;
+            let {mapId, mapName, mapSelected, breadcrumbsHistory} = state;
             switch (payload.source) {
                 case 'SERVER':
                     mapId = state.mapIdList[state.mapSelected];
@@ -86,11 +80,13 @@ const EditorReducer = (state, action) => {
                     breadcrumbsHistory = payload.event.state.breadcrumbsHistory;
                     break;
             }
-
             if (payload.source !== 'HISTORY') {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
-            return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, 'openMap']};
+            return {...state,
+                mapId, mapName, mapSelected, breadcrumbsHistory,
+                serverAction: [...state.serverAction, 'openMap']
+            };
         case 'SET_MAPSTORAGE':
             return {...state,
                 mapStorage: payload,
