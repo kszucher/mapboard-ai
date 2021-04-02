@@ -26,6 +26,10 @@ export const editorState = {
     mapAction: ''
 };
 
+// TODO:
+// - get rid of mapAction, and use the appropriate dispatch DIRECTLY
+// - get rid of serverAction, and make a CommunicationFlow instead
+
 const InitEditorState = JSON.stringify(editorState);
 
 const EditorReducer = (state, action) => {
