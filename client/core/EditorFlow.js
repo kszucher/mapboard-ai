@@ -44,16 +44,16 @@ const EditorReducer = (state, action) => {
             return {...state, ...payload};
         // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
-            let {mapId, mapName, mapSelected, breadcrumbsHistory} = state;
+            let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
             switch (payload.source) {
                 case 'SERVER':
-                    mapId = state.mapIdList[state.mapSelected];
-                    mapName = state.mapNameList[state.mapSelected];
+                    mapId = mapIdList[mapSelected];
+                    mapName = mapNameList[mapSelected];
                     breadcrumbsHistory = [{mapId, mapName}];
                     break;
                 case 'TAB':
-                    mapId = state.mapIdList[payload.value];
-                    mapName = state.mapNameList[payload.value];
+                    mapId = mapIdList[payload.value];
+                    mapName = mapNameList[payload.value];
                     mapSelected = payload.value;
                     breadcrumbsHistory = [{mapId, mapName}];
                     break;
