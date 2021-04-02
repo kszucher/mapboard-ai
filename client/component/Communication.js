@@ -33,12 +33,12 @@ export function Communication() {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
                 switch (lastAction) {
-                    case 'signIn':          msg = {cmd: 'signInRequest',         cred};                       break;
-                    case 'openMap':         msg = {cmd: 'openMapRequest',        cred, mapId, mapSelected};   break;
-                    case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest', cred, mapStorageOut};        break;
-                    case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest', cred, mapStorageOut};        break;
-                    case 'saveMapIdList':   msg = {cmd: 'saveMapIdListRequest',  cred, mapIdList};            break;
-                    case 'saveMap':         msg = {cmd: 'saveMapRequest',        cred, mapId, mapStorageOut}; break;
+                    case 'signIn':          msg = {cmd: 'signInRequest',          cred};                         break;
+                    case 'openMap':         msg = {cmd: 'openMapRequest',         cred, mapId, mapSelected};     break;
+                    case 'createMapInMap':  msg = {cmd: 'createMapInMapRequest',  cred, mapStorageOut};          break;
+                    case 'createMapInTab':  msg = {cmd: 'createMapInTabRequest',  cred, mapStorageOut};          break;
+                    case 'saveUserMapData': msg = {cmd: 'saveUserMapDataRequest', cred, mapIdList, mapSelected}; break;
+                    case 'saveMap':         msg = {cmd: 'saveMapRequest',         cred, mapId, mapStorageOut};   break;
                 }
             }
         }
@@ -95,8 +95,9 @@ export function Communication() {
                     dispatch({type: 'APPEND_MAP_ID_LIST', payload: serverResponse.newMapId});
                     break;
                 }
-                case 'saveMapIdListSuccess': {
+                case 'saveUserMapDataSuccess': {
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
+                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
                     break;
                 }
                 case 'saveMapRequestSuccess': {

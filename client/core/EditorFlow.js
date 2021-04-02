@@ -41,7 +41,7 @@ const EditorReducer = (state, action) => {
         case 'OPEN_WORKSPACE':
             return {...state, isLoggedIn: true};
         case 'UPDATE_TABS':
-            return {...state, ...payload};
+            return {...state, ...payload}; // includes mapIdList, mapNameList, mapSelected
         // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
             let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
@@ -115,7 +115,8 @@ const EditorReducer = (state, action) => {
         case 'APPEND_MAP_ID_LIST': {
             return {...state,
                 mapIdList: [...state.mapIdList, payload],
-                serverAction: [...state.serverAction, 'saveMapIdList']
+                // mapSelected: state.mapIdList.length - 1,
+                serverAction: [...state.serverAction, 'saveUserMapData']
             };
         }
         // SAVE --------------------------------------------------------------------------------------------------------
@@ -130,10 +131,11 @@ const EditorReducer = (state, action) => {
             };
         // DELETE ------------------------------------------------------------------------------------------------------
         case 'REMOVE_MAP_FROM_TAB': {
+            let {mapSelected, mapIdList} = state;
             return {...state,
-                mapIdList: state.mapIdList.filter((val, i) => i !== state.mapSelected),
-                mapSelected: state.mapSelected -1,
-                serverAction: [...state.serverAction, 'saveMapIdList']
+                mapIdList: mapIdList.filter((val, i) => i !== mapSelected),
+                mapSelected: mapSelected === 0 ? mapSelected : mapSelected - 1,
+                serverAction: [...state.serverAction, 'saveUserMapData']
             };
         }
         // MOVE --------------------------------------------------------------------------------------------------------

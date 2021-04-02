@@ -130,10 +130,11 @@ async function sendResponse(c2s) {
                     m2s = await mfun(c2s, 'saveMap');
                     s2c = {cmd: 'saveMapRequestSuccess'};
                     break
-                case 'saveMapIdListRequest': {
+                case 'saveUserMapDataRequest': {
                     m2s = await mfun(c2s, 'saveMapIdList');
+                    m2s = await mfun(c2s, 'saveMapSelected');
                     m2s = await mfun(c2s, 'getUserMaps');
-                    s2c = {cmd: 'saveMapIdListSuccess', headerData: m2s};
+                    s2c = {cmd: 'saveUserMapDataSuccess', headerData: m2s};
                     break
                 }
             }} else { s2c = {cmd: 'signInFail'};}
@@ -146,11 +147,11 @@ async function auth(c2s) {
     return m2s.authenticationSuccess;
 }
 
-async function mfun(c2s, operation) {
+async function mfun(c2s, action, payload) {
     let m2s = {};
     try {
         console.log('connected to server...');
-        switch (operation) {
+        switch (action) {
             case 'auth': {
                 let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 m2s.authenticationSuccess = currUser !== null;
@@ -160,6 +161,7 @@ async function mfun(c2s, operation) {
                 let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 let headerMapIdList = currUser.headerMapIdList;
                 let headerMapNameList = [];
+                let headerMapSelected = currUser.headerMapSelected;
                 await collectionMaps.aggregate([
                     {$match:        {_id:           {$in:           headerMapIdList}}             },
                     {$addFields:    {"__order":     {$indexOfArray: [headerMapIdList, "$_id" ]}}  },
@@ -170,7 +172,7 @@ async function mfun(c2s, operation) {
                 m2s = {
                     mapIdList: headerMapIdList,
                     mapNameList: headerMapNameList,
-                    mapSelected: currUser.headerMapSelected
+                    mapSelected: headerMapSelected
                 };
                 break;
             }
