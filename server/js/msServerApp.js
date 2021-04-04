@@ -150,6 +150,7 @@ async function sendResponse(c2s) {
                             {_id: ObjectId(currUser._id)},
                             {$set: {"headerMapSelected": headerMapIdList.length - 1}}
                         );
+                        currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed
                         s2c = {
                             cmd: 'updateTabSuccess',
                             headerData: {
@@ -175,6 +176,7 @@ async function sendResponse(c2s) {
                             {_id: ObjectId(currUser._id)},
                             {$set: {"headerMapSelected": headerMapSelected}}
                         );
+                        currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed
                         s2c = {
                             cmd: 'updateTabSuccess',
                             headerData: {
@@ -183,7 +185,6 @@ async function sendResponse(c2s) {
                                 mapSelected: currUser.headerMapSelected
                             }
                         };
-                        console.log(s2c)
                         break;
                     }
                     case 'saveMapRequest': {
