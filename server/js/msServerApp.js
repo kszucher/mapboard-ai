@@ -197,35 +197,4 @@ async function getHeaderMapNameList (currUser) {
     return headerMapNameList;
 }
 
-async function mfun(c2s, action, payload) {
-    let {cred} = c2s;
-    let m2s = {};
-    try {
-        console.log('connected to server...');
-        switch (action) {
-
-
-            case 'createMapInTab': {
-                let insertedId = await collectionMaps.insertOne(c2s.mapStorageOut);
-                let currUser = await collectionUsers.findOne(cred);
-                let headerMapIdList = [...currUser.headerMapIdList, insertedId];
-                await collectionUsers.updateOne(
-                    {_id: ObjectId(currUser._id)},
-                    {$set: {"headerMapIdList" : headerMapIdList.map(el => ObjectId(el))}}
-                );
-                await collectionUsers.updateOne(
-                    {_id: ObjectId(currUser._id)},
-                    {$set: {"headerMapSelected" : currUser.headerMapIdList.length}}
-                );
-                break;
-            }
-        }
-    }
-    catch (err) {
-        console.log('mongo error');
-        console.log(err.stack);
-    }
-    return m2s;
-}
-
 module.exports = app;
