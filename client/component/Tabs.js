@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 export default function VerticalTabs() {
     const classes = useStyles();
     const [state, dispatch] = useContext(Context);
-    const {mapNameList, mapSelected} = state;
+    const {mapSelected, mapNameList} = state;
 
     const handleChange = (e, value) =>  {
         dispatch({type: 'OPEN_MAP', payload: {source: 'TAB', value}});

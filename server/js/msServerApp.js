@@ -154,9 +154,9 @@ async function sendResponse(c2s) {
                         s2c = {
                             cmd: 'updateTabSuccess',
                             headerData: {
+                                mapSelected: currUser.headerMapSelected,
                                 mapIdList: currUser.headerMapIdList,
                                 mapNameList: await getHeaderMapNameList(currUser),
-                                mapSelected: currUser.headerMapSelected
                             }
                         };
                         break;
@@ -164,9 +164,7 @@ async function sendResponse(c2s) {
                     case 'removeMapInTabRequest': {
                         let headerMapIdList = currUser.headerMapIdList;
                         let headerMapSelected = currUser.headerMapSelected;
-                        console.log(headerMapIdList.length)
                         headerMapIdList = headerMapIdList.filter((val, i) => i !== headerMapSelected);
-                        console.log(headerMapIdList.length)
                         await collectionUsers.updateOne(
                             {_id: ObjectId(currUser._id)},
                             {$set: {"headerMapIdList": headerMapIdList.map(el => ObjectId(el))}}
@@ -180,9 +178,9 @@ async function sendResponse(c2s) {
                         s2c = {
                             cmd: 'updateTabSuccess',
                             headerData: {
+                                mapSelected: currUser.headerMapSelected,
                                 mapIdList: currUser.headerMapIdList,
                                 mapNameList: await getHeaderMapNameList(currUser),
-                                mapSelected: currUser.headerMapSelected
                             }
                         };
                         break;
