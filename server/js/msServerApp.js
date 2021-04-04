@@ -115,7 +115,7 @@ async function sendResponse(c2s) {
                             headerData: {
                                 mapIdList: currUser.headerMapIdList,
                                 mapNameList: await getHeaderMapNameList(currUser),
-                                mapSelected: currUser.mapSelected
+                                mapSelected: currUser.headerMapSelected
                             }
                         };
                         break
@@ -154,9 +154,10 @@ async function sendResponse(c2s) {
                             headerData: {
                                 mapIdList: currUser.headerMapIdList,
                                 mapNameList: await getHeaderMapNameList(currUser),
-                                mapSelected: currUser.mapSelected
+                                mapSelected: currUser.headerMapSelected
                             }
                         };
+                        console.log(s2c)
                         break;
                     case 'removeMapInTabRequest':
 
