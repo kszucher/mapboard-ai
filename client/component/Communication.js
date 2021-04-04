@@ -33,28 +33,12 @@ export function Communication() {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
                 switch (lastAction) {
-                    case 'signIn':
-                        msg = {cmd: 'signInRequest', cred};
-                        break;
-                    case 'openMap':
-                        msg = {cmd: 'openMapRequest', cred, mapId, mapSelected};
-                        break;
-                    case 'createMapInMap':
-                        msg = {cmd: 'createMapInMapRequest', cred, mapStorageOut};
-                        break;
-                    case 'createMapInTab':
-                        msg = {
-                            cmd: 'createMapInTabRequest',
-                            cred,
-                            mapStorageOut
-                        };
-                        break;
-                    case 'saveUserMapData':
-                        msg = {cmd: 'saveUserMapDataRequest', cred, mapIdList, mapSelected};
-                        break;
-                    case 'saveMap':
-                        msg = {cmd: 'saveMapRequest', cred, mapId, mapStorageOut};
-                        break;
+                    case 'signIn':         msg = {cred, cmd: 'signInRequest'};                        break;
+                    case 'openMap':        msg = {cred, cmd: 'openMapRequest', mapSelected, mapId};   break;
+                    case 'createMapInMap': msg = {cred, cmd: 'createMapInMapRequest', mapStorageOut}; break;
+                    case 'createMapInTab': msg = {cred, cmd: 'createMapInTabRequest', mapStorageOut}; break;
+                    case 'removeMapInTab': msg = {cred, cmd: 'removeMapInTabRequest'};                break;
+                    case 'saveMap':        msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut}; break;
                 }
             }
         }
@@ -107,11 +91,7 @@ export function Communication() {
                     dispatch({type: 'SAVE_MAP'});
                     break;
                 }
-                case 'createMapInTabSuccess': {
-                    dispatch({type: 'APPEND_MAP_ID_LIST', payload: serverResponse.newMapId});
-                    break;
-                }
-                case 'saveUserMapDataSuccess': {
+                case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
                     break;

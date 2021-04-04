@@ -14,23 +14,14 @@ const colorList = [
 export function Palette () {
     const [state, dispatch] = useContext(Context);
     const {colorMode, colorText, colorBorder, colorHighlight, colorLine, colorCellFrame} = state;
-    const [sel, setSel] = useState({
-        x: 0,
-        y: 0,
-    });
+    const [sel, setSel] = useState({x: 0, y: 0});
 
     const findSel = (color) => {
-        let sel = {
-            x: 0,
-            y: 0,
-        };
+        let sel = {x: 0, y: 0};
         for (let i = 0; i < colorList.length; i++) {
             for (let j = 0; j < colorList[0].length; j++) {
                 if (colorList[i][j] === color) {
-                    sel = {
-                        x: i,
-                        y: j,
-                    }
+                    sel = {x: i, y: j}
                 }
             }
         }
@@ -38,38 +29,21 @@ export function Palette () {
     };
 
     useEffect(() => {
-        if (colorMode === 'text') {                             setSel(findSel(colorText));
-        } else if (colorMode === 'border') {                    setSel(findSel(colorBorder))
-        } else if (colorMode === 'highlight') {                 setSel(findSel(colorHighlight))
-        } else if (colorMode === 'line') {                      setSel(findSel(colorLine))
-        } else if (colorMode === 'cellFrame') {                 setSel(findSel(colorCellFrame))}
+        if (colorMode === 'text')               setSel(findSel(colorText));
+        else if (colorMode === 'border')        setSel(findSel(colorBorder))
+        else if (colorMode === 'highlight')     setSel(findSel(colorHighlight))
+        else if (colorMode === 'line')          setSel(findSel(colorLine))
+        else if (colorMode === 'cellFrame')     setSel(findSel(colorCellFrame))
     }, [colorMode]);
 
-    useEffect(() => {
-        if (colorMode === 'text' && colorText!== '')            setSel(findSel(colorText))
-    }, [colorText]);
-
-    useEffect(() => {
-        if (colorMode === 'border' && colorBorder !== '')       setSel(findSel(colorBorder))
-    }, [colorBorder]);
-
-    useEffect(() => {
-        if (colorMode === 'highlight' && colorHighlight !== '') setSel(findSel(colorHighlight));
-    }, [colorHighlight]);
-
-    useEffect(() => {
-        if (colorMode === 'line' && colorLine !== '')           setSel(findSel(colorLine))
-    }, [colorLine]);
-
-    useEffect(() => {
-        if (colorMode === 'cellFrame' && colorCellFrame !== '') setSel(findSel(colorCellFrame))
-    }, [colorCellFrame]);
+    useEffect(() => {if (colorMode === 'text'       && colorText!== '')       setSel(findSel(colorText))},      [colorText]);
+    useEffect(() => {if (colorMode === 'border'     && colorBorder !== '')    setSel(findSel(colorBorder))},    [colorBorder]);
+    useEffect(() => {if (colorMode === 'highlight'  && colorHighlight !== '') setSel(findSel(colorHighlight))}, [colorHighlight]);
+    useEffect(() => {if (colorMode === 'line'       && colorLine !== '')      setSel(findSel(colorLine))},      [colorLine]);
+    useEffect(() => {if (colorMode === 'cellFrame'  && colorCellFrame !== '') setSel(findSel(colorCellFrame))}, [colorCellFrame]);
 
     const handleClick = (i, j) => {
-        setSel({
-            x: i,
-            y: j
-        });
+        setSel({x: i, y: j});
         push();
         nodeDispatch('applyColorFromPalette', {colorMode, color:colorList[i][j]});
         redraw();

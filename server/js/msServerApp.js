@@ -7,7 +7,6 @@ var { promisify } = require('util');
 var sizeOf = promisify( require('image-size'));
 var MongoHeartbeat = require('mongo-heartbeat');
 
-
 // improvement for later times
 // https://flaviocopes.com/node-request-data/
 // https://stackoverflow.com/questions/39677993/send-blob-data-to-node-using-fetch-multer-express
@@ -31,9 +30,9 @@ const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mon
 app.post('/feta', type, async function (req, res) {
     let dimensions = await sizeOf('../uploads/' + req.file.filename);
     let sf2c = {
-            cmd: 'imageSaveSuccess',
-            imageId: req.file.filename,
-            imageSize: dimensions
+        cmd: 'imageSaveSuccess',
+        imageId: req.file.filename,
+        imageSize: dimensions
     };
     res.json(sf2c)
 });
@@ -73,12 +72,11 @@ MongoClient.connect(uri, {
 }, function(err, client) {
     if (err) {
         console.log(err);
-    }
-    else {
+    } else {
         console.log('connected');
         db = client.db("app");
         collectionUsers = db.collection('users');
-        collectionMaps =db.collection('maps');
+        collectionMaps = db.collection('maps');
         app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 
         hb = MongoHeartbeat(db, {
@@ -106,103 +104,103 @@ async function sendResponse(c2s) {
             cmd: 'pingSuccess',
         };
     } else {
-        if (await auth(c2s)) {
-            let m2s;
-            switch (c2s.cmd) {
-                case 'signInRequest':
-                    m2s = await mfun(c2s, 'getUserMaps');
-                    s2c = {cmd: 'signInSuccess', headerData: m2s};
-                    break
-                case 'openMapRequest':
-                    m2s = await mfun(c2s, 'saveMapSelected');
-                    m2s = await mfun(c2s, 'openMap');
-                    s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: m2s};
-                    break
-                case 'createMapInMapRequest':
-                    m2s = await mfun(c2s, 'createMap');
-                    s2c = {cmd: 'createMapInMapSuccess', newMapId: m2s.insertedId};
-                    break
-                case 'createMapInTabRequest':
-                    m2s = await mfun(c2s, 'createMap');
-                    s2c = {cmd: 'createMapInTabSuccess', newMapId: m2s.insertedId};
-                    break
-                case 'saveMapRequest':
-                    m2s = await mfun(c2s, 'saveMap');
-                    s2c = {cmd: 'saveMapRequestSuccess'};
-                    break
-                case 'saveUserMapDataRequest': {
-                    m2s = await mfun(c2s, 'saveMapIdList');
-                    m2s = await mfun(c2s, 'saveMapSelected');
-                    m2s = await mfun(c2s, 'getUserMaps');
-                    s2c = {cmd: 'saveUserMapDataSuccess', headerData: m2s};
-                    break
-                }
-            }} else { s2c = {cmd: 'signInFail'};}
+        try {
+            console.log('connected to server...');
+            let currUser = await collectionUsers.findOne(c2s.cred);
+            if (currUser !== null) {
+                switch (c2s.cmd) {
+                    case 'signInRequest':
+                        s2c = {
+                            cmd: 'signInSuccess',
+                            headerData: {
+                                mapIdList: currUser.headerMapIdList,
+                                mapNameList: await getHeaderMapNameList(currUser),
+                                mapSelected: currUser.mapSelected
+                            }
+                        };
+                        break
+                    case 'openMapRequest':
+                        await collectionUsers.updateOne(
+                            {_id: ObjectId(currUser._id)},
+                            {$set: {"headerMapSelected" : c2s.mapSelected}}
+                        );
+                        s2c = {
+                            cmd: 'openMapSuccess',
+                            mapId: c2s.mapId,
+                            mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})
+                        };
+                        break
+                    case 'createMapInMapRequest':
+                        s2c = {
+                            cmd: 'createMapInMapSuccess',
+                            newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
+                        };
+                        break;
+                    case 'createMapInTabRequest':
+                        // m2s = await mfun(c2s, 'appendTab');
+                        // m2s = await mfun(c2s, 'getUserMaps');
+                        // s2c = {cmd: 'updateTabSuccess', headerData: m2s};
+                        break
+
+                    case 'removeMapInTabRequest':
+
+                        // mapIdList: mapIdList.filter((val, i) => i !== mapSelected),
+
+                        //     m2s = await mfun(c2s, 'saveMapIdList');
+
+                        // mapSelected: mapSelected === 0 ? mapSelected : mapSelected - 1,
+
+                        //     m2s = await mfun(c2s, 'saveMapSelected');
+
+                        break;
+                    case 'saveMapRequest':
+                        await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
+                        s2c = {
+                            cmd: 'saveMapRequestSuccess'
+                        };
+                        break
+                }} else { s2c = {cmd: 'signInFail'};}
+        }
+        catch (err) {
+            console.log('mongo error');
+            console.log(err.stack);
+        }
     }
     return s2c;
 }
 
-async function auth(c2s) {
-    let m2s = await mfun(c2s, 'auth');
-    return m2s.authenticationSuccess;
+async function getHeaderMapNameList (currUser) {
+    let headerMapNameList = [];
+    await collectionMaps.aggregate([
+        {$match:        {_id:           {$in:           currUser.headerMapIdList}}             },
+        {$addFields:    {"__order":     {$indexOfArray: [currUser.headerMapIdList, "$_id" ]}}  },
+        {$sort:         {"__order":     1}                                                     },
+    ]).forEach(function (m) {
+        headerMapNameList.push(m.data[0].content)
+    });
+    return headerMapNameList;
 }
 
 async function mfun(c2s, action, payload) {
+    let {cred} = c2s;
     let m2s = {};
     try {
         console.log('connected to server...');
         switch (action) {
-            case 'auth': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
-                m2s.authenticationSuccess = currUser !== null;
-                break;
-            }
-            case 'getUserMaps': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
-                let headerMapIdList = currUser.headerMapIdList;
-                let headerMapNameList = [];
-                let headerMapSelected = currUser.headerMapSelected;
-                await collectionMaps.aggregate([
-                    {$match:        {_id:           {$in:           headerMapIdList}}             },
-                    {$addFields:    {"__order":     {$indexOfArray: [headerMapIdList, "$_id" ]}}  },
-                    {$sort:         {"__order":     1}                                            },
-                ]).forEach(function (m) {
-                    headerMapNameList.push(m.data[0].content)
-                });
-                m2s = {
-                    mapIdList: headerMapIdList,
-                    mapNameList: headerMapNameList,
-                    mapSelected: headerMapSelected
-                };
-                break;
-            }
-            case 'openMap': {
-                m2s = await collectionMaps.findOne({_id: ObjectId(c2s.mapId)});
-                break;
-            }
-            case 'createMap': {
-                let result = await collectionMaps.insertOne(c2s.mapStorageOut);
-                m2s = {insertedId: result.insertedId};
-                break;
-            }
-            case 'saveMapSelected': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
+
+
+            case 'createMapInTab': {
+                let insertedId = await collectionMaps.insertOne(c2s.mapStorageOut);
+                let currUser = await collectionUsers.findOne(cred);
+                let headerMapIdList = [...currUser.headerMapIdList, insertedId];
                 await collectionUsers.updateOne(
                     {_id: ObjectId(currUser._id)},
-                    {$set: {"headerMapSelected" : c2s.mapSelected}}
+                    {$set: {"headerMapIdList" : headerMapIdList.map(el => ObjectId(el))}}
                 );
-                break;
-            }
-            case 'saveMapIdList': {
-                let currUser = await collectionUsers.findOne({email: c2s.cred.email, password: c2s.cred.password});
                 await collectionUsers.updateOne(
                     {_id: ObjectId(currUser._id)},
-                    {$set: {"headerMapIdList" : c2s.mapIdList.map(el => ObjectId(el))}}
+                    {$set: {"headerMapSelected" : currUser.headerMapIdList.length}}
                 );
-                break;
-            }
-            case 'saveMap': {
-                await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
                 break;
             }
         }

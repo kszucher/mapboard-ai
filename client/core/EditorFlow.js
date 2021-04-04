@@ -46,7 +46,6 @@ const EditorReducer = (state, action) => {
             return {...state, isLoggedIn: true};
         case 'UPDATE_TABS':
             return {...state, ...payload}; // includes mapIdList, mapNameList, mapSelected
-        // OPEN --------------------------------------------------------------------------------------------------------
         case 'OPEN_MAP':
             let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
             switch (payload.source) {
@@ -97,7 +96,6 @@ const EditorReducer = (state, action) => {
                 density: payload.density,
                 alignment: payload.alignment,
             };
-        // CREATE ------------------------------------------------------------------------------------------------------
         case 'CREATE_MAP_IN_MAP':
             return {...state,
                 mapStorageOut: {
@@ -110,20 +108,17 @@ const EditorReducer = (state, action) => {
         case 'CREATE_MAP_IN_TAB':
             return {...state,
                 mapStorageOut: {
-                    data: getDefaultMap(payload.mapName),
+                    data: getDefaultMap('New Map'),
                     density: mapState.density,
                     alignment: mapState.alignment,
                 },
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
-        case 'APPEND_MAP_ID_LIST': {
+        case 'REMOVE_MAP_IN_TAB': {
             return {...state,
-                mapIdList: [...state.mapIdList, payload],
-                // mapSelected: state.mapIdList.length - 1,
-                serverAction: [...state.serverAction, 'saveUserMapData']
+                serverAction: [...state.serverAction, 'removeMapInTab']
             };
         }
-        // SAVE --------------------------------------------------------------------------------------------------------
         case 'SAVE_MAP':
             return {...state,
                 mapStorageOut: {
@@ -133,16 +128,6 @@ const EditorReducer = (state, action) => {
                 },
                 serverAction: [...state.serverAction, 'saveMap']
             };
-        // DELETE ------------------------------------------------------------------------------------------------------
-        case 'REMOVE_MAP_FROM_TAB': {
-            let {mapSelected, mapIdList} = state;
-            return {...state,
-                mapIdList: mapIdList.filter((val, i) => i !== mapSelected),
-                mapSelected: mapSelected === 0 ? mapSelected : mapSelected - 1,
-                serverAction: [...state.serverAction, 'saveUserMapData']
-            };
-        }
-        // MOVE --------------------------------------------------------------------------------------------------------
         case 'MOVE_MAP_TO_SUBMAP': {
             return state;
         }
@@ -155,7 +140,6 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB': {
             return state;
         }
-        // PREFERENCES -------------------------------------------------------------------------------------------------
         case 'SET_NODE_PROPS': {
             let fontSize = '';
             switch (payload.sTextFontSize) {

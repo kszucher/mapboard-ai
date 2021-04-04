@@ -36,10 +36,10 @@ export default function Logo() {
         handleClose();
         switch(param) {
             case 'ADD_MAP':
-                dispatch({type: 'CREATE_MAP_IN_TAB', payload: {mapName: 'New Map'}});
+                dispatch({type: 'CREATE_MAP_IN_TAB'});
                 break;
             case 'REMOVE_MAP':
-                dispatch({type: 'REMOVE_MAP_FROM_TAB'});
+                dispatch({type: 'REMOVE_MAP_IN_TAB'});
                 break;
             case 'SIGN_OUT':
                 dispatch({type: 'RESET_STATE'});
