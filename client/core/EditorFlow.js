@@ -112,6 +112,8 @@ const EditorReducer = (state, action) => {
                     density: mapState.density,
                     alignment: mapState.alignment,
                 },
+                mapNameList: [...state.mapNameList, 'creating...'],
+                mapSelected: state.mapIdList.length - 1,
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
         case 'REMOVE_MAP_IN_TAB': {
