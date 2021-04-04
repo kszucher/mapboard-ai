@@ -146,7 +146,7 @@ async function sendResponse(c2s) {
                             {_id: ObjectId(currUser._id)},
                             {$set: {
                                     "headerMapIdList": headerMapIdList.map(el => ObjectId(el)),
-                                    "headerMapSelected": c2s.mapSelected,
+                                    "headerMapSelected": headerMapIdList.length - 1,
                                 }},
                         );
                         currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed

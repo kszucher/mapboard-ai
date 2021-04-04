@@ -36,7 +36,7 @@ export function Communication() {
                     case 'signIn':         msg = {cred, cmd: 'signInRequest'};                        break;
                     case 'openMap':        msg = {cred, cmd: 'openMapRequest', mapSelected, mapId};   break;
                     case 'createMapInMap': msg = {cred, cmd: 'createMapInMapRequest', mapStorageOut}; break;
-                    case 'createMapInTab': msg = {cred, cmd: 'createMapInTabRequest', mapSelected, mapStorageOut}; break;
+                    case 'createMapInTab': msg = {cred, cmd: 'createMapInTabRequest', mapStorageOut}; break;
                     case 'removeMapInTab': msg = {cred, cmd: 'removeMapInTabRequest'};                break;
                     case 'saveMap':        msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut}; break;
                 }

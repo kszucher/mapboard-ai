@@ -113,11 +113,13 @@ const EditorReducer = (state, action) => {
                     alignment: mapState.alignment,
                 },
                 mapNameList: [...state.mapNameList, 'creating...'],
-                mapSelected: state.mapIdList.length - 1,
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
         case 'REMOVE_MAP_IN_TAB': {
+            let {mapNameList, mapSelected} = state;
             return {...state,
+                mapNameList: mapNameList.filter((val, i) => i !== mapSelected),
+                mapSelected: mapSelected === 0 ? mapSelected : mapSelected - 1,
                 serverAction: [...state.serverAction, 'removeMapInTab']
             };
         }
