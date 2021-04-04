@@ -137,11 +137,27 @@ async function sendResponse(c2s) {
                         };
                         break;
                     case 'createMapInTabRequest':
-                        // m2s = await mfun(c2s, 'appendTab');
-                        // m2s = await mfun(c2s, 'getUserMaps');
-                        // s2c = {cmd: 'updateTabSuccess', headerData: m2s};
-                        break
-
+                        let headerMapIdList = [
+                            ...currUser.headerMapIdList,
+                            (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
+                        ];
+                        await collectionUsers.updateOne(
+                            {_id: ObjectId(currUser._id)},
+                            {$set: {"headerMapIdList" : headerMapIdList.map(el => ObjectId(el))}}
+                        );
+                        await collectionUsers.updateOne(
+                            {_id: ObjectId(currUser._id)},
+                            {$set: {"headerMapSelected" : headerMapIdList.length - 1}}
+                        );
+                        s2c = {
+                            cmd: 'updateTabSuccess',
+                            headerData: {
+                                mapIdList: currUser.headerMapIdList,
+                                mapNameList: await getHeaderMapNameList(currUser),
+                                mapSelected: currUser.mapSelected
+                            }
+                        };
+                        break;
                     case 'removeMapInTabRequest':
 
                         // mapIdList: mapIdList.filter((val, i) => i !== mapSelected),
