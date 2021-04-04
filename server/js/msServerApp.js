@@ -145,7 +145,7 @@ async function sendResponse(c2s) {
                         await collectionUsers.updateOne(
                             {_id: ObjectId(currUser._id)},
                             {$set: {
-                                    "headerMapIdList": headerMapIdList.map(el => ObjectId(el)),
+                                    "headerMapIdList": headerMapIdList,
                                     "headerMapSelected": headerMapIdList.length - 1,
                                 }},
                         );
@@ -166,7 +166,7 @@ async function sendResponse(c2s) {
                         await collectionUsers.updateOne(
                             {_id: ObjectId(currUser._id)},
                             {$set: {
-                                    "headerMapIdList": (headerMapIdList.filter((val, i) => i !== headerMapSelected)).map(el => ObjectId(el)),
+                                    "headerMapIdList": headerMapIdList.filter((val, i) => i !== headerMapSelected),
                                     "headerMapSelected": headerMapSelected === 0 ? headerMapSelected : headerMapSelected - 1
                                 }}
                         );
