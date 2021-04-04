@@ -144,11 +144,10 @@ async function sendResponse(c2s) {
                         ];
                         await collectionUsers.updateOne(
                             {_id: ObjectId(currUser._id)},
-                            {$set: {"headerMapIdList": headerMapIdList.map(el => ObjectId(el))}}
-                        );
-                        await collectionUsers.updateOne(
-                            {_id: ObjectId(currUser._id)},
-                            {$set: {"headerMapSelected": headerMapIdList.length - 1}}
+                            {$set: {
+                                    "headerMapIdList": headerMapIdList.map(el => ObjectId(el)),
+                                    "headerMapSelected": headerMapIdList.length - 1
+                                }},
                         );
                         currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed
                         s2c = {
@@ -164,15 +163,12 @@ async function sendResponse(c2s) {
                     case 'removeMapInTabRequest': {
                         let headerMapIdList = currUser.headerMapIdList;
                         let headerMapSelected = currUser.headerMapSelected;
-                        headerMapIdList = headerMapIdList.filter((val, i) => i !== headerMapSelected);
                         await collectionUsers.updateOne(
                             {_id: ObjectId(currUser._id)},
-                            {$set: {"headerMapIdList": headerMapIdList.map(el => ObjectId(el))}}
-                        );
-                        headerMapSelected = headerMapSelected === 0 ? headerMapSelected : headerMapSelected - 1;
-                        await collectionUsers.updateOne(
-                            {_id: ObjectId(currUser._id)},
-                            {$set: {"headerMapSelected": headerMapSelected}}
+                            {$set: {
+                                    "headerMapIdList": (headerMapIdList.filter((val, i) => i !== headerMapSelected)).map(el => ObjectId(el)),
+                                    "headerMapSelected": headerMapSelected === 0 ? headerMapSelected : headerMapSelected - 1
+                                }}
                         );
                         currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed
                         s2c = {
