@@ -41,6 +41,12 @@ export default function Logo() {
             case 'REMOVE_MAP':
                 dispatch({type: 'REMOVE_MAP_IN_TAB'});
                 break;
+            case 'MOVE_UP_MAP':
+                dispatch({type: 'MOVE_UP_MAP_IN_TAB'});
+                break;
+            case 'MOVE_DOWN_MAP':
+                dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'});
+                break;
             case 'SIGN_OUT':
                 dispatch({type: 'RESET_STATE'});
                 break;
@@ -69,6 +75,8 @@ export default function Logo() {
                     onClose={handleClose}>
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add Map</MenuItem>
                     <MenuItem onClick={handleSelect('REMOVE_MAP')}>Remove Map</MenuItem>
+                    <MenuItem onClick={handleSelect('MOVE_UP_MAP')}>Move Up Map</MenuItem>
+                    <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>
                 <Typography variant="h6" className={classes.title}>

@@ -149,36 +149,58 @@ async function sendResponse(c2s) {
                                     "headerMapSelected": headerMapIdList.length - 1,
                                 }},
                         );
-                        currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed
-                        s2c = {
-                            cmd: 'updateTabSuccess',
-                            headerData: {
-                                mapSelected: currUser.headerMapSelected,
-                                mapIdList: currUser.headerMapIdList,
-                                mapNameList: await getHeaderMapNameList(currUser),
-                            }
-                        };
+                        s2c = getTabData(c2s.cred);
+
                         break;
                     }
                     case 'removeMapInTabRequest': {
                         let headerMapIdList = currUser.headerMapIdList;
                         let headerMapSelected = currUser.headerMapSelected;
-                        await collectionUsers.updateOne(
-                            {_id: ObjectId(currUser._id)},
-                            {$set: {
-                                    "headerMapIdList": headerMapIdList.filter((val, i) => i !== headerMapSelected),
-                                    "headerMapSelected": headerMapSelected === 0 ? headerMapSelected : headerMapSelected - 1
-                                }}
-                        );
-                        currUser = await collectionUsers.findOne(c2s.cred); // needs to get refreshed
-                        s2c = {
-                            cmd: 'updateTabSuccess',
-                            headerData: {
-                                mapSelected: currUser.headerMapSelected,
-                                mapIdList: currUser.headerMapIdList,
-                                mapNameList: await getHeaderMapNameList(currUser),
-                            }
-                        };
+                        if (headerMapSelected > 0) {
+                            headerMapIdList = headerMapIdList.filter((val, i) => i !== headerMapSelected);
+                            await collectionUsers.updateOne(
+                                {_id: ObjectId(currUser._id)},
+                                {$set: {
+                                        "headerMapIdList": headerMapIdList,
+                                        "headerMapSelected": headerMapSelected  - 1
+                                    }}
+                            );
+                        }
+                        s2c = getTabData(c2s.cred);
+                        break;
+                    }
+                    case 'moveUpMapInTabRequest': {
+                        let headerMapIdList = currUser.headerMapIdList;
+                        let headerMapSelected = currUser.headerMapSelected;
+                        if (headerMapSelected > 0) {
+                            [headerMapIdList[headerMapSelected], headerMapIdList[headerMapSelected - 1]] =
+                                [headerMapIdList[headerMapSelected - 1], headerMapIdList[headerMapSelected]]
+                            await collectionUsers.updateOne(
+                                {_id: ObjectId(currUser._id)},
+                                {$set: {
+                                        "headerMapIdList": headerMapIdList,
+                                        "headerMapSelected": headerMapSelected - 1
+                                    }}
+                            );
+                        }
+                        s2c = getTabData(c2s.cred);
+                        break;
+                    }
+                    case 'moveDownMapInTabRequest': {
+                        let headerMapIdList = currUser.headerMapIdList;
+                        let headerMapSelected = currUser.headerMapSelected;
+                        if (headerMapSelected < headerMapIdList.length - 1) {
+                            [headerMapIdList[headerMapSelected], headerMapIdList[headerMapSelected + 1]] =
+                                [headerMapIdList[headerMapSelected + 1], headerMapIdList[headerMapSelected]]
+                            await collectionUsers.updateOne(
+                                {_id: ObjectId(currUser._id)},
+                                {$set: {
+                                        "headerMapIdList": headerMapIdList,
+                                        "headerMapSelected": headerMapSelected + 1
+                                    }}
+                            );
+                        }
+                        s2c = getTabData(c2s.cred);
                         break;
                     }
                     case 'saveMapRequest': {
@@ -197,6 +219,18 @@ async function sendResponse(c2s) {
         }
     }
     return s2c;
+}
+
+async function getTabData (cred) {
+    let currUser = await collectionUsers.findOne(cred); // needs to get refreshed
+    return {
+        cmd: 'updateTabSuccess',
+        headerData: {
+            mapSelected: currUser.headerMapSelected,
+            mapIdList: currUser.headerMapIdList,
+            mapNameList: await getHeaderMapNameList(currUser),
+        }
+    };
 }
 
 async function getHeaderMapNameList (currUser) {
