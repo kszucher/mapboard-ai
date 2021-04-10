@@ -1,7 +1,7 @@
 #breadcrumbs {
     position: fixed;
-    left: 50%;
-    transform: translate(-50%);
+    left: 25%;
+    transform: translate(-25%);
     display: flex;
     align-items: center;
     height: 48px;

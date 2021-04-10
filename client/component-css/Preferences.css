@@ -1,13 +1,14 @@
 #preferences {
     position: fixed;
-    top: 50%;
-    transform: translate(0, -50%);
-    right: 0;
+    top: 80%;
+    transform: translate(0, -80%);
+    /*bottom: 180px;*/
+    left: 0;
     padding: 10px;
     width: 180px;
     background-color: rgba(251,250,252,1);
-    border-top-left-radius: 16px;
-    border-bottom-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
     border-width: 1px;
     border-style: solid;
     border-color: #dddddd;
