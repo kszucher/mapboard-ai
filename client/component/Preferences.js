@@ -2,6 +2,8 @@ import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import '../component-css/Preferences.css'
+import {Palette} from "./Palette";
+import {MuiThemeProvider} from "@material-ui/core";
 
 export function Preferences () {
     const [state, dispatch] = useContext(Context);
@@ -22,6 +24,10 @@ export function Preferences () {
             <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
             <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'bezierCircle', 'edge']]}/>
             <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line', 'cellFrame']]}/>
+
+            <Palette/>
         </div>
+
+
     );
 }

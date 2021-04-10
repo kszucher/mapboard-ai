@@ -52,11 +52,11 @@ export function Palette () {
 
     return (
         <div id = 'palette'>
-            <svg viewBox='0 0 350 48'>
+            <svg viewBox='0 0 350 36'>
                 {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                     <circle
-                        cx={32 + j * 32}
-                        cy={24 + i * 32}
+                        cx={16 + j * 32}
+                        cy={20 + i * 32}
                         r={12}
                         key={'key' + i * 10 + j}
                         fill={jEl}

@@ -1,18 +1,24 @@
 #preferences {
     position: fixed;
-    top: 80%;
-    transform: translate(0, -80%);
+    top: 100%;
+    transform: translate(0, -100%);
     /*bottom: 180px;*/
     left: 0;
-    padding: 10px;
-    width: 180px;
+    /*padding: 10px;*/
+    width: 100%;
     background-color: rgba(251,250,252,1);
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
+    /*border-top-right-radius: 16px;*/
+    /*border-bottom-right-radius: 16px;*/
+
+    /*border-radius: 16px;*/
+
     border-width: 1px;
     border-style: solid;
-    border-color: #dddddd;
-    border-right: 0;
+    border-color: #9040b8;
+    border-bottom: 0;
+
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
+
+    justify-content: center;
 }
