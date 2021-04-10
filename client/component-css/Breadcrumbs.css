@@ -1,7 +1,8 @@
 #breadcrumbs {
+    top: 48px;
     position: fixed;
-    left: 25%;
-    transform: translate(-25%);
+    left: 50%;
+    transform: translate(-50%);
     display: flex;
     align-items: center;
     height: 48px;
@@ -10,8 +11,8 @@
     background-color: #fbfafc;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
-    border-width: 1px;
+    border-width: 2px;
     border-style: solid;
-    border-color: #dddddd;
-    border-top: 0;
+    border-color: #9040b8;
+    /*border-top: 0;*/
 }
