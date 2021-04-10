@@ -28,13 +28,13 @@ export function ToolBar () {
                     <StyledButton input = {[redo, 'redo', 0]}/>
                     <StyledButton input = {[save, 'save', 0]}/>
 
-                    <Divider orientation="vertical" flexItem />
+                    {/*<Divider orientation="vertical" flexItem />*/}
 
                     <StyledButton input = {[cut, 'content_cut', 0]}/>
                     <StyledButton input = {[copy, 'content_copy', 0]}/>
                     <StyledButton input = {[paste, 'content_paste', 0]}/>
 
-                    <Divider orientation="vertical" flexItem />
+                    {/*<Divider orientation="vertical" flexItem />*/}
 
                     <StyledButton input = {[task, 'check_circle', 0]}/>
                     <StyledButton input = {[formatColorReset, 'format_color_reset', 0]}/>

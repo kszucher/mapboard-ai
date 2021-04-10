@@ -2,8 +2,8 @@
 
 #toolbar {
     position: fixed;
-    left: 25%;
-    transform: translate(-25%);
+    left: 50%;
+    transform: translate(-50%);
     display: flex;
     align-items: center;
     height: 48px;
