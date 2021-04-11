@@ -7,7 +7,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {Context} from "../core/Store";
-import '../component-css/Logo.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,8 +52,21 @@ export default function Logo() {
         }
     };
 
+    const col1 = '#a4508b'
+    const col2 = '#5f0a87'
+
     return (
-        <div id = 'logo' className={classes.root}>
+        <div className={classes.root} style={{
+            position: 'absolute',
+            width: '200px',
+            height: '48px',
+            backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)`,
+            borderTopRightRadius: '16px',
+            borderBottomRightRadius: '16px',
+            color: '#fff',
+            display: 'flex',
+            justifyContent: 'center',
+        }}>
             <Toolbar variant={"dense"}>
                 <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleMenu} color = "inherit">
                     <MenuIcon />
