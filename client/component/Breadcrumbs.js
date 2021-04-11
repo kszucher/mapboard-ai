@@ -4,7 +4,6 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {Context} from "../core/Store";
-import '../component-css/Breadcrumbs.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +25,22 @@ export default function WorkspaceBreadcrumbs() {
     };
 
     return (
-        <div id = 'breadcrumbs'>
+        <div style={{
+            position: 'fixed',
+            left: '50%',
+            transform: 'translate(-50%)',
+            display: 'flex',
+            alignItems: 'center',
+            height: '48px',
+            paddingLeft: '20px',
+            paddingRight: '20px',
+            backgroundColor: '#fbfafc',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: '16px',
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: '#9040b8',
+        }}>
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                     {breadcrumbsHistory.map((currElement, index) => (
