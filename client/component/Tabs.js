@@ -6,7 +6,6 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {Context} from "../core/Store";
-import '../component-css/Tabs.css'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -69,28 +68,38 @@ export default function VerticalTabs() {
     };
 
     return (
-        // <div id = 'tabsContainer'>
-            <div id = 'tabs'>
-                <div className={classes.root}>
-                    <Tabs
-                        classes={{
-                            indicator: classes.indicator
-                        }}
-                        orientation="vertical"
-                        variant="scrollable"
-                        aria-label="Vertical tabs example"
-                        className={classes.tabs}
-                        value={mapSelected}
-                        onChange={handleChange}
-                        indicatorColor="primary">
-                        {mapNameList.map((name, index) => (
-                            <Tab
-                                label={name}
-                                key={index}/>
-                        ))}>
-                    </Tabs>
-                </div>
+        <div style={{
+            position: 'fixed',
+            top: '50%',
+            transform: 'translate(0, -50%)',
+            width: '200px',
+            backgroundColor: '#fbfafc',
+            borderTopRightRadius: '16px',
+            borderBottomRightRadius: '16px',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#dddddd',
+            borderLeft: 0
+        }}>
+            <div className={classes.root}>
+                <Tabs
+                    classes={{
+                        indicator: classes.indicator
+                    }}
+                    orientation="vertical"
+                    variant="scrollable"
+                    aria-label="Vertical tabs example"
+                    className={classes.tabs}
+                    value={mapSelected}
+                    onChange={handleChange}
+                    indicatorColor="primary">
+                    {mapNameList.map((name, index) => (
+                        <Tab
+                            label={name}
+                            key={index}/>
+                    ))}>
+                </Tabs>
             </div>
-        // </div>
+        </div>
     );
 }
