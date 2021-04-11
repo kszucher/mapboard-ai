@@ -10,10 +10,6 @@ export function ToolBar () {
     const undo =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'undo'});
     const redo =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'redo'});
     const save =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'save'});
-
-    const mouseSelect =       _ => dispatch({type: 'SET_MOUSE_MODE',  payload: 'select'});
-    const mouseDrag =         _ => dispatch({type: 'SET_MOUSE_MODE',  payload: 'drag'});
-
     const cut =               _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'cut'});
     const copy =              _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'copy'});
     const paste =             _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'paste'});
