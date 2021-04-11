@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import '../component-css/Preferences.css'
 
 export function Preferences () {
     const [state, dispatch] = useContext(Context);
@@ -15,7 +14,21 @@ export function Preferences () {
     const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE',  payload: e});
 
     return (
-        <div id = 'preferences'>
+        <div style={{
+            position: 'fixed',
+            top: '100%',
+            transform: 'translate(0, -100%)',
+            left: '0',
+            width: '100%',
+            height: '48px',
+            backgroundColor: 'rgba(251,250,252,1)',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#9040b8',
+            borderBottom: '0',
+            display: 'flex',
+            justifyContent: 'center',
+        }}>
             <StyledButtonGroup input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
             <StyledButtonGroup input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
             <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
