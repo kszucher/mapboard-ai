@@ -82,7 +82,8 @@ export function Palette () {
             </svg>
             <div style={{
                 display: "flex",
-                flexDirection: 'row'
+                flexDirection: 'row',
+                justifyContent: 'center'
             }}>
                 <StyledButton input = {['OK', setOk]}/>
                 <StyledButton input = {['Cancel', setCancel]}/>
