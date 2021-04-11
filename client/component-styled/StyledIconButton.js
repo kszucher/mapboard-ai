@@ -3,7 +3,7 @@ import React from "react";
 import {createMuiTheme} from "@material-ui/core/styles";
 import {MuiThemeProvider} from "@material-ui/core";
 
-export function StyledButton (arg) {
+export function StyledIconButton (arg) {
 
     const name = arg.input[0];
     const currValue = arg.input[1];

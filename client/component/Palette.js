@@ -65,6 +65,9 @@ export function Palette () {
                         onClick={()=>handleClick(i, j)}
                     />))))}
             </svg>
+
+
+
         </div>
     );
 }

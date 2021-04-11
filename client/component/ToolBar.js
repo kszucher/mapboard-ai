@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from '../core/Store';
-import {StyledButton} from "../component-styled/StyledButton";
+import {StyledIconButton} from "../component-styled/StyledIconButton";
 import '../component-css/ToolBar.css'
 import {Divider} from "@material-ui/core";
 
@@ -24,20 +24,20 @@ export function ToolBar () {
         // <div id = 'toolbar-container'>
             <div id = 'toolbar'>
                 <div className={'buttons'}>
-                    <StyledButton input = {[undo, 'undo', 0]}/>
-                    <StyledButton input = {[redo, 'redo', 0]}/>
-                    <StyledButton input = {[save, 'save', 0]}/>
+                    <StyledIconButton input = {[undo, 'undo', 0]}/>
+                    <StyledIconButton input = {[redo, 'redo', 0]}/>
+                    <StyledIconButton input = {[save, 'save', 0]}/>
 
                     {/*<Divider orientation="vertical" flexItem />*/}
 
-                    <StyledButton input = {[cut, 'content_cut', 0]}/>
-                    <StyledButton input = {[copy, 'content_copy', 0]}/>
-                    <StyledButton input = {[paste, 'content_paste', 0]}/>
+                    <StyledIconButton input = {[cut, 'content_cut', 0]}/>
+                    <StyledIconButton input = {[copy, 'content_copy', 0]}/>
+                    <StyledIconButton input = {[paste, 'content_paste', 0]}/>
 
                     {/*<Divider orientation="vertical" flexItem />*/}
 
-                    <StyledButton input = {[task, 'check_circle', 0]}/>
-                    <StyledButton input = {[formatColorReset, 'format_color_reset', 0]}/>
+                    <StyledIconButton input = {[task, 'check_circle', 0]}/>
+                    <StyledIconButton input = {[formatColorReset, 'format_color_reset', 0]}/>
                 </div>
             </div>
         // </div>
