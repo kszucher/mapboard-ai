@@ -2,7 +2,6 @@ import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy, isUrl} from "../core/Utils";
-import '../component-css/MapComponent.css'
 import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
@@ -473,18 +472,32 @@ export function MapComponent() {
     };
 
     return (
-        <div id = "mapHolderDiv">
-            <div id = 'mapWrap'>
-
-                {/*<svg id="mapSvgOuter2">*/}
-                {/*    <svg  x = "1800" y = "900px" height="1600" width="1600">*/}
-                {/*        <circle  cx="800" cy="810" r="600" stroke="#E8FEFF"  fill="#E8FEFF" />*/}
-                {/*    </svg>*/}
-                {/*</svg>*/}
-
-                <div id='mapDiv'/>
-                <svg id="mapSvgOuter">
-                    <svg id="mapSvgInner" x='calc(100vw)' y='calc(100vh)'/>
+        <div id = 'mapHolderDiv' style={{
+            overflowY: 'scroll',
+            overflowX: 'scroll',
+        }}>
+            <div style={{
+                position: 'relative',
+                paddingTop: '100vh',
+                paddingLeft: '100vw',
+            }}>
+                <div id='mapDiv' style={{
+                    position: 'absolute',
+                    borderRadius: '32px',
+                    backgroundColor: '#fbfafc',
+                    transitionProperty: 'width, height',
+                    display: 'flex',
+                    /*background: inherit;*/
+                    /*backdrop-filter: blur(20px);*/
+                }}/>
+                <svg id="mapSvgOuter" style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                }}>
+                    <svg id="mapSvgInner" x='calc(100vw)' y='calc(100vh)' style={{
+                        overflow: 'visible'
+                    }}/>
                 </svg>
             </div>
         </div>

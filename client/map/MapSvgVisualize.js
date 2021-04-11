@@ -22,9 +22,6 @@ let svgElementNameList = [
 
 export const mapSvgVisualize = {
     start: (r) => {
-        // let mapSvgOuter2 = document.getElementById('mapSvgOuter2');
-        // mapSvgOuter2.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
-        // mapSvgOuter2.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
         let mapSvgOuter = document.getElementById('mapSvgOuter');
         mapSvgOuter.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
