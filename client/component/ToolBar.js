@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from '../core/Store';
 import {StyledIconButton} from "../component-styled/StyledIconButton";
-import '../component-css/ToolBar.css'
 import {Divider} from "@material-ui/core";
 
 export function ToolBar () {
@@ -17,25 +16,43 @@ export function ToolBar () {
     const formatColorReset =  _ => dispatch({type: 'SET_MAP_ACTION',  payload: 'formatColorReset'});
 
     return (
-        // <div id = 'toolbar-container'>
-            <div id = 'toolbar'>
-                <div className={'buttons'}>
-                    <StyledIconButton input = {[undo, 'undo', 0]}/>
-                    <StyledIconButton input = {[redo, 'redo', 0]}/>
-                    <StyledIconButton input = {[save, 'save', 0]}/>
+        <div style={{
+            position: 'fixed',
+            left: '100%',
+            transform: 'translate(-100%)',
+            display: 'flex',
+            alignItems: 'center',
+            height: '48px',
+            paddingLeft: '10px',
+            paddingRight: '10px',
+            backgroundColor: '#fbfafc',
+            borderBottomLeftRadius: '16px',
+            borderBottomRightRadius: '16px',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#dddddd',
+            borderTop: 0,
+            borderRight: 0,
+        }}>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center'
+            }}>
+                <StyledIconButton input = {[undo, 'undo', 0]}/>
+                <StyledIconButton input = {[redo, 'redo', 0]}/>
+                <StyledIconButton input = {[save, 'save', 0]}/>
 
-                    {/*<Divider orientation="vertical" flexItem />*/}
+                {/*<Divider orientation="vertical" flexItem />*/}
 
-                    <StyledIconButton input = {[cut, 'content_cut', 0]}/>
-                    <StyledIconButton input = {[copy, 'content_copy', 0]}/>
-                    <StyledIconButton input = {[paste, 'content_paste', 0]}/>
+                <StyledIconButton input = {[cut, 'content_cut', 0]}/>
+                <StyledIconButton input = {[copy, 'content_copy', 0]}/>
+                <StyledIconButton input = {[paste, 'content_paste', 0]}/>
 
-                    {/*<Divider orientation="vertical" flexItem />*/}
+                {/*<Divider orientation="vertical" flexItem />*/}
 
-                    <StyledIconButton input = {[task, 'check_circle', 0]}/>
-                    <StyledIconButton input = {[formatColorReset, 'format_color_reset', 0]}/>
-                </div>
+                <StyledIconButton input = {[task, 'check_circle', 0]}/>
+                <StyledIconButton input = {[formatColorReset, 'format_color_reset', 0]}/>
             </div>
-        // </div>
+        </div>
     );
 }
