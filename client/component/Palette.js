@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Context} from '../core/Store';
-import '../component-css/Palette.css'
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, push, redraw} from "../core/MapFlow";
+import StyledButton from "../component-styled/StyledButton";
 
 const colorList = [
     ['#000000', '#434343', '#666666', '#999999', '#b7b7b7', '#cccccc', '#d9d9d9', '#efefef', '#f3f3f3', '#ffffff', '#d4ebfe', '#f6e5d4', '#d4f6d4'],
@@ -15,6 +15,9 @@ export function Palette () {
     const [state, dispatch] = useContext(Context);
     const {colorMode, colorText, colorBorder, colorHighlight, colorLine, colorCellFrame} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
+
+    const setOk = ()=>{};
+    const setCancel = ()=>{};
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};
@@ -51,7 +54,19 @@ export function Palette () {
     };
 
     return (
-        <div id = 'palette'>
+        <div style={{
+            position: 'fixed',
+            bottom: '58px',
+            right: '10px',
+            width: '460px',
+            height: '160px',
+            backgroundColor: 'rgba(251,250,252,1)',
+            borderRadius: '16px',
+            paddingBottom: '50px',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#dddddd',
+        }}>
             <svg viewBox='0 0 460 160'>
                 {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                     <circle
@@ -65,9 +80,13 @@ export function Palette () {
                         onClick={()=>handleClick(i, j)}
                     />))))}
             </svg>
-
-
-
+            <div style={{
+                display: "flex",
+                flexDirection: 'row'
+            }}>
+                <StyledButton input = {['OK', setOk]}/>
+                <StyledButton input = {['Cancel', setCancel]}/>
+            </div>
         </div>
     );
 }

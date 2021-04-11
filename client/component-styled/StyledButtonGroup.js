@@ -2,8 +2,6 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,14 +15,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StyledButtonGroup(arg) {
-
     const name = arg.input[0];
     const currValue = arg.input[1];
     const action =  arg.input[2];
     const valueList = arg.input[3];
-
     const classes = useStyles();
-
     return (
         <div className={classes.root}>
             <ButtonGroup variant="text" color="primary" aria-label="text primary button group">
