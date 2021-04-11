@@ -47,6 +47,7 @@ export function Workspace() {
                 <ToolBar/>
                 <Breadcrumbs/>
                 <Preferences/>
+                <Palette/>
 
             </MuiThemeProvider>
         </div>

@@ -1,14 +1,19 @@
 #palette {
-    position: relative;
+    position: fixed;
+
+    /*position: relative;*/
     /*left: 100%;*/
     /*transform: translate(-100%);*/
 
-    /*right: 0;*/
-    width: 350px;
-    /*height: 48px;*/
+    bottom: 58px;
+    right: 10px;
+    width: 460px;
+    height: 160px;
     background-color: rgba(251,250,252,1);
 
     border-radius: 16px;
+
+    padding-bottom: 50px;
 
     /*border-bottom-right-radius: 16px;*/
     /*border-bottom-left-radius: 16px;*/

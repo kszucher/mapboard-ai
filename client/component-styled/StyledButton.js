@@ -4,9 +4,14 @@ import {createMuiTheme} from "@material-ui/core/styles";
 import {MuiThemeProvider} from "@material-ui/core";
 
 export function StyledButton (arg) {
+
+    const name = arg.input[0];
+    const currValue = arg.input[1];
+    const action =  arg.input[2];
+
     return (
-        <IconButton color={arg.input[2] ? 'primary' : 'secondary'} onClick={arg.input[0]}>
-            <span className="material-icons">{arg.input[1]}</span>
+        <IconButton color={action ? 'primary' : 'secondary'} onClick={name}>
+            <span className="material-icons">{currValue}</span>
         </IconButton>
     )
 }

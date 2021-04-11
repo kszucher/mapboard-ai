@@ -24,8 +24,6 @@ export function Preferences () {
             <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
             <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'bezierCircle', 'edge']]}/>
             <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'border', 'highlight', 'line', 'cellFrame']]}/>
-
-            <Palette/>
         </div>
 
 
