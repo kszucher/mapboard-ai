@@ -8,7 +8,7 @@ import Breadcrumbs from "./Breadcrumbs";
 import {MapComponent} from "./MapComponent";
 import {Preferences} from "./Preferences";
 import {Palette} from "./Palette";
-import {ToolBar} from "./ToolBar";
+import {Commands} from "./Commands";
 
 export function Workspace() {
     const theme = createMuiTheme({
@@ -44,7 +44,7 @@ export function Workspace() {
             <MuiThemeProvider theme={theme}>
                 <Logo/>
                 <Tabs/>
-                <ToolBar/>
+                <Commands/>
                 <Breadcrumbs/>
                 <Preferences/>
                 <Palette/>
