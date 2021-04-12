@@ -59,28 +59,36 @@ export function Palette () {
         checkPop();
     };
 
+    const o = 32;
+    const r = 12;
+    const xWidth = o * colorList[0].length;
+    const yWidth = o * colorList.length;
+
     return (
         <div style={{
             position: 'fixed',
             bottom: '106px',
             right: '10px',
-            width: '460px',
-            height: '160px',
+            width: xWidth + 'px',
+            height: yWidth + 'px',
             backgroundColor: 'rgba(251,250,252,1)',
             borderRadius: '16px',
+            paddingTop: '10px',
+            paddingLeft: '10px',
+            paddingRight: '10px',
             paddingBottom: '50px',
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: '#dddddd',
             visibility: paletteVisible? 'visible':'hidden'
         }}>
-            <svg viewBox='0 0 460 160'>
+            <svg viewBox={`0 0 ${xWidth} ${yWidth}`}>
                 {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                     <circle
-                        cx={32 + j * 32}
-                        cy={32 + i * 32}
-                        r={12}
-                        key={'key' + i * 10 + j}
+                        cx={o/2 + j*o}
+                        cy={o/2 + i*o}
+                        r={r}
+                        key={'key' + i*10 + j}
                         fill={jEl}
                         stroke={(i === sel.x && j === sel.y) ? '#9040b8' : 'none'}
                         strokeWidth = {"2%"}
