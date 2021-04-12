@@ -23,7 +23,8 @@ export const editorState = {
     colorHighlight: '',
     colorLine: '',
     colorCellFrame: '',
-    mapAction: ''
+    mapAction: '',
+    paletteVisible: 0,
 };
 
 // TODO:
@@ -190,13 +191,14 @@ const EditorReducer = (state, action) => {
                 colorLine: payload.lineColor,
             };
         }
-        case 'SET_DENSITY':     return {...state, density: payload};
-        case 'SET_ALIGNMENT':   return {...state, alignment: payload};
-        case 'SET_FONT_SIZE':   return {...state, fontSize: payload};
-        case 'SET_LINE_WIDTH':  return {...state, lineWidth: payload};
-        case 'SET_LINE_TYPE':   return {...state, lineType: payload};
-        case 'SET_COLOR_MODE':  return {...state, colorMode: payload};
-        case 'SET_MAP_ACTION':  return {...state, mapAction: [...state.mapAction, payload]};
+        case 'SET_DENSITY':                     return {...state, density: payload};
+        case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
+        case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
+        case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload};
+        case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
+        case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, colorMode: payload, paletteVisible: 1};
+        case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0};
+        case 'SET_MAP_ACTION':                  return {...state, mapAction: [...state.mapAction, payload]};
         default: return state;
     }
 };

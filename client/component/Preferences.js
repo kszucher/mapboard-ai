@@ -6,12 +6,12 @@ export function Preferences () {
     const [state, dispatch] = useContext(Context);
     const {density, alignment, fontSize, lineWidth, lineType, colorMode} = state;
 
-    const setDensity =        e => dispatch({type: 'SET_DENSITY',     payload: e});
-    const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',   payload: e});
-    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',   payload: e});
-    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',  payload: e});
-    const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',   payload: e});
-    const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE',  payload: e});
+    const setDensity =        e => dispatch({type: 'SET_DENSITY',                   payload: e});
+    const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',                 payload: e});
+    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',                 payload: e});
+    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
+    const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
+    const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
 
     return (
         <div style={{

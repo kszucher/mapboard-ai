@@ -13,11 +13,17 @@ const colorList = [
 
 export function Palette () {
     const [state, dispatch] = useContext(Context);
-    const {colorMode, colorText, colorBorder, colorHighlight, colorLine, colorCellFrame} = state;
+    const {colorMode, colorText, colorBorder, colorHighlight, colorLine, colorCellFrame, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
-    const setOk = ()=>{};
-    const setCancel = ()=>{};
+    const closePalette = () => dispatch({type: 'CLOSE_PALETTE'});
+
+    const setOk = () => {
+        closePalette()
+    };
+    const setCancel = () => {
+        closePalette()
+    };
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};
@@ -66,6 +72,7 @@ export function Palette () {
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: '#dddddd',
+            visibility: paletteVisible? 'visible':'hidden'
         }}>
             <svg viewBox='0 0 460 160'>
                 {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
