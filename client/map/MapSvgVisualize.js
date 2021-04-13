@@ -1,4 +1,4 @@
-import {copy, genHash, isOdd} from "../core/Utils";
+import {copy, genHash, getBgc, isOdd} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
@@ -10,6 +10,7 @@ let svgElementNameList = [
     'tableFrame',
     'tableGrid',
     'cellFrame',
+    'border',
     'taskLine',
     'taskCircle0',
     'taskCircle1',
@@ -83,17 +84,39 @@ export const mapSvgVisualize = {
             }
         }
         // branch
-        if (cm.content === 'Equations') { // cm.hasBranchHighlight
-            let ax = nsx;
-            let bx = nex + dir*cm.lineDeltaX;
-            let cx = nsx + dir*(cm.familyW + cm.selfW);
-            let ayu = nsy;
-            let ayd = ney;
-            let bcyu = cm.nodeY - maxHadj / 2;
-            let bcyd = cm.nodeY + maxHadj / 2;
+        if (cm.selected) { // cm.hasBranchHighlight
+
+            // if (cm.selected) {
+            //     // border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
+            //     // borderRadius:           '8px',
+            //     borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
+            // }
+
+            let ax,bx,cx,ayu,ayd,bcyu,bcyd;
+            let path;
+            if (mapState.selectedFamily) { // should be done by RIGHTMOUSE
+                ax = nsx;
+                bx = nex + dir*cm.lineDeltaX;
+                cx = nsx + dir*(cm.familyW + cm.selfW);
+                ayu = nsy;
+                ayd = ney;
+                bcyu = cm.nodeY - maxHadj / 2;
+                bcyd = cm.nodeY + maxHadj / 2;
+                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f');
+            } else {
+                let ax,bx,cx,ayu,ayd,bcyu,bcyd;
+                ax = nsx;
+                bx = nex-1;
+                cx = nex;
+                ayu = nsy;
+                ayd = ney;
+                bcyu = nsy;
+                bcyd = ney;
+                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 's');
+            }
             svgElementData.branchHighlight = {
                 type: 'path',
-                path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]]),
+                path: path,
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
@@ -425,9 +448,9 @@ function getArc(sx, sy, w, h, r, dir) {
     let ver = h - 2 * r;
     if (dir === 0) {
         return `M${x1},${y1} 
-        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz} 
-        a${+r},${+r} 0 0 1 ${+r},${+r} v${+ver} 
-        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz} 
+        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
+        a${+r},${+r} 0 0 1 ${+r},${+r} v${+ver}
+        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
         a${+r},${+r} 0 0 1 ${-r},${-r}`
     } else {
         return `M${x1},${y1} 
@@ -438,7 +461,7 @@ function getArc(sx, sy, w, h, r, dir) {
     }
 }
 
-function getRoundedPath(points) {
+function getRoundedPath(points, v) {
     let path = '';
     let radius = 16;
     for (let i = 0; i < points.length; i++) {
@@ -449,7 +472,17 @@ function getRoundedPath(points) {
         let [c1x, c1y] = currPoint;
         let [c2x, c2y] = currPoint;
         let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
-        path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
+        if (v==='s') {
+            if (i===1) {
+                path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-32,ey]);
+            } else if (i === 4) {
+                path += getBezierPath('L', [sx-32,sy,ex,ey,ex,ey,ex,ey]);
+            } else {
+                path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
+            }
+        } else {
+            path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
+        }
     }
     return path + 'z';
 }

@@ -18,34 +18,26 @@ import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
     isLoading: true,
-
     dataIndex: 0,
     data: [],
-
     density: '', // inherit
     sLineDeltaXDefault: 0,
     padding: 0,
     defaultH: 0,
-
     alignment: '', // inherit
-
     taskLeft: 0,
     taskRight: 0,
-
     mapWidth: 0,
     mapHeight: 0,
-
     deepestSelectablePath: [],
-
+    selectedFamily: 0,
     isNodeClicked: false,
     isTaskClicked: false,
     shouldCenter: false,
-
     moveTarget: {
         path: [],
         index: 0,
     },
-
     margin: 32,
     taskConfig: {
         n: 4,
