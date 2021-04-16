@@ -102,17 +102,17 @@ export const mapSvgVisualize = {
                 ayd = ney;
                 bcyu = cm.nodeY - maxHadj / 2;
                 bcyd = cm.nodeY + maxHadj / 2;
-                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f');
+                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f', dir);
             } else {
                 let ax,bx,cx,ayu,ayd,bcyu,bcyd;
                 ax = nsx;
-                bx = nex-1;
+                bx = nex - dir;
                 cx = nex;
                 ayu = nsy;
                 ayd = ney;
                 bcyu = nsy;
                 bcyd = ney;
-                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 's');
+                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 's', dir);
             }
             svgElementData.branchHighlight = {
                 type: 'path',
@@ -461,7 +461,7 @@ function getArc(sx, sy, w, h, r, dir) {
     }
 }
 
-function getRoundedPath(points, v) {
+function getRoundedPath(points, v, dir) {
     let path = '';
     let radius = 16;
     for (let i = 0; i < points.length; i++) {
@@ -474,9 +474,9 @@ function getRoundedPath(points, v) {
         let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
         if (v==='s') {
             if (i===1) {
-                path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-32,ey]);
+                path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-dir*32,ey]);
             } else if (i === 4) {
-                path += getBezierPath('L', [sx-32,sy,ex,ey,ex,ey,ex,ey]);
+                path += getBezierPath('L', [sx-dir*32,sy,ex,ey,ex,ey,ex,ey]);
             } else {
                 path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
             }
