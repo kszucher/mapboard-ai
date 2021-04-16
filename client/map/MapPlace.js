@@ -124,6 +124,8 @@ export const mapPlace = {
             cm.d[i].parentNodeY = cm.nodeY;
             cm.d[i].lineDeltaX = 0;
             cm.d[i].lineDeltaY = 0;
+            cm.d[i].selfW = cm.selfW;
+            cm.d[i].selfH = cm.selfH;
 
             cm.d[i].isTop = 1;
             cm.d[i].isBottom = 1;

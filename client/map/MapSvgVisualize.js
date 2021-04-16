@@ -92,9 +92,6 @@ export const mapSvgVisualize = {
             //     borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
             // }
 
-
-
-
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
             if (cm.selectedFamily) { // should be done by RIGHTMOUSE
@@ -106,14 +103,6 @@ export const mapSvgVisualize = {
                 ayd = ney;
                 bcyu = cm.nodeY - maxHadj / 2 - margin;
                 bcyd = cm.nodeY + maxHadj / 2 +  margin;
-
-                if (cm.type === 'dir') {
-                    // missing info: selfW, selfH, lineDeltaX, lineDeltaY
-                    console.log(cm)
-                    console.log(mapref(cm.parentPath))
-                    console.log([nsx,nex,nsy,ney,maxHadj,cm.familyW,cm.selfW, cm.lineDeltaX])
-                }
-
                 path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f', dir);
             } else {
                 let ax,bx,cx,ayu,ayd,bcyu,bcyd;

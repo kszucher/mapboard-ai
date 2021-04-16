@@ -41,7 +41,7 @@ export const mapMeasure = {
             params.hasMultipleChild = 1;
         }
 
-        if (cm.type === 'struct') {
+        if (cm.type === 'struct' || cm.type === 'dir') {
             if (cm.hasCell) {
                 let rowCount = Object.keys(cm.c).length;
                 let colCount = Object.keys(cm.c[0]).length;
@@ -102,8 +102,7 @@ export const mapMeasure = {
                 if (rowCount > 1) {
                     params.hasMultipleContentRow = 1;
                 }
-            }
-            else {
+            } else {
                 if (cm.contentType === 'text') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1;
