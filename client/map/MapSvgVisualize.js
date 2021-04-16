@@ -1,5 +1,5 @@
 import {copy, genHash, getBgc, isOdd} from "../core/Utils";
-import {mapState} from "../core/MapFlow";
+import {mapref, mapState} from "../core/MapFlow";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 
@@ -93,9 +93,7 @@ export const mapSvgVisualize = {
             // }
 
 
-            if (cm.isRoot && cm.d[0].selectedFamily) {
-                console.log(cm.d[0])
-            }
+
 
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
@@ -108,6 +106,14 @@ export const mapSvgVisualize = {
                 ayd = ney;
                 bcyu = cm.nodeY - maxHadj / 2 - margin;
                 bcyd = cm.nodeY + maxHadj / 2 +  margin;
+
+                if (cm.type === 'dir') {
+                    // missing info: selfW, selfH, lineDeltaX, lineDeltaY
+                    console.log(cm)
+                    console.log(mapref(cm.parentPath))
+                    console.log([nsx,nex,nsy,ney,maxHadj,cm.familyW,cm.selfW, cm.lineDeltaX])
+                }
+
                 path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f', dir);
             } else {
                 let ax,bx,cx,ayu,ayd,bcyu,bcyd;

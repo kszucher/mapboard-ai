@@ -5,8 +5,8 @@ export const mapPlace = {
         let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
 
         let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfig.width: 0;
-        let leftMapWidth =      r.d[1].s.length > 0 ? r.d[1].selfW + sLineDeltaXDefault + r.d[1].familyW : 0;
-        let rightMapWidth =     r.d[0].s.length > 0 ? r.d[0].selfW + sLineDeltaXDefault + r.d[0].familyW : 0;
+        let leftMapWidth =      r.d[1].s.length > 0 ? sLineDeltaXDefault + r.d[1].familyW : 0;
+        let rightMapWidth =     r.d[0].s.length > 0 ? sLineDeltaXDefault + r.d[0].familyW : 0;
         let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfig.width : 0;
 
         let leftWidth = leftMapWidth + leftTaskWidth + margin;
@@ -46,8 +46,8 @@ export const mapPlace = {
             mapStartCenterX = mapWidth - margin - r.selfW / 2;
         }
 
-        let rightMapHeight =    r.d.length > 0? r.d[0].familyH > r.d[0].selfH ? r.d[0].familyH : r.d[0].selfH : 0;
-        let leftMapHeight =     r.d.length > 1? r.d[1].familyH > r.d[1].selfH ? r.d[1].familyH : r.d[1].selfH : 0;
+        let rightMapHeight = r.d.length > 0 ? r.d[0].familyH : 0;
+        let leftMapHeight =  r.d.length > 1? r.d[1].familyH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
 
