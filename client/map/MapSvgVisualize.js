@@ -84,7 +84,7 @@ export const mapSvgVisualize = {
             }
         }
         // branch
-        if (cm.selected) { // cm.hasBranchHighlight
+        if (cm.selected || cm.selectedFamily) { // cm.hasBranchHighlight
 
             // if (cm.selected) {
             //     // border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
@@ -95,13 +95,14 @@ export const mapSvgVisualize = {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
             if (cm.selectedFamily) { // should be done by RIGHTMOUSE
+                let margin = 2;
                 ax = nsx;
                 bx = nex + dir*cm.lineDeltaX;
-                cx = nsx + dir*(cm.familyW + cm.selfW);
+                cx = nsx + dir*(cm.familyW + cm.selfW) + margin;
                 ayu = nsy;
                 ayd = ney;
-                bcyu = cm.nodeY - maxHadj / 2;
-                bcyd = cm.nodeY + maxHadj / 2;
+                bcyu = cm.nodeY - maxHadj / 2 - margin;
+                bcyd = cm.nodeY + maxHadj / 2 +  margin;
                 path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f', dir);
             } else {
                 let ax,bx,cx,ayu,ayd,bcyu,bcyd;

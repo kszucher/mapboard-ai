@@ -475,4 +475,5 @@ function nodeReducer(action, payload) {
 function clearSelection() {
     let r = getMapData().r;
     mapChangeProp.start(r, {selected: 0}, '');
+    // TODO: rem selectedFamily too
 }
