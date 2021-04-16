@@ -94,7 +94,7 @@ export const mapSvgVisualize = {
 
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
-            if (mapState.selectedFamily) { // should be done by RIGHTMOUSE
+            if (cm.selectedFamily) { // should be done by RIGHTMOUSE
                 ax = nsx;
                 bx = nex + dir*cm.lineDeltaX;
                 cx = nsx + dir*(cm.familyW + cm.selfW);

@@ -30,7 +30,6 @@ export let mapState = {
     mapWidth: 0,
     mapHeight: 0,
     deepestSelectablePath: [],
-    selectedFamily: 0,
     isNodeClicked: false,
     isTaskClicked: false,
     shouldCenter: false,

@@ -18,6 +18,7 @@ export let props = {
         sTextFontSize:                          14,
         cBorderColor:                           '#eac6fb',
         selected:                               0,
+        selectedFamily:                         0,
         task:                                   0,
         lastSelectedChild:                      -1, // -1 means not selected ever
         lineWidth:                              1,
