@@ -43,12 +43,15 @@ function nodeReducer(action, payload) {
         }
         case 'selectDescendantsOut': {
             if (lm.path.length === 1) {
-                if (payload.keyCode === 'ArrowRight') {mapChangeProp.start(lm.d[0], {selected: 1}, 's')}
-                if (payload.keyCode === 'ArrowLeft') {mapChangeProp.start(lm.d[1], {selected: 1}, 's')}
+                if (payload.keyCode === 'ArrowRight') {
+                    lm.d[0].selectedFamily = 1;
+                } else if (payload.keyCode === 'ArrowLeft') {
+                    lm.d[1].selectedFamily = 1;
+                }
             } else if (
                 lm.path[2] === 0 && payload.keyCode === 'ArrowRight' ||
                 lm.path[2] === 1 && payload.keyCode === 'ArrowLeft') {
-                mapChangeProp.start(lm, {selected: 1}, 's');
+                lm.selectedFamily = 1;
             }
             break;
         }

@@ -92,6 +92,11 @@ export const mapSvgVisualize = {
             //     borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
             // }
 
+
+            if (cm.isRoot && cm.d[0].selectedFamily) {
+                console.log(cm.d[0])
+            }
+
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
             if (cm.selectedFamily) { // should be done by RIGHTMOUSE

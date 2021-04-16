@@ -11,7 +11,7 @@ export const mapPlace = {
 
         let leftWidth = leftMapWidth + leftTaskWidth + margin;
         let rightWidth = rightMapWidth + rightTaskWidth + margin;
-        
+
         let flow = 'center';
         if (r.d[0].s.length && !r.d[1].s.length) flow = 'right';
         if (!r.d[0].s.length && r.d[1].s.length) flow = 'left';
@@ -63,7 +63,7 @@ export const mapPlace = {
     },
 
     iterate: (cm) => {
-        if (cm.isRoot) {
+        if (cm.isRoot || cm.type === 'dir') {
             cm.nodeStartX = cm.parentNodeStartX;
             cm.nodeEndX = cm.parentNodeEndX;
         } else {
@@ -78,7 +78,7 @@ export const mapPlace = {
             }
 
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
-                if (cm.type === 'struct' || cm.type === 'dir') {
+                if (cm.type === 'struct') {
                     if (cm.path[2] === 0) {
                         cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
                         cm.nodeEndX = cm.nodeStartX + cm.selfW;
