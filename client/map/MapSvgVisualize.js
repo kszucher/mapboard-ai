@@ -80,20 +80,21 @@ export const mapSvgVisualize = {
         if (cm.selectedSelf || cm.selectedFamily) {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let widthExpansion;
+            let corr = dir === -1 ? -1 : 0;
             if (cm.selectedSelf) {
-                ax = nsx;
-                bx = nex - dir;
-                cx = nex;
-                ayu = nsy;
-                ayd = ney;
-                bcyu = nsy;
-                bcyd = ney;
+                ax = nsx + 1 * dir + corr;
+                bx = nex - 2 * dir + corr - dir;
+                cx = nex - 2 * dir + corr;
+                ayu = nsy + 1;
+                ayd = ney - 3;
+                bcyu = nsy + 1;
+                bcyd = ney - 3;
                 widthExpansion = 'self';
             } else {
                 let margin = 2;
-                ax = nsx;
-                bx = nex + dir*cm.lineDeltaX;
-                cx = nsx + dir*(cm.familyW + cm.selfW) + margin;
+                ax = nsx + corr;
+                bx = nex + dir*cm.lineDeltaX + corr;
+                cx = nsx + dir*(cm.familyW + cm.selfW + margin);
                 ayu = nsy;
                 ayd = ney;
                 bcyu = cm.nodeY - maxHadj / 2 - margin;

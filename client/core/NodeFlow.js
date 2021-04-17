@@ -32,15 +32,15 @@ function nodeReducer(action, payload) {
                 mapState.deepestSelectablePath = ['r'];
             }
             lm = mapref(mapState.deepestSelectablePath); // needs redefinition
-            // if(!lm.isRoot) {
-            //     if (lm.selected) { // has been selected before
-            //         lm.selectedSelf = !lm.selectedSelf;
-            //         lm.selectedFamily = !lm.selectedFamily;
-            //     } else { // just selected now
-            //         lm.selectedSelf = 1;
-            //         lm.selectedFamily = 0;
-            //     }
-            // }
+            if(!lm.isRoot) {
+                if (lm.selected) { // has been selected before
+                    lm.selectedSelf = !lm.selectedSelf;
+                    lm.selectedFamily = !lm.selectedFamily;
+                } else { // just selected now
+                    lm.selectedSelf = 1;
+                    lm.selectedFamily = 0;
+                }
+            }
             clearSelection();
             lm.selected = 1;
             break;
