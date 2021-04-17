@@ -28,12 +28,18 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
-            if(!lm.isRoot) {
-                // lm.selectedFamily = 1;
-                // lm.selectionAnimationRequested = 1;
-            }
+            lm = mapref(mapState.deepestSelectablePath); // needs redefinition
+            // if(!lm.isRoot) {
+            //     if (lm.selected) { // has been selected before
+            //         lm.selectedSelf = !lm.selectedSelf;
+            //         lm.selectedFamily = !lm.selectedFamily;
+            //     } else { // just selected now
+            //         lm.selectedSelf = 1;
+            //         lm.selectedFamily = 0;
+            //     }
+            // }
             clearSelection();
-            mapref(mapState.deepestSelectablePath).selected = 1;
+            lm.selected = 1;
             break;
         }
         case 'selectStructToo': {

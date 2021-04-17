@@ -34,9 +34,6 @@ export const mapSvgVisualize = {
         if (cm.lineAnimationRequested) {
             cm.lineAnimationRequested = 0;
             animationInit = 'l';
-        } else if (cm.selectionAnimationRequested) {
-            cm.selectionAnimationRequested = 0;
-            animationInit = 's';
         }
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
@@ -80,10 +77,10 @@ export const mapSvgVisualize = {
             }
         }
         // branch selection
-        if ( cm.selectedFamily) {
+        if (cm.selectedSelf || cm.selectedFamily) {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
-            if (animationInit === 's') {
+            if (cm.selectedSelf) {
                 let ax,bx,cx,ayu,ayd,bcyu,bcyd;
                 ax = nsx;
                 bx = nex - dir;

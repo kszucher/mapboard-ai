@@ -18,7 +18,6 @@ export let props = {
         sTextFontSize:                          14,
         cBorderColor:                           '#eac6fb',
         selected:                               0,
-        selectedFamily:                         0,
         task:                                   0,
         lastSelectedChild:                      -1, // -1 means not selected ever
         lineWidth:                              1,
@@ -39,10 +38,11 @@ export let props = {
             parentNodeStartXFrom:               0,
             parentNodeYFrom:                    0,
             lineAnimationRequested:             0,
-            selectionAnimationRequested:        0,
             moveLine:                           [],
             moveRect:                           [],
             selectionRect:                      [],
+            selectedSelf:                       0, // not saved yet
+            selectedFamily:                     0, // not saved yet
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,
