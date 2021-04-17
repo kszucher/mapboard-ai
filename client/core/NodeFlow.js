@@ -28,21 +28,19 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
-            if (mapState.deepestSelectablePath.length === 3) {
-                mapState.deepestSelectablePath = ['r'];
-            }
-            lm = mapref(mapState.deepestSelectablePath); // needs redefinition
-            // if(!lm.isRoot) {
-            //     if (lm.selected) { // has been selected before
-            //         lm.selectedSelf = !lm.selectedSelf;
-            //         lm.selectedFamily = !lm.selectedFamily;
-            //     } else { // just selected now
-            //         lm.selectedSelf = 1;
-            //         lm.selectedFamily = 0;
-            //     }
-            // }
             clearSelection();
+            lm = mapref(mapState.deepestSelectablePath);
             lm.selected = 1;
+            lm.selectedSelf = 1;
+            lm.selectedFamily = 0;
+            break;
+        }
+        case 'selectStructFamily': {
+            clearSelection();
+            lm = mapref(mapState.deepestSelectablePath);
+            lm.selected = 1;
+            lm.selectedSelf = 0;
+            lm.selectedFamily = 1;
             break;
         }
         case 'selectStructToo': {
