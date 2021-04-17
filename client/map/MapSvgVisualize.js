@@ -79,9 +79,8 @@ export const mapSvgVisualize = {
         // branch selection
         if (cm.selectedSelf || cm.selectedFamily) {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
-            let path;
+            let widthExpansion;
             if (cm.selectedSelf) {
-                let ax,bx,cx,ayu,ayd,bcyu,bcyd;
                 ax = nsx;
                 bx = nex - dir;
                 cx = nex;
@@ -89,7 +88,7 @@ export const mapSvgVisualize = {
                 ayd = ney;
                 bcyu = nsy;
                 bcyd = ney;
-                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'self', dir);
+                widthExpansion = 'self';
             } else {
                 let margin = 2;
                 ax = nsx;
@@ -99,11 +98,11 @@ export const mapSvgVisualize = {
                 ayd = ney;
                 bcyu = cm.nodeY - maxHadj / 2 - margin;
                 bcyd = cm.nodeY + maxHadj / 2 +  margin;
-                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'family', dir);
+                widthExpansion = 'family';
             }
             svgElementData.branchHighlight = {
                 type: 'path',
-                path: path,
+                path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
