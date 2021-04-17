@@ -84,6 +84,7 @@ export const mapSvgVisualize = {
             }
         }
         // branch
+        /*
         if (cm.selected || cm.selectedFamily) { // cm.hasBranchHighlight
 
             // if (cm.selected) {
@@ -122,6 +123,7 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
+        */
         // table
         if (cm.type === "struct" && cm.hasCell) {
             // frame

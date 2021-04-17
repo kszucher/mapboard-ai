@@ -28,7 +28,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
-            if(!lm.isRoot) lm.selectedFamily = lm.selected;
+            // if(!lm.isRoot) lm.selectedFamily = lm.selected;
             clearSelection();
             mapref(mapState.deepestSelectablePath).selected = 1;
             break;
