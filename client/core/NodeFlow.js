@@ -28,6 +28,9 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
+            if (mapState.deepestSelectablePath.length === 3) {
+                mapState.deepestSelectablePath = ['r'];
+            }
             lm = mapref(mapState.deepestSelectablePath); // needs redefinition
             // if(!lm.isRoot) {
             //     if (lm.selected) { // has been selected before
