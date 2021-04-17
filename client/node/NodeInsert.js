@@ -12,7 +12,7 @@ export function structInsert(lm, mode) {
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeStartXFrom: parentRef.nodeStartX,
             parentNodeYFrom: parentRef.nodeY,
-            twoStepAnimationRequested: 1,
+            lineAnimationRequested: 1,
         }))
     } else if (mode === 'siblingDown') {
         parentRef = mapref(lm.parentPath);
@@ -23,7 +23,7 @@ export function structInsert(lm, mode) {
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeStartXFrom: parentRef.nodeStartX,
             parentNodeYFrom: parentRef.nodeY,
-            twoStepAnimationRequested: 1,
+            lineAnimationRequested: 1,
         }));
     } else if (mode === 'child') {
         parentRef = lm.isRoot? lm.d[0] : lm;
@@ -34,7 +34,7 @@ export function structInsert(lm, mode) {
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeStartXFrom: parentRef.nodeStartX,
             parentNodeYFrom: parentRef.nodeY,
-            twoStepAnimationRequested: 1,
+            lineAnimationRequested: 1,
         }));
     }
 }

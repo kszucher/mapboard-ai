@@ -30,18 +30,21 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
-        if (cm.twoStepAnimationRequested) {
-            mapSvgVisualize.animate(cm, 0);
-            cm.twoStepAnimationRequested = 0;
+        if (cm.lineAnimationRequested) {
+            cm.lineAnimationRequested = 0;
+            mapSvgVisualize.animate(cm, 'l');
+        } else if (cm.selectionAnimationRequested) {
+            cm.selectionAnimationRequested = 0;
+            mapSvgVisualize.animate(cm, 's');
         } else {
-            mapSvgVisualize.animate(cm, 1);
+            mapSvgVisualize.animate(cm, '');
         }
         cm.d.map(i => mapSvgVisualize.iterate(i));
         cm.s.map(i => mapSvgVisualize.iterate(i));
         cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
     },
 
-    animate: (cm, step) => {
+    animate: (cm, animationInit) => {
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
@@ -55,10 +58,10 @@ export const mapSvgVisualize = {
             cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, x2, y2;
-            if (step === 0) {
+            if (animationInit === 'l') {
                 x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
-            } else if (step === 1) {
+            } else {
                 x1 = cm.path[2]? cm.parentNodeStartX : cm.parentNodeEndX;
                 y1 = cm.parentNodeY;
             }
@@ -83,29 +86,11 @@ export const mapSvgVisualize = {
                 fill: cm.lineColor,
             }
         }
-        // branch
-        /*
-        if (cm.selected || cm.selectedFamily) { // cm.hasBranchHighlight
-
-            // if (cm.selected) {
-            //     // border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
-            //     // borderRadius:           '8px',
-            //     borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
-            // }
-
+        // branch selection
+        if ( cm.selectedFamily) {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let path;
-            if (cm.selectedFamily) { // should be done by RIGHTMOUSE
-                let margin = 2;
-                ax = nsx;
-                bx = nex + dir*cm.lineDeltaX;
-                cx = nsx + dir*(cm.familyW + cm.selfW) + margin;
-                ayu = nsy;
-                ayd = ney;
-                bcyu = cm.nodeY - maxHadj / 2 - margin;
-                bcyd = cm.nodeY + maxHadj / 2 +  margin;
-                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'f', dir);
-            } else {
+            if (animationInit === 's') {
                 let ax,bx,cx,ayu,ayd,bcyu,bcyd;
                 ax = nsx;
                 bx = nex - dir;
@@ -114,7 +99,17 @@ export const mapSvgVisualize = {
                 ayd = ney;
                 bcyu = nsy;
                 bcyd = ney;
-                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 's', dir);
+                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'self', dir);
+            } else {
+                let margin = 2;
+                ax = nsx;
+                bx = nex + dir*cm.lineDeltaX;
+                cx = nsx + dir*(cm.familyW + cm.selfW) + margin;
+                ayu = nsy;
+                ayd = ney;
+                bcyu = cm.nodeY - maxHadj / 2 - margin;
+                bcyd = cm.nodeY + maxHadj / 2 +  margin;
+                path = getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], 'family', dir);
             }
             svgElementData.branchHighlight = {
                 type: 'path',
@@ -123,7 +118,6 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-        */
         // table
         if (cm.type === "struct" && cm.hasCell) {
             // frame
@@ -475,9 +469,9 @@ function getRoundedPath(points, v, dir) {
         let [c1x, c1y] = currPoint;
         let [c2x, c2y] = currPoint;
         let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
-        if (v==='s' && i===1) {
+        if (v==='self' && i===1) {
             path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-dir*32,ey]);
-        } else if (v==='s' && i===4) {
+        } else if (v==='self' && i===4) {
             path += getBezierPath('L', [sx-dir*32,sy,ex,ey,ex,ey,ex,ey]);
         } else {
             path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);

@@ -28,7 +28,10 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
-            // if(!lm.isRoot) lm.selectedFamily = lm.selected;
+            if(!lm.isRoot) {
+                // lm.selectedFamily = 1;
+                // lm.selectionAnimationRequested = 1;
+            }
             clearSelection();
             mapref(mapState.deepestSelectablePath).selected = 1;
             break;
