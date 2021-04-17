@@ -30,21 +30,14 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
+        let animationInit = '';
         if (cm.lineAnimationRequested) {
             cm.lineAnimationRequested = 0;
-            mapSvgVisualize.animate(cm, 'l');
+            animationInit = 'l';
         } else if (cm.selectionAnimationRequested) {
             cm.selectionAnimationRequested = 0;
-            mapSvgVisualize.animate(cm, 's');
-        } else {
-            mapSvgVisualize.animate(cm, '');
+            animationInit = 's';
         }
-        cm.d.map(i => mapSvgVisualize.iterate(i));
-        cm.s.map(i => mapSvgVisualize.iterate(i));
-        cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
-    },
-
-    animate: (cm, animationInit) => {
         let svgElementData = {};
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
@@ -409,6 +402,10 @@ export const mapSvgVisualize = {
         mapSvgData[cm.svgId].keepHash = keepHash;
         mapSvgData[cm.svgId].svgElementData = copy(svgElementData);
         mapSvgData[cm.svgId].path = cm.path;
+
+        cm.d.map(i => mapSvgVisualize.iterate(i));
+        cm.s.map(i => mapSvgVisualize.iterate(i));
+        cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
     }
 };
 
