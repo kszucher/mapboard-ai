@@ -123,10 +123,7 @@ export function MapComponent() {
             redraw();
         }
         (window.getSelection ? window.getSelection() : document.selection).empty()
-        let mouseMode;
-        if (e.which === 1) mouseMode = 'select';
-        if (e.which === 2) mouseMode = 'drag';
-        if (mouseMode === 'select') {
+        if (e.which === 1) {
             mapState.isNodeClicked = false;
             let r = getMapData().r;
             r.selectionRect = [];
@@ -179,7 +176,7 @@ export function MapComponent() {
                 pushSelectionState();
                 nodeDispatch('clearSelection');
             }
-        } else if (mouseMode === 'drag') {
+        } else if (e.which === 2) {
             let el = document.getElementById('mapHolderDiv');
             scrollLeft = el.scrollLeft;
             scrollTop = el.scrollTop;
@@ -192,10 +189,7 @@ export function MapComponent() {
         e.preventDefault();
         if (isMouseDown) {
             elapsed++;
-            let mouseMode;
-            if (e.which === 1) mouseMode = 'select';
-            if (e.which === 2) mouseMode = 'drag';
-            if (mouseMode === 'select') {
+            if (e.which === 1) {
                 if (mapState.isNodeClicked) {
                     let r = getMapData().r;
                     let [toX, toY] = getCoords(e);
@@ -252,7 +246,7 @@ export function MapComponent() {
                     mapFindOverRectangle.start(r, startX, startY, width, height);
                     redraw();
                 }
-            } else if (mouseMode === 'drag') {
+            } else if (e.which === 2) {
                 let el = document.getElementById('mapHolderDiv');
                 el.scrollLeft = scrollLeft - e.pageX  + pageX;
                 el.scrollTop = scrollTop -  e.pageY  + pageY;
@@ -263,10 +257,7 @@ export function MapComponent() {
     const mouseup = (e) => {
         e.preventDefault();
         isMouseDown = false;
-        let mouseMode;
-        if (e.which === 1) mouseMode = 'select';
-        if (e.which === 2) mouseMode = 'drag';
-        if (mouseMode === 'select') {
+        if (e.which === 1) {
             let r = getMapData().r;
             if (mapState.moveTarget.path.length) {
                 r.moveLine = [];
@@ -291,7 +282,7 @@ export function MapComponent() {
                 recalc();
                 redraw();
             }
-        } else if (mouseMode === 'drag') {
+        } else if (e.which === 2) {
 
         }
     };
