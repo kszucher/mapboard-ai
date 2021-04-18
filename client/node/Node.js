@@ -39,8 +39,7 @@ export let props = {
             lineAnimationRequested:             0,
             moveData:                           [],
             selectionRect:                      [],
-            selectedSelf:                       0, // not saved yet
-            selectedFamily:                     0, // not saved yet
+            selection:                          's',
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,

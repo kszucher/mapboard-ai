@@ -31,16 +31,14 @@ function nodeReducer(action, payload) {
             clearSelection();
             lm = mapref(mapState.deepestSelectablePath);
             lm.selected = 1;
-            lm.selectedSelf = 1;
-            lm.selectedFamily = 0;
+            lm.selection = 's';
             break;
         }
         case 'selectStructFamily': {
             clearSelection();
             lm = mapref(mapState.deepestSelectablePath);
             lm.selected = 1;
-            lm.selectedSelf = 0;
-            lm.selectedFamily = 1;
+            lm.selection = 'f';
             break;
         }
         case 'selectStructToo': {
@@ -54,14 +52,16 @@ function nodeReducer(action, payload) {
         case 'selectDescendantsOut': {
             if (lm.path.length === 1) {
                 if (payload.keyCode === 'ArrowRight') {
-                    lm.d[0].selectedFamily = 1;
+                    lm.d[0].selected = 1;
+                    lm.d[0].selection = 'f';
                 } else if (payload.keyCode === 'ArrowLeft') {
-                    lm.d[1].selectedFamily = 1;
+                    lm.d[1].selected = 1;
+                    lm.d[1].selection = 'f';
                 }
             } else if (
                 lm.path[2] === 0 && payload.keyCode === 'ArrowRight' ||
                 lm.path[2] === 1 && payload.keyCode === 'ArrowLeft') {
-                lm.selectedFamily = 1;
+                lm.selection = 'f';
             }
             break;
         }
@@ -476,5 +476,5 @@ function nodeReducer(action, payload) {
 
 function clearSelection() {
     let r = getMapData().r;
-    mapChangeProp.start(r, {selected: 0, selectedSelf: 0, selectedFamily: 0}, '');
+    mapChangeProp.start(r, {selected: 0, selection: 's'}, '');
 }

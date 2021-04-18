@@ -79,11 +79,11 @@ export const mapSvgVisualize = {
             }
         }
         // branch selection
-        if (cm.selectedSelf || cm.selectedFamily || cm.ellipseFillColor!== '') {
+        if (cm.selected || cm.ellipseFillColor!== '') {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let widthExpansion;
             let corr = dir === -1 ? -1 : 0;
-            if (cm.selectedSelf || cm.ellipseFillColor !== '') {
+            if (cm.selection  === 's' || cm.ellipseFillColor !== '') {
                 ax = nsx + 1 * dir + corr;
                 bx = nex - 2 * dir + corr - dir;
                 cx = nex - 2 * dir + corr;
@@ -106,7 +106,7 @@ export const mapSvgVisualize = {
             svgElementData.branchHighlight = {
                 type: 'path',
                 path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
-                stroke: (cm.selectedSelf || cm.selectedFamily)? '#000000' : 'none',
+                stroke: cm.selected? '#000000' : 'none',
                 strokeWidth: cm.lineWidth,
                 fill: cm.ellipseFillColor,
             }
