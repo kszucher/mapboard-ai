@@ -120,14 +120,9 @@ export const mapDivVisualize = {
                     }
                 }
             }
-
-            mapDivData[cm.divId].keepHash = keepHash;
-            mapDivData[cm.divId].styleData = copy(styleData);
-            mapDivData[cm.divId].contentType = copy(cm.contentType);
-            mapDivData[cm.divId].content = copy(cm.content);
-            mapDivData[cm.divId].path = cm.path;
+            let {contentType, content, path} = cm;
+            Object.assign(mapDivData[cm.divId], {keepHash, styleData, contentType, content, path})
         }
-
         cm.d.map(i => mapDivVisualize.iterate(i));
         cm.s.map(i => mapDivVisualize.iterate(i));
         cm.c.map(i => i.map(j => mapDivVisualize.iterate(j)));
