@@ -73,7 +73,7 @@ export const mapDivVisualize = {
                 textDecoration:         cm.linkType !== "" ? "underline" : "",
                 cursor:                 'default',
                 color:                  cm.sTextColor,
-                backgroundColor:        cm.ellipseFillColor !== ''? cm.ellipseFillColor : getBgc(),
+                // backgroundColor:        cm.ellipseFillColor !== ''? cm.ellipseFillColor : getBgc(),
                 transition:             '0.5s ease-out',
                 transitionProperty:     'left, top, background-color',
             };

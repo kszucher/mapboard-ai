@@ -25,7 +25,7 @@ export let props = {
         lineColor:                              '#bbbbbb',
         ellipseBorderWidth:                     1,
         ellipseBorderColor:                     getBgc(),
-        ellipseFillColor:                       getBgc(),
+        ellipseFillColor:                       '',
         taskStatus:                             -1,
         hasBranchHighlight:                     0,
     },

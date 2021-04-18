@@ -487,15 +487,6 @@ export function MapComponent() {
                 paddingTop: '100vh',
                 paddingLeft: '100vw',
             }}>
-                <div id='mapDiv' style={{
-                    position: 'absolute',
-                    borderRadius: '32px',
-                    backgroundColor: '#fbfafc',
-                    transitionProperty: 'width, height',
-                    display: 'flex',
-                    /*background: inherit;*/
-                    /*backdrop-filter: blur(20px);*/
-                }}/>
                 <svg id="mapSvgOuter" style={{
                     position: 'absolute',
                     left: 0,
@@ -505,6 +496,16 @@ export function MapComponent() {
                         overflow: 'visible'
                     }}/>
                 </svg>
+                <div id='mapDiv' style={{
+                    position: 'absolute',
+                    borderRadius: '32px',
+                    // backgroundColor: '#fbfafc',
+                    transitionProperty: 'width, height',
+                    display: 'flex',
+                    pointerEvents: 'none'
+                    /*background: inherit;*/
+                    /*backdrop-filter: blur(20px);*/
+                }}/>
             </div>
         </div>
     )

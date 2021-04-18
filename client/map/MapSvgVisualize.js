@@ -1,5 +1,5 @@
-import {copy, genHash, getBgc, isOdd} from "../core/Utils";
-import {mapref, mapState} from "../core/MapFlow";
+import {copy, genHash, isOdd} from "../core/Utils";
+import {mapState} from "../core/MapFlow";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 
@@ -78,11 +78,11 @@ export const mapSvgVisualize = {
             }
         }
         // branch selection
-        if (cm.selectedSelf || cm.selectedFamily) {
+        if (cm.selectedSelf || cm.selectedFamily || cm.ellipseFillColor!== '') {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let widthExpansion;
             let corr = dir === -1 ? -1 : 0;
-            if (cm.selectedSelf) {
+            if (cm.selectedSelf || cm.ellipseFillColor !== '') {
                 ax = nsx + 1 * dir + corr;
                 bx = nex - 2 * dir + corr - dir;
                 cx = nex - 2 * dir + corr;
@@ -107,7 +107,7 @@ export const mapSvgVisualize = {
                 path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
-                // TODO: ability to add FILL to replace background color!
+                fill: cm.ellipseFillColor,
             }
         }
         // table
@@ -315,11 +315,11 @@ export const mapSvgVisualize = {
                     svgElement.setAttribute("id", svgElementName);
                     switch (svgElementData[svgElementName].type) {
                         case 'path': {
-                            let {path, color, strokeWidth, preventTransition} = svgElementData[svgElementName];
+                            let {path, color, strokeWidth, fill, preventTransition} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
                             svgElement.setAttribute("stroke", color);
                             svgElement.setAttribute("stroke-width", strokeWidth);
-                            svgElement.setAttribute("fill", "none");
+                            svgElement.setAttribute("fill", (fill && fill !== '') ? fill : "none");
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
                             svgElement.style.transitionProperty = 'd';
