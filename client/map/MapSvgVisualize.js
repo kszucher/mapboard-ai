@@ -18,6 +18,7 @@ let svgElementNameList = [
     'taskCircle3',
     'moveLine',
     'moveRect',
+    'background',
     'selectionRect',
 ];
 
@@ -261,11 +262,23 @@ export const mapSvgVisualize = {
                 ry: 8,
                 fill: '#fbfafc',
                 fillOpacity: 1,
+                stroke: '#5f0a87',
                 strokeWidth: 5,
             };
         }
         // background
-
+        if (cm.isRoot) {
+            svgElementData.background = {
+                type: 'rect',
+                x: 0,
+                y: 0,
+                width: mapState.mapWidth,
+                height: mapState.mapHeight,
+                rx: 32,
+                ry: 32,
+                fill: '#fbfafc',
+            };
+        }
         // selection rect
         if (cm.selectionRect.length) {
             svgElementData.selectionRect = {
@@ -279,6 +292,7 @@ export const mapSvgVisualize = {
                 fill: '#5f0a87',
                 fillOpacity: 0.05,
                 strokeWidth: 2,
+                preventTransition: 1,
             };
         }
         let svgGroup;
@@ -345,7 +359,7 @@ export const mapSvgVisualize = {
                             break;
                         }
                         case 'rect': {
-                            let {x, y, width, height, rx, ry, fill, fillOpacity, strokeWidth} = svgElementData[svgElementName];
+                            let {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = svgElementData[svgElementName];
                             svgElement.setAttribute("x", x);
                             svgElement.setAttribute("y", y);
                             svgElement.setAttribute("width", width);
@@ -354,8 +368,9 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("ry", ry);
                             svgElement.setAttribute("fill", fill);
                             svgElement.setAttribute("fill-opacity", fillOpacity);
-                            svgElement.setAttribute("stroke", '#5f0a87');
+                            svgElement.setAttribute("stroke", (stroke && stroke !== '') ? stroke: 'none');
                             svgElement.setAttribute("stroke-width", strokeWidth);
+                            svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
                             break;
                         }
                     }
