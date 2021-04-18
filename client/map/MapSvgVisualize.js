@@ -249,8 +249,8 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
                 color: '#5f0a87',
-                preventTransition: 1,
                 strokeWidth: 1,
+                preventTransition: 1,
             }
             svgElementData.moveRect = {
                 type: 'rect',
@@ -264,6 +264,7 @@ export const mapSvgVisualize = {
                 fillOpacity: 1,
                 stroke: '#5f0a87',
                 strokeWidth: 5,
+                preventTransition: 1,
             };
         }
         // background
