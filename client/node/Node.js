@@ -37,8 +37,7 @@ export let props = {
             parentNodeStartXFrom:               0,
             parentNodeYFrom:                    0,
             lineAnimationRequested:             0,
-            moveLine:                           [],
-            moveRect:                           [],
+            moveData:                           [],
             selectionRect:                      [],
             selectedSelf:                       0, // not saved yet
             selectedFamily:                     0, // not saved yet

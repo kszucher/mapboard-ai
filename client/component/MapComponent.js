@@ -209,8 +209,7 @@ export function MapComponent() {
                     let r = getMapData().r;
                     let [toX, toY] = getCoords(e);
                     mapState.moveTarget.path = [];
-                    r.moveLine = [];
-                    r.moveRect = [];
+                    r.moveData = [];
                     let lastSelectedPath = selectionState.structSelectedPathList[0];
                     let lastSelected = mapref(lastSelectedPath);
                     if (!(lastSelected.nodeStartX < toX &&
@@ -223,8 +222,7 @@ export function MapComponent() {
                             let lastFound = mapref(lastNearestPath);
                             fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                             fromY = lastFound.nodeY;
-                            r.moveLine = [fromX, fromY, toX, toY];
-                            r.moveRect = [toX, toY];
+                            r.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
                                 mapState.moveTarget.index = 0;
                             } else {
@@ -275,8 +273,7 @@ export function MapComponent() {
         if (e.which === 1) {
             let r = getMapData().r;
             if (mapState.moveTarget.path.length) {
-                r.moveLine = [];
-                r.moveRect = [];
+                r.moveData = [];
                 mapState.shouldCenter = true;
                 push();
                 nodeDispatch('moveSelection');

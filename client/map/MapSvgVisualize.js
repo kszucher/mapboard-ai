@@ -230,20 +230,20 @@ export const mapSvgVisualize = {
                 };
             }
         }
-        // move line
-        if (cm.moveLine.length) {
+        // move
+        if (cm.moveData.length) {
             let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
-            let deltaX = cm.moveLine[2] - cm.moveLine[0];
-            let deltaY = cm.moveLine[3] - cm.moveLine[1];
+            let deltaX = cm.moveData[2] - cm.moveData[0];
+            let deltaY = cm.moveData[3] - cm.moveData[1];
             // the elegant solution would be the inheritance of the target line type
-            x1 = cm.moveLine[0];
-            y1 = cm.moveLine[1];
-            c1x = cm.moveLine[0] + deltaX / 4;
-            c1y = cm.moveLine[1];
-            c2x = cm.moveLine[0] + deltaX / 4;
-            c2y = cm.moveLine[1] + deltaY;
-            x2 = cm.moveLine[2];
-            y2 = cm.moveLine[3];
+            x1 = cm.moveData[0];
+            y1 = cm.moveData[1];
+            c1x = cm.moveData[0] + deltaX / 4;
+            c1y = cm.moveData[1];
+            c2x = cm.moveData[0] + deltaX / 4;
+            c2y = cm.moveData[1] + deltaY;
+            x2 = cm.moveData[2];
+            y2 = cm.moveData[3];
             svgElementData.moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
@@ -251,13 +251,10 @@ export const mapSvgVisualize = {
                 preventTransition: 1,
                 strokeWidth: 1,
             }
-        }
-        // move rect
-        if (cm.moveRect.length) {
             svgElementData.moveRect = {
                 type: 'rect',
-                x: cm.moveRect[0] - 10,
-                y: cm.moveRect[1] - 10,
+                x: cm.moveData[2] - 10,
+                y: cm.moveData[3] - 10,
                 width: 20,
                 height: 20,
                 rx: 8,
@@ -267,6 +264,8 @@ export const mapSvgVisualize = {
                 strokeWidth: 5,
             };
         }
+        // background
+
         // selection rect
         if (cm.selectionRect.length) {
             svgElementData.selectionRect = {
