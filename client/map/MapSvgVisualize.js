@@ -315,44 +315,48 @@ export const mapSvgVisualize = {
                     svgElement.setAttribute("id", svgElementName);
                     switch (svgElementData[svgElementName].type) {
                         case 'path': {
-                            svgElement.setAttribute("d",                svgElementData[svgElementName].path);
-                            svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
-                            svgElement.setAttribute("stroke-width",     svgElementData[svgElementName].strokeWidth);
-                            svgElement.setAttribute("fill",             "none");
-                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                            svgElement.style.transition =               svgElementData[svgElementName].preventTransition ? '' : '0.5s ease-out';
-                            svgElement.style.transitionProperty =       'd';
+                            let {path, color, strokeWidth, preventTransition} = svgElementData[svgElementName];
+                            svgElement.setAttribute("d", path);
+                            svgElement.setAttribute("stroke", color);
+                            svgElement.setAttribute("stroke-width", strokeWidth);
+                            svgElement.setAttribute("fill", "none");
+                            svgElement.setAttribute("vector-effect", "non-scaling-stroke");
+                            svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
+                            svgElement.style.transitionProperty = 'd';
                             break;
                         }
                         case 'circle': {
-                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
-                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
-                            svgElement.setAttribute("r",                svgElementData[svgElementName].r);
-                            svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
-                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
-                            svgElement.style.transition =               '0.5s ease-out';
+                            let {cx, cy, r, fill} = svgElementData[svgElementName];
+                            svgElement.setAttribute("cx", cx);
+                            svgElement.setAttribute("cy", cy);
+                            svgElement.setAttribute("r", r);
+                            svgElement.setAttribute("fill", fill);
+                            svgElement.setAttribute("vector-effect", "non-scaling-stroke");
+                            svgElement.style.transition = '0.5s ease-out';
                             break;
                         }
                         case 'ellipse': {
-                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
-                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
-                            svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
-                            svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
-                            svgElement.setAttribute("fill",             '#5f0a87');
-                            svgElement.setAttribute("vector-effect",    "non-scaling-stroke");
+                            let {cx, cy, rx, ry} = svgElementData[svgElementName];
+                            svgElement.setAttribute("cx", cx);
+                            svgElement.setAttribute("cy", cy);
+                            svgElement.setAttribute("rx", rx);
+                            svgElement.setAttribute("ry", ry);
+                            svgElement.setAttribute("fill", '#5f0a87');
+                            svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                             break;
                         }
                         case 'rect': {
-                            svgElement.setAttribute("x",                svgElementData[svgElementName].x);
-                            svgElement.setAttribute("y",                svgElementData[svgElementName].y);
-                            svgElement.setAttribute("width",            svgElementData[svgElementName].width);
-                            svgElement.setAttribute("height",           svgElementData[svgElementName].height);
-                            svgElement.setAttribute("rx",               svgElementData[svgElementName].rx);
-                            svgElement.setAttribute("ry",               svgElementData[svgElementName].ry);
-                            svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
-                            svgElement.setAttribute("fill-opacity",     svgElementData[svgElementName].fillOpacity);
-                            svgElement.setAttribute("stroke",           '#5f0a87');
-                            svgElement.setAttribute("stroke-width",      svgElementData[svgElementName].strokeWidth);
+                            let {x, y, width, height, rx, ry, fill, fillOpacity, strokeWidth} = svgElementData[svgElementName];
+                            svgElement.setAttribute("x", x);
+                            svgElement.setAttribute("y", y);
+                            svgElement.setAttribute("width", width);
+                            svgElement.setAttribute("height", height);
+                            svgElement.setAttribute("rx", rx);
+                            svgElement.setAttribute("ry", ry);
+                            svgElement.setAttribute("fill", fill);
+                            svgElement.setAttribute("fill-opacity", fillOpacity);
+                            svgElement.setAttribute("stroke", '#5f0a87');
+                            svgElement.setAttribute("stroke-width", strokeWidth);
                             break;
                         }
                     }
@@ -364,28 +368,32 @@ export const mapSvgVisualize = {
 
                     switch (svgElementData[svgElementName].type) {
                         case 'path': {
-                            svgElement.setAttribute("d",                svgElementData[svgElementName].path);
-                            svgElement.setAttribute("stroke",           svgElementData[svgElementName].color);
-                            svgElement.setAttribute("stroke-width",     svgElementData[svgElementName].strokeWidth);
+                            let {path, color, strokeWidth} = svgElementData[svgElementName];
+                            svgElement.setAttribute("d", path);
+                            svgElement.setAttribute("stroke", color);
+                            svgElement.setAttribute("stroke-width", strokeWidth);
                             break;
                         }
                         case 'circle': {
-                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
-                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
-                            svgElement.setAttribute("r",                svgElementData[svgElementName].r);
-                            svgElement.setAttribute("fill",             svgElementData[svgElementName].fill);
+                            let {cx, cy, r, fill} = svgElementData[svgElementName];
+                            svgElement.setAttribute("cx", cx);
+                            svgElement.setAttribute("cy", cy);
+                            svgElement.setAttribute("r", r);
+                            svgElement.setAttribute("fill", fill);
                             break;
                         }
                         case 'ellipse': {
-                            svgElement.setAttribute("cx",               svgElementData[svgElementName].cx);
-                            svgElement.setAttribute("cy",               svgElementData[svgElementName].cy);
+                            let {cx, cy} = svgElementData[svgElementName];
+                            svgElement.setAttribute("cx", cx);
+                            svgElement.setAttribute("cy", cy);
                             break;
                         }
                         case 'rect': {
-                            svgElement.setAttribute("x",                svgElementData[svgElementName].x);
-                            svgElement.setAttribute("y",                svgElementData[svgElementName].y);
-                            svgElement.setAttribute("width",            svgElementData[svgElementName].width);
-                            svgElement.setAttribute("height",           svgElementData[svgElementName].height);
+                            let {x, y, width, height} = svgElementData[svgElementName];
+                            svgElement.setAttribute("x", x);
+                            svgElement.setAttribute("y", y);
+                            svgElement.setAttribute("width", width);
+                            svgElement.setAttribute("height", height);
                             break;
                         }
                     }
