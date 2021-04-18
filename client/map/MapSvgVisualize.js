@@ -348,16 +348,6 @@ export const mapSvgVisualize = {
                             svgElement.style.transition = '0.5s ease-out';
                             break;
                         }
-                        case 'ellipse': {
-                            let {cx, cy, rx, ry} = svgElementData[svgElementName];
-                            svgElement.setAttribute("cx", cx);
-                            svgElement.setAttribute("cy", cy);
-                            svgElement.setAttribute("rx", rx);
-                            svgElement.setAttribute("ry", ry);
-                            svgElement.setAttribute("fill", '#5f0a87');
-                            svgElement.setAttribute("vector-effect", "non-scaling-stroke");
-                            break;
-                        }
                         case 'rect': {
                             let {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = svgElementData[svgElementName];
                             svgElement.setAttribute("x", x);
@@ -394,12 +384,6 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("cy", cy);
                             svgElement.setAttribute("r", r);
                             svgElement.setAttribute("fill", fill);
-                            break;
-                        }
-                        case 'ellipse': {
-                            let {cx, cy} = svgElementData[svgElementName];
-                            svgElement.setAttribute("cx", cx);
-                            svgElement.setAttribute("cy", cy);
                             break;
                         }
                         case 'rect': {
