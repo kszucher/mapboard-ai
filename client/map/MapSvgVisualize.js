@@ -55,12 +55,8 @@ export const mapSvgVisualize = {
                 x1 = cm.path[2] ? cm.parentNodeStartX : cm.parentNodeEndX;
                 y1 = cm.parentNodeY;
             }
+            x1 = isOdd(x1)?x1-0.5:x1;
             x2 = nsx;
-            if (cm.path[2]) {
-                x1 = isOdd(x1)?x1-0.5:x1
-            } else {
-                x1 = isOdd(x1)?x1-0.5:x1
-            }
             y2 = cm.nodeY;
             svgElementData.connectionLine = {
                 type: 'path',
