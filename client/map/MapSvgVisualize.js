@@ -106,7 +106,7 @@ export const mapSvgVisualize = {
             svgElementData.branchHighlight = {
                 type: 'path',
                 path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
-                stroke: cm.lineColor,
+                stroke: (cm.selectedSelf || cm.selectedFamily)? '#000000' : 'none',
                 strokeWidth: cm.lineWidth,
                 fill: cm.ellipseFillColor,
             }
