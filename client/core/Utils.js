@@ -94,7 +94,7 @@ export function getTextDim(innerHTML, fontSize) {
     let tmpDiv = document.createElement('div');
     tmpDiv.id = "Test";
     tmpDiv.innerHTML = innerHTML;
-    mapHolderDiv.appendChild(tmpDiv);
+    page.appendChild(tmpDiv);
 
     var test = document.getElementById("Test");
     test.style.fontFamily = 'Roboto';
@@ -120,7 +120,7 @@ export function getEquationDim (content) {
     tmpDiv.style.fontSize = 14 + 'px';
     tmpDiv.innerHTML = str;
 
-    mapHolderDiv.appendChild(tmpDiv);
+    page.appendChild(tmpDiv);
 
     let dim = {
         w: tmpDiv.childNodes[0].offsetWidth,

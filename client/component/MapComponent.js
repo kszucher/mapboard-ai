@@ -495,13 +495,10 @@ export function MapComponent() {
                 </svg>
                 <div id='mapDiv' style={{
                     position: 'absolute',
-                    borderRadius: '32px',
-                    // backgroundColor: '#fbfafc',
-                    transitionProperty: 'width, height',
+                    width: '800px',
+                    height: '600px',
                     display: 'flex',
                     pointerEvents: 'none'
-                    /*background: inherit;*/
-                    /*backdrop-filter: blur(20px);*/
                 }}/>
             </div>
         </div>
