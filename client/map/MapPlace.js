@@ -54,8 +54,8 @@ export const mapPlace = {
         mapState.mapWidth = mapWidth;
         mapState.mapHeight = mapHeight;
 
-        r.parentNodeStartX = mapStartCenterX - r.selfW/2 + 2;
-        r.parentNodeEndX = mapStartCenterX + r.selfW/2;
+        r.parentNodeStartX = mapStartCenterX - r.selfW / 2;
+        r.parentNodeEndX = mapStartCenterX + r.selfW / 2;
         r.parentNodeY = 0;
         r.lineDeltaX = 0;
         r.lineDeltaY = minHeight / 2 + 30 - 0.5;
@@ -100,13 +100,10 @@ export const mapPlace = {
                 }
             }
         }
-
         cm.nodeY = cm.parentNodeY + cm.lineDeltaY;
-
         if (Number.isInteger(cm.nodeY)) {
             cm.nodeY += 0.5;
         }
-
         if (Number.isInteger(cm.nodeStartX)) {
             if (cm.path[2] === 0) {
                 cm.nodeStartX += 0.5;
@@ -116,7 +113,6 @@ export const mapPlace = {
                 cm.nodeEndX -= 0.5;
             }
         }
-
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {
             cm.d[i].parentNodeStartX = cm.nodeStartX;
@@ -126,13 +122,10 @@ export const mapPlace = {
             cm.d[i].lineDeltaY = 0;
             cm.d[i].selfW = cm.selfW;
             cm.d[i].selfH = cm.selfH;
-
             cm.d[i].isTop = 1;
             cm.d[i].isBottom = 1;
-
             mapPlace.iterate(cm.d[i]);
         }
-
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
         for (let i = 0; i < rowCount; i++) {
@@ -145,7 +138,6 @@ export const mapPlace = {
                 mapPlace.iterate(cm.c[i][j]);
             }
         }
-
         let elapsedY = 0;
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
@@ -153,11 +145,9 @@ export const mapPlace = {
             cm.s[i].parentNodeEndX = cm.nodeEndX;
             cm.s[i].parentNodeY = cm.nodeY;
             cm.s[i].lineDeltaX = mapState.sLineDeltaXDefault;
-            cm.s[i].lineDeltaY = cm.familyH*(-1/2) + elapsedY + cm.s[i].maxH/2;
-
+            cm.s[i].lineDeltaY = elapsedY + cm.s[i].maxH / 2 - cm.familyH / 2;
             if (i === 0 && cm.isTop) cm.s[i].isTop = 1;
             if (i === sCount - 1 && cm.isBottom === 1) cm.s[i].isBottom = 1;
-
             mapPlace.iterate(cm.s[i]);
             elapsedY += cm.s[i].maxH + cm.spacingActivated*cm.spacing;
         }
