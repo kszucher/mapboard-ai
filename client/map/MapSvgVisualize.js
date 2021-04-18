@@ -324,9 +324,10 @@ export const mapSvgVisualize = {
             }
             switch (op) {
                 case 'init': {
-                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", svgElementData[svgElementName].type);
+                    let {type} = svgElementData[svgElementName]
+                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type);
                     svgElement.setAttribute("id", svgElementName);
-                    switch (svgElementData[svgElementName].type) {
+                    switch (type) {
                         case 'path': {
                             let {path, color, strokeWidth, fill, preventTransition} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
@@ -368,9 +369,9 @@ export const mapSvgVisualize = {
                     break;
                 }
                 case 'update': {
+                    let {type} = svgElementData[svgElementName];
                     let svgElement = svgGroup.querySelector('#' + svgElementName);
-
-                    switch (svgElementData[svgElementName].type) {
+                    switch (type) {
                         case 'path': {
                             let {path, color, strokeWidth} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
