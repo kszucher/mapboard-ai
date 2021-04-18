@@ -406,10 +406,8 @@ export const mapSvgVisualize = {
                 }
             }
         }
-        mapSvgData[cm.svgId].keepHash = keepHash;
-        mapSvgData[cm.svgId].svgElementData = copy(svgElementData);
-        mapSvgData[cm.svgId].path = cm.path;
-
+        let {path} = cm;
+        Object.assign(mapSvgData[cm.svgId], {keepHash, svgElementData, path})
         cm.d.map(i => mapSvgVisualize.iterate(i));
         cm.s.map(i => mapSvgVisualize.iterate(i));
         cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
