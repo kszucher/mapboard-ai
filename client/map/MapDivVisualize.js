@@ -45,8 +45,6 @@ export const mapDivVisualize = {
             mapState.isLoading = false;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
             mapHolderDiv.scrollLeft = currScrollLeft;
-            let mapDiv = document.getElementById('mapDiv');
-            mapDiv.style.transition = 'none';
         }
         if (mapState.shouldCenter) {
             mapState.shouldCenter = false;
