@@ -62,7 +62,7 @@ export const mapSvgVisualize = {
             svgElementData.connectionLine = {
                 type: 'path',
                 path: getConnectionLine(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
-                color: cm.lineColor,
+                stroke: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
         }
@@ -106,7 +106,7 @@ export const mapSvgVisualize = {
             svgElementData.branchHighlight = {
                 type: 'path',
                 path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
-                color: cm.lineColor,
+                stroke: cm.lineColor,
                 strokeWidth: cm.lineWidth,
                 fill: cm.ellipseFillColor,
             }
@@ -122,7 +122,7 @@ export const mapSvgVisualize = {
             svgElementData.tableFrame = {
                 type: 'path',
                 path: getArc(x1, y1, w, h, r, cm.path[2]),
-                color: cm.selected? '#000000' : cm.cBorderColor,
+                stroke: cm.selected? '#000000' : cm.cBorderColor,
                 strokeWidth: 1,
             };
             // grid
@@ -142,7 +142,7 @@ export const mapSvgVisualize = {
             svgElementData.tableGrid = {
                 type: 'path',
                 path: path,
-                color: '#dddddd',
+                stroke: '#dddddd',
                 strokeWidth: 1,
             };
             // cell
@@ -170,7 +170,7 @@ export const mapSvgVisualize = {
                         svgElementData.cellFrame = {
                             type: 'path',
                             path: getArc(x1, y1, w, h, r, cm.path[2]),
-                            color: '#000000',
+                            stroke: '#000000',
                             strokeWidth: 1,
                         };
                         break;
@@ -198,7 +198,7 @@ export const mapSvgVisualize = {
                 svgElementData.taskLine = {
                     type: 'path',
                     path: `M${x1},${y} L${x2},${y}`,
-                    color: '#eeeeee',
+                    stroke: '#eeeeee',
                     strokeWidth: 1,
                 };
             }
@@ -248,7 +248,7 @@ export const mapSvgVisualize = {
             svgElementData.moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
-                color: '#5f0a87',
+                stroke: '#5f0a87',
                 strokeWidth: 1,
                 preventTransition: 1,
             }
@@ -330,9 +330,9 @@ export const mapSvgVisualize = {
                     svgElement.setAttribute("id", svgElementName);
                     switch (type) {
                         case 'path': {
-                            let {path, color, strokeWidth, fill, preventTransition} = svgElementData[svgElementName];
+                            let {path, stroke, strokeWidth, fill, preventTransition} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
-                            svgElement.setAttribute("stroke", color);
+                            svgElement.setAttribute("stroke", stroke);
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             svgElement.setAttribute("fill", (fill && fill !== '') ? fill : "none");
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
@@ -374,9 +374,9 @@ export const mapSvgVisualize = {
                     let svgElement = svgGroup.querySelector('#' + svgElementName);
                     switch (type) {
                         case 'path': {
-                            let {path, color, strokeWidth} = svgElementData[svgElementName];
+                            let {path, stroke, strokeWidth} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
-                            svgElement.setAttribute("stroke", color);
+                            svgElement.setAttribute("stroke", stroke);
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             break;
                         }
