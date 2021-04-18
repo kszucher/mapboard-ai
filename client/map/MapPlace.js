@@ -54,8 +54,8 @@ export const mapPlace = {
         mapState.mapWidth = mapWidth;
         mapState.mapHeight = mapHeight;
 
-        r.parentNodeStartX = mapStartCenterX - r.selfW / 2;
-        r.parentNodeEndX = mapStartCenterX + r.selfW / 2;
+        r.parentNodeStartX = mapStartCenterX - r.selfW / 2 + 1;
+        r.parentNodeEndX = mapStartCenterX + r.selfW / 2 + 1;
         r.parentNodeY = 0;
         r.lineDeltaX = 0;
         r.lineDeltaY = minHeight / 2 + 30 - 0.5;
