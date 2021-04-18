@@ -107,6 +107,7 @@ export const mapSvgVisualize = {
                 path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
                 color: cm.lineColor,
                 strokeWidth: cm.lineWidth,
+                // TODO: ability to add FILL to replace background color!
             }
         }
         // table

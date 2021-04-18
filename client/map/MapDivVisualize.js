@@ -58,16 +58,16 @@ export const mapDivVisualize = {
     iterate: (cm) => {
         if (cm.type === 'struct' && !cm.hasCell) {
             let styleData = {
-                left:                   /*1 +*/ cm.nodeStartX + 'px',
-                top:                    /*1 +*/ cm.nodeY - cm.selfH / 2 + 'px',
+                left:                   1 + cm.nodeStartX + 'px',
+                top:                    1 + cm.nodeY - cm.selfH / 2 + 'px',
                 minWidth:               (mapState.density === 'large'?  0 : -3) + cm.selfW - mapState.padding - 2  + 'px',
                 minHeight:              (mapState.density === 'large'? -2 : -1) + cm.selfH - mapState.padding      + 'px',
                 paddingLeft:            (mapState.density === 'large'?  0 :  3) +            mapState.padding - 2  + 'px',
                 paddingTop:             (mapState.density === 'large'?  0 :  0) +            mapState.padding - 2  + 'px',
                 position:               'absolute',
-                border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
+                // border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
                 borderRadius:           '8px',
-                borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
+                // borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
                 fontSize:               cm.sTextFontSize + 'px',
                 fontFamily:             'Roboto',
                 textDecoration:         cm.linkType !== "" ? "underline" : "",
