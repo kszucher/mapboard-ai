@@ -16,13 +16,12 @@ export const mapTaskColor = {
                     case 3: cm.lineColor = '#25bf25';  break;
                 }
                 if (cm.taskStatus === 0) {
-                    cm.ellipseFill = 0;
+                    cm.ellipseFillColor = '';
                 } else {
-                    cm.ellipseFill = 1;
                     cm.ellipseBorderColor = getBgc();
 
                     switch (cm.taskStatus) {
-                        case 0: cm.ellipseFill = 0; break;
+                        case 0: cm.ellipseFillColor = '';         break;
                         case 1: cm.ellipseFillColor = '#d4ebfe';  break;
                         case 2: cm.ellipseFillColor = '#f6e5d4';  break;
                         case 3: cm.ellipseFillColor = '#d4f6d4';  break;

@@ -326,29 +326,18 @@ function nodeReducer(action, payload) {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 switch (payload.colorMode) {
-                    case 'text':
-                        cm.sTextColor = payload.color;
-                        break;
-                    case 'border':
-                        cm.ellipseFill = 1;
-                        cm.ellipseBorderColor = payload.color;
-                        break;
-                    case 'highlight':
-                        cm.ellipseFill = 1;
-                        cm.ellipseFillColor = payload.color;
-                        break;
-                    case 'line':
-                        cm.lineColor = payload.color;
-                        break;
-                    case 'cellFrame':
-                        cm.cBorderColor = payload.color;
+                    case 'text':      cm.sTextColor =         payload.color; break;
+                    case 'border':    cm.ellipseBorderColor = payload.color; break;
+                    case 'highlight': cm.ellipseFillColor =   payload.color; break;
+                    case 'line':      cm.lineColor =          payload.color; break;
+                    case 'cellFrame': cm.cBorderColor =       payload.color; break;
                 }
             }
             break;
         }
         case 'formatColorReset': {
-            let {sTextColor, ellipseBorderColor, ellipseFill, ellipseFillColor, lineColor, cBorderColor} = props.saveOptional;
-            mapChangeProp.start(lm, {sTextColor, ellipseBorderColor, ellipseFill, ellipseFillColor, lineColor, cBorderColor}, '');
+            let {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor, cBorderColor} = props.saveOptional;
+            mapChangeProp.start(lm, {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor, cBorderColor}, '');
             break;
         }
         case 'applyFontSize': {
