@@ -6,11 +6,11 @@ import {selectionState} from "../core/SelectionFlow";
 let svgElementNameList = [
     'connectionLine',
     'connectionCircle',
-    'branchHighlight',
+    'selectionPolygon',
+    'highlightPolygon',
     'tableFrame',
     'tableGrid',
-    'cellFrame',
-    'border',
+    'tableCellFrame',
     'taskLine',
     'taskCircle0',
     'taskCircle1',
@@ -18,7 +18,7 @@ let svgElementNameList = [
     'taskCircle3',
     'moveLine',
     'moveRect',
-    'background',
+    'backgroundRect',
     'selectionRect',
 ];
 
@@ -44,6 +44,19 @@ export const mapSvgVisualize = {
         let nsy = cm.nodeY - selfHadj/2;
         let ney = cm.nodeY + selfHadj/2;
         let dir = cm.path[2]? -1 : 1;
+        // backgroundRect
+        if (cm.isRoot) {
+            svgElementData.backgroundRect = {
+                type: 'rect',
+                x: 0,
+                y: 0,
+                width: mapState.mapWidth,
+                height: mapState.mapHeight,
+                rx: 32,
+                ry: 32,
+                fill: '#fbfafc',
+            };
+        }
         // connectionLine
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
@@ -103,12 +116,23 @@ export const mapSvgVisualize = {
                 bcyd = cm.nodeY + maxHadj / 2 +  margin;
                 widthExpansion = 'family';
             }
-            svgElementData.branchHighlight = {
-                type: 'path',
-                path: getRoundedPath([[ax,ayu],[bx,bcyu],[cx,bcyu],[cx,bcyd],[bx,bcyd],[ax,ayd]], widthExpansion, dir),
-                stroke: cm.selected? '#666666' : 'none',
-                strokeWidth: cm.lineWidth,
-                fill: cm.ellipseFillColor,
+            let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
+            if ((cm.selected && !cm.isEditing)) {
+                svgElementData.selectionPolygon = {
+                    type: 'path',
+                    path: getRoundedPath(points, widthExpansion, dir),
+                    stroke: cm.selected ? '#666666' : 'none',
+                    strokeWidth: cm.lineWidth,
+                    fill: cm.ellipseFillColor,
+                }
+            } else if (cm.ellipseFillColor!== '') {
+                svgElementData.highlightPolygon = {
+                    type: 'path',
+                    path: getRoundedPath(points, widthExpansion, dir),
+                    stroke: cm.selected ? '#666666' : 'none',
+                    strokeWidth: cm.lineWidth,
+                    fill: cm.ellipseFillColor,
+                }
             }
         }
         // table
@@ -167,7 +191,7 @@ export const mapSvgVisualize = {
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         }
-                        svgElementData.cellFrame = {
+                        svgElementData.tableCellFrame = {
                             type: 'path',
                             path: getArc(x1, y1, w, h, r, cm.path[2]),
                             stroke: '#000000',
@@ -265,19 +289,6 @@ export const mapSvgVisualize = {
                 stroke: '#5f0a87',
                 strokeWidth: 5,
                 preventTransition: 1,
-            };
-        }
-        // background
-        if (cm.isRoot) {
-            svgElementData.background = {
-                type: 'rect',
-                x: 0,
-                y: 0,
-                width: mapState.mapWidth,
-                height: mapState.mapHeight,
-                rx: 32,
-                ry: 32,
-                fill: '#fbfafc',
             };
         }
         // selection rect
