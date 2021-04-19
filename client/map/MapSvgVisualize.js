@@ -4,6 +4,10 @@ import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 
 let svgElementNameList = [
+    'backgroundRect',
+    'selectionRect',
+    'moveLine',
+    'moveRect',
     'connectionLine',
     'connectionCircle',
     'selectionPolygon',
@@ -16,10 +20,6 @@ let svgElementNameList = [
     'taskCircle1',
     'taskCircle2',
     'taskCircle3',
-    'moveLine',
-    'moveRect',
-    'backgroundRect',
-    'selectionRect',
 ];
 
 export const mapSvgVisualize = {
@@ -57,6 +57,58 @@ export const mapSvgVisualize = {
                 fill: '#fbfafc',
             };
         }
+        // selectionRect
+        if (cm.selectionRect.length) {
+            svgElementData.selectionRect = {
+                type: 'rect',
+                x: cm.selectionRect[0],
+                y: cm.selectionRect[1],
+                width: cm.selectionRect[2],
+                height: cm.selectionRect[3],
+                rx: 8,
+                ry: 8,
+                fill: '#5f0a87',
+                fillOpacity: 0.05,
+                strokeWidth: 2,
+                preventTransition: 1,
+            };
+        }
+        // moveLine, moveRect
+        if (cm.moveData.length) {
+            let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
+            let deltaX = cm.moveData[2] - cm.moveData[0];
+            let deltaY = cm.moveData[3] - cm.moveData[1];
+            // the elegant solution would be the inheritance of the target line type
+            x1 = cm.moveData[0];
+            y1 = cm.moveData[1];
+            c1x = cm.moveData[0] + deltaX / 4;
+            c1y = cm.moveData[1];
+            c2x = cm.moveData[0] + deltaX / 4;
+            c2y = cm.moveData[1] + deltaY;
+            x2 = cm.moveData[2];
+            y2 = cm.moveData[3];
+            svgElementData.moveLine = {
+                type: 'path',
+                path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
+                stroke: '#5f0a87',
+                strokeWidth: 1,
+                preventTransition: 1,
+            }
+            svgElementData.moveRect = {
+                type: 'rect',
+                x: cm.moveData[2] - 10,
+                y: cm.moveData[3] - 10,
+                width: 20,
+                height: 20,
+                rx: 8,
+                ry: 8,
+                fill: '#fbfafc',
+                fillOpacity: 1,
+                stroke: '#5f0a87',
+                strokeWidth: 5,
+                preventTransition: 1,
+            };
+        }
         // connectionLine
         if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
             cm.type === 'struct' && !cm.hasCell ||
@@ -91,7 +143,7 @@ export const mapSvgVisualize = {
                 fill: cm.lineColor,
             }
         }
-        // branch selection
+        // selectionPolygon, highlightPolygon
         if ((cm.selected && !cm.isEditing) || cm.ellipseFillColor!== '') {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let widthExpansion;
@@ -254,58 +306,6 @@ export const mapSvgVisualize = {
                     fill: fill,
                 };
             }
-        }
-        // move
-        if (cm.moveData.length) {
-            let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
-            let deltaX = cm.moveData[2] - cm.moveData[0];
-            let deltaY = cm.moveData[3] - cm.moveData[1];
-            // the elegant solution would be the inheritance of the target line type
-            x1 = cm.moveData[0];
-            y1 = cm.moveData[1];
-            c1x = cm.moveData[0] + deltaX / 4;
-            c1y = cm.moveData[1];
-            c2x = cm.moveData[0] + deltaX / 4;
-            c2y = cm.moveData[1] + deltaY;
-            x2 = cm.moveData[2];
-            y2 = cm.moveData[3];
-            svgElementData.moveLine = {
-                type: 'path',
-                path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
-                stroke: '#5f0a87',
-                strokeWidth: 1,
-                preventTransition: 1,
-            }
-            svgElementData.moveRect = {
-                type: 'rect',
-                x: cm.moveData[2] - 10,
-                y: cm.moveData[3] - 10,
-                width: 20,
-                height: 20,
-                rx: 8,
-                ry: 8,
-                fill: '#fbfafc',
-                fillOpacity: 1,
-                stroke: '#5f0a87',
-                strokeWidth: 5,
-                preventTransition: 1,
-            };
-        }
-        // selection rect
-        if (cm.selectionRect.length) {
-            svgElementData.selectionRect = {
-                type: 'rect',
-                x: cm.selectionRect[0],
-                y: cm.selectionRect[1],
-                width: cm.selectionRect[2],
-                height: cm.selectionRect[3],
-                rx: 8,
-                ry: 8,
-                fill: '#5f0a87',
-                fillOpacity: 0.05,
-                strokeWidth: 2,
-                preventTransition: 1,
-            };
         }
         let svgGroup;
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
