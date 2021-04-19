@@ -122,7 +122,7 @@ export const mapSvgVisualize = {
             y2 = cm.nodeY;
             svgElementData.connectionLine = {
                 type: 'path',
-                path: getConnectionLine(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
+                path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 stroke: cm.lineColor,
                 strokeWidth: cm.lineWidth,
             }
@@ -168,7 +168,7 @@ export const mapSvgVisualize = {
             if ((cm.selected && !cm.isEditing)) {
                 svgElementData.selectionPolygon = {
                     type: 'path',
-                    path: getRoundedPath(points, widthExpansion, dir),
+                    path: getPolygonPath(points, widthExpansion, dir),
                     stroke: cm.selected ? '#666666' : 'none',
                     strokeWidth: cm.lineWidth,
                     fill: cm.ellipseFillColor,
@@ -176,7 +176,7 @@ export const mapSvgVisualize = {
             } else if (cm.ellipseFillColor!== '') {
                 svgElementData.highlightPolygon = {
                     type: 'path',
-                    path: getRoundedPath(points, widthExpansion, dir),
+                    path: getPolygonPath(points, widthExpansion, dir),
                     stroke: cm.selected ? '#666666' : 'none',
                     strokeWidth: cm.lineWidth,
                     fill: cm.ellipseFillColor,
@@ -193,7 +193,7 @@ export const mapSvgVisualize = {
             let h = cm.selfH;
             svgElementData.tableFrame = {
                 type: 'path',
-                path: getArc(x1, y1, w, h, r, cm.path[2]),
+                path: getArcPath(x1, y1, w, h, r, cm.path[2]),
                 stroke: cm.selected? '#000000' : cm.cBorderColor,
                 strokeWidth: 1,
             };
@@ -241,7 +241,7 @@ export const mapSvgVisualize = {
                         }
                         svgElementData.tableCellFrame = {
                             type: 'path',
-                            path: getArc(x1, y1, w, h, r, cm.path[2]),
+                            path: getArcPath(x1, y1, w, h, r, cm.path[2]),
                             stroke: '#000000',
                             strokeWidth: 1,
                         };
@@ -421,7 +421,27 @@ export const mapSvgVisualize = {
     }
 };
 
-function getConnectionLine(lineType, sx, sy, dx, dy, ex, ey, dir) {
+function getArcPath(sx, sy, w, h, r, dir) {
+    let x1 = sx;
+    let y1 = sy + r;
+    let horz = w - 2 * r;
+    let vert = h - 2 * r;
+    if (dir === 0) {
+        return `M${x1},${y1} 
+        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
+        a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
+        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
+        a${+r},${+r} 0 0 1 ${-r},${-r}`
+    } else {
+        return `M${x1},${y1} 
+        a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
+        a${+r},${+r} 0 0 0 ${-r},${+r} v${+vert} 
+        a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
+        a${+r},${+r} 0 0 0 ${+r},${-r}`
+    }
+}
+
+function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
     let path;
     if (lineType === 'b') {
         let c1x = sx + dir * dx / 4;
@@ -447,27 +467,7 @@ function getConnectionLine(lineType, sx, sy, dx, dy, ex, ey, dir) {
     return path;
 }
 
-function getArc(sx, sy, w, h, r, dir) {
-    let x1 = sx;
-    let y1 = sy + r;
-    let horz = w - 2 * r;
-    let ver = h - 2 * r;
-    if (dir === 0) {
-        return `M${x1},${y1} 
-        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
-        a${+r},${+r} 0 0 1 ${+r},${+r} v${+ver}
-        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
-        a${+r},${+r} 0 0 1 ${-r},${-r}`
-    } else {
-        return `M${x1},${y1} 
-        a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
-        a${+r},${+r} 0 0 0 ${-r},${+r} v${+ver} 
-        a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
-        a${+r},${+r} 0 0 0 ${+r},${-r}`
-    }
-}
-
-function getRoundedPath(points, v, dir) {
+function getPolygonPath(points, v, dir) {
     let path = '';
     let radius = 16;
     for (let i = 0; i < points.length; i++) {
@@ -489,6 +489,14 @@ function getRoundedPath(points, v, dir) {
     return path + 'z';
 }
 
+function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
+    return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
+}
+
+function getEdgePath(c, [x1,y1,m1x,m1y,m2x,m2y,x2,y2]) {
+    return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
+}
+
 function getCoordsInLine(x0,y0,x1,y1,dt) {
     let xt,yt;
     let d = Math.sqrt(Math.pow((x1-x0),2)+Math.pow((y1-y0),2));
@@ -496,12 +504,4 @@ function getCoordsInLine(x0,y0,x1,y1,dt) {
     xt = (1-t)*x0+t*x1;
     yt = (1-t)*y0+t*y1;
     return [xt, yt];
-}
-
-function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
-    return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`;
-}
-
-function getEdgePath(c, [x1,y1,m1x,m1y,m2x,m2y,x2,y2]) {
-    return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
 }
