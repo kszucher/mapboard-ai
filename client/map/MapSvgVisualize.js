@@ -10,8 +10,8 @@ let svgElementNameList = [
     'moveRect',
     'connectionLine',
     'connectionCircle',
-    'selectionPolygon',
     'highlightPolygon',
+    'selectionPolygon',
     'tableFrame',
     'tableGrid',
     'tableCellFrame',
@@ -140,7 +140,7 @@ export const mapSvgVisualize = {
             }
         }
         // selectionPolygon, highlightPolygon
-        if ((cm.selected && !cm.isEditing) || cm.ellipseFillColor!== '') {
+        if (cm.ellipseFillColor!== '' || cm.selected && !cm.isEditing) {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let widthExpansion;
             let corr = dir === -1 ? -1 : 0;
@@ -165,21 +165,22 @@ export const mapSvgVisualize = {
                 widthExpansion = 'family';
             }
             let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
-            if ((cm.selected && !cm.isEditing)) {
-                svgElementData.selectionPolygon = {
-                    type: 'path',
-                    path: getPolygonPath(points, widthExpansion, dir),
-                    stroke: cm.selected ? '#666666' : 'none',
-                    strokeWidth: cm.lineWidth,
-                    fill: cm.ellipseFillColor,
-                }
-            } else if (cm.ellipseFillColor!== '') {
+            if (cm.ellipseFillColor!== '') {
                 svgElementData.highlightPolygon = {
                     type: 'path',
                     path: getPolygonPath(points, widthExpansion, dir),
                     stroke: cm.selected ? '#666666' : 'none',
                     strokeWidth: cm.lineWidth,
                     fill: cm.ellipseFillColor,
+                }
+            }
+            if (cm.selected && !cm.isEditing) {
+                svgElementData.selectionPolygon = {
+                    type: 'path',
+                    path: getPolygonPath(points, widthExpansion, dir),
+                    stroke: cm.selected ? '#666666' : 'none',
+                    strokeWidth: cm.lineWidth,
+                    // fill: cm.ellipseFillColor,
                 }
             }
         }
