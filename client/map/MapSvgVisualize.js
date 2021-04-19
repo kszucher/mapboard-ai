@@ -79,7 +79,7 @@ export const mapSvgVisualize = {
             }
         }
         // branch selection
-        if (cm.selected || cm.ellipseFillColor!== '') {
+        if ((cm.selected && !cm.isEditing) || cm.ellipseFillColor!== '') {
             let ax,bx,cx,ayu,ayd,bcyu,bcyd;
             let widthExpansion;
             let corr = dir === -1 ? -1 : 0;
