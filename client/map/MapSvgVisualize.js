@@ -164,8 +164,7 @@ export const mapSvgVisualize = {
             if (cm.ellipseFillColor!== '') {
                 svgElementData.highlightPolygon = {
                     type: 'path',
-                    path: getPolygonPath(getPolygonPoints(sParams), 'self', dir),
-                    stroke:  'none',
+                    path: getPolygonPath(getPolygonPoints(sParams), 's', dir),
                     fill: cm.ellipseFillColor,
                 }
             }
@@ -332,11 +331,11 @@ export const mapSvgVisualize = {
                     svgElement.setAttribute("id", svgElementName);
                     switch (type) {
                         case 'path': {
-                            let {path, stroke, strokeWidth, fill, preventTransition} = svgElementData[svgElementName];
+                            let {path, fill, stroke, strokeWidth, preventTransition} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
-                            svgElement.setAttribute("stroke", stroke);
+                            svgElement.setAttribute("fill", checkSvgField(fill));
+                            svgElement.setAttribute("stroke", checkSvgField(stroke));
                             svgElement.setAttribute("stroke-width", strokeWidth);
-                            svgElement.setAttribute("fill", (fill && fill !== '') ? fill : "none");
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
                             svgElement.style.transitionProperty = 'd';
@@ -362,7 +361,7 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("ry", ry);
                             svgElement.setAttribute("fill", fill);
                             svgElement.setAttribute("fill-opacity", fillOpacity);
-                            svgElement.setAttribute("stroke", (stroke && stroke !== '') ? stroke: 'none');
+                            svgElement.setAttribute("stroke", checkSvgField(stroke));
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
                             break;
@@ -415,6 +414,10 @@ export const mapSvgVisualize = {
         cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
     }
 };
+
+function checkSvgField(field) {
+    return (field && field !== '') ? field: 'none'
+}
 
 function getArcPath(sx, sy, w, h, r, dir) {
     let x1 = sx;
