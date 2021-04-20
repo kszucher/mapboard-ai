@@ -478,9 +478,9 @@ function getPolygonPath(points, selection, dir) {
         let [c2x, c2y] = currPoint;
         let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
         if (selection === 's' && i===1) {
-            path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-dir*32,ey]);
+            path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-dir*24,ey]);
         } else if (selection === 's' && i===4) {
-            path += getBezierPath('L', [sx-dir*32,sy,ex,ey,ex,ey,ex,ey]);
+            path += getBezierPath('L', [sx-dir*24,sy,ex,ey,ex,ey,ex,ey]);
         } else {
             path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
         }
