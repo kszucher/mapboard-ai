@@ -20,6 +20,7 @@ export const editorState = {
     colorMode: 'highlight',
     colorText: '',
     colorHighlight: '',
+    colorHighlightBranch: '',
     colorLine: '',
     colorCellFrame: '',
     mapAction: '',
