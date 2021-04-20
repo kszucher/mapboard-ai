@@ -9,7 +9,6 @@ let svgElementNameList = [
     'moveLine',
     'moveRect',
     'connectionLine',
-    'connectionCircle',
     'highlightPolygon',
     'selectionPolygon',
     'tableFrame',
@@ -125,18 +124,6 @@ export const mapSvgVisualize = {
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 stroke: cm.lineColor,
                 strokeWidth: cm.lineWidth,
-            }
-        }
-        if (cm.lineType === 'bc' && cm.s.length > 0) {
-            let x1, y1;
-            x1 = nex;
-            y1 = cm.nodeY;
-            svgElementData.connectionCircle = {
-                type: 'circle',
-                cx: x1 + dir*4,
-                cy: y1,
-                r: 4,
-                fill: cm.lineColor,
             }
         }
         // selectionPolygon, highlightPolygon
@@ -448,14 +435,6 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
         let c2x = sx + dir * dx / 4;
         let c2y = sy + dy;
         path = getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey]);
-    } else if (lineType === 'bc') {
-        let sxn = sx + dir*15;
-        let dxn  = dx / 2;
-        let c1x =  sxn + dir * dxn;
-        let c1y =  sy;
-        let c2x =  sxn + dir * dxn / 4;
-        let c2y =  sy + dy;
-        path = `M${sx},${sy} L${sxn},${sy} ` + getBezierPath('M', [sxn, sy, c1x, c1y, c2x, c2y, ex, ey]);
     } else if (lineType === 'e') {
         let m1x =  sx + dir * dx / 2;
         let m1y =  sy;

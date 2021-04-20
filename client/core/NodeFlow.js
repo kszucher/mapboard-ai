@@ -372,7 +372,6 @@ function nodeReducer(action, payload) {
         case 'applyLineType': {
             let lineTypeMapping = {
                 'bezier': 'b',
-                'bezierCircle': 'bc',
                 'edge': 'e',
             }
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {

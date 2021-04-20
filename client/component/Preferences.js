@@ -38,7 +38,7 @@ export function Preferences () {
                 display: 'flex',
                 justifyContent: 'center'
             }}>
-                <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'bezierCircle', 'edge']]}/>
+                <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'edge']]}/>
                 <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
                 <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
                 <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'highlight', 'line', 'cellFrame']]}/>

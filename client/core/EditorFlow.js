@@ -177,7 +177,6 @@ const EditorReducer = (state, action) => {
             let lineType = '';
             switch (payload.lineWidth) {
                 case 1: lineType = 'bezier'; break;
-                case 2: lineType = 'bezierCircle'; break;
                 case 3: lineType = 'edge'; break;
             }
             return {...state,
