@@ -23,11 +23,8 @@ export let props = {
         lineWidth:                              1,
         lineType:                               'b',
         lineColor:                              '#bbbbbb',
-        ellipseBorderWidth:                     1,
-        ellipseBorderColor:                     getBgc(),
         ellipseFillColor:                       '',
         taskStatus:                             -1,
-        hasBranchHighlight:                     0,
     },
     saveNever: {
         initOnce: {

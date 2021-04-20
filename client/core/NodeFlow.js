@@ -337,8 +337,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'formatColorReset': {
-            let {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor} = props.saveOptional;
-            mapChangeProp.start(lm, {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor}, '');
+            let {sTextColor, ellipseFillColor, lineColor} = props.saveOptional;
+            mapChangeProp.start(lm, {sTextColor, ellipseFillColor, lineColor}, '');
             break;
         }
         case 'applyFontSize': {
