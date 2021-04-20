@@ -132,7 +132,7 @@ export const mapSvgVisualize = {
             cm.ellipseBranchFillColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
-            let margin = 2;
+            let margin = 4;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
                 bx: nex - 2 * dir + corr - dir,
