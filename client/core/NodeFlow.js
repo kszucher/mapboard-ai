@@ -329,7 +329,6 @@ function nodeReducer(action, payload) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 switch (payload.colorMode) {
                     case 'text':      cm.sTextColor =         payload.color; break;
-                    case 'border':    cm.ellipseBorderColor = payload.color; break;
                     case 'highlight': cm.ellipseFillColor =   payload.color; break;
                     case 'line':      cm.lineColor =          payload.color; break;
                     case 'cellFrame': cm.cBorderColor =       payload.color; break;
@@ -338,8 +337,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'formatColorReset': {
-            let {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor, cBorderColor} = props.saveOptional;
-            mapChangeProp.start(lm, {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor, cBorderColor}, '');
+            let {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor} = props.saveOptional;
+            mapChangeProp.start(lm, {sTextColor, ellipseBorderColor, ellipseFillColor, lineColor}, '');
             break;
         }
         case 'applyFontSize': {

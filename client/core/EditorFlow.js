@@ -19,7 +19,6 @@ export const editorState = {
     lineType: '',
     colorMode: 'highlight',
     colorText: '',
-    colorBorder: '',
     colorHighlight: '',
     colorLine: '',
     colorCellFrame: '',
@@ -186,7 +185,6 @@ const EditorReducer = (state, action) => {
                 lineWidth,
                 lineType,
                 colorText: payload.sTextColor,
-                colorBorder: payload.ellipseBorderColor,
                 colorHighlight: payload.ellipseFillColor,
                 colorLine: payload.lineColor,
             };

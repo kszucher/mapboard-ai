@@ -61,7 +61,7 @@ export const mapDivVisualize = {
                 paddingTop:             (mapState.density === 'large'?  0 :  0) +            mapState.padding - 2  + 'px',
                 position:               'absolute',
                 // border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
-                borderRadius:           '8px',
+                // borderRadius:           '8px',
                 // borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
                 fontSize:               cm.sTextFontSize + 'px',
                 fontFamily:             'Roboto',
