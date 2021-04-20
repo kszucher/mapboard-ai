@@ -28,17 +28,19 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
-            clearSelection();
             lm = mapref(mapState.deepestSelectablePath);
+            clearSelection();
             lm.selected = 1;
             lm.selection = 's';
             break;
         }
         case 'selectStructFamily': {
-            clearSelection();
             lm = mapref(mapState.deepestSelectablePath);
-            lm.selected = 1;
-            lm.selection = 'f';
+            if (lm.s.length > 0) {
+                clearSelection();
+                lm.selected = 1;
+                lm.selection = 'f';
+            }
             break;
         }
         case 'selectStructToo': {
