@@ -468,7 +468,7 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
 
 function getPolygonPath(points, selection, dir) {
     let path = '';
-    let radius = 16;
+    let radius = 12;
     for (let i = 0; i < points.length; i++) {
         let prevPoint = i === 0 ? points[points.length - 1] : points[i-1];
         let currPoint = points[i];
