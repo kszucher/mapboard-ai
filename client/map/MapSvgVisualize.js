@@ -9,7 +9,7 @@ let svgElementNameList = [
     'moveLine',
     'moveRect',
     'connectionLine',
-    'highlightNodePolygon',
+    'highlightPolygon',
     'highlightBranchPolygon',
     'selectionPolygon',
     'tableFrame',
@@ -127,7 +127,7 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-        // selectionPolygon, highlightNodePolygon
+        // selectionPolygon, highlightPolygon
         if (cm.ellipseFillColor!== '' || cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
             let margin = 2;
@@ -150,7 +150,7 @@ export const mapSvgVisualize = {
                 bcyd: cm.nodeY + maxHadj / 2 + margin,
             }
             if (cm.ellipseFillColor!== '') {
-                svgElementData.highlightNodePolygon = {
+                svgElementData.highlightPolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(sParams), 's', dir),
                     fill: cm.ellipseFillColor,

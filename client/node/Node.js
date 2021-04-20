@@ -24,6 +24,7 @@ export let props = {
         lineType:                               'b',
         lineColor:                              '#bbbbbb',
         ellipseFillColor:                       '',
+        ellipseBranchFillColor:                 '',
         taskStatus:                             -1,
     },
     saveNever: {
