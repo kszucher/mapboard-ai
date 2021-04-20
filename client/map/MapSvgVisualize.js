@@ -141,46 +141,40 @@ export const mapSvgVisualize = {
         }
         // selectionPolygon, highlightPolygon
         if (cm.ellipseFillColor!== '' || cm.selected && !cm.isEditing) {
-            let ax,bx,cx,ayu,ayd,bcyu,bcyd;
-            let widthExpansion;
             let corr = dir === -1 ? -1 : 0;
-            if (cm.selection  === 's' || cm.ellipseFillColor !== '') {
-                ax = nsx + 1 * dir + corr;
-                bx = nex - 2 * dir + corr - dir;
-                cx = nex - 2 * dir + corr;
-                ayu = nsy + 1;
-                ayd = ney - 3;
-                bcyu = nsy + 1;
-                bcyd = ney - 3;
-                widthExpansion = 'self';
-            } else {
-                let margin = 2;
-                ax = nsx + corr;
-                bx = nex + dir*cm.lineDeltaX + corr;
-                cx = nsx + dir*(cm.familyW + cm.selfW + margin);
-                ayu = nsy;
-                ayd = ney;
-                bcyu = cm.nodeY - maxHadj / 2 - margin;
-                bcyd = cm.nodeY + maxHadj / 2 +  margin;
-                widthExpansion = 'family';
+            let margin = 2;
+            let sParams = {
+                ax: nsx + 1 * dir + corr,
+                bx: nex - 2 * dir + corr - dir,
+                cx: nex - 2 * dir + corr,
+                ayu: nsy + 1,
+                ayd: ney - 3,
+                bcyu: nsy + 1,
+                bcyd: ney - 3,
             }
-            let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
+            let fParams = {
+                ax: nsx + corr,
+                bx: nex + dir * cm.lineDeltaX + corr,
+                cx: nsx + dir * (cm.familyW + cm.selfW + margin),
+                ayu: nsy,
+                ayd: ney,
+                bcyu: cm.nodeY - maxHadj / 2 - margin,
+                bcyd: cm.nodeY + maxHadj / 2 + margin,
+            }
             if (cm.ellipseFillColor!== '') {
                 svgElementData.highlightPolygon = {
                     type: 'path',
-                    path: getPolygonPath(points, widthExpansion, dir),
-                    stroke: cm.selected ? '#666666' : 'none',
-                    strokeWidth: cm.lineWidth,
+                    path: getPolygonPath(getPolygonPoints(sParams), 'self', dir),
+                    stroke:  'none',
                     fill: cm.ellipseFillColor,
                 }
             }
             if (cm.selected && !cm.isEditing) {
                 svgElementData.selectionPolygon = {
                     type: 'path',
-                    path: getPolygonPath(points, widthExpansion, dir),
-                    stroke: cm.selected ? '#666666' : 'none',
+                    path: getPolygonPath(getPolygonPoints(cm.selection  === 's' ? sParams : fParams), cm.selection, dir),
+                    stroke: '#666666',
                     strokeWidth: cm.lineWidth,
-                    // fill: cm.ellipseFillColor,
                 }
             }
         }
@@ -468,7 +462,7 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
     return path;
 }
 
-function getPolygonPath(points, v, dir) {
+function getPolygonPath(points, selection, dir) {
     let path = '';
     let radius = 16;
     for (let i = 0; i < points.length; i++) {
@@ -479,15 +473,20 @@ function getPolygonPath(points, v, dir) {
         let [c1x, c1y] = currPoint;
         let [c2x, c2y] = currPoint;
         let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
-        if (v==='self' && i===1) {
+        if (selection === 's' && i===1) {
             path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-dir*32,ey]);
-        } else if (v==='self' && i===4) {
+        } else if (selection === 's' && i===4) {
             path += getBezierPath('L', [sx-dir*32,sy,ex,ey,ex,ey,ex,ey]);
         } else {
             path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
         }
     }
     return path + 'z';
+}
+
+function getPolygonPoints (params) {
+    let {ax, bx, cx, ayu, ayd, bcyu, bcyd} = params;
+    return [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
 }
 
 function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
