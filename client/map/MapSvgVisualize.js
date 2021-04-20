@@ -338,7 +338,7 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
-                            svgElement.style.transitionProperty = 'd';
+                            svgElement.style.transitionProperty = 'd, fill';
                             break;
                         }
                         case 'circle': {
@@ -375,8 +375,9 @@ export const mapSvgVisualize = {
                     let svgElement = svgGroup.querySelector('#' + svgElementName);
                     switch (type) {
                         case 'path': {
-                            let {path, stroke, strokeWidth} = svgElementData[svgElementName];
+                            let {path, fill, stroke, strokeWidth} = svgElementData[svgElementName];
                             svgElement.setAttribute("d", path);
+                            svgElement.setAttribute("fill", checkSvgField(fill));
                             svgElement.setAttribute("stroke", stroke);
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             break;
