@@ -140,7 +140,7 @@ export const mapSvgVisualize = {
             }
         }
         // selectionPolygon, highlightPolygon
-        if (cm.ellipseFillColor !== '' || !cm.hasCell && !cm.type === 'cell' && cm.selected && !cm.isEditing) {
+        if (cm.ellipseFillColor!== '' || cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
             let margin = 2;
             let sParams = {
@@ -161,7 +161,7 @@ export const mapSvgVisualize = {
                 bcyu: cm.nodeY - maxHadj / 2 - margin,
                 bcyd: cm.nodeY + maxHadj / 2 + margin,
             }
-            if (cm.ellipseFillColor !== '') {
+            if (cm.ellipseFillColor!== '') {
                 svgElementData.highlightPolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(sParams), 's', dir),
