@@ -334,18 +334,18 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("stroke", checkSvgField(stroke));
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
-
-                            // firefox solution
-                            // let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
-                            // svgElementAnimate.setAttribute("attributeName", "d");
-                            // svgElementAnimate.setAttribute("attributeType", "XML");
-                            // svgElementAnimate.setAttribute("dur", "0.5s");
-                            // // svgElementAnimate.setAttribute("fill", "freeze");
-                            // svgElement.appendChild(svgElementAnimate);
-
-                            // chrome solution
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
                             svgElement.style.transitionProperty = 'd, fill';
+                            if (!isChrome) {
+                                let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+                                svgElementAnimate.setAttribute("attributeName", "d");
+                                svgElementAnimate.setAttribute("attributeType", "XML");
+                                svgElementAnimate.setAttribute("dur", "0.5s");
+                                svgElementAnimate.setAttribute("calcMode", "spline");
+                                svgElementAnimate.setAttribute("keySplines", "0 0 0.58 1");
+                                svgElementAnimate.setAttribute("keyTimes", "0;1");
+                                svgElement.appendChild(svgElementAnimate);
+                            }
                             break;
                         }
                         case 'circle': {
@@ -383,18 +383,16 @@ export const mapSvgVisualize = {
                     switch (type) {
                         case 'path': {
                             let {path, fill, stroke, strokeWidth} = svgElementData[svgElementName];
-                            // firefox
-                            // let prevPath = svgElement.getAttribute('d')
-
+                            let prevPath = svgElement.getAttribute('d')
                             svgElement.setAttribute("d", path);
                             svgElement.setAttribute("fill", checkSvgField(fill));
                             svgElement.setAttribute("stroke", stroke);
                             svgElement.setAttribute("stroke-width", strokeWidth);
-
-                            // firefox
-                            // svgElement.lastChild.setAttribute("from", prevPath);
-                            // svgElement.lastChild.setAttribute("to", path);
-                            // svgElement.lastChild.beginElement();
+                            if (!isChrome) {
+                                svgElement.lastChild.setAttribute("from", prevPath);
+                                svgElement.lastChild.setAttribute("to", path);
+                                svgElement.lastChild.beginElement();
+                            }
                             break;
                         }
                         case 'circle': {
@@ -516,3 +514,5 @@ function getCoordsInLine(x0,y0,x1,y1,dt) {
     yt = (1-t)*y0+t*y1;
     return [xt, yt];
 }
+
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
