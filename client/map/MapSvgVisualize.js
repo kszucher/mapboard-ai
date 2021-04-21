@@ -334,6 +334,16 @@ export const mapSvgVisualize = {
                             svgElement.setAttribute("stroke", checkSvgField(stroke));
                             svgElement.setAttribute("stroke-width", strokeWidth);
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
+
+                            // firefox solution
+                            // let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+                            // svgElementAnimate.setAttribute("attributeName", "d");
+                            // svgElementAnimate.setAttribute("attributeType", "XML");
+                            // svgElementAnimate.setAttribute("dur", "0.5s");
+                            // // svgElementAnimate.setAttribute("fill", "freeze");
+                            // svgElement.appendChild(svgElementAnimate);
+
+                            // chrome solution
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
                             svgElement.style.transitionProperty = 'd, fill';
                             break;
@@ -373,10 +383,18 @@ export const mapSvgVisualize = {
                     switch (type) {
                         case 'path': {
                             let {path, fill, stroke, strokeWidth} = svgElementData[svgElementName];
+                            // firefox
+                            // let prevPath = svgElement.getAttribute('d')
+
                             svgElement.setAttribute("d", path);
                             svgElement.setAttribute("fill", checkSvgField(fill));
                             svgElement.setAttribute("stroke", stroke);
                             svgElement.setAttribute("stroke-width", strokeWidth);
+
+                            // firefox
+                            // svgElement.lastChild.setAttribute("from", prevPath);
+                            // svgElement.lastChild.setAttribute("to", path);
+                            // svgElement.lastChild.beginElement();
                             break;
                         }
                         case 'circle': {
