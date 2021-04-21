@@ -118,8 +118,9 @@ export function MapComponent() {
     };
 
     const mousedown = (e) => {
+        let path = e.path || (e.composedPath && e.composedPath());
         e.preventDefault();
-        if (!e.path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
+        if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
         }
         elapsed = 0;
@@ -170,15 +171,15 @@ export function MapComponent() {
                 }
             }
             mapState.isTaskClicked = false;
-            if (e.path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
-                for (const pathItem of e.path) {
+            if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
+                for (const pathItem of path) {
                     if (pathItem.id) {
                         if (pathItem.id.substring(0, 10) === 'taskCircle') {
                             mapState.isTaskClicked = true;
                             push();
                             nodeDispatch('setTaskStatus', {
-                                taskStatus: parseInt(e.path[0].id.charAt(10), 10),
-                                svgId: e.path[1].id
+                                taskStatus: parseInt(path[0].id.charAt(10), 10),
+                                svgId: path[1].id
                             });
                             redraw();
                             checkPop();
