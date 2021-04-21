@@ -489,7 +489,8 @@ export function MapComponent() {
                     left: 0,
                     top: 0,
                 }}>
-                    <svg id="mapSvgInner" x='calc(100vw)' y='calc(100vh)' style={{
+                    <g id="mapSvgInner" style={{
+                        transform: 'translate(calc(100vw), calc(100vh))',
                         overflow: 'visible'
                     }}/>
                 </svg>
