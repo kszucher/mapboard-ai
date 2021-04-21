@@ -50,3 +50,7 @@ body:before {
 ::-webkit-scrollbar {
     display: none;
 }
+
+/*https://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links*/
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
