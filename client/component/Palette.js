@@ -5,10 +5,18 @@ import {checkPop, push, redraw} from "../core/MapFlow";
 import StyledButton from "../component-styled/StyledButton";
 
 const colorList = [
-    ['#000000', '#434343', '#666666', '#999999', '#b7b7b7', '#cccccc', '#d9d9d9', '#efefef', '#f3f3f3', '#ffffff', '#d4ebfe', '#f6e5d4', '#d4f6d4'],
-    ['#e6b8af', '#f4cccc', '#fce5cd', '#fff2cc', '#d9ead3', '#d0e0e3', '#c9daf8', '#cfe2f3', '#d9d2e9', '#ead1dc', '#990000', '#000099', '#fbfafc'],
-    ['#cc4125', '#e06666', '#f6b26b', '#ffd966', '#93c47d', '#76a5af', '#6d9eeb', '#6fa8dc', '#8e7cc3', '#c27ba0', '#d5802a', '#1c8e1c', '#8e1c8e'],
-    ['#85200c', '#990000', '#b45f06', '#bf9000', '#38761d', '#134f5c', '#1155cc', '#0b5394', '#351c75', '#741b47', '#999999', '#bbbbbb', '#dddddd'],
+    ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0'],
+    ['#EFEFEF', '#DEDEE8', '#F3F0E0', '#E4EADE', '#DCE5E6'],
+    ['#9086A6', '#E0C1D2', '#EFF0ED', '#9DD4C9', '#75A3BA'],
+    ['#A0D7D9', '#FBE7A3', '#F4CBA1', '#F8FDDF', '#AE99BF'],
+    ['#1C5D6C', '#70A18F', '#B7CFAE', '#EDDDCF', '#B25C6D'],
+    ['#B2CFC9', '#95BABD', '#9292B0', '#F6A7A7', '#FFD6C9'],
+    ['#04A4B5', '#30BFBF', '#56D3CB', '#EEEE99', '#EBD295'],
+    ['#285588', '#E36273', '#FCC40F', '#ECE7C7', '#A8875E'],
+    ['#605E85', '#6CCC86', '#F7D36F', '#FD7780', '#994D80'],
+    ['#B4C2D6', '#BFE3DA', '#F5FCDC', '#FEFFF7', '#C0DDBE'],
+    ['#FFD6DE', '#E8CEE3', '#C7BAE1', '#BBD3EC', '#ECE4C5'],
+    ['#391F19', '#B68E63', '#F2DFA9', '#E58119', '#746839'],
 ];
 
 export function Palette () {
