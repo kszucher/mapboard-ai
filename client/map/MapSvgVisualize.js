@@ -374,7 +374,23 @@ export const mapSvgVisualize = {
                             break;
                         }
                     }
-                    svgGroup.appendChild(svgElement);
+                    if (svgElementName === 'highlightBranchPolygon') {
+                        if (svgElementData.hasOwnProperty('highlightPolygon')) {
+                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'highlightPolygon'))
+                        } else if (svgElementData.hasOwnProperty('selectionPolygon')) {
+                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'selectionPolygon'))
+                        } else {
+                            svgGroup.appendChild(svgElement);
+                        }
+                    } else if (svgElementName === 'highlightPolygon') {
+                        if (svgElementData.hasOwnProperty('selectionPolygon')) {
+                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'selectionPolygon'))
+                        } else {
+                            svgGroup.appendChild(svgElement);
+                        }
+                    } else {
+                        svgGroup.appendChild(svgElement);
+                    }
                     break;
                 }
                 case 'update': {
