@@ -332,7 +332,6 @@ function nodeReducer(action, payload) {
                     case 'highlight':       cm.ellipseFillColor =       payload.color; break;
                     case 'highlightBranch': cm.ellipseBranchFillColor = payload.color; break;
                     case 'line':            cm.lineColor =              payload.color; break;
-                    case 'cellFrame':       cm.cBorderColor =           payload.color; break;
                 }
             }
             break;

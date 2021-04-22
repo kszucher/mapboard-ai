@@ -22,7 +22,6 @@ export const editorState = {
     colorHighlight: '',
     colorHighlightBranch: '',
     colorLine: '',
-    colorCellFrame: '',
     mapAction: '',
     paletteVisible: 0,
 };

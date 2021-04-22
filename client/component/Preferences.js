@@ -12,36 +12,29 @@ export function Preferences () {
     const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
     const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
     const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
-
+0
     return (
         <div style={{
             position: 'fixed',
-            bottom: 0,
-            left: '0',
-            width: '100%',
-            height: '96px',
+            right: 0,
+            top: 96,
+            width: 250,
             backgroundColor: 'rgba(251,250,252,1)',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#9040b8',
-            borderLeft: 0,
-            borderBottom: 0,
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
         }}>
             <div style={{
                 display: 'flex',
-                justifyContent: 'center'
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
             }}>
                 <StyledButtonGroup input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
                 <StyledButtonGroup input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
-            </div>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center'
-            }}>
                 <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'edge']]}/>
                 <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
                 <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
-                <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'highlight', 'highlightBranch', 'line', 'cellFrame']]}/>
+                <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['text', 'highlight', 'highlightBranch', 'line']]}/>
             </div>
         </div>
     );
