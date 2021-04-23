@@ -9,8 +9,8 @@ let svgElementNameList = [
     'moveLine',
     'moveRect',
     'connectionLine',
-    'highlightPolygon',
-    'highlightBranchPolygon',
+    'nodePolygon',
+    'branchPolygon',
     'selectionPolygon',
     'tableFrame',
     'tableGrid',
@@ -127,7 +127,7 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-        // selectionPolygon, highlightPolygon
+        // branchPolygon, nodePolygon, selectionPolygon
         if (cm.ellipseFillColor!== '' ||
             cm.ellipseBranchFillColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
@@ -152,14 +152,14 @@ export const mapSvgVisualize = {
                 bcyd: cm.nodeY + maxHadj / 2 + margin,
             }
             if (cm.ellipseBranchFillColor!== '') {
-                svgElementData.highlightBranchPolygon = {
+                svgElementData.branchPolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(fParams), 'f', dir),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
             if (cm.ellipseFillColor!== '') {
-                svgElementData.highlightPolygon = {
+                svgElementData.nodePolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(sParams), 's', dir),
                     fill: cm.ellipseFillColor,
@@ -374,15 +374,15 @@ export const mapSvgVisualize = {
                             break;
                         }
                     }
-                    if (svgElementName === 'highlightBranchPolygon') {
-                        if (svgElementData.hasOwnProperty('highlightPolygon')) {
-                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'highlightPolygon'))
+                    if (svgElementName === 'branchPolygon') {
+                        if (svgElementData.hasOwnProperty('nodePolygon')) {
+                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'nodePolygon'))
                         } else if (svgElementData.hasOwnProperty('selectionPolygon')) {
                             svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'selectionPolygon'))
                         } else {
                             svgGroup.appendChild(svgElement);
                         }
-                    } else if (svgElementName === 'highlightPolygon') {
+                    } else if (svgElementName === 'nodePolygon') {
                         if (svgElementData.hasOwnProperty('selectionPolygon')) {
                             svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'selectionPolygon'))
                         } else {
