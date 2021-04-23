@@ -17,11 +17,11 @@ export const editorState = {
     fontSize: '',
     lineWidth: '',
     lineType: '',
-    colorMode: 'highlight',
-    colorText: '',
-    colorHighlight: '',
-    colorHighlightBranch: '',
+    colorMode: 'line',
     colorLine: '',
+    colorText: '',
+    colorNode: '',
+    colorBranch: '',
     mapAction: '',
     paletteVisible: 0,
 };
@@ -183,9 +183,10 @@ const EditorReducer = (state, action) => {
                 fontSize,
                 lineWidth,
                 lineType,
-                colorText: payload.sTextColor,
-                colorHighlight: payload.ellipseFillColor,
                 colorLine: payload.lineColor,
+                colorText: payload.sTextColor,
+                colorNode: payload.ellipseFillColor,
+                colorBranch: payload.ellipseBranchFillColor,
             };
         }
         case 'SET_DENSITY':                     return {...state, density: payload};

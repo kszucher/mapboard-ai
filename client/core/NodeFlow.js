@@ -328,10 +328,10 @@ function nodeReducer(action, payload) {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 switch (payload.colorMode) {
-                    case 'text':            cm.sTextColor =             payload.color; break;
-                    case 'highlight':       cm.ellipseFillColor =       payload.color; break;
-                    case 'highlightBranch': cm.ellipseBranchFillColor = payload.color; break;
                     case 'line':            cm.lineColor =              payload.color; break;
+                    case 'text':            cm.sTextColor =             payload.color; break;
+                    case 'node':            cm.ellipseFillColor =       payload.color; break;
+                    case 'branch':          cm.ellipseBranchFillColor = payload.color; break;
                 }
             }
             break;

@@ -21,7 +21,7 @@ const colorList = [
 
 export function Palette () {
     const [state, dispatch] = useContext(Context);
-    const {colorMode, colorText, colorHighlight, colorHighlightBranch, colorLine, paletteVisible} = state;
+    const {colorMode, colorLine, colorText, colorNode, colorBranch, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
     const closePalette = () => dispatch({type: 'CLOSE_PALETTE'});
@@ -46,16 +46,18 @@ export function Palette () {
     };
 
     useEffect(() => {
-        if (colorMode === 'text')                   setSel(findSel(colorText));
-        else if (colorMode === 'highlight')         setSel(findSel(colorHighlight))
-        else if (colorMode === 'highlightBranch')   setSel(findSel(colorHighlightBranch))
-        else if (colorMode === 'line')              setSel(findSel(colorLine))
+        switch (colorMode) {
+            case 'line':    setSel(findSel(colorLine)); break;
+            case 'text':    setSel(findSel(colorText)); break;
+            case 'node':    setSel(findSel(colorNode)); break;
+            case 'branch':  setSel(findSel(colorBranch)); break;
+        }
     }, [colorMode]);
 
-    useEffect(() => {if (colorMode === 'text'               && colorText!== '')             setSel(findSel(colorText))},            [colorText]);
-    useEffect(() => {if (colorMode === 'highlight'          && colorHighlight !== '')       setSel(findSel(colorHighlight))},       [colorHighlight]);
-    useEffect(() => {if (colorMode === 'highlightBranch'    && colorHighlightBranch !== '') setSel(findSel(colorHighlightBranch))}, [colorHighlightBranch]);
-    useEffect(() => {if (colorMode === 'line'               && colorLine !== '')            setSel(findSel(colorLine))},            [colorLine]);
+    useEffect(() => {if (colorMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine]);
+    useEffect(() => {if (colorMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText]);
+    useEffect(() => {if (colorMode === 'node'   && colorNode !== '')   setSel(findSel(colorNode))},   [colorNode]);
+    useEffect(() => {if (colorMode === 'branch' && colorBranch !== '') setSel(findSel(colorBranch))}, [colorBranch]);
 
     const handleClick = (i, j) => {
         setSel({x: i, y: j});
