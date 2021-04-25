@@ -342,41 +342,31 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyFontSize': {
-            let fontSizeMapping = {
-                h1: 54,
-                h2: 36,
-                h3: 24,
-                h4: 18,
-                h5: 16,
-                h6: 14
-            };
+            let fontSize = {h1: 54, h2: 36, h3: 24, h4: 18, h5: 16, h6: 14}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                cm.sTextFontSize = fontSizeMapping[payload];
+                cm.sTextFontSize = fontSize;
                 cm.isDimAssigned = 0;
             }
             break;
         }
         case 'applyLineWidth': {
-            let lineWidthMapping = {
-                'p1': 1,
-                'p2': 2,
-                'p3': 3,
-            }
+            let lineWidth = {p1: 1, p2: 2, p3: 3}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                cm.lineWidth = lineWidthMapping[payload];
+                cm.lineWidth = lineWidth;
             }
             break;
         }
         case 'applyLineType': {
-            let lineTypeMapping = {
-                'bezier': 'b',
-                'edge': 'e',
-            }
+            let lineType = {bezier: 'b', edge: 'e'}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                cm.lineType = lineTypeMapping[payload];
+                if (cm.selection === 's') {
+                    cm.lineType = lineType;
+                } else {
+                    mapChangeProp.start(cm, {lineType: lineType}, '', true);
+                }
             }
             break;
         }
