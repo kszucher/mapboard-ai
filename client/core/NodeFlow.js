@@ -324,32 +324,19 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'applyColorFromPalette': {
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i]);
-                switch (payload.colorMode) {
-                    case 'line':   cm.lineColor =              payload.color; break;
-                    case 'text':   cm.sTextColor =             payload.color; break;
-                    case 'node':   cm.ellipseFillColor =       payload.color; break;
-                    case 'branch': cm.ellipseBranchFillColor = payload.color; break;
-                }
-            }
-            break;
-        }
         case 'formatColorReset': {
             let {sTextColor, ellipseFillColor, lineColor} = props.saveOptional;
             mapChangeProp.start(lm, {sTextColor, ellipseFillColor, lineColor}, '');
             break;
         }
-        case 'applyFontSize': {
-            let sTextFontSize = {h1: 54, h2: 36, h3: 24, h4: 18, h5: 16, h6: 14}[payload];
+        case 'applyLineType': {
+            let lineType = {bezier: 'b', edge: 'e'}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 if (cm.selection === 's') {
-                    cm.sTextFontSize = sTextFontSize;
-                    cm.isDimAssigned = 0;
+                    cm.lineType = lineType;
                 } else {
-                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned: 0}, '', true);
+                    mapChangeProp.start(cm, {lineType}, '', true);
                 }
             }
             break;
@@ -366,14 +353,27 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'applyLineType': {
-            let lineType = {bezier: 'b', edge: 'e'}[payload];
+        case 'applyFontSize': {
+            let sTextFontSize = {h1: 54, h2: 36, h3: 24, h4: 18, h5: 16, h6: 14}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 if (cm.selection === 's') {
-                    cm.lineType = lineType;
+                    cm.sTextFontSize = sTextFontSize;
+                    cm.isDimAssigned = 0;
                 } else {
-                    mapChangeProp.start(cm, {lineType}, '', true);
+                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned: 0}, '', true);
+                }
+            }
+            break;
+        }
+        case 'applyColorFromPalette': {
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                switch (payload.colorMode) {
+                    case 'line':   cm.lineColor =              payload.color; break;
+                    case 'text':   cm.sTextColor =             payload.color; break;
+                    case 'node':   cm.ellipseFillColor =       payload.color; break;
+                    case 'branch': cm.ellipseBranchFillColor = payload.color; break;
                 }
             }
             break;
