@@ -18,6 +18,7 @@ export const editorState = {
     lineWidth: '',
     lineType: '',
     colorMode: 'line',
+    color: '',
     colorLine: '',
     colorText: '',
     colorNode: '',
@@ -189,6 +190,7 @@ const EditorReducer = (state, action) => {
                 colorBranch: payload.ellipseBranchFillColor,
             };
         }
+        case 'FORMAT_COLOR_CHANGE':             return {...state, color: payload, mapAction: [...state.mapAction, 'formatColorChange']};
         case 'SET_DENSITY':                     return {...state, density: payload};
         case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
         case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};

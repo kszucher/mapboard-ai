@@ -1,7 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Context} from '../core/Store';
-import {nodeDispatch} from "../core/NodeFlow";
-import {checkPop, push, redraw} from "../core/MapFlow";
 import StyledButton from "../component-styled/StyledButton";
 
 const colorList = [
@@ -24,7 +22,8 @@ export function Palette () {
     const {colorMode, colorLine, colorText, colorNode, colorBranch, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
-    const closePalette = () => dispatch({type: 'CLOSE_PALETTE'});
+    const closePalette =        () => dispatch({type: 'CLOSE_PALETTE'});
+    const formatColorChange =   (c) => dispatch({type: 'FORMAT_COLOR_CHANGE', payload: c});
 
     const setOk = () => {
         closePalette()
@@ -61,10 +60,7 @@ export function Palette () {
 
     const handleClick = (i, j) => {
         setSel({x: i, y: j});
-        push();
-        nodeDispatch('applyColorFromPalette', {colorMode, color:colorList[i][j]});
-        redraw();
-        checkPop();
+        formatColorChange(colorList[i][j]);
     };
 
     const o = 32;

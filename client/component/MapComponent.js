@@ -12,7 +12,7 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, lineWidth, lineType, mapAction} = state;
+    const {density, alignment, fontSize, lineWidth, lineType, mapAction, colorMode, color} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -59,7 +59,7 @@ export function MapComponent() {
             } else if (['save'].includes(lastAction)) {
                 dispatch({type: 'SAVE_MAP'});
                 redraw();
-            } else if (['cut', 'copy', 'paste', 'task', 'formatColorReset', 'print'].includes(lastAction)) {
+            } else if (['cut', 'copy', 'paste', 'task', 'formatColorReset', 'formatColorChange'].includes(lastAction)) {
                 push();
                 switch (lastAction) {
                     case 'cut':
@@ -78,7 +78,8 @@ export function MapComponent() {
                     case 'formatColorReset':
                         nodeDispatch('formatColorReset');
                         break;
-                    case 'print':
+                    case 'formatColorChange':
+                        nodeDispatch('applyColorFromPalette', {colorMode, color});
                         break;
                 }
                 redraw();
