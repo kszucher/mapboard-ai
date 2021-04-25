@@ -12,7 +12,7 @@ export function Preferences () {
     const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
     const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
     const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
-0
+    
     return (
         <div style={{
             position: 'fixed',

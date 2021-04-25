@@ -21,18 +21,35 @@ export function MapComponent() {
             redraw();
         }
     }, [density]);
-
     useEffect(() => {
         if (alignment !== '') {
             mapDispatch('setAlignment', alignment);
             redraw();
         }
     }, [alignment]);
-
-    useEffect(() => { if (fontSize !== '')  {push(); nodeDispatch('applyFontSize', fontSize);   redraw(); checkPop()}}, [fontSize]);
-    useEffect(() => { if (lineWidth !== '') {push(); nodeDispatch('applyLineWidth', lineWidth); redraw(); checkPop()}}, [lineWidth]);
-    useEffect(() => { if (lineType !== '')  {push(); nodeDispatch('applyLineType', lineType);   redraw(); checkPop()}}, [lineType]);
-
+    useEffect(() => {
+        if (fontSize !== '') {
+            push(); nodeDispatch('applyFontSize', fontSize);
+            redraw();
+            checkPop()
+        }
+    }, [fontSize]);
+    useEffect(() => {
+        if (lineWidth !== '') {
+            push();
+            nodeDispatch('applyLineWidth', lineWidth);
+            redraw();
+            checkPop()
+        }
+    }, [lineWidth]);
+    useEffect(() => {
+        if (lineType !== '') {
+            push();
+            nodeDispatch('applyLineType', lineType);
+            redraw();
+            checkPop()
+        }
+    }, [lineType]);
     useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
