@@ -342,11 +342,15 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyFontSize': {
-            let fontSize = {h1: 54, h2: 36, h3: 24, h4: 18, h5: 16, h6: 14}[payload];
+            let sTextFontSize = {h1: 54, h2: 36, h3: 24, h4: 18, h5: 16, h6: 14}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                cm.sTextFontSize = fontSize;
-                cm.isDimAssigned = 0;
+                if (cm.selection === 's') {
+                    cm.sTextFontSize = sTextFontSize;
+                    cm.isDimAssigned = 0;
+                } else {
+                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned: 0}, '', true);
+                }
             }
             break;
         }
@@ -354,7 +358,11 @@ function nodeReducer(action, payload) {
             let lineWidth = {p1: 1, p2: 2, p3: 3}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                cm.lineWidth = lineWidth;
+                if (cm.selection === 's') {
+                    cm.lineWidth = lineWidth;
+                } else {
+                    mapChangeProp.start(cm, {lineWidth}, '', true);
+                }
             }
             break;
         }
@@ -365,7 +373,7 @@ function nodeReducer(action, payload) {
                 if (cm.selection === 's') {
                     cm.lineType = lineType;
                 } else {
-                    mapChangeProp.start(cm, {lineType: lineType}, '', true);
+                    mapChangeProp.start(cm, {lineType}, '', true);
                 }
             }
             break;
