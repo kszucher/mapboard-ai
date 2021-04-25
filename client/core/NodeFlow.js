@@ -348,7 +348,7 @@ function nodeReducer(action, payload) {
                 if (cm.selection === 's') {
                     cm.lineWidth = lineWidth;
                 } else {
-                    mapChangeProp.start(cm, {lineWidth}, '', true);
+                    mapChangeProp.start(cm, {lineWidth}, 's', true);
                 }
             }
             break;
@@ -361,7 +361,7 @@ function nodeReducer(action, payload) {
                     cm.sTextFontSize = sTextFontSize;
                     cm.isDimAssigned = 0;
                 } else {
-                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned: 0}, '', true);
+                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned: 0}, 's', true);
                 }
             }
             break;
@@ -373,7 +373,7 @@ function nodeReducer(action, payload) {
                 if (cm.selection === 's' || field === 'ellipseBranchFillColor') {
                     cm[field] = payload.color;
                 } else {
-                    mapChangeProp.start(cm, {[field]: payload.color}, '', true);
+                    mapChangeProp.start(cm, {[field]: payload.color}, 's', true);
                 }
             }
             break;
