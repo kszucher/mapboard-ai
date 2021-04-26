@@ -23,9 +23,11 @@ export function updateDomData() {
     }
     for (const svgId in mapSvgData) {
         if (mapSvgData[svgId].keepHash !== keepHash) {
-            let currSvg = document.getElementById(svgId);
-            currSvg.parentNode.removeChild(currSvg);
-            delete mapSvgData[svgId];
+            for (const i of [0,1,2,3,4]) {
+                let currSvg = document.getElementById(svgId + i);
+                currSvg.parentNode.removeChild(currSvg);
+                delete mapSvgData[svgId];
+            }
         }
     }
 }
