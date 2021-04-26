@@ -393,7 +393,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'setTaskStatus': {
-            let cm = mapref(mapSvgData[payload.svgId].path);
+            let cm = mapref(mapSvgData[payload.svgId.slice(0,-1)].path);
             cm.taskStatus = payload.taskStatus;
             cm.taskStatusInherited = -1;
             break;
