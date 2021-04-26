@@ -6,7 +6,7 @@ import {selectionState} from "../core/SelectionFlow";
 let svgElementNameList = [
     ['backgroundRect'],
     ['branchPolygon'],
-    ['connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3', 'nodePolygon'],
+    ['nodePolygon', 'connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
     ['selectionPolygon'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
@@ -40,29 +40,6 @@ export const mapSvgVisualize = {
                 ry: 32,
                 fill: '#fbfafc',
             };
-        }
-        // connectionLine
-        if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
-            cm.type === 'struct' && !cm.hasCell ||
-            cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
-            let x1, y1, x2, y2;
-            if (cm.lineAnimationRequested) {
-                cm.lineAnimationRequested = 0;
-                x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
-                y1 = cm.parentNodeYFrom;
-            } else {
-                x1 = cm.path[2] ? cm.parentNodeStartX : cm.parentNodeEndX;
-                y1 = cm.parentNodeY;
-            }
-            x1 = isOdd(x1)?x1-0.5:x1;
-            x2 = nsx;
-            y2 = cm.nodeY;
-            svgElementData[2].connectionLine = {
-                type: 'path',
-                path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
-                stroke: cm.lineColor,
-                strokeWidth: cm.lineWidth,
-            }
         }
         // branchPolygon, nodePolygon, selectionPolygon
         if (cm.ellipseFillColor!== '' ||
@@ -109,6 +86,29 @@ export const mapSvgVisualize = {
                     stroke: '#666666',
                     strokeWidth: cm.lineWidth,
                 }
+            }
+        }
+        // connectionLine
+        if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
+            cm.type === 'struct' && !cm.hasCell ||
+            cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
+            let x1, y1, x2, y2;
+            if (cm.lineAnimationRequested) {
+                cm.lineAnimationRequested = 0;
+                x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
+                y1 = cm.parentNodeYFrom;
+            } else {
+                x1 = cm.path[2] ? cm.parentNodeStartX : cm.parentNodeEndX;
+                y1 = cm.parentNodeY;
+            }
+            x1 = isOdd(x1)?x1-0.5:x1;
+            x2 = nsx;
+            y2 = cm.nodeY;
+            svgElementData[2].connectionLine = {
+                type: 'path',
+                path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
+                stroke: cm.lineColor,
+                strokeWidth: cm.lineWidth,
             }
         }
         // table
