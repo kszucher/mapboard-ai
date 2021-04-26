@@ -494,7 +494,7 @@ export function MapComponent() {
     };
 
     return (
-        <div id = 'mapHolderDiv' style={{
+        <div id='mapHolderDiv' style={{
             overflowY: 'scroll',
             overflowX: 'scroll',
         }}>
@@ -511,7 +511,13 @@ export function MapComponent() {
                     <g id="mapSvgInner" style={{
                         transform: 'translate(calc(100vw), calc(100vh))',
                         overflow: 'visible'
-                    }}/>
+                    }}>
+                        <g id="layer0"/>
+                        <g id="layer1"/>
+                        <g id="layer2"/>
+                        <g id="layer3"/>
+                        <g id="layer4"/>
+                    </g>
                 </svg>
                 <div id='mapDiv' style={{
                     position: 'absolute',

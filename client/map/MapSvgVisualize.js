@@ -4,22 +4,11 @@ import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 
 let svgElementNameList = [
-    'backgroundRect',
-    'selectionRect',
-    'moveLine',
-    'moveRect',
-    'connectionLine',
-    'nodePolygon',
-    'branchPolygon',
-    'selectionPolygon',
-    'tableFrame',
-    'tableGrid',
-    'tableCellFrame',
-    'taskLine',
-    'taskCircle0',
-    'taskCircle1',
-    'taskCircle2',
-    'taskCircle3',
+    ['backgroundRect'],
+    ['branchPolygon'],
+    ['connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3', 'nodePolygon'],
+    ['selectionPolygon'],
+    ['moveLine', 'moveRect', 'selectionRect'],
 ];
 
 export const mapSvgVisualize = {
@@ -31,7 +20,7 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
-        let svgElementData = {};
+        let svgElementData = [{},{},{},{},{}];
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
         let nsx = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
@@ -41,7 +30,7 @@ export const mapSvgVisualize = {
         let dir = cm.path[2]? -1 : 1;
         // backgroundRect
         if (cm.isRoot) {
-            svgElementData.backgroundRect = {
+            svgElementData[0].backgroundRect = {
                 type: 'rect',
                 x: 0,
                 y: 0,
@@ -54,7 +43,7 @@ export const mapSvgVisualize = {
         }
         // selectionRect
         if (cm.selectionRect.length) {
-            svgElementData.selectionRect = {
+            svgElementData[4].selectionRect = {
                 type: 'rect',
                 x: cm.selectionRect[0],
                 y: cm.selectionRect[1],
@@ -82,14 +71,14 @@ export const mapSvgVisualize = {
             c2y = cm.moveData[1] + deltaY;
             x2 = cm.moveData[2];
             y2 = cm.moveData[3];
-            svgElementData.moveLine = {
+            svgElementData[4].moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
                 stroke: '#5f0a87',
                 strokeWidth: 1,
                 preventTransition: 1,
             }
-            svgElementData.moveRect = {
+            svgElementData[4].moveRect = {
                 type: 'rect',
                 x: cm.moveData[2] - 10,
                 y: cm.moveData[3] - 10,
@@ -120,7 +109,7 @@ export const mapSvgVisualize = {
             x1 = isOdd(x1)?x1-0.5:x1;
             x2 = nsx;
             y2 = cm.nodeY;
-            svgElementData.connectionLine = {
+            svgElementData[2].connectionLine = {
                 type: 'path',
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 stroke: cm.lineColor,
@@ -152,21 +141,21 @@ export const mapSvgVisualize = {
                 bcyd: cm.nodeY + maxHadj / 2 + margin,
             }
             if (cm.ellipseBranchFillColor!== '') {
-                svgElementData.branchPolygon = {
+                svgElementData[1].branchPolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(fParams), 'f', dir),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
             if (cm.ellipseFillColor!== '') {
-                svgElementData.nodePolygon = {
+                svgElementData[2].nodePolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(sParams), 's', dir),
                     fill: cm.ellipseFillColor,
                 }
             }
             if (cm.selected) {
-                svgElementData.selectionPolygon = {
+                svgElementData[3].selectionPolygon = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(cm.selection  === 's' ? sParams : fParams), cm.selection, dir),
                     stroke: '#666666',
@@ -182,7 +171,7 @@ export const mapSvgVisualize = {
             let y1 = nsy;
             let w = cm.selfW;
             let h = cm.selfH;
-            svgElementData.tableFrame = {
+            svgElementData[2].tableFrame = {
                 type: 'path',
                 path: getArcPath(x1, y1, w, h, r, cm.path[2]),
                 stroke: cm.selected? '#000000' : cm.cBorderColor,
@@ -202,7 +191,7 @@ export const mapSvgVisualize = {
                 let x = nsx + dir*cm.sumMaxColWidth[j];
                 path += `M${x},${nsy} L${x},${ney}`;
             }
-            svgElementData.tableGrid = {
+            svgElementData[2].tableGrid = {
                 type: 'path',
                 path: path,
                 stroke: '#dddddd',
@@ -230,7 +219,7 @@ export const mapSvgVisualize = {
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         }
-                        svgElementData.tableCellFrame = {
+                        svgElementData[2].tableCellFrame = {
                             type: 'path',
                             path: getArcPath(x1, y1, w, h, r, cm.path[2]),
                             stroke: '#000000',
@@ -258,7 +247,7 @@ export const mapSvgVisualize = {
             let x2 = startX;
             let y = cm.nodeY;
             if (!cm.isEditing) {
-                svgElementData.taskLine = {
+                svgElementData[2].taskLine = {
                     type: 'path',
                     path: `M${x1},${y} L${x2},${y}`,
                     stroke: '#eeeeee',
@@ -285,7 +274,7 @@ export const mapSvgVisualize = {
                     }
                 }
                 let r = d/2;
-                svgElementData['taskCircle' + i] = {
+                svgElementData[2]['taskCircle' + i] = {
                     type: 'circle',
                     cx: centerX,
                     cy: centerY,
@@ -294,146 +283,136 @@ export const mapSvgVisualize = {
                 };
             }
         }
-        let svgGroup;
+        let svgGroupList = [];
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
             ((mapSvgData.hasOwnProperty(cm.svgId) && mapSvgData[cm.svgId].keepHash === keepHash))) {
             cm.svgId = 'svg' + genHash(8);
-            mapSvgData[cm.svgId] = {
-                svgElementData: {},
-                path: [],
-            };
-            svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            svgGroup.setAttribute("id", cm.svgId);
-            let mapSvg = document.getElementById('mapSvgInner');
-            mapSvg.appendChild(svgGroup);
-        } else {
-            svgGroup = document.getElementById(cm.svgId);
-        }
-        for (const svgElementName of svgElementNameList) {
-            let hadBefore = mapSvgData[cm.svgId].svgElementData.hasOwnProperty(svgElementName);
-            let hasNow = svgElementData.hasOwnProperty(svgElementName);
-            let op = '';
-            if (hadBefore === false && hasNow === true) op = 'init';
-            if (hadBefore === true && hasNow === false) op = 'delete';
-            if (hadBefore === true && hasNow === true) {
-                if (JSON.stringify(svgElementData[svgElementName]) !==
-                    JSON.stringify(mapSvgData[cm.svgId].svgElementData[svgElementName])) {
-                    op = 'update';
-                }
+            for (const i of [0,1,2,3,4]) {
+                mapSvgData[cm.svgId] = {
+                    svgElementData: [{},{},{},{},{}],
+                    path: [],
+                };
+                svgGroupList.push(document.createElementNS("http://www.w3.org/2000/svg", "g"));
+                svgGroupList[i].setAttribute("id", cm.svgId + i);
+                let parentG = document.getElementById('layer' + i);
+                parentG.appendChild(svgGroupList[i]);
             }
-            switch (op) {
-                case 'init': {
-                    let {type} = svgElementData[svgElementName]
-                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type);
-                    svgElement.setAttribute("id", svgElementName);
-                    switch (type) {
-                        case 'path': {
-                            let {path, fill, stroke, strokeWidth, preventTransition} = svgElementData[svgElementName];
-                            svgElement.setAttribute("d", path);
-                            svgElement.setAttribute("fill", checkSvgField(fill));
-                            svgElement.setAttribute("stroke", checkSvgField(stroke));
-                            svgElement.setAttribute("stroke-width", strokeWidth);
-                            svgElement.setAttribute("vector-effect", "non-scaling-stroke");
-                            svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
-                            svgElement.style.transitionProperty = 'd, fill';
-                            if (!isChrome) {
-                                let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
-                                svgElementAnimate.setAttribute("attributeName", "d");
-                                svgElementAnimate.setAttribute("attributeType", "XML");
-                                svgElementAnimate.setAttribute("dur", "0.5s");
-                                svgElementAnimate.setAttribute("calcMode", "spline");
-                                svgElementAnimate.setAttribute("keySplines", "0 0 0.58 1");
-                                svgElementAnimate.setAttribute("keyTimes", "0;1");
-                                svgElement.appendChild(svgElementAnimate);
-                            }
-                            break;
-                        }
-                        case 'circle': {
-                            let {cx, cy, r, fill} = svgElementData[svgElementName];
-                            svgElement.setAttribute("cx", cx);
-                            svgElement.setAttribute("cy", cy);
-                            svgElement.setAttribute("r", r);
-                            svgElement.setAttribute("fill", fill);
-                            svgElement.setAttribute("vector-effect", "non-scaling-stroke");
-                            svgElement.style.transition = '0.5s ease-out';
-                            break;
-                        }
-                        case 'rect': {
-                            let {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = svgElementData[svgElementName];
-                            svgElement.setAttribute("x", x);
-                            svgElement.setAttribute("y", y);
-                            svgElement.setAttribute("width", width);
-                            svgElement.setAttribute("height", height);
-                            svgElement.setAttribute("rx", rx);
-                            svgElement.setAttribute("ry", ry);
-                            svgElement.setAttribute("fill", fill);
-                            svgElement.setAttribute("fill-opacity", fillOpacity);
-                            svgElement.setAttribute("stroke", checkSvgField(stroke));
-                            svgElement.setAttribute("stroke-width", strokeWidth);
-                            svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
-                            break;
-                        }
+        } else {
+            for (const i of [0,1,2,3,4]) {
+                svgGroupList.push(document.getElementById(cm.svgId + i));
+            }
+        }
+        for (const i of [0,1,2,3,4]) {
+            for (const svgElementName of svgElementNameList[i]) {
+                let hadBefore = mapSvgData[cm.svgId].svgElementData[i].hasOwnProperty(svgElementName);
+                let hasNow = svgElementData[i].hasOwnProperty(svgElementName);
+                let op = '';
+                if (hadBefore === false && hasNow === true) op = 'init';
+                if (hadBefore === true && hasNow === false) op = 'delete';
+                if (hadBefore === true && hasNow === true) {
+                    if (JSON.stringify(svgElementData[i][svgElementName]) !==
+                        JSON.stringify(mapSvgData[cm.svgId].svgElementData[i][svgElementName])) {
+                        op = 'update';
                     }
-                    if (svgElementName === 'branchPolygon') {
-                        if (svgElementData.hasOwnProperty('nodePolygon')) {
-                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'nodePolygon'))
-                        } else if (svgElementData.hasOwnProperty('selectionPolygon')) {
-                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'selectionPolygon'))
-                        } else {
-                            svgGroup.appendChild(svgElement);
-                        }
-                    } else if (svgElementName === 'nodePolygon') {
-                        if (svgElementData.hasOwnProperty('selectionPolygon')) {
-                            svgGroup.insertBefore(svgElement, svgGroup.querySelector('#' + 'selectionPolygon'))
-                        } else {
-                            svgGroup.appendChild(svgElement);
-                        }
-                    } else {
-                        svgGroup.appendChild(svgElement);
-                    }
-                    break;
                 }
-                case 'update': {
-                    let {type} = svgElementData[svgElementName];
-                    let svgElement = svgGroup.querySelector('#' + svgElementName);
-                    switch (type) {
-                        case 'path': {
-                            let {path, fill, stroke, strokeWidth} = svgElementData[svgElementName];
-                            let prevPath = svgElement.getAttribute('d')
-                            svgElement.setAttribute("d", path);
-                            svgElement.setAttribute("fill", checkSvgField(fill));
-                            svgElement.setAttribute("stroke", stroke);
-                            svgElement.setAttribute("stroke-width", strokeWidth);
-                            if (!isChrome) {
-                                svgElement.lastChild.setAttribute("from", prevPath);
-                                svgElement.lastChild.setAttribute("to", path);
-                                svgElement.lastChild.beginElement();
+                switch (op) {
+                    case 'init': {
+                        let {type} = svgElementData[i][svgElementName]
+                        let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type);
+                        svgElement.setAttribute("id", svgElementName);
+                        switch (type) {
+                            case 'path': {
+                                let {path, fill, stroke, strokeWidth, preventTransition} = svgElementData[i][svgElementName];
+                                svgElement.setAttribute("d", path);
+                                svgElement.setAttribute("fill", checkSvgField(fill));
+                                svgElement.setAttribute("stroke", checkSvgField(stroke));
+                                svgElement.setAttribute("stroke-width", strokeWidth);
+                                svgElement.setAttribute("vector-effect", "non-scaling-stroke");
+                                svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
+                                svgElement.style.transitionProperty = 'd, fill';
+                                if (!isChrome) {
+                                    let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
+                                    svgElementAnimate.setAttribute("attributeName", "d");
+                                    svgElementAnimate.setAttribute("attributeType", "XML");
+                                    svgElementAnimate.setAttribute("dur", "0.5s");
+                                    svgElementAnimate.setAttribute("calcMode", "spline");
+                                    svgElementAnimate.setAttribute("keySplines", "0 0 0.58 1");
+                                    svgElementAnimate.setAttribute("keyTimes", "0;1");
+                                    svgElement.appendChild(svgElementAnimate);
+                                }
+                                break;
                             }
-                            break;
+                            case 'circle': {
+                                let {cx, cy, r, fill} = svgElementData[i][svgElementName];
+                                svgElement.setAttribute("cx", cx);
+                                svgElement.setAttribute("cy", cy);
+                                svgElement.setAttribute("r", r);
+                                svgElement.setAttribute("fill", fill);
+                                svgElement.setAttribute("vector-effect", "non-scaling-stroke");
+                                svgElement.style.transition = '0.5s ease-out';
+                                break;
+                            }
+                            case 'rect': {
+                                let {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = svgElementData[i][svgElementName];
+                                svgElement.setAttribute("x", x);
+                                svgElement.setAttribute("y", y);
+                                svgElement.setAttribute("width", width);
+                                svgElement.setAttribute("height", height);
+                                svgElement.setAttribute("rx", rx);
+                                svgElement.setAttribute("ry", ry);
+                                svgElement.setAttribute("fill", fill);
+                                svgElement.setAttribute("fill-opacity", fillOpacity);
+                                svgElement.setAttribute("stroke", checkSvgField(stroke));
+                                svgElement.setAttribute("stroke-width", strokeWidth);
+                                svgElement.style.transition = preventTransition ? '' : '0.5s ease-out';
+                                break;
+                            }
                         }
-                        case 'circle': {
-                            let {cx, cy, r, fill} = svgElementData[svgElementName];
-                            svgElement.setAttribute("cx", cx);
-                            svgElement.setAttribute("cy", cy);
-                            svgElement.setAttribute("r", r);
-                            svgElement.setAttribute("fill", fill);
-                            break;
-                        }
-                        case 'rect': {
-                            let {x, y, width, height} = svgElementData[svgElementName];
-                            svgElement.setAttribute("x", x);
-                            svgElement.setAttribute("y", y);
-                            svgElement.setAttribute("width", width);
-                            svgElement.setAttribute("height", height);
-                            break;
-                        }
+                        svgGroupList[i].appendChild(svgElement);
+                        break;
                     }
-                    break;
-                }
-                case 'delete': {
-                    let svgElement = svgGroup.querySelector('#' + svgElementName);
-                    svgElement.parentNode.removeChild(svgElement);
-                    break;
+                    case 'update': {
+                        let {type} = svgElementData[i][svgElementName];
+                        let svgElement = svgGroupList[i].querySelector('#' + svgElementName);
+                        switch (type) {
+                            case 'path': {
+                                let {path, fill, stroke, strokeWidth} = svgElementData[i][svgElementName];
+                                let prevPath = svgElement.getAttribute('d')
+                                svgElement.setAttribute("d", path);
+                                svgElement.setAttribute("fill", checkSvgField(fill));
+                                svgElement.setAttribute("stroke", stroke);
+                                svgElement.setAttribute("stroke-width", strokeWidth);
+                                if (!isChrome) {
+                                    svgElement.lastChild.setAttribute("from", prevPath);
+                                    svgElement.lastChild.setAttribute("to", path);
+                                    svgElement.lastChild.beginElement();
+                                }
+                                break;
+                            }
+                            case 'circle': {
+                                let {cx, cy, r, fill} = svgElementData[i][svgElementName];
+                                svgElement.setAttribute("cx", cx);
+                                svgElement.setAttribute("cy", cy);
+                                svgElement.setAttribute("r", r);
+                                svgElement.setAttribute("fill", fill);
+                                break;
+                            }
+                            case 'rect': {
+                                let {x, y, width, height} = svgElementData[i][svgElementName];
+                                svgElement.setAttribute("x", x);
+                                svgElement.setAttribute("y", y);
+                                svgElement.setAttribute("width", width);
+                                svgElement.setAttribute("height", height);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 'delete': {
+                        let svgElement = svgGroupList[i].querySelector('#' + svgElementName);
+                        svgElement.parentNode.removeChild(svgElement);
+                        break;
+                    }
                 }
             }
         }
