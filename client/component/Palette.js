@@ -25,13 +25,6 @@ export function Palette () {
     const closePalette =        () => dispatch({type: 'CLOSE_PALETTE'});
     const formatColorChange =   (c) => dispatch({type: 'FORMAT_COLOR_CHANGE', payload: c});
 
-    const setOk = () => {
-        closePalette()
-    };
-    const setCancel = () => {
-        closePalette()
-    };
-
     const findSel = (color) => {
         let sel = {x: 0, y: 0};
         for (let i = 0; i < colorList.length; i++) {
@@ -66,7 +59,6 @@ export function Palette () {
     const o = 32;
     const r = 12;
     const xWidth = o * colorList[0].length;
-    // const xWidth = 180;
     const yWidth = o * colorList.length;
 
     console.log(xWidth)
@@ -107,10 +99,10 @@ export function Palette () {
             <div style={{
                 display: "flex",
                 flexDirection: 'row',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                paddingTop: 12,
             }}>
-                <StyledButton input = {['OK', setOk]}/>
-                <StyledButton input = {['Cancel', setCancel]}/>
+                <StyledButton input = {['Close', ()=>closePalette()]}/>
             </div>
         </div>
     );
