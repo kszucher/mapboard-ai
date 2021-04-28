@@ -18,7 +18,7 @@ export function Preferences () {
             position: 'fixed',
             right: 0,
             top: 96,
-            width: 250,
+            width: 216,
             backgroundColor: 'rgba(251,250,252,1)',
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
@@ -27,13 +27,15 @@ export function Preferences () {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingLeft: 12,
+                paddingRight: 12,
             }}>
                 <StyledButtonGroup input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
                 <StyledButtonGroup input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
                 <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'edge']]}/>
                 <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
-                <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']]}/>
+                <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 't']]}/>
                 <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['line', 'text', 'node', 'branch']]}/>
             </div>
         </div>

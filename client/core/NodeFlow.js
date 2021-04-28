@@ -354,7 +354,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyFontSize': {
-            let sTextFontSize = {h1: 54, h2: 36, h3: 24, h4: 18, h5: 16, h6: 14}[payload];
+            let sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 if (cm.selection === 's') {

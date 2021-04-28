@@ -58,8 +58,8 @@ export default function Logo() {
     return (
         <div className={classes.root} style={{
             position: 'absolute',
-            width: '200px',
-            height: '48px',
+            width: 216,
+            height: 48,
             backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)`,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',

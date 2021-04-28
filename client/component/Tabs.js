@@ -70,9 +70,10 @@ export default function VerticalTabs() {
     return (
         <div style={{
             position: 'fixed',
-            top: '50%',
-            transform: 'translate(0, -50%)',
-            width: '200px',
+            // top: '50%',
+            // transform: 'translate(0, -50%)',
+            top: 48*2,
+            width: 216,
             backgroundColor: '#fbfafc',
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',

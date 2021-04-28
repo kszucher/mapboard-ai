@@ -21,8 +21,8 @@ export default function StyledButtonGroup(arg) {
     const valueList = arg.input[3];
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            <ButtonGroup variant="text" color="primary" aria-label="text primary button group">
+        <div  className={classes.root}>
+            <ButtonGroup size="small" variant="text" color="primary" aria-label="text primary button group">
                 {valueList.map((name, index) =>
                     <Button onClick={e=>action(valueList[index])} key={index}>{name}</Button>
                 )}

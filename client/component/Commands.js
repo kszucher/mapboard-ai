@@ -18,25 +18,26 @@ export function Commands () {
     return (
         <div style={{
             position: 'fixed',
-            left: '100%',
-            transform: 'translate(-100%)',
+            right: 0,
+            width: 192,
             display: 'flex',
             alignItems: 'center',
             height: 48,
-            paddingLeft: 10,
-            paddingRight: 10,
+            paddingLeft: 12,
+            paddingRight: 12,
             backgroundColor: '#fbfafc',
+            borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
-            borderBottomRightRadius: 16,
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: '#dddddd',
             borderTop: 0,
-            borderRight: 0,
+            borderRight: 0
         }}>
             <div style={{
                 display: 'flex',
-                justifyContent: 'center'
+                justifyContent: 'center',
+
             }}>
                 <StyledIconButton action={undo} icon={'undo'}/>
                 <StyledIconButton action={redo} icon={'redo'}/>
@@ -44,13 +45,13 @@ export function Commands () {
 
                 {/*<Divider orientation="vertical" flexItem />*/}
 
-                <StyledIconButton action={cut} icon={'content_cut'}/>
-                <StyledIconButton action={copy} icon={'content_copy'}/>
-                <StyledIconButton action={paste} icon={'content_paste'}/>
+                {/*<StyledIconButton action={cut} icon={'content_cut'}/>*/}
+                {/*<StyledIconButton action={copy} icon={'content_copy'}/>*/}
+                {/*<StyledIconButton action={paste} icon={'content_paste'}/>*/}
 
                 {/*<Divider orientation="vertical" flexItem />*/}
 
-                <StyledIconButton action={task} icon={'check_circle'}/>
+                {/*<StyledIconButton action={task} icon={'check_circle'}/>*/}
                 <StyledIconButton action={formatColorReset} icon={'format_color_reset'}/>
             </div>
         </div>
