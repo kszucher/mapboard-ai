@@ -61,8 +61,6 @@ export function Palette () {
     const xWidth = o * colorList[0].length;
     const yWidth = o * colorList.length;
 
-    console.log(xWidth)
-
     return (
         <div style={{
             position: 'fixed',
@@ -75,10 +73,10 @@ export function Palette () {
             paddingLeft: 12,
             paddingRight: 12,
             paddingBottom: 12,
-            borderWidth: '1px',
-            borderStyle: 'solid',
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
+            borderWidth: '1px',
+            borderStyle: 'solid',
             borderColor: '#dddddd',
             borderRight: 0,
             visibility: paletteVisible? 'visible':'hidden'

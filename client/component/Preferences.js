@@ -22,6 +22,10 @@ export function Preferences () {
             backgroundColor: 'rgba(251,250,252,1)',
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#dddddd',
+            borderRight: 0,
         }}>
             <div style={{
                 display: 'flex',
