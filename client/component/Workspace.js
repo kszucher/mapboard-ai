@@ -9,6 +9,7 @@ import {MapComponent} from "./MapComponent";
 import {Preferences} from "./Preferences";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
+import {Recorder} from "./Recorder";
 
 export function Workspace() {
     const theme = createMuiTheme({
@@ -48,6 +49,7 @@ export function Workspace() {
                 <Breadcrumbs/>
                 <Preferences/>
                 <Palette/>
+                <Recorder/>
 
             </MuiThemeProvider>
         </div>
