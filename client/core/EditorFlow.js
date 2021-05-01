@@ -17,7 +17,7 @@ export const editorState = {
     fontSize: '',
     lineWidth: '',
     lineType: '',
-    colorMode: 'line',
+    colorMode: '',
     color: '',
     colorLine: '',
     colorText: '',
