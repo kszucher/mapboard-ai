@@ -362,7 +362,9 @@ function nodeReducer(action, payload) {
             let field = {
                 line: 'lineColor',
                 text: 'sTextColor',
-                fill: lm.selection === 's'? 'ellipseFillColor' : 'ellipseBranchFillColor'
+                fill: lm.selection === 's'? 'ellipseFillColor' : 'ellipseBranchFillColor',
+                border: lm.hasCell? 'cBorderColor' :
+                    lm.selection === 's'? 'ellipseBorderColor' :  'ellipseBranchBorderColor'
             }[payload.colorMode]
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
