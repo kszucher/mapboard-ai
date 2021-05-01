@@ -26,6 +26,8 @@ export function Preferences () {
             borderStyle: 'solid',
             borderColor: '#dddddd',
             borderRight: 0,
+            paddingTop: 6,
+            paddingBottom: 6,
         }}>
             <div style={{
                 display: 'flex',
