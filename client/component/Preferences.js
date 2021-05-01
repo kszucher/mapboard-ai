@@ -35,12 +35,12 @@ export function Preferences () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                {                        <StyledButtonGroup name='Map Density'   value={density}   action={setDensity}   valueList={['small', 'large']}/>}
-                {                        <StyledButtonGroup name='Map Alignment' value={alignment} action={setAlignment} valueList={['adaptive', 'centered']}/>}
-                {                        <StyledButtonGroup name='Color Mode'    value={colorMode} action={setColorMode} valueList={['line', 'text', 'fill']}/>}
-                {colorMode === 'line' && <StyledButtonGroup name='Line Type'     value={lineType}  action={setLineType}  valueList={['bezier', 'edge']}/>}
-                {colorMode === 'line' && <StyledButtonGroup name='Line Width'    value={lineWidth} action={setLineWidth} valueList={['p1', 'p2', 'p3']}/>}
-                {colorMode === 'text' && <StyledButtonGroup name='Font Size'     value={fontSize}  action={setFontSize}  valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {                        <StyledButtonGroup value={density}   action={setDensity}   valueList={['small', 'large']}/>}
+                {                        <StyledButtonGroup value={alignment} action={setAlignment} valueList={['adaptive', 'centered']}/>}
+                {                        <StyledButtonGroup value={colorMode} action={setColorMode} valueList={['line', 'text', 'fill']}/>}
+                {colorMode === 'line' && <StyledButtonGroup value={lineType}  action={setLineType}  valueList={['bezier', 'edge']}/>}
+                {colorMode === 'line' && <StyledButtonGroup value={lineWidth} action={setLineWidth} valueList={['p1', 'p2', 'p3']}/>}
+                {colorMode === 'text' && <StyledButtonGroup value={fontSize}  action={setFontSize}  valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
             </div>
         </div>
     );
