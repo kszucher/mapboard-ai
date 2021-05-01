@@ -21,8 +21,7 @@ export const editorState = {
     color: '',
     colorLine: '',
     colorText: '',
-    colorNode: '',
-    colorBranch: '',
+    colorFill: '',
     mapAction: '',
     paletteVisible: 0,
 };
@@ -160,8 +159,9 @@ const EditorReducer = (state, action) => {
             return state;
         }
         case 'SET_NODE_PROPS': {
+            let lm = payload;
             let fontSize = '';
-            switch (payload.sTextFontSize) {
+            switch (lm.sTextFontSize) {
                 case 36: fontSize = 'h1'; break;
                 case 24: fontSize = 'h2'; break;
                 case 18: fontSize = 'h3'; break;
@@ -169,13 +169,13 @@ const EditorReducer = (state, action) => {
                 case 14: fontSize = 't'; break;
             }
             let lineWidth = '';
-            switch (payload.lineWidth) {
+            switch (lm.lineWidth) {
                 case 1: lineWidth = 'p1'; break;
                 case 2: lineWidth = 'p2'; break;
                 case 3: lineWidth = 'p3'; break;
             }
             let lineType = '';
-            switch (payload.lineType) {
+            switch (lm.lineType) {
                 case 1: lineType = 'bezier'; break;
                 case 3: lineType = 'edge'; break;
             }
@@ -183,10 +183,9 @@ const EditorReducer = (state, action) => {
                 fontSize,
                 lineWidth,
                 lineType,
-                colorLine: payload.lineColor,
-                colorText: payload.sTextColor,
-                colorNode: payload.ellipseFillColor,
-                colorBranch: payload.ellipseBranchFillColor,
+                colorLine: lm.lineColor,
+                colorText: lm.sTextColor,
+                colorFill: lm.selection === 's'? lm.ellipseFillColor : lm.ellipseBranchFillColor,
             };
         }
         case 'FORMAT_COLOR_CHANGE':             return {...state, color: payload, mapAction: [...state.mapAction, 'formatColorChange']};
@@ -196,7 +195,7 @@ const EditorReducer = (state, action) => {
         case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload};
         case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
         case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, colorMode: payload, paletteVisible: 1};
-        case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0};
+        case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, colorMode: ''};
         case 'SET_MAP_ACTION':                  return {...state, mapAction: [...state.mapAction, payload]};
         default: return state;
     }

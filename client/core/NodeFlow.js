@@ -359,10 +359,14 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyColorFromPalette': {
-            let field = {line: 'lineColor', text: 'sTextColor', node:'ellipseFillColor', branch: 'ellipseBranchFillColor'}[payload.colorMode]
+            let field = {
+                line: 'lineColor',
+                text: 'sTextColor',
+                fill: lm.selection === 's'? 'ellipseFillColor' : 'ellipseBranchFillColor'
+            }[payload.colorMode]
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                if (cm.selection === 's' || field === 'ellipseBranchFillColor') {
+                if (cm.selection === 's' || field === 'ellipseBranchFillColor' || field === 'sTextColor') {
                     cm[field] = payload.color;
                 } else {
                     mapChangeProp.start(cm, {[field]: payload.color}, 's', true);

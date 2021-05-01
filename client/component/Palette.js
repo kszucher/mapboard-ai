@@ -19,7 +19,7 @@ const colorList = [
 
 export function Palette () {
     const [state, dispatch] = useContext(Context);
-    const {colorMode, colorLine, colorText, colorNode, colorBranch, paletteVisible} = state;
+    const {colorMode, colorLine, colorText, colorFill, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
     const closePalette =        () => dispatch({type: 'CLOSE_PALETTE'});
@@ -41,15 +41,13 @@ export function Palette () {
         switch (colorMode) {
             case 'line':    setSel(findSel(colorLine)); break;
             case 'text':    setSel(findSel(colorText)); break;
-            case 'node':    setSel(findSel(colorNode)); break;
-            case 'branch':  setSel(findSel(colorBranch)); break;
+            case 'fill':    setSel(findSel(colorFill)); break;
         }
     }, [colorMode]);
 
     useEffect(() => {if (colorMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine]);
     useEffect(() => {if (colorMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText]);
-    useEffect(() => {if (colorMode === 'node'   && colorNode !== '')   setSel(findSel(colorNode))},   [colorNode]);
-    useEffect(() => {if (colorMode === 'branch' && colorBranch !== '') setSel(findSel(colorBranch))}, [colorBranch]);
+    useEffect(() => {if (colorMode === 'fill'   && colorFill !== '')   setSel(findSel(colorFill))},   [colorFill]);
 
     const handleClick = (i, j) => {
         setSel({x: i, y: j});
