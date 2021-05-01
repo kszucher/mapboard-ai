@@ -38,9 +38,9 @@ export function Preferences () {
                 <StyledButtonGroup input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
                 <StyledButtonGroup input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'centered']]}/>
                 <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['line', 'text', 'node', 'branch']]}/>
-                <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'edge']]}/>
-                <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
-                <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 't']]}/>
+                {/*{colorMode === 'line'&& <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'edge']]}/>}*/}
+                {colorMode === 'line'&&<StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>}
+                {colorMode === 'text'&&<StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 't']]}/>}
             </div>
         </div>
     );

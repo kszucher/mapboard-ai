@@ -40,6 +40,7 @@ export default function WorkspaceBreadcrumbs() {
             borderWidth: '2px',
             borderStyle: 'solid',
             borderColor: '#9040b8',
+            borderTop: 0,
         }}>
             <div className={classes.root}>
                 <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
