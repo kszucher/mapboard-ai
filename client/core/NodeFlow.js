@@ -354,16 +354,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyFontSize': {
-            let sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i]);
-                if (cm.selection === 's') {
-                    cm.sTextFontSize = sTextFontSize;
-                    cm.isDimAssigned = 0;
-                } else {
-                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned: 0}, 's', true);
-                }
-            }
+            lm.sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
+            lm.isDimAssigned = 0;
             break;
         }
         case 'applyColorFromPalette': {
