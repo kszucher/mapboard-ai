@@ -98,7 +98,7 @@ export function Palette () {
                 justifyContent: 'center',
                 paddingTop: 12,
             }}>
-                <StyledButton input = {['Close', ()=>closePalette()]}/>
+                <StyledButton name ={'Close'} action={closePalette}/>
             </div>
         </div>
     );

@@ -32,7 +32,7 @@ export function Recorder () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                <StyledButton input = {['Record Current State', recordCurrentState]}/>
+                <StyledButton name={'Record Current State'} action={recordCurrentState}/>
             </div>
         </div>
     );

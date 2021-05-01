@@ -11,8 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StyledButton(arg) {
-    const name = arg.input[0];
-    const action =  arg.input[1];
+    const {name, action} = arg;
     const classes = useStyles();
     return (
         <div className={classes.root}>
