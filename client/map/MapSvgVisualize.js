@@ -36,8 +36,8 @@ export const mapSvgVisualize = {
                 y: 0,
                 width: mapState.mapWidth,
                 height: mapState.mapHeight,
-                rx: 16,
-                ry: 16,
+                rx: 48,
+                ry: 48,
                 fill: '#fbfafc',
             };
         }
