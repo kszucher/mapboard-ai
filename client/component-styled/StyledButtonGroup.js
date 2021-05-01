@@ -15,10 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StyledButtonGroup(arg) {
-    const name = arg.input[0];
-    const currValue = arg.input[1];
-    const action =  arg.input[2];
-    const valueList = arg.input[3];
+    const {name, value, action, valueList} = arg;
     const classes = useStyles();
     return (
         <div  className={classes.root}>
