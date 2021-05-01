@@ -84,7 +84,7 @@ export const mapSvgVisualize = {
                     type: 'path',
                     path: getPolygonPath(getPolygonPoints(cm.selection  === 's' ? sParams : fParams), cm.selection, dir),
                     stroke: '#666666',
-                    strokeWidth: cm.lineWidth,
+                    strokeWidth: 1,
                 }
             }
         }
