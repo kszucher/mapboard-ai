@@ -19,7 +19,7 @@ export const mapPlace = {
         let sumWidth = 0;
         if (alignment === 'adaptive') {
             sumWidth = leftWidth + r.selfW + rightWidth;
-        } else if (alignment === 'symmetrical') {
+        } else if (alignment === 'centered') {
             if (flow === 'center') {
                 sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
             } else if (flow === 'right') {
@@ -37,7 +37,7 @@ export const mapPlace = {
             if (alignment === 'adaptive') {
                 let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0;
                 mapStartCenterX = leftSpace + leftWidth + r.selfW / 2;
-            } else if (alignment === 'symmetrical') {
+            } else if (alignment === 'centered') {
                 mapStartCenterX = mapWidth / 2;
             }
         } else if (flow === 'right') {

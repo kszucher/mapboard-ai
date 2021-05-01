@@ -8,11 +8,11 @@ export function Preferences () {
 
     const setDensity =        e => dispatch({type: 'SET_DENSITY',                   payload: e});
     const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',                 payload: e});
+    const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
     const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',                 payload: e});
     const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
     const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
-    const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
-    
+
     return (
         <div style={{
             position: 'fixed',
@@ -36,11 +36,11 @@ export function Preferences () {
                 paddingRight: 12,
             }}>
                 <StyledButtonGroup input = {['Map Density',      density,    setDensity,     ['small', 'large']]}/>
-                <StyledButtonGroup input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'symmetrical']]}/>
+                <StyledButtonGroup input = {['Map Alignment',    alignment,  setAlignment,   ['adaptive', 'centered']]}/>
+                <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['line', 'text', 'node', 'branch']]}/>
                 <StyledButtonGroup input = {['Line Type',        lineType,   setLineType,    ['bezier', 'edge']]}/>
                 <StyledButtonGroup input = {['Line Width',       lineWidth,  setLineWidth,   ['p1', 'p2', 'p3']]}/>
                 <StyledButtonGroup input = {['Font Size',        fontSize,   setFontSize,    ['h1', 'h2', 'h3', 'h4', 't']]}/>
-                <StyledButtonGroup input = {['Color Mode',       colorMode,  setColorMode,   ['line', 'text', 'node', 'branch']]}/>
             </div>
         </div>
     );
