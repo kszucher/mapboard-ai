@@ -6,14 +6,9 @@ export function Recorder () {
     const [state, dispatch] = useContext(Context);
     const {} = state;
     
-    const recordCurrentSelection = () => {
+    const recordCurrentState = () => {
 
     };
-    const startRecordingActions = () => {};
-    const stopRecordingActions = () => {};
-    const addRenderStep = () => {};
-    const printContent = () => {};
-    const playStepByStep = () => {};
 
     return (
         <div style={{
@@ -37,12 +32,7 @@ export function Recorder () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                <StyledButton input = {['Record Current Selection', recordCurrentSelection]}/>
-                <StyledButton input = {['Start Recording Actions', startRecordingActions]}/>
-                <StyledButton input = {['Stop Recording Actions', stopRecordingActions]}/>
-                <StyledButton input = {['Add Render Step', addRenderStep]}/>
-                <StyledButton input = {['Print Content', printContent]}/>
-                <StyledButton input = {['Play Step-By-Step', playStepByStep]}/>
+                <StyledButton input = {['Record Current State', recordCurrentState]}/>
             </div>
         </div>
     );
