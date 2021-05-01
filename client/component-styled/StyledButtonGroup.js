@@ -21,7 +21,11 @@ export default function StyledButtonGroup(arg) {
         <div  className={classes.root}>
             <ButtonGroup size="small" variant="text" color="primary" aria-label="text primary button group">
                 {valueList.map((name, index) =>
-                    <Button onClick={e=>action(valueList[index])} key={index}>{name}</Button>
+                    <Button
+                        style ={{textDecoration: value === valueList[index]? 'overline':'none'}}
+                        onClick={e=>action(valueList[index])}
+                        key={index}>{name}
+                    </Button>
                 )}
             </ButtonGroup>
         </div>
