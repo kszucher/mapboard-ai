@@ -22,7 +22,7 @@ export default function StyledButtonGroup(arg) {
             <ButtonGroup size="small" variant="text" color="primary" aria-label="text primary button group">
                 {valueList.map((name, index) =>
                     <Button
-                        style ={{textDecoration: value === valueList[index]? 'overline':'none'}}
+                        style ={{backgroundColor: value === valueList[index]? '#eeeaf2':''}}
                         onClick={e=>action(valueList[index])}
                         key={index}>{name}
                     </Button>
