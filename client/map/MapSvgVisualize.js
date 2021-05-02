@@ -20,6 +20,11 @@ export const mapSvgVisualize = {
     },
 
     iterate: (cm) => {
+        let animationInit = '';
+        if (cm.lineAnimationRequested) {
+            cm.lineAnimationRequested = 0;
+            animationInit = 'l';
+        }
         let svgElementData = [{},{},{},{},{}];
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
@@ -93,8 +98,7 @@ export const mapSvgVisualize = {
             cm.type === 'struct' && !cm.hasCell ||
             cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
             let x1, y1, x2, y2;
-            if (cm.lineAnimationRequested) {
-                cm.lineAnimationRequested = 0;
+            if (animationInit === 'l') {
                 x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
             } else {
