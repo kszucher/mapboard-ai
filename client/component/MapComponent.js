@@ -206,7 +206,7 @@ export function MapComponent() {
                     }
                 }
             }
-            if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
+            if (e.which === 1 && !mapState.isNodeClicked && !mapState.isTaskClicked) {
                 pushSelectionState();
                 nodeDispatch('clearSelection');
             }
