@@ -12,38 +12,38 @@ export const mapPlace = {
         let leftWidth = leftMapWidth + leftTaskWidth + margin;
         let rightWidth = rightMapWidth + rightTaskWidth + margin;
 
-        let flow = 'center';
+        let flow = 'both';
         if (r.d[0].s.length && !r.d[1].s.length) flow = 'right';
         if (!r.d[0].s.length && r.d[1].s.length) flow = 'left';
 
         let sumWidth = 0;
         if (alignment === 'adaptive') {
-            sumWidth = leftWidth + r.selfW + rightWidth;
-        } else if (alignment === 'centered') {
-            if (flow === 'center') {
-                sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
-            } else if (flow === 'right') {
+            if (flow === 'right') {
                 sumWidth = margin + r.selfW + rightWidth;
             } else if (flow === 'left') {
                 sumWidth = leftWidth + r.selfW + margin;
+            } else if (flow === 'both') {
+                sumWidth = leftWidth + r.selfW + rightWidth;
             }
+        } else if (alignment === 'centered') {
+            sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
         }
 
         let divMinWidth = 1366;
         let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth;
 
         let mapStartCenterX = 0;
-        if (flow === 'center') {
-            if (alignment === 'adaptive') {
+        if (alignment === 'centered') {
+            mapStartCenterX = mapWidth / 2;
+        } else if (alignment === 'adaptive') {
+            if (flow === 'both') {
                 let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0;
                 mapStartCenterX = leftSpace + leftWidth + r.selfW / 2;
-            } else if (alignment === 'centered') {
-                mapStartCenterX = mapWidth / 2;
+            } else if (flow === 'right') {
+                mapStartCenterX = margin + r.selfW / 2;
+            } else if (flow === 'left') {
+                mapStartCenterX = mapWidth - margin - r.selfW / 2;
             }
-        } else if (flow === 'right') {
-            mapStartCenterX = margin + r.selfW / 2;
-        } else if (flow === 'left') {
-            mapStartCenterX = mapWidth - margin - r.selfW / 2;
         }
 
         let rightMapHeight = r.d.length > 0 ? r.d[0].familyH : 0;
