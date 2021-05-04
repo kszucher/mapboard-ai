@@ -293,7 +293,7 @@ export function MapComponent() {
             let r = getMapData().r;
             if (mapState.moveTarget.path.length) {
                 r.moveData = [];
-                mapState.shouldCenter = true;
+                mapDispatch('setShouldCenter');
                 push();
                 nodeDispatch('moveSelection');
                 redraw();
