@@ -24,12 +24,14 @@ export function MapComponent() {
     useEffect(() => {
         if (alignment !== '') {
             mapDispatch('setAlignment', alignment);
+            mapDispatch('setShouldCenter');
             redraw();
         }
     }, [alignment]);
     useEffect(() => {
         if (fontSize !== '') {
-            push(); nodeDispatch('applyFontSize', fontSize);
+            push();
+            nodeDispatch('applyFontSize', fontSize);
             redraw();
             checkPop()
         }
