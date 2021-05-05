@@ -51,7 +51,6 @@ export const mapSvgVisualize = {
             cm.ellipseBranchFillColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
-            let margin = 4;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
                 bx: nex - 2 * dir + corr - dir,
@@ -64,30 +63,30 @@ export const mapSvgVisualize = {
             let fParams = {
                 ax: nsx + corr,
                 bx: nex + dir * cm.lineDeltaX + corr,
-                cx: nsx + dir * (cm.familyW + cm.selfW + margin),
+                cx: nsx + dir * (cm.familyW + cm.selfW),
                 ayu: nsy,
                 ayd: ney,
-                bcyu: cm.nodeY - maxHadj / 2 - margin,
-                bcyd: cm.nodeY + maxHadj / 2 + margin,
+                bcyu: cm.nodeY - maxHadj / 2,
+                bcyd: cm.nodeY + maxHadj / 2,
             }
             if (cm.ellipseBranchFillColor!== '') {
                 svgElementData[1].branchPolygon = {
                     type: 'path',
-                    path: getPolygonPath(fParams, 'f', dir),
+                    path: getPolygonPath(fParams, 'f', dir, 0),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
             if (cm.ellipseFillColor!== '') {
                 svgElementData[2].nodePolygon = {
                     type: 'path',
-                    path: getPolygonPath(sParams, 's', dir),
+                    path: getPolygonPath(sParams, 's', dir, 0),
                     fill: cm.ellipseFillColor,
                 }
             }
             if (cm.selected && !cm.isEditing) {
                 svgElementData[3].selectionPolygon = {
                     type: 'path',
-                    path: getPolygonPath(cm.selection  === 's' ? sParams : fParams, cm.selection, dir),
+                    path: getPolygonPath(cm.selection  === 's' ? sParams : fParams, cm.selection, dir, 4),
                     stroke: '#666666',
                     strokeWidth: 1,
                 }
@@ -470,8 +469,14 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
     return path;
 }
 
-function getPolygonPath(params, selection, dir) {
+function getPolygonPath(params, selection, dir, margin) {
     let {ax, bx, cx, ayu, ayd, bcyu, bcyd} = params;
+    if (selection === 'f') {
+        ax -= dir*margin;
+        cx += dir*margin;
+        bcyu -= margin;
+        bcyd += margin;
+    }
     let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
     let path = '';
     let radius = 12;
