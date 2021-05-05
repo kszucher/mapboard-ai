@@ -73,21 +73,21 @@ export const mapSvgVisualize = {
             if (cm.ellipseBranchFillColor!== '') {
                 svgElementData[1].branchPolygon = {
                     type: 'path',
-                    path: getPolygonPath(getPolygonPoints(fParams), 'f', dir),
+                    path: getPolygonPath(fParams, 'f', dir),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
             if (cm.ellipseFillColor!== '') {
                 svgElementData[2].nodePolygon = {
                     type: 'path',
-                    path: getPolygonPath(getPolygonPoints(sParams), 's', dir),
+                    path: getPolygonPath(sParams, 's', dir),
                     fill: cm.ellipseFillColor,
                 }
             }
             if (cm.selected && !cm.isEditing) {
                 svgElementData[3].selectionPolygon = {
                     type: 'path',
-                    path: getPolygonPath(getPolygonPoints(cm.selection  === 's' ? sParams : fParams), cm.selection, dir),
+                    path: getPolygonPath(cm.selection  === 's' ? sParams : fParams, cm.selection, dir),
                     stroke: '#666666',
                     strokeWidth: 1,
                 }
@@ -470,7 +470,9 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
     return path;
 }
 
-function getPolygonPath(points, selection, dir) {
+function getPolygonPath(params, selection, dir) {
+    let {ax, bx, cx, ayu, ayd, bcyu, bcyd} = params;
+    let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
     let path = '';
     let radius = 12;
     for (let i = 0; i < points.length; i++) {
@@ -490,11 +492,6 @@ function getPolygonPath(points, selection, dir) {
         }
     }
     return path + 'z';
-}
-
-function getPolygonPoints (params) {
-    let {ax, bx, cx, ayu, ayd, bcyu, bcyd} = params;
-    return [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
 }
 
 function getBezierPath(c, [x1,y1,c1x,c1y,c2x,c2y,x2,y2]) {
