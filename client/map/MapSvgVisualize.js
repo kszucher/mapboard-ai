@@ -53,7 +53,7 @@ export const mapSvgVisualize = {
             let corr = dir === -1 ? -1 : 0;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
-                bx: nex - 2 * dir + corr - dir,
+                bx: nex - 3 * dir + corr,
                 cx: nex - 2 * dir + corr,
                 ayu: nsy + 1,
                 ayd: ney - 3,
