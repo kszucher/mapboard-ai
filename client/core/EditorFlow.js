@@ -18,12 +18,11 @@ export const editorState = {
     lineType: '',
     lineWidth: '',
     fontSize: '',
-
     color: '',
     colorLine: '',
-    colorText: '',
+    colorBorder: '',
     colorFill: '',
-
+    colorText: '',
     mapAction: '',
     paletteVisible: 0,
 };
@@ -162,14 +161,6 @@ const EditorReducer = (state, action) => {
         }
         case 'SET_NODE_PROPS': {
             let lm = payload;
-            let fontSize = '';
-            switch (lm.sTextFontSize) {
-                case 36: fontSize = 'h1'; break;
-                case 24: fontSize = 'h2'; break;
-                case 18: fontSize = 'h3'; break;
-                case 16: fontSize = 'h4'; break;
-                case 14: fontSize = 't'; break;
-            }
             let lineWidth = '';
             switch (lm.lineWidth) {
                 case 1: lineWidth = 'w1'; break;
@@ -181,21 +172,30 @@ const EditorReducer = (state, action) => {
                 case 1: lineType = 'bezier'; break;
                 case 3: lineType = 'edge'; break;
             }
+            let fontSize = '';
+            switch (lm.sTextFontSize) {
+                case 36: fontSize = 'h1'; break;
+                case 24: fontSize = 'h2'; break;
+                case 18: fontSize = 'h3'; break;
+                case 16: fontSize = 'h4'; break;
+                case 14: fontSize = 't'; break;
+            }
             return {...state,
-                fontSize,
                 lineWidth,
                 lineType,
+                fontSize,
                 colorLine: lm.lineColor,
-                colorText: lm.sTextColor,
+                colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
                 colorFill: lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+                colorText: lm.sTextColor,
             };
         }
         case 'FORMAT_COLOR_CHANGE':             return {...state, color: payload, mapAction: [...state.mapAction, 'formatColorChange']};
         case 'SET_DENSITY':                     return {...state, density: payload};
         case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
-        case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
         case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload};
         case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
+        case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
         case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, colorMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, colorMode: ''};
         case 'SET_MAP_ACTION':                  return {...state, mapAction: [...state.mapAction, payload]};
