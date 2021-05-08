@@ -12,7 +12,7 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, lineWidth, lineType, mapAction, colorMode, color} = state;
+    const {density, alignment, lineWidth, lineType, borderWidth, fontSize, mapAction, colorMode, color} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -29,14 +29,6 @@ export function MapComponent() {
         }
     }, [alignment]);
     useEffect(() => {
-        if (fontSize !== '') {
-            push();
-            nodeDispatch('applyFontSize', fontSize);
-            redraw();
-            checkPop()
-        }
-    }, [fontSize]);
-    useEffect(() => {
         if (lineWidth !== '') {
             push();
             nodeDispatch('applyLineWidth', lineWidth);
@@ -52,6 +44,22 @@ export function MapComponent() {
             checkPop()
         }
     }, [lineType]);
+    useEffect(() => {
+        if (borderWidth !== '') {
+            push();
+            nodeDispatch('applyBorderWidth', borderWidth);
+            redraw();
+            checkPop()
+        }
+    }, [borderWidth]);
+    useEffect(() => {
+        if (fontSize !== '') {
+            push();
+            nodeDispatch('applyFontSize', fontSize);
+            redraw();
+            checkPop()
+        }
+    }, [fontSize]);
     useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {

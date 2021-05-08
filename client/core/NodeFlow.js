@@ -353,6 +353,15 @@ function nodeReducer(action, payload) {
             }
             break;
         }
+        case 'applyBorderWidth': {
+            let borderWidth = {w1: 1, w2: 2, w3: 3}[payload];
+            if (lm.selection === 's') {
+                lm.ellipseNodeBorderWidth = borderWidth;
+            } else {
+                lm.ellipseBranchBorderWidth = borderWidth;
+            }
+            break;
+        }
         case 'applyFontSize': {
             lm.sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
             lm.isDimAssigned = 0;

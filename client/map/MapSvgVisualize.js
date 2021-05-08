@@ -95,7 +95,7 @@ export const mapSvgVisualize = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
                     stroke: cm.ellipseBranchBorderColor,
-                    strokeWidth: 1,
+                    strokeWidth: cm.ellipseBranchBorderWidth,
                 }
             }
             if (cm.ellipseNodeBorderColor !== '') {
@@ -103,7 +103,7 @@ export const mapSvgVisualize = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
                     stroke: cm.ellipseNodeBorderColor,
-                    strokeWidth: 1,
+                    strokeWidth: cm.ellipseNodeBorderWidth,
                 }
             }
             if (cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {

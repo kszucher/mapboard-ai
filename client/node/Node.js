@@ -24,7 +24,9 @@ export let props = {
         ellipseBranchFillColor:                 '',
         ellipseNodeFillColor:                   '',
         ellipseBranchBorderColor:               '',
+        ellipseBranchBorderWidth:               1,
         ellipseNodeBorderColor:                 '',
+        ellipseNodeBorderWidth:                 1,
         taskStatus:                             -1,
     },
     saveNever: {

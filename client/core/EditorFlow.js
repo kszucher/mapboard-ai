@@ -17,6 +17,7 @@ export const editorState = {
     colorMode: '',
     lineType: '',
     lineWidth: '',
+    borderWidth: '',
     fontSize: '',
     color: '',
     colorLine: '',
@@ -172,6 +173,12 @@ const EditorReducer = (state, action) => {
                 case 1: lineType = 'bezier'; break;
                 case 3: lineType = 'edge'; break;
             }
+            let borderWidth = '';
+            switch (lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth) {
+                case 1: borderWidth = 'w1'; break;
+                case 2: borderWidth = 'w2'; break;
+                case 3: borderWidth = 'w3'; break;
+            }
             let fontSize = '';
             switch (lm.sTextFontSize) {
                 case 36: fontSize = 'h1'; break;
@@ -195,6 +202,7 @@ const EditorReducer = (state, action) => {
         case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
         case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload};
         case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
+        case 'SET_BORDER_WIDTH':                return {...state, borderWidth: payload};
         case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
         case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, colorMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, colorMode: ''};
