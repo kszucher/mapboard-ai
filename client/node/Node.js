@@ -1,5 +1,3 @@
-import {copy, getBgc} from '../core/Utils'
-
 export let props = {
     saveAlways: {
         path:                                   [],
@@ -23,10 +21,10 @@ export let props = {
         lineWidth:                              1,
         lineType:                               'b',
         lineColor:                              '#bbbbbb',
-        ellipseNodeFillColor:                   '',
-        ellipseNodeBorderColor:                 '',
         ellipseBranchFillColor:                 '',
+        ellipseNodeFillColor:                   '',
         ellipseBranchBorderColor:               '',
+        ellipseNodeBorderColor:                 '',
         taskStatus:                             -1,
     },
     saveNever: {
@@ -92,5 +90,6 @@ export let props = {
 };
 
 export function getDefaultNode(attributes) {
-    return copy({ ...{d:[], s: [],  c: [[]], content: ''}, ...attributes});
+    // return copy({ ...{d:[], s: [],  c: [[]], content: ''}, ...attributes});
+    return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
 }

@@ -368,7 +368,7 @@ function nodeReducer(action, payload) {
             }[payload.colorMode]
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                if (cm.selection === 's' || field === 'ellipseBranchFillColor') {
+                if (cm.selection === 's' || field === 'ellipseBranchFillColor' || field === 'ellipseBranchBorderColor') {
                     cm[field] = payload.color;
                 } else {
                     mapChangeProp.start(cm, {[field]: payload.color}, 's', true);

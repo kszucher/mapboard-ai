@@ -1,4 +1,4 @@
-import {copy, genHash, isOdd} from "../core/Utils";
+import {genHash, isOdd} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
@@ -7,7 +7,11 @@ let svgElementNameList = [
     ['backgroundRect'],
     ['branchFillPolygon'],
     ['nodeFillPolygon'],
-    ['connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
+    [
+        'connectionLine', 'branchBorderPolygon', 'nodeBorderPolygon',
+        'tableFrame', 'tableGrid', 'tableCellFrame',
+        'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'
+    ],
     ['selectionPolygon'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
@@ -87,15 +91,34 @@ export const mapSvgVisualize = {
                 }
             }
             if (cm.ellipseBranchBorderColor !== '') {
-
+                svgElementData[3].branchBorderPolygon = {
+                    type: 'path',
+                    path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
+                    stroke: cm.ellipseBranchBorderColor,
+                    strokeWidth: 1,
+                }
             }
             if (cm.ellipseNodeBorderColor !== '') {
-
+                svgElementData[3].nodeBorderPolygon = {
+                    type: 'path',
+                    path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
+                    stroke: cm.ellipseNodeBorderColor,
+                    strokeWidth: 1,
+                }
             }
             if (cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
                 svgElementData[4].selectionPolygon = {
                     type: 'path',
-                    path: getPolygonPath(cm.selection  === 's' ? sParams : fParams, cm.selection, dir, 4),
+                    path: getPolygonPath(
+                        cm.selection  === 's'
+                            ? sParams
+                            : fParams,
+                        cm.selection,
+                        dir,
+                        cm.selection === 's'
+                            ? cm.ellipseNodeBorderColor !== '' ? 4 : 0
+                            : cm.ellipseBranchBorderColor !== '' ? 4 : 0
+                    ),
                     stroke: '#666666',
                     strokeWidth: 1,
                 }
@@ -480,12 +503,14 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
 
 function getPolygonPath(params, selection, dir, margin) {
     let {ax, bx, cx, ayu, ayd, bcyu, bcyd} = params;
-    if (selection === 'f') {
+    // if (selection === 'f') {
         ax -= dir*margin;
         cx += dir*margin;
+        ayu -= margin;
+        ayd += margin;
         bcyu -= margin;
         bcyd += margin;
-    }
+    // }
     let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
     let path = '';
     let radius = 12;
