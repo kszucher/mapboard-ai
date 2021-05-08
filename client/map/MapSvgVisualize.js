@@ -5,8 +5,8 @@ import {selectionState} from "../core/SelectionFlow";
 
 let svgElementNameList = [
     ['backgroundRect'],
-    ['branchPolygon'],
-    ['nodePolygon', 'connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
+    ['branchFillPolygon'],
+    ['nodeFillPolygon', 'connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
     ['selectionPolygon'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
@@ -46,7 +46,7 @@ export const mapSvgVisualize = {
                 fill: '#fbfafc',
             };
         }
-        // branchPolygon, nodePolygon, selectionPolygon
+        // branchFillPolygon, nodeFillPolygon, selectionPolygon
         if (cm.ellipseNodeFillColor !== '' ||
             cm.ellipseBranchFillColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
@@ -70,20 +70,22 @@ export const mapSvgVisualize = {
                 bcyd: cm.nodeY + maxHadj / 2,
             }
             if (cm.ellipseBranchFillColor !== '') {
-                svgElementData[1].branchPolygon = {
+                svgElementData[1].branchFillPolygon = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
             if (cm.ellipseNodeFillColor !== '') {
-                svgElementData[2].nodePolygon = {
+                svgElementData[2].nodeFillPolygon = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0),
                     fill: cm.ellipseNodeFillColor,
                 }
             }
-
+            if (cm.ellipseBorderColor !== '') {
+                
+            }
             if (cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
                 svgElementData[3].selectionPolygon = {
                     type: 'path',
