@@ -329,18 +329,6 @@ function nodeReducer(action, payload) {
             mapChangeProp.start(lm, {sTextColor, ellipseNodeFillColor, lineColor}, '');
             break;
         }
-        case 'applyLineType': {
-            let lineType = {bezier: 'b', edge: 'e'}[payload];
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i]);
-                if (cm.selection === 's') {
-                    cm.lineType = lineType;
-                } else {
-                    mapChangeProp.start(cm, {lineType}, '', true);
-                }
-            }
-            break;
-        }
         case 'applyLineWidth': {
             let lineWidth = {w1: 1, w2: 2, w3: 3}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
@@ -349,6 +337,18 @@ function nodeReducer(action, payload) {
                     cm.lineWidth = lineWidth;
                 } else {
                     mapChangeProp.start(cm, {lineWidth}, 's', true);
+                }
+            }
+            break;
+        }
+        case 'applyLineType': {
+            let lineType = {bezier: 'b', edge: 'e'}[payload];
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                if (cm.selection === 's') {
+                    cm.lineType = lineType;
+                } else {
+                    mapChangeProp.start(cm, {lineType}, '', true);
                 }
             }
             break;
