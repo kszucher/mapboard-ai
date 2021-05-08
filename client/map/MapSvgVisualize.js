@@ -503,14 +503,13 @@ function getLinePath(lineType, sx, sy, dx, dy, ex, ey, dir) {
 
 function getPolygonPath(params, selection, dir, margin) {
     let {ax, bx, cx, ayu, ayd, bcyu, bcyd} = params;
-    // if (selection === 'f') {
-        ax -= dir*margin;
-        cx += dir*margin;
-        ayu -= margin;
-        ayd += margin;
-        bcyu -= margin;
-        bcyd += margin;
-    // }
+    ax -= dir*margin;
+    bx -= dir*margin;
+    cx += dir*margin;
+    ayu -= margin;
+    ayd += margin;
+    bcyu -= margin;
+    bcyd += margin;
     let points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]];
     let path = '';
     let radius = 12;
