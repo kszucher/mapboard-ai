@@ -363,8 +363,13 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyFontSize': {
-            lm.sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
-            lm.isDimAssigned = 0;
+            let sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
+            let isDimAssigned = 0;
+            if (lm.selection === 's') {
+                Object.assign(lm, {sTextFontSize, isDimAssigned});
+            } else {
+                mapChangeProp.start(lm, {sTextFontSize, isDimAssigned}, 's', true);
+            }
             break;
         }
         case 'applyColorFromPalette': {
