@@ -6,7 +6,7 @@ import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
 import Breadcrumbs from "./Breadcrumbs";
 import {MapComponent} from "./MapComponent";
-import {Preferences} from "./Preferences";
+import {Formatter} from "./Formatter";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
 import {Recorder} from "./Recorder";
@@ -47,7 +47,7 @@ export function Workspace() {
                 <Tabs/>
                 <Commands/>
                 <Breadcrumbs/>
-                <Preferences/>
+                <Formatter/>
                 <Palette/>
                 <Recorder/>
 

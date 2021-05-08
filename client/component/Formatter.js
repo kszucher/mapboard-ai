@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
-export function Preferences () {
+export function Formatter () {
     const [state, dispatch] = useContext(Context);
     const {density, alignment, colorMode, lineWidth, lineType, borderWidth, fontSize} = state;
 
