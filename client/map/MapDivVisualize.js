@@ -1,4 +1,4 @@
-import {genHash, getLatexString, copy, getBgc} from "../core/Utils";
+import {genHash, getLatexString} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 import {mapDivData, keepHash} from "../core/DomFlow";
 
@@ -60,21 +60,15 @@ export const mapDivVisualize = {
                 paddingLeft:            (mapState.density === 'large'?  0 :  3) +            mapState.padding - 2  + 'px',
                 paddingTop:             (mapState.density === 'large'?  0 :  0) +            mapState.padding - 2  + 'px',
                 position:               'absolute',
-                // border:                 cm.selected ? '1px solid black' : '1px solid' + getBgc(),
-                // borderRadius:           '8px',
-                // borderColor:            cm.selected? (cm.isEditing? cm.ellipseBorderColor : '#000000' ) : cm.ellipseBorderColor,
                 fontSize:               cm.sTextFontSize + 'px',
                 fontFamily:             'Roboto',
                 textDecoration:         cm.linkType !== "" ? "underline" : "",
                 cursor:                 'default',
                 color:                  cm.sTextColor,
-                // backgroundColor:        cm.ellipseNodeFillColor !== ''? cm.ellipseNodeFillColor : getBgc(),
                 transition:             '0.5s ease-out',
                 transitionProperty:     'left, top, background-color',
             };
-
             let div;
-
             if (!mapDivData.hasOwnProperty(cm.divId) ||
                 (mapDivData.hasOwnProperty(cm.divId) && mapDivData[cm.divId].keepHash === keepHash)) {
                 cm.divId = 'div' + genHash(8);
@@ -85,19 +79,15 @@ export const mapDivVisualize = {
                     content: '',
                     path: [],
                 };
-
                 div = document.createElement('div');
                 div.id = cm.divId;
                 div.contentEditable = false;
                 div.spellcheck = false;
-
                 div.appendChild(document.createTextNode(''));
                 document.getElementById('mapDiv').appendChild(div);
-
                 for (const styleName in styleData) {
                     div.style[styleName] = styleData[styleName];
                 }
-
                 div.innerHTML = renderContent(cm.contentType, cm.content);
             }
             else {
@@ -107,7 +97,6 @@ export const mapDivVisualize = {
                         div.style[styleName] = styleData[styleName];
                     }
                 }
-
                 if (!cm.isEditing) {
                     if ((cm.contentType !== mapDivData[cm.divId].contentType) ||
                         (cm.content !== mapDivData[cm.divId].content)) {
