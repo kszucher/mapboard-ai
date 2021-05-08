@@ -47,7 +47,7 @@ export const mapSvgVisualize = {
             };
         }
         // branchPolygon, nodePolygon, selectionPolygon
-        if (cm.ellipseFillColor!== '' ||
+        if (cm.ellipseFillColor !== '' ||
             cm.ellipseBranchFillColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
@@ -69,14 +69,14 @@ export const mapSvgVisualize = {
                 bcyu: cm.nodeY - maxHadj / 2,
                 bcyd: cm.nodeY + maxHadj / 2,
             }
-            if (cm.ellipseBranchFillColor!== '') {
+            if (cm.ellipseBranchFillColor !== '') {
                 svgElementData[1].branchPolygon = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
-            if (cm.ellipseFillColor!== '') {
+            if (cm.ellipseFillColor !== '') {
                 svgElementData[2].nodePolygon = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0),
@@ -484,16 +484,16 @@ function getPolygonPath(params, selection, dir, margin) {
         let prevPoint = i === 0 ? points[points.length - 1] : points[i-1];
         let currPoint = points[i];
         let nextPoint = i === points.length - 1 ? points[0] : points[i+1];
-        let [sx,sy] = getCoordsInLine(currPoint[0], currPoint[1], prevPoint[0], prevPoint[1], radius);
-        let [c1x, c1y] = currPoint;
-        let [c2x, c2y] = currPoint;
-        let [ex,ey] = getCoordsInLine(currPoint[0], currPoint[1], nextPoint[0], nextPoint[1], radius);
-        if (selection === 's' && i===1) {
-            path += getBezierPath('L', [sx,sy,sx,sy,sx,sy,ex-dir*24,ey]);
-        } else if (selection === 's' && i===4) {
-            path += getBezierPath('L', [sx-dir*24,sy,ex,ey,ex,ey,ex,ey]);
+        let [sx,sy] = getCoordsInLine(currPoint, prevPoint, radius);
+        let [c1x,c1y] = currPoint;
+        let [c2x,c2y] = currPoint;
+        let [ex,ey] = getCoordsInLine(currPoint, nextPoint, radius);
+        if (selection === 's' && i === 1) {
+            path += getBezierPath('L', [sx, sy, sx, sy, sx, sy, ex - dir*24, ey]);
+        } else if (selection === 's' && i === 4) {
+            path += getBezierPath('L', [sx - dir*24, sy, ex, ey, ex, ey, ex, ey]);
         } else {
-            path += getBezierPath(i === 0 ? 'M' : 'L', [sx,sy,c1x,c1y,c2x,c2y,ex,ey]);
+            path += getBezierPath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey]);
         }
     }
     return path + 'z';
@@ -507,12 +507,14 @@ function getEdgePath(c, [x1,y1,m1x,m1y,m2x,m2y,x2,y2]) {
     return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`;
 }
 
-function getCoordsInLine(x0,y0,x1,y1,dt) {
-    let xt,yt;
-    let d = Math.sqrt(Math.pow((x1-x0),2)+Math.pow((y1-y0),2));
+function getCoordsInLine(a,b,dt) {
+    let [x0,y0] = a;
+    let [x1,y1] = b;
+    let xt, yt;
+    let d = Math.sqrt(Math.pow((x1 - x0), 2) + Math.pow((y1 - y0), 2));
     let t = dt/d;
-    xt = (1-t)*x0+t*x1;
-    yt = (1-t)*y0+t*y1;
+    xt = (1 - t)*x0 + t*x1;
+    yt = (1 - t)*y0 + t*y1;
     return [xt, yt];
 }
 
