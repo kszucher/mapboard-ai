@@ -325,8 +325,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'formatColorReset': {
-            let {sTextColor, ellipseFillColor, lineColor} = props.saveOptional;
-            mapChangeProp.start(lm, {sTextColor, ellipseFillColor, lineColor}, '');
+            let {sTextColor, ellipseNodeFillColor, lineColor} = props.saveOptional;
+            mapChangeProp.start(lm, {sTextColor, ellipseNodeFillColor, lineColor}, '');
             break;
         }
         case 'applyLineType': {
@@ -362,7 +362,7 @@ function nodeReducer(action, payload) {
             let field = {
                 line: 'lineColor',
                 text: 'sTextColor',
-                fill: lm.selection === 's'? 'ellipseFillColor' : 'ellipseBranchFillColor',
+                fill: lm.selection === 's'? 'ellipseNodeFillColor' : 'ellipseBranchFillColor',
                 border: lm.hasCell? 'cBorderColor' :
                     lm.selection === 's'? 'ellipseBorderColor' :  'ellipseBranchBorderColor'
             }[payload.colorMode]

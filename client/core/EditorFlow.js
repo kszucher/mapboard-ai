@@ -185,7 +185,7 @@ const EditorReducer = (state, action) => {
                 lineType,
                 colorLine: lm.lineColor,
                 colorText: lm.sTextColor,
-                colorFill: lm.selection === 's'? lm.ellipseFillColor : lm.ellipseBranchFillColor,
+                colorFill: lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
             };
         }
         case 'FORMAT_COLOR_CHANGE':             return {...state, color: payload, mapAction: [...state.mapAction, 'formatColorChange']};

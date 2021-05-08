@@ -23,7 +23,7 @@ export let props = {
         lineWidth:                              1,
         lineType:                               'b',
         lineColor:                              '#bbbbbb',
-        ellipseFillColor:                       '',
+        ellipseNodeFillColor:                   '',
         ellipseBranchFillColor:                 '',
         ellipseBorderColor:                     '',
         ellipseBranchBorderColor:               '',

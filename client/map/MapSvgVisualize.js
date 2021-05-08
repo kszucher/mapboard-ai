@@ -47,7 +47,7 @@ export const mapSvgVisualize = {
             };
         }
         // branchPolygon, nodePolygon, selectionPolygon
-        if (cm.ellipseFillColor !== '' ||
+        if (cm.ellipseNodeFillColor !== '' ||
             cm.ellipseBranchFillColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
@@ -76,11 +76,11 @@ export const mapSvgVisualize = {
                     fill: cm.ellipseBranchFillColor,
                 }
             }
-            if (cm.ellipseFillColor !== '') {
+            if (cm.ellipseNodeFillColor !== '') {
                 svgElementData[2].nodePolygon = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0),
-                    fill: cm.ellipseFillColor,
+                    fill: cm.ellipseNodeFillColor,
                 }
             }
 
