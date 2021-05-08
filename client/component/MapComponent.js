@@ -519,6 +519,7 @@ export function MapComponent() {
                         <g id="layer2"/>
                         <g id="layer3"/>
                         <g id="layer4"/>
+                        <g id="layer5"/>
                     </g>
                 </svg>
                 <div id='mapDiv' style={{

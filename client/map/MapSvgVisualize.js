@@ -6,7 +6,8 @@ import {selectionState} from "../core/SelectionFlow";
 let svgElementNameList = [
     ['backgroundRect'],
     ['branchFillPolygon'],
-    ['nodeFillPolygon', 'connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
+    ['nodeFillPolygon'],
+    ['connectionLine', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
     ['selectionPolygon'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
@@ -25,7 +26,7 @@ export const mapSvgVisualize = {
             cm.lineAnimationRequested = 0;
             animationInit = 'l';
         }
-        let svgElementData = [{},{},{},{},{}];
+        let svgElementData = [{},{},{},{},{},{}];
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
         let nsx = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
@@ -46,9 +47,11 @@ export const mapSvgVisualize = {
                 fill: '#fbfafc',
             };
         }
-        // branchFillPolygon, nodeFillPolygon, selectionPolygon
-        if (cm.ellipseNodeFillColor !== '' ||
-            cm.ellipseBranchFillColor !== '' ||
+        // branchFillPolygon, nodeFillPolygon, branchBorderPolygon, nodeBoraerPolygon, selectionPolygon
+        if (cm.ellipseBranchFillColor !== '' ||
+            cm.ellipseNodeFillColor !== '' ||
+            cm.ellipseBranchBorderColor !== '' ||
+            cm.ellipseNodeBorderColor !== '' ||
             cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
             let corr = dir === -1 ? -1 : 0;
             let sParams = {
@@ -83,11 +86,14 @@ export const mapSvgVisualize = {
                     fill: cm.ellipseNodeFillColor,
                 }
             }
-            if (cm.ellipseBorderColor !== '') {
-                
+            if (cm.ellipseBranchBorderColor !== '') {
+
+            }
+            if (cm.ellipseNodeBorderColor !== '') {
+
             }
             if (cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
-                svgElementData[3].selectionPolygon = {
+                svgElementData[4].selectionPolygon = {
                     type: 'path',
                     path: getPolygonPath(cm.selection  === 's' ? sParams : fParams, cm.selection, dir, 4),
                     stroke: '#666666',
@@ -110,7 +116,7 @@ export const mapSvgVisualize = {
             x1 = isOdd(x1)?x1-0.5:x1;
             x2 = nsx;
             y2 = cm.nodeY;
-            svgElementData[2].connectionLine = {
+            svgElementData[3].connectionLine = {
                 type: 'path',
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 stroke: cm.lineColor,
@@ -125,7 +131,7 @@ export const mapSvgVisualize = {
             let y1 = nsy;
             let w = cm.selfW;
             let h = cm.selfH;
-            svgElementData[2].tableFrame = {
+            svgElementData[3].tableFrame = {
                 type: 'path',
                 path: getArcPath(x1, y1, w, h, r, cm.path[2]),
                 stroke: cm.selected? '#000000' : cm.cBorderColor,
@@ -145,7 +151,7 @@ export const mapSvgVisualize = {
                 let x = nsx + dir*cm.sumMaxColWidth[j];
                 path += `M${x},${nsy} L${x},${ney}`;
             }
-            svgElementData[2].tableGrid = {
+            svgElementData[3].tableGrid = {
                 type: 'path',
                 path: path,
                 stroke: '#dddddd',
@@ -173,7 +179,7 @@ export const mapSvgVisualize = {
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         }
-                        svgElementData[2].tableCellFrame = {
+                        svgElementData[3].tableCellFrame = {
                             type: 'path',
                             path: getArcPath(x1, y1, w, h, r, cm.path[2]),
                             stroke: '#000000',
@@ -201,7 +207,7 @@ export const mapSvgVisualize = {
             let x2 = startX;
             let y = cm.nodeY;
             if (!cm.isEditing) {
-                svgElementData[2].taskLine = {
+                svgElementData[3].taskLine = {
                     type: 'path',
                     path: `M${x1},${y} L${x2},${y}`,
                     stroke: '#eeeeee',
@@ -228,7 +234,7 @@ export const mapSvgVisualize = {
                     }
                 }
                 let r = d/2;
-                svgElementData[2]['taskCircle' + i] = {
+                svgElementData[3]['taskCircle' + i] = {
                     type: 'circle',
                     cx: centerX,
                     cy: centerY,
@@ -251,14 +257,14 @@ export const mapSvgVisualize = {
             c2y = cm.moveData[1] + deltaY;
             x2 = cm.moveData[2];
             y2 = cm.moveData[3];
-            svgElementData[4].moveLine = {
+            svgElementData[5].moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
                 stroke: '#5f0a87',
                 strokeWidth: 1,
                 preventTransition: 1,
             }
-            svgElementData[4].moveRect = {
+            svgElementData[5].moveRect = {
                 type: 'rect',
                 x: cm.moveData[2] - 10,
                 y: cm.moveData[3] - 10,
@@ -275,7 +281,7 @@ export const mapSvgVisualize = {
         }
         // selectionRect
         if (cm.selectionRect.length) {
-            svgElementData[4].selectionRect = {
+            svgElementData[5].selectionRect = {
                 type: 'rect',
                 x: cm.selectionRect[0],
                 y: cm.selectionRect[1],
@@ -293,9 +299,9 @@ export const mapSvgVisualize = {
         if (!mapSvgData.hasOwnProperty(cm.svgId) ||
             ((mapSvgData.hasOwnProperty(cm.svgId) && mapSvgData[cm.svgId].keepHash === keepHash))) {
             cm.svgId = 'svg' + genHash(8);
-            for (const i of [0,1,2,3,4]) {
+            for (const i of [0,1,2,3,4,5]) {
                 mapSvgData[cm.svgId] = {
-                    svgElementData: [{},{},{},{},{}],
+                    svgElementData: [{},{},{},{},{},{}],
                     path: [],
                 };
                 svgGroupList.push(document.createElementNS("http://www.w3.org/2000/svg", "g"));
@@ -304,11 +310,11 @@ export const mapSvgVisualize = {
                 parentG.appendChild(svgGroupList[i]);
             }
         } else {
-            for (const i of [0,1,2,3,4]) {
+            for (const i of [0,1,2,3,4,5]) {
                 svgGroupList.push(document.getElementById(cm.svgId + i));
             }
         }
-        for (const i of [0,1,2,3,4]) {
+        for (const i of [0,1,2,3,4,5]) {
             for (const svgElementName of svgElementNameList[i]) {
                 let hadBefore = mapSvgData[cm.svgId].svgElementData[i].hasOwnProperty(svgElementName);
                 let hasNow = svgElementData[i].hasOwnProperty(svgElementName);
