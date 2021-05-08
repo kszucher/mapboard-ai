@@ -95,3 +95,31 @@ export function getDefaultNode(attributes) {
     // return copy({ ...{d:[], s: [],  c: [[]], content: ''}, ...attributes});
     return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
 }
+
+export const resolveConditions = (cm) => {
+    return {
+        backgroundRect: cm.isRoot,
+        branchFillPolygon: cm.ellipseBranchFillColor !== '',
+        nodeFillPolygon: cm.ellipseNodeFillColor !== '',
+        branchBorderPolygon: cm.ellipseBranchBorderColor !== '',
+        nodeBorderPolygon: cm.ellipseNodeBorderColor !== '',
+        selectionPolygon: cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing,
+        line:
+            !cm.isRoot &&
+            !cm.isRootChild &&
+            cm.parentType !== 'cell' &&
+            (cm.type === 'struct' && !cm.hasCell || cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0),
+        table:
+            cm.type === "struct" &&
+            cm.hasCell,
+        task:
+            cm.task &&
+            !cm.path.includes('c') &&
+            !cm.hasDir &&
+            !cm.hasStruct &&
+            !cm.hasCell &&
+            !cm.contentType === 'image' &&
+            !cm.isRoot &&
+            !cm.isRootChild,
+    }
+}

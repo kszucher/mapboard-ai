@@ -2,16 +2,13 @@ import {genHash, isOdd} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
+import {resolveConditions} from "../node/Node";
 
 let svgElementNameList = [
     ['backgroundRect'],
     ['branchFillPolygon'],
     ['nodeFillPolygon'],
-    [
-        'connectionLine', 'branchBorderPolygon', 'nodeBorderPolygon',
-        'tableFrame', 'tableGrid', 'tableCellFrame',
-        'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'
-    ],
+    ['line', 'branchBorderPolygon', 'nodeBorderPolygon', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
     ['selectionPolygon'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
@@ -38,8 +35,8 @@ export const mapSvgVisualize = {
         let nsy = cm.nodeY - selfHadj/2;
         let ney = cm.nodeY + selfHadj/2;
         let dir = cm.path[2]? -1 : 1;
-        // backgroundRect
-        if (cm.isRoot) {
+        let conditions = resolveConditions(cm);
+        if (conditions.backgroundRect) {
             svgElementData[0].backgroundRect = {
                 type: 'rect',
                 x: 0,
@@ -51,12 +48,11 @@ export const mapSvgVisualize = {
                 fill: '#fbfafc',
             };
         }
-        // branchFillPolygon, nodeFillPolygon, branchBorderPolygon, nodeBoraerPolygon, selectionPolygon
-        if (cm.ellipseBranchFillColor !== '' ||
-            cm.ellipseNodeFillColor !== '' ||
-            cm.ellipseBranchBorderColor !== '' ||
-            cm.ellipseNodeBorderColor !== '' ||
-            cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
+        if (conditions.branchFillPolygon ||
+            conditions.nodeFillPolygon ||
+            conditions.branchBorderPolygon ||
+            conditions.nodeBorderPolygon ||
+            conditions.selectionPolygon) {
             let corr = dir === -1 ? -1 : 0;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
@@ -76,21 +72,21 @@ export const mapSvgVisualize = {
                 bcyu: cm.nodeY - maxHadj / 2,
                 bcyd: cm.nodeY + maxHadj / 2,
             }
-            if (cm.ellipseBranchFillColor !== '') {
+            if (conditions.branchFillPolygon) {
                 svgElementData[1].branchFillPolygon = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
-            if (cm.ellipseNodeFillColor !== '') {
+            if (conditions.nodeFillPolygon) {
                 svgElementData[2].nodeFillPolygon = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0),
                     fill: cm.ellipseNodeFillColor,
                 }
             }
-            if (cm.ellipseBranchBorderColor !== '') {
+            if (conditions.branchBorderPolygon) {
                 svgElementData[3].branchBorderPolygon = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
@@ -98,7 +94,7 @@ export const mapSvgVisualize = {
                     strokeWidth: cm.ellipseBranchBorderWidth,
                 }
             }
-            if (cm.ellipseNodeBorderColor !== '') {
+            if (conditions.nodeBorderPolygon) {
                 svgElementData[3].nodeBorderPolygon = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
@@ -106,7 +102,7 @@ export const mapSvgVisualize = {
                     strokeWidth: cm.ellipseNodeBorderWidth,
                 }
             }
-            if (cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
+            if (conditions.selectionPolygon) {
                 svgElementData[4].selectionPolygon = {
                     type: 'path',
                     path: getPolygonPath(
@@ -124,10 +120,7 @@ export const mapSvgVisualize = {
                 }
             }
         }
-        // connectionLine
-        if (!cm.isRoot && !cm.isRootChild && cm.parentType !== 'cell' && (
-            cm.type === 'struct' && !cm.hasCell ||
-            cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0)) {
+        if (conditions.line) {
             let x1, y1, x2, y2;
             if (animationInit === 'l') {
                 x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
@@ -139,7 +132,7 @@ export const mapSvgVisualize = {
             x1 = isOdd(x1)?x1-0.5:x1;
             x2 = nsx;
             y2 = cm.nodeY;
-            svgElementData[3].connectionLine = {
+            svgElementData[3].line = {
                 type: 'path',
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 stroke: cm.lineColor,
@@ -147,7 +140,7 @@ export const mapSvgVisualize = {
             }
         }
         // table
-        if (cm.type === "struct" && cm.hasCell) {
+        if (conditions.table) {
             // frame
             let r = 8;
             let x1 = nsx;
@@ -214,15 +207,7 @@ export const mapSvgVisualize = {
             }
         }
         // task
-        if (cm.task &&
-            !cm.path.includes('c') &&
-            !cm.hasDir &&
-            !cm.hasStruct &&
-            !cm.hasCell &&
-            cm.parentType !== 'cell' &&
-            cm.contentType !== 'image' &&
-            !cm.isRoot &&
-            !cm.isRootChild) {
+        if (conditions.task) {
             let {mapWidth, margin} = mapState;
             let {n, d, gap, width} = mapState.taskConfig;
             let startX = cm.path[2]? margin + width : mapWidth - width - margin;
