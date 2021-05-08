@@ -92,7 +92,6 @@ export let props = {
 };
 
 export function getDefaultNode(attributes) {
-    // return copy({ ...{d:[], s: [],  c: [[]], content: ''}, ...attributes});
     return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
 }
 
