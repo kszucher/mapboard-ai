@@ -170,9 +170,9 @@ const EditorReducer = (state, action) => {
             }
             let lineWidth = '';
             switch (lm.lineWidth) {
-                case 1: lineWidth = 'p1'; break;
-                case 2: lineWidth = 'p2'; break;
-                case 3: lineWidth = 'p3'; break;
+                case 1: lineWidth = 'w1'; break;
+                case 2: lineWidth = 'w2'; break;
+                case 3: lineWidth = 'w3'; break;
             }
             let lineType = '';
             switch (lm.lineType) {

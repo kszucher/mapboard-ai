@@ -342,7 +342,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'applyLineWidth': {
-            let lineWidth = {p1: 1, p2: 2, p3: 3}[payload];
+            let lineWidth = {w1: 1, w2: 2, w3: 3}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 if (cm.selection === 's') {

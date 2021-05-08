@@ -41,7 +41,7 @@ export function Preferences () {
                 {                        <StyledButtonGroup value={alignment} action={setAlignment} valueList={['adaptive', 'centered']}/>}
                 {                        <StyledButtonGroup value={colorMode} action={setColorMode} valueList={['line', 'text', 'fill', 'border']}/>}
                 {colorMode === 'line' && <StyledButtonGroup value={lineType}  action={setLineType}  valueList={['bezier', 'edge']}/>}
-                {colorMode === 'line' && <StyledButtonGroup value={lineWidth} action={setLineWidth} valueList={['p1', 'p2', 'p3']}/>}
+                {colorMode === 'line' && <StyledButtonGroup value={lineWidth} action={setLineWidth} valueList={['w1', 'w2', 'w3']}/>}
                 {colorMode === 'text' && <StyledButtonGroup value={fontSize}  action={setFontSize}  valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
             </div>
         </div>
