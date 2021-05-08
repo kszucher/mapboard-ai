@@ -6,10 +6,10 @@ import {resolveConditions} from "../node/Node";
 
 let svgElementNameList = [
     ['backgroundRect'],
-    ['branchFillPolygon'],
-    ['nodeFillPolygon'],
-    ['line', 'branchBorderPolygon', 'nodeBorderPolygon', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
-    ['selectionPolygon'],
+    ['branchFill'],
+    ['nodeFill'],
+    ['line', 'branchBorder', 'nodeBorder', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
+    ['selection'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
 
@@ -48,11 +48,11 @@ export const mapSvgVisualize = {
                 fill: '#fbfafc',
             };
         }
-        if (conditions.branchFillPolygon ||
-            conditions.nodeFillPolygon ||
-            conditions.branchBorderPolygon ||
-            conditions.nodeBorderPolygon ||
-            conditions.selectionPolygon) {
+        if (conditions.branchFill ||
+            conditions.nodeFill ||
+            conditions.branchBorder ||
+            conditions.nodeBorder ||
+            conditions.selection) {
             let corr = dir === -1 ? -1 : 0;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
@@ -72,38 +72,38 @@ export const mapSvgVisualize = {
                 bcyu: cm.nodeY - maxHadj / 2,
                 bcyd: cm.nodeY + maxHadj / 2,
             }
-            if (conditions.branchFillPolygon) {
-                svgElementData[1].branchFillPolygon = {
+            if (conditions.branchFill) {
+                svgElementData[1].branchFill = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0),
                     fill: cm.ellipseBranchFillColor,
                 }
             }
-            if (conditions.nodeFillPolygon) {
-                svgElementData[2].nodeFillPolygon = {
+            if (conditions.nodeFill) {
+                svgElementData[2].nodeFill = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0),
                     fill: cm.ellipseNodeFillColor,
                 }
             }
-            if (conditions.branchBorderPolygon) {
-                svgElementData[3].branchBorderPolygon = {
+            if (conditions.branchBorder) {
+                svgElementData[3].branchBorder = {
                     type: 'path',
                     path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
                     stroke: cm.ellipseBranchBorderColor,
                     strokeWidth: cm.ellipseBranchBorderWidth,
                 }
             }
-            if (conditions.nodeBorderPolygon) {
-                svgElementData[3].nodeBorderPolygon = {
+            if (conditions.nodeBorder) {
+                svgElementData[3].nodeBorder = {
                     type: 'path',
                     path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
                     stroke: cm.ellipseNodeBorderColor,
                     strokeWidth: cm.ellipseNodeBorderWidth,
                 }
             }
-            if (conditions.selectionPolygon) {
-                svgElementData[4].selectionPolygon = {
+            if (conditions.selection) {
+                svgElementData[4].selection = {
                     type: 'path',
                     path: getPolygonPath(
                         cm.selection  === 's'

@@ -99,11 +99,11 @@ export function getDefaultNode(attributes) {
 export const resolveConditions = (cm) => {
     return {
         backgroundRect: cm.isRoot,
-        branchFillPolygon: cm.ellipseBranchFillColor !== '',
-        nodeFillPolygon: cm.ellipseNodeFillColor !== '',
-        branchBorderPolygon: cm.ellipseBranchBorderColor !== '',
-        nodeBorderPolygon: cm.ellipseNodeBorderColor !== '',
-        selectionPolygon: cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing,
+        branchFill: cm.ellipseBranchFillColor !== '',
+        nodeFill: cm.ellipseNodeFillColor !== '',
+        branchBorder: cm.ellipseBranchBorderColor !== '',
+        nodeBorder: cm.ellipseNodeBorderColor !== '',
+        selection: cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing,
         line:
             !cm.isRoot &&
             !cm.isRootChild &&
