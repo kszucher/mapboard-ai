@@ -97,6 +97,11 @@ export function getDefaultNode(attributes) {
 
 export const resolveConditions = (cm) => {
     return {
+        struct:
+            cm.type === 'struct' &&
+            !cm.hasCell,
+        text:
+            cm.contentType === 'text',
         backgroundRect: cm.isRoot,
         branchFill: cm.ellipseBranchFillColor !== '',
         nodeFill: cm.ellipseNodeFillColor !== '',
@@ -117,8 +122,9 @@ export const resolveConditions = (cm) => {
             !cm.hasDir &&
             !cm.hasStruct &&
             !cm.hasCell &&
-            !cm.contentType === 'image' &&
+            cm.parentType !== 'cell' &&
+            cm.contentType !== 'image' &&
             !cm.isRoot &&
-            !cm.isRootChild,
+            !cm.isRootChild
     }
 }

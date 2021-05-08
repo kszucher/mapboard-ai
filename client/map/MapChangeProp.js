@@ -1,3 +1,5 @@
+import {resolveConditions} from "../node/Node";
+
 export const mapChangeProp = {
     start: (cm, assignment, cond, skip) => {
         mapChangeProp.iterate(cm, assignment, cond, skip);
@@ -7,11 +9,7 @@ export const mapChangeProp = {
         if (skip) {
             skip = false;
         } else {
-            if (cond === 's') {
-                if (cm.type === 'struct' && !cm.hasCell) {
-                    Object.assign(cm, assignment)
-                }
-            } else {
+            if (cond === '' || resolveConditions(cm)[cond]) {
                 Object.assign(cm, assignment)
             }
         }

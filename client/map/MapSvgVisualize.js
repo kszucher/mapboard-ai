@@ -284,7 +284,6 @@ export const mapSvgVisualize = {
                 preventTransition: 1,
             };
         }
-        // selectionRect
         if (cm.selectionRect.length) {
             svgElementData[5].selectionRect = {
                 type: 'rect',
