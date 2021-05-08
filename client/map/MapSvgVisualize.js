@@ -83,7 +83,8 @@ export const mapSvgVisualize = {
                     fill: cm.ellipseFillColor,
                 }
             }
-            if (cm.selected && !cm.isEditing) {
+
+            if (cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing) {
                 svgElementData[3].selectionPolygon = {
                     type: 'path',
                     path: getPolygonPath(cm.selection  === 's' ? sParams : fParams, cm.selection, dir, 4),
