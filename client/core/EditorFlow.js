@@ -14,14 +14,16 @@ export const editorState = {
     breadcrumbsHistory: [],
     density: '',
     alignment: '',
-    fontSize: '',
-    lineWidth: '',
-    lineType: '',
     colorMode: '',
+    lineType: '',
+    lineWidth: '',
+    fontSize: '',
+
     color: '',
     colorLine: '',
     colorText: '',
     colorFill: '',
+
     mapAction: '',
     paletteVisible: 0,
 };

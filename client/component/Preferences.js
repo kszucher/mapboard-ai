@@ -4,14 +4,15 @@ import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function Preferences () {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, fontSize, lineWidth, lineType, colorMode} = state;
+    const {density, alignment, colorMode, lineType, lineWidth, fontSize, borderWidth} = state;
 
     const setDensity =        e => dispatch({type: 'SET_DENSITY',                   payload: e});
     const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',                 payload: e});
     const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
-    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',                 payload: e});
-    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
     const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
+    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
+    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',                 payload: e});
+    const setBorderWidth =    e => dispatch({type: 'SET_BORDER_WIDTH',              payload: e});
 
     return (
         <div style={{
@@ -37,12 +38,13 @@ export function Preferences () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                {                        <StyledButtonGroup value={density}   action={setDensity}   valueList={['small', 'large']}/>}
-                {                        <StyledButtonGroup value={alignment} action={setAlignment} valueList={['adaptive', 'centered']}/>}
-                {                        <StyledButtonGroup value={colorMode} action={setColorMode} valueList={['line', 'text', 'fill', 'border']}/>}
-                {colorMode === 'line' && <StyledButtonGroup value={lineType}  action={setLineType}  valueList={['bezier', 'edge']}/>}
-                {colorMode === 'line' && <StyledButtonGroup value={lineWidth} action={setLineWidth} valueList={['w1', 'w2', 'w3']}/>}
-                {colorMode === 'text' && <StyledButtonGroup value={fontSize}  action={setFontSize}  valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {                           <StyledButtonGroup action={setDensity}     value={density}     valueList={['small', 'large']}/>}
+                {                           <StyledButtonGroup action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
+                {                           <StyledButtonGroup action={setColorMode}   value={colorMode}   valueList={['line', 'text', 'fill', 'border']}/>}
+                {colorMode === 'line' &&    <StyledButtonGroup action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
+                {colorMode === 'line' &&    <StyledButtonGroup action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
+                {colorMode === 'text' &&    <StyledButtonGroup action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {colorMode === 'border' &&  <StyledButtonGroup action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
             </div>
         </div>
     );
