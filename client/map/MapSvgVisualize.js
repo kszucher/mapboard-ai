@@ -139,7 +139,6 @@ export const mapSvgVisualize = {
                 strokeWidth: cm.lineWidth,
             }
         }
-        // table
         if (conditions.table) {
             // frame
             let r = 8;
@@ -206,7 +205,6 @@ export const mapSvgVisualize = {
                 }
             }
         }
-        // task
         if (conditions.task) {
             let {mapWidth, margin} = mapState;
             let {n, d, gap, width} = mapState.taskConfig;
@@ -251,7 +249,6 @@ export const mapSvgVisualize = {
                 };
             }
         }
-        // moveLine, moveRect
         if (cm.moveData.length) {
             let x1, y1, c1x, c1y, c2x, c2y, x2, y2;
             let deltaX = cm.moveData[2] - cm.moveData[0];
