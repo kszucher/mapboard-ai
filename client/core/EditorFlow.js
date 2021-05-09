@@ -14,7 +14,7 @@ export const editorState = {
     breadcrumbsHistory: [],
     density: '',
     alignment: '',
-    colorMode: '',
+    formatMode: '',
     lineWidth: '',
     lineType: '',
     borderWidth: '',
@@ -206,8 +206,8 @@ const EditorReducer = (state, action) => {
         case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
         case 'SET_BORDER_WIDTH':                return {...state, borderWidth: payload};
         case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
-        case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, colorMode: payload, paletteVisible: 1};
-        case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, colorMode: ''};
+        case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, formatMode: payload, paletteVisible: 1};
+        case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, formatMode: ''};
         case 'SET_MAP_ACTION':                  return {...state, mapAction: [...state.mapAction, payload]};
         default: return state;
     }

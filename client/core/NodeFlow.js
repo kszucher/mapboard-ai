@@ -329,7 +329,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'reset': {
-            mapChangeProp.start(lm, getFormatDefault(payload.colorMode), '');
+            mapChangeProp.start(lm, getFormatDefault(payload.formatMode), '');
             break;
         }
         case 'applyLineWidth': {
@@ -387,7 +387,7 @@ function nodeReducer(action, payload) {
                     : lm.selection === 's'
                         ? 'ellipseNodeBorderColor'
                         :'ellipseBranchBorderColor'
-            }[payload.colorMode]
+            }[payload.formatMode]
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 if (cm.selection === 's' || field === 'ellipseBranchFillColor' || field === 'ellipseBranchBorderColor') {

@@ -4,11 +4,11 @@ import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function Formatter () {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, colorMode, lineWidth, lineType, borderWidth, fontSize} = state;
+    const {density, alignment, formatMode, lineWidth, lineType, borderWidth, fontSize} = state;
 
     const setDensity =        e => dispatch({type: 'SET_DENSITY',                   payload: e});
     const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',                 payload: e});
-    const setColorMode =      e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
+    const setformatMode =     e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
     const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
     const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
     const setBorderWidth =    e => dispatch({type: 'SET_BORDER_WIDTH',              payload: e});
@@ -40,15 +40,15 @@ export function Formatter () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                {                           <StyledButtonGroup action={setDensity}     value={density}     valueList={['small', 'large']}/>}
-                {                           <StyledButtonGroup action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
-                {colorMode === '' &&        <StyledButtonGroup action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
-                {colorMode !== '' &&        <StyledButtonGroup action={cmdReset}       value={''}          valueList={['reset ' + colorMode]}/>}
-                {                           <StyledButtonGroup action={setColorMode}   value={colorMode}   valueList={['line', 'border', 'fill', 'text']}/>}
-                {colorMode === 'line' &&    <StyledButtonGroup action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
-                {colorMode === 'line' &&    <StyledButtonGroup action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
-                {colorMode === 'border' &&  <StyledButtonGroup action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
-                {colorMode === 'text' &&    <StyledButtonGroup action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {                            <StyledButtonGroup action={setDensity}     value={density}     valueList={['small', 'large']}/>}
+                {                            <StyledButtonGroup action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
+                {formatMode !== '' &&        <StyledButtonGroup action={cmdReset}       value={''}          valueList={['reset ' + formatMode]}/>}
+                {                            <StyledButtonGroup action={setformatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
+                {formatMode === 'border' &&  <StyledButtonGroup action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'text' &&    <StyledButtonGroup action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
             </div>
         </div>
     );

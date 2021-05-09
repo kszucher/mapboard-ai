@@ -19,7 +19,7 @@ const colorList = [
 
 export function Palette () {
     const [state, dispatch] = useContext(Context);
-    const {colorMode, colorLine, colorBorder, colorFill, colorText, paletteVisible} = state;
+    const {formatMode, colorLine, colorBorder, colorFill, colorText, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
     const closePalette =        () => dispatch({type: 'CLOSE_PALETTE'});
@@ -38,18 +38,18 @@ export function Palette () {
     };
 
     useEffect(() => {
-        switch (colorMode) {
+        switch (formatMode) {
             case 'line':    setSel(findSel(colorLine)); break;
             case 'border':  setSel(findSel(colorBorder)); break;
             case 'fill':    setSel(findSel(colorFill)); break;
             case 'text':    setSel(findSel(colorText)); break;
         }
-    }, [colorMode]);
+    }, [formatMode]);
 
-    useEffect(() => {if (colorMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine]);
-    useEffect(() => {if (colorMode === 'border' && colorBorder !== '') setSel(findSel(colorBorder))}, [colorBorder]);
-    useEffect(() => {if (colorMode === 'fill'   && colorFill !== '')   setSel(findSel(colorFill))},   [colorFill]);
-    useEffect(() => {if (colorMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText]);
+    useEffect(() => {if (formatMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine]);
+    useEffect(() => {if (formatMode === 'border' && colorBorder !== '') setSel(findSel(colorBorder))}, [colorBorder]);
+    useEffect(() => {if (formatMode === 'fill'   && colorFill !== '')   setSel(findSel(colorFill))},   [colorFill]);
+    useEffect(() => {if (formatMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText]);
 
     const handleClick = (i, j) => {
         setSel({x: i, y: j});

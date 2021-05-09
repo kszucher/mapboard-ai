@@ -12,7 +12,7 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, lineWidth, lineType, borderWidth, fontSize, mapAction, colorMode, color} = state;
+    const {density, alignment, lineWidth, lineType, borderWidth, fontSize, mapAction, formatMode, color} = state;
 
     useEffect(() => {
         if (density !== '') {
@@ -86,13 +86,13 @@ export function MapComponent() {
                         nodeDispatch('taskSwitch');
                         break;
                     case 'formatColorChange':
-                        nodeDispatch('applyColorFromPalette', {colorMode, color});
+                        nodeDispatch('applyColorFromPalette', {formatMode, color});
                         break;
                     case 'resetAll':
                         nodeDispatch('resetAll');
                         break;
                     case 'reset':
-                        nodeDispatch('reset', {colorMode});
+                        nodeDispatch('reset', {formatMode});
                         break;
                 }
                 redraw();
