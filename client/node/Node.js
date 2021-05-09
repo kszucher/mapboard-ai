@@ -93,11 +93,7 @@ export let props = {
     }
 };
 
-export function getDefaultNode(attributes) {
-    return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
-}
-
-export const formatParams =  {
+const formatParams =  {
     line: ['lineWidth', 'lineType', 'lineColor'],
     border: ['cBorderColor', 'ellipseBranchBorderColor', 'ellipseBranchBorderWidth', 'ellipseNodeBorderColor', 'ellipseNodeBorderWidth'],
     fill: ['ellipseBranchFillColor', 'ellipseNodeFillColor'],
@@ -144,4 +140,8 @@ export const resolveConditions = (cm) => {
             !cm.isRoot &&
             !cm.isRootChild
     }
+}
+
+export function getDefaultNode(attributes) {
+    return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
 }
