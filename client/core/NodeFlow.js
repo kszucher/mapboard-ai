@@ -4,7 +4,7 @@ import {nodeMove, nodeMoveMouse, setClipboard} from "../node/NodeMove";
 import {nodeNavigate} from "../node/NodeNavigate";
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
-import {getAllFormatParamsDefaults} from "../node/Node";
+import {getAllFormatDefault} from "../node/Node";
 import {selectionState} from "./SelectionFlow";
 import {getMapData, mapref, mapState, pathMerge, recalc, redraw} from "./MapFlow";
 import {mapSvgData} from "./DomFlow";
@@ -325,7 +325,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'formatReset': {
-            mapChangeProp.start(lm, getAllFormatParamsDefaults(), '');
+            mapChangeProp.start(lm, getAllFormatDefault(), '');
             break;
         }
         case 'applyLineWidth': {

@@ -100,12 +100,12 @@ const formatParams =  {
     text: ['sTextColor', 'sTextFontSize'],
 }
 
-export const getAllFormatParams = () => {
-    return([].concat(...Object.values(formatParams)))
+export const getFormatDefault = (type) => {
+    return filteredObj(props.saveOptional, formatParams[type]);
 }
 
-export const getAllFormatParamsDefaults = () => {
-    return filteredObj(props.saveOptional, getAllFormatParams());
+export const getAllFormatDefault = () => {
+    return filteredObj(props.saveOptional, [].concat(...Object.values(formatParams)));
 }
 
 export const resolveConditions = (cm) => {
