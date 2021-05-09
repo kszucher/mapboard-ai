@@ -64,7 +64,7 @@ export function Palette () {
     return (
         <div style={{
             position: 'fixed',
-            top: 48*6+12,
+            top: 216+96+48,
             right: 0,
             width: xWidth + 'px',
             height: yWidth + 'px',
