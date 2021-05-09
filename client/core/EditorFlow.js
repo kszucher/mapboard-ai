@@ -200,6 +200,8 @@ const EditorReducer = (state, action) => {
         case 'FORMAT_COLOR_CHANGE':             return {...state, color: payload, mapAction: [...state.mapAction, 'formatColorChange']};
         case 'SET_DENSITY':                     return {...state, density: payload};
         case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
+        case 'CMD_RESET_ALL':                   return {...state, mapAction: [...state.mapAction, 'resetAll']};
+        case 'CMD_RESET':                       return {...state, mapAction: [...state.mapAction, 'reset']};
         case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload};
         case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
         case 'SET_BORDER_WIDTH':                return {...state, borderWidth: payload};

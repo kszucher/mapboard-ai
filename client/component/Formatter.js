@@ -13,6 +13,8 @@ export function Formatter () {
     const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
     const setBorderWidth =    e => dispatch({type: 'SET_BORDER_WIDTH',              payload: e});
     const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',                 payload: e});
+    const cmdResetAll =       e => dispatch({type: 'CMD_RESET_ALL',                 payload: e});
+    const cmdReset =          e => dispatch({type: 'CMD_RESET',                     payload: e});
 
     return (
         <div style={{
@@ -40,6 +42,8 @@ export function Formatter () {
             }}>
                 {                           <StyledButtonGroup action={setDensity}     value={density}     valueList={['small', 'large']}/>}
                 {                           <StyledButtonGroup action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
+                {colorMode === '' &&        <StyledButtonGroup action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
+                {colorMode !== '' &&        <StyledButtonGroup action={cmdReset}       value={''}          valueList={['reset ' + colorMode]}/>}
                 {                           <StyledButtonGroup action={setColorMode}   value={colorMode}   valueList={['line', 'border', 'fill', 'text']}/>}
                 {colorMode === 'line' &&    <StyledButtonGroup action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
                 {colorMode === 'line' &&    <StyledButtonGroup action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}

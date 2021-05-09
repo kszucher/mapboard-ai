@@ -324,8 +324,12 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'formatReset': {
+        case 'resetAll': {
             mapChangeProp.start(lm, getAllFormatDefault(), '');
+            break;
+        }
+        case 'reset': {
+
             break;
         }
         case 'applyLineWidth': {
