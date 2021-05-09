@@ -92,7 +92,7 @@ export function MapComponent() {
                         nodeDispatch('resetAll');
                         break;
                     case 'reset':
-                        nodeDispatch('reset');
+                        nodeDispatch('reset', {colorMode});
                         break;
                 }
                 redraw();
