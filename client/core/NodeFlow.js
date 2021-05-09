@@ -324,14 +324,6 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'resetAll': {
-            mapChangeProp.start(lm, getAllFormatDefault(), '');
-            break;
-        }
-        case 'reset': {
-            mapChangeProp.start(lm, getFormatDefault(payload.formatMode), '');
-            break;
-        }
         case 'applyLineWidth': {
             let lineWidth = {w1: 1, w2: 2, w3: 3}[payload];
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
@@ -402,6 +394,14 @@ function nodeReducer(action, payload) {
                     }
                 }
             }
+            break;
+        }
+        case 'resetAll': {
+            mapChangeProp.start(lm, getAllFormatDefault(), '');
+            break;
+        }
+        case 'reset': {
+            mapChangeProp.start(lm, getFormatDefault(payload.formatMode), '');
             break;
         }
         case 'applyTaskStatus': {
