@@ -163,3 +163,8 @@ export function subsasgn(obj, path, value) {
     }
     obj[ pathEnd ] = value;
 }
+
+// https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
+export function filteredObj (originalObj, filterKeys) {
+    return filterKeys.reduce((obj, key) => ({ ...obj, [key]: originalObj[key] }), {});
+}

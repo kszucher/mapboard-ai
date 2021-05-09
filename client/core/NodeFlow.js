@@ -4,7 +4,7 @@ import {nodeMove, nodeMoveMouse, setClipboard} from "../node/NodeMove";
 import {nodeNavigate} from "../node/NodeNavigate";
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
-import {props} from "../node/Node";
+import {getAllFormatParamsDefaults} from "../node/Node";
 import {selectionState} from "./SelectionFlow";
 import {getMapData, mapref, mapState, pathMerge, recalc, redraw} from "./MapFlow";
 import {mapSvgData} from "./DomFlow";
@@ -324,9 +324,8 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'formatColorReset': {
-            let {sTextColor, ellipseNodeFillColor, lineColor} = props.saveOptional;
-            mapChangeProp.start(lm, {sTextColor, ellipseNodeFillColor, lineColor}, '');
+        case 'formatReset': {
+            mapChangeProp.start(lm, getAllFormatParamsDefaults(), '');
             break;
         }
         case 'applyLineWidth': {

@@ -69,7 +69,7 @@ export function MapComponent() {
             } else if (['save'].includes(lastAction)) {
                 dispatch({type: 'SAVE_MAP'});
                 redraw();
-            } else if (['cut', 'copy', 'paste', 'task', 'formatColorReset', 'formatColorChange'].includes(lastAction)) {
+            } else if (['cut', 'copy', 'paste', 'task', 'formatReset', 'formatColorChange'].includes(lastAction)) {
                 push();
                 switch (lastAction) {
                     case 'cut':
@@ -85,8 +85,8 @@ export function MapComponent() {
                         nodeDispatch('taskCheckReset');
                         nodeDispatch('taskSwitch');
                         break;
-                    case 'formatColorReset':
-                        nodeDispatch('formatColorReset');
+                    case 'formatReset':
+                        nodeDispatch('formatReset');
                         break;
                     case 'formatColorChange':
                         nodeDispatch('applyColorFromPalette', {colorMode, color});

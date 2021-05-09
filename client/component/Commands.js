@@ -13,7 +13,7 @@ export function Commands () {
     const copy =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'copy'});
     const paste =            () => dispatch({type: 'SET_MAP_ACTION',  payload: 'paste'});
     const task =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'task'});
-    const formatColorReset = () => dispatch({type: 'SET_MAP_ACTION',  payload: 'formatColorReset'});
+    const formatReset =      () => dispatch({type: 'SET_MAP_ACTION',  payload: 'formatReset'});
 
     return (
         <div style={{
@@ -52,7 +52,7 @@ export function Commands () {
                 {/*<Divider orientation="vertical" flexItem />*/}
 
                 {/*<StyledIconButton action={task} icon={'check_circle'}/>*/}
-                <StyledIconButton action={formatColorReset} icon={'format_color_reset'}/>
+                <StyledIconButton action={formatReset} icon={'format_color_reset'}/>
             </div>
         </div>
     );

@@ -1,3 +1,5 @@
+import {filteredObj} from "../core/Utils";
+
 export let props = {
     saveAlways: {
         path:                                   [],
@@ -93,6 +95,21 @@ export let props = {
 
 export function getDefaultNode(attributes) {
     return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
+}
+
+export const formatParams =  {
+    line: ['lineWidth', 'lineType', 'lineColor'],
+    border: ['cBorderColor', 'ellipseBranchBorderColor', 'ellipseBranchBorderWidth', 'ellipseNodeBorderColor', 'ellipseNodeBorderWidth'],
+    fill: ['ellipseBranchFillColor', 'ellipseNodeFillColor'],
+    text: ['sTextColor', 'sTextFontSize'],
+}
+
+export const getAllFormatParams = () => {
+    return([].concat(...Object.values(formatParams)))
+}
+
+export const getAllFormatParamsDefaults = () => {
+    return filteredObj(props.saveOptional, getAllFormatParams());
 }
 
 export const resolveConditions = (cm) => {
