@@ -120,7 +120,7 @@ export const resolveConditions = (cm) => {
         nodeFill: cm.ellipseNodeFillColor !== '',
         branchBorder: cm.ellipseBranchBorderColor !== '',
         nodeBorder: cm.ellipseNodeBorderColor !== '',
-        selectionBorder: cm.selected && !cm.hasCell && cm.type === 'struct' && !cm.isEditing,
+        selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
         line:
             !cm.isRoot &&
             !cm.isRootChild &&

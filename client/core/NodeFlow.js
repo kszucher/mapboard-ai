@@ -53,6 +53,7 @@ function nodeReducer(action, payload) {
         }
         case 'selectDescendantsOut': {
             if (lm.path.length === 1) {
+                lm.selected = 0;
                 if (payload.keyCode === 'ArrowRight') {
                     lm.d[0].selected = 1;
                     lm.d[0].selection = 'f';
