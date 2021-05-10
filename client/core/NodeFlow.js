@@ -36,10 +36,23 @@ function nodeReducer(action, payload) {
         }
         case 'selectStructFamily': {
             lm = mapref(mapState.deepestSelectablePath);
-            if (lm.s.length > 0) {
-                clearSelection();
-                lm.selected = 1;
-                lm.selection = 'f';
+            if (lm.path.length === 1) {
+                lm.selected = 0;
+                if (lm.d[0].selected === 1) {
+                    lm.d[0].selected = 0;
+                    lm.d[1].selected = 1;
+                    lm.d[1].selection = 'f';
+                } else {
+                    lm.d[1].selected = 0;
+                    lm.d[0].selected = 1;
+                    lm.d[0].selection = 'f';
+                }
+            } else {
+                if (lm.s.length > 0) {
+                    clearSelection();
+                    lm.selected = 1;
+                    lm.selection = 'f';
+                }
             }
             break;
         }
