@@ -378,10 +378,13 @@ function nodeReducer(action, payload) {
         case 'applyFontSize': {
             let sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload];
             let isDimAssigned = 0;
-            if (lm.selection === 's') {
-                Object.assign(lm, {sTextFontSize, isDimAssigned});
-            } else {
-                mapChangeProp.start(lm, {sTextFontSize, isDimAssigned}, 'text', true);
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                if (cm.selection === 's') {
+                    Object.assign(cm, {sTextFontSize, isDimAssigned});
+                } else {
+                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned}, 'text', true);
+                }
             }
             break;
         }
