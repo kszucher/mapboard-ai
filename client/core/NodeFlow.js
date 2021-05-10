@@ -78,6 +78,10 @@ function nodeReducer(action, payload) {
                 lm.path[2] === 0 && payload.keyCode === 'ArrowRight' ||
                 lm.path[2] === 1 && payload.keyCode === 'ArrowLeft') {
                 lm.selection = 'f';
+            } else if (
+                lm.path[2] === 0 && payload.keyCode === 'ArrowLeft' ||
+                lm.path[2] === 1 && payload.keyCode === 'ArrowRight') {
+                lm.selection = 's';
             }
             break;
         }
