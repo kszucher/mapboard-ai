@@ -9,7 +9,7 @@ let svgElementNameList = [
     ['branchFill'],
     ['nodeFill'],
     ['line', 'branchBorder', 'nodeBorder', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
-    ['selection'],
+    ['selectionBorder'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
 
@@ -52,7 +52,7 @@ export const mapSvgVisualize = {
             conditions.nodeFill ||
             conditions.branchBorder ||
             conditions.nodeBorder ||
-            conditions.selection) {
+            conditions.selectionBorder) {
             let corr = dir === -1 ? -1 : 0;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
@@ -102,8 +102,8 @@ export const mapSvgVisualize = {
                     strokeWidth: cm.ellipseNodeBorderWidth,
                 }
             }
-            if (conditions.selection) {
-                svgElementData[4].selection = {
+            if (conditions.selectionBorder) {
+                svgElementData[4].selectionBorder = {
                     type: 'path',
                     path: getPolygonPath(
                         cm.selection  === 's'
