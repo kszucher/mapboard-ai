@@ -162,39 +162,15 @@ const EditorReducer = (state, action) => {
         }
         case 'SET_NODE_PROPS': {
             let lm = payload;
-            let lineWidth = '';
-            switch (lm.lineWidth) {
-                case 1: lineWidth = 'w1'; break;
-                case 2: lineWidth = 'w2'; break;
-                case 3: lineWidth = 'w3'; break;
-            }
-            let lineType = '';
-            switch (lm.lineType) {
-                case 1: lineType = 'bezier'; break;
-                case 3: lineType = 'edge'; break;
-            }
-            let borderWidth = '';
-            switch (lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth) {
-                case 1: borderWidth = 'w1'; break;
-                case 2: borderWidth = 'w2'; break;
-                case 3: borderWidth = 'w3'; break;
-            }
-            let fontSize = '';
-            switch (lm.sTextFontSize) {
-                case 36: fontSize = 'h1'; break;
-                case 24: fontSize = 'h2'; break;
-                case 18: fontSize = 'h3'; break;
-                case 16: fontSize = 'h4'; break;
-                case 14: fontSize = 't'; break;
-            }
             return {...state,
-                lineWidth,
-                lineType,
-                fontSize,
-                colorLine: lm.lineColor,
-                colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
-                colorFill: lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
-                colorText: lm.sTextColor,
+                lineWidth:      mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
+                lineType:       mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
+                borderWidth:    mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
+                fontSize:       mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
+                colorLine:      lm.lineColor,
+                colorBorder:    lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
+                colorFill:      lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+                colorText:      lm.sTextColor,
             };
         }
         case 'SET_MAP_ACTION':                  return {...state,                                           mapAction: [...state.mapAction, payload]};
@@ -214,3 +190,7 @@ const EditorReducer = (state, action) => {
 };
 
 export default EditorReducer;
+
+const mapValues = (stringArray, valueArray, conditionValue) => {
+    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
+}
