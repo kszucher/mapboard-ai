@@ -53,7 +53,8 @@ export const mapSvgVisualize = {
             conditions.nodeFill ||
             conditions.branchBorder ||
             conditions.nodeBorder ||
-            conditions.selectionBorder) {
+            conditions.selectionBorder ||
+            conditions.selectionBorderTable) {
             let corr = dir === -1 ? -1 : 0;
             let sParams = {
                 ax: nsx + 1 * dir + corr,
@@ -123,7 +124,7 @@ export const mapSvgVisualize = {
             if (conditions.selectionBorderTable) {
                 svgElementData[4].selectionBorderTable = {
                     type: 'path',
-                    path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2]),
+                    path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2], 4),
                     stroke: '#666666',
                     strokeWidth: 1,
                 };
@@ -152,8 +153,8 @@ export const mapSvgVisualize = {
             // frame
             svgElementData[3].tableFrame = {
                 type: 'path',
-                path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2]),
-                stroke: cm.selected? '#ff0000' : cm.cBorderColor,
+                path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2], 0),
+                stroke: cm.cBorderColor,
                 strokeWidth: cm.ellipseNodeBorderWidth,
             };
             // grid
@@ -200,7 +201,7 @@ export const mapSvgVisualize = {
                         }
                         svgElementData[3].tableCellFrame = {
                             type: 'path',
-                            path: getArcPath(sx, sy, w, h, r, cm.path[2]),
+                            path: getArcPath(sx, sy, w, h, r, cm.path[2], 0),
                             stroke: '#000000',
                             strokeWidth: 1,
                         };
@@ -447,11 +448,11 @@ function checkSvgField(field) {
     return (field && field !== '') ? field: 'none'
 }
 
-function getArcPath(sx, sy, w, h, r, dir) {
-    let x1 = sx;
-    let y1 = sy + r;
-    let horz = w - 2 * r;
-    let vert = h - 2 * r;
+function getArcPath(sx, sy, w, h, r, dir, margin) {
+    let x1 = sx - margin;
+    let y1 = sy + r - margin;
+    let horz = w - 2*r + 2*margin;
+    let vert = h - 2*r + 2*margin;
     if (dir === 0) {
         return `M${x1},${y1} 
         a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
