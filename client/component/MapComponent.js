@@ -15,21 +15,6 @@ export function MapComponent() {
     const {density, alignment, lineWidth, lineType, borderWidth, fontSize, mapAction, formatMode, color} = state;
 
     useEffect(() => {
-        if (density !== '') {
-            mapDispatch('setDensity', density);
-            mapDispatch('setShouldCenter');
-            nodeDispatch('resetDim');
-            redraw();
-        }
-    }, [density]);
-    useEffect(() => {
-        if (alignment !== '') {
-            mapDispatch('setAlignment', alignment);
-            mapDispatch('setShouldCenter');
-            redraw();
-        }
-    }, [alignment]);
-    useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
             if (['undo', 'redo'].includes(lastAction)) {
@@ -37,6 +22,15 @@ export function MapComponent() {
                 redraw();
             } else if (['save'].includes(lastAction)) {
                 dispatch({type: 'SAVE_MAP'});
+                redraw();
+            } else if (['setDensity'].includes(lastAction)) {
+                mapDispatch('setDensity', density);
+                mapDispatch('setShouldCenter');
+                nodeDispatch('resetDim');
+                redraw();
+            } else if (['setAlignment'].includes(lastAction)) {
+                mapDispatch('setAlignment', alignment);
+                mapDispatch('setShouldCenter');
                 redraw();
             } else if ([
                 'cut', 'copy', 'paste',
