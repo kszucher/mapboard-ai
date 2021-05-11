@@ -358,10 +358,13 @@ function nodeReducer(action, payload) {
         }
         case 'applyBorderWidth': {
             let borderWidth = {w1: 1, w2: 2, w3: 3}[payload];
-            if (lm.selection === 's') {
-                lm.ellipseNodeBorderWidth = borderWidth;
-            } else {
-                lm.ellipseBranchBorderWidth = borderWidth;
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                if (cm.selection === 's') {
+                    cm.ellipseNodeBorderWidth = borderWidth;
+                } else {
+                    cm.ellipseBranchBorderWidth = borderWidth;
+                }
             }
             break;
         }
