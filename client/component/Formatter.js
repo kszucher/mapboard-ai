@@ -15,6 +15,7 @@ export function Formatter () {
     const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',     payload: e});
     const cmdResetAll =       e => dispatch({type: 'CMD_RESET_ALL',     payload: e});
     const cmdReset =          e => dispatch({type: 'CMD_RESET',         payload: e});
+    const cmdTaskToggle =     e => dispatch({type: 'CMD_TASK_TOGGLE',   payload: e});
 
     return (
         <div style={{
@@ -44,6 +45,7 @@ export function Formatter () {
                 {                            <StyledButtonGroup action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
                 {                            <StyledButtonGroup action={setformatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}  value={''}          valueList={['make task']}/>}
                 {formatMode !== '' &&        <StyledButtonGroup action={cmdReset}       value={''}          valueList={['reset ' + formatMode]}/>}
                 {formatMode === 'line' &&    <StyledButtonGroup action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
                 {formatMode === 'line' &&    <StyledButtonGroup action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
