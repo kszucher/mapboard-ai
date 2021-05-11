@@ -116,9 +116,9 @@ export const resolveConditions = (cm) => {
         text:
             cm.contentType === 'text',
         backgroundRect: cm.isRoot,
-        branchFill: cm.ellipseBranchFillColor !== '',
+        branchFill: cm.ellipseBranchFillColor !== '' && cm.s.length,
         nodeFill: cm.ellipseNodeFillColor !== '',
-        branchBorder: cm.ellipseBranchBorderColor !== '',
+        branchBorder: cm.ellipseBranchBorderColor !== '' && cm.s.length,
         nodeBorder: cm.ellipseNodeBorderColor !== '',
         selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
         line:
