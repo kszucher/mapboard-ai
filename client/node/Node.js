@@ -121,6 +121,7 @@ export const resolveConditions = (cm) => {
         branchBorder: cm.ellipseBranchBorderColor !== '' && cm.s.length,
         nodeBorder: cm.ellipseNodeBorderColor !== '',
         selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
+        selectionBorderTable: cm.selected && cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
         line:
             !cm.isRoot &&
             !cm.isRootChild &&

@@ -9,7 +9,7 @@ let svgElementNameList = [
     ['branchFill'],
     ['nodeFill'],
     ['line', 'branchBorder', 'nodeBorder', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
-    ['selectionBorder'],
+    ['selectionBorder', 'selectionBorderTable'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
 
@@ -35,6 +35,7 @@ export const mapSvgVisualize = {
         let nsy = cm.nodeY - selfHadj/2;
         let ney = cm.nodeY + selfHadj/2;
         let dir = cm.path[2]? -1 : 1;
+        let r = 8;
         let conditions = resolveConditions(cm);
         if (conditions.backgroundRect) {
             svgElementData[0].backgroundRect = {
@@ -119,6 +120,14 @@ export const mapSvgVisualize = {
                     strokeWidth: 1,
                 }
             }
+            if (conditions.selectionBorderTable) {
+                svgElementData[4].selectionBorderTable = {
+                    type: 'path',
+                    path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2]),
+                    stroke: '#666666',
+                    strokeWidth: 1,
+                };
+            }
         }
         if (conditions.line) {
             let x1, y1, x2, y2;
@@ -141,11 +150,10 @@ export const mapSvgVisualize = {
         }
         if (conditions.table) {
             // frame
-            let r = 8;
             svgElementData[3].tableFrame = {
                 type: 'path',
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2]),
-                stroke: cm.selected? '#000000' : cm.cBorderColor,
+                stroke: cm.selected? '#ff0000' : cm.cBorderColor,
                 strokeWidth: cm.ellipseNodeBorderWidth,
             };
             // grid
@@ -235,12 +243,11 @@ export const mapSvgVisualize = {
                         case 3: fill = '#e5f9e5'; break;
                     }
                 }
-                let r = d/2;
                 svgElementData[3]['taskCircle' + i] = {
                     type: 'circle',
                     cx: centerX,
                     cy: centerY,
-                    r,
+                    r: d/2,
                     fill: fill,
                 };
             }
