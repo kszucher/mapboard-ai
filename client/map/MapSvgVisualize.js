@@ -146,7 +146,7 @@ export const mapSvgVisualize = {
                 type: 'path',
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2]),
                 stroke: cm.selected? '#000000' : cm.cBorderColor,
-                strokeWidth: 1,
+                strokeWidth: cm.ellipseNodeBorderWidth,
             };
             // grid
             let path = '';
