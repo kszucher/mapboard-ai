@@ -29,7 +29,7 @@ export const mapPlace = {
             sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
         }
 
-        let divMinWidth = 1366;
+        let divMinWidth = window.screen.availWidth > 1366 ? 1366 : 800;
         let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth;
 
         let mapStartCenterX = 0;
