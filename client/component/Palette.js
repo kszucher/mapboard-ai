@@ -23,7 +23,7 @@ export function Palette () {
     const [sel, setSel] = useState({x: 0, y: 0});
 
     const closePalette =        () => dispatch({type: 'CLOSE_PALETTE'});
-    const formatColorChange =   (c) => dispatch({type: 'FORMAT_COLOR_CHANGE', payload: c});
+    const setColor =            (c) => dispatch({type: 'SET_COLOR', payload: c});
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};
@@ -53,7 +53,7 @@ export function Palette () {
 
     const handleClick = (i, j) => {
         setSel({x: i, y: j});
-        formatColorChange(colorList[i][j]);
+        setColor(colorList[i][j]);
     };
 
     const o = 32;

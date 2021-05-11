@@ -30,38 +30,6 @@ export function MapComponent() {
         }
     }, [alignment]);
     useEffect(() => {
-        if (lineWidth !== '') {
-            push();
-            nodeDispatch('applyLineWidth', lineWidth);
-            redraw();
-            checkPop()
-        }
-    }, [lineWidth]);
-    useEffect(() => {
-        if (lineType !== '') {
-            push();
-            nodeDispatch('applyLineType', lineType);
-            redraw();
-            checkPop()
-        }
-    }, [lineType]);
-    useEffect(() => {
-        if (borderWidth !== '') {
-            push();
-            nodeDispatch('applyBorderWidth', borderWidth);
-            redraw();
-            checkPop()
-        }
-    }, [borderWidth]);
-    useEffect(() => {
-        if (fontSize !== '') {
-            push();
-            nodeDispatch('applyFontSize', fontSize);
-            redraw();
-            checkPop()
-        }
-    }, [fontSize]);
-    useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
             if (['undo', 'redo'].includes(lastAction)) {
@@ -70,31 +38,23 @@ export function MapComponent() {
             } else if (['save'].includes(lastAction)) {
                 dispatch({type: 'SAVE_MAP'});
                 redraw();
-            } else if (['cut', 'copy', 'paste', 'task', 'formatColorChange', 'resetAll', 'reset'].includes(lastAction)) {
+            } else if ([
+                'cut', 'copy', 'paste',
+                'resetAll', 'reset', 'setLineWidth', 'setLineType', 'setBorderWidth', 'setFontSize', 'setColor', 'task',
+            ].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'cut':
-                        nodeDispatch('cutSelection');
-                        break;
-                    case 'copy':
-                        nodeDispatch('copySelection');
-                        break;
-                    case 'paste':
-                        paste({preventDefault: () => {}});
-                        break;
-                    case 'task':
-                        nodeDispatch('taskCheckReset');
-                        nodeDispatch('taskSwitch');
-                        break;
-                    case 'formatColorChange':
-                        nodeDispatch('applyColorFromPalette', {formatMode, color});
-                        break;
-                    case 'resetAll':
-                        nodeDispatch('resetAll');
-                        break;
-                    case 'reset':
-                        nodeDispatch('reset', {formatMode});
-                        break;
+                    case 'cut':                 nodeDispatch('cutSelection');                                   break;
+                    case 'copy':                nodeDispatch('copySelection');                                  break;
+                    case 'paste':               paste({preventDefault: () => {}});                              break;
+                    case 'resetAll':            nodeDispatch('resetAll');                                       break;
+                    case 'reset':               nodeDispatch('reset', {formatMode});                            break;
+                    case 'setLineWidth':        nodeDispatch('applyLineWidth', lineWidth);                      break;
+                    case 'setLineType':         nodeDispatch('applyLineType', lineType);                        break;
+                    case 'setBorderWidth':      nodeDispatch('applyBorderWidth', borderWidth);                  break;
+                    case 'setFontSize':         nodeDispatch('applyFontSize', fontSize);                        break;
+                    case 'setColor':            nodeDispatch('applyColorFromPalette', {formatMode, color});     break;
+                    case 'task':                nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch');     break;
                 }
                 redraw();
                 checkPop();
@@ -396,7 +356,7 @@ export function MapComponent() {
             [ 0,  0,  1,  [37,39].includes(which),       ['cc',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
             [ 0,  0,  1,  [38,40].includes(which),       ['cr',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
             [ 0,  0,  1,  [37,38,39,40].includes(which), ['s', 'c', 'cr', 'cc'],        0,  1,  0, []                                         ],
-            [ 1,  0,  0,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyColor']                             ],
+            [ 1,  0,  0,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyColorFromKey']                      ],
             [ 1,  0,  1,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyTaskStatus']                        ],
             [ 0,  0,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
             [ 0,  1,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
@@ -421,7 +381,7 @@ export function MapComponent() {
                 }
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j];
-                    if (currExecution === 'applyColor') {
+                    if (currExecution === 'applyColorFromKey') {
                         nodeDispatch(currExecution, {currColor: e.which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
                         nodeDispatch(currExecution, {currTaskStatus: e.which - 96});
