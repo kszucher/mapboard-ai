@@ -328,6 +328,7 @@ function nodeReducer(action, payload) {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 mapChangeProp.start(cm, getAllFormatDefault(), '');
+                mapChangeProp.start(cm, {isDimAssigned: 0}, '');
             }
             break;
         }
@@ -336,6 +337,9 @@ function nodeReducer(action, payload) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 let formatModeFilter = payload.formatMode + (['fill', 'border'].includes(payload.formatMode) ? '_' + cm.selection : '');
                 mapChangeProp.start(cm, getFormatDefault(formatModeFilter), '');
+                if (payload.formatMode === 'text') {
+                    mapChangeProp.start(cm, {isDimAssigned: 0}, '');
+                }
             }
             break;
         }
