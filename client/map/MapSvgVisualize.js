@@ -142,13 +142,9 @@ export const mapSvgVisualize = {
         if (conditions.table) {
             // frame
             let r = 8;
-            let x1 = nsx;
-            let y1 = nsy;
-            let w = cm.selfW;
-            let h = cm.selfH;
             svgElementData[3].tableFrame = {
                 type: 'path',
-                path: getArcPath(x1, y1, w, h, r, cm.path[2]),
+                path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, cm.path[2]),
                 stroke: cm.selected? '#000000' : cm.cBorderColor,
                 strokeWidth: 1,
             };
@@ -176,27 +172,27 @@ export const mapSvgVisualize = {
             for (let i = 0; i < rowCount; i++) {
                 for (let j = 0; j < colCount; j++) {
                     if (cm.c[i][j].selected) {
-                        let x1, y1, w, h;
+                        let sx, sy, w, h;
                         let sc = selectionState;
                         if (sc.cellRowSelected) {
-                            x1 = nsx;
-                            y1 = nsy + cm.sumMaxRowHeight[i];
+                            sx = nsx;
+                            sy = nsy + cm.sumMaxRowHeight[i];
                             w = cm.selfW;
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         } else if (sc.cellColSelected) {
-                            x1 = nsx + dir*cm.sumMaxColWidth[j];
-                            y1 = nsy;
+                            sx = nsx + dir*cm.sumMaxColWidth[j];
+                            sy = nsy;
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.selfH;
                         } else {
-                            x1 = nsx + dir*cm.sumMaxColWidth[j];
-                            y1 = nsy + cm.sumMaxRowHeight[i];
+                            sx = nsx + dir*cm.sumMaxColWidth[j];
+                            sy = nsy + cm.sumMaxRowHeight[i];
                             w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                             h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                         }
                         svgElementData[3].tableCellFrame = {
                             type: 'path',
-                            path: getArcPath(x1, y1, w, h, r, cm.path[2]),
+                            path: getArcPath(sx, sy, w, h, r, cm.path[2]),
                             stroke: '#000000',
                             strokeWidth: 1,
                         };
