@@ -95,8 +95,10 @@ export let props = {
 
 const formatParams =  {
     line: ['lineWidth', 'lineType', 'lineColor'],
-    border: ['cBorderColor', 'ellipseBranchBorderColor', 'ellipseBranchBorderWidth', 'ellipseNodeBorderColor', 'ellipseNodeBorderWidth'],
-    fill: ['ellipseBranchFillColor', 'ellipseNodeFillColor'],
+    border_s: ['cBorderColor', 'ellipseNodeBorderColor', 'ellipseNodeBorderWidth'],
+    border_f: ['ellipseBranchBorderColor', 'ellipseBranchBorderWidth'],
+    fill_s: ['ellipseNodeFillColor'],
+    fill_f: ['ellipseBranchFillColor'],
     text: ['sTextColor', 'sTextFontSize'],
 }
 

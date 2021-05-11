@@ -334,7 +334,8 @@ function nodeReducer(action, payload) {
         case 'reset': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                mapChangeProp.start(cm, getFormatDefault(payload.formatMode), '');
+                let formatModeFilter = payload.formatMode + (['fill', 'border'].includes(payload.formatMode) ? '_' + cm.selection : '');
+                mapChangeProp.start(cm, getFormatDefault(formatModeFilter), '');
             }
             break;
         }
