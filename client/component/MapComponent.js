@@ -17,6 +17,7 @@ export function MapComponent() {
     useEffect(() => {
         if (density !== '') {
             mapDispatch('setDensity', density);
+            mapDispatch('setShouldCenter');
             nodeDispatch('resetDim');
             redraw();
         }
