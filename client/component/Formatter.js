@@ -6,15 +6,15 @@ export function Formatter () {
     const [state, dispatch] = useContext(Context);
     const {density, alignment, formatMode, lineWidth, lineType, borderWidth, fontSize} = state;
 
-    const setDensity =        e => dispatch({type: 'SET_DENSITY',                   payload: e});
-    const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',                 payload: e});
-    const setformatMode =     e => dispatch({type: 'SET_COLOR_MODE_OPEN_PALETTE',   payload: e});
-    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',                payload: e});
-    const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',                 payload: e});
-    const setBorderWidth =    e => dispatch({type: 'SET_BORDER_WIDTH',              payload: e});
-    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',                 payload: e});
-    const cmdResetAll =       e => dispatch({type: 'CMD_RESET_ALL',                 payload: e});
-    const cmdReset =          e => dispatch({type: 'CMD_RESET',                     payload: e});
+    const setDensity =        e => dispatch({type: 'SET_DENSITY',       payload: e});
+    const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',     payload: e});
+    const setformatMode =     e => dispatch({type: 'OPEN_PALETTE',      payload: e});
+    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',    payload: e});
+    const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',     payload: e});
+    const setBorderWidth =    e => dispatch({type: 'SET_BORDER_WIDTH',  payload: e});
+    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',     payload: e});
+    const cmdResetAll =       e => dispatch({type: 'CMD_RESET_ALL',     payload: e});
+    const cmdReset =          e => dispatch({type: 'CMD_RESET',         payload: e});
 
     return (
         <div style={{

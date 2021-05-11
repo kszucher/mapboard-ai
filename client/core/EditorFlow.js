@@ -206,7 +206,7 @@ const EditorReducer = (state, action) => {
         case 'SET_BORDER_WIDTH':                return {...state, borderWidth: payload,                     mapAction: [...state.mapAction, 'setBorderWidth']};
         case 'SET_FONT_SIZE':                   return {...state, fontSize: payload,                        mapAction: [...state.mapAction, 'setFontSize']};
         case 'SET_COLOR':                       return {...state, color: payload,                           mapAction: [...state.mapAction, 'setColor']};
-        case 'SET_COLOR_MODE_OPEN_PALETTE':     return {...state, formatMode: payload, paletteVisible: 1};
+        case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, formatMode: ''};
         case 'SET_MAP_ACTION':                  return {...state,                                           mapAction: [...state.mapAction, payload]};
         default: return state;
