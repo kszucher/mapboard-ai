@@ -325,11 +325,17 @@ function nodeReducer(action, payload) {
         }
         // FORMAT ------------------------------------------------------------------------------------------------------
         case 'resetAll': {
-            mapChangeProp.start(lm, getAllFormatDefault(), '');
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                mapChangeProp.start(cm, getAllFormatDefault(), '');
+            }
             break;
         }
         case 'reset': {
-            mapChangeProp.start(lm, getFormatDefault(payload.formatMode), '');
+            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+                let cm = mapref(sc.structSelectedPathList[i]);
+                mapChangeProp.start(cm, getFormatDefault(payload.formatMode), '');
+            }
             break;
         }
         case 'applyLineWidth': {
