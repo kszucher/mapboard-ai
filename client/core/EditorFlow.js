@@ -197,6 +197,7 @@ const EditorReducer = (state, action) => {
                 colorText: lm.sTextColor,
             };
         }
+        case 'SET_MAP_ACTION':                  return {...state,                                           mapAction: [...state.mapAction, payload]};
         case 'SET_DENSITY':                     return {...state, density: payload,                         mapAction: [...state.mapAction, 'setDensity']};
         case 'SET_ALIGNMENT':                   return {...state, alignment: payload,                       mapAction: [...state.mapAction, 'setAlignment']};
         case 'CMD_RESET_ALL':                   return {...state,                                           mapAction: [...state.mapAction, 'resetAll']};
@@ -208,7 +209,6 @@ const EditorReducer = (state, action) => {
         case 'SET_COLOR':                       return {...state, color: payload,                           mapAction: [...state.mapAction, 'setColor']};
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, formatMode: ''};
-        case 'SET_MAP_ACTION':                  return {...state,                                           mapAction: [...state.mapAction, payload]};
         default: return state;
     }
 };
