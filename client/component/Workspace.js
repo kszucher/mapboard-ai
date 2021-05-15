@@ -10,39 +10,15 @@ import {Formatter} from "./Formatter";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
 import {Recorder} from "./Recorder";
+import {muiTheme} from "../component-styled/Theme";
 
 export function Workspace() {
-    const theme = createMuiTheme({
-        props: {
-            // Name of the component
-            MuiButtonBase: {
-                // The properties to apply
-                disableRipple: true // No more ripple, on the whole application!
-            }
-        },
-        // https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=5f0a87&secondary.color=FAFAFA&primary.text.color=ffffff&secondary.text.color=000000
-        palette: {
-            primary: {
-                light: '#9040b8',
-                main: '#5f0a87',
-                dark: '#2e0059',
-                contrastText: '#fbfafc',
-            },
-            secondary: {
-                light: '#dddddd',
-                main: '#6f6e6f',
-                dark: '#000000',
-                contrastText: '#000000',
-            },
-        },
 
-        spacing: 2
-    });
 
     return (
         <div id="page">
             <MapComponent/>
-            <MuiThemeProvider theme={theme}>
+            <MuiThemeProvider theme={muiTheme}>
                 <Logo/>
                 <Tabs/>
                 <Commands/>
