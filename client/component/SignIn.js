@@ -13,6 +13,8 @@ export default function SignIn() {
     const typeEmail = (e) => {        setEmail(e.target.value);    };
     const typePassword = (e) => {     setPassword(e.target.value);    };
     const signInHandler = () => {     dispatch({type: 'SIGN_IN', payload: {email, password}})};
+    const signUpHandler = () => {     /*TODO*/};
+
 
     return (
         <div
@@ -22,12 +24,14 @@ export default function SignIn() {
                 transform: 'translate(-50%)',
                 top: 96,
                 width: 48*10,
+                height: 48*6,
                 border: "1px solid #fbfafc",
                 borderRadius: '16px',
                 padding: 20,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent: 'space-between'
             }}>
             <Typography component="h1" variant="h5">
                 MindBoard Private Beta
@@ -35,7 +39,7 @@ export default function SignIn() {
             <TextField  variant="outlined"   fullWidth type="email"     label="Email Address" autoComplete="email"              onChange={typeEmail} autoFocus/>
             <TextField  variant="outlined"   fullWidth type="password"  label="Password"      autoComplete="current-password"   onChange={typePassword}/>
             <Button     variant="contained"  fullWidth type="submit"    color="primary"                                         onClick={signInHandler}>Sign In</Button>
-            <Button     variant="outlined"   fullWidth type="submit"    color="primary"                                         onClick={signInHandler}>Sign Up</Button>
+            <Button     variant="outlined"   fullWidth type="submit"    color="primary"                                         onClick={signUpHandler}>Sign Up</Button>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="http://mindboard.io/">
