@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import {Context} from "../core/Store";
 
 export default function SignIn() {
@@ -16,12 +15,13 @@ export default function SignIn() {
     const signInHandler = () => {     dispatch({type: 'SIGN_IN', payload: {email, password}})};
 
     return (
-        <Container
-            component="main"
-            maxWidth="xs"
+        <div
             style={{
                 position: 'relative',
+                left: '50%',
+                transform: 'translate(-50%)',
                 top: 96,
+                width: 48*10,
                 border: "1px solid #fbfafc",
                 borderRadius: '16px',
                 padding: 20,
@@ -44,6 +44,6 @@ export default function SignIn() {
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
-        </Container>
+        </div>
     );
 }
