@@ -11,6 +11,7 @@
     "mongo-heartbeat": "^2.0.1",
     "mongodb": "^3.6.2",
     "multer": "^1.4.2",
+    "nodemailer": "^6.6.0",
     "npm": "^6.13.4"
   },
   "main": "index.js",
