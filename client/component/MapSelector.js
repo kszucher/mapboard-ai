@@ -20,7 +20,7 @@ export default function VerticalTabs() {
             borderColor: '#dddddd',
             borderLeft: 0
         }}>
-            <StyledTabs valueList={mapNameList} value={mapSelected} onChange={handleChange}/>
+            <StyledTabs valueList={mapNameList} value={mapSelected} onChange={handleChange} orientation={'vertical'} component={'mapSelector'}/>
         </div>
     );
 }
