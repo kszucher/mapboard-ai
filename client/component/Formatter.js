@@ -41,16 +41,16 @@ export function Formatter () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                {                            <StyledButtonGroup action={setDensity}     value={density}     valueList={['small', 'large']}/>}
-                {                            <StyledButtonGroup action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
-                {                            <StyledButtonGroup action={setformatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
-                {formatMode === '' &&        <StyledButtonGroup action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
-                {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}  value={''}          valueList={['convert to task']}/>}
-                {formatMode !== '' &&        <StyledButtonGroup action={cmdReset}       value={''}          valueList={['reset ' + formatMode]}/>}
-                {formatMode === 'line' &&    <StyledButtonGroup action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
-                {formatMode === 'line' &&    <StyledButtonGroup action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
-                {formatMode === 'border' &&  <StyledButtonGroup action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
-                {formatMode === 'text' &&    <StyledButtonGroup action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {                            <StyledButtonGroup size="small" action={setDensity}     value={density}     valueList={['small', 'large']}/>}
+                {                            <StyledButtonGroup size="small" action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
+                {                            <StyledButtonGroup size="small" action={setformatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}  value={''}          valueList={['convert to task']}/>}
+                {formatMode !== '' &&        <StyledButtonGroup size="small" action={cmdReset}       value={''}          valueList={['reset ' + formatMode]}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
+                {formatMode === 'border' &&  <StyledButtonGroup size="small" action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'text' &&    <StyledButtonGroup size="small" action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
             </div>
         </div>
     );

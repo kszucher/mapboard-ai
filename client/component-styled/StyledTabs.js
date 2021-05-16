@@ -25,7 +25,13 @@ export default function StyledTabs (arg) {
             }
         } else if (component === 'sign') {
             return {
-                
+                indicator: {
+                    // top: "0px",
+                    // width: "8px",
+                    // borderTopRightRadius: "16px",
+                    // borderBottomRightRadius: "16px",
+                    // backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
+                },
             }
         }
     }
