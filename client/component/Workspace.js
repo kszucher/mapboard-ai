@@ -1,7 +1,7 @@
 import '../component-css/Layout.css'
 import React, { useEffect,} from 'react'
 import Logo from "./Logo";
-import Tabs from "./Tabs";
+import Tabs from "./MapSelector";
 import {createMuiTheme, makeStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from "@material-ui/core";
 import Breadcrumbs from "./Breadcrumbs";
