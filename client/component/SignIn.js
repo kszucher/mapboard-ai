@@ -3,11 +3,9 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import {Context} from "../core/Store";
-import StyledTabs from "../component-styled/StyledTabs";
 import StyledInput from "../component-styled/StyledInput";
 import {Box} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import Logo from "./Logo";
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -36,7 +34,6 @@ export default function SignIn() {
                  flexDirection: 'column',
                  alignItems: 'center',
                  // https://stackoverflow.com/questions/26349987/how-do-i-apply-a-style-to-all-children-of-an-element
-
              }}>
             <Box mt={8}>
                 <Typography component="h1" variant="h5">
@@ -49,18 +46,7 @@ export default function SignIn() {
                 </Typography>
             </Box>
             <Box mt={8}>
-                {/*<StyledTabs*/}
-                {/*    valueList={["Sign In", "Sign Up"]}*/}
-                {/*    value={tabValue}*/}
-                {/*    onChange={()=>setTabValue(!tabValue&1)}*/}
-                {/*    orientation={'horizontal'}*/}
-                {/*    component={'sign'}*/}
-                {/*/>*/}
-
-                <StyledButtonGroup action={signSwitch}     value={0}     valueList={['Sign In', 'Sign Up']}/>
-
-
-
+                <StyledButtonGroup action={()=>setTabValue(!tabValue&1)}     value={['Sign In', 'Sign Up'][tabValue]}     valueList={['Sign In', 'Sign Up']}/>
             </Box>
             <Box width={'75%'} mt={8}>
                 <StyledInput label="Email Address"  type="email"    onChange={typeEmail}    autoFocus={true}/>
@@ -68,11 +54,19 @@ export default function SignIn() {
             <Box width={'75%'} mt={8}>
                 <StyledInput label="Password"       type="password" onChange={typePassword}/>
             </Box>
-            <Box mt={8}>
+            <Box width={'75%'} mt={8}>
                 {tabValue===1&&<StyledInput label="Password Again" type="password" onChange={typePassword}/>}
             </Box>
             <Box mt={8}>
-                <Button     variant="contained"  fullWidth type="submit"    color="primary" onClick={signInHandler}>Sign In</Button>
+                <Button
+                    variant="contained"
+                    fullWidth
+                    type="submit"
+                    color="primary"
+                    onClick={signInHandler}
+                >
+                    Sign In
+                </Button>
             </Box>
             <Box mt={8}>
                 <Typography variant="body2" color="textSecondary" align="center">
