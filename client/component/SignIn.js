@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import {Context} from "../core/Store";
 import StyledTabs from "../component-styled/StyledTabs";
+import StyledInput from "../component-styled/StyledInput";
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -32,11 +32,16 @@ export default function SignIn() {
                 alignItems: 'center',
                 justifyContent: 'space-between'
             }}>
-
             <Typography component="h1" variant="h5">
                 MindBoard Private Beta
             </Typography>
-            <StyledTabs valueList={["cica", "kutya"]} value={1} onChange={signSwitch} orientation={'horizontal'} component={'sign'}/>
+            <StyledTabs
+                valueList={["Sign In", "Sign Up"]}
+                value={0}
+                onChange={signSwitch}
+                orientation={'horizontal'}
+                component={'sign'}
+            />
             <StyledInput label="Email Address"  type="email"    onChange={typeEmail}    autoFocus={true}/>
             <StyledInput label="Password"       type="password" onChange={typePassword}/>
             <Button     variant="contained"  fullWidth type="submit"    color="primary" onClick={signInHandler}>Sign In</Button>
@@ -51,19 +56,4 @@ export default function SignIn() {
             </Typography>
         </div>
     );
-}
-
-const StyledInput = (arg) => {
-    const {label, type, onChange, autoFocus} = arg;
-    return (
-        <TextField
-            variant="outlined"
-            fullWidth
-            type={type}
-            autoComplete={type}
-            label={label}
-            onChange={onChange}
-            autoFocus={autoFocus}
-        />
-    )
 }
