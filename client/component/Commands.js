@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from '../core/Store';
 import {StyledIconButton} from "../component-styled/StyledIconButton";
-import {Divider} from "@material-ui/core";
 
 export function Commands () {
     const [state, dispatch] = useContext(Context);
