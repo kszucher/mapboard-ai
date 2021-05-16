@@ -1,8 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from "../core/Store";
-import {makeStyles} from "@material-ui/core/styles";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function Formatter () {
     const [state, dispatch] = useContext(Context);
@@ -54,35 +52,6 @@ export function Formatter () {
                 {formatMode === 'border' &&  <StyledButtonGroup action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
                 {formatMode === 'text' &&    <StyledButtonGroup action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
             </div>
-        </div>
-    );
-}
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        '& > *': {
-            margin: theme.spacing(1),
-        },
-    },
-}));
-
-const StyledButtonGroup = (arg) => {
-    const {action, value, valueList} = arg;
-    const classes = useStyles();
-    return (
-        <div  className={classes.root}>
-            <ButtonGroup size="small" variant="text" color="primary" aria-label="text primary button group">
-                {valueList.map((name, index) =>
-                    <Button
-                        style ={{backgroundColor: value === valueList[index]? '#eeeaf2':''}}
-                        onClick={e=>action(valueList[index])}
-                        key={index}>{name}
-                    </Button>
-                )}
-            </ButtonGroup>
         </div>
     );
 }
