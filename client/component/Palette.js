@@ -90,7 +90,7 @@ export function Palette () {
                         key={'key' + i*10 + j}
                         fill={jEl}
                         stroke={(i === sel.x && j === sel.y) ? '#9040b8' : 'none'}
-                        strokeWidth = {"2%"}
+                        strokeWidth={"2%"}
                         onClick={()=>handleClick(i, j)}
                     />))))}
             </svg>
@@ -100,7 +100,7 @@ export function Palette () {
                 justifyContent: 'center',
                 paddingTop: 12,
             }}>
-                <StyledButton name ={'Close'} action={closePalette}/>
+                <StyledButton name={'Close'} action={closePalette}/>
             </div>
         </div>
     );

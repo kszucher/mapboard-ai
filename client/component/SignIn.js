@@ -15,7 +15,6 @@ export default function SignIn() {
     const signInHandler = () => {     dispatch({type: 'SIGN_IN', payload: {email, password}})};
     const signUpHandler = () => {     /*TODO*/};
 
-
     return (
         <div
             style={{
@@ -36,10 +35,12 @@ export default function SignIn() {
             <Typography component="h1" variant="h5">
                 MindBoard Private Beta
             </Typography>
-            <TextField  variant="outlined"   fullWidth type="email"     label="Email Address" autoComplete="email"              onChange={typeEmail} autoFocus/>
-            <TextField  variant="outlined"   fullWidth type="password"  label="Password"      autoComplete="current-password"   onChange={typePassword}/>
-            <Button     variant="contained"  fullWidth type="submit"    color="primary"                                         onClick={signInHandler}>Sign In</Button>
-            <Button     variant="outlined"   fullWidth type="submit"    color="primary"                                         onClick={signUpHandler}>Sign Up</Button>
+
+            <StyledInput label="Email Address"  type="email"    onChange={typeEmail}    autoFocus={true}/>
+            <StyledInput label="Password"       type="password" onChange={typePassword}/>
+
+            <Button     variant="contained"  fullWidth type="submit"    color="primary" onClick={signInHandler}>Sign In</Button>
+            <Button     variant="outlined"   fullWidth type="submit"    color="primary" onClick={signUpHandler}>Sign Up</Button>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="http://mindboard.io/">
@@ -50,4 +51,19 @@ export default function SignIn() {
             </Typography>
         </div>
     );
+}
+
+const StyledInput = (arg) => {
+    const {label, type, onChange, autoFocus} = arg;
+    return (
+        <TextField
+            variant="outlined"
+            fullWidth
+            type={type}
+            autoComplete={type}
+            label={label}
+            onChange={onChange}
+            autoFocus={autoFocus}
+        />
+    )
 }
