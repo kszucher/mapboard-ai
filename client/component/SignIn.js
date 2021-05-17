@@ -12,11 +12,13 @@ export default function SignIn() {
     const [password, setPassword] = useState('');
     const [tabValue, setTabValue] = useState(0);
     const [state, dispatch] = useContext(Context);
-    const typeEmail = (e) => {        setEmail(e.target.value);    };
-    const typePassword = (e) => {     setPassword(e.target.value);    };
-    const signInHandler = () => {     dispatch({type: 'SIGN_IN', payload: {email, password}})};
-    const signUpHandler = () => {     /*TODO*/};
+
+    const typeEmail = (e) =>         setEmail(e.target.value)
+    const typePassword = (e) =>      setPassword(e.target.value)
+    const signInHandler = () =>      dispatch({type: 'SIGN_IN', payload: {email, password}})
+    const signUpHandler = () =>      console.log('signup')
     const signSwitch = () => {};
+
     return (
         <div id={'cica'}
              style={{
@@ -46,16 +48,29 @@ export default function SignIn() {
                 </Typography>
             </Box>
             <Box mt={8}>
-                <StyledButtonGroup action={()=>setTabValue(!tabValue&1)}     value={['Sign In', 'Sign Up'][tabValue]}     valueList={['Sign In', 'Sign Up']}/>
+                <StyledButtonGroup
+                    action={()=>setTabValue(!tabValue&1)}
+                    value={['Sign In', 'Sign Up'][tabValue]}
+                    valueList={['Sign In', 'Sign Up']}/>
             </Box>
             <Box width={'75%'} mt={8}>
-                <StyledInput label="Email Address"  type="email"    onChange={typeEmail}    autoFocus={true}/>
+                <StyledInput
+                    label="Email"
+                    type="email"
+                    onChange={typeEmail}
+                    autoFocus={true}/>
             </Box>
             <Box width={'75%'} mt={8}>
-                <StyledInput label="Password"       type="password" onChange={typePassword}/>
+                <StyledInput
+                    label="Password"
+                    type="password"
+                    onChange={typePassword}/>
             </Box>
             <Box width={'75%'} mt={8}>
-                {tabValue===1&&<StyledInput label="Password Again" type="password" onChange={typePassword}/>}
+                {tabValue===1&&<StyledInput
+                    label="Password Again"
+                    type="password"
+                    onChange={typePassword}/>}
             </Box>
             <Box mt={8}>
                 <Button
@@ -63,9 +78,9 @@ export default function SignIn() {
                     fullWidth
                     type="submit"
                     color="primary"
-                    onClick={signInHandler}
+                    onClick={tabValue?signUpHandler:signInHandler}
                 >
-                    Sign In
+                    {['Sign In', 'Sign Up'][tabValue]}
                 </Button>
             </Box>
             <Box mt={8}>
