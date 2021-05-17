@@ -18,35 +18,35 @@ export default function SignForm() {
     const typePassword = (e) =>      setPassword(e.target.value)
     const typePasswordAgain = (e) => setPasswordAgain(e.target.value)
 
-    const signInHandler = () =>      dispatch({type: 'SIGN_IN', payload: {email, password}})
+    const signInHandler = () =>    {
+        if (password.length > 5) {
+            dispatch({type: 'SIGN_IN', payload: {email, password}})
+        }
+    }
     const signUpHandler = () => {
-        if (password.length < 5) {
-            console.log('too short password')
-        } else if (password !== passwordAgain) {
-            console.log('no match');
-        } else {
-
+        if (password.length > 5 && password === passwordAgain) {
+            dispatch({type: 'SIGN_UP', payload: {email, password}})
         }
     }
 
     return (
         <div
-             style={{
-                 position: 'relative',
-                 left: '50%',
-                 transform: 'translate(-50%)',
-                 top: 96,
-                 width: 48*8,
-                 // height: 48*10,
-                 border: "1px solid #fbfafc",
-                 borderRadius: '16px',
-                 backgroundColor: '#fbfafc',
-                 padding: 20,
-                 display: 'flex',
-                 flexDirection: 'column',
-                 alignItems: 'center',
-                 // https://stackoverflow.com/questions/26349987/how-do-i-apply-a-style-to-all-children-of-an-element
-             }}>
+            style={{
+                position: 'relative',
+                left: '50%',
+                transform: 'translate(-50%)',
+                top: 96,
+                width: 48*8,
+                // height: 48*10,
+                border: "1px solid #fbfafc",
+                borderRadius: '16px',
+                backgroundColor: '#fbfafc',
+                padding: 20,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                // https://stackoverflow.com/questions/26349987/how-do-i-apply-a-style-to-all-children-of-an-element
+            }}>
             <Box mt={8}>
                 <Typography component="h1" variant="h5">
                     MindBoard
