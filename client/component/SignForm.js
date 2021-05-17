@@ -7,20 +7,30 @@ import StyledInput from "../component-styled/StyledInput";
 import {Box} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
-export default function SignIn() {
+export default function SignForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordAgain, setPasswordAgain] = useState('');
     const [tabValue, setTabValue] = useState(0);
     const [state, dispatch] = useContext(Context);
 
     const typeEmail = (e) =>         setEmail(e.target.value)
     const typePassword = (e) =>      setPassword(e.target.value)
+    const typePasswordAgain = (e) => setPasswordAgain(e.target.value)
+
     const signInHandler = () =>      dispatch({type: 'SIGN_IN', payload: {email, password}})
-    const signUpHandler = () =>      console.log('signup')
-    const signSwitch = () => {};
+    const signUpHandler = () => {
+        if (password.length < 5) {
+            console.log('too short password')
+        } else if (password !== passwordAgain) {
+            console.log('no match');
+        } else {
+
+        }
+    }
 
     return (
-        <div id={'cica'}
+        <div
              style={{
                  position: 'relative',
                  left: '50%',
@@ -55,6 +65,7 @@ export default function SignIn() {
             </Box>
             <Box width={'75%'} mt={8}>
                 <StyledInput
+                    value={'cjcac'}
                     label="Email"
                     type="email"
                     onChange={typeEmail}
@@ -67,10 +78,11 @@ export default function SignIn() {
                     onChange={typePassword}/>
             </Box>
             <Box width={'75%'} mt={8}>
-                {tabValue===1&&<StyledInput
+                {tabValue===1 && <StyledInput
                     label="Password Again"
                     type="password"
-                    onChange={typePassword}/>}
+                    onChange={typePasswordAgain}/>
+                }
             </Box>
             <Box mt={8}>
                 <Button
@@ -78,8 +90,7 @@ export default function SignIn() {
                     fullWidth
                     type="submit"
                     color="primary"
-                    onClick={tabValue?signUpHandler:signInHandler}
-                >
+                    onClick={tabValue?signUpHandler:signInHandler}>
                     {['Sign In', 'Sign Up'][tabValue]}
                 </Button>
             </Box>
