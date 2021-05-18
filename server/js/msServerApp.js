@@ -116,6 +116,12 @@ async function sendResponse(c2s) {
 
                 console.log(userName)
 
+                // MONGO TODO
+                // - creation of user with genhash
+                // - copy unsavable map's links to its "ownmaps"
+                // - generally, extend the ownmaps capability with editing/viewing rights
+                // - so, the next weeks will be "backend weeks"
+
                 // check if this is not a valid email already
 
                 // if not create USER entry in mongodb!!!
