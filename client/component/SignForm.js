@@ -8,17 +8,25 @@ import {Box} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export default function SignForm() {
+    const [tabValue, setTabValue] = useState(0);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordAgain, setPasswordAgain] = useState('');
-    const [tabValue, setTabValue] = useState(0);
     const [state, dispatch] = useContext(Context);
 
     const typeName = (e) =>             setName(e.target.value)
     const typeEmail = (e) =>            setEmail(e.target.value)
     const typePassword = (e) =>         setPassword(e.target.value)
     const typePasswordAgain = (e) =>    setPasswordAgain(e.target.value)
+
+    const switchMode = () => {
+        setTabValue(!tabValue&1);
+        setName('');
+        setEmail('')
+        setPassword('');
+        setPasswordAgain('');
+    }
 
     const signInHandler = () =>    {
         if (password.length > 5) {
@@ -61,41 +69,15 @@ export default function SignForm() {
             </Box>
             <Box mt={8}>
                 <StyledButtonGroup
-                    action={()=>setTabValue(!tabValue&1)}
+                    action={switchMode}
                     value={['Sign In', 'Sign Up'][tabValue]}
                     valueList={['Sign In', 'Sign Up']}
                 />
             </Box>
-            <Box width={'75%'} mt={8}>
-                <StyledInput
-                    label="Your First Name"
-                    type="name"
-                    onChange={typeName}
-                    autoFocus={true
-                    }/>
-            </Box>
-            <Box width={'75%'} mt={8}>
-                <StyledInput
-                    label="Email"
-                    type="email"
-                    onChange={typeEmail}
-                />
-            </Box>
-            <Box width={'75%'} mt={8}>
-                <StyledInput
-                    label="Password"
-                    type="password"
-                    onChange={typePassword}
-                />
-            </Box>
-            <Box width={'75%'} mt={8}>
-                {tabValue===1 && <StyledInput
-                    label="Password Again"
-                    type="password"
-                    onChange={typePasswordAgain}
-                />
-                }
-            </Box>
+            {tabValue===1 &&    <StyledInput value={name}           label="Your First Name" type=""         onChange={typeName} autoFocus={true}/>}
+            {                   <StyledInput value={email}          label="Email"           type=""         onChange={typeEmail}/>}
+            {                   <StyledInput value={password}       label="Password"        type="password" onChange={typePassword}/>}
+            {tabValue===1 &&    <StyledInput value={passwordAgain}  label="Password Again"  type="password" onChange={typePasswordAgain}/>}
             <Box mt={8}>
                 <Button
                     variant="contained"
