@@ -2,6 +2,9 @@ import {getDefaultMap, mapState, saveMap} from "./MapFlow";
 
 export const editorState = {
     isLoggedIn: false,
+    userName: '',
+    userEmail: '',
+    userPassword: '',
     serverAction: ['ping'],
     serverResponse: {},
     mapSelected: 0,
@@ -40,6 +43,9 @@ const EditorReducer = (state, action) => {
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: [...state.serverAction, 'signIn']};
+        case 'SIGN_UP':
+            let {name, email, password} = payload;
+            return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUp']};
         case 'OPEN_WORKSPACE':
             return {...state, isLoggedIn: true};
         case 'UPDATE_TABS':

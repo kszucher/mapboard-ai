@@ -11,7 +11,7 @@ import {initDomData} from "../core/DomFlow";
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapIdList, mapId, mapSelected, mapStorageOut} = state;
+    const {serverAction, serverResponse, mapIdList, mapId, mapSelected, mapStorageOut, userName, userEmail, userPassword} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -41,6 +41,10 @@ export function Communication() {
                     case 'moveUpMapInTab':      msg = {cred, cmd: 'moveUpMapInTabRequest'};                break;
                     case 'moveDownMapInTab':    msg = {cred, cmd: 'moveDownMapInTabRequest'};              break;
                     case 'saveMap':             msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut}; break;
+                }
+            } else {
+                switch (lastAction) {
+                    case 'signUp': msg = {userData: {userName, userEmail, userPassword}, cmd: 'signUpRequest'}; break;
                 }
             }
         }

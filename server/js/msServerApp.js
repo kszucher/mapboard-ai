@@ -6,10 +6,18 @@ let app = express();
 var { promisify } = require('util');
 var sizeOf = promisify( require('image-size'));
 var MongoHeartbeat = require('mongo-heartbeat');
+const nodemailer = require("nodemailer");
+"use strict";
 
-// improvement for later times
-// https://flaviocopes.com/node-request-data/
-// https://stackoverflow.com/questions/39677993/send-blob-data-to-node-using-fetch-multer-express
+let transporter = nodemailer.createTransport({
+    host: 'mail.privateemail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'info@mindboard.io',
+        pass: 'jH8fB1sB2lS4bQ7d'
+    }
+});
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -101,114 +109,152 @@ async function sendResponse(c2s) {
         s2c = {cmd: 'pingSuccess'};
     } else {
         try {
-            console.log('connected to server...');
-            let currUser = await collectionUsers.findOne(c2s.cred);
-            if (currUser === null) {
-                s2c = {cmd: 'signInFail'}
-            } else {
-                switch (c2s.cmd) {
-                    case 'signInRequest': {
-                        s2c = {
-                            cmd: 'signInSuccess',
-                            headerData: {
-                                mapIdList: currUser.headerMapIdList,
-                                mapNameList: await getHeaderMapNameList(currUser),
-                                mapSelected: currUser.headerMapSelected
-                            }
-                        };
-                        break;
-                    }
-                    case 'openMapRequest': {
-                        await collectionUsers.updateOne(
-                            {_id: ObjectId(currUser._id)},
-                            {$set: {"headerMapSelected": c2s.mapSelected}}
-                        );
-                        s2c = {
-                            cmd: 'openMapSuccess',
-                            mapId: c2s.mapId,
-                            mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})
-                        };
-                        break;
-                    }
-                    case 'createMapInMapRequest': {
-                        s2c = {
-                            cmd: 'createMapInMapSuccess',
-                            newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
-                        };
-                        break;
-                    }
-                    case 'createMapInTabRequest': {
-                        let headerMapIdList = [
-                            ...currUser.headerMapIdList,
-                            (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
-                        ];
-                        await collectionUsers.updateOne(
-                            {_id: ObjectId(currUser._id)},
-                            {$set: {
-                                    "headerMapIdList": headerMapIdList,
-                                    "headerMapSelected": headerMapIdList.length - 1,
-                                }},
-                        );
-                        s2c = getTabData(c2s.cred);
+            if (c2s.cmd === 'signUpRequest') {
+                console.log('try to send mail...')
 
-                        break;
-                    }
-                    case 'removeMapInTabRequest': {
-                        let headerMapIdList = currUser.headerMapIdList;
-                        let headerMapSelected = currUser.headerMapSelected;
-                        if (headerMapSelected > 0) {
-                            headerMapIdList = headerMapIdList.filter((val, i) => i !== headerMapSelected);
+                let {userName, userEmail, userPassword} = c2s.userData;
+
+                console.log(userName)
+
+                // check if this is not a valid email already
+
+                // if not create USER entry in mongodb!!!
+
+                // generate a 4-letter code and save the same code to mongo as a new user with unfinished registration
+
+                // will also need to handle users with unfinished registrations, so if there is an email saved already, ability to resend code IF timeout
+
+
+                // let info = await transporter.sendMail({
+                //     from: "info@mindboard.io",
+                //     to: "christian.szucher@gmail.com", // change this to the user's email
+                //     subject: "MindBoard Email Confirmation",
+                //     text: "",
+                //     html: `
+                //             <p>Hello Krisztian!</p>
+                //             <p>Welcome to MindBoard!<br>You can complete your registration with the following code:</p>
+                //             <p>1234</p>
+                //             <p>Cheers,<br>Krisztian from MindBoard</p>
+                //     `
+                // });
+                s2c = {cmd: 'signUpSuccess'}
+            } else {
+                let currUser = await collectionUsers.findOne(c2s.cred);
+                if (currUser === null) {
+                    s2c = {cmd: 'signInFail'}
+                } else {
+                    switch (c2s.cmd) {
+                        case 'signInRequest': {
+                            s2c = {
+                                cmd: 'signInSuccess',
+                                headerData: {
+                                    mapIdList: currUser.headerMapIdList,
+                                    mapNameList: await getHeaderMapNameList(currUser),
+                                    mapSelected: currUser.headerMapSelected
+                                }
+                            };
+                            break;
+                        }
+                        case 'openMapRequest': {
                             await collectionUsers.updateOne(
                                 {_id: ObjectId(currUser._id)},
-                                {$set: {
-                                        "headerMapIdList": headerMapIdList,
-                                        "headerMapSelected": headerMapSelected  - 1
-                                    }}
+                                {$set: {"headerMapSelected": c2s.mapSelected}}
                             );
+                            s2c = {
+                                cmd: 'openMapSuccess',
+                                mapId: c2s.mapId,
+                                mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})
+                            };
+                            break;
                         }
-                        s2c = getTabData(c2s.cred);
-                        break;
-                    }
-                    case 'moveUpMapInTabRequest': {
-                        let headerMapIdList = currUser.headerMapIdList;
-                        let headerMapSelected = currUser.headerMapSelected;
-                        if (headerMapSelected > 0) {
-                            [headerMapIdList[headerMapSelected], headerMapIdList[headerMapSelected - 1]] =
-                                [headerMapIdList[headerMapSelected - 1], headerMapIdList[headerMapSelected]]
+                        case 'createMapInMapRequest': {
+                            s2c = {
+                                cmd: 'createMapInMapSuccess',
+                                newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
+                            };
+                            break;
+                        }
+                        case 'createMapInTabRequest': {
+                            let headerMapIdList = [
+                                ...currUser.headerMapIdList,
+                                (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
+                            ];
                             await collectionUsers.updateOne(
                                 {_id: ObjectId(currUser._id)},
-                                {$set: {
+                                {
+                                    $set: {
                                         "headerMapIdList": headerMapIdList,
-                                        "headerMapSelected": headerMapSelected - 1
-                                    }}
+                                        "headerMapSelected": headerMapIdList.length - 1,
+                                    }
+                                },
                             );
+                            s2c = getTabData(c2s.cred);
+
+                            break;
                         }
-                        s2c = getTabData(c2s.cred);
-                        break;
-                    }
-                    case 'moveDownMapInTabRequest': {
-                        let headerMapIdList = currUser.headerMapIdList;
-                        let headerMapSelected = currUser.headerMapSelected;
-                        if (headerMapSelected < headerMapIdList.length - 1) {
-                            [headerMapIdList[headerMapSelected], headerMapIdList[headerMapSelected + 1]] =
-                                [headerMapIdList[headerMapSelected + 1], headerMapIdList[headerMapSelected]]
-                            await collectionUsers.updateOne(
-                                {_id: ObjectId(currUser._id)},
-                                {$set: {
-                                        "headerMapIdList": headerMapIdList,
-                                        "headerMapSelected": headerMapSelected + 1
-                                    }}
-                            );
+                        case 'removeMapInTabRequest': {
+                            let headerMapIdList = currUser.headerMapIdList;
+                            let headerMapSelected = currUser.headerMapSelected;
+                            if (headerMapSelected > 0) {
+                                headerMapIdList = headerMapIdList.filter((val, i) => i !== headerMapSelected);
+                                await collectionUsers.updateOne(
+                                    {_id: ObjectId(currUser._id)},
+                                    {
+                                        $set: {
+                                            "headerMapIdList": headerMapIdList,
+                                            "headerMapSelected": headerMapSelected - 1
+                                        }
+                                    }
+                                );
+                            }
+                            s2c = getTabData(c2s.cred);
+                            break;
                         }
-                        s2c = getTabData(c2s.cred);
-                        break;
-                    }
-                    case 'saveMapRequest': {
-                        await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
-                        s2c = {
-                            cmd: 'saveMapRequestSuccess'
-                        };
-                        break;
+                        case 'moveUpMapInTabRequest': {
+                            let headerMapIdList = currUser.headerMapIdList;
+                            let headerMapSelected = currUser.headerMapSelected;
+                            if (headerMapSelected > 0) {
+                                [headerMapIdList[headerMapSelected], headerMapIdList[headerMapSelected - 1]] =
+                                    [headerMapIdList[headerMapSelected - 1], headerMapIdList[headerMapSelected]]
+                                await collectionUsers.updateOne(
+                                    {_id: ObjectId(currUser._id)},
+                                    {
+                                        $set: {
+                                            "headerMapIdList": headerMapIdList,
+                                            "headerMapSelected": headerMapSelected - 1
+                                        }
+                                    }
+                                );
+                            }
+                            s2c = getTabData(c2s.cred);
+                            break;
+                        }
+                        case 'moveDownMapInTabRequest': {
+                            let headerMapIdList = currUser.headerMapIdList;
+                            let headerMapSelected = currUser.headerMapSelected;
+                            if (headerMapSelected < headerMapIdList.length - 1) {
+                                [headerMapIdList[headerMapSelected], headerMapIdList[headerMapSelected + 1]] =
+                                    [headerMapIdList[headerMapSelected + 1], headerMapIdList[headerMapSelected]]
+                                await collectionUsers.updateOne(
+                                    {_id: ObjectId(currUser._id)},
+                                    {
+                                        $set: {
+                                            "headerMapIdList": headerMapIdList,
+                                            "headerMapSelected": headerMapSelected + 1
+                                        }
+                                    }
+                                );
+                            }
+                            s2c = getTabData(c2s.cred);
+                            break;
+                        }
+                        case 'saveMapRequest': {
+                            await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
+                            s2c = {
+                                cmd: 'saveMapRequestSuccess'
+                            };
+                            break;
+                        }
                     }
                 }
             }
