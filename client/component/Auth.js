@@ -7,7 +7,7 @@ import StyledInput from "../component-styled/StyledInput";
 import {Box} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
-export default function SignForm() {
+export default function Auth() {
     const [tabValue, setTabValue] = useState(0);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -78,6 +78,7 @@ export default function SignForm() {
             {                   <StyledInput value={email}          label="Email"           type=""         onChange={typeEmail}/>}
             {                   <StyledInput value={password}       label="Password"        type="password" onChange={typePassword}/>}
             {tabValue===1 &&    <StyledInput value={passwordAgain}  label="Password Again"  type="password" onChange={typePasswordAgain}/>}
+            {/*TODO confirmation page*/}
             <Box mt={8}>
                 <Button
                     variant="contained"
