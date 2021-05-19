@@ -109,45 +109,56 @@ async function sendResponse(c2s) {
         s2c = {cmd: 'pingSuccess'};
     } else {
         try {
+            let currUser;
             if (c2s.cmd === 'signUpRequest') {
-                console.log('try to send mail...')
-
                 let {userName, userEmail, userPassword} = c2s.userData;
-
-                console.log(userName)
-
-                // MONGO TODO
-                // - creation of user with genhash
-                // - copy unsavable map's links to its "ownmaps"
-                // - generally, extend the ownmaps capability with editing/viewing rights
-                // - so, the next weeks will be "backend weeks"
-
-                // check if this is not a valid email already
-
-                // if not create USER entry in mongodb!!!
-
-                // generate a 4-letter code and save the same code to mongo as a new user with unfinished registration
-
-                // will also need to handle users with unfinished registrations, so if there is an email saved already, ability to resend code IF timeout
-
-
-                // let info = await transporter.sendMail({
-                //     from: "info@mindboard.io",
-                //     to: "christian.szucher@gmail.com", // change this to the user's email
-                //     subject: "MindBoard Email Confirmation",
-                //     text: "",
-                //     html: `
-                //             <p>Hello Krisztian!</p>
-                //             <p>Welcome to MindBoard!<br>You can complete your registration with the following code:</p>
-                //             <p>1234</p>
-                //             <p>Cheers,<br>Krisztian from MindBoard</p>
-                //     `
-                // });
-                s2c = {cmd: 'signUpSuccess'}
-            } else {
-                let currUser = await collectionUsers.findOne(c2s.cred);
+                currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null) {
+                    await transporter.sendMail({
+                        from: "info@mindboard.io",
+                        to: userEmail,
+                        subject: "MindBoard Email Confirmation",
+                        text: "",
+                        html: `
+                                <p>Hello ${userName}!</p>
+                                <p>Welcome to MindBoard!<br>You can complete your registration using the following code:</p>
+                                <p>1234</p>
+                                <p>Cheers,<br>Krisztian from MindBoard</p>
+                        `
+                    });
+                    currUser = await collectionUsers.insertOne({
+                        email: userEmail,
+                        password: userPassword,
+                        headerMapSelected: 0,
+                        headerMapIdList: [
+                            ObjectId('5f3fd7ba7a84a4205428c96a'), // features
+                            ObjectId('5ee5e343b1945921ec26c781'), // controls
+                            ObjectId('5f467ee216bcf436da264a69'), // proposals
+                        ],
+                        activationStatus: 'awaitingConfirmation',
+                        confirmationCode: 1567 // TODO generate
+                    })
+                    s2c = {cmd: 'signUpSuccess'};
+                } else {
+                    s2c = {cmd: 'signUpFailEmailAlreadyInUse'};
+                }
+            } else if (c2s.cmd === 'signUpConfirmationRequest') {
+                let {userEmail, confirmationCode} = c2s.userData;
+                currUser = await collectionUsers.findOne({email: userEmail});
+                if (currUser === null || c2s.confirmationCode !== currUser.confirmationCode) {
+                    s2c = {cmd: 'signUpConfirmationFail'};
+                } else {
+                    await collectionUsers.updateOne(
+                        {_id: ObjectId(currUser._id)},
+                        {$set: {"activationStatus": 'activated'}}
+                    );
+                }
+            } else {
+                currUser = await collectionUsers.findOne(c2s.cred);
+                if (currUser === null || currUser.activationStatus === 'awaitingConfirmation') {
                     s2c = {cmd: 'signInFail'}
+                } else if (currUser.activationStatus === 'awaitingConfirmation') {
+                    s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
                     switch (c2s.cmd) {
                         case 'signInRequest': {
