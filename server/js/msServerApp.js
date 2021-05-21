@@ -114,6 +114,7 @@ async function sendResponse(c2s) {
                 let {userName, userEmail, userPassword} = c2s.userData;
                 currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null) {
+                    let confirmationCode = getConfirmationCode();
                     await transporter.sendMail({
                         from: "info@mindboard.io",
                         to: userEmail,
@@ -122,7 +123,7 @@ async function sendResponse(c2s) {
                         html: `
                                 <p>Hello ${userName}!</p>
                                 <p>Welcome to MindBoard!<br>You can complete your registration using the following code:</p>
-                                <p>1234</p>
+                                <p>${confirmationCode}</p>
                                 <p>Cheers,<br>Krisztian from MindBoard</p>
                         `
                     });
@@ -136,7 +137,7 @@ async function sendResponse(c2s) {
                             ObjectId('5f467ee216bcf436da264a69'), // proposals
                         ],
                         activationStatus: 'awaitingConfirmation',
-                        confirmationCode: 1567 // TODO generate
+                        confirmationCode
                     })
                     s2c = {cmd: 'signUpSuccess'};
                 } else {
@@ -306,6 +307,11 @@ async function getHeaderMapNameList (currUser) {
         headerMapNameList.push(m.data[0].content)
     });
     return headerMapNameList;
+}
+
+function getConfirmationCode() {
+    let [min, max] = [1000, 9999];
+    return Math.round(Math.random() * (max - min) + min);
 }
 
 module.exports = app;
