@@ -65,8 +65,9 @@ export const mapDivVisualize = {
                 textDecoration:         cm.linkType !== "" ? "underline" : "",
                 cursor:                 'default',
                 color:                  cm.sTextColor,
-                transition:             '0.5s ease-out',
-                transitionProperty:     'left, top, background-color',
+                transition: 'all 0.5s',
+                transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.2,1.0)',
+                // transitionProperty:     'left, top, background-color',
             };
             let div;
             if (!mapDivData.hasOwnProperty(cm.divId) ||
