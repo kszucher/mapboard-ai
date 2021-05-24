@@ -6,6 +6,9 @@ import {Context} from "../core/Store";
 import StyledInput from "../component-styled/StyledInput";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
+let regEmail = '';
+let regPassword = '';
+
 export default function Auth() {
     const mainTabValues = ['Sign In', 'Sign Up'];
     const subTabValues = ['Step 1', 'Step 2'];
@@ -75,6 +78,8 @@ export default function Auth() {
         if (password.length < 5)  {
             setFeedbackMessage('Your password must be at least 5 characters.')
         } else {
+            regEmail = email;
+            regPassword = password;
             dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
         }
     }
@@ -90,8 +95,11 @@ export default function Auth() {
             case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
             case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
             case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
-            case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); break;
-
+            case 'signUpStep2Success':
+                switchMainMode(mainTabValues[0]);
+                setEmail(regEmail);
+                setPassword(regPassword);
+                break;
         }
     }, [serverResponseToUser]);
 
