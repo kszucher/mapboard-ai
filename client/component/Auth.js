@@ -85,7 +85,13 @@ export default function Auth() {
     useEffect(() => {
         let lastResponse = [...serverResponseToUser].pop();
         switch (lastResponse) {
-            case 'signUpStep1FailEmailAlreadyInUse': setFeedbackMessage('Email address already in use.'); break;
+            case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
+            case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break;
+            case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
+            case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
+            case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
+            case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); break;
+
         }
     }, [serverResponseToUser]);
 
