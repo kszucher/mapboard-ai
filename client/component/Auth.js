@@ -63,7 +63,9 @@ export default function Auth() {
     }
 
     const signInHandler = () =>    {
-        if (password.length < 5) {
+        if (email === '' || password === '') {
+            setFeedbackMessage('Missing information.')
+        } else if (password.length < 5) {
             setFeedbackMessage('Too short password.')
         } else {
             dispatch({type: 'SIGN_IN', payload: {email, password}})
@@ -121,7 +123,8 @@ export default function Auth() {
                 value={name}
                 label="Your First Name"
                 onChange={typeName}
-                autoFocus={true} />
+                autoFocus
+            />
             }
             <StyledInput
                 value={email}
@@ -158,7 +161,7 @@ export default function Auth() {
                 color="primary"
                 disabled={
                     mainTabValue === 0
-                        ? (name === '' || email === '')
+                        ? false // (email === '' || password === '') // autofill issue
                         : (subTabValue === 0
                             ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
                             : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
