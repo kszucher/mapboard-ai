@@ -75,7 +75,7 @@ export default function Auth() {
         if (password.length < 5)  {
             setFeedbackMessage('Your password must be at least 5 characters.')
         } else {
-            dispatch({type: 'SIGN_UP', payload: {name, email, password}});
+            dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
         }
     }
     const signUpStep2Handler = () => {
@@ -85,7 +85,7 @@ export default function Auth() {
     useEffect(() => {
         let lastResponse = [...serverResponseToUser].pop();
         switch (lastResponse) {
-            case 'signUpFailEmailAlreadyInUse': setFeedbackMessage('Email address already in use.'); break;
+            case 'signUpStep1FailEmailAlreadyInUse': setFeedbackMessage('Email address already in use.'); break;
         }
     }, [serverResponseToUser]);
 

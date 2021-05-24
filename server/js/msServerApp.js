@@ -110,7 +110,7 @@ async function sendResponse(c2s) {
     } else {
         try {
             let currUser;
-            if (c2s.cmd === 'signUpRequest') {
+            if (c2s.cmd === 'signUpStep1Request') {
                 let {userName, userEmail, userPassword} = c2s.userData;
                 currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null) {
@@ -141,7 +141,7 @@ async function sendResponse(c2s) {
                         activationStatus: 'awaitingConfirmation',
                         confirmationCode
                     })
-                    s2c = {cmd: 'signUpSuccess'};
+                    s2c = {cmd: 'signUpStep1Success'};
                 } else {
                     s2c = {cmd: 'signUpFailEmailAlreadyInUse'};
                 }

@@ -45,9 +45,9 @@ const EditorReducer = (state, action) => {
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: [...state.serverAction, 'signIn']};
-        case 'SIGN_UP':
+        case 'SIGN_UP_STEP_1':
             let {name, email, password} = payload;
-            return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUp']};
+            return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUpStep1']};
         case 'OPEN_WORKSPACE':
             return {...state, isLoggedIn: true};
         case 'UPDATE_TABS':

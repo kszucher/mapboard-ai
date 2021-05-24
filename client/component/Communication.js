@@ -44,7 +44,7 @@ export function Communication() {
                 }
             } else {
                 switch (lastAction) {
-                    case 'signUp': msg = {userData: {userName, userEmail, userPassword}, cmd: 'signUpRequest'}; break;
+                    case 'signUpStep1': msg = {userData: {userName, userEmail, userPassword}, cmd: 'signUpStep1Request'}; break;
                 }
             }
         }
@@ -74,7 +74,7 @@ export function Communication() {
                     localStorage.clear();
                     break;
                 }
-                case 'signUpFailEmailAlreadyInUse': {
+                case 'signUpStep1FailEmailAlreadyInUse': {
                     dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
                     break;
                 }
