@@ -120,12 +120,14 @@ async function sendResponse(c2s) {
                         to: userEmail,
                         subject: "MindBoard Email Confirmation",
                         text: "",
-                        html: `
+                        html:
+                            `
                                 <p>Hello ${userName}!</p>
                                 <p>Welcome to MindBoard!<br>You can complete your registration using the following code:</p>
                                 <p>${confirmationCode}</p>
                                 <p>Cheers,<br>Krisztian from MindBoard</p>
-                        `
+                            `
+                        // TODO send out slack invite https://join.slack.com/t/mindboardio/shared_invite/zt-qunqabbo-fE_2dnrU7GPuEiDsAy6L~A
                     });
                     currUser = await collectionUsers.insertOne({
                         email: userEmail,
