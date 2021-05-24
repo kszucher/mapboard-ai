@@ -4,7 +4,6 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import {Context} from "../core/Store";
 import StyledInput from "../component-styled/StyledInput";
-import {Box} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export default function Auth() {
@@ -47,58 +46,48 @@ export default function Auth() {
                 transform: 'translate(-50%)',
                 top: 96,
                 width: 48*8,
-                // height: 48*10,
                 border: "1px solid #fbfafc",
                 borderRadius: '16px',
                 backgroundColor: '#fbfafc',
                 padding: 20,
-                display: 'flex',
+                display: 'inline-flex',
+                flexWrap: 'wrap',
+                gap: 16,
                 flexDirection: 'column',
                 alignItems: 'center',
-                // https://stackoverflow.com/questions/26349987/how-do-i-apply-a-style-to-all-children-of-an-element
             }}>
-            <Box mt={8}>
-                <Typography component="h1" variant="h5">
-                    MindBoard
-                </Typography>
-            </Box>
-            <Box mt={8}>
-                <Typography component="h1" variant="h6">
-                    Private Beta
-                </Typography>
-            </Box>
-            <Box mt={8}>
-                <StyledButtonGroup
-                    action={switchMode}
-                    value={['Sign In', 'Sign Up'][tabValue]}
-                    valueList={['Sign In', 'Sign Up']}
-                />
-            </Box>
+            <Typography component="h1" variant="h5">
+                MindBoard
+            </Typography>
+            <Typography component="h1" variant="h6">
+                Private Beta
+            </Typography>
+            <StyledButtonGroup
+                action={switchMode}
+                value={['Sign In', 'Sign Up'][tabValue]}
+                valueList={['Sign In', 'Sign Up']}
+            />
             {tabValue===1 &&    <StyledInput value={name}           label="Your First Name" type=""         onChange={typeName} autoFocus={true}/>}
             {                   <StyledInput value={email}          label="Email"           type=""         onChange={typeEmail}/>}
             {                   <StyledInput value={password}       label="Password"        type="password" onChange={typePassword}/>}
             {tabValue===1 &&    <StyledInput value={passwordAgain}  label="Password Again"  type="password" onChange={typePasswordAgain}/>}
             {/*TODO confirmation page*/}
-            <Box mt={8}>
-                <Button
-                    variant="contained"
-                    fullWidth
-                    type="submit"
-                    color="primary"
-                    onClick={tabValue?signUpHandler:signInHandler}>
-                    {['Sign In', 'Sign Up'][tabValue]}
-                </Button>
-            </Box>
-            <Box mt={8}>
-                <Typography variant="body2" color="textSecondary" align="center">
-                    {'Copyright © '}
-                    <Link color="inherit" href="http://mindboard.io/">
-                        MindBoard
-                    </Link>{' '}
-                    {new Date().getFullYear()}
-                    {'.'}
-                </Typography>
-            </Box>
+            <Button
+                variant="contained"
+                fullWidth
+                type="submit"
+                color="primary"
+                onClick={tabValue?signUpHandler:signInHandler}>
+                {['Sign In', 'Sign Up'][tabValue]}
+            </Button>
+            <Typography variant="body2" color="textSecondary" align="center">
+                {'Copyright © '}
+                <Link color="inherit" href="http://mindboard.io/">
+                    MindBoard
+                </Link>{' '}
+                {new Date().getFullYear()}
+                {'.'}
+            </Typography>
         </div>
     );
 }
