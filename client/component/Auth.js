@@ -7,7 +7,8 @@ import StyledInput from "../component-styled/StyledInput";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export default function Auth() {
-    const [tabValue, setTabValue] = useState(0);
+    const [mainTabValue, setMainTabValue] = useState(0);
+    const [subTabValue, setSubTabValue] = useState(0);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,12 +20,17 @@ export default function Auth() {
     const typePassword = (e) =>         setPassword(e.target.value)
     const typePasswordAgain = (e) =>    setPasswordAgain(e.target.value)
 
-    const switchMode = () => {
-        setTabValue(!tabValue&1);
+    const switchMainMode = () => {
+        setMainTabValue(!mainTabValue&1);
         setName('');
         setEmail('')
         setPassword('');
         setPasswordAgain('');
+    }
+
+    const switchSubMode = () => {
+        setSubTabValue(!subTabValue&1);
+
     }
 
     const signInHandler = () =>    {
@@ -37,6 +43,9 @@ export default function Auth() {
             dispatch({type: 'SIGN_UP', payload: {name, email, password}})
         }
     }
+
+    const mainSelectorValues = ['Sign In', 'Sign Up'];
+    const subSelectorValues = ['Step 1', 'Step 2'];
 
     return (
         <div
@@ -56,29 +65,21 @@ export default function Auth() {
                 flexDirection: 'column',
                 alignItems: 'center',
             }}>
-            <Typography component="h1" variant="h5">
-                MindBoard
-            </Typography>
-            <Typography component="h1" variant="h6">
-                Private Beta
-            </Typography>
-            <StyledButtonGroup
-                action={switchMode}
-                value={['Sign In', 'Sign Up'][tabValue]}
-                valueList={['Sign In', 'Sign Up']}
-            />
-            {tabValue===1 &&    <StyledInput value={name}           label="Your First Name" type=""         onChange={typeName} autoFocus={true}/>}
-            {                   <StyledInput value={email}          label="Email"           type=""         onChange={typeEmail}/>}
-            {                   <StyledInput value={password}       label="Password"        type="password" onChange={typePassword}/>}
-            {tabValue===1 &&    <StyledInput value={passwordAgain}  label="Password Again"  type="password" onChange={typePasswordAgain}/>}
-            {/*TODO confirmation page*/}
+            <Typography component="h1" variant="h5">MindBoard</Typography>
+            <Typography component="h1" variant="h6">Private Beta</Typography>
+            {                       <StyledButtonGroup  value={mainSelectorValues[mainTabValue]} valueList={mainSelectorValues} action={switchMainMode} />}
+            {mainTabValue===1 &&    <StyledButtonGroup  value={subSelectorValues[subTabValue]}   valueList={subSelectorValues}  action={switchSubMode}  />}
+            {mainTabValue===1 &&    <StyledInput        value={name}           label="Your First Name" onChange={typeName}          autoFocus={true} />}
+            {                       <StyledInput        value={email}          label="Email"           onChange={typeEmail}                          />}
+            {                       <StyledInput        value={password}       label="Password"        onChange={typePassword}      type="password"  />}
+            {mainTabValue===1 &&    <StyledInput        value={passwordAgain}  label="Password Again"  onChange={typePasswordAgain} type="password"  />}
             <Button
                 variant="contained"
                 fullWidth
                 type="submit"
                 color="primary"
-                onClick={tabValue?signUpHandler:signInHandler}>
-                {['Sign In', 'Sign Up'][tabValue]}
+                onClick={mainTabValue ? signUpHandler : signInHandler}>
+                {mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')}
             </Button>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
