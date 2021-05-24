@@ -13,36 +13,34 @@ export default function Auth() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordAgain, setPasswordAgain] = useState('');
+    const [confirmationCode, setConfirmationCode] = useState('');
     const [state, dispatch] = useContext(Context);
 
     const typeName = (e) =>             setName(e.target.value)
     const typeEmail = (e) =>            setEmail(e.target.value)
     const typePassword = (e) =>         setPassword(e.target.value)
     const typePasswordAgain = (e) =>    setPasswordAgain(e.target.value)
+    const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) setConfirmationCode(e.target.value)}
 
     const switchMainMode = () => {
         setMainTabValue(!mainTabValue&1);
+        if (mainTabValue) setSubTabValue(0);
         setName('');
         setEmail('')
         setPassword('');
         setPasswordAgain('');
+        setConfirmationCode('');
     }
-
     const switchSubMode = () => {
         setSubTabValue(!subTabValue&1);
-
+        setPassword('');
+        setPasswordAgain('');
+        setConfirmationCode('');
     }
 
-    const signInHandler = () =>    {
-        if (password.length > 5) {
-            dispatch({type: 'SIGN_IN', payload: {email, password}})
-        }
-    }
-    const signUpHandler = () => {
-        if (password.length > 5 && password === passwordAgain) {
-            dispatch({type: 'SIGN_UP', payload: {name, email, password}})
-        }
-    }
+    const signInHandler = () =>    {    if (password.length > 5)                                {dispatch({type: 'SIGN_IN', payload: {email, password}})}}
+    const signUpStep1Handler = () => {  if (password.length > 5 && password === passwordAgain)  {dispatch({type: 'SIGN_UP', payload: {name, email, password}})}}
+    const signUpStep2Handler = () => {  console.log('checking confirmation code...')}
 
     const mainSelectorValues = ['Sign In', 'Sign Up'];
     const subSelectorValues = ['Step 1', 'Step 2'];
@@ -67,18 +65,19 @@ export default function Auth() {
             }}>
             <Typography component="h1" variant="h5">MindBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-            {                       <StyledButtonGroup  value={mainSelectorValues[mainTabValue]} valueList={mainSelectorValues} action={switchMainMode} />}
-            {mainTabValue===1 &&    <StyledButtonGroup  value={subSelectorValues[subTabValue]}   valueList={subSelectorValues}  action={switchSubMode}  />}
-            {mainTabValue===1 &&    <StyledInput        value={name}           label="Your First Name" onChange={typeName}          autoFocus={true} />}
-            {                       <StyledInput        value={email}          label="Email"           onChange={typeEmail}                          />}
-            {                       <StyledInput        value={password}       label="Password"        onChange={typePassword}      type="password"  />}
-            {mainTabValue===1 &&    <StyledInput        value={passwordAgain}  label="Password Again"  onChange={typePasswordAgain} type="password"  />}
+            {                                       <StyledButtonGroup value={mainSelectorValues[mainTabValue]} valueList={mainSelectorValues} action={switchMainMode} />}
+            {mainTabValue===1 &&                    <StyledButtonGroup value={subSelectorValues[subTabValue]}   valueList={subSelectorValues}  action={switchSubMode}  />}
+            {mainTabValue===1 && subTabValue===0 && <StyledInput       value={name}             label="Your First Name"   onChange={typeName}             autoFocus={true} />}
+            {                                       <StyledInput       value={email}            label="Email"             onChange={typeEmail}                             />}
+            {                    subTabValue===0 && <StyledInput       value={password}         label="Password"          onChange={typePassword}         type="password"  />}
+            {mainTabValue===1 && subTabValue===0 && <StyledInput       value={passwordAgain}    label="Password Again"    onChange={typePasswordAgain}    type="password"  />}
+            {mainTabValue===1 && subTabValue===1 && <StyledInput       value={confirmationCode} label="Confirmation Code" onChange={typeConfirmationCode}                  />}
             <Button
                 variant="contained"
                 fullWidth
                 type="submit"
                 color="primary"
-                onClick={mainTabValue ? signUpHandler : signInHandler}>
+                onClick={mainTabValue === 0 ? signInHandler : (subTabValue === 0 ? signUpStep1Handler : signUpStep2Handler)}>
                 {mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')}
             </Button>
             <Typography variant="body2" color="textSecondary" align="center">
