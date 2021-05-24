@@ -22,10 +22,18 @@ export default function Auth() {
     const [state, dispatch] = useContext(Context);
     const {serverResponseToUser} = state;
 
-    const typeName = (e) =>             setName(e.target.value)
-    const typeEmail = (e) =>            setEmail(e.target.value)
-    const typePassword = (e) =>         setPassword(e.target.value)
-    const typePasswordAgain = (e) =>    setPasswordAgain(e.target.value)
+    const typeName = (e) => {
+        setName(e.target.value)
+    }
+    const typeEmail = (e) => {
+        setEmail(e.target.value)
+    }
+    const typePassword = (e) => {
+        setPassword(e.target.value)
+    }
+    const typePasswordAgain = (e) => {
+        setPasswordAgain(e.target.value)
+    }
     const typeConfirmationCode = (e) => {
         if (!isNaN(e.target.value) && e.target.value.length <= 4) {
             setConfirmationCode(e.target.value)
@@ -68,7 +76,9 @@ export default function Auth() {
             dispatch({type: 'SIGN_UP', payload: {name, email, password}});
         }
     }
-    const signUpStep2Handler = () => {  console.log('checking confirmation code...')}
+    const signUpStep2Handler = () => {
+        console.log('checking confirmation code...')
+    }
 
     useEffect(() => {
         let lastResponse = [...serverResponseToUser].pop();
@@ -148,7 +158,7 @@ export default function Auth() {
                 color="primary"
                 disabled={
                     mainTabValue === 0
-                        ? false
+                        ? (name === '' || email === '')
                         : (subTabValue === 0
                             ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
                             : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
