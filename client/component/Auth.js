@@ -7,6 +7,9 @@ import StyledInput from "../component-styled/StyledInput";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export default function Auth() {
+    const mainTabValues = ['Sign In', 'Sign Up'];
+    const subTabValues = ['Step 1', 'Step 2'];
+
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
     const [name, setName] = useState('');
@@ -23,24 +26,32 @@ export default function Auth() {
     const typeEmail = (e) =>            setEmail(e.target.value)
     const typePassword = (e) =>         setPassword(e.target.value)
     const typePasswordAgain = (e) =>    setPasswordAgain(e.target.value)
-    const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) setConfirmationCode(e.target.value)}
-
-    const switchMainMode = () => {
-        setMainTabValue(!mainTabValue&1);
-        if (mainTabValue) setSubTabValue(0);
-        setName('');
-        setEmail('')
-        setPassword('');
-        setPasswordAgain('');
-        setConfirmationCode('');
-        setFeedbackMessage('');
+    const typeConfirmationCode = (e) => {
+        if (!isNaN(e.target.value) && e.target.value.length <= 4) {
+            setConfirmationCode(e.target.value)
+        }
     }
-    const switchSubMode = () => {
-        setSubTabValue(!subTabValue&1);
-        setPassword('');
-        setPasswordAgain('');
-        setConfirmationCode('');
-        setFeedbackMessage('');
+
+    const switchMainMode = (e) => {
+        if (e !== mainTabValues[mainTabValue]) {
+            setMainTabValue(!mainTabValue & 1);
+            if (mainTabValue) setSubTabValue(0);
+            setName('');
+            setEmail('')
+            setPassword('');
+            setPasswordAgain('');
+            setConfirmationCode('');
+            setFeedbackMessage('');
+        }
+    }
+    const switchSubMode = (e) => {
+        if (e !== subTabValues[subTabValue]) {
+            setSubTabValue(!subTabValue & 1);
+            setPassword('');
+            setPasswordAgain('');
+            setConfirmationCode('');
+            setFeedbackMessage('');
+        }
     }
 
     const signInHandler = () =>    {
@@ -53,16 +64,11 @@ export default function Auth() {
     const signUpStep1Handler = () => {
         if (password.length < 5)  {
             setFeedbackMessage('Your password must be at least 5 characters.')
-        } else if (password !== passwordAgain) {
-            setFeedbackMessage(`Passwords don't match.`)
         } else {
             dispatch({type: 'SIGN_UP', payload: {name, email, password}});
         }
     }
     const signUpStep2Handler = () => {  console.log('checking confirmation code...')}
-
-    const mainSelectorValues = ['Sign In', 'Sign Up'];
-    const subSelectorValues = ['Step 1', 'Step 2'];
 
     useEffect(() => {
         let lastResponse = [...serverResponseToUser].pop();
@@ -91,8 +97,8 @@ export default function Auth() {
             }}>
             <Typography component="h1" variant="h5">MindBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-            {                                       <StyledButtonGroup value={mainSelectorValues[mainTabValue]} valueList={mainSelectorValues} action={switchMainMode} />}
-            {mainTabValue===1 &&                    <StyledButtonGroup value={subSelectorValues[subTabValue]}   valueList={subSelectorValues}  action={switchSubMode}  />}
+            {                                       <StyledButtonGroup value={mainTabValues[mainTabValue]} valueList={mainTabValues} action={switchMainMode} />}
+            {mainTabValue===1 &&                    <StyledButtonGroup value={subTabValues[subTabValue]}   valueList={subTabValues}  action={switchSubMode}  />}
             {mainTabValue===1 && subTabValue===0 && <StyledInput       value={name}             label="Your First Name"   onChange={typeName}             autoFocus={true} />}
             {                                       <StyledInput       value={email}            label="Email"             onChange={typeEmail}                             />}
             {                    subTabValue===0 && <StyledInput       value={password}         label="Password"          onChange={typePassword}         type="password"  />}
@@ -107,8 +113,30 @@ export default function Auth() {
                 fullWidth
                 type="submit"
                 color="primary"
-                onClick={mainTabValue === 0 ? signInHandler : (subTabValue === 0 ? signUpStep1Handler : signUpStep2Handler)}>
-                {mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')}
+                disabled={
+                    mainTabValue === 0
+                        ? false
+                        : (subTabValue === 0
+                            ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
+                            : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
+                        )
+                }
+                onClick={
+                    mainTabValue === 0
+                        ? signInHandler
+                        : (subTabValue === 0
+                            ? signUpStep1Handler
+                            : signUpStep2Handler
+                        )
+                }>
+                {
+                    mainTabValue === 0
+                        ? 'Sign In'
+                        : (subTabValue === 0
+                            ? 'Get Confirmation Code'
+                            : 'Enter Confirmation Code'
+                        )
+                }
             </Button>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
