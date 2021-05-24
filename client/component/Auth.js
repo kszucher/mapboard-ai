@@ -79,7 +79,7 @@ export default function Auth() {
         }
     }
     const signUpStep2Handler = () => {
-        console.log('checking confirmation code...')
+        dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
     }
 
     useEffect(() => {

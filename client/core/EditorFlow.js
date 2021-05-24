@@ -5,6 +5,7 @@ export const editorState = {
     userName: '',
     userEmail: '',
     userPassword: '',
+    userConfirmationCode: '',
     serverAction: ['ping'],
     serverResponse: {},
     serverResponseToUser: [''],
@@ -45,9 +46,14 @@ const EditorReducer = (state, action) => {
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: [...state.serverAction, 'signIn']};
-        case 'SIGN_UP_STEP_1':
+        case 'SIGN_UP_STEP_1': {
             let {name, email, password} = payload;
             return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUpStep1']};
+        }
+        case 'SIGN_UP_STEP_2': {
+            let {email, confirmationCode} = payload;
+            return {...state, userEmail: email, userConfirmationCode: confirmationCode, serverAction: [...state.serverAction, 'signUpStep2']};
+        }
         case 'OPEN_WORKSPACE':
             return {...state, isLoggedIn: true};
         case 'UPDATE_TABS':

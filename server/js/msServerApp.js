@@ -143,18 +143,24 @@ async function sendResponse(c2s) {
                     })
                     s2c = {cmd: 'signUpStep1Success'};
                 } else {
-                    s2c = {cmd: 'signUpFailEmailAlreadyInUse'};
+                    s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'};
                 }
-            } else if (c2s.cmd === 'signUpConfirmationRequest') {
-                let {userEmail, confirmationCode} = c2s.userData;
+            } else if (c2s.cmd === 'signUpStep2Request') {
+                let {userEmail, userConfirmationCode} = c2s.userData;
                 currUser = await collectionUsers.findOne({email: userEmail});
-                if (currUser === null || c2s.confirmationCode !== currUser.confirmationCode) {
-                    s2c = {cmd: 'signUpConfirmationFail'};
+                if (currUser === null ) {
+                    s2c = {cmd: 'signUpStep2FailUnknownUser'};
+                } else if (currUser.activationStatus === 'activated') {
+                    s2c = {cmd: 'signUpStep2FailAlreadyActivated'};
+                } else if (parseInt(userConfirmationCode) !== currUser.confirmationCode) {
+                    console.log([userConfirmationCode, currUser.confirmationCode])
+                    s2c = {cmd: 'signUpStep2FailWrongCode'};
                 } else {
                     await collectionUsers.updateOne(
                         {_id: ObjectId(currUser._id)},
                         {$set: {"activationStatus": 'activated'}}
                     );
+                    s2c = {cmd: 'signUpStep2Success'};
                 }
             } else {
                 currUser = await collectionUsers.findOne(c2s.cred);
