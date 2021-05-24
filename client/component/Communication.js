@@ -74,6 +74,10 @@ export function Communication() {
                     localStorage.clear();
                     break;
                 }
+                case 'signUpFailEmailAlreadyInUse': {
+                    dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
+                    break;
+                }
                 case 'openMapSuccess': {
                     mapState.isLoading = true;
                     mapDispatch('setData', serverResponse.mapStorage.data);

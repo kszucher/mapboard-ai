@@ -7,6 +7,7 @@ export const editorState = {
     userPassword: '',
     serverAction: ['ping'],
     serverResponse: {},
+    serverResponseToUser: [''],
     mapSelected: 0,
     mapIdList: [],
     mapId: '',
@@ -40,6 +41,7 @@ const EditorReducer = (state, action) => {
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
             return JSON.parse(InitEditorState);
         case 'SERVER_RESPONSE': return {...state, serverResponse: payload};
+        case 'SERVER_RESPONSE_TO_USER': return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: [...state.serverAction, 'signIn']};

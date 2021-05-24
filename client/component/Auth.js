@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +14,10 @@ export default function Auth() {
     const [password, setPassword] = useState('');
     const [passwordAgain, setPasswordAgain] = useState('');
     const [confirmationCode, setConfirmationCode] = useState('');
+    const [feedbackMessage, setFeedbackMessage] = useState('');
+
     const [state, dispatch] = useContext(Context);
+    const {serverResponseToUser} = state;
 
     const typeName = (e) =>             setName(e.target.value)
     const typeEmail = (e) =>            setEmail(e.target.value)
@@ -30,20 +33,43 @@ export default function Auth() {
         setPassword('');
         setPasswordAgain('');
         setConfirmationCode('');
+        setFeedbackMessage('');
     }
     const switchSubMode = () => {
         setSubTabValue(!subTabValue&1);
         setPassword('');
         setPasswordAgain('');
         setConfirmationCode('');
+        setFeedbackMessage('');
     }
 
-    const signInHandler = () =>    {    if (password.length > 5)                                {dispatch({type: 'SIGN_IN', payload: {email, password}})}}
-    const signUpStep1Handler = () => {  if (password.length > 5 && password === passwordAgain)  {dispatch({type: 'SIGN_UP', payload: {name, email, password}})}}
+    const signInHandler = () =>    {
+        if (password.length < 5) {
+            setFeedbackMessage('Too short password.')
+        } else {
+            dispatch({type: 'SIGN_IN', payload: {email, password}})
+        }
+    }
+    const signUpStep1Handler = () => {
+        if (password.length < 5)  {
+            setFeedbackMessage('Your password must be at least 5 characters.')
+        } else if (password !== passwordAgain) {
+            setFeedbackMessage(`Passwords don't match.`)
+        } else {
+            dispatch({type: 'SIGN_UP', payload: {name, email, password}});
+        }
+    }
     const signUpStep2Handler = () => {  console.log('checking confirmation code...')}
 
     const mainSelectorValues = ['Sign In', 'Sign Up'];
     const subSelectorValues = ['Step 1', 'Step 2'];
+
+    useEffect(() => {
+        let lastResponse = [...serverResponseToUser].pop();
+        switch (lastResponse) {
+            case 'signUpFailEmailAlreadyInUse': setFeedbackMessage('Email address already in use.'); break;
+        }
+    }, [serverResponseToUser]);
 
     return (
         <div
@@ -72,6 +98,10 @@ export default function Auth() {
             {                    subTabValue===0 && <StyledInput       value={password}         label="Password"          onChange={typePassword}         type="password"  />}
             {mainTabValue===1 && subTabValue===0 && <StyledInput       value={passwordAgain}    label="Password Again"    onChange={typePasswordAgain}    type="password"  />}
             {mainTabValue===1 && subTabValue===1 && <StyledInput       value={confirmationCode} label="Confirmation Code" onChange={typeConfirmationCode}                  />}
+            {feedbackMessage !== '' &&
+            <Typography variant="body2" color="textSecondary" align="center">
+                {feedbackMessage}
+            </Typography>}
             <Button
                 variant="contained"
                 fullWidth
