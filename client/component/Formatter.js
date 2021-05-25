@@ -16,6 +16,7 @@ export function Formatter () {
     const cmdResetAll =       e => dispatch({type: 'CMD_RESET_ALL',     payload: e});
     const cmdReset =          e => dispatch({type: 'CMD_RESET',         payload: e});
     const cmdTaskToggle =     e => dispatch({type: 'CMD_TASK_TOGGLE',   payload: e});
+    const cmdSubmapToggle =   e => dispatch({type: 'CMD_SUBMAP_TOGGLE', payload: e});
 
     return (
         <div style={{
@@ -41,16 +42,17 @@ export function Formatter () {
                 paddingLeft: 12,
                 paddingRight: 12,
             }}>
-                {                            <StyledButtonGroup size="small" action={setDensity}     value={density}     valueList={['small', 'large']}/>}
-                {                            <StyledButtonGroup size="small" action={setAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
-                {                            <StyledButtonGroup size="small" action={setformatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdResetAll}    value={''}          valueList={['reset format']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}  value={''}          valueList={['convert to task']}/>}
-                {formatMode !== '' &&        <StyledButtonGroup size="small" action={cmdReset}       value={''}          valueList={['reset ' + formatMode]}/>}
-                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={setLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
-                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={setLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
-                {formatMode === 'border' &&  <StyledButtonGroup size="small" action={setBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
-                {formatMode === 'text' &&    <StyledButtonGroup size="small" action={setFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {                            <StyledButtonGroup size="small" action={setDensity}      value={density}     valueList={['small', 'large']}/>}
+                {                            <StyledButtonGroup size="small" action={setAlignment}    value={alignment}   valueList={['adaptive', 'centered']}/>}
+                {                            <StyledButtonGroup size="small" action={setformatMode}   value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdResetAll}     value={''}          valueList={['reset format']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}   value={''}          valueList={['convert to task']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdSubmapToggle} value={''}          valueList={['convert to submap']}/>}
+                {formatMode !== '' &&        <StyledButtonGroup size="small" action={cmdReset}        value={''}          valueList={['reset ' + formatMode]}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={setLineWidth}    value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={setLineType}     value={lineType}    valueList={['bezier', 'edge']}/>}
+                {formatMode === 'border' &&  <StyledButtonGroup size="small" action={setBorderWidth}  value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'text' &&    <StyledButtonGroup size="small" action={setFontSize}     value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
             </div>
         </div>
     );

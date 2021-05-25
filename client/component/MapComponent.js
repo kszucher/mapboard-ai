@@ -52,6 +52,9 @@ export function MapComponent() {
                 }
                 redraw();
                 checkPop();
+            } else if (['submapToggle'].includes(lastAction)) {
+                let {lastPath} = selectionState;
+                dispatch({type: 'CREATE_MAP_IN_MAP', payload: mapref(lastPath).content});
             } else {
                 console.log('unknown action: ' + lastAction);
             }
