@@ -151,7 +151,7 @@ async function sendResponse(c2s) {
                 currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null ) {
                     s2c = {cmd: 'signUpStep2FailUnknownUser'};
-                } else if (currUser.activationStatus === 'activated') {
+                } else if (currUser.activationStatus === 'completed') {
                     s2c = {cmd: 'signUpStep2FailAlreadyActivated'};
                 } else if (parseInt(userConfirmationCode) !== currUser.confirmationCode) {
                     console.log([userConfirmationCode, currUser.confirmationCode])
@@ -159,7 +159,7 @@ async function sendResponse(c2s) {
                 } else {
                     await collectionUsers.updateOne(
                         {_id: ObjectId(currUser._id)},
-                        {$set: {"activationStatus": 'activated'}}
+                        {$set: {"activationStatus": 'completed'}}
                     );
                     s2c = {cmd: 'signUpStep2Success'};
                 }
