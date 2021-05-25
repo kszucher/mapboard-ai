@@ -206,3 +206,7 @@ export default EditorReducer;
 const mapValues = (stringArray, valueArray, conditionValue) => {
     return stringArray[valueArray.findIndex(v=>v===conditionValue)]
 }
+
+// setInterval(function() {
+//     remoteDispatch({type: 'SAVE_MAP'});
+//     }, 3000);
