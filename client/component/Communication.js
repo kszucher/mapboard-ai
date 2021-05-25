@@ -1,9 +1,16 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
-import {Context} from "../core/Store";
+import {Context, remoteDispatch, remoteGetState} from "../core/Store";
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, mapDispatch, mapState, push, redraw} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
+
+let waitingForServer = 0;
+setInterval(function() {
+    if (!waitingForServer && remoteGetState().mapId !== '') {
+        remoteDispatch({type: 'SAVE_MAP'});
+    }
+}, 3000);
 
 /**
  * @return {null}
@@ -50,12 +57,14 @@ export function Communication() {
             }
         }
         console.log('SERVER_MESSAGE: ' + msg.cmd);
+        waitingForServer = 1;
         post(msg, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     }, [serverAction]);
 
     useEffect(() => {
         if (serverResponse.cmd) {
             console.log('SERVER_RESPONSE: ' + serverResponse.cmd);
+            waitingForServer = 0;
             switch (serverResponse.cmd) {
                 case 'pingSuccess': {
                     const cred = JSON.parse(localStorage.getItem('cred'));
