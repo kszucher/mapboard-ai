@@ -149,15 +149,24 @@ const EditorReducer = (state, action) => {
                 serverAction: [...state.serverAction, 'moveDownMapInTab']
             };
         }
-        case 'SAVE_MAP':
-            return {...state,
-                mapStorageOut: {
-                    data: saveMap(),
-                    density: mapState.density,
-                    alignment: mapState.alignment,
-                },
-                serverAction: [...state.serverAction, 'saveMap']
-            };
+        case 'SAVE_MAP': {
+            if (state.mapId === '5f3fd7ba7a84a4205428c96a' ||
+                state.mapId === '5ee5e343b1945921ec26c781' ||
+                state.mapId === '5f467ee216bcf436da264a69') {
+                console.log('unable to save');
+                return state;
+            } else {
+                return {
+                    ...state,
+                    mapStorageOut: {
+                        data: saveMap(),
+                        density: mapState.density,
+                        alignment: mapState.alignment,
+                    },
+                    serverAction: [...state.serverAction, 'saveMap']
+                }
+            }
+        }
         case 'MOVE_MAP_TO_SUBMAP': {
             return state;
         }
