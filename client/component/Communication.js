@@ -48,7 +48,6 @@ export function Communication() {
                     case 'moveUpMapInTab':      msg = {cred, cmd: 'moveUpMapInTabRequest'};                     break;
                     case 'moveDownMapInTab':    msg = {cred, cmd: 'moveDownMapInTabRequest'};                   break;
                     case 'saveMap':             msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut};      break;
-                    case 'savePrevMap':         msg = {cred, cmd: 'saveMapRequest', prevMapId, mapStorageOut};  break;
                 }
             } else {
                 switch (lastAction) {

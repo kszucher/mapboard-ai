@@ -12,7 +12,6 @@ export const editorState = {
     mapSelected: 0,
     mapIdList: [],
     mapId: '',
-    prevMapId: '',
     mapNameList: [],
     mapName: '',
     mapStorage: [],
@@ -60,8 +59,7 @@ const EditorReducer = (state, action) => {
         case 'UPDATE_TABS':
             return {...state, ...payload}; // includes mapIdList, mapNameList, mapSelected
         case 'OPEN_MAP':
-            let {mapId, prevMapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
-            prevMapId = mapId;
+            let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
             switch (payload.source) {
                 case 'SERVER':
                     mapId = mapIdList[mapSelected];
@@ -101,7 +99,7 @@ const EditorReducer = (state, action) => {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
             return {...state,
-                mapId, prevMapId, mapName, mapSelected, breadcrumbsHistory,
+                mapId, mapName, mapSelected, breadcrumbsHistory,
                 serverAction: [...state.serverAction, 'savePrevMap', 'openMap']
             };
         case 'SET_MAPSTORAGE':
