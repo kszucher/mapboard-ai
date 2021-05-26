@@ -154,6 +154,7 @@ const EditorReducer = (state, action) => {
                 state.mapId === '5ee5e343b1945921ec26c781' ||
                 state.mapId === '5f467ee216bcf436da264a69') {
                 console.log('unable to save');
+                window.alert('unable to save protected map');
                 return state;
             } else {
                 return {
