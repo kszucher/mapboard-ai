@@ -100,7 +100,7 @@ const EditorReducer = (state, action) => {
             }
             return {...state,
                 mapId, mapName, mapSelected, breadcrumbsHistory,
-                serverAction: [...state.serverAction, 'savePrevMap', 'openMap']
+                serverAction: [...state.serverAction, 'openMap']
             };
         case 'SET_MAPSTORAGE':
             return {...state,

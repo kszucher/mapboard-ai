@@ -56,14 +56,14 @@ export function Communication() {
                 }
             }
         }
-        // console.log('SERVER_MESSAGE: ' + msg.cmd);
+        console.log('SERVER_MESSAGE: ' + msg.cmd);
         waitingForServer = 1;
         post(msg, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     }, [serverAction]);
 
     useEffect(() => {
         if (serverResponse.cmd) {
-            // console.log('SERVER_RESPONSE: ' + serverResponse.cmd);
+            console.log('SERVER_RESPONSE: ' + serverResponse.cmd);
             waitingForServer = 0;
             switch (serverResponse.cmd) {
                 case 'pingSuccess': {
@@ -117,6 +117,7 @@ export function Communication() {
                 }
                 case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
+                    dispatch({type: 'SAVE_MAP'});
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
                     break;
                 }

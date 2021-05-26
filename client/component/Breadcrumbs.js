@@ -8,7 +8,11 @@ export default function WorkspaceBreadcrumbs() {
     const [state, dispatch] = useContext(Context);
     const {breadcrumbsHistory} = state;
 
-    const handleClick = index => event => {event.preventDefault(); dispatch({type: 'OPEN_MAP', payload: {source: 'BREADCRUMBS', index}})};
+    const handleClick = index => event => {
+        event.preventDefault();
+        dispatch({type: 'SAVE_MAP'});
+        dispatch({type: 'OPEN_MAP', payload: {source: 'BREADCRUMBS', index}})
+    };
 
     return (
         <div style={{
