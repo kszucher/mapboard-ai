@@ -12,6 +12,7 @@ export const editorState = {
     mapSelected: 0,
     mapIdList: [],
     mapId: '',
+    prevMapId: '',
     mapNameList: [],
     mapName: '',
     mapStorage: [],
@@ -71,9 +72,11 @@ const EditorReducer = (state, action) => {
         case 'UPDATE_TABS':
             return {...state, ...payload}; // includes mapIdList, mapNameList, mapSelected
         case 'OPEN_MAP':
-            let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
+            let {mapId, prevMapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
+            prevMapId = mapId;
             switch (payload.source) {
-                case 'SERVER':
+                case 'SERVER_SIGN_IN_SUCCESS':
+                case 'SERVER_UPDATE_TABS_SUCCESS':
                     mapId = mapIdList[mapSelected];
                     mapName = mapNameList[mapSelected];
                     breadcrumbsHistory = [{mapId, mapName}];
@@ -110,9 +113,12 @@ const EditorReducer = (state, action) => {
             if (payload.source !== 'HISTORY') {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
+            let serverAction = ['SERVER_UPDATE_TABS_SUCCESS', 'TAB', 'BREADCRUMBS', 'MOUSE', 'KEY', 'HISTORY'].includes(payload.source)
+                ? 'saveOpenMap'
+                : 'openMap';
             return {...state,
-                mapId, mapName, mapSelected, breadcrumbsHistory,
-                serverAction: [...state.serverAction, 'openMap']
+                mapId, prevMapId, mapName, mapSelected, breadcrumbsHistory,
+                serverAction: [...state.serverAction, serverAction]
             };
         case 'SET_MAPSTORAGE':
             return {...state,

@@ -94,7 +94,6 @@ export function MapComponent() {
     };
 
     const popstate = (e) => {
-        dispatch({type: 'SAVE_MAP'});
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
     };
 
@@ -148,7 +147,6 @@ export function MapComponent() {
                     let lm = mapref(selectionState.lastPath);
                     if (!e.shiftKey) {
                         if (lm.linkType === 'internal') {
-                            dispatch({type: 'SAVE_MAP'});
                             dispatch({type: 'OPEN_MAP', payload: {source: 'MOUSE', lm}})
                         } else if (lm.linkType === 'external') {
                             isMouseDown = false;

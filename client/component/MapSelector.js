@@ -6,7 +6,6 @@ export default function VerticalTabs() {
     const [state, dispatch] = useContext(Context);
     const {mapSelected, mapNameList} = state;
     const handleChange = (e, value) =>  {
-        dispatch({type: 'SAVE_MAP'});
         dispatch({type: 'OPEN_MAP', payload: {source: 'TAB', value}})
     };
 

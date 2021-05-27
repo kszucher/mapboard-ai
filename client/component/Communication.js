@@ -18,42 +18,72 @@ setInterval(function() {
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode} = state;
+    const {serverAction, serverResponse, mapId, prevMapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode} = state;
 
-    const post = (message, callback) => {
+    const callback = response => {
+        console.log('SERVER_RESPONSE: ' + response.cmd);
+        dispatch({type: 'SERVER_RESPONSE', payload: response});
+    }
+
+    const post = (msg) => {
+        console.log('SERVER_MESSAGE: ' + msg.cmd);
+        waitingForServer = 1;
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
-            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                waitingForServer = 0;
                 callback(JSON.parse(xmlHttp.responseText));
+            }
         };
         xmlHttp.open("POST", myUrl, true); // true for asynchronous
-        xmlHttp.send(JSON.stringify(message));
+        xmlHttp.send(JSON.stringify(msg));
     };
 
     useEffect(() => {
         let lastAction = [...serverAction].pop();
-        let msg = {};
         if (lastAction === 'ping') {
-            msg = {cmd: 'pingRequest'};
+            post({cmd: 'pingRequest'});
         } else {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
+                let mapStorageOutSave;
+                if (['saveOpenMap', 'saveMap'].includes(lastAction)) {
+                    mapStorageOutSave = {
+                        data: saveMap(),
+                        density: mapState.density,
+                        alignment: mapState.alignment,
+                    };
+                }
                 switch (lastAction) {
                     case 'signIn': {
-                        msg = {cred, cmd: 'signInRequest'};
+                        post({cred, cmd: 'signInRequest'});
                         break;
                     }
-                    case 'openMap':
-                        msg = {cred, cmd: 'openMapRequest', mapSelected, mapId};
+                    case 'openMap': {
+                        post({cred, cmd: 'openMapRequest', mapSelected, mapId});
                         break;
+                    }
+                    case 'saveOpenMap': {
+                        console.log(prevMapId)
+                        console.log(mapStorageOutSave)
+                        // post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOutSave});
+                        post({cred, cmd: 'openMapRequest', mapSelected, mapId});
+                        break;
+                    }
+                    case 'saveMap': {
+                        console.log(mapId)
+                        console.log(mapStorageOutSave)
+                        post({cred, cmd: 'saveMapRequest', mapId, mapStorageOutSave});
+                        break;
+                    }
                     case 'createMapInMap': {
                         let mapStorageOut = {
                             data: getDefaultMap(payload),
                             density: mapState.density,
                             alignment: mapState.alignment,
                         };
-                        msg = {cred, cmd: 'createMapInMapRequest', mapStorageOut};
+                        post({cred, cmd: 'createMapInMapRequest', mapStorageOut});
                         break;
                     }
                     case 'createMapInTab': {
@@ -62,54 +92,39 @@ export function Communication() {
                             density: mapState.density,
                             alignment: mapState.alignment,
                         };
-                        msg = {cred, cmd: 'createMapInTabRequest', mapStorageOut};
+                        post({cred, cmd: 'createMapInTabRequest', mapStorageOut});
                         break;
                     }
                     case 'removeMapInTab': {
-                        msg = {cred, cmd: 'removeMapInTabRequest'};
+                        post({cred, cmd: 'removeMapInTabRequest'});
                         break;
                     }
                     case 'moveUpMapInTab': {
-                        msg = {cred, cmd: 'moveUpMapInTabRequest'};
+                        post({cred, cmd: 'moveUpMapInTabRequest'});
                         break;
                     }
                     case 'moveDownMapInTab': {
-                        msg = {cred, cmd: 'moveDownMapInTabRequest'};
-                        break;
-                    }
-                    case 'saveMap': {
-                        if (mapId === '5f3fd7ba7a84a4205428c96a' ||
-                            mapId === '5ee5e343b1945921ec26c781' ||
-                            mapId === '5f467ee216bcf436da264a69') {
-                            window.alert('unable to save protected map');
-                            return;
-                        } else {
-                            let mapStorageOut = {
-                                data: saveMap(),
-                                density: mapState.density,
-                                alignment: mapState.alignment,
-                            };
-                            msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut};
-                        }
+                        post({cred, cmd: 'moveDownMapInTabRequest'});
                         break;
                     }
                 }
             } else {
                 switch (lastAction) {
-                    case 'signUpStep1': msg = {userData: {userName, userEmail, userPassword}, cmd: 'signUpStep1Request'}; break;
-                    case 'signUpStep2': msg = {userData: {userEmail, userConfirmationCode}, cmd: 'signUpStep2Request'}; break;
+                    case 'signUpStep1': {
+                        post({userData: {userName, userEmail, userPassword}, cmd: 'signUpStep1Request'});
+                        break;
+                    }
+                    case 'signUpStep2': {
+                        post({userData: {userEmail, userConfirmationCode}, cmd: 'signUpStep2Request'});
+                        break;
+                    }
                 }
             }
         }
-        console.log('SERVER_MESSAGE: ' + msg.cmd);
-        waitingForServer = 1;
-        post(msg, response => dispatch({type: 'SERVER_RESPONSE', payload: response}));
     }, [serverAction]);
 
     useEffect(() => {
         if (serverResponse.cmd) {
-            console.log('SERVER_RESPONSE: ' + serverResponse.cmd);
-            waitingForServer = 0;
             switch (serverResponse.cmd) {
                 case 'pingSuccess': {
                     const cred = JSON.parse(localStorage.getItem('cred'));
@@ -122,7 +137,7 @@ export function Communication() {
                     initDomData();
                     dispatch({type: 'OPEN_WORKSPACE'});
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
-                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
+                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_SIGN_IN_SUCCESS'}});
                     break;
                 }
                 case 'signInFail': {
@@ -162,8 +177,7 @@ export function Communication() {
                 }
                 case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord
                     dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
-                    dispatch({type: 'SAVE_MAP'});
-                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER'}});
+                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_UPDATE_TABS_SUCCESS'}});
                     break;
                 }
                 case 'saveMapRequestSuccess': {

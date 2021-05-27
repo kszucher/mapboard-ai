@@ -10,7 +10,6 @@ export default function WorkspaceBreadcrumbs() {
 
     const handleClick = index => event => {
         event.preventDefault();
-        dispatch({type: 'SAVE_MAP'});
         dispatch({type: 'OPEN_MAP', payload: {source: 'BREADCRUMBS', index}})
     };
 
