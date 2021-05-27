@@ -41,18 +41,30 @@ const EditorReducer = (state, action) => {
         case 'RESET_STATE':
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
             return JSON.parse(InitEditorState);
-        case 'SERVER_RESPONSE': return {...state, serverResponse: payload};
-        case 'SERVER_RESPONSE_TO_USER': return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
+        case 'SERVER_RESPONSE':
+            return {...state,
+                serverResponse: payload
+            };
+        case 'SERVER_RESPONSE_TO_USER':
+            return {...state,
+                serverResponseToUser: [...state.serverResponseToUser, payload]
+            }
         case 'SIGN_IN':
             localStorage.setItem('cred', JSON.stringify(payload));
-            return {...state, serverAction: [...state.serverAction, 'signIn']};
+            return {...state,
+                serverAction: [...state.serverAction, 'signIn']
+            };
         case 'SIGN_UP_STEP_1': {
             let {name, email, password} = payload;
-            return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUpStep1']};
+            return {...state, userName: name, userEmail: email, userPassword: password,
+                serverAction: [...state.serverAction, 'signUpStep1']
+            };
         }
         case 'SIGN_UP_STEP_2': {
             let {email, confirmationCode} = payload;
-            return {...state, userEmail: email, userConfirmationCode: confirmationCode, serverAction: [...state.serverAction, 'signUpStep2']};
+            return {...state, userEmail: email, userConfirmationCode: confirmationCode,
+                serverAction: [...state.serverAction, 'signUpStep2']
+            };
         }
         case 'OPEN_WORKSPACE':
             return {...state, isLoggedIn: true};
@@ -110,20 +122,10 @@ const EditorReducer = (state, action) => {
             };
         case 'CREATE_MAP_IN_MAP':
             return {...state,
-                mapStorageOut: {
-                    data: getDefaultMap(payload),
-                    density: mapState.density,
-                    alignment: mapState.alignment,
-                },
                 serverAction: [...state.serverAction, 'createMapInMap']
             };
         case 'CREATE_MAP_IN_TAB':
             return {...state,
-                mapStorageOut: {
-                    data: getDefaultMap('New Map'),
-                    density: mapState.density,
-                    alignment: mapState.alignment,
-                },
                 mapNameList: [...state.mapNameList, 'creating...'],
                 serverAction: [...state.serverAction, 'createMapInTab']
             };
@@ -150,22 +152,8 @@ const EditorReducer = (state, action) => {
             };
         }
         case 'SAVE_MAP': {
-            if (state.mapId === '5f3fd7ba7a84a4205428c96a' ||
-                state.mapId === '5ee5e343b1945921ec26c781' ||
-                state.mapId === '5f467ee216bcf436da264a69') {
-                console.log('unable to save');
-                window.alert('unable to save protected map');
-                return state;
-            } else {
-                return {
-                    ...state,
-                    mapStorageOut: {
-                        data: saveMap(),
-                        density: mapState.density,
-                        alignment: mapState.alignment,
-                    },
-                    serverAction: [...state.serverAction, 'saveMap']
-                }
+            return { ...state,
+                serverAction: [...state.serverAction, 'saveMap']
             }
         }
         case 'MOVE_MAP_TO_SUBMAP': {

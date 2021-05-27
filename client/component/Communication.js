@@ -2,7 +2,7 @@ import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context, remoteDispatch, remoteGetState} from "../core/Store";
 import {nodeDispatch} from "../core/NodeFlow";
-import {checkPop, mapDispatch, mapState, push, redraw} from "../core/MapFlow";
+import {checkPop, getDefaultMap, mapDispatch, mapState, push, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
 
 let waitingForServer = 0;
@@ -18,7 +18,7 @@ setInterval(function() {
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapId, mapSelected, mapStorageOut, userName, userEmail, userPassword, userConfirmationCode} = state;
+    const {serverAction, serverResponse, mapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode} = state;
 
     const post = (message, callback) => {
         let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
@@ -40,14 +40,59 @@ export function Communication() {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
                 switch (lastAction) {
-                    case 'signIn':              msg = {cred, cmd: 'signInRequest'};                             break;
-                    case 'openMap':             msg = {cred, cmd: 'openMapRequest', mapSelected, mapId};        break;
-                    case 'createMapInMap':      msg = {cred, cmd: 'createMapInMapRequest', mapStorageOut};      break;
-                    case 'createMapInTab':      msg = {cred, cmd: 'createMapInTabRequest', mapStorageOut};      break;
-                    case 'removeMapInTab':      msg = {cred, cmd: 'removeMapInTabRequest'};                     break;
-                    case 'moveUpMapInTab':      msg = {cred, cmd: 'moveUpMapInTabRequest'};                     break;
-                    case 'moveDownMapInTab':    msg = {cred, cmd: 'moveDownMapInTabRequest'};                   break;
-                    case 'saveMap':             msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut};      break;
+                    case 'signIn': {
+                        msg = {cred, cmd: 'signInRequest'};
+                        break;
+                    }
+                    case 'openMap':
+                        msg = {cred, cmd: 'openMapRequest', mapSelected, mapId};
+                        break;
+                    case 'createMapInMap': {
+                        let mapStorageOut = {
+                            data: getDefaultMap(payload),
+                            density: mapState.density,
+                            alignment: mapState.alignment,
+                        };
+                        msg = {cred, cmd: 'createMapInMapRequest', mapStorageOut};
+                        break;
+                    }
+                    case 'createMapInTab': {
+                        let mapStorageOut = {
+                            data: getDefaultMap('New Map'),
+                            density: mapState.density,
+                            alignment: mapState.alignment,
+                        };
+                        msg = {cred, cmd: 'createMapInTabRequest', mapStorageOut};
+                        break;
+                    }
+                    case 'removeMapInTab': {
+                        msg = {cred, cmd: 'removeMapInTabRequest'};
+                        break;
+                    }
+                    case 'moveUpMapInTab': {
+                        msg = {cred, cmd: 'moveUpMapInTabRequest'};
+                        break;
+                    }
+                    case 'moveDownMapInTab': {
+                        msg = {cred, cmd: 'moveDownMapInTabRequest'};
+                        break;
+                    }
+                    case 'saveMap': {
+                        if (mapId === '5f3fd7ba7a84a4205428c96a' ||
+                            mapId === '5ee5e343b1945921ec26c781' ||
+                            mapId === '5f467ee216bcf436da264a69') {
+                            window.alert('unable to save protected map');
+                            return;
+                        } else {
+                            let mapStorageOut = {
+                                data: saveMap(),
+                                density: mapState.density,
+                                alignment: mapState.alignment,
+                            };
+                            msg = {cred, cmd: 'saveMapRequest', mapId, mapStorageOut};
+                        }
+                        break;
+                    }
                 }
             } else {
                 switch (lastAction) {
