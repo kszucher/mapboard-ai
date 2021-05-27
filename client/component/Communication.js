@@ -65,16 +65,12 @@ export function Communication() {
                         break;
                     }
                     case 'saveOpenMap': {
-                        console.log(prevMapId)
-                        console.log(mapStorageOutSave)
-                        // post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOutSave});
+                        post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut: mapStorageOutSave});
                         post({cred, cmd: 'openMapRequest', mapSelected, mapId});
                         break;
                     }
                     case 'saveMap': {
-                        console.log(mapId)
-                        console.log(mapStorageOutSave)
-                        post({cred, cmd: 'saveMapRequest', mapId, mapStorageOutSave});
+                        post({cred, cmd: 'saveMapRequest', mapId: mapId, mapStorageOut: mapStorageOutSave});
                         break;
                     }
                     case 'createMapInMap': {
