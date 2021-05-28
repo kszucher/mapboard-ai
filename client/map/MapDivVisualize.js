@@ -66,7 +66,7 @@ export const mapDivVisualize = {
                 cursor:                 'default',
                 color:                  cm.sTextColor,
                 transition: 'all 0.5s',
-                transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.2,1.0)',
+                transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:     'left, top, background-color',
             };
             let div;

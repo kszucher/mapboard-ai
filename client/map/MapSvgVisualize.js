@@ -349,7 +349,7 @@ export const mapSvgVisualize = {
                                 svgElement.setAttribute("stroke-width", strokeWidth);
                                 svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                                 svgElement.style.transition = preventTransition ? '' : 'all 0.5s';
-                                svgElement.style.transitionTimingFunction = preventTransition ? '' : 'cubic-bezier(0.0,0.0,0.2,1.0)';
+                                svgElement.style.transitionTimingFunction = preventTransition ? '' : 'cubic-bezier(0.0,0.0,0.58,1.0)';
 
                                 svgElement.style.transitionProperty = 'd, fill';
                                 if (!isChrome) {
@@ -358,7 +358,7 @@ export const mapSvgVisualize = {
                                     svgElementAnimate.setAttribute("attributeType", "XML");
                                     svgElementAnimate.setAttribute("dur", "0.5s");
                                     svgElementAnimate.setAttribute("calcMode", "spline");
-                                    svgElementAnimate.setAttribute("keySplines", "0 0 0.2 1");
+                                    svgElementAnimate.setAttribute("keySplines", "0 0 0.58 1");
                                     svgElementAnimate.setAttribute("keyTimes", "0;1");
                                     svgElement.appendChild(svgElementAnimate);
                                 }
