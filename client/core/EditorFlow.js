@@ -15,6 +15,7 @@ export const editorState = {
     prevMapId: '',
     mapNameList: [],
     mapName: '',
+    newMapName: '',
     mapStorage: [],
     mapStorageOut: [],
     breadcrumbsHistory: [],
@@ -128,6 +129,7 @@ const EditorReducer = (state, action) => {
             };
         case 'CREATE_MAP_IN_MAP':
             return {...state,
+                newMapName: payload,
                 serverAction: [...state.serverAction, 'createMapInMap']
             };
         case 'CREATE_MAP_IN_TAB':

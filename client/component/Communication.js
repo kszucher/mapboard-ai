@@ -18,7 +18,7 @@ setInterval(function() {
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapId, prevMapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode} = state;
+    const {serverAction, serverResponse, mapId, prevMapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode, newMapName} = state;
 
     const callback = response => {
         console.log('SERVER_RESPONSE: ' + response.cmd);
@@ -28,7 +28,9 @@ export function Communication() {
     const post = (msg) => {
         console.log('SERVER_MESSAGE: ' + msg.cmd);
         waitingForServer = 1;
-        let myUrl = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:8082/beta" : "https://mindboard.io/beta";
+        let myUrl = process.env.NODE_ENV === 'development'
+            ? "http://127.0.0.1:8082/beta"
+            : "https://mindboard.io/beta";
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
@@ -47,25 +49,16 @@ export function Communication() {
         } else {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
-                let mapStorageOut;
+                let mapStorageOut = {
+                    density: mapState.density,
+                    alignment: mapState.alignment
+                };
                 if (['saveOpenMap', 'saveMap'].includes(lastAction)) {
-                    mapStorageOut = {
-                        data: saveMap(),
-                        density: mapState.density,
-                        alignment: mapState.alignment,
-                    };
+                    Object.assign(mapStorageOut, {data: saveMap()});
                 } else if (lastAction === 'createMapInMap') {
-                    mapStorageOut = {
-                        data: getDefaultMap(payload),
-                        density: mapState.density,
-                        alignment: mapState.alignment,
-                    };
+                    Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
                 } else if (lastAction === 'createMapInTab') {
-                    mapStorageOut = {
-                        data: getDefaultMap('New Map'),
-                        density: mapState.density,
-                        alignment: mapState.alignment,
-                    };
+                    Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                 }
                 switch (lastAction) {
                     case 'signIn': {
