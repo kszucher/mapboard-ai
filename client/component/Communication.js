@@ -61,54 +61,21 @@ export function Communication() {
                     Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                 }
                 switch (lastAction) {
-                    case 'signIn': {
-                        post({cred, cmd: 'signInRequest'});
-                        break;
-                    }
-                    case 'openMap': {
-                        post({cred, cmd: 'openMapRequest', mapSelected, mapId});
-                        break;
-                    }
-                    case 'saveOpenMap': {
-                        post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut});
-                        post({cred, cmd: 'openMapRequest', mapSelected, mapId});
-                        break;
-                    }
-                    case 'saveMap': {
-                        post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut});
-                        break;
-                    }
-                    case 'createMapInMap': {
-                        post({cred, cmd: 'createMapInMapRequest', mapStorageOut});
-                        break;
-                    }
-                    case 'createMapInTab': {
-                        post({cred, cmd: 'createMapInTabRequest', mapStorageOut});
-                        break;
-                    }
-                    case 'removeMapInTab': {
-                        post({cred, cmd: 'removeMapInTabRequest'});
-                        break;
-                    }
-                    case 'moveUpMapInTab': {
-                        post({cred, cmd: 'moveUpMapInTabRequest'});
-                        break;
-                    }
-                    case 'moveDownMapInTab': {
-                        post({cred, cmd: 'moveDownMapInTabRequest'});
-                        break;
-                    }
+                    case 'signIn':              post({cred, cmd: 'signInRequest'}); break;
+                    case 'openMap':             post({cred, cmd: 'openMapRequest', mapSelected, mapId}); break;
+                    case 'saveOpenMap':         post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut});
+                                                post({cred, cmd: 'openMapRequest', mapSelected, mapId}); break;
+                    case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut}); break;
+                    case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut}); break;
+                    case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut}); break;
+                    case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'}); break;
+                    case 'moveUpMapInTab':      post({cred, cmd: 'moveUpMapInTabRequest'}); break;
+                    case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'}); break;
                 }
             } else {
                 switch (lastAction) {
-                    case 'signUpStep1': {
-                        post({userData: {userName, userEmail, userPassword}, cmd: 'signUpStep1Request'});
-                        break;
-                    }
-                    case 'signUpStep2': {
-                        post({userData: {userEmail, userConfirmationCode}, cmd: 'signUpStep2Request'});
-                        break;
-                    }
+                    case 'signUpStep1':         post({userData: {userName, userEmail, userPassword}, cmd: 'signUpStep1Request'}); break;
+                    case 'signUpStep2':         post({userData: {userEmail, userConfirmationCode}, cmd: 'signUpStep2Request'}); break;
                 }
             }
         }

@@ -38,17 +38,18 @@ export function MapComponent() {
             ].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'cut':                 nodeDispatch('cutSelection');                                   break;
-                    case 'copy':                nodeDispatch('copySelection');                                  break;
-                    case 'paste':               paste({preventDefault: () => {}});                              break;
-                    case 'resetAll':            nodeDispatch('resetAll');                                       break;
-                    case 'reset':               nodeDispatch('reset', {formatMode});                            break;
-                    case 'setLineWidth':        nodeDispatch('applyLineWidth', lineWidth);                      break;
-                    case 'setLineType':         nodeDispatch('applyLineType', lineType);                        break;
-                    case 'setBorderWidth':      nodeDispatch('applyBorderWidth', borderWidth);                  break;
-                    case 'setFontSize':         nodeDispatch('applyFontSize', fontSize);                        break;
-                    case 'setColor':            nodeDispatch('applyColorFromPalette', {formatMode, color});     break;
-                    case 'taskToggle':          nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch');     break;
+                    case 'cut':                 nodeDispatch('cutSelection'); break;
+                    case 'copy':                nodeDispatch('copySelection'); break;
+                    case 'paste':               paste({preventDefault: () => {}}); break;
+                    case 'resetAll':            nodeDispatch('resetAll'); break;
+                    case 'reset':               nodeDispatch('reset', {formatMode}); break;
+                    case 'setLineWidth':        nodeDispatch('applyLineWidth', lineWidth); break;
+                    case 'setLineType':         nodeDispatch('applyLineType', lineType); break;
+                    case 'setBorderWidth':      nodeDispatch('applyBorderWidth', borderWidth); break;
+                    case 'setFontSize':         nodeDispatch('applyFontSize', fontSize); break;
+                    case 'setColor':            nodeDispatch('applyColorFromPalette', {formatMode, color}); break;
+                    case 'taskToggle':          nodeDispatch('taskCheckReset');
+                                                nodeDispatch('taskSwitch'); break;
                 }
                 redraw();
                 checkPop();
