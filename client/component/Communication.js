@@ -47,10 +47,22 @@ export function Communication() {
         } else {
             const cred = JSON.parse(localStorage.getItem('cred'));
             if (cred && cred.email && cred.password) {
-                let mapStorageOutSave;
+                let mapStorageOut;
                 if (['saveOpenMap', 'saveMap'].includes(lastAction)) {
-                    mapStorageOutSave = {
+                    mapStorageOut = {
                         data: saveMap(),
+                        density: mapState.density,
+                        alignment: mapState.alignment,
+                    };
+                } else if (lastAction === 'createMapInMap') {
+                    mapStorageOut = {
+                        data: getDefaultMap(payload),
+                        density: mapState.density,
+                        alignment: mapState.alignment,
+                    };
+                } else if (lastAction === 'createMapInTab') {
+                    mapStorageOut = {
+                        data: getDefaultMap('New Map'),
                         density: mapState.density,
                         alignment: mapState.alignment,
                     };
@@ -65,29 +77,19 @@ export function Communication() {
                         break;
                     }
                     case 'saveOpenMap': {
-                        post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut: mapStorageOutSave});
+                        post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut});
                         post({cred, cmd: 'openMapRequest', mapSelected, mapId});
                         break;
                     }
                     case 'saveMap': {
-                        post({cred, cmd: 'saveMapRequest', mapId: mapId, mapStorageOut: mapStorageOutSave});
+                        post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut});
                         break;
                     }
                     case 'createMapInMap': {
-                        let mapStorageOut = {
-                            data: getDefaultMap(payload),
-                            density: mapState.density,
-                            alignment: mapState.alignment,
-                        };
                         post({cred, cmd: 'createMapInMapRequest', mapStorageOut});
                         break;
                     }
                     case 'createMapInTab': {
-                        let mapStorageOut = {
-                            data: getDefaultMap('New Map'),
-                            density: mapState.density,
-                            alignment: mapState.alignment,
-                        };
                         post({cred, cmd: 'createMapInTabRequest', mapStorageOut});
                         break;
                     }
