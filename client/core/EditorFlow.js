@@ -38,37 +38,35 @@ const InitEditorState = JSON.stringify(editorState);
 const EditorReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
-        case 'RESET_STATE':
+        case 'RESET_STATE': {
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
             return JSON.parse(InitEditorState);
-        case 'SERVER_RESPONSE':
-            return {...state,
-                serverResponse: payload
-            };
-        case 'SERVER_RESPONSE_TO_USER':
-            return {...state,
-                serverResponseToUser: [...state.serverResponseToUser, payload]
-            }
-        case 'SIGN_IN':
+        }
+        case 'SERVER_RESPONSE': {
+            return {...state, serverResponse: payload};
+        }
+        case 'SERVER_RESPONSE_TO_USER': {
+            return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
+        }
+        case 'SIGN_IN': {
             localStorage.setItem('cred', JSON.stringify(payload));
             return {...state, serverAction: [...state.serverAction, 'signIn']};
+        }
         case 'SIGN_UP_STEP_1': {
             let {name, email, password} = payload;
-            return {...state, userName: name, userEmail: email, userPassword: password,
-                serverAction: [...state.serverAction, 'signUpStep1']
-            };
+            return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUpStep1']};
         }
         case 'SIGN_UP_STEP_2': {
             let {email, confirmationCode} = payload;
-            return {...state, userEmail: email, userConfirmationCode: confirmationCode,
-                serverAction: [...state.serverAction, 'signUpStep2']
-            };
+            return {...state, userEmail: email, userConfirmationCode: confirmationCode, serverAction: [...state.serverAction, 'signUpStep2']};
         }
-        case 'OPEN_WORKSPACE':
+        case 'OPEN_WORKSPACE': {
             return {...state, isLoggedIn: true};
-        case 'UPDATE_TABS':
+        }
+        case 'UPDATE_TABS': {
             return {...state, ...payload}; // includes mapIdList, mapNameList, mapSelected
-        case 'OPEN_MAP':
+        }
+        case 'OPEN_MAP': {
             let {mapId, prevMapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
             prevMapId = mapId;
             switch (payload.source) {
@@ -96,8 +94,10 @@ const EditorReducer = (state, action) => {
                     break;
                 case 'KEY':
                     switch (payload.key) {
-                        case 'SPACE': break;
-                        case 'BACKSPACE': break;
+                        case 'SPACE':
+                            break;
+                        case 'BACKSPACE':
+                            break;
                     }
                     break;
                 case 'HISTORY':
@@ -113,78 +113,66 @@ const EditorReducer = (state, action) => {
             let serverAction = ['SERVER_UPDATE_TABS_SUCCESS', 'TAB', 'BREADCRUMBS', 'MOUSE', 'KEY', 'HISTORY'].includes(payload.source)
                 ? 'saveOpenMap'
                 : 'openMap';
-            return {...state,
+            return {
+                ...state,
                 mapId, prevMapId, mapName, mapSelected, breadcrumbsHistory,
                 serverAction: [...state.serverAction, serverAction]
             };
-        case 'SET_MAPSTORAGE':
-            return {...state,
-                mapStorage: payload,
-                density: payload.density,
-                alignment: payload.alignment,
-            };
-        case 'CREATE_MAP_IN_MAP':
-            return {...state,
-                newMapName: payload,
-                serverAction: [...state.serverAction, 'createMapInMap']
-            };
-        case 'CREATE_MAP_IN_TAB':
-            return {...state,
-                mapNameList: [...state.mapNameList, 'creating...'],
-                serverAction: [...state.serverAction, 'createMapInTab']
-            };
+        }
+        case 'SET_MAPSTORAGE': {
+            return {...state, mapStorage: payload, density: payload.density, alignment: payload.alignment};
+        }
+        case 'CREATE_MAP_IN_MAP': {
+            return {...state, newMapName: payload, serverAction: [...state.serverAction, 'createMapInMap']};
+        }
+        case 'CREATE_MAP_IN_TAB': {
+            return {...state, mapNameList: [...state.mapNameList, 'creating...'], serverAction: [...state.serverAction, 'createMapInTab']};
+        }
         case 'REMOVE_MAP_IN_TAB': {
             let {mapNameList, mapSelected} = state;
-            return {...state,
-                mapNameList: mapNameList.filter((val, i) => i !== mapSelected),
-                mapSelected: mapSelected === 0 ? mapSelected : mapSelected - 1,
-                serverAction: [...state.serverAction, 'removeMapInTab']
-            };
+            mapNameList = mapNameList.filter((val, i) => i !== mapSelected);
+            mapSelected = mapSelected === 0 ? mapSelected : mapSelected - 1;
+            return {...state, mapNameList, mapSelected, serverAction: [...state.serverAction, 'removeMapInTab']};
         }
         case 'MOVE_UP_MAP_IN_TAB': {
             let {mapSelected} = state;
-            return {...state,
-                mapSelected: mapSelected === 0 ? mapSelected : mapSelected - 1,
-                serverAction: [...state.serverAction, 'moveUpMapInTab']
-            };
+            mapSelected = mapSelected === 0 ? mapSelected : mapSelected - 1;
+            return {...state, mapSelected, serverAction: [...state.serverAction, 'moveUpMapInTab']};
         }
         case 'MOVE_DOWN_MAP_IN_TAB': {
             let {mapNameList, mapSelected} = state;
-            return {...state,
-                mapSelected: mapSelected ===  mapNameList.length - 1? mapSelected : mapSelected + 1,
-                serverAction: [...state.serverAction, 'moveDownMapInTab']
-            };
+            mapSelected = mapSelected ===  mapNameList.length - 1? mapSelected : mapSelected + 1
+            return {...state, mapSelected, serverAction: [...state.serverAction, 'moveDownMapInTab']};
         }
         case 'SAVE_MAP': {
-            return { ...state,
-                serverAction: [...state.serverAction, 'saveMap']
+            return { ...state, serverAction: [...state.serverAction, 'saveMap']
             }
         }
-        case 'MOVE_MAP_TO_SUBMAP': {return state;}
-        case 'MOVE_SUBMAP_TO_MAP': {return state;}
-        case 'MOVE_TAB_TO_SUBMAP': {return state;}
-        case 'MOVE_SUBMAP_TO_TAB': {return state;}
+        case 'MOVE_MAP_TO_SUBMAP': return state;
+        case 'MOVE_SUBMAP_TO_MAP': return state;
+        case 'MOVE_TAB_TO_SUBMAP': return state;
+        case 'MOVE_SUBMAP_TO_TAB': return state;
+        case 'SET_DENSITY':        return {...state, density: payload};
+        case 'SET_ALIGNMENT':      return {...state, alignment: payload};
+        case 'SET_LINE_WIDTH':     return {...state, lineWidth: payload};
+        case 'SET_LINE_TYPE':      return {...state, lineType: payload};
+        case 'SET_BORDER_WIDTH':   return {...state, borderWidth: payload};
+        case 'SET_FONT_SIZE':      return {...state, fontSize: payload};
+        case 'OPEN_PALETTE':       return {...state, formatMode: payload, paletteVisible: 1};
+        case 'CLOSE_PALETTE':      return {...state, formatMode: '', paletteVisible: 0, };
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
-                lineWidth:      mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
-                lineType:       mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
-                borderWidth:    mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
-                fontSize:       mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
-                colorLine:      lm.lineColor,
-                colorBorder:    lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
-                colorFill:      lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
-                colorText:      lm.sTextColor,
+                lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
+                lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
+                borderWidth: mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
+                fontSize:    mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
+                colorLine:   lm.lineColor,
+                colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
+                colorFill:   lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+                colorText:   lm.sTextColor,
             };
         }
-        case 'SET_DENSITY':                     return {...state, density: payload};
-        case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
-        case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload};
-        case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
-        case 'SET_BORDER_WIDTH':                return {...state, borderWidth: payload};
-        case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
-        case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
-        case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
         default: return state;
     }
 };
