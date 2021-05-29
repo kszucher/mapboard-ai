@@ -26,9 +26,9 @@ export function Formatter () {
     const setLineType =       e => {dispatch({type: 'SET_LINE_TYPE',     payload: e})}
     const setBorderWidth =    e => {dispatch({type: 'SET_BORDER_WIDTH',  payload: e})}
     const setFontSize =       e => {dispatch({type: 'SET_FONT_SIZE',     payload: e})}
-    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');               redraw(); checkPop()}
-    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});    redraw(); checkPop()}
-    const cmdTaskToggle =     e => {dispatch({type: 'CMD_TASK_TOGGLE',   payload: e})}
+    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                    redraw(); checkPop()}
+    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                         redraw(); checkPop()}
+    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch');  redraw(); checkPop()}
     const cmdSubmapToggle =   e => {dispatch({type: 'CMD_SUBMAP_TOGGLE', payload: e})}
 
     return (
