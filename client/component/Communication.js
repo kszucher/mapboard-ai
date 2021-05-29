@@ -4,12 +4,11 @@ import {Context, remoteDispatch, remoteGetState} from "../core/Store";
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, getDefaultMap, mapDispatch, mapState, push, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
-import {serverDispatch} from "../core/ServerFlow";
 
 let waitingForServer = 0;
 setInterval(function() {
     if (!waitingForServer && remoteGetState().mapId !== '') {
-        // serverDispatch('saveMap');
+        // remoteDispatch({type: 'SAVE_MAP'})
     }
 }, 3000);
 
@@ -131,7 +130,7 @@ export function Communication() {
                     nodeDispatch('insertIlinkFromMongo', serverResponse.newMapId);
                     redraw();
                     checkPop();
-                    serverDispatch('saveMap');
+                    dispatch({type: 'SAVE_MAP'})
                     break;
                 }
                 case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord

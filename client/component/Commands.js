@@ -4,14 +4,13 @@ import {StyledIconButton} from "../component-styled/StyledIconButton";
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {pasteDispatch} from "../core/PasteFlow";
-import {serverDispatch} from "../core/ServerFlow";
 
 export function Commands () {
     const [state, dispatch] = useContext(Context);
 
     const undo =             () => {mapDispatch('undo'); redraw()}
     const redo =             () => {mapDispatch('redo'); redraw()}
-    const save =             () => {serverDispatch('saveMap')}
+    const save =             () => {dispatch({type: 'SAVE_MAP'})}
     const cut =              () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
     const copy =             () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
     const paste =            () => {pasteDispatch()};
