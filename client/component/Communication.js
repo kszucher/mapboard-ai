@@ -4,11 +4,12 @@ import {Context, remoteDispatch, remoteGetState} from "../core/Store";
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, getDefaultMap, mapDispatch, mapState, push, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
+import {serverDispatch} from "../core/ServerFlow";
 
 let waitingForServer = 0;
 setInterval(function() {
     if (!waitingForServer && remoteGetState().mapId !== '') {
-        // remoteDispatch({type: 'SAVE_MAP'});
+        // serverDispatch('saveMap');
     }
 }, 3000);
 
@@ -66,6 +67,7 @@ export function Communication() {
                     case 'saveOpenMap':         post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut});
                                                 post({cred, cmd: 'openMapRequest', mapSelected, mapId}); break;
                     case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut}); break;
+                    // TODO: save backup map
                     case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut}); break;
                     case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut}); break;
                     case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'}); break;
@@ -130,7 +132,7 @@ export function Communication() {
                     nodeDispatch('insertIlinkFromMongo', serverResponse.newMapId);
                     redraw();
                     checkPop();
-                    dispatch({type: 'SAVE_MAP'});
+                    serverDispatch('saveMap');
                     break;
                 }
                 case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord

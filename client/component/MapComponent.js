@@ -7,6 +7,7 @@ import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redra
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
+import {pasteDispatch} from "../core/PasteFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
@@ -17,13 +18,7 @@ export function MapComponent() {
     useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
-            if (['undo', 'redo'].includes(lastAction)) {
-                mapDispatch(lastAction);
-                redraw();
-            } else if (['save'].includes(lastAction)) {
-                dispatch({type: 'SAVE_MAP'});
-                redraw();
-            } else if (['setDensity'].includes(lastAction)) {
+            if (['setDensity'].includes(lastAction)) {
                 mapDispatch('setDensity', density);
                 mapDispatch('setShouldCenter');
                 nodeDispatch('resetDim');
@@ -33,14 +28,10 @@ export function MapComponent() {
                 mapDispatch('setShouldCenter');
                 redraw();
             } else if ([
-                'cut', 'copy', 'paste',
                 'resetAll', 'reset', 'setLineWidth', 'setLineType', 'setBorderWidth', 'setFontSize', 'setColor', 'taskToggle',
             ].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'cut':                 nodeDispatch('cutSelection'); break;
-                    case 'copy':                nodeDispatch('copySelection'); break;
-                    case 'paste':               paste({preventDefault: () => {}}); break;
                     case 'resetAll':            nodeDispatch('resetAll'); break;
                     case 'reset':               nodeDispatch('reset', {formatMode}); break;
                     case 'setLineWidth':        nodeDispatch('applyLineWidth', lineWidth); break;
@@ -55,7 +46,7 @@ export function MapComponent() {
                 checkPop();
             } else if (['submapToggle'].includes(lastAction)) {
                 let {lastPath} = selectionState;
-                dispatch({type: 'CREATE_MAP_IN_MAP', payload: mapref(lastPath).content});
+                dispatch({type: 'CREATE_MAP_IN_MAP', payload: mapref(lastPath).content}); // TODO not okay!!!
             } else {
                 console.log('unknown action: ' + lastAction);
             }
@@ -409,60 +400,7 @@ export function MapComponent() {
 
     const paste = (e) => {
         e.preventDefault();
-        navigator.permissions.query({name: "clipboard-write"}).then(result => {
-            if (result.state === "granted" || result.state === "prompt") {
-                navigator.clipboard.read().then(item => {
-                    let type = item[0].types[0];
-                    if (type === 'text/plain') {
-                        navigator.clipboard.readText().then(text => {
-                            if (isEditing) {
-                                nodeDispatch('insertTextFromClipboardAsText', text);
-                            } else {
-                                push();
-                                if (text.substring(0, 1) === '[') {
-                                    nodeDispatch('insertMapFromClipboard', text);
-                                } else {
-                                    nodeDispatch('insert_O_S');
-                                    redraw();
-                                    if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                                        nodeDispatch('insertEquationFromClipboardAsNode', text);
-                                    } else if (isUrl(text)) {
-                                        nodeDispatch('insertElinkFromClipboardAsNode', text);
-                                    } else {
-                                        nodeDispatch('insertTextFromClipboardAsNode', text);
-                                    }
-                                }
-                                redraw();
-                                checkPop();
-                            }
-                        });
-                    }
-                    if (type === 'image/png') {
-                        if (isEditing) {
-
-                        } else {
-                            item[0].getType('image/png').then(image => {
-                                var formData = new FormData();
-                                formData.append('upl', image, 'image.png');
-                                let address = process.env.NODE_ENV === 'development' ?
-                                    'http://127.0.0.1:8082/feta' :
-                                    'https://mindboard.io/feta';
-                                fetch(address, {method: 'post', body: formData}).then(response =>
-                                    response.json().then(response => {
-                                            push();
-                                            nodeDispatch('insert_O_S');
-                                            nodeDispatch('insertImageFromLinkAsNode', response);
-                                            redraw();
-                                            checkPop();
-                                        }
-                                    )
-                                );
-                            })
-                        }
-                    }
-                })
-            }
-        });
+        pasteDispatch();
     };
 
     return (

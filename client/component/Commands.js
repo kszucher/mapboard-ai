@@ -1,17 +1,20 @@
 import React, {useContext} from 'react';
 import {Context} from '../core/Store';
 import {StyledIconButton} from "../component-styled/StyledIconButton";
+import {nodeDispatch} from "../core/NodeFlow";
+import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
+import {pasteDispatch} from "../core/PasteFlow";
+import {serverDispatch} from "../core/ServerFlow";
 
 export function Commands () {
     const [state, dispatch] = useContext(Context);
 
-    const undo =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'undo'});
-    const redo =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'redo'});
-    const save =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'save'});
-    const cut =              () => dispatch({type: 'SET_MAP_ACTION',  payload: 'cut'});
-    const copy =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'copy'});
-    const paste =            () => dispatch({type: 'SET_MAP_ACTION',  payload: 'paste'});
-    const task =             () => dispatch({type: 'SET_MAP_ACTION',  payload: 'task'});
+    const undo =             () => {mapDispatch('undo'); redraw()}
+    const redo =             () => {mapDispatch('redo'); redraw()}
+    const save =             () => {serverDispatch('saveMap')}
+    const cut =              () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
+    const copy =             () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
+    const paste =            () => {pasteDispatch()};
 
     return (
         <div style={{
