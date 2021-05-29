@@ -112,11 +112,7 @@ const EditorReducer = (state, action) => {
             let serverAction = ['SERVER_UPDATE_TABS_SUCCESS', 'TAB', 'BREADCRUMBS', 'MOUSE', 'KEY', 'HISTORY'].includes(payload.source)
                 ? 'saveOpenMap'
                 : 'openMap';
-            return {
-                ...state,
-                mapId, prevMapId, mapName, mapSelected, breadcrumbsHistory,
-                serverAction: [...state.serverAction, serverAction]
-            };
+            return {...state, mapId, prevMapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, serverAction]};
         }
         case 'SET_MAPSTORAGE': {
             let {density, alignment} = payload;
@@ -145,8 +141,7 @@ const EditorReducer = (state, action) => {
             return {...state, mapSelected, serverAction: [...state.serverAction, 'moveDownMapInTab']};
         }
         case 'SAVE_MAP': {
-            return { ...state, serverAction: [...state.serverAction, 'saveMap']
-            }
+            return { ...state, serverAction: [...state.serverAction, 'saveMap']}
         }
         case 'MOVE_MAP_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_MAP': return state;
