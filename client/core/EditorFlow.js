@@ -63,7 +63,8 @@ const EditorReducer = (state, action) => {
             return {...state, isLoggedIn: true};
         }
         case 'UPDATE_TABS': {
-            return {...state, ...payload}; // includes mapIdList, mapNameList, mapSelected
+            let {mapIdList, mapNameList, mapSelected} = payload;
+            return {...state, mapIdList, mapNameList, mapSelected};
         }
         case 'OPEN_MAP': {
             let {mapId, prevMapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
