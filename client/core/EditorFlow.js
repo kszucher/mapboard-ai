@@ -119,7 +119,8 @@ const EditorReducer = (state, action) => {
             };
         }
         case 'SET_MAPSTORAGE': {
-            return {...state, mapStorage: payload, density: payload.density, alignment: payload.alignment};
+            let {density, alignment} = payload;
+            return {...state, mapStorage: payload, density, alignment};
         }
         case 'CREATE_MAP_IN_MAP': {
             return {...state, newMapName: payload, serverAction: [...state.serverAction, 'createMapInMap']};
