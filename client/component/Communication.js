@@ -53,7 +53,7 @@ export function Communication() {
                     density: mapState.density,
                     alignment: mapState.alignment
                 };
-                if (['saveOpenMap', 'saveMap'].includes(lastAction)) {
+                if (['saveOpenMap', 'saveMap', 'saveMapBackup'].includes(lastAction)) {
                     Object.assign(mapStorageOut, {data: saveMap()});
                 } else if (lastAction === 'createMapInMap') {
                     Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
@@ -66,7 +66,7 @@ export function Communication() {
                     case 'saveOpenMap':         post({cred, cmd: 'saveMapRequest', mapId: prevMapId, mapStorageOut});
                                                 post({cred, cmd: 'openMapRequest', mapSelected, mapId}); break;
                     case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut}); break;
-                    // TODO: save backup map
+                    case 'saveMapBackup':       post({cred, cmd: 'saveMapBackupRequest', mapId, mapStorageOut}); break;
                     case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut}); break;
                     case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut}); break;
                     case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'}); break;

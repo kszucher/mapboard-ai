@@ -144,6 +144,9 @@ const EditorReducer = (state, action) => {
         case 'SAVE_MAP': {
             return { ...state, serverAction: [...state.serverAction, 'saveMap']}
         }
+        case 'SAVE_MAP_BACKUP': {
+            return { ...state, serverAction: [...state.serverAction, 'saveMapBackup']}
+        }
         case 'MOVE_MAP_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_MAP': return state;
         case 'MOVE_TAB_TO_SUBMAP': return state;
