@@ -1,22 +1,35 @@
 import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
+import {mapDispatch, redraw} from "../core/MapFlow";
+import {nodeDispatch} from "../core/NodeFlow";
 
 export function Formatter () {
     const [state, dispatch] = useContext(Context);
     const {density, alignment, formatMode, lineWidth, lineType, borderWidth, fontSize} = state;
 
-    const setDensity =        e => dispatch({type: 'SET_DENSITY',       payload: e});
-    const setAlignment =      e => dispatch({type: 'SET_ALIGNMENT',     payload: e});
-    const setformatMode =     e => dispatch({type: 'OPEN_PALETTE',      payload: e});
-    const setLineWidth =      e => dispatch({type: 'SET_LINE_WIDTH',    payload: e});
-    const setLineType =       e => dispatch({type: 'SET_LINE_TYPE',     payload: e});
-    const setBorderWidth =    e => dispatch({type: 'SET_BORDER_WIDTH',  payload: e});
-    const setFontSize =       e => dispatch({type: 'SET_FONT_SIZE',     payload: e});
-    const cmdResetAll =       e => dispatch({type: 'CMD_RESET_ALL',     payload: e});
-    const cmdReset =          e => dispatch({type: 'CMD_RESET',         payload: e});
-    const cmdTaskToggle =     e => dispatch({type: 'CMD_TASK_TOGGLE',   payload: e});
-    const cmdSubmapToggle =   e => dispatch({type: 'CMD_SUBMAP_TOGGLE', payload: e});
+    const setDensity = e => {
+        dispatch({type: 'SET_DENSITY', payload: e})
+        mapDispatch('setDensity', e);
+        mapDispatch('setShouldCenter');
+        nodeDispatch('resetDim');
+        redraw();
+    }
+    const setAlignment = e => {
+        dispatch({type: 'SET_ALIGNMENT', payload: e})
+        mapDispatch('setAlignment', e);
+        mapDispatch('setShouldCenter');
+        redraw();
+    }
+    const setformatMode =     e => {dispatch({type: 'OPEN_PALETTE',      payload: e})}
+    const setLineWidth =      e => {dispatch({type: 'SET_LINE_WIDTH',    payload: e})}
+    const setLineType =       e => {dispatch({type: 'SET_LINE_TYPE',     payload: e})}
+    const setBorderWidth =    e => {dispatch({type: 'SET_BORDER_WIDTH',  payload: e})}
+    const setFontSize =       e => {dispatch({type: 'SET_FONT_SIZE',     payload: e})}
+    const cmdResetAll =       e => {dispatch({type: 'CMD_RESET_ALL',     payload: e})}
+    const cmdReset =          e => {dispatch({type: 'CMD_RESET',         payload: e})}
+    const cmdTaskToggle =     e => {dispatch({type: 'CMD_TASK_TOGGLE',   payload: e})}
+    const cmdSubmapToggle =   e => {dispatch({type: 'CMD_SUBMAP_TOGGLE', payload: e})}
 
     return (
         <div style={{

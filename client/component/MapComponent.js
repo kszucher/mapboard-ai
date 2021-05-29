@@ -18,16 +18,7 @@ export function MapComponent() {
     useEffect(() => {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
-            if (['setDensity'].includes(lastAction)) {
-                mapDispatch('setDensity', density);
-                mapDispatch('setShouldCenter');
-                nodeDispatch('resetDim');
-                redraw();
-            } else if (['setAlignment'].includes(lastAction)) {
-                mapDispatch('setAlignment', alignment);
-                mapDispatch('setShouldCenter');
-                redraw();
-            } else if ([
+            if ([
                 'resetAll', 'reset', 'setLineWidth', 'setLineType', 'setBorderWidth', 'setFontSize', 'setColor', 'taskToggle',
             ].includes(lastAction)) {
                 push();

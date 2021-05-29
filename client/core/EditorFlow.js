@@ -189,8 +189,8 @@ const EditorReducer = (state, action) => {
                 colorText:      lm.sTextColor,
             };
         }
-        case 'SET_DENSITY':                     return {...state, density: payload,                         mapAction: [...state.mapAction, 'setDensity']};
-        case 'SET_ALIGNMENT':                   return {...state, alignment: payload,                       mapAction: [...state.mapAction, 'setAlignment']};
+        case 'SET_DENSITY':                     return {...state, density: payload};
+        case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
         case 'CMD_RESET_ALL':                   return {...state,                                           mapAction: [...state.mapAction, 'resetAll']};
         case 'CMD_RESET':                       return {...state,                                           mapAction: [...state.mapAction, 'reset']};
         case 'CMD_TASK_TOGGLE':                 return {...state,                                           mapAction: [...state.mapAction, 'taskToggle']};
