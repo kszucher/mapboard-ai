@@ -80,11 +80,11 @@ export default function Auth() {
         } else {
             regEmail = email;
             regPassword = password;
-            dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
+            dispatch({type: 'SIGN_UP_STEP_1', payload: {userName: name, userEmail: email, userPassword: password}});
         }
     }
     const signUpStep2Handler = () => {
-        dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
+        dispatch({type: 'SIGN_UP_STEP_2', payload: {userEmail: email, userConfirmationCode: confirmationCode}});
     }
 
     useEffect(() => {

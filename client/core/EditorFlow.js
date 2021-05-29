@@ -53,12 +53,12 @@ const EditorReducer = (state, action) => {
             return {...state, serverAction: [...state.serverAction, 'signIn']};
         }
         case 'SIGN_UP_STEP_1': {
-            let {name, email, password} = payload;
-            return {...state, userName: name, userEmail: email, userPassword: password, serverAction: [...state.serverAction, 'signUpStep1']};
+            let {userName, userEmail, userPassword} = payload;
+            return {...state, userName, userEmail, userPassword, serverAction: [...state.serverAction, 'signUpStep1']};
         }
         case 'SIGN_UP_STEP_2': {
-            let {email, confirmationCode} = payload;
-            return {...state, userEmail: email, userConfirmationCode: confirmationCode, serverAction: [...state.serverAction, 'signUpStep2']};
+            let {userEmail, userConfirmationCode} = payload;
+            return {...state, userEmail, userConfirmationCode, serverAction: [...state.serverAction, 'signUpStep2']};
         }
         case 'OPEN_WORKSPACE': {
             return {...state, isLoggedIn: true};
