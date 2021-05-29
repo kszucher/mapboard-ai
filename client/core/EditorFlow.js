@@ -26,12 +26,10 @@ export const editorState = {
     lineType: '',
     borderWidth: '',
     fontSize: '',
-    color: '',
     colorLine: '',
     colorBorder: '',
     colorFill: '',
     colorText: '',
-    mapAction: '',
     paletteVisible: 0,
 };
 
@@ -164,18 +162,10 @@ const EditorReducer = (state, action) => {
                 serverAction: [...state.serverAction, 'saveMap']
             }
         }
-        case 'MOVE_MAP_TO_SUBMAP': {
-            return state;
-        }
-        case 'MOVE_SUBMAP_TO_MAP': {
-            return state;
-        }
-        case 'MOVE_TAB_TO_SUBMAP': {
-            return state;
-        }
-        case 'MOVE_SUBMAP_TO_TAB': {
-            return state;
-        }
+        case 'MOVE_MAP_TO_SUBMAP': {return state;}
+        case 'MOVE_SUBMAP_TO_MAP': {return state;}
+        case 'MOVE_TAB_TO_SUBMAP': {return state;}
+        case 'MOVE_SUBMAP_TO_TAB': {return state;}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
@@ -195,9 +185,8 @@ const EditorReducer = (state, action) => {
         case 'SET_LINE_TYPE':                   return {...state, lineType: payload};
         case 'SET_BORDER_WIDTH':                return {...state, borderWidth: payload};
         case 'SET_FONT_SIZE':                   return {...state, fontSize: payload};
-        case 'SET_COLOR':                       return {...state, color: payload,                           mapAction: [...state.mapAction, 'setColor']};
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
-        case 'CLOSE_PALETTE':                   return {...state, paletteVisible: 0, formatMode: ''};
+        case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
         default: return state;
     }
 };

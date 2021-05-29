@@ -1,6 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {Context} from '../core/Store';
 import StyledButton from "../component-styled/StyledButton";
+import {nodeDispatch} from "../core/NodeFlow";
+import {push, checkPop, redraw} from "../core/MapFlow";
 
 const colorList = [
     ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
@@ -22,8 +24,15 @@ export function Palette () {
     const {formatMode, colorLine, colorBorder, colorFill, colorText, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
-    const closePalette =        () => dispatch({type: 'CLOSE_PALETTE'});
-    const setColor =            (c) => dispatch({type: 'SET_COLOR', payload: c});
+    const closePalette = () => {
+        dispatch({type: 'CLOSE_PALETTE'});
+    }
+    const setColor = (color) => {
+        push();
+        nodeDispatch('applyColorFromPalette', {formatMode, color});
+        checkPop();
+        redraw();
+    };
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};

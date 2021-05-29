@@ -13,27 +13,6 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {density, alignment, lineWidth, lineType, borderWidth, fontSize, mapAction, formatMode, color} = state;
-
-    useEffect(() => {
-        let lastAction = [...mapAction].pop();
-        if (lastAction && lastAction !== '') {
-            if ([
-                'setColor',
-            ].includes(lastAction)) {
-                push();
-                switch (lastAction) {
-                    case 'setColor':
-                        nodeDispatch('applyColorFromPalette', {formatMode, color});
-                        break;
-                }
-                redraw();
-                checkPop();
-            } else {
-                console.log('unknown action: ' + lastAction);
-            }
-        }
-    }, [mapAction]);
 
     useEffect(() => {
         window.addEventListener('resize',       resize);
