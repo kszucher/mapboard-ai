@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
+import {checkPop, mapDispatch, mapref, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
+import {selectionState} from "../core/SelectionFlow";
 
 export function Formatter () {
     const [state, dispatch] = useContext(Context);
@@ -29,7 +30,11 @@ export function Formatter () {
     const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                    redraw(); checkPop()}
     const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                         redraw(); checkPop()}
     const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch');  redraw(); checkPop()}
-    const cmdSubmapToggle =   e => {dispatch({type: 'CMD_SUBMAP_TOGGLE', payload: e})}
+    const cmdSubmapToggle =   e => {
+        // TODO check if it is not a submap already
+        let {lastPath} = selectionState;
+        dispatch({type: 'CREATE_MAP_IN_MAP', payload: mapref(lastPath).content});
+    }
 
     return (
         <div style={{
