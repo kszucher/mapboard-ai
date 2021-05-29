@@ -10,26 +10,26 @@ export function Formatter () {
     const {density, alignment, formatMode, lineWidth, lineType, borderWidth, fontSize} = state;
 
     const setDensity = e => {
-        dispatch({type: 'SET_DENSITY', payload: e})
         mapDispatch('setDensity', e);
         mapDispatch('setShouldCenter');
         nodeDispatch('resetDim');
         redraw();
+        dispatch({type: 'SET_DENSITY', payload: e})
     }
     const setAlignment = e => {
-        dispatch({type: 'SET_ALIGNMENT', payload: e})
         mapDispatch('setAlignment', e);
         mapDispatch('setShouldCenter');
         redraw();
+        dispatch({type: 'SET_ALIGNMENT', payload: e})
     }
-    const setformatMode =     e => {dispatch({type: 'OPEN_PALETTE',      payload: e})}
-    const setLineWidth =      e => {dispatch({type: 'SET_LINE_WIDTH',    payload: e})}
-    const setLineType =       e => {dispatch({type: 'SET_LINE_TYPE',     payload: e})}
-    const setBorderWidth =    e => {dispatch({type: 'SET_BORDER_WIDTH',  payload: e})}
-    const setFontSize =       e => {dispatch({type: 'SET_FONT_SIZE',     payload: e})}
-    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                    redraw(); checkPop()}
-    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                         redraw(); checkPop()}
-    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch');  redraw(); checkPop()}
+    const setformatMode =     e => {                                                                                          dispatch({type: 'OPEN_PALETTE',      payload: e})}
+    const setLineWidth =      e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(); dispatch({type: 'SET_LINE_WIDTH',    payload: e})}
+    const setLineType =       e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(); dispatch({type: 'SET_LINE_TYPE',     payload: e})}
+    const setBorderWidth =    e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(); dispatch({type: 'SET_BORDER_WIDTH',  payload: e})}
+    const setFontSize =       e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(); dispatch({type: 'SET_FONT_SIZE',     payload: e})}
+    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
+    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
+    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
     const cmdSubmapToggle =   e => {
         // TODO check if it is not a submap already
         let {lastPath} = selectionState;

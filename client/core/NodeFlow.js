@@ -6,11 +6,27 @@ import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {getAllFormatDefault, getFormatDefault} from "../node/Node";
 import {selectionState} from "./SelectionFlow";
-import {getMapData, mapref, mapState, pathMerge, recalc, redraw} from "./MapFlow";
+import {checkPop, getMapData, mapref, mapState, pathMerge, push, recalc, redraw} from "./MapFlow";
 import {mapSvgData} from "./DomFlow";
 
 let mutationObserver;
 export let isEditing = 0;
+
+export function nodeSingleDispatch(action, payload) {
+    push();
+    nodeDispatch(action, payload);
+    redraw();
+    checkPop()
+}
+
+export function nodeMultiDispatch(actionList, payload) {
+    push();
+    for (const action of actionList) {
+        nodeDispatch(action, payload);
+    }
+    redraw();
+    checkPop()
+}
 
 export function nodeDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action);
