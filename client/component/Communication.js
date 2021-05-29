@@ -109,8 +109,7 @@ export function Communication() {
                 case 'signUpStep2FailUnknownUser':
                 case 'signUpStep2FailWrongCode':
                 case 'signUpStep2FailAlreadyActivated':
-                case 'signUpStep2Success':
-                {
+                case 'signUpStep2Success': {
                     dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
                     break;
                 }

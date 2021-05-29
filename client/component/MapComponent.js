@@ -19,12 +19,10 @@ export function MapComponent() {
         let lastAction = [...mapAction].pop();
         if (lastAction && lastAction !== '') {
             if ([
-                'resetAll', 'reset', 'setLineWidth', 'setLineType', 'setBorderWidth', 'setFontSize', 'setColor', 'taskToggle',
+                'setLineWidth', 'setLineType', 'setBorderWidth', 'setFontSize', 'setColor', 'taskToggle',
             ].includes(lastAction)) {
                 push();
                 switch (lastAction) {
-                    case 'resetAll':            nodeDispatch('resetAll'); break;
-                    case 'reset':               nodeDispatch('reset', {formatMode}); break;
                     case 'setLineWidth':        nodeDispatch('applyLineWidth', lineWidth); break;
                     case 'setLineType':         nodeDispatch('applyLineType', lineType); break;
                     case 'setBorderWidth':      nodeDispatch('applyBorderWidth', borderWidth); break;

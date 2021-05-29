@@ -191,8 +191,6 @@ const EditorReducer = (state, action) => {
         }
         case 'SET_DENSITY':                     return {...state, density: payload};
         case 'SET_ALIGNMENT':                   return {...state, alignment: payload};
-        case 'CMD_RESET_ALL':                   return {...state,                                           mapAction: [...state.mapAction, 'resetAll']};
-        case 'CMD_RESET':                       return {...state,                                           mapAction: [...state.mapAction, 'reset']};
         case 'CMD_TASK_TOGGLE':                 return {...state,                                           mapAction: [...state.mapAction, 'taskToggle']};
         case 'CMD_SUBMAP_TOGGLE':               return {...state,                                           mapAction: [...state.mapAction, 'submapToggle']};
         case 'SET_LINE_WIDTH':                  return {...state, lineWidth: payload,                       mapAction: [...state.mapAction, 'setLineWidth']};

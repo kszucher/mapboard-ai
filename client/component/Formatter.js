@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import {mapDispatch, redraw} from "../core/MapFlow";
+import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 
 export function Formatter () {
@@ -26,8 +26,8 @@ export function Formatter () {
     const setLineType =       e => {dispatch({type: 'SET_LINE_TYPE',     payload: e})}
     const setBorderWidth =    e => {dispatch({type: 'SET_BORDER_WIDTH',  payload: e})}
     const setFontSize =       e => {dispatch({type: 'SET_FONT_SIZE',     payload: e})}
-    const cmdResetAll =       e => {dispatch({type: 'CMD_RESET_ALL',     payload: e})}
-    const cmdReset =          e => {dispatch({type: 'CMD_RESET',         payload: e})}
+    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');               redraw(); checkPop()}
+    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});    redraw(); checkPop()}
     const cmdTaskToggle =     e => {dispatch({type: 'CMD_TASK_TOGGLE',   payload: e})}
     const cmdSubmapToggle =   e => {dispatch({type: 'CMD_SUBMAP_TOGGLE', payload: e})}
 
