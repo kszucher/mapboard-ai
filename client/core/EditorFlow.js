@@ -17,7 +17,6 @@ export const editorState = {
     mapName: '',
     newMapName: '',
     mapStorage: [],
-    mapStorageOut: [],
     breadcrumbsHistory: [],
     density: '',
     alignment: '',
