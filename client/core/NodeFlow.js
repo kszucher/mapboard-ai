@@ -483,7 +483,7 @@ function nodeReducer(action, payload) {
             mapChangeProp.start(mapref(['r']), {isDimAssigned: 0}, '');
             break;
         }
-        // EDIT -------------------------------------------------------------------------------------------------------------
+        // EDIT --------------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             if (!lm.hasCell) {
                 lm.content = '';
