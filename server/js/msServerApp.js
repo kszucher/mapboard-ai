@@ -202,6 +202,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'createMapInTabRequest': {
+                            // should probably use addToSet instead
                             let headerMapIdList = [
                                 ...currUser.headerMapIdList,
                                 (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
@@ -216,7 +217,6 @@ async function sendResponse(c2s) {
                                 },
                             );
                             s2c = getTabData(c2s.cred);
-
                             break;
                         }
                         case 'removeMapInTabRequest': {
@@ -282,11 +282,24 @@ async function sendResponse(c2s) {
                             };
                             break;
                         }
+                        case 'saveMapBackupRequest': {
+                            await collectionMaps.updateOne(
+                                {_id: ObjectId(c2s.mapId)},
+                                {
+                                    $push: {
+                                        "dataBackup": [c2s.mapStorageOut]
+                                    }
+                                }
+                            );
+                            s2c = {
+                                cmd: 'saveMapBackupRequestSuccess'
+                            };
+                            break;
+                        }
                     }
                 }
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log('mongo error');
             console.log(err.stack);
         }
