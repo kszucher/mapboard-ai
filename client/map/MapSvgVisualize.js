@@ -1,4 +1,4 @@
-import {genHash, isOdd} from "../core/Utils";
+import {genHash, isChrome, isOdd} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
@@ -537,5 +537,3 @@ function getCoordsInLine(a,b,dt) {
     yt = (1 - t)*y0 + t*y1;
     return [xt, yt];
 }
-
-var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);

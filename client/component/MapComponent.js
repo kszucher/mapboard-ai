@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
-import {arraysSame, copy, isUrl} from "../core/Utils";
+import {arraysSame, copy, isChrome, isUrl} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
@@ -379,17 +379,9 @@ export function MapComponent() {
                     left: 0,
                     top: 0,
                 }}>
-                    <g id="mapSvgInner" style={{
-                        transform: 'translate(calc(100vw), calc(100vh))',
-                        overflow: 'visible'
-                    }}>
-                        <g id="layer0"/>
-                        <g id="layer1"/>
-                        <g id="layer2"/>
-                        <g id="layer3"/>
-                        <g id="layer4"/>
-                        <g id="layer5"/>
-                    </g>
+                    {isChrome
+                        ?<svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
+                        :<svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>}
                 </svg>
                 <div id='mapDiv' style={{
                     position: 'absolute',
@@ -400,5 +392,18 @@ export function MapComponent() {
                 }}/>
             </div>
         </div>
+    )
+}
+
+const Layers = () => {
+    return (
+        <>
+            <g id="layer0"/>
+            <g id="layer1"/>
+            <g id="layer2"/>
+            <g id="layer3"/>
+            <g id="layer4"/>
+            <g id="layer5"/>
+        </>
     )
 }

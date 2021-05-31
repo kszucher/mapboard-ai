@@ -168,3 +168,5 @@ export function subsasgn(obj, path, value) {
 export function filteredObj (originalObj, filterKeys) {
     return filterKeys.reduce((obj, key) => ({ ...obj, [key]: originalObj[key] }), {});
 }
+
+export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
