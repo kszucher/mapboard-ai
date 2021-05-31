@@ -130,7 +130,7 @@ export function Communication() {
                     nodeDispatch('insertIlinkFromMongo', serverResponse.newMapId);
                     redraw();
                     checkPop();
-                    dispatch({type: 'SAVE_MAP'})
+                    // dispatch({type: 'SAVE_MAP'})
                     break;
                 }
                 case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord

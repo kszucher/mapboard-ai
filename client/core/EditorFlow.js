@@ -90,7 +90,7 @@ const EditorReducer = (state, action) => {
                 case 'MOUSE':
                     mapId = payload.lm.link;
                     mapName = payload.lm.content;
-                    breadcrumbsHistory.push({mapId, mapName});
+                    breadcrumbsHistory = [...breadcrumbsHistory, {mapId, mapName}];
                     break;
                 case 'KEY':
                     switch (payload.key) {
