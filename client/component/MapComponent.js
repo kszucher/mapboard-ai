@@ -385,8 +385,7 @@ export function MapComponent() {
                 </svg>
                 <div id='mapDiv' style={{
                     position: 'absolute',
-                    width: '800px',
-                    height: '600px',
+                    transitionProperty: 'width, height',
                     display: 'flex',
                     pointerEvents: 'none'
                 }}/>

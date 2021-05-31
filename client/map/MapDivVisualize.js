@@ -37,6 +37,9 @@ const scrollTo = function(to, duration) {
 
 export const mapDivVisualize = {
     start: (r) => {
+        let mapDiv = document.getElementById('mapDiv');
+        mapDiv.style.width = "" + mapState.mapWidth + "px";
+        mapDiv.style.height = "" + mapState.mapHeight + "px";
         let currScrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
         if (mapState.isLoading) {
             mapState.isLoading = false;
