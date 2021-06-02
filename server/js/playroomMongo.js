@@ -2,7 +2,9 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-async function filterStage (collectionMaps, params) {
+
+
+async function mapFilter (collectionMaps, params) {
     let filter = [];
     switch (params.filterMode) {
         case 'all': {
@@ -103,9 +105,10 @@ async function mongoFunction(cmd) {
 
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
-                let maps = await filterStage(collectionMaps, {filterMode: 'all'});
+                let maps = await mapFilter(collectionMaps, {filterMode: 'all'});
+                // TODO collect maps from tabs too that should not be deleted
                 console.log(maps.length);
-                let mapsThatHaveInternalLink = await filterStage(collectionMaps, {filterMode: 'filtered', cond: 'eq', condVal: 'internal'})
+                let mapsThatHaveInternalLink = await mapFilter(collectionMaps, {filterMode: 'filtered', cond: 'eq', condVal: 'internal'})
                 console.log(mapsThatHaveInternalLink.length);
                 break;
             }
