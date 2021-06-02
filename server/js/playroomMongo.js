@@ -95,7 +95,7 @@ async function updateStage (params) {
 }
 
 async function mongoFunction(cmd) {
-    const client = new MongoClient(uri, { useNewUrlParser: true });
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         const collectionMaps =      client.db("app").collection("maps");
