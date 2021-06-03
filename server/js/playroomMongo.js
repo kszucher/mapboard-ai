@@ -6,9 +6,15 @@ async function userFilter (collectionUsers, params) {
     let filter = [];
     switch (params.filterMode) {
         case 'all': {
-            // todo: gather maps from headermaplists for notdelete
+            await collectionUsers.find({}).forEach( doc => {
+                filter.push({
+                    userId : doc._id,
+                });
+            });
+            break;
         }
     }
+    return filter;
 }
 
 async function mapFilter (collectionMaps, params) {
@@ -17,7 +23,7 @@ async function mapFilter (collectionMaps, params) {
         case 'all': {
             await collectionMaps.find({}).forEach( doc => {
                 filter.push({
-                    _id : doc._id,
+                    mapId : doc._id,
                 });
             });
             break;
@@ -33,10 +39,12 @@ async function mapFilter (collectionMaps, params) {
                                     input: "$data",
                                     as: "dataElem",
                                     cond: {
-                                        [`$${params.cond}`]: [
+                                        [
+                                            `$${params.cond}`]: [
                                             "$$dataElem." + dataElemField,
                                             `${params.condVal}`
-                                        ]}
+                                        ]
+                                    }
                                 }
                             }
                         }
@@ -51,7 +59,6 @@ async function mapFilter (collectionMaps, params) {
                 filter.push({
                     mapId : doc._id,
                     nodePath: doc.data['path'],
-                    nodeValue : doc.data[dataElemField]
                 });
             });
         }
@@ -60,6 +67,7 @@ async function mapFilter (collectionMaps, params) {
 }
 
 async function updateStage (params) {
+    // from 4.2 there is aggregation set, aggregation unset, so this could be part of the above query!!!
     switch (updateStage) {
         case 'setMapProp': {
             for (let i = 0; i < filter.length; i++) {
@@ -77,7 +85,6 @@ async function updateStage (params) {
                     {$unset: {"MAPROPNAME" : ""}}
                 );
             }
-            // note: unable to use aggregation unset from mongodb v4.2, as mongodb free tier only supports mongodb 4.0
             break;
         }
         case 'setNodeProp': {
@@ -112,9 +119,11 @@ async function mongoFunction(cmd) {
 
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
-                let mapsAll =                       await mapFilter(collectionMaps, {filterMode: 'all'});
-                let mapsFilteredLinkTypeInternal =  await mapFilter(collectionMaps, {filterMode: 'filtered', cond: 'eq', condKey: 'linkType', condVal: 'internal'})
-                console.log(mapsAll.length);
+                let mapsFromUserTabs = (await collectionUsers.distinct('headerMapIdList')).map(el => {return {mapId: el}});
+                let mapsAll = await mapFilter(collectionMaps, {filterMode: 'all'});
+                let mapsFilteredLinkTypeInternal = await mapFilter(collectionMaps, {filterMode: 'filtered', cond: 'eq', condKey: 'linkType', condVal: 'internal'})
+                console.log(mapsFromUserTabs.length)
+                console.log(mapsAll.length)
                 console.log(mapsFilteredLinkTypeInternal.length);
                 break;
             }
