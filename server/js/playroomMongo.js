@@ -23,7 +23,7 @@ async function mapFilter (collectionMaps, params) {
             break;
         }
         case 'filtered': {
-            let dataElemField = 'linkType';
+            let dataElemField = params.condKey;
             await collectionMaps.aggregate(
                 [
                     {
@@ -107,16 +107,15 @@ async function mongoFunction(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
-        const collectionMaps =      client.db("app").collection("maps");
-        const collectionUsers =     client.db("app").collection("users");
+        const collectionMaps = client.db("app").collection("maps");
+        const collectionUsers = client.db("app").collection("users");
 
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
-                let maps = await mapFilter(collectionMaps, {filterMode: 'all'});
-                // TODO collect maps from tabs too that should not be deleted
-                console.log(maps.length);
-                let mapsThatHaveInternalLink = await mapFilter(collectionMaps, {filterMode: 'filtered', cond: 'eq', condVal: 'internal'})
-                console.log(mapsThatHaveInternalLink.length);
+                let mapsAll =                       await mapFilter(collectionMaps, {filterMode: 'all'});
+                let mapsFilteredLinkTypeInternal =  await mapFilter(collectionMaps, {filterMode: 'filtered', cond: 'eq', condKey: 'linkType', condVal: 'internal'})
+                console.log(mapsAll.length);
+                console.log(mapsFilteredLinkTypeInternal.length);
                 break;
             }
         }
