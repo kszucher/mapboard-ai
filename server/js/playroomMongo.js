@@ -2,7 +2,14 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-
+async function userFilter (collectionUsers, params) {
+    let filter = [];
+    switch (params.filterMode) {
+        case 'all': {
+            // todo: gather maps from headermaplists for notdelete
+        }
+    }
+}
 
 async function mapFilter (collectionMaps, params) {
     let filter = [];
@@ -42,9 +49,9 @@ async function mapFilter (collectionMaps, params) {
                 ]
             ).forEach( doc => {
                 filter.push({
-                    _id : doc._id,
-                    path: doc.data['path'],
-                    value : doc.data[dataElemField]
+                    mapId : doc._id,
+                    nodePath: doc.data['path'],
+                    nodeValue : doc.data[dataElemField]
                 });
             });
         }
@@ -57,7 +64,7 @@ async function updateStage (params) {
         case 'setMapProp': {
             for (let i = 0; i < filter.length; i++) {
                 await collectionMaps.updateOne(
-                    {_id: filter[i]._id},
+                    {_id: filter[i].mapId},
                     {$set: {"MAPROPNAME" : "MAPROPVALUE"}}
                 );
             }
@@ -66,7 +73,7 @@ async function updateStage (params) {
         case 'unsetMapProp': {
             for (let i = 0; i < filter.length; i++) {
                 await collectionMaps.updateOne(
-                    {_id: filter[i]._id},
+                    {_id: filter[i].mapId},
                     {$unset: {"MAPROPNAME" : ""}}
                 );
             }
@@ -76,9 +83,9 @@ async function updateStage (params) {
         case 'setNodeProp': {
             for (let i = 0; i < filter.length; i++) {
                 await collectionMaps.updateOne(
-                    { _id: filter[i]._id },
+                    { _id: filter[i].mapId },
                     { $set: { "data.$[elem].NODEPROPNAME" : "NODEPROPVALUE" } },
-                    { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true }
+                    { "arrayFilters": [{ "elem.path": filter[i].nodePath }], "multi": true }
                 )
             }
             break;
@@ -86,9 +93,9 @@ async function updateStage (params) {
         case 'unsetNodeProp': {
             for (let i = 0; i < filter.length; i++) {
                 await collectionMaps.updateOne(
-                    { _id: filter[i]._id },
+                    { _id: filter[i].mapId },
                     { $unset: { "data.$[elem].NODEPROPNAME" : "" } },
-                    { "arrayFilters": [{ "elem.path": filter[i].path }], "multi": true }
+                    { "arrayFilters": [{ "elem.path": filter[i].nodePath }], "multi": true }
                 )
             }
             break;
