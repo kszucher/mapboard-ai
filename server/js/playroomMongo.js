@@ -127,7 +127,7 @@ async function mongoFunction(cmd) {
                     filterMode: 'all',
                     returnArray: 'map'
                 });
-                let tabMaps = (await collectionUsers.distinct('headerMapIdList')).map(el => {return el});
+                let tabMaps = await collectionUsers.distinct('headerMapIdList');
                 let linkedMaps = await mapFilter(collectionMaps, {
                     filterMode: 'filtered',
                     cond: 'eq',
