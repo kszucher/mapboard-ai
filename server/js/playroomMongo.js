@@ -57,7 +57,7 @@ async function mapFilter (collectionMaps, params) {
                 ]
             ).forEach( doc => {
                 if (params.returnArray === 'nodeLink') {
-                    filter.push(doc.data.link);
+                    filter.push(ObjectId(doc.data.link));
                 } else if (params.returnArray === 'mapNodePath') {
                     filter.push({
                         mapId : doc._id,
@@ -127,7 +127,7 @@ async function mongoFunction(cmd) {
                     filterMode: 'all',
                     returnArray: 'map'
                 });
-                let tabMaps = await collectionUsers.distinct('headerMapIdList');
+                let tabMaps = await collectionUsers.distinct('headerMapIdList')
                 let linkedMaps = await mapFilter(collectionMaps, {
                     filterMode: 'filtered',
                     cond: 'eq',
@@ -136,17 +136,19 @@ async function mongoFunction(cmd) {
                     returnArray: 'nodeLink',
                 })
 
-                console.log(allMaps.length)
-                console.log(tabMaps.length)
-                console.log(linkedMaps.length)
+                let mapsToKeep = [...tabMaps, ...linkedMaps];
+                let mapsToDelete = difference(allMaps, mapsToKeep);
 
-                // await collectionMaps.deleteMany(
-                //     {
-                //         _id: {
-                //             $in: deleteMaps
-                //         }
-                //     }
-                // )
+                console.log(mapsToKeep.length)
+                console.log(mapsToDelete.length) // run until mapsDelete is 0
+
+                await collectionMaps.deleteMany(
+                    {
+                        _id: {
+                            $in: mapsToDelete
+                        }
+                    }
+                )
                 break;
             }
         }
@@ -159,3 +161,10 @@ async function mongoFunction(cmd) {
 }
 
 mongoFunction('findDeleteUnusedMaps');
+
+// warn: set operations require strings
+const difference = (arrA, arrB) => {
+    arrA = arrA.map(el=>el.toString());
+    arrB = arrB.map(el=>el.toString());
+    return arrA.filter(x => !arrB.includes(x)).map(el=>ObjectId(el));
+}
