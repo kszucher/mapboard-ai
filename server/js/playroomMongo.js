@@ -21,10 +21,10 @@ async function mapFilter (collectionMaps, params) {
     let filter = [];
     switch (params.filterMode) {
         case 'all': {
-            await collectionMaps.find({}).forEach( doc => {
-                filter.push({
-                    mapId : doc._id,
-                });
+            await collectionMaps.find({}).forEach(doc => {
+                if (params.returnArray === 'map') {
+                    filter.push(doc._id);
+                }
             });
             break;
         }
@@ -56,10 +56,14 @@ async function mapFilter (collectionMaps, params) {
                     }
                 ]
             ).forEach( doc => {
-                filter.push({
-                    mapId : doc._id,
-                    nodePath: doc.data['path'],
-                });
+                if (params.returnArray === 'nodeLink') {
+                    filter.push(doc.data.link);
+                } else if (params.returnArray === 'mapNodePath') {
+                    filter.push({
+                        mapId : doc._id,
+                        nodePath: doc.data.path,
+                    });
+                }
             });
         }
     }
@@ -119,12 +123,30 @@ async function mongoFunction(cmd) {
 
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
-                let mapsFromUserTabs = (await collectionUsers.distinct('headerMapIdList')).map(el => {return {mapId: el}});
-                let mapsAll = await mapFilter(collectionMaps, {filterMode: 'all'});
-                let mapsFilteredLinkTypeInternal = await mapFilter(collectionMaps, {filterMode: 'filtered', cond: 'eq', condKey: 'linkType', condVal: 'internal'})
-                console.log(mapsFromUserTabs.length)
-                console.log(mapsAll.length)
-                console.log(mapsFilteredLinkTypeInternal.length);
+                let allMaps = await mapFilter(collectionMaps, {
+                    filterMode: 'all',
+                    returnArray: 'map'
+                });
+                let tabMaps = (await collectionUsers.distinct('headerMapIdList')).map(el => {return el});
+                let linkedMaps = await mapFilter(collectionMaps, {
+                    filterMode: 'filtered',
+                    cond: 'eq',
+                    condKey: 'linkType',
+                    condVal: 'internal',
+                    returnArray: 'nodeLink',
+                })
+
+                console.log(allMaps.length)
+                console.log(tabMaps.length)
+                console.log(linkedMaps.length)
+
+                // await collectionMaps.deleteMany(
+                //     {
+                //         _id: {
+                //             $in: deleteMaps
+                //         }
+                //     }
+                // )
                 break;
             }
         }
