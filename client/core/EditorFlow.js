@@ -67,8 +67,7 @@ const EditorReducer = (state, action) => {
             return {...state, mapIdList, mapNameList, mapSelected};
         }
         case 'OPEN_MAP': {
-            let {mapId, prevMapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
-            prevMapId = mapId;
+            let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
             switch (payload.source) {
                 case 'SERVER_SIGN_IN_SUCCESS':
                 case 'SERVER_UPDATE_TABS_SUCCESS':
@@ -113,11 +112,12 @@ const EditorReducer = (state, action) => {
             let serverAction = ['SERVER_UPDATE_TABS_SUCCESS', 'TAB', 'BREADCRUMBS', 'MOUSE', 'KEY', 'HISTORY'].includes(payload.source)
                 ? 'saveOpenMap'
                 : 'openMap';
-            return {...state, mapId, prevMapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, serverAction]};
+            return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, serverAction]};
         }
-        case 'SET_MAPSTORAGE': {
-            let {density, alignment} = payload;
-            return {...state, mapStorage: payload, density, alignment};
+        case 'OPEN_MAP_SUCCESS': {
+            let {mapId, mapStorage} = payload;
+            let prevMapId = state.mapId;
+            return {...state, prevMapId, mapId, mapStorage};
         }
         case 'CREATE_MAP_IN_MAP': {
             return {...state, newMapName: payload, serverAction: [...state.serverAction, 'createMapInMap']};

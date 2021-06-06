@@ -122,7 +122,8 @@ export function Communication() {
                     let mapHolderDiv = document.getElementById('mapHolderDiv');
                     mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
-                    dispatch({type: 'SET_MAPSTORAGE', payload: serverResponse.mapStorage});
+                    let {mapId, mapStorage} = serverResponse;
+                    dispatch({type: 'OPEN_MAP_SUCCESS', payload: {mapId, mapStorage}});
                     break;
                 }
                 case 'createMapInMapSuccess': {
