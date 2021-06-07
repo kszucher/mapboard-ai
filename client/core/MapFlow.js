@@ -33,10 +33,8 @@ export let mapState = {
     isNodeClicked: false,
     isTaskClicked: false,
     shouldCenter: false,
-    moveTarget: {
-        path: [],
-        index: 0,
-    },
+    moveTargetPath: [],
+    moveTargetIndex: 0,
     margin: 32,
     taskConfig: {
         n: 4,

@@ -151,7 +151,7 @@ export function MapComponent() {
                 if (mapState.isNodeClicked) {
                     let r = getMapData().r;
                     let [toX, toY] = getCoords(e);
-                    mapState.moveTarget.path = [];
+                    mapState.moveTargetPath = [];
                     r.moveData = [];
                     let lastSelectedPath = selectionState.structSelectedPathList[0];
                     let lastSelected = mapref(lastSelectedPath);
@@ -161,13 +161,13 @@ export function MapComponent() {
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
                         let lastNearestPath = mapFindNearest.start(r, toX, toY);
                         if (lastNearestPath.length > 1) {
-                            mapState.moveTarget.path = copy(lastNearestPath);
+                            mapState.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
                             fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                             fromY = lastFound.nodeY;
                             r.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
-                                mapState.moveTarget.index = 0;
+                                mapState.moveTargetIndex = 0;
                             } else {
                                 let insertIndex = 0;
                                 for (let i = 0; i < lastFound.s.length - 1; i++) {
@@ -184,7 +184,7 @@ export function MapComponent() {
                                         insertIndex -= 1;
                                     }
                                 }
-                                mapState.moveTarget.index = insertIndex;
+                                mapState.moveTargetIndex = insertIndex;
                             }
                         }
                     }
@@ -215,7 +215,7 @@ export function MapComponent() {
         isMouseDown = false;
         if (e.which === 1) {
             let r = getMapData().r;
-            if (mapState.moveTarget.path.length) {
+            if (mapState.moveTargetPath.length) {
                 r.moveData = [];
                 mapDispatch('setShouldCenter');
                 push();
