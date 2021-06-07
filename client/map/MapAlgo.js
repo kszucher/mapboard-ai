@@ -20,6 +20,12 @@ export const mapAlgo = {
             cm.s.push(getDefaultNode());
         }
 
+        if (cm.contentCalc && cm.contentCalc !== '') {
+            if (cm.contentCalc === '=AVG') {
+                cm.content = 'cica';
+            }
+        }
+
         if (cm.d) cm.d.map(i => mapAlgo.iterate(i));
         if (cm.s) cm.s.map(i => mapAlgo.iterate(i));
         if (cm.c) cm.c.map(i => i.map(j => mapAlgo.iterate(j)));

@@ -537,6 +537,9 @@ function nodeReducer(action, payload) {
             if (lm.content.substring(0, 2) === '\\[') {
                 lm.contentType = 'equation';
                 lm.isDimAssigned = 0;
+            } else if (lm.content.substring(0, 1) === '=') {
+                lm.contentCalc = lm.content;
+                lm.isDimAssigned = 0;
             }
             break;
         }
