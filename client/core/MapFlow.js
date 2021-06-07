@@ -36,12 +36,10 @@ export let mapState = {
     moveTargetPath: [],
     moveTargetIndex: 0,
     margin: 32,
-    taskConfig: {
-        n: 4,
-        d: 24,
-        gap: 4,
-        width: 0,
-    },
+    taskConfigN: 4,
+    taskConfigD: 24,
+    taskConfigGap: 4,
+    taskConfigWidth: 0,
 };
 
 const InitMapState = JSON.stringify(mapState);
@@ -66,7 +64,7 @@ function mapReducer(action, payload) {
             mapState.sLineDeltaXDefault = payload === 'large' ? 30 : 20;
             mapState.padding = payload === 'large' ? 8 : 3;
             mapState.defaultH = payload === 'large' ? 30 : 20; // 30 = 14 + 2*8, 20 = 14 + 2*3
-            mapState.taskConfig.d = payload === 'large' ? 24 : 20;
+            mapState.taskConfigD = payload === 'large' ? 24 : 20;
             break;
         }
         case 'setAlignment': {
@@ -74,8 +72,8 @@ function mapReducer(action, payload) {
             break;
         }
         case 'setTaskConfigWidth': {
-            let {n, d, gap} = mapState.taskConfig;
-            mapState.taskConfig.width = n * d + (n - 1) * gap;
+            let {taskConfigN, taskConfigD, taskConfigGap} = mapState;
+            mapState.taskConfigWidth = taskConfigN * taskConfigD + (taskConfigN - 1) * taskConfigGap;
             break;
         }
         case 'setIsLoading': {

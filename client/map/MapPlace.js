@@ -2,12 +2,12 @@ import {mapState} from "../core/MapFlow";
 
 export const mapPlace = {
     start: (r) => {
-        let {alignment, taskConfig, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
+        let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
 
-        let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfig.width: 0;
+        let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0;
         let leftMapWidth =      r.d[1].s.length > 0 ? sLineDeltaXDefault + r.d[1].familyW : 0;
         let rightMapWidth =     r.d[0].s.length > 0 ? sLineDeltaXDefault + r.d[0].familyW : 0;
-        let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfig.width : 0;
+        let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0;
 
         let leftWidth = leftMapWidth + leftTaskWidth + margin;
         let rightWidth = rightMapWidth + rightTaskWidth + margin;

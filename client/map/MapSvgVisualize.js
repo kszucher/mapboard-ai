@@ -211,9 +211,8 @@ export const mapSvgVisualize = {
             }
         }
         if (conditions.task) {
-            let {mapWidth, margin} = mapState;
-            let {n, d, gap, width} = mapState.taskConfig;
-            let startX = cm.path[2]? margin + width : mapWidth - width - margin;
+            let {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = mapState;
+            let startX = cm.path[2]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin;
             let x1 = nex;
             let x2 = startX;
             let y = cm.nodeY;
@@ -225,8 +224,10 @@ export const mapSvgVisualize = {
                     strokeWidth: 1,
                 };
             }
-            for (let i = 0; i < n; i++) {
-                let centerX = cm.path[2]? startX - d/2 - i * (d + gap) : startX + d/2 + i * (d + gap);
+            for (let i = 0; i < taskConfigN; i++) {
+                let centerX = cm.path[2]
+                    ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
+                    : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap);
                 let centerY = cm.nodeY;
                 let fill;
                 if (cm.taskStatus === i) {
@@ -248,7 +249,7 @@ export const mapSvgVisualize = {
                     type: 'circle',
                     cx: centerX,
                     cy: centerY,
-                    r: d/2,
+                    r: taskConfigD/2,
                     fill: fill,
                 };
             }
