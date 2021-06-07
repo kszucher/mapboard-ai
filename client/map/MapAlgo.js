@@ -1,4 +1,5 @@
 import {getDefaultNode} from "../node/Node";
+import {mapref} from "../core/MapFlow";
 
 let selectionFound = 0;
 
@@ -21,8 +22,20 @@ export const mapAlgo = {
         }
 
         if (cm.contentCalc && cm.contentCalc !== '') {
-            if (cm.contentCalc === '=AVG') {
-                cm.content = 'cica';
+            if (cm.parentType === 'cell') {
+                let parentStruct = mapref(mapref(cm.parentPath).parentPath)
+                let result = 0;
+                for (let i = 0; i < parentStruct.c.length - 1; i++) {
+                    let currRowCell = parentStruct.c[0][i].s[0].content;
+                    let currColCell = parentStruct.c[i][0].s[0].content;
+                    if (cm.contentCalc === '=SUM') {
+                        result += parseInt(currColCell);
+                    }
+                }
+                cm.content = result;
+
+            } else {
+                cm.content = 'not a last row of a table!';
             }
         }
 
