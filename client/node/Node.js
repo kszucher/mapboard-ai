@@ -42,6 +42,7 @@ export let props = {
             moveData:                           [],
             selectionRect:                      [],
             selection:                          's',
+            contentCalc:                        '',
             // mapMeasure
             isDimAssigned:                      0,
             contentW:                           0,

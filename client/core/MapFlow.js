@@ -1,6 +1,6 @@
 import {mapAssembly} from "../map/MapAssembly";
 import {copy, subsasgn, subsref} from "./Utils";
-import {mapRestore} from "../map/MapRestore";
+import {mapAlgo} from "../map/MapAlgo";
 import {mapInit} from "../map/MapInit";
 import {mapChain} from "../map/MapChain";
 import {mapTaskCheck} from "../map/MapTaskCheck";
@@ -106,7 +106,7 @@ export const getMapData = () => {
 export function recalc() {
     initSelectionState();
     let r = getMapData().r;
-    mapRestore.start(r);
+    mapAlgo.start(r);
     mapInit.start(r);
     mapChain.start(r);
     mapTaskCheck.start(r);
