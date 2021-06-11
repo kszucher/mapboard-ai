@@ -194,6 +194,31 @@ async function sendResponse(c2s) {
                             };
                             break;
                         }
+                        case 'saveOpenMapRequest': {
+
+                            break;
+                        }
+                        case 'saveMapRequest': {
+                            await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
+                            s2c = {
+                                cmd: 'saveMapRequestSuccess'
+                            };
+                            break;
+                        }
+                        case 'saveMapBackupRequest': {
+                            await collectionMaps.updateOne(
+                                {_id: ObjectId(c2s.mapId)},
+                                {
+                                    $push: {
+                                        "dataBackup": [c2s.mapStorageOut]
+                                    }
+                                }
+                            );
+                            s2c = {
+                                cmd: 'saveMapBackupRequestSuccess'
+                            };
+                            break;
+                        }
                         case 'createMapInMapRequest': {
                             s2c = {
                                 cmd: 'createMapInMapSuccess',
@@ -273,27 +298,6 @@ async function sendResponse(c2s) {
                                 );
                             }
                             s2c = getTabData(c2s.cred);
-                            break;
-                        }
-                        case 'saveMapRequest': {
-                            await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
-                            s2c = {
-                                cmd: 'saveMapRequestSuccess'
-                            };
-                            break;
-                        }
-                        case 'saveMapBackupRequest': {
-                            await collectionMaps.updateOne(
-                                {_id: ObjectId(c2s.mapId)},
-                                {
-                                    $push: {
-                                        "dataBackup": [c2s.mapStorageOut]
-                                    }
-                                }
-                            );
-                            s2c = {
-                                cmd: 'saveMapBackupRequestSuccess'
-                            };
                             break;
                         }
                     }
