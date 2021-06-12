@@ -115,7 +115,7 @@ const EditorReducer = (state, action) => {
         }
         case 'OPEN_MAP_SUCCESS': {
             let {mapId, mapStorage} = payload;
-            let prevMapId = state.mapId.slice(0);
+            let prevMapId = state.mapId;
             return {...state, prevMapId, mapId, mapStorage};
         }
         case 'CREATE_MAP_IN_MAP': {
