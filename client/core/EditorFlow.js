@@ -1,4 +1,5 @@
 import {saveMap} from "./MapFlow";
+import {shallowCopy} from "./Utils";
 
 export const editorState = {
     isLoggedIn: false,
@@ -114,7 +115,7 @@ const EditorReducer = (state, action) => {
         }
         case 'OPEN_MAP_SUCCESS': {
             let {mapId, mapStorage} = payload;
-            let prevMapId = state.mapId;
+            let prevMapId = state.mapId.slice(0);
             return {...state, prevMapId, mapId, mapStorage};
         }
         case 'CREATE_MAP_IN_MAP': {
