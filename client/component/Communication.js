@@ -8,7 +8,7 @@ import {initDomData} from "../core/DomFlow";
 let waitingForServer = 0;
 setInterval(function() {
     if (!waitingForServer && remoteGetState().mapId !== '' && remoteGetState.prevMapId !== '') {
-        remoteDispatch({type: 'SAVE_MAP'})
+        // remoteDispatch({type: 'SAVE_MAP'})
     }
 }, 3000);
 
