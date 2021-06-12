@@ -61,17 +61,16 @@ export function Communication() {
                     Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                 }
                 switch (lastAction) {
-                    case 'signIn':              post({cred, cmd: 'signInRequest'});                                                 break;
-                    case 'openMap':             post({cred, cmd: 'openMapRequest',          mapId, mapSelected});                   break;
-                    case 'saveOpenMap':         post({cred, cmd: 'saveMapRequest',          mapId: prevMapId, mapStorageOut});
-                                                post({cred, cmd: 'openMapRequest',          mapId, mapSelected});                   break;
-                    case 'saveMap':             post({cred, cmd: 'saveMapRequest',          mapId, mapStorageOut});                 break;
-                    case 'saveMapBackup':       post({cred, cmd: 'saveMapBackupRequest',    mapId, mapStorageOut});                 break;
-                    case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest',   mapStorageOut});                        break;
-                    case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest',   mapStorageOut});                        break;
-                    case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'});                                         break;
-                    case 'moveUpMapInTab':      post({cred, cmd: 'moveUpMapInTabRequest'});                                         break;
-                    case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'});                                       break;
+                    case 'signIn':              post({cred, cmd: 'signInRequest'});                                                     break;
+                    case 'openMap':             post({cred, cmd: 'openMapRequest', mapId, mapSelected});                                break;
+                    case 'saveOpenMap':         post({cred, cmd: 'saveOpenMapRequest', prevMapId, mapStorageOut, mapId, mapSelected});  break;
+                    case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut});                              break;
+                    case 'saveMapBackup':       post({cred, cmd: 'saveMapBackupRequest', mapId, mapStorageOut});                        break;
+                    case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut});                              break;
+                    case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut});                              break;
+                    case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'});                                             break;
+                    case 'moveUpMapInTab':      post({cred, cmd: 'moveUpMapInTabRequest'});                                             break;
+                    case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'});                                           break;
                 }
             } else {
                 switch (lastAction) {
@@ -112,7 +111,8 @@ export function Communication() {
                     dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
                     break;
                 }
-                case 'openMapSuccess': {
+                case 'openMapSuccess':
+                case 'saveOpenMapSuccess': {
                     mapState.isLoading = true;
                     mapDispatch('setData', serverResponse.mapStorage.data);
                     mapDispatch('setDensity', serverResponse.mapStorage.density);
@@ -139,7 +139,7 @@ export function Communication() {
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_UPDATE_TABS_SUCCESS'}});
                     break;
                 }
-                case 'saveMapRequestSuccess': {
+                case 'saveMapSuccess': {
                     break;
                 }
             }

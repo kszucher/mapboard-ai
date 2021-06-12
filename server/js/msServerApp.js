@@ -195,13 +195,22 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveOpenMapRequest': {
-
+                            await collectionMaps.replaceOne({_id: ObjectId(c2s.prevMapId)}, c2s.mapStorageOut);
+                            await collectionUsers.updateOne(
+                                {_id: ObjectId(currUser._id)},
+                                {$set: {"headerMapSelected": c2s.mapSelected}}
+                            );
+                            s2c = {
+                                cmd: 'saveOpenMapSuccess',
+                                mapId: c2s.mapId,
+                                mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})
+                            };
                             break;
                         }
                         case 'saveMapRequest': {
                             await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
                             s2c = {
-                                cmd: 'saveMapRequestSuccess'
+                                cmd: 'saveMapSuccess'
                             };
                             break;
                         }
@@ -215,7 +224,7 @@ async function sendResponse(c2s) {
                                 }
                             );
                             s2c = {
-                                cmd: 'saveMapBackupRequestSuccess'
+                                cmd: 'saveMapBackupSuccess'
                             };
                             break;
                         }

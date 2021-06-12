@@ -109,9 +109,7 @@ const EditorReducer = (state, action) => {
             if (payload.source !== 'HISTORY') {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
-            let serverAction = ['SERVER_UPDATE_TABS_SUCCESS', 'TAB', 'BREADCRUMBS', 'MOUSE', 'KEY', 'HISTORY'].includes(payload.source)
-                ? 'saveOpenMap'
-                : 'openMap';
+            let serverAction = payload.source === 'SERVER_SIGN_IN_SUCCESS' ? 'openMap' : 'saveOpenMap';
             return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, serverAction]};
         }
         case 'OPEN_MAP_SUCCESS': {
