@@ -43,39 +43,41 @@ export function Communication() {
     };
 
     useEffect(() => {
-        let lastAction = [...serverAction].pop();
-        if (lastAction === 'ping') {
-            post({cmd: 'pingRequest'});
-        } else {
-            const cred = JSON.parse(localStorage.getItem('cred'));
-            if (cred && cred.email && cred.password) {
-                let mapStorageOut = {
-                    density: mapState.density,
-                    alignment: mapState.alignment
-                };
-                if (['saveOpenMap', 'saveMap', 'saveMapBackup'].includes(lastAction)) {
-                    Object.assign(mapStorageOut, {data: saveMap()});
-                } else if (lastAction === 'createMapInMap') {
-                    Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
-                } else if (lastAction === 'createMapInTab') {
-                    Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
-                }
-                switch (lastAction) {
-                    case 'signIn':              post({cred, cmd: 'signInRequest'});                                                     break;
-                    case 'openMap':             post({cred, cmd: 'openMapRequest', mapId, mapSelected});                                break;
-                    case 'saveOpenMap':         post({cred, cmd: 'saveOpenMapRequest', prevMapId, mapStorageOut, mapId, mapSelected});  break;
-                    case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut});                              break;
-                    case 'saveMapBackup':       post({cred, cmd: 'saveMapBackupRequest', mapId, mapStorageOut});                        break;
-                    case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut});                              break;
-                    case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut});                              break;
-                    case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'});                                             break;
-                    case 'moveUpMapInTab':      post({cred, cmd: 'moveUpMapInTabRequest'});                                             break;
-                    case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'});                                           break;
-                }
+        if (!waitingForServer) {
+            let lastAction = [...serverAction].pop();
+            if (lastAction === 'ping') {
+                post({cmd: 'pingRequest'});
             } else {
-                switch (lastAction) {
-                    case 'signUpStep1':         post({cmd: 'signUpStep1Request', userData: {userName, userEmail, userPassword}});   break;
-                    case 'signUpStep2':         post({cmd: 'signUpStep2Request', userData: {userEmail, userConfirmationCode}});     break;
+                const cred = JSON.parse(localStorage.getItem('cred'));
+                if (cred && cred.email && cred.password) {
+                    let mapStorageOut = {
+                        density: mapState.density,
+                        alignment: mapState.alignment
+                    };
+                    if (['saveOpenMap', 'saveMap', 'saveMapBackup'].includes(lastAction)) {
+                        Object.assign(mapStorageOut, {data: saveMap()});
+                    } else if (lastAction === 'createMapInMap') {
+                        Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
+                    } else if (lastAction === 'createMapInTab') {
+                        Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
+                    }
+                    switch (lastAction) {
+                        case 'signIn':              post({cred, cmd: 'signInRequest'});                                                     break;
+                        case 'openMap':             post({cred, cmd: 'openMapRequest', mapId, mapSelected});                                break;
+                        case 'saveOpenMap':         post({cred, cmd: 'saveOpenMapRequest', prevMapId, mapStorageOut, mapId, mapSelected});  break;
+                        case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut});                              break;
+                        case 'saveMapBackup':       post({cred, cmd: 'saveMapBackupRequest', mapId, mapStorageOut});                        break;
+                        case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut});                              break;
+                        case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut});                              break;
+                        case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'});                                             break;
+                        case 'moveUpMapInTab':      post({cred, cmd: 'moveUpMapInTabRequest'});                                             break;
+                        case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'});                                           break;
+                    }
+                } else {
+                    switch (lastAction) {
+                        case 'signUpStep1':         post({cmd: 'signUpStep1Request', userData: {userName, userEmail, userPassword}});   break;
+                        case 'signUpStep2':         post({cmd: 'signUpStep2Request', userData: {userEmail, userConfirmationCode}});     break;
+                    }
                 }
             }
         }
