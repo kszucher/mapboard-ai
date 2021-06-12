@@ -97,8 +97,9 @@ export function Communication() {
                 case 'signInSuccess': {
                     initDomData();
                     dispatch({type: 'OPEN_WORKSPACE'});
-                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
+                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.payload});
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_SIGN_IN_SUCCESS'}});
+                    // dispatch({type: 'OPEN_MAP_SERVER_SIGN_IN_SUCCESS', payload: serverResponse.payload});
                     break;
                 }
                 case 'signInFail': {
@@ -126,6 +127,9 @@ export function Communication() {
                     mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
                     let {mapId, mapStorage} = serverResponse;
+
+                    // TODO itt állítjuk be a tabokat ha kell,nem az updatetabs-szal
+
                     dispatch({type: 'OPEN_MAP_SUCCESS', payload: {mapId, mapStorage}});
                     break;
                 }
@@ -138,7 +142,7 @@ export function Communication() {
                     break;
                 }
                 case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord
-                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.headerData});
+                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.payload});
                     dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_UPDATE_TABS_SUCCESS'}});
                     break;
                 }

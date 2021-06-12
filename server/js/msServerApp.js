@@ -174,7 +174,7 @@ async function sendResponse(c2s) {
                         case 'signInRequest': {
                             s2c = {
                                 cmd: 'signInSuccess',
-                                headerData: {
+                                payload: {
                                     mapIdList: currUser.headerMapIdList,
                                     mapNameList: await getHeaderMapNameList(currUser),
                                     mapSelected: currUser.headerMapSelected
@@ -293,7 +293,7 @@ async function getTabData (cred) {
     let currUser = await collectionUsers.findOne(cred); // needs to get refreshed
     return {
         cmd: 'updateTabSuccess',
-        headerData: {
+        payload: {
             mapSelected: currUser.headerMapSelected,
             mapIdList: currUser.headerMapIdList,
             mapNameList: await getHeaderMapNameList(currUser),
