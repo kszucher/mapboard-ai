@@ -1,5 +1,4 @@
 import {saveMap} from "./MapFlow";
-import {shallowCopy} from "./Utils";
 
 export const editorState = {
     isLoggedIn: false,
@@ -7,7 +6,8 @@ export const editorState = {
     userEmail: '',
     userPassword: '',
     userConfirmationCode: '',
-    serverAction: ['ping'],
+    serverAction: {serverCmd: 'ping'},
+    serverActionCntr: 0,
     serverResponse: {},
     serverResponseToUser: [''],
     mapSelected: 0,
@@ -35,6 +35,16 @@ export const editorState = {
 
 const InitEditorState = JSON.stringify(editorState);
 
+const createServerAction = (state, serverCmd, serverPayload) => {
+    // if (serverPayload === undefined) {
+    //     serverPayload = {}
+    // }
+    return {
+        serverAction: {serverCmd, serverPayload},
+        serverActionCntr: state.serverActionCntr + 1
+    }
+}
+
 const EditorReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
@@ -50,15 +60,15 @@ const EditorReducer = (state, action) => {
         }
         case 'SIGN_IN': {
             localStorage.setItem('cred', JSON.stringify(payload));
-            return {...state, serverAction: [...state.serverAction, 'signIn']};
+            return {...state, ...createServerAction(state, 'signIn')};
         }
         case 'SIGN_UP_STEP_1': {
             let {userName, userEmail, userPassword} = payload;
-            return {...state, userName, userEmail, userPassword, serverAction: [...state.serverAction, 'signUpStep1']};
+            return {...state, userName, userEmail, userPassword, ...createServerAction(state, 'signUpStep1')};
         }
         case 'SIGN_UP_STEP_2': {
             let {userEmail, userConfirmationCode} = payload;
-            return {...state, userEmail, userConfirmationCode, serverAction: [...state.serverAction, 'signUpStep2']};
+            return {...state, userEmail, userConfirmationCode, ...createServerAction(state, 'signUpStep2')};
         }
         case 'OPEN_WORKSPACE': {
             return {...state, isLoggedIn: true};
@@ -110,8 +120,8 @@ const EditorReducer = (state, action) => {
             if (payload.source !== 'HISTORY') {
                 history.pushState({mapId, mapName, mapSelected, breadcrumbsHistory}, mapId, '');
             }
-            let serverAction = payload.source === 'SERVER_SIGN_IN_SUCCESS' ? 'openMap' : 'saveOpenMap';
-            return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, serverAction: [...state.serverAction, serverAction]};
+            let serverCmd = payload.source === 'SERVER_SIGN_IN_SUCCESS' ? 'openMap' : 'saveOpenMap';
+            return {...state, mapId, mapName, mapSelected, breadcrumbsHistory, ...createServerAction(state, serverCmd)};
         }
         case 'OPEN_MAP_SUCCESS': {
             let {mapId, mapStorage} = payload;
@@ -119,32 +129,32 @@ const EditorReducer = (state, action) => {
             return {...state, prevMapId, mapId, mapStorage};
         }
         case 'CREATE_MAP_IN_MAP': {
-            return {...state, newMapName: payload, serverAction: [...state.serverAction, 'createMapInMap']};
+            return {...state, newMapName: payload, ...createServerAction(state, 'createMapInMap')};
         }
         case 'CREATE_MAP_IN_TAB': {
-            return {...state, mapNameList: [...state.mapNameList, 'creating...'], serverAction: [...state.serverAction, 'createMapInTab']};
+            return {...state, mapNameList: [...state.mapNameList, 'creating...'], ...createServerAction(state, 'createMapInTab')};
         }
         case 'REMOVE_MAP_IN_TAB': {
             let {mapNameList, mapSelected} = state;
             mapNameList = mapNameList.filter((val, i) => i !== mapSelected);
             mapSelected = mapSelected === 0 ? mapSelected : mapSelected - 1;
-            return {...state, mapNameList, mapSelected, serverAction: [...state.serverAction, 'removeMapInTab']};
+            return {...state, mapNameList, mapSelected, ...createServerAction(state, 'removeMapInTab')};
         }
         case 'MOVE_UP_MAP_IN_TAB': {
             let {mapSelected} = state;
             mapSelected = mapSelected === 0 ? mapSelected : mapSelected - 1;
-            return {...state, mapSelected, serverAction: [...state.serverAction, 'moveUpMapInTab']};
+            return {...state, mapSelected, ...createServerAction(state, 'moveUpMapInTab')};
         }
         case 'MOVE_DOWN_MAP_IN_TAB': {
             let {mapNameList, mapSelected} = state;
             mapSelected = mapSelected ===  mapNameList.length - 1? mapSelected : mapSelected + 1
-            return {...state, mapSelected, serverAction: [...state.serverAction, 'moveDownMapInTab']};
+            return {...state, mapSelected, ...createServerAction(state, 'moveDownMapInTab')};
         }
         case 'SAVE_MAP': {
-            return { ...state, serverAction: [...state.serverAction, 'saveMap']}
+            return { ...state, ...createServerAction(state, 'saveMap')}
         }
         case 'SAVE_MAP_BACKUP': {
-            return { ...state, serverAction: [...state.serverAction, 'saveMapBackup']}
+            return { ...state, ...createServerAction(state, 'saveMapBackup')}
         }
         case 'MOVE_MAP_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_MAP': return state;

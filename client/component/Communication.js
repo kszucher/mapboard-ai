@@ -18,7 +18,7 @@ setInterval(function() {
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverResponse, mapId, prevMapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode, newMapName} = state;
+    const {serverAction, serverActionCntr, serverResponse, mapId, prevMapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode, newMapName} = state;
 
     const callback = response => {
         console.log('SERVER_RESPONSE: ' + response.cmd);
@@ -44,8 +44,9 @@ export function Communication() {
 
     useEffect(() => {
         if (!waitingForServer) {
-            let lastAction = [...serverAction].pop();
-            if (lastAction === 'ping') {
+            console.log(serverAction)
+            let {serverCmd} = serverAction;
+            if (serverCmd === 'ping') {
                 post({cmd: 'pingRequest'});
             } else {
                 const cred = JSON.parse(localStorage.getItem('cred'));
@@ -54,14 +55,14 @@ export function Communication() {
                         density: mapState.density,
                         alignment: mapState.alignment
                     };
-                    if (['saveOpenMap', 'saveMap', 'saveMapBackup'].includes(lastAction)) {
+                    if (['saveOpenMap', 'saveMap', 'saveMapBackup'].includes(serverCmd)) {
                         Object.assign(mapStorageOut, {data: saveMap()});
-                    } else if (lastAction === 'createMapInMap') {
+                    } else if (serverCmd === 'createMapInMap') {
                         Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
-                    } else if (lastAction === 'createMapInTab') {
+                    } else if (serverCmd === 'createMapInTab') {
                         Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                     }
-                    switch (lastAction) {
+                    switch (serverCmd) {
                         case 'signIn':              post({cred, cmd: 'signInRequest'});                                                     break;
                         case 'openMap':             post({cred, cmd: 'openMapRequest', mapId, mapSelected});                                break;
                         case 'saveOpenMap':         post({cred, cmd: 'saveOpenMapRequest', prevMapId, mapStorageOut, mapId, mapSelected});  break;
@@ -74,14 +75,14 @@ export function Communication() {
                         case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'});                                           break;
                     }
                 } else {
-                    switch (lastAction) {
+                    switch (serverCmd) {
                         case 'signUpStep1':         post({cmd: 'signUpStep1Request', userData: {userName, userEmail, userPassword}});   break;
                         case 'signUpStep2':         post({cmd: 'signUpStep2Request', userData: {userEmail, userConfirmationCode}});     break;
                     }
                 }
             }
         }
-    }, [serverAction]);
+    }, [serverActionCntr]);
 
     useEffect(() => {
         if (serverResponse.cmd) {
