@@ -183,64 +183,33 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapRequest': {
-                            await collectionUsers.updateOne(
-                                {_id: ObjectId(currUser._id)},
-                                {$set: {"headerMapSelected": c2s.mapSelected}}
-                            );
-                            s2c = {
-                                cmd: 'openMapSuccess',
-                                mapId: c2s.mapId,
-                                mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})
-                            };
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
+                            s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
                             break;
                         }
                         case 'saveOpenMapRequest': {
                             await collectionMaps.replaceOne({_id: ObjectId(c2s.prevMapId)}, c2s.mapStorageOut);
-                            await collectionUsers.updateOne(
-                                {_id: ObjectId(currUser._id)},
-                                {$set: {"headerMapSelected": c2s.mapSelected}}
-                            );
-                            s2c = {
-                                cmd: 'saveOpenMapSuccess',
-                                mapId: c2s.mapId,
-                                mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})
-                            };
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
+                            s2c = {cmd: 'saveOpenMapSuccess', mapId: c2s.mapId, mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
                             break;
                         }
                         case 'saveMapRequest': {
                             await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
-                            s2c = {
-                                cmd: 'saveMapSuccess'
-                            };
+                            s2c = {cmd: 'saveMapSuccess'};
                             break;
                         }
                         case 'saveMapBackupRequest': {
-                            await collectionMaps.updateOne(
-                                {_id: ObjectId(c2s.mapId)},
-                                {
-                                    $push: {
-                                        "dataBackup": [c2s.mapStorageOut]
-                                    }
-                                }
-                            );
-                            s2c = {
-                                cmd: 'saveMapBackupSuccess'
-                            };
+                            await collectionMaps.updateOne({_id: ObjectId(c2s.mapId)}, {$push: {"dataBackup": [c2s.mapStorageOut]}});
+                            s2c = {cmd: 'saveMapBackupSuccess'};
                             break;
                         }
                         case 'createMapInMapRequest': {
-                            s2c = {
-                                cmd: 'createMapInMapSuccess',
-                                newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
-                            };
+                            s2c = {cmd: 'createMapInMapSuccess', newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId};
                             break;
                         }
                         case 'createMapInTabRequest': {
                             // should probably use addToSet instead
-                            let headerMapIdList = [
-                                ...currUser.headerMapIdList,
-                                (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId
-                            ];
+                            let headerMapIdList = [...currUser.headerMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
                             await collectionUsers.updateOne(
                                 {_id: ObjectId(currUser._id)},
                                 {
