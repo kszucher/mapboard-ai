@@ -2,10 +2,6 @@ import {saveMap} from "./MapFlow";
 
 export const editorState = {
     isLoggedIn: false,
-    userName: '',
-    userEmail: '',
-    userPassword: '',
-    userConfirmationCode: '',
     serverAction: {serverCmd: 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
@@ -36,9 +32,9 @@ export const editorState = {
 const InitEditorState = JSON.stringify(editorState);
 
 const createServerAction = (state, serverCmd, serverPayload) => {
-    // if (serverPayload === undefined) {
-    //     serverPayload = {}
-    // }
+    if (serverPayload === undefined) {
+        serverPayload = {}
+    }
     return {
         serverAction: {serverCmd, serverPayload},
         serverActionCntr: state.serverActionCntr + 1
@@ -63,12 +59,10 @@ const EditorReducer = (state, action) => {
             return {...state, ...createServerAction(state, 'signIn')};
         }
         case 'SIGN_UP_STEP_1': {
-            let {userName, userEmail, userPassword} = payload;
-            return {...state, userName, userEmail, userPassword, ...createServerAction(state, 'signUpStep1')};
+            return {...state, ...createServerAction(state, 'signUpStep1', payload)};
         }
         case 'SIGN_UP_STEP_2': {
-            let {userEmail, userConfirmationCode} = payload;
-            return {...state, userEmail, userConfirmationCode, ...createServerAction(state, 'signUpStep2')};
+            return {...state, ...createServerAction(state, 'signUpStep2', payload)};
         }
         case 'OPEN_WORKSPACE': {
             return {...state, isLoggedIn: true};

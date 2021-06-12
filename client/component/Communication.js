@@ -18,7 +18,7 @@ setInterval(function() {
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverActionCntr, serverResponse, mapId, prevMapId, mapSelected, userName, userEmail, userPassword, userConfirmationCode, newMapName} = state;
+    const {serverAction, serverActionCntr, serverResponse, mapId, prevMapId, mapSelected, newMapName} = state;
 
     const callback = response => {
         console.log('SERVER_RESPONSE: ' + response.cmd);
@@ -45,7 +45,7 @@ export function Communication() {
     useEffect(() => {
         if (!waitingForServer) {
             console.log(serverAction)
-            let {serverCmd} = serverAction;
+            let {serverCmd, serverPayload} = serverAction;
             if (serverCmd === 'ping') {
                 post({cmd: 'pingRequest'});
             } else {
@@ -76,8 +76,8 @@ export function Communication() {
                     }
                 } else {
                     switch (serverCmd) {
-                        case 'signUpStep1':         post({cmd: 'signUpStep1Request', userData: {userName, userEmail, userPassword}});   break;
-                        case 'signUpStep2':         post({cmd: 'signUpStep2Request', userData: {userEmail, userConfirmationCode}});     break;
+                        case 'signUpStep1':         post({cmd: 'signUpStep1Request', userData: serverPayload});                             break;
+                        case 'signUpStep2':         post({cmd: 'signUpStep2Request', userData: serverPayload});                             break;
                     }
                 }
             }
