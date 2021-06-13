@@ -45,6 +45,7 @@ export function Communication() {
     useEffect(() => {
         if (!waitingForServer) {
             let {serverCmd, serverPayload} = serverAction;
+            console.log(serverPayload)
             if (serverCmd === 'ping') {
                 post({serverCmd});
             } else {
@@ -64,6 +65,7 @@ export function Communication() {
                     switch (serverCmd) {
                         case 'signIn':                post({cred, serverCmd}); break;
                         case 'openMapFromTabHistory': post({cred, serverCmd}); break;
+                        case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMap':               post({cred, serverCmd, mapId, mapSelected}); break;
                         case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, mapSelected}); break;
                         case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;

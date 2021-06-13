@@ -72,6 +72,9 @@ const EditorReducer = (state, action) => {
         case 'OPEN_MAP_FROM_TAB_HISTORY': {
             return {...state, isLoggedIn: true, ...createServerAction(state, 'openMapFromTabHistory')};
         }
+        case 'OPEN_MAP_FROM_TAB': {
+            return {...state, ...createServerAction(state, 'openMapFromTab', payload)};
+        }
         case 'OPEN_MAP': {
             let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;
             switch (payload.source) {

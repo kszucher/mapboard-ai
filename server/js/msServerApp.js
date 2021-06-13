@@ -106,7 +106,6 @@ MongoClient.connect(uri, {
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'};
 
-    console.log(c2s)
 
     if (c2s.serverCmd === 'ping') {
 
@@ -189,8 +188,13 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromTab': {
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
-                            s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
+                            let mapNameList = await getHeaderMapNameList(currUser);
+                            let {mapSelected} = c2s.serverPayload;
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": mapSelected}});
+                            let mapIdList = currUser.headerMapIdList;
+                            let mapId = mapIdList[mapSelected];
+                            let mapStorage = await collectionMaps.findOne({_id: ObjectId(mapId)});
+                            s2c = {cmd: 'openMapSuccess', payload: {mapNameList, mapSelected, mapId, mapStorage}};
                             break;
                         }
                         case 'openMap': {

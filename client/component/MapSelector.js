@@ -9,7 +9,8 @@ export default function VerticalTabs() {
     const [mapSelected, setMapSelected] = useState(0);
 
     const handleChange = (e, value) =>  {
-        dispatch({type: 'OPEN_MAP', payload: {source: 'TAB', value}})
+        setMapSelected(value);
+        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {mapSelected: value}})
     };
 
     useEffect(() => {
