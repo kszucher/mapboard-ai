@@ -11,7 +11,7 @@ export default function WorkspaceBreadcrumbs() {
 
     const handleClick = index => event => {
         event.preventDefault();
-        dispatch({type: 'OPEN_MAP', payload: {source: 'BREADCRUMBS', index}})
+        dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}})
     };
 
     useEffect(() => {

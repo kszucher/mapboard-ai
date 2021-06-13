@@ -67,6 +67,7 @@ export function Communication() {
                         case 'openMapFromTabHistory': post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromMap':        post({cred, serverCmd, serverPayload}); break;
+                        case 'openMapFromBreadcrumbs':post({cred, serverCmd, serverPayload}); break;
 
                         case 'openMap':               post({cred, serverCmd, mapId, tabMapSelected}); break;
                         case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, tabMapSelected}); break;

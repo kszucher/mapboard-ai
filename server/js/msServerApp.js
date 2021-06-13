@@ -219,6 +219,17 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromBreadcrumbs': {
+                            let {_id, headerMapIdList, headerMapSelected, breadcrumbMapIdList} = currUser;
+                            let tabMapSelected = headerMapSelected; // to be removed when naming changes
+                            let tabMapIdList = headerMapIdList; // to be removed when naming changes
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                            let {breadcrumbMapSelected} = c2s.serverPayload;
+                            breadcrumbMapIdList.length = breadcrumbMapSelected + 1;
+                            let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
+                            let mapStorage = await collectionMaps.findOne({_id: mapId});
+                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
+                            let breadcrumbMapNameList = await getBreadcrumbMapNameList(breadcrumbMapIdList);
+                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
                         case 'saveOpenMap': {
