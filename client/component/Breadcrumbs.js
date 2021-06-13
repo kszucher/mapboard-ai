@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
@@ -6,12 +6,21 @@ import {Context} from "../core/Store";
 
 export default function WorkspaceBreadcrumbs() {
     const [state, dispatch] = useContext(Context);
-    const {breadcrumbsHistory} = state;
+    const {serverResponse, serverResponseCntr} = state;
+    const [breadcrumbMapNameList, setBreadcrumbMapNameList] = useState(['']);
 
     const handleClick = index => event => {
         event.preventDefault();
         dispatch({type: 'OPEN_MAP', payload: {source: 'BREADCRUMBS', index}})
     };
+
+    useEffect(() => {
+        if (serverResponse.cmd === 'openMapSuccess') {
+            let {breadcrumbMapNameList} = serverResponse.payload;
+            setBreadcrumbMapNameList(breadcrumbMapNameList);
+        }
+    }, [serverResponseCntr]);
+
 
     return (
         <div style={{
@@ -32,13 +41,13 @@ export default function WorkspaceBreadcrumbs() {
             borderTop: 0,
         }}>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                {breadcrumbsHistory.map((currElement, index) => (
+                {breadcrumbMapNameList.map((el, index) => (
                     <Link
                         color="inherit"
                         href="/"
                         onClick={handleClick(index)}
                         key={index}>
-                        {currElement.mapName}
+                        {el}
                     </Link>
                 ))}>
             </Breadcrumbs>

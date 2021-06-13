@@ -179,22 +179,28 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromTabHistory': {
-                            let tabMapNameList = await getHeaderMapNameList(currUser);
-                            let tabMapSelected = currUser.headerMapSelected;
-                            let mapIdList = currUser.headerMapIdList;
-                            let mapId = mapIdList[tabMapSelected];
-                            let mapStorage = await collectionMaps.findOne({_id: ObjectId(mapId)});
-                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, mapId, mapStorage}};
+                            let {_id, headerMapIdList, headerMapSelected} = currUser;
+                            let tabMapSelected = headerMapSelected; // to be removed when naming changes
+                            let tabMapIdList = headerMapIdList; // to be removed when naming changes
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                            let mapId = tabMapIdList[tabMapSelected];
+                            let mapStorage = await collectionMaps.findOne({_id: mapId});
+                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList: [mapId]}});
+                            let breadcrumbMapNameList = await getBreadcrumbMapNameList([mapId]);
+                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapStorage}};
                             break;
                         }
                         case 'openMapFromTab': {
-                            let tabMapNameList = await getHeaderMapNameList(currUser);
+                            let {_id, headerMapIdList} = currUser;
+                            let tabMapIdList = headerMapIdList; // to be removed when naming changes
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
                             let {tabMapSelected} = c2s.serverPayload;
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": tabMapSelected}});
-                            let mapIdList = currUser.headerMapIdList;
-                            let mapId = mapIdList[tabMapSelected];
-                            let mapStorage = await collectionMaps.findOne({_id: ObjectId(mapId)});
-                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, mapId, mapStorage}};
+                            await collectionUsers.updateOne({_id}, {$set: {"headerMapSelected": tabMapSelected}});
+                            let mapId = tabMapIdList[tabMapSelected];
+                            let mapStorage = await collectionMaps.findOne({_id: mapId});
+                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList: [mapId]}});
+                            let breadcrumbMapNameList = await getBreadcrumbMapNameList([mapId]);
+                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapStorage}};
                             break;
                         }
                         case 'openMapFromBreadcrumbs': {
@@ -307,22 +313,34 @@ async function getTabData (cred) {
         cmd: 'updateTabSuccess',
         payload: {
             tabMapSelected: currUser.headerMapSelected,
-            mapIdList: currUser.headerMapIdList,
-            tabMapNameList: await getHeaderMapNameList(currUser),
+            tabMapIdList: currUser.headerMapIdList,
+            tabMapNameList: await getTabMapNameList(currUser.headerMapIdList),
         }
     };
 }
 
-async function getHeaderMapNameList (currUser) {
+async function getTabMapNameList (headerMapIdList) {
     let headerMapNameList = [];
     await collectionMaps.aggregate([
-        {$match:        {_id:           {$in:           currUser.headerMapIdList}}             },
-        {$addFields:    {"__order":     {$indexOfArray: [currUser.headerMapIdList, "$_id" ]}}  },
+        {$match:        {_id:           {$in:           headerMapIdList}}             },
+        {$addFields:    {"__order":     {$indexOfArray: [headerMapIdList, "$_id" ]}}  },
         {$sort:         {"__order":     1}                                                     },
     ]).forEach(function (m) {
         headerMapNameList.push(m.data[0].content)
     });
     return headerMapNameList;
+}
+
+async function getBreadcrumbMapNameList (breadcrumbMapIdList) {
+    let breadcrumbMapNameList = [];
+    await collectionMaps.aggregate([
+        {$match:        {_id:           {$in:           breadcrumbMapIdList}}             },
+        {$addFields:    {"__order":     {$indexOfArray: [breadcrumbMapIdList, "$_id" ]}}  },
+        {$sort:         {"__order":     1}                                                         },
+    ]).forEach(function (m) {
+        breadcrumbMapNameList.push(m.data[0].content)
+    });
+    return breadcrumbMapNameList;
 }
 
 function getConfirmationCode() {
