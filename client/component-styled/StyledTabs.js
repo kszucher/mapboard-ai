@@ -6,7 +6,7 @@ import React from "react";
 export default function StyledTabs (arg) {
     const {valueList, value, onChange, orientation, component} = arg;
     const getStyle = (theme) => {
-        if (component === 'mapSelector') {
+        if (component === 'tabs') {
             return {
                 root: {
                     flexGrow: 1,

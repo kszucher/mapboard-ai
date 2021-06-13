@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Context} from "../core/Store";
 import StyledTabs from "../component-styled/StyledTabs";
 
-export default function VerticalTabs() {
+export default function Tabs() {
     const [state, dispatch] = useContext(Context);
     const {serverResponse, serverResponseCntr} = state;
     const [mapNameList, setMapNameList] = useState([]);
@@ -39,7 +39,7 @@ export default function VerticalTabs() {
                 value={mapSelected}
                 onChange={handleChange}
                 orientation={'vertical'}
-                component={'mapSelector'}/>
+                component={'tabs'}/>
         </div>
     );
 }
