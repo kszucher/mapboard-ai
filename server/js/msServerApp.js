@@ -179,30 +179,33 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromTabHistory': {
-                            let mapNameList = await getHeaderMapNameList(currUser);
-                            let mapSelected = currUser.headerMapSelected;
+                            let tabMapNameList = await getHeaderMapNameList(currUser);
+                            let tabMapSelected = currUser.headerMapSelected;
                             let mapIdList = currUser.headerMapIdList;
-                            let mapId = mapIdList[mapSelected];
+                            let mapId = mapIdList[tabMapSelected];
                             let mapStorage = await collectionMaps.findOne({_id: ObjectId(mapId)});
-                            s2c = {cmd: 'openMapSuccess', payload: {mapNameList, mapSelected, mapId, mapStorage}};
+                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, mapId, mapStorage}};
                             break;
                         }
                         case 'openMapFromTab': {
-                            let mapNameList = await getHeaderMapNameList(currUser);
-                            let {mapSelected} = c2s.serverPayload;
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": mapSelected}});
+                            let tabMapNameList = await getHeaderMapNameList(currUser);
+                            let {tabMapSelected} = c2s.serverPayload;
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": tabMapSelected}});
                             let mapIdList = currUser.headerMapIdList;
-                            let mapId = mapIdList[mapSelected];
+                            let mapId = mapIdList[tabMapSelected];
                             let mapStorage = await collectionMaps.findOne({_id: ObjectId(mapId)});
-                            s2c = {cmd: 'openMapSuccess', payload: {mapNameList, mapSelected, mapId, mapStorage}};
+                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, mapId, mapStorage}};
                             break;
                         }
-                        case 'openMap': {
+                        case 'openMapFromBreadcrumbs': {
+                            break;
+                        }
+                        case 'openMapFromMap': {
                             break;
                         }
                         case 'saveOpenMap': {
                             await collectionMaps.replaceOne({_id: ObjectId(c2s.prevMapId)}, c2s.mapStorageOut);
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.tabMapSelected}});
                             s2c = {
                                 cmd: 'openMapSuccess',
                                 mapId: c2s.mapId,
@@ -303,9 +306,9 @@ async function getTabData (cred) {
     return {
         cmd: 'updateTabSuccess',
         payload: {
-            mapSelected: currUser.headerMapSelected,
+            tabMapSelected: currUser.headerMapSelected,
             mapIdList: currUser.headerMapIdList,
-            mapNameList: await getHeaderMapNameList(currUser),
+            tabMapNameList: await getHeaderMapNameList(currUser),
         }
     };
 }

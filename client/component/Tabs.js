@@ -5,19 +5,19 @@ import StyledTabs from "../component-styled/StyledTabs";
 export default function Tabs() {
     const [state, dispatch] = useContext(Context);
     const {serverResponse, serverResponseCntr} = state;
-    const [mapNameList, setMapNameList] = useState([]);
-    const [mapSelected, setMapSelected] = useState(0);
+    const [tabMapNameList, setTabMapNameList] = useState([]);
+    const [tabMapSelected, setTabMapSelected] = useState(0);
 
     const handleChange = (e, value) =>  {
-        setMapSelected(value);
-        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {mapSelected: value}})
+        setTabMapSelected(value);
+        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     };
 
     useEffect(() => {
         if (serverResponse.cmd === 'openMapSuccess') {
-            let {mapNameList, mapSelected} = serverResponse.payload;
-            setMapNameList(mapNameList);
-            setMapSelected(mapSelected);
+            let {tabMapNameList, tabMapSelected} = serverResponse.payload;
+            setTabMapNameList(tabMapNameList);
+            setTabMapSelected(tabMapSelected);
         }
     }, [serverResponseCntr]);
 
@@ -35,8 +35,8 @@ export default function Tabs() {
             borderLeft: 0
         }}>
             <StyledTabs
-                valueList={mapNameList}
-                value={mapSelected}
+                valueList={tabMapNameList}
+                value={tabMapSelected}
                 onChange={handleChange}
                 orientation={'vertical'}
                 component={'tabs'}/>
