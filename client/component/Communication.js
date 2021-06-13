@@ -63,9 +63,11 @@ export function Communication() {
                         Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                     }
                     switch (serverCmd) {
-                        case 'signIn':                post({cred, serverCmd}); break;
-                        case 'openMapFromTabHistory': post({cred, serverCmd}); break;
+                        case 'signIn':                post({cred, serverCmd, serverPayload}); break;
+                        case 'openMapFromTabHistory': post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
+                        case 'openMapFromMap':        post({cred, serverCmd, serverPayload}); break;
+
                         case 'openMap':               post({cred, serverCmd, mapId, tabMapSelected}); break;
                         case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, tabMapSelected}); break;
                         case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;
@@ -115,9 +117,9 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    let {mapId, mapStorage} = serverResponse.payload;
+                    let {mapStorage} = serverResponse.payload;
                     mapState.isLoading = true;
-                    mapDispatch('setMapId', mapId);
+                    mapDispatch('setMapId', mapStorage._id);
                     mapDispatch('setData', mapStorage.data);
                     mapDispatch('setDensity', mapStorage.density);
                     mapDispatch('setAlignment', mapStorage.alignment);

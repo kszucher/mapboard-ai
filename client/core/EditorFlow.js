@@ -75,6 +75,9 @@ const EditorReducer = (state, action) => {
         case 'OPEN_MAP_FROM_TAB': {
             return {...state, ...createServerAction(state, 'openMapFromTab', payload)};
         }
+        case 'OPEN_MAP_FROM_MAP': {
+            return {...state, ...createServerAction(state, 'openMapFromMap', payload)};
+        }
         case 'OPEN_MAP': {
             let {mapId, mapName, tabMapSelected, mapIdList, tabMapNameList, breadcrumbsHistory} = state;
             switch (payload.source) {
