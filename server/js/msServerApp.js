@@ -191,7 +191,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromTab': {
+                        case 'openMapFromTab': { // should save previous map
                             let {_id, headerMapIdList} = currUser;
                             let tabMapIdList = headerMapIdList; // to be removed when naming changes
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
@@ -205,7 +205,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromMap': {
+                        case 'openMapFromMap': { // should save previous map
                             let {_id, headerMapIdList, headerMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapSelected = headerMapSelected; // to be removed when naming changes
                             let tabMapIdList = headerMapIdList; // to be removed when naming changes
@@ -218,7 +218,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromBreadcrumbs': {
+                        case 'openMapFromBreadcrumbs': { // should save previous map
                             let {_id, headerMapIdList, headerMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapSelected = headerMapSelected; // to be removed when naming changes
                             let tabMapIdList = headerMapIdList; // to be removed when naming changes
