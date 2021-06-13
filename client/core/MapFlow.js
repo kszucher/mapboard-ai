@@ -18,6 +18,7 @@ import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
     isLoading: true,
+    mapId: '',
     dataIndex: 0,
     data: [],
     density: '', // inherit
@@ -54,6 +55,10 @@ export function mapDispatch(action, payload) {
 
 function mapReducer(action, payload) {
     switch (action) {
+        case 'setMapId': {
+            mapState.mapId = payload.mapId;
+            break;
+        }
         case 'setData': {
             mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload)];

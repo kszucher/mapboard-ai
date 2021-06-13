@@ -1,13 +1,24 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Context} from "../core/Store";
 import StyledTabs from "../component-styled/StyledTabs";
 
 export default function VerticalTabs() {
     const [state, dispatch] = useContext(Context);
-    const {mapSelected, mapNameList} = state;
+    const {serverResponse, serverResponseCntr} = state;
+    const [mapNameList, setMapNameList] = useState([]);
+    const [mapSelected, setMapSelected] = useState(0);
+
     const handleChange = (e, value) =>  {
         dispatch({type: 'OPEN_MAP', payload: {source: 'TAB', value}})
     };
+
+    useEffect(() => {
+        if (serverResponse.cmd === 'openMapSuccess') {
+            let {mapNameList, mapSelected} = serverResponse.payload;
+            setMapNameList(mapNameList);
+            setMapSelected(mapSelected);
+        }
+    }, [serverResponseCntr]);
 
     return (
         <div style={{

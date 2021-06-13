@@ -18,7 +18,7 @@ setInterval(function() {
 export function Communication() {
 
     const [state, dispatch] = useContext(Context);
-    const {serverAction, serverActionCntr, serverResponse, mapId, prevMapId, mapSelected, newMapName} = state;
+    const {serverAction, serverActionCntr, serverResponse, serverResponseCntr} = state;
 
     const callback = response => {
         console.log('SERVER_RESPONSE: ' + response.cmd);
@@ -26,7 +26,7 @@ export function Communication() {
     }
 
     const post = (msg) => {
-        console.log('SERVER_MESSAGE: ' + msg.cmd);
+        console.log('SERVER_MESSAGE: ' + msg.serverCmd);
         waitingForServer = 1;
         let myUrl = process.env.NODE_ENV === 'development'
             ? "http://127.0.0.1:8082/beta"
@@ -44,10 +44,9 @@ export function Communication() {
 
     useEffect(() => {
         if (!waitingForServer) {
-            console.log(serverAction)
             let {serverCmd, serverPayload} = serverAction;
             if (serverCmd === 'ping') {
-                post({cmd: 'pingRequest'});
+                post({serverCmd});
             } else {
                 const cred = JSON.parse(localStorage.getItem('cred'));
                 if (cred && cred.email && cred.password) {
@@ -63,21 +62,22 @@ export function Communication() {
                         Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                     }
                     switch (serverCmd) {
-                        case 'signIn':              post({cred, cmd: 'signInRequest'});                                                     break;
-                        case 'openMap':             post({cred, cmd: 'openMapRequest', mapId, mapSelected});                                break;
-                        case 'saveOpenMap':         post({cred, cmd: 'saveOpenMapRequest', prevMapId, mapStorageOut, mapId, mapSelected});  break;
-                        case 'saveMap':             post({cred, cmd: 'saveMapRequest', mapId, mapStorageOut});                              break;
-                        case 'saveMapBackup':       post({cred, cmd: 'saveMapBackupRequest', mapId, mapStorageOut});                        break;
-                        case 'createMapInMap':      post({cred, cmd: 'createMapInMapRequest', mapStorageOut});                              break;
-                        case 'createMapInTab':      post({cred, cmd: 'createMapInTabRequest', mapStorageOut});                              break;
-                        case 'removeMapInTab':      post({cred, cmd: 'removeMapInTabRequest'});                                             break;
-                        case 'moveUpMapInTab':      post({cred, cmd: 'moveUpMapInTabRequest'});                                             break;
-                        case 'moveDownMapInTab':    post({cred, cmd: 'moveDownMapInTabRequest'});                                           break;
+                        case 'signIn':                post({cred, serverCmd}); break;
+                        case 'openMapFromTabHistory': post({cred, serverCmd}); break;
+                        case 'openMap':               post({cred, serverCmd, mapId, mapSelected}); break;
+                        case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, mapSelected}); break;
+                        case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;
+                        case 'saveMapBackup':         post({cred, serverCmd, mapId, mapStorageOut}); break;
+                        case 'createMapInMap':        post({cred, serverCmd, mapStorageOut}); break;
+                        case 'createMapInTab':        post({cred, serverCmd, mapStorageOut}); break;
+                        case 'removeMapInTab':        post({cred, serverCmd}); break;
+                        case 'moveUpMapInTab':        post({cred, serverCmd}); break;
+                        case 'moveDownMapInTab':      post({cred, serverCmd}); break;
                     }
                 } else {
                     switch (serverCmd) {
-                        case 'signUpStep1':         post({cmd: 'signUpStep1Request', userData: serverPayload});                             break;
-                        case 'signUpStep2':         post({cmd: 'signUpStep2Request', userData: serverPayload});                             break;
+                        case 'signUpStep1':           post({serverCmd, userData: serverPayload}); break;
+                        case 'signUpStep2':           post({serverCmd, userData: serverPayload}); break;
                     }
                 }
             }
@@ -96,10 +96,7 @@ export function Communication() {
                 }
                 case 'signInSuccess': {
                     initDomData();
-                    dispatch({type: 'OPEN_WORKSPACE'});
-                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.payload});
-                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_SIGN_IN_SUCCESS'}});
-                    // dispatch({type: 'OPEN_MAP_SERVER_SIGN_IN_SUCCESS', payload: serverResponse.payload});
+                    dispatch({type: 'OPEN_MAP_FROM_TAB_HISTORY'});
                     break;
                 }
                 case 'signInFail': {
@@ -115,22 +112,18 @@ export function Communication() {
                     dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
                     break;
                 }
-                case 'openMapSuccess':
-                case 'saveOpenMapSuccess': {
+                case 'openMapSuccess': {
+                    let {mapId, mapStorage} = serverResponse.payload;
                     mapState.isLoading = true;
-                    mapDispatch('setData', serverResponse.mapStorage.data);
-                    mapDispatch('setDensity', serverResponse.mapStorage.density);
-                    mapDispatch('setAlignment', serverResponse.mapStorage.alignment);
+                    mapDispatch('setMapId', mapId);
+                    mapDispatch('setData', mapStorage.data);
+                    mapDispatch('setDensity', mapStorage.density);
+                    mapDispatch('setAlignment', mapStorage.alignment);
                     mapDispatch('setTaskConfigWidth');
                     redraw();
                     let mapHolderDiv = document.getElementById('mapHolderDiv');
                     mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
-                    let {mapId, mapStorage} = serverResponse;
-
-                    // TODO itt állítjuk be a tabokat ha kell,nem az updatetabs-szal
-
-                    dispatch({type: 'OPEN_MAP_SUCCESS', payload: {mapId, mapStorage}});
                     break;
                 }
                 case 'createMapInMapSuccess': {
@@ -151,7 +144,7 @@ export function Communication() {
                 }
             }
         }
-    }, [serverResponse]);
+    }, [serverResponseCntr]);
 
     return null;
 }

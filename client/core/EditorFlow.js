@@ -5,6 +5,7 @@ export const editorState = {
     serverAction: {serverCmd: 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
+    serverResponseCntr: 0,
     serverResponseToUser: [''],
     mapSelected: 0,
     mapIdList: [],
@@ -49,7 +50,7 @@ const EditorReducer = (state, action) => {
             return JSON.parse(InitEditorState);
         }
         case 'SERVER_RESPONSE': {
-            return {...state, serverResponse: payload};
+            return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload};
         }
         case 'SERVER_RESPONSE_TO_USER': {
             return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
@@ -64,12 +65,12 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_2': {
             return {...state, ...createServerAction(state, 'signUpStep2', payload)};
         }
-        case 'OPEN_WORKSPACE': {
-            return {...state, isLoggedIn: true};
-        }
         case 'UPDATE_TABS': {
             let {mapIdList, mapNameList, mapSelected} = payload;
             return {...state, mapIdList, mapNameList, mapSelected};
+        }
+        case 'OPEN_MAP_FROM_TAB_HISTORY': {
+            return {...state, isLoggedIn: true, ...createServerAction(state, 'openMapFromTabHistory')};
         }
         case 'OPEN_MAP': {
             let {mapId, mapName, mapSelected, mapIdList, mapNameList, breadcrumbsHistory} = state;

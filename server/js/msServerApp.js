@@ -105,12 +105,16 @@ MongoClient.connect(uri, {
 
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'};
-    if (c2s.cmd === 'pingRequest') {
+
+    console.log(c2s)
+
+    if (c2s.serverCmd === 'ping') {
+
         s2c = {cmd: 'pingSuccess'};
     } else {
         try {
             let currUser;
-            if (c2s.cmd === 'signUpStep1Request') {
+            if (c2s.serverCmd === 'signUpStep1') {
                 let {userName, userEmail, userPassword} = c2s.userData;
                 currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null) {
@@ -146,7 +150,7 @@ async function sendResponse(c2s) {
                 } else {
                     s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'};
                 }
-            } else if (c2s.cmd === 'signUpStep2Request') {
+            } else if (c2s.serverCmd === 'signUpStep2') {
                 let {userEmail, userConfirmationCode} = c2s.userData;
                 currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null ) {
@@ -170,59 +174,60 @@ async function sendResponse(c2s) {
                 } else if (currUser.activationStatus === 'awaitingConfirmation') {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
-                    switch (c2s.cmd) {
-                        case 'signInRequest': {
-                            s2c = {
-                                cmd: 'signInSuccess',
-                                payload: {
-                                    mapIdList: currUser.headerMapIdList,
-                                    mapNameList: await getHeaderMapNameList(currUser),
-                                    mapSelected: currUser.headerMapSelected
-                                }
-                            };
+                    switch (c2s.serverCmd) {
+                        case 'signIn': {
+                            s2c = {cmd: 'signInSuccess'};
                             break;
                         }
-                        case 'openMapRequest': {
+                        case 'openMapFromTabHistory': {
+                            let mapNameList = await getHeaderMapNameList(currUser);
+                            let mapSelected = currUser.headerMapSelected;
+                            let mapIdList = currUser.headerMapIdList;
+                            let mapId = mapIdList[mapSelected];
+                            let mapStorage = await collectionMaps.findOne({_id: ObjectId(mapId)});
+                            s2c = {cmd: 'openMapSuccess', payload: {mapNameList, mapSelected, mapId, mapStorage}};
+                            break;
+                        }
+                        case 'openMapFromTab': {
                             await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
                             s2c = {cmd: 'openMapSuccess', mapId: c2s.mapId, mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
                             break;
                         }
-                        case 'saveOpenMapRequest': {
-                            await collectionMaps.replaceOne({_id: ObjectId(c2s.prevMapId)}, c2s.mapStorageOut);
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
-                            s2c = {cmd: 'saveOpenMapSuccess', mapId: c2s.mapId, mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
+                        case 'openMap': {
                             break;
                         }
-                        case 'saveMapRequest': {
+                        case 'saveOpenMap': {
+                            await collectionMaps.replaceOne({_id: ObjectId(c2s.prevMapId)}, c2s.mapStorageOut);
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"headerMapSelected": c2s.mapSelected}});
+                            s2c = {
+                                cmd: 'openMapSuccess',
+                                mapId: c2s.mapId,
+                                mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
+                            break;
+                        }
+                        case 'saveMap': {
                             await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
                             s2c = {cmd: 'saveMapSuccess'};
                             break;
                         }
-                        case 'saveMapBackupRequest': {
+                        case 'saveMapBackup': {
                             await collectionMaps.updateOne({_id: ObjectId(c2s.mapId)}, {$push: {"dataBackup": [c2s.mapStorageOut]}});
                             s2c = {cmd: 'saveMapBackupSuccess'};
                             break;
                         }
-                        case 'createMapInMapRequest': {
+                        case 'createMapInMap': {
                             s2c = {cmd: 'createMapInMapSuccess', newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId};
                             break;
                         }
-                        case 'createMapInTabRequest': {
+                        case 'createMapInTab': {
                             // should probably use addToSet instead
                             let headerMapIdList = [...currUser.headerMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
-                            await collectionUsers.updateOne(
-                                {_id: ObjectId(currUser._id)},
-                                {
-                                    $set: {
-                                        "headerMapIdList": headerMapIdList,
-                                        "headerMapSelected": headerMapIdList.length - 1,
-                                    }
-                                },
-                            );
+                            let headerMapSelected = headerMapIdList.length - 1;
+                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {headerMapIdList, headerMapSelected});
                             s2c = getTabData(c2s.cred);
                             break;
                         }
-                        case 'removeMapInTabRequest': {
+                        case 'removeMapInTab': {
                             let headerMapIdList = currUser.headerMapIdList;
                             let headerMapSelected = currUser.headerMapSelected;
                             if (headerMapSelected > 0) {
@@ -240,7 +245,7 @@ async function sendResponse(c2s) {
                             s2c = getTabData(c2s.cred);
                             break;
                         }
-                        case 'moveUpMapInTabRequest': {
+                        case 'moveUpMapInTab': {
                             let headerMapIdList = currUser.headerMapIdList;
                             let headerMapSelected = currUser.headerMapSelected;
                             if (headerMapSelected > 0) {
@@ -259,7 +264,7 @@ async function sendResponse(c2s) {
                             s2c = getTabData(c2s.cred);
                             break;
                         }
-                        case 'moveDownMapInTabRequest': {
+                        case 'moveDownMapInTab': {
                             let headerMapIdList = currUser.headerMapIdList;
                             let headerMapSelected = currUser.headerMapSelected;
                             if (headerMapSelected < headerMapIdList.length - 1) {
