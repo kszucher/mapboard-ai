@@ -77,10 +77,12 @@ const EditorReducer = (state, action) => {
             return {...state, ...createServerAction(state, 'openMapFromTab', {...payload, mapStorageOut})};
         }
         case 'OPEN_MAP_FROM_MAP': {
-            return {...state, ...createServerAction(state, 'openMapFromMap', payload)};
+            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
+            return {...state, ...createServerAction(state, 'openMapFromMap', {...payload, mapStorageOut})};
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': {
-            return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs', payload)};
+            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
+            return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs', {...payload, mapStorageOut})};
         }
         case 'OPEN_MAP': {
             let {mapId, mapName, tabMapSelected, mapIdList, tabMapNameList, breadcrumbsHistory} = state;
