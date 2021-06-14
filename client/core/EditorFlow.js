@@ -70,7 +70,8 @@ const EditorReducer = (state, action) => {
             return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, mapStorageOut})};
         }
         case 'SAVE_MAP': {
-            return { ...state, ...createServerAction(state, 'saveMap')}
+            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
+            return { ...state, ...createServerAction(state, 'saveMap', {...payload, mapStorageOut})}
         }
         case 'CREATE_MAP_IN_MAP': {
             return {...state, newMapName: payload, ...createServerAction(state, 'createMapInMap')};

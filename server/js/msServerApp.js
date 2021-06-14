@@ -230,6 +230,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveMap': {
+                            let {mapStorageOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
                             // await collectionMaps.updateOne({_id: ObjectId(c2s.mapId)}, {$push: {"dataBackup": [c2s.mapStorageOut]}});
                             s2c = {cmd: 'saveMapSuccess'};
                             break;

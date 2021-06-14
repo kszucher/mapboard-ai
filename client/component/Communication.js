@@ -61,7 +61,8 @@ export function Communication() {
                         case 'saveOpenMapFromTab':          post({cred, serverCmd, serverPayload}); break;
                         case 'saveOpenMapFromMap':          post({cred, serverCmd, serverPayload}); break;
                         case 'saveOpenMapFromBreadcrumbs':  post({cred, serverCmd, serverPayload}); break;
-                        case 'saveMap':                     post({cred, serverCmd, mapId, mapStorageOut}); break;
+                        case 'saveMap':                     post({cred, serverCmd, serverPayload}); break;
+                        // TODO finish these
                         case 'createMapInMap':              post({cred, serverCmd, mapStorageOut}); break;
                         case 'createMapInTab':              post({cred, serverCmd, mapStorageOut}); break;
                         case 'removeMapInTab':              post({cred, serverCmd}); break;
