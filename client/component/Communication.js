@@ -50,13 +50,7 @@ export function Communication() {
             } else {
                 const cred = JSON.parse(localStorage.getItem('cred'));
                 if (cred && cred.email && cred.password) {
-                    let mapStorageOut = {
-                        density: mapState.density,
-                        alignment: mapState.alignment
-                    };
-                    if (['saveOpenMap', 'saveMap', 'saveMapBackup'].includes(serverCmd)) {
-                        Object.assign(mapStorageOut, {data: saveMap()});
-                    } else if (serverCmd === 'createMapInMap') {
+                    if (serverCmd === 'createMapInMap') {
                         Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
                     } else if (serverCmd === 'createMapInTab') {
                         Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
@@ -67,12 +61,7 @@ export function Communication() {
                         case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromMap':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromBreadcrumbs':post({cred, serverCmd, serverPayload}); break;
-
-                        case 'openMap':               post({cred, serverCmd, mapId, tabMapSelected}); break;
-                        case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, tabMapSelected}); break;
                         case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;
-                        case 'saveMapBackup':         post({cred, serverCmd, mapId, mapStorageOut}); break;
-
                         case 'createMapInMap':        post({cred, serverCmd, mapStorageOut}); break;
                         case 'createMapInTab':        post({cred, serverCmd, mapStorageOut}); break;
                         case 'removeMapInTab':        post({cred, serverCmd}); break;

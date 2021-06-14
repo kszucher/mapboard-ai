@@ -69,6 +69,9 @@ const EditorReducer = (state, action) => {
             let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
             return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs', {...payload, mapStorageOut})};
         }
+        case 'SAVE_MAP': {
+            return { ...state, ...createServerAction(state, 'saveMap')}
+        }
         case 'CREATE_MAP_IN_MAP': {
             return {...state, newMapName: payload, ...createServerAction(state, 'createMapInMap')};
         }
@@ -90,12 +93,6 @@ const EditorReducer = (state, action) => {
             let {tabMapNameList, tabMapSelected} = state;
             tabMapSelected = tabMapSelected ===  tabMapNameList.length - 1? tabMapSelected : tabMapSelected + 1
             return {...state, tabMapSelected, ...createServerAction(state, 'moveDownMapInTab')};
-        }
-        case 'SAVE_MAP': {
-            return { ...state, ...createServerAction(state, 'saveMap')}
-        }
-        case 'SAVE_MAP_BACKUP': {
-            return { ...state, ...createServerAction(state, 'saveMapBackup')}
         }
         case 'MOVE_MAP_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_MAP': return state;

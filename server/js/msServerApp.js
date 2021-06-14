@@ -229,23 +229,9 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'saveOpenMap': {
-                            await collectionMaps.replaceOne({_id: ObjectId(c2s.prevMapId)}, c2s.mapStorageOut);
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"tabMapSelected": c2s.tabMapSelected}});
-                            s2c = {
-                                cmd: 'openMapSuccess',
-                                mapId: c2s.mapId,
-                                mapStorage: await collectionMaps.findOne({_id: ObjectId(c2s.mapId)})};
-                            break;
-                        }
                         case 'saveMap': {
-                            await collectionMaps.replaceOne({_id: ObjectId(c2s.mapId)}, c2s.mapStorageOut);
+                            // await collectionMaps.updateOne({_id: ObjectId(c2s.mapId)}, {$push: {"dataBackup": [c2s.mapStorageOut]}});
                             s2c = {cmd: 'saveMapSuccess'};
-                            break;
-                        }
-                        case 'saveMapBackup': {
-                            await collectionMaps.updateOne({_id: ObjectId(c2s.mapId)}, {$push: {"dataBackup": [c2s.mapStorageOut]}});
-                            s2c = {cmd: 'saveMapBackupSuccess'};
                             break;
                         }
                         case 'createMapInMap': {

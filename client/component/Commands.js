@@ -11,7 +11,6 @@ export function Commands () {
     const undo =             () => {mapDispatch('undo'); redraw()}
     const redo =             () => {mapDispatch('redo'); redraw()}
     const save =             () => {dispatch({type: 'SAVE_MAP'})}
-    const saveBackup =       () => {dispatch({type: 'SAVE_MAP_BACKUP'})}
     const cut =              () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
     const copy =             () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
     const paste =            () => {pasteDispatch()};
@@ -43,7 +42,6 @@ export function Commands () {
                 <StyledIconButton action={undo} icon={'undo'}/>
                 <StyledIconButton action={redo} icon={'redo'}/>
                 <StyledIconButton action={save} icon={'save'}/>
-                <StyledIconButton action={saveBackup} icon={'save'}/>
 
                 {/*<Divider orientation="vertical" flexItem />*/}
 
