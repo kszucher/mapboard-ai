@@ -55,13 +55,13 @@ export function mapDispatch(action, payload) {
 
 function mapReducer(action, payload) {
     switch (action) {
-        case 'setMapId': {
-            mapState.mapId = payload.mapId;
-            break;
-        }
         case 'setData': {
             mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload)];
+            break;
+        }
+        case 'setMapId': { // needs to follow setData, as it initializes
+            mapState.mapId = payload;
             break;
         }
         case 'setDensity': {

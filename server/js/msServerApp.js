@@ -189,10 +189,11 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromTab': { // should save previous map
+                        case 'openMapFromTab': {
+                            let {tabMapSelected, mapStorageOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
                             let {_id, tabMapIdList} = currUser;
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            let {tabMapSelected} = c2s.serverPayload;
                             await collectionUsers.updateOne({_id}, {$set: {tabMapSelected}});
                             let mapId = tabMapIdList[tabMapSelected];
                             let mapStorage = await collectionMaps.findOne({_id: mapId});
@@ -203,9 +204,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromMap': { // should save previous map
+                            let mapId = ObjectId(c2s.serverPayload.mapId);
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            let mapId = ObjectId(c2s.serverPayload.mapId);
                             let mapStorage = await collectionMaps.findOne({_id: mapId});
                             breadcrumbMapIdList = [...breadcrumbMapIdList, mapId];
                             await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
@@ -214,9 +215,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromBreadcrumbs': { // should save previous map
+                            let {breadcrumbMapSelected} = c2s.serverPayload;
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            let {breadcrumbMapSelected} = c2s.serverPayload;
                             breadcrumbMapIdList.length = breadcrumbMapSelected + 1;
                             let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
                             let mapStorage = await collectionMaps.findOne({_id: mapId});

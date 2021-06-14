@@ -121,8 +121,8 @@ export function Communication() {
                 case 'openMapSuccess': {
                     let {mapStorage} = serverResponse.payload;
                     mapState.isLoading = true;
-                    mapDispatch('setMapId', mapStorage._id);
                     mapDispatch('setData', mapStorage.data);
+                    mapDispatch('setMapId', mapStorage._id);
                     mapDispatch('setDensity', mapStorage.density);
                     mapDispatch('setAlignment', mapStorage.alignment);
                     mapDispatch('setTaskConfigWidth');

@@ -1,4 +1,4 @@
-import {saveMap} from "./MapFlow";
+import {mapState, saveMap} from "./MapFlow";
 
 export const editorState = {
     isLoggedIn: false,
@@ -73,7 +73,8 @@ const EditorReducer = (state, action) => {
             return {...state, isLoggedIn: true, ...createServerAction(state, 'openMapFromTabHistory')};
         }
         case 'OPEN_MAP_FROM_TAB': {
-            return {...state, ...createServerAction(state, 'openMapFromTab', payload)};
+            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
+            return {...state, ...createServerAction(state, 'openMapFromTab', {...payload, mapStorageOut})};
         }
         case 'OPEN_MAP_FROM_MAP': {
             return {...state, ...createServerAction(state, 'openMapFromMap', payload)};
