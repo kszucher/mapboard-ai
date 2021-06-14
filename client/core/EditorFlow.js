@@ -57,17 +57,17 @@ const EditorReducer = (state, action) => {
         case 'OPEN_MAP_FROM_TAB_HISTORY': {
             return {...state, isLoggedIn: true, ...createServerAction(state, 'openMapFromTabHistory')};
         }
-        case 'OPEN_MAP_FROM_TAB': {
+        case 'SAVE_OPEN_MAP_FROM_TAB': {
             let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'openMapFromTab', {...payload, mapStorageOut})};
+            return {...state, ...createServerAction(state, 'saveOpenMapFromTab', {...payload, mapStorageOut})};
         }
-        case 'OPEN_MAP_FROM_MAP': {
+        case 'SAVE_OPEN_MAP_FROM_MAP': {
             let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'openMapFromMap', {...payload, mapStorageOut})};
+            return {...state, ...createServerAction(state, 'saveOpenMapFromMap', {...payload, mapStorageOut})};
         }
-        case 'OPEN_MAP_FROM_BREADCRUMBS': {
+        case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS': {
             let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs', {...payload, mapStorageOut})};
+            return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, mapStorageOut})};
         }
         case 'SAVE_MAP': {
             return { ...state, ...createServerAction(state, 'saveMap')}

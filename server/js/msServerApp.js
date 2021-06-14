@@ -189,7 +189,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromTab': {
+                        case 'saveOpenMapFromTab': {
                             let {tabMapSelected, mapStorageOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
                             let {_id, tabMapIdList} = currUser;
@@ -203,7 +203,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromMap': {
+                        case 'saveOpenMapFromMap': {
                             let {mapId, mapStorageOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
                             mapId = ObjectId(mapId);
@@ -216,7 +216,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
-                        case 'openMapFromBreadcrumbs': {
+                        case 'saveOpenMapFromBreadcrumbs': {
                             let {breadcrumbMapSelected, mapStorageOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;

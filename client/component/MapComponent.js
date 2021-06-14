@@ -100,7 +100,7 @@ export function MapComponent() {
                     let lm = mapref(selectionState.lastPath);
                     if (!e.shiftKey) {
                         if (lm.linkType === 'internal') {
-                            dispatch({type: 'OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
+                            dispatch({type: 'SAVE_OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
                         } else if (lm.linkType === 'external') {
                             isMouseDown = false;
                             window.open(lm.link, '_blank');

@@ -56,17 +56,17 @@ export function Communication() {
                         Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
                     }
                     switch (serverCmd) {
-                        case 'signIn':                post({cred, serverCmd, serverPayload}); break;
-                        case 'openMapFromTabHistory': post({cred, serverCmd, serverPayload}); break;
-                        case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
-                        case 'openMapFromMap':        post({cred, serverCmd, serverPayload}); break;
-                        case 'openMapFromBreadcrumbs':post({cred, serverCmd, serverPayload}); break;
-                        case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;
-                        case 'createMapInMap':        post({cred, serverCmd, mapStorageOut}); break;
-                        case 'createMapInTab':        post({cred, serverCmd, mapStorageOut}); break;
-                        case 'removeMapInTab':        post({cred, serverCmd}); break;
-                        case 'moveUpMapInTab':        post({cred, serverCmd}); break;
-                        case 'moveDownMapInTab':      post({cred, serverCmd}); break;
+                        case 'signIn':                      post({cred, serverCmd, serverPayload}); break;
+                        case 'openMapFromTabHistory':       post({cred, serverCmd, serverPayload}); break;
+                        case 'saveOpenMapFromTab':          post({cred, serverCmd, serverPayload}); break;
+                        case 'saveOpenMapFromMap':          post({cred, serverCmd, serverPayload}); break;
+                        case 'saveOpenMapFromBreadcrumbs':  post({cred, serverCmd, serverPayload}); break;
+                        case 'saveMap':                     post({cred, serverCmd, mapId, mapStorageOut}); break;
+                        case 'createMapInMap':              post({cred, serverCmd, mapStorageOut}); break;
+                        case 'createMapInTab':              post({cred, serverCmd, mapStorageOut}); break;
+                        case 'removeMapInTab':              post({cred, serverCmd}); break;
+                        case 'moveUpMapInTab':              post({cred, serverCmd}); break;
+                        case 'moveDownMapInTab':            post({cred, serverCmd}); break;
                     }
                 } else {
                     switch (serverCmd) {
