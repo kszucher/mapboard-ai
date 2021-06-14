@@ -67,7 +67,8 @@ export function Communication() {
                         case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromMap':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromBreadcrumbs':post({cred, serverCmd, serverPayload}); break;
-
+                        // TODO make these work under the new system using the app_dev server AND rename finally
+                        // save will be super easy AND safe btw, because mapStorageOut contains its mapId
                         case 'openMap':               post({cred, serverCmd, mapId, tabMapSelected}); break;
                         case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, tabMapSelected}); break;
                         case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;
