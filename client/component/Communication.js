@@ -67,8 +67,7 @@ export function Communication() {
                         case 'openMapFromTab':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromMap':        post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromBreadcrumbs':post({cred, serverCmd, serverPayload}); break;
-                        // TODO make these work under the new system using the app_dev server AND rename finally
-                        // save will be super easy AND safe btw, because mapStorageOut contains its mapId
+
                         case 'openMap':               post({cred, serverCmd, mapId, tabMapSelected}); break;
                         case 'saveOpenMap':           post({cred, serverCmd, prevMapId, mapStorageOut, mapId, tabMapSelected}); break;
                         case 'saveMap':               post({cred, serverCmd, mapId, mapStorageOut}); break;
@@ -138,11 +137,6 @@ export function Communication() {
                     redraw();
                     checkPop();
                     // dispatch({type: 'SAVE_MAP'})
-                    break;
-                }
-                case 'updateTabSuccess': { // this will be the reply for createMapInTab, delete, and reord
-                    dispatch({type: 'UPDATE_TABS', payload: serverResponse.payload});
-                    dispatch({type: 'OPEN_MAP', payload: {source: 'SERVER_UPDATE_TABS_SUCCESS'}});
                     break;
                 }
                 case 'saveMapSuccess': {

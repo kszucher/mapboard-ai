@@ -7,17 +7,6 @@ export const editorState = {
     serverResponse: {},
     serverResponseCntr: 0,
     serverResponseToUser: [''],
-    tabMapSelected: 0,
-    mapIdList: [],
-    mapId: '',
-    prevMapId: '',
-    tabMapNameList: [],
-    mapName: '',
-    newMapName: '',
-    mapStorage: [],
-    breadcrumbsHistory: [],
-    density: '',
-    alignment: '',
     formatMode: '',
     lineWidth: '',
     lineType: '',
@@ -65,10 +54,6 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_2': {
             return {...state, ...createServerAction(state, 'signUpStep2', payload)};
         }
-        case 'UPDATE_TABS': {
-            let {mapIdList, tabMapNameList, tabMapSelected} = payload;
-            return {...state, mapIdList, tabMapNameList, tabMapSelected};
-        }
         case 'OPEN_MAP_FROM_TAB_HISTORY': {
             return {...state, isLoggedIn: true, ...createServerAction(state, 'openMapFromTabHistory')};
         }
@@ -83,57 +68,6 @@ const EditorReducer = (state, action) => {
         case 'OPEN_MAP_FROM_BREADCRUMBS': {
             let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
             return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs', {...payload, mapStorageOut})};
-        }
-        case 'OPEN_MAP': {
-            let {mapId, mapName, tabMapSelected, mapIdList, tabMapNameList, breadcrumbsHistory} = state;
-            switch (payload.source) {
-                case 'SERVER_SIGN_IN_SUCCESS':
-                case 'SERVER_UPDATE_TABS_SUCCESS':
-                    mapId = mapIdList[tabMapSelected];
-                    mapName = tabMapNameList[tabMapSelected];
-                    breadcrumbsHistory = [{mapId, mapName}];
-                    break;
-                case 'TAB':
-                    mapId = mapIdList[payload.value];
-                    mapName = tabMapNameList[payload.value];
-                    tabMapSelected = payload.value;
-                    breadcrumbsHistory = [{mapId, mapName}];
-                    break;
-                case 'BREADCRUMBS':
-                    mapId = breadcrumbsHistory[payload.index].mapId;
-                    mapName = breadcrumbsHistory[payload.index].mapName;
-                    breadcrumbsHistory.length = payload.index + 1;
-                    break;
-                case 'MOUSE':
-                    mapId = payload.lm.link;
-                    mapName = payload.lm.content;
-                    breadcrumbsHistory = [...breadcrumbsHistory, {mapId, mapName}];
-                    break;
-                case 'KEY':
-                    switch (payload.key) {
-                        case 'SPACE':
-                            break;
-                        case 'BACKSPACE':
-                            break;
-                    }
-                    break;
-                case 'HISTORY':
-                    mapId = payload.event.state.mapId;
-                    mapName = payload.event.state.mapName;
-                    tabMapSelected = payload.event.state.tabMapSelected;
-                    breadcrumbsHistory = payload.event.state.breadcrumbsHistory;
-                    break;
-            }
-            if (payload.source !== 'HISTORY') {
-                history.pushState({mapId, mapName, tabMapSelected, breadcrumbsHistory}, mapId, '');
-            }
-            let serverCmd = payload.source === 'SERVER_SIGN_IN_SUCCESS' ? 'openMap' : 'saveOpenMap';
-            return {...state, mapId, mapName, tabMapSelected, breadcrumbsHistory, ...createServerAction(state, serverCmd)};
-        }
-        case 'OPEN_MAP_SUCCESS': {
-            let {mapId, mapStorage} = payload;
-            let prevMapId = state.mapId;
-            return {...state, prevMapId, mapId, mapStorage};
         }
         case 'CREATE_MAP_IN_MAP': {
             return {...state, newMapName: payload, ...createServerAction(state, 'createMapInMap')};
