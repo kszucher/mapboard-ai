@@ -236,50 +236,55 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'createMapInMap': {
+                            // should save map worked on
                             s2c = {cmd: 'createMapInMapSuccess', newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId};
                             break;
                         }
-                        // TODO
                         case 'createMapInTab': {
+                            // should save map worked on
+                            let {_id} = currUser;
                             let tabMapIdList = [...currUser.tabMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
                             let tabMapSelected = tabMapIdList.length - 1;
-                            await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {tabMapIdList, tabMapSelected});
-                            s2c = getTabData(c2s.cred);
+                            await collectionUsers.updateOne({_id}, {tabMapIdList, tabMapSelected});
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
                             break;
                         }
                         case 'removeMapInTab': {
-                            let tabMapIdList = currUser.tabMapIdList;
-                            let tabMapSelected = currUser.tabMapSelected;
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
                             if (tabMapSelected > 0) {
                                 tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected);
                                 tabMapSelected = tabMapSelected - 1;
-                                await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {tabMapIdList, tabMapSelected}});
+                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                             }
-                            s2c = getTabData(c2s.cred);
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
                             break;
                         }
                         case 'moveUpMapInTab': {
-                            let tabMapIdList = currUser.tabMapIdList;
-                            let tabMapSelected = currUser.tabMapSelected;
+                            // should save map worked on
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
                             if (tabMapSelected > 0) {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                     [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                                 tabMapSelected = tabMapSelected - 1;
                                 await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                             }
-                            s2c = getTabData(c2s.cred);
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
                             break;
                         }
                         case 'moveDownMapInTab': {
-                            let tabMapIdList = currUser.tabMapIdList;
-                            let tabMapSelected = currUser.tabMapSelected;
+                            // should save map worked on
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
                             if (tabMapSelected < tabMapIdList.length - 1) {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                     [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                                 tabMapSelected = tabMapSelected + 1;
                                 await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                             }
-                            s2c = getTabData(c2s.cred);
+                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
                             break;
                         }
                     }
@@ -291,18 +296,6 @@ async function sendResponse(c2s) {
         }
     }
     return s2c;
-}
-
-async function getTabData (cred) {
-    let currUser = await collectionUsers.findOne(cred); // needs to get refreshed
-    return {
-        cmd: 'updateTabSuccess',
-        payload: {
-            tabMapSelected: currUser.tabMapSelected,
-            tabMapIdList: currUser.tabMapIdList,
-            tabMapNameList: await getTabMapNameList(currUser.tabMapIdList),
-        }
-    };
 }
 
 async function getTabMapNameList (tabMapIdList) {
