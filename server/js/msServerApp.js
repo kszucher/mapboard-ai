@@ -242,9 +242,9 @@ async function sendResponse(c2s) {
                         }
                         case 'createMapInTab': {
                             // should save map worked on
-                            let {_id} = currUser;
-                            let tabMapIdList = [...currUser.tabMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
-                            let tabMapSelected = tabMapIdList.length - 1;
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
+                            tabMapIdList = [...tabMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
+                            tabMapSelected = tabMapIdList.length - 1;
                             await collectionUsers.updateOne({_id}, {tabMapIdList, tabMapSelected});
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
                             s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
