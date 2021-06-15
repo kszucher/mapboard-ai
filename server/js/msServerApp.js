@@ -239,8 +239,8 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'createMapInMapSuccess', newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId};
                             break;
                         }
+                        // TODO
                         case 'createMapInTab': {
-                            // should probably use addToSet instead
                             let tabMapIdList = [...currUser.tabMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
                             let tabMapSelected = tabMapIdList.length - 1;
                             await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {tabMapIdList, tabMapSelected});
@@ -252,15 +252,8 @@ async function sendResponse(c2s) {
                             let tabMapSelected = currUser.tabMapSelected;
                             if (tabMapSelected > 0) {
                                 tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected);
-                                await collectionUsers.updateOne(
-                                    {_id: ObjectId(currUser._id)},
-                                    {
-                                        $set: {
-                                            "tabMapIdList": tabMapIdList,
-                                            "tabMapSelected": tabMapSelected - 1
-                                        }
-                                    }
-                                );
+                                tabMapSelected = tabMapSelected - 1;
+                                await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {tabMapIdList, tabMapSelected}});
                             }
                             s2c = getTabData(c2s.cred);
                             break;
@@ -271,15 +264,8 @@ async function sendResponse(c2s) {
                             if (tabMapSelected > 0) {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                     [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
-                                await collectionUsers.updateOne(
-                                    {_id: ObjectId(currUser._id)},
-                                    {
-                                        $set: {
-                                            "tabMapIdList": tabMapIdList,
-                                            "tabMapSelected": tabMapSelected - 1
-                                        }
-                                    }
-                                );
+                                tabMapSelected = tabMapSelected - 1;
+                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                             }
                             s2c = getTabData(c2s.cred);
                             break;
@@ -290,15 +276,8 @@ async function sendResponse(c2s) {
                             if (tabMapSelected < tabMapIdList.length - 1) {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                     [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
-                                await collectionUsers.updateOne(
-                                    {_id: ObjectId(currUser._id)},
-                                    {
-                                        $set: {
-                                            "tabMapIdList": tabMapIdList,
-                                            "tabMapSelected": tabMapSelected + 1
-                                        }
-                                    }
-                                );
+                                tabMapSelected = tabMapSelected + 1;
+                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                             }
                             s2c = getTabData(c2s.cred);
                             break;
