@@ -339,7 +339,7 @@ export function MapComponent() {
                         mapDispatch(currExecution);
                     } else if (currExecution === 'CREATE_MAP_IN_MAP') {
                         if (!mapref(lastPath).isRoot) {
-                            dispatch({type: currExecution, payload: mapref(lastPath).content});
+                            dispatch({type: currExecution, payload: {newMapName: mapref(lastPath).content}});
                         }
                     } else if (currExecution === 'SAVE_MAP') {
                         dispatch({type: currExecution});

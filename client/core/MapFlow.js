@@ -168,18 +168,3 @@ export function saveMap() {
     return mapDisassembly.start(cm);
 }
 
-export function getDefaultMap(mapName) {
-    return [
-        {
-            path: ['r'],
-            content: mapName,
-            selected: 1
-        },
-        {
-            path: ['r', 'd', 0],
-        },
-        {
-            path: ['r', 'd', 1],
-        },
-    ]
-}

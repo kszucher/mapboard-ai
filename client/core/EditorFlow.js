@@ -74,7 +74,8 @@ const EditorReducer = (state, action) => {
             return { ...state, ...createServerAction(state, 'saveMap', {...payload, mapStorageOut})}
         }
         case 'CREATE_MAP_IN_MAP': {
-            return {...state, newMapName: payload, ...createServerAction(state, 'createMapInMap')};
+            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
+            return {...state, ...createServerAction(state, 'createMapInMap', {...payload, mapStorageOut})};
         }
         case 'CREATE_MAP_IN_TAB': {
             return {...state, tabMapNameList: [...state.tabMapNameList, 'creating...'], ...createServerAction(state, 'createMapInTab')};

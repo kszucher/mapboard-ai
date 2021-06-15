@@ -50,11 +50,11 @@ export function Communication() {
             } else {
                 const cred = JSON.parse(localStorage.getItem('cred'));
                 if (cred && cred.email && cred.password) {
-                    if (serverCmd === 'createMapInMap') {
-                        Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
-                    } else if (serverCmd === 'createMapInTab') {
-                        Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
-                    }
+                    // if (serverCmd === 'createMapInMap') {
+                    //     Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
+                    // } else if (serverCmd === 'createMapInTab') {
+                    //     Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
+                    // }
                     switch (serverCmd) {
                         case 'signIn':                      post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromTabHistory':       post({cred, serverCmd, serverPayload}); break;
@@ -63,11 +63,11 @@ export function Communication() {
                         case 'saveOpenMapFromBreadcrumbs':  post({cred, serverCmd, serverPayload}); break;
                         case 'saveMap':                     post({cred, serverCmd, serverPayload}); break;
                         // TODO finish these
-                        case 'createMapInMap':              post({cred, serverCmd, mapStorageOut}); break;
-                        case 'createMapInTab':              post({cred, serverCmd, mapStorageOut}); break;
-                        case 'removeMapInTab':              post({cred, serverCmd}); break;
-                        case 'moveUpMapInTab':              post({cred, serverCmd}); break;
-                        case 'moveDownMapInTab':            post({cred, serverCmd}); break;
+                        case 'createMapInMap':              post({cred, serverCmd, serverPayload}); break;
+                        case 'createMapInTab':              post({cred, serverCmd, serverPayload}); break;
+                        case 'removeMapInTab':              post({cred, serverCmd, serverPayload}); break;
+                        case 'moveUpMapInTab':              post({cred, serverCmd, serverPayload}); break;
+                        case 'moveDownMapInTab':            post({cred, serverCmd, serverPayload}); break;
                     }
                 } else {
                     switch (serverCmd) {
@@ -119,14 +119,6 @@ export function Communication() {
                     let mapHolderDiv = document.getElementById('mapHolderDiv');
                     mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
-                    break;
-                }
-                case 'createMapInMapSuccess': {
-                    push();
-                    nodeDispatch('insertIlinkFromMongo', serverResponse.newMapId);
-                    redraw();
-                    checkPop();
-                    // dispatch({type: 'SAVE_MAP'})
                     break;
                 }
                 case 'saveMapSuccess': {

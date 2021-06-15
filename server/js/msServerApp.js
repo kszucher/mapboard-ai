@@ -236,8 +236,16 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'createMapInMap': {
-                            // should save map worked on
-                            s2c = {cmd: 'createMapInMapSuccess', newMapId: (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId};
+                            // let {mapStorageOut, newMapName} = c2s.serverPayload;
+                            // await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
+                            // let newMapStorage = getDefaultMap(newMapName)
+                            // let newMapId = (await collectionMaps.insertOne(newMapStorage)).insertedId
+
+                            // TODO
+                            // lm.linkType = 'internal';
+                            // lm.link = payload;
+
+                            s2c = {cmd: 'openMapSuccess', newMapId};
                             break;
                         }
                         case 'createMapInTab': {
@@ -325,6 +333,22 @@ async function getBreadcrumbMapNameList (breadcrumbMapIdList) {
 function getConfirmationCode() {
     let [min, max] = [1000, 9999];
     return Math.round(Math.random() * (max - min) + min);
+}
+
+function getDefaultMap(mapName) {
+    return [
+        {
+            path: ['r'],
+            content: mapName,
+            selected: 1
+        },
+        {
+            path: ['r', 'd', 0],
+        },
+        {
+            path: ['r', 'd', 1],
+        },
+    ]
 }
 
 module.exports = app;

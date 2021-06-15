@@ -314,12 +314,6 @@ function nodeReducer(action, payload) {
             lm.isDimAssigned = 0;
             break;
         }
-        case 'insertIlinkFromMongo': {
-            lm.linkType = 'internal';
-            lm.link = payload;
-            lm.isDimAssigned = 0;
-            break;
-        }
         case 'insertEquationFromClipboardAsNode': {
             lm.contentType = 'equation';
             lm.content = payload;
