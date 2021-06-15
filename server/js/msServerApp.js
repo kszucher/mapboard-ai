@@ -194,11 +194,10 @@ async function sendResponse(c2s) {
                             await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
                             let {_id, tabMapIdList} = currUser;
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            await collectionUsers.updateOne({_id}, {$set: {tabMapSelected}});
                             let mapId = tabMapIdList[tabMapSelected];
                             let mapStorage = await collectionMaps.findOne({_id: mapId});
                             let breadcrumbMapIdList = [mapId];
-                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
+                            await collectionUsers.updateOne({_id}, {$set: {tabMapSelected, breadcrumbMapIdList}});
                             let breadcrumbMapNameList = await getBreadcrumbMapNameList(breadcrumbMapIdList);
                             s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
