@@ -33,7 +33,7 @@ export function Formatter () {
     const cmdSubmapToggle =   e => {
         // TODO check if it is not a submap already
         let {lastPath} = selectionState;
-        dispatch({type: 'CREATE_MAP_IN_MAP', payload: {newMapName: mapref(lastPath).content}});
+        dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}});
     }
 
     return (
