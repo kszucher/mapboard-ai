@@ -267,16 +267,20 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'removeMapInTab': {
-                            let {_id, tabMapIdList, tabMapSelected} = currUser;
-                            if (tabMapSelected > 0) {
+                            let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
+                            if (tabMapSelected === 0) {
+                                s2c = {cmd: 'removeMapInTabFail'};
+                            } else {
                                 tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected);
                                 tabMapSelected = tabMapSelected - 1;
                                 await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                                let breadcrumbMapNameList = await getBreadcrumbMapNameList(breadcrumbMapIdList);
+                                let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                                let mapId = tabMapIdList[tabMapSelected];
+                                let mapStorage = await collectionMaps.findOne({_id: mapId});
+                                s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             }
-                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
                             break;
-                            // use openMapSuccess instead
                         }
                         case 'moveUpMapInTab': {
                             // should save map worked on
