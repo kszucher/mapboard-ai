@@ -253,14 +253,17 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'createMapInTab': {
-                            // should save map worked on
-                            let {_id, tabMapIdList, tabMapSelected} = currUser;
-                            tabMapIdList = [...tabMapIdList, (await collectionMaps.insertOne(c2s.mapStorageOut)).insertedId];
+                            let {mapStorageOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
+                            let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
+                            let mapStorage = getDefaultMap('New Map');
+                            let newMapId = (await collectionMaps.insertOne(mapStorage)).insertedId;
+                            tabMapIdList = [...tabMapIdList, newMapId];
                             tabMapSelected = tabMapIdList.length - 1;
-                            await collectionUsers.updateOne({_id}, {tabMapIdList, tabMapSelected});
+                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                            let breadcrumbMapNameList = await getBreadcrumbMapNameList(breadcrumbMapIdList);
                             let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
-                            // use openMapSuccess instead
+                            s2c = {cmd: 'openMapSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapStorage}};
                             break;
                         }
                         case 'removeMapInTab': {

@@ -50,11 +50,6 @@ export function Communication() {
             } else {
                 const cred = JSON.parse(localStorage.getItem('cred'));
                 if (cred && cred.email && cred.password) {
-                    // if (serverCmd === 'createMapInMap') {
-                    //     Object.assign(mapStorageOut, {data: getDefaultMap(newMapName)});
-                    // } else if (serverCmd === 'createMapInTab') {
-                    //     Object.assign(mapStorageOut, {data: getDefaultMap('New Map')});
-                    // }
                     switch (serverCmd) {
                         case 'signIn':                      post({cred, serverCmd, serverPayload}); break;
                         case 'openMapFromTabHistory':       post({cred, serverCmd, serverPayload}); break;
@@ -62,9 +57,9 @@ export function Communication() {
                         case 'saveOpenMapFromMap':          post({cred, serverCmd, serverPayload}); break;
                         case 'saveOpenMapFromBreadcrumbs':  post({cred, serverCmd, serverPayload}); break;
                         case 'saveMap':                     post({cred, serverCmd, serverPayload}); break;
-                        // TODO finish these
                         case 'createMapInMap':              post({cred, serverCmd, serverPayload}); break;
                         case 'createMapInTab':              post({cred, serverCmd, serverPayload}); break;
+
                         case 'removeMapInTab':              post({cred, serverCmd, serverPayload}); break;
                         case 'moveUpMapInTab':              post({cred, serverCmd, serverPayload}); break;
                         case 'moveDownMapInTab':            post({cred, serverCmd, serverPayload}); break;
