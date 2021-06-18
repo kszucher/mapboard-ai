@@ -85,14 +85,10 @@ const EditorReducer = (state, action) => {
             return {...state, ...createServerAction(state, 'removeMapInTab')};
         }
         case 'MOVE_UP_MAP_IN_TAB': {
-            let {tabMapSelected} = state;
-            tabMapSelected = tabMapSelected === 0 ? tabMapSelected : tabMapSelected - 1;
-            return {...state, tabMapSelected, ...createServerAction(state, 'moveUpMapInTab')};
+            return {...state, ...createServerAction(state, 'moveUpMapInTab')};
         }
         case 'MOVE_DOWN_MAP_IN_TAB': {
-            let {tabMapNameList, tabMapSelected} = state;
-            tabMapSelected = tabMapSelected ===  tabMapNameList.length - 1? tabMapSelected : tabMapSelected + 1
-            return {...state, tabMapSelected, ...createServerAction(state, 'moveDownMapInTab')};
+            return {...state, ...createServerAction(state, 'moveDownMapInTab')};
         }
         case 'MOVE_MAP_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_MAP': return state;

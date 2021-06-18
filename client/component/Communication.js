@@ -59,7 +59,6 @@ export function Communication() {
                         case 'saveMap':                     post({cred, serverCmd, serverPayload}); break;
                         case 'createMapInMap':              post({cred, serverCmd, serverPayload}); break;
                         case 'createMapInTab':              post({cred, serverCmd, serverPayload}); break;
-
                         case 'removeMapInTab':              post({cred, serverCmd, serverPayload}); break;
                         case 'moveUpMapInTab':              post({cred, serverCmd, serverPayload}); break;
                         case 'moveDownMapInTab':            post({cred, serverCmd, serverPayload}); break;

@@ -14,7 +14,7 @@ export default function Tabs() {
     };
 
     useEffect(() => {
-        if (serverResponse.cmd === 'openMapSuccess') {
+        if (['openMapSuccess', 'updateTabSuccess'].includes(serverResponse.cmd)) {
             let {tabMapNameList, tabMapSelected} = serverResponse.payload;
             setTabMapNameList(tabMapNameList);
             setTabMapSelected(tabMapSelected);

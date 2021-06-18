@@ -283,31 +283,31 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'moveUpMapInTab': {
-                            // should save map worked on
                             let {_id, tabMapIdList, tabMapSelected} = currUser;
-                            if (tabMapSelected > 0) {
+                            if (tabMapSelected === 0) {
+                                s2c = {cmd: 'moveUpMapInTabFail'};
+                            } else {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                     [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                                 tabMapSelected = tabMapSelected - 1;
                                 await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                                let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                                s2c = {cmd: 'updateTabSuccess', payload: {tabMapNameList, tabMapSelected}}
                             }
-                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
-                            // updateTabSuccess will be listened to by tabs only
                             break;
                         }
                         case 'moveDownMapInTab': {
-                            // should save map worked on
                             let {_id, tabMapIdList, tabMapSelected} = currUser;
-                            if (tabMapSelected < tabMapIdList.length - 1) {
+                            if (tabMapSelected >= tabMapIdList.length - 1) {
+                                s2c = {cmd: 'moveDownMapInTabFail'};
+                            } else {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                     [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                                 tabMapSelected = tabMapSelected + 1;
                                 await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                                let tabMapNameList = await getTabMapNameList(tabMapIdList);
+                                s2c = {cmd: 'updateTabSuccess', payload: {tabMapNameList, tabMapSelected}};
                             }
-                            let tabMapNameList = await getTabMapNameList(tabMapIdList);
-                            s2c = {cmd: 'updateTabSuccess', payload: {tabMapSelected, tabMapIdList, tabMapNameList}};
-                            // updateTabSuccess will be listened to by tabs only
                             break;
                         }
                     }
