@@ -151,6 +151,10 @@ async function mongoFunction(cmd) {
                 )
                 break;
             }
+            case 'moveAlignmentDensityInsideData': {
+
+                break;
+            }
         }
     }
     catch (err) {
