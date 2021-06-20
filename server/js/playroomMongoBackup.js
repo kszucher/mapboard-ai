@@ -25,6 +25,7 @@ const mongoProcess = async (mongoCmd, endPoints) => {
     if (mongoCmd === 'mongorestore') {
         mongoParams.push(`--nsFrom=${endPoints.source}.*`);
         mongoParams.push(`--nsTo=${endPoints.target}.*`);
+        mongoParams.push(`--drop`);
     }
     console.log(mongoParams)
     await spawnProcess(mongoCmd, mongoParams);
