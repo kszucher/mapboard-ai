@@ -14,14 +14,14 @@ let svgElementNameList = [
 ];
 
 export const mapSvgVisualize = {
-    start: (r) => {
+    start: (m, r) => {
         let mapSvgOuter = document.getElementById('mapSvgOuter');
         mapSvgOuter.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
-        mapSvgVisualize.iterate(r);
+        mapSvgVisualize.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         let animationInit = '';
         if (cm.lineAnimationRequested) {
             cm.lineAnimationRequested = 0;
@@ -441,9 +441,9 @@ export const mapSvgVisualize = {
         }
         let {path} = cm;
         Object.assign(mapSvgData[cm.svgId], {keepHash, svgElementData, path})
-        cm.d.map(i => mapSvgVisualize.iterate(i));
-        cm.s.map(i => mapSvgVisualize.iterate(i));
-        cm.c.map(i => i.map(j => mapSvgVisualize.iterate(j)));
+        cm.d.map(i => mapSvgVisualize.iterate(m, i));
+        cm.s.map(i => mapSvgVisualize.iterate(m, i));
+        cm.c.map(i => i.map(j => mapSvgVisualize.iterate(m, j)));
     }
 };
 

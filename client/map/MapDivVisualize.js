@@ -36,7 +36,7 @@ const scrollTo = function(to, duration) {
 };
 
 export const mapDivVisualize = {
-    start: (r) => {
+    start: (m, r) => {
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + mapState.mapWidth + "px";
         mapDiv.style.height = "" + mapState.mapHeight + "px";
@@ -50,10 +50,10 @@ export const mapDivVisualize = {
             mapState.shouldCenter = false;
             scrollTo(currScrollLeft, 500);
         }
-        mapDivVisualize.iterate(r);
+        mapDivVisualize.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         if (cm.type === 'struct' && !cm.hasCell) {
             let styleData = {
                 left:                   1 + cm.nodeStartX + 'px',
@@ -111,9 +111,9 @@ export const mapDivVisualize = {
             let {contentType, content, path} = cm;
             Object.assign(mapDivData[cm.divId], {keepHash, styleData, contentType, content, path})
         }
-        cm.d.map(i => mapDivVisualize.iterate(i));
-        cm.s.map(i => mapDivVisualize.iterate(i));
-        cm.c.map(i => i.map(j => mapDivVisualize.iterate(j)));
+        cm.d.map(i => mapDivVisualize.iterate(m, i));
+        cm.s.map(i => mapDivVisualize.iterate(m, i));
+        cm.c.map(i => i.map(j => mapDivVisualize.iterate(m, j)));
     }
 };
 

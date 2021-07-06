@@ -1,17 +1,17 @@
 import {mapState} from "../core/MapFlow";
 
 export const mapChain = {
-    start: (r) => {
+    start: (m, r) => {
         Object.assign(r, {
             parentPath: [],
             path: ['r'],
             isRoot: 1,
             type: 'struct',
         });
-        mapChain.iterate(r);
+        mapChain.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         if (!cm.isRoot) {
             if (cm.type === 'dir') {
                 cm.path = cm.parentPath.concat(["d", cm.index]);
@@ -31,7 +31,7 @@ export const mapChain = {
                 type: 'dir',
                 index: i,
             });
-            mapChain.iterate(cm.d[i]);
+            mapChain.iterate(m, cm.d[i]);
         }
 
         let sCount = Object.keys(cm.s).length;
@@ -43,7 +43,7 @@ export const mapChain = {
                 type: 'struct',
                 index: i,
             });
-            mapChain.iterate(cm.s[i]);
+            mapChain.iterate(m, cm.s[i]);
         }
 
         let rowCount = Object.keys(cm.c).length;
@@ -57,7 +57,7 @@ export const mapChain = {
                     type: 'cell',
                     index: [i, j],
                 });
-                mapChain.iterate(cm.c[i][j]);
+                mapChain.iterate(m, cm.c[i][j]);
             }
         }
 

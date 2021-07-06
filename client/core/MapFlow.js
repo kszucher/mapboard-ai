@@ -110,24 +110,26 @@ export const getMapData = () => {
 
 export function recalc() {
     initSelectionState();
+    let m = getMapData().m;
     let r = getMapData().r;
-    mapAlgo.start(r);
-    mapInit.start(r);
-    mapChain.start(r);
-    mapTaskCheck.start(r);
-    mapMeasure.start(r);
-    mapPlace.start(r);
-    mapTaskCalc.start(r);
-    mapTaskColor.start(r);
-    mapCollect.start(r);
+    mapAlgo.start(m, r);
+    mapInit.start(m, r);
+    mapChain.start(m, r);
+    mapTaskCheck.start(m, r);
+    mapMeasure.start(m, r);
+    mapPlace.start(m, r);
+    mapTaskCalc.start(m, r);
+    mapTaskColor.start(m, r);
+    mapCollect.start(m, r);
     updateSelectionState();
 }
 
 export function redraw() {
     initDomHash();
+    let m = getMapData().m;
     let r = getMapData().r;
-    mapDivVisualize.start(r);
-    mapSvgVisualize.start(r);
+    mapDivVisualize.start(m, r);
+    mapSvgVisualize.start(m, r);
     updateDomData();
 }
 
@@ -167,4 +169,3 @@ export function saveMap() {
     mapDeinit.start(cm);
     return mapDisassembly.start(cm);
 }
-

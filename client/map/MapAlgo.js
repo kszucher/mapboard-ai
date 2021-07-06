@@ -4,15 +4,15 @@ import {mapref} from "../core/MapFlow";
 let selectionFound = 0;
 
 export const mapAlgo = {
-    start: (r) => {
-        mapAlgo.iterate(r);
+    start: (m, r) => {
+        mapAlgo.iterate(m, r);
         if (!selectionFound) {
             r.selected = 1;
             console.log('MAP RESTORED AFTER NO SELECTION')
         }
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         if (cm.selected) {
             selectionFound = 1;
         }
@@ -39,8 +39,8 @@ export const mapAlgo = {
             }
         }
 
-        if (cm.d) cm.d.map(i => mapAlgo.iterate(i));
-        if (cm.s) cm.s.map(i => mapAlgo.iterate(i));
-        if (cm.c) cm.c.map(i => i.map(j => mapAlgo.iterate(j)));
+        if (cm.d) cm.d.map(i => mapAlgo.iterate(m, i));
+        if (cm.s) cm.s.map(i => mapAlgo.iterate(m, i));
+        if (cm.c) cm.c.map(i => i.map(j => mapAlgo.iterate(m, j)));
     }
 };

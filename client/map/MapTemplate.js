@@ -1,11 +1,11 @@
 export const mapTemplate = {
-    start: (r) => {
-        mapTemplate.iterate(r);
+    start: (m, r) => {
+        mapTemplate.iterate(m, r);
     },
 
-    iterate: (cm) => {
-        cm.d.map(i => mapTemplate.iterate(i));
-        cm.s.map(i => mapTemplate.iterate(i));
-        cm.c.map(i => i.map(j => mapTemplate.iterate(j)));
+    iterate: (m, cm) => {
+        cm.d.map(i => mapTemplate.iterate(m, i));
+        cm.s.map(i => mapTemplate.iterate(m, i));
+        cm.c.map(i => i.map(j => mapTemplate.iterate(m, j)));
     }
 };

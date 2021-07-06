@@ -2,27 +2,27 @@ import {createArray, getEquationDim, getTextDim} from "../core/Utils";
 import {mapState} from "../core/MapFlow";
 
 export const mapMeasure = {
-    start: (r) => {
-        mapMeasure.iterate(r, {
+    start: (m, r) => {
+        mapMeasure.iterate(m, r, {
             hasMultipleChild: 0,
             hasMultipleContentRow: 0,
         });
     },
 
-    iterate: (cm, params) => {
+    iterate: (m, cm, params) => {
         params.hasMultipleChild = 0;
         params.hasMultipleContentRow = 0;
 
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {
-            mapMeasure.iterate(cm.d[i], params);
+            mapMeasure.iterate(m, cm.d[i], params);
         }
 
         let sCount = Object.keys(cm.s).length;
         if (sCount) {
             let sMaxW = 0;
             for (let i = 0; i < sCount; i++) {
-                mapMeasure.iterate(cm.s[i], params);
+                mapMeasure.iterate(m, cm.s[i], params);
                 cm.familyH += cm.s[i].maxH;
                 let currMaxW = cm.s[i].maxW;
                 if (currMaxW >= sMaxW) {
@@ -51,7 +51,7 @@ export const mapMeasure = {
 
                 for (let i = 0; i < rowCount; i++) {
                     for (let j = 0; j < colCount; j++) {
-                        mapMeasure.iterate(cm.c[i][j], params);
+                        mapMeasure.iterate(m, cm.c[i][j], params);
                         maxCellHeightMat[i][j] = cm.c[i][j].maxH;
                         maxCellWidthMat[i][j] = cm.c[i][j].maxW;
                         if (cm.c[i][j].maxH > mapState.defaultH) {

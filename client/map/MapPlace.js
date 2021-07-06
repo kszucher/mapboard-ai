@@ -1,7 +1,7 @@
 import {mapState} from "../core/MapFlow";
 
 export const mapPlace = {
-    start: (r) => {
+    start: (m, r) => {
         let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
 
         let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0;
@@ -59,10 +59,10 @@ export const mapPlace = {
         r.parentNodeY = 0;
         r.lineDeltaX = 0;
         r.lineDeltaY = minHeight / 2 + 30 - 0.5;
-        mapPlace.iterate(r);
+        mapPlace.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         if (cm.isRoot || cm.type === 'dir') {
             cm.nodeStartX = cm.parentNodeStartX;
             cm.nodeEndX = cm.parentNodeEndX;
@@ -124,7 +124,7 @@ export const mapPlace = {
             cm.d[i].selfH = cm.selfH;
             cm.d[i].isTop = 1;
             cm.d[i].isBottom = 1;
-            mapPlace.iterate(cm.d[i]);
+            mapPlace.iterate(m, cm.d[i]);
         }
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
@@ -135,7 +135,7 @@ export const mapPlace = {
                 cm.c[i][j].parentNodeY = cm.parentNodeY;
                 cm.c[i][j].lineDeltaX = cm.sumMaxColWidth[j] + 20;
                 cm.c[i][j].lineDeltaY = cm.nodeY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeY;
-                mapPlace.iterate(cm.c[i][j]);
+                mapPlace.iterate(m, cm.c[i][j]);
             }
         }
         let elapsedY = 0;
@@ -148,7 +148,7 @@ export const mapPlace = {
             cm.s[i].lineDeltaY = elapsedY + cm.s[i].maxH / 2 - cm.familyH / 2;
             if (i === 0 && cm.isTop) cm.s[i].isTop = 1;
             if (i === sCount - 1 && cm.isBottom === 1) cm.s[i].isBottom = 1;
-            mapPlace.iterate(cm.s[i]);
+            mapPlace.iterate(m, cm.s[i]);
             elapsedY += cm.s[i].maxH + cm.spacingActivated*cm.spacing;
         }
     }

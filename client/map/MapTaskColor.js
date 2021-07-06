@@ -1,11 +1,11 @@
 import {getBgc} from "../core/Utils";
 
 export const mapTaskColor = {
-    start: (r) => {
-        mapTaskColor.iterate(r);
+    start: (m, r) => {
+        mapTaskColor.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         if (cm.task) {
             if (cm.taskStatus !== -1) {
                 cm.sTextColor = '#222222';
@@ -28,8 +28,8 @@ export const mapTaskColor = {
             }
         }
 
-        cm.d.map(i => mapTaskColor.iterate(i));
-        cm.s.map(i => mapTaskColor.iterate(i));
-        cm.c.map(i => i.map(j => mapTaskColor.iterate(j)));
+        cm.d.map(i => mapTaskColor.iterate(m, i));
+        cm.s.map(i => mapTaskColor.iterate(m, i));
+        cm.c.map(i => i.map(j => mapTaskColor.iterate(m, j)));
     }
 };

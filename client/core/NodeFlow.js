@@ -38,7 +38,12 @@ function nodeReducer(action, payload) {
     let sc = selectionState;
     let lm = mapref(sc.lastPath);
     switch (action) {
-        // SELECT ------------------------------------------------------------------------------------------------------
+        // MAP ---------------------------------------------------------------------------------------------------------
+        case 'setDensity': {
+            mapref(['m']).density = payload;
+            break;
+        }
+        // NODE SELECT -------------------------------------------------------------------------------------------------
         case 'clearSelection': {
             clearSelection();
             break;
@@ -227,7 +232,7 @@ function nodeReducer(action, payload) {
             mapref(['r']).selected = 1;
             break;
         }
-        // INSERT ------------------------------------------------------------------------------------------------------
+        // NODE INSERT -------------------------------------------------------------------------------------------------
         case 'insert_U_S': {
             if (!lm.isRoot) {
                 clearSelection();
@@ -255,7 +260,7 @@ function nodeReducer(action, payload) {
             cellInsert(sc.lastPath, payload.keyCode);
             break;
         }
-        // DELETE ------------------------------------------------------------------------------------------------------
+        // NODE DELETE -------------------------------------------------------------------------------------------------
         case 'delete_S': {
             structDeleteReselect(sc);
             break;
@@ -264,7 +269,7 @@ function nodeReducer(action, payload) {
             cellBlockDeleteReselect(sc);
             break;
         }
-        // MOVE --------------------------------------------------------------------------------------------------------
+        // NODE MOVE ---------------------------------------------------------------------------------------------------
         case 'move_S': {
             nodeMove(sc, 'struct2struct', payload.keyCode);
             break;
@@ -333,7 +338,7 @@ function nodeReducer(action, payload) {
             nodeMove(sc, 'clipboard2struct', '', 'PASTE');
             break;
         }
-        // FORMAT ------------------------------------------------------------------------------------------------------
+        // NODE FORMAT -------------------------------------------------------------------------------------------------
         case 'resetAll': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
@@ -477,7 +482,7 @@ function nodeReducer(action, payload) {
             mapChangeProp.start(mapref(['r']), {isDimAssigned: 0}, '');
             break;
         }
-        // EDIT --------------------------------------------------------------------------------------------------------
+        // NODE EDIT ---------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             if (!lm.hasCell) {
                 lm.content = '';

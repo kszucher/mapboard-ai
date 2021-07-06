@@ -1,14 +1,14 @@
 import {selectionState} from "../core/SelectionFlow";
 
 export const mapCollect = {
-    start: (r) => {
+    start: (m, r) => {
         selectionState.structSelectedPathList = [];
         selectionState.cellSelectedPathList = [];
 
-        mapCollect.iterate(r);
+        mapCollect.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         if (cm.selected) {
             if (Number.isInteger(cm.path[cm.path.length - 2])) {
                 selectionState.cellSelectedPathList.push(cm.path.slice(0)); // naturally ascending
@@ -18,8 +18,8 @@ export const mapCollect = {
             }
         }
 
-        cm.d.map(i => mapCollect.iterate(i));
-        cm.s.map(i => mapCollect.iterate(i));
-        cm.c.map(i => i.map(j => mapCollect.iterate(j)));
+        cm.d.map(i => mapCollect.iterate(m, i));
+        cm.s.map(i => mapCollect.iterate(m, i));
+        cm.c.map(i => i.map(j => mapCollect.iterate(m, j)));
     }
 };

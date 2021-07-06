@@ -2,11 +2,11 @@ import {props} from "../node/Node"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
-    start: (r) => {
-        mapInit.iterate(r);
+    start: (m, r) => {
+        mapInit.iterate(m, r);
     },
 
-    iterate: (cm) => {
+    iterate: (m, cm) => {
         for (const prop in props.saveAlways) {
             if (!cm.hasOwnProperty(prop)) {
                 cm[prop] = copy(props.saveAlways[prop]);
@@ -29,8 +29,8 @@ export const mapInit = {
             cm[prop] = shallowCopy(props.saveNever.initAlways[prop])
         }
 
-        cm.d.map(i => mapInit.iterate(i));
-        cm.s.map(i => mapInit.iterate(i));
-        cm.c.map(i => i.map(j => mapInit.iterate(j)));
+        cm.d.map(i => mapInit.iterate(m, i));
+        cm.s.map(i => mapInit.iterate(m, i));
+        cm.c.map(i => i.map(j => mapInit.iterate(m, j)));
     }
 };
