@@ -92,7 +92,7 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>
                 <Typography variant="h6" className={classes.title}>
-                    MapBoard
+                    mapboard
                 </Typography>
             </Toolbar>
         </div>

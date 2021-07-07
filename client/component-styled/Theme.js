@@ -24,5 +24,9 @@ export const muiTheme = createMuiTheme({
         },
     },
 
-    spacing: 2
+    spacing: 2,
+
+    typography: {
+        fontFamily: 'Comfortaa',
+    },
 });
