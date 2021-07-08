@@ -59,7 +59,7 @@ function mapReducer(action, payload) {
             mapState.isLoading = true;
             break;
         }
-        case 'setShouldCenter': {
+        case 'setShouldCenter': { // RESTORE THIS AFTER OPEN!!!
             mapState.shouldCenter = true;
             break;
         }

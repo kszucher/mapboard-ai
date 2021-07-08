@@ -40,6 +40,7 @@ function nodeReducer(action, payload) {
     switch (action) {
         // MAP ---------------------------------------------------------------------------------------------------------
         case 'setDensity': {
+            console.log('left')
             let m = mapref(['m']);
             m.density = payload;
             let {density} = m;
