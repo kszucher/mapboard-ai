@@ -1,7 +1,7 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context, remoteGetState} from "../core/Store";
-import {mapDispatch, mapState, redraw, saveMap} from "../core/MapFlow";
+import {mapDispatch, mapState, recalc, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
 
 let waitingForServer = 0;
@@ -107,7 +107,12 @@ export function Communication() {
                     mapDispatch('setData', mapStorage.data);
                     mapDispatch('setMapId', mapStorage._id);
                     mapDispatch('setTaskConfigWidth');
+
+                    // TODO okay now I need to go forward with map params to make them truly included in saved data... a few more days but then it will work
+
+                    recalc(); // this was somewhat missing altogether
                     redraw();
+
                     let mapHolderDiv = document.getElementById('mapHolderDiv');
                     mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
                     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;

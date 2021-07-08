@@ -7,16 +7,18 @@ export function mapAssembly(dataLinear) {
         if (i === 0) {
             dataNested.r.d = [{},{}];
             // use mongo for this
-            // dataNested.m = {
-            //     alignment: 'left',
-            //     density: 'large',
-            //
-            //     sLineDeltaXDefault: 0,
-            //     padding: 0,
-            //     defaultH: 0,
-            // }
+            dataNested.m = {
+                alignment: 'left',
+                density: 'large',
+
+                sLineDeltaXDefault: 0,
+                padding: 0,
+                defaultH: 0,
+
+                // TODO continue here...
+            }
         }
     }
-    console.log(dataNested)
+    // console.log(dataNested)
     return dataNested;
 }
