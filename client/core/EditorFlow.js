@@ -8,10 +8,6 @@ export const editorState = {
     serverResponseCntr: 0,
     serverResponseToUser: [''],
     formatMode: '',
-    lineWidth: '',
-    lineType: '',
-    borderWidth: '',
-    fontSize: '',
     colorLine: '',
     colorBorder: '',
     colorFill: '',
@@ -31,6 +27,14 @@ const createServerAction = (state, serverCmd, serverPayload) => {
     }
 }
 
+const getMapStorageOut = () => {
+    return {mapId: mapState.mapId, data: saveMap()}
+}
+
+const mapValues = (stringArray, valueArray, conditionValue) => {
+    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
+}
+
 const EditorReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
@@ -38,68 +42,27 @@ const EditorReducer = (state, action) => {
             localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
             return JSON.parse(InitEditorState);
         }
-        case 'SERVER_RESPONSE': {
-            return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload};
-        }
-        case 'SERVER_RESPONSE_TO_USER': {
-            return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
-        }
-        case 'SIGN_IN': {
-            localStorage.setItem('cred', JSON.stringify(payload));
-            return {...state, ...createServerAction(state, 'signIn')};
-        }
-        case 'SIGN_UP_STEP_1': {
-            return {...state, ...createServerAction(state, 'signUpStep1', payload)};
-        }
-        case 'SIGN_UP_STEP_2': {
-            return {...state, ...createServerAction(state, 'signUpStep2', payload)};
-        }
-        case 'OPEN_MAP_FROM_TAB_HISTORY': {
-            return {...state, isLoggedIn: true, ...createServerAction(state, 'openMapFromTabHistory')};
-        }
-        case 'SAVE_OPEN_MAP_FROM_TAB': {
-            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'saveOpenMapFromTab', {...payload, mapStorageOut})};
-        }
-        case 'SAVE_OPEN_MAP_FROM_MAP': {
-            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'saveOpenMapFromMap', {...payload, mapStorageOut})};
-        }
-        case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS': {
-            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, mapStorageOut})};
-        }
-        case 'SAVE_MAP': {
-            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return { ...state, ...createServerAction(state, 'saveMap', {...payload, mapStorageOut})}
-        }
-        case 'CREATE_MAP_IN_MAP': {
-            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'createMapInMap', {...payload, mapStorageOut})};
-        }
-        case 'CREATE_MAP_IN_TAB': {
-            let mapStorageOut = {mapId: mapState.mapId, data: saveMap()};
-            return {...state, ...createServerAction(state, 'createMapInTab', {...payload, mapStorageOut})};
-        }
-        case 'REMOVE_MAP_IN_TAB': {
-            return {...state, ...createServerAction(state, 'removeMapInTab')};
-        }
-        case 'MOVE_UP_MAP_IN_TAB': {
-            return {...state, ...createServerAction(state, 'moveUpMapInTab')};
-        }
-        case 'MOVE_DOWN_MAP_IN_TAB': {
-            return {...state, ...createServerAction(state, 'moveDownMapInTab')};
-        }
+        case 'SERVER_RESPONSE':                 return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload};
+        case 'SERVER_RESPONSE_TO_USER':         return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
+        case 'SIGN_IN':                         return {...state, ...createServerAction(state, 'signIn')};
+        case 'SIGN_UP_STEP_1':                  return {...state, ...createServerAction(state, 'signUpStep1', payload)};
+        case 'SIGN_UP_STEP_2':                  return {...state, ...createServerAction(state, 'signUpStep2', payload)};
+        case 'OPEN_MAP_FROM_TAB_HISTORY':       return {...state, ...createServerAction(state, 'openMapFromTabHistory'), isLoggedIn: true};
+        case 'SAVE_OPEN_MAP_FROM_TAB':          return {...state, ...createServerAction(state, 'saveOpenMapFromTab',         {...payload, ...getMapStorageOut()})};
+        case 'SAVE_OPEN_MAP_FROM_MAP':          return {...state, ...createServerAction(state, 'saveOpenMapFromMap',         {...payload, ...getMapStorageOut()})};
+        case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS':  return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, ...getMapStorageOut()})};
+        case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStorageOut()})}
+        case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStorageOut()})};
+        case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStorageOut()})};
+        case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')};
+        case 'MOVE_UP_MAP_IN_TAB':              return {...state, ...createServerAction(state, 'moveUpMapInTab')};
+        case 'MOVE_DOWN_MAP_IN_TAB':            return {...state, ...createServerAction(state, 'moveDownMapInTab')};
+
         case 'MOVE_MAP_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_MAP': return state;
         case 'MOVE_TAB_TO_SUBMAP': return state;
         case 'MOVE_SUBMAP_TO_TAB': return state;
-        case 'SET_DENSITY':        return {...state, density: payload};
-        case 'SET_ALIGNMENT':      return {...state, alignment: payload};
-        case 'SET_LINE_WIDTH':     return {...state, lineWidth: payload};
-        case 'SET_LINE_TYPE':      return {...state, lineType: payload};
-        case 'SET_BORDER_WIDTH':   return {...state, borderWidth: payload};
-        case 'SET_FONT_SIZE':      return {...state, fontSize: payload};
+
         case 'OPEN_PALETTE':       return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':      return {...state, formatMode: '', paletteVisible: 0, };
         case 'SET_NODE_PROPS': {
@@ -120,7 +83,3 @@ const EditorReducer = (state, action) => {
 };
 
 export default EditorReducer;
-
-const mapValues = (stringArray, valueArray, conditionValue) => {
-    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
-}

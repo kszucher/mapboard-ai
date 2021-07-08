@@ -21,11 +21,6 @@ export let mapState = {
     mapId: '',
     dataIndex: 0,
     data: [],
-    density: '', // inherit
-    sLineDeltaXDefault: 0,
-    padding: 0,
-    defaultH: 0,
-    alignment: '', // inherit
     taskLeft: 0,
     taskRight: 0,
     mapWidth: 0,
@@ -48,7 +43,7 @@ const InitMapState = JSON.stringify(mapState);
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    if (['setDensity', 'setAlignment', 'setTaskConfigWidth', 'isLoading', 'undo', 'redo'].includes(action)) {
+    if (['isLoading', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
@@ -62,18 +57,6 @@ function mapReducer(action, payload) {
         }
         case 'setMapId': { // needs to follow setData, as it initializes
             mapState.mapId = payload;
-            break;
-        }
-        case 'setDensity': {
-            mapState.density = payload;
-            mapState.sLineDeltaXDefault = payload === 'large' ? 30 : 20;
-            mapState.padding = payload === 'large' ? 8 : 3;
-            mapState.defaultH = payload === 'large' ? 30 : 20; // 30 = 14 + 2*8, 20 = 14 + 2*3
-            mapState.taskConfigD = payload === 'large' ? 24 : 20;
-            break;
-        }
-        case 'setAlignment': {
-            mapState.alignment = payload;
             break;
         }
         case 'setTaskConfigWidth': {
@@ -128,6 +111,8 @@ export function redraw() {
     initDomHash();
     let m = getMapData().m;
     let r = getMapData().r;
+    console.log('mr')
+    console.log([m, r])
     mapDivVisualize.start(m, r);
     mapSvgVisualize.start(m, r);
     updateDomData();
@@ -150,10 +135,6 @@ export function checkPop() {
 
 export function mapref(path) {
     return subsref(getMapData(), path)
-}
-
-export function mapasgn(path, value) {
-    subsasgn(getMapData(), path, value)
 }
 
 export function pathMerge(path1, path2) {

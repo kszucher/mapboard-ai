@@ -2,7 +2,7 @@ import {mapState} from "../core/MapFlow";
 
 export const mapPlace = {
     start: (m, r) => {
-        let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = mapState;
+        let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m;
 
         let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0;
         let leftMapWidth =      r.d[1].s.length > 0 ? sLineDeltaXDefault + r.d[1].familyW : 0;
@@ -88,7 +88,7 @@ export const mapPlace = {
                     }
                 } else if (cm.type === 'cell') {
                     if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
-                        let diff = mapState.sLineDeltaXDefault - 20;
+                        let diff = m.sLineDeltaXDefault - 20;
                         if (cm.path[2] === 0) {
                             cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
                             cm.nodeEndX = cm.nodeStartX + cm.selfW;
@@ -144,7 +144,7 @@ export const mapPlace = {
             cm.s[i].parentNodeStartX = cm.nodeStartX;
             cm.s[i].parentNodeEndX = cm.nodeEndX;
             cm.s[i].parentNodeY = cm.nodeY;
-            cm.s[i].lineDeltaX = mapState.sLineDeltaXDefault;
+            cm.s[i].lineDeltaX = m.sLineDeltaXDefault;
             cm.s[i].lineDeltaY = elapsedY + cm.s[i].maxH / 2 - cm.familyH / 2;
             if (i === 0 && cm.isTop) cm.s[i].isTop = 1;
             if (i === sCount - 1 && cm.isBottom === 1) cm.s[i].isBottom = 1;

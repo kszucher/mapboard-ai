@@ -4,7 +4,19 @@ export function mapAssembly(dataLinear) {
     let dataNested = {};
     for (let i = 0; i < dataLinear.length; i++) {
         subsasgn(dataNested, copy(dataLinear[i].path), copy(dataLinear[i]));
-        if (i === 0) dataNested.r.d = [{},{}];
+        if (i === 0) {
+            dataNested.r.d = [{},{}];
+            // use mongo for this
+            // dataNested.m = {
+            //     alignment: 'left',
+            //     density: 'large',
+            //
+            //     sLineDeltaXDefault: 0,
+            //     padding: 0,
+            //     defaultH: 0,
+            // }
+        }
     }
+    console.log(dataNested)
     return dataNested;
 }

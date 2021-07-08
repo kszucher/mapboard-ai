@@ -58,10 +58,10 @@ export const mapDivVisualize = {
             let styleData = {
                 left:                   1 + cm.nodeStartX + 'px',
                 top:                    1 + cm.nodeY - cm.selfH / 2 + 'px',
-                minWidth:               (mapState.density === 'large'?  0 : -3) + cm.selfW - mapState.padding - 2  + 'px',
-                minHeight:              (mapState.density === 'large'? -2 : -1) + cm.selfH - mapState.padding      + 'px',
-                paddingLeft:            (mapState.density === 'large'?  0 :  3) +            mapState.padding - 2  + 'px',
-                paddingTop:             (mapState.density === 'large'?  0 :  0) +            mapState.padding - 2  + 'px',
+                minWidth:               (m.density === 'large'?  0 : -3) + cm.selfW - m.padding - 2  + 'px',
+                minHeight:              (m.density === 'large'? -2 : -1) + cm.selfH - m.padding      + 'px',
+                paddingLeft:            (m.density === 'large'?  0 :  3) +            m.padding - 2  + 'px',
+                paddingTop:             (m.density === 'large'?  0 :  0) +            m.padding - 2  + 'px',
                 position:               'absolute',
                 fontSize:               cm.sTextFontSize + 'px',
                 fontFamily:             'Roboto',
@@ -111,9 +111,28 @@ export const mapDivVisualize = {
             let {contentType, content, path} = cm;
             Object.assign(mapDivData[cm.divId], {keepHash, styleData, contentType, content, path})
         }
+
+        console.log('skin')
+        console.log(cm.path)
+        console.log(cm.d.map(i=>i))
+
         cm.d.map(i => mapDivVisualize.iterate(m, i));
         cm.s.map(i => mapDivVisualize.iterate(m, i));
         cm.c.map(i => i.map(j => mapDivVisualize.iterate(m, j)));
+
+        // try {
+        //     console.log('SUCCESS::::')
+        //     console.log(cm.path)
+        //
+        //     cm.d.map(i => mapDivVisualize.iterate(m, i));
+        //     cm.s.map(i => mapDivVisualize.iterate(m, i));
+        //     cm.c.map(i => i.map(j => mapDivVisualize.iterate(m, j)));
+        // } catch {
+        //     console.log('FAIL')
+        //     console.log(cm.path)
+        // }
+
+
     }
 };
 

@@ -111,8 +111,8 @@ export const mapMeasure = {
                         let y = dimVec[1];
                         let lineCount = y/17;
                         let realY = lineCount <= 1 ? mapState.defaultH : y + mapState.padding*2;
-                        cm.contentW = mapState.density === 'large' ? x : x + 8;
-                        let yc = mapState.density === 'large' ? 1 : 2;
+                        cm.contentW = m.density === 'large' ? x : x + 8;
+                        let yc = m.density === 'large' ? 1 : 2;
                         cm.contentH = realY - mapState.padding*2 + yc;
                     }
                 } else if (cm.contentType === 'equation') {

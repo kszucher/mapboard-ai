@@ -365,30 +365,14 @@ export function MapComponent() {
     };
 
     return (
-        <div id='mapHolderDiv' style={{
-            overflowY: 'scroll',
-            overflowX: 'scroll',
-        }}>
-            <div style={{
-                position: 'relative',
-                paddingTop: '100vh',
-                paddingLeft: '100vw',
-            }}>
-                <svg id="mapSvgOuter" style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                }}>
+        <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
+            <div style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+                <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
                     {isChrome
                         ?<svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
                         :<svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>}
                 </svg>
-                <div id='mapDiv' style={{
-                    position: 'absolute',
-                    transitionProperty: 'width, height',
-                    display: 'flex',
-                    pointerEvents: 'none'
-                }}/>
+                <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
             </div>
         </div>
     )

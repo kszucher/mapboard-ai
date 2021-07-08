@@ -71,7 +71,9 @@ export default function Auth() {
         } else if (password.length < 5) {
             setFeedbackMessage('Too short password.')
         } else {
-            dispatch({type: 'SIGN_IN', payload: {email, password}})
+            let cred = {email, password}
+            localStorage.setItem('cred', JSON.stringify(cred))
+            dispatch({type: 'SIGN_IN', payload: cred})
         }
     }
     const signUpStep1Handler = () => {

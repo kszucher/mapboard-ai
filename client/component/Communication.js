@@ -1,8 +1,7 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
-import {Context, remoteDispatch, remoteGetState} from "../core/Store";
-import {nodeDispatch} from "../core/NodeFlow";
-import {checkPop, getDefaultMap, mapDispatch, mapState, push, redraw, saveMap} from "../core/MapFlow";
+import {Context, remoteGetState} from "../core/Store";
+import {mapDispatch, mapState, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
 
 let waitingForServer = 0;
@@ -79,6 +78,7 @@ export function Communication() {
                 case 'pingSuccess': {
                     const cred = JSON.parse(localStorage.getItem('cred'));
                     if (cred && cred.email && cred.password) {
+                        localStorage.setItem('cred', JSON.stringify(cred))
                         dispatch({type: 'SIGN_IN', payload: cred})
                     }
                     break;
@@ -106,8 +106,6 @@ export function Communication() {
                     mapState.isLoading = true;
                     mapDispatch('setData', mapStorage.data);
                     mapDispatch('setMapId', mapStorage._id);
-                    mapDispatch('setDensity', mapStorage.density);
-                    mapDispatch('setAlignment', mapStorage.alignment);
                     mapDispatch('setTaskConfigWidth');
                     redraw();
                     let mapHolderDiv = document.getElementById('mapHolderDiv');

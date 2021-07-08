@@ -88,8 +88,7 @@ export function Palette () {
             borderStyle: 'solid',
             borderColor: '#dddddd',
             borderRight: 0,
-            visibility: paletteVisible? 'visible':'hidden'
-        }}>
+            visibility: paletteVisible? 'visible':'hidden' }}>
             <svg viewBox={`0 0 ${xWidth} ${yWidth}`}>
                 {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                     <circle
@@ -103,12 +102,7 @@ export function Palette () {
                         onClick={()=>handleClick(i, j)}
                     />))))}
             </svg>
-            <div style={{
-                display: "flex",
-                flexDirection: 'row',
-                justifyContent: 'center',
-                paddingTop: 12,
-            }}>
+            <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
                 <StyledButton name={'Close'} action={closePalette}/>
             </div>
         </div>
