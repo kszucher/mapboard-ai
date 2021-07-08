@@ -111,8 +111,6 @@ export function redraw() {
     initDomHash();
     let m = getMapData().m;
     let r = getMapData().r;
-    console.log('mr')
-    console.log([m, r])
     mapDivVisualize.start(m, r);
     mapSvgVisualize.start(m, r);
     updateDomData();

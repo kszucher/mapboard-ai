@@ -111,28 +111,9 @@ export const mapDivVisualize = {
             let {contentType, content, path} = cm;
             Object.assign(mapDivData[cm.divId], {keepHash, styleData, contentType, content, path})
         }
-
-        console.log('skin')
-        console.log(cm.path)
-        console.log(cm.d.map(i=>i))
-
         cm.d.map(i => mapDivVisualize.iterate(m, i));
         cm.s.map(i => mapDivVisualize.iterate(m, i));
         cm.c.map(i => i.map(j => mapDivVisualize.iterate(m, j)));
-
-        // try {
-        //     console.log('SUCCESS::::')
-        //     console.log(cm.path)
-        //
-        //     cm.d.map(i => mapDivVisualize.iterate(m, i));
-        //     cm.s.map(i => mapDivVisualize.iterate(m, i));
-        //     cm.c.map(i => i.map(j => mapDivVisualize.iterate(m, j)));
-        // } catch {
-        //     console.log('FAIL')
-        //     console.log(cm.path)
-        // }
-
-
     }
 };
 

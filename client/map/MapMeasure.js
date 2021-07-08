@@ -1,5 +1,4 @@
 import {createArray, getEquationDim, getTextDim} from "../core/Utils";
-import {mapState} from "../core/MapFlow";
 
 export const mapMeasure = {
     start: (m, r) => {
@@ -35,7 +34,7 @@ export const mapMeasure = {
             if (cm.spacingActivated) {
                 cm.familyH += (sCount - 1)*cm.spacing;
             }
-            cm.familyW = sMaxW + mapState.sLineDeltaXDefault;
+            cm.familyW = sMaxW + m.sLineDeltaXDefault;
         }
         if (sCount > 1) {
             params.hasMultipleChild = 1;
@@ -54,7 +53,7 @@ export const mapMeasure = {
                         mapMeasure.iterate(m, cm.c[i][j], params);
                         maxCellHeightMat[i][j] = cm.c[i][j].maxH;
                         maxCellWidthMat[i][j] = cm.c[i][j].maxW;
-                        if (cm.c[i][j].maxH > mapState.defaultH) {
+                        if (cm.c[i][j].maxH > m.defaultH) {
                             isCellSpacingActivated = 1;
                         }
                     }
@@ -110,10 +109,10 @@ export const mapMeasure = {
                         let x = dimVec[0];
                         let y = dimVec[1];
                         let lineCount = y/17;
-                        let realY = lineCount <= 1 ? mapState.defaultH : y + mapState.padding*2;
+                        let realY = lineCount <= 1 ? m.defaultH : y + m.padding*2;
                         cm.contentW = m.density === 'large' ? x : x + 8;
                         let yc = m.density === 'large' ? 1 : 2;
-                        cm.contentH = realY - mapState.padding*2 + yc;
+                        cm.contentH = realY - m.padding*2 + yc;
                     }
                 } else if (cm.contentType === 'equation') {
                     if (cm.isDimAssigned === 0) {
@@ -128,8 +127,8 @@ export const mapMeasure = {
                 }
                 else {console.log('unknown contentType')}
 
-                cm.selfW = cm.contentW + mapState.padding*2;
-                cm.selfH = cm.contentH + mapState.padding*2;
+                cm.selfW = cm.contentW + m.padding*2;
+                cm.selfH = cm.contentH + m.padding*2;
             }
         }
 
