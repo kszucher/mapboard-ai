@@ -51,8 +51,8 @@ export const mapPlace = {
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
 
-        mapState.mapWidth = mapWidth;
-        mapState.mapHeight = mapHeight;
+        m.mapWidth = mapWidth;
+        m.mapHeight = mapHeight;
 
         r.parentNodeStartX = mapStartCenterX - r.selfW / 2 + 1;
         r.parentNodeEndX = mapStartCenterX + r.selfW / 2 + 1;

@@ -54,12 +54,6 @@ function nodeReducer(action, payload) {
             m.alignment = payload;
             break;
         }
-        case 'setTaskConfigWidth': {
-            let m = mapref(['m']);
-            let {taskConfigN, taskConfigD, taskConfigGap} = m;
-            m.taskConfigWidth = taskConfigN * taskConfigD + (taskConfigN - 1) * taskConfigGap;
-            break;
-        }
         // NODE SELECT -------------------------------------------------------------------------------------------------
         case 'clearSelection': {
             clearSelection();

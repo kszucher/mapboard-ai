@@ -1,5 +1,5 @@
 import {genHash, getLatexString} from "../core/Utils";
-import {mapState} from "../core/MapFlow";
+import {mapState, redraw} from "../core/MapFlow";
 import {mapDivData, keepHash} from "../core/DomFlow";
 
 const scrollTo = function(to, duration) {
@@ -38,9 +38,10 @@ const scrollTo = function(to, duration) {
 export const mapDivVisualize = {
     start: (m, r) => {
         let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.width = "" + mapState.mapWidth + "px";
-        mapDiv.style.height = "" + mapState.mapHeight + "px";
-        let currScrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
+        mapDiv.style.width = "" + m.mapWidth + "px";
+        mapDiv.style.height = "" + m.mapHeight + "px";
+        let currScrollLeft = (window.innerWidth + m.mapWidth) / 2;
+
         if (mapState.isLoading) {
             mapState.isLoading = false;
             let mapHolderDiv = document.getElementById('mapHolderDiv');
@@ -50,6 +51,14 @@ export const mapDivVisualize = {
             mapState.shouldCenter = false;
             scrollTo(currScrollLeft, 500);
         }
+
+        if (mapState.isLoading2) { // think what happens here and why...
+            mapState.isLoading2 = false;
+            let mapHolderDiv = document.getElementById('mapHolderDiv');
+            mapHolderDiv.scrollLeft = (window.innerWidth + m.mapWidth) / 2;
+            mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
+        }
+
         mapDivVisualize.iterate(m, r);
     },
 

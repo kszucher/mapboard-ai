@@ -106,16 +106,10 @@ export function Communication() {
                     mapState.isLoading = true;
                     mapDispatch('setData', mapStorage.data);
                     mapDispatch('setMapId', mapStorage._id);
-                    mapDispatch('setTaskConfigWidth');
-
-                    // TODO okay now I need to go forward with map params to make them truly included in saved data... a few more days but then it will work
-
-                    recalc(); // this was somewhat missing altogether
+                    recalc();
                     redraw();
-
-                    let mapHolderDiv = document.getElementById('mapHolderDiv');
-                    mapHolderDiv.scrollLeft = (window.innerWidth + mapState.mapWidth) / 2;
-                    mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
+                    mapState.isLoading2 = true;
+                    redraw();
                     break;
                 }
                 case 'saveMapSuccess': {

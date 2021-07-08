@@ -16,8 +16,8 @@ let svgElementNameList = [
 export const mapSvgVisualize = {
     start: (m, r) => {
         let mapSvgOuter = document.getElementById('mapSvgOuter');
-        mapSvgOuter.style.width = 'calc(200vw + ' + mapState.mapWidth + 'px)';
-        mapSvgOuter.style.height = 'calc(200vh + ' + mapState.mapHeight + 'px)';
+        mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)';
+        mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)';
         mapSvgVisualize.iterate(m, r);
     },
 
@@ -42,8 +42,8 @@ export const mapSvgVisualize = {
                 type: 'rect',
                 x: 0,
                 y: 0,
-                width: mapState.mapWidth,
-                height: mapState.mapHeight,
+                width: m.mapWidth,
+                height: m.mapHeight,
                 rx: 32,
                 ry: 32,
                 fill: '#fbfafc',
@@ -211,7 +211,7 @@ export const mapSvgVisualize = {
             }
         }
         if (conditions.task) {
-            let {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = mapState;
+            let {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m;
             let startX = cm.path[2]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin;
             let x1 = nex;
             let x2 = startX;

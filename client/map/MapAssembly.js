@@ -6,7 +6,9 @@ export function mapAssembly(dataLinear) {
         subsasgn(dataNested, copy(dataLinear[i].path), copy(dataLinear[i]));
         if (i === 0) {
             dataNested.r.d = [{},{}];
-            // use mongo for this
+            // STORE IN MONGO ONCE WORKING
+
+            // save always
             dataNested.m = {
                 alignment: 'left',
                 density: 'large',
@@ -15,8 +17,25 @@ export function mapAssembly(dataLinear) {
                 padding: 0,
                 defaultH: 0,
 
-                // TODO continue here...
+
+
+                taskConfigN: 4,
+                taskConfigD: 24,
+                taskConfigGap: 4,
+
+                margin: 32,
+
+
+
             }
+
+            // save never
+            let {taskConfigN, taskConfigD, taskConfigGap} = dataNested.m;
+            Object.assign(dataNested.m, {
+                taskConfigWidth: taskConfigN * taskConfigD + (taskConfigN - 1) * taskConfigGap,
+                mapWidth: 0,
+                mapHeight: 0,
+            })
         }
     }
     // console.log(dataNested)

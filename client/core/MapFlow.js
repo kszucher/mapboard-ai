@@ -18,24 +18,20 @@ import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
     isLoading: true,
+    isLoading2: false,
+
     mapId: '',
     dataIndex: 0,
     data: [],
     taskLeft: 0,
     taskRight: 0,
-    mapWidth: 0,
-    mapHeight: 0,
+
     deepestSelectablePath: [],
     isNodeClicked: false,
     isTaskClicked: false,
     shouldCenter: false,
     moveTargetPath: [],
     moveTargetIndex: 0,
-    margin: 32,
-    taskConfigN: 4,
-    taskConfigD: 24,
-    taskConfigGap: 4,
-    taskConfigWidth: 0,
 };
 
 const InitMapState = JSON.stringify(mapState);
@@ -57,11 +53,6 @@ function mapReducer(action, payload) {
         }
         case 'setMapId': { // needs to follow setData, as it initializes
             mapState.mapId = payload;
-            break;
-        }
-        case 'setTaskConfigWidth': {
-            let {taskConfigN, taskConfigD, taskConfigGap} = mapState;
-            mapState.taskConfigWidth = taskConfigN * taskConfigD + (taskConfigN - 1) * taskConfigGap;
             break;
         }
         case 'setIsLoading': {
