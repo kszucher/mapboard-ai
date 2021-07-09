@@ -37,6 +37,7 @@ const scrollTo = function(to, duration) {
 
 export const mapDivVisualize = {
     start: (m, r) => {
+        let mapHolderDiv = document.getElementById('mapHolderDiv');
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + m.mapWidth + "px";
         mapDiv.style.height = "" + m.mapHeight + "px";
@@ -49,14 +50,12 @@ export const mapDivVisualize = {
 
         if (mapState.isResizing) {
             mapState.isResizing = false;
-            let mapHolderDiv = document.getElementById('mapHolderDiv');
             mapHolderDiv.scrollLeft = currScrollLeft;
         }
 
-        if (mapState.isLoading) { // think what happens here and why...
+        if (mapState.isLoading) {
             mapState.isLoading = false;
-            let mapHolderDiv = document.getElementById('mapHolderDiv');
-            mapHolderDiv.scrollLeft = (window.innerWidth + m.mapWidth) / 2;
+            mapHolderDiv.scrollLeft = currScrollLeft;
             mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
         }
 
