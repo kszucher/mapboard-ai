@@ -40,14 +40,8 @@ function nodeReducer(action, payload) {
     switch (action) {
         // MAP ---------------------------------------------------------------------------------------------------------
         case 'setDensity': {
-            console.log('left')
             let m = mapref(['m']);
             m.density = payload;
-            let {density} = m;
-            m.sLineDeltaXDefault = density === 'large' ? 30 : 20;
-            m.padding = density === 'large' ? 8 : 3;
-            m.defaultH = density === 'large' ? 30 : 20; // 30 = 14 + 2*8, 20 = 14 + 2*3
-            m.taskConfigD = density === 'large' ? 24 : 20;
             break;
         }
         case 'setAlignment': {
