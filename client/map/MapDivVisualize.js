@@ -37,28 +37,24 @@ const scrollTo = function(to, duration) {
 
 export const mapDivVisualize = {
     start: (m, r) => {
-        let mapHolderDiv = document.getElementById('mapHolderDiv');
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + m.mapWidth + "px";
         mapDiv.style.height = "" + m.mapHeight + "px";
+        let mapHolderDiv = document.getElementById('mapHolderDiv');
         let currScrollLeft = (window.innerWidth + m.mapWidth) / 2;
-
-        if (mapState.shouldCenter) {
-            mapState.shouldCenter = false;
-            scrollTo(currScrollLeft, 500);
-        }
-
-        if (mapState.isResizing) {
-            mapState.isResizing = false;
-            mapHolderDiv.scrollLeft = currScrollLeft;
-        }
-
         if (mapState.isLoading) {
             mapState.isLoading = false;
             mapHolderDiv.scrollLeft = currScrollLeft;
             mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
         }
-
+        if (mapState.isResizing) {
+            mapState.isResizing = false;
+            mapHolderDiv.scrollLeft = currScrollLeft;
+        }
+        if (mapState.shouldCenter) {
+            mapState.shouldCenter = false;
+            scrollTo(currScrollLeft, 500);
+        }
         mapDivVisualize.iterate(m, r);
     },
 
