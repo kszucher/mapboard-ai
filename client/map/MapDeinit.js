@@ -2,6 +2,8 @@ import {props} from "../node/Node";
 
 export const mapDeinit = {
     start: (cm) => {
+        delete cm['m']
+
         mapDeinit.iterate(cm.r);
     },
 
