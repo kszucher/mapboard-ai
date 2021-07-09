@@ -12,10 +12,6 @@ export function mapAssembly(dataLinear) {
                 alignment: 'adaptive',
                 density: 'large',
 
-                sLineDeltaXDefault: 0,
-                padding: 0,
-                defaultH: 0,
-
                 taskConfigN: 4,
                 taskConfigGap: 4,
                 margin: 32,
