@@ -105,7 +105,7 @@ export function Communication() {
                     let {mapStorage} = serverResponse.payload;
                     mapDispatch('setStorage', mapStorage);
                     redraw();
-                    mapState.isLoading2 = true;
+                    mapState.isLoading = true;
                     redraw();
                     break;
                 }

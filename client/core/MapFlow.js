@@ -18,7 +18,7 @@ import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
     isResizing: true,
-    isLoading2: false,
+    isLoading: false,
 
     mapId: '',
     dataIndex: 0,
@@ -50,7 +50,7 @@ function mapReducer(action, payload) {
             mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload.data)];
             mapState.mapId = payload._id;
-            mapState.isLoading2 = true;
+            mapState.isLoading = true;
             break;
         }
         case 'setIsResizing': {
