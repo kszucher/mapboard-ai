@@ -8,7 +8,6 @@ export function mapAssembly(dataLinear) {
             dataNested.r.d = [{},{}];
             // STORE IN MONGO ONCE WORKING
 
-            // save always
             dataNested.m = {
                 alignment: 'left',
                 density: 'large',
@@ -21,24 +20,7 @@ export function mapAssembly(dataLinear) {
                 taskConfigGap: 4,
                 margin: 32,
             }
-
-            // save never
-            let {density} = dataNested.m;
-            Object.assign(dataNested.m, {
-                mapWidth: 0,
-                mapHeight: 0,
-                sLineDeltaXDefault: density === 'large' ? 30 : 20,
-                padding: density === 'large' ? 8 : 3,
-                defaultH: density === 'large' ? 30 : 20, // 30 = 14 + 2*8, 20 = 14 + 2*3
-                taskConfigD: density === 'large' ? 24 : 20,
-            })
-
-            let {taskConfigN, taskConfigGap, taskConfigD} = dataNested.m;
-            Object.assign(dataNested.m, {
-                taskConfigWidth: taskConfigN * taskConfigD + (taskConfigN - 1) * taskConfigGap,
-            })
         }
     }
-    // console.log(dataNested)
     return dataNested;
 }
