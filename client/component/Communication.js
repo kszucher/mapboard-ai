@@ -103,10 +103,7 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     let {mapStorage} = serverResponse.payload;
-                    mapState.isLoading = true;
-                    mapDispatch('setData', mapStorage.data);
-                    mapDispatch('setMapId', mapStorage._id);
-                    recalc();
+                    mapDispatch('setStorage', mapStorage);
                     redraw();
                     mapState.isLoading2 = true;
                     redraw();
