@@ -17,7 +17,7 @@ import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
-    isResizing: true,
+    isResizing: false,
     isLoading: false,
 
     mapId: '',
