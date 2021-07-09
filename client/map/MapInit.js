@@ -1,4 +1,4 @@
-import {nodeProps} from "../node/Node"
+import {nodeProps} from "../core/DataProps"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {

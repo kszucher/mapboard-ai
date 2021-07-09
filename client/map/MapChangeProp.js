@@ -1,4 +1,4 @@
-import {resolveConditions} from "../node/Node";
+import {resolveConditions} from "../core/DataProps";
 
 export const mapChangeProp = {
     start: (cm, assignment, cond, skip) => {

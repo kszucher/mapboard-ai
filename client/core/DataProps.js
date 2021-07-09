@@ -1,4 +1,4 @@
-import {filteredObj} from "../core/Utils";
+import {filteredObj} from "./Utils";
 
 export let nodeProps = {
     saveAlways: {
