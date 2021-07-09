@@ -63,7 +63,7 @@ function nodeReducer(action, payload) {
         }
         case 'selectStructFamily': {
             lm = mapref(mapState.deepestSelectablePath);
-            if (lm.path.length === 1) {
+            if (lm.path.length === 1 && lm.path[0] === 'r') {
                 lm.selected = 0;
                 if (lm.d[0].selected === 1) {
                     lm.d[0].selected = 0;
@@ -92,7 +92,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectDescendantsOut': {
-            if (lm.path.length === 1) {
+            if (lm.path.length === 1 && lm.path[0] === 'r') {
                 lm.selected = 0;
                 if (payload.keyCode === 'ArrowRight') {
                     lm.d[0].selected = 1;

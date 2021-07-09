@@ -6,14 +6,14 @@ export function nodeNavigate (lastPath, target, key) {
 
     let truePath = lastPath;
     if (key === 'ArrowRight') {
-        if (lastPath.length === 1) {
+        if (lastPath.length === 1 && lastPath[0] === 'r') {
             truePath = ['r', 'd', 0];
             direction = 'out';
         } else {
             direction = lastPath[2] === 0 ? 'out' : 'in';
         }
     } else if (key === 'ArrowLeft') {
-        if (lastPath.length === 1) {
+        if (lastPath.length === 1 && lastPath[0] === 'r') {
             truePath = ['r', 'd', 1];
             direction = 'out';
         } else {
