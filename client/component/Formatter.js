@@ -16,20 +16,8 @@ export function Formatter () {
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
-    const updateDensity = e => {
-        nodeDispatch('setDensity', e)
-        mapDispatch('setShouldCenter')
-        nodeDispatch('resetDim')
-        redraw()
-        setDensity(e)
-    }
-
-    const updateAlignment = e => {
-        nodeDispatch('setAlignment', e)
-        mapDispatch('setShouldCenter')
-        redraw()
-        setAlignment(e)
-    }
+    const updateDensity =        e => {nodeDispatch('setDensity', e); mapDispatch('setShouldCenter'); nodeDispatch('resetDim'); redraw(); setDensity(e)}
+    const updateAlignment =      e => {nodeDispatch('setAlignment', e); mapDispatch('setShouldCenter');    redraw();             setAlignment(e)}
     const updateFormatMode =     e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const updateLineWidth =      e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(); setLineWidth(e)}
     const updateLineType =       e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(); setLineType(e)}
@@ -38,8 +26,7 @@ export function Formatter () {
     const cmdResetAll =          e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
-    const cmdSubmapToggle =      e => {
-        // TODO check if it is not a submap already
+    const cmdSubmapToggle =      e => {// TODO check if it is not a submap already
         let {lastPath} = selectionState;
         dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}})
     }
