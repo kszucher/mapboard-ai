@@ -1,5 +1,5 @@
 import {mapAssembly} from "../map/MapAssembly";
-import {copy, subsasgn, subsref} from "./Utils";
+import {copy, subsref} from "./Utils";
 import {mapAlgo} from "../map/MapAlgo";
 import {mapInit} from "../map/MapInit";
 import {mapChain} from "../map/MapChain";
@@ -39,17 +39,18 @@ const InitMapState = JSON.stringify(mapState);
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    if (['setStorage', 'isResizing', 'undo', 'redo'].includes(action)) {
+    if (['setMapStorage', 'isResizing', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
 
 function mapReducer(action, payload) {
     switch (action) {
-        case 'setStorage': {
+        case 'setMapStorage': {
             mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload.data)];
             mapState.mapId = payload._id;
+            mapState.isLoading = true;
             break;
         }
         case 'setIsResizing': {
@@ -99,8 +100,8 @@ export function redraw() {
     initDomHash();
     let m = getMapData().m;
     let r = getMapData().r;
-    mapDivVisualize.start(m, r);
     mapSvgVisualize.start(m, r);
+    mapDivVisualize.start(m, r);
     updateDomData();
 }
 

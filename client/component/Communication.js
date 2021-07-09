@@ -1,7 +1,7 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context, remoteGetState} from "../core/Store";
-import {mapDispatch, mapState, recalc, redraw, saveMap} from "../core/MapFlow";
+import {mapDispatch, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
 
 let waitingForServer = 0;
@@ -103,9 +103,7 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     let {mapStorage} = serverResponse.payload;
-                    mapDispatch('setStorage', mapStorage);
-                    redraw();
-                    mapState.isLoading = true;
+                    mapDispatch('setMapStorage', mapStorage);
                     redraw();
                     break;
                 }
