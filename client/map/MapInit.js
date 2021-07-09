@@ -1,4 +1,4 @@
-import {props} from "../node/Node"
+import {nodeProps} from "../node/Node"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
@@ -17,26 +17,26 @@ export const mapInit = {
     },
 
     iterate: (m, cm) => {
-        for (const prop in props.saveAlways) {
+        for (const prop in nodeProps.saveAlways) {
             if (!cm.hasOwnProperty(prop)) {
-                cm[prop] = copy(props.saveAlways[prop]);
+                cm[prop] = copy(nodeProps.saveAlways[prop]);
             }
         }
 
-        for (const prop in props.saveOptional) {
+        for (const prop in nodeProps.saveOptional) {
             if (!cm.hasOwnProperty(prop)) {
-                cm[prop] = shallowCopy(props.saveOptional[prop])
+                cm[prop] = shallowCopy(nodeProps.saveOptional[prop])
             }
         }
 
-        for (const prop in props.saveNever.initOnce) {
+        for (const prop in nodeProps.saveNever.initOnce) {
             if (!cm.hasOwnProperty(prop)) {
-                cm[prop] = shallowCopy(props.saveNever.initOnce[prop])
+                cm[prop] = shallowCopy(nodeProps.saveNever.initOnce[prop])
             }
         }
 
-        for (const prop in props.saveNever.initAlways) {
-            cm[prop] = shallowCopy(props.saveNever.initAlways[prop])
+        for (const prop in nodeProps.saveNever.initAlways) {
+            cm[prop] = shallowCopy(nodeProps.saveNever.initAlways[prop])
         }
 
         cm.d.map(i => mapInit.iterate(m, i));

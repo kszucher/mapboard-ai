@@ -1,6 +1,6 @@
 import {filteredObj} from "../core/Utils";
 
-export let props = {
+export let nodeProps = {
     saveAlways: {
         path:                                   [],
         d:                                      [],
@@ -105,11 +105,11 @@ const formatParams =  {
 }
 
 export const getFormatDefault = (type) => {
-    return filteredObj(props.saveOptional, formatParams[type]);
+    return filteredObj(nodeProps.saveOptional, formatParams[type]);
 }
 
 export const getAllFormatDefault = () => {
-    return filteredObj(props.saveOptional, [].concat(...Object.values(formatParams)));
+    return filteredObj(nodeProps.saveOptional, [].concat(...Object.values(formatParams)));
 }
 
 export const resolveConditions = (cm) => {

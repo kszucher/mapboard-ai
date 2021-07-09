@@ -1,4 +1,4 @@
-import {props} from "../node/Node";
+import {nodeProps} from "../node/Node";
 
 export const mapDeinit = {
     start: (cm) => {
@@ -13,10 +13,10 @@ export const mapDeinit = {
         cm.c.map(i => i.map(j => mapDeinit.iterate(j)));
 
         for (const prop in cm) {
-            if (props.saveAlways.hasOwnProperty(prop)) {
+            if (nodeProps.saveAlways.hasOwnProperty(prop)) {
 
-            } else if (props.saveOptional.hasOwnProperty(prop)) {
-                if (cm[prop] === props.saveOptional[prop]) {
+            } else if (nodeProps.saveOptional.hasOwnProperty(prop)) {
+                if (cm[prop] === nodeProps.saveOptional[prop]) {
                     delete cm[prop]
                 }
             } else {
