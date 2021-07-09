@@ -9,7 +9,7 @@ export function mapAssembly(dataLinear) {
             // STORE IN MONGO ONCE WORKING
 
             dataNested.m = {
-                alignment: 'left',
+                alignment: 'adaptive',
                 density: 'large',
 
                 sLineDeltaXDefault: 0,
