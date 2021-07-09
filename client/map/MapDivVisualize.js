@@ -42,14 +42,15 @@ export const mapDivVisualize = {
         mapDiv.style.height = "" + m.mapHeight + "px";
         let currScrollLeft = (window.innerWidth + m.mapWidth) / 2;
 
-        if (mapState.isLoading) {
-            mapState.isLoading = false;
-            let mapHolderDiv = document.getElementById('mapHolderDiv');
-            mapHolderDiv.scrollLeft = currScrollLeft;
-        }
         if (mapState.shouldCenter) {
             mapState.shouldCenter = false;
             scrollTo(currScrollLeft, 500);
+        }
+
+        if (mapState.isResizing) {
+            mapState.isResizing = false;
+            let mapHolderDiv = document.getElementById('mapHolderDiv');
+            mapHolderDiv.scrollLeft = currScrollLeft;
         }
 
         if (mapState.isLoading2) { // think what happens here and why...

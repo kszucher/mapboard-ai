@@ -42,7 +42,7 @@ export function MapComponent() {
     };
 
     const resize = () => {
-        mapDispatch('setIsLoading');
+        mapDispatch('setIsResizing');
         redraw();
     };
 
