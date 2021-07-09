@@ -50,7 +50,6 @@ function mapReducer(action, payload) {
             mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload.data)];
             mapState.mapId = payload._id;
-            mapState.isLoading = true;
             break;
         }
         case 'setIsResizing': {
