@@ -39,14 +39,17 @@ function nodeReducer(action, payload) {
     let lm = mapref(sc.lastPath);
     switch (action) {
         // MAP ---------------------------------------------------------------------------------------------------------
-        case 'setDensity': {
+        case 'updateDensity': {
             let m = mapref(['m']);
             m.density = payload;
+            m.shouldCenter = true;
+            mapChangeProp.start(mapref(['r']), {isDimAssigned: 0}, '');
             break;
         }
-        case 'setAlignment': {
+        case 'updateAlignment': {
             let m = mapref(['m']);
             m.alignment = payload;
+            m.shouldCenter = true;
             break;
         }
         // NODE SELECT -------------------------------------------------------------------------------------------------
@@ -482,10 +485,6 @@ function nodeReducer(action, payload) {
         }
         case 'taskSwitch': {
             mapChangeProp.start(lm, {task: !lm.task}, '');
-            break;
-        }
-        case 'resetDim': {
-            mapChangeProp.start(mapref(['r']), {isDimAssigned: 0}, '');
             break;
         }
         // NODE EDIT ---------------------------------------------------------------------------------------------------

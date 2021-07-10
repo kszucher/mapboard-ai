@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import {checkPop, mapDispatch, mapref, push, redraw} from "../core/MapFlow";
+import {checkPop, mapref, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {selectionState} from "../core/SelectionFlow";
 
@@ -16,8 +16,8 @@ export function Formatter () {
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
-    const updateDensity =        e => {nodeDispatch('setDensity', e); mapDispatch('setShouldCenter'); nodeDispatch('resetDim'); redraw(); setDensity(e)}
-    const updateAlignment =      e => {nodeDispatch('setAlignment', e); mapDispatch('setShouldCenter');    redraw();             setAlignment(e)}
+    const updateDensity =        e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(); setDensity(e)}
+    const updateAlignment =      e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(); setAlignment(e)}
     const updateFormatMode =     e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const updateLineWidth =      e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(); setLineWidth(e)}
     const updateLineType =       e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(); setLineType(e)}

@@ -20,3 +20,5 @@ export function mapAssembly(dataLinear) {
     }
     return dataNested;
 }
+
+// todo: kialakítani a prop system-et map esetre is, aminek hála nem kell a mongohoz nyúlni, sőt az új mongoval is lehet régi feature-öket tesztelni

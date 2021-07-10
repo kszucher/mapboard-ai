@@ -51,8 +51,8 @@ export const mapDivVisualize = {
             mapState.isResizing = false;
             mapHolderDiv.scrollLeft = currScrollLeft;
         }
-        if (mapState.shouldCenter) {
-            mapState.shouldCenter = false;
+        if (m.shouldCenter) {
+            m.shouldCenter = false;
             scrollTo(currScrollLeft, 500);
         }
         mapDivVisualize.iterate(m, r);

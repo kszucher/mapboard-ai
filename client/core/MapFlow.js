@@ -29,7 +29,6 @@ export let mapState = {
     deepestSelectablePath: [],
     isNodeClicked: false,
     isTaskClicked: false,
-    shouldCenter: false,
     moveTargetPath: [],
     moveTargetIndex: 0,
 };
@@ -55,10 +54,6 @@ function mapReducer(action, payload) {
         }
         case 'setIsResizing': {
             mapState.isResizing = true;
-            break;
-        }
-        case 'setShouldCenter': { // RESTORE THIS AFTER OPEN!!!
-            mapState.shouldCenter = true;
             break;
         }
         case 'undo': {

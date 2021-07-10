@@ -215,9 +215,10 @@ export function MapComponent() {
         isMouseDown = false;
         if (e.which === 1) {
             let r = getMapData().r;
+            let m = getMapData().m;
             if (mapState.moveTargetPath.length) {
                 r.moveData = [];
-                mapDispatch('setShouldCenter');
+                m.shouldCenter = true; // outside push - checkPop?
                 push();
                 nodeDispatch('moveSelection');
                 redraw();
@@ -247,7 +248,8 @@ export function MapComponent() {
         if (mapState.isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
-            mapDispatch('setShouldCenter');
+            let m = getMapData().m;
+            m.shouldCenter = true; // outside push - checkPop?
         }
         redraw();
     };

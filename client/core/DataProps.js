@@ -1,5 +1,8 @@
 import {filteredObj} from "./Utils";
 
+// MAPPROPS
+// saveNever: shouldCenter, ... TODO
+
 export let nodeProps = {
     saveAlways: {
         path:                                   [],
