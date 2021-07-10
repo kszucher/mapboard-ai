@@ -1,4 +1,4 @@
-import {nodeProps} from "../core/DataProps";
+import {nodeProps} from "../core/DefaultProperties";
 
 export const mapDeinit = {
     start: (cm) => {

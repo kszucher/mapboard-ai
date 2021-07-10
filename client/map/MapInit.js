@@ -1,9 +1,11 @@
-import {nodeProps} from "../core/DataProps"
+import {nodeProps} from "../core/DefaultProperties"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
     start: (m, r) => {
         let {density, taskConfigN, taskConfigGap} = m;
+
+        // tehát ez nem lettel feltételezve lesz hogy van, hanem betöltődik a default-ja a dataPropsból VAGY a mongobol HA már oda volt mentve
 
         m.mapWidth = 0;
         m.mapHeight = 0;

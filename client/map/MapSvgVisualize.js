@@ -1,7 +1,7 @@
 import {genHash, isChrome, isOdd} from "../core/Utils";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
-import {resolveConditions} from "../core/DataProps";
+import {resolveConditions} from "../core/DefaultProperties";
 
 let svgElementNameList = [
     ['backgroundRect'],

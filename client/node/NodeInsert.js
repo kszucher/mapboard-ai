@@ -1,4 +1,4 @@
-import {getDefaultNode} from "../core/DataProps";
+import {getDefaultNode} from "../core/DefaultProperties";
 import {mapref} from "../core/MapFlow";
 
 export function structInsert(lm, mode) {
