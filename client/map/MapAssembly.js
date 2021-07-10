@@ -6,8 +6,8 @@ export function mapAssembly(dataLinear) {
         subsasgn(dataNested, copy(dataLinear[i].path), copy(dataLinear[i]));
         if (i === 0) {
             dataNested.r.d = [{},{}];
-            // STORE IN MONGO ONCE WORKING
 
+            // MOVE THIS TO MAPINIT USING MAPPROPS and FORGET ABOUT MONGO AS IT WILL WORK AS IS
             dataNested.m = {
                 alignment: 'adaptive',
                 density: 'large',
@@ -20,5 +20,3 @@ export function mapAssembly(dataLinear) {
     }
     return dataNested;
 }
-
-// todo: kialakítani a prop system-et map esetre is, aminek hála nem kell a mongohoz nyúlni, sőt az új mongoval is lehet régi feature-öket tesztelni
