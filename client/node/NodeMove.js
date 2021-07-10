@@ -1,4 +1,4 @@
-import {getDefaultNode} from "../core/DefaultProperties";
+import {getDefaultNode} from "../core/DefaultProps";
 import {copy, transpose} from "../core/Utils";
 import {mapref, mapState} from "../core/MapFlow";
 

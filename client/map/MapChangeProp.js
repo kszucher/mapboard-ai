@@ -1,4 +1,4 @@
-import {resolveConditions} from "../core/DefaultProperties";
+import {resolveConditions} from "../core/DefaultProps";
 
 export const mapChangeProp = {
     start: (cm, assignment, cond, skip) => {

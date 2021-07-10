@@ -1,4 +1,4 @@
-import {getDefaultNode} from "../core/DefaultProperties";
+import {getDefaultNode} from "../core/DefaultProps";
 import {mapref} from "../core/MapFlow";
 
 let selectionFound = 0;

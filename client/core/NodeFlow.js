@@ -4,7 +4,7 @@ import {nodeMove, nodeMoveMouse, setClipboard} from "../node/NodeMove";
 import {nodeNavigate} from "../node/NodeNavigate";
 import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
-import {getAllFormatDefault, getFormatDefault} from "./DefaultProperties";
+import {getAllFormatDefault, getFormatDefault} from "./DefaultProps";
 import {selectionState} from "./SelectionFlow";
 import {checkPop, getMapData, mapref, mapState, pathMerge, push, recalc, redraw} from "./MapFlow";
 import {mapSvgData} from "./DomFlow";
