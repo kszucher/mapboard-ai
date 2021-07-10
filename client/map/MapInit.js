@@ -1,22 +1,25 @@
-import {nodeProps} from "../core/DefaultProps"
+import {mapProps, nodeProps} from "../core/DefaultProps"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
     start: (m, r) => {
-        let {density, taskConfigN, taskConfigGap} = m;
+        for (const prop in mapProps.saveOptional) {
+            if (!m.hasOwnProperty(prop)) {
+                m[prop] = copy(mapProps.saveOptional[prop]);
+            }
+        }
 
-        // tehát ez nem lettel feltételezve lesz hogy van, hanem betöltődik a default-ja a dataPropsból VAGY a mongobol HA már oda volt mentve
+        for (const prop in mapProps.saveNever) {
+            if (!m.hasOwnProperty(prop)) {
+                m[prop] = copy(mapProps.saveNever[prop]);
+            }
+        }
 
-        m.mapWidth = 0;
-        m.mapHeight = 0;
-        m.sLineDeltaXDefault = density === 'large' ? 30 : 20;
-        m.padding = density === 'large' ? 8 : 3;
-        m.defaultH = density === 'large' ? 30 : 20; // 30 = 14 + 2*8, 20 = 14 + 2*3
-        m.taskConfigD = density === 'large' ? 24 : 20;
-        m.taskConfigWidth = taskConfigN * m.taskConfigD + (taskConfigN - 1) * taskConfigGap;
-
-        m.taskLeft = 0;
-        m.taskRight = 0;
+        m.sLineDeltaXDefault = m.density === 'large' ? 30 : 20;
+        m.padding = m.density === 'large' ? 8 : 3;
+        m.defaultH = m.density === 'large' ? 30 : 20; // 30 = 14 + 2*8, 20 = 14 + 2*3
+        m.taskConfigD = m.density === 'large' ? 24 : 20;
+        m.taskConfigWidth = m.taskConfigN * m.taskConfigD + (m.taskConfigN - 1) * m.taskConfigGap;
 
         mapInit.iterate(m, r);
     },

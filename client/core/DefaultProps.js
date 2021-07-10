@@ -1,7 +1,25 @@
 import {filteredObj} from "./Utils";
 
-// MAPPROPS
-// saveNever: shouldCenter, ... TODO
+export let mapProps = {
+    saveOptional: {
+        alignment: 'adaptive',
+        density: 'large',
+        taskConfigN: 4,
+        taskConfigGap: 4,
+        margin: 32,
+    },
+    saveNever: {
+        mapWidth: 0,
+        mapHeight: 0,
+        taskLeft: 0,
+        taskRight: 0,
+        sLineDeltaXDefault: 0,
+        padding: 0,
+        defaultH: 0,
+        taskConfigD: 0,
+        taskConfigWidth: 0,
+    }
+}
 
 export let nodeProps = {
     saveAlways: {
