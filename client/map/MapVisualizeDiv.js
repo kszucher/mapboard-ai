@@ -35,7 +35,7 @@ const scrollTo = function(to, duration) {
     animateScroll();
 };
 
-export const mapDivVisualize = {
+export const mapVisualizeDiv = {
     start: (m, r) => {
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + m.mapWidth + "px";
@@ -55,7 +55,7 @@ export const mapDivVisualize = {
             m.shouldCenter = false;
             scrollTo(currScrollLeft, 500);
         }
-        mapDivVisualize.iterate(m, r);
+        mapVisualizeDiv.iterate(m, r);
     },
 
     iterate: (m, cm) => {
@@ -116,9 +116,9 @@ export const mapDivVisualize = {
             let {contentType, content, path} = cm;
             Object.assign(mapDivData[cm.divId], {keepHash, styleData, contentType, content, path})
         }
-        cm.d.map(i => mapDivVisualize.iterate(m, i));
-        cm.s.map(i => mapDivVisualize.iterate(m, i));
-        cm.c.map(i => i.map(j => mapDivVisualize.iterate(m, j)));
+        cm.d.map(i => mapVisualizeDiv.iterate(m, i));
+        cm.s.map(i => mapVisualizeDiv.iterate(m, i));
+        cm.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j)));
     }
 };
 

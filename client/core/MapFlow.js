@@ -11,8 +11,8 @@ import {mapTaskColor} from "../map/MapTaskColor";
 import {mapDeinit} from "../map/MapDeinit";
 import {mapDisassembly} from "../map/MapDisassembly";
 import {initDomHash, updateDomData} from "./DomFlow";
-import {mapDivVisualize} from "../map/MapDivVisualize";
-import {mapSvgVisualize} from "../map/MapSvgVisualize";
+import {mapVisualizeDiv} from "../map/MapVisualizeDiv";
+import {mapVisualizeSvg} from "../map/MapVisualizeSvg";
 import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
 
@@ -95,8 +95,8 @@ export function redraw() {
     initDomHash();
     let m = getMapData().m;
     let r = getMapData().r;
-    mapSvgVisualize.start(m, r);
-    mapDivVisualize.start(m, r);
+    mapVisualizeSvg.start(m, r);
+    mapVisualizeDiv.start(m, r);
     updateDomData();
 }
 

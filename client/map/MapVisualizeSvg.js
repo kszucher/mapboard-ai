@@ -12,12 +12,12 @@ let svgElementNameList = [
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
 
-export const mapSvgVisualize = {
+export const mapVisualizeSvg = {
     start: (m, r) => {
         let mapSvgOuter = document.getElementById('mapSvgOuter');
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)';
-        mapSvgVisualize.iterate(m, r);
+        mapVisualizeSvg.iterate(m, r);
     },
 
     iterate: (m, cm) => {
@@ -440,9 +440,9 @@ export const mapSvgVisualize = {
         }
         let {path} = cm;
         Object.assign(mapSvgData[cm.svgId], {keepHash, svgElementData, path})
-        cm.d.map(i => mapSvgVisualize.iterate(m, i));
-        cm.s.map(i => mapSvgVisualize.iterate(m, i));
-        cm.c.map(i => i.map(j => mapSvgVisualize.iterate(m, j)));
+        cm.d.map(i => mapVisualizeSvg.iterate(m, i));
+        cm.s.map(i => mapVisualizeSvg.iterate(m, i));
+        cm.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j)));
     }
 };
 

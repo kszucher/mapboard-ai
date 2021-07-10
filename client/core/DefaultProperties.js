@@ -53,9 +53,9 @@ export let nodeProps = {
             contentH:                           0,
             // mapTaskCalc
             taskStatusInherited:                0,
-            // mapDivVisualize
+            // mapVisualizeDiv
             divId:                              '',
-            // mapSvgVisualize
+            // mapVisualizeSvg
             svgId:                              '',
         },
         initAlways: {
