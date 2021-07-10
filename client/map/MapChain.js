@@ -1,5 +1,3 @@
-import {mapState} from "../core/MapFlow";
-
 export const mapChain = {
     start: (m, r) => {
         Object.assign(r, {

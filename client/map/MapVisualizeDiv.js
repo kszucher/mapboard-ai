@@ -1,5 +1,5 @@
 import {genHash, getLatexString} from "../core/Utils";
-import {mapState, redraw} from "../core/MapFlow";
+import {mapState} from "../core/MapFlow";
 import {mapDivData, keepHash} from "../core/DomFlow";
 
 const scrollTo = function(to, duration) {
