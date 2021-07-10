@@ -25,23 +25,11 @@ export default function Auth() {
     const [state, dispatch] = useContext(Context);
     const {serverResponseToUser} = state;
 
-    const typeName = (e) => {
-        setName(e.target.value)
-    }
-    const typeEmail = (e) => {
-        setEmail(e.target.value)
-    }
-    const typePassword = (e) => {
-        setPassword(e.target.value)
-    }
-    const typePasswordAgain = (e) => {
-        setPasswordAgain(e.target.value)
-    }
-    const typeConfirmationCode = (e) => {
-        if (!isNaN(e.target.value) && e.target.value.length <= 4) {
-            setConfirmationCode(e.target.value)
-        }
-    }
+    const typeName = (e) => {setName(e.target.value)}
+    const typeEmail = (e) => {setEmail(e.target.value)}
+    const typePassword = (e) => {setPassword(e.target.value)}
+    const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
+    const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
 
     const switchMainMode = (e) => {
         if (e !== mainTabValues[mainTabValue]) {
@@ -107,98 +95,40 @@ export default function Auth() {
 
     return (
         <div
-            style={{
-                position: 'relative',
-                left: '50%',
-                transform: 'translate(-50%)',
-                top: 96,
-                width: 48*8,
-                border: "1px solid #fbfafc",
-                borderRadius: '16px',
-                backgroundColor: '#fbfafc',
-                padding: 20,
-                display: 'inline-flex',
-                flexWrap: 'wrap',
-                gap: 16,
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}>
+            style={{position: 'relative', left: '50%', transform: 'translate(-50%)', top: 96, width: 48*8,
+                flexDirection: 'column', alignItems: 'center', display: 'inline-flex', flexWrap: 'wrap', gap: 16,
+                backgroundColor: '#fbfafc', padding: 20, border: "1px solid #fbfafc", borderRadius: '16px' }}>
             <Typography component="h1" variant="h5">MindBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-            <StyledButtonGroup
-                value={mainTabValues[mainTabValue]}
-                valueList={mainTabValues}
-                action={switchMainMode}
-            />
-            {mainTabValue===1 && <StyledButtonGroup
-                value={subTabValues[subTabValue]}
-                valueList={subTabValues}
-                action={switchSubMode}
-            />}
-            {mainTabValue===1 && subTabValue===0 && <StyledInput
-                value={name}
-                label="Your First Name"
-                onChange={typeName}
-                autoFocus
-            />
-            }
-            <StyledInput
-                value={email}
-                label="Email"
-                onChange={typeEmail}
-            />
-            {subTabValue===0 && <StyledInput
-                value={password}
-                label="Password"
-                onChange={typePassword}
-                type="password"
-            />}
-            {mainTabValue===1 && subTabValue===0 && <StyledInput
-                value={passwordAgain}
-                label="Password Again"
-                onChange={typePasswordAgain}
-                type="password"
-            />}
-            {mainTabValue===1 && subTabValue===1 && <StyledInput
-                value={confirmationCode}
-                label="Confirmation Code"
-                onChange={typeConfirmationCode}
-            />}
-            {feedbackMessage !== '' && <Typography
-                variant="body2"
-                color="textSecondary"
-                align="center">
-                {feedbackMessage}
-            </Typography>}
-            <Button
-                variant="contained"
-                fullWidth
-                type="submit"
-                color="primary"
-                disabled={
-                    mainTabValue === 0
+            <StyledButtonGroup value={mainTabValues[mainTabValue]} valueList={mainTabValues} action={switchMainMode}/>
+            {mainTabValue===1 &&
+            <StyledButtonGroup value={subTabValues[subTabValue]} valueList={subTabValues} action={switchSubMode}/>}
+            {mainTabValue===1 && subTabValue===0 &&
+            <StyledInput value={name} label="Your First Name" onChange={typeName} autoFocus/>}
+            <StyledInput value={email} label="Email" onChange={typeEmail}/>
+            {subTabValue===0 &&
+            <StyledInput value={password} label="Password" onChange={typePassword} type="password"/>}
+            {mainTabValue===1 && subTabValue===0 &&
+            <StyledInput value={passwordAgain} label="Password Again" onChange={typePasswordAgain} type="password"/>}
+            {mainTabValue===1 && subTabValue===1 &&
+            <StyledInput value={confirmationCode} label="Confirmation Code" onChange={typeConfirmationCode}/>}
+            {feedbackMessage !== '' &&
+            <Typography variant="body2" color="textSecondary" align="center">{feedbackMessage}</Typography>}
+            <Button variant="contained" fullWidth type="submit" color="primary"
+                    disabled={mainTabValue === 0
                         ? false // (email === '' || password === '') // autofill issue
                         : (subTabValue === 0
-                            ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
-                            : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
-                        )
-                }
-                onClick={
-                    mainTabValue === 0
-                        ? signInHandler
-                        : (subTabValue === 0
-                            ? signUpStep1Handler
-                            : signUpStep2Handler
-                        )
-                }>
-                {
-                    mainTabValue === 0
-                        ? 'Sign In'
-                        : (subTabValue === 0
-                            ? 'Get Confirmation Code'
-                            : 'Enter Confirmation Code'
-                        )
-                }
+                                ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
+                                : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
+                        )}
+                    onClick={
+                        mainTabValue === 0
+                            ? signInHandler
+                            : (subTabValue === 0
+                                ? signUpStep1Handler
+                                : signUpStep2Handler
+                            )}>
+                {mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')}
             </Button>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
