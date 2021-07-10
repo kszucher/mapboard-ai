@@ -23,8 +23,6 @@ export let mapState = {
     mapId: '',
     dataIndex: 0,
     data: [],
-    taskLeft: 0,
-    taskRight: 0,
 
     deepestSelectablePath: [],
     isNodeClicked: false,

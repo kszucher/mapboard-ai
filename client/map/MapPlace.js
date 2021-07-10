@@ -1,5 +1,3 @@
-import {mapState} from "../core/MapFlow";
-
 export const mapPlace = {
     start: (m, r) => {
         let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m;

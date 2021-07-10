@@ -15,6 +15,9 @@ export const mapInit = {
         m.taskConfigD = density === 'large' ? 24 : 20;
         m.taskConfigWidth = taskConfigN * m.taskConfigD + (taskConfigN - 1) * taskConfigGap;
 
+        m.taskLeft = 0;
+        m.taskRight = 0;
+
         mapInit.iterate(m, r);
     },
 

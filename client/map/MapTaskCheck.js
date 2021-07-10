@@ -1,9 +1,7 @@
-import {mapState} from "../core/MapFlow";
-
 export const mapTaskCheck = {
     start: (m, r) => {
-        mapState.taskLeft = 0;
-        mapState.taskRight = 0;
+        m.taskLeft = 0;
+        m.taskRight = 0;
         mapTaskCheck.iterate(m, r);
     },
 
@@ -11,9 +9,9 @@ export const mapTaskCheck = {
         if (cm.task) {
             try {
                 if (cm.path[2] === 0) {
-                    mapState.taskRight = 1;
+                    m.taskRight = 1;
                 } else {
-                    mapState.taskLeft = 1;
+                    m.taskLeft = 1;
                 }
             } catch {
                 console.log(cm.path)
