@@ -153,7 +153,7 @@ async function mongoFunction(cmd) {
             }
             case 'removeFieldFromAllMap': {
 
-                await collectionMaps.updateMany({}, {$unset: {density:""}}); // NORMAL VERSION
+                await collectionMaps.updateMany({}, {$set: {dataPlayback:[]}}); // NORMAL VERSION
                 // await collectionMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
 
                 break;
