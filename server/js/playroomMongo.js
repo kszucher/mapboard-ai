@@ -114,12 +114,18 @@ async function updateStage (params) {
     }
 }
 
+let db;
+let collectionMaps;
+let collectionUsers;
+
 async function mongoFunction(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
-        const collectionMaps = client.db("app").collection("maps");
-        const collectionUsers = client.db("app").collection("users");
+
+        db = client.db("app_dev")
+        collectionMaps = db.collection("maps");
+        collectionUsers = db.collection("users");
 
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
@@ -140,15 +146,16 @@ async function mongoFunction(cmd) {
                 let mapsToDelete = difference(allMaps, mapsToKeep);
 
                 console.log(mapsToKeep.length)
-                console.log(mapsToDelete.length) // run until mapsDelete is 0
+                console.log(mapsToDelete.length) // run until mapsToDelete is 0
 
-                await collectionMaps.deleteMany(
-                    {
-                        _id: {
-                            $in: mapsToDelete
-                        }
-                    }
-                )
+                await collectionMaps.deleteMany({_id: {$in: mapsToDelete}})
+                break;
+            }
+            case 'removeFieldFromAllMap': {
+
+                await collectionMaps.updateMany({}, {$unset: {density:""}}); // NORMAL VERSION
+                // await collectionMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
+
                 break;
             }
         }
@@ -160,7 +167,7 @@ async function mongoFunction(cmd) {
     client.close();
 }
 
-mongoFunction('findDeleteUnusedMaps');
+mongoFunction('removeFieldFromAllMap');
 
 // warn: set operations require strings
 const difference = (arrA, arrB) => {

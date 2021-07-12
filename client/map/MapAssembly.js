@@ -11,3 +11,10 @@ export function mapAssembly(dataLinear) {
     }
     return dataNested;
 }
+
+// TODO:
+//  mongoban
+//      a 4 unused cuccot kiirtjuk,
+//      utána a 2 fontosat bevezetjük,
+//      a push/position0-val az m-et bevezetjük
+//  a mapDisassembly pedig csak az ELTÉRŐ dolgokat engedi majd ki --> WIN és utána jöhet az, hogy mongo push restore whatever szóval MONGO MONGO MONGO BONG
