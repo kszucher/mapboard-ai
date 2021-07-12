@@ -29,7 +29,6 @@ async function mapFilter (collectionMaps, params) {
             break;
         }
         case 'filtered': {
-            let dataElemField = params.condKey;
             await collectionMaps.aggregate(
                 [
                     {
@@ -38,13 +37,7 @@ async function mapFilter (collectionMaps, params) {
                                 $filter: {
                                     input: "$data",
                                     as: "dataElem",
-                                    cond: {
-                                        [
-                                            `$${params.cond}`]: [
-                                            "$$dataElem." + dataElemField,
-                                            `${params.condVal}`
-                                        ]
-                                    }
+                                    cond: {[`$${params.cond}`]: [`$$dataElem.${params.condKey}`, `${params.condVal}`]}
                                 }
                             }
                         }
@@ -148,7 +141,7 @@ async function mongoFunction(cmd) {
                 console.log(mapsToKeep.length)
                 console.log(mapsToDelete.length) // run until mapsToDelete is 0
 
-                await collectionMaps.deleteMany({_id: {$in: mapsToDelete}})
+                // await collectionMaps.deleteMany({_id: {$in: mapsToDelete}})
                 break;
             }
             case 'removeFieldFromAllMap': {
@@ -167,7 +160,7 @@ async function mongoFunction(cmd) {
     client.close();
 }
 
-mongoFunction('removeFieldFromAllMap');
+mongoFunction('findDeleteUnusedMaps');
 
 // warn: set operations require strings
 const difference = (arrA, arrB) => {
