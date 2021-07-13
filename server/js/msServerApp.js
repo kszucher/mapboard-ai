@@ -328,7 +328,7 @@ async function getTabMapNameList(tabMapIdList) {
         {$addFields:    {"__order":     {$indexOfArray: [tabMapIdList, "$_id" ]}}  },
         {$sort:         {"__order":     1}                                                     },
     ]).forEach(function (m) {
-        tabMapNameList.push(m.data[0].content)
+        tabMapNameList.push(m.data[1].content)
     });
     return tabMapNameList;
 }
@@ -340,7 +340,7 @@ async function getBreadcrumbMapNameList(breadcrumbMapIdList) {
         {$addFields:    {"__order":     {$indexOfArray: [breadcrumbMapIdList, "$_id" ]}}  },
         {$sort:         {"__order":     1}                                                         },
     ]).forEach(function (m) {
-        breadcrumbMapNameList.push(m.data[0].content)
+        breadcrumbMapNameList.push(m.data[1].content)
     });
     return breadcrumbMapNameList;
 }

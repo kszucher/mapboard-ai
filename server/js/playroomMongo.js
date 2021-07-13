@@ -145,17 +145,12 @@ async function mongoFunction(cmd) {
                 break;
             }
             case 'removeFieldFromAllMap': {
-
-                await collectionMaps.updateMany({}, {$set: {dataPlayback:[]}}); // NORMAL VERSION
+                // await collectionMaps.updateMany({}, {$set: {dataPlayback:[]}}); // NORMAL VERSION
                 // await collectionMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
-
                 break;
             }
-
-            // TODO: create the "m" field for all data array using push/position 0
-
             case 'pushStuff': {
-
+                // await collectionMaps.updateMany({}, {$push: {data:{$each: [{path: ['m']}], $position: 0}}})
                 break;
             }
         }

@@ -3,14 +3,23 @@ const spawn = require('await-spawn')
 const mongoTransfer = async (mode) => {
     var date = + new Date();
     switch (mode) {
-        case 'prod2dev': {
+        case 'prod2file2dev': {
             await mongoProcess('mongodump', {source: 'app_prod'}, date);
             await mongoProcess('mongorestore', {source:'app_prod', target:'app_dev'}, date);
             break;
         }
-        case 'dev2prod': {
+        case 'prod2file': {
+            await mongoProcess('mongodump', {source: 'app_prod'}, date);
+            break;
+        }
+        case 'dev2file2prod': {
             await mongoProcess('mongodump', {source: 'app_dev'}, date);
             await mongoProcess('mongorestore', {source:'app_dev', target:'app_prod'}, date);
+            break;
+        }
+        case 'dev2file': {
+            await mongoProcess('mongodump', {source: 'app_dev'}, date);
+            break;
         }
     }
 }
@@ -43,4 +52,4 @@ const spawnProcess = async (mongoCmd, mongoParams) => {
     console.log(`process ${mongoCmd} finished`);
 }
 
-mongoTransfer('prod2dev');
+mongoTransfer('prod2file2dev');
