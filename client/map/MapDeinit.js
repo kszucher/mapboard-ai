@@ -1,9 +1,18 @@
-import {nodeProps} from "../core/DefaultProps";
+import {mapProps, nodeProps} from "../core/DefaultProps";
 
 export const mapDeinit = {
     start: (cm) => {
-        delete cm['m']
+        for (const prop in cm.m) {
+            if (mapProps.saveAlways.hasOwnProperty(prop)) {
 
+            } else if (mapProps.saveOptional.hasOwnProperty(prop)) {
+                if (cm.m[prop] === mapProps.saveOptional[prop]) {
+                    delete cm.m[prop];
+                }
+            } else {
+                delete cm.m[prop];
+            }
+        }
         mapDeinit.iterate(cm.r);
     },
 
@@ -17,7 +26,7 @@ export const mapDeinit = {
 
             } else if (nodeProps.saveOptional.hasOwnProperty(prop)) {
                 if (cm[prop] === nodeProps.saveOptional[prop]) {
-                    delete cm[prop]
+                    delete cm[prop];
                 }
             } else {
                 delete cm[prop];

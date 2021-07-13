@@ -1,6 +1,9 @@
 import {filteredObj} from "./Utils";
 
 export let mapProps = {
+    saveAlways: {
+        path: [],
+    },
     saveOptional: {
         alignment: 'adaptive',
         density: 'large',
