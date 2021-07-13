@@ -151,6 +151,13 @@ async function mongoFunction(cmd) {
 
                 break;
             }
+
+            // TODO: create the "m" field for all data array using push/position 0
+
+            case 'pushStuff': {
+
+                break;
+            }
         }
     }
     catch (err) {
@@ -160,7 +167,7 @@ async function mongoFunction(cmd) {
     client.close();
 }
 
-mongoFunction('findDeleteUnusedMaps');
+mongoFunction('pushStuff');
 
 // warn: set operations require strings
 const difference = (arrA, arrB) => {

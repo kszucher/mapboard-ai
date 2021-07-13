@@ -1,25 +1,26 @@
 const spawn = require('await-spawn')
 
 const mongoTransfer = async (mode) => {
+    var date = + new Date();
     switch (mode) {
         case 'prod2dev': {
-            await mongoProcess('mongodump', {source: 'app_prod'});
-            await mongoProcess('mongorestore', {source:'app_prod', target:'app_dev'});
+            await mongoProcess('mongodump', {source: 'app_prod'}, date);
+            await mongoProcess('mongorestore', {source:'app_prod', target:'app_dev'}, date);
             break;
         }
         case 'dev2prod': {
-            await mongoProcess('mongodump', {source: 'app_dev'});
-            await mongoProcess('mongorestore', {source:'app_dev', target:'app_prod'});
+            await mongoProcess('mongodump', {source: 'app_dev'}, date);
+            await mongoProcess('mongorestore', {source:'app_dev', target:'app_prod'}, date);
         }
     }
 }
 
-const mongoProcess = async (mongoCmd, endPoints) => {
+const mongoProcess = async (mongoCmd, endPoints, date) => {
     let baseUri = 'mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net'
     let basePath = 'C:/Users/Kryss/Dropbox/mindboard/mongobackup';
     const mongoParams = [
         `--uri=${baseUri}/${mongoCmd === 'mongodump' ? endPoints.source : endPoints.target}`,
-        `--archive=${basePath}/${endPoints.source}`,
+        `--archive=${basePath}/${endPoints.source}_${date}`,
         '--gzip'
     ]
     if (mongoCmd === 'mongorestore') {
@@ -39,7 +40,7 @@ const spawnProcess = async (mongoCmd, mongoParams) => {
     } catch (e) {
         console.log(e.stderr.toString())
     }
-    console.log(`process ${mongoCmd} fininshed`);
+    console.log(`process ${mongoCmd} finished`);
 }
 
 mongoTransfer('prod2dev');
