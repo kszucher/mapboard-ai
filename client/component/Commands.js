@@ -10,7 +10,9 @@ export function Commands () {
 
     const undo =             () => {mapDispatch('undo'); redraw()}
     const redo =             () => {mapDispatch('redo'); redraw()}
-    const save =             () => {dispatch({type: 'SAVE_MAP'})}
+    const saveMap =          () => {dispatch({type: 'SAVE_MAP'})}
+    const saveMapPlayback =  () => {dispatch({type: 'SAVE_MAP_PLAYBACK'})}
+
     const cut =              () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
     const copy =             () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
     const paste =            () => {pasteDispatch()};
@@ -41,17 +43,8 @@ export function Commands () {
             }}>
                 <StyledIconButton action={undo} icon={'undo'}/>
                 <StyledIconButton action={redo} icon={'redo'}/>
-                <StyledIconButton action={save} icon={'save'}/>
-
-                {/*<Divider orientation="vertical" flexItem />*/}
-
-                {/*<StyledIconButton action={cut} icon={'content_cut'}/>*/}
-                {/*<StyledIconButton action={copy} icon={'content_copy'}/>*/}
-                {/*<StyledIconButton action={paste} icon={'content_paste'}/>*/}
-
-                {/*<Divider orientation="vertical" flexItem />*/}
-
-                {/*<StyledIconButton action={task} icon={'check_circle'}/>*/}
+                <StyledIconButton action={saveMap} icon={'save'}/>
+                <StyledIconButton action={saveMapPlayback} icon={'save'}/>
             </div>
         </div>
     );
