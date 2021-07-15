@@ -17,3 +17,5 @@ c.connect({
 });
 
 // put can be a local file, a buffer or a path to a local file --> so it should work from the buffer soon
+
+// TODO should change DB to prod before upload
