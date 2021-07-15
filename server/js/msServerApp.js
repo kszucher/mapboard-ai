@@ -234,12 +234,6 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'saveMapSuccess'};
                             break;
                         }
-                        case 'saveMapPlayback': {
-                            let {mapStorageOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$push: {"dataPlayback": mapStorageOut.data}});
-                            s2c = {cmd: 'saveMapPlaybackSuccess'};
-                            break;
-                        }
                         case 'createMapInMap': {
                             let {mapStorageOut, lastPath, newMapName} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$set: {data: mapStorageOut.data}});
@@ -313,6 +307,28 @@ async function sendResponse(c2s) {
                                 let tabMapNameList = await getMapNameList(tabMapIdList);
                                 s2c = {cmd: 'updateTabSuccess', payload: {tabMapNameList, tabMapSelected}};
                             }
+                            break;
+                        }
+                        case 'addMapPlayback': {
+                            let {mapStorageOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$push: {"dataPlayback": mapStorageOut.data}});
+                            s2c = {cmd: 'addMapPlaybackSuccess'};
+                            break;
+                        }
+                        case 'getPlaybackCount': {
+                            // TODO
+                            break;
+                        }
+                        case 'openMapFromPlayback': {
+                            // TODO
+                            break;
+                        }
+                        case 'replaceMapInPlayback': {
+                            // TODO
+                            break;
+                        }
+                        case 'duplicateMapInPlayback': {
+                            // TODO
                             break;
                         }
                     }
