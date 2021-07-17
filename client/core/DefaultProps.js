@@ -11,7 +11,7 @@ export let mapProps = {
         taskConfigGap: 4,
         margin: 32,
     },
-    saveNever: {
+    saveNeverInitOnce: {
         mapWidth: 0,
         mapHeight: 0,
         taskLeft: 0,
@@ -21,8 +21,11 @@ export let mapProps = {
         defaultH: 0,
         taskConfigD: 0,
         taskConfigWidth: 0,
+    },
+    saveNeverInitAlways: {
+
     }
-}
+};
 
 export let nodeProps = {
     saveAlways: {
@@ -55,67 +58,65 @@ export let nodeProps = {
         ellipseNodeBorderWidth: 1,
         taskStatus: -1,
     },
-    saveNever: {
-        initOnce: {
-            // UNSORTED
-            isEditing: 0,
-            parentNodeEndXFrom: 0,
-            parentNodeStartXFrom: 0,
-            parentNodeYFrom: 0,
-            lineAnimationRequested: 0,
-            moveData: [],
-            selectionRect: [],
-            selection: 's',
-            // mapAlgo
-            contentCalc: '',
-            // mapMeasure
-            isDimAssigned: 0,
-            contentW: 0,
-            contentH: 0,
-            // mapTaskCalc
-            taskStatusInherited: 0,
-            // mapVisualizeDiv
-            divId: '',
-            // mapVisualizeSvg
-            svgId: '',
-        },
-        initAlways: {
-            // mapChain
-            isRoot: 0,
-            isRootChild: 0,
-            parentPath: [],
-            type: '',
-            parentType: '',
-            parentParentType: '',
-            hasDir: 0,
-            hasStruct: 0,
-            hasCell: 0,
-            index: [],
-            // mapMeasure
-            selfW: 0,
-            selfH: 0,
-            familyW: 0,
-            familyH: 0,
-            maxColWidth: [],
-            maxRowHeight: [],
-            sumMaxColWidth: [0],
-            sumMaxRowHeight: [0],
-            maxW: 0,
-            maxH: 0,
-            spacing: 10,
-            spacingActivated: 0,
-            // mapPlace
-            parentNodeStartX: 0,
-            parentNodeEndX: 0,
-            parentNodeY: 0,
-            lineDeltaX: 0,
-            lineDeltaY: 0,
-            nodeStartX: 0,
-            nodeEndX: 0,
-            nodeY: 0,
-            isTop: 0,
-            isBottom: 0,
-        }
+    saveNeverInitOnce: {
+        // UNSORTED
+        isEditing: 0,
+        parentNodeEndXFrom: 0,
+        parentNodeStartXFrom: 0,
+        parentNodeYFrom: 0,
+        lineAnimationRequested: 0,
+        moveData: [],
+        selectionRect: [],
+        selection: 's',
+        // mapAlgo
+        contentCalc: '',
+        // mapMeasure
+        isDimAssigned: 0,
+        contentW: 0,
+        contentH: 0,
+        // mapTaskCalc
+        taskStatusInherited: 0,
+        // mapVisualizeDiv
+        divId: '',
+        // mapVisualizeSvg
+        svgId: '',
+    },
+    saveNeverInitAlways: {
+        // mapChain
+        isRoot: 0,
+        isRootChild: 0,
+        parentPath: [],
+        type: '',
+        parentType: '',
+        parentParentType: '',
+        hasDir: 0,
+        hasStruct: 0,
+        hasCell: 0,
+        index: [],
+        // mapMeasure
+        selfW: 0,
+        selfH: 0,
+        familyW: 0,
+        familyH: 0,
+        maxColWidth: [],
+        maxRowHeight: [],
+        sumMaxColWidth: [0],
+        sumMaxRowHeight: [0],
+        maxW: 0,
+        maxH: 0,
+        spacing: 10,
+        spacingActivated: 0,
+        // mapPlace
+        parentNodeStartX: 0,
+        parentNodeEndX: 0,
+        parentNodeY: 0,
+        lineDeltaX: 0,
+        lineDeltaY: 0,
+        nodeStartX: 0,
+        nodeEndX: 0,
+        nodeY: 0,
+        isTop: 0,
+        isBottom: 0,
     }
 };
 

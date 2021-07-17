@@ -9,10 +9,14 @@ export const mapInit = {
             }
         }
 
-        for (const prop in mapProps.saveNever) {
+        for (const prop in mapProps.saveNeverInitOnce) {
             if (!m.hasOwnProperty(prop)) {
-                m[prop] = copy(mapProps.saveNever[prop]);
+                m[prop] = copy(mapProps.saveNeverInitOnce[prop]);
             }
+        }
+
+        for (const prop in mapProps.saveNeverInitAlways) {
+            m[prop] = copy(mapProps.saveNeverInitAlways[prop]);
         }
 
         m.sLineDeltaXDefault = m.density === 'large' ? 30 : 20;
@@ -37,14 +41,14 @@ export const mapInit = {
             }
         }
 
-        for (const prop in nodeProps.saveNever.initOnce) {
+        for (const prop in nodeProps.saveNeverInitOnce) {
             if (!cm.hasOwnProperty(prop)) {
-                cm[prop] = shallowCopy(nodeProps.saveNever.initOnce[prop])
+                cm[prop] = shallowCopy(nodeProps.saveNeverInitOnce[prop])
             }
         }
 
-        for (const prop in nodeProps.saveNever.initAlways) {
-            cm[prop] = shallowCopy(nodeProps.saveNever.initAlways[prop])
+        for (const prop in nodeProps.saveNeverInitAlways) {
+            cm[prop] = shallowCopy(nodeProps.saveNeverInitAlways[prop])
         }
 
         cm.d.map(i => mapInit.iterate(m, i));
