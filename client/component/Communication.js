@@ -98,7 +98,7 @@ export function Communication() {
                 case 'saveMapSuccess': {
                     break;
                 }
-                case 'addMapPlaybackSuccess': {
+                case 'saveMapToPlaybackSuccess': {
                     break;
                 }
             }

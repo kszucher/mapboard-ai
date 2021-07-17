@@ -8,14 +8,14 @@ import {pasteDispatch} from "../core/PasteFlow";
 export function Commands () {
     const [state, dispatch] = useContext(Context);
 
-    const undo =             () => {mapDispatch('undo'); redraw()}
-    const redo =             () => {mapDispatch('redo'); redraw()}
-    const saveMap =          () => {dispatch({type: 'SAVE_MAP'})}
-    const addMapPlayback =   () => {dispatch({type: 'ADD_MAP_PLAYBACK'})}
+    const undo =                () => {mapDispatch('undo'); redraw()}
+    const redo =                () => {mapDispatch('redo'); redraw()}
+    const saveMap =             () => {dispatch({type: 'SAVE_MAP'})}
+    const saveMapToPlayback =   () => {dispatch({type: 'SAVE_MAP_TO_PLAYBACK'})}
 
-    const cut =              () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
-    const copy =             () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
-    const paste =            () => {pasteDispatch()};
+    const cut =                 () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
+    const copy =                () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
+    const paste =               () => {pasteDispatch()};
 
     return (
         <div style={{
@@ -44,7 +44,7 @@ export function Commands () {
                 <StyledIconButton action={undo} icon={'undo'}/>
                 <StyledIconButton action={redo} icon={'redo'}/>
                 <StyledIconButton action={saveMap} icon={'save'}/>
-                <StyledIconButton action={addMapPlayback} icon={'save'}/>
+                <StyledIconButton action={saveMapToPlayback} icon={'save'}/>
             </div>
         </div>
     );

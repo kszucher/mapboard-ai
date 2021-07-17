@@ -309,10 +309,10 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
-                        case 'addMapPlayback': {
+                        case 'saveMapToPlayback': {
                             let {mapStorageOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapStorageOut.mapId)}, {$push: {"dataPlayback": mapStorageOut.data}});
-                            s2c = {cmd: 'addMapPlaybackSuccess'};
+                            s2c = {cmd: 'saveMapToPlaybackSuccess'};
                             break;
                         }
                         case 'getPlaybackCount': {

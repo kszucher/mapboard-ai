@@ -54,7 +54,7 @@ const EditorReducer = (state, action) => {
         case 'SAVE_OPEN_MAP_FROM_MAP':          return {...state, ...createServerAction(state, 'saveOpenMapFromMap',         {...payload, ...getMapStorageOut()})};
         case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS':  return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, ...getMapStorageOut()})};
         case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStorageOut()})}
-        case 'ADD_MAP_PLAYBACK':                return {...state, ...createServerAction(state, 'addMapPlayback',             {...payload, ...getMapStorageOut()})}
+        case 'SAVE_MAP_TO_PLAYBACK':            return {...state, ...createServerAction(state, 'saveMapToPlayback',          {...payload, ...getMapStorageOut()})}
         case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStorageOut()})};
         case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStorageOut()})};
         case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')};
