@@ -15,6 +15,7 @@ export function PlaybackEditor () {
 
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
     const openMapFromPlayback = (idx) => dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload:idx})
+    const saveMapToPlayback =   () => {dispatch({type: 'SAVE_MAP_TO_PLAYBACK'})}
 
     useEffect(() => {
         if (serverResponse.cmd === 'getPlaybackCountSuccess') {
@@ -31,7 +32,7 @@ export function PlaybackEditor () {
             paddingTop: 12, paddingLeft: 12, paddingRight: 12, paddingBottom: 12,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
 
-            {/*<StyledButtonGroup size="small" action={cmdResetAll} value={''} valueList={['reset format']}/>*/}
+            <StyledButtonGroup size="small" action={saveMapToPlayback} value={''} valueList={['save map to playback']}/>
 
 
             <List dense={true}>

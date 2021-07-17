@@ -11,7 +11,6 @@ export function Commands () {
     const undo =                () => {mapDispatch('undo'); redraw()}
     const redo =                () => {mapDispatch('redo'); redraw()}
     const saveMap =             () => {dispatch({type: 'SAVE_MAP'})}
-    const saveMapToPlayback =   () => {dispatch({type: 'SAVE_MAP_TO_PLAYBACK'})}
 
     const cut =                 () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
     const copy =                () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
@@ -34,17 +33,13 @@ export function Commands () {
             borderStyle: 'solid',
             borderColor: '#dddddd',
             borderTop: 0,
-            borderRight: 0
-        }}>
+            borderRight: 0 }}>
             <div style={{
                 display: 'flex',
-                justifyContent: 'center',
-
-            }}>
+                justifyContent: 'center' }}>
                 <StyledIconButton action={undo} icon={'undo'}/>
                 <StyledIconButton action={redo} icon={'redo'}/>
                 <StyledIconButton action={saveMap} icon={'save'}/>
-                <StyledIconButton action={saveMapToPlayback} icon={'save'}/>
             </div>
         </div>
     );
