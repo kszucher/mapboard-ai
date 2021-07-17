@@ -49,24 +49,11 @@ export function Communication() {
             } else {
                 const cred = JSON.parse(localStorage.getItem('cred'));
                 if (cred && cred.email && cred.password) {
-                    switch (serverCmd) {
-                        case 'signIn':                      post({cred, serverCmd, serverPayload}); break;
-                        case 'openMapFromTabHistory':       post({cred, serverCmd, serverPayload}); break;
-                        case 'saveOpenMapFromTab':          post({cred, serverCmd, serverPayload}); break;
-                        case 'saveOpenMapFromMap':          post({cred, serverCmd, serverPayload}); break;
-                        case 'saveOpenMapFromBreadcrumbs':  post({cred, serverCmd, serverPayload}); break;
-                        case 'saveMap':                     post({cred, serverCmd, serverPayload}); break;
-                        case 'addMapPlayback':              post({cred, serverCmd, serverPayload}); break;
-                        case 'createMapInMap':              post({cred, serverCmd, serverPayload}); break;
-                        case 'createMapInTab':              post({cred, serverCmd, serverPayload}); break;
-                        case 'removeMapInTab':              post({cred, serverCmd, serverPayload}); break;
-                        case 'moveUpMapInTab':              post({cred, serverCmd, serverPayload}); break;
-                        case 'moveDownMapInTab':            post({cred, serverCmd, serverPayload}); break;
-                    }
+                    post({cred, serverCmd, serverPayload});
                 } else {
                     switch (serverCmd) {
-                        case 'signUpStep1':           post({serverCmd, userData: serverPayload}); break;
-                        case 'signUpStep2':           post({serverCmd, userData: serverPayload}); break;
+                        case 'signUpStep1': post({serverCmd, userData: serverPayload}); break; // TODO rem userData prefix
+                        case 'signUpStep2': post({serverCmd, userData: serverPayload}); break; // TODO rem userData prefix
                     }
                 }
             }

@@ -5,7 +5,7 @@ import Tabs from "./Tabs";
 import {MuiThemeProvider} from "@material-ui/core";
 import Breadcrumbs from "./Breadcrumbs";
 import {MapComponent} from "./MapComponent";
-import {Formatter} from "./Formatter";
+import {Controls} from "./Controls";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
 import {muiTheme} from "../component-styled/Theme";
@@ -23,7 +23,7 @@ export function Workspace() {
                 <Tabs/>
                 <Commands/>
                 <Breadcrumbs/>
-                <Formatter/>
+                <Controls/>
                 {paletteVisible && <Palette/>}
                 {frameEditorVisible && <FrameEditor/>}
             </MuiThemeProvider>
