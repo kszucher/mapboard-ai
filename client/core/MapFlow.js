@@ -43,10 +43,13 @@ export function mapDispatch(action, payload) {
 
 function mapReducer(action, payload) {
     switch (action) {
-        case 'setMapStorage': {
+        case 'initMapState': {
             mapState = JSON.parse(InitMapState);
-            mapState.data = [mapAssembly(payload.data)];
-            mapState.mapId = payload._id;
+
+            console.log(payload)
+
+            mapState.data = [mapAssembly(payload.mapStorage)];
+            mapState.mapId = payload.mapId;
             mapState.isLoading = true;
             break;
         }

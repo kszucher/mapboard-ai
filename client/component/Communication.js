@@ -90,16 +90,19 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    let {mapStorage} = serverResponse.payload;
-                    dispatch({type: 'SET_IS_PLAYBACK_OFF'})
-                    mapDispatch('setMapStorage', mapStorage);
+                    // let {mapStorage, mapId} = serverResponse.payload;
+
+                    console.log(serverResponse)
+
+                    // dispatch({type: 'SET_IS_PLAYBACK_OFF'})
+                    mapDispatch('initMapState', serverResponse.payload);
                     redraw();
                     break;
                 }
                 case 'openMapFromPlaybackSuccess': {
-                    let {mapStorage} = serverResponse.payload;
+                    let {mapStorage, mapId} = serverResponse.payload;
                     dispatch({type: 'SET_IS_PLAYBACK_ON'})
-                    mapDispatch('setMapStorage', mapStorage);
+                    mapDispatch('initMapState', {mapStorage, mapId});
                     redraw();
                     break;
                 }
