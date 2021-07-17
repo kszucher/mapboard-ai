@@ -13,6 +13,7 @@ export const editorState = {
     colorFill: '',
     colorText: '',
     paletteVisible: 0,
+    frameEditorVisible: 0,
 };
 
 const InitEditorState = JSON.stringify(editorState);
@@ -66,6 +67,10 @@ const EditorReducer = (state, action) => {
 
         case 'OPEN_PALETTE':       return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':      return {...state, formatMode: '', paletteVisible: 0, };
+
+        case 'OPEN_FRAME_EDITOR':  return {...state, frameEditorVisible: 1};
+        case 'CLOSE_FRAME_EDITOR': return {...state, frameEditorVisible: 0};
+
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,

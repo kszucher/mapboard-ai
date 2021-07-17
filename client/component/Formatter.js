@@ -26,10 +26,8 @@ export function Formatter () {
     const cmdResetAll =          e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
-    const cmdSubmapToggle =      e => {// TODO check if it is not a submap already
-        let {lastPath} = selectionState;
-        dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}})
-    }
+    const cmdSubmapToggle =      e => {let {lastPath} = selectionState; dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}})}
+    const cmdFrameEditor =       e => dispatch({type: 'OPEN_FRAME_EDITOR'})
 
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
@@ -39,13 +37,15 @@ export function Formatter () {
                 {                            <StyledButtonGroup size="small" action={updateAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
                 {                            <StyledButtonGroup size="small" action={updateFormatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
                 {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdResetAll}       value={''}          valueList={['reset format']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
                 {formatMode !== '' &&        <StyledButtonGroup size="small" action={cmdReset}          value={''}          valueList={['reset ' + formatMode]}/>}
                 {formatMode === 'line' &&    <StyledButtonGroup size="small" action={updateLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
                 {formatMode === 'line' &&    <StyledButtonGroup size="small" action={updateLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
                 {formatMode === 'border' &&  <StyledButtonGroup size="small" action={updateBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
                 {formatMode === 'text' &&    <StyledButtonGroup size="small" action={updateFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdFrameEditor}    value={''}          valueList={['frame editor']}/>}
+
             </div>
         </div>
     );

@@ -9,10 +9,9 @@ import {Formatter} from "./Formatter";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
 import {muiTheme} from "../component-styled/Theme";
+import {FrameEditor} from "./FrameEditor";
 
 export function Workspace() {
-
-
     return (
         <div id="page">
             <MapComponent/>
@@ -23,6 +22,7 @@ export function Workspace() {
                 <Breadcrumbs/>
                 <Formatter/>
                 <Palette/>
+                <FrameEditor/>
 
             </MuiThemeProvider>
         </div>
