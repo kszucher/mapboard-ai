@@ -9,12 +9,12 @@ import {Controls} from "./Controls";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
 import {muiTheme} from "../component-styled/Theme";
-import {FrameEditor} from "./FrameEditor";
+import {PlaybackEditor} from "./PlaybackEditor";
 import {Context} from "../core/Store";
 
 export function Workspace() {
     const [state, dispatch] = useContext(Context);
-    const {paletteVisible, frameEditorVisible} = state;
+    const {paletteVisible, playbackEditorVisible} = state;
     return (
         <div id="page">
             <MapComponent/>
@@ -25,7 +25,7 @@ export function Workspace() {
                 <Breadcrumbs/>
                 <Controls/>
                 {paletteVisible && <Palette/>}
-                {frameEditorVisible && <FrameEditor/>}
+                {playbackEditorVisible && <PlaybackEditor/>}
             </MuiThemeProvider>
         </div>
     )

@@ -47,6 +47,7 @@ export default function Logo() {
                 dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'});
                 break;
             case 'SIGN_OUT':
+                localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
                 dispatch({type: 'RESET_STATE'});
                 break;
         }

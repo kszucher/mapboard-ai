@@ -316,7 +316,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'getPlaybackCount': {
-                            // TODO
+                            let {mapId} = c2s.serverPayload;
+                            let playbackCount = (await collectionMaps.findOne({_id: ObjectId(mapId)})).dataPlayback.length;
+                            s2c = {cmd: 'getPlaybackCountSuccess', payload: playbackCount};
                             break;
                         }
                         case 'openMapFromPlayback': {

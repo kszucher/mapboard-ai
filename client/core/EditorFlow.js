@@ -13,7 +13,7 @@ export const editorState = {
     colorFill: '',
     colorText: '',
     paletteVisible: 0,
-    frameEditorVisible: 0,
+    playbackEditorVisible: 0,
 };
 
 const InitEditorState = JSON.stringify(editorState);
@@ -32,6 +32,10 @@ const getMapStorageOut = () => {
     return {mapStorageOut: {mapId: mapState.mapId, data: saveMap()}}
 }
 
+const getMapId = () => {
+    return {mapId: mapState.mapId}
+}
+
 const mapValues = (stringArray, valueArray, conditionValue) => {
     return stringArray[valueArray.findIndex(v=>v===conditionValue)]
 }
@@ -39,10 +43,7 @@ const mapValues = (stringArray, valueArray, conditionValue) => {
 const EditorReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
-        case 'RESET_STATE': {
-            localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
-            return JSON.parse(InitEditorState);
-        }
+        case 'RESET_STATE':                     return JSON.parse(InitEditorState);
         case 'SERVER_RESPONSE':                 return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload};
         case 'SERVER_RESPONSE_TO_USER':         return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':                         return {...state, ...createServerAction(state, 'signIn')};
@@ -59,18 +60,14 @@ const EditorReducer = (state, action) => {
         case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')};
         case 'MOVE_UP_MAP_IN_TAB':              return {...state, ...createServerAction(state, 'moveUpMapInTab')};
         case 'MOVE_DOWN_MAP_IN_TAB':            return {...state, ...createServerAction(state, 'moveDownMapInTab')};
-
-        case 'MOVE_MAP_TO_SUBMAP': return state;
-        case 'MOVE_SUBMAP_TO_MAP': return state;
-        case 'MOVE_TAB_TO_SUBMAP': return state;
-        case 'MOVE_SUBMAP_TO_TAB': return state;
-
-        case 'OPEN_PALETTE':       return {...state, formatMode: payload, paletteVisible: 1};
-        case 'CLOSE_PALETTE':      return {...state, formatMode: '', paletteVisible: 0, };
-
-        case 'OPEN_FRAME_EDITOR':  return {...state, frameEditorVisible: 1};
-        case 'CLOSE_FRAME_EDITOR': return {...state, frameEditorVisible: 0};
-
+        case 'MOVE_MAP_TO_SUBMAP':              return state;
+        case 'MOVE_SUBMAP_TO_MAP':              return state;
+        case 'MOVE_TAB_TO_SUBMAP':              return state;
+        case 'MOVE_SUBMAP_TO_TAB':              return state;
+        case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
+        case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
+        case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount', {...payload, ...getMapId()}), playbackEditorVisible: 1};
+        case 'CLOSE_PLAYBACK_EDITOR':           return {...state, playbackEditorVisible: 0};
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
