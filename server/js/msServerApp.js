@@ -322,7 +322,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromPlayback': {
-                            // TODO
+                            // TODO open map AND indicate somehow that this is not a normal map!!! resulting in killing features in the frontend
                             break;
                         }
                         case 'replaceMapInPlayback': {
