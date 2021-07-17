@@ -24,15 +24,8 @@ export function Palette () {
     const {formatMode, colorLine, colorBorder, colorFill, colorText, paletteVisible} = state;
     const [sel, setSel] = useState({x: 0, y: 0});
 
-    const closePalette = () => {
-        dispatch({type: 'CLOSE_PALETTE'});
-    }
-    const setColor = (color) => {
-        push();
-        nodeDispatch('applyColorFromPalette', {formatMode, color});
-        checkPop();
-        redraw();
-    };
+    const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
+    const setColor = (color) => {push(); nodeDispatch('applyColorFromPalette', {formatMode, color}); checkPop(); redraw()};
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};

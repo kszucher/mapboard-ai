@@ -1,8 +1,11 @@
 import React, {useContext, useEffect} from 'react';
 import {Context} from "../core/Store";
+import StyledButton from "../component-styled/StyledButton";
 
 export function FrameEditor () {
     const [state, dispatch] = useContext(Context);
+
+    const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
 
     useEffect(() => {
 
@@ -19,7 +22,9 @@ export function FrameEditor () {
 
 
 
-
+            <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
+                <StyledButton name={'Close'} action={closeFrameEditor}/>
+            </div>
 
         </div>
     );
