@@ -91,6 +91,14 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     let {mapStorage} = serverResponse.payload;
+                    dispatch({type: 'SET_IS_PLAYBACK_OFF'})
+                    mapDispatch('setMapStorage', mapStorage);
+                    redraw();
+                    break;
+                }
+                case 'openMapFromPlaybackSuccess': {
+                    let {mapStorage} = serverResponse.payload;
+                    dispatch({type: 'SET_IS_PLAYBACK_ON'})
                     mapDispatch('setMapStorage', mapStorage);
                     redraw();
                     break;

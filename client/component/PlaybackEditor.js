@@ -9,13 +9,17 @@ import {Edit} from "@material-ui/icons";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function PlaybackEditor () {
-    const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr} = state;
-    const [playbackCount, setPlaybackCount] = useState(0);
+    const [state, dispatch] = useContext(Context)
+    const {serverResponse, serverResponseCntr} = state
+    const [playbackCount, setPlaybackCount] = useState(0)
+    const [frameSelection, setFrameSelection] = useState([])
 
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
-    const openMapFromPlayback = (idx) => dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload:idx})
     const saveMapToPlayback =   () => {dispatch({type: 'SAVE_MAP_TO_PLAYBACK'})}
+    const openMapFromPlayback = (idx) => {
+        setFrameSelection([idx])
+        dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: idx})
+    }
 
     useEffect(() => {
         if (serverResponse.cmd === 'getPlaybackCountSuccess') {
@@ -32,16 +36,20 @@ export function PlaybackEditor () {
             paddingTop: 12, paddingLeft: 12, paddingRight: 12, paddingBottom: 12,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
 
+
+
             <StyledButtonGroup size="small" action={saveMapToPlayback} value={''} valueList={['save map to playback']}/>
+
 
 
             <List dense={true}>
                 {[...Array(playbackCount).keys()].map((el, idx) => (
-                    <ListItem button key={idx} onClick={_=>openMapFromPlayback(idx)}>
-                        <ListItemText
-                            primary={`frame ${idx}`}
-                            secondary={1 === 0 ? 'Secondary text' : null}
-                             />
+                    <ListItem
+                        button
+                        key={idx}
+                        onClick={_=>openMapFromPlayback(idx)}
+                        selected={frameSelection.includes(idx)} >
+                        <ListItemText primary={`frame ${idx}`} secondary={1 === 0 ? 'Secondary text' : null}/>
                         {/*<ListItemSecondaryAction>*/}
                         {/*    <IconButton edge="end" aria-label="delete">*/}
                         {/*        <EditIcon />*/}
