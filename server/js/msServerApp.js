@@ -190,8 +190,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveOpenMapFromTab': {
-                            let {tabMapSelected, mapStorageOut, mapIdOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                            let {tabMapSelected, mapIdOut, mapStorageOut} = c2s.serverPayload;
+                            await setMapData(mapIdOut, mapStorageOut);
                             let {_id, tabMapIdList} = currUser;
                             let tabMapNameList = await getMapNameList(tabMapIdList);
                             let mapId = tabMapIdList[tabMapSelected];
@@ -203,8 +203,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveOpenMapFromMap': {
-                            let {mapId, mapStorageOut, mapIdOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                            let {mapId, mapIdOut, mapStorageOut} = c2s.serverPayload;
+                            await setMapData(mapIdOut, mapStorageOut);
                             mapId = ObjectId(mapId);
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapNameList = await getMapNameList(tabMapIdList);
@@ -216,8 +216,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveOpenMapFromBreadcrumbs': {
-                            let {breadcrumbMapSelected, mapStorageOut, mapIdOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                            let {breadcrumbMapSelected, mapIdOut, mapStorageOut} = c2s.serverPayload;
+                            await setMapData(mapIdOut, mapStorageOut);
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapNameList = await getMapNameList(tabMapIdList);
                             breadcrumbMapIdList.length = breadcrumbMapSelected + 1;
@@ -229,14 +229,14 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveMap': {
-                            let {mapStorageOut, mapIdOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                            let {mapIdOut, mapStorageOut} = c2s.serverPayload;
+                            await setMapData(mapIdOut, mapStorageOut);
                             s2c = {cmd: 'saveMapSuccess'};
                             break;
                         }
                         case 'createMapInMap': {
-                            let {mapStorageOut, mapIdOut, lastPath, newMapName} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                            let {mapIdOut, mapStorageOut, lastPath, newMapName} = c2s.serverPayload;
+                            await setMapData(mapIdOut, mapStorageOut);
                             let mapData = getDefaultMap(newMapName);
                             let newMapId = (await collectionMaps.insertOne(mapData)).insertedId;
                             await collectionMaps.updateOne(
@@ -252,8 +252,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'createMapInTab': {
-                            let {mapStorageOut, mapIdOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                            let {mapIdOut, mapStorageOut} = c2s.serverPayload;
+                            await setMapData(mapIdOut, mapStorageOut);
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let mapData = getDefaultMap('New Map');
                             let newMapId = (await collectionMaps.insertOne(mapData)).insertedId;
@@ -310,7 +310,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'saveMapToPlayback': {
-                            let {mapStorageOut, mapIdOut} = c2s.serverPayload;
+                            let {mapIdOut, mapStorageOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageOut}});
                             let playbackCount = (await collectionMaps.findOne({_id: ObjectId(mapIdOut)})).dataPlayback.length;
                             s2c = {cmd: 'saveMapToPlaybackSuccess', payload: {playbackCount}};
@@ -348,9 +348,15 @@ async function sendResponse(c2s) {
     return s2c;
 }
 
+async function setMapData(mapIdOut, mapStorageOut) {
+    await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageOut}});
+}
+
 async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
+
+// async function setPlaybackMapData()
 
 async function getPlaybackMapData(mapId, playbackMapSelected) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback[playbackMapSelected]

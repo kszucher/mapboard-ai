@@ -30,7 +30,7 @@ const createServerAction = (state, serverCmd, serverPayload) => {
 }
 
 const getMapStorageOut = () => {
-    return {mapStorageOut: saveMap(), mapIdOut: mapState.mapId}
+    return {mapIdOut: mapState.mapId, mapStorageOut: saveMap()}
 }
 
 const getMapId = () => {
