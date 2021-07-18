@@ -23,7 +23,7 @@ export function updateDomData() {
     }
     for (const svgId in mapSvgData) {
         if (mapSvgData[svgId].keepHash !== keepHash) {
-            for (const i of [0,1,2,3,4]) {
+            for (const i of [0,1,2,3,4,5]) {
                 let currSvg = document.getElementById(svgId + i);
                 currSvg.parentNode.removeChild(currSvg);
                 delete mapSvgData[svgId];
