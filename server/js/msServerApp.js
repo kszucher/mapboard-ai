@@ -241,7 +241,7 @@ async function sendResponse(c2s) {
                             let mapStorage = getDefaultMap(newMapName);
                             let mapId = (await collectionMaps.insertOne(mapStorage)).insertedId;
                             await collectionMaps.updateOne(
-                                {_id: ObjectId(mapStorageOut.mapId)},
+                                {_id: ObjectId(mapIdOut)},
                                 {$set: {'data.$[elem].linkType' : 'internal', 'data.$[elem].link' : mapId.toString()}},
                                 {"arrayFilters": [{ "elem.path": lastPath }], "multi": true}
                             );
