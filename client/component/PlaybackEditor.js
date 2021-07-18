@@ -18,7 +18,7 @@ export function PlaybackEditor () {
     const saveMapToPlayback =   () => {dispatch({type: 'SAVE_MAP_TO_PLAYBACK'})}
     const openMapFromPlayback = (idx) => {
         setFrameSelection([idx])
-        dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: idx})
+        dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {playbackMapSelected: idx}})
     }
 
     useEffect(() => {

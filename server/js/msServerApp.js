@@ -322,7 +322,10 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromPlayback': {
-                            // TODO open and return _ONLY_ this map from the array and its index
+                            let {mapId, playbackMapSelected} = c2s.serverPayload;
+                            mapId = ObjectId(mapId);
+                            let mapStorage = await getPlaybackMapData(mapId, playbackMapSelected);
+                            s2c = {cmd: 'openMapFromPlaybackSuccess', payload: {mapStorage, mapId}};
                             break;
                         }
                         case 'replaceMapInPlayback': {
@@ -346,6 +349,10 @@ async function sendResponse(c2s) {
 
 async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
+}
+
+async function getPlaybackMapData(mapId, playbackMapSelected) {
+    return (await collectionMaps.findOne({_id: mapId})).dataPlayback[playbackMapSelected]
 }
 
 async function getMapNameList(mapIdList) {

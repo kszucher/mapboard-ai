@@ -67,9 +67,9 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':              return state;
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
-        case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount', {...payload, ...getMapId()}), playbackEditorVisible: 1};
+        case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount',           {...payload, ...getMapId()}), playbackEditorVisible: 1};
         case 'CLOSE_PLAYBACK_EDITOR':           return {...state, playbackEditorVisible: 0};
-        case 'OPEN_MAP_FROM_PLAYBACK':          return {...state, ...createServerAction(state, 'openMapFromPlayback', payload)};
+        case 'OPEN_MAP_FROM_PLAYBACK':          return {...state, ...createServerAction(state, 'openMapFromPlayback',        {...payload, ...getMapId()})};
         case 'SET_IS_PLAYBACK_ON':              return {...state, isPlayback: 1};
         case 'SET_IS_PLAYBACK_OFF':             return {...state, isPlayback: 0};
         case 'SET_NODE_PROPS': {

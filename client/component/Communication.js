@@ -90,12 +90,9 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    // let {mapStorage, mapId} = serverResponse.payload;
-
-                    console.log(serverResponse)
-
-                    // dispatch({type: 'SET_IS_PLAYBACK_OFF'})
-                    mapDispatch('initMapState', serverResponse.payload);
+                    let {mapStorage, mapId} = serverResponse.payload;
+                    dispatch({type: 'SET_IS_PLAYBACK_OFF'})
+                    mapDispatch('initMapState', {mapStorage, mapId});
                     redraw();
                     break;
                 }
