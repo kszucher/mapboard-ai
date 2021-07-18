@@ -36,7 +36,7 @@ const InitMapState = JSON.stringify(mapState);
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    if (['initMapState', 'isResizing', 'undo', 'redo'].includes(action)) {
+    if (['initMapState', 'setIsResizing', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
