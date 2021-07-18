@@ -311,7 +311,7 @@ async function sendResponse(c2s) {
                         }
                         case 'saveMapToPlayback': {
                             let {mapIdOut, mapStorageOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageOut}});
+                            await setPlaybackMapData(mapIdOut, mapStorageOut);
                             let playbackCount = (await collectionMaps.findOne({_id: ObjectId(mapIdOut)})).dataPlayback.length;
                             s2c = {cmd: 'saveMapToPlaybackSuccess', payload: {playbackCount}};
                             break;
@@ -356,7 +356,9 @@ async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
 
-// async function setPlaybackMapData()
+async function setPlaybackMapData(mapIdOut, mapStorageOut) {
+    await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageOut}});
+}
 
 async function getPlaybackMapData(mapId, playbackMapSelected) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback[playbackMapSelected]
