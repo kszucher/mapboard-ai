@@ -29,7 +29,7 @@ const createServerAction = (state, serverCmd, serverPayload) => {
     }
 }
 
-const getMapStorageOut = () => {
+const getMapOut = () => {
     return {mapIdOut: mapState.mapId, mapStorageOut: saveMap()}
 }
 
@@ -51,12 +51,12 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_1':                  return {...state, ...createServerAction(state, 'signUpStep1', payload)};
         case 'SIGN_UP_STEP_2':                  return {...state, ...createServerAction(state, 'signUpStep2', payload)};
         case 'OPEN_MAP_FROM_TAB_HISTORY':       return {...state, ...createServerAction(state, 'openMapFromTabHistory'), isLoggedIn: true};
-        case 'SAVE_OPEN_MAP_FROM_TAB':          return {...state, ...createServerAction(state, 'saveOpenMapFromTab',         {...payload, ...getMapStorageOut()})};
-        case 'SAVE_OPEN_MAP_FROM_MAP':          return {...state, ...createServerAction(state, 'saveOpenMapFromMap',         {...payload, ...getMapStorageOut()})};
-        case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS':  return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, ...getMapStorageOut()})};
-        case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStorageOut()})}
-        case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStorageOut()})};
-        case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStorageOut()})};
+        case 'SAVE_OPEN_MAP_FROM_TAB':          return {...state, ...createServerAction(state, 'saveOpenMapFromTab',         {...payload, ...getMapOut()})};
+        case 'SAVE_OPEN_MAP_FROM_MAP':          return {...state, ...createServerAction(state, 'saveOpenMapFromMap',         {...payload, ...getMapOut()})};
+        case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS':  return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, ...getMapOut()})};
+        case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapOut()})}
+        case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapOut()})};
+        case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapOut()})};
         case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')};
         case 'MOVE_UP_MAP_IN_TAB':              return {...state, ...createServerAction(state, 'moveUpMapInTab')};
         case 'MOVE_DOWN_MAP_IN_TAB':            return {...state, ...createServerAction(state, 'moveDownMapInTab')};
@@ -66,7 +66,7 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':              return state;
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
-        case 'SAVE_MAP_TO_PLAYBACK':            return {...state, ...createServerAction(state, 'saveMapToPlayback',          {...payload, ...getMapStorageOut()})}
+        case 'SAVE_MAP_TO_PLAYBACK':            return {...state, ...createServerAction(state, 'saveMapToPlayback',          {...payload, ...getMapOut()})}
         case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount',           {...payload, ...getMapId()}), playbackEditorVisible: 1};
         case 'CLOSE_PLAYBACK_EDITOR':           return {...state, playbackEditorVisible: 0};
         case 'OPEN_MAP_FROM_PLAYBACK':          return {...state, ...createServerAction(state, 'openMapFromPlayback',        {...payload, ...getMapId()})};
