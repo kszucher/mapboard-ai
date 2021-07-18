@@ -30,11 +30,16 @@ const createServerAction = (state, serverCmd, serverPayload) => {
 }
 
 const getMapOut = () => {
-    return {mapIdOut: mapState.mapId, mapStorageOut: saveMap()}
+    return {
+        mapIdOut: mapState.mapId,
+        mapStorageOut: saveMap(),
+    }
 }
 
 const getMapId = () => {
-    return {mapId: mapState.mapId}
+    return {
+        mapId: mapState.mapId
+    }
 }
 
 const mapValues = (stringArray, valueArray, conditionValue) => {
