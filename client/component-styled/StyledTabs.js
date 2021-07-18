@@ -4,7 +4,7 @@ import Tab from "@material-ui/core/Tab";
 import React from "react";
 
 export default function StyledTabs (arg) {
-    const {valueList, value, onChange, orientation, component} = arg;
+    const {valueList, value, onChange, orientation, component, disabled} = arg;
     const getStyle = (theme) => {
         if (component === 'tabs') {
             return {
@@ -39,18 +39,17 @@ export default function StyledTabs (arg) {
     return (
         <div className={classes.root}>
             <Tabs
-                classes={{
-                    indicator: classes.indicator
-                }}
+                classes={{indicator: classes.indicator}}
                 orientation={orientation}
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
                 value={value}
                 onChange={onChange}
-                indicatorColor="primary">
+                indicatorColor="primary" >
                 {valueList.map((name, index) => (
                     <Tab
+                        disabled={disabled}
                         label={name}
                         key={index}/>
                 ))}>

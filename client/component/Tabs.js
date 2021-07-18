@@ -4,7 +4,7 @@ import StyledTabs from "../component-styled/StyledTabs";
 
 export default function Tabs() {
     const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr} = state;
+    const {serverResponse, serverResponseCntr, isPlayback} = state;
     const [tabMapNameList, setTabMapNameList] = useState([]);
     const [tabMapSelected, setTabMapSelected] = useState(0);
 
@@ -39,7 +39,9 @@ export default function Tabs() {
                 value={tabMapSelected}
                 onChange={handleChange}
                 orientation={'vertical'}
-                component={'tabs'}/>
+                component={'tabs'}
+                disabled={isPlayback}
+            />
         </div>
     );
 }
