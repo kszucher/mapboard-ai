@@ -6,13 +6,17 @@ import {Context} from "../core/Store";
 
 export default function WorkspaceBreadcrumbs() {
     const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr} = state;
+    const {serverResponse, serverResponseCntr, isPlayback} = state;
     const [breadcrumbMapNameList, setBreadcrumbMapNameList] = useState(['']);
 
     const handleClick = index => event => {
         event.preventDefault();
         dispatch({type: 'SAVE_OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}})
     };
+
+    const doNothing = _ => event => {
+        event.preventDefault();
+    }
 
     useEffect(() => {
         if (serverResponse.cmd === 'openMapSuccess') {
@@ -45,7 +49,7 @@ export default function WorkspaceBreadcrumbs() {
                     <Link
                         color="inherit"
                         href="/"
-                        onClick={handleClick(index)}
+                        onClick={isPlayback ? doNothing() : handleClick(index)}
                         key={index}>
                         {el}
                     </Link>

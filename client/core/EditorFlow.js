@@ -73,7 +73,7 @@ const EditorReducer = (state, action) => {
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
         case 'SAVE_MAP_TO_PLAYBACK':            return {...state, ...createServerAction(state, 'saveMapToPlayback',          {...payload, ...getMapOut()})}
         case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount',           {...payload, ...getMapId()}), playbackEditorVisible: 1};
-        case 'CLOSE_PLAYBACK_EDITOR':           return {...state, playbackEditorVisible: 0};
+        case 'CLOSE_PLAYBACK_EDITOR':           return {...state, /*TODO open*/ playbackEditorVisible: 0, isPlayback: false};
         case 'OPEN_MAP_FROM_PLAYBACK':          return {...state, ...createServerAction(state, 'openMapFromPlayback',        {...payload, ...getMapId()})};
         case 'SET_IS_PLAYBACK_ON':              return {...state, isPlayback: true};
         case 'SET_IS_PLAYBACK_OFF':             return {...state, isPlayback: false};
