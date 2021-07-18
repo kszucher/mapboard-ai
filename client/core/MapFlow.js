@@ -36,7 +36,7 @@ const InitMapState = JSON.stringify(mapState);
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    if (['setMapStorage', 'isResizing', 'undo', 'redo'].includes(action)) {
+    if (['initMapState', 'isResizing', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
@@ -45,9 +45,6 @@ function mapReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
             mapState = JSON.parse(InitMapState);
-
-            console.log(payload)
-
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.mapId = payload.mapId;
             mapState.isLoading = true;
