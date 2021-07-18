@@ -22,8 +22,8 @@ export function PlaybackEditor () {
     }
 
     useEffect(() => {
-        if (serverResponse.cmd === 'getPlaybackCountSuccess') {
-            setPlaybackCount(serverResponse.payload);
+        if (['saveMapToPlaybackSuccess', 'getPlaybackCountSuccess'].includes(serverResponse.cmd)) {
+            setPlaybackCount(serverResponse.payload.playbackCount);
         }
     }, [serverResponseCntr]);
 

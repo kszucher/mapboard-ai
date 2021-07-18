@@ -30,7 +30,7 @@ const createServerAction = (state, serverCmd, serverPayload) => {
 }
 
 const getMapStorageOut = () => {
-    return {mapStorageOut: {mapId: mapState.mapId, data: saveMap()}}
+    return {mapStorageOut: saveMap(), mapIdOut: mapState.mapId}
 }
 
 const getMapId = () => {
@@ -55,7 +55,6 @@ const EditorReducer = (state, action) => {
         case 'SAVE_OPEN_MAP_FROM_MAP':          return {...state, ...createServerAction(state, 'saveOpenMapFromMap',         {...payload, ...getMapStorageOut()})};
         case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS':  return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, ...getMapStorageOut()})};
         case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStorageOut()})}
-        case 'SAVE_MAP_TO_PLAYBACK':            return {...state, ...createServerAction(state, 'saveMapToPlayback',          {...payload, ...getMapStorageOut()})}
         case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStorageOut()})};
         case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStorageOut()})};
         case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')};
@@ -67,6 +66,7 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':              return state;
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
+        case 'SAVE_MAP_TO_PLAYBACK':            return {...state, ...createServerAction(state, 'saveMapToPlayback',          {...payload, ...getMapStorageOut()})}
         case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount',           {...payload, ...getMapId()}), playbackEditorVisible: 1};
         case 'CLOSE_PLAYBACK_EDITOR':           return {...state, playbackEditorVisible: 0};
         case 'OPEN_MAP_FROM_PLAYBACK':          return {...state, ...createServerAction(state, 'openMapFromPlayback',        {...payload, ...getMapId()})};
