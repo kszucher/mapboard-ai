@@ -312,13 +312,13 @@ async function sendResponse(c2s) {
                         case 'saveMapToPlayback': {
                             let {mapIdOut, mapStorageOut} = c2s.serverPayload;
                             await setPlaybackMapData(mapIdOut, mapStorageOut);
-                            let playbackCount = (await collectionMaps.findOne({_id: ObjectId(mapIdOut)})).dataPlayback.length;
+                            let playbackCount = getPlaybackCount(mapIdOut);
                             s2c = {cmd: 'saveMapToPlaybackSuccess', payload: {playbackCount}};
                             break;
                         }
                         case 'getPlaybackCount': {
                             let {mapId} = c2s.serverPayload;
-                            let playbackCount = (await collectionMaps.findOne({_id: ObjectId(mapId)})).dataPlayback.length;
+                            let playbackCount = getPlaybackCount(mapId);
                             s2c = {cmd: 'getPlaybackCountSuccess', payload: {playbackCount}};
                             break;
                         }
@@ -362,6 +362,10 @@ async function setPlaybackMapData(mapIdOut, mapStorageOut) {
 
 async function getPlaybackMapData(mapId, playbackMapSelected) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback[playbackMapSelected]
+}
+
+async function getPlaybackCount(mapId) {
+    return (await collectionMaps.findOne({_id: ObjectId(mapId)})).dataPlayback.length;
 }
 
 async function getMapNameList(mapIdList) {
