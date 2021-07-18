@@ -238,8 +238,9 @@ async function sendResponse(c2s) {
                             let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let {mapIdOut, mapStorageOut, lastPath, newMapName} = c2s.serverPayload;
                             await setMapData(mapIdOut, mapStorageOut);
-                            let mapStorage = getDefaultMap(newMapName);
-                            let mapId = (await collectionMaps.insertOne(mapStorage)).insertedId;
+                            let newMap = getDefaultMap(newMapName);
+                            let mapStorage = newMap.data;
+                            let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
                             await collectionMaps.updateOne(
                                 {_id: ObjectId(mapIdOut)},
                                 {$set: {'data.$[elem].linkType' : 'internal', 'data.$[elem].link' : mapId.toString()}},
@@ -255,8 +256,9 @@ async function sendResponse(c2s) {
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let {mapIdOut, mapStorageOut} = c2s.serverPayload;
                             await setMapData(mapIdOut, mapStorageOut);
-                            let mapStorage = getDefaultMap('New Map');
-                            let mapId = (await collectionMaps.insertOne(mapStorage)).insertedId;
+                            let newMap = getDefaultMap('New Map');
+                            let mapStorage = newMap.data;
+                            let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
                             tabMapIdList = [...tabMapIdList, mapId];
                             tabMapSelected = tabMapIdList.length - 1;
                             await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
@@ -349,7 +351,7 @@ async function sendResponse(c2s) {
 }
 
 async function setMapData(mapIdOut, mapStorageOut) {
-    await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageOut}});
+    await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
 }
 
 async function getMapData(mapId) {
@@ -390,7 +392,10 @@ function getDefaultMap(mapName) {
             {path: ['r'], content: mapName, selected: 1},
             {path: ['r', 'd', 0]},
             {path: ['r', 'd', 1]},
-        ]}
+        ],
+        dataHistory: [],
+        dataPlayback: []
+    }
 }
 
 module.exports = app;
