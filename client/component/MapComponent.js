@@ -211,6 +211,7 @@ export function MapComponent() {
     };
 
     const mouseup = (e) => {
+        let path = e.path || (e.composedPath && e.composedPath());
         e.preventDefault();
         isMouseDown = false;
         if (e.which === 1) {
@@ -226,7 +227,9 @@ export function MapComponent() {
             }
             r.selectionRect = [];
             if (elapsed === 0) {
-                if (!mapState.isNodeClicked && !mapState.isTaskClicked) {
+                if (!mapState.isNodeClicked &&
+                    !mapState.isTaskClicked &&
+                    ['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
                     push();
                     nodeDispatch('select_root');
                     redraw();
