@@ -10,7 +10,7 @@ export default function Tabs() {
 
     const handleChange = (e, value) =>  {
         setTabMapSelected(value);
-        dispatch({type: 'SAVE_OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
+        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     };
 
     useEffect(() => {

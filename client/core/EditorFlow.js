@@ -57,9 +57,9 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_1':                  return {...state, ...createServerAction(state, 'signUpStep1', payload)};
         case 'SIGN_UP_STEP_2':                  return {...state, ...createServerAction(state, 'signUpStep2', payload)};
         case 'OPEN_MAP_FROM_TAB_HISTORY':       return {...state, ...createServerAction(state, 'openMapFromTabHistory'), isLoggedIn: true};
-        case 'SAVE_OPEN_MAP_FROM_TAB':          return {...state, ...createServerAction(state, 'saveOpenMapFromTab',         {...payload, ...getMapOut()})};
-        case 'SAVE_OPEN_MAP_FROM_MAP':          return {...state, ...createServerAction(state, 'saveOpenMapFromMap',         {...payload, ...getMapOut()})};
-        case 'SAVE_OPEN_MAP_FROM_BREADCRUMBS':  return {...state, ...createServerAction(state, 'saveOpenMapFromBreadcrumbs', {...payload, ...getMapOut()})};
+        case 'OPEN_MAP_FROM_TAB':               return {...state, ...createServerAction(state, 'openMapFromTab',             {...payload, ...getMapOut()})};
+        case 'OPEN_MAP_FROM_MAP':               return {...state, ...createServerAction(state, 'openMapFromMap',             {...payload, ...getMapOut()})};
+        case 'OPEN_MAP_FROM_BREADCRUMBS':       return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs',     {...payload, ...getMapOut()})};
         case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapOut()})}
         case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapOut()})};
         case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapOut()})};
