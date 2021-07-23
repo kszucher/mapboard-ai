@@ -47,6 +47,7 @@ function mapReducer(action, payload) {
             mapState = JSON.parse(InitMapState);
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.mapId = payload.mapId;
+            mapState.mapSource = payload.mapSource;
             mapState.isLoading = true;
             break;
         }

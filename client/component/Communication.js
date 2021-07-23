@@ -90,16 +90,13 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    let {mapStorage, mapId} = serverResponse.payload;
-                    dispatch({type: 'SET_IS_PLAYBACK_OFF'})
-                    mapDispatch('initMapState', {mapStorage, mapId});
-                    redraw();
-                    break;
-                }
-                case 'openMapFromPlaybackSuccess': {
-                    let {mapStorage, mapId} = serverResponse.payload;
-                    dispatch({type: 'SET_IS_PLAYBACK_ON'})
-                    mapDispatch('initMapState', {mapStorage, mapId});
+                    let {mapStorage, mapId, mapSource} = serverResponse.payload;
+                    if (mapSource === 'data') {
+                        dispatch({type: 'SET_IS_PLAYBACK_OFF'})
+                    } else if (mapSource === 'dataPlayback') {
+                        dispatch({type: 'SET_IS_PLAYBACK_ON'})
+                    }
+                    mapDispatch('initMapState', {mapStorage, mapId, mapSource});
                     redraw();
                     break;
                 }

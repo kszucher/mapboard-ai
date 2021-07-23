@@ -33,6 +33,7 @@ const getMapOut = () => {
     return {
         mapIdOut: mapState.mapId,
         mapStorageOut: saveMap(),
+        mapSourceOut: mapState.mapSource,
     }
 }
 
