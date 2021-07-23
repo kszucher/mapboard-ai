@@ -19,12 +19,11 @@ export default function WorkspaceBreadcrumbs() {
     }
 
     useEffect(() => {
-        if (serverResponse.cmd === 'openMapSuccess') {
+        if (serverResponse.payload?.hasOwnProperty('breadcrumbMapNameList')) {
             let {breadcrumbMapNameList} = serverResponse.payload;
             setBreadcrumbMapNameList(breadcrumbMapNameList);
         }
     }, [serverResponseCntr]);
-
 
     return (
         <div style={{
