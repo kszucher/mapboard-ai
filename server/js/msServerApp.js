@@ -183,6 +183,9 @@ async function sendResponse(c2s) {
                                 await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
                             }
                         } else if (mapSourceOut === 'dataPlayback') {
+
+                            console.log(c2s.serverPayload.mapSourcePosOut)
+
                             // TODO the 2nd two
                             console.log('overwrite lenne...') // na itt kellene megtalálni az aktuális pozit és felülírni, TODO holnap
                         }
@@ -330,7 +333,7 @@ async function sendResponse(c2s) {
                             let {mapId, playbackMapSelected} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
                             let mapStorage = await getPlaybackMapData(mapId, playbackMapSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback'}};
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', playbackMapSelected}};
                             break;
                         }
                         case 'duplicateMapInPlayback': {

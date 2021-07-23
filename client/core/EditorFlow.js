@@ -34,6 +34,7 @@ const getMapOut = () => {
         mapIdOut: mapState.mapId,
         mapStorageOut: saveMap(),
         mapSourceOut: mapState.mapSource,
+        mapSourcePosOut: mapState.mapSourcePos,
     }
 }
 
