@@ -311,11 +311,11 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
-                        case 'saveMapToPlayback': {
+                        case 'saveAddMapToPlayback': {
                             let {mapIdOut, mapStorageOut} = c2s.serverPayload;
                             await setPlaybackMapData(mapIdOut, mapStorageOut);
                             let playbackCount = await getPlaybackCount(mapIdOut);
-                            s2c = {cmd: 'saveMapToPlaybackSuccess', payload: {playbackCount}};
+                            s2c = {cmd: 'saveAddMapToPlaybackSuccess', payload: {playbackCount}};
                             break;
                         }
                         case 'getPlaybackCount': {

@@ -15,14 +15,14 @@ export function PlaybackEditor () {
     const [frameSelection, setFrameSelection] = useState([])
 
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
-    const saveMapToPlayback =   () => {dispatch({type: 'SAVE_MAP_TO_PLAYBACK'})}
+    const saveAddMapToPlayback = _ => {dispatch({type: 'SAVE_ADD_MAP_TO_PLAYBACK'})}
     const openMapFromPlayback = (idx) => {
         setFrameSelection([idx])
         dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {playbackMapSelected: idx}})
     }
 
     useEffect(() => {
-        if (['saveMapToPlaybackSuccess', 'getPlaybackCountSuccess'].includes(serverResponse.cmd)) {
+        if (['saveAddMapToPlaybackSuccess', 'getPlaybackCountSuccess'].includes(serverResponse.cmd)) {
             setPlaybackCount(serverResponse.payload.playbackCount);
         }
     }, [serverResponseCntr]);
@@ -38,7 +38,7 @@ export function PlaybackEditor () {
 
 
 
-            <StyledButtonGroup size="small" action={saveMapToPlayback} value={''} valueList={['save map to playback']}/>
+            <StyledButtonGroup size="small" action={saveAddMapToPlayback} value={''} valueList={['save map to playback']}/>
 
 
 
