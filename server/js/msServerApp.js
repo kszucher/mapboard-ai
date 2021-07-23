@@ -185,9 +185,8 @@ async function sendResponse(c2s) {
                         } else if (mapSourceOut === 'dataPlayback') {
 
                             console.log(c2s.serverPayload.mapSourcePosOut)
+                            // TODO overwrite in this position
 
-                            // TODO the 2nd two
-                            console.log('overwrite lenne...') // na itt kellene megtalálni az aktuális pozit és felülírni, TODO holnap
                         }
                     }
                     switch (c2s.serverCmd) {
@@ -330,10 +329,10 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openMapFromPlayback': {
-                            let {mapId, playbackMapSelected} = c2s.serverPayload;
+                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, playbackMapSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', playbackMapSelected}};
+                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', dataPlaybackSelected}};
                             break;
                         }
                         case 'duplicateMapInPlayback': {
@@ -355,8 +354,8 @@ async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
 
-async function getPlaybackMapData(mapId, playbackMapSelected) {
-    return (await collectionMaps.findOne({_id: mapId})).dataPlayback[playbackMapSelected]
+async function getPlaybackMapData(mapId, dataPlaybackSelected) {
+    return (await collectionMaps.findOne({_id: mapId})).dataPlayback[dataPlaybackSelected]
 }
 
 async function getPlaybackCount(mapId) {
