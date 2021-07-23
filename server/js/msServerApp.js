@@ -173,8 +173,8 @@ async function sendResponse(c2s) {
                 } else if (currUser.activationStatus === 'awaitingConfirmation') {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
-                    if (['saveOpenMapFromTab', 'saveOpenMapFromMap', 'saveOpenMapFromBreadcrumbs', 'saveMap',
-                        'createMapInMap', 'createMapInTab', 'saveAddMapToPlayback'].includes(c2s.serverCmd)) {
+                    if (['saveOpenMapFromTab', 'saveOpenMapFromMap', 'saveOpenMapFromBreadcrumbs', 'createMapInMap', 'createMapInTab',
+                        'saveMap', 'saveAddMapToPlayback'].includes(c2s.serverCmd)) {
                         let {mapIdOut, mapStorageOut, mapSourceOut} = c2s.serverPayload
                         if (mapSourceOut === 'data') {
                             if (c2s.serverCmd === 'saveAddMapToPlayback') {
@@ -184,6 +184,7 @@ async function sendResponse(c2s) {
                             }
                         } else if (mapSourceOut === 'dataPlayback') {
                             // TODO the 2nd two
+                            console.log('overwrite lenne...') // na itt kellene megtalálni az aktuális pozit és felülírni, TODO holnap
                         }
                     }
                     switch (c2s.serverCmd) {
@@ -333,10 +334,6 @@ async function sendResponse(c2s) {
                             mapId = ObjectId(mapId);
                             let mapStorage = await getPlaybackMapData(mapId, playbackMapSelected);
                             s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback'}};
-                            break;
-                        }
-                        case 'replaceDataMapInPlayback': {
-                            // TODO
                             break;
                         }
                         case 'duplicateMapInPlayback': {
