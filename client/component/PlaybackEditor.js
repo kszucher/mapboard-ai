@@ -16,7 +16,7 @@ export function PlaybackEditor () {
 
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
     const importFrame = _ => {dispatch({type: 'IMPORT_FRAME'})}
-    const deleteFrame = _=> {dispatch({type: 'DELETE_FRAME'})}
+    const deleteFrame = _=> {dispatch({type: 'DELETE_FRAME', payload: {dataPlaybackSelected: frameSelection[0]}})}
     const openMapFromPlayback = (idx) => {
         setFrameSelection([idx])
         dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {dataPlaybackSelected: idx}})
@@ -62,7 +62,7 @@ export function PlaybackEditor () {
             </List>
 
             {frameSelection.length!==0 &&
-            <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['delete frame']}/>}
+            <StyledButtonGroup size="small" action={deleteFrame} value={''} valueList={['delete frame']}/>}
 
 
             <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>

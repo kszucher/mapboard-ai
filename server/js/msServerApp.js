@@ -182,18 +182,7 @@ async function sendResponse(c2s) {
                             const {mapSourcePosOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${mapSourcePosOut}`]: mapStorageOut}});
                         }
-                        if (c2s.serverCmd === 'importFrame') {
-                            let mapStorageToCopy = await getMapData(ObjectId(mapIdOut));
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageToCopy}});
-                        }
                     }
-
-                    // FOR DUPLICATION
-                    // await collectionMaps.updateOne(
-                    //     {_id: ObjectId(mapIdOut)},
-                    //     {$push: {"dataPlayback": {$each: [mapStorageOut], $position: mapSourcePosOut}}}
-                    // );
-
                     switch (c2s.serverCmd) {
                         case 'signIn': {
                             s2c = {cmd: 'signInSuccess'};
@@ -242,13 +231,6 @@ async function sendResponse(c2s) {
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
                             let mapStorage = await getMapData(mapId);
                             s2c = {cmd: 'openMapSuccess', payload: {breadcrumbMapNameList, mapId, mapStorage, mapSource: 'data'}};
-                            break;
-                        }
-                        case 'openMapFromPlayback': {
-                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
-                            mapId = ObjectId(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', dataPlaybackSelected}};
                             break;
                         }
                         case 'saveMap': {
@@ -328,20 +310,36 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
-                        case 'importFrame': {
-                            let {mapIdOut} = c2s.serverPayload;
-                            let playbackCount = await getPlaybackCount(mapIdOut);
-                            s2c = {cmd: 'importFrameSuccess', payload: {playbackCount}};
-                            break;
-                        }
                         case 'getPlaybackCount': {
                             let {mapId} = c2s.serverPayload;
                             let playbackCount = await getPlaybackCount(mapId);
                             s2c = {cmd: 'getPlaybackCountSuccess', payload: {playbackCount}};
                             break;
                         }
-                        case 'duplicateMapInPlayback': {
-                            // TODO
+                        case 'openMapFromPlayback': {
+                            // TODO this should save the previous stuff too, probably just needs to be added to the list?
+                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
+                            mapId = ObjectId(mapId);
+                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', dataPlaybackSelected}};
+                            break;
+                        }
+                        case 'importFrame': {
+                            let {mapIdOut} = c2s.serverPayload;
+                            let mapStorageToCopy = await getMapData(ObjectId(mapIdOut));
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageToCopy}});
+                            let playbackCount = await getPlaybackCount(mapIdOut);
+                            s2c = {cmd: 'importFrameSuccess', payload: {playbackCount}};
+                            break;
+                        }
+                        case 'deleteFrame': {
+                            // TODO: only IF
+                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
+                            // await collectionMaps.updateOne({_id: ObjectId(mapId)}, {$set: {[`dataPlayback.${dataPlaybackSelected}`]: mapStorageOut}});
+                            break;
+                        }
+                        case 'duplicateFrame': {
+                            // await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": {$each: [mapStorageOut], $position: mapSourcePosOut}}});
                             break;
                         }
                     }
