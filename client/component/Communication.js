@@ -104,7 +104,7 @@ export function Communication() {
                 case 'saveMapSuccess': {
                     break;
                 }
-                case 'copyToPlaybackSuccess': {
+                case 'importFrameSuccess': {
                     break;
                 }
             }

@@ -15,14 +15,15 @@ export function PlaybackEditor () {
     const [frameSelection, setFrameSelection] = useState([])
 
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
-    const copyToPlayback = _ => {dispatch({type: 'COPY_TO_PLAYBACK'})}
+    const importFrame = _ => {dispatch({type: 'IMPORT_FRAME'})}
+    const deleteFrame = _=> {dispatch({type: 'DELETE_FRAME'})}
     const openMapFromPlayback = (idx) => {
         setFrameSelection([idx])
         dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {dataPlaybackSelected: idx}})
     }
 
     useEffect(() => {
-        if (['copyToPlaybackSuccess', 'getPlaybackCountSuccess'].includes(serverResponse.cmd)) {
+        if (['importFrameSuccess', 'getPlaybackCountSuccess'].includes(serverResponse.cmd)) {
             setPlaybackCount(serverResponse.payload.playbackCount);
         }
     }, [serverResponseCntr]);
@@ -38,9 +39,7 @@ export function PlaybackEditor () {
 
 
 
-            <StyledButtonGroup size="small" action={copyToPlayback} value={''} valueList={['copy to playback']}/>
-
-
+            <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['import frame']}/>
 
             <List dense={true}>
                 {[...Array(playbackCount).keys()].map((el, idx) => (
@@ -61,6 +60,11 @@ export function PlaybackEditor () {
                     </ListItem>
                 ))}
             </List>
+
+            {frameSelection.length!==0 &&
+            <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['delete frame']}/>}
+
+
             <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
                 <StyledButton name={'Close'} action={closePlaybackEditor}/>
             </div>

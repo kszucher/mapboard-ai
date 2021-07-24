@@ -174,7 +174,7 @@ async function sendResponse(c2s) {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
                     if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs',
-                        'createMapInMap', 'createMapInTab', 'saveMap', 'copyToPlayback'].includes(c2s.serverCmd)) {
+                        'createMapInMap', 'createMapInTab', 'saveMap', 'importFrame'].includes(c2s.serverCmd)) {
                         const {mapIdOut, mapStorageOut, mapSourceOut} = c2s.serverPayload;
                         if (mapSourceOut === 'data') {
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
@@ -182,7 +182,7 @@ async function sendResponse(c2s) {
                             const {mapSourcePosOut} = c2s.serverPayload;
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${mapSourcePosOut}`]: mapStorageOut}});
                         }
-                        if (c2s.serverCmd === 'copyToPlayback') {
+                        if (c2s.serverCmd === 'importFrame') {
                             let mapStorageToCopy = await getMapData(ObjectId(mapIdOut));
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageToCopy}});
                         }
@@ -321,10 +321,10 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
-                        case 'copyToPlayback': {
+                        case 'importFrame': {
                             let {mapIdOut} = c2s.serverPayload;
                             let playbackCount = await getPlaybackCount(mapIdOut);
-                            s2c = {cmd: 'copyToPlaybackSuccess', payload: {playbackCount}};
+                            s2c = {cmd: 'importFrameSuccess', payload: {playbackCount}};
                             break;
                         }
                         case 'getPlaybackCount': {
