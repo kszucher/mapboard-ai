@@ -173,33 +173,27 @@ async function sendResponse(c2s) {
                 } else if (currUser.activationStatus === 'awaitingConfirmation') {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
-                    if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs', 'createMapInMap', 'createMapInTab',
-                        'saveMap', 'saveAddMapToPlayback'].includes(c2s.serverCmd)) {
-                        let {mapIdOut, mapStorageOut, mapSourceOut} = c2s.serverPayload
+                    if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs',
+                        'createMapInMap', 'createMapInTab', 'saveMap', 'copyToPlayback'].includes(c2s.serverCmd)) {
+                        const {mapIdOut, mapStorageOut, mapSourceOut} = c2s.serverPayload;
                         if (mapSourceOut === 'data') {
-                            if (c2s.serverCmd === 'saveAddMapToPlayback') {
-                                await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageOut}});
-                            } else {
-                                await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
-                            }
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
                         } else if (mapSourceOut === 'dataPlayback') {
-
-                            // FOR DUPLICATION
-                            // await collectionMaps.updateOne(
-                            //     {_id: ObjectId(mapIdOut)},
-                            //     {$push: {"dataPlayback": {$each: [mapStorageOut], $position: mapSourcePosOut}}}
-                            // );
-
                             const {mapSourcePosOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne(
-                                {_id: ObjectId(mapIdOut)},
-                                {$set: {[`dataPlayback.${mapSourcePosOut}`]: mapStorageOut}}
-                            );
-
-                            // TODO overwrite in this position
-
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${mapSourcePosOut}`]: mapStorageOut}});
+                        }
+                        if (c2s.serverCmd === 'copyToPlayback') {
+                            let mapStorageToCopy = await getMapData(ObjectId(mapIdOut));
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageToCopy}});
                         }
                     }
+
+                    // FOR DUPLICATION
+                    // await collectionMaps.updateOne(
+                    //     {_id: ObjectId(mapIdOut)},
+                    //     {$push: {"dataPlayback": {$each: [mapStorageOut], $position: mapSourcePosOut}}}
+                    // );
+
                     switch (c2s.serverCmd) {
                         case 'signIn': {
                             s2c = {cmd: 'signInSuccess'};
@@ -327,10 +321,10 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
-                        case 'saveAddMapToPlayback': {
+                        case 'copyToPlayback': {
                             let {mapIdOut} = c2s.serverPayload;
                             let playbackCount = await getPlaybackCount(mapIdOut);
-                            s2c = {cmd: 'saveAddMapToPlaybackSuccess', payload: {playbackCount}};
+                            s2c = {cmd: 'copyToPlaybackSuccess', payload: {playbackCount}};
                             break;
                         }
                         case 'getPlaybackCount': {

@@ -73,7 +73,7 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':              return state;
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1};
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, };
-        case 'SAVE_ADD_MAP_TO_PLAYBACK':        return {...state, ...createServerAction(state, 'saveAddMapToPlayback',       {...payload, ...getMapOut()})}
+        case 'COPY_TO_PLAYBACK':                return {...state, ...createServerAction(state, 'copyToPlayback',             {...payload, ...getMapOut()})}
         case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getPlaybackCount',           {...payload, ...getMapId()}), playbackEditorVisible: 1};
         case 'CLOSE_PLAYBACK_EDITOR':           return {...state, /*TODO open*/ playbackEditorVisible: 0, isPlayback: false};
         case 'OPEN_MAP_FROM_PLAYBACK':          return {...state, ...createServerAction(state, 'openMapFromPlayback',        {...payload, ...getMapId()})};
@@ -99,6 +99,6 @@ const EditorReducer = (state, action) => {
 export default EditorReducer;
 
 // TODO
-// - smart save depending on isPlaying saves into DATA or DATAPLAYBACK --> a saveAddMapToPlayback MELLÉ kell még a többi üzemmód
+// - smart save depending on isPlaying saves into DATA or DATAPLAYBACK --> a copyToPlayback MELLÉ kell még a többi üzemmód
 // - ability to BATCH download all frames SOMEWHERE and play them back frame by frame... using mapFlow, similarly how undo redo works
 // -- rename mapState.data to something more expressing... mapState.dataLocal, dataPlaybackLocal és a prev/next ugyanazt csinálja FASZA
