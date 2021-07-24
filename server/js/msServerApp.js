@@ -244,6 +244,13 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'openMapSuccess', payload: {breadcrumbMapNameList, mapId, mapStorage, mapSource: 'data'}};
                             break;
                         }
+                        case 'openMapFromPlayback': {
+                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
+                            mapId = ObjectId(mapId);
+                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', dataPlaybackSelected}};
+                            break;
+                        }
                         case 'saveMap': {
                             s2c = {cmd: 'saveMapSuccess'};
                             break;
@@ -331,13 +338,6 @@ async function sendResponse(c2s) {
                             let {mapId} = c2s.serverPayload;
                             let playbackCount = await getPlaybackCount(mapId);
                             s2c = {cmd: 'getPlaybackCountSuccess', payload: {playbackCount}};
-                            break;
-                        }
-                        case 'openMapFromPlayback': {
-                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
-                            mapId = ObjectId(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', dataPlaybackSelected}};
                             break;
                         }
                         case 'duplicateMapInPlayback': {
