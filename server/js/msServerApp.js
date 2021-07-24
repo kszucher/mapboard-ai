@@ -335,7 +335,17 @@ async function sendResponse(c2s) {
                         case 'deleteFrame': {
                             // TODO: only IF
                             let {mapId, dataPlaybackSelected} = c2s.serverPayload;
-                            // await collectionMaps.updateOne({_id: ObjectId(mapId)}, {$set: {[`dataPlayback.${dataPlaybackSelected}`]: mapStorageOut}});
+                            await collectionMaps.updateOne({_id: ObjectId(mapId)}, [{
+                                $set: {
+                                    dataPlayback: {
+                                        $concatArrays:[
+                                            {$slice:[ "$dataPlayback", dataPlaybackSelected ]},
+                                            {$slice:[ "$dataPlayback", {$add:[1, dataPlaybackSelected]}, {$size: "$dataPlayback"}]}
+                                        ]}}}]);
+                            let playbackCount = await getPlaybackCount(ObjectId(mapId));
+                            s2c = {cmd: 'deleteFrameSuccess', payload: {playbackCount}};
+
+
                             break;
                         }
                         case 'duplicateFrame': {
