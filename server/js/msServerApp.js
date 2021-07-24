@@ -184,7 +184,18 @@ async function sendResponse(c2s) {
                             }
                         } else if (mapSourceOut === 'dataPlayback') {
 
-                            console.log(c2s.serverPayload.mapSourcePosOut)
+                            // FOR DUPLICATION
+                            // await collectionMaps.updateOne(
+                            //     {_id: ObjectId(mapIdOut)},
+                            //     {$push: {"dataPlayback": {$each: [mapStorageOut], $position: mapSourcePosOut}}}
+                            // );
+
+                            const {mapSourcePosOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne(
+                                {_id: ObjectId(mapIdOut)},
+                                {$set: {[`dataPlayback.${mapSourcePosOut}`]: mapStorageOut}}
+                            );
+
                             // TODO overwrite in this position
 
                         }
