@@ -319,6 +319,7 @@ async function sendResponse(c2s) {
                         }
                         case 'getFrameLen': {
                             let {mapId} = c2s.serverPayload;
+                            mapId = ObjectId(mapId);
                             let frameLen = await getFrameLen(mapId);
                             s2c = {cmd: 'getFrameLenSuccess', payload: {frameLen}};
                             break;
@@ -333,8 +334,9 @@ async function sendResponse(c2s) {
                         }
                         case 'importFrame': {
                             let {mapIdOut} = c2s.serverPayload;
-                            let mapStorageToCopy = await getMapData(ObjectId(mapIdOut));
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageToCopy}});
+                            mapIdOut = ObjectId(mapIdOut);
+                            let mapStorageToCopy = await getMapData(mapIdOut);
+                            await collectionMaps.updateOne({_id: mapIdOut}, {$push: {"dataPlayback": mapStorageToCopy}});
                             let frameLen = await getFrameLen(mapIdOut);
                             s2c = {cmd: 'importFrameSuccess', payload: {frameLen}};
                             break;
@@ -380,7 +382,7 @@ async function getPlaybackMapData(mapId, frameSelected) {
 }
 
 async function getFrameLen(mapId) {
-    return (await collectionMaps.findOne({_id: ObjectId(mapId)})).dataPlayback.length;
+    return (await collectionMaps.findOne({_id: mapId})).dataPlayback.length;
 }
 
 async function getMapNameList(mapIdList) {
