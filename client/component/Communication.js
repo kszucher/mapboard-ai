@@ -107,6 +107,9 @@ export function Communication() {
                 case 'importFrameSuccess': {
                     break;
                 }
+                case 'deleteFrameSuccess': {
+                    break;
+                }
             }
         }
     }, [serverResponseCntr]);

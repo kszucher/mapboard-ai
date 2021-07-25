@@ -14,16 +14,21 @@ export function PlaybackEditor () {
     const [playbackCount, setPlaybackCount] = useState(0)
     const [frameSelection, setFrameSelection] = useState([])
 
-    const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
-    const importFrame = _ => {dispatch({type: 'IMPORT_FRAME'})}
-    const deleteFrame = _=> {dispatch({type: 'DELETE_FRAME', payload: {dataPlaybackSelected: frameSelection[0]}})}
+    const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
     const openMapFromPlayback = (idx) => {
         setFrameSelection([idx])
         dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {dataPlaybackSelected: idx}})
     }
+    const deleteFrame = _=> {
+        if (playbackCount > 0) {
+            setFrameSelection([frameSelection[0] - 1])
+            dispatch({type: 'DELETE_FRAME', payload: {dataPlaybackSelected: frameSelection[0]}})
+        }
+    }
+    const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
 
     useEffect(() => {
-        if (['importFrameSuccess', 'getPlaybackCountSuccess'].includes(serverResponse.cmd)) {
+        if (serverResponse.payload?.hasOwnProperty('playbackCount')) {
             setPlaybackCount(serverResponse.payload.playbackCount);
         }
     }, [serverResponseCntr]);
@@ -36,8 +41,6 @@ export function PlaybackEditor () {
             position: 'fixed', top: 216+96+48, right: 0, width: xWidth, backgroundColor: 'rgba(251,250,252,1)',
             paddingTop: 12, paddingLeft: 12, paddingRight: 12, paddingBottom: 12,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
-
-
 
             <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['import frame']}/>
 
@@ -61,9 +64,8 @@ export function PlaybackEditor () {
                 ))}
             </List>
 
-            {frameSelection.length!==0 &&
+            {frameSelection.length > 0 &&
             <StyledButtonGroup size="small" action={deleteFrame} value={''} valueList={['delete frame']}/>}
-
 
             <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
                 <StyledButton name={'Close'} action={closePlaybackEditor}/>
