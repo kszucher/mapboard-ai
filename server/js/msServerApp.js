@@ -174,7 +174,7 @@ async function sendResponse(c2s) {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
                     if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs',
-                        'createMapInMap', 'createMapInTab', 'saveMap', 'importFrame'].includes(c2s.serverCmd)) {
+                        'createMapInMap', 'createMapInTab', 'saveMap', 'openFrame', 'importFrame'].includes(c2s.serverCmd)) {
                         const {mapIdOut, mapStorageOut, mapSourceOut} = c2s.serverPayload;
                         if (mapSourceOut === 'data') {
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
@@ -317,7 +317,6 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openFrame': {
-                            // TODO this should save the previous stuff too, probably just needs to be added to the list?
                             let {mapId, dataPlaybackSelected} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
                             let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);

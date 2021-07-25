@@ -29,7 +29,7 @@ const createServerAction = (state, serverCmd, serverPayload) => {
     }
 }
 
-const getMapOut = () => {
+const getMapStuff = () => {
     return {
         mapIdOut: mapState.mapId,
         mapStorageOut: saveMap(),
@@ -58,12 +58,12 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_1':                  return {...state, ...createServerAction(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':                  return {...state, ...createServerAction(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_TAB_HISTORY':       return {...state, ...createServerAction(state, 'openMapFromTabHistory'), isLoggedIn: true}
-        case 'OPEN_MAP_FROM_TAB':               return {...state, ...createServerAction(state, 'openMapFromTab',             {...payload, ...getMapOut()})}
-        case 'OPEN_MAP_FROM_MAP':               return {...state, ...createServerAction(state, 'openMapFromMap',             {...payload, ...getMapOut()})}
-        case 'OPEN_MAP_FROM_BREADCRUMBS':       return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs',     {...payload, ...getMapOut()})}
-        case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapOut()})}
-        case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapOut()})}
-        case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapOut()})}
+        case 'OPEN_MAP_FROM_TAB':               return {...state, ...createServerAction(state, 'openMapFromTab',             {...payload, ...getMapStuff()})}
+        case 'OPEN_MAP_FROM_MAP':               return {...state, ...createServerAction(state, 'openMapFromMap',             {...payload, ...getMapStuff()})}
+        case 'OPEN_MAP_FROM_BREADCRUMBS':       return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs',     {...payload, ...getMapStuff()})}
+        case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStuff()})}
+        case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStuff()})}
+        case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStuff()})}
         case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')}
         case 'MOVE_UP_MAP_IN_TAB':              return {...state, ...createServerAction(state, 'moveUpMapInTab')}
         case 'MOVE_DOWN_MAP_IN_TAB':            return {...state, ...createServerAction(state, 'moveDownMapInTab')}
@@ -75,7 +75,7 @@ const EditorReducer = (state, action) => {
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getFrameLen',                {...payload, ...getMapId()}), playbackEditorVisible: 1}
         case 'OPEN_FRAME':                      return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapId()})}
-        case 'IMPORT_FRAME':                    return {...state, ...createServerAction(state, 'importFrame',                {...payload, ...getMapOut()})}
+        case 'IMPORT_FRAME':                    return {...state, ...createServerAction(state, 'importFrame',                {...payload, ...getMapStuff()})}
         case 'DELETE_FRAME':                    return {...state, ...createServerAction(state, 'deleteFrame',                {...payload, ...getMapId()})}
         case 'CLOSE_PLAYBACK_EDITOR':           return {...state, /*TODO open*/ playbackEditorVisible: 0, isPlayback: false}
         case 'SET_IS_PLAYBACK_ON':              return {...state, isPlayback: true}
