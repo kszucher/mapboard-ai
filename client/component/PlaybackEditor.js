@@ -20,7 +20,8 @@ export function PlaybackEditor () {
     }
     const deleteFrame = _=> {
         if (frameLen > 0) {
-            dispatch({type: 'DELETE_FRAME', payload: {frameSelected: frameSelection[0] - 1, frameSelectedOut: frameSelection[0]}})
+            let frameSelected = frameSelection[0] > 0 ? frameSelection[0] - 1 : 0;
+            dispatch({type: 'DELETE_FRAME', payload: {frameSelected, frameSelectedOut: frameSelection[0]}})
         }
     }
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
