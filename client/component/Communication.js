@@ -91,7 +91,9 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     let {mapStorage, mapId, mapSource} = serverResponse.payload;
-                    let mapSourcePos = serverResponse.payload.hasOwnProperty('dataPlaybackSelected') ? serverResponse.payload.dataPlaybackSelected : 0;
+                    let mapSourcePos = serverResponse.payload.hasOwnProperty('dataPlaybackSelected')
+                        ? serverResponse.payload.dataPlaybackSelected
+                        : null;
                     if (mapSource === 'data') {
                         dispatch({type: 'SET_IS_PLAYBACK_OFF'})
                     } else if (mapSource === 'dataPlayback') {

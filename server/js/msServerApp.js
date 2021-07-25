@@ -332,18 +332,19 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'deleteFrame': {
-                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
+                            let {mapId, dataPlaybackSelectedOut} = c2s.serverPayload; // mapId and mapIdOut is the same here
+                            let dataPlaybackSelected = dataPlaybackSelectedOut - 1;
                             mapId = ObjectId(mapId);
                             await collectionMaps.updateOne({_id: mapId}, [{
                                 $set: {
                                     dataPlayback: {
                                         $concatArrays: [
-                                            {$slice: ["$dataPlayback", dataPlaybackSelected]},
-                                            {$slice: ["$dataPlayback", {$add: [1, dataPlaybackSelected]}, {$size: "$dataPlayback"}]}
+                                            {$slice: ["$dataPlayback", dataPlaybackSelectedOut]},
+                                            {$slice: ["$dataPlayback", {$add: [1, dataPlaybackSelectedOut]}, {$size: "$dataPlayback"}]}
                                         ]}}}]);
                             let frameLen = await getFrameLen(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected - 1);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', frameLen}};
+                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback',  dataPlaybackSelected, frameLen}};
                             break;
                         }
                         case 'duplicateFrame': {
