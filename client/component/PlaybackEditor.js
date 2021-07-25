@@ -15,9 +15,9 @@ export function PlaybackEditor () {
     const [frameSelection, setFrameSelection] = useState([])
 
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
-    const openMapFromPlayback = (idx) => {
+    const openFrame = (idx) => {
         setFrameSelection([idx])
-        dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {dataPlaybackSelected: idx}})
+        dispatch({type: 'OPEN_FRAME', payload: {dataPlaybackSelected: idx}})
     }
     const deleteFrame = _=> {
         if (frameLen > 0) {
@@ -49,7 +49,7 @@ export function PlaybackEditor () {
                     <ListItem
                         button
                         key={idx}
-                        onClick={_=>openMapFromPlayback(idx)}
+                        onClick={_=>openFrame(idx)}
                         selected={frameSelection.includes(idx)} >
                         <ListItemText primary={`frame ${idx}`} secondary={1 === 0 ? 'Secondary text' : null}/>
                         {/*<ListItemSecondaryAction>*/}

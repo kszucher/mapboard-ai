@@ -316,7 +316,7 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'getFrameLenSuccess', payload: {frameLen}};
                             break;
                         }
-                        case 'openMapFromPlayback': {
+                        case 'openFrame': {
                             // TODO this should save the previous stuff too, probably just needs to be added to the list?
                             let {mapId, dataPlaybackSelected} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
