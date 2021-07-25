@@ -74,7 +74,7 @@ const EditorReducer = (state, action) => {
         case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getFrameLen',                {...payload, ...getMapId()}), playbackEditorVisible: 1}
-        case 'OPEN_FRAME':                      return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapId()})}
+        case 'OPEN_FRAME':                      return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapStuff(), ...getMapId()})}
         case 'IMPORT_FRAME':                    return {...state, ...createServerAction(state, 'importFrame',                {...payload, ...getMapStuff()})}
         case 'DELETE_FRAME':                    return {...state, ...createServerAction(state, 'deleteFrame',                {...payload, ...getMapId()})}
         case 'CLOSE_PLAYBACK_EDITOR':           return {...state, /*TODO open*/ playbackEditorVisible: 0, isPlayback: false}
