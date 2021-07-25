@@ -17,12 +17,12 @@ export function PlaybackEditor () {
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
     const openFrame = (idx) => {
         setFrameSelection([idx])
-        dispatch({type: 'OPEN_FRAME', payload: {dataPlaybackSelected: idx}})
+        dispatch({type: 'OPEN_FRAME', payload: {frameSelected: idx}})
     }
     const deleteFrame = _=> {
         if (frameLen > 0) {
             setFrameSelection([frameSelection[0] - 1])
-            dispatch({type: 'DELETE_FRAME', payload: {dataPlaybackSelectedOut: frameSelection[0]}})
+            dispatch({type: 'DELETE_FRAME', payload: {frameSelectedOut: frameSelection[0]}})
         }
     }
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})

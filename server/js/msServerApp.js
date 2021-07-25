@@ -317,10 +317,10 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openFrame': {
-                            let {mapId, dataPlaybackSelected} = c2s.serverPayload;
+                            let {mapId, frameSelected} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', dataPlaybackSelected}};
+                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', frameSelected}};
                             break;
                         }
                         case 'importFrame': {
@@ -332,19 +332,19 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'deleteFrame': {
-                            let {mapId, dataPlaybackSelectedOut} = c2s.serverPayload; // mapId and mapIdOut is the same here
-                            let dataPlaybackSelected = dataPlaybackSelectedOut - 1;
+                            let {mapId, frameSelectedOut} = c2s.serverPayload; // mapId and mapIdOut is the same here
+                            let frameSelected = frameSelectedOut - 1;
                             mapId = ObjectId(mapId);
                             await collectionMaps.updateOne({_id: mapId}, [{
                                 $set: {
                                     dataPlayback: {
                                         $concatArrays: [
-                                            {$slice: ["$dataPlayback", dataPlaybackSelectedOut]},
-                                            {$slice: ["$dataPlayback", {$add: [1, dataPlaybackSelectedOut]}, {$size: "$dataPlayback"}]}
+                                            {$slice: ["$dataPlayback", frameSelectedOut]},
+                                            {$slice: ["$dataPlayback", {$add: [1, frameSelectedOut]}, {$size: "$dataPlayback"}]}
                                         ]}}}]);
                             let frameLen = await getFrameLen(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback',  dataPlaybackSelected, frameLen}};
+                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback',  frameSelected, frameLen}};
                             break;
                         }
                         case 'duplicateFrame': {
@@ -366,8 +366,8 @@ async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
 
-async function getPlaybackMapData(mapId, dataPlaybackSelected) {
-    return (await collectionMaps.findOne({_id: mapId})).dataPlayback[dataPlaybackSelected]
+async function getPlaybackMapData(mapId, frameSelected) {
+    return (await collectionMaps.findOne({_id: mapId})).dataPlayback[frameSelected]
 }
 
 async function getFrameLen(mapId) {
