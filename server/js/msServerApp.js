@@ -275,7 +275,7 @@ async function sendResponse(c2s) {
                         case 'removeMapInTab': {
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             if (tabMapSelected === 0) {
-                                s2c = {cmd: 'removeMapInTabFail'}; // filter this on FE instead
+                                s2c = {cmd: 'removeMapInTabFail'};
                             } else {
                                 tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected);
                                 tabMapSelected = tabMapSelected - 1;
@@ -292,7 +292,7 @@ async function sendResponse(c2s) {
                         case 'moveUpMapInTab': {
                             let {_id, tabMapIdList, tabMapSelected} = currUser;
                             if (tabMapSelected === 0) {
-                                s2c = {cmd: 'moveUpMapInTabFail'}; // filter this on FE instead
+                                s2c = {cmd: 'moveUpMapInTabFail'};
                             } else {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                     [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
@@ -306,7 +306,7 @@ async function sendResponse(c2s) {
                         case 'moveDownMapInTab': {
                             let {_id, tabMapIdList, tabMapSelected} = currUser;
                             if (tabMapSelected >= tabMapIdList.length - 1) {
-                                s2c = {cmd: 'moveDownMapInTabFail'}; // filter this on FE instead
+                                s2c = {cmd: 'moveDownMapInTabFail'};
                             } else {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                     [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
@@ -342,7 +342,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'deleteFrame': {
-                            let {mapId, frameSelected, frameSelectedOut} = c2s.serverPayload; // mapId and mapIdOut is the same here
+                            let {mapId, frameSelected, frameSelectedOut} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
                             await collectionMaps.updateOne({_id: mapId}, [{
                                 $set: {
