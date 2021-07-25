@@ -48,7 +48,7 @@ function mapReducer(action, payload) {
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.mapId = payload.mapId;
             mapState.mapSource = payload.mapSource;
-            mapState.mapSourcePos = payload.mapSourcePos;
+            mapState.frameSelected = payload.frameSelected;
             mapState.isLoading = true;
             break;
         }

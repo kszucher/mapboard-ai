@@ -91,7 +91,7 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     let {mapStorage, mapId, mapSource} = serverResponse.payload;
-                    let mapSourcePos = serverResponse.payload.hasOwnProperty('frameSelected')
+                    let frameSelected = serverResponse.payload.hasOwnProperty('frameSelected')
                         ? serverResponse.payload.frameSelected
                         : null;
                     if (mapSource === 'data') {
@@ -99,7 +99,7 @@ export function Communication() {
                     } else if (mapSource === 'dataPlayback') {
                         dispatch({type: 'SET_IS_PLAYBACK_ON'})
                     }
-                    mapDispatch('initMapState', {mapStorage, mapId, mapSource, mapSourcePos});
+                    mapDispatch('initMapState', {mapStorage, mapId, mapSource, frameSelected});
                     redraw();
                     break;
                 }

@@ -179,8 +179,8 @@ async function sendResponse(c2s) {
                         if (mapSourceOut === 'data') {
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
                         } else if (mapSourceOut === 'dataPlayback') {
-                            const {mapSourcePosOut} = c2s.serverPayload;
-                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${mapSourcePosOut}`]: mapStorageOut}});
+                            const {frameSelectedOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}});
                         }
                     }
                     switch (c2s.serverCmd) {
@@ -344,11 +344,11 @@ async function sendResponse(c2s) {
                                         ]}}}]);
                             let frameLen = await getFrameLen(mapId);
                             let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback',  frameSelected, frameLen}};
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', frameSelected, frameLen}};
                             break;
                         }
                         case 'duplicateFrame': {
-                            // await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": {$each: [mapStorageOut], $position: mapSourcePosOut}}});
+                            // await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": {$each: [mapStorageOut], $position: frameSelectedOut}}});
                             break;
                         }
                     }
