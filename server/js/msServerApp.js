@@ -310,10 +310,10 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
-                        case 'getPlaybackCount': {
+                        case 'getFrameLen': {
                             let {mapId} = c2s.serverPayload;
-                            let playbackCount = await getPlaybackCount(mapId);
-                            s2c = {cmd: 'getPlaybackCountSuccess', payload: {playbackCount}};
+                            let frameLen = await getFrameLen(mapId);
+                            s2c = {cmd: 'getFrameLenSuccess', payload: {frameLen}};
                             break;
                         }
                         case 'openMapFromPlayback': {
@@ -328,8 +328,8 @@ async function sendResponse(c2s) {
                             let {mapIdOut} = c2s.serverPayload;
                             let mapStorageToCopy = await getMapData(ObjectId(mapIdOut));
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$push: {"dataPlayback": mapStorageToCopy}});
-                            let playbackCount = await getPlaybackCount(mapIdOut);
-                            s2c = {cmd: 'importFrameSuccess', payload: {playbackCount}};
+                            let frameLen = await getFrameLen(mapIdOut);
+                            s2c = {cmd: 'importFrameSuccess', payload: {frameLen}};
                             break;
                         }
                         case 'deleteFrame': {
@@ -342,9 +342,9 @@ async function sendResponse(c2s) {
                                             {$slice: ["$dataPlayback", dataPlaybackSelected]},
                                             {$slice: ["$dataPlayback", {$add: [1, dataPlaybackSelected]}, {$size: "$dataPlayback"}]}
                                         ]}}}]);
-                            let playbackCount = await getPlaybackCount(mapId);
+                            let frameLen = await getFrameLen(mapId);
                             let mapStorage = await getPlaybackMapData(mapId, dataPlaybackSelected - 1);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', playbackCount}};
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource: 'dataPlayback', frameLen}};
                             break;
                         }
                         case 'duplicateFrame': {
@@ -370,7 +370,7 @@ async function getPlaybackMapData(mapId, dataPlaybackSelected) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback[dataPlaybackSelected]
 }
 
-async function getPlaybackCount(mapId) {
+async function getFrameLen(mapId) {
     return (await collectionMaps.findOne({_id: ObjectId(mapId)})).dataPlayback.length;
 }
 

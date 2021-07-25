@@ -11,7 +11,7 @@ import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 export function PlaybackEditor () {
     const [state, dispatch] = useContext(Context)
     const {serverResponse, serverResponseCntr} = state
-    const [playbackCount, setPlaybackCount] = useState(0)
+    const [frameLen, setFrameLen] = useState(0)
     const [frameSelection, setFrameSelection] = useState([])
 
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
@@ -20,7 +20,7 @@ export function PlaybackEditor () {
         dispatch({type: 'OPEN_MAP_FROM_PLAYBACK', payload: {dataPlaybackSelected: idx}})
     }
     const deleteFrame = _=> {
-        if (playbackCount > 0) {
+        if (frameLen > 0) {
             setFrameSelection([frameSelection[0] - 1])
             dispatch({type: 'DELETE_FRAME', payload: {dataPlaybackSelected: frameSelection[0]}})
         }
@@ -28,10 +28,10 @@ export function PlaybackEditor () {
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
 
     useEffect(() => {
-        if (serverResponse.payload?.hasOwnProperty('playbackCount')) {
-            setPlaybackCount(serverResponse.payload.playbackCount);
+        if (serverResponse.payload?.hasOwnProperty('frameLen')) {
+            setFrameLen(serverResponse.payload.frameLen)
         }
-    }, [serverResponseCntr]);
+    }, [serverResponseCntr])
 
     const xWidth = 192;
     // const yWidth = 300;
@@ -45,7 +45,7 @@ export function PlaybackEditor () {
             <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['import frame']}/>
 
             <List dense={true}>
-                {[...Array(playbackCount).keys()].map((el, idx) => (
+                {[...Array(frameLen).keys()].map((el, idx) => (
                     <ListItem
                         button
                         key={idx}
