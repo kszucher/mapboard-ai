@@ -344,17 +344,26 @@ async function sendResponse(c2s) {
                         case 'deleteFrame': {
                             let {mapId, frameSelected, frameSelectedOut} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
-                            await collectionMaps.updateOne({_id: mapId}, [{
-                                $set: {
-                                    dataPlayback: {
-                                        $concatArrays: [
-                                            {$slice: ["$dataPlayback", frameSelectedOut]},
-                                            {$slice: ["$dataPlayback", {$add: [1, frameSelectedOut]}, {$size: "$dataPlayback"}]}
-                                        ]}}}]);
                             let frameLen = await getFrameLen(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                            let mapSource = 'dataPlayback';
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource, frameSelected, frameLen}};
+                            if (frameLen === 0) {
+                                s2c = {cmd: 'deleteFrameFail'};
+                                // TODO: going back to pure data mode and opening the BASE map
+                            } else {
+                                frameLen = frameLen - 1;
+                                await collectionMaps.updateOne({_id: mapId}, [{
+                                    $set: {
+                                        dataPlayback: {
+                                            $concatArrays: [
+                                                {$slice: ["$dataPlayback", frameSelectedOut]},
+                                                {$slice: ["$dataPlayback", {$add: [1, frameSelectedOut]}, {$size: "$dataPlayback"}]}
+                                            ]
+                                        }
+                                    }
+                                }]);
+                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                let mapSource = 'dataPlayback';
+                                s2c = {cmd: 'openMapSuccess', payload: {mapId, mapStorage, mapSource, frameSelected, frameLen}};
+                            }
                             break;
                         }
                         case 'duplicateFrame': {

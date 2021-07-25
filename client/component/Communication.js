@@ -90,6 +90,7 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
+                    // TODO move this out of here and become fully reactive
                     let {mapStorage, mapId, mapSource} = serverResponse.payload;
                     let frameSelected = serverResponse.payload.hasOwnProperty('frameSelected')
                         ? serverResponse.payload.frameSelected
@@ -101,15 +102,6 @@ export function Communication() {
                     }
                     mapDispatch('initMapState', {mapStorage, mapId, mapSource, frameSelected});
                     redraw();
-                    break;
-                }
-                case 'saveMapSuccess': {
-                    break;
-                }
-                case 'importFrameSuccess': {
-                    break;
-                }
-                case 'deleteFrameSuccess': {
                     break;
                 }
             }
