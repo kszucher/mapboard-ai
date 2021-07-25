@@ -342,8 +342,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'deleteFrame': {
-                            let {mapId, frameSelectedOut} = c2s.serverPayload; // mapId and mapIdOut is the same here
-                            let frameSelected = frameSelectedOut - 1;
+                            let {mapId, frameSelected, frameSelectedOut} = c2s.serverPayload; // mapId and mapIdOut is the same here
                             mapId = ObjectId(mapId);
                             await collectionMaps.updateOne({_id: mapId}, [{
                                 $set: {
