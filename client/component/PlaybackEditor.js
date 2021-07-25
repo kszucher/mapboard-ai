@@ -16,13 +16,20 @@ export function PlaybackEditor () {
 
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
     const openFrame = (idx) => {
-        dispatch({type: 'OPEN_FRAME', payload: {frameSelected: idx}})
+        let frameSelected = idx;
+        dispatch({type: 'OPEN_FRAME', payload: {frameSelected}})
     }
     const deleteFrame = _=> {
         if (frameLen > 0) {
-            let frameSelected = frameSelection[0] > 0 ? frameSelection[0] - 1 : 0;
-            dispatch({type: 'DELETE_FRAME', payload: {frameSelected, frameSelectedOut: frameSelection[0]}})
+            let frameSelectedOut = frameSelection[0];
+            let frameSelected = frameSelectedOut > 0 ? frameSelectedOut - 1 : 0;
+            dispatch({type: 'DELETE_FRAME', payload: {frameSelectedOut, frameSelected}})
         }
+    }
+    const duplicateFrame = _=> {
+        let frameSelectedOut = frameSelection[0];
+        let frameSelected = frameSelectedOut + 1;
+        dispatch({type: 'DUPLICATE_FRAME', payload: {frameSelectedOut, frameSelected}})
     }
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
 
@@ -68,6 +75,8 @@ export function PlaybackEditor () {
 
             {frameSelection.length > 0 &&
             <StyledButtonGroup size="small" action={deleteFrame} value={''} valueList={['delete frame']}/>}
+            {frameSelection.length > 0 &&
+            <StyledButtonGroup size="small" action={duplicateFrame} value={''} valueList={['duplicate frame']}/>}
 
             <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
                 <StyledButton name={'Close'} action={closePlaybackEditor}/>

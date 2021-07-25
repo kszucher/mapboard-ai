@@ -21,8 +21,10 @@ export let mapState = {
     isLoading: false,
 
     mapId: '',
-    dataIndex: 0,
+    mapSource: '',
     data: [],
+    dataIndex: 0,
+    frameSelected: null,
 
     deepestSelectablePath: [],
     isNodeClicked: false,
@@ -45,9 +47,9 @@ function mapReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
             mapState = JSON.parse(InitMapState);
-            mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.mapId = payload.mapId;
             mapState.mapSource = payload.mapSource;
+            mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.frameSelected = payload.frameSelected;
             mapState.isLoading = true;
             break;

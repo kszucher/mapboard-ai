@@ -91,7 +91,7 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     // TODO move this out of here and become fully reactive
-                    let {mapStorage, mapId, mapSource} = serverResponse.payload;
+                    let {mapId, mapSource, mapStorage} = serverResponse.payload;
                     let frameSelected = serverResponse.payload.hasOwnProperty('frameSelected')
                         ? serverResponse.payload.frameSelected
                         : null;
@@ -100,7 +100,7 @@ export function Communication() {
                     } else if (mapSource === 'dataPlayback') {
                         dispatch({type: 'SET_IS_PLAYBACK_ON'})
                     }
-                    mapDispatch('initMapState', {mapStorage, mapId, mapSource, frameSelected});
+                    mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
                     redraw();
                     break;
                 }
