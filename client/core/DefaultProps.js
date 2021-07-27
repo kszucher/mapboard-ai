@@ -33,6 +33,10 @@ export let nodeProps = {
         d: [],
         s: [],
         c: [[]],
+        // mapVisualizeDiv
+        divId: '',
+        // mapVisualizeSvg
+        svgId: ''
     },
     saveOptional: {
         contentType: 'text',
@@ -76,10 +80,6 @@ export let nodeProps = {
         contentH: 0,
         // mapTaskCalc
         taskStatusInherited: 0,
-        // mapVisualizeDiv
-        divId: '',
-        // mapVisualizeSvg
-        svgId: '',
     },
     saveNeverInitAlways: {
         // mapChain
