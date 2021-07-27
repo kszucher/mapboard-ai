@@ -24,8 +24,8 @@ export function Workspace() {
                 <Commands/>
                 <Breadcrumbs/>
                 <Controls/>
-                {paletteVisible && <Palette/>}
-                {playbackEditorVisible && <PlaybackEditor/>}
+                {paletteVisible===1 && <Palette/>}
+                {playbackEditorVisible===1 && <PlaybackEditor/>}
             </MuiThemeProvider>
         </div>
     )
