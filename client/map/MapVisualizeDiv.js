@@ -80,7 +80,9 @@ export const mapVisualizeDiv = {
             let div;
             if (!mapDivData.hasOwnProperty(cm.divId) ||
                 (mapDivData.hasOwnProperty(cm.divId) && mapDivData[cm.divId].keepHash === keepHash)) {
-                cm.divId = 'div' + genHash(8);
+                if (cm.divId === '') {
+                    cm.divId = 'div' + genHash(8);
+                }
                 mapDivData[cm.divId] = {
                     keepHash: '',
                     styleData: {},
