@@ -45,7 +45,7 @@ app.post('/feta', type, async function (req, res) {
     res.json(sf2c)
 });
 
-app.use('/file', express.static(path.join(__dirname, '../uploads')));
+// app.use('/file', express.static(path.join(__dirname, '../uploads')));
 app.use(cors());
 app.post('/beta', function (req, res) {
     let inputStream =       [];
