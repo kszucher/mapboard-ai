@@ -40,7 +40,7 @@ export const pasteDispatch = () => {
                             formData.append('upl', image, 'image.png');
                             let address = process.env.NODE_ENV === 'development' ?
                                 'http://127.0.0.1:8082/feta' :
-                                'https://mindboard.io/feta';
+                                'https://mapboard-server.herokuapp.com/feta';
                             fetch(address, {method: 'post', body: formData}).then(response =>
                                 response.json().then(response => {
                                         push();

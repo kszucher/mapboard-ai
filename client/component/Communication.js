@@ -29,7 +29,7 @@ export function Communication() {
         waitingForServer = 1;
         let myUrl = process.env.NODE_ENV === 'development'
             ? "http://127.0.0.1:8082/beta"
-            : "https://mindboard.io/beta";
+            : "https://mapboard-server.herokuapp.com/beta";
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
