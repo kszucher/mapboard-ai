@@ -34,8 +34,7 @@
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publishToHeroku": "cd ../ && git subtree push --prefix client https://git.heroku.com/mapboard-client.git master || (exit 0)",
-    "build": "webpack --config=webpack.config.js",
-    "heroku-postbuild": "echo Skip build on Heroku"
+    "build": "webpack --config=webpack.config.js --mode production"
   },
   "keywords": []
 }
