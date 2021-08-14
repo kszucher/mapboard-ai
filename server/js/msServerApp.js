@@ -82,7 +82,7 @@ MongoClient.connect(uri, {
         console.log(err);
     } else {
         console.log('connected');
-        db = client.db("app_dev");
+        db = client.db(process.env.MONGO_TARGET_DB || "app_dev");
         collectionUsers = db.collection('users');
         collectionMaps = db.collection('maps');
         app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')});
