@@ -85,7 +85,7 @@ MongoClient.connect(uri, {
         db = client.db("app_dev");
         collectionUsers = db.collection('users');
         collectionMaps = db.collection('maps');
-        app.listen(8082, function () {console.log('CORS-enabled web server listening on port 8082')});
+        app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 
         hb = MongoHeartbeat(db, {
             interval: 5000, //defaults to 5000 ms,
