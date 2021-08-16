@@ -8,6 +8,7 @@ import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
+import FontFaceObserver from 'fontfaceobserver'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
@@ -15,6 +16,16 @@ export function MapComponent() {
     const [state, dispatch] = useContext(Context);
 
     useEffect(() => {
+        var font = new FontFaceObserver('Roboto', {
+            weight: 400
+        });
+
+        font.load().then(function () {
+            console.log('Font is available');
+        }, function () {
+            console.log('Font is not available');
+        });
+
         window.addEventListener('resize',       resize);
         window.addEventListener('popstate',     popstate);
         window.addEventListener('dblclick',     dblclick);
