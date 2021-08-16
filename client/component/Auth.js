@@ -98,7 +98,7 @@ export default function Auth() {
             style={{position: 'relative', left: '50%', transform: 'translate(-50%)', top: 96, width: 48*8,
                 flexDirection: 'column', alignItems: 'center', display: 'inline-flex', flexWrap: 'wrap', gap: 16,
                 backgroundColor: '#fbfafc', padding: 20, border: "1px solid #fbfafc", borderRadius: '16px' }}>
-            <Typography component="h1" variant="h5">MindBoard</Typography>
+            <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
             <StyledButtonGroup value={mainTabValues[mainTabValue]} valueList={mainTabValues} action={switchMainMode}/>
             {mainTabValue===1 &&
@@ -132,8 +132,8 @@ export default function Auth() {
             </Button>
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
-                <Link color="inherit" href="http://mindboard.io/">
-                    MindBoard
+                <Link color="inherit" href="http://mapboard.io/">
+                    MapBoard
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
