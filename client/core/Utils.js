@@ -90,46 +90,35 @@ export function transpose(array2d) {
 }
 
 export function getTextDim(innerHTML, fontSize) {
-
     let tmpDiv = document.createElement('div');
     tmpDiv.id = "Test";
     tmpDiv.innerHTML = innerHTML;
     page.appendChild(tmpDiv);
-
     var test = document.getElementById("Test");
     test.style.fontFamily = 'Roboto';
     test.style.fontSize = fontSize + 'px';
     var height = test.clientHeight;
     var width = test.clientWidth;
-
     var element = document.getElementById("Test");
     element.parentNode.removeChild(element);
-
     if (width === 0) width = 14;
-
     return [width, height];
 }
 
 export function getEquationDim (content) {
-
     let str = katex.renderToString(getLatexString(content), {throwOnError: false});
-
     let tmpDiv = document.createElement('TTT');
     tmpDiv.id = "Test";
     tmpDiv.style.fontFamily = 'Roboto';
     tmpDiv.style.fontSize = 14 + 'px';
     tmpDiv.innerHTML = str;
-
     page.appendChild(tmpDiv);
-
     let dim = {
         w: tmpDiv.childNodes[0].offsetWidth,
         h: tmpDiv.childNodes[0].offsetHeight,
     };
-
     var element = document.getElementById("Test");
     element.parentNode.removeChild(element);
-
     return dim;
 }
 
