@@ -346,7 +346,6 @@ async function sendResponse(c2s) {
                             let frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
                                 s2c = {cmd: 'deleteFrameFail'};
-                                // TODO: going back to pure data mode and opening the BASE map
                             } else {
                                 frameLen = frameLen - 1;
                                 await collectionMaps.updateOne({_id: mapId}, [{
@@ -359,8 +358,15 @@ async function sendResponse(c2s) {
                                         }
                                     }
                                 }]);
-                                let mapSource = 'dataPlayback';
-                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                let mapSource;
+                                let mapStorage;
+                                if (frameLen === 0) {
+                                    mapSource = 'data';
+                                    mapStorage = await getMapData(mapId);
+                                } else {
+                                    mapSource = 'dataPlayback';
+                                    mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                }
                                 s2c = {cmd: 'openMapSuccess', payload: {mapId, mapSource, mapStorage, frameSelected, frameLen}};
                             }
                             break;
