@@ -173,8 +173,9 @@ async function sendResponse(c2s) {
                 } else if (currUser.activationStatus === 'awaitingConfirmation') {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
-                    if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs',
-                        'createMapInMap', 'createMapInTab', 'saveMap', 'importFrame', 'openFrame', 'duplicateFrame'].includes(c2s.serverCmd)) {
+                    if (c2s.serverPayload.hasOwnProperty('mapIdOut') &&
+                        c2s.serverPayload.hasOwnProperty('mapSourceOut') &&
+                        c2s.serverPayload.hasOwnProperty('mapStorageOut')) {
                         const {mapIdOut, mapSourceOut, mapStorageOut} = c2s.serverPayload;
                         if (mapSourceOut === 'data') {
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
