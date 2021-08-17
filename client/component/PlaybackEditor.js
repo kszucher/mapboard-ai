@@ -1,11 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Context} from "../core/Store";
 import StyledButton from "../component-styled/StyledButton";
-import {List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import {Edit} from "@material-ui/icons";
+import {List, ListItem, ListItemText} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function PlaybackEditor () {
@@ -35,15 +31,15 @@ export function PlaybackEditor () {
 
     useEffect(() => {
         if (serverResponse.payload?.hasOwnProperty('frameLen')) {
-            setFrameLen(serverResponse.payload.frameLen)
+            setFrameLen(serverResponse.payload.frameLen);
+            console.log(serverResponse.payload.frameLen)
         }
         if (serverResponse.payload?.hasOwnProperty('frameSelected')) {
-            setFrameSelection([serverResponse.payload.frameSelected])
+            setFrameSelection([serverResponse.payload.frameSelected]);
         }
     }, [serverResponseCntr])
 
     const xWidth = 192;
-    // const yWidth = 300;
 
     return (
         <div style={{
@@ -61,21 +57,13 @@ export function PlaybackEditor () {
                         onClick={_=>openFrame(idx)}
                         selected={frameSelection.includes(idx)} >
                         <ListItemText primary={`frame ${idx}`} secondary={1 === 0 ? 'Secondary text' : null}/>
-                        {/*<ListItemSecondaryAction>*/}
-                        {/*    <IconButton edge="end" aria-label="delete">*/}
-                        {/*        <EditIcon />*/}
-                        {/*    </IconButton>*/}
-                        {/*    <IconButton edge="end" aria-label="delete">*/}
-                        {/*        <DeleteIcon />*/}
-                        {/*    </IconButton>*/}
-                        {/*</ListItemSecondaryAction>*/}
                     </ListItem>
                 ))}
             </List>
 
-            {frameSelection.length > 0 &&
+            {frameSelection.length > 0 && frameLen > 0 &&
             <StyledButtonGroup size="small" action={deleteFrame} value={''} valueList={['delete frame']}/>}
-            {frameSelection.length > 0 &&
+            {frameSelection.length > 0 && frameLen > 0 &&
             <StyledButtonGroup size="small" action={duplicateFrame} value={''} valueList={['duplicate frame']}/>}
 
             <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
