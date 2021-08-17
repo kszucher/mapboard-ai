@@ -188,12 +188,10 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'signInSuccess'};
                             break;
                         }
-                        case 'openMapFromTabHistory': {
-                            let {_id, tabMapIdList, tabMapSelected} = currUser;
+                        case 'openMapFromHistory': {
+                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
                             let tabMapNameList = await getMapNameList(tabMapIdList);
-                            let mapId = tabMapIdList[tabMapSelected];
-                            let breadcrumbMapIdList = [mapId];
-                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
+                            let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
                             let mapSource = 'data';
                             let mapStorage = await getMapData(mapId);

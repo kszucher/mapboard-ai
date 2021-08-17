@@ -73,7 +73,7 @@ export function Communication() {
                 }
                 case 'signInSuccess': {
                     initDomData();
-                    dispatch({type: 'OPEN_MAP_FROM_TAB_HISTORY'});
+                    dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
                     break;
                 }
                 case 'signInFail': {

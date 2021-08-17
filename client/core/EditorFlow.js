@@ -51,36 +51,36 @@ const mapValues = (stringArray, valueArray, conditionValue) => {
 const EditorReducer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
-        case 'RESET_STATE':                     return JSON.parse(InitEditorState)
-        case 'SERVER_RESPONSE':                 return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
-        case 'SERVER_RESPONSE_TO_USER':         return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
-        case 'SIGN_IN':                         return {...state, ...createServerAction(state, 'signIn')}
-        case 'SIGN_UP_STEP_1':                  return {...state, ...createServerAction(state, 'signUpStep1', payload)}
-        case 'SIGN_UP_STEP_2':                  return {...state, ...createServerAction(state, 'signUpStep2', payload)}
-        case 'OPEN_MAP_FROM_TAB_HISTORY':       return {...state, ...createServerAction(state, 'openMapFromTabHistory'), isLoggedIn: true}
-        case 'OPEN_MAP_FROM_TAB':               return {...state, ...createServerAction(state, 'openMapFromTab',             {...payload, ...getMapStuff()})}
-        case 'OPEN_MAP_FROM_MAP':               return {...state, ...createServerAction(state, 'openMapFromMap',             {...payload, ...getMapStuff()})}
-        case 'OPEN_MAP_FROM_BREADCRUMBS':       return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs',     {...payload, ...getMapStuff()})}
-        case 'SAVE_MAP':                        return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStuff()})}
-        case 'CREATE_MAP_IN_MAP':               return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStuff()})}
-        case 'CREATE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStuff()})}
-        case 'REMOVE_MAP_IN_TAB':               return {...state, ...createServerAction(state, 'removeMapInTab')}
-        case 'MOVE_UP_MAP_IN_TAB':              return {...state, ...createServerAction(state, 'moveUpMapInTab')}
-        case 'MOVE_DOWN_MAP_IN_TAB':            return {...state, ...createServerAction(state, 'moveDownMapInTab')}
-        case 'MOVE_MAP_TO_SUBMAP':              return state
-        case 'MOVE_SUBMAP_TO_MAP':              return state
-        case 'MOVE_TAB_TO_SUBMAP':              return state
-        case 'MOVE_SUBMAP_TO_TAB':              return state
-        case 'OPEN_PALETTE':                    return {...state, formatMode: payload, paletteVisible: 1}
-        case 'CLOSE_PALETTE':                   return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':            return {...state, ...createServerAction(state, 'getFrameLen',                {...payload, ...getMapId()}), playbackEditorVisible: 1}
-        case 'OPEN_FRAME':                      return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapStuff()})}
-        case 'IMPORT_FRAME':                    return {...state, ...createServerAction(state, 'importFrame',                {...payload, ...getMapStuff()})}
-        case 'DELETE_FRAME':                    return {...state, ...createServerAction(state, 'deleteFrame',                {...payload, ...getMapId()})}
-        case 'DUPLICATE_FRAME':                 return {...state, ...createServerAction(state, 'duplicateFrame',             {...payload, ...getMapStuff()})}
-        case 'CLOSE_PLAYBACK_EDITOR':           return {...state, /*TODO open*/ playbackEditorVisible: 0, isPlayback: false}
-        case 'SET_IS_PLAYBACK_ON':              return {...state, isPlayback: true}
-        case 'SET_IS_PLAYBACK_OFF':             return {...state, isPlayback: false}
+        case 'RESET_STATE':               return JSON.parse(InitEditorState)
+        case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
+        case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
+        case 'SIGN_IN':                   return {...state, ...createServerAction(state, 'signIn')}
+        case 'SIGN_UP_STEP_1':            return {...state, ...createServerAction(state, 'signUpStep1', payload)}
+        case 'SIGN_UP_STEP_2':            return {...state, ...createServerAction(state, 'signUpStep2', payload)}
+        case 'OPEN_MAP_FROM_HISTORY':     return {...state, ...createServerAction(state, 'openMapFromHistory'), isLoggedIn: true}
+        case 'OPEN_MAP_FROM_TAB':         return {...state, ...createServerAction(state, 'openMapFromTab',             {...payload, ...getMapStuff()})}
+        case 'OPEN_MAP_FROM_MAP':         return {...state, ...createServerAction(state, 'openMapFromMap',             {...payload, ...getMapStuff()})}
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state, ...createServerAction(state, 'openMapFromBreadcrumbs',     {...payload, ...getMapStuff()})}
+        case 'SAVE_MAP':                  return {...state, ...createServerAction(state, 'saveMap',                    {...payload, ...getMapStuff()})}
+        case 'CREATE_MAP_IN_MAP':         return {...state, ...createServerAction(state, 'createMapInMap',             {...payload, ...getMapStuff()})}
+        case 'CREATE_MAP_IN_TAB':         return {...state, ...createServerAction(state, 'createMapInTab',             {...payload, ...getMapStuff()})}
+        case 'REMOVE_MAP_IN_TAB':         return {...state, ...createServerAction(state, 'removeMapInTab')}
+        case 'MOVE_UP_MAP_IN_TAB':        return {...state, ...createServerAction(state, 'moveUpMapInTab')}
+        case 'MOVE_DOWN_MAP_IN_TAB':      return {...state, ...createServerAction(state, 'moveDownMapInTab')}
+        case 'MOVE_MAP_TO_SUBMAP':        return state
+        case 'MOVE_SUBMAP_TO_MAP':        return state
+        case 'MOVE_TAB_TO_SUBMAP':        return state
+        case 'MOVE_SUBMAP_TO_TAB':        return state
+        case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
+        case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
+        case 'OPEN_PLAYBACK_EDITOR':      return {...state, ...createServerAction(state, 'getFrameLen',                {...payload, ...getMapId()}), playbackEditorVisible: 1}
+        case 'OPEN_FRAME':                return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapStuff()})}
+        case 'IMPORT_FRAME':              return {...state, ...createServerAction(state, 'importFrame',                {...payload, ...getMapStuff()})}
+        case 'DELETE_FRAME':              return {...state, ...createServerAction(state, 'deleteFrame',                {...payload, ...getMapId()})}
+        case 'DUPLICATE_FRAME':           return {...state, ...createServerAction(state, 'duplicateFrame',             {...payload, ...getMapStuff()})}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, ...createServerAction(state, 'openMapFromHistory',         {...payload, ...getMapStuff()}), playbackEditorVisible: 0, isPlayback: false}
+        case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
+        case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
