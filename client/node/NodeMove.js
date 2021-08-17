@@ -136,7 +136,10 @@ export function nodeMove(sc, target, key, mode) {
             clipboard = [];
             for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(structSelectedPathList[i]);
-                clipboard.splice(0, 0, copy(currRef));
+                let currRefCopy = copy(currRef);
+                currRefCopy.divId = '';
+                currRefCopy.svgId = '';
+                clipboard.splice(0, 0, currRefCopy);
             }
 
             navigator.permissions.query({name: "clipboard-write"}).then(result => {
