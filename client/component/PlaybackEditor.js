@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Context} from "../core/Store";
 import StyledButton from "../component-styled/StyledButton";
-import {List, ListItem, ListItemText} from "@material-ui/core";
+import {List, ListItem, ListItemText, Slider} from "@material-ui/core";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function PlaybackEditor () {
@@ -48,17 +48,32 @@ export function PlaybackEditor () {
 
             <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['import frame']}/>
 
-            <List dense={true}>
-                {[...Array(frameLen).keys()].map((el, idx) => (
-                    <ListItem
-                        button
-                        key={idx}
-                        onClick={_=>openFrame(idx)}
-                        selected={frameSelection.includes(idx)} >
-                        <ListItemText primary={`frame ${idx}`} secondary={1 === 0 ? 'Secondary text' : null}/>
-                    </ListItem>
-                ))}
-            </List>
+            {/*<List dense={true}>*/}
+            {/*    {[...Array(frameLen).keys()].map((el, idx) => (*/}
+            {/*        <ListItem*/}
+            {/*            button*/}
+            {/*            key={idx}*/}
+            {/*            onClick={_=>openFrame(idx)}*/}
+            {/*            selected={frameSelection.includes(idx)} >*/}
+            {/*            <ListItemText primary={`frame ${idx}`} secondary={1 === 0 ? 'Secondary text' : null}/>*/}
+            {/*        </ListItem>*/}
+            {/*    ))}*/}
+            {/*</List>*/}
+
+            {frameLen > 0 &&
+            < Slider
+                defaultValue={1}
+                // getAriaValueText={'cica'}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                step={1}
+                marks
+                min={1}
+                max={frameLen}
+                onChangeCommitted={(event, value) => openFrame(value - 1)}
+            />}
+
+
 
             {frameSelection.length > 0 && frameLen > 0 &&
             <StyledButtonGroup size="small" action={deleteFrame} value={''} valueList={['delete frame']}/>}
