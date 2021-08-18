@@ -42,47 +42,42 @@ export function PlaybackEditor () {
 
     return (
         <div style={{
-            position: 'fixed', top: 216+96+48, right: 0, width: xWidth, backgroundColor: 'rgba(251,250,252,1)',
-            paddingTop: 12, paddingLeft: 12, paddingRight: 12, paddingBottom: 12,
-            borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
+            position: 'fixed',
+            left: '50%',
+            transform: 'translate(-50%)',
+            bottom: 0,
+            width: 1366 - 2*20,
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 16,
+            padding: 20,
 
-            <StyledButtonGroup size="small" action={importFrame} value={''} valueList={['import frame']}/>
-
-            {/*<List dense={true}>*/}
-            {/*    {[...Array(frameLen).keys()].map((el, idx) => (*/}
-            {/*        <ListItem*/}
-            {/*            button*/}
-            {/*            key={idx}*/}
-            {/*            onClick={_=>openFrame(idx)}*/}
-            {/*            selected={frameSelection.includes(idx)} >*/}
-            {/*            <ListItemText primary={`frame ${idx}`} secondary={1 === 0 ? 'Secondary text' : null}/>*/}
-            {/*        </ListItem>*/}
-            {/*    ))}*/}
-            {/*</List>*/}
-
+            backgroundColor: '#fbfafc',
+            borderTopLeftRadius: '16px',
+            borderTopRightRadius: '16px',
+            borderWidth: '2px',
+            borderStyle: 'solid',
+            borderColor: '#9040b8',
+            borderBottom: 0
+        }}>
             {frameLen > 0 &&
             < Slider
                 defaultValue={1}
                 // getAriaValueText={'cica'}
                 aria-labelledby="discrete-slider"
-                valueLabelDisplay="auto"
+                valueLabelDisplay="on"
                 step={1}
                 marks
                 min={1}
                 max={frameLen}
                 onChangeCommitted={(event, value) => openFrame(value - 1)}
-            />}
-
-
-
-            {frameSelection.length > 0 && frameLen > 0 &&
-            <StyledButtonGroup size="small" action={deleteFrame} value={''} valueList={['delete frame']}/>}
-            {frameSelection.length > 0 && frameLen > 0 &&
-            <StyledButtonGroup size="small" action={duplicateFrame} value={''} valueList={['duplicate frame']}/>}
-
-            <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
-                <StyledButton name={'Close'} action={closePlaybackEditor}/>
-            </div>
+            />
+            }
+            <StyledButtonGroup action={importFrame} value={''} valueList={['import frame']}/>
+            <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete frame']}/>
+            <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={duplicateFrame} value={''} valueList={['duplicate frame']}/>
+            <StyledButton name={'Close'} action={closePlaybackEditor}/>
         </div>
     );
 }

@@ -15,11 +15,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StyledButtonGroup (arg) {
-    const {action, value, valueList, size} = arg;
+    const {action, value, valueList, size, disabled} = arg;
     const classes = useStyles();
     return (
         <div  className={classes.root}>
-            <ButtonGroup size={size} variant="text" color="primary" aria-label="text primary button group">
+            <ButtonGroup
+                disabled={disabled || false}
+                size={size || 'small'}
+                variant="text"
+                color="primary"
+                aria-label="text primary button group"
+            >
                 {valueList.map((name, index) =>
                     <Button
                         style ={{backgroundColor: value === valueList[index]? '#eeeaf2':''}}
