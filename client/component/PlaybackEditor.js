@@ -10,7 +10,9 @@ export function PlaybackEditor () {
     const [frameLen, setFrameLen] = useState(0)
     const [frameSelection, setFrameSelection] = useState([])
 
-    const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
+    const importFrame = _ => {
+        dispatch({type: 'IMPORT_FRAME'})
+    }
     const openFrame = (idx) => {
         let frameSelected = idx;
         dispatch({type: 'OPEN_FRAME', payload: {frameSelected}})
@@ -27,7 +29,9 @@ export function PlaybackEditor () {
         let frameSelected = frameSelectedOut + 1;
         dispatch({type: 'DUPLICATE_FRAME', payload: {frameSelectedOut, frameSelected}})
     }
-    const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
+    const closePlaybackEditor = _ => {
+        dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
+    }
 
     useEffect(() => {
         if (serverResponse.payload?.hasOwnProperty('frameLen')) {
@@ -64,7 +68,6 @@ export function PlaybackEditor () {
             {frameLen > 0 &&
             < Slider
                 defaultValue={1}
-                // getAriaValueText={'cica'}
                 aria-labelledby="discrete-slider"
                 valueLabelDisplay="on"
                 step={1}

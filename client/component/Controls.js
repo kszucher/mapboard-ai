@@ -26,8 +26,14 @@ export function Controls () {
     const cmdResetAll =          e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
-    const cmdSubmapToggle =      e => {let {lastPath} = selectionState; dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}})}
-    const cmdPlaybackEditor =    e => dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
+    const cmdSubmapToggle = e => {
+        let {lastPath} = selectionState;
+        dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}})
+    }
+    const cmdPlaybackEditor = e => {
+        dispatch({type: 'OPEN_PLAYBACK_EDITOR'});
+        dispatch({type: 'OPEN_FRAME', payload: {frameSelected: 0}});
+    }
 
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
