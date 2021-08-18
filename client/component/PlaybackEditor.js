@@ -32,7 +32,6 @@ export function PlaybackEditor () {
     useEffect(() => {
         if (serverResponse.payload?.hasOwnProperty('frameLen')) {
             setFrameLen(serverResponse.payload.frameLen);
-            console.log(serverResponse.payload.frameLen)
         }
         if (serverResponse.payload?.hasOwnProperty('frameSelected')) {
             setFrameSelection([serverResponse.payload.frameSelected]);
