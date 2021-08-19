@@ -131,7 +131,7 @@ function renderContent (contentType, content) {
         case 'equation':
             return katex.renderToString(getLatexString(content), {throwOnError: false});
         case 'image':
-            let imageLink = 'https://mapboard-server.herokuapp.com/file/';
+            let imageLink = 'https://mapboard.io/file/';
             return '<img src="' + imageLink + content + '" alt="" id="img">';
     }
 }

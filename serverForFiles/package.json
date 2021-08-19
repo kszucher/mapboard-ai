@@ -1,0 +1,9 @@
+{
+  "name": "mb-server-for-files",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.17.1",
+    "image-size": "^1.0.0",
+    "multer": "^1.4.3"
+  }
+}
