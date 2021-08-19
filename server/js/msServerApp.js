@@ -1,10 +1,6 @@
 let express = require('express');
 let cors = require('cors');
-var multer = require('multer');
-var path = require('path');
 let app = express();
-var { promisify } = require('util');
-var sizeOf = promisify( require('image-size'));
 var MongoHeartbeat = require('mongo-heartbeat');
 const nodemailer = require("nodemailer");
 "use strict";
@@ -19,33 +15,10 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '../uploads/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
-    }
-});
-
-var upload = multer({ storage: storage });
-var type = upload.single('upl');
-
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 
-app.post('/feta', type, async function (req, res) {
-    let dimensions = await sizeOf('../uploads/' + req.file.filename);
-    let sf2c = {
-        cmd: 'imageSaveSuccess',
-        imageId: req.file.filename,
-        imageSize: dimensions
-    };
-    res.json(sf2c)
-});
-
-// app.use('/file', express.static(path.join(__dirname, '../uploads')));
 app.use(cors());
 app.post('/beta', function (req, res) {
     let inputStream =       [];
