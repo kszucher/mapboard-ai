@@ -37,6 +37,8 @@ export function Controls () {
             case 'import': dispatch ({type: 'IMPORT_FRAME'}); break;
             case 'duplicate': dispatch ({type: 'DUPLICATE_FRAME'}); break;
             case 'delete': dispatch ({type: 'DELETE_FRAME'}); break;
+            case 'prev': dispatch ({type: 'PREV_FRAME'}); break;
+            case 'next': dispatch ({type: 'NEXT_FRAME'}); break;
         }
     }
 
@@ -60,7 +62,10 @@ export function Controls () {
                                                                 value={''}
                                                                 valueList={['import', 'duplicate', 'delete']}
                                                                 valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>}
-
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}
+                                                                value={''}
+                                                                valueList={['prev', 'next']}
+                                                                valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
             </div>
         </div>
     );
