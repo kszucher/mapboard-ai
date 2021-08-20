@@ -64,25 +64,23 @@ const EditorReducer = (state, action) => {
         // ide gyűjteni a serv command-okat
     }
 
-
-
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(InitEditorState)
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
-        case 'SIGN_IN':                   return {...state, ...serv(state, 'signIn')}
-        case 'SIGN_UP_STEP_1':            return {...state, ...serv(state, 'signUpStep1', payload)}
-        case 'SIGN_UP_STEP_2':            return {...state, ...serv(state, 'signUpStep2', payload)}
-        case 'OPEN_MAP_FROM_HISTORY':     return {...state, ...serv(state, 'openMapFromHistory'), isLoggedIn: true}
-        case 'OPEN_MAP_FROM_TAB':         return {...state, ...serv(state, 'openMapFromTab',         {...payload, ...mapOut()})}
-        case 'OPEN_MAP_FROM_MAP':         return {...state, ...serv(state, 'openMapFromMap',         {...payload, ...mapOut()})}
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state, ...serv(state, 'openMapFromBreadcrumbs', {...payload, ...mapOut()})}
-        case 'SAVE_MAP':                  return {...state, ...serv(state, 'saveMap',                {...payload, ...mapOut()})}
-        case 'CREATE_MAP_IN_MAP':         return {...state, ...serv(state, 'createMapInMap',         {...payload, ...mapOut()})}
-        case 'CREATE_MAP_IN_TAB':         return {...state, ...serv(state, 'createMapInTab',         {...payload, ...mapOut()})}
-        case 'REMOVE_MAP_IN_TAB':         return {...state, ...serv(state, 'removeMapInTab')}
-        case 'MOVE_UP_MAP_IN_TAB':        return {...state, ...serv(state, 'moveUpMapInTab')}
-        case 'MOVE_DOWN_MAP_IN_TAB':      return {...state, ...serv(state, 'moveDownMapInTab')}
+        case 'SIGN_IN':                   return {...state,                                                 ...serv(state, 'signIn')}
+        case 'SIGN_UP_STEP_1':            return {...state,                                                 ...serv(state, 'signUpStep1', payload)}
+        case 'SIGN_UP_STEP_2':            return {...state,                                                 ...serv(state, 'signUpStep2', payload)}
+        case 'OPEN_MAP_FROM_HISTORY':     return {...state, isLoggedIn: true,                               ...serv(state, 'openMapFromHistory')}
+        case 'OPEN_MAP_FROM_TAB':         return {...state,                                                 ...serv(state, 'openMapFromTab',         {...payload, ...mapOut()})}
+        case 'OPEN_MAP_FROM_MAP':         return {...state,                                                 ...serv(state, 'openMapFromMap',         {...payload, ...mapOut()})}
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                                 ...serv(state, 'openMapFromBreadcrumbs', {...payload, ...mapOut()})}
+        case 'SAVE_MAP':                  return {...state,                                                 ...serv(state, 'saveMap',                {...payload, ...mapOut()})}
+        case 'CREATE_MAP_IN_MAP':         return {...state,                                                 ...serv(state, 'createMapInMap',         {...payload, ...mapOut()})}
+        case 'CREATE_MAP_IN_TAB':         return {...state,                                                 ...serv(state, 'createMapInTab',         {...payload, ...mapOut()})}
+        case 'REMOVE_MAP_IN_TAB':         return {...state,                                                 ...serv(state, 'removeMapInTab')}
+        case 'MOVE_UP_MAP_IN_TAB':        return {...state,                                                 ...serv(state, 'moveUpMapInTab')}
+        case 'MOVE_DOWN_MAP_IN_TAB':      return {...state,                                                 ...serv(state, 'moveDownMapInTab')}
         case 'MOVE_MAP_TO_SUBMAP':        return state
         case 'MOVE_SUBMAP_TO_MAP':        return state
         case 'MOVE_TAB_TO_SUBMAP':        return state
