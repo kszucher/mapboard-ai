@@ -36,18 +36,18 @@ export function Controls () {
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
-                {                            <StyledButtonGroup size="small" action={updateDensity}     value={density}     valueList={['small', 'large']}/>}
-                {                            <StyledButtonGroup size="small" action={updateAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
-                {                            <StyledButtonGroup size="small" action={updateFormatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdResetAll}       value={''}          valueList={['reset format']}/>}
-                {formatMode !== '' &&        <StyledButtonGroup size="small" action={cmdReset}          value={''}          valueList={['reset ' + formatMode]}/>}
-                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={updateLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
-                {formatMode === 'line' &&    <StyledButtonGroup size="small" action={updateLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
-                {formatMode === 'border' &&  <StyledButtonGroup size="small" action={updateBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
-                {formatMode === 'text' &&    <StyledButtonGroup size="small" action={updateFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdPlaybackEditor} value={''}          valueList={[`${playbackEditorVisible? 'close': 'open'} frame editor`]}/>}
+                {                            <StyledButtonGroup action={updateDensity}     value={density}     valueList={['small', 'large']}/>}
+                {                            <StyledButtonGroup action={updateAlignment}   value={alignment}   valueList={['adaptive', 'centered']}/>}
+                {                            <StyledButtonGroup action={updateFormatMode}  value={formatMode}  valueList={['line', 'border', 'fill', 'text']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdResetAll}       value={''}          valueList={['reset format']}/>}
+                {formatMode !== '' &&        <StyledButtonGroup action={cmdReset}          value={''}          valueList={['reset ' + formatMode]}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup action={updateLineWidth}   value={lineWidth}   valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'line' &&    <StyledButtonGroup action={updateLineType}    value={lineType}    valueList={['bezier', 'edge']}/>}
+                {formatMode === 'border' &&  <StyledButtonGroup action={updateBorderWidth} value={borderWidth} valueList={['w1', 'w2', 'w3']}/>}
+                {formatMode === 'text' &&    <StyledButtonGroup action={updateFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${playbackEditorVisible? 'close': 'open'} frame editor`]}/>}
             </div>
         </div>
     );
