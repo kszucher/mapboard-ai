@@ -303,12 +303,12 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'importFrame': {
-                            let {mapIdOut} = c2s.serverPayload;
+                            let {mapIdOut, frameSelected} = c2s.serverPayload;
                             mapIdOut = ObjectId(mapIdOut);
                             let mapStorageToCopy = await getMapData(mapIdOut);
                             await collectionMaps.updateOne({_id: mapIdOut}, {$push: {"dataPlayback": mapStorageToCopy}});
                             let frameLen = await getFrameLen(mapIdOut);
-                            s2c = {cmd: 'importFrameSuccess', payload: {frameLen}};
+                            s2c = {cmd: 'importFrameSuccess', payload: {frameLen, frameSelected}};
                             break;
                         }
                         case 'deleteFrame': {
@@ -338,7 +338,7 @@ async function sendResponse(c2s) {
                                     mapSource = 'dataPlayback';
                                     mapStorage = await getPlaybackMapData(mapId, frameSelected);
                                 }
-                                s2c = {cmd: 'openMapSuccess', payload: {mapId, mapSource, mapStorage, frameSelected, frameLen}};
+                                s2c = {cmd: 'openMapSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             }
                             break;
                         }
@@ -349,7 +349,7 @@ async function sendResponse(c2s) {
                             let mapSource = mapSourceOut;
                             let mapStorage = mapStorageOut;
                             let frameLen = await getFrameLen(mapId);
-                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapSource, mapStorage, frameSelected, frameLen}};
+                            s2c = {cmd: 'openMapSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             break;
                         }
                     }

@@ -14,17 +14,16 @@ export function PlaybackEditor () {
 
     const prevFrame = _ =>           dispatch({type: 'OPEN_FRAME', payload: {frameSelected: frameSelection[0] - 1}})
     const nextFrame = _ =>           dispatch({type: 'OPEN_FRAME', payload: {frameSelected: frameSelection[0] + 1}})
-    const importFrame = _ =>         dispatch({type: 'IMPORT_FRAME'})
+    const importFrame = _ =>         dispatch({type: 'IMPORT_FRAME', payload: {frameSelection: frameSelection[0]}})
     const openFrame = idx => {       dispatch({type: 'OPEN_FRAME', payload: {frameSelected: idx}})}
     const deleteFrame = _=>          dispatch({type: 'DELETE_FRAME', payload: {frameSelectedOut: frameSelection[0], frameSelected: frameSelection[0] > 0 ? frameSelection[0] - 1 : 0}})
     const duplicateFrame = _=>       dispatch({type: 'DUPLICATE_FRAME', payload: {frameSelectedOut: frameSelection[0], frameSelected: frameSelection[0] + 1}})
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
 
     useEffect(() => {
-        if (serverResponse.payload?.hasOwnProperty('frameLen')) {
+        if (serverResponse.payload?.hasOwnProperty('frameLen') &&
+            serverResponse.payload?.hasOwnProperty('frameSelected')) {
             setFrameLen(serverResponse.payload.frameLen);
-        }
-        if (serverResponse.payload?.hasOwnProperty('frameSelected')) {
             setFrameSelection([serverResponse.payload.frameSelected]);
         }
     }, [serverResponseCntr])
