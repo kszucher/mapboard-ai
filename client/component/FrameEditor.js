@@ -6,7 +6,7 @@ import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import Button from "@material-ui/core/Button";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 
-export function PlaybackEditor () {
+export function FrameEditor () {
     const [state, dispatch] = useContext(Context)
     const {serverResponse, serverResponseCntr} = state
     const [frameLen, setFrameLen] = useState(0)

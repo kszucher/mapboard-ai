@@ -9,7 +9,7 @@ import {Controls} from "./Controls";
 import {Palette} from "./Palette";
 import {Commands} from "./Commands";
 import {muiTheme} from "../component-styled/Theme";
-import {PlaybackEditor} from "./PlaybackEditor";
+import {FrameEditor} from "./FrameEditor";
 import {Context} from "../core/Store";
 
 export function Workspace() {
@@ -25,7 +25,7 @@ export function Workspace() {
                 <Breadcrumbs/>
                 <Controls/>
                 {paletteVisible===1 && <Palette/>}
-                {playbackEditorVisible===1 && <PlaybackEditor/>}
+                {playbackEditorVisible===1 && <FrameEditor/>}
             </MuiThemeProvider>
         </div>
     )
