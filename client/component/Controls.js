@@ -7,7 +7,7 @@ import {selectionState} from "../core/SelectionFlow";
 
 export function Controls () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode} = state
+    const {formatMode, playbackEditorVisible} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -28,7 +28,7 @@ export function Controls () {
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
     const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}})
     const cmdPlaybackEditor =    e => {
-        state.playbackEditorVisible
+        playbackEditorVisible
             ? dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
             : dispatch({type: 'OPEN_PLAYBACK_EDITOR', payload: {frameSelected: 0}})
     }
@@ -47,7 +47,7 @@ export function Controls () {
                 {formatMode === 'text' &&    <StyledButtonGroup size="small" action={updateFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
                 {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
-                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdPlaybackEditor} value={''}          valueList={['playback editor']}/>}
+                {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdPlaybackEditor} value={''}          valueList={[`${playbackEditorVisible? 'close': 'open'} frame editor`]}/>}
             </div>
         </div>
     );

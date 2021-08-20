@@ -34,9 +34,9 @@ export function FrameEditor () {
         }}>
             <div style={{display: 'flex', flexDirection: 'column'}}>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <StyledButtonGroup action={importFrame} value={''} valueList={['import frame']}/>
-                    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete frame']}/>
-                    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={duplicateFrame} value={''} valueList={['duplicate frame']}/>
+                    <StyledButtonGroup action={importFrame} value={''} valueList={['import']}/>
+                    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete']}/>
+                    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={duplicateFrame} value={''} valueList={['duplicate']}/>
                 </div>
                 {frameLen > 0 &&
                 <MobileStepper
