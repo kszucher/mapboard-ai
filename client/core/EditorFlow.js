@@ -13,7 +13,7 @@ export const editorState = {
     colorFill: '',
     colorText: '',
     paletteVisible: 0,
-    playbackEditorVisible: 0,
+    frameEditorVisible: 0,
     isPlayback: false,
     frameLen: 0,
     frameSelection: [],
@@ -89,8 +89,8 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':        return state
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {...state,  playbackEditorVisible: 1, isPlayback: true,  ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: 0                                                             })}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {...state,  playbackEditorVisible: 0, isPlayback: false, ...serv( state, 'openMapFromHistory', { ...mapOut()                                                                                                        })}
+        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true,      ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: 0                                                             })}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false,     ...serv( state, 'openMapFromHistory', { ...mapOut()                                                                                                        })}
         case 'OPEN_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: state.frameSelection[0]                                       })}
         case 'IMPORT_FRAME':              return {...state,                                               ...serv( state, 'importFrame', {        ...mapOut(),                          frameSelected: state.frameSelection[0]                                       })}
         case 'DUPLICATE_FRAME':           return {...state,                                               ...serv( state, 'duplicateFrame', {     ...mapOut(),   ...getFrameOut(state), frameSelected: state.frameSelection[0] + 1                                   })}

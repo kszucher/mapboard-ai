@@ -7,7 +7,7 @@ import {selectionState} from "../core/SelectionFlow";
 
 export function Controls () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, playbackEditorVisible} = state
+    const {formatMode, frameEditorVisible} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -28,7 +28,7 @@ export function Controls () {
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
     const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}})
     const cmdPlaybackEditor = e => {
-        playbackEditorVisible
+        frameEditorVisible
             ? dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
             : dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
     }
@@ -55,9 +55,8 @@ export function Controls () {
                 {formatMode === 'text' &&    <StyledButtonGroup action={updateFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
-                {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${playbackEditorVisible? 'close': 'open'} frame editor`]}/>}
-
-                {playbackEditorVisible=== 1 &&    <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'duplicate', 'delete']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${frameEditorVisible? 'close': 'open'} frame editor`]}/>}
+                {frameEditorVisible=== 1 &&    <StyledButtonGroup action={cmdFrameOp}   value={''}          valueList={['import', 'duplicate', 'delete']}/>}
 
                 {/*    <StyledButtonGroup action={importFrame} value={''} valueList={['import']}/>*/}
                 {/*    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete']}/>*/}

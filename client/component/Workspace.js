@@ -14,7 +14,7 @@ import {Context} from "../core/Store";
 
 export function Workspace() {
     const [state, dispatch] = useContext(Context);
-    const {paletteVisible, playbackEditorVisible} = state;
+    const {paletteVisible, frameEditorVisible} = state;
     return (
         <div id="page">
             <MapComponent/>
@@ -25,7 +25,7 @@ export function Workspace() {
                 <Breadcrumbs/>
                 <Controls/>
                 {paletteVisible===1 && <Palette/>}
-                {playbackEditorVisible===1 && <FrameEditor/>}
+                {frameEditorVisible===1 && <FrameEditor/>}
             </MuiThemeProvider>
         </div>
     )
