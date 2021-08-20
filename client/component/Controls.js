@@ -1,9 +1,11 @@
 import React, {useContext, useState} from 'react';
-import {Context} from "../core/Store";
+import {Context, remoteGetState} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {checkPop, mapref, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {selectionState} from "../core/SelectionFlow";
+
+let namedTimer;
 
 export function Controls () {
     const [state, dispatch] = useContext(Context)
@@ -27,18 +29,21 @@ export function Controls () {
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
     const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}})
-    const cmdPlaybackEditor = e => {
-        frameEditorVisible
-            ? dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
-            : dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
-    }
     const cmdFrameOp = e => {
         switch (e) {
-            case 'import': dispatch ({type: 'IMPORT_FRAME'}); break;
-            case 'duplicate': dispatch ({type: 'DUPLICATE_FRAME'}); break;
-            case 'delete': dispatch ({type: 'DELETE_FRAME'}); break;
-            case 'prev': dispatch ({type: 'PREV_FRAME'}); break;
-            case 'next': dispatch ({type: 'NEXT_FRAME'}); break;
+            case 'frame editor': dispatch({type: 'OPEN_PLAYBACK_EDITOR'}); break;
+            case 'import':       dispatch({type: 'IMPORT_FRAME'}); break;
+            case 'duplicate':    dispatch({type: 'DUPLICATE_FRAME'}); break;
+            case 'delete':       dispatch({type: 'DELETE_FRAME'}); break;
+            case 'prev':         dispatch({type: 'PREV_FRAME'}); break;
+            case 'next':         dispatch({type: 'NEXT_FRAME'}); break;
+            case 'autoplay': {
+                namedTimer = setInterval(function() {
+                    dispatch({type: 'NEXT_FRAME_AUTOPLAY'})
+                }, 1000);
+                break;
+            }
+            case 'close':        dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
 
@@ -57,7 +62,7 @@ export function Controls () {
                 {formatMode === 'text' &&    <StyledButtonGroup action={updateFontSize}    value={fontSize}    valueList={['h1', 'h2', 'h3', 'h4', 't']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
-                {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${frameEditorVisible? 'close': 'open'} frame editor`]}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['frame editor']}/>}
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}
                                                                 value={''}
                                                                 valueList={['import', 'duplicate', 'delete']}
@@ -66,6 +71,8 @@ export function Controls () {
                                                                 value={''}
                                                                 valueList={['prev', 'next']}
                                                                 valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp} value={''} valueList={['autoplay']} />}
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp} value={''} valueList={['close']} />}
             </div>
         </div>
     );
