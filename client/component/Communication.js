@@ -108,5 +108,13 @@ export function Communication() {
         }
     }, [serverResponseCntr]);
 
+    // NEW PHILISOPHY...
+    useEffect(() => {
+        if (serverResponse.payload?.hasOwnProperty('frameLen') &&
+            serverResponse.payload?.hasOwnProperty('frameSelected')) {
+            dispatch({type: 'SET_FRAME_INFO', payload: serverResponse})
+        }
+    }, [serverResponseCntr])
+
     return null;
 }

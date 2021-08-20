@@ -27,11 +27,19 @@ export function Controls () {
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
     const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}})
-    const cmdPlaybackEditor =    e => {
+    const cmdPlaybackEditor = e => {
         playbackEditorVisible
             ? dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
-            : dispatch({type: 'OPEN_PLAYBACK_EDITOR', payload: {frameSelected: 0}})
+            : dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
     }
+    const cmdFrameOp = e => {
+        switch (e) {
+            // case 'import': dispatch ({type: 'IMPORT_FRAME'}); break;
+            // case 'delete': dispatch ({type: 'DELETE_FRAME'}); break;
+            // case 'duplicate': dispatch ({type: 'DUPLICATE_FRAME'}); break;
+        }
+    }
+
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
@@ -48,6 +56,13 @@ export function Controls () {
                 {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${playbackEditorVisible? 'close': 'open'} frame editor`]}/>}
+
+                {playbackEditorVisible=== true &&    <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'delete', 'duplicate']}/>}
+
+                {/*    <StyledButtonGroup action={importFrame} value={''} valueList={['import']}/>*/}
+                {/*    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete']}/>*/}
+                {/*    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={duplicateFrame} value={''} valueList={['duplicate']}/>*/}
+
             </div>
         </div>
     );
