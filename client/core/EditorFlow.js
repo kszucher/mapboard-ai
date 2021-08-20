@@ -73,12 +73,12 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':        return state
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {...state, playbackEditorVisible: 1, isPlayback: true}
+        case 'OPEN_PLAYBACK_EDITOR':      return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapStuff()}), playbackEditorVisible: 1, isPlayback: true}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, ...createServerAction(state, 'openMapFromHistory',         {...payload, ...getMapStuff()}), playbackEditorVisible: 0, isPlayback: false}
         case 'OPEN_FRAME':                return {...state, ...createServerAction(state, 'openFrame',                  {...payload, ...getMapStuff()})}
         case 'IMPORT_FRAME':              return {...state, ...createServerAction(state, 'importFrame',                {...payload, ...getMapStuff()})}
         case 'DELETE_FRAME':              return {...state, ...createServerAction(state, 'deleteFrame',                {...payload, ...getMapId()})}
         case 'DUPLICATE_FRAME':           return {...state, ...createServerAction(state, 'duplicateFrame',             {...payload, ...getMapStuff()})}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, ...createServerAction(state, 'openMapFromHistory',         {...payload, ...getMapStuff()}), playbackEditorVisible: 0, isPlayback: false}
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_NODE_PROPS': {

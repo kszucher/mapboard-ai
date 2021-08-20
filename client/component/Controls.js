@@ -26,14 +26,8 @@ export function Controls () {
     const cmdResetAll =          e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
-    const cmdSubmapToggle = e => {
-        let {lastPath} = selectionState;
-        dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath, newMapName: mapref(lastPath).content}})
-    }
-    const cmdPlaybackEditor = e => {
-        dispatch({type: 'OPEN_PLAYBACK_EDITOR'});
-        dispatch({type: 'OPEN_FRAME', payload: {frameSelected: 0}});
-    }
+    const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}})
+    const cmdPlaybackEditor =    e => dispatch({type: 'OPEN_PLAYBACK_EDITOR', payload: {frameSelected: 0}});
 
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
@@ -51,7 +45,6 @@ export function Controls () {
                 {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
                 {formatMode === '' &&        <StyledButtonGroup size="small" action={cmdPlaybackEditor} value={''}          valueList={['playback editor']}/>}
-
             </div>
         </div>
     );
