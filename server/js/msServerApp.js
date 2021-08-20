@@ -303,11 +303,12 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'importFrame': {
-                            let {mapIdOut, frameSelected} = c2s.serverPayload;
+                            let {mapIdOut} = c2s.serverPayload;
                             mapIdOut = ObjectId(mapIdOut);
                             let mapStorageToCopy = await getMapData(mapIdOut);
                             await collectionMaps.updateOne({_id: mapIdOut}, {$push: {"dataPlayback": mapStorageToCopy}});
                             let frameLen = await getFrameLen(mapIdOut);
+                            let frameSelected = frameLen - 1;
                             s2c = {cmd: 'importFrameSuccess', payload: {frameLen, frameSelected}};
                             break;
                         }
