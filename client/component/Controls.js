@@ -34,9 +34,9 @@ export function Controls () {
     }
     const cmdFrameOp = e => {
         switch (e) {
-            // case 'import': dispatch ({type: 'IMPORT_FRAME'}); break;
-            // case 'delete': dispatch ({type: 'DELETE_FRAME'}); break;
-            // case 'duplicate': dispatch ({type: 'DUPLICATE_FRAME'}); break;
+            case 'import': dispatch ({type: 'IMPORT_FRAME'}); break;
+            case 'duplicate': dispatch ({type: 'DUPLICATE_FRAME'}); break;
+            case 'delete': dispatch ({type: 'DELETE_FRAME'}); break;
         }
     }
 
@@ -57,7 +57,7 @@ export function Controls () {
                 {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${playbackEditorVisible? 'close': 'open'} frame editor`]}/>}
 
-                {playbackEditorVisible=== true &&    <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'delete', 'duplicate']}/>}
+                {playbackEditorVisible=== 1 &&    <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'duplicate', 'delete']}/>}
 
                 {/*    <StyledButtonGroup action={importFrame} value={''} valueList={['import']}/>*/}
                 {/*    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete']}/>*/}
