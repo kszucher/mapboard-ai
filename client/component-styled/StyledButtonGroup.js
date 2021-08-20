@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StyledButtonGroup (arg) {
-    const {action, value, valueList, size, disabled} = arg;
+    const {action, value, valueList, size, disabled, valueListDisabled} = arg;
     const classes = useStyles();
     return (
         <div  className={classes.root}>
@@ -28,6 +28,7 @@ export default function StyledButtonGroup (arg) {
             >
                 {valueList.map((name, index) =>
                     <Button
+                        disabled={valueListDisabled && valueListDisabled[index] || false}
                         style ={{backgroundColor: value === valueList[index]? '#eeeaf2':''}}
                         onClick={e=>action(valueList[index])}
                         key={index}>{name}

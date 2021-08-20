@@ -7,7 +7,7 @@ import {selectionState} from "../core/SelectionFlow";
 
 export function Controls () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible} = state
+    const {formatMode, frameEditorVisible, frameLen, frameSelection} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -56,11 +56,10 @@ export function Controls () {
                 {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdPlaybackEditor} value={''}          valueList={[`${frameEditorVisible? 'close': 'open'} frame editor`]}/>}
-                {frameEditorVisible=== 1 &&    <StyledButtonGroup action={cmdFrameOp}   value={''}          valueList={['import', 'duplicate', 'delete']}/>}
-
-                {/*    <StyledButtonGroup action={importFrame} value={''} valueList={['import']}/>*/}
-                {/*    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={deleteFrame} value={''} valueList={['delete']}/>*/}
-                {/*    <StyledButtonGroup disabled={!frameSelection.length || !frameLen} action={duplicateFrame} value={''} valueList={['duplicate']}/>*/}
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}
+                                                                value={''}
+                                                                valueList={['import', 'duplicate', 'delete']}
+                                                                valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>}
 
             </div>
         </div>
