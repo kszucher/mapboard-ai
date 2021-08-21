@@ -92,26 +92,29 @@ export function Communication() {
                     break;
                 }
                 case 'openMapSuccess': {
-                    // TODO move this out of here and become fully reactive
-                    let {mapId, mapSource, mapStorage} = serverResponse.payload;
-                    let frameSelected = serverResponse.payload.hasOwnProperty('frameSelected')
-                        ? serverResponse.payload.frameSelected
-                        : null;
-                    if (mapSource === 'data') {
-                        dispatch({type: 'SET_IS_PLAYBACK_OFF'})
-                    } else if (mapSource === 'dataPlayback') {
-                        dispatch({type: 'SET_IS_PLAYBACK_ON'})
-                    }
-                    mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
-                    redraw();
                     break;
                 }
             }
         }
     }, [serverResponseCntr]);
 
-    // NEW PHILISOPHY...
     useEffect(() => {
+        if (serverResponse.payload?.hasOwnProperty('mapId') &&
+            serverResponse.payload?.hasOwnProperty('mapSource') &&
+            serverResponse.payload?.hasOwnProperty('mapStorage')) {
+            let {mapId, mapSource, mapStorage} = serverResponse.payload;
+            let frameSelected = serverResponse.payload.hasOwnProperty('frameSelected')
+                ? serverResponse.payload.frameSelected
+                : null;
+            if (mapSource === 'data') {
+                dispatch({type: 'SET_IS_PLAYBACK_OFF'})
+            } else if (mapSource === 'dataPlayback') {
+                dispatch({type: 'SET_IS_PLAYBACK_ON'})
+            }
+            mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
+            redraw();
+        }
+
         if (serverResponse.payload?.hasOwnProperty('frameLen') &&
             serverResponse.payload?.hasOwnProperty('frameSelected')) {
             dispatch({type: 'SET_FRAME_INFO', payload: serverResponse})
