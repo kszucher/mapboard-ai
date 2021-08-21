@@ -102,6 +102,7 @@ export function Communication() {
             const serverState = serverResponse.payload;
             if (serverState.hasOwnProperty('landingData')) {
                 const {landingData} = serverState;
+                initDomData();
                 dispatch({type: 'SET_LANDING_DATA', payload: {landingData}})
             }
             if (serverState.hasOwnProperty('mapId') &&
