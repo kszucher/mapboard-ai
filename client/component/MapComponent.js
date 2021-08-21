@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
-import {arraysSame, copy, getEquationDim, getLatexString, getTextDim, isChrome, isUrl} from "../core/Utils";
+import {arraysSame, copy, getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
@@ -13,18 +13,24 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {isDemo} = state;
+    const {isDemo, landingData} = state;
+
 
     useEffect(() => {
+        if (landingData.length) {
+            mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[0], frameSelected: 0});
+            redraw();
+        }
+    }, [landingData]);
 
-        console.log('CREATION OF MAP')
-
+    useEffect(() => {
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
         if (isDemo) {
 
 
         } else {
+            window.addEventListener("contextmenu", contextmenu);
             window.addEventListener('resize', resize);
             window.addEventListener('popstate', popstate);
             window.addEventListener('dblclick', dblclick);
@@ -33,12 +39,8 @@ export function MapComponent() {
             window.addEventListener('mouseup', mouseup);
             window.addEventListener("keydown", keydown);
             window.addEventListener("paste", paste);
-            window.addEventListener("contextmenu", contextmenu);
-        }
-        return () => {
-            if (mapState.isLanding) {
-
-            } else {
+            return () => {
+                window.removeEventListener("contextmenu", contextmenu);
                 window.removeEventListener('resize', resize);
                 window.removeEventListener('popstate', popstate);
                 window.removeEventListener('dblclick', dblclick);
@@ -47,9 +49,8 @@ export function MapComponent() {
                 window.removeEventListener('mouseup', mouseup);
                 window.removeEventListener("keydown", keydown);
                 window.removeEventListener("paste", paste);
-                window.removeEventListener("contextmenu", contextmenu);
             }
-        };
+        }
     }, []);
 
     const contextmenu = (e) => {

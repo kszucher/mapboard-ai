@@ -101,12 +101,14 @@ export function Communication() {
         if (serverResponse.payload) {
             const serverState = serverResponse.payload;
             if (serverState.hasOwnProperty('landingData')) {
-                dispatch({type: 'SET_LANDING_DATA', payload: serverResponse})
+                const {landingData} = serverState;
+                dispatch({type: 'SET_LANDING_DATA', payload: {landingData}})
             }
             if (serverState.hasOwnProperty('mapId') &&
                 serverState.hasOwnProperty('mapSource') &&
                 serverState.hasOwnProperty('mapStorage')) {
                 const {mapId, mapSource, mapStorage} = serverState;
+                // TODO move under MapComponent once mapFlow is merged into editorFlow
                 let frameSelected = serverState.hasOwnProperty('frameSelected')
                     ? serverState.frameSelected
                     : null;
