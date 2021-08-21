@@ -2,6 +2,8 @@ import {mapState, saveMap} from "./MapFlow";
 
 export const editorState = {
     isLoggedIn: false,
+    isDemo: false,
+    landingData: [],
     serverAction: {serverCmd: 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
@@ -69,6 +71,7 @@ const EditorReducer = (state, action) => {
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':                   return {...state,                                                 ...serv(state, 'signIn')}
+        case 'SHOW_LIVE_DEMO':            return {...state, isDemo: true}
         case 'SIGN_UP_STEP_1':            return {...state,                                                 ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                                 ...serv(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, isLoggedIn: true,                               ...serv(state, 'openMapFromHistory')}
@@ -98,6 +101,7 @@ const EditorReducer = (state, action) => {
         case 'NEXT_FRAME_AUTOPLAY':       return {...state,                                               ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: state.frameSelection[0] < state.frameLen -1 ? state.frameSelection[0] + 1 : 0  })}
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
+        case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
         case 'SET_FRAME_INFO':            return {...state, frameLen: payload.payload.frameLen, frameSelection: [payload.payload.frameSelected]}
         case 'SET_NODE_PROPS': {
             let lm = payload;

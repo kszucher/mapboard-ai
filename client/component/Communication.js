@@ -64,6 +64,8 @@ export function Communication() {
         if (serverResponse.cmd) {
             switch (serverResponse.cmd) {
                 case 'pingSuccess': {
+                    dispatch({type: 'SET_LANDING_DATA', payload: serverResponse})
+
                     const cred = JSON.parse(localStorage.getItem('cred'));
                     if (cred && cred.email && cred.password) {
                         localStorage.setItem('cred', JSON.stringify(cred))

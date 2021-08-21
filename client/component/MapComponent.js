@@ -15,27 +15,38 @@ export function MapComponent() {
     const [state, dispatch] = useContext(Context);
 
     useEffect(() => {
+
+        console.log('CREATION OF MAP')
+
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
-        window.addEventListener('resize',       resize);
-        window.addEventListener('popstate',     popstate);
-        window.addEventListener('dblclick',     dblclick);
-        window.addEventListener('mousedown',    mousedown);
-        window.addEventListener('mousemove',    mousemove);
-        window.addEventListener('mouseup',      mouseup);
-        window.addEventListener("keydown",      keydown);
-        window.addEventListener("paste",        paste);
-        window.addEventListener("contextmenu",  contextmenu);
+        if (mapState.isLanding) {
+
+        } else {
+            window.addEventListener('resize', resize);
+            window.addEventListener('popstate', popstate);
+            window.addEventListener('dblclick', dblclick);
+            window.addEventListener('mousedown', mousedown);
+            window.addEventListener('mousemove', mousemove);
+            window.addEventListener('mouseup', mouseup);
+            window.addEventListener("keydown", keydown);
+            window.addEventListener("paste", paste);
+            window.addEventListener("contextmenu", contextmenu);
+        }
         return () => {
-            window.removeEventListener('resize',       resize);
-            window.removeEventListener('popstate',     popstate);
-            window.removeEventListener('dblclick',     dblclick);
-            window.removeEventListener('mousedown',    mousedown);
-            window.removeEventListener('mousemove',    mousemove);
-            window.removeEventListener('mouseup',      mouseup);
-            window.removeEventListener("keydown",      keydown);
-            window.removeEventListener("paste",        paste);
-            window.removeEventListener("contextmenu",  contextmenu);
+            if (mapState.isLanding) {
+
+            } else {
+                window.removeEventListener('resize', resize);
+                window.removeEventListener('popstate', popstate);
+                window.removeEventListener('dblclick', dblclick);
+                window.removeEventListener('mousedown', mousedown);
+                window.removeEventListener('mousemove', mousemove);
+                window.removeEventListener('mouseup', mouseup);
+                window.removeEventListener("keydown", keydown);
+                window.removeEventListener("paste", paste);
+                window.removeEventListener("contextmenu", contextmenu);
+            }
         };
     }, []);
 

@@ -30,6 +30,7 @@ export default function Auth() {
     const typePassword = (e) => {setPassword(e.target.value)}
     const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
+    const showLiveDemo = (e) => {dispatch({type: 'SHOW_LIVE_DEMO'})}
 
     const switchMainMode = (e) => {
         if (e !== mainTabValues[mainTabValue]) {
@@ -121,22 +122,30 @@ export default function Auth() {
             {mainTabValue===1 && subTabValue===0 && <StyledInput value={passwordAgain}      label="Password Again"      onChange={typePasswordAgain} type="password"/>}
             {mainTabValue===1 && subTabValue===1 && <StyledInput value={confirmationCode}   label="Confirmation Code"   onChange={typeConfirmationCode}/>}
             {feedbackMessage !== '' &&              <Typography variant="body2" color="textSecondary" align="center">{feedbackMessage}</Typography>}
-            <Button variant="contained" fullWidth type="submit" color="primary"
-                    disabled={mainTabValue === 0
+            <Button
+                variant="contained"
+                fullWidth
+                type="submit"
+                color="primary"
+                disabled={
+                    mainTabValue === 0
                         ? false // (email === '' || password === '') // autofill issue
                         : (subTabValue === 0
-                                ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
-                                : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
+                            ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
+                            : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
                         )}
-                    onClick={
-                        mainTabValue === 0
-                            ? signInHandler
-                            : (subTabValue === 0
-                                ? signUpStep1Handler
-                                : signUpStep2Handler
-                            )}>
+                onClick={
+                    mainTabValue === 0
+                        ? signInHandler
+                        : (subTabValue === 0
+                            ? signUpStep1Handler
+                            : signUpStep2Handler
+                        )}>
                 {mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')}
             </Button>
+
+            <Button variant="contained" fullWidth type="submit" color="primary" onClick={showLiveDemo}>LIVE DEMO</Button>
+
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="http://mapboard.io/">

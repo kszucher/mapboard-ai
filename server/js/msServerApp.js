@@ -78,11 +78,8 @@ MongoClient.connect(uri, {
 
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'};
-
-
     if (c2s.serverCmd === 'ping') {
-
-        s2c = {cmd: 'pingSuccess'};
+        s2c = {cmd: 'pingSuccess', landingData: (await collectionMaps.findOne({_id: ObjectId('5f3fd7ba7a84a4205428c96a')})).dataPlayback};
     } else {
         try {
             let currUser;
