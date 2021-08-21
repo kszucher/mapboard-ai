@@ -30,6 +30,7 @@ export default function Logo() {
     const handleClose = () => {setAnchorEl(null)};
 
     const [state, dispatch] = useContext(Context);
+    const {isDemo} = state;
 
     const handleSelect = param => e => {
         handleClose();
@@ -68,22 +69,19 @@ export default function Logo() {
             display: 'flex',
             justifyContent: 'center',
         }}>
+
             <Toolbar variant={"dense"}>
-                <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleMenu} color = "inherit">
-                    <MenuIcon />
+                <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleMenu}
+                            color="inherit">
+                    <MenuIcon/>
                 </IconButton>
-                <Menu
+
+                {!isDemo && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
                     keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
+                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
                     open={open}
                     onClose={handleClose}>
                     <MenuItem onClick={handleSelect('ADD_MAP')}>Add Map</MenuItem>
@@ -91,11 +89,22 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('MOVE_UP_MAP')}>Move Up Map</MenuItem>
                     <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
-                </Menu>
+                </Menu>}
+                {isDemo && <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                    keepMounted
+                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
+                    open={open}
+                    onClose={handleClose}>
+                    <MenuItem onClick={_=>dispatch({type: 'SHOW_SIGN_IN_UP'})}>Sign In / Sign Up</MenuItem>
+                </Menu>}
                 <Typography variant="h6" className={classes.title}>
                     mapboard
                 </Typography>
             </Toolbar>
+
         </div>
     );
 }

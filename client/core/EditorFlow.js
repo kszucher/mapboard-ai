@@ -75,6 +75,7 @@ const EditorReducer = (state, action) => {
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':                   return {...state,                                                 ...serv(state, 'signIn')}
+        case 'SHOW_SIGN_IN_UP':           return {...state, isDemo: false}
         case 'SHOW_LIVE_DEMO':            return {...state, isDemo: true,                                   ...serv(state, 'getLandingData')}
         case 'SIGN_UP_STEP_1':            return {...state,                                                 ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                                 ...serv(state, 'signUpStep2', payload)}
