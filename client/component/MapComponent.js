@@ -13,22 +13,27 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {isDemo, landingData} = state;
+    const {isDemo, landingData, landingDataIndex} = state;
 
+    const loadLandingDataFrame = (landingData, landingDataIndex) => {
+        mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
+        redraw();
+    }
 
     useEffect(() => {
         if (landingData.length) {
-            mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[0], frameSelected: 0});
-            redraw();
+            loadLandingDataFrame(landingData, landingDataIndex);
         }
-    }, [landingData]);
+    }, [landingData, landingDataIndex]);
 
     useEffect(() => {
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
         if (isDemo) {
-
-
+            window.addEventListener("mousewheel", mousewheel, {passive: false});
+            return () => {
+                window.removeEventListener("mousewheel", mousewheel);
+            }
         } else {
             window.addEventListener("contextmenu", contextmenu);
             window.addEventListener('resize', resize);
@@ -52,6 +57,11 @@ export function MapComponent() {
             }
         }
     }, []);
+
+    const mousewheel = (e) => {
+        e.preventDefault();
+        dispatch({type: 'PLAY_LANDING'})
+    }
 
     const contextmenu = (e) => {
         e.preventDefault()
