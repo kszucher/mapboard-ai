@@ -79,11 +79,13 @@ MongoClient.connect(uri, {
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'};
     if (c2s.serverCmd === 'ping') {
-        s2c = {cmd: 'pingSuccess', landingData: (await collectionMaps.findOne({_id: ObjectId('5f3fd7ba7a84a4205428c96a')})).dataPlayback};
+        s2c = {cmd: 'pingSuccess'};
     } else {
         try {
             let currUser;
-            if (c2s.serverCmd === 'signUpStep1') {
+            if (c2s.serverCmd === 'getLandingData') {
+                s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await collectionMaps.findOne({_id: ObjectId('5f3fd7ba7a84a4205428c96a')})).dataPlayback}}
+            } else if (c2s.serverCmd === 'signUpStep1') {
                 let {userName, userEmail, userPassword} = c2s.userData;
                 currUser = await collectionUsers.findOne({email: userEmail});
                 if (currUser === null) {

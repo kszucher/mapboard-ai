@@ -13,6 +13,7 @@ let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
+    const {isDemo} = state;
 
     useEffect(() => {
 
@@ -20,7 +21,8 @@ export function MapComponent() {
 
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
-        if (mapState.isLanding) {
+        if (isDemo) {
+
 
         } else {
             window.addEventListener('resize', resize);

@@ -52,6 +52,7 @@ export function Communication() {
                     post({cred, serverCmd, serverPayload});
                 } else {
                     switch (serverCmd) {
+                        case 'getLandingData': post({serverCmd}); break;
                         case 'signUpStep1': post({serverCmd, userData: serverPayload}); break; // TODO rem userData prefix
                         case 'signUpStep2': post({serverCmd, userData: serverPayload}); break; // TODO rem userData prefix
                     }
@@ -101,6 +102,9 @@ export function Communication() {
     useEffect(() => {
         if (serverResponse.payload) {
             const serverState = serverResponse.payload;
+            if (serverState.hasOwnProperty('landingData')) {
+                console.log('landing is ready to be served...')
+            }
             if (serverState.hasOwnProperty('mapId') &&
                 serverState.hasOwnProperty('mapSource') &&
                 serverState.hasOwnProperty('mapStorage')) {
