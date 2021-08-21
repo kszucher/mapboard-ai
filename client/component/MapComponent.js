@@ -20,8 +20,6 @@ export function MapComponent() {
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
         redraw();
-        // TODO ide kell rakni egy 20ms vagy whatever hosszú timeout-ot, ami addig nem engedi a scroll-t továbbmenni oszt szevasz
-        // plusz TODO minHeight!
     }
 
     useEffect(() => {
