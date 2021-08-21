@@ -99,25 +99,27 @@ export function Communication() {
     }, [serverResponseCntr]);
 
     useEffect(() => {
-        if (serverResponse.payload?.hasOwnProperty('mapId') &&
-            serverResponse.payload?.hasOwnProperty('mapSource') &&
-            serverResponse.payload?.hasOwnProperty('mapStorage')) {
-            let {mapId, mapSource, mapStorage} = serverResponse.payload;
-            let frameSelected = serverResponse.payload.hasOwnProperty('frameSelected')
-                ? serverResponse.payload.frameSelected
-                : null;
-            if (mapSource === 'data') {
-                dispatch({type: 'SET_IS_PLAYBACK_OFF'})
-            } else if (mapSource === 'dataPlayback') {
-                dispatch({type: 'SET_IS_PLAYBACK_ON'})
+        if (serverResponse.payload) {
+            const serverState = serverResponse.payload;
+            if (serverState.hasOwnProperty('mapId') &&
+                serverState.hasOwnProperty('mapSource') &&
+                serverState.hasOwnProperty('mapStorage')) {
+                const {mapId, mapSource, mapStorage} = serverState;
+                let frameSelected = serverState.hasOwnProperty('frameSelected')
+                    ? serverState.frameSelected
+                    : null;
+                if (mapSource === 'data') {
+                    dispatch({type: 'SET_IS_PLAYBACK_OFF'})
+                } else if (mapSource === 'dataPlayback') {
+                    dispatch({type: 'SET_IS_PLAYBACK_ON'})
+                }
+                mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
+                redraw();
             }
-            mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
-            redraw();
-        }
-
-        if (serverResponse.payload?.hasOwnProperty('frameLen') &&
-            serverResponse.payload?.hasOwnProperty('frameSelected')) {
-            dispatch({type: 'SET_FRAME_INFO', payload: serverResponse})
+            if (serverState.hasOwnProperty('frameLen') &&
+                serverState.hasOwnProperty('frameSelected')) {
+                dispatch({type: 'SET_FRAME_INFO', payload: serverResponse})
+            }
         }
     }, [serverResponseCntr])
 
