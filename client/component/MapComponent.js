@@ -64,9 +64,6 @@ export function MapComponent() {
 
     const mousewheel = (e) => {
         e.preventDefault();
-
-        console.log(e.deltaY)
-
         if (!isIntervalRunning) {
             namedInterval = setInterval(function () {
                 clearInterval(namedInterval);
