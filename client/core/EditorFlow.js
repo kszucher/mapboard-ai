@@ -80,7 +80,7 @@ const EditorReducer = (state, action) => {
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, isLoggedIn: true,                               ...serv(state, 'openMapFromHistory')}
         case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,                  ...serv(state, 'openMapFromTab',         {tabMapSelected: payload.value, ...mapOut()})}
         case 'OPEN_MAP_FROM_MAP':         return {...state,                                                 ...serv(state, 'openMapFromMap',         {...payload, ...mapOut()})}
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                                 ...serv(state, 'openMapFromBreadcrumbs', {...payload, ...mapOut()})}
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                                 ...serv(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: payload.index, ...mapOut()})}
         case 'SAVE_MAP':                  return {...state,                                                 ...serv(state, 'saveMap',                {...payload, ...mapOut()})}
         case 'CREATE_MAP_IN_MAP':         return {...state,                                                 ...serv(state, 'createMapInMap',         {...payload, ...mapOut()})}
         case 'CREATE_MAP_IN_TAB':         return {...state,                                                 ...serv(state, 'createMapInTab',         {...payload, ...mapOut()})}
