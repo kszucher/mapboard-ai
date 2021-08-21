@@ -6,8 +6,7 @@ import {Context} from "../core/Store";
 
 export default function WorkspaceBreadcrumbs() {
     const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr, isPlayback} = state;
-    const [breadcrumbMapNameList, setBreadcrumbMapNameList] = useState(['']);
+    const {breadcrumbMapNameList, isPlayback} = state;
 
     const handleClick = index => event => {
         event.preventDefault();
@@ -17,13 +16,6 @@ export default function WorkspaceBreadcrumbs() {
     const doNothing = _ => event => {
         event.preventDefault();
     }
-
-    useEffect(() => {
-        if (serverResponse.payload?.hasOwnProperty('breadcrumbMapNameList')) {
-            let {breadcrumbMapNameList} = serverResponse.payload;
-            setBreadcrumbMapNameList(breadcrumbMapNameList);
-        }
-    }, [serverResponseCntr]);
 
     return (
         <div style={{

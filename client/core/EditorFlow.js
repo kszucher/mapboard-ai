@@ -4,6 +4,7 @@ export const editorState = {
     isLoggedIn: false,
     isDemo: false,
     landingData: [],
+    breadcrumbMapNameList: [''],
     serverAction: {serverCmd: 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
@@ -102,7 +103,8 @@ const EditorReducer = (state, action) => {
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
-        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.payload.frameLen, frameSelection: [payload.payload.frameSelected]}
+        case 'SET_BREADCRUMBMAPNAMELIST': return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
+        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,

@@ -118,7 +118,12 @@ export function Communication() {
             }
             if (serverState.hasOwnProperty('frameLen') &&
                 serverState.hasOwnProperty('frameSelected')) {
-                dispatch({type: 'SET_FRAME_INFO', payload: serverResponse})
+                const {frameLen, frameSelected} = serverState;
+                dispatch({type: 'SET_FRAME_INFO', payload: {frameLen, frameSelected}})
+            }
+            if (serverState.hasOwnProperty('breadcrumbMapNameList')) {
+                const {breadcrumbMapNameList} = serverState;
+                dispatch({type: 'SET_BREADCRUMBMAPNAMELIST', payload: {breadcrumbMapNameList}})
             }
         }
     }, [serverResponseCntr])
