@@ -123,7 +123,12 @@ export function Communication() {
             }
             if (serverState.hasOwnProperty('breadcrumbMapNameList')) {
                 const {breadcrumbMapNameList} = serverState;
-                dispatch({type: 'SET_BREADCRUMBMAPNAMELIST', payload: {breadcrumbMapNameList}})
+                dispatch({type: 'SET_BREADCRUMB_DATA', payload: {breadcrumbMapNameList}})
+            }
+            if (serverState.hasOwnProperty('tabMapNameList') &&
+                serverState.hasOwnProperty('tabMapSelected')) {
+                const {tabMapNameList, tabMapSelected} = serverState;
+                dispatch({type: 'SET_TAB_DATA', payload: {tabMapNameList, tabMapSelected}})
             }
         }
     }, [serverResponseCntr])

@@ -1,26 +1,14 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledTabs from "../component-styled/StyledTabs";
 
 export default function Tabs() {
     const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr, isPlayback} = state;
-    const [tabMapNameList, setTabMapNameList] = useState([]);
-    const [tabMapSelected, setTabMapSelected] = useState(0);
+    const {tabMapNameList, tabMapSelected, isPlayback} = state;
 
     const handleChange = (e, value) =>  {
-        setTabMapSelected(value);
-        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
+        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {value}})
     };
-
-    useEffect(() => {
-        if (serverResponse.payload?.hasOwnProperty('tabMapNameList') &&
-            serverResponse.payload?.hasOwnProperty('tabMapSelected')) {
-            let {tabMapNameList, tabMapSelected} = serverResponse.payload;
-            setTabMapNameList(tabMapNameList);
-            setTabMapSelected(tabMapSelected);
-        }
-    }, [serverResponseCntr]);
 
     return (
         <div style={{

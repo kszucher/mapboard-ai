@@ -5,6 +5,8 @@ export const editorState = {
     isDemo: false,
     landingData: [],
     breadcrumbMapNameList: [''],
+    tabMapNameList: [],
+    tabMapSelected: 0,
     serverAction: {serverCmd: 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
@@ -76,7 +78,7 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_1':            return {...state,                                                 ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                                 ...serv(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, isLoggedIn: true,                               ...serv(state, 'openMapFromHistory')}
-        case 'OPEN_MAP_FROM_TAB':         return {...state,                                                 ...serv(state, 'openMapFromTab',         {...payload, ...mapOut()})}
+        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,                  ...serv(state, 'openMapFromTab',         {tabMapSelected: payload.value, ...mapOut()})}
         case 'OPEN_MAP_FROM_MAP':         return {...state,                                                 ...serv(state, 'openMapFromMap',         {...payload, ...mapOut()})}
         case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                                 ...serv(state, 'openMapFromBreadcrumbs', {...payload, ...mapOut()})}
         case 'SAVE_MAP':                  return {...state,                                                 ...serv(state, 'saveMap',                {...payload, ...mapOut()})}
@@ -103,7 +105,8 @@ const EditorReducer = (state, action) => {
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
-        case 'SET_BREADCRUMBMAPNAMELIST': return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
+        case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
+        case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
         case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
         case 'SET_NODE_PROPS': {
             let lm = payload;
