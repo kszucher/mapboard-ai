@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from "react";
-import {Context} from "../core/Store";
+import {Context, remoteGetState} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy, getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
@@ -10,6 +10,8 @@ import {checkPopSelectionState, pushSelectionState, selectionState} from "../cor
 import {pasteDispatch} from "../core/PasteFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
+let namedInterval;
+let isIntervalRunning = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
@@ -18,6 +20,8 @@ export function MapComponent() {
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
         redraw();
+        // TODO ide kell rakni egy 20ms vagy whatever hosszú timeout-ot, ami addig nem engedi a scroll-t továbbmenni oszt szevasz
+        // plusz TODO minHeight!
     }
 
     useEffect(() => {
@@ -60,7 +64,21 @@ export function MapComponent() {
 
     const mousewheel = (e) => {
         e.preventDefault();
-        dispatch({type: 'PLAY_LANDING'})
+
+        console.log(e.deltaY)
+
+        if (!isIntervalRunning) {
+            namedInterval = setInterval(function () {
+                clearInterval(namedInterval);
+                isIntervalRunning = false;
+                if (Math.sign(e.deltaY) === 1) {
+                    dispatch({type: 'PLAY_LANDING_NEXT'})
+                } else {
+                    dispatch({type: 'PLAY_LANDING_PREV'})
+                }
+            }, 100);
+        }
+        isIntervalRunning = true;
     }
 
     const contextmenu = (e) => {
