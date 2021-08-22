@@ -103,7 +103,6 @@ const EditorReducer = (state, action) => {
         case 'DELETE_FRAME':              return {...state,                                               ...serv( state, 'deleteFrame', {        ...getMapId(), ...getFrameOut(state), frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0               })}
         case 'PREV_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: state.frameSelection[0] - 1                                                 })}
         case 'NEXT_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: state.frameSelection[0] + 1                                                 })}
-        case 'NEXT_FRAME_AUTOPLAY':       return {...state,                                               ...serv( state, 'openFrame', {          ...mapOut(),                          frameSelected: state.frameSelection[0] < state.frameLen -1 ? state.frameSelection[0] + 1 : 0  })}
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}

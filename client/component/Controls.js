@@ -37,12 +37,6 @@ export function Controls () {
             case 'delete':       dispatch({type: 'DELETE_FRAME'}); break;
             case 'prev':         dispatch({type: 'PREV_FRAME'}); break;
             case 'next':         dispatch({type: 'NEXT_FRAME'}); break;
-            case 'autoplay': {
-                namedTimer = setInterval(function() {
-                    dispatch({type: 'NEXT_FRAME_AUTOPLAY'})
-                }, 1000);
-                break;
-            }
             case 'close':        dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
@@ -71,7 +65,6 @@ export function Controls () {
                                                                 value={''}
                                                                 valueList={['prev', 'next']}
                                                                 valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
-                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp} value={''} valueList={['autoplay']} />}
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp} value={''} valueList={['close']} />}
             </div>
         </div>
