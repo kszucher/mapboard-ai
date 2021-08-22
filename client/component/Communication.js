@@ -52,9 +52,9 @@ export function Communication() {
                     post({cred, serverCmd, serverPayload});
                 } else {
                     switch (serverCmd) {
-                        case 'getLandingData': post({serverCmd}); break;
-                        case 'signUpStep1': post({serverCmd, userData: serverPayload}); break; // TODO rem userData prefix
-                        case 'signUpStep2': post({serverCmd, userData: serverPayload}); break; // TODO rem userData prefix
+                        case 'getLandingData':  post({serverCmd}); break;
+                        case 'signUpStep1':     post({serverCmd, serverPayload}); break;
+                        case 'signUpStep2':     post({serverCmd, serverPayload}); break;
                     }
                 }
             }

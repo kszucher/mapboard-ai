@@ -86,18 +86,18 @@ async function sendResponse(c2s) {
             if (c2s.serverCmd === 'getLandingData') {
                 s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await collectionMaps.findOne({_id: ObjectId('5f3fd7ba7a84a4205428c96a')})).dataPlayback}}
             } else if (c2s.serverCmd === 'signUpStep1') {
-                let {userName, userEmail, userPassword} = c2s.userData;
-                currUser = await collectionUsers.findOne({email: userEmail});
+                let {name, email, password} = c2s.serverPayload;
+                currUser = await collectionUsers.findOne({email: email});
                 if (currUser === null) {
                     let confirmationCode = getConfirmationCode();
                     await transporter.sendMail({
                         from: "info@mindboard.io",
-                        to: userEmail,
+                        to: email,
                         subject: "MapBoard Email Confirmation",
                         text: "",
                         html:
                             `
-                                <p>Hello ${userName}!</p>
+                                <p>Hello ${name}!</p>
                                 <p>Welcome to MapBoard!<br>You can complete your registration using the following code:</p>
                                 <p>${confirmationCode}</p>
                                 <p>You can also join the conversation, propose features and get product news here:<br>
@@ -106,8 +106,8 @@ async function sendResponse(c2s) {
                             `
                     });
                     currUser = await collectionUsers.insertOne({
-                        email: userEmail,
-                        password: userPassword,
+                        email: email,
+                        password: password,
                         tabMapSelected: 0,
                         tabMapIdList: [
                             ObjectId('5f3fd7ba7a84a4205428c96a'), // features
@@ -115,21 +115,24 @@ async function sendResponse(c2s) {
                             ObjectId('5f467ee216bcf436da264a69'), // proposals
                         ],
                         activationStatus: 'awaitingConfirmation',
-                        confirmationCode
+                        confirmationCode,
+                        breadcrumbMapIdList: [
+                            ObjectId('5f3fd7ba7a84a4205428c96a') , // features
+                        ],
                     })
                     s2c = {cmd: 'signUpStep1Success'};
                 } else {
                     s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'};
                 }
             } else if (c2s.serverCmd === 'signUpStep2') {
-                let {userEmail, userConfirmationCode} = c2s.userData;
-                currUser = await collectionUsers.findOne({email: userEmail});
+                let {email, confirmationCode} = c2s.serverPayload;
+                currUser = await collectionUsers.findOne({email: email});
                 if (currUser === null ) {
                     s2c = {cmd: 'signUpStep2FailUnknownUser'};
                 } else if (currUser.activationStatus === 'completed') {
                     s2c = {cmd: 'signUpStep2FailAlreadyActivated'};
-                } else if (parseInt(userConfirmationCode) !== currUser.confirmationCode) {
-                    console.log([userConfirmationCode, currUser.confirmationCode])
+                } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
+                    console.log([confirmationCode, currUser.confirmationCode])
                     s2c = {cmd: 'signUpStep2FailWrongCode'};
                 } else {
                     await collectionUsers.updateOne(
@@ -399,7 +402,7 @@ function getDefaultMap(mapName) {
             {path: ['r', 'd', 1]},
         ],
         dataHistory: [],
-        dataPlayback: []
+        dataPlayback: [],
     }
 }
 
