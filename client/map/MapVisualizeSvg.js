@@ -353,7 +353,7 @@ export const mapVisualizeSvg = {
                                 svgElement.style.transition = preventTransition ? '' : 'all 0.5s';
                                 svgElement.style.transitionTimingFunction = preventTransition ? '' : 'cubic-bezier(0.0,0.0,0.58,1.0)';
 
-                                svgElement.style.transitionProperty = 'd, fill';
+                                svgElement.style.transitionProperty = 'd, fill, stroke-width';
                                 if (!isChrome) {
                                     let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
                                     svgElementAnimate.setAttribute("attributeName", "d");
