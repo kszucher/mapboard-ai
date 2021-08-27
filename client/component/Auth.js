@@ -30,7 +30,7 @@ export default function Auth() {
     const typePassword = (e) => {setPassword(e.target.value)}
     const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
-    const showLiveDemo = (e) => {dispatch({type: 'SHOW_LIVE_DEMO'})}
+    const showLiveDemo = (e) => {dispatch({type: 'SHOW_DEMO'})}
 
     const switchMainMode = (e) => {
         if (e !== mainTabValues[mainTabValue]) {

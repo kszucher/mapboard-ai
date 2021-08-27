@@ -7,6 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {Context} from "../core/Store";
+import {PAGE_STATES} from "../core/EditorFlow";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,7 +31,7 @@ export default function Logo() {
     const handleClose = () => {setAnchorEl(null)};
 
     const [state, dispatch] = useContext(Context);
-    const {isDemo} = state;
+    const {pageState} = state;
 
     const handleSelect = param => e => {
         handleClose();
@@ -76,7 +77,7 @@ export default function Logo() {
                     <MenuIcon/>
                 </IconButton>
 
-                {!isDemo && <Menu
+                {pageState === PAGE_STATES.WORKSPACE && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -90,7 +91,7 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>}
-                {isDemo && <Menu
+                {pageState === PAGE_STATES.DEMO && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -98,7 +99,7 @@ export default function Logo() {
                     transformOrigin={{vertical: 'top', horizontal: 'right'}}
                     open={open}
                     onClose={handleClose}>
-                    <MenuItem onClick={_=>dispatch({type: 'SHOW_SIGN_IN_UP'})}>Sign In / Sign Up</MenuItem>
+                    <MenuItem onClick={_=>dispatch({type: 'SHOW_AUTH'})}>Sign In / Sign Up</MenuItem>
                 </Menu>}
                 <Typography variant="h6" className={classes.title}>
                     mapboard

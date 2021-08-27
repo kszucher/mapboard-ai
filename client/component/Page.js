@@ -11,33 +11,29 @@ import Breadcrumbs from "./Breadcrumbs";
 import {Controls} from "./Controls";
 import {Palette} from "./Palette";
 import {FrameEditor} from "./FrameEditor";
+import {PAGE_STATES} from "../core/EditorFlow";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
-    const {isLoggedIn, isDemo, paletteVisible, frameEditorVisible} = state;
+    const {pageState, paletteVisible, frameEditorVisible} = state;
     return(
         <div id="page">
-            <>
-                {(isLoggedIn || isDemo) ?
+            <MuiThemeProvider theme={muiTheme}>
+                {[PAGE_STATES.DEMO, PAGE_STATES.WORKSPACE].includes(pageState) &&
                     <>
                         <MapComponent/>
-                        <MuiThemeProvider theme={muiTheme}>
-                            <Logo/>
-                            {isLoggedIn && <Tabs/>}
-                            {isLoggedIn && <Commands/>}
-                            {isLoggedIn && <Breadcrumbs/>}
-                            {isLoggedIn && <Controls/>}
-                            {paletteVisible===1 && <Palette/>}
-                            {frameEditorVisible===1 && <FrameEditor/>}
-                        </MuiThemeProvider>
-                    </>
-                    :
-                    <MuiThemeProvider theme={muiTheme}>
-                        <Auth/>
-                    </MuiThemeProvider>
-                }
-            </>
-
+                        <Logo/>
+                        {pageState === PAGE_STATES.WORKSPACE && <>
+                            <Tabs/>
+                            <Commands/>
+                            <Breadcrumbs/>
+                            <Controls/>
+                        </>}
+                        {paletteVisible===1 && <Palette/>}
+                        {frameEditorVisible===1 && <FrameEditor/>}
+                    </>}
+                {pageState === PAGE_STATES.AUTH && <Auth/>}
+            </MuiThemeProvider>
         </div>
     )
 }

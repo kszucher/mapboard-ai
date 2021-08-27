@@ -8,6 +8,7 @@ import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
+import {PAGE_STATES} from "../core/EditorFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
@@ -15,7 +16,7 @@ let isIntervalRunning = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {isDemo, landingData, landingDataIndex} = state;
+    const {pageState, landingData, landingDataIndex} = state;
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
@@ -31,7 +32,7 @@ export function MapComponent() {
     useEffect(() => {
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
-        if (isDemo) {
+        if (pageState === PAGE_STATES.DEMO) {
             window.addEventListener("mousewheel", mousewheel, {passive: false});
             return () => {
                 window.removeEventListener("mousewheel", mousewheel);

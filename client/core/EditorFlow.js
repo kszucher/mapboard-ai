@@ -1,8 +1,14 @@
 import {mapState, saveMap} from "./MapFlow";
 
+export const PAGE_STATES = {
+    EMPTY: 'EMPTY',
+    DEMO: 'DEMO',
+    AUTH: 'AUTH',
+    WORKSPACE: 'WORKSPACE'
+}
+
 export const editorState = {
-    isLoggedIn: false,
-    isDemo: false,
+    pageState: PAGE_STATES.AUTH,
     landingData: [],
     landingDataIndex: 0,
     breadcrumbMapNameList: [''],
@@ -75,11 +81,11 @@ const EditorReducer = (state, action) => {
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':                   return {...state,                                                 ...serv(state, 'signIn')}
-        case 'SHOW_SIGN_IN_UP':           return {...state, isDemo: false}
-        case 'SHOW_LIVE_DEMO':            return {...state, isDemo: true,                                   ...serv(state, 'getLandingData')}
+        case 'SHOW_AUTH':                 return {...state, pageState: PAGE_STATES.AUTH}
+        case 'SHOW_DEMO':                 return {...state, pageState: PAGE_STATES.DEMO,                    ...serv(state, 'getLandingData')}
         case 'SIGN_UP_STEP_1':            return {...state,                                                 ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                                 ...serv(state, 'signUpStep2', payload)}
-        case 'OPEN_MAP_FROM_HISTORY':     return {...state, isLoggedIn: true,                               ...serv(state, 'openMapFromHistory')}
+        case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: PAGE_STATES.WORKSPACE,               ...serv(state, 'openMapFromHistory')}
         case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,                  ...serv(state, 'openMapFromTab',         {tabMapSelected: payload.value, ...mapOut()})}
         case 'OPEN_MAP_FROM_MAP':         return {...state,                                                 ...serv(state, 'openMapFromMap',         {...payload, ...mapOut()})}
         case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                                 ...serv(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: payload.index, ...mapOut()})}
