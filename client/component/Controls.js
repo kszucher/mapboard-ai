@@ -38,6 +38,9 @@ export function Controls () {
             case 'close':        dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
+    const cmdSharing = e => {
+
+    }
 
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
@@ -58,6 +61,7 @@ export function Controls () {
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'duplicate', 'delete']}  valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>}
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['prev', 'next']} valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['close']} />}
+                {formatMode === '' &&        <StyledButtonGroup action={cmdSharing}        value={''}          valueList={['sharing']}/>}
             </div>
         </div>
     );
