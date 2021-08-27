@@ -36,18 +36,10 @@ export default function Logo() {
     const handleSelect = param => e => {
         handleClose();
         switch(param) {
-            case 'ADD_MAP':
-                dispatch({type: 'CREATE_MAP_IN_TAB'});
-                break;
-            case 'REMOVE_MAP':
-                dispatch({type: 'REMOVE_MAP_IN_TAB'});
-                break;
-            case 'MOVE_UP_MAP':
-                dispatch({type: 'MOVE_UP_MAP_IN_TAB'});
-                break;
-            case 'MOVE_DOWN_MAP':
-                dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'});
-                break;
+            case 'ADD_MAP':dispatch({type: 'CREATE_MAP_IN_TAB'}); break;
+            case 'REMOVE_MAP':dispatch({type: 'REMOVE_MAP_IN_TAB'});break;
+            case 'MOVE_UP_MAP':dispatch({type: 'MOVE_UP_MAP_IN_TAB'});break;
+            case 'MOVE_DOWN_MAP':dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'});break;
             case 'SIGN_OUT':
                 localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
                 dispatch({type: 'RESET_STATE'});
