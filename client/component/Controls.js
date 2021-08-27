@@ -1,11 +1,9 @@
 import React, {useContext, useState} from 'react';
-import {Context, remoteGetState} from "../core/Store";
+import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {checkPop, mapref, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {selectionState} from "../core/SelectionFlow";
-
-let namedTimer;
 
 export function Controls () {
     const [state, dispatch] = useContext(Context)
@@ -57,15 +55,9 @@ export function Controls () {
                 {formatMode === '' &&        <StyledButtonGroup action={cmdTaskToggle}     value={''}          valueList={['convert to task']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdSubmapToggle}   value={''}          valueList={['convert to submap']}/>}
                 {formatMode === '' &&        <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['frame editor']}/>}
-                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}
-                                                                value={''}
-                                                                valueList={['import', 'duplicate', 'delete']}
-                                                                valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>}
-                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}
-                                                                value={''}
-                                                                valueList={['prev', 'next']}
-                                                                valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
-                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp} value={''} valueList={['close']} />}
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'duplicate', 'delete']}  valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>}
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['prev', 'next']} valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
+                {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['close']} />}
             </div>
         </div>
     );
