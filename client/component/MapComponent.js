@@ -142,6 +142,9 @@ export function MapComponent() {
                 if (e.which === 1) {
                     let lm = mapref(selectionState.lastPath);
                     if (!e.shiftKey) {
+                        if (lm.linkType !== '') {
+                            nodeDispatch('select_root');
+                        }
                         if (lm.linkType === 'internal') {
                             dispatch({type: 'OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
                         } else if (lm.linkType === 'external') {
