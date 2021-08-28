@@ -23,8 +23,6 @@ export let mapState = {
     dataIndex: 0,
     frameSelected: null,
 
-    isNodeClicked: false,
-    isTaskClicked: false,
     moveTargetPath: [],
     moveTargetIndex: 0,
 };

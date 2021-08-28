@@ -13,6 +13,8 @@ import {PAGE_STATES} from "../core/EditorFlow";
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
 let isIntervalRunning = false;
+let isNodeClicked = false;
+let isTaskClicked = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
@@ -113,14 +115,14 @@ export function MapComponent() {
         }
         (window.getSelection ? window.getSelection() : document.selection).empty()
         if (e.which === 1 || e.which === 3) {
-            mapState.isNodeClicked = false;
+            isNodeClicked = false;
             let m = getMapData().m;
             let r = getMapData().r;
             r.selectionRect = [];
             [fromX, fromY] = getCoords(e);
             let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
             if (lastOverPath.length) {
-                mapState.isNodeClicked = true;
+                isNodeClicked = true;
                 m.deepestSelectablePath = copy(lastOverPath);
                 if (m.deepestSelectablePath.length === 3) {
                     m.deepestSelectablePath = ['r'];
@@ -153,12 +155,12 @@ export function MapComponent() {
                     }
                 }
             }
-            mapState.isTaskClicked = false;
+            isTaskClicked = false;
             if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
                 for (const pathItem of path) {
                     if (pathItem.id) {
                         if (pathItem.id.substring(0, 10) === 'taskCircle') {
-                            mapState.isTaskClicked = true;
+                            isTaskClicked = true;
                             push();
                             nodeDispatch('setTaskStatus', {
                                 taskStatus: parseInt(path[0].id.charAt(10), 10),
@@ -171,7 +173,7 @@ export function MapComponent() {
                     }
                 }
             }
-            if (e.which === 1 && !mapState.isNodeClicked && !mapState.isTaskClicked) {
+            if (e.which === 1 && !isNodeClicked && !isTaskClicked) {
                 pushSelectionState();
                 nodeDispatch('clearSelection');
             }
@@ -189,7 +191,7 @@ export function MapComponent() {
         if (isMouseDown) {
             elapsed++;
             if (e.which === 1) {
-                if (mapState.isNodeClicked) {
+                if (isNodeClicked) {
                     let r = getMapData().r;
                     let [toX, toY] = getCoords(e);
                     mapState.moveTargetPath = [];
@@ -230,7 +232,7 @@ export function MapComponent() {
                         }
                     }
                     redraw();
-                } else if (mapState.isTaskClicked) {
+                } else if (isTaskClicked) {
 
                 } else {
                     let r = getMapData().r;
@@ -268,8 +270,8 @@ export function MapComponent() {
             }
             r.selectionRect = [];
             if (elapsed === 0) {
-                if (!mapState.isNodeClicked &&
-                    !mapState.isTaskClicked &&
+                if (!isNodeClicked &&
+                    !isTaskClicked &&
                     ['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
                     push();
                     nodeDispatch('select_root');
@@ -289,7 +291,7 @@ export function MapComponent() {
 
     const dblclick = (e) => {
         e.preventDefault();
-        if (mapState.isNodeClicked) {
+        if (isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
             let m = getMapData().m;
