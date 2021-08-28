@@ -3,7 +3,7 @@ import {Context, remoteGetState} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy, getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
-import {checkPop, getMapData, mapDispatch, mapref, mapState, push, recalc, redraw} from "../core/MapFlow";
+import {checkPop, getMapData, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
