@@ -38,7 +38,7 @@ export function CommandTexts () {
         }
     }
     const cmdSharing = e => {
-
+        dispatch({type: 'SHOW_SHARING_EDITOR'})
     }
 
     return (

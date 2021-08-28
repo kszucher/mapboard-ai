@@ -27,6 +27,7 @@ export const editorState = {
     colorText: '',
     paletteVisible: 0,
     frameEditorVisible: 0,
+    sharingEditorVisible: 0,
     isPlayback: false,
     frameLen: 0,
     frameSelection: [],
@@ -81,6 +82,7 @@ const EditorReducer = (state, action) => {
         case 'SIGN_IN':                   return {...state,                                           ...serv(state, 'signIn')}
         case 'SHOW_AUTH':                 return {...state, pageState: PAGE_STATES.AUTH}
         case 'SHOW_DEMO':                 return {...state, pageState: PAGE_STATES.DEMO,              ...serv(state, 'getLandingData')}
+        case 'SHOW_SHARING_EDITOR':       return {...state, sharingEditorVisible: 1}
         case 'SIGN_UP_STEP_1':            return {...state,                                           ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                           ...serv(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: PAGE_STATES.WORKSPACE,         ...serv(state, 'openMapFromHistory')}
