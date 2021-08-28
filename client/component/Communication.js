@@ -43,21 +43,7 @@ export function Communication() {
 
     useEffect(() => {
         if (!waitingForServer) {
-            let {serverCmd, serverPayload} = serverAction;
-            if (serverCmd === 'ping') {
-                post({serverCmd});
-            } else {
-                const cred = JSON.parse(localStorage.getItem('cred'));
-                if (cred && cred.email && cred.password) {
-                    post({cred, serverCmd, serverPayload});
-                } else {
-                    switch (serverCmd) {
-                        case 'getLandingData':  post({serverCmd}); break;
-                        case 'signUpStep1':     post({serverCmd, serverPayload}); break;
-                        case 'signUpStep2':     post({serverCmd, serverPayload}); break;
-                    }
-                }
-            }
+            post (serverAction);
         }
     }, [serverActionCntr]);
 

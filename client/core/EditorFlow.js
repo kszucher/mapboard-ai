@@ -34,20 +34,22 @@ export const editorState = {
 
 const InitEditorState = JSON.stringify(editorState);
 
-const serv = (state, serverCmd, serverPayload) => {
-    if (serverPayload === undefined) {
-        serverPayload = {}
+const serv = (state, serverCmd, serverPayload = {}) => {
+    let serverAction = {serverCmd, serverPayload};
+    let serverActionCntr = state.serverActionCntr + 1;
+    if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(serverCmd)) {
+        const cred = JSON.parse(localStorage.getItem('cred'));
+        if (cred && cred.email && cred.password) {
+            Object.assign(serverAction, cred);
+        }
     }
-    return {
-        serverAction: {serverCmd, serverPayload},
-        serverActionCntr: state.serverActionCntr + 1
-    }
+    return {serverAction, serverActionCntr}
 }
 
 const mapSave = () => {             return {mapIdOut: mapState.mapId, mapSourceOut: mapState.mapSource, mapStorageOut: saveMap(), frameSelectedOut: mapState.frameSelected,}}
 const newMapSave = () => {          return {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}}
 const mapDelete = () => {           return {mapId: mapState.mapId}}
-const frameOut = (state) => {    return {frameSelectedOut: state.frameSelection[0]}}
+const frameOut = (state) => {       return {frameSelectedOut: state.frameSelection[0]}}
 
 const EditorReducer = (state, action) => {
     const {payload} = action;
