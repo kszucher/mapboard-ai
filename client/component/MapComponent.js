@@ -192,9 +192,10 @@ export function MapComponent() {
             elapsed++;
             if (e.which === 1) {
                 if (isNodeClicked) {
+                    let m = getMapData().m;
                     let r = getMapData().r;
                     let [toX, toY] = getCoords(e);
-                    mapState.moveTargetPath = [];
+                    m.moveTargetPath = [];
                     r.moveData = [];
                     let lastSelectedPath = selectionState.structSelectedPathList[0];
                     let lastSelected = mapref(lastSelectedPath);
@@ -204,13 +205,13 @@ export function MapComponent() {
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
                         let lastNearestPath = mapFindNearest.start(r, toX, toY);
                         if (lastNearestPath.length > 1) {
-                            mapState.moveTargetPath = copy(lastNearestPath);
+                            m.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
                             fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                             fromY = lastFound.nodeY;
                             r.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
-                                mapState.moveTargetIndex = 0;
+                                m.moveTargetIndex = 0;
                             } else {
                                 let insertIndex = 0;
                                 for (let i = 0; i < lastFound.s.length - 1; i++) {
@@ -227,7 +228,7 @@ export function MapComponent() {
                                         insertIndex -= 1;
                                     }
                                 }
-                                mapState.moveTargetIndex = insertIndex;
+                                m.moveTargetIndex = insertIndex;
                             }
                         }
                     }
@@ -260,7 +261,7 @@ export function MapComponent() {
         if (e.which === 1) {
             let r = getMapData().r;
             let m = getMapData().m;
-            if (mapState.moveTargetPath.length) {
+            if (m.moveTargetPath.length) {
                 r.moveData = [];
                 m.shouldCenter = true; // outside push - checkPop?
                 push();

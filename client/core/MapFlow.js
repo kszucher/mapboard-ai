@@ -22,9 +22,6 @@ export let mapState = {
     data: [],
     dataIndex: 0,
     frameSelected: null,
-
-    moveTargetPath: [],
-    moveTargetIndex: 0,
 };
 
 const InitMapState = JSON.stringify(mapState);

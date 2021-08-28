@@ -1,6 +1,6 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import {copy, transpose} from "../core/Utils";
-import {mapref, mapState} from "../core/MapFlow";
+import {getMapData, mapref, mapState} from "../core/MapFlow";
 
 let clipboard = [];
 
@@ -10,14 +10,14 @@ export function setClipboard(clipboardIn) {
 
 export function nodeMoveMouse (sc) {
     let {structSelectedPathList, sameParentPath} = sc;
+    let m = getMapData().m;
     let sameParent = mapref(sameParentPath);
     let moveSource = mapref(structSelectedPathList[0]);
-    let moveTarget = mapref(mapState.moveTargetPath);
-    mapState.moveTargetPath = [];
-    let moveTargetIndex = mapState.moveTargetIndex;
+    let moveTarget = mapref(m.moveTargetPath);
+    m.moveTargetPath = [];
     let tempClipboard = copy(moveSource);
     sameParent.s.splice(moveSource.index, 1);
-    moveTarget.s.splice(moveTargetIndex, 0, tempClipboard);
+    moveTarget.s.splice(m.moveTargetIndex, 0, tempClipboard);
 }
 
 export function nodeMove(sc, target, key, mode) {

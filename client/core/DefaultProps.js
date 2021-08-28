@@ -21,11 +21,13 @@ export let mapProps = {
         defaultH: 0,
         taskConfigD: 0,
         taskConfigWidth: 0,
-
+        // indicators
         isLoading: true,
         isResizing: false,
+        // navigators
         deepestSelectablePath: [],
-
+        moveTargetPath: [],
+        moveTargetIndex: 0,
     },
     saveNeverInitAlways: {
 
