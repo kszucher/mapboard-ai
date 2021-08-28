@@ -24,8 +24,6 @@ export let mapState = {
     frameSelected: null,
 };
 
-const InitMapState = JSON.stringify(mapState);
-
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
@@ -37,7 +35,6 @@ export function mapDispatch(action, payload) {
 function mapReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
-            mapState = JSON.parse(InitMapState);
             mapState.mapId = payload.mapId;
             mapState.mapSource = payload.mapSource;
             mapState.data = [mapAssembly(payload.mapStorage)];
