@@ -5,7 +5,7 @@ import {checkPop, mapref, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {selectionState} from "../core/SelectionFlow";
 
-export function Controls () {
+export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
     const {formatMode, frameEditorVisible, frameLen, frameSelection} = state
 

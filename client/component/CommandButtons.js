@@ -5,7 +5,7 @@ import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {pasteDispatch} from "../core/PasteFlow";
 
-export function Commands () {
+export function CommandButtons () {
     const [state, dispatch] = useContext(Context);
 
     const undo =                () => {mapDispatch('undo'); redraw()}

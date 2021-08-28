@@ -6,9 +6,9 @@ import {MuiThemeProvider} from "@material-ui/core";
 import {MapComponent} from "./MapComponent";
 import Logo from "./Logo";
 import Tabs from "./Tabs";
-import {Commands} from "./Commands";
+import {CommandButtons} from "./CommandButtons";
 import Breadcrumbs from "./Breadcrumbs";
-import {Controls} from "./Controls";
+import {CommandTexts} from "./CommandTexts";
 import {Palette} from "./Palette";
 import {FrameEditor} from "./FrameEditor";
 import {PAGE_STATES} from "../core/EditorFlow";
@@ -25,9 +25,9 @@ export function Page() {
                         <Logo/>
                         {pageState === PAGE_STATES.WORKSPACE && <>
                             <Tabs/>
-                            <Commands/>
+                            <CommandButtons/>
                             <Breadcrumbs/>
-                            <Controls/>
+                            <CommandTexts/>
                         </>}
                         {paletteVisible===1 && <Palette/>}
                         {frameEditorVisible===1 && <FrameEditor/>}
