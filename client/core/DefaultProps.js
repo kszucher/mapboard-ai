@@ -21,6 +21,8 @@ export let mapProps = {
         defaultH: 0,
         taskConfigD: 0,
         taskConfigWidth: 0,
+
+        isResizing: false,
     },
     saveNeverInitAlways: {
 

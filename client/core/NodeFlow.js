@@ -52,6 +52,11 @@ function nodeReducer(action, payload) {
             m.shouldCenter = true;
             break;
         }
+        case 'setIsResizing': {
+            let m = mapref(['m']);
+            m.isResizing = true;
+            break;
+        }
         // NODE SELECT -------------------------------------------------------------------------------------------------
         case 'clearSelection': {
             clearSelection();
@@ -420,12 +425,18 @@ function nodeReducer(action, payload) {
             let field = {
                 line: 'lineColor',
                 text: 'sTextColor',
-                fill: lm.selection === 's' ? 'ellipseNodeFillColor' : 'ellipseBranchFillColor',
-                border: lm.hasCell ? 'cBorderColor' : lm.selection === 's' ? 'ellipseNodeBorderColor' :'ellipseBranchBorderColor'
+                fill: lm.selection === 's'
+                    ? 'ellipseNodeFillColor'
+                    : 'ellipseBranchFillColor',
+                border: lm.hasCell ? 'cBorderColor' : lm.selection === 's'
+                    ? 'ellipseNodeBorderColor'
+                    :'ellipseBranchBorderColor'
             }[payload.formatMode]
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                if (cm.selection === 's' || field === 'ellipseBranchFillColor' || field === 'ellipseBranchBorderColor') {
+                if (cm.selection === 's' ||
+                    field === 'ellipseBranchFillColor' ||
+                    field === 'ellipseBranchBorderColor') {
                     cm[field] = payload.color;
                 } else {
                     if (field !== 'cBorderColor') {

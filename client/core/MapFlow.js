@@ -17,7 +17,6 @@ import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
-    isResizing: false,
     isLoading: false,
 
     mapId: '',
@@ -38,7 +37,7 @@ const InitMapState = JSON.stringify(mapState);
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    if (['initMapState', 'setIsResizing', 'undo', 'redo'].includes(action)) {
+    if (['initMapState', 'undo', 'redo'].includes(action)) {
         recalc();
     }
 }
@@ -52,10 +51,6 @@ function mapReducer(action, payload) {
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.frameSelected = payload.frameSelected;
             mapState.isLoading = true;
-            break;
-        }
-        case 'setIsResizing': {
-            mapState.isResizing = true;
             break;
         }
         case 'undo': {

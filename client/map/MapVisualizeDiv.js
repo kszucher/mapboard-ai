@@ -47,8 +47,8 @@ export const mapVisualizeDiv = {
             mapHolderDiv.scrollLeft = currScrollLeft;
             mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
         }
-        if (mapState.isResizing) {
-            mapState.isResizing = false;
+        if (m.isResizing) {
+            m.isResizing = false;
             mapHolderDiv.scrollLeft = currScrollLeft;
         }
         if (m.shouldCenter) {

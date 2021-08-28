@@ -82,7 +82,7 @@ export function MapComponent() {
     };
 
     const resize = () => {
-        mapDispatch('setIsResizing');
+        nodeDispatch('setIsResizing');
         redraw();
     };
 
