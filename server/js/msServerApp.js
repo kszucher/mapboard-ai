@@ -297,7 +297,7 @@ async function sendResponse(c2s) {
                             let mapId = ObjectId(mapIdOut);
                             let frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
-                                s2c = {cmd: 'openFrameFail'};
+                                s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
                             } else {
                                 let mapStorage = await getPlaybackMapData(mapId, frameSelected);
                                 let mapSource = 'dataPlayback';
