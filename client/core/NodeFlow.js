@@ -63,14 +63,16 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStruct': {
-            lm = mapref(mapState.deepestSelectablePath);
+            let m = mapref(['m']);
+            lm = mapref(m.deepestSelectablePath);
             clearSelection();
             lm.selected = 1;
             lm.selection = 's';
             break;
         }
         case 'selectStructFamily': {
-            lm = mapref(mapState.deepestSelectablePath);
+            let m = mapref(['m']);
+            lm = mapref(m.deepestSelectablePath);
             if (lm.path.length === 1 && lm.path[0] === 'r') {
                 lm.selected = 0;
                 if (lm.d[0].selected === 1) {
@@ -92,7 +94,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'selectStructToo': {
-            mapref(mapState.deepestSelectablePath).selected = sc.maxSel + 1;
+            let m = mapref(['m']);
+            mapref(m.deepestSelectablePath).selected = sc.maxSel + 1;
             break;
         }
         case 'select_all': {

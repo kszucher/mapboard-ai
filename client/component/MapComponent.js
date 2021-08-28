@@ -114,15 +114,16 @@ export function MapComponent() {
         (window.getSelection ? window.getSelection() : document.selection).empty()
         if (e.which === 1 || e.which === 3) {
             mapState.isNodeClicked = false;
+            let m = getMapData().m;
             let r = getMapData().r;
             r.selectionRect = [];
             [fromX, fromY] = getCoords(e);
             let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
             if (lastOverPath.length) {
                 mapState.isNodeClicked = true;
-                mapState.deepestSelectablePath = copy(lastOverPath);
-                if (mapState.deepestSelectablePath.length === 3) {
-                    mapState.deepestSelectablePath = ['r'];
+                m.deepestSelectablePath = copy(lastOverPath);
+                if (m.deepestSelectablePath.length === 3) {
+                    m.deepestSelectablePath = ['r'];
                 }
                 push();
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {

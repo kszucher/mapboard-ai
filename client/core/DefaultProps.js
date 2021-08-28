@@ -24,6 +24,8 @@ export let mapProps = {
 
         isLoading: true,
         isResizing: false,
+        deepestSelectablePath: [],
+
     },
     saveNeverInitAlways: {
 
