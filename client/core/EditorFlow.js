@@ -47,7 +47,7 @@ const serv = (state, serverCmd, serverPayload) => {
 const mapSave = () => {             return {mapIdOut: mapState.mapId, mapSourceOut: mapState.mapSource, mapStorageOut: saveMap(), frameSelectedOut: mapState.frameSelected,}}
 const newMapSave = () => {          return {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}}
 const mapDelete = () => {           return {mapId: mapState.mapId}}
-const getFrameOut = (state) => {    return {frameSelectedOut: state.frameSelection[0]}}
+const frameOut = (state) => {    return {frameSelectedOut: state.frameSelection[0]}}
 
 const EditorReducer = (state, action) => {
     const {payload} = action;
@@ -82,14 +82,14 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':        return state
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true,      ...serv( state, 'openFrame', {          ...mapSave(),                          frameSelected: 0                                                             })}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false,     ...serv( state, 'openMapFromHistory', { ...mapSave()                                                                                                        })}
-        case 'OPEN_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapSave(),                          frameSelected: state.frameSelection[0]                                       })}
-        case 'IMPORT_FRAME':              return {...state,                                               ...serv( state, 'importFrame', {        ...mapSave(),                                                                                                       })}
-        case 'DUPLICATE_FRAME':           return {...state,                                               ...serv( state, 'duplicateFrame', {     ...mapSave(),   ...getFrameOut(state), frameSelected: state.frameSelection[0] + 1                                   })}
-        case 'DELETE_FRAME':              return {...state,                                               ...serv( state, 'deleteFrame', {        ...mapDelete(), ...getFrameOut(state), frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })}
-        case 'PREV_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapSave(),                          frameSelected: state.frameSelection[0] - 1                                   })}
-        case 'NEXT_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapSave(),                          frameSelected: state.frameSelection[0] + 1                                   })}
+        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true,      ...serv( state, 'openFrame', {          ...mapSave(),                       frameSelected: 0                                                             })}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false,     ...serv( state, 'openMapFromHistory', { ...mapSave()                                                                                                     })}
+        case 'OPEN_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapSave(),                       frameSelected: state.frameSelection[0]                                       })}
+        case 'IMPORT_FRAME':              return {...state,                                               ...serv( state, 'importFrame', {        ...mapSave(),                                                                                                    })}
+        case 'DUPLICATE_FRAME':           return {...state,                                               ...serv( state, 'duplicateFrame', {     ...mapSave(),   ...frameOut(state), frameSelected: state.frameSelection[0] + 1                                   })}
+        case 'DELETE_FRAME':              return {...state,                                               ...serv( state, 'deleteFrame', {        ...mapDelete(), ...frameOut(state), frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })}
+        case 'PREV_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapSave(),                       frameSelected: state.frameSelection[0] - 1                                   })}
+        case 'NEXT_FRAME':                return {...state,                                               ...serv( state, 'openFrame', {          ...mapSave(),                       frameSelected: state.frameSelection[0] + 1                                   })}
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
