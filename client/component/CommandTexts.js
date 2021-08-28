@@ -1,9 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import {checkPop, mapref, push, redraw} from "../core/MapFlow";
+import {checkPop, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
-import {selectionState} from "../core/SelectionFlow";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
@@ -26,7 +25,7 @@ export function CommandTexts () {
     const cmdResetAll =          e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
     const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
-    const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP', payload: {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}})
+    const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP'})
     const cmdFrameOp = e => {
         switch (e) {
             case 'frame editor': dispatch({type: 'OPEN_PLAYBACK_EDITOR'}); break;

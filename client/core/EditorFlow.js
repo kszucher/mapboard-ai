@@ -1,4 +1,5 @@
-import {mapState, saveMap} from "./MapFlow";
+import {mapref, mapState, saveMap} from "./MapFlow";
+import {selectionState} from "./SelectionFlow";
 
 export const PAGE_STATES = {
     EMPTY: 'EMPTY',
@@ -43,30 +44,10 @@ const serv = (state, serverCmd, serverPayload) => {
     }
 }
 
-const mapSave = () => {
-    return {
-        mapIdOut: mapState.mapId,
-        mapSourceOut: mapState.mapSource,
-        mapStorageOut: saveMap(),
-        frameSelectedOut: mapState.frameSelected,
-    }
-}
-
-const mapDelete = () => {
-    return {
-        mapId: mapState.mapId
-    }
-}
-
-const getFrameOut = (state) => {
-    return {
-        frameSelectedOut: state.frameSelection[0]
-    }
-}
-
-const mapValues = (stringArray, valueArray, conditionValue) => {
-    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
-}
+const mapSave = () => {             return {mapIdOut: mapState.mapId, mapSourceOut: mapState.mapSource, mapStorageOut: saveMap(), frameSelectedOut: mapState.frameSelected,}}
+const newMapSave = () => {          return {lastPath: selectionState.lastPath, newMapName: mapref(selectionState.lastPath).content}}
+const mapDelete = () => {           return {mapId: mapState.mapId}}
+const getFrameOut = (state) => {    return {frameSelectedOut: state.frameSelection[0]}}
 
 const EditorReducer = (state, action) => {
     const {payload} = action;
@@ -89,9 +70,9 @@ const EditorReducer = (state, action) => {
         case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,                  ...serv(state, 'openMapFromTab',         {tabMapSelected: payload.value, ...mapSave()})}
         case 'OPEN_MAP_FROM_MAP':         return {...state,                                                 ...serv(state, 'openMapFromMap',         {...payload, ...mapSave()})}
         case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                                 ...serv(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: payload.index, ...mapSave()})}
-        case 'SAVE_MAP':                  return {...state,                                                 ...serv(state, 'saveMap',                {...payload, ...mapSave()})}
-        case 'CREATE_MAP_IN_MAP':         return {...state,                                                 ...serv(state, 'createMapInMap',         {...payload, ...mapSave()})}
-        case 'CREATE_MAP_IN_TAB':         return {...state,                                                 ...serv(state, 'createMapInTab',         {...payload, ...mapSave()})}
+        case 'SAVE_MAP':                  return {...state,                                                 ...serv(state, 'saveMap',                {...mapSave(), ...payload})}
+        case 'CREATE_MAP_IN_MAP':         return {...state,                                                 ...serv(state, 'createMapInMap',         {...mapSave(), ...newMapSave()})}
+        case 'CREATE_MAP_IN_TAB':         return {...state,                                                 ...serv(state, 'createMapInTab',         {...mapSave(), ...payload})}
         case 'REMOVE_MAP_IN_TAB':         return {...state,                                                 ...serv(state, 'removeMapInTab')}
         case 'MOVE_UP_MAP_IN_TAB':        return {...state,                                                 ...serv(state, 'moveUpMapInTab')}
         case 'MOVE_DOWN_MAP_IN_TAB':      return {...state,                                                 ...serv(state, 'moveDownMapInTab')}
@@ -135,3 +116,7 @@ const EditorReducer = (state, action) => {
 };
 
 export default EditorReducer;
+
+const mapValues = (stringArray, valueArray, conditionValue) => {
+    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
+}

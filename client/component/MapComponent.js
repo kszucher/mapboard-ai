@@ -383,18 +383,14 @@ export function MapComponent() {
                 }
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j];
-                    if (currExecution === 'applyColorFromKey') {
+                    if (['CREATE_MAP_IN_MAP', 'SAVE_MAP'].includes(currExecution)) {
+                        dispatch({type: currExecution});
+                    } else if (['undo', 'redo'].includes(currExecution)) {
+                        mapDispatch(currExecution);
+                    } else if (currExecution === 'applyColorFromKey') {
                         nodeDispatch(currExecution, {currColor: e.which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
                         nodeDispatch(currExecution, {currTaskStatus: e.which - 96});
-                    } else if (['undo', 'redo'].includes(currExecution)) {
-                        mapDispatch(currExecution);
-                    } else if (currExecution === 'CREATE_MAP_IN_MAP') {
-                        if (!mapref(lastPath).isRoot) {
-                            dispatch({type: currExecution, payload: {lastPath, newMapName: mapref(lastPath).content}});
-                        }
-                    } else if (currExecution === 'SAVE_MAP') {
-                        dispatch({type: currExecution});
                     } else {
                         nodeDispatch(currExecution, {keyCode: e.code});
                         if (['insert_O_S', 'insert_U_S', 'insert_D_S'].includes(currExecution)) {
