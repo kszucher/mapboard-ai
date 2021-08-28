@@ -22,6 +22,7 @@ export let mapProps = {
         taskConfigD: 0,
         taskConfigWidth: 0,
 
+        isLoading: true,
         isResizing: false,
     },
     saveNeverInitAlways: {

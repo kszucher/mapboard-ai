@@ -17,8 +17,6 @@ import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
 
 export let mapState = {
-    isLoading: false,
-
     mapId: '',
     mapSource: '',
     data: [],
@@ -50,7 +48,6 @@ function mapReducer(action, payload) {
             mapState.mapSource = payload.mapSource;
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.frameSelected = payload.frameSelected;
-            mapState.isLoading = true;
             break;
         }
         case 'undo': {

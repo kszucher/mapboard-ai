@@ -42,8 +42,8 @@ export const mapVisualizeDiv = {
         mapDiv.style.height = "" + m.mapHeight + "px";
         let mapHolderDiv = document.getElementById('mapHolderDiv');
         let currScrollLeft = (window.innerWidth + m.mapWidth) / 2;
-        if (mapState.isLoading) {
-            mapState.isLoading = false;
+        if (m.isLoading) {
+            m.isLoading = false;
             mapHolderDiv.scrollLeft = currScrollLeft;
             mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
         }
