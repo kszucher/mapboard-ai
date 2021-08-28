@@ -44,6 +44,7 @@ function mapReducer(action, payload) {
             mapState.mapId = payload.mapId;
             mapState.mapSource = payload.mapSource;
             mapState.data = [mapAssembly(payload.mapStorage)];
+            mapState.dataIndex = 0;
             mapState.frameSelected = payload.frameSelected;
             break;
         }
