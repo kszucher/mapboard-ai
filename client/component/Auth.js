@@ -130,13 +130,13 @@ export default function Auth() {
             }}>
             <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-            <StyledButtonGroup open={true}                                  value={mainTabValues[mainTabValue]} valueList={mainTabValues} action={switchMainMode}/>
-            <StyledButtonGroup open={mainTabValue===1}                      value={subTabValues[subTabValue]}   valueList={subTabValues}  action={switchSubMode}/>
-            <StyledInput        open={mainTabValue===1 && subTabValue===0}  value={name}                        label="Your First Name"   action={typeName}              autoFocus/>
-            <StyledInput        open={true}                                 value={email}                       label="Email"             action={typeEmail}/>
-            <StyledInput        open={subTabValue===0}                      value={password}                    label="Password"          action={typePassword}          type="password"/>
-            <StyledInput        open={mainTabValue===1 && subTabValue===0}  value={passwordAgain}               label="Password Again"    action={typePasswordAgain}     type="password"/>
-            <StyledInput        open={mainTabValue===1 && subTabValue===1}  value={confirmationCode}            label="Confirmation Code" action={typeConfirmationCode}/>
+            <StyledButtonGroup open={true}                                 valueList={mainTabValues} value={mainTabValues[mainTabValue]} action={switchMainMode}/>
+            <StyledButtonGroup open={mainTabValue===1}                     valueList={subTabValues}  value={subTabValues[subTabValue]}   action={switchSubMode}/>
+            <StyledInput       open={mainTabValue===1 && subTabValue===0}  label="Your First Name"   value={name}                        action={typeName}              autoFocus/>
+            <StyledInput       open={true}                                 label="Email"             value={email}                       action={typeEmail}/>
+            <StyledInput       open={subTabValue===0}                      label="Password"          value={password}                    action={typePassword}          type="password"/>
+            <StyledInput       open={mainTabValue===1 && subTabValue===0}  label="Password Again"    value={passwordAgain}               action={typePasswordAgain}     type="password"/>
+            <StyledInput       open={mainTabValue===1 && subTabValue===1}  label="Confirmation Code" value={confirmationCode}            action={typeConfirmationCode}/>
             {feedbackMessage !== '' && <Typography
                 variant="body2"
                 color="textSecondary"

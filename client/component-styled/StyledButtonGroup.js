@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StyledButtonGroup (arg) {
-    const {open, action, value, valueList, size, disabled, valueListDisabled} = arg;
+    const {open, valueList, value, action, size, disabled, valueListDisabled} = arg;
     const classes = useStyles();
     return (
         open && <div  className={classes.root}>

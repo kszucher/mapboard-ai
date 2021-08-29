@@ -39,7 +39,7 @@ export function SharingEditor() {
             }}>
                 <Typography component="h1" variant="h5">Sharing</Typography>
 
-                <StyledInput open={true} value={email} label="Email" action={typeEmail}/>
+                <StyledInput open={true} label="Email" value={email} action={typeEmail}/>
 
                 {/*CHECK VALIDITY*/}
 
