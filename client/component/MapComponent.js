@@ -25,6 +25,38 @@ export function MapComponent() {
         redraw();
     }
 
+    const addLandingListeners = () => {
+        window.addEventListener("mousewheel", mousewheel, {passive: false});
+    }
+
+    const removeLandingListeners = () => {
+        window.removeEventListener("mousewheel", mousewheel);
+    }
+
+    const addMapListeners = () => {
+        window.addEventListener("contextmenu", contextmenu);
+        window.addEventListener('resize', resize);
+        window.addEventListener('popstate', popstate);
+        window.addEventListener('dblclick', dblclick);
+        window.addEventListener('mousedown', mousedown);
+        window.addEventListener('mousemove', mousemove);
+        window.addEventListener('mouseup', mouseup);
+        window.addEventListener("keydown", keydown);
+        window.addEventListener("paste", paste);
+    }
+
+    const removeMapListeners = () => {
+        window.removeEventListener("contextmenu", contextmenu);
+        window.removeEventListener('resize', resize);
+        window.removeEventListener('popstate', popstate);
+        window.removeEventListener('dblclick', dblclick);
+        window.removeEventListener('mousedown', mousedown);
+        window.removeEventListener('mousemove', mousemove);
+        window.removeEventListener('mouseup', mouseup);
+        window.removeEventListener("keydown", keydown);
+        window.removeEventListener("paste", paste);
+    }
+
     useEffect(() => {
         if (landingData.length) {
             loadLandingDataFrame(landingData, landingDataIndex);
@@ -34,34 +66,19 @@ export function MapComponent() {
     useEffect(() => {
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
+
+        removeLandingListeners();
+        removeMapListeners();
         if (pageState === PAGE_STATES.DEMO) {
-            window.addEventListener("mousewheel", mousewheel, {passive: false});
-            return () => {
-                window.removeEventListener("mousewheel", mousewheel);
-            }
-        } else {
-            window.addEventListener("contextmenu", contextmenu);
-            window.addEventListener('resize', resize);
-            window.addEventListener('popstate', popstate);
-            window.addEventListener('dblclick', dblclick);
-            window.addEventListener('mousedown', mousedown);
-            window.addEventListener('mousemove', mousemove);
-            window.addEventListener('mouseup', mouseup);
-            window.addEventListener("keydown", keydown);
-            window.addEventListener("paste", paste);
-            return () => {
-                window.removeEventListener("contextmenu", contextmenu);
-                window.removeEventListener('resize', resize);
-                window.removeEventListener('popstate', popstate);
-                window.removeEventListener('dblclick', dblclick);
-                window.removeEventListener('mousedown', mousedown);
-                window.removeEventListener('mousemove', mousemove);
-                window.removeEventListener('mouseup', mouseup);
-                window.removeEventListener("keydown", keydown);
-                window.removeEventListener("paste", paste);
-            }
+            addLandingListeners();
+        } else if (pageState === PAGE_STATES.WORKSPACE) {
+            addMapListeners();
         }
-    }, []);
+        return () => {
+            removeLandingListeners();
+            removeMapListeners();
+        }
+    }, [pageState]);
 
     const mousewheel = (e) => {
         e.preventDefault();

@@ -5,7 +5,8 @@ export const PAGE_STATES = {
     EMPTY: 'EMPTY',
     DEMO: 'DEMO',
     AUTH: 'AUTH',
-    WORKSPACE: 'WORKSPACE'
+    WORKSPACE: 'WORKSPACE',
+    WORKSPACE_SHARING: 'WORKSPACE_SHARING'
 }
 
 export const editorState = {
@@ -27,7 +28,6 @@ export const editorState = {
     colorText: '',
     paletteVisible: 0,
     frameEditorVisible: 0,
-    sharingEditorVisible: false,
     isPlayback: false,
     frameLen: 0,
     frameSelection: [],
@@ -116,8 +116,8 @@ const EditorReducer = (state, action) => {
         case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'OPEN_SHARING_EDITOR':       return {...state, sharingEditorVisible: true}
-        case 'CLOSE_SHARING_EDITOR':      return {...state, sharingEditorVisible: false}
+        case 'OPEN_SHARING_EDITOR':       return {...state, pageState: PAGE_STATES.WORKSPACE_SHARING}
+        case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: PAGE_STATES.WORKSPACE}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,

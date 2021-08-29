@@ -13,6 +13,8 @@ export default function Auth() {
     const mainTabValues = ['Sign In', 'Sign Up'];
     const subTabValues = ['Step 1', 'Step 2'];
 
+    const [state, dispatch] = useContext(Context);
+    const {serverResponseToUser} = state;
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
     const [name, setName] = useState('');
@@ -21,9 +23,6 @@ export default function Auth() {
     const [passwordAgain, setPasswordAgain] = useState('');
     const [confirmationCode, setConfirmationCode] = useState('');
     const [feedbackMessage, setFeedbackMessage] = useState('');
-
-    const [state, dispatch] = useContext(Context);
-    const {serverResponseToUser} = state;
 
     const typeName = (e) => {setName(e.target.value)}
     const typeEmail = (e) => {setEmail(e.target.value)}

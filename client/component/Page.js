@@ -20,10 +20,10 @@ export function Page() {
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
-                {[PAGE_STATES.DEMO, PAGE_STATES.WORKSPACE].includes(pageState) && <>
+                {[PAGE_STATES.DEMO, PAGE_STATES.WORKSPACE, PAGE_STATES.WORKSPACE_SHARING].includes(pageState) && <>
                     <MapComponent/>
                     <Logo/>
-                    {pageState === PAGE_STATES.WORKSPACE && <>
+                    {[PAGE_STATES.WORKSPACE, PAGE_STATES.WORKSPACE_SHARING].includes(pageState) && <>
                         <Tabs/>
                         <CommandButtons/>
                         <Breadcrumbs/>

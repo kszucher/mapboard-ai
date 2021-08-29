@@ -1,18 +1,22 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import {Context} from "../core/Store";
 import {Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import StyledButton from "../component-styled/StyledButton";
+import StyledInput from "../component-styled/StyledInput";
+import {PAGE_STATES} from "../core/EditorFlow";
 
 export function SharingEditor() {
     const [state, dispatch] = useContext(Context);
-    const {sharingEditorVisible} = state;
+    const {pageState} = state;
+    const [email, setEmail] = useState('');
 
+    const typeEmail = (e) => {setEmail(e.target.value)}
     const closeSharingEditor = _ => dispatch({type: 'CLOSE_SHARING_EDITOR'})
 
     return(
         <Modal
-            open={sharingEditorVisible}
+            open={pageState === PAGE_STATES.WORKSPACE_SHARING}
             onClose={_=>{}}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
@@ -35,9 +39,9 @@ export function SharingEditor() {
             }}>
                 <Typography component="h1" variant="h5">Sharing</Typography>
 
+                <StyledInput open={true} value={email} label="Email" onChange={typeEmail}/>
 
-
-                <StyledButton open={true} name={'Close'} action={closeSharingEditor}/>
+                <StyledButton name={'Close'} action={closeSharingEditor}/>
 
 
             </div>}
