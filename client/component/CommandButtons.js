@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import {Context} from '../core/Store';
-import {StyledIconButton} from "../component-styled/StyledIconButton";
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {pasteDispatch} from "../core/PasteFlow";
+import StyledButton from "../component-styled/StyledButton";
 
 export function CommandButtons () {
     const [state, dispatch] = useContext(Context);
@@ -11,7 +11,6 @@ export function CommandButtons () {
     const undo =                () => {mapDispatch('undo'); redraw()}
     const redo =                () => {mapDispatch('redo'); redraw()}
     const saveMap =             () => {dispatch({type: 'SAVE_MAP'})}
-
     const cut =                 () => {push(); nodeDispatch('cutSelection'); redraw(); checkPop()}
     const copy =                () => {push(); nodeDispatch('copySelection'); redraw(); checkPop()}
     const paste =               () => {pasteDispatch()};
@@ -37,9 +36,9 @@ export function CommandButtons () {
             <div style={{
                 display: 'flex',
                 justifyContent: 'center' }}>
-                <StyledIconButton action={undo} icon={'undo'}/>
-                <StyledIconButton action={redo} icon={'redo'}/>
-                <StyledIconButton action={saveMap} icon={'save'}/>
+                <StyledButton version={'icon'} action={undo} icon={'undo'}/>
+                <StyledButton version={'icon'} action={redo} icon={'redo'}/>
+                <StyledButton version={'icon'} action={saveMap} icon={'save'}/>
             </div>
         </div>
     );

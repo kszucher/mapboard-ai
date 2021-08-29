@@ -41,19 +41,13 @@ export function SharingEditor() {
 
                 <StyledInput open={true} value={email} label="Email" onChange={typeEmail}/>
 
-                <StyledButton name={'Close'} action={closeSharingEditor}/>
+                {/*CHECK VALIDITY*/}
 
+                {/*SAVE*/}
+
+                <StyledButton version={'shortOutlined'} name={'Close'} action={closeSharingEditor}/>
 
             </div>}
         </Modal>
     )
 }
-
-// kell egy input mező, ahova be lehet írni egy email-t,
-// kell egy check validity gomb, ami megmondja, hogy létezik-e ez a user, hasonlóan ahhoz, mint a "signUpStep1FailEmailAlreadyInUse" esetén
-// kell egy save
-// meg persze kell egy kijelzés arról, hogy van-e már share-elve
-// aztán meg az ELFOGADÁS-t is tesztelgetni kell
-// lesz ezzel szép kis munka
-// my map, alatta meg a 3 shared map legyen
-// saját magammal is meg kell osztanom a minta-map-eket, amik egy főmotkány userhez lesznek áttéve

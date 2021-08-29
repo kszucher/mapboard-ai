@@ -82,7 +82,7 @@ export function Palette () {
                     />))))}
             </svg>
             <div style={{display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
-                <StyledButton name={'Close'} action={closePalette}/>
+                <StyledButton version={'shortOutlined'} name={'Close'} action={closePalette}/>
             </div>
         </div>
     );
