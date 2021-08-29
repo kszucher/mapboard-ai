@@ -37,6 +37,7 @@ app.post('/beta', function (req, res) {
 
 let collectionUsers;
 let collectionMaps;
+let collectionShares;
 var db;
 var hb;
 
@@ -58,6 +59,7 @@ MongoClient.connect(uri, {
         db = client.db(process.env.MONGO_TARGET_DB || "app_dev");
         collectionUsers = db.collection('users');
         collectionMaps = db.collection('maps');
+        collectionShares = db.collection('maps');
         app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 
         hb = MongoHeartbeat(db, {
@@ -357,13 +359,23 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'checkValidity': {
-                            let {email} = c2s.serverPayload;
+                            let {email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
                                 s2c = {cmd: 'shareValidityFail'};
                             } else {
-                                // TODO 
-                                s2c = {cmd: 'shareValiditySuccess'};
+                                // TODO
+                                let newShare = {
+                                    sharedMap: '',
+                                    ownerUser: ObjectId(currUser._id),
+                                    shareUser: ObjectId(shareUser.id),
+                                    access,
+                                    status: 'waiting'
+                                }
+                                // let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
+                                console.log(newShare)
+
+                                s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }
                         }
                     }
