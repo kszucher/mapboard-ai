@@ -356,6 +356,11 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'duplicateFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             break;
                         }
+                        case 'checkValidity': {
+                            let {email} = c2s.serverPayload;
+
+                            console.log(email)
+                        }
                     }
                 }
             }

@@ -11,8 +11,9 @@ export function SharingEditor() {
     const {pageState} = state;
     const [email, setEmail] = useState('');
 
-    const typeEmail = (e) => {setEmail(e.target.value)}
+    const typeEmail = (e) =>        setEmail(e.target.value)
     const closeSharingEditor = _ => dispatch({type: 'CLOSE_SHARING_EDITOR'})
+    const checkValidity = _=>       dispatch({type: 'CHECK_VALIDITY', payload: {email}})
 
     return(
         <Modal
@@ -41,7 +42,7 @@ export function SharingEditor() {
 
                 <StyledInput open={true} label="Email" value={email} action={typeEmail}/>
 
-                {/*CHECK VALIDITY*/}
+                <StyledButton version="longContained" disabled={false} action={checkValidity} name={'check validity'}/>
 
                 {/*SAVE*/}
 

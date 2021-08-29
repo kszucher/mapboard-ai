@@ -85,9 +85,9 @@ const EditorReducer = (state, action) => {
         case 'SIGN_UP_STEP_1':            return {...state,                                           ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                           ...serv(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: PAGE_STATES.WORKSPACE,         ...serv(state, 'openMapFromHistory')}
-        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,            ...serv(state, 'openMapFromTab', {tabMapSelected: payload.value})}
+        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,            ...serv(state, 'openMapFromTab', {            tabMapSelected: payload.value})}
         case 'OPEN_MAP_FROM_MAP':         return {...state,                                           ...serv(state, 'openMapFromMap', payload)}
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                           ...serv(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: payload.index})}
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                           ...serv(state, 'openMapFromBreadcrumbs', {    breadcrumbMapSelected: payload.index})}
         case 'SAVE_MAP':                  return {...state,                                           ...serv(state, 'saveMap')}
         case 'CREATE_MAP_IN_MAP':         return {...state,                                           ...serv(state, 'createMapInMap')}
         case 'CREATE_MAP_IN_TAB':         return {...state,                                           ...serv(state, 'createMapInTab')}
@@ -100,14 +100,14 @@ const EditorReducer = (state, action) => {
         case 'MOVE_SUBMAP_TO_TAB':        return state
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true,  ...serv( state, 'openFrame', {         frameSelected: 0                                                             })}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false, ...serv( state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})}
-        case 'OPEN_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {         frameSelected: state.frameSelection[0]                                       })}
+        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true,  ...serv( state, 'openFrame', {                frameSelected: 0                                                             })}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false, ...serv( state, 'openMapFromBreadcrumbs', {   breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})}
+        case 'OPEN_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {                frameSelected: state.frameSelection[0]                                       })}
         case 'IMPORT_FRAME':              return {...state,                                           ...serv( state, 'importFrame')}
-        case 'DUPLICATE_FRAME':           return {...state,                                           ...serv( state, 'duplicateFrame', {    frameSelected: state.frameSelection[0] + 1                                   })}
-        case 'DELETE_FRAME':              return {...state,                                           ...serv( state, 'deleteFrame', {       frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })}
-        case 'PREV_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {         frameSelected: state.frameSelection[0] - 1                                   })}
-        case 'NEXT_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {         frameSelected: state.frameSelection[0] + 1                                   })}
+        case 'DUPLICATE_FRAME':           return {...state,                                           ...serv( state, 'duplicateFrame', {           frameSelected: state.frameSelection[0] + 1                                   })}
+        case 'DELETE_FRAME':              return {...state,                                           ...serv( state, 'deleteFrame', {              frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })}
+        case 'PREV_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {                frameSelected: state.frameSelection[0] - 1                                   })}
+        case 'NEXT_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {                frameSelected: state.frameSelection[0] + 1                                   })}
         case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
         case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
@@ -118,6 +118,7 @@ const EditorReducer = (state, action) => {
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'OPEN_SHARING_EDITOR':       return {...state, pageState: PAGE_STATES.WORKSPACE_SHARING}
         case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: PAGE_STATES.WORKSPACE}
+        case 'CHECK_VALIDITY':            return {...state,                                           ...serv(state, 'checkValidity', payload)}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
