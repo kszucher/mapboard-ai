@@ -27,7 +27,7 @@ export const editorState = {
     colorText: '',
     paletteVisible: 0,
     frameEditorVisible: 0,
-    sharingEditorVisible: 0,
+    sharingEditorVisible: false,
     isPlayback: false,
     frameLen: 0,
     frameSelection: [],
@@ -82,7 +82,6 @@ const EditorReducer = (state, action) => {
         case 'SIGN_IN':                   return {...state,                                           ...serv(state, 'signIn')}
         case 'SHOW_AUTH':                 return {...state, pageState: PAGE_STATES.AUTH}
         case 'SHOW_DEMO':                 return {...state, pageState: PAGE_STATES.DEMO,              ...serv(state, 'getLandingData')}
-        case 'SHOW_SHARING_EDITOR':       return {...state, sharingEditorVisible: 1}
         case 'SIGN_UP_STEP_1':            return {...state,                                           ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                           ...serv(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: PAGE_STATES.WORKSPACE,         ...serv(state, 'openMapFromHistory')}
@@ -117,6 +116,8 @@ const EditorReducer = (state, action) => {
         case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
+        case 'OPEN_SHARING_EDITOR':       return {...state, sharingEditorVisible: true}
+        case 'CLOSE_SHARING_EDITOR':      return {...state, sharingEditorVisible: false}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,

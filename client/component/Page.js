@@ -16,7 +16,7 @@ import {SharingEditor} from "./SharingEditor";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
-    const {pageState, paletteVisible, frameEditorVisible, sharingEditorVisible} = state;
+    const {pageState, paletteVisible, frameEditorVisible} = state;
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
@@ -33,7 +33,7 @@ export function Page() {
                     {frameEditorVisible===1 && <FrameEditor/>}
                 </>}
                 {pageState === PAGE_STATES.AUTH && <Auth/>}
-                {sharingEditorVisible && <SharingEditor/>}
+                <SharingEditor/>
             </MuiThemeProvider>
         </div>
     )

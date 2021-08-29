@@ -15,31 +15,29 @@ export function CommandTexts () {
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
-    const updateDensity =        e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(); setDensity(e)}
-    const updateAlignment =      e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(); setAlignment(e)}
-    const updateFormatMode =     e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    const updateLineWidth =      e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(); setLineWidth(e)}
-    const updateLineType =       e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(); setLineType(e)}
-    const updateBorderWidth =    e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(); setBorderWidth(e)}
-    const updateFontSize =       e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(); setFontSize(e)}
-    const cmdResetAll =          e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
-    const cmdReset =             e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
-    const cmdTaskToggle =        e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
-    const cmdSubmapToggle =      e => dispatch({type: 'CREATE_MAP_IN_MAP'})
+    const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(); setDensity(e)}
+    const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(); setAlignment(e)}
+    const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
+    const updateLineWidth =   e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(); setLineWidth(e)}
+    const updateLineType =    e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(); setLineType(e)}
+    const updateBorderWidth = e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(); setBorderWidth(e)}
+    const updateFontSize =    e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(); setFontSize(e)}
+    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
+    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
+    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
+    const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
     const cmdFrameOp = e => {
         switch (e) {
-            case 'frame editor': dispatch({type: 'OPEN_PLAYBACK_EDITOR'}); break;
-            case 'import':       dispatch({type: 'IMPORT_FRAME'}); break;
-            case 'duplicate':    dispatch({type: 'DUPLICATE_FRAME'}); break;
-            case 'delete':       dispatch({type: 'DELETE_FRAME'}); break;
-            case 'prev':         dispatch({type: 'PREV_FRAME'}); break;
-            case 'next':         dispatch({type: 'NEXT_FRAME'}); break;
-            case 'close':        dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
+            case 'frame editor':   dispatch({type: 'OPEN_PLAYBACK_EDITOR'}); break;
+            case 'import':         dispatch({type: 'IMPORT_FRAME'}); break;
+            case 'duplicate':      dispatch({type: 'DUPLICATE_FRAME'}); break;
+            case 'delete':         dispatch({type: 'DELETE_FRAME'}); break;
+            case 'prev':           dispatch({type: 'PREV_FRAME'}); break;
+            case 'next':           dispatch({type: 'NEXT_FRAME'}); break;
+            case 'close':          dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
-    const cmdSharing = e => {
-        dispatch({type: 'SHOW_SHARING_EDITOR'})
-    }
+    const openSharingEditor = e => dispatch({type: 'OPEN_SHARING_EDITOR'})
 
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
@@ -60,7 +58,7 @@ export function CommandTexts () {
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['import', 'duplicate', 'delete']}  valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>}
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['prev', 'next']} valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>}
                 {frameEditorVisible === 1 && <StyledButtonGroup action={cmdFrameOp}        value={''}          valueList={['close']} />}
-                {formatMode === '' &&        <StyledButtonGroup action={cmdSharing}        value={''}          valueList={['sharing']}/>}
+                {formatMode === '' &&        <StyledButtonGroup action={openSharingEditor} value={''}          valueList={['sharing']}/>}
             </div>
         </div>
     );

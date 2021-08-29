@@ -2,13 +2,17 @@ import React, {useContext} from 'react'
 import {Context} from "../core/Store";
 import {Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import StyledButton from "../component-styled/StyledButton";
 
 export function SharingEditor() {
     const [state, dispatch] = useContext(Context);
-    const {} = state;
+    const {sharingEditorVisible} = state;
+
+    const closeSharingEditor = _ => dispatch({type: 'CLOSE_SHARING_EDITOR'})
+
     return(
         <Modal
-            open={true}
+            open={sharingEditorVisible}
             onClose={_=>{}}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
@@ -30,6 +34,9 @@ export function SharingEditor() {
                 borderRadius: '16px'
             }}>
                 <Typography component="h1" variant="h5">MapBoard</Typography>
+
+                <StyledButton name={'Close'} action={closeSharingEditor}/>
+
 
             </div>}
         </Modal>
