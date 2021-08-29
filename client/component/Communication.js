@@ -95,7 +95,6 @@ export function Communication() {
                 serverState.hasOwnProperty('mapSource') &&
                 serverState.hasOwnProperty('mapStorage')) {
                 const {mapId, mapSource, mapStorage} = serverState;
-                // TODO move under MapComponent once mapFlow is merged into editorFlow
                 let frameSelected = serverState.hasOwnProperty('frameSelected')
                     ? serverState.frameSelected
                     : null;

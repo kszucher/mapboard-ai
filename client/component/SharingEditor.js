@@ -33,9 +33,11 @@ export function SharingEditor() {
                 border: "1px solid #fbfafc",
                 borderRadius: '16px'
             }}>
-                <Typography component="h1" variant="h5">MapBoard</Typography>
+                <Typography component="h1" variant="h5">Sharing</Typography>
 
-                <StyledButton name={'Close'} action={closeSharingEditor}/>
+
+
+                <StyledButton open={true} name={'Close'} action={closeSharingEditor}/>
 
 
             </div>}

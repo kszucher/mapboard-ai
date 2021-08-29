@@ -116,11 +116,11 @@ export default function Auth() {
             <Typography component="h1" variant="h6">Private Beta</Typography>
             {                                       <StyledButtonGroup value={mainTabValues[mainTabValue]} valueList={mainTabValues} action={switchMainMode}/>}
             {mainTabValue===1 &&                    <StyledButtonGroup value={subTabValues[subTabValue]} valueList={subTabValues} action={switchSubMode}/>}
-            {mainTabValue===1 && subTabValue===0 && <StyledInput value={name}               label="Your First Name"     onChange={typeName} autoFocus/>}
-            {                                       <StyledInput value={email}              label="Email"               onChange={typeEmail}/>}
-            {subTabValue===0 &&                     <StyledInput value={password}           label="Password"            onChange={typePassword} type="password"/>}
-            {mainTabValue===1 && subTabValue===0 && <StyledInput value={passwordAgain}      label="Password Again"      onChange={typePasswordAgain} type="password"/>}
-            {mainTabValue===1 && subTabValue===1 && <StyledInput value={confirmationCode}   label="Confirmation Code"   onChange={typeConfirmationCode}/>}
+            <StyledInput open={mainTabValue===1 && subTabValue===0} value={name}             label="Your First Name"   onChange={typeName}              autoFocus/>
+            <StyledInput open={true}                                value={email}            label="Email"             onChange={typeEmail}/>
+            <StyledInput open={subTabValue===0}                     value={password}         label="Password"          onChange={typePassword}          type="password"/>
+            <StyledInput open={mainTabValue===1 && subTabValue===0} value={passwordAgain}    label="Password Again"    onChange={typePasswordAgain}     type="password"/>
+            <StyledInput open={mainTabValue===1 && subTabValue===1} value={confirmationCode} label="Confirmation Code" onChange={typeConfirmationCode}/>
             {feedbackMessage !== '' &&              <Typography variant="body2" color="textSecondary" align="center">{feedbackMessage}</Typography>}
             <Button
                 variant="contained"
