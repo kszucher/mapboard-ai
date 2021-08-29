@@ -54,7 +54,7 @@ export function Communication() {
                     const cred = JSON.parse(localStorage.getItem('cred'));
                     if (cred && cred.email && cred.password) {
                         localStorage.setItem('cred', JSON.stringify(cred))
-                        dispatch({type: 'SIGN_IN', payload: cred})
+                        dispatch({type: 'SIGN_IN'})
                     }
                     break;
                 }

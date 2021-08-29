@@ -41,7 +41,7 @@ const serv = (state, serverCmd, serverPayload = {}) => {
     if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(serverCmd)) {
         const cred = JSON.parse(localStorage.getItem('cred'));
         if (cred && cred.email && cred.password) {
-            Object.assign(serverAction, cred);
+            Object.assign(serverAction, {cred});
         }
     }
     if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs', 'saveMap', 'createMapInMap', 'createMapInTab',
