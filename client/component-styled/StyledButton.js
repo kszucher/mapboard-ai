@@ -26,9 +26,28 @@ export default function StyledButton(arg) {
             const classes = useStyles();
             return (
                 <div className={classes.root}>
-                    <Button variant="outlined" color="primary" onClick={action}>{name}</Button>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={action}>
+                        {name}
+                    </Button>
                 </div>
             );
+        }
+        case 'longContained': {
+            const {name, action, disabled} = arg;
+            return (
+                <Button
+                    fullWidth
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    disabled={disabled}
+                    onClick={action}>
+                    {name}
+                </Button>
+            )
         }
         default: return(<></>)
     }

@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import {Context} from "../core/Store";
-import StyledInput from "../component-styled/StyledInput";
+import StyledButton from "../component-styled/StyledButton";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
+import StyledInput from "../component-styled/StyledInput";
 
 let regEmail = '';
 let regPassword = '';
@@ -130,18 +130,41 @@ export default function Auth() {
             }}>
             <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-            <StyledButtonGroup  open={true}                                 value={mainTabValues[mainTabValue]} valueList={mainTabValues} action={switchMainMode}/>
-            <StyledButtonGroup  open={mainTabValue===1}                     value={subTabValues[subTabValue]} valueList={subTabValues} action={switchSubMode}/>
+            <StyledButtonGroup
+                open={true}
+                value={mainTabValues[mainTabValue]}
+                valueList={mainTabValues}
+                action={switchMainMode}/>
+            <StyledButtonGroup
+                open={mainTabValue===1}
+                value={subTabValues[subTabValue]}
+                valueList={subTabValues}
+                action={switchSubMode}/>
             <StyledInput        open={mainTabValue===1 && subTabValue===0}  value={name}             label="Your First Name"   onChange={typeName}              autoFocus/>
             <StyledInput        open={true}                                 value={email}            label="Email"             onChange={typeEmail}/>
             <StyledInput        open={subTabValue===0}                      value={password}         label="Password"          onChange={typePassword}          type="password"/>
             <StyledInput        open={mainTabValue===1 && subTabValue===0}  value={passwordAgain}    label="Password Again"    onChange={typePasswordAgain}     type="password"/>
             <StyledInput        open={mainTabValue===1 && subTabValue===1}  value={confirmationCode} label="Confirmation Code" onChange={typeConfirmationCode}/>
-            {feedbackMessage !== '' && <Typography variant="body2" color="textSecondary" align="center">{feedbackMessage}</Typography>}
-            <Button variant="contained" fullWidth type="submit" color="primary" disabled={signActionDisabled()} onClick={signAction}>{signActionText()}</Button>
-            <Button variant="contained" fullWidth type="submit" color="primary" disabled={false}                onClick={showLiveDemo}>LIVE DEMO</Button>
-
-            <Typography variant="body2" color="textSecondary" align="center">
+            {feedbackMessage !== '' && <Typography
+                variant="body2"
+                color="textSecondary"
+                align="center">
+                {feedbackMessage}
+            </Typography>}
+            <StyledButton
+                version="longContained"
+                disabled={signActionDisabled()}
+                action={signAction}
+                name={signActionText()}/>
+            <StyledButton
+                version="longContained"
+                disabled={false}
+                action={showLiveDemo}
+                name={'LIVE DEMO'}/>
+            <Typography
+                variant="body2"
+                color="textSecondary"
+                align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="http://mapboard.io/">
                     MapBoard
