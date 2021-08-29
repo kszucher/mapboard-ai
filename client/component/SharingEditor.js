@@ -10,7 +10,7 @@ import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 export function SharingEditor() {
     const [state, dispatch] = useContext(Context);
     const {pageState} = state;
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('test1@mapboard.io');
     const [access, setAccess] = useState('view')
 
     const typeEmail = (e) =>        setEmail(e.target.value)
