@@ -30,7 +30,6 @@ export default function Auth() {
     const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
     const showLiveDemo = (e) => {dispatch({type: 'SHOW_DEMO'})}
-
     const switchMainMode = (e) => {
         if (e !== mainTabValues[mainTabValue]) {
             setMainTabValue(!mainTabValue & 1);
@@ -52,7 +51,6 @@ export default function Auth() {
             setFeedbackMessage('');
         }
     }
-
     const signInHandler = () =>    {
         if (email === '' || password === '') {
             setFeedbackMessage('Missing information.')
@@ -75,6 +73,25 @@ export default function Auth() {
     }
     const signUpStep2Handler = () => {
         dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
+    }
+    const signAction = () => {
+        mainTabValue === 0
+            ? signInHandler()
+            : (subTabValue === 0
+                ? signUpStep1Handler()
+                : signUpStep2Handler()
+            )
+    }
+    const signActionDisabled = () => {
+        return mainTabValue === 0
+            ? false // (email === '' || password === '') // autofill issue
+            : (subTabValue === 0
+                ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
+                : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
+            )
+    }
+    const signActionText = () => {
+        return mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')
     }
 
     useEffect(() => {
@@ -121,29 +138,8 @@ export default function Auth() {
             <StyledInput        open={mainTabValue===1 && subTabValue===0}  value={passwordAgain}    label="Password Again"    onChange={typePasswordAgain}     type="password"/>
             <StyledInput        open={mainTabValue===1 && subTabValue===1}  value={confirmationCode} label="Confirmation Code" onChange={typeConfirmationCode}/>
             {feedbackMessage !== '' && <Typography variant="body2" color="textSecondary" align="center">{feedbackMessage}</Typography>}
-            <Button
-                variant="contained"
-                fullWidth
-                type="submit"
-                color="primary"
-                disabled={
-                    mainTabValue === 0
-                        ? false // (email === '' || password === '') // autofill issue
-                        : (subTabValue === 0
-                            ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
-                            : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
-                        )}
-                onClick={
-                    mainTabValue === 0
-                        ? signInHandler
-                        : (subTabValue === 0
-                            ? signUpStep1Handler
-                            : signUpStep2Handler
-                        )}>
-                {mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')}
-            </Button>
-
-            <Button variant="contained" fullWidth type="submit" color="primary" onClick={showLiveDemo}>LIVE DEMO</Button>
+            <Button variant="contained" fullWidth type="submit" color="primary" disabled={signActionDisabled()} onClick={signAction}>{signActionText()}</Button>
+            <Button variant="contained" fullWidth type="submit" color="primary" disabled={false}                onClick={showLiveDemo}>LIVE DEMO</Button>
 
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
