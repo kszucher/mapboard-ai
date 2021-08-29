@@ -144,7 +144,6 @@ async function sendResponse(c2s) {
                     s2c = {cmd: 'signUpStep2Success'};
                 }
             } else {
-                s2c = {cmd: 'DUNNO'};
                 currUser = await collectionUsers.findOne({email: c2s.cred.email});
                 if (currUser === null || currUser.password !== c2s.cred.password) {
                     s2c = {cmd: 'signInFail'};
