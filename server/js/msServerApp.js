@@ -87,7 +87,7 @@ async function sendResponse(c2s) {
                 s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await collectionMaps.findOne({_id: ObjectId('5f3fd7ba7a84a4205428c96a')})).dataPlayback}}
             } else if (c2s.serverCmd === 'signUpStep1') {
                 let {name, email, password} = c2s.serverPayload;
-                currUser = await collectionUsers.findOne({email: email});
+                currUser = await collectionUsers.findOne({email});
                 if (currUser === null) {
                     let confirmationCode = getConfirmationCode();
                     await transporter.sendMail({
@@ -126,7 +126,7 @@ async function sendResponse(c2s) {
                 }
             } else if (c2s.serverCmd === 'signUpStep2') {
                 let {email, confirmationCode} = c2s.serverPayload;
-                currUser = await collectionUsers.findOne({email: email});
+                currUser = await collectionUsers.findOne({email});
                 if (currUser === null ) {
                     s2c = {cmd: 'signUpStep2FailUnknownUser'};
                 } else if (currUser.activationStatus === 'completed') {
@@ -358,8 +358,13 @@ async function sendResponse(c2s) {
                         }
                         case 'checkValidity': {
                             let {email} = c2s.serverPayload;
-
-                            console.log(email)
+                            let shareUser = await collectionUsers.findOne({email});
+                            if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
+                                s2c = {cmd: 'shareValidityFail'};
+                            } else {
+                                // TODO 
+                                s2c = {cmd: 'shareValiditySuccess'};
+                            }
                         }
                     }
                 }
