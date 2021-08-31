@@ -425,7 +425,7 @@ async function sendResponse(c2s) {
                             };
                             break;
                         }
-                        case 'checkValidity': {
+                        case 'createShare': {
                             let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {

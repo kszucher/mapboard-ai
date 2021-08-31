@@ -70,7 +70,7 @@ const serv = (state, serverCmd, serverPayload = {}) => {
             frameSelectedOut: state.frameSelection[0]
         })
     }
-    if (['checkValidity'].includes(serverCmd)) {
+    if (['createShare'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
             mapId: mapState.mapId,
         })
@@ -123,7 +123,7 @@ const EditorReducer = (state, action) => {
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'OPEN_SHARING_EDITOR':       return {...state, pageState: PAGE_STATES.WORKSPACE_SHARING}
         case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: PAGE_STATES.WORKSPACE}
-        case 'CHECK_VALIDITY':            return {...state,                                           ...serv(state, 'checkValidity', payload)}
+        case 'CREATE_SHARE':              return {...state,                                           ...serv(state, 'createShare', payload)}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,

@@ -15,7 +15,7 @@ export function SharingEditor() {
 
     const typeEmail = (e) =>        setEmail(e.target.value)
     const closeSharingEditor = _ => dispatch({type: 'CLOSE_SHARING_EDITOR'})
-    const checkValidity = _=>       dispatch({type: 'CHECK_VALIDITY', payload: {email, access}})
+    const createShare = _=>       dispatch({type: 'CREATE_SHARE', payload: {email, access}})
 
 
     return(
@@ -47,7 +47,7 @@ export function SharingEditor() {
 
                 <StyledRadioButtonGroup open={true} valueList={['view', 'edit']} value={access} action={e=>setAccess(e.target.value)}/>
 
-                <StyledButton version="longContained" disabled={false} action={checkValidity} name={'check validity'}/>
+                <StyledButton version="longContained" disabled={false} action={createShare} name={'check validity'}/>
 
                 <StyledButton version={'shortOutlined'} name={'Close'} action={closeSharingEditor}/>
 
