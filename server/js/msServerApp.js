@@ -426,14 +426,13 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'checkValidity': {
-                            let {email, access} = c2s.serverPayload;
+                            let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
                                 s2c = {cmd: 'shareValidityFail'};
                             } else {
-                                // TODO
                                 let newShare = {
-                                    sharedMap: '',
+                                    sharedMap: ObjectId(mapId),
                                     ownerUser: ObjectId(currUser._id),
                                     shareUser: ObjectId(shareUser.id),
                                     access,
@@ -441,6 +440,7 @@ async function sendResponse(c2s) {
                                 }
                                 // let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
                                 console.log(newShare)
+
 
                                 s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }

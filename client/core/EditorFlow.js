@@ -70,6 +70,11 @@ const serv = (state, serverCmd, serverPayload = {}) => {
             frameSelectedOut: state.frameSelection[0]
         })
     }
+    if (['checkValidity'].includes(serverCmd)) {
+        Object.assign(serverAction.serverPayload, {
+            mapId: mapState.mapId,
+        })
+    }
     return {serverAction, serverActionCntr}
 }
 
