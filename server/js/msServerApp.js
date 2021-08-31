@@ -134,152 +134,171 @@ async function sendResponse(c2s) {
                 } else if (currUser.activationStatus === 'completed') {
                     s2c = {cmd: 'signUpStep2FailAlreadyActivated'};
                 } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
-                    console.log([confirmationCode, currUser.confirmationCode])
                     s2c = {cmd: 'signUpStep2FailWrongCode'};
                 } else {
-                    await collectionUsers.updateOne(
-                        {_id: ObjectId(currUser._id)},
-                        {$set: {"activationStatus": 'completed'}}
-                    );
+                    await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"activationStatus": 'completed'}});
                     s2c = {cmd: 'signUpStep2Success'};
                 }
             } else {
                 currUser = await collectionUsers.findOne({email: c2s.cred.email});
                 if (currUser === null || currUser.password !== c2s.cred.password) {
                     s2c = {cmd: 'signInFail'};
+                } else if (currUser.activationStatus === 'awaitingConfirmation') {
+                    s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
-                    if (currUser.activationStatus === 'awaitingConfirmation') {
-                        s2c = {cmd: 'signInFail'}
-                    } else if (currUser.activationStatus === 'awaitingConfirmation') {
-                        s2c = {cmd: 'signInFailIncompleteRegistration'}
-                    } else {
-                        if (c2s.hasOwnProperty('serverPayload') &&
-                            c2s.serverPayload.hasOwnProperty('mapIdOut') &&
-                            c2s.serverPayload.hasOwnProperty('mapSourceOut') &&
-                            c2s.serverPayload.hasOwnProperty('mapStorageOut')) {
-                            const {mapIdOut, mapSourceOut, mapStorageOut} = c2s.serverPayload;
-                            if (mapSourceOut === 'data') {
-                                await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
-                            } else if (mapSourceOut === 'dataPlayback') {
-                                const {frameSelectedOut} = c2s.serverPayload;
-                                await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}});
-                            }
+                    if (c2s.hasOwnProperty('serverPayload') &&
+                        c2s.serverPayload.hasOwnProperty('mapIdOut') &&
+                        c2s.serverPayload.hasOwnProperty('mapSourceOut') &&
+                        c2s.serverPayload.hasOwnProperty('mapStorageOut')) {
+                        const {mapIdOut, mapSourceOut, mapStorageOut} = c2s.serverPayload;
+                        if (mapSourceOut === 'data') {
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}});
+                        } else if (mapSourceOut === 'dataPlayback') {
+                            const {frameSelectedOut} = c2s.serverPayload;
+                            await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}});
                         }
-                        switch (c2s.serverCmd) {
-                            case 'signIn': {
-                                s2c = {cmd: 'signInSuccess'};
-                                break;
-                            }
-                            case 'openMapFromHistory': {
-                                let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
-                                let tabMapNameList = await getMapNameList(tabMapIdList);
-                                let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
-                                let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
-                                let mapSource = 'data';
-                                let mapStorage = await getMapData(mapId);
-                                s2c = {
-                                    cmd: 'openMapFromHistorySuccess',
-                                    payload: {
-                                        tabMapNameList,
-                                        tabMapSelected,
-                                        breadcrumbMapNameList,
-                                        mapId,
-                                        mapSource,
-                                        mapStorage
-                                    }
-                                };
-                                break;
-                            }
-                            case 'openMapFromTab': {
-                                let {_id, tabMapIdList} = currUser;
-                                let {tabMapSelected} = c2s.serverPayload;
-                                let tabMapNameList = await getMapNameList(tabMapIdList);
-                                let mapId = tabMapIdList[tabMapSelected];
-                                let breadcrumbMapIdList = [mapId];
-                                await collectionUsers.updateOne({_id}, {$set: {tabMapSelected, breadcrumbMapIdList}});
-                                let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
-                                let mapSource = 'data';
-                                let mapStorage = await getMapData(mapId);
-                                s2c = {
-                                    cmd: 'openMapFromTabSuccess',
-                                    payload: {
-                                        tabMapNameList,
-                                        tabMapSelected,
-                                        breadcrumbMapNameList,
-                                        mapId,
-                                        mapSource,
-                                        mapStorage
-                                    }
-                                };
-                                break;
-                            }
-                            case 'openMapFromMap': {
-                                let {_id, breadcrumbMapIdList} = currUser;
-                                let {mapId} = c2s.serverPayload;
-                                mapId = ObjectId(mapId);
-                                breadcrumbMapIdList = [...breadcrumbMapIdList, mapId];
-                                await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
-                                let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
-                                let mapSource = 'data';
-                                let mapStorage = await getMapData(mapId);
-                                s2c = {
-                                    cmd: 'openMapFromMapSuccess',
-                                    payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}
-                                };
-                                break;
-                            }
-                            case 'openMapFromBreadcrumbs': {
-                                let {_id, breadcrumbMapIdList} = currUser;
-                                let {breadcrumbMapSelected} = c2s.serverPayload;
-                                breadcrumbMapIdList.length = breadcrumbMapSelected + 1;
-                                let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
-                                await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
-                                let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
-                                let mapSource = 'data';
-                                let mapStorage = await getMapData(mapId);
-                                s2c = {
-                                    cmd: 'openMapFromBreadcrumbsSuccess',
-                                    payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}
-                                };
-                                break;
-                            }
-                            case 'saveMap': {
-                                s2c = {cmd: 'saveMapSuccess'};
-                                break;
-                            }
-                            case 'createMapInMap': {
-                                let {breadcrumbMapIdList} = currUser;
-                                let {mapIdOut, lastPath, newMapName} = c2s.serverPayload;
-                                let newMap = getDefaultMap(newMapName);
-                                let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
-                                await collectionMaps.updateOne(
-                                    {_id: ObjectId(mapIdOut)},
-                                    {$set: {'data.$[elem].linkType': 'internal', 'data.$[elem].link': mapId.toString()}},
-                                    {"arrayFilters": [{"elem.path": lastPath}], "multi": true}
-                                );
-                                breadcrumbMapIdList = [...breadcrumbMapIdList, mapId];
-                                let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
-                                let mapSource = 'data';
-                                let mapStorage = newMap.data;
-                                s2c = {
-                                    cmd: 'createMapInMapSuccess',
-                                    payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}
-                                };
-                                break;
-                            }
-                            case 'createMapInTab': {
-                                let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
-                                let newMap = getDefaultMap('New Map');
-                                let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
-                                tabMapIdList = [...tabMapIdList, mapId];
-                                tabMapSelected = tabMapIdList.length - 1;
+                    }
+                    switch (c2s.serverCmd) {
+                        case 'signIn': {
+                            s2c = {cmd: 'signInSuccess'};
+                            break;
+                        }
+                        case 'openMapFromHistory': {
+                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
+                            let tabMapNameList = await getMapNameList(tabMapIdList);
+                            let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
+                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
+                            let mapSource = 'data';
+                            let mapStorage = await getMapData(mapId);
+                            s2c = {
+                                cmd: 'openMapFromHistorySuccess',
+                                payload: {
+                                    tabMapNameList,
+                                    tabMapSelected,
+                                    breadcrumbMapNameList,
+                                    mapId,
+                                    mapSource,
+                                    mapStorage
+                                }
+                            };
+                            break;
+                        }
+                        case 'openMapFromTab': {
+                            let {_id, tabMapIdList} = currUser;
+                            let {tabMapSelected} = c2s.serverPayload;
+                            let tabMapNameList = await getMapNameList(tabMapIdList);
+                            let mapId = tabMapIdList[tabMapSelected];
+                            let breadcrumbMapIdList = [mapId];
+                            await collectionUsers.updateOne({_id}, {$set: {tabMapSelected, breadcrumbMapIdList}});
+                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
+                            let mapSource = 'data';
+                            let mapStorage = await getMapData(mapId);
+                            s2c = {
+                                cmd: 'openMapFromTabSuccess',
+                                payload: {
+                                    tabMapNameList,
+                                    tabMapSelected,
+                                    breadcrumbMapNameList,
+                                    mapId,
+                                    mapSource,
+                                    mapStorage
+                                }
+                            };
+                            break;
+                        }
+                        case 'openMapFromMap': {
+                            let {_id, breadcrumbMapIdList} = currUser;
+                            let {mapId} = c2s.serverPayload;
+                            mapId = ObjectId(mapId);
+                            breadcrumbMapIdList = [...breadcrumbMapIdList, mapId];
+                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
+                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
+                            let mapSource = 'data';
+                            let mapStorage = await getMapData(mapId);
+                            s2c = {
+                                cmd: 'openMapFromMapSuccess',
+                                payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}
+                            };
+                            break;
+                        }
+                        case 'openMapFromBreadcrumbs': {
+                            let {_id, breadcrumbMapIdList} = currUser;
+                            let {breadcrumbMapSelected} = c2s.serverPayload;
+                            breadcrumbMapIdList.length = breadcrumbMapSelected + 1;
+                            let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1];
+                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}});
+                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
+                            let mapSource = 'data';
+                            let mapStorage = await getMapData(mapId);
+                            s2c = {
+                                cmd: 'openMapFromBreadcrumbsSuccess',
+                                payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}
+                            };
+                            break;
+                        }
+                        case 'saveMap': {
+                            s2c = {cmd: 'saveMapSuccess'};
+                            break;
+                        }
+                        case 'createMapInMap': {
+                            let {breadcrumbMapIdList} = currUser;
+                            let {mapIdOut, lastPath, newMapName} = c2s.serverPayload;
+                            let newMap = getDefaultMap(newMapName);
+                            let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
+                            await collectionMaps.updateOne(
+                                {_id: ObjectId(mapIdOut)},
+                                {$set: {'data.$[elem].linkType': 'internal', 'data.$[elem].link': mapId.toString()}},
+                                {"arrayFilters": [{"elem.path": lastPath}], "multi": true}
+                            );
+                            breadcrumbMapIdList = [...breadcrumbMapIdList, mapId];
+                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
+                            let mapSource = 'data';
+                            let mapStorage = newMap.data;
+                            s2c = {
+                                cmd: 'createMapInMapSuccess',
+                                payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}
+                            };
+                            break;
+                        }
+                        case 'createMapInTab': {
+                            let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
+                            let newMap = getDefaultMap('New Map');
+                            let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
+                            tabMapIdList = [...tabMapIdList, mapId];
+                            tabMapSelected = tabMapIdList.length - 1;
+                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
+                            let tabMapNameList = await getMapNameList(tabMapIdList);
+                            let mapSource = 'data';
+                            let mapStorage = newMap.data;
+                            s2c = {
+                                cmd: 'createMapInTabSuccess',
+                                payload: {
+                                    tabMapNameList,
+                                    tabMapSelected,
+                                    breadcrumbMapNameList,
+                                    mapId,
+                                    mapSource,
+                                    mapStorage
+                                }
+                            };
+                            break;
+                        }
+                        case 'removeMapInTab': {
+                            let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
+                            if (tabMapSelected === 0) {
+                                s2c = {cmd: 'removeMapInTabFail'};
+                            } else {
+                                tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected);
+                                tabMapSelected = tabMapSelected - 1;
                                 await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                                 let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
                                 let tabMapNameList = await getMapNameList(tabMapIdList);
+                                let mapId = tabMapIdList[tabMapSelected];
                                 let mapSource = 'data';
-                                let mapStorage = newMap.data;
+                                let mapStorage = await getMapData(mapId);
                                 s2c = {
-                                    cmd: 'createMapInTabSuccess',
+                                    cmd: 'removeMapInTabSuccess',
                                     payload: {
                                         tabMapNameList,
                                         tabMapSelected,
@@ -289,168 +308,141 @@ async function sendResponse(c2s) {
                                         mapStorage
                                     }
                                 };
-                                break;
                             }
-                            case 'removeMapInTab': {
-                                let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
-                                if (tabMapSelected === 0) {
-                                    s2c = {cmd: 'removeMapInTabFail'};
-                                } else {
-                                    tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected);
-                                    tabMapSelected = tabMapSelected - 1;
-                                    await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
-                                    let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList);
-                                    let tabMapNameList = await getMapNameList(tabMapIdList);
-                                    let mapId = tabMapIdList[tabMapSelected];
-                                    let mapSource = 'data';
-                                    let mapStorage = await getMapData(mapId);
-                                    s2c = {
-                                        cmd: 'removeMapInTabSuccess',
-                                        payload: {
-                                            tabMapNameList,
-                                            tabMapSelected,
-                                            breadcrumbMapNameList,
-                                            mapId,
-                                            mapSource,
-                                            mapStorage
-                                        }
-                                    };
-                                }
-                                break;
+                            break;
+                        }
+                        case 'moveUpMapInTab': {
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
+                            if (tabMapSelected === 0) {
+                                s2c = {cmd: 'moveUpMapInTabFail'};
+                            } else {
+                                [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
+                                    [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
+                                tabMapSelected = tabMapSelected - 1;
+                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                                let tabMapNameList = await getMapNameList(tabMapIdList);
+                                s2c = {cmd: 'moveUpMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}}
                             }
-                            case 'moveUpMapInTab': {
-                                let {_id, tabMapIdList, tabMapSelected} = currUser;
-                                if (tabMapSelected === 0) {
-                                    s2c = {cmd: 'moveUpMapInTabFail'};
-                                } else {
-                                    [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
-                                        [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
-                                    tabMapSelected = tabMapSelected - 1;
-                                    await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
-                                    let tabMapNameList = await getMapNameList(tabMapIdList);
-                                    s2c = {cmd: 'moveUpMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}}
-                                }
-                                break;
+                            break;
+                        }
+                        case 'moveDownMapInTab': {
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
+                            if (tabMapSelected >= tabMapIdList.length - 1) {
+                                s2c = {cmd: 'moveDownMapInTabFail'};
+                            } else {
+                                [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
+                                    [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
+                                tabMapSelected = tabMapSelected + 1;
+                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                                let tabMapNameList = await getMapNameList(tabMapIdList);
+                                s2c = {cmd: 'moveDownMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}};
                             }
-                            case 'moveDownMapInTab': {
-                                let {_id, tabMapIdList, tabMapSelected} = currUser;
-                                if (tabMapSelected >= tabMapIdList.length - 1) {
-                                    s2c = {cmd: 'moveDownMapInTabFail'};
-                                } else {
-                                    [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
-                                        [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
-                                    tabMapSelected = tabMapSelected + 1;
-                                    await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
-                                    let tabMapNameList = await getMapNameList(tabMapIdList);
-                                    s2c = {cmd: 'moveDownMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}};
-                                }
-                                break;
-                            }
-                            case 'openFrame': {
-                                let {mapIdOut, frameSelected} = c2s.serverPayload;
-                                let mapId = ObjectId(mapIdOut);
-                                let frameLen = await getFrameLen(mapId);
-                                if (frameLen === 0) {
-                                    s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
-                                } else {
-                                    let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                                    let mapSource = 'dataPlayback';
-                                    s2c = {
-                                        cmd: 'openFrameSuccess',
-                                        payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}
-                                    };
-                                }
-                                break;
-                            }
-                            case 'importFrame': {
-                                let {mapIdOut} = c2s.serverPayload;
-                                mapIdOut = ObjectId(mapIdOut);
-                                let mapStorageToCopy = await getMapData(mapIdOut);
-                                await collectionMaps.updateOne({_id: mapIdOut}, {$push: {"dataPlayback": mapStorageToCopy}});
-                                let frameLen = await getFrameLen(mapIdOut);
-                                let frameSelected = frameLen - 1;
-                                s2c = {cmd: 'importFrameSuccess', payload: {frameLen, frameSelected}};
-                                break;
-                            }
-                            case 'deleteFrame': {
-                                let {mapId, frameSelectedOut, frameSelected} = c2s.serverPayload;
-                                mapId = ObjectId(mapId);
-                                let frameLen = await getFrameLen(mapId);
-                                if (frameLen === 0) {
-                                    s2c = {cmd: 'deleteFrameFail'};
-                                } else {
-                                    frameLen = frameLen - 1;
-                                    await collectionMaps.updateOne({_id: mapId}, [{
-                                        $set: {
-                                            dataPlayback: {
-                                                $concatArrays: [
-                                                    {$slice: ["$dataPlayback", frameSelectedOut]},
-                                                    {$slice: ["$dataPlayback", {$add: [1, frameSelectedOut]}, {$size: "$dataPlayback"}]}
-                                                ]
-                                            }
-                                        }
-                                    }]);
-                                    let mapSource;
-                                    let mapStorage;
-                                    if (frameLen === 0) {
-                                        mapSource = 'data';
-                                        mapStorage = await getMapData(mapId);
-                                    } else {
-                                        mapSource = 'dataPlayback';
-                                        mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                                    }
-                                    s2c = {
-                                        cmd: 'deleteFrameSuccess',
-                                        payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}
-                                    };
-                                }
-                                break;
-                            }
-                            case 'duplicateFrame': {
-                                let {
-                                    mapIdOut,
-                                    mapSourceOut,
-                                    mapStorageOut,
-                                    frameSelectedOut,
-                                    frameSelected
-                                } = c2s.serverPayload;
-                                let mapId = ObjectId(mapIdOut);
-                                await collectionMaps.updateOne({_id: mapId}, {
-                                    $push: {
-                                        "dataPlayback": {
-                                            $each: [mapStorageOut],
-                                            $position: frameSelectedOut
-                                        }
-                                    }
-                                });
-                                let mapSource = mapSourceOut;
-                                let mapStorage = mapStorageOut;
-                                let frameLen = await getFrameLen(mapId);
+                            break;
+                        }
+                        case 'openFrame': {
+                            let {mapIdOut, frameSelected} = c2s.serverPayload;
+                            let mapId = ObjectId(mapIdOut);
+                            let frameLen = await getFrameLen(mapId);
+                            if (frameLen === 0) {
+                                s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
+                            } else {
+                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                let mapSource = 'dataPlayback';
                                 s2c = {
-                                    cmd: 'duplicateFrameSuccess',
+                                    cmd: 'openFrameSuccess',
+                                    payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}
+                                };
+                            }
+                            break;
+                        }
+                        case 'importFrame': {
+                            let {mapIdOut} = c2s.serverPayload;
+                            mapIdOut = ObjectId(mapIdOut);
+                            let mapStorageToCopy = await getMapData(mapIdOut);
+                            await collectionMaps.updateOne({_id: mapIdOut}, {$push: {"dataPlayback": mapStorageToCopy}});
+                            let frameLen = await getFrameLen(mapIdOut);
+                            let frameSelected = frameLen - 1;
+                            s2c = {cmd: 'importFrameSuccess', payload: {frameLen, frameSelected}};
+                            break;
+                        }
+                        case 'deleteFrame': {
+                            let {mapId, frameSelectedOut, frameSelected} = c2s.serverPayload;
+                            mapId = ObjectId(mapId);
+                            let frameLen = await getFrameLen(mapId);
+                            if (frameLen === 0) {
+                                s2c = {cmd: 'deleteFrameFail'};
+                            } else {
+                                frameLen = frameLen - 1;
+                                await collectionMaps.updateOne({_id: mapId}, [{
+                                    $set: {
+                                        dataPlayback: {
+                                            $concatArrays: [
+                                                {$slice: ["$dataPlayback", frameSelectedOut]},
+                                                {$slice: ["$dataPlayback", {$add: [1, frameSelectedOut]}, {$size: "$dataPlayback"}]}
+                                            ]
+                                        }
+                                    }
+                                }]);
+                                let mapSource;
+                                let mapStorage;
+                                if (frameLen === 0) {
+                                    mapSource = 'data';
+                                    mapStorage = await getMapData(mapId);
+                                } else {
+                                    mapSource = 'dataPlayback';
+                                    mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                }
+                                s2c = {
+                                    cmd: 'deleteFrameSuccess',
                                     payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}
                                 };
-                                break;
                             }
-                            case 'checkValidity': {
-                                let {email, access} = c2s.serverPayload;
-                                let shareUser = await collectionUsers.findOne({email});
-                                if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
-                                    s2c = {cmd: 'shareValidityFail'};
-                                } else {
-                                    // TODO
-                                    let newShare = {
-                                        sharedMap: '',
-                                        ownerUser: ObjectId(currUser._id),
-                                        shareUser: ObjectId(shareUser.id),
-                                        access,
-                                        status: 'waiting'
+                            break;
+                        }
+                        case 'duplicateFrame': {
+                            let {
+                                mapIdOut,
+                                mapSourceOut,
+                                mapStorageOut,
+                                frameSelectedOut,
+                                frameSelected
+                            } = c2s.serverPayload;
+                            let mapId = ObjectId(mapIdOut);
+                            await collectionMaps.updateOne({_id: mapId}, {
+                                $push: {
+                                    "dataPlayback": {
+                                        $each: [mapStorageOut],
+                                        $position: frameSelectedOut
                                     }
-                                    // let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
-                                    console.log(newShare)
-
-                                    s2c = {cmd: 'shareValiditySuccess', payload: {}};
                                 }
+                            });
+                            let mapSource = mapSourceOut;
+                            let mapStorage = mapStorageOut;
+                            let frameLen = await getFrameLen(mapId);
+                            s2c = {
+                                cmd: 'duplicateFrameSuccess',
+                                payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}
+                            };
+                            break;
+                        }
+                        case 'checkValidity': {
+                            let {email, access} = c2s.serverPayload;
+                            let shareUser = await collectionUsers.findOne({email});
+                            if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
+                                s2c = {cmd: 'shareValidityFail'};
+                            } else {
+                                // TODO
+                                let newShare = {
+                                    sharedMap: '',
+                                    ownerUser: ObjectId(currUser._id),
+                                    shareUser: ObjectId(shareUser.id),
+                                    access,
+                                    status: 'waiting'
+                                }
+                                // let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
+                                console.log(newShare)
+
+                                s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }
                         }
                     }
