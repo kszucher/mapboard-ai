@@ -120,6 +120,10 @@ export function Communication() {
                 const {tabMapNameList, tabMapSelected} = serverState;
                 dispatch({type: 'SET_TAB_DATA', payload: {tabMapNameList, tabMapSelected}})
             }
+            if (serverState.hasOwnProperty('shareDataExtended')) {
+                const {shareDataExtended} = serverState;
+                dispatch({type: 'SET_SHARE_DATA', payload: {shareDataExtended}})
+            }
         }
     }, [serverResponseCntr])
 

@@ -9,7 +9,7 @@ import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 
 export function SharingEditor() {
     const [state, dispatch] = useContext(Context);
-    const {pageState} = state;
+    const {pageState, shareDataExtended} = state;
     const [email, setEmail] = useState('test1@mapboard.io');
     const [access, setAccess] = useState('view')
 
@@ -50,6 +50,10 @@ export function SharingEditor() {
                 <StyledButton version="longContained" disabled={false} action={createShare} name={'share'}/>
 
                 <StyledButton version={'shortOutlined'} name={'close without sharing'} action={closeSharingEditor}/>
+
+                <div>
+                    {JSON.stringify(shareDataExtended)}
+                </div>
 
             </div>}
         </Modal>
