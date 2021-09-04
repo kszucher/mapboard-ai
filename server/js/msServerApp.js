@@ -59,7 +59,7 @@ MongoClient.connect(uri, {
         db = client.db(process.env.MONGO_TARGET_DB || "app_dev");
         collectionUsers = db.collection('users');
         collectionMaps = db.collection('maps');
-        collectionShares = db.collection('maps');
+        collectionShares = db.collection('shares');
         app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')});
 
         hb = MongoHeartbeat(db, {
@@ -433,17 +433,32 @@ async function sendResponse(c2s) {
                             } else {
                                 let newShare = {
                                     sharedMap: ObjectId(mapId),
-                                    ownerUser: ObjectId(currUser._id),
-                                    shareUser: ObjectId(shareUser.id),
+                                    ownerUser: currUser._id,
+                                    shareUser: shareUser._id,
                                     access,
                                     status: 'waiting'
                                 }
-                                // let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
-                                console.log(newShare)
 
+                                // TODO: some condition checking, or actually, get the CURRENT STATUS OF THE MAP
+                                await collectionShares.insertOne(newShare);
 
                                 s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }
+                            break;
+                        }
+                        case 'getShares': {
+                            let shareData = await collectionShares.find({ownerUser: currUser._id}).toArray();
+                            let shareDataExtended = [];
+                            for(let i = 0; i < shareData.length; i++) {
+                                shareDataExtended.push({
+                                    'map': (await getMapNameList([shareData[i].sharedMap]))[0],
+                                    'shareUserEmail': await getUserEmail(shareData[i].shareUser),
+                                    'access': shareData[i].access,
+                                    'status': shareData[i].status
+                                })
+                            }
+                            console.log(shareDataExtended)
+                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExtended}};
                         }
                     }
                 }
@@ -476,6 +491,10 @@ async function getMapNameList(mapIdList) {
         {$sort: {"__order": 1}},
     ]).forEach(function (m) {mapNameList.push(m.data[1].content)});
     return mapNameList;
+}
+
+async function getUserEmail(userId) {
+    return (await collectionUsers.findOne({_id: userId})).email;
 }
 
 function getConfirmationCode() {

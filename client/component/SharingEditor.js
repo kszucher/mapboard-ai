@@ -47,9 +47,9 @@ export function SharingEditor() {
 
                 <StyledRadioButtonGroup open={true} valueList={['view', 'edit']} value={access} action={e=>setAccess(e.target.value)}/>
 
-                <StyledButton version="longContained" disabled={false} action={createShare} name={'check validity'}/>
+                <StyledButton version="longContained" disabled={false} action={createShare} name={'share'}/>
 
-                <StyledButton version={'shortOutlined'} name={'Close'} action={closeSharingEditor}/>
+                <StyledButton version={'shortOutlined'} name={'close without sharing'} action={closeSharingEditor}/>
 
             </div>}
         </Modal>

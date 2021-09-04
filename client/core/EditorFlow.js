@@ -80,16 +80,17 @@ const serv = (state, serverCmd, serverPayload = {}) => {
 
 const EditorReducer = (state, action) => {
     const {payload} = action;
+    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARING} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(InitEditorState)
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':                   return {...state,                                           ...serv(state, 'signIn')}
-        case 'SHOW_AUTH':                 return {...state, pageState: PAGE_STATES.AUTH}
-        case 'SHOW_DEMO':                 return {...state, pageState: PAGE_STATES.DEMO,              ...serv(state, 'getLandingData')}
+        case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
+        case 'SHOW_DEMO':                 return {...state, pageState: DEMO,                          ...serv(state, 'getLandingData')}
         case 'SIGN_UP_STEP_1':            return {...state,                                           ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                           ...serv(state, 'signUpStep2', payload)}
-        case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: PAGE_STATES.WORKSPACE,         ...serv(state, 'openMapFromHistory')}
+        case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: WORKSPACE,                     ...serv(state, 'openMapFromHistory')}
         case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,            ...serv(state, 'openMapFromTab', {            tabMapSelected: payload.value})}
         case 'OPEN_MAP_FROM_MAP':         return {...state,                                           ...serv(state, 'openMapFromMap', payload)}
         case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                           ...serv(state, 'openMapFromBreadcrumbs', {    breadcrumbMapSelected: payload.index})}
@@ -121,8 +122,8 @@ const EditorReducer = (state, action) => {
         case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'OPEN_SHARING_EDITOR':       return {...state, pageState: PAGE_STATES.WORKSPACE_SHARING}
-        case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: PAGE_STATES.WORKSPACE}
+        case 'OPEN_SHARING_EDITOR':       return {...state, pageState: WORKSPACE_SHARING,             ...serv(state, 'getShares')}
+        case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: WORKSPACE}
         case 'CREATE_SHARE':              return {...state,                                           ...serv(state, 'createShare', payload)}
         case 'SET_NODE_PROPS': {
             let lm = payload;
