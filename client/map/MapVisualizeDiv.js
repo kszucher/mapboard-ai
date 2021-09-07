@@ -128,7 +128,19 @@ function renderContent (contentType, content) {
         case 'text':
             return content;
         case 'equation':
-            return katex.renderToString(getLatexString(content), {throwOnError: false});
+            console.log(content)
+            if (content === '\\[rc\\]') {
+                return `<input type="radio" checked>`
+            } else  if (content === '\\[ruc\\]') {
+                return `<input type="radio">`;
+            } else  if (content === '\\[cc\\]') {
+                return `<input type="checkbox" checked>`;
+            } else  if (content === '\\[cuc\\]') {
+                return `<input type="checkbox">`;
+
+            } else {
+                return katex.renderToString(getLatexString(content), {throwOnError: false});
+            }
         case 'image':
             let imageLink = 'https://mapboard.io/file/';
             return '<img src="' + imageLink + content + '" alt="" id="img">';
