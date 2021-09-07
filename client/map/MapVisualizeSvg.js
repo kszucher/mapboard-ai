@@ -269,7 +269,7 @@ export const mapVisualizeSvg = {
             svgElementData[5].moveLine = {
                 type: 'path',
                 path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
-                stroke: '#5f0a87',
+                stroke: window.location.search === '?d=iq' ? '#08212e' : '#5f0a87',
                 strokeWidth: 1,
                 preventTransition: 1,
             }
@@ -283,7 +283,7 @@ export const mapVisualizeSvg = {
                 ry: 8,
                 fill: '#fbfafc',
                 fillOpacity: 1,
-                stroke: '#5f0a87',
+                stroke: window.location.search === '?d=iq' ? '#08212e' : '#5f0a87',
                 strokeWidth: 5,
                 preventTransition: 1,
             };
@@ -297,7 +297,7 @@ export const mapVisualizeSvg = {
                 height: cm.selectionRect[3],
                 rx: 8,
                 ry: 8,
-                fill: '#5f0a87',
+                fill: window.location.search === '?d=iq' ? '#08212e' : '#5f0a87',
                 fillOpacity: 0.05,
                 strokeWidth: 2,
                 preventTransition: 1,

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
 import Auth from "./Auth";
 import {muiTheme} from "../component-styled/Theme";
@@ -13,10 +13,17 @@ import {Palette} from "./Palette";
 import {FrameEditor} from "./FrameEditor";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {SharingEditor} from "./SharingEditor";
+import {getEquationDim, getTextDim} from "../core/Utils";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
     const {pageState, paletteVisible, frameEditorVisible} = state;
+
+    useEffect(()=> {
+        getTextDim('Test')
+        getEquationDim('\\[Test\\]');
+    }, [])
+
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
