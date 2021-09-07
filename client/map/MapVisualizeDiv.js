@@ -128,7 +128,6 @@ function renderContent (contentType, content) {
         case 'text':
             return content;
         case 'equation':
-            console.log(content)
             if (content === '\\[rc\\]') {
                 return `<input type="radio" checked>`
             } else  if (content === '\\[ruc\\]') {
