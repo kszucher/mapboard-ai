@@ -43,7 +43,9 @@ export function Communication() {
 
     useEffect(() => {
         if (!waitingForServer) {
-            post (serverAction);
+            // console.log('na itt gecc')
+            // Object.assign(serverAction, {queryString: window.location.search})
+            post ({...serverAction, queryString: window.location.search});
         }
     }, [serverActionCntr]);
 
@@ -78,6 +80,9 @@ export function Communication() {
                 }
                 case 'openMapSuccess': {
                     break;
+                }
+                case 'getLandingDataSuccess': {
+                    dispatch({type: 'SET_DEMO'});
                 }
             }
         }

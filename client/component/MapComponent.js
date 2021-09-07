@@ -26,11 +26,19 @@ export function MapComponent() {
     }
 
     const addLandingListeners = () => {
-        window.addEventListener("mousewheel", mousewheel, {passive: false});
+        if (window.location.search === '?d=iq') {
+            addMapListeners();
+        } else {
+            window.addEventListener("mousewheel", mousewheel, {passive: false});
+        }
     }
 
     const removeLandingListeners = () => {
-        window.removeEventListener("mousewheel", mousewheel);
+        if (window.location.search === '?d=iq') {
+            removeMapListeners()
+        } else {
+            window.removeEventListener("mousewheel", mousewheel);
+        }
     }
 
     const addMapListeners = () => {

@@ -86,7 +86,12 @@ async function sendResponse(c2s) {
         try {
             let currUser;
             if (c2s.serverCmd === 'getLandingData') {
-                s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await collectionMaps.findOne({_id: ObjectId('5f3fd7ba7a84a4205428c96a')})).dataPlayback}}
+                let mapId = '5f3fd7ba7a84a4205428c96a'
+                console.log(c2s)
+                if (c2s.queryString === '?d=iq') {
+                    mapId = '613762a580e3ae001695ec93';
+                }
+                s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await collectionMaps.findOne({_id: ObjectId(mapId)})).dataPlayback}}
             } else if (c2s.serverCmd === 'signUpStep1') {
                 let {name, email, password} = c2s.serverPayload;
                 currUser = await collectionUsers.findOne({email});

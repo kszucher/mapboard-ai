@@ -16,7 +16,7 @@ export const editorState = {
     breadcrumbMapNameList: [''],
     tabMapNameList: [],
     tabMapSelected: 0,
-    serverAction: {serverCmd: 'ping'},
+    serverAction: {serverCmd: window.location.search ==='?d=iq' ?  'getLandingData' : 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
     serverResponseCntr: 0,
@@ -88,7 +88,8 @@ const EditorReducer = (state, action) => {
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SIGN_IN':                   return {...state,                                           ...serv(state, 'signIn')}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
-        case 'SHOW_DEMO':                 return {...state, pageState: DEMO,                          ...serv(state, 'getLandingData')}
+        case 'SET_DEMO':                  return {...state, pageState: DEMO}
+        case 'SHOW_DEMO':                 return {...state,                                           ...serv(state, 'getLandingData')}
         case 'SIGN_UP_STEP_1':            return {...state,                                           ...serv(state, 'signUpStep1', payload)}
         case 'SIGN_UP_STEP_2':            return {...state,                                           ...serv(state, 'signUpStep2', payload)}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: WORKSPACE,                     ...serv(state, 'openMapFromHistory')}
