@@ -36,7 +36,84 @@ export const editorState = {
 
 const InitEditorState = JSON.stringify(editorState);
 
-const serv = (state, serverCmd, serverPayload = {}) => {
+const EditorReducer = (state, action) => {
+    return {...{...state, ...resolveProps(state, action)}, ...resolvePropsServer(state, action)};
+};
+
+const resolveProps = (state, action) => {
+    const {payload} = action;
+    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARING} = PAGE_STATES;
+    switch (action.type) {
+        case 'RESET_STATE':               return JSON.parse(InitEditorState)
+        case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
+        case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
+        case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
+        case 'SET_DEMO':                  return {...state, pageState: DEMO}
+        case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: WORKSPACE}
+        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value}
+        case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
+        case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
+        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false}
+        case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
+        case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
+        case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
+        case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
+        case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
+        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
+        case 'SET_SHARE_DATA':            return {...state, shareDataExtended: payload}
+        case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
+        case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
+        case 'OPEN_SHARING_EDITOR':       return {...state, pageState: WORKSPACE_SHARING}
+        case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: WORKSPACE}
+        case 'SET_NODE_PROPS': {
+            let lm = payload;
+            return {...state,
+                lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
+                lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
+                borderWidth: mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
+                fontSize:    mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
+                colorLine:   lm.lineColor,
+                colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
+                colorFill:   lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+                colorText:   lm.sTextColor,
+            }
+        }
+        default: return state
+    }
+}
+
+const resolvePropsServer = (state, action) => {
+    const {payload} = action;
+    switch (action.type) {
+        case 'SIGN_IN':                   return propsServer(state, 'signIn')
+        case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
+        case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1',                 payload)
+        case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2',                 payload)
+        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
+        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab',              {tabMapSelected: payload.value})
+        case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap',              payload)
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs',      {breadcrumbMapSelected: payload.index})
+        case 'SAVE_MAP':                  return propsServer(state, 'saveMap')
+        case 'CREATE_MAP_IN_MAP':         return propsServer(state, 'createMapInMap')
+        case 'CREATE_MAP_IN_TAB':         return propsServer(state, 'createMapInTab')
+        case 'REMOVE_MAP_IN_TAB':         return propsServer(state, 'removeMapInTab')
+        case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 'moveUpMapInTab')
+        case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
+        case 'OPEN_PLAYBACK_EDITOR':      return propsServer(state, 'openFrame',                  {frameSelected: 0})
+        case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs',     {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})
+        case 'OPEN_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0]})
+        case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
+        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame', {           frameSelected: state.frameSelection[0] + 1})
+        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame', {              frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })
+        case 'PREV_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] - 1})
+        case 'NEXT_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] + 1})
+        case 'OPEN_SHARING_EDITOR':       return propsServer(state, 'getShares')
+        case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
+    }
+}
+
+const propsServer = (state, serverCmd, serverPayload = {}) => {
     let serverAction = {serverCmd, serverPayload};
     let serverActionCntr = state.serverActionCntr + 1;
     if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(serverCmd)) {
@@ -78,72 +155,6 @@ const serv = (state, serverCmd, serverPayload = {}) => {
     }
     return {serverAction, serverActionCntr}
 }
-
-const EditorReducer = (state, action) => {
-    const {payload} = action;
-    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARING} = PAGE_STATES;
-    switch (action.type) {
-        case 'RESET_STATE':               return JSON.parse(InitEditorState)
-        case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
-        case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
-        case 'SIGN_IN':                   return {...state,                                           ...serv(state, 'signIn')}
-        case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
-        case 'SET_DEMO':                  return {...state, pageState: DEMO}
-        case 'SHOW_DEMO':                 return {...state,                                           ...serv(state, 'getLandingData')}
-        case 'SIGN_UP_STEP_1':            return {...state,                                           ...serv(state, 'signUpStep1', payload)}
-        case 'SIGN_UP_STEP_2':            return {...state,                                           ...serv(state, 'signUpStep2', payload)}
-        case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: WORKSPACE,                     ...serv(state, 'openMapFromHistory')}
-        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value,            ...serv(state, 'openMapFromTab', {            tabMapSelected: payload.value})}
-        case 'OPEN_MAP_FROM_MAP':         return {...state,                                           ...serv(state, 'openMapFromMap', payload)}
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return {...state,                                           ...serv(state, 'openMapFromBreadcrumbs', {    breadcrumbMapSelected: payload.index})}
-        case 'SAVE_MAP':                  return {...state,                                           ...serv(state, 'saveMap')}
-        case 'CREATE_MAP_IN_MAP':         return {...state,                                           ...serv(state, 'createMapInMap')}
-        case 'CREATE_MAP_IN_TAB':         return {...state,                                           ...serv(state, 'createMapInTab')}
-        case 'REMOVE_MAP_IN_TAB':         return {...state,                                           ...serv(state, 'removeMapInTab')}
-        case 'MOVE_UP_MAP_IN_TAB':        return {...state,                                           ...serv(state, 'moveUpMapInTab')}
-        case 'MOVE_DOWN_MAP_IN_TAB':      return {...state,                                           ...serv(state, 'moveDownMapInTab')}
-        case 'MOVE_MAP_TO_SUBMAP':        return state
-        case 'MOVE_SUBMAP_TO_MAP':        return state
-        case 'MOVE_TAB_TO_SUBMAP':        return state
-        case 'MOVE_SUBMAP_TO_TAB':        return state
-        case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
-        case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true,  ...serv( state, 'openFrame', {                frameSelected: 0                                                             })}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false, ...serv( state, 'openMapFromBreadcrumbs', {   breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})}
-        case 'OPEN_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {                frameSelected: state.frameSelection[0]                                       })}
-        case 'IMPORT_FRAME':              return {...state,                                           ...serv( state, 'importFrame')}
-        case 'DUPLICATE_FRAME':           return {...state,                                           ...serv( state, 'duplicateFrame', {           frameSelected: state.frameSelection[0] + 1                                   })}
-        case 'DELETE_FRAME':              return {...state,                                           ...serv( state, 'deleteFrame', {              frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })}
-        case 'PREV_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {                frameSelected: state.frameSelection[0] - 1                                   })}
-        case 'NEXT_FRAME':                return {...state,                                           ...serv( state, 'openFrame', {                frameSelected: state.frameSelection[0] + 1                                   })}
-        case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
-        case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
-        case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
-        case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
-        case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
-        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
-        case 'SET_SHARE_DATA':            return {...state, shareDataExtended: payload}
-        case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
-        case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'OPEN_SHARING_EDITOR':       return {...state, pageState: WORKSPACE_SHARING,             ...serv(state, 'getShares')}
-        case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: WORKSPACE}
-        case 'CREATE_SHARE':              return {...state,                                           ...serv(state, 'createShare', payload)}
-        case 'SET_NODE_PROPS': {
-            let lm = payload;
-            return {...state,
-                lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
-                lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
-                borderWidth: mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
-                fontSize:    mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
-                colorLine:   lm.lineColor,
-                colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
-                colorFill:   lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
-                colorText:   lm.sTextColor,
-            }
-        }
-        default: return state
-    }
-};
 
 export default EditorReducer;
 
