@@ -43,8 +43,6 @@ export function Communication() {
 
     useEffect(() => {
         if (!waitingForServer) {
-            // console.log('na itt gecc')
-            // Object.assign(serverAction, {queryString: window.location.search})
             post ({...serverAction, queryString: window.location.search});
         }
     }, [serverActionCntr]);

@@ -87,7 +87,6 @@ async function sendResponse(c2s) {
             let currUser;
             if (c2s.serverCmd === 'getLandingData') {
                 let mapId = '5f3fd7ba7a84a4205428c96a'
-                console.log(c2s)
                 if (c2s.queryString === '?d=iq') {
                     mapId = '613762a580e3ae001695ec93';
                 }
