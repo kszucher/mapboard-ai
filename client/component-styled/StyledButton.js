@@ -35,6 +35,19 @@ export default function StyledButton(arg) {
                 </div>
             );
         }
+        case 'shortContained': {
+            const {name, action, disabled} = arg;
+            return (
+                <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    disabled={disabled}
+                    onClick={action}>
+                    {name}
+                </Button>
+            )
+        }
         case 'longContained': {
             const {name, action, disabled} = arg;
             return (

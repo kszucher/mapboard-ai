@@ -455,13 +455,13 @@ async function sendResponse(c2s) {
                             let shareDataExtended = [];
                             for(let i = 0; i < shareData.length; i++) {
                                 shareDataExtended.push({
+                                    'id': i,
                                     'map': (await getMapNameList([shareData[i].sharedMap]))[0],
                                     'shareUserEmail': await getUserEmail(shareData[i].shareUser),
                                     'access': shareData[i].access,
                                     'status': shareData[i].status
                                 })
                             }
-                            console.log(shareDataExtended)
                             s2c = {cmd: 'getSharesSuccess', payload: {shareDataExtended}};
                         }
                     }
