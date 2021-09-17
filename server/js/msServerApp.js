@@ -429,6 +429,21 @@ async function sendResponse(c2s) {
                             };
                             break;
                         }
+                        case 'getShares': {
+                            let shareData = await collectionShares.find({ownerUser: currUser._id}).toArray();
+                            let shareDataExtended = [];
+                            for(let i = 0; i < shareData.length; i++) {
+                                shareDataExtended.push({
+                                    'id': i,
+                                    'map': (await getMapNameList([shareData[i].sharedMap]))[0],
+                                    'shareUserEmail': await getUserEmail(shareData[i].shareUser),
+                                    'access': shareData[i].access,
+                                    'status': shareData[i].status
+                                })
+                            }
+                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExtended}};
+                            break;
+                        }
                         case 'createShare': {
                             let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
@@ -449,20 +464,6 @@ async function sendResponse(c2s) {
                                 s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }
                             break;
-                        }
-                        case 'getShares': {
-                            let shareData = await collectionShares.find({ownerUser: currUser._id}).toArray();
-                            let shareDataExtended = [];
-                            for(let i = 0; i < shareData.length; i++) {
-                                shareDataExtended.push({
-                                    'id': i,
-                                    'map': (await getMapNameList([shareData[i].sharedMap]))[0],
-                                    'shareUserEmail': await getUserEmail(shareData[i].shareUser),
-                                    'access': shareData[i].access,
-                                    'status': shareData[i].status
-                                })
-                            }
-                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExtended}};
                         }
                     }
                 }
