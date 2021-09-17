@@ -6,6 +6,7 @@ export const PAGE_STATES = {
     DEMO: 'DEMO',
     AUTH: 'AUTH',
     WORKSPACE: 'WORKSPACE',
+    WORKSPACE_SHARES: 'WORKSPACE_SHARES',
     WORKSPACE_SHARING: 'WORKSPACE_SHARING'
 }
 
@@ -42,7 +43,7 @@ const EditorReducer = (state, action) => {
 
 const resolveProps = (state, action) => {
     const {payload} = action;
-    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARING} = PAGE_STATES;
+    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(InitEditorState)
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
@@ -64,8 +65,9 @@ const resolveProps = (state, action) => {
         case 'SET_SHARE_DATA':            return {...state, shareDataExtended: payload.shareDataExtended}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'OPEN_SHARING_EDITOR':       return {...state, pageState: WORKSPACE_SHARING}
-        case 'CLOSE_SHARING_EDITOR':      return {...state, pageState: WORKSPACE}
+        case 'SHOW_SHARES':               return {...state, pageState: WORKSPACE_SHARES}
+        case 'SHOW_SHARING':              return {...state, pageState: WORKSPACE_SHARING}
+        case 'CLOSE_WORKSPACE_MODAL':     return {...state, pageState: WORKSPACE}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
@@ -108,7 +110,7 @@ const resolvePropsServer = (state, action) => {
         case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame', {              frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })
         case 'PREV_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] - 1})
         case 'NEXT_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] + 1})
-        case 'OPEN_SHARING_EDITOR':       return propsServer(state, 'getShares')
+        case 'SHOW_SHARES':               return propsServer(state, 'getShares')
         case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
     }
 }

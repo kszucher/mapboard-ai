@@ -12,12 +12,14 @@ import {CommandTexts} from "./CommandTexts";
 import {Palette} from "./Palette";
 import {FrameEditor} from "./FrameEditor";
 import {PAGE_STATES} from "../core/EditorFlow";
-import {SharingEditor} from "./SharingEditor";
+import {Sharing} from "./Sharing";
 import {getEquationDim, getTextDim} from "../core/Utils";
+import {Shares} from "./Shares";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
     const {pageState, paletteVisible, frameEditorVisible} = state;
+    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -27,10 +29,10 @@ export function Page() {
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
-                {[PAGE_STATES.DEMO, PAGE_STATES.WORKSPACE, PAGE_STATES.WORKSPACE_SHARING].includes(pageState) && <>
+                {[DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING].includes(pageState) && <>
                     <MapComponent/>
                     <Logo/>
-                    {[PAGE_STATES.WORKSPACE, PAGE_STATES.WORKSPACE_SHARING].includes(pageState) && <>
+                    {[WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING].includes(pageState) && <>
                         <Tabs/>
                         <CommandButtons/>
                         <Breadcrumbs/>
@@ -39,8 +41,9 @@ export function Page() {
                     {paletteVisible===1 && <Palette/>}
                     {frameEditorVisible===1 && <FrameEditor/>}
                 </>}
-                {pageState === PAGE_STATES.AUTH && <Auth/>}
-                <SharingEditor/>
+                {pageState === AUTH && <Auth/>}
+                {pageState === WORKSPACE_SHARES && <Shares/>}
+                {pageState === WORKSPACE_SHARING && <Sharing/>}
             </MuiThemeProvider>
         </div>
     )

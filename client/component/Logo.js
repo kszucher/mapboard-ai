@@ -44,6 +44,7 @@ export default function Logo() {
                 localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
                 dispatch({type: 'RESET_STATE'});
                 break;
+            case 'SHOW_SHARES':dispatch({type: 'SHOW_SHARES'})
         }
     };
 
@@ -82,6 +83,7 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('MOVE_UP_MAP')}>Move Up Map</MenuItem>
                     <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
+                    <MenuItem onClick={handleSelect('SHOW_SHARES')}>Shares</MenuItem>
                 </Menu>}
                 {pageState === PAGE_STATES.DEMO && <Menu
                     id="menu-appbar"

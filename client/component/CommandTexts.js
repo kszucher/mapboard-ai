@@ -37,7 +37,7 @@ export function CommandTexts () {
             case 'close':          dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
-    const openSharingEditor = e => dispatch({type: 'OPEN_SHARING_EDITOR'})
+    const openSharing = e => dispatch({type: 'SHOW_SHARING'})
 
     return (
         <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
@@ -58,7 +58,7 @@ export function CommandTexts () {
                 <StyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>
                 <StyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>
                 <StyledButtonGroup open={frameEditorVisible === 1} valueList={['close']}                          value={''}          action={cmdFrameOp}        />
-                <StyledButtonGroup open={formatMode === ''}        valueList={['sharing']}                        value={''}          action={openSharingEditor} />
+                <StyledButtonGroup open={formatMode === ''}        valueList={['sharing']}                        value={''}          action={openSharing}       />
             </div>
         </div>
     );
