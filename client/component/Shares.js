@@ -3,6 +3,7 @@ import {Context} from "../core/Store";
 import {Modal} from "@material-ui/core";
 import StyledButton from "../component-styled/StyledButton";
 import {DataGrid} from "@mui/x-data-grid";
+import Typography from "@material-ui/core/Typography";
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
@@ -30,10 +31,10 @@ export function Shares() {
                 transform: 'translate(-50%)',
                 top: 96,
                 width: 48*16,
-                height: 800,
+                // height: 1200,
                 flexDirection: 'column',
                 alignItems: 'center',
-                display: 'inline-flex',
+                display: 'flex',
                 flexWrap: 'wrap',
                 gap: 16,
                 backgroundColor: '#fbfafc',
@@ -41,7 +42,12 @@ export function Shares() {
                 border: "1px solid #fbfafc",
                 borderRadius: '16px'
             }}>
-                <div style={{ height: 400, width: '100%' }}>
+                <Typography
+                    component="h1"
+                    variant="h5">
+                    My Shares
+                </Typography>
+                <div style={{ width: '100%' }}>
                     <DataGrid
                         rows={shareDataExtended}
                         columns={columns}
@@ -49,6 +55,23 @@ export function Shares() {
                         rowsPerPageOptions={[5]}
                         checkboxSelection
                         disableSelectionOnClick
+                        autoHeight={true}
+                    />
+                </div>
+                <Typography
+                    component="h1"
+                    variant="h5">
+                    Shared With Me
+                </Typography>
+                <div style={{ width: '100%' }}>
+                    <DataGrid
+                        rows={shareDataExtended}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        checkboxSelection
+                        disableSelectionOnClick
+                        autoHeight={true}
                     />
                 </div>
                 <StyledButton version={'shortOutlined'} name={'close'} action={closeSharing}/>
