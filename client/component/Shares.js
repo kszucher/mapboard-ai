@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
-    const {shareDataExtended} = state;
+    const {shareDataExport} = state;
 
     const closeSharing = _ =>       dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
 
@@ -49,7 +49,7 @@ export function Shares() {
                 </Typography>
                 <div style={{ width: '100%' }}>
                     <DataGrid
-                        rows={shareDataExtended}
+                        rows={shareDataExport}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
@@ -65,7 +65,7 @@ export function Shares() {
                 </Typography>
                 <div style={{ width: '100%' }}>
                     <DataGrid
-                        rows={shareDataExtended}
+                        rows={shareDataExport}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}

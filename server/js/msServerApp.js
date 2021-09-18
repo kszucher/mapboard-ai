@@ -430,21 +430,32 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'getShares': {
-                            let shareData = await collectionShares.find({ownerUser: currUser._id}).toArray();
-                            let shareDataExtended = [];
-                            for(let i = 0; i < shareData.length; i++) {
-                                shareDataExtended.push({
+                            let ownerUserData = await collectionShares.find({ownerUser: currUser._id}).toArray();
+                            let shareUserData = await collectionShares.find({shareUser: currUser._id}).toArray();
+
+
+                            // 3 TODO
+                            // - filter for another list
+                            // - NOT converting anything right now to see edit
+                            // - make script for sys - this will be needed anyways
+
+                            let shareDataExport = [];
+                            for(let i = 0; i < ownerUserData.length; i++) {
+                                shareDataExport.push({
                                     'id': i,
-                                    'map': (await getMapNameList([shareData[i].sharedMap]))[0],
-                                    'shareUserEmail': await getUserEmail(shareData[i].shareUser),
-                                    'access': shareData[i].access,
-                                    'status': shareData[i].status
+                                    'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
+                                    'shareUserEmail': await getUserEmail(ownerUserData[i].shareUser),
+                                    'access': ownerUserData[i].access,
+                                    'status': ownerUserData[i].status
                                 })
                             }
-                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExtended}};
+
+
+                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport}};
                             break;
                         }
                         case 'createShare': {
+                            // TODO: minden felhasználó létrehozása egyúttal 3 share létrehozását is jelenti
                             let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
