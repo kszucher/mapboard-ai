@@ -7,13 +7,20 @@ import Typography from "@material-ui/core/Typography";
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
-    const {shareDataExport} = state;
+    const {shareDataExport, shareDataImport} = state;
 
     const closeSharing = _ =>       dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
 
-    const columns = [
+    const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false                },
         {field: 'shareUserEmail', headerName: 'Shared With', width: 250, sortable: false, editable: false                },
+        {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false, type: 'number'},
+        {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
+    ];
+
+    const columnsImport = [
+        {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false                },
+        {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false                },
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false, type: 'number'},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
     ];
@@ -45,12 +52,12 @@ export function Shares() {
                 <Typography
                     component="h1"
                     variant="h5">
-                    My Shares
+                    Maps I Share With Others
                 </Typography>
                 <div style={{ width: '100%' }}>
                     <DataGrid
                         rows={shareDataExport}
-                        columns={columns}
+                        columns={columnsExport}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         checkboxSelection
@@ -61,12 +68,12 @@ export function Shares() {
                 <Typography
                     component="h1"
                     variant="h5">
-                    Shared With Me
+                    Maps Others Share With Me
                 </Typography>
                 <div style={{ width: '100%' }}>
                     <DataGrid
-                        rows={shareDataExport}
-                        columns={columns}
+                        rows={shareDataImport}
+                        columns={columnsImport}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
                         checkboxSelection

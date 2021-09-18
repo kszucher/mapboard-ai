@@ -431,16 +431,8 @@ async function sendResponse(c2s) {
                         }
                         case 'getShares': {
                             let ownerUserData = await collectionShares.find({ownerUser: currUser._id}).toArray();
-                            let shareUserData = await collectionShares.find({shareUser: currUser._id}).toArray();
-
-
-                            // 3 TODO
-                            // - filter for another list
-                            // - NOT converting anything right now to see edit
-                            // - make script for sys - this will be needed anyways
-
                             let shareDataExport = [];
-                            for(let i = 0; i < ownerUserData.length; i++) {
+                            for (let i = 0; i < ownerUserData.length; i++) {
                                 shareDataExport.push({
                                     'id': i,
                                     'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
@@ -449,13 +441,22 @@ async function sendResponse(c2s) {
                                     'status': ownerUserData[i].status
                                 })
                             }
-
-
-                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport}};
+                            let shareUserData = await collectionShares.find({shareUser: currUser._id}).toArray();
+                            let shareDataImport = [];
+                            for (let i = 0; i < shareUserData.length; i++) {
+                                shareDataImport.push({
+                                    'id': i,
+                                    'map': (await getMapNameList([shareUserData[i].sharedMap]))[0],
+                                    'shareUserEmail': await getUserEmail(shareUserData[i].ownerUser),
+                                    'access': shareUserData[i].access,
+                                    'status': shareUserData[i].status
+                                })
+                            }
+                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport}};
                             break;
                         }
                         case 'createShare': {
-                            // TODO: minden felhasználó létrehozása egyúttal 3 share létrehozását is jelenti
+                            // TODO: minden felhasználó létrehozása egyúttal 3 share létrehozását is jelenti BY SYSTEM
                             let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {

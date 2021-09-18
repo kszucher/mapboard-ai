@@ -33,6 +33,7 @@ export const editorState = {
     frameLen: 0,
     frameSelection: [],
     shareDataExport: [],
+    shareDataImport: [],
 };
 
 const InitEditorState = JSON.stringify(editorState);
@@ -62,7 +63,7 @@ const resolveProps = (state, action) => {
         case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
         case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
         case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
-        case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport}
+        case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'SHOW_SHARES':               return {...state, pageState: WORKSPACE_SHARES}
