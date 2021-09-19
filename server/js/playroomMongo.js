@@ -28,6 +28,14 @@ async function mapFilter (collectionMaps, params) {
             });
             break;
         }
+        case 'mapWithoutProp': {
+            await collectionMaps.find({[params.prop]: null}).forEach(doc => {
+                if (params.returnArray === 'map') {
+                    filter.push(doc._id);
+                }
+            });
+            break;
+        }
         case 'filtered': {
             await collectionMaps.aggregate(
                 [
@@ -51,6 +59,8 @@ async function mapFilter (collectionMaps, params) {
             ).forEach( doc => {
                 if (params.returnArray === 'nodeLink') {
                     filter.push(ObjectId(doc.data.link));
+                } else if (params.returnArray === 'mapNodeContent') {
+                    filter.push(doc.data.content);
                 } else if (params.returnArray === 'mapNodePath') {
                     filter.push({
                         mapId : doc._id,
@@ -157,6 +167,25 @@ async function mongoFunction(cmd) {
                 // await collectionMaps.updateMany({}, {$push: {data:{$each: [{path: ['m']}], $position: 0}}})
                 break;
             }
+            case 'noPath': {
+                let arr = await mapFilter(collectionMaps, {
+                    filterMode: 'mapWithoutProp',
+                    prop: 'path',
+                    returnArray: 'map',
+                })
+                for (let i = 0; i < arr.length; i++) {
+                    let parent = await mapFilter(collectionMaps, {
+                        filterMode: 'filtered',
+                        cond: 'eq',
+                        condKey: 'link',
+                        condVal: arr[i],
+                        returnArray: 'mapNodeContent',
+                    })
+                    let child = (await collectionMaps.findOne({_id: ObjectId(arr[i])})).data[1].content;
+                    console.log(parent, child)
+                }
+                break;
+            }
         }
     }
     catch (err) {
@@ -173,4 +202,4 @@ const difference = (arrA, arrB) => {
     return arrA.filter(x => !arrB.includes(x)).map(el=>ObjectId(el));
 }
 
-mongoFunction('');
+mongoFunction('noPath');
