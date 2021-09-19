@@ -127,7 +127,7 @@ async function mongoFunction(cmd) {
                     returnArray: 'map'
                 });
                 let tabMaps = await collectionUsers.distinct('tabMapIdList')
-                let linkedMaps = await mapFilter(collectionMaps, {
+                let ownedMaps = await mapFilter(collectionMaps, {
                     filterMode: 'filtered',
                     cond: 'eq',
                     condKey: 'linkType',
@@ -135,7 +135,7 @@ async function mongoFunction(cmd) {
                     returnArray: 'nodeLink',
                 })
 
-                let mapsToKeep = [...tabMaps, ...linkedMaps];
+                let mapsToKeep = [...tabMaps, ...ownedMaps];
                 let mapsToDelete = difference(allMaps, mapsToKeep);
 
                 console.log(mapsToKeep.length)
@@ -173,4 +173,4 @@ const difference = (arrA, arrB) => {
     return arrA.filter(x => !arrB.includes(x)).map(el=>ObjectId(el));
 }
 
-mongoFunction('addFieldToAllMap');
+mongoFunction('');
