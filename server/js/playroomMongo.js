@@ -144,6 +144,10 @@ async function mongoFunction(cmd) {
                 // await collectionMaps.deleteMany({_id: {$in: mapsToDelete}})
                 break;
             }
+            case 'addFieldToAllMap': {
+                await collectionMaps.updateMany({}, {$set: {ownerUser: ObjectId('5d88c99f1935c83e84ca263d')}});
+                break;
+            }
             case 'removeFieldFromAllMap': {
                 // await collectionMaps.updateMany({}, {$set: {dataPlayback:[]}}); // NORMAL VERSION
                 // await collectionMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
@@ -162,11 +166,11 @@ async function mongoFunction(cmd) {
     client.close();
 }
 
-mongoFunction('pushStuff');
-
 // warn: set operations require strings
 const difference = (arrA, arrB) => {
     arrA = arrA.map(el=>el.toString());
     arrB = arrB.map(el=>el.toString());
     return arrA.filter(x => !arrB.includes(x)).map(el=>ObjectId(el));
 }
+
+mongoFunction('addFieldToAllMap');

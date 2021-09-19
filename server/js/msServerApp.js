@@ -126,6 +126,7 @@ async function sendResponse(c2s) {
                             ObjectId('5f3fd7ba7a84a4205428c96a') , // features
                         ],
                     })
+                    // TODO: sys shares
                     s2c = {cmd: 'signUpStep1Success'};
                 } else {
                     s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'};
@@ -455,8 +456,11 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport}};
                             break;
                         }
+                        case 'acceptShare': {
+
+                            break;
+                        }
                         case 'createShare': {
-                            // TODO: minden felhasználó létrehozása egyúttal 3 share létrehozását is jelenti BY SYSTEM
                             let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
