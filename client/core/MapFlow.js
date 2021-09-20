@@ -95,7 +95,8 @@ export function push() {
 }
 
 export function checkPop() {
-    if (JSON.stringify(mapState.data[mapState.dataIndex]) === JSON.stringify(mapState.data[mapState.dataIndex - 1])) {
+    if (JSON.stringify(mapState.data[mapState.dataIndex]) ===
+        JSON.stringify(mapState.data[mapState.dataIndex - 1])) {
         mapState.data.length--;
         mapState.dataIndex--;
     }
