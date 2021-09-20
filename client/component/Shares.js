@@ -4,6 +4,10 @@ import {Modal} from "@material-ui/core";
 import StyledButton from "../component-styled/StyledButton";
 import {DataGrid} from "@mui/x-data-grid";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
@@ -23,6 +27,14 @@ export function Shares() {
         {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false                },
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false, type: 'number'},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
+        {field: ' ',              headerName: '',            renderCell: () => (
+                <strong>
+                    <IconButton aria-label="delete" size="small" onClick={_=> {console.log('ADD')}}>
+                        <AddCircleOutlineIcon />
+                    </IconButton>
+                </strong>
+            ),
+        }
     ];
 
     return(
@@ -37,7 +49,7 @@ export function Shares() {
                 left: '50%',
                 transform: 'translate(-50%)',
                 top: 96,
-                width: 48*16,
+                width: 1024,
                 // height: 1200,
                 flexDirection: 'column',
                 alignItems: 'center',
