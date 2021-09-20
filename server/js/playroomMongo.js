@@ -163,6 +163,10 @@ async function mongoFunction(cmd) {
                 // await collectionMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
                 break;
             }
+            case 'removeArrayElementFromAllMap': {
+                await collectionMaps.updateMany({}, {$pop: {path: 1}});
+                break;
+            }
             case 'pushStuff': {
                 // await collectionMaps.updateMany({}, {$push: {data:{$each: [{path: ['m']}], $position: 0}}})
                 break;
@@ -202,4 +206,4 @@ const difference = (arrA, arrB) => {
     return arrA.filter(x => !arrB.includes(x)).map(el=>ObjectId(el));
 }
 
-mongoFunction('noPath');
+mongoFunction('');
