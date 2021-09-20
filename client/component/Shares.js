@@ -14,6 +14,7 @@ export function Shares() {
     const {shareDataExport, shareDataImport} = state;
 
     const closeSharing = _ =>       dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
+    const acceptShare = params =>   dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
 
     const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false                },
@@ -27,9 +28,9 @@ export function Shares() {
         {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false                },
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false, type: 'number'},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
-        {field: ' ',              headerName: '',            renderCell: () => (
+        {field: ' ',              headerName: '',            renderCell: (params) => (
                 <strong>
-                    <IconButton aria-label="delete" size="small" onClick={_=> {console.log('ADD')}}>
+                    <IconButton aria-label="delete" size="small" onClick={_=>acceptShare(params)}>
                         <AddCircleOutlineIcon />
                     </IconButton>
                 </strong>

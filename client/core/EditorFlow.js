@@ -113,6 +113,7 @@ const resolvePropsServer = (state, action) => {
         case 'NEXT_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] + 1})
         case 'SHOW_SHARES':               return propsServer(state, 'getShares')
         case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
+        case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare',                payload)
     }
 }
 

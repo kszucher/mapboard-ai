@@ -435,6 +435,7 @@ async function sendResponse(c2s) {
                             let shareDataExport = [];
                             for (let i = 0; i < ownerUserData.length; i++) {
                                 shareDataExport.push({
+                                    '_id': ownerUserData[i]._id,
                                     'id': i,
                                     'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
                                     'shareUserEmail': await getUserEmail(ownerUserData[i].shareUser),
@@ -446,6 +447,7 @@ async function sendResponse(c2s) {
                             let shareDataImport = [];
                             for (let i = 0; i < shareUserData.length; i++) {
                                 shareDataImport.push({
+                                    '_id': shareUserData[i]._id,
                                     'id': i,
                                     'map': (await getMapNameList([shareUserData[i].sharedMap]))[0],
                                     'shareUserEmail': await getUserEmail(shareUserData[i].ownerUser),
@@ -457,7 +459,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'acceptShare': {
-
+                            let {shareId} = c2s.serverPayload;
+                            shareId = ObjectId(shareId);
+                            // TODO: apply this
                             break;
                         }
                         case 'createShare': {
