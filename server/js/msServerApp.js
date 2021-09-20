@@ -246,9 +246,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'createMapInMap': {
-                            let {breadcrumbMapIdList} = currUser;
+                            let {_id, breadcrumbMapIdList} = currUser;
                             let {mapIdOut, lastPath, newMapName} = c2s.serverPayload;
-                            let newMap = getDefaultMap(newMapName);
+                            let newMap = getDefaultMap(newMapName, _id, breadcrumbMapIdList);
                             let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
                             await collectionMaps.updateOne(
                                 {_id: ObjectId(mapIdOut)},
@@ -267,7 +267,7 @@ async function sendResponse(c2s) {
                         }
                         case 'createMapInTab': {
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser;
-                            let newMap = getDefaultMap('New Map');
+                            let newMap = getDefaultMap('New Map', _id, breadcrumbMapIdList);
                             let mapId = (await collectionMaps.insertOne(newMap)).insertedId;
                             tabMapIdList = [...tabMapIdList, mapId];
                             tabMapSelected = tabMapIdList.length - 1;
@@ -523,7 +523,7 @@ function getConfirmationCode() {
     return Math.round(Math.random() * (max - min) + min);
 }
 
-function getDefaultMap(mapName) {
+function getDefaultMap(mapName, ownerUser, path) {
     return {
         data: [
             {path: ['m']},
@@ -533,6 +533,8 @@ function getDefaultMap(mapName) {
         ],
         dataHistory: [],
         dataPlayback: [],
+        ownerUser,
+        path
     }
 }
 
