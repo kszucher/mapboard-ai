@@ -177,14 +177,7 @@ async function sendResponse(c2s) {
                             let mapStorage = await getMapData(mapId);
                             s2c = {
                                 cmd: 'openMapFromHistorySuccess',
-                                payload: {
-                                    tabMapNameList,
-                                    tabMapSelected,
-                                    breadcrumbMapNameList,
-                                    mapId,
-                                    mapSource,
-                                    mapStorage
-                                }
+                                payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}
                             };
                             break;
                         }
@@ -200,14 +193,7 @@ async function sendResponse(c2s) {
                             let mapStorage = await getMapData(mapId);
                             s2c = {
                                 cmd: 'openMapFromTabSuccess',
-                                payload: {
-                                    tabMapNameList,
-                                    tabMapSelected,
-                                    breadcrumbMapNameList,
-                                    mapId,
-                                    mapSource,
-                                    mapStorage
-                                }
+                                payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}
                             };
                             break;
                         }
@@ -278,14 +264,7 @@ async function sendResponse(c2s) {
                             let mapStorage = newMap.data;
                             s2c = {
                                 cmd: 'createMapInTabSuccess',
-                                payload: {
-                                    tabMapNameList,
-                                    tabMapSelected,
-                                    breadcrumbMapNameList,
-                                    mapId,
-                                    mapSource,
-                                    mapStorage
-                                }
+                                payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}
                             };
                             break;
                         }
@@ -304,14 +283,7 @@ async function sendResponse(c2s) {
                                 let mapStorage = await getMapData(mapId);
                                 s2c = {
                                     cmd: 'removeMapInTabSuccess',
-                                    payload: {
-                                        tabMapNameList,
-                                        tabMapSelected,
-                                        breadcrumbMapNameList,
-                                        mapId,
-                                        mapSource,
-                                        mapStorage
-                                    }
+                                    payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}
                                 };
                             }
                             break;
@@ -405,13 +377,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'duplicateFrame': {
-                            let {
-                                mapIdOut,
-                                mapSourceOut,
-                                mapStorageOut,
-                                frameSelectedOut,
-                                frameSelected
-                            } = c2s.serverPayload;
+                            let {mapIdOut, mapSourceOut, mapStorageOut, frameSelectedOut, frameSelected} = c2s.serverPayload;
                             let mapId = ObjectId(mapIdOut);
                             await collectionMaps.updateOne({_id: mapId}, {
                                 $push: {
@@ -461,7 +427,21 @@ async function sendResponse(c2s) {
                         case 'acceptShare': {
                             let {shareId} = c2s.serverPayload;
                             shareId = ObjectId(shareId);
+
+                            let shareData = await collectionShares.findOne({_id: shareId});
+
+
+
+                            // check if this still exists, e.g. 2 tab opened, and one already deleted it
+
+                            console.log(shareData)
+
+
+                            // ellenőrzöm, hogy nincs-e már hozzáadva, és ha ok, akkor hozzáadom, EASY PEASY
                             // TODO: apply this
+
+                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport, }};
+
                             break;
                         }
                         case 'createShare': {
