@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Context} from "../core/Store";
 import {Modal} from "@material-ui/core";
 import StyledButton from "../component-styled/StyledButton";
@@ -37,6 +37,10 @@ export function Shares() {
             ),
         }
     ];
+
+    useEffect(() => {
+        dispatch({type: 'GET_SHARES'})
+    }, []);
 
     return(
         <Modal
