@@ -13,8 +13,10 @@ export function Shares() {
     const [state, dispatch] = useContext(Context);
     const {shareDataExport, shareDataImport} = state;
 
-    const closeSharing = _ =>       dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
-    const acceptShare = params =>   dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
+    const closeSharing = _ =>
+        dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
+    const acceptShare = params =>
+        dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
 
     const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false                },
@@ -98,7 +100,10 @@ export function Shares() {
                         autoHeight={true}
                     />
                 </div>
-                <StyledButton version={'shortOutlined'} name={'close'} action={closeSharing}/>
+                <StyledButton
+                    version={'shortOutlined'}
+                    name={'close'}
+                    action={closeSharing}/>
             </div>}
         </Modal>
     )
