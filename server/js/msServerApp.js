@@ -425,23 +425,14 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'acceptShare': {
+                            let {tabMapIdList} = currUser;
                             let {shareId} = c2s.serverPayload;
                             shareId = ObjectId(shareId);
-
                             let shareData = await collectionShares.findOne({_id: shareId});
-
-
-
-                            // check if this still exists, e.g. 2 tab opened, and one already deleted it
-
-                            console.log(shareData)
-
-
-                            // ellenőrzöm, hogy nincs-e már hozzáadva, és ha ok, akkor hozzáadom, EASY PEASY
-                            // TODO: apply this
-
-                            s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport, }};
-
+                            // TODO update waiting status
+                            tabMapIdList = [...tabMapIdList, shareData.sharedMap];
+                            // TODO save tabMapIdList back to mongo, and figure out tabMapNameList and tabMapSelected
+                            s2c = {cmd: 'acceptShareSuccess', payload: {/*shareDataExport, shareDataImport,*/  }};
                             break;
                         }
                         case 'createShare': {
