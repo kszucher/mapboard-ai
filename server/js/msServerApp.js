@@ -397,40 +397,19 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'getShares': {
-                            let ownerUserData = await collectionShares.find({ownerUser: currUser._id}).toArray();
-                            let shareDataExport = [];
-                            for (let i = 0; i < ownerUserData.length; i++) {
-                                shareDataExport.push({
-                                    '_id': ownerUserData[i]._id,
-                                    'id': i,
-                                    'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
-                                    'shareUserEmail': await getUserEmail(ownerUserData[i].shareUser),
-                                    'access': ownerUserData[i].access,
-                                    'status': ownerUserData[i].status
-                                })
-                            }
-                            let shareUserData = await collectionShares.find({shareUser: currUser._id}).toArray();
-                            let shareDataImport = [];
-                            for (let i = 0; i < shareUserData.length; i++) {
-                                shareDataImport.push({
-                                    '_id': shareUserData[i]._id,
-                                    'id': i,
-                                    'map': (await getMapNameList([shareUserData[i].sharedMap]))[0],
-                                    'shareUserEmail': await getUserEmail(shareUserData[i].ownerUser),
-                                    'access': shareUserData[i].access,
-                                    'status': shareUserData[i].status
-                                })
-                            }
+                            const {shareDataExport, shareDataImport} = await getUserShares(currUser._id);
                             s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport}};
                             break;
                         }
                         case 'acceptShare': {
-                            let {tabMapIdList} = currUser;
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
                             let {shareId} = c2s.serverPayload;
                             shareId = ObjectId(shareId);
                             let shareData = await collectionShares.findOne({_id: shareId});
-                            // TODO update waiting status
                             tabMapIdList = [...tabMapIdList, shareData.sharedMap];
+                            tabMapSelected = tabMapIdList.length - 1;
+                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+
                             // TODO save tabMapIdList back to mongo, and figure out tabMapNameList and tabMapSelected
                             s2c = {cmd: 'acceptShareSuccess', payload: {/*shareDataExport, shareDataImport,*/  }};
                             break;
@@ -491,6 +470,34 @@ async function getMapNameList(mapIdList) {
 
 async function getUserEmail(userId) {
     return (await collectionUsers.findOne({_id: userId})).email;
+}
+
+async function getUserShares(userId) {
+    let ownerUserData = await collectionShares.find({ownerUser: userId}).toArray();
+    let shareDataExport = [];
+    for (let i = 0; i < ownerUserData.length; i++) {
+        shareDataExport.push({
+            '_id': ownerUserData[i]._id,
+            'id': i,
+            'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
+            'shareUserEmail': await getUserEmail(ownerUserData[i].shareUser),
+            'access': ownerUserData[i].access,
+            'status': ownerUserData[i].status
+        })
+    }
+    let shareUserData = await collectionShares.find({shareUser: userId}).toArray();
+    let shareDataImport = [];
+    for (let i = 0; i < shareUserData.length; i++) {
+        shareDataImport.push({
+            '_id': shareUserData[i]._id,
+            'id': i,
+            'map': (await getMapNameList([shareUserData[i].sharedMap]))[0],
+            'shareUserEmail': await getUserEmail(shareUserData[i].ownerUser),
+            'access': shareUserData[i].access,
+            'status': shareUserData[i].status
+        })
+    }
+    return {shareDataExport, shareDataImport}
 }
 
 function getConfirmationCode() {
