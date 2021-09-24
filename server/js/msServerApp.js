@@ -409,9 +409,9 @@ async function sendResponse(c2s) {
                             tabMapIdList = [...tabMapIdList, shareData.sharedMap];
                             tabMapSelected = tabMapIdList.length - 1;
                             await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
-
-                            // TODO save tabMapIdList back to mongo, and figure out tabMapNameList and tabMapSelected
-                            s2c = {cmd: 'acceptShareSuccess', payload: {/*shareDataExport, shareDataImport,*/  }};
+                            const tabMapNameList = await getMapNameList(tabMapIdList);
+                            const {shareDataExport, shareDataImport} = await getUserShares(currUser._id);
+                            s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapNameList, tabMapSelected}};
                             break;
                         }
                         case 'createShare': {
