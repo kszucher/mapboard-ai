@@ -410,6 +410,7 @@ async function sendResponse(c2s) {
                             tabMapSelected = tabMapIdList.length - 1;
                             await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
                             const tabMapNameList = await getMapNameList(tabMapIdList);
+                            await collectionShares.updateOne({_id: shareId}, {$set: {status: 'accepted'}});
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id);
                             s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapNameList, tabMapSelected}};
                             break;

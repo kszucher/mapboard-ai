@@ -30,7 +30,7 @@ export function Shares() {
         {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false                },
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false, type: 'number'},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
-        {field: ' ',              headerName: '',            renderCell: (params) => (
+        {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
                 <strong>
                     <IconButton aria-label="delete" size="small" onClick={_=>acceptShare(params)}>
                         <AddCircleOutlineIcon />
@@ -56,7 +56,8 @@ export function Shares() {
                 left: '50%',
                 transform: 'translate(-50%)',
                 top: 96,
-                width: 1024,
+                // maxWidth: 'fit-content',
+                width: 200+250+140+140+200,
                 // height: 1200,
                 flexDirection: 'column',
                 alignItems: 'center',
