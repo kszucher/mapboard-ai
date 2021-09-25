@@ -114,6 +114,7 @@ const resolvePropsServer = (state, action) => {
         case 'GET_SHARES':                return propsServer(state, 'getShares')
         case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
         case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare',                payload)
+        case 'WITHDRAW_SHARE':            return propsServer(state, 'withdrawShare',              payload)
     }
 }
 

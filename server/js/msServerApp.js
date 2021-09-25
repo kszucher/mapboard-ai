@@ -434,7 +434,7 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'withdrawShare': {
-
+                            console.log('withdraw request')
                         }
                     }
                 }

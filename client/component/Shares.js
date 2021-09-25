@@ -9,21 +9,34 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
     const {shareDataExport, shareDataImport} = state;
 
-    const closeSharing = _ =>
-        dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
-    const acceptShare = params =>
-        dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
+    const closeSharing = _ =>         dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
+    const acceptShare = params =>     dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
+    const withdrawShare = params =>   dispatch({type: 'WITHDRAW_SHARE', payload: {shareId: params.row._id}})
 
     const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false                },
         {field: 'shareUserEmail', headerName: 'Shared With', width: 250, sortable: false, editable: false                },
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false, type: 'number'},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
+        {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
+                <strong>
+                    <IconButton
+                        aria-label="xxx"
+                        size="small"
+                        onClick={_=>withdrawShare(params)}
+                        disabled={false}
+                    >
+                        <CancelIcon/>
+                    </IconButton>
+                </strong>
+            ),
+        }
     ];
 
     const columnsImport = [
@@ -34,7 +47,7 @@ export function Shares() {
         {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
                 <strong>
                     <IconButton
-                        aria-label="delete"
+                        aria-label="xxx"
                         size="small"
                         onClick={_=>acceptShare(params)}
                         disabled={params.row.status === 'accepted'}
