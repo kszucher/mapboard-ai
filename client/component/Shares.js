@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
@@ -32,8 +33,14 @@ export function Shares() {
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false                },
         {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
                 <strong>
-                    <IconButton aria-label="delete" size="small" onClick={_=>acceptShare(params)}>
-                        <AddCircleOutlineIcon />
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={_=>acceptShare(params)}
+                        disabled={params.row.status === 'accepted'}
+                    >
+                        {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}
+                        {params.row.status === 'accepted' && <CheckCircleIcon/>}
                     </IconButton>
                 </strong>
             ),

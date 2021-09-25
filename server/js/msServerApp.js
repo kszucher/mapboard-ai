@@ -428,13 +428,13 @@ async function sendResponse(c2s) {
                                     access,
                                     status: 'waiting'
                                 }
-
-                                // TODO: some condition checking, or actually, get the CURRENT STATUS OF THE MAP
                                 await collectionShares.insertOne(newShare);
-
                                 s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }
                             break;
+                        }
+                        case 'withdrawShare': {
+
                         }
                     }
                 }
