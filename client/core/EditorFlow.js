@@ -142,7 +142,7 @@ const propsServer = (state, serverCmd, serverPayload = {}) => {
     }
     if (['deleteFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
-            mapId: mapState.mapId,
+            mapIdDelete: mapState.mapId,
             frameSelectedOut: mapState.frameSelected
         })
     }

@@ -362,8 +362,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'deleteFrame': {
-                            let {mapId, frameSelectedOut} = c2s.serverPayload;
-                            mapId = ObjectId(mapId);
+                            const {mapIdDelete, frameSelectedOut} = c2s.serverPayload;
+                            const mapId = ObjectId(mapIdDelete);
                             const frameSelected =  frameSelectedOut > 0 ? frameSelectedOut - 1 : 0;
                             let frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
