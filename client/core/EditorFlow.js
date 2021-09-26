@@ -109,8 +109,8 @@ const resolvePropsServer = (state, action) => {
         case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
         case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame',             {frameSelected: mapState.frameSelected + 1})
         case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame',                {frameSelected: mapState.frameSelected > 0 ? mapState.frameSelected - 1 : 0 })
-        case 'PREV_FRAME':                return propsServer(state, 'openFrame',                  {frameSelected: mapState.frameSelected - 1})
-        case 'NEXT_FRAME':                return propsServer(state, 'openFrame',                  {frameSelected: mapState.frameSelected + 1})
+        case 'PREV_FRAME':                return propsServer(state, 'openPrevFrame',              {frameSelected: mapState.frameSelected - 1})
+        case 'NEXT_FRAME':                return propsServer(state, 'openNextFrame',              {frameSelected: mapState.frameSelected + 1})
         case 'GET_SHARES':                return propsServer(state, 'getShares')
         case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
         case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare',                payload)
@@ -128,7 +128,7 @@ const propsServer = (state, serverCmd, serverPayload = {}) => {
         }
     }
     if (['openMapFromTab', 'openMapFromMap', 'openMapFromBreadcrumbs', 'saveMap', 'createMapInMap', 'createMapInTab',
-        'openFrame', 'importFrame', 'duplicateFrame'].includes(serverCmd)) {
+        'openFrame', 'openPrevFrame', 'openNextFrame', 'importFrame', 'duplicateFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
             mapIdOut: mapState.mapId,
             mapSourceOut: mapState.mapSource,

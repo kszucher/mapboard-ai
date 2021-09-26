@@ -329,6 +329,32 @@ async function sendResponse(c2s) {
                             }
                             break;
                         }
+                        case 'openPrevFrame': {
+                            let {mapIdOut, frameSelected} = c2s.serverPayload;
+                            let mapId = ObjectId(mapIdOut);
+                            let frameLen = await getFrameLen(mapId);
+                            if (frameLen === 0) {
+                                s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
+                            } else {
+                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                let mapSource = 'dataPlayback';
+                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
+                            }
+                            break;
+                        }
+                        case 'openNextFrame': {
+                            let {mapIdOut, frameSelected} = c2s.serverPayload;
+                            let mapId = ObjectId(mapIdOut);
+                            let frameLen = await getFrameLen(mapId);
+                            if (frameLen === 0) {
+                                s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
+                            } else {
+                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                let mapSource = 'dataPlayback';
+                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
+                            }
+                            break;
+                        }
                         case 'importFrame': {
                             const {mapIdOut} = c2s.serverPayload;
                             const mapId = ObjectId(mapIdOut);
