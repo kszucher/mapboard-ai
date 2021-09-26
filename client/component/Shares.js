@@ -95,7 +95,7 @@ export function Shares() {
                     Maps I Share With Others
                 </Typography>
                 <div style={{ width: '100%' }}>
-                    <DataGrid
+                    {shareDataExport.length > 0 && <DataGrid
                         rows={shareDataExport}
                         columns={columnsExport}
                         pageSize={5}
@@ -103,7 +103,7 @@ export function Shares() {
                         checkboxSelection
                         disableSelectionOnClick
                         autoHeight={true}
-                    />
+                    />}
                 </div>
                 <Typography
                     component="h1"
@@ -111,7 +111,7 @@ export function Shares() {
                     Maps Others Share With Me
                 </Typography>
                 <div style={{ width: '100%' }}>
-                    <DataGrid
+                    {shareDataImport.length > 0 && <DataGrid
                         rows={shareDataImport}
                         columns={columnsImport}
                         pageSize={5}
@@ -119,7 +119,7 @@ export function Shares() {
                         checkboxSelection
                         disableSelectionOnClick
                         autoHeight={true}
-                    />
+                    />}
                 </div>
                 <StyledButton
                     version={'shortOutlined'}
