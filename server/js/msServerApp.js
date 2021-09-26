@@ -317,14 +317,15 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openFrame': {
-                            let {mapIdOut, frameSelected} = c2s.serverPayload;
-                            let mapId = ObjectId(mapIdOut);
-                            let frameLen = await getFrameLen(mapId);
+                            const {mapIdOut} = c2s.serverPayload;
+                            const mapId = ObjectId(mapIdOut);
+                            const frameSelected = 0;
+                            const frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
                                 s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
                             } else {
-                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                                let mapSource = 'dataPlayback';
+                                const mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                const mapSource = 'dataPlayback';
                                 s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             }
                             break;
@@ -332,20 +333,20 @@ async function sendResponse(c2s) {
                         case 'openPrevFrame': {
                             const {mapIdOut, frameSelectedOut} = c2s.serverPayload;
                             const frameSelected = frameSelectedOut - 1;
-                            let mapId = ObjectId(mapIdOut);
-                            let frameLen = await getFrameLen(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                            let mapSource = 'dataPlayback';
+                            const mapId = ObjectId(mapIdOut);
+                            const frameLen = await getFrameLen(mapId);
+                            const mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            const mapSource = 'dataPlayback';
                             s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             break;
                         }
                         case 'openNextFrame': {
                             const {mapIdOut, frameSelectedOut} = c2s.serverPayload;
                             const frameSelected = frameSelectedOut + 1
-                            let mapId = ObjectId(mapIdOut);
-                            let frameLen = await getFrameLen(mapId);
-                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                            let mapSource = 'dataPlayback';
+                            const mapId = ObjectId(mapIdOut);
+                            const frameLen = await getFrameLen(mapId);
+                            const mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            const mapSource = 'dataPlayback';
                             s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             break;
                         }

@@ -105,7 +105,7 @@ const resolvePropsServer = (state, action) => {
         case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 'moveUpMapInTab')
         case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
         case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs',     {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})
-        case 'OPEN_FRAME':                return propsServer(state, 'openFrame',                  {frameSelected: mapState.frameSelected})
+        case 'OPEN_FRAME':                return propsServer(state, 'openFrame')
         case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
         case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame',             {frameSelected: mapState.frameSelected + 1})
         case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame',                {frameSelected: mapState.frameSelected > 0 ? mapState.frameSelected - 1 : 0 })
