@@ -369,7 +369,6 @@ async function sendResponse(c2s) {
                             if (frameLen === 0) {
                                 s2c = {cmd: 'deleteFrameFail'};
                             } else {
-                                frameLen = frameLen - 1;
                                 await collectionMaps.updateOne({_id: mapId}, [{
                                     $set: {
                                         dataPlayback: {
@@ -382,6 +381,7 @@ async function sendResponse(c2s) {
                                 }]);
                                 let mapSource;
                                 let mapStorage;
+                                frameLen = frameLen - 1;
                                 if (frameLen === 0) {
                                     mapSource = 'data';
                                     mapStorage = await getMapData(mapId);
