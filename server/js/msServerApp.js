@@ -324,9 +324,9 @@ async function sendResponse(c2s) {
                             if (frameLen === 0) {
                                 s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
                             } else {
-                                const mapStorage = await getPlaybackMapData(mapId, frameSelected);
                                 const mapSource = 'dataPlayback';
-                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
+                                const mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             }
                             break;
                         }
@@ -335,9 +335,9 @@ async function sendResponse(c2s) {
                             const frameSelected = frameSelectedOut - 1;
                             const mapId = ObjectId(mapIdOut);
                             const frameLen = await getFrameLen(mapId);
-                            const mapStorage = await getPlaybackMapData(mapId, frameSelected);
                             const mapSource = 'dataPlayback';
-                            s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
+                            const mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             break;
                         }
                         case 'openNextFrame': {
@@ -345,20 +345,20 @@ async function sendResponse(c2s) {
                             const frameSelected = frameSelectedOut + 1
                             const mapId = ObjectId(mapIdOut);
                             const frameLen = await getFrameLen(mapId);
-                            const mapStorage = await getPlaybackMapData(mapId, frameSelected);
                             const mapSource = 'dataPlayback';
-                            s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
+                            const mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             break;
                         }
                         case 'importFrame': {
                             const {mapIdOut} = c2s.serverPayload;
                             const mapId = ObjectId(mapIdOut);
-                            const mapStorage = await getMapData(mapId);
                             const mapSource = 'dataPlayback';
+                            const mapStorage = await getMapData(mapId);
                             await collectionMaps.updateOne({_id: mapId}, {$push: {"dataPlayback": mapStorage}});
                             const frameLen = await getFrameLen(mapId);
                             const frameSelected = frameLen - 1;
-                            s2c = {cmd: 'importFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
+                            s2c = {cmd: 'importFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             break;
                         }
                         case 'deleteFrame': {
