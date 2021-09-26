@@ -362,8 +362,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'deleteFrame': {
-                            let {mapId, frameSelectedOut, frameSelected} = c2s.serverPayload;
+                            let {mapId, frameSelectedOut} = c2s.serverPayload;
                             mapId = ObjectId(mapId);
+                            const frameSelected =  frameSelectedOut > 0 ? frameSelectedOut - 1 : 0;
                             let frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
                                 s2c = {cmd: 'deleteFrameFail'};
@@ -396,8 +397,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'duplicateFrame': {
-                            let {mapIdOut, mapSourceOut, mapStorageOut, frameSelectedOut, frameSelected} = c2s.serverPayload;
-                            let mapId = ObjectId(mapIdOut);
+                            const {mapIdOut, mapSourceOut, mapStorageOut, frameSelectedOut} = c2s.serverPayload;
+                            const frameSelected = frameSelectedOut + 1;
+                            const mapId = ObjectId(mapIdOut);
                             await collectionMaps.updateOne({_id: mapId}, {
                                 $push: {
                                     "dataPlayback": {

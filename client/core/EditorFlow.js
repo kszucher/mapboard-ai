@@ -92,29 +92,29 @@ const resolvePropsServer = (state, action) => {
     switch (action.type) {
         case 'SIGN_IN':                   return propsServer(state, 'signIn')
         case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
-        case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1',                 payload)
-        case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2',                 payload)
+        case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
+        case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
         case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
-        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab',              {tabMapSelected: payload.value})
-        case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap',              payload)
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs',      {breadcrumbMapSelected: payload.index})
+        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', {tabMapSelected: payload.value})
+        case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: payload.index})
         case 'SAVE_MAP':                  return propsServer(state, 'saveMap')
         case 'CREATE_MAP_IN_MAP':         return propsServer(state, 'createMapInMap')
         case 'CREATE_MAP_IN_TAB':         return propsServer(state, 'createMapInTab')
         case 'REMOVE_MAP_IN_TAB':         return propsServer(state, 'removeMapInTab')
         case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 'moveUpMapInTab')
         case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
-        case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs',     {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})
+        case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})
         case 'OPEN_FRAME':                return propsServer(state, 'openFrame')
         case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
-        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame',             {frameSelected: mapState.frameSelected + 1})
-        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame',                {frameSelected: mapState.frameSelected > 0 ? mapState.frameSelected - 1 : 0 })
+        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame')
+        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame')
         case 'PREV_FRAME':                return propsServer(state, 'openPrevFrame')
         case 'NEXT_FRAME':                return propsServer(state, 'openNextFrame')
         case 'GET_SHARES':                return propsServer(state, 'getShares')
-        case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
-        case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare',                payload)
-        case 'WITHDRAW_SHARE':            return propsServer(state, 'withdrawShare',              payload)
+        case 'CREATE_SHARE':              return propsServer(state, 'createShare', payload)
+        case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare', payload)
+        case 'WITHDRAW_SHARE':            return propsServer(state, 'withdrawShare', payload)
     }
 }
 
@@ -145,11 +145,6 @@ const propsServer = (state, serverCmd, serverPayload = {}) => {
     if (['deleteFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
             mapId: mapState.mapId,
-            frameSelectedOut: mapState.frameSelected
-        })
-    }
-    if (['duplicateFrame'].includes(serverCmd)) {
-        Object.assign(serverAction.serverPayload, {
             frameSelectedOut: mapState.frameSelected
         })
     }
