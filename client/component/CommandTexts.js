@@ -6,7 +6,7 @@ import {nodeDispatch} from "../core/NodeFlow";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible, frameLen, frameSelected, breadcrumbMapNameList} = state
+    const {formatMode, frameEditorVisible, frameLen, frameSelected} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -34,7 +34,7 @@ export function CommandTexts () {
             case 'delete':         dispatch({type: 'DELETE_FRAME'}); break;
             case 'prev':           dispatch({type: 'PREV_FRAME'}); break;
             case 'next':           dispatch({type: 'NEXT_FRAME'}); break;
-            case 'close':          dispatch({type: 'CLOSE_PLAYBACK_EDITOR', payload: {breadcrumbMapSelected: breadcrumbMapNameList.length - 1}}); break;
+            case 'close':          dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
     const openSharing = e => dispatch({type: 'SHOW_SHARING'})

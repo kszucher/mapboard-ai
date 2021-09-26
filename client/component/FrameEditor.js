@@ -6,10 +6,13 @@ import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 
 export function FrameEditor () {
     const [state, dispatch] = useContext(Context)
-    const {frameLen, frameSelected} = state;
+    const {frameLen, frameSelected, breadcrumbMapNameList} = state;
 
     useEffect(() => {
-        dispatch({type: 'OPEN_FRAME'})
+        dispatch({type: 'OPEN_FRAME'});
+        return () => {
+            dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: breadcrumbMapNameList.length - 1}})
+        }
     }, []);
 
     return (
