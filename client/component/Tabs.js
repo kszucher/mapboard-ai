@@ -7,7 +7,7 @@ export default function Tabs() {
     const {tabMapNameList, tabMapSelected, isPlayback} = state;
 
     const handleChange = (e, value) =>  {
-        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {value}})
+        dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     };
 
     return (

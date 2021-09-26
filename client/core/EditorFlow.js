@@ -52,7 +52,7 @@ const resolveProps = (state, action) => {
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
         case 'SET_DEMO':                  return {...state, pageState: DEMO}
         case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: WORKSPACE}
-        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.value}
+        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.tabMapSelected}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}
@@ -88,23 +88,22 @@ const resolveProps = (state, action) => {
 
 const resolvePropsServer = (state, action) => {
     const {payload} = action;
-    // TODO move logic to BE to avoid priority inversion
     switch (action.type) {
         case 'SIGN_IN':                   return propsServer(state, 'signIn')
         case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
         case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
         case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
-        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', {tabMapSelected: payload.value})
+        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload)
         case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: payload.index})
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)
         case 'SAVE_MAP':                  return propsServer(state, 'saveMap')
         case 'CREATE_MAP_IN_MAP':         return propsServer(state, 'createMapInMap')
         case 'CREATE_MAP_IN_TAB':         return propsServer(state, 'createMapInTab')
         case 'REMOVE_MAP_IN_TAB':         return propsServer(state, 'removeMapInTab')
         case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 'moveUpMapInTab')
         case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
-        case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs', {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})
+        case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs', payload)
         case 'OPEN_FRAME':                return propsServer(state, 'openFrame')
         case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
         case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame')
