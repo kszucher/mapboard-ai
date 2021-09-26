@@ -330,13 +330,14 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'importFrame': {
-                            let {mapIdOut} = c2s.serverPayload;
-                            mapIdOut = ObjectId(mapIdOut);
-                            let mapStorageToCopy = await getMapData(mapIdOut);
-                            await collectionMaps.updateOne({_id: mapIdOut}, {$push: {"dataPlayback": mapStorageToCopy}});
-                            let frameLen = await getFrameLen(mapIdOut);
-                            let frameSelected = frameLen - 1;
-                            s2c = {cmd: 'importFrameSuccess', payload: {frameLen, frameSelected}};
+                            const {mapIdOut} = c2s.serverPayload;
+                            const mapId = ObjectId(mapIdOut);
+                            const mapStorage = await getMapData(mapId);
+                            const mapSource = 'dataPlayback';
+                            await collectionMaps.updateOne({_id: mapId}, {$push: {"dataPlayback": mapStorage}});
+                            const frameLen = await getFrameLen(mapId);
+                            const frameSelected = frameLen - 1;
+                            s2c = {cmd: 'importFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             break;
                         }
                         case 'deleteFrame': {
