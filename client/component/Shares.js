@@ -16,8 +16,8 @@ export function Shares() {
     const {shareDataExport, shareDataImport} = state;
 
     const closeSharing = _ =>         dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
-    const acceptShare = params =>     dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
-    const withdrawShare = params =>   dispatch({type: 'WITHDRAW_SHARE', payload: {shareId: params.row._id}})
+    const acceptShare = params =>     dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
+    const withdrawShare = params =>   dispatch({type: 'WITHDRAW_SHARE', payload: {shareIdOut: params.row._id}})
 
     const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false},

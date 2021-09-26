@@ -436,9 +436,9 @@ async function sendResponse(c2s) {
                         }
                         case 'acceptShare': {
                             let {_id, tabMapIdList, tabMapSelected} = currUser;
-                            let {shareId} = c2s.serverPayload;
-                            shareId = ObjectId(shareId);
-                            let shareData = await collectionShares.findOne({_id: shareId});
+                            const {shareIdOut} = c2s.serverPayload;
+                            const shareId = ObjectId(shareIdOut);
+                            const shareData = await collectionShares.findOne({_id: shareId});
                             tabMapIdList = [...tabMapIdList, shareData.sharedMap];
                             tabMapSelected = tabMapIdList.length - 1;
                             await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
@@ -449,7 +449,10 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'withdrawShare': {
-                            let {shareId} = c2s.serverPayload;
+                            const {shareIdOut} = c2s.serverPayload;
+                            const shareId = ObjectId(shareIdOut);
+                            const shareData = await collectionShares.findOne({_id: shareId});
+
                             // TODO: IF share is accepted, find the user and delete it from its tabMapIdList too
                             // await collectionShares.deleteOne({_id: ObjectId(shareId)});
                             console.log('withdraw request')
