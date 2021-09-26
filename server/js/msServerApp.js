@@ -334,13 +334,9 @@ async function sendResponse(c2s) {
                             const frameSelected = frameSelectedOut - 1;
                             let mapId = ObjectId(mapIdOut);
                             let frameLen = await getFrameLen(mapId);
-                            if (frameLen === 0) {
-                                s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
-                            } else {
-                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                                let mapSource = 'dataPlayback';
-                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
-                            }
+                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            let mapSource = 'dataPlayback';
+                            s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             break;
                         }
                         case 'openNextFrame': {
@@ -348,13 +344,9 @@ async function sendResponse(c2s) {
                             const frameSelected = frameSelectedOut + 1
                             let mapId = ObjectId(mapIdOut);
                             let frameLen = await getFrameLen(mapId);
-                            if (frameLen === 0) {
-                                s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}};
-                            } else {
-                                let mapStorage = await getPlaybackMapData(mapId, frameSelected);
-                                let mapSource = 'dataPlayback';
-                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
-                            }
+                            let mapStorage = await getPlaybackMapData(mapId, frameSelected);
+                            let mapSource = 'dataPlayback';
+                            s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             break;
                         }
                         case 'importFrame': {

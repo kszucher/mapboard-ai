@@ -110,7 +110,7 @@ const resolvePropsServer = (state, action) => {
         case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame',             {frameSelected: mapState.frameSelected + 1})
         case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame',                {frameSelected: mapState.frameSelected > 0 ? mapState.frameSelected - 1 : 0 })
         case 'PREV_FRAME':                return propsServer(state, 'openPrevFrame')
-        case 'NEXT_FRAME':                return propsServer(state, 'openNextFrame',              {frameSelected: mapState.frameSelected + 1})
+        case 'NEXT_FRAME':                return propsServer(state, 'openNextFrame')
         case 'GET_SHARES':                return propsServer(state, 'getShares')
         case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
         case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare',                payload)
