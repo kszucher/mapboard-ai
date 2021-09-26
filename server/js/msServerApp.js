@@ -330,7 +330,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openPrevFrame': {
-                            let {mapIdOut, frameSelected} = c2s.serverPayload;
+                            const {mapIdOut, frameSelectedOut} = c2s.serverPayload;
+                            const frameSelected = frameSelectedOut - 1;
                             let mapId = ObjectId(mapIdOut);
                             let frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
@@ -343,7 +344,8 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'openNextFrame': {
-                            let {mapIdOut, frameSelected} = c2s.serverPayload;
+                            const {mapIdOut, frameSelectedOut} = c2s.serverPayload;
+                            const frameSelected = frameSelectedOut + 1
                             let mapId = ObjectId(mapIdOut);
                             let frameLen = await getFrameLen(mapId);
                             if (frameLen === 0) {
