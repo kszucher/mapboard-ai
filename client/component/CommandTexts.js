@@ -6,7 +6,7 @@ import {nodeDispatch} from "../core/NodeFlow";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible, frameLen, frameSelection} = state
+    const {formatMode, frameEditorVisible, frameLen, frameSelected} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -55,8 +55,8 @@ export function CommandTexts () {
                 <StyledButtonGroup open={formatMode === ''}        valueList={['convert to task']}                value={''}          action={cmdTaskToggle}     />
                 <StyledButtonGroup open={formatMode === ''}        valueList={['convert to submap']}              value={''}          action={cmdSubmapToggle}   />
                 <StyledButtonGroup open={formatMode === ''}        valueList={['frame editor']}                   value={''}          action={cmdFrameOp}        />
-                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameSelection.length || !frameLen)]}/>
-                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelection[0] === 0, frameSelection[0] === frameLen - 1]}/>
+                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameLen)]}/>
+                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelected === 0, frameSelected === frameLen - 1]}/>
                 <StyledButtonGroup open={frameEditorVisible === 1} valueList={['close']}                          value={''}          action={cmdFrameOp}        />
                 <StyledButtonGroup open={formatMode === ''}        valueList={['sharing']}                        value={''}          action={openSharing}       />
             </div>

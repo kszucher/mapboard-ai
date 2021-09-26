@@ -31,7 +31,7 @@ export const editorState = {
     frameEditorVisible: 0,
     isPlayback: false,
     frameLen: 0,
-    frameSelection: [],
+    frameSelected: 0,
     shareDataExport: [],
     shareDataImport: [],
 };
@@ -62,7 +62,7 @@ const resolveProps = (state, action) => {
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
         case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
         case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
-        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelection: [payload.frameSelected]}
+        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelected: payload.frameSelected}
         case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
@@ -106,12 +106,12 @@ const resolvePropsServer = (state, action) => {
         case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
         case 'OPEN_PLAYBACK_EDITOR':      return propsServer(state, 'openFrame',                  {frameSelected: 0})
         case 'CLOSE_PLAYBACK_EDITOR':     return propsServer(state, 'openMapFromBreadcrumbs',     {breadcrumbMapSelected: state.breadcrumbMapNameList.length - 1})
-        case 'OPEN_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0]})
+        case 'OPEN_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: mapState.frameSelected})
         case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
-        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame', {           frameSelected: state.frameSelection[0] + 1})
-        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame', {              frameSelected: state.frameSelection[0] > 0 ? state.frameSelection[0] - 1 : 0 })
-        case 'PREV_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] - 1})
-        case 'NEXT_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: state.frameSelection[0] + 1})
+        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame', {           frameSelected: mapState.frameSelected + 1})
+        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame', {              frameSelected: mapState.frameSelected > 0 ? mapState.frameSelected - 1 : 0 })
+        case 'PREV_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: mapState.frameSelected - 1})
+        case 'NEXT_FRAME':                return propsServer(state, 'openFrame', {                frameSelected: mapState.frameSelected + 1})
         case 'GET_SHARES':                return propsServer(state, 'getShares')
         case 'CREATE_SHARE':              return propsServer(state, 'createShare',                payload)
         case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare',                payload)
@@ -146,12 +146,12 @@ const propsServer = (state, serverCmd, serverPayload = {}) => {
     if (['deleteFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
             mapId: mapState.mapId,
-            frameSelectedOut: state.frameSelection[0] // state shouldn't be here
+            frameSelectedOut: mapState.frameSelected
         })
     }
     if (['duplicateFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
-            frameSelectedOut: state.frameSelection[0] // state shouldn't be here
+            frameSelectedOut: mapState.frameSelected
         })
     }
     if (['createShare'].includes(serverCmd)) {

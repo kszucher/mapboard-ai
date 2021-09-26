@@ -6,7 +6,7 @@ import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 
 export function FrameEditor () {
     const [state, dispatch] = useContext(Context)
-    const {frameLen, frameSelection} = state;
+    const {frameLen, frameSelected} = state;
     return (
         <div style={{position: 'fixed', left: '50%', transform: 'translate(-50%)', bottom: 0, display: 'flex', alignItems: 'center'}}>
             <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -24,12 +24,12 @@ export function FrameEditor () {
                     variant="dots"
                     steps={frameLen}
                     position="static"
-                    activeStep={frameSelection[0]}
+                    activeStep={frameSelected}
                     backButton={
                         <Button style={{paddingRight:20}}
                                 size="large"
                                 onClick={_=>dispatch({type: 'PREV_FRAME'})}
-                                disabled={frameSelection[0] === 0}>
+                                disabled={frameSelected === 0}>
                             <KeyboardArrowLeft />
                         </Button>
                     }
@@ -37,7 +37,7 @@ export function FrameEditor () {
                         <Button style={{paddingLeft:20}}
                                 size="large"
                                 onClick={_=>dispatch({type: 'NEXT_FRAME'})}
-                                disabled={frameSelection[0] === frameLen - 1}>
+                                disabled={frameSelected === frameLen - 1}>
                             <KeyboardArrowRight />
                         </Button>
                     }
