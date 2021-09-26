@@ -325,10 +325,7 @@ async function sendResponse(c2s) {
                             } else {
                                 let mapStorage = await getPlaybackMapData(mapId, frameSelected);
                                 let mapSource = 'dataPlayback';
-                                s2c = {
-                                    cmd: 'openFrameSuccess',
-                                    payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}
-                                };
+                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapStorage, mapSource, frameLen, frameSelected}};
                             }
                             break;
                         }
@@ -434,6 +431,9 @@ async function sendResponse(c2s) {
                             break;
                         }
                         case 'withdrawShare': {
+                            let {shareId} = c2s.serverPayload;
+                            // TODO: IF share is accepted, find the user and delete it from its tabMapIdList too
+                            // await collectionShares.deleteOne({_id: ObjectId(shareId)});
                             console.log('withdraw request')
                         }
                     }

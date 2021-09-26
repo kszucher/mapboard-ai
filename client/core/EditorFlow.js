@@ -88,6 +88,7 @@ const resolveProps = (state, action) => {
 
 const resolvePropsServer = (state, action) => {
     const {payload} = action;
+    // TODO move logic to BE to avoid priority inversion
     switch (action.type) {
         case 'SIGN_IN':                   return propsServer(state, 'signIn')
         case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
@@ -145,12 +146,12 @@ const propsServer = (state, serverCmd, serverPayload = {}) => {
     if (['deleteFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
             mapId: mapState.mapId,
-            frameSelectedOut: state.frameSelection[0]
+            frameSelectedOut: state.frameSelection[0] // state shouldn't be here
         })
     }
     if (['duplicateFrame'].includes(serverCmd)) {
         Object.assign(serverAction.serverPayload, {
-            frameSelectedOut: state.frameSelection[0]
+            frameSelectedOut: state.frameSelection[0] // state shouldn't be here
         })
     }
     if (['createShare'].includes(serverCmd)) {
