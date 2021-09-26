@@ -401,20 +401,6 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport}};
                             break;
                         }
-                        case 'acceptShare': {
-                            let {_id, tabMapIdList, tabMapSelected} = currUser;
-                            let {shareId} = c2s.serverPayload;
-                            shareId = ObjectId(shareId);
-                            let shareData = await collectionShares.findOne({_id: shareId});
-                            tabMapIdList = [...tabMapIdList, shareData.sharedMap];
-                            tabMapSelected = tabMapIdList.length - 1;
-                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
-                            const tabMapNameList = await getMapNameList(tabMapIdList);
-                            await collectionShares.updateOne({_id: shareId}, {$set: {status: 'accepted'}});
-                            const {shareDataExport, shareDataImport} = await getUserShares(currUser._id);
-                            s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapNameList, tabMapSelected}};
-                            break;
-                        }
                         case 'createShare': {
                             let {mapId, email, access} = c2s.serverPayload;
                             let shareUser = await collectionUsers.findOne({email});
@@ -431,6 +417,20 @@ async function sendResponse(c2s) {
                                 await collectionShares.insertOne(newShare);
                                 s2c = {cmd: 'shareValiditySuccess', payload: {}};
                             }
+                            break;
+                        }
+                        case 'acceptShare': {
+                            let {_id, tabMapIdList, tabMapSelected} = currUser;
+                            let {shareId} = c2s.serverPayload;
+                            shareId = ObjectId(shareId);
+                            let shareData = await collectionShares.findOne({_id: shareId});
+                            tabMapIdList = [...tabMapIdList, shareData.sharedMap];
+                            tabMapSelected = tabMapIdList.length - 1;
+                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}});
+                            const tabMapNameList = await getMapNameList(tabMapIdList);
+                            await collectionShares.updateOne({_id: shareId}, {$set: {status: 'accepted'}});
+                            const {shareDataExport, shareDataImport} = await getUserShares(currUser._id);
+                            s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapNameList, tabMapSelected}};
                             break;
                         }
                         case 'withdrawShare': {
