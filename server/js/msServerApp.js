@@ -389,10 +389,7 @@ async function sendResponse(c2s) {
                                     mapSource = 'dataPlayback';
                                     mapStorage = await getPlaybackMapData(mapId, frameSelected);
                                 }
-                                s2c = {
-                                    cmd: 'deleteFrameSuccess',
-                                    payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}
-                                };
+                                s2c = {cmd: 'deleteFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             }
                             break;
                         }
@@ -411,10 +408,7 @@ async function sendResponse(c2s) {
                             let mapSource = mapSourceOut;
                             let mapStorage = mapStorageOut;
                             let frameLen = await getFrameLen(mapId);
-                            s2c = {
-                                cmd: 'duplicateFrameSuccess',
-                                payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}
-                            };
+                            s2c = {cmd: 'duplicateFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}};
                             break;
                         }
                         case 'getShares': {
