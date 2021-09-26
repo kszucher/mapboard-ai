@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Context} from "../core/Store";
 import {MobileStepper} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -7,6 +7,11 @@ import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 export function FrameEditor () {
     const [state, dispatch] = useContext(Context)
     const {frameLen, frameSelected} = state;
+
+    useEffect(() => {
+        dispatch({type: 'OPEN_FRAME'})
+    }, []);
+
     return (
         <div style={{position: 'fixed', left: '50%', transform: 'translate(-50%)', bottom: 0, display: 'flex', alignItems: 'center'}}>
             <div style={{display: 'flex', flexDirection: 'column'}}>

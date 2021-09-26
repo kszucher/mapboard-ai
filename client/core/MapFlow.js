@@ -21,7 +21,7 @@ export let mapState = {
     mapSource: '',
     data: [],
     dataIndex: 0,
-    frameSelected: null,
+    frameSelected: 0,
 };
 
 export function mapDispatch(action, payload) {

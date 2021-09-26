@@ -98,9 +98,7 @@ export function Communication() {
                 serverState.hasOwnProperty('mapSource') &&
                 serverState.hasOwnProperty('mapStorage')) {
                 const {mapId, mapSource, mapStorage} = serverState;
-                let frameSelected = serverState.hasOwnProperty('frameSelected')
-                    ? serverState.frameSelected
-                    : null;
+                let frameSelected = serverState.hasOwnProperty('frameSelected') ? serverState.frameSelected : 0;
                 if (mapSource === 'data') {
                     dispatch({type: 'SET_IS_PLAYBACK_OFF'})
                 } else if (mapSource === 'dataPlayback') {
