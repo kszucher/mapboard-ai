@@ -9,7 +9,7 @@ export const mapTaskCheck = {
         if (cm.task === task) {
             cm.task = task;
         }
-        if (cm.task) {
+        if (cm.task && !cm.path.includes('c') && cm.path.length > 3) {
             try {
                 if (cm.path[2] === 0) {
                     m.taskRight = 1;
