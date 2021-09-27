@@ -443,6 +443,8 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                         }
                     }
+                    // if s2c payload contains "mapStorage", we will find out and append mapRight
+                    // in a for loop, right-to-left break, we find the LATEST applicable right in the chain and apply that
                 }
             }
         } catch (err) {
