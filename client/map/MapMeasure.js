@@ -81,7 +81,7 @@ export const mapMeasure = {
                             maxColWidth = cellWidth;
                         }
                         if (cm.c[i][j].s[0].task) {
-                            maxColWidth += 100;
+                            maxColWidth += 120;
                         }
                     }
                     cm.maxColWidth.push(maxColWidth);

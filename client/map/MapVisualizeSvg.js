@@ -2,6 +2,7 @@ import {genHash, isChrome, isOdd} from "../core/Utils";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 import {resolveConditions} from "../core/DefaultProps";
+import {mapref} from "../core/MapFlow";
 
 let svgElementNameList = [
     ['backgroundRect'],
@@ -211,7 +212,19 @@ export const mapVisualizeSvg = {
         }
         if (conditions.task) {
             let {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m;
-            let startX = cm.path[2]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin;
+            let startX;
+            if (cm.path.includes('c')) {
+                let coverCellPath = cm.path.slice(0, cm.path.lastIndexOf('c'));
+                let currCol = cm.path[cm.path.lastIndexOf('c') + 2]
+                let coverCellRef = mapref(coverCellPath);
+                let smcv = coverCellRef.sumMaxColWidth[currCol];
+                let mcv = coverCellRef.maxColWidth[currCol];
+                startX = cm.path[2]
+                    ? coverCellRef.nodeEndX - smcv - mcv + 120
+                    : coverCellRef.nodeStartX + smcv + mcv - 120;
+            } else {
+                startX = cm.path[2]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
+            }
             let x1 = nex;
             let x2 = startX;
             let y = cm.nodeY;
