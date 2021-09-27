@@ -432,12 +432,15 @@ async function sendResponse(c2s) {
                             const shareId = ObjectId(shareIdOut)
                             const shareData = await collectionShares.findOne({_id: shareId})
                             const shareUser = await collectionUsers.findOne({_id: shareData.shareUser})
-
-                            console.log(shareUser.email)
-
-                            // TODO: find the user and delete the shared map from its tabMapIdList
-                            // await collectionShares.deleteOne({_id: ObjectId(shareId)})
-                            console.log('withdraw request')
+                            await collectionUsers.updateOne(
+                                {_id: ObjectId(shareUser._id)},
+                                {$pull: {tabMapIdList: ObjectId(shareData.sharedMap)}},
+                                {multi: true}
+                            );
+                            // IF shared map was selected, change selection
+                            await collectionShares.deleteOne({_id: ObjectId(shareId)})
+                            const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
+                            s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                         }
                     }
                 }
