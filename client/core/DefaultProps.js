@@ -168,11 +168,11 @@ export const resolveConditions = (cm) => {
             cm.hasCell,
         task:
             cm.task &&
-            !cm.path.includes('c') &&
+            // !cm.path.includes('c') &&
             !cm.hasDir &&
             !cm.hasStruct &&
             !cm.hasCell &&
-            cm.parentType !== 'cell' &&
+            // cm.parentType !== 'cell' &&
             cm.contentType !== 'image' &&
             !cm.isRoot &&
             !cm.isRootChild

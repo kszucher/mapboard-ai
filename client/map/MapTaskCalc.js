@@ -3,12 +3,8 @@ export const mapTaskCalc = {
         mapTaskCalc.iterate(m, r, r.task);
     },
 
-    iterate: (m, cm, task) => {
-        if (cm.task === task) {
-            cm.task = task;
-        }
-        cm.d.map(i => mapTaskCalc.iterate(m, i, cm.task));
-
+    iterate: (m, cm) => {
+        cm.d.map(i => mapTaskCalc.iterate(m, i));
         let sCount = Object.keys(cm.s).length;
         if (sCount === 0) {
             if (cm.taskStatusInherited === 1) {
@@ -19,7 +15,7 @@ export const mapTaskCalc = {
             let firstTaskStatus = 0;
             let isSameTaskStatus = true;
             for (let i = 0; i < sCount; i++) {
-                mapTaskCalc.iterate(m, cm.s[i], cm.task);
+                mapTaskCalc.iterate(m, cm.s[i]);
                 if (i === 0) {
                     firstTaskStatus = cm.s[0].taskStatus
                 } else {
@@ -34,7 +30,6 @@ export const mapTaskCalc = {
                 cm.taskStatusInherited = 1;
             }
         }
-
-        cm.c.map(i => i.map(j => mapTaskCalc.iterate(m, j, cm.task)));
+        cm.c.map(i => i.map(j => mapTaskCalc.iterate(m, j)));
     }
 };

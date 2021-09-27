@@ -11,12 +11,10 @@ export const mapMeasure = {
     iterate: (m, cm, params) => {
         params.hasMultipleChild = 0;
         params.hasMultipleContentRow = 0;
-
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {
             mapMeasure.iterate(m, cm.d[i], params);
         }
-
         let sCount = Object.keys(cm.s).length;
         if (sCount) {
             let sMaxW = 0;
@@ -39,7 +37,6 @@ export const mapMeasure = {
         if (sCount > 1) {
             params.hasMultipleChild = 1;
         }
-
         if (cm.type === 'struct' || cm.type === 'dir') {
             if (cm.hasCell) {
                 let rowCount = Object.keys(cm.c).length;
@@ -47,7 +44,6 @@ export const mapMeasure = {
                 let maxCellHeightMat = createArray(rowCount, colCount);
                 let maxCellWidthMat = createArray(rowCount, colCount);
                 let isCellSpacingActivated = 0;
-
                 for (let i = 0; i < rowCount; i++) {
                     for (let j = 0; j < colCount; j++) {
                         mapMeasure.iterate(m, cm.c[i][j], params);
@@ -58,7 +54,6 @@ export const mapMeasure = {
                         }
                     }
                 }
-
                 if (isCellSpacingActivated === 1) {
                     for (let i = 0; i < rowCount; i++) {
                         for (let j = 0; j < colCount; j++) {
@@ -66,38 +61,39 @@ export const mapMeasure = {
                         }
                     }
                 }
-
                 for (let i = 0; i < rowCount; i++) {
                     let maxRowHeight = 0;
                     for (let j = 0; j < colCount; j++) {
                         let cellHeight = maxCellHeightMat[i][j];
-                        if (cellHeight >= maxRowHeight)
+                        if (cellHeight >= maxRowHeight) {
                             maxRowHeight = cellHeight;
+                        }
                     }
                     cm.maxRowHeight.push(maxRowHeight);
                     cm.sumMaxRowHeight.push(maxRowHeight + cm.sumMaxRowHeight.slice(-1)[0]);
                     cm.selfH += maxRowHeight;
                 }
-
                 for (let j = 0; j < colCount; j++) {
                     let maxColWidth = 0;
                     for (let i = 0; i < rowCount; i++) {
                         let cellWidth = maxCellWidthMat[i][j];
-                        if (cellWidth >= maxColWidth)
+                        if (cellWidth >= maxColWidth) {
                             maxColWidth = cellWidth;
+                        }
+                        if (cm.c[i][j].s[0].task) {
+                            maxColWidth += 100;
+                        }
                     }
                     cm.maxColWidth.push(maxColWidth);
                     cm.sumMaxColWidth.push(maxColWidth + cm.sumMaxColWidth.slice(-1)[0]);
                     cm.selfW += maxColWidth;
                 }
-
                 for (let j = 0; j < colCount; j++) {
                     for (let i = 0; i < rowCount; i++) {
                         cm.c[i][j].selfW = cm.maxColWidth[j];
                         cm.c[i][j].selfH = cm.maxRowHeight[i];
                     }
                 }
-
                 if (rowCount > 1) {
                     params.hasMultipleContentRow = 1;
                 }
@@ -126,12 +122,10 @@ export const mapMeasure = {
                     cm.contentH = cm.imageH;
                 }
                 else {console.log('unknown contentType')}
-
                 cm.selfW = cm.contentW + m.padding*2;
                 cm.selfH = cm.contentH + m.padding*2;
             }
         }
-
         cm.maxW = cm.selfW + cm.familyW;
         cm.maxH = Math.max(...[cm.selfH, cm.familyH]);
     }
