@@ -169,25 +169,25 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'openMapFromHistory': {
-                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
-                            let tabMapNameList = await getMapNameList(tabMapIdList)
-                            let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
-                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
-                            let mapSource = 'data'
-                            let mapStorage = await getMapData(mapId)
+                            const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
+                            const tabMapNameList = await getMapNameList(tabMapIdList)
+                            const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
+                            const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
+                            const mapSource = 'data'
+                            const mapStorage = await getMapData(mapId)
                             s2c = {cmd: 'openMapFromHistorySuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
                         case 'openMapFromTab': {
-                            let {_id, tabMapIdList} = currUser
-                            let {tabMapSelected} = c2s.serverPayload
-                            let tabMapNameList = await getMapNameList(tabMapIdList)
-                            let mapId = tabMapIdList[tabMapSelected]
-                            let breadcrumbMapIdList = [mapId]
+                            const {_id, tabMapIdList} = currUser
+                            const {tabMapSelected} = c2s.serverPayload
+                            const tabMapNameList = await getMapNameList(tabMapIdList)
+                            const mapId = tabMapIdList[tabMapSelected]
+                            const breadcrumbMapIdList = [mapId]
                             await collectionUsers.updateOne({_id}, {$set: {tabMapSelected, breadcrumbMapIdList}})
-                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
-                            let mapSource = 'data'
-                            let mapStorage = await getMapData(mapId)
+                            const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
+                            const mapSource = 'data'
+                            const mapStorage = await getMapData(mapId)
                             s2c = {cmd: 'openMapFromTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
