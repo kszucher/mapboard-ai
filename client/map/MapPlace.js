@@ -1,19 +1,15 @@
 export const mapPlace = {
     start: (m, r) => {
         let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m;
-
         let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0;
         let leftMapWidth =      r.d[1].s.length > 0 ? sLineDeltaXDefault + r.d[1].familyW : 0;
         let rightMapWidth =     r.d[0].s.length > 0 ? sLineDeltaXDefault + r.d[0].familyW : 0;
         let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0;
-
         let leftWidth = leftMapWidth + leftTaskWidth + margin;
         let rightWidth = rightMapWidth + rightTaskWidth + margin;
-
         let flow = 'both';
         if (r.d[0].s.length && !r.d[1].s.length) flow = 'right';
         if (!r.d[0].s.length && r.d[1].s.length) flow = 'left';
-
         let sumWidth = 0;
         if (alignment === 'adaptive') {
             if (flow === 'right') {
@@ -26,10 +22,8 @@ export const mapPlace = {
         } else if (alignment === 'centered') {
             sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
         }
-
         let divMinWidth = window.screen.availWidth > 1366 ? 1366 : 800;
         let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth;
-
         let mapStartCenterX = 0;
         if (alignment === 'centered') {
             mapStartCenterX = mapWidth / 2;
@@ -43,15 +37,12 @@ export const mapPlace = {
                 mapStartCenterX = mapWidth - margin - r.selfW / 2;
             }
         }
-
         let rightMapHeight = r.d.length > 0 ? r.d[0].familyH : 0;
         let leftMapHeight =  r.d.length > 1? r.d[1].familyH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
-
         m.mapWidth = mapWidth;
         m.mapHeight = mapHeight;
-
         r.parentNodeStartX = mapStartCenterX - r.selfW / 2 + 1;
         r.parentNodeEndX = mapStartCenterX + r.selfW / 2 + 1;
         r.parentNodeY = 0;
@@ -74,7 +65,6 @@ export const mapPlace = {
                     cm.nodeStartX = cm.nodeEndX - cm.selfW;
                 }
             }
-
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
                 if (cm.type === 'struct') {
                     if (cm.path[2] === 0) {

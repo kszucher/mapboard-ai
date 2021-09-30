@@ -46,14 +46,12 @@ export function cellInsert (lastPath, key) {
     let currCol = lm.index[1];
     let rowLen = parentRef.c.length;
     let colLen = parentRef.c[0].length;
-
     let direction;
     if (        key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {  direction = 'in';
     } else if ( key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {  direction = 'out';
     } else if ( key === 'ArrowUp') {                                                                    direction = 'up';
     } else if ( key === 'ArrowDown') {                                                                  direction = 'down';
     }
-
     switch (direction) {
         case 'in': {
             for (let i = 0; i < rowLen; i++) {
@@ -83,7 +81,6 @@ export function cellInsert (lastPath, key) {
             parentRef.c.splice(currRow + 1, 0, newRow);
             break;
         }
-
         default:
             break;
     }

@@ -16,11 +16,9 @@ export const mapAlgo = {
         if (cm.selected) {
             selectionFound = 1;
         }
-
         if (cm.type === 'cell' && !cm.s.length) {
             cm.s.push(getDefaultNode());
         }
-
         if (cm.contentCalc && cm.contentCalc !== '') {
             if (cm.parentType === 'cell') {
                 let parentStruct = mapref(mapref(cm.parentPath).parentPath)
@@ -38,7 +36,6 @@ export const mapAlgo = {
                 cm.content = 'not a last row of a table!';
             }
         }
-
         if (cm.d) cm.d.map(i => mapAlgo.iterate(m, i));
         if (cm.s) cm.s.map(i => mapAlgo.iterate(m, i));
         if (cm.c) cm.c.map(i => i.map(j => mapAlgo.iterate(m, j)));

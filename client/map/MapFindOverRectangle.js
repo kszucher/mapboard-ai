@@ -16,7 +16,6 @@ export const mapFindOverRectangle = {
                 cm.nodeStartX, cm.nodeY, cm.nodeEndX, cm.nodeY
             )
         }
-
         cm.d.map(i => mapFindOverRectangle.iterate(i));
         cm.s.map(i => mapFindOverRectangle.iterate(i));
         cm.c.map(i => i.map(j => mapFindOverRectangle.iterate(j)));

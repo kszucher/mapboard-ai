@@ -8,7 +8,11 @@ let svgElementNameList = [
     ['backgroundRect'],
     ['branchFill'],
     ['nodeFill'],
-    ['line', 'branchBorder', 'nodeBorder', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
+    [
+        'line', 'branchBorder', 'nodeBorder',
+        'tableFrame', 'tableGrid', 'tableCellFrame',
+        'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'
+    ],
     ['selectionBorder', 'selectionBorderTable'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];

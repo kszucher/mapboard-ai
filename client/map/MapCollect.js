@@ -4,7 +4,6 @@ export const mapCollect = {
     start: (m, r) => {
         selectionState.structSelectedPathList = [];
         selectionState.cellSelectedPathList = [];
-
         mapCollect.iterate(m, r);
     },
 
@@ -17,7 +16,6 @@ export const mapCollect = {
 
             }
         }
-
         cm.d.map(i => mapCollect.iterate(m, i));
         cm.s.map(i => mapCollect.iterate(m, i));
         cm.c.map(i => i.map(j => mapCollect.iterate(m, j)));

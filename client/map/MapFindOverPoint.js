@@ -21,7 +21,6 @@ export const mapFindOverPoint = {
                 lastOverPath = copy(cm.path);
             }
         }
-
         cm.d.map(i => mapFindOverPoint.iterate(i));
         cm.s.map(i => mapFindOverPoint.iterate(i));
         cm.c.map(i => i.map(j => mapFindOverPoint.iterate(j)));

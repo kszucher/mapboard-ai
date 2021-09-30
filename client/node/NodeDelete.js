@@ -3,12 +3,10 @@ import {mapref} from "../core/MapFlow";
 
 export function structDeleteReselect(sc) {
     let lm = mapref(sc.lastPath);
-
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         let cm = mapref(sc.structSelectedPathList[i]);
         if (cm.isRoot) return;
     }
-
     // calculate jumpback
     let im = lm;
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
@@ -25,7 +23,6 @@ export function structDeleteReselect(sc) {
             imParentChildDelLen++;
         }
     }
-
     // delete
     for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
         let cm = mapref(sc.structSelectedPathList[i]);
@@ -34,7 +31,6 @@ export function structDeleteReselect(sc) {
         cmParent.taskStatusInherited = 0;
         cmParent.s.splice(cm.index, 1);
     }
-
     // reselect on jumpback
     if (imParentChildLen === imParentChildDelLen) {
         if (imParent.isRootChild) {

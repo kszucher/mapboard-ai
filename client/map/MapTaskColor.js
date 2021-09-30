@@ -1,5 +1,3 @@
-import {getBgc} from "../core/Utils";
-
 export const mapTaskColor = {
     start: (m, r) => {
         mapTaskColor.iterate(m, r);
@@ -27,7 +25,6 @@ export const mapTaskColor = {
                 }
             }
         }
-
         cm.d.map(i => mapTaskColor.iterate(m, i));
         cm.s.map(i => mapTaskColor.iterate(m, i));
         cm.c.map(i => i.map(j => mapTaskColor.iterate(m, j)));
