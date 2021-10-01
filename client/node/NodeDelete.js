@@ -34,7 +34,7 @@ export function structDeleteReselect(sc) {
     // reselect on jumpback
     if (imParentChildLen === imParentChildDelLen) {
         if (imParent.isRootChild) {
-            mapref(['r']).selected = 1;
+            mapref(['r', 0]).selected = 1;
         } else {
             imParent.selected = 1;
         }
@@ -44,7 +44,7 @@ export function structDeleteReselect(sc) {
                 imParent.s[0].selected = 1;
             } else {
                 if (imParent.isRootChild) {
-                    mapref(['r']).selected = 1;
+                    mapref(['r', 0]).selected = 1;
                 } else {
                     imParent.selected = 1;
                 }

@@ -27,7 +27,7 @@ function nodeReducer(action, payload) {
             let m = mapref(['m']);
             m.density = payload;
             m.shouldCenter = true;
-            mapChangeProp.start(mapref(['r']), {isDimAssigned: 0}, '');
+            mapChangeProp.start(mapref(['r', 0]), {isDimAssigned: 0}, '');
             break;
         }
         case 'updateAlignment': {
@@ -57,7 +57,7 @@ function nodeReducer(action, payload) {
         case 'selectStructFamily': {
             let m = mapref(['m']);
             lm = mapref(m.deepestSelectablePath);
-            if (lm.path.length === 1 && lm.path[0] === 'r') {
+            if (lm.path.length === 2) {
                 lm.selected = 0;
                 if (lm.d[0].selected === 1) {
                     lm.d[0].selected = 0;
@@ -83,11 +83,11 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'select_all': {
-            mapChangeProp.start(getMapData().r, {selected: 1}, 'struct');
+            mapChangeProp.start(getMapData().r[0], {selected: 1}, 'struct');
             break;
         }
         case 'selectDescendantsOut': {
-            if (lm.path.length === 1 && lm.path[0] === 'r') {
+            if (lm.path.length === 2) {
                 lm.selected = 0;
                 if (payload.keyCode === 'ArrowRight') {
                     lm.d[0].selected = 1;
@@ -97,12 +97,12 @@ function nodeReducer(action, payload) {
                     lm.d[1].selection = 'f';
                 }
             } else if (
-                lm.path[2] === 0 && payload.keyCode === 'ArrowRight' ||
-                lm.path[2] === 1 && payload.keyCode === 'ArrowLeft') {
+                lm.path[3] === 0 && payload.keyCode === 'ArrowRight' ||
+                lm.path[3] === 1 && payload.keyCode === 'ArrowLeft') {
                 lm.selection = 'f';
             } else if (
-                lm.path[2] === 0 && payload.keyCode === 'ArrowLeft' ||
-                lm.path[2] === 1 && payload.keyCode === 'ArrowRight') {
+                lm.path[3] === 0 && payload.keyCode === 'ArrowLeft' ||
+                lm.path[3] === 1 && payload.keyCode === 'ArrowRight') {
                 lm.selection = 's';
             }
             break;
@@ -166,7 +166,7 @@ function nodeReducer(action, payload) {
         }
         case 'select_O_M': {
             clearSelection();
-            let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[2] === 0 ? 'ArrowRight' : 'ArrowLeft');
+            let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[3] === 0 ? 'ArrowRight' : 'ArrowLeft');
             mapref(toPath).selected = 1;
             mapref(toPath).s[0].selected = 1;
             break;
@@ -230,7 +230,7 @@ function nodeReducer(action, payload) {
         }
         case 'select_root': {
             clearSelection();
-            mapref(['r']).selected = 1;
+            mapref(['r', 0]).selected = 1;
             break;
         }
         // NODE INSERT -------------------------------------------------------------------------------------------------
@@ -549,6 +549,6 @@ function nodeReducer(action, payload) {
 }
 
 function clearSelection() {
-    let r = getMapData().r;
+    let r = getMapData().r[0];
     mapChangeProp.start(r, {selected: 0, selection: 's'}, '');
 }

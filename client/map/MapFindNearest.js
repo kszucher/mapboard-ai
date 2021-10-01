@@ -31,8 +31,8 @@ export const mapFindNearest = {
                     vCondition = Math.abs(currY - cm.nodeY) <= cm.maxH / 2 + overlap;
                 }
                 let hCondition =
-                    (cm.path[2] === 0 && currX > cm.nodeEndX) ||
-                    (cm.path[2] === 1 && currX < cm.nodeStartX);
+                    (cm.path[3] === 0 && currX > cm.nodeEndX) ||
+                    (cm.path[3] === 1 && currX < cm.nodeStartX);
                 if (vCondition && hCondition) {
                     lastNearestPath = copy(cm.path);
                     cm.s.map(i => mapFindNearest.iterate(i));

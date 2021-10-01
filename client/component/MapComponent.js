@@ -142,15 +142,15 @@ export function MapComponent() {
         if (e.which === 1 || e.which === 3) {
             isNodeClicked = false;
             let m = getMapData().m;
-            let r = getMapData().r;
+            let r = getMapData().r[0];
             r.selectionRect = [];
             [fromX, fromY] = getCoords(e);
             let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
             if (lastOverPath.length) {
                 isNodeClicked = true;
                 m.deepestSelectablePath = copy(lastOverPath);
-                if (m.deepestSelectablePath.length === 3) {
-                    m.deepestSelectablePath = ['r'];
+                if (m.deepestSelectablePath.length === 4) {
+                    m.deepestSelectablePath = ['r', 0];
                 }
                 push();
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
@@ -221,7 +221,7 @@ export function MapComponent() {
             if (e.which === 1) {
                 if (isNodeClicked) {
                     let m = getMapData().m;
-                    let r = getMapData().r;
+                    let r = getMapData().r[0];
                     let [toX, toY] = getCoords(e);
                     m.moveTargetPath = [];
                     r.moveData = [];
@@ -232,10 +232,10 @@ export function MapComponent() {
                         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
                         let lastNearestPath = mapFindNearest.start(r, toX, toY);
-                        if (lastNearestPath.length > 1) {
+                        if (lastNearestPath.length > 2) {
                             m.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
-                            fromX = lastFound.path[2] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
+                            fromX = lastFound.path[3] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
                             fromY = lastFound.nodeY;
                             r.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
@@ -264,7 +264,7 @@ export function MapComponent() {
                 } else if (isTaskClicked) {
 
                 } else {
-                    let r = getMapData().r;
+                    let r = getMapData().r[0];
                     let [toX, toY] = getCoords(e);
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
@@ -287,7 +287,7 @@ export function MapComponent() {
         e.preventDefault();
         isMouseDown = false;
         if (e.which === 1) {
-            let r = getMapData().r;
+            let r = getMapData().r[0];
             let m = getMapData().m;
             if (m.moveTargetPath.length) {
                 r.moveData = [];

@@ -6,7 +6,7 @@ export const mapDisassembly = {
     start: (cm) => {
         dcm = [];
         dcm.push(copy(cm.m))
-        mapDisassembly.iterate(cm.r);
+        mapDisassembly.iterate(cm.r[0]);
         return dcm;
     },
 

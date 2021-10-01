@@ -25,12 +25,12 @@ export function nodeMove(sc, target, key, mode) {
         cellRowSelected, cellRow, cellColSelected, cellCol} = sc;
     let lm = mapref(lastPath);
     let direction = '';
-    if (key === 'ArrowLeft' && lm.path[2] === 0 && haveSameParent && mapref(sameParentPath).isRootChild ||
-        key === 'ArrowRight' && lm.path[2] === 1 && haveSameParent && mapref(sameParentPath).isRootChild) {
+    if (key === 'ArrowLeft' && lm.path[3] === 0 && haveSameParent && mapref(sameParentPath).isRootChild ||
+        key === 'ArrowRight' && lm.path[3] === 1 && haveSameParent && mapref(sameParentPath).isRootChild) {
         direction = 'through'
-    } else if (key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {
+    } else if (key === 'ArrowLeft' && lm.path[3] === 0 || key === 'ArrowRight' && lm.path[3] === 1) {
         direction = 'in';
-    } else if (key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {
+    } else if (key === 'ArrowLeft' && lm.path[3] === 1 || key === 'ArrowRight' && lm.path[3] === 0) {
         direction = 'out';
     } else if (key === 'ArrowUp') {
         direction = 'up';
@@ -41,8 +41,8 @@ export function nodeMove(sc, target, key, mode) {
         if (haveSameParent && !lm.isRoot) {
             let sameParent = mapref(sameParentPath);
             if (direction === 'through') {
-                let rootRef = mapref(['r']);
-                let dir = lm.path[2];
+                let rootRef = mapref(['r', 0]);
+                let dir = lm.path[3];
                 let revDir = 1 - dir;
                 for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                     let currRef = mapref(structSelectedPathList[i]);

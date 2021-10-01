@@ -64,7 +64,7 @@ export const getMapData = () => {
 export function recalc() {
     initSelectionState();
     let m = getMapData().m;
-    let r = getMapData().r;
+    let r = getMapData().r[0];
     mapAlgo.start(m, r);
     mapInit.start(m, r);
     mapChain.start(m, r);
@@ -80,7 +80,7 @@ export function recalc() {
 export function redraw() {
     initDomHash();
     let m = getMapData().m;
-    let r = getMapData().r;
+    let r = getMapData().r[0];
     mapVisualizeSvg.start(m, r);
     mapVisualizeDiv.start(m, r);
     updateDomData();

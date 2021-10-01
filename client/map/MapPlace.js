@@ -57,7 +57,7 @@ export const mapPlace = {
             cm.nodeEndX = cm.parentNodeEndX;
         } else {
             if (cm.type === 'cell' && cm.parentParentType === 'cell' || cm.parentType === 'cell') {
-                if (cm.path[2] === 0) {
+                if (cm.path[3] === 0) {
                     cm.nodeStartX = cm.parentNodeStartX + 2;
                     cm.nodeEndX = cm.nodeStartX + cm.selfW;
                 } else {
@@ -67,7 +67,7 @@ export const mapPlace = {
             }
             if (cm.parentType === 'struct' || cm.parentType === 'dir') {
                 if (cm.type === 'struct') {
-                    if (cm.path[2] === 0) {
+                    if (cm.path[3] === 0) {
                         cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX;
                         cm.nodeEndX = cm.nodeStartX + cm.selfW;
                     } else {
@@ -77,7 +77,7 @@ export const mapPlace = {
                 } else if (cm.type === 'cell') {
                     if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
                         let diff = m.sLineDeltaXDefault - 20;
-                        if (cm.path[2] === 0) {
+                        if (cm.path[3] === 0) {
                             cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff;
                             cm.nodeEndX = cm.nodeStartX + cm.selfW;
                         } else {
@@ -93,7 +93,7 @@ export const mapPlace = {
             cm.nodeY += 0.5;
         }
         if (Number.isInteger(cm.nodeStartX)) {
-            if (cm.path[2] === 0) {
+            if (cm.path[3] === 0) {
                 cm.nodeStartX += 0.5;
                 cm.nodeEndX += 0.5;
             } else {

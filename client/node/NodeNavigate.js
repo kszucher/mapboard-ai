@@ -5,26 +5,26 @@ export function nodeNavigate (lastPath, target, key) {
     let currPath = [];
     let truePath = lastPath;
     if (key === 'ArrowRight') {
-        if (lastPath.length === 1 && lastPath[0] === 'r') {
-            truePath = ['r', 'd', 0];
+        if (lastPath.length === 2) {
+            truePath = ['r', 0, 'd', 0];
             direction = 'out';
         } else {
-            direction = lastPath[2] === 0 ? 'out' : 'in';
+            direction = lastPath[3] === 0 ? 'out' : 'in';
         }
     } else if (key === 'ArrowLeft') {
-        if (lastPath.length === 1 && lastPath[0] === 'r') {
-            truePath = ['r', 'd', 1];
+        if (lastPath.length === 2) {
+            truePath = ['r', 0, 'd', 1];
             direction = 'out';
         } else {
-            direction = lastPath[2] === 0 ? 'in' : 'out';
+            direction = lastPath[3] === 0 ? 'in' : 'out';
         }
     } else if (key === 'ArrowUp') {
         direction = 'up';
     } else if (key === 'ArrowDown') {
         direction = 'down';
     }
-    if (direction === 'out' && truePath.length === 3 && mapref(truePath).s.length === 0) {
-        return ['r'];
+    if (direction === 'out' && truePath.length === 4 && mapref(truePath).s.length === 0) {
+        return ['r', 0];
     }
     if (target === 'struct2struct') {
         let inDepth = - 1;
@@ -78,7 +78,7 @@ export function nodeNavigate (lastPath, target, key) {
                         break;
                     }
                     if (currDirection === 'i') {
-                        if (currPath.length === 5) {
+                        if (currPath.length === 6) {
                             currPath = currPath.slice(0, currPath.length - 4);
                         } else {
                             currPath = currPath.slice(0, currPath.length - 2);

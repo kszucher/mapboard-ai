@@ -518,9 +518,9 @@ function getDefaultMap(mapName, ownerUser, path) {
     return {
         data: [
             {path: ['m']},
-            {path: ['r'], content: mapName, selected: 1},
-            {path: ['r', 'd', 0]},
-            {path: ['r', 'd', 1]},
+            {path: ['r', 0], content: mapName, selected: 1},
+            {path: ['r', 0, 'd', 0]},
+            {path: ['r', 0, 'd', 1]},
         ],
         dataHistory: [],
         dataPlayback: [],

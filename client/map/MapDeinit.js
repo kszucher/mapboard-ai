@@ -13,7 +13,7 @@ export const mapDeinit = {
                 delete cm.m[prop];
             }
         }
-        mapDeinit.iterate(cm.r);
+        mapDeinit.iterate(cm.r[0]);
     },
 
     iterate: (cm) => {

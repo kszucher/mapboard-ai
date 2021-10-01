@@ -47,8 +47,8 @@ export function cellInsert (lastPath, key) {
     let rowLen = parentRef.c.length;
     let colLen = parentRef.c[0].length;
     let direction;
-    if (        key === 'ArrowLeft' && lm.path[2] === 0 || key === 'ArrowRight' && lm.path[2] === 1) {  direction = 'in';
-    } else if ( key === 'ArrowLeft' && lm.path[2] === 1 || key === 'ArrowRight' && lm.path[2] === 0) {  direction = 'out';
+    if (        key === 'ArrowLeft' && lm.path[3] === 0 || key === 'ArrowRight' && lm.path[3] === 1) {  direction = 'in';
+    } else if ( key === 'ArrowLeft' && lm.path[3] === 1 || key === 'ArrowRight' && lm.path[3] === 0) {  direction = 'out';
     } else if ( key === 'ArrowUp') {                                                                    direction = 'up';
     } else if ( key === 'ArrowDown') {                                                                  direction = 'down';
     }

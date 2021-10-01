@@ -2,7 +2,7 @@ export const mapChain = {
     start: (m, r) => {
         Object.assign(r, {
             parentPath: [],
-            path: ['r'],
+            path: ['r', 0],
             isRoot: 1,
             type: 'struct',
         });
@@ -22,7 +22,7 @@ export const mapChain = {
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {
             Object.assign(cm.d[i], {
-                parentPath: ['r'],
+                parentPath: ['r', 0],
                 parentType: cm.type,
                 isRootChild: 1,
                 type: 'dir',

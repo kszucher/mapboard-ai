@@ -34,11 +34,11 @@ export const mapVisualizeSvg = {
         let svgElementData = [{},{},{},{},{},{}];
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
-        let nsx = cm.path[2]? cm.nodeEndX : cm.nodeStartX;
-        let nex = cm.path[2]? cm.nodeStartX : cm.nodeEndX;
+        let nsx = cm.path[3]? cm.nodeEndX : cm.nodeStartX;
+        let nex = cm.path[3]? cm.nodeStartX : cm.nodeEndX;
         let nsy = cm.nodeY - selfHadj/2;
         let ney = cm.nodeY + selfHadj/2;
-        let dir = cm.path[2]? -1 : 1;
+        let dir = cm.path[3]? -1 : 1;
         let r = 8;
         let conditions = resolveConditions(cm);
         if (conditions.backgroundRect) {
@@ -137,10 +137,10 @@ export const mapVisualizeSvg = {
         if (conditions.line) {
             let x1, y1, x2, y2;
             if (animationInit === 'l') {
-                x1 = cm.path[2]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
+                x1 = cm.path[3]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
             } else {
-                x1 = cm.path[2] ? cm.parentNodeStartX : cm.parentNodeEndX;
+                x1 = cm.path[3] ? cm.parentNodeStartX : cm.parentNodeEndX;
                 y1 = cm.parentNodeY;
             }
             x1 = isOdd(x1)?x1-0.5:x1;
@@ -223,11 +223,11 @@ export const mapVisualizeSvg = {
                 let coverCellRef = mapref(coverCellPath);
                 let smcv = coverCellRef.sumMaxColWidth[currCol];
                 let mcv = coverCellRef.maxColWidth[currCol];
-                startX = cm.path[2]
+                startX = cm.path[3]
                     ? coverCellRef.nodeEndX - smcv - mcv + 120
                     : coverCellRef.nodeStartX + smcv + mcv - 120;
             } else {
-                startX = cm.path[2]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
+                startX = cm.path[3]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
             }
             let x1 = nex;
             let x2 = startX;
@@ -241,7 +241,7 @@ export const mapVisualizeSvg = {
                 };
             }
             for (let i = 0; i < taskConfigN; i++) {
-                let centerX = cm.path[2]
+                let centerX = cm.path[3]
                     ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
                     : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap);
                 let centerY = cm.nodeY;
