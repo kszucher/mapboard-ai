@@ -9,14 +9,14 @@ export function nodeNavigate (lastPath, target, key) {
             truePath = ['r', 0, 'd', 0];
             direction = 'out';
         } else {
-            direction = lastPath[3] === 0 ? 'out' : 'in';
+            direction = lastPath[3] ? 'in' : 'out';
         }
     } else if (key === 'ArrowLeft') {
         if (lastPath.length === 2) {
             truePath = ['r', 0, 'd', 1];
             direction = 'out';
         } else {
-            direction = lastPath[3] === 0 ? 'in' : 'out';
+            direction = lastPath[3] ? 'out' : 'in';
         }
     } else if (key === 'ArrowUp') {
         direction = 'up';

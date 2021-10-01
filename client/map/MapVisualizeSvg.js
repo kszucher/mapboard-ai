@@ -34,11 +34,11 @@ export const mapVisualizeSvg = {
         let svgElementData = [{},{},{},{},{},{}];
         let selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
         let maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
-        let nsx = cm.path[3]? cm.nodeEndX : cm.nodeStartX;
-        let nex = cm.path[3]? cm.nodeStartX : cm.nodeEndX;
+        let nsx = cm.path[3] ? cm.nodeEndX : cm.nodeStartX;
+        let nex = cm.path[3] ? cm.nodeStartX : cm.nodeEndX;
         let nsy = cm.nodeY - selfHadj/2;
         let ney = cm.nodeY + selfHadj/2;
-        let dir = cm.path[3]? -1 : 1;
+        let dir = cm.path[3] ? -1 : 1;
         let r = 8;
         let conditions = resolveConditions(cm);
         if (conditions.backgroundRect) {
@@ -137,7 +137,7 @@ export const mapVisualizeSvg = {
         if (conditions.line) {
             let x1, y1, x2, y2;
             if (animationInit === 'l') {
-                x1 = cm.path[3]? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
+                x1 = cm.path[3] ? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom;
                 y1 = cm.parentNodeYFrom;
             } else {
                 x1 = cm.path[3] ? cm.parentNodeStartX : cm.parentNodeEndX;
@@ -227,7 +227,7 @@ export const mapVisualizeSvg = {
                     ? coverCellRef.nodeEndX - smcv - mcv + 120
                     : coverCellRef.nodeStartX + smcv + mcv - 120;
             } else {
-                startX = cm.path[3]? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
+                startX = cm.path[3] ? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
             }
             let x1 = nex;
             let x2 = startX;

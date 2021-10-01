@@ -166,7 +166,7 @@ function nodeReducer(action, payload) {
         }
         case 'select_O_M': {
             clearSelection();
-            let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[3] === 0 ? 'ArrowRight' : 'ArrowLeft');
+            let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[3] ? 'ArrowLeft' : 'ArrowRight');
             mapref(toPath).selected = 1;
             mapref(toPath).s[0].selected = 1;
             break;

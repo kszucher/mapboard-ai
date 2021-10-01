@@ -235,7 +235,7 @@ export function MapComponent() {
                         if (lastNearestPath.length > 2) {
                             m.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
-                            fromX = lastFound.path[3] === 0 ? lastFound.nodeEndX : lastFound.nodeStartX;
+                            fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX;
                             fromY = lastFound.nodeY;
                             r.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
