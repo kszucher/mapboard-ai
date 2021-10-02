@@ -6,7 +6,7 @@ import {setEndOfContenteditable, transposeArray} from "./Utils";
 import {mapChangeProp} from "../map/MapChangeProp";
 import {getAllFormatDefault, getFormatDefault} from "./DefaultProps";
 import {selectionState} from "./SelectionFlow";
-import {getMapData, mapref, pathMerge, recalc, redraw} from "./MapFlow";
+import {mapref, pathMerge, recalc, redraw} from "./MapFlow";
 import {mapSvgData} from "./DomFlow";
 
 let mutationObserver;
@@ -83,7 +83,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'select_all': {
-            mapChangeProp.start(getMapData().r[0], {selected: 1}, 'struct');
+            mapChangeProp.start(mapref(['r', 0]), {selected: 1}, 'struct');
             break;
         }
         case 'selectDescendantsOut': {
@@ -549,6 +549,6 @@ function nodeReducer(action, payload) {
 }
 
 function clearSelection() {
-    let r = getMapData().r[0];
+    let r = mapref(['r', 0]);
     mapChangeProp.start(r, {selected: 0, selection: 's'}, '');
 }

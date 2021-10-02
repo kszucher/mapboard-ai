@@ -57,14 +57,14 @@ function mapReducer(action, payload) {
     }
 }
 
-export const getMapData = () => {
+const getMapData = () => {
     return mapState.data[mapState.dataIndex];
 };
 
 export function recalc() {
     initSelectionState();
-    let m = getMapData().m;
-    let r = getMapData().r[0];
+    let m = mapref(['m']);
+    let r = mapref(['r', 0]);
     mapAlgo.start(m, r);
     mapInit.start(m, r);
     mapChain.start(m, r);
@@ -79,8 +79,8 @@ export function recalc() {
 
 export function redraw() {
     initDomHash();
-    let m = getMapData().m;
-    let r = getMapData().r[0];
+    let m = mapref(['m']);
+    let r = mapref(['r', 0]);
     mapVisualizeSvg.start(m, r);
     mapVisualizeDiv.start(m, r);
     updateDomData();

@@ -1,9 +1,9 @@
 import React, {useContext, useEffect} from "react";
-import {Context, remoteGetState} from "../core/Store";
+import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy, getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
-import {checkPop, getMapData, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
+import {checkPop, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
@@ -141,8 +141,8 @@ export function MapComponent() {
         (window.getSelection ? window.getSelection() : document.selection).empty()
         if (e.which === 1 || e.which === 3) {
             isNodeClicked = false;
-            let m = getMapData().m;
-            let r = getMapData().r[0];
+            let m = mapref(['m']);
+            let r = mapref(['r', 0]);
             r.selectionRect = [];
             [fromX, fromY] = getCoords(e);
             let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
@@ -220,8 +220,8 @@ export function MapComponent() {
             elapsed++;
             if (e.which === 1) {
                 if (isNodeClicked) {
-                    let m = getMapData().m;
-                    let r = getMapData().r[0];
+                    let m = mapref(['m']);
+                    let r = mapref(['r', 0]);
                     let [toX, toY] = getCoords(e);
                     m.moveTargetPath = [];
                     r.moveData = [];
@@ -264,7 +264,7 @@ export function MapComponent() {
                 } else if (isTaskClicked) {
 
                 } else {
-                    let r = getMapData().r[0];
+                    let r = mapref(['r', 0]);
                     let [toX, toY] = getCoords(e);
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
@@ -287,8 +287,8 @@ export function MapComponent() {
         e.preventDefault();
         isMouseDown = false;
         if (e.which === 1) {
-            let r = getMapData().r[0];
-            let m = getMapData().m;
+            let m = mapref(['m']);
+            let r = mapref(['r', 0]);
             if (m.moveTargetPath.length) {
                 r.moveData = [];
                 m.shouldCenter = true; // outside push - checkPop?
@@ -323,7 +323,7 @@ export function MapComponent() {
         if (isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
-            let m = getMapData().m;
+            let m = mapref(['m']);
             m.shouldCenter = true; // outside push - checkPop?
         }
         redraw();
