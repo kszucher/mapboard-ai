@@ -2,7 +2,7 @@ import {mapProps, nodeProps} from "../core/DefaultProps"
 import {copy, shallowCopy} from "../core/Utils"
 
 export const mapInit = {
-    start: (m, r) => {
+    start: (m, cr) => {
         for (const prop in mapProps.saveOptional) {
             if (!m.hasOwnProperty(prop)) {
                 m[prop] = copy(mapProps.saveOptional[prop]);
@@ -21,7 +21,7 @@ export const mapInit = {
         m.defaultH = m.density === 'large' ? 30 : 20; // 30 = 14 + 2*8, 20 = 14 + 2*3
         m.taskConfigD = m.density === 'large' ? 24 : 20;
         m.taskConfigWidth = m.taskConfigN * m.taskConfigD + (m.taskConfigN - 1) * m.taskConfigGap;
-        mapInit.iterate(m, r);
+        mapInit.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

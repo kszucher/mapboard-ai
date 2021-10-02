@@ -1,6 +1,6 @@
 export const mapTaskCalc = {
-    start: (m, r) => {
-        mapTaskCalc.iterate(m, r, r.task);
+    start: (m, cr) => {
+        mapTaskCalc.iterate(m, cr, cr.task);
     },
 
     iterate: (m, cm) => {

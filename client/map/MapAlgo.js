@@ -4,10 +4,10 @@ import {mapref} from "../core/MapFlow";
 let selectionFound = 0;
 
 export const mapAlgo = {
-    start: (m, r) => {
-        mapAlgo.iterate(m, r);
+    start: (m, cr) => {
+        mapAlgo.iterate(m, cr);
         if (!selectionFound) {
-            r.selected = 1;
+            cr.selected = 1;
             console.log('MAP RESTORED AFTER NO SELECTION')
         }
     },

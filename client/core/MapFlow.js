@@ -64,25 +64,25 @@ const getMapData = () => {
 export function recalc() {
     initSelectionState();
     let m = mapref(['m']);
-    let r = mapref(['r', 0]);
-    mapAlgo.start(m, r);
-    mapInit.start(m, r);
-    mapChain.start(m, r);
-    mapTaskCheck.start(m, r);
-    mapMeasure.start(m, r);
-    mapPlace.start(m, r);
-    mapTaskCalc.start(m, r);
-    mapTaskColor.start(m, r);
-    mapCollect.start(m, r);
+    let cr = mapref(['r', 0]);
+    mapAlgo.start(m, cr);
+    mapInit.start(m, cr);
+    mapChain.start(m, cr);
+    mapTaskCheck.start(m, cr);
+    mapMeasure.start(m, cr);
+    mapPlace.start(m, cr);
+    mapTaskCalc.start(m, cr);
+    mapTaskColor.start(m, cr);
+    mapCollect.start(m, cr);
     updateSelectionState();
 }
 
 export function redraw() {
     initDomHash();
     let m = mapref(['m']);
-    let r = mapref(['r', 0]);
-    mapVisualizeSvg.start(m, r);
-    mapVisualizeDiv.start(m, r);
+    let cr = mapref(['r', 0]);
+    mapVisualizeSvg.start(m, cr);
+    mapVisualizeDiv.start(m, cr);
     updateDomData();
 }
 

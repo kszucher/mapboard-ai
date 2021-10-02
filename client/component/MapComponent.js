@@ -142,10 +142,10 @@ export function MapComponent() {
         if (e.which === 1 || e.which === 3) {
             isNodeClicked = false;
             let m = mapref(['m']);
-            let r = mapref(['r', 0]);
-            r.selectionRect = [];
+            let cr = mapref(['r', 0]);
+            cr.selectionRect = [];
             [fromX, fromY] = getCoords(e);
-            let lastOverPath = mapFindOverPoint.start(r, fromX, fromY);
+            let lastOverPath = mapFindOverPoint.start(cr, fromX, fromY);
             if (lastOverPath.length) {
                 isNodeClicked = true;
                 m.deepestSelectablePath = copy(lastOverPath);
@@ -221,23 +221,23 @@ export function MapComponent() {
             if (e.which === 1) {
                 if (isNodeClicked) {
                     let m = mapref(['m']);
-                    let r = mapref(['r', 0]);
+                    let cr = mapref(['r', 0]);
                     let [toX, toY] = getCoords(e);
                     m.moveTargetPath = [];
-                    r.moveData = [];
+                    cr.moveData = [];
                     let lastSelectedPath = selectionState.structSelectedPathList[0];
                     let lastSelected = mapref(lastSelectedPath);
                     if (!(lastSelected.nodeStartX < toX &&
                         toX < lastSelected.nodeEndX &&
                         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-                        let lastNearestPath = mapFindNearest.start(r, toX, toY);
+                        let lastNearestPath = mapFindNearest.start(cr, toX, toY);
                         if (lastNearestPath.length > 2) {
                             m.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
                             fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX;
                             fromY = lastFound.nodeY;
-                            r.moveData = [fromX, fromY, toX, toY];
+                            cr.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
                                 m.moveTargetIndex = 0;
                             } else {
@@ -264,14 +264,14 @@ export function MapComponent() {
                 } else if (isTaskClicked) {
 
                 } else {
-                    let r = mapref(['r', 0]);
+                    let cr = mapref(['r', 0]);
                     let [toX, toY] = getCoords(e);
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
                     let width = Math.abs(toX - fromX);
                     let height = Math.abs(toY - fromY);
-                    r.selectionRect = [startX, startY, width, height ];
-                    mapFindOverRectangle.start(r, startX, startY, width, height);
+                    cr.selectionRect = [startX, startY, width, height ];
+                    mapFindOverRectangle.start(cr, startX, startY, width, height);
                     redraw();
                 }
             } else if (e.which === 2) {
@@ -288,16 +288,16 @@ export function MapComponent() {
         isMouseDown = false;
         if (e.which === 1) {
             let m = mapref(['m']);
-            let r = mapref(['r', 0]);
+            let cr = mapref(['r', 0]);
             if (m.moveTargetPath.length) {
-                r.moveData = [];
+                cr.moveData = [];
                 m.shouldCenter = true; // outside push - checkPop?
                 push();
                 nodeDispatch('moveSelection');
                 redraw();
                 checkPop();
             }
-            r.selectionRect = [];
+            cr.selectionRect = [];
             if (elapsed === 0) {
                 if (!isNodeClicked &&
                     !isTaskClicked &&

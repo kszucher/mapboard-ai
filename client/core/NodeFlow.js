@@ -25,9 +25,10 @@ function nodeReducer(action, payload) {
         // MAP ---------------------------------------------------------------------------------------------------------
         case 'updateDensity': {
             let m = mapref(['m']);
+            let cr = mapref(['r', 0]);
             m.density = payload;
             m.shouldCenter = true;
-            mapChangeProp.start(mapref(['r', 0]), {isDimAssigned: 0}, '');
+            mapChangeProp.start(cr, {isDimAssigned: 0}, '');
             break;
         }
         case 'updateAlignment': {
@@ -83,7 +84,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'select_all': {
-            mapChangeProp.start(mapref(['r', 0]), {selected: 1}, 'struct');
+            let cr = mapref(['r', 0]);
+            mapChangeProp.start(cr, {selected: 1}, 'struct');
             break;
         }
         case 'selectDescendantsOut': {
@@ -230,7 +232,8 @@ function nodeReducer(action, payload) {
         }
         case 'select_root': {
             clearSelection();
-            mapref(['r', 0]).selected = 1;
+            let cr = mapref(['r', 0]);
+            cr.selected = 1;
             break;
         }
         // NODE INSERT -------------------------------------------------------------------------------------------------
@@ -549,6 +552,6 @@ function nodeReducer(action, payload) {
 }
 
 function clearSelection() {
-    let r = mapref(['r', 0]);
-    mapChangeProp.start(r, {selected: 0, selection: 's'}, '');
+    let cr = mapref(['r', 0]);
+    mapChangeProp.start(cr, {selected: 0, selection: 's'}, '');
 }

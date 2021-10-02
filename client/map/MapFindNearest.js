@@ -5,13 +5,13 @@ let aboveRoot, belowRoot = 0;
 let lastNearestPath = [];
 
 export const mapFindNearest = {
-    start: (r, x, y) => {
+    start: (cr, x, y) => {
         currX = x;
         currY = y;
-        aboveRoot = y >= r.nodeY;
-        belowRoot = y < r.nodeY;
+        aboveRoot = y >= cr.nodeY;
+        belowRoot = y < cr.nodeY;
         lastNearestPath = [];
-        mapFindNearest.iterate(r);
+        mapFindNearest.iterate(cr);
         return lastNearestPath;
     },
 

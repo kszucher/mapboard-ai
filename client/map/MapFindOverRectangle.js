@@ -1,12 +1,12 @@
 let startX, startY, width, height = 0;
 
 export const mapFindOverRectangle = {
-    start: (r, x, y, w, h) => {
+    start: (cr, x, y, w, h) => {
         startX = x;
         startY = y;
         width = w;
         height = h;
-        mapFindOverRectangle.iterate(r);
+        mapFindOverRectangle.iterate(cr);
     },
 
     iterate: (cm) => {

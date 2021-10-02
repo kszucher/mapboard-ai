@@ -1,6 +1,6 @@
 export const mapTemplate = {
-    start: (m, r) => {
-        mapTemplate.iterate(m, r);
+    start: (m, cr) => {
+        mapTemplate.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

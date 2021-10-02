@@ -1,12 +1,12 @@
 export const mapChain = {
-    start: (m, r) => {
-        Object.assign(r, {
+    start: (m, cr) => { // TODO pass "num" as parameter
+        Object.assign(cr, {
             parentPath: [],
             path: ['r', 0],
             isRoot: 1,
             type: 'struct',
         });
-        mapChain.iterate(m, r);
+        mapChain.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

@@ -41,13 +41,13 @@ export function nodeMove(sc, target, key, mode) {
         if (haveSameParent && !lm.isRoot) {
             let sameParent = mapref(sameParentPath);
             if (direction === 'through') {
-                let rootRef = mapref(['r', 0]);
+                let cr = mapref(['r', 0]);
                 let dir = lm.path[3];
                 let revDir = 1 - dir;
                 for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                     let currRef = mapref(structSelectedPathList[i]);
                     sameParent.s.splice(currRef.index, 1);
-                    rootRef.d[revDir].s.splice(rootRef.d[revDir].s.length, 0, copy(currRef));
+                    cr.d[revDir].s.splice(cr.d[revDir].s.length, 0, copy(currRef));
                 }
             } else if (direction === 'in') {
                 let sameParentParent = mapref(sameParent.parentPath);

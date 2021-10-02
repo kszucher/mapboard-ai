@@ -1,10 +1,10 @@
 import {selectionState} from "../core/SelectionFlow";
 
 export const mapCollect = {
-    start: (m, r) => {
+    start: (m, cr) => {
         selectionState.structSelectedPathList = [];
         selectionState.cellSelectedPathList = [];
-        mapCollect.iterate(m, r);
+        mapCollect.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

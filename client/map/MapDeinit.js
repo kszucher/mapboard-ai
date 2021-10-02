@@ -13,6 +13,7 @@ export const mapDeinit = {
                 delete cm.m[prop];
             }
         }
+        // TODO loop
         mapDeinit.iterate(cm.r[0]);
     },
 

@@ -35,7 +35,7 @@ const scrollTo = function(to, duration) {
 };
 
 export const mapVisualizeDiv = {
-    start: (m, r) => {
+    start: (m, cr) => {
         let mapDiv = document.getElementById('mapDiv');
         mapDiv.style.width = "" + m.mapWidth + "px";
         mapDiv.style.height = "" + m.mapHeight + "px";
@@ -54,7 +54,7 @@ export const mapVisualizeDiv = {
             m.shouldCenter = false;
             scrollTo(currScrollLeft, 500);
         }
-        mapVisualizeDiv.iterate(m, r);
+        mapVisualizeDiv.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

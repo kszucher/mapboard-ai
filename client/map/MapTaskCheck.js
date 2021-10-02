@@ -1,8 +1,8 @@
 export const mapTaskCheck = {
-    start: (m, r) => {
+    start: (m, cr) => {
         m.taskLeft = 0;
         m.taskRight = 0;
-        mapTaskCheck.iterate(m, r, r.task);
+        mapTaskCheck.iterate(m, cr, cr.task);
     },
 
     iterate: (m, cm, task) => {

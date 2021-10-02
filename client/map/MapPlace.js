@@ -1,26 +1,26 @@
 export const mapPlace = {
-    start: (m, r) => {
+    start: (m, cr) => {
         let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m;
-        let leftTaskWidth =     r.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0;
-        let leftMapWidth =      r.d[1].s.length > 0 ? sLineDeltaXDefault + r.d[1].familyW : 0;
-        let rightMapWidth =     r.d[0].s.length > 0 ? sLineDeltaXDefault + r.d[0].familyW : 0;
-        let rightTaskWidth =    r.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0;
+        let leftTaskWidth =     cr.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0;
+        let leftMapWidth =      cr.d[1].s.length > 0 ? sLineDeltaXDefault + cr.d[1].familyW : 0;
+        let rightMapWidth =     cr.d[0].s.length > 0 ? sLineDeltaXDefault + cr.d[0].familyW : 0;
+        let rightTaskWidth =    cr.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0;
         let leftWidth = leftMapWidth + leftTaskWidth + margin;
         let rightWidth = rightMapWidth + rightTaskWidth + margin;
         let flow = 'both';
-        if (r.d[0].s.length && !r.d[1].s.length) flow = 'right';
-        if (!r.d[0].s.length && r.d[1].s.length) flow = 'left';
+        if (cr.d[0].s.length && !cr.d[1].s.length) flow = 'right';
+        if (!cr.d[0].s.length && cr.d[1].s.length) flow = 'left';
         let sumWidth = 0;
         if (alignment === 'adaptive') {
             if (flow === 'right') {
-                sumWidth = margin + r.selfW + rightWidth;
+                sumWidth = margin + cr.selfW + rightWidth;
             } else if (flow === 'left') {
-                sumWidth = leftWidth + r.selfW + margin;
+                sumWidth = leftWidth + cr.selfW + margin;
             } else if (flow === 'both') {
-                sumWidth = leftWidth + r.selfW + rightWidth;
+                sumWidth = leftWidth + cr.selfW + rightWidth;
             }
         } else if (alignment === 'centered') {
-            sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + r.selfW ;
+            sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + cr.selfW ;
         }
         let divMinWidth = window.screen.availWidth > 1366 ? 1366 : 800;
         let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth;
@@ -30,25 +30,25 @@ export const mapPlace = {
         } else if (alignment === 'adaptive') {
             if (flow === 'both') {
                 let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0;
-                mapStartCenterX = leftSpace + leftWidth + r.selfW / 2;
+                mapStartCenterX = leftSpace + leftWidth + cr.selfW / 2;
             } else if (flow === 'right') {
-                mapStartCenterX = margin + r.selfW / 2;
+                mapStartCenterX = margin + cr.selfW / 2;
             } else if (flow === 'left') {
-                mapStartCenterX = mapWidth - margin - r.selfW / 2;
+                mapStartCenterX = mapWidth - margin - cr.selfW / 2;
             }
         }
-        let rightMapHeight = r.d.length > 0 ? r.d[0].familyH : 0;
-        let leftMapHeight =  r.d.length > 1? r.d[1].familyH : 0;
+        let rightMapHeight = cr.d.length > 0 ? cr.d[0].familyH : 0;
+        let leftMapHeight =  cr.d.length > 1? cr.d[1].familyH : 0;
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight]);
         let mapHeight = minHeight + 60;
         m.mapWidth = mapWidth;
         m.mapHeight = mapHeight;
-        r.parentNodeStartX = mapStartCenterX - r.selfW / 2 + 1;
-        r.parentNodeEndX = mapStartCenterX + r.selfW / 2 + 1;
-        r.parentNodeY = 0;
-        r.lineDeltaX = 0;
-        r.lineDeltaY = minHeight / 2 + 30 - 0.5;
-        mapPlace.iterate(m, r);
+        cr.parentNodeStartX = mapStartCenterX - cr.selfW / 2 + 1;
+        cr.parentNodeEndX = mapStartCenterX + cr.selfW / 2 + 1;
+        cr.parentNodeY = 0;
+        cr.lineDeltaX = 0;
+        cr.lineDeltaY = minHeight / 2 + 30 - 0.5;
+        mapPlace.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

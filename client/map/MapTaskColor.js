@@ -1,6 +1,6 @@
 export const mapTaskColor = {
-    start: (m, r) => {
-        mapTaskColor.iterate(m, r);
+    start: (m, cr) => {
+        mapTaskColor.iterate(m, cr);
     },
 
     iterate: (m, cm) => {

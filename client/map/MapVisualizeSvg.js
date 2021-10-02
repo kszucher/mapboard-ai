@@ -18,11 +18,11 @@ let svgElementNameList = [
 ];
 
 export const mapVisualizeSvg = {
-    start: (m, r) => {
+    start: (m, cr) => {
         let mapSvgOuter = document.getElementById('mapSvgOuter');
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)';
-        mapVisualizeSvg.iterate(m, r);
+        mapVisualizeSvg.iterate(m, cr);
     },
 
     iterate: (m, cm) => {
