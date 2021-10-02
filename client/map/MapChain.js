@@ -1,5 +1,5 @@
 export const mapChain = {
-    start: (m, cr, crIndex) => { // TODO pass "num" as parameter
+    start: (m, cr, crIndex) => {
         Object.assign(cr, {
             parentPath: [],
             path: ['r', crIndex],
