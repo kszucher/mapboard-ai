@@ -142,7 +142,7 @@ export function MapComponent() {
         if (e.which === 1 || e.which === 3) {
             isNodeClicked = false;
             let m = mapref(['m']);
-            let cr = mapref(['r', 0]);
+            let cr = mapref(['r', 0]); // TODO use ['g']
             cr.selectionRect = [];
             [fromX, fromY] = getCoords(e);
             let lastOverPath = mapFindOverPoint.start(cr, fromX, fromY);
@@ -150,7 +150,7 @@ export function MapComponent() {
                 isNodeClicked = true;
                 m.deepestSelectablePath = copy(lastOverPath);
                 if (m.deepestSelectablePath.length === 4) {
-                    m.deepestSelectablePath = ['r', 0];
+                    m.deepestSelectablePath = ['r', 0]; // TODO use ['g']
                 }
                 push();
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
@@ -221,7 +221,7 @@ export function MapComponent() {
             if (e.which === 1) {
                 if (isNodeClicked) {
                     let m = mapref(['m']);
-                    let cr = mapref(['r', 0]);
+                    let cr = mapref(['r', 0]); // TODO use ['g']
                     let [toX, toY] = getCoords(e);
                     m.moveTargetPath = [];
                     cr.moveData = [];
@@ -264,13 +264,13 @@ export function MapComponent() {
                 } else if (isTaskClicked) {
 
                 } else {
-                    let cr = mapref(['r', 0]);
+                    let cr = mapref(['r', 0]); // TODO use ['g']
                     let [toX, toY] = getCoords(e);
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
                     let width = Math.abs(toX - fromX);
                     let height = Math.abs(toY - fromY);
-                    cr.selectionRect = [startX, startY, width, height ];
+                    cr.selectionRect = [startX, startY, width, height];
                     mapFindOverRectangle.start(cr, startX, startY, width, height);
                     redraw();
                 }
@@ -288,7 +288,7 @@ export function MapComponent() {
         isMouseDown = false;
         if (e.which === 1) {
             let m = mapref(['m']);
-            let cr = mapref(['r', 0]);
+            let cr = mapref(['r', 0]); // TODO use ['g']
             if (m.moveTargetPath.length) {
                 cr.moveData = [];
                 m.shouldCenter = true; // outside push - checkPop?

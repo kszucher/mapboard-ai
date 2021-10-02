@@ -25,10 +25,12 @@ function nodeReducer(action, payload) {
         // MAP ---------------------------------------------------------------------------------------------------------
         case 'updateDensity': {
             let m = mapref(['m']);
-            let cr = mapref(['r', 0]);
             m.density = payload;
             m.shouldCenter = true;
-            mapChangeProp.start(cr, {isDimAssigned: 0}, '');
+            for (let i = 0; i < mapref(['r']).length; i++) {
+                let cr = mapref(['r', i]);
+                mapChangeProp.start(cr, {isDimAssigned: 0}, '');
+            }
             break;
         }
         case 'updateAlignment': {
@@ -84,8 +86,10 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'select_all': {
-            let cr = mapref(['r', 0]);
-            mapChangeProp.start(cr, {selected: 1}, 'struct');
+            for (let i = 0; i < mapref(['r']).length; i++) {
+                let cr = mapref(['r', i]);
+                mapChangeProp.start(cr, {selected: 1}, 'struct');
+            }
             break;
         }
         case 'selectDescendantsOut': {
@@ -552,6 +556,8 @@ function nodeReducer(action, payload) {
 }
 
 function clearSelection() {
-    let cr = mapref(['r', 0]);
-    mapChangeProp.start(cr, {selected: 0, selection: 's'}, '');
+    for (let i = 0; i < mapref(['r']).length; i++) {
+        let cr = mapref(['r', i]);
+        mapChangeProp.start(cr, {selected: 0, selection: 's'}, '');
+    }
 }

@@ -41,7 +41,8 @@ export function nodeMove(sc, target, key, mode) {
         if (haveSameParent && !lm.isRoot) {
             let sameParent = mapref(sameParentPath);
             if (direction === 'through') {
-                let cr = mapref(['r', 0]);
+                let crIndex = lm.path[1];
+                let cr = mapref(['r', crIndex]);
                 let dir = lm.path[3];
                 let revDir = 1 - dir;
                 for (let i = structSelectedPathList.length - 1; i > -1; i--) {

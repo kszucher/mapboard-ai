@@ -3,6 +3,7 @@ import {mapref} from "../core/MapFlow";
 
 export function structDeleteReselect(sc) {
     let lm = mapref(sc.lastPath);
+    let crIndex = lm.path[1];
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         let cm = mapref(sc.structSelectedPathList[i]);
         if (cm.isRoot) return;
@@ -34,7 +35,7 @@ export function structDeleteReselect(sc) {
     // reselect on jumpback
     if (imParentChildLen === imParentChildDelLen) {
         if (imParent.isRootChild) {
-            let cr = mapref(['r', 0]);
+            let cr = mapref(['r', crIndex]);
             cr.selected = 1;
         } else {
             imParent.selected = 1;
@@ -45,7 +46,7 @@ export function structDeleteReselect(sc) {
                 imParent.s[0].selected = 1;
             } else {
                 if (imParent.isRootChild) {
-                    let cr = mapref(['r', 0]);
+                    let cr = mapref(['r', crIndex]);
                     cr.selected = 1;
                 } else {
                     imParent.selected = 1;

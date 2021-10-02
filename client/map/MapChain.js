@@ -1,15 +1,15 @@
 export const mapChain = {
-    start: (m, cr) => { // TODO pass "num" as parameter
+    start: (m, cr, crIndex) => { // TODO pass "num" as parameter
         Object.assign(cr, {
             parentPath: [],
-            path: ['r', 0],
+            path: ['r', crIndex],
             isRoot: 1,
             type: 'struct',
         });
-        mapChain.iterate(m, cr);
+        mapChain.iterate(m, cr, crIndex);
     },
 
-    iterate: (m, cm) => {
+    iterate: (m, cm, crIndex) => {
         if (!cm.isRoot) {
             if (cm.type === 'dir') {
                 cm.path = cm.parentPath.concat(["d", cm.index]);
@@ -22,13 +22,13 @@ export const mapChain = {
         let dCount = Object.keys(cm.d).length;
         for (let i = 0; i < dCount; i++) {
             Object.assign(cm.d[i], {
-                parentPath: ['r', 0],
+                parentPath: ['r', crIndex],
                 parentType: cm.type,
                 isRootChild: 1,
                 type: 'dir',
                 index: i,
             });
-            mapChain.iterate(m, cm.d[i]);
+            mapChain.iterate(m, cm.d[i], crIndex);
         }
         let sCount = Object.keys(cm.s).length;
         for (let i = 0; i < sCount; i++) {
@@ -39,7 +39,7 @@ export const mapChain = {
                 type: 'struct',
                 index: i,
             });
-            mapChain.iterate(m, cm.s[i]);
+            mapChain.iterate(m, cm.s[i], crIndex);
         }
         let rowCount = Object.keys(cm.c).length;
         let colCount = Object.keys(cm.c[0]).length;
@@ -52,7 +52,7 @@ export const mapChain = {
                     type: 'cell',
                     index: [i, j],
                 });
-                mapChain.iterate(m, cm.c[i][j]);
+                mapChain.iterate(m, cm.c[i][j], crIndex);
             }
         }
         cm.hasDir = dCount > 0 ? 1 : 0;
