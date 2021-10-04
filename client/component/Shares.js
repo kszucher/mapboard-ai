@@ -84,9 +84,9 @@ export function Shares() {
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: '#fbfafc',
+                backgroundColor: getBgc(),
                 padding: 20,
-                border: "1px solid #fbfafc",
+                border: `1px solid ${getBgc()}`,
                 borderRadius: '16px'
             }}>
                 <Typography

@@ -1,4 +1,4 @@
-import {genHash, isChrome, isOdd} from "../core/Utils";
+import {genHash, getBgc, isChrome, isOdd} from "../core/Utils";
 import {keepHash, mapSvgData} from "../core/DomFlow";
 import {selectionState} from "../core/SelectionFlow";
 import {resolveConditions} from "../core/DefaultProps";
@@ -50,7 +50,7 @@ export const mapVisualizeSvg = {
                 height: m.mapHeight,
                 rx: 32,
                 ry: 32,
-                fill: '#fbfafc',
+                fill: getBgc(),
             };
         }
         if (conditions.branchFill ||
@@ -298,7 +298,7 @@ export const mapVisualizeSvg = {
                 height: 20,
                 rx: 8,
                 ry: 8,
-                fill: '#fbfafc',
+                fill: getBgc(),
                 fillOpacity: 1,
                 stroke: window.location.search === '?d=iq' ? '#08212e' : '#5f0a87',
                 strokeWidth: 5,

@@ -4,6 +4,7 @@ import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {pasteDispatch} from "../core/PasteFlow";
 import StyledButton from "../component-styled/StyledButton";
+import {getBgc} from "../core/Utils";
 
 export function CommandButtons () {
     const [state, dispatch] = useContext(Context);
@@ -25,7 +26,7 @@ export function CommandButtons () {
             height: 48,
             paddingLeft: 12,
             paddingRight: 12,
-            backgroundColor: '#fbfafc',
+            backgroundColor: getBgc(),
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
             borderWidth: '1px',

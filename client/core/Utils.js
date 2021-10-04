@@ -1,5 +1,5 @@
 export function getBgc() {
-    return  window.location.search === '?d=iq' ? '#fafafa' : '#fbfafc';
+    return '#fbfafc';
 }
 
 export function arrayValuesSame(array) {

@@ -3,6 +3,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {Context} from "../core/Store";
+import {getBgc} from "../core/Utils";
 
 export default function WorkspaceBreadcrumbs() {
     const [state, dispatch] = useContext(Context);
@@ -27,7 +28,7 @@ export default function WorkspaceBreadcrumbs() {
             height: '48px',
             paddingLeft: '20px',
             paddingRight: '20px',
-            backgroundColor: '#fbfafc',
+            backgroundColor: getBgc(),
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px',
             borderWidth: '2px',

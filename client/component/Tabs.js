@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {Context} from "../core/Store";
 import StyledTabs from "../component-styled/StyledTabs";
+import {getBgc} from "../core/Utils";
 
 export default function Tabs() {
     const [state, dispatch] = useContext(Context);
@@ -15,7 +16,7 @@ export default function Tabs() {
             position: 'fixed',
             top: 48*2,
             width: 216,
-            backgroundColor: '#fbfafc',
+            backgroundColor: getBgc(),
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
             borderWidth: '1px',
