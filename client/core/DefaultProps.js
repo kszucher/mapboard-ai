@@ -68,6 +68,8 @@ export let nodeProps = {
         ellipseNodeBorderColor: '',
         ellipseNodeBorderWidth: 1,
         taskStatus: -1,
+        // subMapStartX: 0, // only applies for root <-- calculate (how?)
+        // subMapStartY: 0,  // only applies for root <-- calculate (how?)
     },
     saveNeverInitOnce: {
         // UNSORTED
@@ -87,6 +89,8 @@ export let nodeProps = {
         contentH: 0,
         // mapTaskCalc
         taskStatusInherited: 0,
+        // subMapWidth: 0, // only applies for root <-- channel mapWidth here
+        // subMapHeight: 0, // only applies for root <-- channel mapHeight here
     },
     saveNeverInitAlways: {
         // mapChain
