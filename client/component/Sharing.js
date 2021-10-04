@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import StyledButton from "../component-styled/StyledButton";
 import StyledInput from "../component-styled/StyledInput";
 import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
+import {COLORS} from "../core/Utils";
 
 export function Sharing() {
     const [state, dispatch] = useContext(Context);
@@ -37,9 +38,9 @@ export function Sharing() {
                 display: 'inline-flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: getBgc(),
+                backgroundColor: COLORS.MAP_BACKGROUND,
                 padding: 20,
-                border: `1px solid ${getBgc()}`,
+                border: `1px solid ${COLORS.MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
                 <Typography

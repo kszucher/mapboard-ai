@@ -1,5 +1,5 @@
 import {createTheme} from "@material-ui/core/styles";
-import {getBgc} from "../core/Utils";
+import {COLORS} from "../core/Utils";
 
 export const muiTheme = createTheme({
     props: {
@@ -15,13 +15,13 @@ export const muiTheme = createTheme({
             light: '#9040b8',
             main: '#5f0a87',
             dark: '#2e0059',
-            contrastText: getBgc(),
+            contrastText: COLORS.MAP_BACKGROUND,
         },
         secondary: {
             light: '#9040b8',
             main: '#5f0a87',
             dark: '#2e0059',
-            contrastText: getBgc(),
+            contrastText: COLORS.MAP_BACKGROUND,
         },
     },
 

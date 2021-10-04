@@ -1,6 +1,23 @@
-export function getBgc() {
-    return '#fbfafc';
+let colorMode = 'dark';
+
+const COLOR_LIGHT = {
+    BACKGROUND: '#fbfafc',
 }
+
+const COLOR_DARK = {
+    MAP_BACKGROUND: '#222529',
+    BACKGROUND: '#000000'
+}
+
+const getColors = (colorMode) => {
+    if (colorMode === 'light') {
+        return COLOR_LIGHT;
+    } else if (colorMode === 'dark') {
+        return COLOR_DARK;
+    }
+}
+
+export const COLORS = getColors(colorMode)
 
 export function arrayValuesSame(array) {
     let first = JSON.stringify(array[0]);

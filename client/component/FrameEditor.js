@@ -3,7 +3,7 @@ import {Context} from "../core/Store";
 import {MobileStepper} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
-import {getBgc} from "../core/Utils";
+import {COLORS} from "../core/Utils";
 
 export function FrameEditor () {
     const [state, dispatch] = useContext(Context)
@@ -22,7 +22,7 @@ export function FrameEditor () {
                 {frameLen > 0 &&
                 <MobileStepper
                     style={{
-                        backgroundColor: getBgc(),
+                        backgroundColor: COLORS.MAP_BACKGROUND,
                         borderTopLeftRadius: '16px',
                         borderTopRightRadius: '16px',
                         borderWidth: '2px',

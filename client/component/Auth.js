@@ -5,7 +5,7 @@ import {Context} from "../core/Store";
 import StyledButton from "../component-styled/StyledButton";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import StyledInput from "../component-styled/StyledInput";
-import {getBgc} from "../core/Utils";
+import {COLORS} from "../core/Utils";
 
 let regEmail = '';
 let regPassword = '';
@@ -124,9 +124,9 @@ export default function Auth() {
                 display: 'inline-flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: getBgc(),
+                backgroundColor: COLORS.MAP_BACKGROUND,
                 padding: 20,
-                border: `1px solid ${getBgc()}`,
+                border: `1px solid ${COLORS.MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
             <Typography component="h1" variant="h5">MapBoard</Typography>

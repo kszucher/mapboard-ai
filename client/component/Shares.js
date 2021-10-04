@@ -10,6 +10,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import {COLORS} from "../core/Utils";
 
 export function Shares() {
     const [state, dispatch] = useContext(Context);
@@ -84,9 +85,9 @@ export function Shares() {
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: getBgc(),
+                backgroundColor: COLORS.MAP_BACKGROUND,
                 padding: 20,
-                border: `1px solid ${getBgc()}`,
+                border: `1px solid ${COLORS.MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
                 <Typography
