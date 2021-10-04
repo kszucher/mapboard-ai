@@ -3,6 +3,7 @@ import {Context} from "../core/Store";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {checkPop, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
+import {COLORS} from "../core/Utils";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
@@ -40,9 +41,29 @@ export function CommandTexts () {
     const openSharing = e => dispatch({type: 'SHOW_SHARING'})
 
     return (
-        <div style={{position: 'fixed', right: 0, top: 96, width: 216, backgroundColor: 'rgba(251,250,252,1)', paddingTop: 6, paddingBottom: 6,
-            borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0 }}>
-            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
+        <div style={{
+            position: 'fixed',
+            right: 0,
+            top: 96,
+            width: 216,
+            backgroundColor: COLORS.MAP_BACKGROUND,
+            paddingTop: 6,
+            paddingBottom: 6,
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: '#dddddd',
+            borderRight: 0
+        }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingLeft: 12,
+                paddingRight: 12
+            }}>
                 <StyledButtonGroup open={true}                     valueList={['small', 'large']}                 value={density}     action={updateDensity}     />
                 <StyledButtonGroup open={true}                     valueList={['adaptive', 'centered']}           value={alignment}   action={updateAlignment}   />
                 <StyledButtonGroup open={true}                     valueList={['line', 'border', 'fill', 'text']} value={formatMode}  action={updateFormatMode}  />

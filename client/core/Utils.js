@@ -1,12 +1,11 @@
 let colorMode = 'dark';
 
 const COLOR_LIGHT = {
-    BACKGROUND: '#fbfafc',
+    MAP_BACKGROUND: '#fbfafc',
 }
 
 const COLOR_DARK = {
     MAP_BACKGROUND: '#222529',
-    BACKGROUND: '#000000'
 }
 
 const getColors = (colorMode) => {
