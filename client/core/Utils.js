@@ -1,4 +1,4 @@
-let colorMode = 'dark';
+let colorMode = 'light';
 
 const COLOR_LIGHT = {
     MAP_BACKGROUND: '#fbfafc',
