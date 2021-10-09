@@ -62,7 +62,6 @@ const resolveProps = (state, action) => {
         case 'SHOW_SHARES':               return {...state, pageState: WORKSPACE_SHARES}
         case 'SHOW_SHARING':              return {...state, pageState: WORKSPACE_SHARING}
         case 'CLOSE_WORKSPACE_MODAL':     return {...state, pageState: WORKSPACE}
-        case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.tabMapSelected}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}
