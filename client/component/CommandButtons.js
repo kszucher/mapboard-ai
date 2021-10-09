@@ -5,6 +5,7 @@ import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {pasteDispatch} from "../core/PasteFlow";
 import StyledButton from "../component-styled/StyledButton";
 import {COLORS} from "../core/Utils";
+import {MAP_RIGHTS} from "../core/EditorFlow";
 
 export function CommandButtons () {
     const [state, dispatch] = useContext(Context);
@@ -37,10 +38,24 @@ export function CommandButtons () {
             <div style={{
                 display: 'flex',
                 justifyContent: 'center' }}>
-                <StyledButton version={'icon'} action={undo} icon={'undo'}/>
-                <StyledButton version={'icon'} action={redo} icon={'redo'}/>
-                <StyledButton version={'icon'} action={saveMap} icon={'save'}/>
+                <ControlledStyledButton version={'icon'} action={undo} icon={'undo'}/>
+                <ControlledStyledButton version={'icon'} action={redo} icon={'redo'}/>
+                <ControlledStyledButton version={'icon'} action={saveMap} icon={'save'}/>
             </div>
         </div>
     );
+}
+
+const ControlledStyledButton = (arg) => {
+    const {version, action, icon} = arg;
+    const [state, dispatch] = useContext(Context)
+    const {mapRight} = state
+    return (
+        <StyledButton
+            version={version}
+            action={action}
+            icon={icon}
+            disabled={[MAP_RIGHTS.VIEW, MAP_RIGHTS.UNAUTHORIZED].includes(mapRight)}
+        />
+    )
 }

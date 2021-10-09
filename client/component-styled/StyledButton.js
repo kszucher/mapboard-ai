@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
 export default function StyledButton(arg) {
     switch (arg.version) {
         case 'icon': {
-            const {action, icon} = arg
+            const {action, icon, disabled} = arg
             return (
-                <IconButton color='secondary' onClick={action}>
+                <IconButton color='secondary' onClick={action} disabled={disabled}>
                     <span className="material-icons">{icon}</span>
                 </IconButton>
             )
