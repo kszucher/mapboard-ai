@@ -60,7 +60,7 @@ export function Communication() {
                 }
                 case 'signInSuccess': {
                     initDomData();
-                    dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
+                    dispatch({type: 'SHOW_WORKSPACE'});
                     break;
                 }
                 case 'signInFail': {
@@ -80,7 +80,7 @@ export function Communication() {
                     break;
                 }
                 case 'getLandingDataSuccess': {
-                    dispatch({type: 'SET_DEMO'});
+                    dispatch({type: 'SHOW_DEMO'});
                 }
             }
         }

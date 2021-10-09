@@ -26,6 +26,12 @@ export function Page() {
         getEquationDim('\\[Test\\]');
     }, [])
 
+    useEffect(() => {
+        if (pageState === PAGE_STATES.WORKSPACE) {
+            dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
+        }
+    }, [pageState])
+
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>

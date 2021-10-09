@@ -57,8 +57,11 @@ const resolveProps = (state, action) => {
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
-        case 'SET_DEMO':                  return {...state, pageState: DEMO}
-        case 'OPEN_MAP_FROM_HISTORY':     return {...state, pageState: WORKSPACE}
+        case 'SHOW_DEMO':                 return {...state, pageState: DEMO}
+        case 'SHOW_WORKSPACE':            return {...state, pageState: WORKSPACE}
+        case 'SHOW_SHARES':               return {...state, pageState: WORKSPACE_SHARES}
+        case 'SHOW_SHARING':              return {...state, pageState: WORKSPACE_SHARING}
+        case 'CLOSE_WORKSPACE_MODAL':     return {...state, pageState: WORKSPACE}
         case 'OPEN_MAP_FROM_TAB':         return {...state, tabMapSelected: payload.tabMapSelected}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
@@ -72,9 +75,6 @@ const resolveProps = (state, action) => {
         case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'SHOW_SHARES':               return {...state, pageState: WORKSPACE_SHARES}
-        case 'SHOW_SHARING':              return {...state, pageState: WORKSPACE_SHARING}
-        case 'CLOSE_WORKSPACE_MODAL':     return {...state, pageState: WORKSPACE}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
@@ -99,7 +99,7 @@ const resolvePropsServer = (state, action) => {
         case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
         case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
-        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory') // TODO call from useEffect
+        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
         case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload) // TODO call from useEffect
         case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
         case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)
