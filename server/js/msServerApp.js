@@ -439,7 +439,7 @@ async function sendResponse(c2s) {
                                 {$pull: {tabMapIdList: ObjectId(shareData.sharedMap)}},
                                 {multi: true}
                             );
-                            // IF shared map was selected, change selection
+                            // if shared map was selected by shareUser, change selection
                             await collectionShares.deleteOne({_id: ObjectId(shareId)})
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
                             s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
@@ -449,21 +449,18 @@ async function sendResponse(c2s) {
                         s2c.payload.hasOwnProperty('mapId')) {
                         const {path, ownerUser} = await getMapProps(s2c.payload.mapId)
                         let mapRight = 'unauthorized'
-                        // console.log(currUser._id, ownerUser)
                         if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
                             mapRight = 'edit'
                         } else {
-                            for (let i = path.length - 1; i > -1; i--) {
-                                const currMapId = path[i]
-                                // olyan share-t keresek, ahol sharedMaő = currMap, shareEser = currUser, és annak a RIGHT-ja
-
-                                console.log(currUser._id, s2c.payload.mapId, currMapId)
+                            let fullPath = [...path, s2c.payload.mapId]
+                            for (let i = fullPath.length - 1; i > -1; i--) {
+                                const currMapId = fullPath[i]
                                 const shareData = await collectionShares.findOne({shareUser: currUser._id, sharedMap: currMapId})
-                                console.log(shareData)
+                                if (shareData !== null) {
+                                    mapRight = shareData.access;
+                                }
                             }
                         }
-
-                        console.log(mapRight)
                     }
                 }
             }
