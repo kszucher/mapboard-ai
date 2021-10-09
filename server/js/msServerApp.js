@@ -156,6 +156,7 @@ async function sendResponse(c2s) {
                         c2s.serverPayload.hasOwnProperty('mapSourceOut') &&
                         c2s.serverPayload.hasOwnProperty('mapStorageOut')) {
                         const {mapIdOut, mapSourceOut, mapStorageOut} = c2s.serverPayload
+                        // TODO check if I have the right to save this
                         if (mapSourceOut === 'data') {
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}})
                         } else if (mapSourceOut === 'dataPlayback') {
@@ -174,7 +175,7 @@ async function sendResponse(c2s) {
                             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
                             const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             const mapSource = 'data'
-                            const mapStorage = await getNewMapData(mapId)
+                            const mapStorage = await getMapProps(mapId)
                             s2c = {cmd: 'openMapFromHistorySuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
@@ -187,7 +188,7 @@ async function sendResponse(c2s) {
                             await collectionUsers.updateOne({_id}, {$set: {tabMapSelected, breadcrumbMapIdList}})
                             const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             const mapSource = 'data'
-                            const mapStorage = await getNewMapData(mapId)
+                            const mapStorage = await getMapProps(mapId)
                             s2c = {cmd: 'openMapFromTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
@@ -199,7 +200,7 @@ async function sendResponse(c2s) {
                             await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}})
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             let mapSource = 'data'
-                            let mapStorage = await getNewMapData(mapId)
+                            let mapStorage = await getMapProps(mapId)
                             s2c = {cmd: 'openMapFromMapSuccess', payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
@@ -211,7 +212,7 @@ async function sendResponse(c2s) {
                             await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}})
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             let mapSource = 'data'
-                            let mapStorage = await getNewMapData(mapId)
+                            let mapStorage = await getMapProps(mapId)
                             s2c = {cmd: 'openMapFromBreadcrumbsSuccess', payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
@@ -262,7 +263,7 @@ async function sendResponse(c2s) {
                                 let tabMapNameList = await getMapNameList(tabMapIdList)
                                 let mapId = tabMapIdList[tabMapSelected]
                                 let mapSource = 'data'
-                                let mapStorage = await getNewMapData(mapId)
+                                let mapStorage = await getMapProps(mapId)
                                 s2c = {cmd: 'removeMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             }
                             break
@@ -333,7 +334,7 @@ async function sendResponse(c2s) {
                             const {mapIdOut} = c2s.serverPayload
                             const mapId = ObjectId(mapIdOut)
                             const mapSource = 'dataPlayback'
-                            const mapStorage = await getNewMapData(mapId)
+                            const mapStorage = await getMapProps(mapId)
                             await collectionMaps.updateOne({_id: mapId}, {$push: {"dataPlayback": mapStorage}})
                             const frameLen = await getFrameLen(mapId)
                             const frameSelected = frameLen - 1
@@ -363,7 +364,7 @@ async function sendResponse(c2s) {
                                 frameLen = frameLen - 1
                                 if (frameLen === 0) {
                                     mapSource = 'data'
-                                    mapStorage = await getNewMapData(mapId)
+                                    mapStorage = await getMapProps(mapId)
                                 } else {
                                     mapSource = 'dataPlayback'
                                     mapStorage = await getPlaybackMapData(mapId, frameSelected)
@@ -441,7 +442,12 @@ async function sendResponse(c2s) {
                             await collectionShares.deleteOne({_id: ObjectId(shareId)})
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
                             s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
+                            // mivel nem torlodik ki automatikusan mert nincs push, ezert ellenorizni kell minden mentesnel, hogy egyaltalan van-e jogunk
                         }
+                    }
+                    if (s2c.hasOwnProperty('payload') &&
+                        s2c.payload.hasOwnProperty('mapStorage')) {
+                        console.log(s2c.payload.mapStorage)
                     }
                     // if s2c payload contains "mapStorage", we will find out and append mapRight
                     // in a for loop, right-to-left break, we find the LATEST applicable right in the chain and apply that
@@ -455,7 +461,7 @@ async function sendResponse(c2s) {
     return s2c
 }
 
-async function getNewMapData(mapId) {
+async function getMapProps(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
 
