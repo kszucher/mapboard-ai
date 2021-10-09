@@ -239,7 +239,7 @@ async function sendResponse(c2s) {
                         }
                         case 'createMapInTab': {
                             let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
-                            let newMap = getDefaultMap('New Map', _id, breadcrumbMapIdList)
+                            let newMap = getDefaultMap('New Map', _id, [])
                             let mapId = (await collectionMaps.insertOne(newMap)).insertedId
                             tabMapIdList = [...tabMapIdList, mapId]
                             tabMapSelected = tabMapIdList.length - 1
@@ -400,6 +400,7 @@ async function sendResponse(c2s) {
                             let {mapId, email, access} = c2s.serverPayload
                             let shareUser = await collectionUsers.findOne({email})
                             if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
+                                // TODO: also fail if trying to create a share for an existing ownerUser/shareUser combination OR overwrite
                                 s2c = {cmd: 'shareValidityFail'}
                             } else {
                                 let newShare = {
@@ -442,15 +443,28 @@ async function sendResponse(c2s) {
                             await collectionShares.deleteOne({_id: ObjectId(shareId)})
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
                             s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
-                            // mivel nem torlodik ki automatikusan mert nincs push, ezert ellenorizni kell minden mentesnel, hogy egyaltalan van-e jogunk
                         }
                     }
                     if (s2c.hasOwnProperty('payload') &&
-                        s2c.payload.hasOwnProperty('mapStorage')) {
-                        console.log(s2c.payload.mapStorage)
+                        s2c.payload.hasOwnProperty('mapId')) {
+                        const {path, ownerUser} = await getMapProps(s2c.payload.mapId)
+                        let mapRight = 'unauthorized'
+                        // console.log(currUser._id, ownerUser)
+                        if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
+                            mapRight = 'edit'
+                        } else {
+                            for (let i = path.length - 1; i > -1; i--) {
+                                const currMapId = path[i]
+                                // olyan share-t keresek, ahol sharedMaő = currMap, shareEser = currUser, és annak a RIGHT-ja
+
+                                console.log(currUser._id, s2c.payload.mapId, currMapId)
+                                const shareData = await collectionShares.findOne({shareUser: currUser._id, sharedMap: currMapId})
+                                console.log(shareData)
+                            }
+                        }
+
+                        console.log(mapRight)
                     }
-                    // if s2c payload contains "mapStorage", we will find out and append mapRight
-                    // in a for loop, right-to-left break, we find the LATEST applicable right in the chain and apply that
                 }
             }
         } catch (err) {
@@ -471,6 +485,12 @@ async function getPlaybackMapData(mapId, frameSelected) {
 
 async function getFrameLen(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback.length
+}
+
+async function getMapProps(mapId) {
+    const currMap = await collectionMaps.findOne({_id: mapId});
+    const {path, ownerUser} = currMap
+    return {path, ownerUser}
 }
 
 async function getMapNameList(mapIdList) {
