@@ -95,11 +95,11 @@ const resolvePropsServer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'SIGN_IN':                   return propsServer(state, 'signIn')
-        case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
+        case 'GET_LANDING_DATA':          return propsServer(state, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
         case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
         case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
-        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload) // TODO call from useEffect
+        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload)
         case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
         case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)
         case 'SAVE_MAP':                  return propsServer(state, 'saveMap')
