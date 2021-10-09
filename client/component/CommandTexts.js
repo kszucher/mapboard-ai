@@ -47,7 +47,7 @@ export function CommandTexts () {
             right: 0,
             top: 96,
             width: 216,
-            backgroundColor: mapRight === MAP_RIGHTS.EDIT ? COLORS.MAP_BACKGROUND : '#ff0000',
+            backgroundColor: COLORS.MAP_BACKGROUND,
             paddingTop: 6,
             paddingBottom: 6,
             borderTopLeftRadius: 16,
@@ -65,23 +65,40 @@ export function CommandTexts () {
                 paddingLeft: 12,
                 paddingRight: 12
             }}>
-                <StyledButtonGroup open={true}                     valueList={['small', 'large']}                 value={density}     action={updateDensity}     />
-                <StyledButtonGroup open={true}                     valueList={['adaptive', 'centered']}           value={alignment}   action={updateAlignment}   />
-                <StyledButtonGroup open={true}                     valueList={['line', 'border', 'fill', 'text']} value={formatMode}  action={updateFormatMode}  />
-                <StyledButtonGroup open={formatMode === '' }       valueList={['reset format']}                   value={''}          action={cmdResetAll}       />
-                <StyledButtonGroup open={formatMode !== '' }       valueList={['reset ' + formatMode]}            value={''}          action={cmdReset}          />
-                <StyledButtonGroup open={formatMode === 'line'}    valueList={['w1', 'w2', 'w3']}                 value={lineWidth}   action={updateLineWidth}   />
-                <StyledButtonGroup open={formatMode === 'line'}    valueList={['bezier', 'edge']}                 value={lineType}    action={updateLineType}    />
-                <StyledButtonGroup open={formatMode === 'border'}  valueList={['w1', 'w2', 'w3']}                 value={borderWidth} action={updateBorderWidth} />
-                <StyledButtonGroup open={formatMode === 'text'}    valueList={['h1', 'h2', 'h3', 'h4', 't']}      value={fontSize}    action={updateFontSize}    />
-                <StyledButtonGroup open={formatMode === ''}        valueList={['convert to task']}                value={''}          action={cmdTaskToggle}     />
-                <StyledButtonGroup open={formatMode === ''}        valueList={['convert to submap']}              value={''}          action={cmdSubmapToggle}   />
-                <StyledButtonGroup open={formatMode === ''}        valueList={['frame editor']}                   value={''}          action={cmdFrameOp}        />
-                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameLen)]}/>
-                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelected === 0, frameSelected === frameLen - 1]}/>
-                <StyledButtonGroup open={frameEditorVisible === 1} valueList={['close']}                          value={''}          action={cmdFrameOp}        />
-                <StyledButtonGroup open={formatMode === ''}        valueList={['sharing']}                        value={''}          action={openSharing}       />
+                <ControlledStyledButtonGroup open={true}                     valueList={['small', 'large']}                 value={density}     action={updateDensity}     />
+                <ControlledStyledButtonGroup open={true}                     valueList={['adaptive', 'centered']}           value={alignment}   action={updateAlignment}   />
+                <ControlledStyledButtonGroup open={true}                     valueList={['line', 'border', 'fill', 'text']} value={formatMode}  action={updateFormatMode}  />
+                <ControlledStyledButtonGroup open={formatMode === '' }       valueList={['reset format']}                   value={''}          action={cmdResetAll}       />
+                <ControlledStyledButtonGroup open={formatMode !== '' }       valueList={['reset ' + formatMode]}            value={''}          action={cmdReset}          />
+                <ControlledStyledButtonGroup open={formatMode === 'line'}    valueList={['w1', 'w2', 'w3']}                 value={lineWidth}   action={updateLineWidth}   />
+                <ControlledStyledButtonGroup open={formatMode === 'line'}    valueList={['bezier', 'edge']}                 value={lineType}    action={updateLineType}    />
+                <ControlledStyledButtonGroup open={formatMode === 'border'}  valueList={['w1', 'w2', 'w3']}                 value={borderWidth} action={updateBorderWidth} />
+                <ControlledStyledButtonGroup open={formatMode === 'text'}    valueList={['h1', 'h2', 'h3', 'h4', 't']}      value={fontSize}    action={updateFontSize}    />
+                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['convert to task']}                value={''}          action={cmdTaskToggle}     />
+                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['convert to submap']}              value={''}          action={cmdSubmapToggle}   />
+                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['frame editor']}                   value={''}          action={cmdFrameOp}        />
+                <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameLen)]}/>
+                <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelected === 0, frameSelected === frameLen - 1]}/>
+                <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['close']}                          value={''}          action={cmdFrameOp}        />
+                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['sharing']}                        value={''}          action={openSharing}       />
             </div>
         </div>
     );
+}
+
+const ControlledStyledButtonGroup = (arg) => {
+    const {open, valueList, value, action, size, valueListDisabled} = arg;
+    const [state, dispatch] = useContext(Context)
+    const {mapRight} = state
+    return (
+        <StyledButtonGroup
+            open={open}
+            valueList={valueList}
+            value={value}
+            action={action}
+            size={size}
+            disabled={[MAP_RIGHTS.VIEW, MAP_RIGHTS.UNAUTHORIZED].includes(mapRight)}
+            valueListDisabled={valueListDisabled}
+        />
+    )
 }
