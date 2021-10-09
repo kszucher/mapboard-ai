@@ -4,10 +4,11 @@ import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {checkPop, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {COLORS} from "../core/Utils";
+import {MAP_RIGHTS} from "../core/EditorFlow";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible, frameLen, frameSelected} = state
+    const {formatMode, frameEditorVisible, frameLen, frameSelected, mapRight} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -46,7 +47,7 @@ export function CommandTexts () {
             right: 0,
             top: 96,
             width: 216,
-            backgroundColor: COLORS.MAP_BACKGROUND,
+            backgroundColor: mapRight === MAP_RIGHTS.EDIT ? COLORS.MAP_BACKGROUND : '#ff0000',
             paddingTop: 6,
             paddingBottom: 6,
             borderTopLeftRadius: 16,

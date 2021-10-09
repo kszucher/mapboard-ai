@@ -461,6 +461,7 @@ async function sendResponse(c2s) {
                                 }
                             }
                         }
+                        Object.assign(s2c.payload, {mapRight})
                     }
                 }
             }

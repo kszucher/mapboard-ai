@@ -10,6 +10,12 @@ export const PAGE_STATES = {
     WORKSPACE_SHARING: 'WORKSPACE_SHARING'
 }
 
+export const MAP_RIGHTS = {
+    VIEW: 'view',
+    EDIT: 'edit',
+    UNAUTHORIZED: 'unauthorized'
+}
+
 export const editorState = {
     pageState: PAGE_STATES.AUTH,
     landingData: [],
@@ -30,6 +36,7 @@ export const editorState = {
     paletteVisible: 0,
     frameEditorVisible: 0,
     isPlayback: false,
+    mapRight: MAP_RIGHTS.UNAUTHORIZED,
     frameLen: 0,
     frameSelected: 0,
     shareDataExport: [],
@@ -57,8 +64,7 @@ const resolveProps = (state, action) => {
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}
         case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false}
-        case 'SET_IS_PLAYBACK_ON':        return {...state, isPlayback: true}
-        case 'SET_IS_PLAYBACK_OFF':       return {...state, isPlayback: false}
+        case 'AFTER_OPEN':                return {...state, isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
         case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
         case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
@@ -93,8 +99,8 @@ const resolvePropsServer = (state, action) => {
         case 'SHOW_DEMO':                 return propsServer(state, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
         case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
-        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
-        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload)
+        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory') // TODO call from useEffect
+        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload) // TODO call from useEffect
         case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
         case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)
         case 'SAVE_MAP':                  return propsServer(state, 'saveMap')

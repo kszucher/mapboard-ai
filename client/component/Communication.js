@@ -96,14 +96,12 @@ export function Communication() {
             }
             if (serverState.hasOwnProperty('mapId') &&
                 serverState.hasOwnProperty('mapSource') &&
-                serverState.hasOwnProperty('mapStorage')) {
-                const {mapId, mapSource, mapStorage} = serverState;
+                serverState.hasOwnProperty('mapStorage') &&
+                serverState.hasOwnProperty('mapRight')
+            ) {
+                const {mapId, mapSource, mapStorage, mapRight} = serverState;
                 let frameSelected = serverState.hasOwnProperty('frameSelected') ? serverState.frameSelected : 0;
-                if (mapSource === 'data') {
-                    dispatch({type: 'SET_IS_PLAYBACK_OFF'})
-                } else if (mapSource === 'dataPlayback') {
-                    dispatch({type: 'SET_IS_PLAYBACK_ON'})
-                }
+                dispatch({type: 'AFTER_OPEN', payload: {mapSource, mapRight}})
                 mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
                 redraw();
             }
