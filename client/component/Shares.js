@@ -16,6 +16,7 @@ export function Shares() {
     const [state, dispatch] = useContext(Context);
     const {shareDataExport, shareDataImport} = state;
 
+    const getShares = _ =>            dispatch({type: 'GET_SHARES'})
     const closeSharing = _ =>         dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
     const acceptShare = params =>     dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
     const withdrawShare = params =>   dispatch({type: 'WITHDRAW_SHARE', payload: {shareIdOut: params.row._id}})
@@ -31,8 +32,7 @@ export function Shares() {
                         aria-label="xxx"
                         size="small"
                         onClick={_=>withdrawShare(params)}
-                        disabled={false}
-                    >
+                        disabled={false}>
                         <CancelIcon/>
                     </IconButton>
                 </strong>
@@ -51,8 +51,7 @@ export function Shares() {
                         aria-label="xxx"
                         size="small"
                         onClick={_=>acceptShare(params)}
-                        disabled={params.row.status === 'accepted'}
-                    >
+                        disabled={params.row.status === 'accepted'}>
                         {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}
                         {params.row.status === 'accepted' && <CheckCircleIcon/>}
                     </IconButton>
@@ -62,7 +61,7 @@ export function Shares() {
     ];
 
     useEffect(() => {
-        dispatch({type: 'GET_SHARES'})
+        getShares()
     }, []);
 
     return(
@@ -70,8 +69,7 @@ export function Shares() {
             open={true}
             onClose={_=>{}}
             aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-        >
+            aria-describedby="simple-modal-description">
             {<div style={{
                 position: 'relative',
                 left: '50%',
@@ -88,8 +86,7 @@ export function Shares() {
                 backgroundColor: COLORS.MAP_BACKGROUND,
                 padding: 20,
                 border: `1px solid ${COLORS.MAP_BACKGROUND}`,
-                borderRadius: '16px'
-            }}>
+                borderRadius: '16px'}}>
                 <Typography
                     component="h1"
                     variant="h5">
@@ -103,8 +100,7 @@ export function Shares() {
                         rowsPerPageOptions={[5]}
                         checkboxSelection
                         disableSelectionOnClick
-                        autoHeight={true}
-                    />}
+                        autoHeight={true}/>}
                 </div>
                 <Typography
                     component="h1"
@@ -119,9 +115,12 @@ export function Shares() {
                         rowsPerPageOptions={[5]}
                         checkboxSelection
                         disableSelectionOnClick
-                        autoHeight={true}
-                    />}
+                        autoHeight={true}/>}
                 </div>
+                <StyledButton
+                    version={'shortOutlined'}
+                    name={'refresh'}
+                    action={getShares}/>
                 <StyledButton
                     version={'shortOutlined'}
                     name={'close'}
