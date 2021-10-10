@@ -15,7 +15,7 @@ export function Sharing() {
     const typeEmail = (e) =>
         setEmail(e.target.value)
     const closeSharing = _ =>
-        dispatch({type: 'CLOSE_WORKSPACE_MODAL'})
+        dispatch({type: 'CLOSE_SHARING'})
     const createShare = _=>
         dispatch({type: 'CREATE_SHARE', payload: {email, access}})
 
@@ -61,14 +61,14 @@ export function Sharing() {
                     action={e=>setAccess(e.target.value)}
                 />
                 <StyledButton
-                    version="shortContained"
+                    version="shortOutlined"
                     disabled={false}
                     action={createShare}
                     name={'share'}
                 />
                 <StyledButton
                     version={'shortOutlined'}
-                    name={'close without sharing'}
+                    name={'close'}
                     action={closeSharing}
                 />
             </div>}
