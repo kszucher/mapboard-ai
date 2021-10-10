@@ -21,7 +21,7 @@ export function Page() {
     const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING} = PAGE_STATES;
 
     useEffect(() => {
-        if (pageState === PAGE_STATES.WORKSPACE) {
+        if (pageState === WORKSPACE) {
             dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
         }
     }, [pageState])

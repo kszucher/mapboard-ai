@@ -23,16 +23,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Logo() {
     const classes = useStyles();
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-
     const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
     const handleClose = () => {setAnchorEl(null)};
-
     const [state, dispatch] = useContext(Context);
     const {pageState} = state;
-
+    const {DEMO, WORKSPACE} = PAGE_STATES;
     const handleSelect = param => e => {
         handleClose();
         switch(param) {
@@ -47,10 +44,8 @@ export default function Logo() {
             case 'SHOW_SHARES':dispatch({type: 'SHOW_SHARES'})
         }
     };
-
     const col1 = '#a4508b'
     const col2 = '#5f0a87'
-
     return (
         <div style={{
             position: 'absolute',
@@ -61,16 +56,17 @@ export default function Logo() {
             borderBottomRightRadius: '16px',
             color: '#fff',
             display: 'flex',
-            justifyContent: 'center',
-        }}>
-
+            justifyContent: 'center'}}>
             <Toolbar variant={"dense"}>
-                <IconButton edge="start" className={classes.menuButton} aria-label="menu" onClick={handleMenu}
-                            color="inherit">
+                <IconButton
+                    edge="start"
+                    className={classes.menuButton}
+                    aria-label="menu"
+                    onClick={handleMenu}
+                    color="inherit">
                     <MenuIcon/>
                 </IconButton>
-
-                {pageState === PAGE_STATES.WORKSPACE && <Menu
+                {pageState === WORKSPACE && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -85,7 +81,7 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                     <MenuItem onClick={handleSelect('SHOW_SHARES')}>Shares</MenuItem>
                 </Menu>}
-                {pageState === PAGE_STATES.DEMO && <Menu
+                {pageState === DEMO && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -95,11 +91,12 @@ export default function Logo() {
                     onClose={handleClose}>
                     <MenuItem onClick={_=>dispatch({type: 'SHOW_AUTH'})}>Sign In / Sign Up</MenuItem>
                 </Menu>}
-                <Typography variant="h6" className={classes.title}>
+                <Typography
+                    variant="h6"
+                    className={classes.title}>
                     {'mapboard'}
                 </Typography>
             </Toolbar>
-
         </div>
     );
 }
