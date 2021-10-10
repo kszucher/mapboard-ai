@@ -19,7 +19,7 @@ let isTaskClicked = false;
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
     const {pageState, landingData, landingDataIndex} = state;
-    const {DEMO, WORKSPACE} = PAGE_STATES;
+    const {DEMO, WS_EDIT} = PAGE_STATES;
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
@@ -74,7 +74,7 @@ export function MapComponent() {
         removeMapListeners();
         if (pageState === DEMO) {
             addLandingListeners();
-        } else if (pageState === WORKSPACE) {
+        } else if (pageState === WS_EDIT) {
             addMapListeners();
         }
         return () => {

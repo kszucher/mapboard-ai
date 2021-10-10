@@ -5,9 +5,9 @@ export const PAGE_STATES = {
     EMPTY: 'EMPTY',
     DEMO: 'DEMO',
     AUTH: 'AUTH',
-    WORKSPACE: 'WORKSPACE',
-    WORKSPACE_SHARES: 'WORKSPACE_SHARES',
-    WORKSPACE_SHARING: 'WORKSPACE_SHARING'
+    WS_EDIT: 'WS_EDIT',
+    WS_SHARES: 'WS_SHARES',
+    WS_SHARING: 'WS_SHARING'
 }
 
 export const MAP_RIGHTS = {
@@ -51,17 +51,17 @@ const EditorReducer = (state, action) => {
 
 const resolveProps = (state, action) => {
     const {payload} = action;
-    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING} = PAGE_STATES;
+    const {AUTH, DEMO, WS_EDIT, WS_SHARES, WS_SHARING} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(InitEditorState)
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
         case 'SHOW_DEMO':                 return {...state, pageState: DEMO}
-        case 'SHOW_WORKSPACE':            return {...state, pageState: WORKSPACE}
-        case 'SHOW_SHARES':               return {...state, pageState: WORKSPACE_SHARES}
-        case 'SHOW_SHARING':              return {...state, pageState: WORKSPACE_SHARING}
-        case 'CLOSE_SHARING':             return {...state, pageState: WORKSPACE}
+        case 'SHOW_WORKSPACE':            return {...state, pageState: WS_EDIT}
+        case 'SHOW_SHARES':               return {...state, pageState: WS_SHARES}
+        case 'SHOW_SHARING':              return {...state, pageState: WS_SHARING}
+        case 'CLOSE_SHARING':             return {...state, pageState: WS_EDIT}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}

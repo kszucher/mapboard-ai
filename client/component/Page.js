@@ -18,10 +18,10 @@ import {Shares} from "./Shares";
 export function Page() {
     const [state, dispatch] = useContext(Context);
     const {pageState, paletteVisible, frameEditorVisible} = state;
-    const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING} = PAGE_STATES;
+    const {AUTH, DEMO, WS_EDIT, WS_SHARES, WS_SHARING} = PAGE_STATES;
 
     useEffect(() => {
-        if (pageState === WORKSPACE) {
+        if (pageState === WS_EDIT) {
             dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
         }
     }, [pageState])
@@ -29,10 +29,10 @@ export function Page() {
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
-                {[DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING].includes(pageState) && <>
+                {[DEMO, WS_EDIT, WS_SHARES, WS_SHARING].includes(pageState) && <>
                     <MapComponent/>
                     <Logo/>
-                    {[WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING].includes(pageState) && <>
+                    {[WS_EDIT, WS_SHARES, WS_SHARING].includes(pageState) && <>
                         <Tabs/>
                         <CommandButtons/>
                         <Breadcrumbs/>
@@ -42,8 +42,8 @@ export function Page() {
                     {frameEditorVisible===1 && <FrameEditor/>}
                 </>}
                 {pageState === AUTH && <Auth/>}
-                {pageState === WORKSPACE_SHARES && <Shares/>}
-                {pageState === WORKSPACE_SHARING && <Sharing/>}
+                {pageState === WS_SHARES && <Shares/>}
+                {pageState === WS_SHARING && <Sharing/>}
             </MuiThemeProvider>
         </div>
     )
