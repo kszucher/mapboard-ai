@@ -17,15 +17,24 @@ const useStyles = makeStyles((theme) => ({
 export function StyledSelect (arg) {
     const classes = useStyles();
     return (
-        <FormControl component="fieldset" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">{arg.input[0]}</InputLabel>
+        <FormControl
+            component="fieldset"
+            className={classes.formControl}>
+            <InputLabel
+                id="demo-simple-select-label">
+                {arg.input[0]}
+            </InputLabel>
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={arg.input[1]}
                 onChange={arg.input[2]}>
                 {arg.input[3].map((name, index) =>
-                    <MenuItem value={name} key={index}>{name}</MenuItem>
+                    <MenuItem
+                        value={name}
+                        key={index}>
+                        {name}
+                    </MenuItem>
                 )}
             </Select>
         </FormControl>

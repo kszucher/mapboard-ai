@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Logo() {
     const classes = useStyles();
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
     const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
@@ -52,7 +52,7 @@ export default function Logo() {
     const col2 = '#5f0a87'
 
     return (
-        <div className={classes.root} style={{
+        <div style={{
             position: 'absolute',
             width: 216,
             height: 48,

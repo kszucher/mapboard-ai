@@ -13,7 +13,6 @@ import {Palette} from "./Palette";
 import {FrameEditor} from "./FrameEditor";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Sharing} from "./Sharing";
-import {getEquationDim, getTextDim} from "../core/Utils";
 import {Shares} from "./Shares";
 
 export function Page() {
