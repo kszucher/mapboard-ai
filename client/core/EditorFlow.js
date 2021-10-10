@@ -38,10 +38,6 @@ export const editorState = {
     frameEditorVisible: 0,
     isPlayback: false,
     // map
-    mapOpenCntr: 0,
-    mapId: '',
-    mapSource: '',
-    mapStorage: [],
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
     // frame
     frameLen: 0,
@@ -67,7 +63,7 @@ const resolveProps = (state, action) => {
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
         case 'SHOW_DEMO':                 return {...state, pageState: DEMO}
-        case 'SHOW_WORKSPACE':            return {...state, pageState: resolvePageState(state.mapRight)}
+        case 'SHOW_WS':                   return {...state, pageState: resolvePageState(state.mapRight)}
         case 'SHOW_SHARES':               return {...state, pageState: WS_SHARES}
         case 'SHOW_SHARING':              return {...state, pageState: WS_SHARING}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
@@ -81,14 +77,7 @@ const resolveProps = (state, action) => {
         case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'AFTER_OPEN':
-            const {mapId, mapSource, mapStorage, mapRight} = payload;
-            return {...state,
-                mapOpenCntr: state.mapOpenCntr + 1,
-                mapId, mapSource, mapStorage, mapRight,
-                isPlayback: payload.mapSource === 'dataPlayback',
-                pageState: resolvePageState(payload.mapRight),
-            }
+        case 'AFTER_OPEN':                return {...state,  isPlayback: payload.mapSource === 'dataPlayback', mapRight:payload.mapRight, pageState: resolvePageState(payload.mapRight)}
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
@@ -120,6 +109,7 @@ const resolvePropsServer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'SIGN_IN':                   return propsServer(state, 'signIn')
+        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
         case 'GET_LANDING_DATA':          return propsServer(state, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
         case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)

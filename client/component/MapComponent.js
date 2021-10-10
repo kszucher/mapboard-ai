@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
-import {arraysSame, copy, getEquationDim, getTextDim, isChrome} from "../core/Utils";
+import {arraysSame, copy, isChrome} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
@@ -18,7 +18,7 @@ let isTaskClicked = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {pageState, landingData, landingDataIndex, mapOpenCntr, mapId, mapSource, mapStorage, frameSelected} = state;
+    const {pageState, landingData, landingDataIndex} = state;
     const {DEMO, WS_EDIT} = PAGE_STATES;
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
@@ -57,13 +57,10 @@ export function MapComponent() {
         window.removeEventListener("keydown", keydown);
         window.removeEventListener("paste", paste);
     }
-    
+
     useEffect(()=> {
-        if (mapOpenCntr) {
-            mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
-            redraw();
-        }
-    }, [mapOpenCntr])
+        dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
+    }, [])
 
     useEffect(() => {
         if (landingData.length) {

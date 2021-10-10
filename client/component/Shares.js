@@ -17,7 +17,7 @@ export function Shares() {
     const {shareDataExport, shareDataImport} = state;
 
     const getShares =     _ =>      dispatch({type: 'GET_SHARES'})
-    const closeShares =   _ =>      dispatch({type: 'SHOW_WORKSPACE'})
+    const closeShares =   _ =>      dispatch({type: 'SHOW_WS'})
     const acceptShare =   params => dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
     const withdrawShare = params => dispatch({type: 'WITHDRAW_SHARE', payload: {shareIdOut: params.row._id}})
 

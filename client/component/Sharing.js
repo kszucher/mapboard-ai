@@ -13,7 +13,7 @@ export function Sharing() {
     const [access, setAccess] = useState('view')
 
     const typeEmail =    (e) => setEmail(e.target.value)
-    const closeSharing = _ =>   dispatch({type: 'SHOW_WORKSPACE'})
+    const closeSharing = _ =>   dispatch({type: 'SHOW_WS'})
     const createShare =  _ =>   dispatch({type: 'CREATE_SHARE', payload: {email, access}})
 
     return(
