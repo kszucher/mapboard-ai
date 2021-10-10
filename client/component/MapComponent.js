@@ -26,19 +26,11 @@ export function MapComponent() {
     }
 
     const addLandingListeners = () => {
-        if (window.location.search === '?d=iq') {
-            addMapListeners();
-        } else {
-            window.addEventListener("mousewheel", mousewheel, {passive: false});
-        }
+        window.addEventListener("mousewheel", mousewheel, {passive: false});
     }
 
     const removeLandingListeners = () => {
-        if (window.location.search === '?d=iq') {
-            removeMapListeners()
-        } else {
-            window.removeEventListener("mousewheel", mousewheel);
-        }
+        window.removeEventListener("mousewheel", mousewheel);
     }
 
     const addMapListeners = () => {
@@ -65,6 +57,11 @@ export function MapComponent() {
         window.removeEventListener("paste", paste);
     }
 
+    useEffect(()=> {
+        getTextDim('Test')
+        getEquationDim('\\[Test\\]');
+    }, [])
+
     useEffect(() => {
         if (landingData.length) {
             loadLandingDataFrame(landingData, landingDataIndex);
@@ -72,9 +69,6 @@ export function MapComponent() {
     }, [landingData, landingDataIndex]);
 
     useEffect(() => {
-        getTextDim('Test')
-        getEquationDim('\\[Test\\]');
-
         removeLandingListeners();
         removeMapListeners();
         if (pageState === PAGE_STATES.DEMO) {

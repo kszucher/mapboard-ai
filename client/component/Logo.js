@@ -48,8 +48,8 @@ export default function Logo() {
         }
     };
 
-    const col1 = window.location.search === '?d=iq' ? '#08212e' : '#a4508b'
-    const col2 = window.location.search === '?d=iq' ? '#08212e' : '#5f0a87'
+    const col1 = '#a4508b'
+    const col2 = '#5f0a87'
 
     return (
         <div className={classes.root} style={{
@@ -96,7 +96,7 @@ export default function Logo() {
                     <MenuItem onClick={_=>dispatch({type: 'SHOW_AUTH'})}>Sign In / Sign Up</MenuItem>
                 </Menu>}
                 <Typography variant="h6" className={classes.title}>
-                    {window.location.search === '?d=iq' ? 'iq demo' : 'mapboard'}
+                    {'mapboard'}
                 </Typography>
             </Toolbar>
 

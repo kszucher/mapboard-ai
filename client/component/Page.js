@@ -21,11 +21,6 @@ export function Page() {
     const {pageState, paletteVisible, frameEditorVisible} = state;
     const {AUTH, DEMO, WORKSPACE, WORKSPACE_SHARES, WORKSPACE_SHARING} = PAGE_STATES;
 
-    useEffect(()=> {
-        getTextDim('Test')
-        getEquationDim('\\[Test\\]');
-    }, [])
-
     useEffect(() => {
         if (pageState === PAGE_STATES.WORKSPACE) {
             dispatch({type: 'OPEN_MAP_FROM_HISTORY'});

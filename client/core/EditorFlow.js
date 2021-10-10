@@ -23,7 +23,7 @@ export const editorState = {
     breadcrumbMapNameList: [''],
     tabMapNameList: [],
     tabMapSelected: 0,
-    serverAction: {serverCmd: window.location.search ==='?d=iq' ?  'getLandingData' : 'ping'},
+    serverAction: {serverCmd: 'ping'},
     serverActionCntr: 0,
     serverResponse: {},
     serverResponseCntr: 0,
