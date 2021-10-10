@@ -1,7 +1,6 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
 import {Context, remoteGetState} from "../core/Store";
-import {mapDispatch, redraw, saveMap} from "../core/MapFlow";
 import {initDomData} from "../core/DomFlow";
 
 let waitingForServer = 0;
@@ -58,9 +57,8 @@ export function Communication() {
                     }
                     break;
                 }
-                case 'signInSuccess': {
+                case 'openMapFromHistorySuccess': {
                     initDomData();
-                    dispatch({type: 'SHOW_WORKSPACE'});
                     break;
                 }
                 case 'signInFail': {
@@ -100,10 +98,7 @@ export function Communication() {
                 serverState.hasOwnProperty('mapRight')
             ) {
                 const {mapId, mapSource, mapStorage, mapRight} = serverState;
-                let frameSelected = serverState.hasOwnProperty('frameSelected') ? serverState.frameSelected : 0;
-                dispatch({type: 'AFTER_OPEN', payload: {mapSource, mapRight}})
-                mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
-                redraw();
+                dispatch({type: 'AFTER_OPEN', payload: {mapId, mapSource, mapStorage, mapRight}})
             }
             if (serverState.hasOwnProperty('frameLen') &&
                 serverState.hasOwnProperty('frameSelected')) {

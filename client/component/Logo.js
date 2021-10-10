@@ -29,7 +29,7 @@ export default function Logo() {
     const handleClose = () => {setAnchorEl(null)};
     const [state, dispatch] = useContext(Context);
     const {pageState} = state;
-    const {DEMO, WS_EDIT} = PAGE_STATES;
+    const {DEMO, WS_EDIT, WS_VIEW} = PAGE_STATES;
     const handleSelect = param => e => {
         handleClose();
         switch(param) {
@@ -66,7 +66,7 @@ export default function Logo() {
                     color="inherit">
                     <MenuIcon/>
                 </IconButton>
-                {pageState === WS_EDIT && <Menu
+                {[WS_EDIT, WS_VIEW].includes(pageState) && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}

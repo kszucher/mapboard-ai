@@ -18,7 +18,7 @@ let isTaskClicked = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {pageState, landingData, landingDataIndex} = state;
+    const {pageState, landingData, landingDataIndex, mapOpenCntr, mapId, mapSource, mapStorage, frameSelected} = state;
     const {DEMO, WS_EDIT} = PAGE_STATES;
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
@@ -62,6 +62,13 @@ export function MapComponent() {
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
     }, [])
+
+    useEffect(()=> {
+        if (mapOpenCntr) {
+            mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
+            redraw();
+        }
+    }, [mapOpenCntr])
 
     useEffect(() => {
         if (landingData.length) {

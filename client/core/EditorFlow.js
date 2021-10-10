@@ -6,14 +6,15 @@ export const PAGE_STATES = {
     DEMO: 'DEMO',
     AUTH: 'AUTH',
     WS_EDIT: 'WS_EDIT',
+    WS_VIEW: 'WS_VIEW',
     WS_SHARES: 'WS_SHARES',
     WS_SHARING: 'WS_SHARING'
 }
 
 export const MAP_RIGHTS = {
+    UNAUTHORIZED: 'unauthorized',
     VIEW: 'view',
     EDIT: 'edit',
-    UNAUTHORIZED: 'unauthorized'
 }
 
 export const editorState = {
@@ -36,9 +37,16 @@ export const editorState = {
     paletteVisible: 0,
     frameEditorVisible: 0,
     isPlayback: false,
+    // map
+    mapOpenCntr: 0,
+    mapId: '',
+    mapSource: '',
+    mapStorage: [],
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
+    // frame
     frameLen: 0,
     frameSelected: 0,
+    // share
     shareDataExport: [],
     shareDataImport: [],
 };
@@ -51,21 +59,21 @@ const EditorReducer = (state, action) => {
 
 const resolveProps = (state, action) => {
     const {payload} = action;
-    const {AUTH, DEMO, WS_EDIT, WS_SHARES, WS_SHARING} = PAGE_STATES;
+    const {AUTH, DEMO, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
+    const {EDIT, VIEW} = MAP_RIGHTS;
     switch (action.type) {
-        case 'RESET_STATE':               return JSON.parse(InitEditorState)
+        case 'RESET_STATE': return JSON.parse(InitEditorState)
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
         case 'SHOW_DEMO':                 return {...state, pageState: DEMO}
-        case 'SHOW_WORKSPACE':            return {...state, pageState: WS_EDIT} //  attól függően WS_EDIT vagy WS_VIEW, hogy...
+        case 'SHOW_WORKSPACE':            return {...state, pageState: resolvePageState(state.mapRight)}
         case 'SHOW_SHARES':               return {...state, pageState: WS_SHARES}
         case 'SHOW_SHARING':              return {...state, pageState: WS_SHARING}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}
         case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false}
-        case 'AFTER_OPEN':                return {...state, isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
         case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
         case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
         case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
@@ -73,6 +81,14 @@ const resolveProps = (state, action) => {
         case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
+        case 'AFTER_OPEN':
+            const {mapId, mapSource, mapStorage, mapRight} = payload;
+            return {...state,
+                mapOpenCntr: state.mapOpenCntr + 1,
+                mapId, mapSource, mapStorage, mapRight,
+                isPlayback: payload.mapSource === 'dataPlayback',
+                pageState: resolvePageState(payload.mapRight),
+            }
         case 'SET_NODE_PROPS': {
             let lm = payload;
             return {...state,
@@ -90,6 +106,16 @@ const resolveProps = (state, action) => {
     }
 }
 
+const resolvePageState = (mapRight) => {
+    const {UNAUTHORIZED, VIEW, EDIT} = MAP_RIGHTS;
+    const {WS_UNAUTHORIZED, WS_VIEW, WS_EDIT} = PAGE_STATES;
+    switch (mapRight) {
+        case UNAUTHORIZED: return WS_UNAUTHORIZED;
+        case VIEW: return WS_VIEW;
+        case EDIT: return WS_EDIT;
+    }
+}
+
 const resolvePropsServer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
@@ -97,7 +123,6 @@ const resolvePropsServer = (state, action) => {
         case 'GET_LANDING_DATA':          return propsServer(state, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
         case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
-        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
         case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload)
         case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
         case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)

@@ -164,10 +164,6 @@ async function sendResponse(c2s) {
                     }
                     switch (c2s.serverCmd) {
                         case 'signIn': {
-                            s2c = {cmd: 'signInSuccess'}
-                            break
-                        }
-                        case 'openMapFromHistory': {
                             const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
                             const tabMapNameList = await getMapNameList(tabMapIdList)
                             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
