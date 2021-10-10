@@ -14,11 +14,17 @@ import {FrameEditor} from "./FrameEditor";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Sharing} from "./Sharing";
 import {Shares} from "./Shares";
+import {getEquationDim, getTextDim} from "../core/Utils";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
     const {pageState, paletteVisible, frameEditorVisible} = state;
     const {AUTH, DEMO, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
+
+    useEffect(()=> {
+        getTextDim('Test')
+        getEquationDim('\\[Test\\]');
+    }, [])
 
     return(
         <div id="page">

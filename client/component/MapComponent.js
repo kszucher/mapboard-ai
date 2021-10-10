@@ -57,12 +57,7 @@ export function MapComponent() {
         window.removeEventListener("keydown", keydown);
         window.removeEventListener("paste", paste);
     }
-
-    useEffect(()=> {
-        getTextDim('Test')
-        getEquationDim('\\[Test\\]');
-    }, [])
-
+    
     useEffect(()=> {
         if (mapOpenCntr) {
             mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
