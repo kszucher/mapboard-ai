@@ -58,10 +58,9 @@ const resolveProps = (state, action) => {
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
         case 'SHOW_DEMO':                 return {...state, pageState: DEMO}
-        case 'SHOW_WORKSPACE':            return {...state, pageState: WS_EDIT}
+        case 'SHOW_WORKSPACE':            return {...state, pageState: WS_EDIT} //  attól függően WS_EDIT vagy WS_VIEW, hogy...
         case 'SHOW_SHARES':               return {...state, pageState: WS_SHARES}
         case 'SHOW_SHARING':              return {...state, pageState: WS_SHARING}
-        case 'CLOSE_SHARING':             return {...state, pageState: WS_EDIT}
         case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}

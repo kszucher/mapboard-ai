@@ -12,12 +12,9 @@ export function Sharing() {
     const [email, setEmail] = useState('test1@mapboard.io');
     const [access, setAccess] = useState('view')
 
-    const typeEmail = (e) =>
-        setEmail(e.target.value)
-    const closeSharing = _ =>
-        dispatch({type: 'CLOSE_SHARING'})
-    const createShare = _=>
-        dispatch({type: 'CREATE_SHARE', payload: {email, access}})
+    const typeEmail =    (e) => setEmail(e.target.value)
+    const closeSharing = _ =>   dispatch({type: 'SHOW_WORKSPACE'})
+    const createShare =  _ =>   dispatch({type: 'CREATE_SHARE', payload: {email, access}})
 
     return(
         <Modal
