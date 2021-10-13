@@ -149,8 +149,11 @@ async function sendResponse(c2s) {
                             await collectionMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}})
                         }
                     }
-                    if (0 === 1) {
-
+                    if (c2s.serverPayload.hasOwnProperty('tabMapIdListOut') &&
+                        c2s.serverPayload.hasOwnProperty('tabMapSelectedOut') &&
+                        JSON.stringify(c2s.serverPayload.tabMapIdListOut) !== JSON.stringify(currUser.tabMapIdList) &&
+                        c2s.serverPayload.tabMapSelectedOut !== currUser.tabMapSelected) {
+                        s2c = {cmd: 'tabSynchFail'}
                     } else {
                         switch (c2s.serverCmd) {
                             case 'signIn': {
