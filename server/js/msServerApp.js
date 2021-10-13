@@ -17,7 +17,8 @@ const transporter = nodemailer.createTransport({
 })
 
 const ACTIVATION_STATUS = {
-
+    COMPLETED: 'completed',
+    AWAITING_CONFIRMATION: 'awaitingConfirmation'
 }
 
 const MAP_RIGHT = {
@@ -112,7 +113,7 @@ async function sendResponse(c2s) {
                                 <p>Cheers,<br>Krisztian from MapBoard</p>
                             `
                     })
-                    await collectionUsers.insertOne({email, password, activationStatus: 'awaitingConfirmation', confirmationCode})
+                    await collectionUsers.insertOne({email, password, activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION, confirmationCode})
                     s2c = {cmd: 'signUpStep1Success'}
                 } else {
                     s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'}
@@ -122,7 +123,7 @@ async function sendResponse(c2s) {
                 currUser = await collectionUsers.findOne({email})
                 if (currUser === null ) {
                     s2c = {cmd: 'signUpStep2FailUnknownUser'}
-                } else if (currUser.activationStatus === 'completed') {
+                } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
                     s2c = {cmd: 'signUpStep2FailAlreadyActivated'}
                 } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
                     s2c = {cmd: 'signUpStep2FailWrongCode'}
@@ -130,7 +131,7 @@ async function sendResponse(c2s) {
                     let newMap = getDefaultMap('My First Map', currUser._id, [])
                     let mapId = (await collectionMaps.insertOne(newMap)).insertedId
                     await collectionUsers.updateOne({_id: currUser._id}, {$set: {
-                            activationStatus: 'completed',
+                            activationStatus: ACTIVATION_STATUS.COMPLETED,
                             tabMapSelected: systemMaps.length,
                             tabMapIdList: [...systemMaps, mapId],
                             breadcrumbMapIdList: [mapId]
@@ -141,7 +142,7 @@ async function sendResponse(c2s) {
                 currUser = await collectionUsers.findOne({email: c2s.cred.email})
                 if (currUser === null || currUser.password !== c2s.cred.password) {
                     s2c = {cmd: 'signInFail'}
-                } else if (currUser.activationStatus === 'awaitingConfirmation') {
+                } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
                     s2c = {cmd: 'signInFailIncompleteRegistration'}
                 } else {
                     if (c2s.hasOwnProperty('serverPayload') &&
