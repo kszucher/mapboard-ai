@@ -223,32 +223,37 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'createMapInTab': {
-                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
-                            let newMap = getDefaultMap('New Map', currUser._id, [])
-                            let mapId = (await collectionMaps.insertOne(newMap)).insertedId
+                            let {tabMapIdList, tabMapSelected} = currUser
+                            const newMap = getDefaultMap('New Map', currUser._id, [])
+                            const mapId = (await collectionMaps.insertOne(newMap)).insertedId
                             tabMapIdList = [...tabMapIdList, mapId]
                             tabMapSelected = tabMapIdList.length - 1
                             await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
-                            let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
-                            let tabMapNameList = await getMapNameList(tabMapIdList)
-                            let mapSource = 'data'
-                            let mapStorage = newMap.data
+                            const {breadcrumbMapIdList} = currUser
+                            const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
+                            const tabMapNameList = await getMapNameList(tabMapIdList)
+                            const mapSource = 'data'
+                            const mapStorage = newMap.data
                             s2c = {cmd: 'createMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             break
                         }
                         case 'removeMapInTab': {
-                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
-                            if (tabMapSelected === 0) {
+                            let {tabMapIdList, tabMapSelected} = currUser
+                            const {breadcrumbMapIdList} = currUser
+                            if (tabMapIdList.length === 1) {
                                 s2c = {cmd: 'removeMapInTabFail'}
                             } else {
-                                tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected)
-                                tabMapSelected = tabMapSelected - 1
+                                const mapIdRemove = tabMapIdList[tabMapSelected]
+                                await collectionShares.updateMany({sharedMap: mapIdRemove}, {$set: {status: SHARE_STATUS.INACTIVATED}})
+                                
+                                tabMapIdList = tabMapIdList.filter((el, idx) => idx !== tabMapSelected)
+                                tabMapSelected = tabMapSelected > 0 ? tabMapSelected - 1 : 0
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
-                                let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
-                                let tabMapNameList = await getMapNameList(tabMapIdList)
-                                let mapId = tabMapIdList[tabMapSelected]
-                                let mapSource = 'data'
-                                let mapStorage = await getMapData(mapId)
+                                const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
+                                const tabMapNameList = await getMapNameList(tabMapIdList)
+                                const mapId = tabMapIdList[tabMapSelected]
+                                const mapSource = 'data'
+                                const mapStorage = await getMapData(mapId)
                                 s2c = {cmd: 'removeMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
                             }
                             break
