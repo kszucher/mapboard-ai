@@ -155,9 +155,10 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'openMapFromHistory': {
-                            const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
+                            const {tabMapIdList, tabMapSelected} = currUser
                             const tabMapNameList = await getMapNameList(tabMapIdList)
                             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
+                            const {breadcrumbMapIdList} = currUser
                             const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             const mapSource = 'data'
                             const mapStorage = await getMapData(mapId)
@@ -245,7 +246,7 @@ async function sendResponse(c2s) {
                             } else {
                                 const mapIdRemove = tabMapIdList[tabMapSelected]
                                 await collectionShares.updateMany({sharedMap: mapIdRemove}, {$set: {status: SHARE_STATUS.INACTIVATED}})
-                                
+
                                 tabMapIdList = tabMapIdList.filter((el, idx) => idx !== tabMapSelected)
                                 tabMapSelected = tabMapSelected > 0 ? tabMapSelected - 1 : 0
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
