@@ -423,7 +423,7 @@ async function sendResponse(c2s) {
                                 {_id: ObjectId(shareUser._id)},
                                 {$pull: {tabMapIdList: ObjectId(shareData.sharedMap)}},
                                 {multi: true}
-                            );
+                            )
                             // if shared map was selected by shareUser, change selection
                             await collectionShares.deleteOne({_id: ObjectId(shareId)})
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
@@ -452,7 +452,7 @@ async function sendResponse(c2s) {
                                         sharedMap: currMapId
                                     })
                                     if (shareData !== null) {
-                                        mapRight = shareData.access;
+                                        mapRight = shareData.access
                                     }
                                 }
                             }
@@ -482,7 +482,7 @@ async function getFrameLen(mapId) {
 }
 
 async function getMapProps(mapId) {
-    const currMap = await collectionMaps.findOne({_id: mapId});
+    const currMap = await collectionMaps.findOne({_id: mapId})
     const {path, ownerUser} = currMap
     return {path, ownerUser}
 }
