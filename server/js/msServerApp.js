@@ -17,6 +17,10 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+const ACTIVATION_STATUS = {
+
+}
+
 const MAP_RIGHT = {
     UNAUTHORIZED: 'unauthorized',
     VIEW: 'view',
@@ -124,16 +128,7 @@ async function sendResponse(c2s) {
                                 <p>Cheers,<br>Krisztian from MapBoard</p>
                             `
                     })
-                    await collectionUsers.insertOne({
-                        email: email,
-                        password: password,
-                        tabMapSelected: 0,
-                        tabMapIdList: systemMaps,
-                        activationStatus: 'awaitingConfirmation',
-                        confirmationCode,
-                        breadcrumbMapIdList: [systemMaps[0]],
-                    })
-                    // TODO: sys shares
+                    await collectionUsers.insertOne({email, password, activationStatus: 'awaitingConfirmation', confirmationCode})
                     s2c = {cmd: 'signUpStep1Success'}
                 } else {
                     s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'}
@@ -148,7 +143,14 @@ async function sendResponse(c2s) {
                 } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
                     s2c = {cmd: 'signUpStep2FailWrongCode'}
                 } else {
-                    await collectionUsers.updateOne({_id: ObjectId(currUser._id)}, {$set: {"activationStatus": 'completed'}})
+                    let newMap = getDefaultMap('My First Map', currUser._id, [])
+                    let mapId = (await collectionMaps.insertOne(newMap)).insertedId
+                    await collectionUsers.updateOne({_id: currUser._id}, {$set: {
+                            activationStatus: 'completed',
+                            tabMapSelected: systemMaps.length,
+                            tabMapIdList: [...systemMaps, mapId],
+                            breadcrumbMapIdList: [mapId]
+                        }})
                     s2c = {cmd: 'signUpStep2Success'}
                 }
             } else {
@@ -187,12 +189,12 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'openMapFromTab': {
-                            const {_id, tabMapIdList} = currUser
+                            const {tabMapIdList} = currUser
                             const {tabMapSelected} = c2s.serverPayload
                             const tabMapNameList = await getMapNameList(tabMapIdList)
                             const mapId = tabMapIdList[tabMapSelected]
                             const breadcrumbMapIdList = [mapId]
-                            await collectionUsers.updateOne({_id}, {$set: {tabMapSelected, breadcrumbMapIdList}})
+                            await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapSelected, breadcrumbMapIdList}})
                             const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             const mapSource = 'data'
                             const mapStorage = await getMapData(mapId)
@@ -200,11 +202,11 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'openMapFromMap': {
-                            let {_id, breadcrumbMapIdList} = currUser
+                            let {breadcrumbMapIdList} = currUser
                             let {mapId} = c2s.serverPayload
                             mapId = ObjectId(mapId)
                             breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
-                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}})
+                            await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             let mapSource = 'data'
                             let mapStorage = await getMapData(mapId)
@@ -212,11 +214,11 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'openMapFromBreadcrumbs': {
-                            let {_id, breadcrumbMapIdList} = currUser
+                            let {breadcrumbMapIdList} = currUser
                             let {breadcrumbMapSelected} = c2s.serverPayload
                             breadcrumbMapIdList.length = breadcrumbMapSelected + 1
                             let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
-                            await collectionUsers.updateOne({_id}, {$set: {breadcrumbMapIdList}})
+                            await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             let mapSource = 'data'
                             let mapStorage = await getMapData(mapId)
@@ -228,9 +230,9 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'createMapInMap': {
-                            let {_id, breadcrumbMapIdList} = currUser
+                            let {breadcrumbMapIdList} = currUser
                             let {mapIdOut, lastPath, newMapName} = c2s.serverPayload
-                            let newMap = getDefaultMap(newMapName, _id, breadcrumbMapIdList)
+                            let newMap = getDefaultMap(newMapName, currUser._id, breadcrumbMapIdList)
                             let mapId = (await collectionMaps.insertOne(newMap)).insertedId
                             await collectionMaps.updateOne(
                                 {_id: ObjectId(mapIdOut)},
@@ -245,12 +247,12 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'createMapInTab': {
-                            let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
-                            let newMap = getDefaultMap('New Map', _id, [])
+                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
+                            let newMap = getDefaultMap('New Map', currUser._id, [])
                             let mapId = (await collectionMaps.insertOne(newMap)).insertedId
                             tabMapIdList = [...tabMapIdList, mapId]
                             tabMapSelected = tabMapIdList.length - 1
-                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}})
+                            await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                             let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                             let tabMapNameList = await getMapNameList(tabMapIdList)
                             let mapSource = 'data'
@@ -259,13 +261,13 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'removeMapInTab': {
-                            let {_id, tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
+                            let {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUser
                             if (tabMapSelected === 0) {
                                 s2c = {cmd: 'removeMapInTabFail'}
                             } else {
                                 tabMapIdList = tabMapIdList.filter((val, i) => i !== tabMapSelected)
                                 tabMapSelected = tabMapSelected - 1
-                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}})
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 let breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                                 let tabMapNameList = await getMapNameList(tabMapIdList)
                                 let mapId = tabMapIdList[tabMapSelected]
@@ -276,28 +278,28 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'moveUpMapInTab': {
-                            let {_id, tabMapIdList, tabMapSelected} = currUser
+                            let {tabMapIdList, tabMapSelected} = currUser
                             if (tabMapSelected === 0) {
                                 s2c = {cmd: 'moveUpMapInTabFail'}
                             } else {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                     [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                                 tabMapSelected = tabMapSelected - 1
-                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}})
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 let tabMapNameList = await getMapNameList(tabMapIdList)
                                 s2c = {cmd: 'moveUpMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}}
                             }
                             break
                         }
                         case 'moveDownMapInTab': {
-                            let {_id, tabMapIdList, tabMapSelected} = currUser
+                            let {tabMapIdList, tabMapSelected} = currUser
                             if (tabMapSelected >= tabMapIdList.length - 1) {
                                 s2c = {cmd: 'moveDownMapInTabFail'}
                             } else {
                                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                     [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                                 tabMapSelected = tabMapSelected + 1
-                                await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}})
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 let tabMapNameList = await getMapNameList(tabMapIdList)
                                 s2c = {cmd: 'moveDownMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}}
                             }
@@ -423,13 +425,13 @@ async function sendResponse(c2s) {
                             break
                         }
                         case 'acceptShare': {
-                            let {_id, tabMapIdList, tabMapSelected} = currUser
+                            let {tabMapIdList, tabMapSelected} = currUser
                             const {shareIdOut} = c2s.serverPayload
                             const shareId = ObjectId(shareIdOut)
                             const shareData = await collectionShares.findOne({_id: shareId})
                             tabMapIdList = [...tabMapIdList, shareData.sharedMap]
                             tabMapSelected = tabMapIdList.length - 1
-                            await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}})
+                            await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                             const tabMapNameList = await getMapNameList(tabMapIdList)
                             await collectionShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
