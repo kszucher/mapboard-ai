@@ -150,7 +150,7 @@ async function sendResponse(c2s) {
                         }
                     }
                     if (0 === 1) {
-                        
+
                     } else {
                         switch (c2s.serverCmd) {
                             case 'signIn': {
@@ -160,8 +160,8 @@ async function sendResponse(c2s) {
                             case 'openMapFromHistory': {
                                 const {tabMapIdList, tabMapSelected} = currUser
                                 const tabMapNameList = await getMapNameList(tabMapIdList)
-                                const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
                                 const {breadcrumbMapIdList} = currUser
+                                const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
                                 const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                                 const mapSource = 'data'
                                 const mapStorage = await getMapData(mapId)
