@@ -430,16 +430,11 @@ async function sendResponse(c2s) {
                             s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                         }
                     }
-                    if (s2c.hasOwnProperty('payload') &&
-                        s2c.payload.hasOwnProperty('mapId')) {
+                    if (s2c.hasOwnProperty('payload') && s2c.payload.hasOwnProperty('mapId')) {
                         const {path, ownerUser} = await getMapProps(s2c.payload.mapId)
                         let mapRight = MAP_RIGHT.UNAUTHORIZED
                         if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(s2c.payload.mapId)))) {
-                            if (JSON.stringify(currUser._id) === JSON.stringify(adminUser)) {
-                                mapRight = MAP_RIGHT.EDIT
-                            } else {
-                                mapRight = MAP_RIGHT.VIEW
-                            }
+                            mapRight = JSON.stringify(currUser._id) === JSON.stringify(adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
                         } else {
                             if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
                                 mapRight = MAP_RIGHT.EDIT
