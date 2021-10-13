@@ -17,6 +17,18 @@ const transporter = nodemailer.createTransport({
     }
 })
 
+const MAP_RIGHT = {
+    UNAUTHORIZED: 'unauthorized',
+    VIEW: 'view',
+    EDIT: 'edit'
+}
+
+const SHARE_STATUS = {
+    WAITING: 'waiting',
+    REJECTED: 'rejected',
+    ACCEPTED: 'accepted',
+    INACTIVATED: 'inactivated'
+}
 
 let collectionUsers, collectionMaps, collectionShares, db, hb
 
@@ -401,7 +413,7 @@ async function sendResponse(c2s) {
                                     ownerUser: currUser._id,
                                     shareUser: shareUser._id,
                                     access,
-                                    status: 'waiting'
+                                    status: SHARE_STATUS.WAITING
                                 }
                                 await collectionShares.insertOne(newShare)
                                 s2c = {cmd: 'shareValiditySuccess', payload: {}}
@@ -417,7 +429,7 @@ async function sendResponse(c2s) {
                             tabMapSelected = tabMapIdList.length - 1
                             await collectionUsers.updateOne({_id}, {$set: {tabMapIdList, tabMapSelected}})
                             const tabMapNameList = await getMapNameList(tabMapIdList)
-                            await collectionShares.updateOne({_id: shareId}, {$set: {status: 'accepted'}})
+                            await collectionShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
                             const {shareDataExport, shareDataImport} = await getUserShares(currUser._id)
                             s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapNameList, tabMapSelected}}
                             break
@@ -441,9 +453,9 @@ async function sendResponse(c2s) {
                     if (s2c.hasOwnProperty('payload') &&
                         s2c.payload.hasOwnProperty('mapId')) {
                         const {path, ownerUser} = await getMapProps(s2c.payload.mapId)
-                        let mapRight = 'unauthorized'
+                        let mapRight = MAP_RIGHT.UNAUTHORIZED
                         if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
-                            mapRight = 'edit'
+                            mapRight = MAP_RIGHT.EDIT
                         } else {
                             let fullPath = [...path, s2c.payload.mapId]
                             for (let i = fullPath.length - 1; i > -1; i--) {
