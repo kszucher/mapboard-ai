@@ -60,16 +60,7 @@ app.post('/beta', function (req, res) {
     })
 })
 
-MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    connectTimeoutMS:3600000,
-    keepAlive:3600000,
-    socketTimeoutMS:3600000
-    // https://mongoosejs.com/docs/connections.html
-    // https://stackoverflow.com/questions/24880412/nodejs-mongodb-driver-drops-connection-when-idle
-
-}, function(err, client) {
+MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
     if (err) {
         console.log(err)
     } else {
