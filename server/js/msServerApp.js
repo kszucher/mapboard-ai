@@ -1,11 +1,13 @@
-let express = require('express')
-let cors = require('cors')
-let app = express()
-var MongoHeartbeat = require('mongo-heartbeat')
-const nodemailer = require("nodemailer")
 "use strict"
-
-let transporter = nodemailer.createTransport({
+const express = require('express')
+const cors = require('cors')
+const app = express()
+const MongoHeartbeat = require('mongo-heartbeat')
+const MongoClient = require('mongodb').MongoClient
+const ObjectId = require('mongodb').ObjectId
+const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority"
+const nodemailer = require("nodemailer")
+const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
     secure: true,
@@ -15,9 +17,8 @@ let transporter = nodemailer.createTransport({
     }
 })
 
-const MongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectId
-const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority"
+
+let collectionUsers, collectionMaps, collectionShares, db, hb
 
 app.use(cors())
 app.post('/beta', function (req, res) {
@@ -34,12 +35,6 @@ app.post('/beta', function (req, res) {
         })
     })
 })
-
-let collectionUsers
-let collectionMaps
-let collectionShares
-var db
-var hb
 
 MongoClient.connect(uri, {
     useNewUrlParser: true,
