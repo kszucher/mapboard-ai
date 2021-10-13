@@ -30,6 +30,14 @@ const SHARE_STATUS = {
     INACTIVATED: 'inactivated'
 }
 
+const systemMaps = [
+    ObjectId('5f3fd7ba7a84a4205428c96a'), // features
+    ObjectId('5ee5e343b1945921ec26c781'), // controls
+    ObjectId('5f467ee216bcf436da264a69'), // proposals
+]
+
+const adminUser = ObjectId('5d88c99f1935c83e84ca263d')
+
 let collectionUsers, collectionMaps, collectionShares, db, hb
 
 app.use(cors())
@@ -120,16 +128,10 @@ async function sendResponse(c2s) {
                         email: email,
                         password: password,
                         tabMapSelected: 0,
-                        tabMapIdList: [
-                            ObjectId('5f3fd7ba7a84a4205428c96a'), // features
-                            ObjectId('5ee5e343b1945921ec26c781'), // controls
-                            ObjectId('5f467ee216bcf436da264a69'), // proposals
-                        ],
+                        tabMapIdList: systemMaps,
                         activationStatus: 'awaitingConfirmation',
                         confirmationCode,
-                        breadcrumbMapIdList: [
-                            ObjectId('5f3fd7ba7a84a4205428c96a') , // features
-                        ],
+                        breadcrumbMapIdList: [systemMaps[0]],
                     })
                     // TODO: sys shares
                     s2c = {cmd: 'signUpStep1Success'}
@@ -454,15 +456,26 @@ async function sendResponse(c2s) {
                         s2c.payload.hasOwnProperty('mapId')) {
                         const {path, ownerUser} = await getMapProps(s2c.payload.mapId)
                         let mapRight = MAP_RIGHT.UNAUTHORIZED
-                        if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
-                            mapRight = MAP_RIGHT.EDIT
+                        if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(s2c.payload.mapId)))) {
+                            if (JSON.stringify(currUser._id) === JSON.stringify(adminUser)) {
+                                mapRight = MAP_RIGHT.EDIT
+                            } else {
+                                mapRight = MAP_RIGHT.VIEW
+                            }
                         } else {
-                            let fullPath = [...path, s2c.payload.mapId]
-                            for (let i = fullPath.length - 1; i > -1; i--) {
-                                const currMapId = fullPath[i]
-                                const shareData = await collectionShares.findOne({shareUser: currUser._id, sharedMap: currMapId})
-                                if (shareData !== null) {
-                                    mapRight = shareData.access;
+                            if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
+                                mapRight = MAP_RIGHT.EDIT
+                            } else {
+                                let fullPath = [...path, s2c.payload.mapId]
+                                for (let i = fullPath.length - 1; i > -1; i--) {
+                                    const currMapId = fullPath[i]
+                                    const shareData = await collectionShares.findOne({
+                                        shareUser: currUser._id,
+                                        sharedMap: currMapId
+                                    })
+                                    if (shareData !== null) {
+                                        mapRight = shareData.access;
+                                    }
                                 }
                             }
                         }
