@@ -2,7 +2,6 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const MongoHeartbeat = require('mongo-heartbeat')
 const MongoClient = require('mongodb').MongoClient
 const ObjectId = require('mongodb').ObjectId
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority"
@@ -42,7 +41,7 @@ const systemMaps = [
 
 const adminUser = ObjectId('5d88c99f1935c83e84ca263d')
 
-let collectionUsers, collectionMaps, collectionShares, db, hb
+let collectionUsers, collectionMaps, collectionShares, db
 
 app.use(cors())
 app.post('/beta', function (req, res) {
@@ -66,7 +65,6 @@ MongoClient.connect(uri, {
     connectTimeoutMS:3600000,
     keepAlive:3600000,
     socketTimeoutMS:3600000
-
     // https://mongoosejs.com/docs/connections.html
     // https://stackoverflow.com/questions/24880412/nodejs-mongodb-driver-drops-connection-when-idle
 
@@ -80,20 +78,6 @@ MongoClient.connect(uri, {
         collectionMaps = db.collection('maps')
         collectionShares = db.collection('shares')
         app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')})
-
-        hb = MongoHeartbeat(db, {
-            interval: 5000, //defaults to 5000 ms,
-            timeout: 10000,  //defaults to 10000 ms
-            tolerance: 2    //defaults to 1 attempt
-        })
-
-        hb.on('error', function (err) {
-            console.error('mongodb didnt respond the heartbeat message')
-            process.nextTick(function () {
-                process.exit(1)
-            })
-        })
-
     }
 })
 
