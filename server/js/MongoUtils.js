@@ -108,8 +108,8 @@ async function mongoFunction(cmd) {
     try {
         await client.connect();
         db = client.db("app_dev")
-        collectionMaps = db.collection("maps");
         collectionUsers = db.collection("users");
+        collectionMaps = db.collection("maps");
         collectionShares = db.collection("shares");
         switch (cmd) {
             case 'findDeleteUnusedMaps': {

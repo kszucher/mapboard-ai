@@ -2,40 +2,46 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-const genIdU = (id) => {return ObjectId('5f17dc2309ce612aa8580' + id)}
-const genIdS = (id) => {return ObjectId('5f17dc2309ce612aa8581' + id)}
-
 let db, collectionUsers, collectionMaps, collectionShares;
 async function mongoPlayground(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         db = client.db("app_dev_mongo")
-        collectionMaps = db.collection("maps");
         collectionUsers = db.collection("users");
+        collectionMaps = db.collection("maps");
         collectionShares = db.collection("shares");
+        await collectionUsers.deleteMany();
+        await collectionMaps.deleteMany();
+        await collectionShares.deleteMany();
         switch (cmd) {
             case 'deleteMapDeleteShare': {
                 const dbContent = {
                     users: [
-                        {_id: genIdU('001'), tabMapIdList: ['amap', 'bmap']},
-                        {_id: genIdU('002'), tabMapIdList: ['bmap']},
-                        {_id: genIdU('003'), tabMapIdList: ['cmap']}
+                        {_id: 1, tabMapIdList: ['amap', 'bmap']},
+                        {_id: 2, tabMapIdList: ['bmap']},
+                        {_id: 3, tabMapIdList: ['cmap']},
                     ],
-                    maps: [],
+                    maps: [
+                        {_id: 1, name: "amap"},
+                        {_id: 2, name: "bmap"},
+                        {_id: 3, name: "cmap"},
+                    ],
                     shares: [
-                        {_id: genIdS('001'), shareUser: genIdU('001'), sharedMap: "amap"},
-                        {_id: genIdS('002'), shareUser: genIdU('001'), sharedMap: "bmap"},
-                        {_id: genIdS('003'), shareUser: genIdU('002'), sharedMap: "bmap"},
-                        {_id: genIdS('004'), shareUser: genIdU('003'), sharedMap: "cmap"},
+                        {_id: 1, shareUser: 1, sharedMap: "amap"},
+                        {_id: 2, shareUser: 1, sharedMap: "bmap"},
+                        {_id: 3, shareUser: 2, sharedMap: "bmap"},
+                        {_id: 4, shareUser: 3, sharedMap: "cmap"},
                     ]
                 }
-                // collectionMaps.insertMany(dbContent.maps);
-                collectionUsers.insertMany(dbContent.users);
-                collectionShares.insertMany(dbContent.shares);
-
-
-
+                break;
+            }
+        }
+        await collectionUsers.insertMany(dbContent.users);
+        await collectionMaps.insertMany(dbContent.maps);
+        await collectionShares.insertMany(dbContent.shares);
+        switch(cmd) {
+            case 'deleteMapDeleteShare': {
                 // https://mongoplayground.net/p/izkTA3B8cfJ
 
                 // tehát azon usereket akarom megfosztani a shared maptól, akik az adott remove maphoz tartoznak eh
@@ -64,9 +70,13 @@ async function mongoPlayground(cmd) {
 
                 */
 
+
+
+
                 break;
             }
         }
+        // TODO print
     }
     catch (err) {
         console.log('error');
