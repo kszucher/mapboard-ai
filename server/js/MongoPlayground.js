@@ -19,20 +19,20 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 dbContent = {
                     users: [
-                        {_id: 1, tabMapIdList: ['amap', 'bmap']},
-                        {_id: 2, tabMapIdList: ['bmap']},
-                        {_id: 3, tabMapIdList: ['cmap']},
+                        {_id: 'u1', tabMapIdList: ['m1', 'm2']},
+                        {_id: 'u2', tabMapIdList: ['m2']},
+                        {_id: 'u3', tabMapIdList: ['m3']},
                     ],
                     maps: [
-                        {_id: 1, name: "amap"},
-                        {_id: 2, name: "bmap"},
-                        {_id: 3, name: "cmap"},
+                        {_id: 'm1', name: "amap"},
+                        {_id: 'm2', name: "bmap"},
+                        {_id: 'm3', name: "cmap"},
                     ],
                     shares: [
-                        {_id: 1, shareUser: 1, sharedMap: "amap"},
-                        {_id: 2, shareUser: 1, sharedMap: "bmap"},
-                        {_id: 3, shareUser: 2, sharedMap: "bmap"},
-                        {_id: 4, shareUser: 3, sharedMap: "cmap"},
+                        {_id: 's1', shareUser: 'u1', sharedMap: "m1"},
+                        {_id: 's2', shareUser: 'u1', sharedMap: "m2"},
+                        {_id: 's3', shareUser: 'u2', sharedMap: "m2"},
+                        {_id: 's4', shareUser: 'u3', sharedMap: "m3"},
                     ]
                 }
                 break;
@@ -43,23 +43,32 @@ async function mongoPlayground(cmd) {
         await collectionShares.insertMany(dbContent.shares);
         switch(cmd) {
             case 'deleteMapDeleteShare': {
-
+                // https://stackoverflow.com/questions/9224841/add-a-new-field-to-a-collection-with-value-of-an-existing-field/9225033
+                // https://stackoverflow.com/questions/10712751/mongodb-how-can-i-find-all-documents-that-arent-referenced-by-a-document-from/39555871
+                // https://stackoverflow.com/questions/10712751/mongodb-how-can-i-find-all-documents-that-arent-referenced-by-a-document-from/39555871
                 let result = await collectionUsers.aggregate([
-                    {$lookup: {
+                    {
+                        $lookup: {
                             from: 'shares',
-                            let: {},
+                            let: {user_id: "$_id"},
                             pipeline: [
                                 {
-                                    $match: {sharedMap: 'bmap'}
+                                    $match: {
+                                        $expr: {
+                                            $and: [
+                                                { $eq: ['$sharedMap', 'm2']},
+                                                { $eq: ["$shareUser", '$$user_id']},
+                                            ]
+                                        }
+                                    },
                                 }
                             ],
-                            as: 'cica'
+                            as: 'shouldDeleteSomething'
                         }
                     }
                 ]).toArray();
-
-                console.log(result)
-
+                // console.log(result)
+                console.log(JSON.stringify(result, null, 4))
                 break;
             }
         }
