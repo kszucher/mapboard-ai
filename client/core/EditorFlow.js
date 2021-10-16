@@ -107,7 +107,7 @@ const resolveProps = (state, action) => {
     }
 }
 
-const propsServer = (state, shouldSaveCurrentMap, serverCmd, serverPayload = {}) => {
+const assignMapProps = (state, shouldSaveCurrentMap, serverCmd, serverPayload = {}) => {
     let serverAction = {serverCmd, serverPayload};
     let serverActionCntr = state.serverActionCntr + 1;
     if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(serverCmd)) {
@@ -147,30 +147,30 @@ const propsServer = (state, shouldSaveCurrentMap, serverCmd, serverPayload = {})
 const resolvePropsServer = (state, action) => {
     const {payload} = action;
     switch (action.type) {
-        case 'SIGN_IN':                   return propsServer(state, 0, 'signIn')
-        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 0, 'openMapFromHistory')
-        case 'GET_LANDING_DATA':          return propsServer(state, 0, 'getLandingData')
-        case 'SIGN_UP_STEP_1':            return propsServer(state, 0, 'signUpStep1', payload)
-        case 'SIGN_UP_STEP_2':            return propsServer(state, 0, 'signUpStep2', payload)
-        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 1, 'openMapFromTab', payload)
-        case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 1, 'openMapFromMap', payload)
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 1, 'openMapFromBreadcrumbs', payload)
-        case 'SAVE_MAP':                  return propsServer(state, 1, 'saveMap')
-        case 'CREATE_MAP_IN_MAP':         return propsServer(state, 1, 'createMapInMap')
-        case 'CREATE_MAP_IN_TAB':         return propsServer(state, 1, 'createMapInTab')
-        case 'REMOVE_MAP_IN_TAB':         return propsServer(state, 0, 'removeMapInTab')
-        case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 0, 'moveUpMapInTab')
-        case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 0, 'moveDownMapInTab')
-        case 'OPEN_FRAME':                return propsServer(state, 1, 'openFrame')
-        case 'IMPORT_FRAME':              return propsServer(state, 1, 'importFrame')
-        case 'DUPLICATE_FRAME':           return propsServer(state, 1, 'duplicateFrame')
-        case 'DELETE_FRAME':              return propsServer(state, 0, 'deleteFrame')
-        case 'PREV_FRAME':                return propsServer(state, 1, 'openPrevFrame')
-        case 'NEXT_FRAME':                return propsServer(state, 1, 'openNextFrame')
-        case 'GET_SHARES':                return propsServer(state, 0, 'getShares')
-        case 'CREATE_SHARE':              return propsServer(state, 0, 'createShare', payload)
-        case 'ACCEPT_SHARE':              return propsServer(state, 0, 'acceptShare', payload)
-        case 'WITHDRAW_SHARE':            return propsServer(state, 0, 'withdrawShare', payload)
+        case 'SIGN_IN':                   return assignMapProps(state, 0, 'signIn')
+        case 'OPEN_MAP_FROM_HISTORY':     return assignMapProps(state, 0, 'openMapFromHistory')
+        case 'GET_LANDING_DATA':          return assignMapProps(state, 0, 'getLandingData')
+        case 'SIGN_UP_STEP_1':            return assignMapProps(state, 0, 'signUpStep1', payload)
+        case 'SIGN_UP_STEP_2':            return assignMapProps(state, 0, 'signUpStep2', payload)
+        case 'OPEN_MAP_FROM_TAB':         return assignMapProps(state, 1, 'openMapFromTab', payload)
+        case 'OPEN_MAP_FROM_MAP':         return assignMapProps(state, 1, 'openMapFromMap', payload)
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return assignMapProps(state, 1, 'openMapFromBreadcrumbs', payload)
+        case 'SAVE_MAP':                  return assignMapProps(state, 1, 'saveMap')
+        case 'CREATE_MAP_IN_MAP':         return assignMapProps(state, 1, 'createMapInMap')
+        case 'CREATE_MAP_IN_TAB':         return assignMapProps(state, 1, 'createMapInTab')
+        case 'REMOVE_MAP_IN_TAB':         return assignMapProps(state, 0, 'removeMapInTab')
+        case 'MOVE_UP_MAP_IN_TAB':        return assignMapProps(state, 0, 'moveUpMapInTab')
+        case 'MOVE_DOWN_MAP_IN_TAB':      return assignMapProps(state, 0, 'moveDownMapInTab')
+        case 'OPEN_FRAME':                return assignMapProps(state, 1, 'openFrame')
+        case 'IMPORT_FRAME':              return assignMapProps(state, 1, 'importFrame')
+        case 'DUPLICATE_FRAME':           return assignMapProps(state, 1, 'duplicateFrame')
+        case 'DELETE_FRAME':              return assignMapProps(state, 0, 'deleteFrame')
+        case 'PREV_FRAME':                return assignMapProps(state, 1, 'openPrevFrame')
+        case 'NEXT_FRAME':                return assignMapProps(state, 1, 'openNextFrame')
+        case 'GET_SHARES':                return assignMapProps(state, 0, 'getShares')
+        case 'CREATE_SHARE':              return assignMapProps(state, 0, 'createShare', payload)
+        case 'ACCEPT_SHARE':              return assignMapProps(state, 0, 'acceptShare', payload)
+        case 'WITHDRAW_SHARE':            return assignMapProps(state, 0, 'withdrawShare', payload)
         default: return {}
     }
 }
