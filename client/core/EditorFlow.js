@@ -49,10 +49,6 @@ export const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState);
 
-const mapValues = (stringArray, valueArray, conditionValue) => {
-    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
-}
-
 const resolvePageState = (mapRight) => {
     const {UNAUTHORIZED, VIEW, EDIT} = MAP_RIGHTS;
     const {WS_UNAUTHORIZED, WS_VIEW, WS_EDIT} = PAGE_STATES;
@@ -63,45 +59,51 @@ const resolvePageState = (mapRight) => {
     }
 }
 
+const mapValues = (stringArray, valueArray, conditionValue) => {
+    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
+}
+
+const resolveNodeProps = (payload) => {
+    let lm = payload;
+    return {
+        lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
+        lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
+        borderWidth: mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
+        fontSize:    mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
+        colorLine:   lm.lineColor,
+        colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
+        colorFill:   lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+        colorText:   lm.sTextColor,
+    }
+}
+
 const resolveProps = (state, action) => {
     const {payload} = action;
     const {AUTH, DEMO, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
     const {EDIT, VIEW} = MAP_RIGHTS;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(editorStateDefault)
-        case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
-        case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
-        case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
-        case 'SHOW_DEMO':                 return {...state, pageState: DEMO}
-        case 'SHOW_WS':                   return {...state, pageState: resolvePageState(state.mapRight)}
-        case 'SHOW_SHARES':               return {...state, pageState: WS_SHARES}
-        case 'SHOW_SHARING':              return {...state, pageState: WS_SHARING}
-        case 'OPEN_PALETTE':              return {...state, formatMode: payload, paletteVisible: 1}
-        case 'CLOSE_PALETTE':             return {...state, formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {...state, frameEditorVisible: 1, isPlayback: true}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {...state, frameEditorVisible: 0, isPlayback: false}
-        case 'SET_LANDING_DATA':          return {...state, landingData: payload.landingData}
-        case 'SET_BREADCRUMB_DATA':       return {...state, breadcrumbMapNameList: payload.breadcrumbMapNameList}
-        case 'SET_TAB_DATA':              return {...state, tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
-        case 'SET_FRAME_INFO':            return {...state, frameLen: payload.frameLen, frameSelected: payload.frameSelected}
-        case 'SET_SHARE_DATA':            return {...state, shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
-        case 'PLAY_LANDING_NEXT':         return {...state, landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
-        case 'PLAY_LANDING_PREV':         return {...state, landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'AFTER_OPEN':                return {...state,  isPlayback: payload.mapSource === 'dataPlayback', mapRight:payload.mapRight, pageState: resolvePageState(payload.mapRight)}
-        case 'SET_NODE_PROPS': {
-            let lm = payload;
-            return {...state,
-                lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
-                lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
-                borderWidth: mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
-                fontSize:    mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
-                colorLine:   lm.lineColor,
-                colorBorder: lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
-                colorFill:   lm.selection === 's'? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
-                colorText:   lm.sTextColor,
-            }
-        }
-        default: return state
+        case 'SERVER_RESPONSE':           return {serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
+        case 'SERVER_RESPONSE_TO_USER':   return {serverResponseToUser: [...state.serverResponseToUser, payload]}
+        case 'SHOW_AUTH':                 return {pageState: AUTH}
+        case 'SHOW_DEMO':                 return {pageState: DEMO}
+        case 'SHOW_WS':                   return {pageState: resolvePageState(state.mapRight)}
+        case 'SHOW_SHARES':               return {pageState: WS_SHARES}
+        case 'SHOW_SHARING':              return {pageState: WS_SHARING}
+        case 'OPEN_PALETTE':              return {formatMode: payload, paletteVisible: 1}
+        case 'CLOSE_PALETTE':             return {formatMode: '', paletteVisible: 0, }
+        case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1, isPlayback: true}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {frameEditorVisible: 0, isPlayback: false}
+        case 'SET_LANDING_DATA':          return {landingData: payload.landingData}
+        case 'SET_BREADCRUMB_DATA':       return {breadcrumbMapNameList: payload.breadcrumbMapNameList}
+        case 'SET_TAB_DATA':              return {tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
+        case 'SET_FRAME_INFO':            return {frameLen: payload.frameLen, frameSelected: payload.frameSelected}
+        case 'SET_SHARE_DATA':            return {shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
+        case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
+        case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
+        case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight:payload.mapRight, pageState: resolvePageState(payload.mapRight)}
+        case 'SET_NODE_PROPS':            return {...resolveNodeProps(payload)}
+        default: return {}
     }
 }
 
@@ -173,9 +175,8 @@ const resolvePropsServer = (state, action) => {
     }
 }
 
-
 const EditorReducer = (state, action) => {
-    return {...{...state, ...resolveProps(state, action)}, ...resolvePropsServer(state, action)};
+    return {...state, ...resolveProps(state, action), ...resolvePropsServer(state, action)};
 };
 
 export default EditorReducer;
