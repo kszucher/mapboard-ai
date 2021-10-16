@@ -97,8 +97,7 @@ export function Communication() {
             if (serverState.hasOwnProperty('mapId') &&
                 serverState.hasOwnProperty('mapSource') &&
                 serverState.hasOwnProperty('mapStorage') &&
-                serverState.hasOwnProperty('mapRight')
-            ) {
+                serverState.hasOwnProperty('mapRight')) {
                 const {mapId, mapSource, mapStorage, mapRight} = serverState;
                 let frameSelected = serverState.hasOwnProperty('frameSelected') ? serverState.frameSelected : 0;
                 dispatch({type: 'AFTER_OPEN', payload: {mapSource, mapRight}})
