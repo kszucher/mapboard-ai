@@ -102,7 +102,7 @@ const resolveProps = (state, action) => {
         case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight:payload.mapRight, pageState: resolvePageState(payload.mapRight)}
-        case 'SET_NODE_PROPS':            return {...resolveNodeProps(payload)}
+        case 'SET_NODE_PROPS':            return resolveNodeProps(payload)
         default: return {}
     }
 }
