@@ -77,7 +77,7 @@ const extractNodeProps = (payload) => {
     }
 }
 
-const resolveProps = (state, action) => {
+const resolveActions = (state, action) => {
     const {payload} = action;
     const {AUTH, DEMO, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
     const {EDIT, VIEW} = MAP_RIGHTS;
@@ -144,7 +144,7 @@ const assignMapProps = (state, shouldSaveCurrentMap, serverCmd, serverPayload = 
     return {serverAction, serverActionCntr}
 }
 
-const resolvePropsServer = (state, action) => {
+const resolveServerActions = (state, action) => {
     const {payload} = action;
     switch (action.type) {
         case 'SIGN_IN':                   return assignMapProps(state, 0, 'signIn')
@@ -176,7 +176,7 @@ const resolvePropsServer = (state, action) => {
 }
 
 const EditorReducer = (state, action) => {
-    return {...state, ...resolveProps(state, action), ...resolvePropsServer(state, action)};
+    return {...state, ...resolveActions(state, action), ...resolveServerActions(state, action)};
 };
 
 export default EditorReducer;
