@@ -43,46 +43,33 @@ async function mongoPlayground(cmd) {
         await collectionShares.insertMany(dbContent.shares);
         switch(cmd) {
             case 'deleteMapDeleteShare': {
-                // https://mongoplayground.net/p/izkTA3B8cfJ
 
-                // tehát azon usereket akarom megfosztani a shared maptól, akik az adott remove maphoz tartoznak eh
-
-                // NAJA itt addig jáccok holnap amíg nemmegy
-
-                /*
-
-                $lookup: {
-                    from: 'shares',
-                    let: {},
-                    pipeline: [
-                        $match: {
-                            // sharedMap === mapIdRemove
+                let result = await collectionUsers.aggregate([
+                    {$lookup: {
+                            from: 'shares',
+                            let: {},
+                            pipeline: [
+                                {
+                                    $match: {sharedMap: 'bmap'}
+                                }
+                            ],
+                            as: 'cica'
                         }
-                        // és akkor ebből valahogy ebből kiszedni csak a shareUser mezőt
-                    ]
-                }
+                    }
+                ]).toArray();
 
-
-                // valahogy a szűrés vége ID listát kéne kinyerni, és erre a listára csinálni valamit...
-                // hogy lesz id listám???
-
-
-                $project ???
-
-                */
-
-
-
+                console.log(result)
 
                 break;
             }
         }
-        let result = [
-            await collectionUsers.find().toArray(),
-            await collectionMaps.find().toArray(),
-            await collectionShares.find().toArray(),
-        ];
-        console.log(result)
+        let result = {
+            users: await collectionUsers.find().toArray(),
+            maps: await collectionMaps.find().toArray(),
+            shares: await collectionShares.find().toArray(),
+        };
+        // console.log(result)
+        // console.log(JSON.stringify(result, null, 4))
     }
     catch (err) {
         console.log('error');
