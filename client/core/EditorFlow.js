@@ -47,7 +47,7 @@ export const editorState = {
     shareDataImport: [],
 };
 
-const InitEditorState = JSON.stringify(editorState);
+const editorStateDefault = JSON.stringify(editorState);
 
 const mapValues = (stringArray, valueArray, conditionValue) => {
     return stringArray[valueArray.findIndex(v=>v===conditionValue)]
@@ -68,7 +68,7 @@ const resolveProps = (state, action) => {
     const {AUTH, DEMO, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
     const {EDIT, VIEW} = MAP_RIGHTS;
     switch (action.type) {
-        case 'RESET_STATE': return JSON.parse(InitEditorState)
+        case 'RESET_STATE':               return JSON.parse(editorStateDefault)
         case 'SERVER_RESPONSE':           return {...state, serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SERVER_RESPONSE_TO_USER':   return {...state, serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {...state, pageState: AUTH}
