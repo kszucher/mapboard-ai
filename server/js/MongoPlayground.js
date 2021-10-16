@@ -45,7 +45,6 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 // https://stackoverflow.com/questions/9224841/add-a-new-field-to-a-collection-with-value-of-an-existing-field/9225033
                 // https://stackoverflow.com/questions/10712751/mongodb-how-can-i-find-all-documents-that-arent-referenced-by-a-document-from/39555871
-                // https://stackoverflow.com/questions/10712751/mongodb-how-can-i-find-all-documents-that-arent-referenced-by-a-document-from/39555871
                 let result = await collectionUsers.aggregate([
                     {
                         $lookup: {
@@ -56,16 +55,30 @@ async function mongoPlayground(cmd) {
                                     $match: {
                                         $expr: {
                                             $and: [
-                                                { $eq: ['$sharedMap', 'm2']},
-                                                { $eq: ["$shareUser", '$$user_id']},
+                                                {$eq: ['$sharedMap', 'm2']},
+                                                {$eq: ["$shareUser", '$$user_id']},
                                             ]
                                         }
-                                    },
-                                }
+                                    }
+                                },
+                                {
+                                    $project: {
+                                        _id: 0,
+                                        sharedMap: 1
+                                    }
+                                },
+                                // NOT SUPPORTED IN CURRENT MONGO TIER
+                                // {
+                                //     $getField: {
+                                //         field: 'sharedMap'
+                                //     }
+                                // }
                             ],
-                            as: 'shouldDeleteSomething'
-                        }
-                    }
+                            as: 'shouldDeleteSomething' // TODO: el kell jutni oda, hogy a shouldDeleteSomething a map-ig egyszerűsödjön
+                        },
+                    },
+                    {$unwind: '$shouldDeleteSomething'},
+
                 ]).toArray();
                 // console.log(result)
                 console.log(JSON.stringify(result, null, 4))
