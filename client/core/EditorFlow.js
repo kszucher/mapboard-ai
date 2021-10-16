@@ -49,9 +49,19 @@ export const editorState = {
 
 const InitEditorState = JSON.stringify(editorState);
 
-const EditorReducer = (state, action) => {
-    return {...{...state, ...resolveProps(state, action)}, ...resolvePropsServer(state, action)};
-};
+const mapValues = (stringArray, valueArray, conditionValue) => {
+    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
+}
+
+const resolvePageState = (mapRight) => {
+    const {UNAUTHORIZED, VIEW, EDIT} = MAP_RIGHTS;
+    const {WS_UNAUTHORIZED, WS_VIEW, WS_EDIT} = PAGE_STATES;
+    switch (mapRight) {
+        case UNAUTHORIZED: return WS_UNAUTHORIZED;
+        case VIEW: return WS_VIEW;
+        case EDIT: return WS_EDIT;
+    }
+}
 
 const resolveProps = (state, action) => {
     const {payload} = action;
@@ -95,46 +105,6 @@ const resolveProps = (state, action) => {
     }
 }
 
-const resolvePageState = (mapRight) => {
-    const {UNAUTHORIZED, VIEW, EDIT} = MAP_RIGHTS;
-    const {WS_UNAUTHORIZED, WS_VIEW, WS_EDIT} = PAGE_STATES;
-    switch (mapRight) {
-        case UNAUTHORIZED: return WS_UNAUTHORIZED;
-        case VIEW: return WS_VIEW;
-        case EDIT: return WS_EDIT;
-    }
-}
-
-const resolvePropsServer = (state, action) => {
-    const {payload} = action;
-    switch (action.type) {
-        case 'SIGN_IN':                   return propsServer(state, 'signIn')
-        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
-        case 'GET_LANDING_DATA':          return propsServer(state, 'getLandingData')
-        case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
-        case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
-        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload)
-        case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)
-        case 'SAVE_MAP':                  return propsServer(state, 'saveMap')
-        case 'CREATE_MAP_IN_MAP':         return propsServer(state, 'createMapInMap')
-        case 'CREATE_MAP_IN_TAB':         return propsServer(state, 'createMapInTab')
-        case 'REMOVE_MAP_IN_TAB':         return propsServer(state, 'removeMapInTab')
-        case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 'moveUpMapInTab')
-        case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
-        case 'OPEN_FRAME':                return propsServer(state, 'openFrame')
-        case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
-        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame')
-        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame')
-        case 'PREV_FRAME':                return propsServer(state, 'openPrevFrame')
-        case 'NEXT_FRAME':                return propsServer(state, 'openNextFrame')
-        case 'GET_SHARES':                return propsServer(state, 'getShares')
-        case 'CREATE_SHARE':              return propsServer(state, 'createShare', payload)
-        case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare', payload)
-        case 'WITHDRAW_SHARE':            return propsServer(state, 'withdrawShare', payload)
-    }
-}
-
 const propsServer = (state, serverCmd, serverPayload = {}) => {
     let serverAction = {serverCmd, serverPayload};
     let serverActionCntr = state.serverActionCntr + 1;
@@ -173,8 +143,39 @@ const propsServer = (state, serverCmd, serverPayload = {}) => {
     return {serverAction, serverActionCntr}
 }
 
-export default EditorReducer;
-
-const mapValues = (stringArray, valueArray, conditionValue) => {
-    return stringArray[valueArray.findIndex(v=>v===conditionValue)]
+const resolvePropsServer = (state, action) => {
+    const {payload} = action;
+    switch (action.type) {
+        case 'SIGN_IN':                   return propsServer(state, 'signIn')
+        case 'OPEN_MAP_FROM_HISTORY':     return propsServer(state, 'openMapFromHistory')
+        case 'GET_LANDING_DATA':          return propsServer(state, 'getLandingData')
+        case 'SIGN_UP_STEP_1':            return propsServer(state, 'signUpStep1', payload)
+        case 'SIGN_UP_STEP_2':            return propsServer(state, 'signUpStep2', payload)
+        case 'OPEN_MAP_FROM_TAB':         return propsServer(state, 'openMapFromTab', payload)
+        case 'OPEN_MAP_FROM_MAP':         return propsServer(state, 'openMapFromMap', payload)
+        case 'OPEN_MAP_FROM_BREADCRUMBS': return propsServer(state, 'openMapFromBreadcrumbs', payload)
+        case 'SAVE_MAP':                  return propsServer(state, 'saveMap')
+        case 'CREATE_MAP_IN_MAP':         return propsServer(state, 'createMapInMap')
+        case 'CREATE_MAP_IN_TAB':         return propsServer(state, 'createMapInTab')
+        case 'REMOVE_MAP_IN_TAB':         return propsServer(state, 'removeMapInTab')
+        case 'MOVE_UP_MAP_IN_TAB':        return propsServer(state, 'moveUpMapInTab')
+        case 'MOVE_DOWN_MAP_IN_TAB':      return propsServer(state, 'moveDownMapInTab')
+        case 'OPEN_FRAME':                return propsServer(state, 'openFrame')
+        case 'IMPORT_FRAME':              return propsServer(state, 'importFrame')
+        case 'DUPLICATE_FRAME':           return propsServer(state, 'duplicateFrame')
+        case 'DELETE_FRAME':              return propsServer(state, 'deleteFrame')
+        case 'PREV_FRAME':                return propsServer(state, 'openPrevFrame')
+        case 'NEXT_FRAME':                return propsServer(state, 'openNextFrame')
+        case 'GET_SHARES':                return propsServer(state, 'getShares')
+        case 'CREATE_SHARE':              return propsServer(state, 'createShare', payload)
+        case 'ACCEPT_SHARE':              return propsServer(state, 'acceptShare', payload)
+        case 'WITHDRAW_SHARE':            return propsServer(state, 'withdrawShare', payload)
+    }
 }
+
+
+const EditorReducer = (state, action) => {
+    return {...{...state, ...resolveProps(state, action)}, ...resolvePropsServer(state, action)};
+};
+
+export default EditorReducer;
