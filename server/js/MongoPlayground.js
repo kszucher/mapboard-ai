@@ -77,7 +77,12 @@ async function mongoPlayground(cmd) {
                 break;
             }
         }
-        // TODO print
+        let result = [
+            await collectionUsers.find().toArray(),
+            await collectionMaps.find().toArray(),
+            await collectionShares.find().toArray(),
+        ];
+        console.log(result)
     }
     catch (err) {
         console.log('error');
