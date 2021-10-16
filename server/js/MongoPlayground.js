@@ -14,9 +14,10 @@ async function mongoPlayground(cmd) {
         await collectionUsers.deleteMany();
         await collectionMaps.deleteMany();
         await collectionShares.deleteMany();
+        let dbContent;
         switch (cmd) {
             case 'deleteMapDeleteShare': {
-                const dbContent = {
+                dbContent = {
                     users: [
                         {_id: 1, tabMapIdList: ['amap', 'bmap']},
                         {_id: 2, tabMapIdList: ['bmap']},

@@ -28,7 +28,7 @@ const mongoProcess = async (mongoCmd, endPoints, date) => {
     await spawnProcess(mongoCmd, mongoParams);
 }
 
-const mongoTransfer = async (mode) => {
+const mongoBackup = async (mode) => {
     var date = + new Date();
     switch (mode) {
         case 'prod2file2dev': {
@@ -52,4 +52,4 @@ const mongoTransfer = async (mode) => {
     }
 }
 
-mongoTransfer('prod2file2dev');
+mongoBackup('prod2file2dev');

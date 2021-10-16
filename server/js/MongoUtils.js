@@ -103,7 +103,7 @@ async function updateStage (params) {
 }
 
 let db, collectionUsers, collectionMaps, collectionShares;
-async function mongoFunction(cmd) {
+async function mongoUtil(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
@@ -187,4 +187,4 @@ const difference = (arrA, arrB) => {
     return arrA.filter(x => !arrB.includes(x)).map(el=>ObjectId(el));
 }
 
-mongoFunction('');
+mongoUtil('');
