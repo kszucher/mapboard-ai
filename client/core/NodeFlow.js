@@ -12,10 +12,11 @@ import {mapSvgData} from "./DomFlow";
 let mutationObserver;
 export let isEditing = 0;
 
-export function nodeDispatch(action, payload) {
-    console.log('NODEDISPATCH: ' + action);
-    nodeReducer(action, payload);
-    recalc();
+function clearSelection() {
+    for (let i = 0; i < mapref(['r']).length; i++) {
+        let cr = mapref(['r', i]);
+        mapChangeProp.start(cr, {selected: 0, selection: 's'}, '');
+    }
 }
 
 function nodeReducer(action, payload) {
@@ -555,9 +556,8 @@ function nodeReducer(action, payload) {
     }
 }
 
-function clearSelection() {
-    for (let i = 0; i < mapref(['r']).length; i++) {
-        let cr = mapref(['r', i]);
-        mapChangeProp.start(cr, {selected: 0, selection: 's'}, '');
-    }
+export function nodeDispatch(action, payload) {
+    console.log('NODEDISPATCH: ' + action);
+    nodeReducer(action, payload);
+    recalc();
 }
