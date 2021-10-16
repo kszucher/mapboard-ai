@@ -2,44 +2,6 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-const genId = (id) => {return ObjectId('5f17dc2309ce612aa858b' + id)}
-
-async function fill (mode) {
-    let db;
-    switch (mode) {
-        case 'deleteMapDeleteShare': {
-            db = {
-                users: [
-                    {_id: genId('001'), tabMapIdList: ['amap', 'bmap', 'cmap']},
-                    {_id: genId('002'), tabMapIdList: ['bmap', 'cmap', 'dmap']},
-                    {_id: ObjectId("5f17dc2309ce612aa858b003"), tabMapIdList: ['cmap', 'dmap', 'emap']}
-                ],
-                shares: [
-                    {_id: 1, shareUser: genId('001'), sharedMap: "bmap"},
-                    {_id: 2, shareUser: genId('002'), sharedMap: "bmap"},
-                    {_id: 3, shareUser: ObjectId('5f17dc2309ce612aa858b003'), sharedMap: "emap"},
-                ]
-            }
-            break;
-        }
-    }
-}
-
-async function userFilter (collectionUsers, params) {
-    let filter = [];
-    switch (params.filterMode) {
-        case 'all': {
-            await collectionUsers.find({}).forEach( doc => {
-                filter.push({
-                    userId : doc._id,
-                });
-            });
-            break;
-        }
-    }
-    return filter;
-}
-
 async function mapFilter (collectionMaps, params) {
     let filter = [];
     switch (params.filterMode) {
@@ -140,19 +102,15 @@ async function updateStage (params) {
     }
 }
 
-let db;
-let collectionMaps;
-let collectionUsers;
-
+let db, collectionUsers, collectionMaps, collectionShares;
 async function mongoFunction(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
-
         db = client.db("app_dev")
         collectionMaps = db.collection("maps");
         collectionUsers = db.collection("users");
-
+        collectionShares = db.collection("shares");
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
                 let allMaps = await mapFilter(collectionMaps, {
