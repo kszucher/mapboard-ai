@@ -2,6 +2,29 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
+const genId = (id) => {return ObjectId('5f17dc2309ce612aa858b' + id)}
+
+async function fill (mode) {
+    let db;
+    switch (mode) {
+        case 'deleteMapDeleteShare': {
+            db = {
+                users: [
+                    {_id: genId('001'), tabMapIdList: ['amap', 'bmap', 'cmap']},
+                    {_id: genId('002'), tabMapIdList: ['bmap', 'cmap', 'dmap']},
+                    {_id: ObjectId("5f17dc2309ce612aa858b003"), tabMapIdList: ['cmap', 'dmap', 'emap']}
+                ],
+                shares: [
+                    {_id: 1, shareUser: genId('001'), sharedMap: "bmap"},
+                    {_id: 2, shareUser: genId('002'), sharedMap: "bmap"},
+                    {_id: 3, shareUser: ObjectId('5f17dc2309ce612aa858b003'), sharedMap: "emap"},
+                ]
+            }
+            break;
+        }
+    }
+}
+
 async function userFilter (collectionUsers, params) {
     let filter = [];
     switch (params.filterMode) {
@@ -159,7 +182,7 @@ async function mongoFunction(cmd) {
                 break;
             }
             case 'removeFieldFromAllMap': {
-                // await collectionMaps.updateMany({}, {$set: {dataPlayback:[]}}); // NORMAL VERSION
+                // await collectionMaps.updateMany({}, {$set: {density:[]}}); // NORMAL VERSION
                 // await collectionMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
                 break;
             }
