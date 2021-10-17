@@ -24,9 +24,9 @@ async function mongoPlayground(cmd) {
                         {_id: 'u3', tabMapIdList: ['m3']},
                     ],
                     maps: [
-                        {_id: 'm1', name: "amap"},
-                        {_id: 'm2', name: "bmap"},
-                        {_id: 'm3', name: "cmap"},
+                        {_id: 'm1'},
+                        {_id: 'm2'},
+                        {_id: 'm3'},
                     ],
                     shares: [
                         {_id: 's1', shareUser: 'u1', sharedMap: "m1"},
@@ -45,6 +45,14 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 // https://stackoverflow.com/questions/9224841/add-a-new-field-to-a-collection-with-value-of-an-existing-field/9225033
                 // https://stackoverflow.com/questions/10712751/mongodb-how-can-i-find-all-documents-that-arent-referenced-by-a-document-from/39555871
+
+
+
+                // nah, az alábbit hagyni kell, és helyette egy aggregation pipeline-t futtatni képes aggregate kell, ami pulloz ÉS csökkent
+
+
+
+
                 let result = await collectionUsers.aggregate([
                     {
                         $lookup: {
@@ -58,26 +66,58 @@ async function mongoPlayground(cmd) {
                                                 {$eq: ['$sharedMap', 'm2']},
                                                 {$eq: ["$shareUser", '$$user_id']},
                                             ]
-                                        }
+                                        },
                                     }
                                 },
                                 {
-                                    $project: {
-                                        _id: 0,
-                                        sharedMap: 1
-                                    }
+                                    $count: "found"
                                 },
-                                // NOT SUPPORTED IN CURRENT MONGO TIER
-                                // {
-                                //     $getField: {
-                                //         field: 'sharedMap'
-                                //     }
-                                // }
+
+
                             ],
                             as: 'shouldDeleteSomething' // TODO: el kell jutni oda, hogy a shouldDeleteSomething a map-ig egyszerűsödjön
                         },
                     },
-                    {$unwind: '$shouldDeleteSomething'},
+
+
+
+                    // {
+                    //     $size: 'shouldDeleteSomething'
+                    // }
+
+                    {
+                        $unwind: {
+                            path:'$shouldDeleteSomething',
+                            preserveNullAndEmptyArrays: true // ha merge van, akkor nem fontos hogy ez is legyen
+                        }
+                    },
+
+                    // {
+                    //     $project : {
+                    //         "shouldDeleteSomething" : {
+                    //             $cond : {
+                    //                 "if" : {"$eq" : [{"$size" : "$shouldDeleteSomething" }, 0]},
+                    //                 "then" : [{ }],
+                    //                 "else" : "$shouldDeleteSomething"
+                    //             }
+                    //         },
+                    //         "_id" : 1
+                    //     }
+                    // },
+
+                    // {
+                    //     "$unwind" : "$versions"
+                    // }
+
+                    // {
+                    //     $replaceWith: {
+                    //         shouldDeleteSomething: 'a'
+                    //     }
+                    // },
+
+                    // {$out: "users"}
+
+                    // {$merge: "users"}
 
                 ]).toArray();
                 // console.log(result)
