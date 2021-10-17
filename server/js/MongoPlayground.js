@@ -19,9 +19,9 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 dbContent = {
                     users: [
-                        {_id: 'u1', tabMapIdList: ['m1', 'm2']},
-                        {_id: 'u2', tabMapIdList: ['m2']},
-                        {_id: 'u3', tabMapIdList: ['m3']},
+                        {_id: 'u1', tabMapSelected: 2, tabMapIdList: ['m1', 'm2']},
+                        {_id: 'u2', tabMapSelected: 1, tabMapIdList: ['m2']},
+                        {_id: 'u3', tabMapSelected: 1, tabMapIdList: ['m3']},
                     ],
                     maps: [
                         {_id: 'm1'},
@@ -48,78 +48,47 @@ async function mongoPlayground(cmd) {
 
 
 
-                // nah, az alábbit hagyni kell, és helyette egy aggregation pipeline-t futtatni képes aggregate kell, ami pulloz ÉS csökkent
+                // let result = await collectionUsers.aggregate([
+                //     {
+                //         $lookup: {
+                //             from: 'shares',
+                //             let: {user_id: "$_id"},
+                //             pipeline: [
+                //                 {
+                //                     $match: {
+                //                         $expr: {
+                //                             $and: [
+                //                                 {$eq: ['$sharedMap', 'm2']},
+                //                                 {$eq: ["$shareUser", '$$user_id']},
+                //                             ]
+                //                         },
+                //                     }
+                //                 },
+                //                 {
+                //                     $count: "found"
+                //                 },
+                //
+                //
+                //             ],
+                //             as: 'shouldDeleteSomething'
+                //         },
+                //     },
+                //     {
+                //         $unwind: {
+                //             path:'$shouldDeleteSomething',
+                //             preserveNullAndEmptyArrays: true // ha merge van, akkor nem fontos hogy ez is legyen
+                //         }
+                //     },
+                // ]).toArray();
 
 
+                // TODO elerni azt, hogy ahol a tabMapIdList tartalmazza a mapToRemove-ot, ott az kitorlodjon, plusz okosan kezelni a tabMapIdList-et
+                // https://docs.mongodb.com/manual/tutorial/update-documents-with-aggregation-pipeline/
+                let result = await collectionUsers.updateMany(
+                    {},
+                    []
+                )
 
-
-                let result = await collectionUsers.aggregate([
-                    {
-                        $lookup: {
-                            from: 'shares',
-                            let: {user_id: "$_id"},
-                            pipeline: [
-                                {
-                                    $match: {
-                                        $expr: {
-                                            $and: [
-                                                {$eq: ['$sharedMap', 'm2']},
-                                                {$eq: ["$shareUser", '$$user_id']},
-                                            ]
-                                        },
-                                    }
-                                },
-                                {
-                                    $count: "found"
-                                },
-
-
-                            ],
-                            as: 'shouldDeleteSomething' // TODO: el kell jutni oda, hogy a shouldDeleteSomething a map-ig egyszerűsödjön
-                        },
-                    },
-
-
-
-                    // {
-                    //     $size: 'shouldDeleteSomething'
-                    // }
-
-                    {
-                        $unwind: {
-                            path:'$shouldDeleteSomething',
-                            preserveNullAndEmptyArrays: true // ha merge van, akkor nem fontos hogy ez is legyen
-                        }
-                    },
-
-                    // {
-                    //     $project : {
-                    //         "shouldDeleteSomething" : {
-                    //             $cond : {
-                    //                 "if" : {"$eq" : [{"$size" : "$shouldDeleteSomething" }, 0]},
-                    //                 "then" : [{ }],
-                    //                 "else" : "$shouldDeleteSomething"
-                    //             }
-                    //         },
-                    //         "_id" : 1
-                    //     }
-                    // },
-
-                    // {
-                    //     "$unwind" : "$versions"
-                    // }
-
-                    // {
-                    //     $replaceWith: {
-                    //         shouldDeleteSomething: 'a'
-                    //     }
-                    // },
-
-                    // {$out: "users"}
-
-                    // {$merge: "users"}
-
-                ]).toArray();
                 // console.log(result)
                 console.log(JSON.stringify(result, null, 4))
                 break;
