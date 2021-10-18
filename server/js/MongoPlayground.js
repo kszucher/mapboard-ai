@@ -90,14 +90,17 @@ async function mongoPlayground(cmd) {
                         $set: {
                             tabMapSelected: {
                                 $cond: {
-                                    if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", "map2"]}]}, then: {
+                                    if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", "map2"]}]},
+                                    then: {
                                         $cond: {
-                                            if: {$gt: ["$tabMapSelected", 0]}, then: {$subtract: ["$tabMapSelected", 1]},
+                                            if: {$gt: ["$tabMapSelected", 0]},
+                                            then: {$subtract: ["$tabMapSelected", 1]},
                                             else: 0
                                         }},
-                                    else: "$$REMOVE"
+                                    else: "$tabMapSelected"
                                 }
                             }
+                            // TODO also remove map2 from all arrays
                         }
                     }])
 
