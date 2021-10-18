@@ -19,20 +19,20 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 dbContent = {
                     users: [
-                        {_id: 'u1', tabMapSelected: 1, tabMapIdList: ['m1', 'm2', 'm3']},
-                        {_id: 'u2', tabMapSelected: 0, tabMapIdList: ['m2']},
-                        {_id: 'u3', tabMapSelected: 3, tabMapIdList: ['m3']},
+                        {_id: 'user1', tabMapSelected: 1, tabMapIdList: ['map1', 'map2', 'map3']},
+                        {_id: 'user2', tabMapSelected: 0, tabMapIdList: ['map2']},
+                        {_id: 'user3', tabMapSelected: 3, tabMapIdList: ['map3']},
                     ],
                     maps: [
-                        {_id: 'm1'},
-                        {_id: 'm2'},
-                        {_id: 'm3'},
+                        {_id: 'map1'},
+                        {_id: 'map2'},
+                        {_id: 'map3'},
                     ],
                     shares: [
-                        {_id: 's1', shareUser: 'u1', sharedMap: "m1"},
-                        {_id: 's2', shareUser: 'u1', sharedMap: "m2"},
-                        {_id: 's3', shareUser: 'u2', sharedMap: "m2"},
-                        {_id: 's4', shareUser: 'u3', sharedMap: "m3"},
+                        {_id: 'share1', shareUser: 'user1', sharedMap: "map1"},
+                        {_id: 'share2', shareUser: 'user1', sharedMap: "map2"},
+                        {_id: 'share3', shareUser: 'user2', sharedMap: "map2"},
+                        {_id: 'share4', shareUser: 'user3', sharedMap: "map3"},
                     ]
                 }
                 break;
