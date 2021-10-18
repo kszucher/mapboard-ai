@@ -19,9 +19,9 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 dbContent = {
                     users: [
-                        {_id: 'u1', tabMapSelected: 2, tabMapIdList: ['m1', 'm2']},
-                        {_id: 'u2', tabMapSelected: 1, tabMapIdList: ['m2']},
-                        {_id: 'u3', tabMapSelected: 1, tabMapIdList: ['m3']},
+                        {_id: 'u1', tabMapSelected: 1, tabMapIdList: ['m1', 'm2', 'm3']},
+                        {_id: 'u2', tabMapSelected: 0, tabMapIdList: ['m2']},
+                        {_id: 'u3', tabMapSelected: 3, tabMapIdList: ['m3']},
                     ],
                     maps: [
                         {_id: 'm1'},
@@ -85,12 +85,17 @@ async function mongoPlayground(cmd) {
                 // TODO elerni azt, hogy ahol a tabMapIdList tartalmazza a mapToRemove-ot, ott az kitorlodjon, plusz okosan kezelni a tabMapIdList-et
                 // https://docs.mongodb.com/manual/tutorial/update-documents-with-aggregation-pipeline/
                 let result = await collectionUsers.updateMany(
-                    {},
-                    []
-                )
+                    {tabMapIdList: 'm2'},
+                    [{$set: {
+                        tabMapSelected:
+                            {$cond: [
+                                {$gt: ["$tabMapSelected", 0]},
+                                    {$subtract: ["$tabMapSelected", 1]},
+                                    0
+                                ]}}}])
 
                 // console.log(result)
-                console.log(JSON.stringify(result, null, 4))
+                // console.log(JSON.stringify(result, null, 4))
                 break;
             }
         }
@@ -100,7 +105,7 @@ async function mongoPlayground(cmd) {
             shares: await collectionShares.find().toArray(),
         };
         // console.log(result)
-        // console.log(JSON.stringify(result, null, 4))
+        console.log(JSON.stringify(result, null, 4))
     }
     catch (err) {
         console.log('error');
