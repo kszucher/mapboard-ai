@@ -1,3 +1,5 @@
+const MongoQueries = require("./MongoQueries");
+
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
@@ -82,33 +84,7 @@ async function mongoPlayground(cmd) {
                 // ]).toArray();
 
 
-                // TODO elerni azt, hogy ahol a tabMapIdList tartalmazza a mapToRemove-ot, ott az kitorlodjon, plusz okosan kezelni a tabMapIdList-et
-                // https://docs.mongodb.com/manual/tutorial/update-documents-with-aggregation-pipeline/
-                await collectionUsers.updateMany(
-                    {tabMapIdList: 'map2'},
-                    [
-                        {
-                            $set: {
-                                tabMapSelected: {
-                                    $cond: {
-                                        if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", "map2"]}]},
-                                        then: {
-                                            $cond: {
-                                                if: {$gt: ["$tabMapSelected", 0]},
-                                                then: {$subtract: ["$tabMapSelected", 1]},
-                                                else: 0
-                                            }},
-                                        else: "$tabMapSelected"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                );
-                await collectionUsers.updateMany(
-                    {tabMapIdList: 'map2'},
-                    {$pull: {tabMapIdList: 'map2'}}
-                )
+                await MongoQueries.deleteMapFromEveryUser(collectionUsers, 'map2');
 
                 // console.log(result)
                 // console.log(JSON.stringify(result, null, 4))
