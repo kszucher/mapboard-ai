@@ -19,7 +19,7 @@ async function mongoPlayground(cmd) {
             case 'deleteMapDeleteShare': {
                 dbContent = {
                     users: [
-                        {_id: 'user1', tabMapSelected: 2, tabMapIdList: ['map1', 'map2', 'map3']},
+                        {_id: 'user1', tabMapSelected: 1, tabMapIdList: ['map1', 'map2', 'map3']},
                         {_id: 'user2', tabMapSelected: 0, tabMapIdList: ['map2']},
                         {_id: 'user3', tabMapSelected: 3, tabMapIdList: ['map3']},
                     ],
@@ -84,25 +84,31 @@ async function mongoPlayground(cmd) {
 
                 // TODO elerni azt, hogy ahol a tabMapIdList tartalmazza a mapToRemove-ot, ott az kitorlodjon, plusz okosan kezelni a tabMapIdList-et
                 // https://docs.mongodb.com/manual/tutorial/update-documents-with-aggregation-pipeline/
-                let result = await collectionUsers.updateMany(
+                await collectionUsers.updateMany(
                     {tabMapIdList: 'map2'},
-                    [{
-                        $set: {
-                            tabMapSelected: {
-                                $cond: {
-                                    if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", "map2"]}]},
-                                    then: {
-                                        $cond: {
-                                            if: {$gt: ["$tabMapSelected", 0]},
-                                            then: {$subtract: ["$tabMapSelected", 1]},
-                                            else: 0
-                                        }},
-                                    else: "$tabMapSelected"
+                    [
+                        {
+                            $set: {
+                                tabMapSelected: {
+                                    $cond: {
+                                        if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", "map2"]}]},
+                                        then: {
+                                            $cond: {
+                                                if: {$gt: ["$tabMapSelected", 0]},
+                                                then: {$subtract: ["$tabMapSelected", 1]},
+                                                else: 0
+                                            }},
+                                        else: "$tabMapSelected"
+                                    }
                                 }
                             }
-                            // TODO also remove map2 from all arrays
                         }
-                    }])
+                    ]
+                );
+                await collectionUsers.updateMany(
+                    {tabMapIdList: 'map2'},
+                    {$pull: {tabMapIdList: 'map2'}}
+                )
 
                 // console.log(result)
                 // console.log(JSON.stringify(result, null, 4))

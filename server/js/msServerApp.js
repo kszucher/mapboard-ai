@@ -245,8 +245,7 @@ async function sendResponse(c2s) {
                                 break
                             }
                             case 'removeMapInTab': {
-                                let {tabMapIdList, tabMapSelected} = currUser
-                                const {breadcrumbMapIdList} = currUser
+                                let {tabMapIdList, tabMapSelected} = currUser // this is not required to be used
                                 if (tabMapIdList.length === 1) {
                                     s2c = {cmd: 'removeMapInTabFail'}
                                 } else {
@@ -256,6 +255,10 @@ async function sendResponse(c2s) {
                                     tabMapIdList = tabMapIdList.filter((el, idx) => idx !== tabMapSelected)
                                     tabMapSelected = tabMapSelected > 0 ? tabMapSelected - 1 : 0
                                     await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
+                                    // the mongoPlayground query should be used insted
+                                    // TODO figure out how to use the result of an update
+
+                                    const {breadcrumbMapIdList} = currUser
                                     const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                                     const tabMapNameList = await getMapNameList(tabMapIdList)
                                     const mapId = tabMapIdList[tabMapSelected]
