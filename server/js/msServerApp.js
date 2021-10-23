@@ -257,7 +257,7 @@ async function sendResponse(c2s) {
                                         await deleteMapFromUsers(collectionUsers, mapIdToDelete);
                                         await deleteMapFromShares(collectionShares, mapIdToDelete);
                                     } else {
-                                        // TODO
+                                        await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: currUser._id})
                                     }
 
                                     // SENDING LATEST

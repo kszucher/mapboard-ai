@@ -1,6 +1,8 @@
-async function deleteMapFromUsers (collectionUsers, mapIdToDelete) {
+async function deleteMapFromUsers (collectionUsers, mapIdToDelete, userFilter = {}) {
+    const filter = {tabMapIdList: mapIdToDelete, ...userFilter}
+    console.log(filter)
     await collectionUsers.updateMany(
-        {tabMapIdList: mapIdToDelete},
+        filter,
         [
             {
                 $set: {
@@ -19,9 +21,9 @@ async function deleteMapFromUsers (collectionUsers, mapIdToDelete) {
                 }
             }
         ]
-    );
+    )
     await collectionUsers.updateMany(
-        {tabMapIdList: mapIdToDelete},
+        filter,
         {$pull: {tabMapIdList: mapIdToDelete}}
     )
 }
