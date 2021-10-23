@@ -6,7 +6,7 @@ const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority"
 const nodemailer = require("nodemailer")
-const {deleteMapFromUsers} = require("./MongoQueries");
+const {deleteMapFromUsers, deleteMapFromShares} = require("./MongoQueries");
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
@@ -253,11 +253,12 @@ async function sendResponse(c2s) {
                                     s2c = {cmd: 'removeMapInTabFail'}
                                 } else {
                                     const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
-                                    if (isEqual(getMapOwnerUser(mapIdToDelete), currUser._id)) {
+                                    if (isEqual(await getMapOwnerUser(mapIdToDelete), currUser._id)) {
                                         await deleteMapFromUsers(collectionUsers, mapIdToDelete);
                                         await deleteMapFromShares(collectionShares, mapIdToDelete);
                                     } else {
                                         await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: currUser._id})
+                                        await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: currUser._id});
                                     }
 
                                     // SENDING LATEST

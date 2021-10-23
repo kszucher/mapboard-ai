@@ -1,6 +1,5 @@
 async function deleteMapFromUsers (collectionUsers, mapIdToDelete, userFilter = {}) {
     const filter = {tabMapIdList: mapIdToDelete, ...userFilter}
-    console.log(filter)
     await collectionUsers.updateMany(
         filter,
         [
@@ -28,9 +27,10 @@ async function deleteMapFromUsers (collectionUsers, mapIdToDelete, userFilter = 
     )
 }
 
-async function deleteMapFromShares(collectionShares, mapIdToDelete) {
+async function deleteMapFromShares(collectionShares, mapIdToDelete, userFilter = {}) {
+    const filter = {sharedMap: mapIdToDelete, ...userFilter}
     await collectionShares.deleteMany(
-        {sharedMap: mapIdToDelete}
+        filter
     )
 }
 
