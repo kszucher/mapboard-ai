@@ -156,6 +156,7 @@ async function sendResponse(c2s) {
                     if (c2s.serverPayload.hasOwnProperty('tabMapIdListOut') &&
                         !isEqual(c2s.serverPayload.tabMapIdListOut, currUser.tabMapIdList)) {
                         s2c = {cmd: 'tabSynchFail'}
+                        // TODO send down the actual
                     } else {
                         switch (c2s.serverCmd) {
                             case 'signIn': {
@@ -487,7 +488,7 @@ async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
 
-async function getMapOwnerUser(mapId) {
+async function getMapOwnerUser(mapId) { // use getMapProps instead
     return (await collectionMaps.findOne({_id: mapId})).ownerUser
 }
 
