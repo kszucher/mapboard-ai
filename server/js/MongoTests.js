@@ -5,7 +5,7 @@ const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mon
 const ObjectId = require('mongodb').ObjectId;
 
 let db, collectionUsers, collectionMaps, collectionShares;
-async function mongoPlayground(cmd) {
+async function mongoTests(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
@@ -46,6 +46,7 @@ async function mongoPlayground(cmd) {
         switch(cmd) {
             case 'deleteMapFromUsersFromShares': {
                 await MongoQueries.deleteMapFromUsers(collectionUsers, 'map2');
+                await MongoQueries.deleteMapFromShares(collectionShares, 'map2');
                 break;
             }
         }
@@ -63,4 +64,4 @@ async function mongoPlayground(cmd) {
     client.close();
 }
 
-mongoPlayground('deleteMapFromUsersFromShares');
+mongoTests('deleteMapFromUsersFromShares');

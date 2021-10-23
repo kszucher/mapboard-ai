@@ -26,8 +26,13 @@ async function deleteMapFromUsers (collectionUsers, mapIdToDelete) {
     )
 }
 
-
+async function deleteMapFromShares(collectionShares, mapIdToDelete) {
+    await collectionShares.deleteMany(
+        {sharedMap: mapIdToDelete}
+    )
+}
 
 module.exports = {
-    deleteMapFromUsers
+    deleteMapFromUsers,
+    deleteMapFromShares
 }

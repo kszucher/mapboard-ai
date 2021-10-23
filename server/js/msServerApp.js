@@ -32,7 +32,6 @@ const SHARE_STATUS = {
     WAITING: 'waiting',
     REJECTED: 'rejected',
     ACCEPTED: 'accepted',
-    INACTIVATED: 'inactivated'
 }
 
 const systemMaps = [
@@ -255,8 +254,8 @@ async function sendResponse(c2s) {
                                 } else {
                                     const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
                                     if (isEqual(getMapOwnerUser(mapIdToDelete), currUser._id)) {
-                                        await collectionShares.updateMany({sharedMap: mapIdToDelete}, {$set: {status: SHARE_STATUS.INACTIVATED}})
                                         await deleteMapFromUsers(collectionUsers, mapIdToDelete);
+                                        await deleteMapFromShares(collectionShares, mapIdToDelete);
                                     } else {
                                         // TODO
                                     }
