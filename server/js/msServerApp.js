@@ -6,6 +6,7 @@ const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority"
 const nodemailer = require("nodemailer")
+const {deleteMapFromUsers} = require("./MongoQueries");
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
     port: 465,
@@ -41,6 +42,10 @@ const systemMaps = [
 ]
 
 const adminUser = ObjectId('5d88c99f1935c83e84ca263d')
+
+const isEqual = (obj1, obj2) => {
+    return JSON.stringify(obj1)===JSON.stringify(obj2)
+}
 
 let collectionUsers, collectionMaps, collectionShares, db
 
@@ -245,20 +250,20 @@ async function sendResponse(c2s) {
                                 break
                             }
                             case 'removeMapInTab': {
-                                let {tabMapIdList, tabMapSelected} = currUser // this is not required to be used
-                                if (tabMapIdList.length === 1) {
+                                if (currUser.tabMapIdList.length === 1) {
                                     s2c = {cmd: 'removeMapInTabFail'}
                                 } else {
-                                    const mapIdRemove = tabMapIdList[tabMapSelected]
-                                    await collectionShares.updateMany({sharedMap: mapIdRemove}, {$set: {status: SHARE_STATUS.INACTIVATED}})
+                                    const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
+                                    if (isEqual(getMapOwnerUser(mapIdToDelete), currUser._id)) {
+                                        await collectionShares.updateMany({sharedMap: mapIdToDelete}, {$set: {status: SHARE_STATUS.INACTIVATED}})
+                                        await deleteMapFromUsers(collectionUsers, mapIdToDelete);
+                                    } else {
+                                        // TODO
+                                    }
 
-                                    tabMapIdList = tabMapIdList.filter((el, idx) => idx !== tabMapSelected)
-                                    tabMapSelected = tabMapSelected > 0 ? tabMapSelected - 1 : 0
-                                    await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
-                                    // the mongoPlayground query should be used insted
-                                    // TODO figure out how to use the result of an update
-
-                                    const {breadcrumbMapIdList} = currUser
+                                    // SENDING LATEST
+                                    const currUserNew = await collectionUsers.findOne({email: c2s.cred.email})
+                                    const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserNew
                                     const breadcrumbMapNameList = await getMapNameList(breadcrumbMapIdList)
                                     const tabMapNameList = await getMapNameList(tabMapIdList)
                                     const mapId = tabMapIdList[tabMapSelected]
@@ -482,6 +487,10 @@ async function sendResponse(c2s) {
 
 async function getMapData(mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
+}
+
+async function getMapOwnerUser(mapId) {
+    return (await collectionMaps.findOne({_id: mapId})).ownerUser
 }
 
 async function getPlaybackMapData(mapId, frameSelected) {

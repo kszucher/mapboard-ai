@@ -1,12 +1,12 @@
-async function deleteMapFromEveryUser (collectionUsers, mapToDelete) {
+async function deleteMapFromUsers (collectionUsers, mapIdToDelete) {
     await collectionUsers.updateMany(
-        {tabMapIdList: mapToDelete},
+        {tabMapIdList: mapIdToDelete},
         [
             {
                 $set: {
                     tabMapSelected: {
                         $cond: {
-                            if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", mapToDelete]}]},
+                            if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", mapIdToDelete]}]},
                             then: {
                                 $cond: {
                                     if: {$gt: ["$tabMapSelected", 0]},
@@ -21,13 +21,13 @@ async function deleteMapFromEveryUser (collectionUsers, mapToDelete) {
         ]
     );
     await collectionUsers.updateMany(
-        {tabMapIdList: mapToDelete},
-        {$pull: {tabMapIdList: mapToDelete}}
+        {tabMapIdList: mapIdToDelete},
+        {$pull: {tabMapIdList: mapIdToDelete}}
     )
 }
 
-module.exports = {
-    deleteMapFromEveryUser
-}
 
-// TODO import all queries here, make tests for all, and continue --> LINE 259: how to use the result of the updated document???
+
+module.exports = {
+    deleteMapFromUsers
+}

@@ -18,7 +18,7 @@ async function mongoPlayground(cmd) {
         await collectionShares.deleteMany();
         let dbContent;
         switch (cmd) {
-            case 'deleteMapDeleteShare': {
+            case 'deleteMapFromUsersFromShares': {
                 dbContent = {
                     users: [
                         {_id: 'user1', tabMapSelected: 1, tabMapIdList: ['map1', 'map2', 'map3']},
@@ -44,50 +44,8 @@ async function mongoPlayground(cmd) {
         await collectionMaps.insertMany(dbContent.maps);
         await collectionShares.insertMany(dbContent.shares);
         switch(cmd) {
-            case 'deleteMapDeleteShare': {
-                // https://stackoverflow.com/questions/9224841/add-a-new-field-to-a-collection-with-value-of-an-existing-field/9225033
-                // https://stackoverflow.com/questions/10712751/mongodb-how-can-i-find-all-documents-that-arent-referenced-by-a-document-from/39555871
-
-
-
-                // let result = await collectionUsers.aggregate([
-                //     {
-                //         $lookup: {
-                //             from: 'shares',
-                //             let: {user_id: "$_id"},
-                //             pipeline: [
-                //                 {
-                //                     $match: {
-                //                         $expr: {
-                //                             $and: [
-                //                                 {$eq: ['$sharedMap', 'm2']},
-                //                                 {$eq: ["$shareUser", '$$user_id']},
-                //                             ]
-                //                         },
-                //                     }
-                //                 },
-                //                 {
-                //                     $count: "found"
-                //                 },
-                //
-                //
-                //             ],
-                //             as: 'shouldDeleteSomething'
-                //         },
-                //     },
-                //     {
-                //         $unwind: {
-                //             path:'$shouldDeleteSomething',
-                //             preserveNullAndEmptyArrays: true // ha merge van, akkor nem fontos hogy ez is legyen
-                //         }
-                //     },
-                // ]).toArray();
-
-
-                await MongoQueries.deleteMapFromEveryUser(collectionUsers, 'map2');
-
-                // console.log(result)
-                // console.log(JSON.stringify(result, null, 4))
+            case 'deleteMapFromUsersFromShares': {
+                await MongoQueries.deleteMapFromUsers(collectionUsers, 'map2');
                 break;
             }
         }
@@ -96,7 +54,6 @@ async function mongoPlayground(cmd) {
             maps: await collectionMaps.find().toArray(),
             shares: await collectionShares.find().toArray(),
         };
-        // console.log(result)
         console.log(JSON.stringify(result, null, 4))
     }
     catch (err) {
@@ -106,4 +63,4 @@ async function mongoPlayground(cmd) {
     client.close();
 }
 
-mongoPlayground('deleteMapDeleteShare');
+mongoPlayground('deleteMapFromUsersFromShares');
