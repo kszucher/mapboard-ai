@@ -154,9 +154,7 @@ async function sendResponse(c2s) {
                         }
                     }
                     if (c2s.serverPayload.hasOwnProperty('tabMapIdListOut') &&
-                        c2s.serverPayload.hasOwnProperty('tabMapSelectedOut') &&
-                        JSON.stringify(c2s.serverPayload.tabMapIdListOut) !== JSON.stringify(currUser.tabMapIdList) &&
-                        c2s.serverPayload.tabMapSelectedOut !== currUser.tabMapSelected) {
+                        !isEqual(c2s.serverPayload.tabMapIdListOut, currUser.tabMapIdList)) {
                         s2c = {cmd: 'tabSynchFail'}
                     } else {
                         switch (c2s.serverCmd) {
