@@ -403,7 +403,7 @@ async function sendResponse(c2s) {
                             case 'createShare': {
                                 let {mapId, email, access} = c2s.serverPayload
                                 let shareUser = await collectionUsers.findOne({email})
-                                if (shareUser === null || JSON.stringify(shareUser._id) === JSON.stringify(currUser._id)) {
+                                if (shareUser === null || isEqual(shareUser._id, currUser._id)) {
                                     // TODO: also fail if trying to create a share for an existing ownerUser/shareUser combination OR overwrite
                                     s2c = {cmd: 'shareValidityFail'}
                                 } else {
@@ -453,9 +453,9 @@ async function sendResponse(c2s) {
                             const {path, ownerUser} = await getMapProps(s2c.payload.mapId)
                             let mapRight = MAP_RIGHT.UNAUTHORIZED
                             if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(s2c.payload.mapId)))) {
-                                mapRight = JSON.stringify(currUser._id) === JSON.stringify(adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
+                                mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
                             } else {
-                                if (JSON.stringify(currUser._id) === JSON.stringify(ownerUser)) {
+                                if (isEqual(currUser._id, ownerUser)) {
                                     mapRight = MAP_RIGHT.EDIT
                                 } else {
                                     let fullPath = [...path, s2c.payload.mapId]
