@@ -77,6 +77,51 @@ function getDefaultMap(mapName, ownerUser, path) {
     }
 }
 
+async function resolveClientActions (action, s2c) {
+    switch (s2c.payload) {
+        case 'pingSuccess':                         break;
+        case 'getLandingDataSuccess':               break;
+        case 'signUpStep1Success':                  break;
+        case 'signUpStep1FailEmailAlreadyInUse':    break;
+        case 'signUpStep2FailUnknownUser':          break;
+        case 'signUpStep2FailAlreadyActivated':     break;
+        case 'signUpStep2FailWrongCode':            break;
+        case 'signUpStep2Success':                  break;
+        case 'signInFail':                          break;
+        case 'signInFailIncompleteRegistration':    break;
+        case 'tabSynchFail':                        break;
+        case 'signInSuccess':                       break;
+        case 'openMapFromHistorySuccess':           break;
+        case 'openMapFromTabSuccess':               break;
+        case 'openMapFromMapSuccess':               break;
+        case 'openMapFromBreadcrumbsSuccess':       break;
+        case 'saveMapSuccess':                      break;
+        case 'createMapInMapSuccess':               break;
+        case 'createMapInTabSuccess':               break;
+        case 'removeMapInTabFail':                  break;
+        case 'removeMapInTabSuccess':               break;
+        case 'moveUpMapInTabFail':                  break;
+        case 'moveUpMapInTabSuccess':               break;
+        case 'moveDownMapInTabFail':                break;
+        case 'moveDownMapInTabSuccess':             break;
+        case 'openFrameFail':                       break;
+        case 'openFrameSuccess':                    break; // openPrevFrameSuccess/openNextFrameSuccess
+        case 'importFrameSuccess':                  break;
+        case 'deleteFrameFail':                     break;
+        case 'deleteFrameSuccess':                  break;
+        case 'duplicateFrameSuccess':               break;
+        case 'getSharesSuccess':                    break;
+        case 'shareValidityFail':                   break;
+        case 'shareValiditySuccess':                break;
+        case 'acceptShareSuccess':                  break;
+        case 'withdrawShareSuccess':                break;
+    }
+    return s2c
+    // TODO: na, itt gyönyörűszépen össze lehet szedegetni, hogy melyik válasz most mit ad le!!!
+    // ez igazából amúgy egy api spec is lesz ám!!!
+    // de a lényeg, hogy sokat lehet majd a lenti kódon rövidíteni!!!
+}
+
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'}
     if (c2s.serverCmd === 'ping') {
@@ -125,7 +170,9 @@ async function sendResponse(c2s) {
                 } else {
                     let newMap = getDefaultMap('My First Map', currUser._id, [])
                     let mapId = (await collectionMaps.insertOne(newMap)).insertedId
-                    await collectionUsers.updateOne({_id: currUser._id}, {$set: {
+                    await collectionUsers.updateOne(
+                        {_id: currUser._id},
+                        {$set: {
                             activationStatus: ACTIVATION_STATUS.COMPLETED,
                             tabMapSelected: systemMaps.length,
                             tabMapIdList: [...systemMaps, mapId],
