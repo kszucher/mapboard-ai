@@ -1,22 +1,22 @@
-async function getMapData(mapId) {
+async function getMapData(collectionMaps, mapId) {
     return (await collectionMaps.findOne({_id: mapId})).data
 }
 
-async function getPlaybackMapData(mapId, frameSelected) {
+async function getPlaybackMapData(collectionMaps, mapId, frameSelected) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback[frameSelected]
 }
 
-async function getFrameLen(mapId) {
+async function getFrameLen(collectionMaps, mapId) {
     return (await collectionMaps.findOne({_id: mapId})).dataPlayback.length
 }
 
-async function getMapProps(mapId) {
+async function getMapProps(collectionMaps, mapId) {
     const currMap = await collectionMaps.findOne({_id: mapId})
     const {path, ownerUser} = currMap
     return {path, ownerUser}
 }
 
-async function getMapNameList(mapIdList) {
+async function getMapNameList(collectionMaps, mapIdList) {
     let mapNameList = []
     await collectionMaps.aggregate([
         {$match: {_id: {$in: mapIdList}}},
@@ -26,11 +26,11 @@ async function getMapNameList(mapIdList) {
     return mapNameList
 }
 
-async function getUserEmail(userId) {
+async function getUserEmail(collectionUsers, userId) {
     return (await collectionUsers.findOne({_id: userId})).email
 }
 
-async function getUserShares(userId) {
+async function getUserShares(collectionUsers, collectionShares, userId) {
     let ownerUserData = await collectionShares.find({ownerUser: userId}).toArray()
     let shareDataExport = []
     for (let i = 0; i < ownerUserData.length; i++) {
@@ -38,7 +38,7 @@ async function getUserShares(userId) {
             '_id': ownerUserData[i]._id,
             'id': i,
             'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
-            'shareUserEmail': await getUserEmail(ownerUserData[i].shareUser),
+            'shareUserEmail': await getUserEmail(collectionUsers, ownerUserData[i].shareUser),
             'access': ownerUserData[i].access,
             'status': ownerUserData[i].status
         })
@@ -50,7 +50,7 @@ async function getUserShares(userId) {
             '_id': shareUserData[i]._id,
             'id': i,
             'map': (await getMapNameList([shareUserData[i].sharedMap]))[0],
-            'shareUserEmail': await getUserEmail(shareUserData[i].ownerUser),
+            'shareUserEmail': await getUserEmail(collectionUsers, shareUserData[i].ownerUser),
             'access': shareUserData[i].access,
             'status': shareUserData[i].status
         })
