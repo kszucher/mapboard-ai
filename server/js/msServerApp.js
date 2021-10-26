@@ -48,34 +48,25 @@ const isEqual = (obj1, obj2) => {
 
 let collectionUsers, collectionMaps, collectionShares, db
 
-app.use(cors())
-app.post('/beta', function (req, res) {
-    let inputStream =       []
-    req.on('data', function (data) {
-        inputStream += data
-    })
-    req.on('end', function () {
-        let c2s = JSON.parse(inputStream) // it must be a parameter to prevent async issues
-        inputStream = []
-        sendResponse(c2s).then(s2c => {
-            res.json(s2c)
-            console.log('response sent')
-        })
-    })
-})
+function getConfirmationCode() {
+    let [min, max] = [1000, 9999]
+    return Math.round(Math.random() * (max - min) + min)
+}
 
-MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log('connected')
-        db = client.db(process.env.MONGO_TARGET_DB || "app_dev")
-        collectionUsers = db.collection('users')
-        collectionMaps = db.collection('maps')
-        collectionShares = db.collection('shares')
-        app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')})
+function getDefaultMap(mapName, ownerUser, path) {
+    return {
+        data: [
+            {path: ['m']},
+            {path: ['r', 0], content: mapName, selected: 1},
+            {path: ['r', 0, 'd', 0]},
+            {path: ['r', 0, 'd', 1]},
+        ],
+        dataHistory: [],
+        dataPlayback: [],
+        ownerUser,
+        path
     }
-})
+}
 
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'}
@@ -548,24 +539,33 @@ async function getUserShares(userId) {
     return {shareDataExport, shareDataImport}
 }
 
-function getConfirmationCode() {
-    let [min, max] = [1000, 9999]
-    return Math.round(Math.random() * (max - min) + min)
-}
+app.use(cors())
+app.post('/beta', function (req, res) {
+    let inputStream =       []
+    req.on('data', function (data) {
+        inputStream += data
+    })
+    req.on('end', function () {
+        let c2s = JSON.parse(inputStream) // it must be a parameter to prevent async issues
+        inputStream = []
+        sendResponse(c2s).then(s2c => {
+            res.json(s2c)
+            console.log('response sent')
+        })
+    })
+})
 
-function getDefaultMap(mapName, ownerUser, path) {
-    return {
-        data: [
-            {path: ['m']},
-            {path: ['r', 0], content: mapName, selected: 1},
-            {path: ['r', 0, 'd', 0]},
-            {path: ['r', 0, 'd', 1]},
-        ],
-        dataHistory: [],
-        dataPlayback: [],
-        ownerUser,
-        path
+MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
+    if (err) {
+        console.log(err)
+    } else {
+        console.log('connected')
+        db = client.db(process.env.MONGO_TARGET_DB || "app_dev")
+        collectionUsers = db.collection('users')
+        collectionMaps = db.collection('maps')
+        collectionShares = db.collection('shares')
+        app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')})
     }
-}
+})
 
 module.exports = app
