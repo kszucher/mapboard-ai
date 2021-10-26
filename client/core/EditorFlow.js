@@ -126,7 +126,7 @@ const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd,
     }
     if (shouldSynchTabs) {
         Object.assign(serverAction.serverPayload, {
-            tabMapIdListOut: state.tabMapIdList
+            // tabMapIdListOut: state.tabMapIdList // TODO use
         })
     }
     if (['createMapInMap'].includes(serverCmd)) {
