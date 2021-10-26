@@ -77,44 +77,48 @@ function getDefaultMap(mapName, ownerUser, path) {
     }
 }
 
+function assignProps () {
+
+}
+
 async function resolveClientActions (action, s2c) {
     switch (s2c.payload) {
-        case 'pingSuccess':                         break;
-        case 'getLandingDataSuccess':               break;
-        case 'signUpStep1Success':                  break;
-        case 'signUpStep1FailEmailAlreadyInUse':    break;
-        case 'signUpStep2FailUnknownUser':          break;
-        case 'signUpStep2FailAlreadyActivated':     break;
-        case 'signUpStep2FailWrongCode':            break;
-        case 'signUpStep2Success':                  break;
-        case 'signInFail':                          break;
-        case 'signInFailIncompleteRegistration':    break;
-        case 'tabSynchFail':                        break;
-        case 'signInSuccess':                       break;
-        case 'openMapFromHistorySuccess':           break;
-        case 'openMapFromTabSuccess':               break;
-        case 'openMapFromMapSuccess':               break;
-        case 'openMapFromBreadcrumbsSuccess':       break;
-        case 'saveMapSuccess':                      break;
-        case 'createMapInMapSuccess':               break;
-        case 'createMapInTabSuccess':               break;
-        case 'removeMapInTabFail':                  break;
-        case 'removeMapInTabSuccess':               break;
-        case 'moveUpMapInTabFail':                  break;
-        case 'moveUpMapInTabSuccess':               break;
-        case 'moveDownMapInTabFail':                break;
-        case 'moveDownMapInTabSuccess':             break;
-        case 'openFrameFail':                       break;
-        case 'openFrameSuccess':                    break; // openPrevFrameSuccess/openNextFrameSuccess
-        case 'importFrameSuccess':                  break;
-        case 'deleteFrameFail':                     break;
-        case 'deleteFrameSuccess':                  break;
-        case 'duplicateFrameSuccess':               break;
-        case 'getSharesSuccess':                    break;
-        case 'shareValidityFail':                   break;
-        case 'shareValiditySuccess':                break;
-        case 'acceptShareSuccess':                  break;
-        case 'withdrawShareSuccess':                break;
+        case 'pingSuccess':                         return assignProps(0)
+        case 'getLandingDataSuccess':               return assignProps(0)
+        case 'signUpStep1Success':                  return assignProps(0)
+        case 'signUpStep1FailEmailAlreadyInUse':    return assignProps(0)
+        case 'signUpStep2FailUnknownUser':          return assignProps(0)
+        case 'signUpStep2FailAlreadyActivated':     return assignProps(0)
+        case 'signUpStep2FailWrongCode':            return assignProps(0)
+        case 'signUpStep2Success':                  return assignProps(0)
+        case 'signInFail':                          return assignProps(0)
+        case 'signInFailIncompleteRegistration':    return assignProps(0)
+        case 'tabSynchFail':                        return assignProps(0)
+        case 'signInSuccess':                       return assignProps(0)
+        case 'openMapFromHistorySuccess':           return assignProps(0)
+        case 'openMapFromTabSuccess':               return assignProps(0)
+        case 'openMapFromMapSuccess':               return assignProps(0)
+        case 'openMapFromBreadcrumbsSuccess':       return assignProps(0)
+        case 'saveMapSuccess':                      return assignProps(0)
+        case 'createMapInMapSuccess':               return assignProps(0)
+        case 'createMapInTabSuccess':               return assignProps(0)
+        case 'removeMapInTabFail':                  return assignProps(0)
+        case 'removeMapInTabSuccess':               return assignProps(0)
+        case 'moveUpMapInTabFail':                  return assignProps(0)
+        case 'moveUpMapInTabSuccess':               return assignProps(0)
+        case 'moveDownMapInTabFail':                return assignProps(0)
+        case 'moveDownMapInTabSuccess':             return assignProps(0)
+        case 'openFrameFail':                       return assignProps(0)
+        case 'openFrameSuccess':                    return assignProps(0)
+        case 'importFrameSuccess':                  return assignProps(0)
+        case 'deleteFrameFail':                     return assignProps(0)
+        case 'deleteFrameSuccess':                  return assignProps(0)
+        case 'duplicateFrameSuccess':               return assignProps(0)
+        case 'getSharesSuccess':                    return assignProps(0)
+        case 'shareValidityFail':                   return assignProps(0)
+        case 'shareValiditySuccess':                return assignProps(0)
+        case 'acceptShareSuccess':                  return assignProps(0)
+        case 'withdrawShareSuccess':                return assignProps(0)
     }
     return s2c
     // TODO: na, itt gyönyörűszépen össze lehet szedegetni, hogy melyik válasz most mit ad le!!!
