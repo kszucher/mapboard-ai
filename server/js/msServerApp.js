@@ -11,6 +11,7 @@ const {
     getFrameLen,
     getPlaybackMapData,
     getMapProps,
+    getMapNameList,
     getUserShares,
     deleteMapFromUsers,
     deleteMapFromShares
@@ -310,8 +311,6 @@ async function sendResponse(c2s) {
                                         await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: currUser._id})
                                         await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: currUser._id});
                                     }
-
-                                    // SENDING LATEST
                                     const currUserNew = await collectionUsers.findOne({email: c2s.cred.email})
                                     const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserNew
                                     const breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
@@ -447,7 +446,7 @@ async function sendResponse(c2s) {
                                 break
                             }
                             case 'getShares': {
-                                const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionShares, currUser._id)
+                                const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
                                 s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport}}
                                 break
                             }
@@ -480,7 +479,7 @@ async function sendResponse(c2s) {
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
                                 await collectionShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
-                                const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionShares, currUser._id)
+                                const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
                                 s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapNameList, tabMapSelected}}
                                 break
                             }
@@ -496,7 +495,7 @@ async function sendResponse(c2s) {
                                 )
                                 // if shared map was selected by shareUser, change selection
                                 await collectionShares.deleteOne({_id: ObjectId(shareId)})
-                                const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionShares, currUser._id)
+                                const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
                                 s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }
                         }

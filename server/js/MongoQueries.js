@@ -30,14 +30,14 @@ async function getUserEmail(collectionUsers, userId) {
     return (await collectionUsers.findOne({_id: userId})).email
 }
 
-async function getUserShares(collectionUsers, collectionShares, userId) {
+async function getUserShares(collectionUsers, collectionMaps, collectionShares, userId) {
     let ownerUserData = await collectionShares.find({ownerUser: userId}).toArray()
     let shareDataExport = []
     for (let i = 0; i < ownerUserData.length; i++) {
         shareDataExport.push({
             '_id': ownerUserData[i]._id,
             'id': i,
-            'map': (await getMapNameList([ownerUserData[i].sharedMap]))[0],
+            'map': (await getMapNameList(collectionMaps, [ownerUserData[i].sharedMap]))[0],
             'shareUserEmail': await getUserEmail(collectionUsers, ownerUserData[i].shareUser),
             'access': ownerUserData[i].access,
             'status': ownerUserData[i].status
@@ -49,7 +49,7 @@ async function getUserShares(collectionUsers, collectionShares, userId) {
         shareDataImport.push({
             '_id': shareUserData[i]._id,
             'id': i,
-            'map': (await getMapNameList([shareUserData[i].sharedMap]))[0],
+            'map': (await getMapNameList(collectionMaps, [shareUserData[i].sharedMap]))[0],
             'shareUserEmail': await getUserEmail(collectionUsers, shareUserData[i].ownerUser),
             'access': shareUserData[i].access,
             'status': shareUserData[i].status
@@ -99,6 +99,7 @@ module.exports = {
     getFrameLen,
     getPlaybackMapData,
     getMapProps,
+    getMapNameList,
     getUserShares,
     deleteMapFromUsers,
     deleteMapFromShares
