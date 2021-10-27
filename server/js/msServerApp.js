@@ -205,7 +205,7 @@ async function sendResponse(c2s) {
                                 const {tabMapSelected} = c2s.serverPayload
                                 const mapId = tabMapIdList[tabMapSelected]
                                 const breadcrumbMapIdList = [mapId]
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapSelected, breadcrumbMapIdList}})
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 const mapSource = 'data'
                                 s2c = {cmd: 'openMapFromTabSuccess', payload: {tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource}}
                                 break
@@ -255,7 +255,6 @@ async function sendResponse(c2s) {
                                 const mapId = (await collectionMaps.insertOne(newMap)).insertedId
                                 tabMapIdList = [...tabMapIdList, mapId]
                                 tabMapSelected = tabMapIdList.length - 1
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 const {breadcrumbMapIdList} = currUser
                                 const mapSource = 'data'
                                 s2c = {cmd: 'createMapInTabSuccess', payload: {tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource}}
@@ -289,7 +288,6 @@ async function sendResponse(c2s) {
                                     [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                         [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                                     tabMapSelected = tabMapSelected - 1
-                                    await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                     s2c = {cmd: 'moveUpMapInTabSuccess', payload: {tabMapIdList, tabMapSelected}}
                                 }
                                 break
@@ -302,7 +300,6 @@ async function sendResponse(c2s) {
                                     [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                         [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                                     tabMapSelected = tabMapSelected + 1
-                                    await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                     s2c = {cmd: 'moveDownMapInTabSuccess', payload: {tabMapIdList, tabMapSelected}}
                                 }
                                 break
@@ -421,7 +418,6 @@ async function sendResponse(c2s) {
                                 const shareData = await collectionShares.findOne({_id: shareId})
                                 tabMapIdList = [...tabMapIdList, shareData.sharedMap]
                                 tabMapSelected = tabMapIdList.length - 1
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 await collectionShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
                                 const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
                                 s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapIdList, tabMapSelected}}
@@ -475,8 +471,9 @@ async function sendResponse(c2s) {
                                 }
                                 Object.assign(s2c.payload, {mapStorage, mapRight})
                             }
-                            if (s2c.payload.hasOwnProperty('tabMapIdList')) {
-                                const {tabMapIdList} = s2c.payload;
+                            if (s2c.payload.hasOwnProperty('tabMapIdList') && s2c.payload.hasOwnProperty('tabMapSelected')) {
+                                const {tabMapIdList, tabMapSelected} = s2c.payload;
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
                                 Object.assign(s2c.payload, {tabMapNameList})
                             }
