@@ -205,7 +205,6 @@ async function sendResponse(c2s) {
                                 const {tabMapSelected} = c2s.serverPayload
                                 const mapId = tabMapIdList[tabMapSelected]
                                 const breadcrumbMapIdList = [mapId]
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 const mapSource = 'data'
                                 s2c = {cmd: 'openMapFromTabSuccess', payload: {tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource}}
                                 break
@@ -215,7 +214,6 @@ async function sendResponse(c2s) {
                                 let {mapId} = c2s.serverPayload
                                 mapId = ObjectId(mapId)
                                 breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 const mapSource = 'data'
                                 s2c = {cmd: 'openMapFromMapSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
@@ -225,7 +223,6 @@ async function sendResponse(c2s) {
                                 let {breadcrumbMapSelected} = c2s.serverPayload
                                 breadcrumbMapIdList.length = breadcrumbMapSelected + 1
                                 let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 const mapSource = 'data'
                                 s2c = {cmd: 'openMapFromBreadcrumbsSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
@@ -245,7 +242,6 @@ async function sendResponse(c2s) {
                                     {"arrayFilters": [{"elem.path": lastPath}], "multi": true}
                                 )
                                 breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
-                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 const mapSource = 'data'
                                 s2c = {cmd: 'createMapInMapSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
@@ -481,6 +477,8 @@ async function sendResponse(c2s) {
                             if (s2c.payload.hasOwnProperty('breadcrumbMapIdList')) {
                                 const {breadcrumbMapIdList} = s2c.payload;
                                 const breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
+                                // TODO: remove mapnál a breadcrumb-ot is beállítani a nagy queryben mindenkinek!!!
                                 Object.assign(s2c.payload, {breadcrumbMapNameList})
                             }
                         }
