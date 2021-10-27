@@ -245,6 +245,7 @@ async function sendResponse(c2s) {
                                     {"arrayFilters": [{"elem.path": lastPath}], "multi": true}
                                 )
                                 breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
+                                await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 const mapSource = 'data'
                                 s2c = {cmd: 'createMapInMapSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
