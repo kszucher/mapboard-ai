@@ -222,8 +222,7 @@ async function sendResponse(c2s) {
                                 const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
                                 const breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 const mapSource = 'data'
-                                const mapStorage = await getMapData(collectionMaps, mapId)
-                                s2c = {cmd: 'openMapFromHistorySuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                s2c = {cmd: 'openMapFromHistorySuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource}}
                                 break
                             }
                             case 'openMapFromTab': {
@@ -235,8 +234,7 @@ async function sendResponse(c2s) {
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapSelected, breadcrumbMapIdList}})
                                 const breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 const mapSource = 'data'
-                                const mapStorage = await getMapData(collectionMaps, mapId)
-                                s2c = {cmd: 'openMapFromTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                s2c = {cmd: 'openMapFromTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource}}
                                 break
                             }
                             case 'openMapFromMap': {
@@ -247,8 +245,7 @@ async function sendResponse(c2s) {
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 let breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 let mapSource = 'data'
-                                let mapStorage = await getMapData(collectionMaps, mapId)
-                                s2c = {cmd: 'openMapFromMapSuccess', payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                s2c = {cmd: 'openMapFromMapSuccess', payload: {breadcrumbMapNameList, mapId, mapSource}}
                                 break
                             }
                             case 'openMapFromBreadcrumbs': {
@@ -259,8 +256,7 @@ async function sendResponse(c2s) {
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 let breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 let mapSource = 'data'
-                                let mapStorage = await getMapData(collectionMaps, mapId)
-                                s2c = {cmd: 'openMapFromBreadcrumbsSuccess', payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                s2c = {cmd: 'openMapFromBreadcrumbsSuccess', payload: {breadcrumbMapNameList, mapId, mapSource}}
                                 break
                             }
                             case 'saveMap': {
@@ -280,8 +276,7 @@ async function sendResponse(c2s) {
                                 breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
                                 let breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 let mapSource = 'data'
-                                let mapStorage = newMap.data
-                                s2c = {cmd: 'createMapInMapSuccess', payload: {breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                s2c = {cmd: 'createMapInMapSuccess', payload: {breadcrumbMapNameList, mapId, mapSource}}
                                 break
                             }
                             case 'createMapInTab': {
@@ -295,8 +290,7 @@ async function sendResponse(c2s) {
                                 const breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
                                 const mapSource = 'data'
-                                const mapStorage = newMap.data
-                                s2c = {cmd: 'createMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                s2c = {cmd: 'createMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource}}
                                 break
                             }
                             case 'removeMapInTab': {
@@ -317,8 +311,7 @@ async function sendResponse(c2s) {
                                     const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
                                     const mapId = tabMapIdList[tabMapSelected]
                                     const mapSource = 'data'
-                                    const mapStorage = await getMapData(collectionMaps, mapId)
-                                    s2c = {cmd: 'removeMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource, mapStorage}}
+                                    s2c = {cmd: 'removeMapInTabSuccess', payload: {tabMapNameList, tabMapSelected, breadcrumbMapNameList, mapId, mapSource}}
                                 }
                                 break
                             }
@@ -359,8 +352,7 @@ async function sendResponse(c2s) {
                                     s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}}
                                 } else {
                                     const mapSource = 'dataPlayback'
-                                    const mapStorage = await getPlaybackMapData(collectionMaps, mapId, frameSelected)
-                                    s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}}
+                                    s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 }
                                 break
                             }
@@ -370,8 +362,7 @@ async function sendResponse(c2s) {
                                 const mapId = ObjectId(mapIdOut)
                                 const frameLen = await getFrameLen(collectionMaps, mapId)
                                 const mapSource = 'dataPlayback'
-                                const mapStorage = await getPlaybackMapData(collectionMaps, mapId, frameSelected)
-                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}}
+                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
                             }
                             case 'openNextFrame': {
@@ -380,8 +371,7 @@ async function sendResponse(c2s) {
                                 const mapId = ObjectId(mapIdOut)
                                 const frameLen = await getFrameLen(collectionMaps, mapId)
                                 const mapSource = 'dataPlayback'
-                                const mapStorage = await getPlaybackMapData(collectionMaps, mapId, frameSelected)
-                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}}
+                                s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
                             }
                             case 'importFrame': {
@@ -392,7 +382,7 @@ async function sendResponse(c2s) {
                                 await collectionMaps.updateOne({_id: mapId}, {$push: {"dataPlayback": mapStorage}})
                                 const frameLen = await getFrameLen(collectionMaps, mapId)
                                 const frameSelected = frameLen - 1
-                                s2c = {cmd: 'importFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}}
+                                s2c = {cmd: 'importFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
                             }
                             case 'deleteFrame': {
@@ -414,16 +404,13 @@ async function sendResponse(c2s) {
                                         }
                                     }])
                                     let mapSource
-                                    let mapStorage
                                     frameLen = frameLen - 1
                                     if (frameLen === 0) {
                                         mapSource = 'data'
-                                        mapStorage = await getMapData(collectionMaps, mapId)
                                     } else {
                                         mapSource = 'dataPlayback'
-                                        mapStorage = await getPlaybackMapData(collectionMaps, mapId, frameSelected)
                                     }
-                                    s2c = {cmd: 'deleteFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}}
+                                    s2c = {cmd: 'deleteFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 }
                                 break
                             }
@@ -439,10 +426,9 @@ async function sendResponse(c2s) {
                                         }
                                     }
                                 })
-                                let mapSource = mapSourceOut
-                                let mapStorage = mapStorageOut
+                                let mapSource = "dataPlayback"
                                 let frameLen = await getFrameLen(collectionMaps, mapId)
-                                s2c = {cmd: 'duplicateFrameSuccess', payload: {mapId, mapSource, mapStorage, frameLen, frameSelected}}
+                                s2c = {cmd: 'duplicateFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
                             }
                             case 'getShares': {
@@ -499,16 +485,27 @@ async function sendResponse(c2s) {
                                 s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }
                         }
-                        if (s2c.hasOwnProperty('payload') && s2c.payload.hasOwnProperty('mapId')) {
-                            const {path, ownerUser} = await getMapProps(collectionMaps, s2c.payload.mapId)
+                        if (s2c.hasOwnProperty('payload')
+                            && s2c.payload.hasOwnProperty('mapId')
+                            && s2c.payload.hasOwnProperty('mapSource')
+                        ) {
+                            const {mapId, mapSource} = s2c.payload;
+                            let mapStorage = {};
+                            if (mapSource === 'data') {
+                                mapStorage = await getMapData(collectionMaps, mapId)
+                            } else if (mapSource === 'dataPlayback') {
+                                mapStorage = await getPlaybackMapData(collectionMaps, mapId, s2c.payload.frameSelected)
+                            }
+
+                            const {path, ownerUser} = await getMapProps(collectionMaps, mapId)
                             let mapRight = MAP_RIGHT.UNAUTHORIZED
-                            if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(s2c.payload.mapId)))) {
+                            if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
                                 mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
                             } else {
                                 if (isEqual(currUser._id, ownerUser)) {
                                     mapRight = MAP_RIGHT.EDIT
                                 } else {
-                                    let fullPath = [...path, s2c.payload.mapId]
+                                    let fullPath = [...path, mapId]
                                     for (let i = fullPath.length - 1; i > -1; i--) {
                                         const currMapId = fullPath[i]
                                         const shareData = await collectionShares.findOne({
@@ -521,7 +518,7 @@ async function sendResponse(c2s) {
                                     }
                                 }
                             }
-                            Object.assign(s2c.payload, {mapRight})
+                            Object.assign(s2c.payload, {mapStorage, mapRight})
                         }
                     }
                 }
