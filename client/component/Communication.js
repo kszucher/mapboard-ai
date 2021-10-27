@@ -76,17 +76,11 @@ export function Communication() {
                     dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
                     break;
                 }
-                case 'openMapSuccess': {
-                    break;
-                }
                 case 'getLandingDataSuccess': {
                     dispatch({type: 'SHOW_DEMO'});
                 }
             }
         }
-    }, [serverResponseCntr]);
-
-    useEffect(() => {
         if (serverResponse.payload) {
             const serverState = serverResponse.payload;
             if (serverState.hasOwnProperty('landingData')) {
