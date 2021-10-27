@@ -403,13 +403,8 @@ async function sendResponse(c2s) {
                                             }
                                         }
                                     }])
-                                    let mapSource
                                     frameLen = frameLen - 1
-                                    if (frameLen === 0) {
-                                        mapSource = 'data'
-                                    } else {
-                                        mapSource = 'dataPlayback'
-                                    }
+                                    const mapSource = frameLen === 0 ? 'data' : 'dataPlayback';
                                     s2c = {cmd: 'deleteFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 }
                                 break
