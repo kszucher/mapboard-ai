@@ -78,54 +78,31 @@ function getDefaultMap(mapName, ownerUser, path) {
     }
 }
 
-function assignProps () {
-
-}
-
-async function resolveClientActions (action, s2c) {
-    switch (s2c.payload) {
-        case 'pingSuccess':                         return assignProps(0)
-        case 'getLandingDataSuccess':               return assignProps(0)
-        case 'signUpStep1Success':                  return assignProps(0)
-        case 'signUpStep1FailEmailAlreadyInUse':    return assignProps(0)
-        case 'signUpStep2FailUnknownUser':          return assignProps(0)
-        case 'signUpStep2FailAlreadyActivated':     return assignProps(0)
-        case 'signUpStep2FailWrongCode':            return assignProps(0)
-        case 'signUpStep2Success':                  return assignProps(0)
-        case 'signInFail':                          return assignProps(0)
-        case 'signInFailIncompleteRegistration':    return assignProps(0)
-        case 'tabSynchFail':                        return assignProps(0)
-        case 'signInSuccess':                       return assignProps(0)
-        case 'openMapFromHistorySuccess':           return assignProps(0)
-        case 'openMapFromTabSuccess':               return assignProps(0)
-        case 'openMapFromMapSuccess':               return assignProps(0)
-        case 'openMapFromBreadcrumbsSuccess':       return assignProps(0)
-        case 'saveMapSuccess':                      return assignProps(0)
-        case 'createMapInMapSuccess':               return assignProps(0)
-        case 'createMapInTabSuccess':               return assignProps(0)
-        case 'removeMapInTabFail':                  return assignProps(0)
-        case 'removeMapInTabSuccess':               return assignProps(0)
-        case 'moveUpMapInTabFail':                  return assignProps(0)
-        case 'moveUpMapInTabSuccess':               return assignProps(0)
-        case 'moveDownMapInTabFail':                return assignProps(0)
-        case 'moveDownMapInTabSuccess':             return assignProps(0)
-        case 'openFrameFail':                       return assignProps(0)
-        case 'openFrameSuccess':                    return assignProps(0)
-        case 'importFrameSuccess':                  return assignProps(0)
-        case 'deleteFrameFail':                     return assignProps(0)
-        case 'deleteFrameSuccess':                  return assignProps(0)
-        case 'duplicateFrameSuccess':               return assignProps(0)
-        case 'getSharesSuccess':                    return assignProps(0)
-        case 'shareValidityFail':                   return assignProps(0)
-        case 'shareValiditySuccess':                return assignProps(0)
-        case 'acceptShareSuccess':                  return assignProps(0)
-        case 'withdrawShareSuccess':                return assignProps(0)
-    }
-    return s2c
-    // TODO: na, itt gyönyörűszépen össze lehet szedegetni, hogy melyik válasz most mit ad le!!!
-    // ez igazából amúgy egy api spec is lesz ám!!!
-    // de a lényeg, hogy sokat lehet majd a lenti kódon rövidíteni!!!
-}
+const replyList = [
+    'pingSuccess',
+    'getLandingDataSuccess',
+    'signUpStep1FailEmailAlreadyInUse', 'signUpStep1Success',
+    'signUpStep2FailUnknownUser', 'signUpStep2FailAlreadyActivated', 'signUpStep2FailWrongCode', 'signUpStep2Success',
+    'signInFail', 'signInFailIncompleteRegistration', 'tabSynchFail', 'signInSuccess',
+    'openMapFromHistorySuccess',
+    'openMapFromTabSuccess',
+    'openMapFromMapSuccess',
+    'openMapFromBreadcrumbsSuccess',
+    'saveMapSuccess',
+    'createMapInMapSuccess',
+    'createMapInTabSuccess',
+    'removeMapInTabFail', 'removeMapInTabSuccess',
+    'moveUpMapInTabFail', 'moveUpMapInTabSuccess',
+    'moveDownMapInTabFail', 'moveDownMapInTabSuccess',
+    'openFrameFail', 'openFrameSuccess',
+    'importFrameSuccess',
+    'deleteFrameFail', 'deleteFrameSuccess',
+    'duplicateFrameSuccess',
+    'getSharesSuccess',
+    'shareValidityFail', 'shareValiditySuccess',
+    'acceptShareSuccess',
+    'withdrawShareSuccess',
+]
 
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'}
@@ -141,7 +118,9 @@ async function sendResponse(c2s) {
             } else if (c2s.serverCmd === 'signUpStep1') {
                 let {name, email, password} = c2s.serverPayload
                 currUser = await collectionUsers.findOne({email})
-                if (currUser === null) {
+                if (currUser !== null) {
+                    s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'}
+                } else {
                     let confirmationCode = getConfirmationCode()
                     await transporter.sendMail({
                         from: "info@mindboard.io",
@@ -160,8 +139,6 @@ async function sendResponse(c2s) {
                     })
                     await collectionUsers.insertOne({email, password, activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION, confirmationCode})
                     s2c = {cmd: 'signUpStep1Success'}
-                } else {
-                    s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'}
                 }
             } else if (c2s.serverCmd === 'signUpStep2') {
                 let {email, confirmationCode} = c2s.serverPayload
@@ -320,10 +297,14 @@ async function sendResponse(c2s) {
                                 if (tabMapSelected === 0) {
                                     s2c = {cmd: 'moveUpMapInTabFail'}
                                 } else {
+
+
                                     [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                         [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                                     tabMapSelected = tabMapSelected - 1
                                     await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
+
+
                                     let tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
                                     s2c = {cmd: 'moveUpMapInTabSuccess', payload: {tabMapNameList, tabMapSelected}}
                                 }
