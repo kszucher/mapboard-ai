@@ -286,14 +286,10 @@ async function sendResponse(c2s) {
                                 if (tabMapSelected === 0) {
                                     s2c = {cmd: 'moveUpMapInTabFail'}
                                 } else {
-
-
                                     [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                                         [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                                     tabMapSelected = tabMapSelected - 1
                                     await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
-
-
                                     s2c = {cmd: 'moveUpMapInTabSuccess', payload: {tabMapIdList, tabMapSelected}}
                                 }
                                 break
@@ -303,14 +299,10 @@ async function sendResponse(c2s) {
                                 if (tabMapSelected >= tabMapIdList.length - 1) {
                                     s2c = {cmd: 'moveDownMapInTabFail'}
                                 } else {
-
-
                                     [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                                         [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                                     tabMapSelected = tabMapSelected + 1
                                     await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
-
-
                                     s2c = {cmd: 'moveDownMapInTabSuccess', payload: {tabMapIdList, tabMapSelected}}
                                 }
                                 break
