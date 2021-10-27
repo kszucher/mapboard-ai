@@ -273,8 +273,8 @@ async function sendResponse(c2s) {
                                         await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: currUser._id})
                                         await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: currUser._id});
                                     }
-                                    const currUserNew = await collectionUsers.findOne({email: c2s.cred.email})
-                                    const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserNew
+                                    const currUserUpdated = await collectionUsers.findOne({email: c2s.cred.email})
+                                    const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserUpdated
                                     const mapId = tabMapIdList[tabMapSelected]
                                     const mapSource = 'data'
                                     s2c = {cmd: 'removeMapInTabSuccess', payload: {tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource}}
