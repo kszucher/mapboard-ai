@@ -458,44 +458,43 @@ async function sendResponse(c2s) {
                                 s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }
                         }
-                        if (s2c.hasOwnProperty('payload')
-                            && s2c.payload.hasOwnProperty('mapId')
-                            && s2c.payload.hasOwnProperty('mapSource')
-                        ) {
-                            const {mapId, mapSource} = s2c.payload;
-                            let mapStorage = {};
-                            if (mapSource === 'data') {
-                                mapStorage = await getMapData(collectionMaps, mapId)
-                            } else if (mapSource === 'dataPlayback') {
-                                mapStorage = await getPlaybackMapData(collectionMaps, mapId, s2c.payload.frameSelected)
-                            }
-                            const {path, ownerUser} = await getMapProps(collectionMaps, mapId)
-                            let mapRight = MAP_RIGHT.UNAUTHORIZED
-                            if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
-                                mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
-                            } else {
-                                if (isEqual(currUser._id, ownerUser)) {
-                                    mapRight = MAP_RIGHT.EDIT
+                        if (s2c.hasOwnProperty('payload')) {
+                            if (s2c.payload.hasOwnProperty('mapId') && s2c.payload.hasOwnProperty('mapSource')) {
+                                const {mapId, mapSource} = s2c.payload;
+                                let mapStorage = {};
+                                if (mapSource === 'data') {
+                                    mapStorage = await getMapData(collectionMaps, mapId)
+                                } else if (mapSource === 'dataPlayback') {
+                                    mapStorage = await getPlaybackMapData(collectionMaps, mapId, s2c.payload.frameSelected)
+                                }
+                                const {path, ownerUser} = await getMapProps(collectionMaps, mapId)
+                                let mapRight = MAP_RIGHT.UNAUTHORIZED
+                                if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
+                                    mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
                                 } else {
-                                    let fullPath = [...path, mapId]
-                                    for (let i = fullPath.length - 1; i > -1; i--) {
-                                        const currMapId = fullPath[i]
-                                        const shareData = await collectionShares.findOne({
-                                            shareUser: currUser._id,
-                                            sharedMap: currMapId
-                                        })
-                                        if (shareData !== null) {
-                                            mapRight = shareData.access
+                                    if (isEqual(currUser._id, ownerUser)) {
+                                        mapRight = MAP_RIGHT.EDIT
+                                    } else {
+                                        let fullPath = [...path, mapId]
+                                        for (let i = fullPath.length - 1; i > -1; i--) {
+                                            const currMapId = fullPath[i]
+                                            const shareData = await collectionShares.findOne({
+                                                shareUser: currUser._id,
+                                                sharedMap: currMapId
+                                            })
+                                            if (shareData !== null) {
+                                                mapRight = shareData.access
+                                            }
                                         }
                                     }
                                 }
+                                Object.assign(s2c.payload, {mapStorage, mapRight})
                             }
-                            Object.assign(s2c.payload, {mapStorage, mapRight})
-                        }
-                        if (s2c.payload.hasOwnProperty('tabMapIdList')) {
-                            const {tabMapIdList} = s2c.payload;
-                            const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
-                            Object.assign(s2c.payload, {tabMapNameList})
+                            if (s2c.payload.hasOwnProperty('tabMapIdList')) {
+                                const {tabMapIdList} = s2c.payload;
+                                const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
+                                Object.assign(s2c.payload, {tabMapNameList})
+                            }
                         }
                     }
                 }
