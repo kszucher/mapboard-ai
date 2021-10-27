@@ -216,7 +216,7 @@ async function sendResponse(c2s) {
                                 mapId = ObjectId(mapId)
                                 breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
-                                let mapSource = 'data'
+                                const mapSource = 'data'
                                 s2c = {cmd: 'openMapFromMapSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
                             }
@@ -226,7 +226,7 @@ async function sendResponse(c2s) {
                                 breadcrumbMapIdList.length = breadcrumbMapSelected + 1
                                 let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
-                                let mapSource = 'data'
+                                const mapSource = 'data'
                                 s2c = {cmd: 'openMapFromBreadcrumbsSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
                             }
@@ -245,7 +245,7 @@ async function sendResponse(c2s) {
                                     {"arrayFilters": [{"elem.path": lastPath}], "multi": true}
                                 )
                                 breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
-                                let mapSource = 'data'
+                                const mapSource = 'data'
                                 s2c = {cmd: 'createMapInMapSuccess', payload: {breadcrumbMapIdList, mapId, mapSource}}
                                 break
                             }
@@ -393,8 +393,8 @@ async function sendResponse(c2s) {
                                         }
                                     }
                                 })
-                                let mapSource = "dataPlayback"
-                                let frameLen = await getFrameLen(collectionMaps, mapId)
+                                const mapSource = "dataPlayback"
+                                const frameLen = await getFrameLen(collectionMaps, mapId)
                                 s2c = {cmd: 'duplicateFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
                             }
