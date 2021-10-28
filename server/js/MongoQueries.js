@@ -78,6 +78,8 @@ async function deleteMapFromUsers (collectionUsers, mapIdToDelete, userFilter = 
                         }
                     }
                 }
+                // TODO: vajon itt egy újabb set, ami a tabMapSelected-en alapul, képes a legfrissebb értékkel set-elni valamit?
+                // ha igen, akkor a breadcrumb még mindig nincs meg, hanem a tabMapIdListből kell kivadászni, ez is kérdés hogy lehet-e
             }
         ]
     )
