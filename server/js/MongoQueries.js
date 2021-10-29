@@ -96,6 +96,16 @@ async function deleteMapFromShares(collectionShares, mapIdToDelete, userFilter =
     )
 }
 
+async function deleteMapEveryone (collectionUsers, collectionShares, mapIdToDelete) {
+    await deleteMapFromUsers(collectionUsers, mapIdToDelete);
+    await deleteMapFromShares(collectionShares, mapIdToDelete);
+}
+
+async function deleteMapJustMe (collectionUsers, collectionShares, mapIdToDelete, userId) {
+    await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: userId})
+    await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId});
+}
+
 module.exports = {
     getMapData,
     getFrameLen,
@@ -104,5 +114,7 @@ module.exports = {
     getMapNameList,
     getUserShares,
     deleteMapFromUsers,
-    deleteMapFromShares
+    deleteMapFromShares,
+    deleteMapEveryone,
+    deleteMapJustMe
 }

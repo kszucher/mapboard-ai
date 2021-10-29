@@ -13,9 +13,9 @@ const {
     getMapProps,
     getMapNameList,
     getUserShares,
-    deleteMapFromUsers,
-    deleteMapFromShares
-} = require("./MongoQueries");
+    deleteMapEveryone,
+    deleteMapJustMe,
+} = require("./MongoQueries")
 
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
@@ -262,13 +262,9 @@ async function sendResponse(c2s) {
                                     s2c = {cmd: 'removeMapInTabFail'}
                                 } else {
                                     const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
-                                    if (isEqual((await getMapProps(collectionMaps, mapIdToDelete)).ownerUser, currUser._id)) {
-                                        await deleteMapFromUsers(collectionUsers, mapIdToDelete);
-                                        await deleteMapFromShares(collectionShares, mapIdToDelete);
-                                    } else {
-                                        await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: currUser._id})
-                                        await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: currUser._id});
-                                    }
+                                    isEqual((await getMapProps(collectionMaps, mapIdToDelete)).ownerUser, currUser._id)
+                                        ? await deleteMapEveryone(collectionUsers, collectionShares, mapIdToDelete)
+                                        : await deleteMapJustMe(collectionUsers, collectionShares, mapIdToDelete, currUser._id)
                                     const currUserUpdated = await collectionUsers.findOne({email: c2s.cred.email})
                                     const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserUpdated
                                     const mapId = tabMapIdList[tabMapSelected]
@@ -362,7 +358,7 @@ async function sendResponse(c2s) {
                                         }
                                     }])
                                     frameLen = frameLen - 1
-                                    const mapSource = frameLen === 0 ? 'data' : 'dataPlayback';
+                                    const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
                                     s2c = {cmd: 'deleteFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 }
                                 break
@@ -438,8 +434,8 @@ async function sendResponse(c2s) {
                         }
                         if (s2c.hasOwnProperty('payload')) {
                             if (s2c.payload.hasOwnProperty('mapId') && s2c.payload.hasOwnProperty('mapSource')) {
-                                const {mapId, mapSource} = s2c.payload;
-                                let mapStorage = {};
+                                const {mapId, mapSource} = s2c.payload
+                                let mapStorage = {}
                                 if (mapSource === 'data') {
                                     mapStorage = await getMapData(collectionMaps, mapId)
                                 } else if (mapSource === 'dataPlayback') {
@@ -448,7 +444,7 @@ async function sendResponse(c2s) {
                                 const {path, ownerUser} = await getMapProps(collectionMaps, mapId)
                                 let mapRight = MAP_RIGHT.UNAUTHORIZED
                                 if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
-                                    mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW;
+                                    mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW
                                 } else {
                                     if (isEqual(currUser._id, ownerUser)) {
                                         mapRight = MAP_RIGHT.EDIT
@@ -469,13 +465,13 @@ async function sendResponse(c2s) {
                                 Object.assign(s2c.payload, {mapStorage, mapRight})
                             }
                             if (s2c.payload.hasOwnProperty('tabMapIdList') && s2c.payload.hasOwnProperty('tabMapSelected')) {
-                                const {tabMapIdList, tabMapSelected} = s2c.payload;
+                                const {tabMapIdList, tabMapSelected} = s2c.payload
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 const tabMapNameList = await getMapNameList(collectionMaps, tabMapIdList)
                                 Object.assign(s2c.payload, {tabMapNameList})
                             }
                             if (s2c.payload.hasOwnProperty('breadcrumbMapIdList')) {
-                                const {breadcrumbMapIdList} = s2c.payload;
+                                const {breadcrumbMapIdList} = s2c.payload
                                 const breadcrumbMapNameList = await getMapNameList(collectionMaps, breadcrumbMapIdList)
                                 await collectionUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 // TODO: remove mapnál a breadcrumb-ot is beállítani a nagy queryben mindenkinek!!!
