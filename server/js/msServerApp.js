@@ -14,8 +14,8 @@ const {
     getShareProps,
     getMapNameList,
     getUserShares,
-    deleteMapEveryone,
-    deleteMapJustMe,
+    deleteMapAll,
+    deleteMapOne,
 } = require("./MongoQueries")
 
 const transporter = nodemailer.createTransport({
@@ -264,8 +264,8 @@ async function sendResponse(c2s) {
                                 } else {
                                     const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
                                     isEqual((await getMapProps(collectionMaps, mapIdToDelete)).ownerUser, currUser._id)
-                                        ? await deleteMapEveryone(collectionUsers, collectionShares, mapIdToDelete)
-                                        : await deleteMapJustMe(collectionUsers, collectionShares, mapIdToDelete, currUser._id)
+                                        ? await deleteMapAll(collectionUsers, collectionShares, mapIdToDelete)
+                                        : await deleteMapOne(collectionUsers, collectionShares, mapIdToDelete, currUser._id)
                                     const currUserUpdated = await collectionUsers.findOne({email: c2s.cred.email})
                                     const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserUpdated
                                     const mapId = tabMapIdList[tabMapSelected]
@@ -421,14 +421,7 @@ async function sendResponse(c2s) {
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
                                 const {shareUser, sharedMap} = await getShareProps(shareId)
-                                // TODO "just you"
-                                await collectionUsers.updateOne(
-                                    {_id: shareUser},
-                                    {$pull: {tabMapIdList: ObjectId(sharedMap)}},
-                                    {multi: true}
-                                )
-                                await collectionShares.deleteOne({_id: ObjectId(shareId)})
-
+                                await deleteMapOne(collectionUsers, collectionShares, sharedMap, shareUser)
                                 const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
                                 s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }

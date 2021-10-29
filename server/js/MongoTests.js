@@ -18,8 +18,8 @@ async function mongoTests(cmd) {
         await collectionShares.deleteMany();
         let dbContent;
         switch (cmd) {
-            case 'deleteMapJustMe':
-            case 'deleteMapEveryone':
+            case 'deleteMapOne':
+            case 'deleteMapAll':
             {
                 dbContent = {
                     users: [
@@ -46,12 +46,12 @@ async function mongoTests(cmd) {
         await collectionMaps.insertMany(dbContent.maps);
         await collectionShares.insertMany(dbContent.shares);
         switch(cmd) {
-            case 'deleteMapJustMe': {
-                await MongoQueries.deleteMapJustMe(collectionUsers, collectionShares, 'map2', 'user2');
+            case 'deleteMapOne': {
+                await MongoQueries.deleteMapOne(collectionUsers, collectionShares, 'map2', 'user2');
                 break;
             }
-            case 'deleteMapEveryone': {
-                await MongoQueries.deleteMapEveryone(collectionUsers, collectionShares, 'map2');
+            case 'deleteMapAll': {
+                await MongoQueries.deleteMapAll(collectionUsers, collectionShares, 'map2');
 
                 break;
             }
@@ -70,5 +70,5 @@ async function mongoTests(cmd) {
     client.close();
 }
 
-mongoTests('deleteMapJustMe');
-// mongoTests('deleteMapEveryone');
+mongoTests('deleteMapOne');
+// mongoTests('deleteMapAll');

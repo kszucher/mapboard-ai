@@ -102,22 +102,17 @@ async function deleteMapFromShares(collectionShares, mapIdToDelete, userFilter =
     )
 }
 
-async function deleteMapEveryone (collectionUsers, collectionShares, mapIdToDelete) {
+async function deleteMapAll (collectionUsers, collectionShares, mapIdToDelete) {
     await deleteMapFromUsers(collectionUsers, mapIdToDelete)
     await deleteMapFromShares(collectionShares, mapIdToDelete)
 }
 
-async function deleteMapJustMe (collectionUsers, collectionShares, mapIdToDelete, userId) {
+async function deleteMapOne (collectionUsers, collectionShares, mapIdToDelete, userId) {
     await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: userId})
     await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId})
 }
 
-async function deleteMapJustYou (collectionUsers, collectionShares, mapIdToDelete, userId) {
-    await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: userId})
-    await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId})
-}
-
-// in case I want to remove share for ALL user I ever shared it with: "everyoneButMe"
+// in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
 // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
 module.exports = {
@@ -128,6 +123,6 @@ module.exports = {
     getShareProps,
     getMapNameList,
     getUserShares,
-    deleteMapEveryone,
-    deleteMapJustMe
+    deleteMapAll,
+    deleteMapOne
 }
