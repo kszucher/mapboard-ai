@@ -421,7 +421,7 @@ async function sendResponse(c2s) {
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
                                 const {shareUser, sharedMap} = await getShareProps(shareId)
-                                // TODO ehelyett a kettő helyett a megfelelő művelet
+                                // TODO "just you"
                                 await collectionUsers.updateOne(
                                     {_id: shareUser},
                                     {$pull: {tabMapIdList: ObjectId(sharedMap)}},

@@ -112,6 +112,14 @@ async function deleteMapJustMe (collectionUsers, collectionShares, mapIdToDelete
     await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId})
 }
 
+async function deleteMapJustYou (collectionUsers, collectionShares, mapIdToDelete, userId) {
+    await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: userId})
+    await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId})
+}
+
+// in case I want to remove share for ALL user I ever shared it with: "everyoneButMe"
+// https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
+
 module.exports = {
     getMapData,
     getFrameLen,
