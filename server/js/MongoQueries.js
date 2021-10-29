@@ -16,6 +16,12 @@ async function getMapProps(collectionMaps, mapId) {
     return {path, ownerUser}
 }
 
+async function getShareProps(collectionShares, shareId) {
+    const currShare = await collectionShares.findOne({_id: shareId})
+    const {shareUser, sharedMap} = currShare
+    return {shareUser, sharedMap}
+}
+
 async function getMapNameList(collectionMaps, mapIdList) {
     let mapNameList = []
     await collectionMaps.aggregate([
@@ -97,13 +103,13 @@ async function deleteMapFromShares(collectionShares, mapIdToDelete, userFilter =
 }
 
 async function deleteMapEveryone (collectionUsers, collectionShares, mapIdToDelete) {
-    await deleteMapFromUsers(collectionUsers, mapIdToDelete);
-    await deleteMapFromShares(collectionShares, mapIdToDelete);
+    await deleteMapFromUsers(collectionUsers, mapIdToDelete)
+    await deleteMapFromShares(collectionShares, mapIdToDelete)
 }
 
 async function deleteMapJustMe (collectionUsers, collectionShares, mapIdToDelete, userId) {
     await deleteMapFromUsers(collectionUsers, mapIdToDelete, {_id: userId})
-    await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId});
+    await deleteMapFromShares(collectionShares, mapIdToDelete, {shareUser: userId})
 }
 
 module.exports = {
@@ -111,10 +117,9 @@ module.exports = {
     getFrameLen,
     getPlaybackMapData,
     getMapProps,
+    getShareProps,
     getMapNameList,
     getUserShares,
-    deleteMapFromUsers,
-    deleteMapFromShares,
     deleteMapEveryone,
     deleteMapJustMe
 }

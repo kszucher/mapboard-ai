@@ -11,6 +11,7 @@ const {
     getFrameLen,
     getPlaybackMapData,
     getMapProps,
+    getShareProps,
     getMapNameList,
     getUserShares,
     deleteMapEveryone,
@@ -408,8 +409,8 @@ async function sendResponse(c2s) {
                                 let {tabMapIdList, tabMapSelected} = currUser
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const shareData = await collectionShares.findOne({_id: shareId})
-                                tabMapIdList = [...tabMapIdList, shareData.sharedMap]
+                                const {shareUser, sharedMap} = await getShareProps(shareId)
+                                tabMapIdList = [...tabMapIdList, sharedMap]
                                 tabMapSelected = tabMapIdList.length - 1
                                 await collectionShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
                                 const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
@@ -419,15 +420,15 @@ async function sendResponse(c2s) {
                             case 'withdrawShare': {
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const shareData = await collectionShares.findOne({_id: shareId})
-                                const shareUser = await collectionUsers.findOne({_id: shareData.shareUser})
+                                const {shareUser, sharedMap} = await getShareProps(shareId)
+                                // TODO ehelyett a kettő helyett a megfelelő művelet
                                 await collectionUsers.updateOne(
-                                    {_id: ObjectId(shareUser._id)},
-                                    {$pull: {tabMapIdList: ObjectId(shareData.sharedMap)}},
+                                    {_id: shareUser},
+                                    {$pull: {tabMapIdList: ObjectId(sharedMap)}},
                                     {multi: true}
                                 )
-                                // if shared map was selected by shareUser, change selection
                                 await collectionShares.deleteOne({_id: ObjectId(shareId)})
+
                                 const {shareDataExport, shareDataImport} = await getUserShares(collectionUsers, collectionMaps, collectionShares, currUser._id)
                                 s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }
