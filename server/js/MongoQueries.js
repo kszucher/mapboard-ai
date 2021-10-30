@@ -79,19 +79,28 @@ async function deleteMapFromUsers (cUsers, mapIdToDelete, userFilter = {}) {
                                     if: {$gt: ["$tabMapSelected", 0]},
                                     then: {$subtract: ["$tabMapSelected", 1]},
                                     else: 0
-                                }},
+                                }
+                            },
                             else: "$tabMapSelected"
                         }
                     }
                 }
-                // TODO: vajon itt egy újabb set, ami a tabMapSelected-en alapul, képes a legfrissebb értékkel set-elni valamit?
-                // ha igen, akkor a breadcrumb még mindig nincs meg, hanem a tabMapIdListből kell kivadászni, ez is kérdés hogy lehet-e
-            }
+            },
+            {
+                $set : {
+                    tabMapIdList : {
+                        $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapIdToDelete]}}
+                    }
+                }
+            },
+            // {
+            //     $set: {
+            //         breadcrumbMapIdList: {
+            //
+            //         }
+            //     }
+            // },
         ]
-    )
-    await cUsers.updateMany(
-        filter,
-        {$pull: {tabMapIdList: mapIdToDelete}}
     )
 }
 

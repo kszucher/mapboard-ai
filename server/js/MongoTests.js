@@ -47,7 +47,7 @@ async function mongoTests(cmd) {
         await cShares.insertMany(dbContent.shares);
         switch(cmd) {
             case 'deleteMapOne': {
-                await MongoQueries.deleteMapOne(cUsers, cShares, 'map2', 'user2');
+                await MongoQueries.deleteMapOne(cUsers, cShares, 'map2', 'user1');
                 break;
             }
             case 'deleteMapAll': {
