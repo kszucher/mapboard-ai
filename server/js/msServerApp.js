@@ -409,7 +409,7 @@ async function sendResponse(c2s) {
                                 let {tabMapIdList, tabMapSelected} = currUser
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const {shareUser, sharedMap} = await getShareProps(shareId)
+                                const {shareUser, sharedMap} = await getShareProps(cShares, shareId)
                                 tabMapIdList = [...tabMapIdList, sharedMap]
                                 tabMapSelected = tabMapIdList.length - 1
                                 await cShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
@@ -420,7 +420,7 @@ async function sendResponse(c2s) {
                             case 'deleteShare': {
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const {shareUser, sharedMap} = await getShareProps(shareId)
+                                const {shareUser, sharedMap} = await getShareProps(cShares, shareId)
                                 await deleteMapOne(cUsers, cShares, sharedMap, shareUser)
                                 const {shareDataExport, shareDataImport} = await getUserShares(cUsers, cMaps, cShares, currUser._id)
                                 s2c = {cmd: 'deleteShareSuccess', payload: {shareDataExport, shareDataImport}}
