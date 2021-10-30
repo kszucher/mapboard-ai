@@ -4,18 +4,18 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-let db, collectionUsers, collectionMaps, collectionShares;
+let db, cUsers, cMaps, cShares;
 async function mongoTests(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         db = client.db("app_dev_mongo")
-        collectionUsers = db.collection("users");
-        collectionMaps = db.collection("maps");
-        collectionShares = db.collection("shares");
-        await collectionUsers.deleteMany();
-        await collectionMaps.deleteMany();
-        await collectionShares.deleteMany();
+        cUsers = db.collection("users");
+        cMaps = db.collection("maps");
+        cShares = db.collection("shares");
+        await cUsers.deleteMany();
+        await cMaps.deleteMany();
+        await cShares.deleteMany();
         let dbContent;
         switch (cmd) {
             case 'deleteMapOne':
@@ -42,24 +42,24 @@ async function mongoTests(cmd) {
                 break;
             }
         }
-        await collectionUsers.insertMany(dbContent.users);
-        await collectionMaps.insertMany(dbContent.maps);
-        await collectionShares.insertMany(dbContent.shares);
+        await cUsers.insertMany(dbContent.users);
+        await cMaps.insertMany(dbContent.maps);
+        await cShares.insertMany(dbContent.shares);
         switch(cmd) {
             case 'deleteMapOne': {
-                await MongoQueries.deleteMapOne(collectionUsers, collectionShares, 'map2', 'user2');
+                await MongoQueries.deleteMapOne(cUsers, cShares, 'map2', 'user2');
                 break;
             }
             case 'deleteMapAll': {
-                await MongoQueries.deleteMapAll(collectionUsers, collectionShares, 'map2');
+                await MongoQueries.deleteMapAll(cUsers, cShares, 'map2');
 
                 break;
             }
         }
         let result = {
-            users: await collectionUsers.find().toArray(),
-            maps: await collectionMaps.find().toArray(),
-            shares: await collectionShares.find().toArray(),
+            users: await cUsers.find().toArray(),
+            maps: await cMaps.find().toArray(),
+            shares: await cShares.find().toArray(),
         };
         console.log(JSON.stringify(result, null, 4))
     }
