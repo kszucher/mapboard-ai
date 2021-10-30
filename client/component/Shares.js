@@ -19,7 +19,7 @@ export function Shares() {
     const getShares =     _ =>      dispatch({type: 'GET_SHARES'})
     const closeShares =   _ =>      dispatch({type: 'SHOW_WS'})
     const acceptShare =   params => dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
-    const withdrawShare = params => dispatch({type: 'WITHDRAW_SHARE', payload: {shareIdOut: params.row._id}})
+    const deleteShare =   params => dispatch({type: 'DELETE_SHARE', payload: {shareIdOut: params.row._id}})
 
     const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false},
@@ -31,7 +31,7 @@ export function Shares() {
                     <IconButton
                         aria-label="xxx"
                         size="small"
-                        onClick={_=>withdrawShare(params)}
+                        onClick={_=>deleteShare(params)}
                         disabled={false}>
                         <CancelIcon/>
                     </IconButton>

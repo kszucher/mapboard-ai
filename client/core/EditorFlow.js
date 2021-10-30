@@ -176,7 +176,7 @@ const resolveServerActions = (state, action) => {
         case 'GET_SHARES':                return assignMapProps(state, 0, 0, 'getShares')
         case 'CREATE_SHARE':              return assignMapProps(state, 0, 0, 'createShare', payload)
         case 'ACCEPT_SHARE':              return assignMapProps(state, 0, 0, 'acceptShare', payload)
-        case 'WITHDRAW_SHARE':            return assignMapProps(state, 0, 0, 'withdrawShare', payload)
+        case 'DELETE_SHARE':              return assignMapProps(state, 0, 0, 'deleteShare', payload)
         default: return {}
     }
 }

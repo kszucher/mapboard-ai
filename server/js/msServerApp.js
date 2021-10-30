@@ -102,7 +102,7 @@ const replyList = [
     'getSharesSuccess',
     'shareValidityFail', 'shareValiditySuccess',
     'acceptShareSuccess',
-    'withdrawShareSuccess',
+    'deleteShareSuccess',
 ]
 
 async function sendResponse(c2s) {
@@ -417,13 +417,13 @@ async function sendResponse(c2s) {
                                 s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapIdList, tabMapSelected}}
                                 break
                             }
-                            case 'withdrawShare': {
+                            case 'deleteShare': {
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
                                 const {shareUser, sharedMap} = await getShareProps(shareId)
                                 await deleteMapOne(cUsers, cShares, sharedMap, shareUser)
                                 const {shareDataExport, shareDataImport} = await getUserShares(cUsers, cMaps, cShares, currUser._id)
-                                s2c = {cmd: 'withdrawShareSuccess', payload: {shareDataExport, shareDataImport}}
+                                s2c = {cmd: 'deleteShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }
                         }
                         if (s2c.hasOwnProperty('payload')) {
