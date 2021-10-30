@@ -83,16 +83,17 @@ async function deleteMapFromUsers (cUsers, mapIdToDelete, userFilter = {}) {
                             },
                             else: "$tabMapSelected"
                         }
-                    }
-                }
-            },
-            {
-                $set : {
+                    },
                     tabMapIdList : {
                         $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapIdToDelete]}}
                     }
                 }
             },
+            // {
+            //     $set : {
+            //
+            //     }
+            // },
             // {
             //     $set: {
             //         breadcrumbMapIdList: {
