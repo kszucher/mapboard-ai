@@ -23,9 +23,9 @@ async function mongoTests(cmd) {
             {
                 dbContent = {
                     users: [
-                        {_id: 'user1', tabMapSelected: 1, tabMapIdList: ['map1', 'map2', 'map3']},
-                        {_id: 'user2', tabMapSelected: 0, tabMapIdList: ['map2']},
-                        {_id: 'user3', tabMapSelected: 3, tabMapIdList: ['map3']},
+                        {_id: 'user1', breadcrumbMapIdList: ['map2'], tabMapSelected: 1, tabMapIdList: ['map1', 'map2', 'map3']},
+                        {_id: 'user2', breadcrumbMapIdList: ['map2'], tabMapSelected: 0, tabMapIdList: ['map2']},
+                        {_id: 'user3', breadcrumbMapIdList: ['map1'], tabMapSelected: 3, tabMapIdList: ['map3']},
                     ],
                     maps: [
                         {_id: 'map1'},

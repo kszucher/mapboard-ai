@@ -468,9 +468,9 @@ async function sendResponse(c2s) {
                                 const {breadcrumbMapIdList} = s2c.payload
                                 const breadcrumbMapNameList = await getMapNameList(cMaps, breadcrumbMapIdList)
                                 await cUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
-                                // TODO: remove mapnál a breadcrumb-ot is beállítani a nagy queryben mindenkinek!!!
                                 Object.assign(s2c.payload, {breadcrumbMapNameList})
                             }
+                            // console.log(s2c)
                         }
                     }
                 }
