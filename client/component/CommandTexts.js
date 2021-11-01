@@ -8,7 +8,7 @@ import {MAP_RIGHTS} from "../core/EditorFlow";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible, frameLen, frameSelected, mapRight} = state
+    const {formatMode, frameEditorVisible, frameLen, frameSelected} = state
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -39,7 +39,6 @@ export function CommandTexts () {
             case 'close':          dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
         }
     }
-    const openSharing = e => dispatch({type: 'SHOW_SHARING'})
 
     return (
         <div style={{
@@ -80,7 +79,6 @@ export function CommandTexts () {
                 <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameLen)]}/>
                 <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelected === 0, frameSelected === frameLen - 1]}/>
                 <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['close']}                          value={''}          action={cmdFrameOp}        />
-                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['sharing']}                        value={''}          action={openSharing}       />
             </div>
         </div>
     );

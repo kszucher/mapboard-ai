@@ -37,11 +37,12 @@ export default function Logo() {
             case 'REMOVE_MAP':dispatch({type: 'REMOVE_MAP_IN_TAB'});break;
             case 'MOVE_UP_MAP':dispatch({type: 'MOVE_UP_MAP_IN_TAB'});break;
             case 'MOVE_DOWN_MAP':dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'});break;
+            case 'SHOW_SHARING': dispatch({type: 'SHOW_SHARING'}); break;
+            case 'SHOW_SHARES':dispatch({type: 'SHOW_SHARES'}); break;
             case 'SIGN_OUT':
                 localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
                 dispatch({type: 'RESET_STATE'});
                 break;
-            case 'SHOW_SHARES':dispatch({type: 'SHOW_SHARES'})
         }
     };
     const col1 = '#a4508b'
@@ -78,8 +79,9 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('REMOVE_MAP')}>Remove Map</MenuItem>
                     <MenuItem onClick={handleSelect('MOVE_UP_MAP')}>Move Up Map</MenuItem>
                     <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
-                    <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
+                    <MenuItem onClick={handleSelect('SHOW_SHARING')}>Sharing</MenuItem>
                     <MenuItem onClick={handleSelect('SHOW_SHARES')}>Shares</MenuItem>
+                    <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>}
                 {pageState === DEMO && <Menu
                     id="menu-appbar"

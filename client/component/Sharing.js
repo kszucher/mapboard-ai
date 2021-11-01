@@ -9,7 +9,7 @@ import {COLORS} from "../core/Utils";
 
 export function Sharing() {
     const [state, dispatch] = useContext(Context);
-    const [email, setEmail] = useState('test1@mapboard.io');
+    const [email, setEmail] = useState('test2@mapboard.io');
     const [access, setAccess] = useState('view')
 
     const typeEmail =    (e) => setEmail(e.target.value)
