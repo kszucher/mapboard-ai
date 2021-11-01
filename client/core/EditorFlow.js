@@ -28,7 +28,6 @@ export const editorState = {
     serverActionCntr: 0,
     serverResponse: {},
     serverResponseCntr: 0,
-    serverResponseToUser: [''],
     formatMode: '',
     colorLine: '',
     colorBorder: '',
@@ -84,7 +83,6 @@ const resolveActions = (state, action) => {
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(editorStateDefault)
         case 'SERVER_RESPONSE':           return {serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
-        case 'SERVER_RESPONSE_TO_USER':   return {serverResponseToUser: [...state.serverResponseToUser, payload]}
         case 'SHOW_AUTH':                 return {pageState: AUTH}
         case 'SHOW_DEMO':                 return {pageState: DEMO}
         case 'SHOW_WS':                   return {pageState: resolvePageState(state.mapRight)}

@@ -15,7 +15,7 @@ export default function Auth() {
     const subTabValues = ['Step 1', 'Step 2'];
 
     const [state, dispatch] = useContext(Context);
-    const {serverResponseToUser} = state;
+    const {serverResponse, serverResponseCntr} = state;
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
     const [name, setName] = useState('');
@@ -96,20 +96,15 @@ export default function Auth() {
     }
 
     useEffect(() => {
-        let lastResponse = [...serverResponseToUser].pop();
-        switch (lastResponse) {
+        switch (serverResponse.cmd) {
             case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
             case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break;
             case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
             case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
             case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
-            case 'signUpStep2Success':
-                switchMainMode(mainTabValues[0]);
-                setEmail(regEmail);
-                setPassword(regPassword);
-                break;
+            case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break;
         }
-    }, [serverResponseToUser]);
+    }, [serverResponseCntr]);
 
     return (
         <div

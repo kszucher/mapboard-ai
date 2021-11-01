@@ -67,15 +67,6 @@ export function Communication() {
                     localStorage.clear();
                     break;
                 }
-                case 'signUpStep1FailEmailAlreadyInUse':
-                case 'signUpStep1Success':
-                case 'signUpStep2FailUnknownUser':
-                case 'signUpStep2FailWrongCode':
-                case 'signUpStep2FailAlreadyActivated':
-                case 'signUpStep2Success': {
-                    dispatch({type: 'SERVER_RESPONSE_TO_USER', payload: serverResponse.cmd});
-                    break;
-                }
                 case 'getLandingDataSuccess': {
                     dispatch({type: 'SHOW_DEMO'});
                 }
