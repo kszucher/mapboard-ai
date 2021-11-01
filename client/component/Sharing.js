@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Context} from "../core/Store";
 import {Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -9,12 +9,24 @@ import {COLORS} from "../core/Utils";
 
 export function Sharing() {
     const [state, dispatch] = useContext(Context);
+    const {serverResponse, serverResponseCntr} = state;
     const [email, setEmail] = useState('test2@mapboard.io');
     const [access, setAccess] = useState('view')
+    const [feedbackMessage, setFeedbackMessage] = useState('');
 
     const typeEmail =    (e) => setEmail(e.target.value)
     const closeSharing = _ =>   dispatch({type: 'SHOW_WS'})
     const createShare =  _ =>   dispatch({type: 'CREATE_SHARE', payload: {email, access}})
+
+    useEffect(() => {
+        switch (serverResponse.cmd) {
+            case 'createShareFailNotAValidUser':            setFeedbackMessage('There is no user associated with this address.'); break;
+            case 'createShareFailCantShareWithYourself':    setFeedbackMessage('Please choose a different address than yours.'); break;
+            case 'createShareSuccess':                      setFeedbackMessage('The map has been shared successfully.'); break;
+            case 'createShareFailAlreadyShared':            setFeedbackMessage('The map has already been shared.'); break;
+            case 'updateShareSuccess':                      setFeedbackMessage('Access has changed successfully.'); break;
+        }
+    }, [serverResponseCntr]);
 
     return(
         <Modal
@@ -57,6 +69,13 @@ export function Sharing() {
                     value={access}
                     action={e=>setAccess(e.target.value)}
                 />
+                {feedbackMessage !== '' &&
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center">
+                    {feedbackMessage}
+                </Typography>}
                 <StyledButton
                     version="shortOutlined"
                     disabled={false}

@@ -79,32 +79,6 @@ function getDefaultMap(mapName, ownerUser, path) {
     }
 }
 
-const replyList = [
-    'pingSuccess',
-    'getLandingDataSuccess',
-    'signUpStep1FailEmailAlreadyInUse', 'signUpStep1Success',
-    'signUpStep2FailUnknownUser', 'signUpStep2FailAlreadyActivated', 'signUpStep2FailWrongCode', 'signUpStep2Success',
-    'signInFail', 'signInFailIncompleteRegistration', 'tabSynchFail', 'signInSuccess',
-    'openMapFromHistorySuccess',
-    'openMapFromTabSuccess',
-    'openMapFromMapSuccess',
-    'openMapFromBreadcrumbsSuccess',
-    'saveMapSuccess',
-    'createMapInMapSuccess',
-    'createMapInTabSuccess',
-    'removeMapInTabFail', 'removeMapInTabSuccess',
-    'moveUpMapInTabFail', 'moveUpMapInTabSuccess',
-    'moveDownMapInTabFail', 'moveDownMapInTabSuccess',
-    'openFrameFail', 'openFrameSuccess',
-    'importFrameSuccess',
-    'deleteFrameFail', 'deleteFrameSuccess',
-    'duplicateFrameSuccess',
-    'getSharesSuccess',
-    'shareValidityFail', 'shareValiditySuccess',
-    'acceptShareSuccess',
-    'deleteShareSuccess',
-]
-
 async function sendResponse(c2s) {
     let s2c = {'ERROR': 'error'}
     if (c2s.serverCmd === 'ping') {
@@ -387,21 +361,36 @@ async function sendResponse(c2s) {
                                 break
                             }
                             case 'createShare': {
-                                let {mapId, email, access} = c2s.serverPayload
-                                let shareUser = await usersColl.findOne({email})
-                                if (shareUser === null || isEqual(shareUser._id, currUser._id)) {
-                                    // TODO: also fail if trying to create a share for an existing ownerUser/shareUser combination OR overwrite
-                                    s2c = {cmd: 'shareValidityFail'}
+                                const {mapId, email, access} = c2s.serverPayload
+                                const shareUser = await usersColl.findOne({email})
+                                if (shareUser === null) {
+                                    s2c = {cmd: 'createShareFailNotAValidUser'}
+                                } else if (isEqual(shareUser._id, currUser._id)) {
+                                    s2c = {cmd: 'createShareFailCantShareWithYourself'}
                                 } else {
-                                    let newShare = {
+                                    const currShare = await sharesColl.findOne({
                                         sharedMap: ObjectId(mapId),
                                         ownerUser: currUser._id,
-                                        shareUser: shareUser._id,
-                                        access,
-                                        status: SHARE_STATUS.WAITING
+                                        shareUser: shareUser._id
+                                    })
+                                    if (currShare === null) {
+                                        const newShare = {
+                                            sharedMap: ObjectId(mapId),
+                                            ownerUser: currUser._id,
+                                            shareUser: shareUser._id,
+                                            access,
+                                            status: SHARE_STATUS.WAITING
+                                        }
+                                        await sharesColl.insertOne(newShare)
+                                        s2c = {cmd: 'createShareSuccess'}
+                                    } else {
+                                        if (currShare.access === access) {
+                                            s2c = {cmd: 'createShareFailAlreadyShared'}
+                                        } else {
+                                            await sharesColl.updateOne({_id: currShare._id}, {$set: {access}})
+                                            s2c = {cmd: 'updateShareSuccess'}
+                                        }
                                     }
-                                    await sharesColl.insertOne(newShare)
-                                    s2c = {cmd: 'shareValiditySuccess', payload: {}}
                                 }
                                 break
                             }
