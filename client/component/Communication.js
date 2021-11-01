@@ -67,17 +67,16 @@ export function Communication() {
                     localStorage.clear();
                     break;
                 }
-                case 'getLandingDataSuccess': {
-                    dispatch({type: 'SHOW_DEMO'});
-                }
             }
         }
         if (serverResponse.payload) {
             const serverState = serverResponse.payload;
-            if (serverState.hasOwnProperty('landingData')) {
-                const {landingData} = serverState;
+            if (serverState.hasOwnProperty('landingData') &&
+                serverState.hasOwnProperty('mapRight')) {
+                const {landingData, mapRight} = serverState;
+                console.log('LEFF')
                 initDomData();
-                dispatch({type: 'SET_LANDING_DATA', payload: {landingData}})
+                dispatch({type: 'SET_LANDING_DATA', payload: {landingData, mapRight}})
             }
             if (serverState.hasOwnProperty('mapId') &&
                 serverState.hasOwnProperty('mapSource') &&

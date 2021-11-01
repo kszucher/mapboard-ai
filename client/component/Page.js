@@ -18,8 +18,8 @@ import {getEquationDim, getTextDim} from "../core/Utils";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
-    const {pageState, paletteVisible, frameEditorVisible} = state;
-    const {AUTH, DEMO, WS_UNAUTHORIZED, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
+    const {pageState, paletteVisible, frameEditorVisible, mapRight} = state;
+    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -29,10 +29,10 @@ export function Page() {
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
-                {[DEMO, WS_UNAUTHORIZED, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING].includes(pageState) && <>
+                {[DEMO, WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
                     <MapComponent/>
                     <Logo/>
-                    {[WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING].includes(pageState) && <>
+                    {[WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
                         <Tabs/>
                         <CommandButtons/>
                         <Breadcrumbs/>

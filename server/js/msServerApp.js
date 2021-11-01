@@ -33,7 +33,7 @@ const ACTIVATION_STATUS = {
     AWAITING_CONFIRMATION: 'awaitingConfirmation'
 }
 
-const MAP_RIGHT = {
+const MAP_RIGHTS = {
     UNAUTHORIZED: 'unauthorized',
     VIEW: 'view',
     EDIT: 'edit'
@@ -89,7 +89,11 @@ async function sendResponse(c2s) {
             if (c2s.serverCmd === 'getLandingData') {
                 // this could depend on queryString
                 let mapId = '5f3fd7ba7a84a4205428c96a'
-                s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await mapsColl.findOne({_id: ObjectId(mapId)})).dataPlayback}}
+                s2c = {cmd: 'getLandingDataSuccess', payload: {
+                        landingData: (await mapsColl.findOne({_id: ObjectId(mapId)})).dataPlayback,
+                        mapRight: MAP_RIGHTS.VIEW
+                    },
+                }
             } else if (c2s.serverCmd === 'signUpStep1') {
                 let {name, email, password} = c2s.serverPayload
                 currUser = await usersColl.findOne({email})
@@ -441,12 +445,14 @@ async function sendResponse(c2s) {
                                     mapStorage = await getPlaybackMapData(mapsColl, mapId, s2c.payload.frameSelected)
                                 }
                                 const {path, ownerUser} = await getMapProps(mapsColl, mapId)
-                                let mapRight = MAP_RIGHT.UNAUTHORIZED
+                                let mapRight = MAP_RIGHTS.UNAUTHORIZED
                                 if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
-                                    mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW
+                                    mapRight = isEqual(currUser._id, adminUser)
+                                        ? MAP_RIGHTS.EDIT
+                                        : MAP_RIGHTS.VIEW
                                 } else {
                                     if (isEqual(currUser._id, ownerUser)) {
-                                        mapRight = MAP_RIGHT.EDIT
+                                        mapRight = MAP_RIGHTS.EDIT
                                     } else {
                                         let fullPath = [...path, mapId]
                                         for (let i = fullPath.length - 1; i > -1; i--) {
@@ -475,7 +481,6 @@ async function sendResponse(c2s) {
                                 await usersColl.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 Object.assign(s2c.payload, {breadcrumbMapNameList})
                             }
-                            // console.log(s2c)
                         }
                     }
                 }
@@ -485,6 +490,7 @@ async function sendResponse(c2s) {
             console.log(err.stack)
         }
     }
+    // console.log(s2c)
     return s2c
 }
 

@@ -8,7 +8,7 @@ import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
-import {PAGE_STATES} from "../core/EditorFlow";
+import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
@@ -18,8 +18,8 @@ let isTaskClicked = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {pageState, landingData, landingDataIndex} = state;
-    const {DEMO, WS_EDIT} = PAGE_STATES;
+    const {landingData, landingDataIndex, serverResponse, serverResponseCntr, pageState} = state;
+    const {DEMO, WS} = PAGE_STATES;
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
@@ -58,10 +58,6 @@ export function MapComponent() {
         window.removeEventListener("paste", paste);
     }
 
-    useEffect(()=> {
-        dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
-    }, [])
-
     useEffect(() => {
         if (landingData.length) {
             loadLandingDataFrame(landingData, landingDataIndex);
@@ -69,18 +65,32 @@ export function MapComponent() {
     }, [landingData, landingDataIndex]);
 
     useEffect(() => {
-        removeLandingListeners();
-        removeMapListeners();
         if (pageState === DEMO) {
-            addLandingListeners();
-        } else if (pageState === WS_EDIT) {
-            addMapListeners();
+            dispatch({type: 'GET_LANDING_DATA'});
+        } else if (pageState === WS) {
+            dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
         }
-        return () => {
-            removeLandingListeners();
-            removeMapListeners();
+    }, [pageState])
+
+    useEffect(() => {
+        if (serverResponse.payload) {
+            const serverState = serverResponse.payload;
+            if (serverState.hasOwnProperty('mapRight')) {
+                const {mapRight} = serverState;
+                removeLandingListeners();
+                removeMapListeners();
+                if (mapRight === MAP_RIGHTS.VIEW) {
+                    addLandingListeners();
+                } else if (mapRight === MAP_RIGHTS.EDIT) {
+                    addMapListeners();
+                }
+                return () => {
+                    removeLandingListeners();
+                    removeMapListeners();
+                }
+            }
         }
-    }, [pageState]);
+    }, [serverResponseCntr]);
 
     const mousewheel = (e) => {
         e.preventDefault();

@@ -5,8 +5,7 @@ export const PAGE_STATES = {
     EMPTY: 'EMPTY',
     DEMO: 'DEMO',
     AUTH: 'AUTH',
-    WS_EDIT: 'WS_EDIT',
-    WS_VIEW: 'WS_VIEW',
+    WS: 'WS',
     WS_SHARES: 'WS_SHARES',
     WS_SHARING: 'WS_SHARING'
 }
@@ -48,16 +47,6 @@ export const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState);
 
-const resolvePageState = (mapRight) => {
-    const {UNAUTHORIZED, VIEW, EDIT} = MAP_RIGHTS;
-    const {WS_UNAUTHORIZED, WS_VIEW, WS_EDIT} = PAGE_STATES;
-    switch (mapRight) {
-        case UNAUTHORIZED: return WS_UNAUTHORIZED;
-        case VIEW: return WS_VIEW;
-        case EDIT: return WS_EDIT;
-    }
-}
-
 const mapValues = (stringArray, valueArray, conditionValue) => {
     return stringArray[valueArray.findIndex(v=>v===conditionValue)]
 }
@@ -78,28 +67,27 @@ const extractNodeProps = (payload) => {
 
 const resolveActions = (state, action) => {
     const {payload} = action;
-    const {AUTH, DEMO, WS_EDIT, WS_VIEW, WS_SHARES, WS_SHARING} = PAGE_STATES;
-    const {EDIT, VIEW} = MAP_RIGHTS;
+    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(editorStateDefault)
         case 'SERVER_RESPONSE':           return {serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SHOW_AUTH':                 return {pageState: AUTH}
         case 'SHOW_DEMO':                 return {pageState: DEMO}
-        case 'SHOW_WS':                   return {pageState: resolvePageState(state.mapRight)}
+        case 'SHOW_WS':                   return {pageState: WS}
         case 'SHOW_SHARING':              return {pageState: WS_SHARING}
         case 'SHOW_SHARES':               return {pageState: WS_SHARES}
         case 'OPEN_PALETTE':              return {formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1, isPlayback: true}
         case 'CLOSE_PLAYBACK_EDITOR':     return {frameEditorVisible: 0, isPlayback: false}
-        case 'SET_LANDING_DATA':          return {landingData: payload.landingData}
+        case 'SET_LANDING_DATA':          return {landingData: payload.landingData, mapRight: payload.mapRight}
         case 'SET_BREADCRUMB_DATA':       return {breadcrumbMapNameList: payload.breadcrumbMapNameList}
         case 'SET_TAB_DATA':              return {tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
         case 'SET_FRAME_INFO':            return {frameLen: payload.frameLen, frameSelected: payload.frameSelected}
         case 'SET_SHARE_DATA':            return {shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight:payload.mapRight, pageState: resolvePageState(payload.mapRight)}
+        case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
         default: return {}
     }
