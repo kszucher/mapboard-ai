@@ -1,30 +1,30 @@
-async function getMapData(cMaps, mapId) {
-    return (await cMaps.findOne({_id: mapId})).data
+async function getMapData(mapsColl, mapId) {
+    return (await mapsColl.findOne({_id: mapId})).data
 }
 
-async function getPlaybackMapData(cMaps, mapId, frameSelected) {
-    return (await cMaps.findOne({_id: mapId})).dataPlayback[frameSelected]
+async function getPlaybackMapData(mapsColl, mapId, frameSelected) {
+    return (await mapsColl.findOne({_id: mapId})).dataPlayback[frameSelected]
 }
 
-async function getFrameLen(cMaps, mapId) {
-    return (await cMaps.findOne({_id: mapId})).dataPlayback.length
+async function getFrameLen(mapsColl, mapId) {
+    return (await mapsColl.findOne({_id: mapId})).dataPlayback.length
 }
 
-async function getMapProps(cMaps, mapId) {
-    const currMap = await cMaps.findOne({_id: mapId})
+async function getMapProps(mapsColl, mapId) {
+    const currMap = await mapsColl.findOne({_id: mapId})
     const {path, ownerUser} = currMap
     return {path, ownerUser}
 }
 
-async function getShareProps(cShares, shareId) {
-    const currShare = await cShares.findOne({_id: shareId})
+async function getShareProps(sharesColl, shareId) {
+    const currShare = await sharesColl.findOne({_id: shareId})
     const {shareUser, sharedMap} = currShare
     return {shareUser, sharedMap}
 }
 
-async function getMapNameList(cMaps, mapIdList) {
+async function getMapNameList(mapsColl, mapIdList) {
     let mapNameList = []
-    await cMaps.aggregate([
+    await mapsColl.aggregate([
         {$match: {_id: {$in: mapIdList}}},
         {$addFields: {"__order": {$indexOfArray: [mapIdList, "$_id"]}}},
         {$sort: {"__order": 1}},
@@ -32,31 +32,31 @@ async function getMapNameList(cMaps, mapIdList) {
     return mapNameList
 }
 
-async function getUserEmail(cUsers, userId) {
-    return (await cUsers.findOne({_id: userId})).email
+async function getUserEmail(usersColl, userId) {
+    return (await usersColl.findOne({_id: userId})).email
 }
 
-async function getUserShares(cUsers, cMaps, cShares, userId) {
-    let ownerUserData = await cShares.find({ownerUser: userId}).toArray()
+async function getUserShares(usersColl, mapsColl, sharesColl, userId) {
+    let ownerUserData = await sharesColl.find({ownerUser: userId}).toArray()
     let shareDataExport = []
     for (let i = 0; i < ownerUserData.length; i++) {
         shareDataExport.push({
             '_id': ownerUserData[i]._id,
             'id': i,
-            'map': (await getMapNameList(cMaps, [ownerUserData[i].sharedMap]))[0],
-            'shareUserEmail': await getUserEmail(cUsers, ownerUserData[i].shareUser),
+            'map': (await getMapNameList(mapsColl, [ownerUserData[i].sharedMap]))[0],
+            'shareUserEmail': await getUserEmail(usersColl, ownerUserData[i].shareUser),
             'access': ownerUserData[i].access,
             'status': ownerUserData[i].status
         })
     }
-    let shareUserData = await cShares.find({shareUser: userId}).toArray()
+    let shareUserData = await sharesColl.find({shareUser: userId}).toArray()
     let shareDataImport = []
     for (let i = 0; i < shareUserData.length; i++) {
         shareDataImport.push({
             '_id': shareUserData[i]._id,
             'id': i,
-            'map': (await getMapNameList(cMaps, [shareUserData[i].sharedMap]))[0],
-            'shareUserEmail': await getUserEmail(cUsers, shareUserData[i].ownerUser),
+            'map': (await getMapNameList(mapsColl, [shareUserData[i].sharedMap]))[0],
+            'shareUserEmail': await getUserEmail(usersColl, shareUserData[i].ownerUser),
             'access': shareUserData[i].access,
             'status': shareUserData[i].status
         })
@@ -64,9 +64,9 @@ async function getUserShares(cUsers, cMaps, cShares, userId) {
     return {shareDataExport, shareDataImport}
 }
 
-async function deleteMapFromUsers (cUsers, mapIdToDelete, userFilter = {}) {
+async function deleteMapFromUsers (usersColl, mapIdToDelete, userFilter = {}) {
     const filter = {tabMapIdList: mapIdToDelete, ...userFilter}
-    await cUsers.updateMany(
+    await usersColl.updateMany(
         filter,
         [
             {
@@ -104,21 +104,21 @@ async function deleteMapFromUsers (cUsers, mapIdToDelete, userFilter = {}) {
     )
 }
 
-async function deleteMapFromShares(cShares, mapIdToDelete, userFilter = {}) {
+async function deleteMapFromShares(sharesColl, mapIdToDelete, userFilter = {}) {
     const filter = {sharedMap: mapIdToDelete, ...userFilter}
-    await cShares.deleteMany(
+    await sharesColl.deleteMany(
         filter
     )
 }
 
-async function deleteMapAll (cUsers, cShares, mapIdToDelete) {
-    await deleteMapFromUsers(cUsers, mapIdToDelete)
-    await deleteMapFromShares(cShares, mapIdToDelete)
+async function deleteMapAll (usersColl, sharesColl, mapIdToDelete) {
+    await deleteMapFromUsers(usersColl, mapIdToDelete)
+    await deleteMapFromShares(sharesColl, mapIdToDelete)
 }
 
-async function deleteMapOne (cUsers, cShares, mapIdToDelete, userId) {
-    await deleteMapFromUsers(cUsers, mapIdToDelete, {_id: userId})
-    await deleteMapFromShares(cShares, mapIdToDelete, {shareUser: userId})
+async function deleteMapOne (usersColl, sharesColl, mapIdToDelete, userId) {
+    await deleteMapFromUsers(usersColl, mapIdToDelete, {_id: userId})
+    await deleteMapFromShares(sharesColl, mapIdToDelete, {shareUser: userId})
 }
 
 // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"

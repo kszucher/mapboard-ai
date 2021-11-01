@@ -4,18 +4,18 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-let db, cUsers, cMaps, cShares;
+let db, usersColl, mapsColl, sharesColl;
 async function mongoTests(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         db = client.db("app_dev_mongo")
-        cUsers = db.collection("users");
-        cMaps = db.collection("maps");
-        cShares = db.collection("shares");
-        await cUsers.deleteMany();
-        await cMaps.deleteMany();
-        await cShares.deleteMany();
+        usersColl = db.collection("users");
+        mapsColl = db.collection("maps");
+        sharesColl = db.collection("shares");
+        await usersColl.deleteMany();
+        await mapsColl.deleteMany();
+        await sharesColl.deleteMany();
         let dbContent;
         switch (cmd) {
             case 'deleteMapOne':
@@ -42,24 +42,24 @@ async function mongoTests(cmd) {
                 break;
             }
         }
-        await cUsers.insertMany(dbContent.users);
-        await cMaps.insertMany(dbContent.maps);
-        await cShares.insertMany(dbContent.shares);
+        await usersColl.insertMany(dbContent.users);
+        await mapsColl.insertMany(dbContent.maps);
+        await sharesColl.insertMany(dbContent.shares);
         switch(cmd) {
             case 'deleteMapOne': {
-                await MongoQueries.deleteMapOne(cUsers, cShares, 'map2', 'user1');
+                await MongoQueries.deleteMapOne(usersColl, sharesColl, 'map2', 'user1');
                 break;
             }
             case 'deleteMapAll': {
-                await MongoQueries.deleteMapAll(cUsers, cShares, 'map2');
+                await MongoQueries.deleteMapAll(usersColl, sharesColl, 'map2');
 
                 break;
             }
         }
         let result = {
-            users: await cUsers.find().toArray(),
-            maps: await cMaps.find().toArray(),
-            shares: await cShares.find().toArray(),
+            users: await usersColl.find().toArray(),
+            maps: await mapsColl.find().toArray(),
+            shares: await sharesColl.find().toArray(),
         };
         console.log(JSON.stringify(result, null, 4))
     }

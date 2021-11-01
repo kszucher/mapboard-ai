@@ -57,7 +57,7 @@ const isEqual = (obj1, obj2) => {
     return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
 
-let cUsers, cMaps, cShares, db
+let usersColl, mapsColl, sharesColl, db
 
 function getConfirmationCode() {
     let [min, max] = [1000, 9999]
@@ -115,10 +115,10 @@ async function sendResponse(c2s) {
             if (c2s.serverCmd === 'getLandingData') {
                 // this could depend on queryString
                 let mapId = '5f3fd7ba7a84a4205428c96a'
-                s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await cMaps.findOne({_id: ObjectId(mapId)})).dataPlayback}}
+                s2c = {cmd: 'getLandingDataSuccess', payload: {landingData: (await mapsColl.findOne({_id: ObjectId(mapId)})).dataPlayback}}
             } else if (c2s.serverCmd === 'signUpStep1') {
                 let {name, email, password} = c2s.serverPayload
-                currUser = await cUsers.findOne({email})
+                currUser = await usersColl.findOne({email})
                 if (currUser !== null) {
                     s2c = {cmd: 'signUpStep1FailEmailAlreadyInUse'}
                 } else {
@@ -138,12 +138,12 @@ async function sendResponse(c2s) {
                                 <p>Cheers,<br>Krisztian from MapBoard</p>
                             `
                     })
-                    await cUsers.insertOne({email, password, activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION, confirmationCode})
+                    await usersColl.insertOne({email, password, activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION, confirmationCode})
                     s2c = {cmd: 'signUpStep1Success'}
                 }
             } else if (c2s.serverCmd === 'signUpStep2') {
                 let {email, confirmationCode} = c2s.serverPayload
-                currUser = await cUsers.findOne({email})
+                currUser = await usersColl.findOne({email})
                 if (currUser === null ) {
                     s2c = {cmd: 'signUpStep2FailUnknownUser'}
                 } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
@@ -152,8 +152,8 @@ async function sendResponse(c2s) {
                     s2c = {cmd: 'signUpStep2FailWrongCode'}
                 } else {
                     let newMap = getDefaultMap('My First Map', currUser._id, [])
-                    let mapId = (await cMaps.insertOne(newMap)).insertedId
-                    await cUsers.updateOne(
+                    let mapId = (await mapsColl.insertOne(newMap)).insertedId
+                    await usersColl.updateOne(
                         {_id: currUser._id},
                         {$set: {
                             activationStatus: ACTIVATION_STATUS.COMPLETED,
@@ -164,7 +164,7 @@ async function sendResponse(c2s) {
                     s2c = {cmd: 'signUpStep2Success'}
                 }
             } else {
-                currUser = await cUsers.findOne({email: c2s.cred.email})
+                currUser = await usersColl.findOne({email: c2s.cred.email})
                 if (currUser === null || currUser.password !== c2s.cred.password) {
                     s2c = {cmd: 'signInFail'}
                 } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
@@ -177,10 +177,10 @@ async function sendResponse(c2s) {
                         const {mapIdOut, mapSourceOut, mapStorageOut} = c2s.serverPayload
                         // TODO check if I have the right to save this
                         if (mapSourceOut === 'data') {
-                            await cMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}})
+                            await mapsColl.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}})
                         } else if (mapSourceOut === 'dataPlayback') {
                             const {frameSelectedOut} = c2s.serverPayload
-                            await cMaps.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}})
+                            await mapsColl.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}})
                         }
                     }
                     if (c2s.serverPayload.hasOwnProperty('tabMapIdListOut') &&
@@ -236,8 +236,8 @@ async function sendResponse(c2s) {
                                 let {breadcrumbMapIdList} = currUser
                                 let {mapIdOut, lastPath, newMapName} = c2s.serverPayload
                                 let newMap = getDefaultMap(newMapName, currUser._id, breadcrumbMapIdList)
-                                let mapId = (await cMaps.insertOne(newMap)).insertedId
-                                await cMaps.updateOne(
+                                let mapId = (await mapsColl.insertOne(newMap)).insertedId
+                                await mapsColl.updateOne(
                                     {_id: ObjectId(mapIdOut)},
                                     {$set: {'data.$[elem].linkType': 'internal', 'data.$[elem].link': mapId.toString()}},
                                     {"arrayFilters": [{"elem.path": lastPath}], "multi": true}
@@ -250,7 +250,7 @@ async function sendResponse(c2s) {
                             case 'createMapInTab': {
                                 let {tabMapIdList, tabMapSelected} = currUser
                                 const newMap = getDefaultMap('New Map', currUser._id, [])
-                                const mapId = (await cMaps.insertOne(newMap)).insertedId
+                                const mapId = (await mapsColl.insertOne(newMap)).insertedId
                                 tabMapIdList = [...tabMapIdList, mapId]
                                 tabMapSelected = tabMapIdList.length - 1
                                 const {breadcrumbMapIdList} = currUser
@@ -263,10 +263,10 @@ async function sendResponse(c2s) {
                                     s2c = {cmd: 'removeMapInTabFail'}
                                 } else {
                                     const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
-                                    isEqual((await getMapProps(cMaps, mapIdToDelete)).ownerUser, currUser._id)
-                                        ? await deleteMapAll(cUsers, cShares, mapIdToDelete)
-                                        : await deleteMapOne(cUsers, cShares, mapIdToDelete, currUser._id)
-                                    const currUserUpdated = await cUsers.findOne({email: c2s.cred.email})
+                                    isEqual((await getMapProps(mapsColl, mapIdToDelete)).ownerUser, currUser._id)
+                                        ? await deleteMapAll(usersColl, sharesColl, mapIdToDelete)
+                                        : await deleteMapOne(usersColl, sharesColl, mapIdToDelete, currUser._id)
+                                    const currUserUpdated = await usersColl.findOne({email: c2s.cred.email})
                                     const {tabMapIdList, tabMapSelected, breadcrumbMapIdList} = currUserUpdated
                                     const mapId = tabMapIdList[tabMapSelected]
                                     const mapSource = 'data'
@@ -302,7 +302,7 @@ async function sendResponse(c2s) {
                                 const {mapIdOut} = c2s.serverPayload
                                 const mapId = ObjectId(mapIdOut)
                                 const frameSelected = 0
-                                const frameLen = await getFrameLen(cMaps, mapId)
+                                const frameLen = await getFrameLen(mapsColl, mapId)
                                 if (frameLen === 0) {
                                     s2c = {cmd: 'openFrameFail', payload: {frameLen, frameSelected}}
                                 } else {
@@ -315,7 +315,7 @@ async function sendResponse(c2s) {
                                 const {mapIdOut, frameSelectedOut} = c2s.serverPayload
                                 const frameSelected = frameSelectedOut - 1
                                 const mapId = ObjectId(mapIdOut)
-                                const frameLen = await getFrameLen(cMaps, mapId)
+                                const frameLen = await getFrameLen(mapsColl, mapId)
                                 const mapSource = 'dataPlayback'
                                 s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
@@ -324,7 +324,7 @@ async function sendResponse(c2s) {
                                 const {mapIdOut, frameSelectedOut} = c2s.serverPayload
                                 const frameSelected = frameSelectedOut + 1
                                 const mapId = ObjectId(mapIdOut)
-                                const frameLen = await getFrameLen(cMaps, mapId)
+                                const frameLen = await getFrameLen(mapsColl, mapId)
                                 const mapSource = 'dataPlayback'
                                 s2c = {cmd: 'openFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
@@ -333,9 +333,9 @@ async function sendResponse(c2s) {
                                 const {mapIdOut} = c2s.serverPayload
                                 const mapId = ObjectId(mapIdOut)
                                 const mapSource = 'dataPlayback'
-                                const mapStorage = await getMapData(cMaps, mapId)
-                                await cMaps.updateOne({_id: mapId}, {$push: {"dataPlayback": mapStorage}})
-                                const frameLen = await getFrameLen(cMaps, mapId)
+                                const mapStorage = await getMapData(mapsColl, mapId)
+                                await mapsColl.updateOne({_id: mapId}, {$push: {"dataPlayback": mapStorage}})
+                                const frameLen = await getFrameLen(mapsColl, mapId)
                                 const frameSelected = frameLen - 1
                                 s2c = {cmd: 'importFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
@@ -344,11 +344,11 @@ async function sendResponse(c2s) {
                                 const {mapIdDelete, frameSelectedOut} = c2s.serverPayload
                                 const mapId = ObjectId(mapIdDelete)
                                 const frameSelected =  frameSelectedOut > 0 ? frameSelectedOut - 1 : 0
-                                let frameLen = await getFrameLen(cMaps, mapId)
+                                let frameLen = await getFrameLen(mapsColl, mapId)
                                 if (frameLen === 0) {
                                     s2c = {cmd: 'deleteFrameFail'}
                                 } else {
-                                    await cMaps.updateOne({_id: mapId}, [{
+                                    await mapsColl.updateOne({_id: mapId}, [{
                                         $set: {
                                             dataPlayback: {
                                                 $concatArrays: [
@@ -368,7 +368,7 @@ async function sendResponse(c2s) {
                                 const {mapIdOut, mapSourceOut, mapStorageOut, frameSelectedOut} = c2s.serverPayload
                                 const frameSelected = frameSelectedOut + 1
                                 const mapId = ObjectId(mapIdOut)
-                                await cMaps.updateOne({_id: mapId}, {
+                                await mapsColl.updateOne({_id: mapId}, {
                                     $push: {
                                         "dataPlayback": {
                                             $each: [mapStorageOut],
@@ -377,18 +377,18 @@ async function sendResponse(c2s) {
                                     }
                                 })
                                 const mapSource = "dataPlayback"
-                                const frameLen = await getFrameLen(cMaps, mapId)
+                                const frameLen = await getFrameLen(mapsColl, mapId)
                                 s2c = {cmd: 'duplicateFrameSuccess', payload: {mapId, mapSource, frameLen, frameSelected}}
                                 break
                             }
                             case 'getShares': {
-                                const {shareDataExport, shareDataImport} = await getUserShares(cUsers, cMaps, cShares, currUser._id)
+                                const {shareDataExport, shareDataImport} = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
                                 s2c = {cmd: 'getSharesSuccess', payload: {shareDataExport, shareDataImport}}
                                 break
                             }
                             case 'createShare': {
                                 let {mapId, email, access} = c2s.serverPayload
-                                let shareUser = await cUsers.findOne({email})
+                                let shareUser = await usersColl.findOne({email})
                                 if (shareUser === null || isEqual(shareUser._id, currUser._id)) {
                                     // TODO: also fail if trying to create a share for an existing ownerUser/shareUser combination OR overwrite
                                     s2c = {cmd: 'shareValidityFail'}
@@ -400,7 +400,7 @@ async function sendResponse(c2s) {
                                         access,
                                         status: SHARE_STATUS.WAITING
                                     }
-                                    await cShares.insertOne(newShare)
+                                    await sharesColl.insertOne(newShare)
                                     s2c = {cmd: 'shareValiditySuccess', payload: {}}
                                 }
                                 break
@@ -409,23 +409,23 @@ async function sendResponse(c2s) {
                                 let {tabMapIdList, tabMapSelected} = currUser
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const {shareUser, sharedMap} = await getShareProps(cShares, shareId)
+                                const {shareUser, sharedMap} = await getShareProps(sharesColl, shareId)
                                 tabMapIdList = [...tabMapIdList, sharedMap]
                                 tabMapSelected = tabMapIdList.length - 1
                                 const mapId = tabMapIdList[tabMapSelected]
                                 const breadcrumbMapIdList = [mapId]
                                 const mapSource = 'data'
-                                await cShares.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
-                                const {shareDataExport, shareDataImport} = await getUserShares(cUsers, cMaps, cShares, currUser._id)
+                                await sharesColl.updateOne({_id: shareId}, {$set: {status: SHARE_STATUS.ACCEPTED}})
+                                const {shareDataExport, shareDataImport} = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
                                 s2c = {cmd: 'acceptShareSuccess', payload: {shareDataExport, shareDataImport, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource}}
                                 break
                             }
                             case 'deleteShare': {
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const {shareUser, sharedMap} = await getShareProps(cShares, shareId)
-                                await deleteMapOne(cUsers, cShares, sharedMap, shareUser)
-                                const {shareDataExport, shareDataImport} = await getUserShares(cUsers, cMaps, cShares, currUser._id)
+                                const {shareUser, sharedMap} = await getShareProps(sharesColl, shareId)
+                                await deleteMapOne(usersColl, sharesColl, sharedMap, shareUser)
+                                const {shareDataExport, shareDataImport} = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
                                 s2c = {cmd: 'deleteShareSuccess', payload: {shareDataExport, shareDataImport}}
                             }
                         }
@@ -434,11 +434,11 @@ async function sendResponse(c2s) {
                                 const {mapId, mapSource} = s2c.payload
                                 let mapStorage = {}
                                 if (mapSource === 'data') {
-                                    mapStorage = await getMapData(cMaps, mapId)
+                                    mapStorage = await getMapData(mapsColl, mapId)
                                 } else if (mapSource === 'dataPlayback') {
-                                    mapStorage = await getPlaybackMapData(cMaps, mapId, s2c.payload.frameSelected)
+                                    mapStorage = await getPlaybackMapData(mapsColl, mapId, s2c.payload.frameSelected)
                                 }
-                                const {path, ownerUser} = await getMapProps(cMaps, mapId)
+                                const {path, ownerUser} = await getMapProps(mapsColl, mapId)
                                 let mapRight = MAP_RIGHT.UNAUTHORIZED
                                 if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
                                     mapRight = isEqual(currUser._id, adminUser) ? MAP_RIGHT.EDIT : MAP_RIGHT.VIEW
@@ -449,7 +449,7 @@ async function sendResponse(c2s) {
                                         let fullPath = [...path, mapId]
                                         for (let i = fullPath.length - 1; i > -1; i--) {
                                             const currMapId = fullPath[i]
-                                            const shareData = await cShares.findOne({
+                                            const shareData = await sharesColl.findOne({
                                                 shareUser: currUser._id,
                                                 sharedMap: currMapId
                                             })
@@ -463,14 +463,14 @@ async function sendResponse(c2s) {
                             }
                             if (s2c.payload.hasOwnProperty('tabMapIdList') && s2c.payload.hasOwnProperty('tabMapSelected')) {
                                 const {tabMapIdList, tabMapSelected} = s2c.payload
-                                await cUsers.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
-                                const tabMapNameList = await getMapNameList(cMaps, tabMapIdList)
+                                await usersColl.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
+                                const tabMapNameList = await getMapNameList(mapsColl, tabMapIdList)
                                 Object.assign(s2c.payload, {tabMapNameList})
                             }
                             if (s2c.payload.hasOwnProperty('breadcrumbMapIdList')) {
                                 const {breadcrumbMapIdList} = s2c.payload
-                                const breadcrumbMapNameList = await getMapNameList(cMaps, breadcrumbMapIdList)
-                                await cUsers.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
+                                const breadcrumbMapNameList = await getMapNameList(mapsColl, breadcrumbMapIdList)
+                                await usersColl.updateOne({_id: currUser._id}, {$set: {breadcrumbMapIdList}})
                                 Object.assign(s2c.payload, {breadcrumbMapNameList})
                             }
                             // console.log(s2c)
@@ -508,9 +508,9 @@ MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, func
     } else {
         console.log('connected')
         db = client.db(process.env.MONGO_TARGET_DB || "app_dev")
-        cUsers = db.collection('users')
-        cMaps = db.collection('maps')
-        cShares = db.collection('shares')
+        usersColl = db.collection('users')
+        mapsColl = db.collection('maps')
+        sharesColl = db.collection('shares')
         app.listen(process.env.PORT || 8082, function () {console.log('CORS-enabled web server listening on port 8082')})
     }
 })

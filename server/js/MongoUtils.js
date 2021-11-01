@@ -2,11 +2,11 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority";
 const ObjectId = require('mongodb').ObjectId;
 
-async function mapFilter (cMaps, params) {
+async function mapFilter (mapsColl, params) {
     let filter = [];
     switch (params.filterMode) {
         case 'all': {
-            await cMaps.find({}).forEach(doc => {
+            await mapsColl.find({}).forEach(doc => {
                 if (params.returnArray === 'map') {
                     filter.push(doc._id);
                 }
@@ -14,7 +14,7 @@ async function mapFilter (cMaps, params) {
             break;
         }
         case 'mapWithoutProp': {
-            await cMaps.find({[params.prop]: null}).forEach(doc => {
+            await mapsColl.find({[params.prop]: null}).forEach(doc => {
                 if (params.returnArray === 'map') {
                     filter.push(doc._id);
                 }
@@ -22,7 +22,7 @@ async function mapFilter (cMaps, params) {
             break;
         }
         case 'filtered': {
-            await cMaps.aggregate(
+            await mapsColl.aggregate(
                 [
                     {
                         $project: {
@@ -63,7 +63,7 @@ async function updateStage (params) {
     switch (updateStage) {
         case 'setMapProp': {
             for (let i = 0; i < filter.length; i++) {
-                await cMaps.updateOne(
+                await mapsColl.updateOne(
                     {_id: filter[i].mapId},
                     {$set: {"MAPROPNAME" : "MAPROPVALUE"}}
                 );
@@ -72,7 +72,7 @@ async function updateStage (params) {
         }
         case 'unsetMapProp': {
             for (let i = 0; i < filter.length; i++) {
-                await cMaps.updateOne(
+                await mapsColl.updateOne(
                     {_id: filter[i].mapId},
                     {$unset: {"MAPROPNAME" : ""}}
                 );
@@ -81,7 +81,7 @@ async function updateStage (params) {
         }
         case 'setNodeProp': {
             for (let i = 0; i < filter.length; i++) {
-                await cMaps.updateOne(
+                await mapsColl.updateOne(
                     { _id: filter[i].mapId },
                     { $set: { "data.$[elem].NODEPROPNAME" : "NODEPROPVALUE" } },
                     { "arrayFilters": [{ "elem.path": filter[i].nodePath }], "multi": true }
@@ -91,7 +91,7 @@ async function updateStage (params) {
         }
         case 'unsetNodeProp': {
             for (let i = 0; i < filter.length; i++) {
-                await cMaps.updateOne(
+                await mapsColl.updateOne(
                     { _id: filter[i].mapId },
                     { $unset: { "data.$[elem].NODEPROPNAME" : "" } },
                     { "arrayFilters": [{ "elem.path": filter[i].nodePath }], "multi": true }
@@ -102,23 +102,23 @@ async function updateStage (params) {
     }
 }
 
-let db, cUsers, cMaps, cShares;
+let db, usersColl, mapsColl, sharesColl;
 async function mongoUtil(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         db = client.db("app_dev")
-        cUsers = db.collection("users");
-        cMaps = db.collection("maps");
-        cShares = db.collection("shares");
+        usersColl = db.collection("users");
+        mapsColl = db.collection("maps");
+        sharesColl = db.collection("shares");
         switch (cmd) {
             case 'findDeleteUnusedMaps': {
-                let allMaps = await mapFilter(cMaps, {
+                let allMaps = await mapFilter(mapsColl, {
                     filterMode: 'all',
                     returnArray: 'map'
                 });
-                let tabMaps = await cUsers.distinct('tabMapIdList')
-                let ownedMaps = await mapFilter(cMaps, {
+                let tabMaps = await usersColl.distinct('tabMapIdList')
+                let ownedMaps = await mapFilter(mapsColl, {
                     filterMode: 'filtered',
                     cond: 'eq',
                     condKey: 'linkType',
@@ -132,41 +132,41 @@ async function mongoUtil(cmd) {
                 console.log(mapsToKeep.length)
                 console.log(mapsToDelete.length) // run until mapsToDelete is 0
 
-                // await cMaps.deleteMany({_id: {$in: mapsToDelete}})
+                // await mapsColl.deleteMany({_id: {$in: mapsToDelete}})
                 break;
             }
             case 'addFieldToAllMap': {
-                await cMaps.updateMany({}, {$set: {ownerUser: ObjectId('5d88c99f1935c83e84ca263d')}});
+                await mapsColl.updateMany({}, {$set: {ownerUser: ObjectId('5d88c99f1935c83e84ca263d')}});
                 break;
             }
             case 'removeFieldFromAllMap': {
-                // await cMaps.updateMany({}, {$set: {density:[]}}); // NORMAL VERSION
-                // await cMaps.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
+                // await mapsColl.updateMany({}, {$set: {density:[]}}); // NORMAL VERSION
+                // await mapsColl.aggregate([{$unset: "density"}, {$out: "maps"}]).toArray() // FANCY VERSION
                 break;
             }
             case 'removeArrayElementFromAllMap': {
-                await cMaps.updateMany({}, {$pop: {path: 1}});
+                await mapsColl.updateMany({}, {$pop: {path: 1}});
                 break;
             }
             case 'pushStuff': {
-                // await cMaps.updateMany({}, {$push: {data:{$each: [{path: ['m']}], $position: 0}}})
+                // await mapsColl.updateMany({}, {$push: {data:{$each: [{path: ['m']}], $position: 0}}})
                 break;
             }
             case 'noPath': {
-                let arr = await mapFilter(cMaps, {
+                let arr = await mapFilter(mapsColl, {
                     filterMode: 'mapWithoutProp',
                     prop: 'path',
                     returnArray: 'map',
                 })
                 for (let i = 0; i < arr.length; i++) {
-                    let parent = await mapFilter(cMaps, {
+                    let parent = await mapFilter(mapsColl, {
                         filterMode: 'filtered',
                         cond: 'eq',
                         condKey: 'link',
                         condVal: arr[i],
                         returnArray: 'mapNodeContent',
                     })
-                    let child = (await cMaps.findOne({_id: ObjectId(arr[i])})).data[1].content;
+                    let child = (await mapsColl.findOne({_id: ObjectId(arr[i])})).data[1].content;
                     console.log(parent, child)
                 }
                 break;
