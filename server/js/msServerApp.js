@@ -149,12 +149,25 @@ async function sendResponse(c2s) {
                         c2s.serverPayload.hasOwnProperty('mapSourceOut') &&
                         c2s.serverPayload.hasOwnProperty('mapStorageOut')) {
                         const {mapIdOut, mapSourceOut, mapStorageOut} = c2s.serverPayload
-                        // TODO check if I have the right to save this
-                        if (mapSourceOut === 'data') {
-                            await mapsColl.updateOne({_id: ObjectId(mapIdOut)}, {$set: {data: mapStorageOut}})
-                        } else if (mapSourceOut === 'dataPlayback') {
-                            const {frameSelectedOut} = c2s.serverPayload
-                            await mapsColl.updateOne({_id: ObjectId(mapIdOut)}, {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}})
+                        const {ownerUser} = await getMapProps(mapsColl, ObjectId(mapIdOut))
+                        const shareToEdit = await sharesColl.findOne({
+                            shareUser: currUser._id,
+                            sharedMap: ObjectId(mapIdOut),
+                            access: 'edit'
+                        })
+                        if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
+                            if (mapSourceOut === 'data') {
+                                await mapsColl.updateOne(
+                                    {_id: ObjectId(mapIdOut)},
+                                    {$set: {data: mapStorageOut}}
+                                )
+                            } else if (mapSourceOut === 'dataPlayback') {
+                                const {frameSelectedOut} = c2s.serverPayload
+                                await mapsColl.updateOne(
+                                    {_id: ObjectId(mapIdOut)},
+                                    {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}}
+                                )
+                            }
                         }
                     }
                     if (c2s.serverPayload.hasOwnProperty('tabMapIdListOut') &&
