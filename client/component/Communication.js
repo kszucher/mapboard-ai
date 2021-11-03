@@ -74,7 +74,6 @@ export function Communication() {
             if (serverState.hasOwnProperty('landingData') &&
                 serverState.hasOwnProperty('mapRight')) {
                 const {landingData, mapRight} = serverState;
-                console.log('LEFF')
                 initDomData();
                 dispatch({type: 'SET_LANDING_DATA', payload: {landingData, mapRight}})
             }

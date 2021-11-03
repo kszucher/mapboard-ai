@@ -77,8 +77,6 @@ export function MapComponent() {
             const serverState = serverResponse.payload;
             if (serverState.hasOwnProperty('mapRight')) {
                 const {mapRight} = serverState;
-                removeLandingListeners();
-                removeMapListeners();
                 if (mapRight === MAP_RIGHTS.VIEW) {
                     addLandingListeners();
                 } else if (mapRight === MAP_RIGHTS.EDIT) {
