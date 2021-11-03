@@ -323,7 +323,11 @@ export function MapComponent() {
     };
 
     const dblclick = (e) => {
+        let path = e.path || (e.composedPath && e.composedPath());
         e.preventDefault();
+        if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
+            return;
+        }
         if (isNodeClicked) {
             nodeDispatch('startEdit');
         } else {
