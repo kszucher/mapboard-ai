@@ -18,8 +18,7 @@ let isTaskClicked = false;
 
 export function MapComponent() {
     const [state, dispatch] = useContext(Context);
-    const {landingData, landingDataIndex, serverResponse, serverResponseCntr, pageState} = state;
-    const {DEMO, WS} = PAGE_STATES;
+    const {landingData, landingDataIndex, serverResponse, serverResponseCntr} = state;
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
@@ -64,13 +63,6 @@ export function MapComponent() {
         }
     }, [landingData, landingDataIndex]);
 
-    useEffect(() => {
-        if (pageState === DEMO) {
-            dispatch({type: 'GET_LANDING_DATA'});
-        } else if (pageState === WS) {
-            dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
-        }
-    }, [pageState])
 
     useEffect(() => {
         if (serverResponse.payload) {

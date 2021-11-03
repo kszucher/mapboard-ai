@@ -26,6 +26,14 @@ export function Page() {
         getEquationDim('\\[Test\\]');
     }, [])
 
+    useEffect(() => {
+        if (pageState === DEMO) {
+            dispatch({type: 'GET_LANDING_DATA'});
+        } else if (pageState === WS) {
+            dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
+        }
+    }, [pageState])
+
     return(
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
