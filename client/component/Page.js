@@ -3,7 +3,7 @@ import {Context} from "../core/Store";
 import Auth from "./Auth";
 import {muiTheme} from "../component-styled/Theme";
 import {MuiThemeProvider} from "@material-ui/core";
-import {MapComponent} from "./MapComponent";
+import {MapListeners} from "./MapListeners";
 import Logo from "./Logo";
 import Tabs from "./Tabs";
 import {CommandButtons} from "./CommandButtons";
@@ -14,7 +14,7 @@ import {FrameEditor} from "./FrameEditor";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Sharing} from "./Sharing";
 import {Shares} from "./Shares";
-import {getEquationDim, getTextDim} from "../core/Utils";
+import {getEquationDim, getTextDim, isChrome} from "../core/Utils";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
@@ -38,7 +38,7 @@ export function Page() {
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
                 {[DEMO, WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
-                    <MapComponent/>
+                    <Map/>
                     <Logo/>
                     {[WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
                         <Tabs/>
@@ -53,6 +53,35 @@ export function Page() {
                 {pageState === WS_SHARES && <Shares/>}
                 {pageState === WS_SHARING && <Sharing/>}
             </MuiThemeProvider>
+            <MapListeners/>
         </div>
+    )
+}
+
+const Map = () => {
+    return (
+        <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
+            <div style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+                <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
+                    {isChrome
+                        ?<svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
+                        :<svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>}
+                </svg>
+                <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
+            </div>
+        </div>
+    )
+}
+
+const Layers = () => {
+    return (
+        <>
+            <g id="layer0"/>
+            <g id="layer1"/>
+            <g id="layer2"/>
+            <g id="layer3"/>
+            <g id="layer4"/>
+            <g id="layer5"/>
+        </>
     )
 }
