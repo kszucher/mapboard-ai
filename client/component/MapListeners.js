@@ -16,6 +16,38 @@ let isIntervalRunning = false;
 let isNodeClicked = false;
 let isTaskClicked = false;
 
+const addLandingListeners = (ctx) => {
+    window.addEventListener("mousewheel", ctx.mousewheel, {passive: false});
+}
+
+const removeLandingListeners = (ctx) => {
+    window.removeEventListener("mousewheel", ctx.mousewheel);
+}
+
+const addMapListeners = (ctx) => {
+    window.addEventListener("contextmenu", ctx.contextmenu);
+    window.addEventListener('resize', ctx.resize);
+    window.addEventListener('popstate', ctx.popstate);
+    window.addEventListener('dblclick', ctx.dblclick);
+    window.addEventListener('mousedown', ctx.mousedown);
+    window.addEventListener('mousemove', ctx.mousemove);
+    window.addEventListener('mouseup', ctx.mouseup);
+    window.addEventListener("keydown", ctx.keydown);
+    window.addEventListener("paste", ctx.paste);
+}
+
+const removeMapListeners = (ctx) => {
+    window.removeEventListener("contextmenu", ctx.contextmenu, true);
+    window.removeEventListener('resize', ctx.resize, true);
+    window.removeEventListener('popstate', ctx.popstate, true);
+    window.removeEventListener('dblclick', ctx.dblclick, true);
+    window.removeEventListener('mousedown', ctx.mousedown, true);
+    window.removeEventListener('mousemove', ctx.mousemove, true);
+    window.removeEventListener('mouseup', ctx.mouseup, true);
+    window.removeEventListener("keydown", ctx.keydown, true);
+    window.removeEventListener("paste", ctx.paste, true);
+}
+
 export function MapListeners() {
     const [state, dispatch] = useContext(Context);
     const {landingData, landingDataIndex, serverResponse, serverResponseCntr} = state;
@@ -25,37 +57,7 @@ export function MapListeners() {
         redraw();
     }
 
-    const addLandingListeners = () => {
-        window.addEventListener("mousewheel", mousewheel, {passive: false});
-    }
-
-    const removeLandingListeners = () => {
-        window.removeEventListener("mousewheel", mousewheel);
-    }
-
-    const addMapListeners = () => {
-        window.addEventListener("contextmenu", contextmenu);
-        window.addEventListener('resize', resize);
-        window.addEventListener('popstate', popstate);
-        window.addEventListener('dblclick', dblclick);
-        window.addEventListener('mousedown', mousedown);
-        window.addEventListener('mousemove', mousemove);
-        window.addEventListener('mouseup', mouseup);
-        window.addEventListener("keydown", keydown);
-        window.addEventListener("paste", paste);
-    }
-
-    const removeMapListeners = () => {
-        window.removeEventListener("contextmenu", contextmenu);
-        window.removeEventListener('resize', resize);
-        window.removeEventListener('popstate', popstate);
-        window.removeEventListener('dblclick', dblclick);
-        window.removeEventListener('mousedown', mousedown);
-        window.removeEventListener('mousemove', mousemove);
-        window.removeEventListener('mouseup', mouseup);
-        window.removeEventListener("keydown", keydown);
-        window.removeEventListener("paste", paste);
-    }
+    const ctx = {};
 
     useEffect(() => {
         if (landingData.length) {
@@ -70,9 +72,9 @@ export function MapListeners() {
             if (serverState.hasOwnProperty('mapRight')) {
                 const {mapRight} = serverState;
                 if (mapRight === MAP_RIGHTS.VIEW) {
-                    addLandingListeners();
+                    addLandingListeners(ctx);
                 } else if (mapRight === MAP_RIGHTS.EDIT) {
-                    addMapListeners();
+                    addMapListeners(ctx);
                 }
             }
         }
@@ -80,12 +82,12 @@ export function MapListeners() {
 
     useEffect(() => {
         return () => {
-            removeLandingListeners();
-            removeMapListeners();
+            removeLandingListeners(ctx);
+            removeMapListeners(ctx);
         }
     }, [])
 
-    const mousewheel = (e) => {
+    ctx.mousewheel = (e) => {
         e.preventDefault();
         if (!isIntervalRunning) {
             namedInterval = setInterval(function () {
@@ -101,16 +103,16 @@ export function MapListeners() {
         isIntervalRunning = true;
     }
 
-    const contextmenu = (e) => {
+    ctx.contextmenu = (e) => {
         e.preventDefault()
     };
 
-    const resize = () => {
+    ctx.resize = () => {
         nodeDispatch('setIsResizing');
         redraw();
     };
 
-    const popstate = (e) => {
+    ctx.popstate = (e) => {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
     };
 
@@ -123,7 +125,7 @@ export function MapListeners() {
         return [x, y]
     };
 
-    const mousedown = (e) => {
+    ctx.mousedown = (e) => {
         let path = e.path || (e.composedPath && e.composedPath());
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
@@ -211,7 +213,7 @@ export function MapListeners() {
         }
     };
 
-    const mousemove = (e) => {
+    ctx.mousemove = (e) => {
         e.preventDefault();
         if (isMouseDown) {
             elapsed++;
@@ -279,7 +281,7 @@ export function MapListeners() {
         }
     };
 
-    const mouseup = (e) => {
+    ctx.mouseup = (e) => {
         let path = e.path || (e.composedPath && e.composedPath());
         e.preventDefault();
         isMouseDown = false;
@@ -315,7 +317,7 @@ export function MapListeners() {
         }
     };
 
-    const dblclick = (e) => {
+    ctx.dblclick = (e) => {
         let path = e.path || (e.composedPath && e.composedPath());
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
@@ -330,7 +332,7 @@ export function MapListeners() {
         redraw();
     };
 
-    const keydown = (e) => {
+    ctx.keydown = (e) => {
         let {scope, lastPath} = selectionState;
         let {key, code, which} = e;
         // [37,38,39,40] = [left,up,right,down]
@@ -433,7 +435,7 @@ export function MapListeners() {
         }
     };
 
-    const paste = (e) => {
+    ctx.paste = (e) => {
         e.preventDefault();
         pasteDispatch();
     };
