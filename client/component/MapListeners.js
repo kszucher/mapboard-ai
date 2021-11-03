@@ -74,13 +74,16 @@ export function MapListeners() {
                 } else if (mapRight === MAP_RIGHTS.EDIT) {
                     addMapListeners();
                 }
-                return () => {
-                    removeLandingListeners();
-                    removeMapListeners();
-                }
             }
         }
     }, [serverResponseCntr]);
+
+    useEffect(() => {
+        return () => {
+            removeLandingListeners();
+            removeMapListeners();
+        }
+    }, [])
 
     const mousewheel = (e) => {
         e.preventDefault();
