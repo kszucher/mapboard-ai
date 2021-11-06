@@ -112,7 +112,7 @@ export function Map() {
     // };
 
     const mousedown = (e) => {
-        const path = e.nativeEvent.path
+        const {path, which} = e.nativeEvent
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
@@ -124,7 +124,7 @@ export function Map() {
             redraw();
         }
         (window.getSelection ? window.getSelection() : document.selection).empty()
-        if (e.which === 1 || e.which === 3) {
+        if (which === 1 || which === 3) {
             isNodeClicked = false;
             let m = mapref(['m']);
             let cr = mapref(['r', 0]); // TODO use ['g']
@@ -139,7 +139,7 @@ export function Map() {
                 }
                 push();
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    if (e.which === 1) {
+                    if (which === 1) {
                         nodeDispatch('selectStruct');
                     } else {
                         nodeDispatch('selectStructFamily');
@@ -149,7 +149,7 @@ export function Map() {
                 }
                 redraw();
                 checkPop();
-                if (e.which === 1) {
+                if (which === 1) {
                     let lm = mapref(selectionState.lastPath);
                     if (!e.shiftKey) {
                         if (lm.linkType !== '') {
@@ -186,11 +186,11 @@ export function Map() {
                     }
                 }
             }
-            if (e.which === 1 && !isNodeClicked && !isTaskClicked) {
+            if (which === 1 && !isNodeClicked && !isTaskClicked) {
                 pushSelectionState();
                 nodeDispatch('clearSelection');
             }
-        } else if (e.which === 2) {
+        } else if (which === 2) {
             let el = document.getElementById('mapHolderDiv');
             scrollLeft = el.scrollLeft;
             scrollTop = el.scrollTop;
@@ -201,9 +201,10 @@ export function Map() {
 
     const mousemove = (e) => {
         e.preventDefault();
+        const {which} = e.nativeEvent
         if (isMouseDown) {
             elapsed++;
-            if (e.which === 1) {
+            if (which === 1) {
                 if (isNodeClicked) {
                     let m = mapref(['m']);
                     let cr = mapref(['r', 0]); // TODO use ['g']
@@ -259,7 +260,7 @@ export function Map() {
                     mapFindOverRectangle.start(cr, startX, startY, width, height);
                     redraw();
                 }
-            } else if (e.which === 2) {
+            } else if (which === 2) {
                 let el = document.getElementById('mapHolderDiv');
                 el.scrollLeft = scrollLeft - e.pageX  + pageX;
                 el.scrollTop = scrollTop -  e.pageY  + pageY;
@@ -268,10 +269,10 @@ export function Map() {
     };
 
     const mouseup = (e) => {
-        const path = e.nativeEvent.path
+        const {path, which} = e.nativeEvent
         e.preventDefault();
         isMouseDown = false;
-        if (e.which === 1) {
+        if (which === 1) {
             let m = mapref(['m']);
             let cr = mapref(['r', 0]); // TODO use ['g']
             if (m.moveTargetPath.length) {
@@ -298,13 +299,13 @@ export function Map() {
                 recalc();
                 redraw();
             }
-        } else if (e.which === 2) {
+        } else if (which === 2) {
 
         }
     };
 
     const dblclick = (e) => {
-        const path = e.nativeEvent.path
+        const {path} = e.nativeEvent
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
@@ -320,7 +321,7 @@ export function Map() {
 
     const keydown = (e) => {
         let {scope, lastPath} = selectionState;
-        let {key, code, which} = e;
+        let {key, code, which} = e.nativeEvent;
         // [37,38,39,40] = [left,up,right,down]
         let keyStateMachineDb = [
             ['c','s','a', 'keyMatch',                     'scope',                     'e','p','m', 'executionList',                          ],
@@ -402,9 +403,9 @@ export function Map() {
                     } else if (['undo', 'redo'].includes(currExecution)) {
                         mapDispatch(currExecution);
                     } else if (currExecution === 'applyColorFromKey') {
-                        nodeDispatch(currExecution, {currColor: e.which - 96});
+                        nodeDispatch(currExecution, {currColor: which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
-                        nodeDispatch(currExecution, {currTaskStatus: e.which - 96});
+                        nodeDispatch(currExecution, {currTaskStatus: which - 96});
                     } else {
                         nodeDispatch(currExecution, {keyCode: e.code});
                         if (['insert_O_S', 'insert_U_S', 'insert_D_S'].includes(currExecution)) {
