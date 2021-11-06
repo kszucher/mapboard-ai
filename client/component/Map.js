@@ -40,7 +40,7 @@ export function Map() {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
         redraw();
     }
-    
+
     useEffect(() => {
         if (landingData.length) {
             loadLandingDataFrame(landingData, landingDataIndex);
@@ -408,9 +408,9 @@ export function Map() {
             // onResize={}
             // onpopstate={}
             onDoubleClick={ mapRight === MAP_RIGHTS.EDIT ? dblclick : undefined}
-            onMouseDown={   mapRight === MAP_RIGHTS.EDIT ? mousedown : undefined}
-            onMouseMove={   mapRight === MAP_RIGHTS.EDIT ? mousemove : undefined}
-            onMouseUp={     mapRight === MAP_RIGHTS.EDIT ? mouseup : undefined}
+            onMouseDown={   mapRight === MAP_RIGHTS.EDIT ? mousedown : undefined} // MUST BE WINDOW BOUND
+            onMouseMove={   mapRight === MAP_RIGHTS.EDIT ? mousemove : undefined} // MUST BE WINDOW BOUND
+            onMouseUp={     mapRight === MAP_RIGHTS.EDIT ? mouseup : undefined} // MUST BE WINDOW BOUND
             onKeyDown={     mapRight === MAP_RIGHTS.EDIT ? keydown : undefined}
             tabIndex={0}
             ref={inputRef}

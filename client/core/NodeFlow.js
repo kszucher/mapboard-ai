@@ -560,4 +560,7 @@ export function nodeDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action);
     nodeReducer(action, payload);
     recalc();
+    if (action !== 'typeText' && action !== 'startEdit') {
+        document.getElementById("mapHolderDiv").focus();
+    }
 }
