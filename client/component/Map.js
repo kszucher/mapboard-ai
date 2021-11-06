@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy, isChrome} from "../core/Utils";
@@ -16,41 +16,36 @@ let isIntervalRunning = false;
 let isNodeClicked = false;
 let isTaskClicked = false;
 
-const addLandingListeners = (ctx) => {
-    window.addEventListener("mousewheel", ctx.mousewheel, {passive: false});
+
+const useFocus = () => {
+    const htmlElRef = useRef(null)
+    const setFocus = () => {htmlElRef.current &&  htmlElRef.current.focus()}
+
+    return [ htmlElRef, setFocus ]
 }
 
-const removeLandingListeners = (ctx) => {
-    window.removeEventListener("mousewheel", ctx.mousewheel);
-}
+// const addLandingListeners = (ctx) => {
+//     window.addEventListener("mousewheel", const mousewheel, {passive: false});
+// }
+//
+// const removeLandingListeners = (ctx) => {
+//     window.removeEventListener("mousewheel", const mousewheel);
+// }
+//
 
-const addMapListeners = (ctx) => {
-    window.addEventListener("contextmenu", ctx.contextmenu);
-    window.addEventListener('resize', ctx.resize);
-    window.addEventListener('popstate', ctx.popstate);
-    window.addEventListener('dblclick', ctx.dblclick);
-    window.addEventListener('mousedown', ctx.mousedown);
-    window.addEventListener('mousemove', ctx.mousemove);
-    window.addEventListener('mouseup', ctx.mouseup);
-    window.addEventListener("keydown", ctx.keydown);
-    window.addEventListener("paste", ctx.paste);
-}
-
-const removeMapListeners = (ctx) => {
-    window.removeEventListener("contextmenu", ctx.contextmenu, true);
-    window.removeEventListener('resize', ctx.resize, true);
-    window.removeEventListener('popstate', ctx.popstate, true);
-    window.removeEventListener('dblclick', ctx.dblclick, true);
-    window.removeEventListener('mousedown', ctx.mousedown, true);
-    window.removeEventListener('mousemove', ctx.mousemove, true);
-    window.removeEventListener('mouseup', ctx.mouseup, true);
-    window.removeEventListener("keydown", ctx.keydown, true);
-    window.removeEventListener("paste", ctx.paste, true);
-}
+const getCoords = (e) => {
+    let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    let mapHolderDiv = document.getElementById('mapHolderDiv');
+    let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
+    let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
+    return [x, y]
+};
 
 export function Map() {
     const [state, dispatch] = useContext(Context);
-    const {landingData, landingDataIndex, serverResponse, serverResponseCntr} = state;
+    const {landingData, landingDataIndex, serverResponse, serverResponseCntr, mapRight, pageState} = state;
+    const [inputRef, setInputFocus] = useFocus()
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
@@ -66,28 +61,28 @@ export function Map() {
     }, [landingData, landingDataIndex]);
 
 
-    useEffect(() => {
-        if (serverResponse.payload) {
-            const serverState = serverResponse.payload;
-            if (serverState.hasOwnProperty('mapRight')) {
-                const {mapRight} = serverState;
-                if (mapRight === MAP_RIGHTS.VIEW) {
-                    addLandingListeners(ctx);
-                } else if (mapRight === MAP_RIGHTS.EDIT) {
-                    addMapListeners(ctx);
-                }
-            }
-        }
-    }, [serverResponseCntr]);
+    // useEffect(() => {
+    //     if (serverResponse.payload) {
+    //         const serverState = serverResponse.payload;
+    //         if (serverState.hasOwnProperty('mapRight')) {
+    //             const {mapRight} = serverState;
+    //             if (mapRight === MAP_RIGHTS.VIEW) {
+    //                 addLandingListeners(ctx);
+    //             } else if (mapRight === MAP_RIGHTS.EDIT) {
+    //                 addMapListeners(ctx);
+    //             }
+    //         }
+    //     }
+    // }, [serverResponseCntr]);
 
     useEffect(() => {
-        return () => {
-            removeLandingListeners(ctx);
-            removeMapListeners(ctx);
-        }
-    }, [])
 
-    ctx.mousewheel = (e) => {
+        console.log('SET FOCUS')
+        setInputFocus()
+
+    }, [pageState])
+
+    const mousewheel = (e) => {
         e.preventDefault();
         if (!isIntervalRunning) {
             namedInterval = setInterval(function () {
@@ -103,30 +98,21 @@ export function Map() {
         isIntervalRunning = true;
     }
 
-    ctx.contextmenu = (e) => {
+    const contextmenu = (e) => {
         e.preventDefault()
     };
 
-    ctx.resize = () => {
-        nodeDispatch('setIsResizing');
-        redraw();
-    };
+    // const resize = () => {
+    //     nodeDispatch('setIsResizing');
+    //     redraw();
+    // };
 
-    ctx.popstate = (e) => {
-        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
-    };
+    // const popstate = (e) => {
+    //     dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
+    // };
 
-    const getCoords = (e) => {
-        let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-        let mapHolderDiv = document.getElementById('mapHolderDiv');
-        let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
-        let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
-        return [x, y]
-    };
-
-    ctx.mousedown = (e) => {
-        let path = e.path || (e.composedPath && e.composedPath());
+    const mousedown = (e) => {
+        const path = e.nativeEvent.path
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
@@ -213,7 +199,7 @@ export function Map() {
         }
     };
 
-    ctx.mousemove = (e) => {
+    const mousemove = (e) => {
         e.preventDefault();
         if (isMouseDown) {
             elapsed++;
@@ -281,8 +267,8 @@ export function Map() {
         }
     };
 
-    ctx.mouseup = (e) => {
-        let path = e.path || (e.composedPath && e.composedPath());
+    const mouseup = (e) => {
+        const path = e.nativeEvent.path
         e.preventDefault();
         isMouseDown = false;
         if (e.which === 1) {
@@ -317,8 +303,8 @@ export function Map() {
         }
     };
 
-    ctx.dblclick = (e) => {
-        let path = e.path || (e.composedPath && e.composedPath());
+    const dblclick = (e) => {
+        const path = e.nativeEvent.path
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
@@ -332,7 +318,7 @@ export function Map() {
         redraw();
     };
 
-    ctx.keydown = (e) => {
+    const keydown = (e) => {
         let {scope, lastPath} = selectionState;
         let {key, code, which} = e;
         // [37,38,39,40] = [left,up,right,down]
@@ -435,7 +421,7 @@ export function Map() {
         }
     };
 
-    ctx.paste = (e) => {
+    const paste = (e) => {
         e.preventDefault();
         pasteDispatch();
     };
@@ -443,9 +429,22 @@ export function Map() {
     return (
         <div
             id='mapHolderDiv'
-            style={{overflowY: 'scroll', overflowX: 'scroll'}}
+            style={{overflowY: 'scroll', overflowX: 'scroll', width: '100%', height: '100%'}}
+
+            onContextMenu={ mapRight === MAP_RIGHTS.EDIT ? contextmenu : undefined}
+            // onResize={}
+            // onpopstate={}
+            onDoubleClick={ mapRight === MAP_RIGHTS.EDIT ? dblclick : undefined}
+            onMouseDown={   mapRight === MAP_RIGHTS.EDIT ? mousedown : undefined}
+            onMouseMove={   mapRight === MAP_RIGHTS.EDIT ? mousemove : undefined}
+            onMouseUp={     mapRight === MAP_RIGHTS.EDIT ? mouseup : undefined}
+            onKeyDown={     mapRight === MAP_RIGHTS.EDIT ? keydown : undefined}
+            onPaste={       mapRight === MAP_RIGHTS.EDIT ? paste : undefined}
+            tabIndex={0}
+            ref={inputRef}
         >
-            <div style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+            <div
+                style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
                 <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
                     {isChrome
                         ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
