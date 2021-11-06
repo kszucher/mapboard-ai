@@ -399,6 +399,13 @@ export function Map() {
         }
     };
 
+    // FINAL TODO
+    // a MAPLISTENER külön életet él a MAPTÓL, viszont a MAP létrejötte (ami bizonyos módokhoz társítható leginkább),
+    // életre hívnak USEEFFECT függvényket, amik kapcsolgatnak.
+    // de olyan SOSE lesz, hogy a MAP törlése miatt AUTOMATICE törlődnek ezek a dolgok a useEffect re-re-re hívásában
+    // tehát ez mindig dom lesz, de TOTÁL LOOSELY COUPLED módon lesz működtetve.
+    // that's it folks
+
     return (
         <div
             id='mapHolderDiv'
