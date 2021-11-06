@@ -8,7 +8,7 @@ import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
-import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
+import {MAP_RIGHTS} from "../core/EditorFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
@@ -16,22 +16,11 @@ let isIntervalRunning = false;
 let isNodeClicked = false;
 let isTaskClicked = false;
 
-
 const useFocus = () => {
     const htmlElRef = useRef(null)
-    const setFocus = () => {htmlElRef.current &&  htmlElRef.current.focus()}
-
+    const setFocus = () => {htmlElRef.current && htmlElRef.current.focus()}
     return [ htmlElRef, setFocus ]
 }
-
-// const addLandingListeners = (ctx) => {
-//     window.addEventListener("mousewheel", const mousewheel, {passive: false});
-// }
-//
-// const removeLandingListeners = (ctx) => {
-//     window.removeEventListener("mousewheel", const mousewheel);
-// }
-//
 
 const getCoords = (e) => {
     let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -51,31 +40,16 @@ export function Map() {
         mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
         redraw();
     }
-
-    const ctx = {};
-
+    
     useEffect(() => {
         if (landingData.length) {
             loadLandingDataFrame(landingData, landingDataIndex);
         }
     }, [landingData, landingDataIndex]);
 
-
-    // useEffect(() => {
-    //     if (serverResponse.payload) {
-    //         const serverState = serverResponse.payload;
-    //         if (serverState.hasOwnProperty('mapRight')) {
-    //             const {mapRight} = serverState;
-    //             if (mapRight === MAP_RIGHTS.VIEW) {
-    //                 addLandingListeners(ctx);
-    //             } else if (mapRight === MAP_RIGHTS.EDIT) {
-    //                 addMapListeners(ctx);
-    //             }
-    //         }
-    //     }
-    // }, [serverResponseCntr]);
-
     useEffect(() => {
+        // TODO any event that comes THROUGH buttons but results in nodeDispatch, should be fed into react first,
+        // and as a result, a collector event sets focus again, which has nothing to do with pageState actually
 
         console.log('SET FOCUS')
         setInputFocus()
