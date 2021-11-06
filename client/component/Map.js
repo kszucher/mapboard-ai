@@ -354,6 +354,7 @@ export function Map() {
             [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                      ],
             [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
             [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
+            [ 1,  0,  0,  code === 'KeyV',               ['s', 'c', 'm'],               0,  1,  1, ['paste']                                  ],
             [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['SAVE_MAP']                               ],
             [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'SAVE_MAP']                 ],
             [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
@@ -402,6 +403,8 @@ export function Map() {
                         dispatch({type: currExecution});
                     } else if (['undo', 'redo'].includes(currExecution)) {
                         mapDispatch(currExecution);
+                    } else if (currExecution === 'paste') {
+                        pasteDispatch();
                     } else if (currExecution === 'applyColorFromKey') {
                         nodeDispatch(currExecution, {currColor: which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
@@ -422,11 +425,6 @@ export function Map() {
         }
     };
 
-    const paste = (e) => {
-        e.preventDefault();
-        pasteDispatch();
-    };
-
     return (
         <div
             id='mapHolderDiv'
@@ -440,7 +438,6 @@ export function Map() {
             onMouseMove={   mapRight === MAP_RIGHTS.EDIT ? mousemove : undefined}
             onMouseUp={     mapRight === MAP_RIGHTS.EDIT ? mouseup : undefined}
             onKeyDown={     mapRight === MAP_RIGHTS.EDIT ? keydown : undefined}
-            onPaste={       mapRight === MAP_RIGHTS.EDIT ? paste : undefined}
             tabIndex={0}
             ref={inputRef}
         >
