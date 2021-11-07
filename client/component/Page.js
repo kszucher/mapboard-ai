@@ -15,6 +15,7 @@ import {Sharing} from "./Sharing";
 import {Shares} from "./Shares";
 import {getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {WindowListeners} from "./WindowListeners";
+import {FramesSide} from "./FramesSide";
 
 export function Page() {
     const [state, dispatch] = useContext(Context);
@@ -47,6 +48,7 @@ export function Page() {
                         <CommandTexts/>
                     </>}
                     {paletteVisible===1 && <Palette/>}
+                    {frameEditorVisible===1 && <FramesSide/>}
                     {frameEditorVisible===1 && <FramesBottom/>}
                 </>}
                 {pageState === AUTH && <Auth/>}

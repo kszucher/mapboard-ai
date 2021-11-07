@@ -23,29 +23,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Logo() {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
-    const handleClose = () => {setAnchorEl(null)};
     const [state, dispatch] = useContext(Context);
     const {pageState} = state;
     const {DEMO, WS} = PAGE_STATES;
-    const handleSelect = param => e => {
-        handleClose();
-        switch(param) {
-            case 'ADD_MAP':dispatch({type: 'CREATE_MAP_IN_TAB'}); break;
-            case 'REMOVE_MAP':dispatch({type: 'REMOVE_MAP_IN_TAB'});break;
-            case 'MOVE_UP_MAP':dispatch({type: 'MOVE_UP_MAP_IN_TAB'});break;
-            case 'MOVE_DOWN_MAP':dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'});break;
-            case 'SHOW_SHARING': dispatch({type: 'SHOW_SHARING'}); break;
-            case 'SHOW_SHARES':dispatch({type: 'SHOW_SHARES'}); break;
-            case 'SIGN_OUT':
-                localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
-                dispatch({type: 'RESET_STATE'});
-                break;
-        }
-    };
+
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
+    const handleClose = () => {setAnchorEl(null)};
+
+    const createMapInTab =      _ => dispatch({type: 'CREATE_MAP_IN_TAB'})
+    const removeMapInTab =      _ => dispatch({type: 'REMOVE_MAP_IN_TAB'})
+    const moveUpMapInTab =      _ => dispatch({type: 'MOVE_UP_MAP_IN_TAB'})
+    const moveDownMapInTab =    _ => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
+    const showSharing =         _ => dispatch({type: 'SHOW_SHARING'})
+    const showShares =          _ => dispatch({type: 'SHOW_SHARES'})
+    const signOut = _ => {
+        localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
+        dispatch({type: 'RESET_STATE'});
+    }
+
     const col1 = '#a4508b'
     const col2 = '#5f0a87'
     return (
@@ -76,15 +75,15 @@ export default function Logo() {
                     transformOrigin={{vertical: 'top', horizontal: 'right'}}
                     open={open}
                     onClose={handleClose}>
-                    <MenuItem onClick={handleSelect('ADD_MAP')}>Add Map</MenuItem>
-                    <MenuItem onClick={handleSelect('REMOVE_MAP')}>Remove Map</MenuItem>
-                    <MenuItem onClick={handleSelect('MOVE_UP_MAP')}>Move Up Map</MenuItem>
-                    <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
+                    <MenuItem onClick={() => {handleClose(); createMapInTab()}}>    {'Add Map'}         </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); removeMapInTab()}}>    {'Remove Map'}      </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); moveUpMapInTab()}}>    {'Move Up Map'}     </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); moveDownMapInTab()}}>  {'Move Down Map'}   </MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleSelect('SHOW_SHARING')}>Sharing</MenuItem>
-                    <MenuItem onClick={handleSelect('SHOW_SHARES')}>Shares</MenuItem>
+                    <MenuItem onClick={() => {handleClose(); showSharing()}}>       {'Sharing'}         </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); showShares()}}>        {'Shares'}          </MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
+                    <MenuItem onClick={() => {handleClose(); signOut()}}>           {'Sign Out'}        </MenuItem>
                 </Menu>}
                 {pageState === DEMO && <Menu
                     id="menu-appbar"
