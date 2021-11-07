@@ -29,17 +29,6 @@ export function CommandTexts () {
     const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
     const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
     const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
-    const cmdFrameOp = e => {
-        switch (e) {
-            case 'frame editor':   dispatch({type: 'OPEN_PLAYBACK_EDITOR'}); break;
-            case 'import':         dispatch({type: 'IMPORT_FRAME'}); break;
-            case 'duplicate':      dispatch({type: 'DUPLICATE_FRAME'}); break;
-            case 'delete':         dispatch({type: 'DELETE_FRAME'}); break;
-            case 'prev':           dispatch({type: 'PREV_FRAME'}); break;
-            case 'next':           dispatch({type: 'NEXT_FRAME'}); break;
-            case 'close':          dispatch({type: 'CLOSE_PLAYBACK_EDITOR'}); break;
-        }
-    }
 
     return (
         <div style={{
@@ -76,10 +65,6 @@ export function CommandTexts () {
                 <ControlledStyledButtonGroup open={formatMode === 'text'}    valueList={['h1', 'h2', 'h3', 'h4', 't']}      value={fontSize}    action={updateFontSize}    />
                 <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['convert to task']}                value={''}          action={cmdTaskToggle}     />
                 <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['convert to submap']}              value={''}          action={cmdSubmapToggle}   />
-                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['frame editor']}                   value={''}          action={cmdFrameOp}        />
-                <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['import', 'duplicate', 'delete']}  value={''}          action={cmdFrameOp}        valueListDisabled={[false, ...Array(2).fill(!frameLen)]}/>
-                <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['prev', 'next']}                   value={''}          action={cmdFrameOp}        valueListDisabled={[frameSelected === 0, frameSelected === frameLen - 1]}/>
-                <ControlledStyledButtonGroup open={frameEditorVisible === 1} valueList={['close']}                          value={''}          action={cmdFrameOp}        />
             </div>
         </div>
     );

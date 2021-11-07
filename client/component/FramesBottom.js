@@ -9,6 +9,9 @@ export function FramesBottom () {
     const [state, dispatch] = useContext(Context)
     const {frameLen, frameSelected, breadcrumbMapNameList} = state;
 
+    const prevFrame = _=>dispatch({type: 'PREV_FRAME'})
+    const nextFrame = _ => dispatch({type: 'NEXT_FRAME'})
+
     useEffect(() => {
         dispatch({type: 'OPEN_FRAME'});
         return () => {
@@ -47,7 +50,7 @@ export function FramesBottom () {
                     backButton={
                         <Button style={{paddingRight:20}}
                                 size="large"
-                                onClick={_=>dispatch({type: 'PREV_FRAME'})}
+                                onClick={prevFrame}
                                 disabled={frameSelected === 0}>
                             <KeyboardArrowLeft />
                         </Button>
@@ -55,7 +58,7 @@ export function FramesBottom () {
                     nextButton={
                         <Button style={{paddingLeft:20}}
                                 size="large"
-                                onClick={_=>dispatch({type: 'NEXT_FRAME'})}
+                                onClick={nextFrame}
                                 disabled={frameSelected === frameLen - 1}>
                             <KeyboardArrowRight />
                         </Button>
