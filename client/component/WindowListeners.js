@@ -1,14 +1,14 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect} from "react";
 import {Context} from "../core/Store";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
-import {arraysSame, copy, isChrome} from "../core/Utils";
+import {arraysSame, copy} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
-import {MAP_RIGHTS} from "../core/EditorFlow";
+import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
@@ -432,25 +432,21 @@ export function WindowListeners() {
     }, [landingData, landingDataIndex]);
 
     useEffect(() => {
-        if (serverResponse.payload) {
-            const serverState = serverResponse.payload;
-            if (serverState.hasOwnProperty('mapRight')) {
-                const {mapRight} = serverState;
-                if (mapRight === MAP_RIGHTS.VIEW) {
-                    addLandingListeners();
-                } else if (mapRight === MAP_RIGHTS.EDIT) {
-                    addMapListeners();
-                }
+        if (pageState === PAGE_STATES.WS) {
+            if (mapRight === MAP_RIGHTS.EDIT) {
+                addMapListeners();
+            } else if (mapRight === MAP_RIGHTS.VIEW) {
+                // TODO figure out view listeners
             }
+        } else if (pageState === PAGE_STATES.DEMO) {
+            addLandingListeners()
         }
-    }, [serverResponseCntr]);
-
-    // useEffect(() => {
-    //     return () => {
-    //         removeLandingListeners();
-    //         removeMapListeners();
-    //     }
-    // }, [])
+        return () => {
+            console.log('LISTENERS REMOVED')
+            removeMapListeners();
+            removeLandingListeners();
+        }
+    }, [pageState, mapRight]);
 
     return (
         <></>
