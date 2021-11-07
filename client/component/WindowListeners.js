@@ -16,12 +16,6 @@ let isIntervalRunning = false;
 let isNodeClicked = false;
 let isTaskClicked = false;
 
-const useFocus = () => {
-    const htmlElRef = useRef(null)
-    const setFocus = () => {htmlElRef.current && htmlElRef.current.focus()}
-    return [ htmlElRef, setFocus ]
-}
-
 const getCoords = (e) => {
     let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -31,30 +25,28 @@ const getCoords = (e) => {
     return [x, y]
 };
 
-export function Map() {
+const getNativeEvent = (e) => {
+    return {
+        path: e.path || (e.composedPath && e.composedPath()),
+        key: e.key,
+        code: e.code,
+        which: e.which
+    };
+}
+
+export function WindowListeners() {
     const [state, dispatch] = useContext(Context);
     const {landingData, landingDataIndex, serverResponse, serverResponseCntr, mapRight, pageState} = state;
-    const [inputRef, setInputFocus] = useFocus()
 
     const loadLandingDataFrame = (landingData, landingDataIndex) => {
-        mapDispatch('initMapState', {mapId: '', mapSource: '', mapStorage: landingData[landingDataIndex], frameSelected: 0});
+        mapDispatch('initMapState', {
+            mapId: '',
+            mapSource: '',
+            mapStorage: landingData[landingDataIndex],
+            frameSelected: 0
+        });
         redraw();
     }
-
-    useEffect(() => {
-        if (landingData.length) {
-            loadLandingDataFrame(landingData, landingDataIndex);
-        }
-    }, [landingData, landingDataIndex]);
-
-    useEffect(() => {
-        // TODO any event that comes THROUGH buttons but results in nodeDispatch, should be fed into react first,
-        // and as a result, a collector event sets focus again, which has nothing to do with pageState actually
-
-        console.log('SET FOCUS')
-        setInputFocus()
-
-    }, [pageState])
 
     const mousewheel = (e) => {
         e.preventDefault();
@@ -76,17 +68,17 @@ export function Map() {
         e.preventDefault()
     };
 
-    // const resize = () => {
-    //     nodeDispatch('setIsResizing');
-    //     redraw();
-    // };
+    const resize = () => {
+        nodeDispatch('setIsResizing');
+        redraw();
+    };
 
-    // const popstate = (e) => {
-    //     dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
-    // };
+    const popstate = (e) => {
+        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
+    };
 
     const mousedown = (e) => {
-        const {path, which} = e.nativeEvent
+        const {path, which} = getNativeEvent(e)
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
@@ -175,7 +167,7 @@ export function Map() {
 
     const mousemove = (e) => {
         e.preventDefault();
-        const {which} = e.nativeEvent
+        const {which} = getNativeEvent(e)
         if (isMouseDown) {
             elapsed++;
             if (which === 1) {
@@ -243,7 +235,7 @@ export function Map() {
     };
 
     const mouseup = (e) => {
-        const {path, which} = e.nativeEvent
+        const {path, which} = getNativeEvent(e)
         e.preventDefault();
         isMouseDown = false;
         if (which === 1) {
@@ -279,7 +271,7 @@ export function Map() {
     };
 
     const dblclick = (e) => {
-        const {path} = e.nativeEvent
+        const {path} = getNativeEvent(e)
         e.preventDefault();
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return;
@@ -295,7 +287,7 @@ export function Map() {
 
     const keydown = (e) => {
         let {scope, lastPath} = selectionState;
-        let {key, code, which} = e.nativeEvent;
+        let {key, code, which} = getNativeEvent(e);
         // [37,38,39,40] = [left,up,right,down]
         let keyStateMachineDb = [
             ['c','s','a', 'keyMatch',                     'scope',                     'e','p','m', 'executionList',                          ],
@@ -328,7 +320,6 @@ export function Map() {
             [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                      ],
             [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
             [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
-            [ 1,  0,  0,  code === 'KeyV',               ['s', 'c', 'm'],               0,  1,  1, ['paste']                                  ],
             [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['SAVE_MAP']                               ],
             [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'SAVE_MAP']                 ],
             [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
@@ -377,8 +368,6 @@ export function Map() {
                         dispatch({type: currExecution});
                     } else if (['undo', 'redo'].includes(currExecution)) {
                         mapDispatch(currExecution);
-                    } else if (currExecution === 'paste') {
-                        pasteDispatch();
                     } else if (currExecution === 'applyColorFromKey') {
                         nodeDispatch(currExecution, {currColor: which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
@@ -399,52 +388,71 @@ export function Map() {
         }
     };
 
-    // FINAL TODO
-    // a MAPLISTENER külön életet él a MAPTÓL, viszont a MAP létrejötte (ami bizonyos módokhoz társítható leginkább),
-    // életre hívnak USEEFFECT függvényket, amik kapcsolgatnak.
-    // de olyan SOSE lesz, hogy a MAP törlése miatt AUTOMATICE törlődnek ezek a dolgok a useEffect re-re-re hívásában
-    // tehát ez mindig dom lesz, de TOTÁL LOOSELY COUPLED módon lesz működtetve.
-    // that's it folks
+    const paste = (e) => {
+        e.preventDefault();
+        pasteDispatch();
+    };
+
+    const addLandingListeners = () => {
+        window.addEventListener("mousewheel", mousewheel, {passive: false});
+    }
+
+    const removeLandingListeners = () => {
+        window.removeEventListener("mousewheel", mousewheel);
+    }
+
+    const addMapListeners = () => {
+        window.addEventListener("contextmenu", contextmenu);
+        window.addEventListener('resize', resize);
+        window.addEventListener('popstate', popstate);
+        window.addEventListener('dblclick', dblclick);
+        window.addEventListener('mousedown', mousedown);
+        window.addEventListener('mousemove', mousemove);
+        window.addEventListener('mouseup', mouseup);
+        window.addEventListener("keydown", keydown);
+        window.addEventListener("paste", paste);
+    }
+
+    const removeMapListeners = () => {
+        window.removeEventListener("contextmenu", contextmenu);
+        window.removeEventListener('resize', resize);
+        window.removeEventListener('popstate', popstate);
+        window.removeEventListener('dblclick', dblclick);
+        window.removeEventListener('mousedown', mousedown);
+        window.removeEventListener('mousemove', mousemove);
+        window.removeEventListener('mouseup', mouseup);
+        window.removeEventListener("keydown", keydown);
+        window.removeEventListener("paste", paste);
+    }
+
+    useEffect(() => {
+        if (landingData.length) {
+            loadLandingDataFrame(landingData, landingDataIndex);
+        }
+    }, [landingData, landingDataIndex]);
+
+    useEffect(() => {
+        if (serverResponse.payload) {
+            const serverState = serverResponse.payload;
+            if (serverState.hasOwnProperty('mapRight')) {
+                const {mapRight} = serverState;
+                if (mapRight === MAP_RIGHTS.VIEW) {
+                    addLandingListeners();
+                } else if (mapRight === MAP_RIGHTS.EDIT) {
+                    addMapListeners();
+                }
+            }
+        }
+    }, [serverResponseCntr]);
+
+    // useEffect(() => {
+    //     return () => {
+    //         removeLandingListeners();
+    //         removeMapListeners();
+    //     }
+    // }, [])
 
     return (
-        <div
-            id='mapHolderDiv'
-            style={{overflowY: 'scroll', overflowX: 'scroll', width: '100%', height: '100%'}}
-
-            onContextMenu={ mapRight === MAP_RIGHTS.EDIT ? contextmenu : undefined}
-            // onResize={}
-            // onpopstate={}
-            onDoubleClick={ mapRight === MAP_RIGHTS.EDIT ? dblclick : undefined}
-            onMouseDown={   mapRight === MAP_RIGHTS.EDIT ? mousedown : undefined} // MUST BE WINDOW BOUND
-            onMouseMove={   mapRight === MAP_RIGHTS.EDIT ? mousemove : undefined} // MUST BE WINDOW BOUND
-            onMouseUp={     mapRight === MAP_RIGHTS.EDIT ? mouseup : undefined} // MUST BE WINDOW BOUND
-            onKeyDown={     mapRight === MAP_RIGHTS.EDIT ? keydown : undefined}
-            tabIndex={0}
-            ref={inputRef}
-        >
-            <div
-                style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
-                <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
-                    {isChrome
-                        ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
-                        : <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>
-                    }
-                </svg>
-                <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
-            </div>
-        </div>
-    )
-}
-
-const Layers = () => {
-    return (
-        <>
-            <g id="layer0"/>
-            <g id="layer1"/>
-            <g id="layer2"/>
-            <g id="layer3"/>
-            <g id="layer4"/>
-            <g id="layer5"/>
-        </>
+        <></>
     )
 }
