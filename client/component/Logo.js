@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {Context} from "../core/Store";
 import {PAGE_STATES} from "../core/EditorFlow";
+import {Divider} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -79,8 +80,10 @@ export default function Logo() {
                     <MenuItem onClick={handleSelect('REMOVE_MAP')}>Remove Map</MenuItem>
                     <MenuItem onClick={handleSelect('MOVE_UP_MAP')}>Move Up Map</MenuItem>
                     <MenuItem onClick={handleSelect('MOVE_DOWN_MAP')}>Move Down Map</MenuItem>
+                    <Divider />
                     <MenuItem onClick={handleSelect('SHOW_SHARING')}>Sharing</MenuItem>
                     <MenuItem onClick={handleSelect('SHOW_SHARES')}>Shares</MenuItem>
+                    <Divider />
                     <MenuItem onClick={handleSelect('SIGN_OUT')}>Sign Out</MenuItem>
                 </Menu>}
                 {pageState === DEMO && <Menu

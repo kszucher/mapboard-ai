@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 import {COLORS} from "../core/Utils";
 
-export function FrameEditor () {
+export function FramesBottom () {
     const [state, dispatch] = useContext(Context)
     const {frameLen, frameSelected, breadcrumbMapNameList} = state;
 
@@ -17,8 +17,18 @@ export function FrameEditor () {
     }, []);
 
     return (
-        <div style={{position: 'fixed', left: '50%', transform: 'translate(-50%)', bottom: 0, display: 'flex', alignItems: 'center'}}>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{
+            position: 'fixed',
+            left: '50%',
+            transform: 'translate(-50%)',
+            bottom: 0,
+            display: 'flex',
+            alignItems: 'center'
+        }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
                 {frameLen > 0 &&
                 <MobileStepper
                     style={{

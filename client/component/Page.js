@@ -9,7 +9,7 @@ import {CommandButtons} from "./CommandButtons";
 import Breadcrumbs from "./Breadcrumbs";
 import {CommandTexts} from "./CommandTexts";
 import {Palette} from "./Palette";
-import {FrameEditor} from "./FrameEditor";
+import {FramesBottom} from "./FramesBottom";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Sharing} from "./Sharing";
 import {Shares} from "./Shares";
@@ -47,7 +47,7 @@ export function Page() {
                         <CommandTexts/>
                     </>}
                     {paletteVisible===1 && <Palette/>}
-                    {frameEditorVisible===1 && <FrameEditor/>}
+                    {frameEditorVisible===1 && <FramesBottom/>}
                 </>}
                 {pageState === AUTH && <Auth/>}
                 {pageState === WS_SHARES && <Shares/>}
