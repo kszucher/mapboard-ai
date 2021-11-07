@@ -18,7 +18,7 @@ export default function StyledButtonGroup (arg) {
     const {open, valueList, value, action, size, disabled, valueListDisabled} = arg;
     const classes = useStyles();
     return (
-        open && <div  className={classes.root}>
+        open && <div className={classes.root}>
             <ButtonGroup
                 disabled={disabled || false}
                 size={size || 'small'}

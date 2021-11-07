@@ -1,14 +1,15 @@
 import React, {useContext, useState} from 'react';
 import {Context} from "../core/Store";
-import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {checkPop, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
+import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function CommandTexts () {
     const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible, frameLen, frameSelected} = state
+    const {formatMode, mapRight} = state
+    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
@@ -54,35 +55,84 @@ export function CommandTexts () {
                 paddingLeft: 12,
                 paddingRight: 12
             }}>
-                <ControlledStyledButtonGroup open={true}                     valueList={['small', 'large']}                 value={density}     action={updateDensity}     />
-                <ControlledStyledButtonGroup open={true}                     valueList={['adaptive', 'centered']}           value={alignment}   action={updateAlignment}   />
-                <ControlledStyledButtonGroup open={true}                     valueList={['line', 'border', 'fill', 'text']} value={formatMode}  action={updateFormatMode}  />
-                <ControlledStyledButtonGroup open={formatMode === '' }       valueList={['reset format']}                   value={''}          action={cmdResetAll}       />
-                <ControlledStyledButtonGroup open={formatMode !== '' }       valueList={['reset ' + formatMode]}            value={''}          action={cmdReset}          />
-                <ControlledStyledButtonGroup open={formatMode === 'line'}    valueList={['w1', 'w2', 'w3']}                 value={lineWidth}   action={updateLineWidth}   />
-                <ControlledStyledButtonGroup open={formatMode === 'line'}    valueList={['bezier', 'edge']}                 value={lineType}    action={updateLineType}    />
-                <ControlledStyledButtonGroup open={formatMode === 'border'}  valueList={['w1', 'w2', 'w3']}                 value={borderWidth} action={updateBorderWidth} />
-                <ControlledStyledButtonGroup open={formatMode === 'text'}    valueList={['h1', 'h2', 'h3', 'h4', 't']}      value={fontSize}    action={updateFontSize}    />
-                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['convert to task']}                value={''}          action={cmdTaskToggle}     />
-                <ControlledStyledButtonGroup open={formatMode === ''}        valueList={['convert to submap']}              value={''}          action={cmdSubmapToggle}   />
+                <StyledButtonGroup
+                    open={true}
+                    valueList={['small', 'large']}
+                    value={density}
+                    action={updateDensity}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={true}
+                    valueList={['adaptive', 'centered']}
+                    value={alignment}
+                    action={updateAlignment}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={true}
+                    valueList={['line', 'border', 'fill', 'text']}
+                    value={formatMode}
+                    action={updateFormatMode}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === '' }
+                    valueList={['reset format']}
+                    value={''}
+                    action={cmdResetAll}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode !== '' }
+                    valueList={['reset ' + formatMode]}
+                    value={''}
+                    action={cmdReset}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === 'line'}
+                    valueList={['w1', 'w2', 'w3']}
+                    value={lineWidth}
+                    action={updateLineWidth}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === 'line'}
+                    valueList={['bezier', 'edge']}
+                    value={lineType}
+                    action={updateLineType}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === 'border'}
+                    valueList={['w1', 'w2', 'w3']}
+                    value={borderWidth}
+                    action={updateBorderWidth}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === 'text'}
+                    valueList={['h1', 'h2', 'h3', 'h4', 't']}
+                    value={fontSize}
+                    action={updateFontSize}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === ''}
+                    valueList={['convert to task']}
+                    value={''}
+                    action={cmdTaskToggle}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
+                <StyledButtonGroup
+                    open={formatMode === ''}
+                    valueList={['convert to submap']}
+                    value={''}
+                    action={cmdSubmapToggle}
+                    disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
+                />
             </div>
         </div>
     );
-}
-
-const ControlledStyledButtonGroup = (arg) => {
-    const {open, valueList, value, action, size, valueListDisabled} = arg;
-    const [state, dispatch] = useContext(Context)
-    const {mapRight} = state
-    return (
-        <StyledButtonGroup
-            open={open}
-            valueList={valueList}
-            value={value}
-            action={action}
-            size={size}
-            disabled={[MAP_RIGHTS.VIEW, MAP_RIGHTS.UNAUTHORIZED].includes(mapRight)}
-            valueListDisabled={valueListDisabled}
-        />
-    )
 }
