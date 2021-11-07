@@ -17,6 +17,7 @@ export function CommandTexts () {
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
+    // TODO: put these all into the global state, and each one of them will trigger a useEffect in WindowListeners
     const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(); setDensity(e)}
     const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
