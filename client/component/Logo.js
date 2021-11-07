@@ -67,7 +67,7 @@ export default function Logo() {
                     color="inherit">
                     <MenuIcon/>
                 </IconButton>
-                {pageState === 'WS' && <Menu
+                {pageState === PAGE_STATES.WS && <Menu
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{vertical: 'top', horizontal: 'right'}}
