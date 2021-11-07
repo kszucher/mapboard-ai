@@ -36,17 +36,7 @@ const getNativeEvent = (e) => {
 
 export function WindowListeners() {
     const [state, dispatch] = useContext(Context);
-    const {landingData, landingDataIndex, serverResponse, serverResponseCntr, mapRight, pageState} = state;
-
-    const loadLandingDataFrame = (landingData, landingDataIndex) => {
-        mapDispatch('initMapState', {
-            mapId: '',
-            mapSource: '',
-            mapStorage: landingData[landingDataIndex],
-            frameSelected: 0
-        });
-        redraw();
-    }
+    const {mapRight, pageState, landingData, landingDataIndex, } = state;
 
     const mousewheel = (e) => {
         e.preventDefault();
@@ -425,11 +415,15 @@ export function WindowListeners() {
         window.removeEventListener("paste", paste);
     }
 
-    useEffect(() => {
-        if (landingData.length) {
-            loadLandingDataFrame(landingData, landingDataIndex);
-        }
-    }, [landingData, landingDataIndex]);
+    const loadLandingDataFrame = (landingData, landingDataIndex) => {
+        mapDispatch('initMapState', {
+            mapId: '',
+            mapSource: '',
+            mapStorage: landingData[landingDataIndex],
+            frameSelected: 0
+        });
+        redraw();
+    }
 
     useEffect(() => {
         if (pageState === PAGE_STATES.WS) {
@@ -447,6 +441,12 @@ export function WindowListeners() {
             removeLandingListeners();
         }
     }, [pageState, mapRight]);
+
+    useEffect(() => {
+        if (landingData.length) {
+            loadLandingDataFrame(landingData, landingDataIndex);
+        }
+    }, [landingData, landingDataIndex]);
 
     return (
         <></>
