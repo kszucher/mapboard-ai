@@ -78,8 +78,8 @@ const resolveActions = (state, action) => {
         case 'SHOW_SHARES':               return {pageState: WS_SHARES}
         case 'OPEN_PALETTE':              return {formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1, isPlayback: true}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {frameEditorVisible: 0, isPlayback: false}
+        case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1}
+        case 'CLOSE_PLAYBACK_EDITOR':     return {frameEditorVisible: 0}
         case 'SET_LANDING_DATA':          return {landingData: payload.landingData, mapRight: payload.mapRight}
         case 'SET_BREADCRUMB_DATA':       return {breadcrumbMapNameList: payload.breadcrumbMapNameList}
         case 'SET_TAB_DATA':              return {tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
