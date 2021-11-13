@@ -1,15 +1,10 @@
 import '../component-css/Layout.css'
 import React, {useContext, useEffect} from 'react'
-import {Context, remoteGetState} from "../core/Store";
+import {Context} from "../core/Store";
 import {initDomData} from "../core/DomFlow";
 import {mapDispatch, redraw} from "../core/MapFlow";
 
 let waitingForServer = 0;
-setInterval(function() {
-    if (!waitingForServer && remoteGetState().mapId !== '' && remoteGetState.prevMapId !== '') {
-        // remoteDispatch({type: 'SAVE_MAP'})
-    }
-}, 3000);
 
 /**
  * @return {null}
