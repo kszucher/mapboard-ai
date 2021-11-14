@@ -415,7 +415,7 @@ async function sendResponse(c2s) {
                                 let {tabMapIdList, tabMapSelected} = currUser
                                 const {shareIdOut} = c2s.serverPayload
                                 const shareId = ObjectId(shareIdOut)
-                                const {shareUser, sharedMap} = await getShareProps(sharesColl, shareId)
+                                const {sharedMap} = await getShareProps(sharesColl, shareId)
                                 tabMapIdList = [...tabMapIdList, sharedMap]
                                 tabMapSelected = tabMapIdList.length - 1
                                 const mapId = tabMapIdList[tabMapSelected]
@@ -454,7 +454,7 @@ async function sendResponse(c2s) {
                                     if (isEqual(currUser._id, ownerUser)) {
                                         mapRight = MAP_RIGHTS.EDIT
                                     } else {
-                                        let fullPath = [...path, mapId]
+                                        const fullPath = [...path, mapId]
                                         for (let i = fullPath.length - 1; i > -1; i--) {
                                             const currMapId = fullPath[i]
                                             const shareData = await sharesColl.findOne({
@@ -469,7 +469,8 @@ async function sendResponse(c2s) {
                                 }
                                 Object.assign(s2c.payload, {mapStorage, mapRight})
                             }
-                            if (s2c.payload.hasOwnProperty('tabMapIdList') && s2c.payload.hasOwnProperty('tabMapSelected')) {
+                            if (s2c.payload.hasOwnProperty('tabMapIdList') &&
+                                s2c.payload.hasOwnProperty('tabMapSelected')) {
                                 const {tabMapIdList, tabMapSelected} = s2c.payload
                                 await usersColl.updateOne({_id: currUser._id}, {$set: {tabMapIdList, tabMapSelected}})
                                 const tabMapNameList = await getMapNameList(mapsColl, tabMapIdList)
