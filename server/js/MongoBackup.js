@@ -12,8 +12,8 @@ const spawnProcess = async (mongoCmd, mongoParams) => {
 }
 
 const mongoProcess = async (mongoCmd, endPoints, date) => {
-    let baseUri = 'mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net'
-    let basePath = 'C:/Users/Kryss/Dropbox/mindboard/mongobackup';
+    let baseUri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
+    let basePath = 'C:/Users/Kryss/Dropbox/mapboard/mongobackup';
     const mongoParams = [
         `--uri=${baseUri}/${mongoCmd === 'mongodump' ? endPoints.source : endPoints.target}`,
         `--archive=${basePath}/${endPoints.source}_${date}`,
@@ -47,6 +47,16 @@ const mongoBackup = async (mode) => {
         }
         case 'dev2file': {
             await mongoProcess('mongodump', {source: 'app_dev'}, date);
+            break;
+        }
+        case 'file2dev': {
+            date = ''
+            await mongoProcess('mongorestore', {source:'app_dev', target:'app_dev'}, date);
+            break;
+        }
+        case 'file2prod': {
+            date = '1636920486636'
+            await mongoProcess('mongorestore', {source:'app_prod', target:'app_prod'}, date);
             break;
         }
     }

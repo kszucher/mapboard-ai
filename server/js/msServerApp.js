@@ -4,7 +4,7 @@ const cors = require('cors')
 const app = express()
 const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
-const uri = "mongodb+srv://mindboard-server:3%21q.FkpzkJPTM-Q@cluster0-sg0ny.mongodb.net/test?retryWrites=true&w=majority"
+const uri = "mongodb+srv://admin:TNszfBws4@JQ8!t@cluster0.wbdxy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 const nodemailer = require("nodemailer")
 const {
     getMapData,
