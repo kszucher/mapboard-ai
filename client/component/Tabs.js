@@ -1,14 +1,16 @@
-import React, {useContext} from 'react';
-import {Context} from "../core/Store";
+import React from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import StyledTabs from "../component-styled/StyledTabs";
 import {COLORS} from "../core/Utils";
 
 export default function Tabs() {
-    const [state, dispatch] = useContext(Context);
-    const {tabMapNameList, tabMapSelected, isPlayback} = state;
+    const tabMapNameList = useSelector(state => state.tabMapNameList)
+    const tabMapSelected = useSelector(state => state.tabMapSelected)
+    const isPlayback = useSelector(state => state.isPlayback)
+    const dispatch = useDispatch()
 
     const handleChange = (e, value) =>  {
-        dispatch({type: 'SET_TAB_DATA', payload: {tabMapNameList: state.tabMapNameList, tabMapSelected: value}})
+        dispatch({type: 'SET_TAB_DATA', payload: {tabMapNameList, tabMapSelected: value}})
         dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     };
 

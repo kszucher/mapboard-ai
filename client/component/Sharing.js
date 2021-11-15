@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Context} from "../core/Store";
+import React, {useEffect, useState} from 'react'
+import {useSelector, useDispatch} from "react-redux";
 import {Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import StyledButton from "../component-styled/StyledButton";
@@ -8,8 +8,10 @@ import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 import {COLORS} from "../core/Utils";
 
 export function Sharing() {
-    const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr} = state;
+    const serverResponse = useSelector(state => state.serverResponse)
+    const serverResponseCntr = useSelector(state => state.serverResponseCntr)
+    const dispatch = useDispatch()
+
     const [email, setEmail] = useState('test2@mapboard.io');
     const [access, setAccess] = useState('view')
     const [feedbackMessage, setFeedbackMessage] = useState('');

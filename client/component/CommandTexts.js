@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {Context} from "../core/Store";
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import {checkPop, push, redraw} from "../core/MapFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {COLORS} from "../core/Utils";
@@ -7,8 +7,10 @@ import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function CommandTexts () {
-    const [state, dispatch] = useContext(Context)
-    const {formatMode, mapRight} = state
+    const formatMode = useSelector(state => state.formatMode)
+    const mapRight = useSelector(state => state.mapRight)
+    const dispatch = useDispatch()
+
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
 
     const [density, setDensity] = useState('')

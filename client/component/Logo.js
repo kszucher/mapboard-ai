@@ -1,4 +1,5 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import {Context} from "../core/Store";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Divider} from "@material-ui/core";
 
@@ -23,10 +23,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Logo() {
-    const [state, dispatch] = useContext(Context);
-    const {pageState} = state;
+    const pageState = useSelector(state => state.pageState)
+    const dispatch = useDispatch()
     const {DEMO, WS} = PAGE_STATES;
-
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

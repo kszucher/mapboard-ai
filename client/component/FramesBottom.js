@@ -1,15 +1,17 @@
-import React, {useContext, useEffect} from 'react';
-import {Context} from "../core/Store";
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux'
 import {MobileStepper} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 import {COLORS} from "../core/Utils";
 
 export function FramesBottom () {
-    const [state, dispatch] = useContext(Context)
-    const {frameLen, frameSelected, breadcrumbMapNameList} = state;
+    const frameLen = useSelector(state => state.frameLen)
+    const frameSelected = useSelector(state => state.frameSelected)
+    const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
+    const dispatch = useDispatch()
 
-    const prevFrame = _=>dispatch({type: 'PREV_FRAME'})
+    const prevFrame = _=> dispatch({type: 'PREV_FRAME'})
     const nextFrame = _ => dispatch({type: 'NEXT_FRAME'})
 
     useEffect(() => {

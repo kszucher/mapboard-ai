@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {Context} from '../core/Store';
+import React from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {nodeDispatch} from "../core/NodeFlow";
 import {checkPop, mapDispatch, push, redraw} from "../core/MapFlow";
 import {pasteDispatch} from "../core/PasteFlow";
@@ -8,7 +8,7 @@ import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 
 export function CommandButtons () {
-    const [state, dispatch] = useContext(Context);
+    const dispatch = useDispatch()
 
     const undo =                () => {mapDispatch('undo'); redraw()}
     const redo =                () => {mapDispatch('redo'); redraw()}
@@ -48,8 +48,7 @@ export function CommandButtons () {
 
 const ControlledStyledButton = (arg) => {
     const {version, action, icon} = arg;
-    const [state, dispatch] = useContext(Context)
-    const {mapRight} = state
+    const mapRight = useSelector(state => state.mapRight)
     return (
         <StyledButton
             version={version}

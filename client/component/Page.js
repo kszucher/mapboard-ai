@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react'
-import {Context} from "../core/Store";
+import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from "react-redux";
 import Auth from "./Auth";
 import {muiTheme} from "../component-styled/Theme";
 import {MuiThemeProvider} from "@material-ui/core";
@@ -18,8 +18,10 @@ import {WindowListeners} from "./WindowListeners";
 import {FramesSide} from "./FramesSide";
 
 export function Page() {
-    const [state, dispatch] = useContext(Context);
-    const {pageState, paletteVisible, frameEditorVisible} = state;
+    const pageState = useSelector(state => state.pageState)
+    const paletteVisible = useSelector(state => state.paletteVisible)
+    const frameEditorVisible = useSelector(state => state.frameEditorVisible)
+    const dispatch = useDispatch()
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING} = PAGE_STATES;
 
     useEffect(()=> {

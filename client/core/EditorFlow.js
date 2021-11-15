@@ -1,5 +1,6 @@
 import {mapref, mapState, saveMap} from "./MapFlow";
 import {selectionState} from "./SelectionFlow";
+import {createStore} from "redux";
 
 export const PAGE_STATES = {
     EMPTY: 'EMPTY',
@@ -16,7 +17,7 @@ export const MAP_RIGHTS = {
     EDIT: 'edit',
 }
 
-export const editorState = {
+const editorState = {
     pageState: PAGE_STATES.AUTH,
     landingData: [],
     landingDataIndex: 0,
@@ -167,8 +168,11 @@ const resolveServerActions = (state, action) => {
     }
 }
 
-const EditorReducer = (state, action) => {
-    return {...state, ...resolveActions(state, action), ...resolveServerActions(state, action)};
+const editorReducer = (state, action) => {
+    return {...state,
+        ...resolveActions(state, action),
+        ...resolveServerActions(state, action)
+    };
 };
 
-export default EditorReducer;
+export const store = createStore(editorReducer, editorState)

@@ -1,6 +1,6 @@
 import '../component-css/Layout.css'
-import React, {useContext, useEffect} from 'react'
-import {Context} from "../core/Store";
+import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from "react-redux";
 import {initDomData} from "../core/DomFlow";
 import {mapDispatch, redraw} from "../core/MapFlow";
 
@@ -10,9 +10,11 @@ let waitingForServer = 0;
  * @return {null}
  */
 export function Communication() {
-
-    const [state, dispatch] = useContext(Context);
-    const {serverAction, serverActionCntr, serverResponse, serverResponseCntr} = state;
+    const serverAction = useSelector(state => state.serverAction)
+    const serverActionCntr = useSelector(state => state.serverActionCntr)
+    const serverResponse = useSelector(state => state.serverResponse)
+    const serverResponseCntr = useSelector(state => state.serverResponseCntr)
+    const dispatch = useDispatch()
 
     const callback = response => {
         console.log('SERVER_RESPONSE: ' + response.cmd);

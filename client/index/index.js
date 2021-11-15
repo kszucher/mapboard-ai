@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from "react-redux";
+import {store} from "../core/EditorFlow";
 import {Page} from "../component/Page";
-import Store from "../core/Store";
 import {Communication} from "../component/Communication";
 
 ReactDOM.render(
-    <Store>
+    <Provider store={store}>
         <Communication/>
         <Page/>
-    </Store>,
+    </Provider>,
     document.getElementById('app')
 );

@@ -1,5 +1,5 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {Context} from '../core/Store';
+import React, {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import StyledButton from "../component-styled/StyledButton";
 import {nodeDispatch} from "../core/NodeFlow";
 import {push, checkPop, redraw} from "../core/MapFlow";
@@ -20,8 +20,12 @@ const colorList = [
 ];
 
 export function Palette () {
-    const [state, dispatch] = useContext(Context);
-    const {formatMode, colorLine, colorBorder, colorFill, colorText, paletteVisible} = state;
+    const formatMode = useSelector(state => state.xxx)
+    const colorLine = useSelector(state => state.colorLine)
+    const colorBorder = useSelector(state => state.colorBorder)
+    const colorFill = useSelector(state => state.colorFill)
+    const colorText = useSelector(state => state.colorText)
+    const dispatch = useDispatch()
     const [sel, setSel] = useState({x: 0, y: 0});
 
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})

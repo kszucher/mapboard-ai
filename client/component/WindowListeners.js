@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from "react";
-import {Context} from "../core/Store";
+import React, {useEffect} from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
@@ -35,8 +35,11 @@ const getNativeEvent = (e) => {
 }
 
 export function WindowListeners() {
-    const [state, dispatch] = useContext(Context);
-    const {mapRight, pageState, landingData, landingDataIndex, } = state;
+    const mapRight = useSelector(state => state.mapRight)
+    const pageState = useSelector(state => state.pageState)
+    const landingData = useSelector(state => state.landingData)
+    const landingDataIndex = useSelector(state => state.landingDataIndex)
+    const dispatch = useDispatch()
 
     const mousewheel = (e) => {
         e.preventDefault();

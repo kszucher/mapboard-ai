@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import {Context} from "../core/Store";
 import StyledButton from "../component-styled/StyledButton";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import StyledInput from "../component-styled/StyledInput";
@@ -10,12 +10,13 @@ import {COLORS} from "../core/Utils";
 let regEmail = '';
 let regPassword = '';
 
-export default function Auth() {
-    const mainTabValues = ['Sign In', 'Sign Up'];
-    const subTabValues = ['Step 1', 'Step 2'];
+const mainTabValues = ['Sign In', 'Sign Up'];
+const subTabValues = ['Step 1', 'Step 2'];
 
-    const [state, dispatch] = useContext(Context);
-    const {serverResponse, serverResponseCntr} = state;
+export default function Auth() {
+    const serverResponse = useSelector(state => state.serverResponse)
+    const serverResponseCntr = useSelector(state => state.serverResponseCntr)
+    const dispatch = useDispatch()
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
     const [name, setName] = useState('');

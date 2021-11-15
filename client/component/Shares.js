@@ -1,20 +1,19 @@
-import React, {useContext, useEffect} from 'react'
-import {Context} from "../core/Store";
+import React, {useEffect} from 'react'
+import {useSelector, useDispatch} from "react-redux";
 import {Modal} from "@material-ui/core";
 import StyledButton from "../component-styled/StyledButton";
 import {DataGrid} from "@mui/x-data-grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {COLORS} from "../core/Utils";
 
 export function Shares() {
-    const [state, dispatch] = useContext(Context);
-    const {shareDataExport, shareDataImport} = state;
+    const shareDataExport = useSelector(state => state.shareDataExport)
+    const shareDataImport = useSelector(state => state.shareDataImport)
+    const dispatch = useDispatch()
 
     const getShares =     _ =>      dispatch({type: 'GET_SHARES'})
     const closeShares =   _ =>      dispatch({type: 'SHOW_WS'})

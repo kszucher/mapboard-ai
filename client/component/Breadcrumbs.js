@@ -1,13 +1,14 @@
-import React, {useContext} from 'react';
+import React from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import {Context} from "../core/Store";
 import {COLORS} from "../core/Utils";
 
 export default function WorkspaceBreadcrumbs() {
-    const [state, dispatch] = useContext(Context);
-    const {breadcrumbMapNameList, isPlayback} = state;
+    const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
+    const isPlayback = useSelector(state => state.isPlayback)
+    const dispatch = useDispatch()
 
     const handleClick = index => event => {
         event.preventDefault();

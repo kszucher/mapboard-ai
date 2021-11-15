@@ -1,14 +1,17 @@
-import React, {useContext} from 'react';
-import {Context} from "../core/Store";
+import React from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
 
 export function FramesSide () {
-    const [state, dispatch] = useContext(Context)
-    const {formatMode, frameEditorVisible, frameLen, frameSelected, mapRight} = state
+    const frameEditorVisible = useSelector(state => state.frameEditorVisible)
+    const frameLen = useSelector(state => state.frameLen)
+    const frameSelected = useSelector(state => state.frameSelected)
+    const mapRight = useSelector(state => state.mapRight)
+    const dispatch = useDispatch()
+
     const {UNAUTHORIZED, VIEW, EDIT} = MAP_RIGHTS
 
     const importFrame =         _ => dispatch({type: 'IMPORT_FRAME'})
