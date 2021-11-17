@@ -1,6 +1,7 @@
 import {mapref, mapState, saveMap} from "./MapFlow";
 import {selectionState} from "./SelectionFlow";
-import {createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
+import rootSaga from "./EditorSagas";
 
 export const PAGE_STATES = {
     EMPTY: 'EMPTY',
@@ -175,4 +176,14 @@ const editorReducer = (state, action) => {
     };
 };
 
-export const store = createStore(editorReducer, editorState)
+export const store = createStore(
+    editorReducer,
+    editorState,
+    applyMiddleware.run(rootSaga)
+)
+
+const rootReducer = combineReducers({
+    posts: postsReducer,
+});
+
+sagaMiddleware.run(rootSaga)
