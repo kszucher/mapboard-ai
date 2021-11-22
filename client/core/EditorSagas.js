@@ -1,8 +1,13 @@
-import { call, put, takeEvery, takeLatest, all } from 'redux-saga/effects';
+import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects';
 import '@babel/polyfill'
 
-function* myFirstSaga() {
+const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
+function* myFirstSaga() {
+    while(true) {
+        yield take('SIGN_IN')
+        yield put({type: 'SIGN_IN_REAL'})
+    }
 }
 
 function* mySecondSaga() {
