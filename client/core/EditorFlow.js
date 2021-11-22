@@ -182,8 +182,4 @@ export const store = createStore(
     applyMiddleware.run(rootSaga)
 )
 
-const rootReducer = combineReducers({
-    posts: postsReducer,
-});
-
 sagaMiddleware.run(rootSaga)
