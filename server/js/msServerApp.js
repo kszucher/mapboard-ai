@@ -510,11 +510,13 @@ async function processReq(req) {
     try {
         let currUser
         if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(req.serverCmd)) {
-            currUser = await getUser(usersColl, req.cred)
-            if (currUser === null) {
-                return {cmd: 'authFailWrongCred'}
-            } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
-                return {cmd: 'authFailIncompleteRegistration'}
+            if (req.hasOwnProperty('cred')) {
+                currUser = await getUser(usersColl, req.cred)
+                if (currUser === null) {
+                    return { cmd: 'authFailWrongCred' }
+                } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
+                    return { cmd: 'authFailIncompleteRegistration' }
+                }
             }
         }
         const inSynch = await checkSynch(req)
