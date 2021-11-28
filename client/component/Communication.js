@@ -60,7 +60,7 @@ export function Communication() {
                     dispatch({type: 'SHOW_WS'});
                     break;
                 }
-                case 'signInFail': {
+                case 'authFail': {
                     localStorage.clear();
                     break;
                 }
