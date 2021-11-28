@@ -1,3 +1,12 @@
+async function getUserByEmail(usersColl, email) {
+    return (await usersColl.findOne({ email }))
+}
+
+async function getUser(usersColl, cred) {
+    const {email, password} = cred
+    return (await usersColl.findOne({ email, password }))
+}
+
 async function getMapData(mapsColl, mapId) {
     return (await mapsColl.findOne({_id: mapId})).data
 }
@@ -125,6 +134,8 @@ async function deleteMapOne (usersColl, sharesColl, mapIdToDelete, userId) {
 // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
 module.exports = {
+    getUserByEmail,
+    getUser,
     getMapData,
     getFrameLen,
     getPlaybackMapData,

@@ -96,8 +96,8 @@ const resolveActions = (state, action) => {
     }
 }
 
-const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd, serverPayload = {}) => {
-    let serverAction = {serverCmd, serverPayload};
+const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd, payload = {}) => {
+    let serverAction = {serverCmd, payload};
     let serverActionCntr = state.serverActionCntr + 1;
     if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(serverCmd)) {
         const cred = JSON.parse(localStorage.getItem('cred'));
@@ -106,7 +106,7 @@ const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd,
         }
     }
     if (shouldSaveCurrentMap) {
-        Object.assign(serverAction.serverPayload, {
+        Object.assign(serverAction.payload, {
             mapIdOut: mapState.mapId,
             mapSourceOut: mapState.mapSource,
             mapStorageOut: saveMap(),
@@ -114,24 +114,24 @@ const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd,
         })
     }
     if (shouldSynchTabs) {
-        Object.assign(serverAction.serverPayload, {
+        Object.assign(serverAction.payload, {
             // tabMapIdListOut: state.tabMapIdList // TODO use
         })
     }
     if (['createMapInMap'].includes(serverCmd)) {
-        Object.assign(serverAction.serverPayload, {
+        Object.assign(serverAction.payload, {
             lastPath: selectionState.lastPath,
             newMapName: mapref(selectionState.lastPath).content
         })
     }
     if (['deleteFrame'].includes(serverCmd)) {
-        Object.assign(serverAction.serverPayload, {
+        Object.assign(serverAction.payload, {
             mapIdDelete: mapState.mapId,
             frameSelectedOut: mapState.frameSelected
         })
     }
     if (['createShare'].includes(serverCmd)) {
-        Object.assign(serverAction.serverPayload, {
+        Object.assign(serverAction.payload, {
             mapId: mapState.mapId,
         })
     }
