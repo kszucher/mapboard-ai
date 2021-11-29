@@ -33,20 +33,46 @@ function* myFirstSaga() {
 
 function* mySecondSaga() {
     while (true) {
-        yield take([
+        yield take([ // maybe we will just fork a loader individually, and this is a dead end
+          // by the way, the amount of sagas may be less then the fetch endpoints, IF some action can only follow another
           'OPEN_MAP_FROM_TAB',
           'CREATE_MAP_IN_TAB',
           'REMOVE_MAP_IN_TAB',
           'MOVE_UP_MAP_IN_TAB',
           'MOVE_DOWN_MAP_IN_TAB'
         ])
-        console.log('shall save... <-----------------------')
+        console.log('group found.. <-----------------------')
+      // yield call save service
     }
 }
+
+function* myThirdSaga() {
+  while (true) {
+    yield take('OPEN_MAP_FROM_TAB')
+    console.log('item found.. <-----------------------')
+    const { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource } = yield call('openMapFromTab')
+    // PUT ACTION
+    yield fork(mapLoaderSaga, mapId, mapSource)
+    // yield call mapRight, mapStorage based on mapId and mapSource??? YES MICROSERVICES!!!
+    // ALSO, this thing will be forked, so other sagas can refer to it as well so it i
+  }
+}
+
+function* mapLoaderSaga(mapId, mapSource) {
+  // {mapRight, mapStorage} = yield call getMap
+  // PUT ACTION
+}
+// TABLOADER?
+// BREADCRUMBLOADER?
+
+// everything will fall into their place
+
+// TODO will need to transform BE to support these micro services, but we are starting to get the feel of this!!!
 
 export default function* rootSaga() {
     yield all([
         myFirstSaga(),
-        mySecondSaga()
+        mySecondSaga(),
+        myThirdSaga()
     ])
 }
