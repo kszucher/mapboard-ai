@@ -45,10 +45,6 @@ export function FramesSide () {
                 paddingLeft: 12,
                 paddingRight: 12
             }}>
-                <Typography
-                    variant="button">
-                    {'Playback Editor'}
-                </Typography>
                 <StyledButtonGroup
                     open={frameEditorVisible === 1}
                     valueList={['import', 'duplicate', 'delete']}
