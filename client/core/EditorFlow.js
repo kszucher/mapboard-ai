@@ -142,7 +142,7 @@ const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd,
 const resolveServerActions = (state, action) => {
     const {payload} = action;
     switch (action.type) {
-        case 'SIGN_IN_REAL':                   return assignMapProps(state, 0, 0, 'signIn')
+        case 'SIGN_IN':                   return assignMapProps(state, 0, 0, 'signIn')
         case 'OPEN_MAP_FROM_HISTORY':     return assignMapProps(state, 0, 0, 'openMapFromHistory')
         case 'GET_LANDING_DATA':          return assignMapProps(state, 0, 0, 'getLandingData')
         case 'SIGN_UP_STEP_1':            return assignMapProps(state, 0, 0, 'signUpStep1', payload)
