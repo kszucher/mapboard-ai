@@ -5,7 +5,7 @@ import {muiTheme} from "../component-styled/Theme";
 import {MuiThemeProvider} from "@material-ui/core";
 import Logo from "./Logo";
 import Tabs from "./Tabs";
-import {CommandButtons} from "./CommandButtons";
+import {UndoRedo} from "./UndoRedo";
 import Breadcrumbs from "./Breadcrumbs";
 import {CommandTexts} from "./CommandTexts";
 import {Palette} from "./Palette";
@@ -45,7 +45,7 @@ export function Page() {
                     <Logo/>
                     {[WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
                         <Tabs/>
-                        <CommandButtons/>
+                        <UndoRedo/>
                         <Breadcrumbs/>
                         <CommandTexts/>
                     </>}

@@ -7,7 +7,7 @@ import StyledButton from "../component-styled/StyledButton";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 
-export function CommandButtons () {
+export function UndoRedo () {
     const dispatch = useDispatch()
 
     const undo =                () => {mapDispatch('undo'); redraw()}
