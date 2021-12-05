@@ -31,6 +31,8 @@ function* profileSaga () {
         const { name } = yield call(getProfileInfo)
         yield put({ type: 'SET_PROFILE_NAME', payload: name })
         yield put({ type: 'SHOW_WS_PROFILE' })
+        yield take('CLOSE_PROFILE')
+        yield put({ type: 'SHOW_WS' })
     }
 }
 

@@ -9,7 +9,7 @@ import StyledButton from '../component-styled/StyledButton'
 export function ProfileEditor() {
     const profileName = useSelector(state => state.profileName)
     const dispatch = useDispatch()
-    const closeProfileEditor = _ => dispatch({type: 'SHOW_WS'})
+    const closeProfile = _ => dispatch({type: 'CLOSE_PROFILE'})
     return(
         <Modal
             open={true}
@@ -41,7 +41,7 @@ export function ProfileEditor() {
                 <StyledButton
                     version="shortOutlined"
                     disabled={false}
-                    action={closeProfileEditor}
+                    action={closeProfile}
                     name={'close'}
                 />
             </div>}
