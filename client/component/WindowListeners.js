@@ -41,6 +41,8 @@ export function WindowListeners() {
     const landingDataIndex = useSelector(state => state.landingDataIndex)
     const dispatch = useDispatch()
 
+    const {DEMO, WS} = PAGE_STATES;
+
     const mousewheel = (e) => {
         e.preventDefault();
         if (!isIntervalRunning) {
@@ -429,13 +431,13 @@ export function WindowListeners() {
     }
 
     useEffect(() => {
-        if (pageState === PAGE_STATES.WS) {
+        if (pageState === WS) {
             if (mapRight === MAP_RIGHTS.EDIT) {
                 addMapListeners();
             } else if (mapRight === MAP_RIGHTS.VIEW) {
                 // TODO figure out view listeners
             }
-        } else if (pageState === PAGE_STATES.DEMO) {
+        } else if (pageState === DEMO) {
             addLandingListeners()
         }
         return () => {
