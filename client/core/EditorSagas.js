@@ -25,6 +25,10 @@ const fetchPost = req => {
 
 const getProfileInfo = payload => fetchPost({ serverCmd: 'getProfileInfo', payload })
 
+function* playbackSaga () {
+    // TODO create and open modal which checks if there is a frame already
+}
+
 function* profileSaga () {
     while (true) {
         yield take('OPEN_PROFILE')
@@ -44,6 +48,7 @@ function* profileSaga () {
 
 export default function* rootSaga () {
     yield all([
+        playbackSaga(),
         profileSaga(),
     ])
 }
