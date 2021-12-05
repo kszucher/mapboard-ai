@@ -77,8 +77,8 @@ const resolveActions = (state, action) => {
         case 'SHOW_AUTH':                 return {pageState: AUTH}
         case 'SHOW_DEMO':                 return {pageState: DEMO}
         case 'SHOW_WS':                   return {pageState: WS}
-        case 'SHOW_SHARING':              return {pageState: WS_SHARING}
-        case 'SHOW_SHARES':               return {pageState: WS_SHARES}
+        case 'SHOW_WS_SHARING':           return {pageState: WS_SHARING}
+        case 'SHOW_WS_SHARES':            return {pageState: WS_SHARES}
         case 'OPEN_PALETTE':              return {formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1}

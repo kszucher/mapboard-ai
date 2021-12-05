@@ -38,8 +38,8 @@ export default function Logo() {
     const moveUpMapInTab =      _ => dispatch({type: 'MOVE_UP_MAP_IN_TAB'})
     const moveDownMapInTab =    _ => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
     const openPlaybackEditor =  _ => dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
-    const showSharing =         _ => dispatch({type: 'SHOW_SHARING'})
-    const showShares =          _ => dispatch({type: 'SHOW_SHARES'})
+    const showSharing =         _ => dispatch({type: 'SHOW_WS_SHARING'})
+    const showShares =          _ => dispatch({type: 'SHOW_WS_SHARES'})
     const signOut = _ => {
         localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
         dispatch({type: 'RESET_STATE'});
