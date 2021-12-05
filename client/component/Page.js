@@ -16,6 +16,7 @@ import {Shares} from "../component-modal/Shares";
 import {getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {WindowListeners} from "./WindowListeners";
 import {FramesSide} from "../component-side/FramesSide";
+import { Profile } from '../component-side/Profile'
 
 export function Page() {
     const pageState = useSelector(state => state.pageState)
@@ -43,6 +44,7 @@ export function Page() {
                 {[DEMO, WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
                     <Map/>
                     <Logo/>
+                    <Profile/>
                     {[WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
                         <Tabs/>
                         <UndoRedo/>

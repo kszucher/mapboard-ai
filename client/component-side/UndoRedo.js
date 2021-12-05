@@ -20,27 +20,28 @@ export function UndoRedo () {
     return (
         <div style={{
             position: 'fixed',
-            right: 0,
-            width: 192,
+            left: 216+48,
+            width: 96,
             display: 'flex',
             alignItems: 'center',
             height: 48,
             paddingLeft: 12,
             paddingRight: 12,
             backgroundColor: COLORS.MAP_BACKGROUND,
-            borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: '#dddddd',
             borderTop: 0,
-            borderRight: 0 }}>
+            // borderRight: 0
+        }}>
             <div style={{
                 display: 'flex',
                 justifyContent: 'center' }}>
                 <ControlledStyledButton version={'icon'} action={undo} icon={'undo'}/>
                 <ControlledStyledButton version={'icon'} action={redo} icon={'redo'}/>
-                <ControlledStyledButton version={'icon'} action={saveMap} icon={'save'}/>
+                {/*<ControlledStyledButton version={'icon'} action={saveMap} icon={'save'}/>*/}
             </div>
         </div>
     );
