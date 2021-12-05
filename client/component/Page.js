@@ -3,19 +3,19 @@ import {useDispatch, useSelector} from "react-redux";
 import Auth from "./Auth";
 import {muiTheme} from "../component-styled/Theme";
 import {MuiThemeProvider} from "@material-ui/core";
-import Logo from "./Logo";
-import Tabs from "./Tabs";
-import {UndoRedo} from "./UndoRedo";
-import Breadcrumbs from "./Breadcrumbs";
-import {CommandTexts} from "./CommandTexts";
-import {Palette} from "./Palette";
-import {FramesBottom} from "./FramesBottom";
+import Logo from "../component-side/Logo";
+import Tabs from "../component-side/Tabs";
+import {UndoRedo} from "../component-side/UndoRedo";
+import Breadcrumbs from "../component-side/Breadcrumbs";
+import {CommandTexts} from "../component-side/CommandTexts";
+import {Palette} from "../component-side/Palette";
+import {FramesBottom} from "../component-side/FramesBottom";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Sharing} from "../component-modal/Sharing";
 import {Shares} from "../component-modal/Shares";
 import {getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {WindowListeners} from "./WindowListeners";
-import {FramesSide} from "./FramesSide";
+import {FramesSide} from "../component-side/FramesSide";
 
 export function Page() {
     const pageState = useSelector(state => state.pageState)

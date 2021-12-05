@@ -1,4 +1,4 @@
-import '../component-css/Layout.css'
+import '../css/Layout.css'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {initDomData} from "../core/DomFlow";
