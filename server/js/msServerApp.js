@@ -159,6 +159,7 @@ async function resolveCmd(req, currUser) {
                 await usersColl.insertOne({
                     email,
                     password,
+                    name,
                     activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION,
                     confirmationCode
                 })
@@ -449,6 +450,10 @@ async function resolveCmd(req, currUser) {
                 shareDataImport
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
             return { cmd: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
+        }
+        case 'getProfileInfo': {
+            const { name } = currUser
+            return { name } // no cmd as this goes to saga directly
         }
     }
 }

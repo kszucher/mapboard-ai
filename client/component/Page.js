@@ -17,13 +17,14 @@ import {getEquationDim, getTextDim, isChrome} from "../core/Utils";
 import {WindowListeners} from "./WindowListeners";
 import {FramesSide} from "../component-side/FramesSide";
 import { Profile } from '../component-side/Profile'
+import { ProfileEditor } from '../component-modal/ProfileEditor'
 
 export function Page() {
     const pageState = useSelector(state => state.pageState)
     const paletteVisible = useSelector(state => state.paletteVisible)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING} = PAGE_STATES;
+    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -41,11 +42,11 @@ export function Page() {
     return (
         <div id="page">
             <MuiThemeProvider theme={muiTheme}>
-                {[DEMO, WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
+                {[DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                     <Map/>
                     <Logo/>
                     <Profile/>
-                    {[WS, WS_SHARES, WS_SHARING].includes(pageState) && <>
+                    {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                         <Tabs/>
                         <UndoRedo/>
                         <Breadcrumbs/>
@@ -58,6 +59,7 @@ export function Page() {
                 {pageState === AUTH && <Auth/>}
                 {pageState === WS_SHARES && <Shares/>}
                 {pageState === WS_SHARING && <Sharing/>}
+                {pageState === WS_PROFILE && <ProfileEditor/>}
                 <WindowListeners/>
             </MuiThemeProvider>
         </div>

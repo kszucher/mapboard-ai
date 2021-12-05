@@ -10,7 +10,8 @@ export const PAGE_STATES = {
     AUTH: 'AUTH',
     WS: 'WS',
     WS_SHARES: 'WS_SHARES',
-    WS_SHARING: 'WS_SHARING'
+    WS_SHARING: 'WS_SHARING',
+    WS_PROFILE: 'WS_PROFILE'
 }
 
 export const MAP_RIGHTS = {
@@ -46,6 +47,8 @@ const editorState = {
     // share
     shareDataExport: [],
     shareDataImport: [],
+    //
+    profileName: ''
 };
 
 const editorStateDefault = JSON.stringify(editorState);
@@ -70,7 +73,7 @@ const extractNodeProps = (payload) => {
 
 const resolveActions = (state, action) => {
     const {payload} = action;
-    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING} = PAGE_STATES;
+    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(editorStateDefault)
         case 'SERVER_RESPONSE':           return {serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
@@ -79,6 +82,7 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS':                   return {pageState: WS}
         case 'SHOW_WS_SHARING':           return {pageState: WS_SHARING}
         case 'SHOW_WS_SHARES':            return {pageState: WS_SHARES}
+        case 'SHOW_WS_PROFILE':           return {pageState: WS_PROFILE}
         case 'OPEN_PALETTE':              return {formatMode: payload, paletteVisible: 1}
         case 'CLOSE_PALETTE':             return {formatMode: '', paletteVisible: 0, }
         case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1}
@@ -92,6 +96,7 @@ const resolveActions = (state, action) => {
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
+        case 'SET_PROFILE_NAME':          return {profileName: payload}
         default: return {}
     }
 }
