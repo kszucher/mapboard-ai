@@ -20,7 +20,7 @@ const colorList = [
 ];
 
 export function Palette () {
-    const formatMode = useSelector(state => state.xxx)
+    const formatMode = useSelector(state => state.formatMode)
     const colorLine = useSelector(state => state.colorLine)
     const colorBorder = useSelector(state => state.colorBorder)
     const colorFill = useSelector(state => state.colorFill)
