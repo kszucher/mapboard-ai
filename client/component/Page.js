@@ -45,10 +45,10 @@ export function Page() {
                 {[DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                     <Map/>
                     <Logo/>
-                    <Profile/>
                     {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                         <Tabs/>
                         <UndoRedo/>
+                        <Profile/>
                         <Breadcrumbs/>
                         <CommandTexts/>
                     </>}
