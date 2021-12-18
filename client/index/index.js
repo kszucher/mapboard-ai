@@ -7,7 +7,7 @@ import {Communication} from "../component/Communication";
 
 ReactDOM.render(
     <Provider store={store}>
-        <Communication/>
+        {/*<Communication/>*/}
         <Page/>
     </Provider>,
     document.getElementById('app')

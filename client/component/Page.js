@@ -29,6 +29,7 @@ export function Page() {
     useEffect(()=> {
         getTextDim('Test')
         getEquationDim('\\[Test\\]');
+        dispatch({type: 'PING'})
     }, [])
 
     useEffect(() => {

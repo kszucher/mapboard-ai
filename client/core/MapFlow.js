@@ -15,6 +15,7 @@ import {mapVisualizeDiv} from "../map/MapVisualizeDiv";
 import {mapVisualizeSvg} from "../map/MapVisualizeSvg";
 import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
+import { mapPrint } from '../map/MapPrint'
 
 export let mapState = {
     mapId: '',

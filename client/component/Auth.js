@@ -14,8 +14,8 @@ const mainTabValues = ['Sign In', 'Sign Up'];
 const subTabValues = ['Step 1', 'Step 2'];
 
 export default function Auth() {
-    const serverResponse = useSelector(state => state.serverResponse)
-    const serverResponseCntr = useSelector(state => state.serverResponseCntr)
+    // const serverResponse = useSelector(state => state.serverResponse)
+    // const serverResponseCntr = useSelector(state => state.serverResponseCntr)
     const dispatch = useDispatch()
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
@@ -96,16 +96,16 @@ export default function Auth() {
         return mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')
     }
 
-    useEffect(() => {
-        switch (serverResponse.cmd) {
-            case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
-            case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break;
-            case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
-            case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
-            case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
-            case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break;
-        }
-    }, [serverResponseCntr]);
+    // useEffect(() => {
+    //     switch (serverResponse.cmd) {
+    //         case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
+    //         case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break;
+    //         case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
+    //         case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
+    //         case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
+    //         case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break;
+    //     }
+    // }, [serverResponseCntr]);
 
     return (
         <div
