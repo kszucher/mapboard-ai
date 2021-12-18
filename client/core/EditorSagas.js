@@ -109,13 +109,10 @@ function* legacySaga () {
                 case 'signInSuccess': {
                     initDomData();
 
-
-
-
                     yield put({type: 'SHOW_WS'});
 
-                    // most ilyenkor mi van???
-                    // ez kivált egy page state-et, ami meg... egy ilyen cuccot...
+                    // remove double BE call here that came from useEffect on SHOW_WS,
+                    // instead, after sign in successs, IMMEDIATELY load appropriate map on be !!!!
 
                     break;
                 }
