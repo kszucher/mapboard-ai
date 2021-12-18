@@ -169,6 +169,11 @@ function* playbackSaga () {
     // TODO create and open modal which checks if there is a frame already
 }
 
+function* authSaga () {
+    // TODO: this will make logic in auth obsolete,
+    // also, since ALL state will be brought to central state, this can control everything from here!!!
+}
+
 function* profileSaga () {
     while (true) {
         yield take('OPEN_PROFILE')
@@ -206,7 +211,6 @@ function* demoSaga () {
         console.log(resp)
 
         // TODO start here!!! make the universal parse, and move everything inside it to an appropriate side effect!!! this will be super cool
-
         // yield put({ type: 'PARSE_BE', payload: resp })
     }
 }
