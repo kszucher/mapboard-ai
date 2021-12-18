@@ -21,7 +21,10 @@ const fetchPost = (req) => {
     }
     return fetch(backendUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
         body: JSON.stringify(req),
     }).then(resp => resp.json())
 }

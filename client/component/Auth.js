@@ -16,6 +16,8 @@ const subTabValues = ['Step 1', 'Step 2'];
 export default function Auth() {
     // const serverResponse = useSelector(state => state.serverResponse)
     // const serverResponseCntr = useSelector(state => state.serverResponseCntr)
+
+    // TODO const local states SIGN_IN_STEP_1, SIGN_IN_STEP_2, SIGN_UP
     const dispatch = useDispatch()
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
@@ -93,7 +95,11 @@ export default function Auth() {
             )
     }
     const signActionText = () => {
-        return mainTabValue === 0 ? 'Sign In' : (subTabValue === 0 ? 'Get Confirmation Code' : 'Enter Confirmation Code')
+        return mainTabValue === 0
+            ? 'Sign In'
+            : (subTabValue === 0
+                ? 'Get Confirmation Code'
+                : 'Enter Confirmation Code')
     }
 
     // useEffect(() => {

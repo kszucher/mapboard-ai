@@ -70,7 +70,6 @@ const resolveActions = (state, action) => {
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(editorStateDefault)
-        case 'SERVER_RESPONSE':           return {serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
         case 'SHOW_AUTH':                 return {pageState: AUTH}
         case 'SHOW_DEMO':                 return {pageState: DEMO}
         case 'SHOW_WS':                   return {pageState: WS}
