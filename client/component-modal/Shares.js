@@ -16,7 +16,7 @@ export function Shares() {
     const dispatch = useDispatch()
 
     const getShares =     _ =>      dispatch({type: 'GET_SHARES'})
-    const closeShares =   _ =>      dispatch({type: 'SHOW_WS'})
+    const closeShares =   _ =>      dispatch({type: 'CLOSE_SHARES'})
     const acceptShare =   params => dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
     const deleteShare =   params => dispatch({type: 'DELETE_SHARE', payload: {shareIdOut: params.row._id}})
 

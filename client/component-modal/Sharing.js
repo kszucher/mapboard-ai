@@ -17,7 +17,7 @@ export function Sharing() {
     const [feedbackMessage, setFeedbackMessage] = useState('');
 
     const typeEmail =    (e) => setEmail(e.target.value)
-    const closeSharing = _ =>   dispatch({type: 'SHOW_WS'})
+    const closeSharing = _ =>   dispatch({type: 'CLOSE_SHARING'})
     const createShare =  _ =>   dispatch({type: 'CREATE_SHARE', payload: {email, access}})
 
     // useEffect(() => {

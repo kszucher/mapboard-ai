@@ -18,6 +18,11 @@ export const MAP_RIGHTS = {
     EDIT: 'edit',
 }
 
+// PHILOSOPHY
+// central state lesz megtartva <-- ebbol kovetkezik minden ami ez alatt van !!!
+// kozvetlenul ide reducer-elodik be a BE reply
+// emiatt az AUTH és a SHARING flow-t ide be kell mozgatni, ami mint state ua-zon a useEffect-en frissíti a local state-et
+// továbbá, lokálisan egy reducer-t kell majd ehelyett használni
 const editorState = {
     pageState: PAGE_STATES.AUTH,
     landingData: [],
@@ -81,16 +86,18 @@ const resolveActions = (state, action) => {
         case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1}
         case 'CLOSE_PLAYBACK_EDITOR':     return {frameEditorVisible: 0}
         case 'SET_LANDING_DATA':          return {landingData: payload.landingData, mapRight: payload.mapRight}
-        case 'SET_BREADCRUMB_DATA':       return {breadcrumbMapNameList: payload.breadcrumbMapNameList}
-        case 'SET_TAB_DATA':              return {tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
+        // case 'SET_BREADCRUMB_DATA':       return {breadcrumbMapNameList: payload.breadcrumbMapNameList}
+        // case 'SET_TAB_DATA':              return {tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
+        // case 'SET_FRAME_INFO':            return {frameLen: payload.frameLen, frameSelected: payload.frameSelected}
+        // case 'SET_SHARE_DATA':            return {shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
         case 'SET_TAB_MAP_SELECTED':      return {tabMapSelected: payload.tabMapSelected}
-        case 'SET_FRAME_INFO':            return {frameLen: payload.frameLen, frameSelected: payload.frameSelected}
-        case 'SET_SHARE_DATA':            return {shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
+
         case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
         case 'SET_PROFILE_NAME':          return {profileName: payload}
+        case 'PARSE_BE':                  return {...payload}
         default: return {}
     }
 }

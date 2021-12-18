@@ -34,9 +34,9 @@ export function Page() {
 
     useEffect(() => {
         if (pageState === DEMO) {
-            dispatch({type: 'GET_LANDING_DATA'});
+            // dispatch({type: 'GET_LANDING_DATA'}); // MOVED TO SAGA!!!
         } else if (pageState === WS) {
-            dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
+            // dispatch({type: 'OPEN_MAP_FROM_HISTORY'}); // MOVED TO SAGA!!!
         }
     }, [pageState])
 

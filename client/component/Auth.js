@@ -33,7 +33,7 @@ export default function Auth() {
     const typePassword = (e) => {setPassword(e.target.value)}
     const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
-    const openDemo = (e) => {dispatch({type: 'SHOW_DEMO'})}
+    const liveDemo = (e) => {dispatch({type: 'LIVE_DEMO'})}
     const switchMainMode = (e) => {
         if (e !== mainTabValues[mainTabValue]) {
             setMainTabValue(!mainTabValue & 1);
@@ -105,11 +105,11 @@ export default function Auth() {
     // useEffect(() => {
     //     switch (serverResponse.cmd) {
     //         case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
-    //         case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break;
+    //         case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break; // --> explicit mode by BE
     //         case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
     //         case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
     //         case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
-    //         case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break;
+    //         case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break; // explicit mode by BE
     //     }
     // }, [serverResponseCntr]);
 
@@ -147,7 +147,7 @@ export default function Auth() {
                 {feedbackMessage}
             </Typography>}
             <StyledButton version="longContained" disabled={signActionDisabled()} action={signAction}   name={signActionText()}/>
-            <StyledButton version="longContained" disabled={false}                action={openDemo} name={'LIVE DEMO'}/>
+            <StyledButton version="longContained" disabled={false}                action={liveDemo} name={'LIVE DEMO'}/>
             <Typography
                 variant="body2"
                 color="textSecondary"

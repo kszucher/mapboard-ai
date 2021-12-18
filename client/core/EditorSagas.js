@@ -29,9 +29,6 @@ const fetchPost = (req) => {
     }).then(resp => resp.json())
 }
 
-const legacyFetchPost = payload => fetchPost(payload)
-const getProfileInfo = payload => fetchPost({ type: 'GET_PROFILE_INFO', payload })
-
 function* legacySaga () {
     while (true) {
         let { type, payload } = yield take('*')
@@ -41,7 +38,6 @@ function* legacySaga () {
             case 'PING':                        fetchGen = [0, 0];   break
             case 'SIGN_IN':                     fetchGen = [0, 0];   break
             case 'OPEN_MAP_FROM_HISTORY':       fetchGen = [0, 0];   break
-            case 'GET_LANDING_DATA':            fetchGen = [0, 0];   break
             case 'SIGN_UP_STEP_1':              fetchGen = [0, 0];   break
             case 'SIGN_UP_STEP_2':              fetchGen = [0, 0];   break
             case 'OPEN_MAP_FROM_TAB':           fetchGen = [1, 1];   break
@@ -99,7 +95,7 @@ function* legacySaga () {
                 mapId: mapState.mapId,
             }
         }
-        const { resp } = yield call(legacyFetchPost, { type, payload })
+        const { resp } = yield call(fetchPost, { type, payload })
         if (resp.type) {
             switch (resp.type) {
                 case 'pingSuccess': {
@@ -112,7 +108,15 @@ function* legacySaga () {
                 }
                 case 'signInSuccess': {
                     initDomData();
+
+
+
+
                     yield put({type: 'SHOW_WS'});
+
+                    // most ilyenkor mi van???
+                    // ez kivált egy page state-et, ami meg... egy ilyen cuccot...
+
                     break;
                 }
                 case 'authFail': {
@@ -122,8 +126,6 @@ function* legacySaga () {
             }
         }
         // TODO erre az egészre egy spread-es NAGY reducer-t tuti hogy ki lehet találni!!!
-        // ami jön a BE-ről, az kb. 1-az-1-ben belereducálódhat, hisz miért is ne??!!
-        // genius idea!!!
         if (resp.payload) {
             if (resp.payload.hasOwnProperty('landingData') &&
                 resp.payload.hasOwnProperty('mapRight')) {
@@ -173,7 +175,7 @@ function* playbackSaga () {
 function* profileSaga () {
     while (true) {
         yield take('OPEN_PROFILE')
-        const { name } = yield call(getProfileInfo)
+        const { name } = yield call(fetchPost, { type: 'GET_PROFILE_INFO' })
         yield put({ type: 'SET_PROFILE_NAME', payload: name })
         yield put({ type: 'SHOW_WS_PROFILE' })
         const { type } = yield take(['CLOSE_PROFILE'])
@@ -187,10 +189,37 @@ function* profileSaga () {
     }
 }
 
+function* wsSaga () {
+    while (true) {
+        yield take([
+            'CLOSE_SHARES',
+            'CLOSE_SHARING',
+        ])
+        yield put({type: 'SHOW_WS'})
+    }
+}
+
+function* demoSaga () {
+    while (true) {
+        yield take([
+            'LIVE_DEMO',
+        ])
+        const { resp } = yield call(fetchPost, { type: 'GET_LANDING_DATA' })
+        yield put({ type: 'SHOW_DEMO' })
+        console.log(resp)
+
+        // TODO start here!!! make the universal parse, and move everything inside it to an appropriate side effect!!! this will be super cool
+
+        // yield put({ type: 'PARSE_BE', payload: resp })
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         legacySaga(),
         playbackSaga(),
         profileSaga(),
+        wsSaga(),
+        demoSaga(),
     ])
 }
