@@ -15,6 +15,7 @@ import {mapVisualizeDiv} from "../map/MapVisualizeDiv";
 import {mapVisualizeSvg} from "../map/MapVisualizeSvg";
 import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
+import { mapPrint } from '../map/MapPrint'
 
 export let mapState = {
     mapId: '',
@@ -75,6 +76,7 @@ export function recalc() {
         mapTaskCalc.start(m, cr);
         mapTaskColor.start(m, cr);
         mapCollect.start(m, cr);
+        // mapPrint.start(m, cr)
     }
     updateSelectionState();
 }
