@@ -9,6 +9,7 @@ import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
 import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
+import { initDomData } from '../core/DomFlow'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
@@ -35,10 +36,15 @@ const getNativeEvent = (e) => {
 }
 
 export function WindowListeners() {
+    const mapId = useSelector(state => state.mapId)
+    const mapSource = useSelector(state => state.mapSource)
+    const mapStorage = useSelector(state => state.mapStorage)
+    const frameSelected = useSelector(state => state.frameSelected)
     const mapRight = useSelector(state => state.mapRight)
     const pageState = useSelector(state => state.pageState)
     const landingData = useSelector(state => state.landingData)
     const landingDataIndex = useSelector(state => state.landingDataIndex)
+
     const dispatch = useDispatch()
 
     const {DEMO, WS} = PAGE_STATES;
@@ -420,15 +426,24 @@ export function WindowListeners() {
         window.removeEventListener("paste", paste);
     }
 
-    const loadLandingDataFrame = (landingData, landingDataIndex) => {
-        mapDispatch('initMapState', {
-            mapId: '',
-            mapSource: '',
-            mapStorage: landingData[landingDataIndex],
-            frameSelected: 0
-        });
+    useEffect(() => {
+        if (landingData.length) {
+            initDomData();
+            mapDispatch('initMapState', {
+                mapId: '',
+                mapSource: '',
+                mapStorage: landingData[landingDataIndex],
+                frameSelected: 0
+            });
+            redraw();
+        }
+    }, [landingData, landingDataIndex]);
+
+    useEffect(() => {
+        initDomData(); // TODO don't apply this in case of editing frames
+        mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
         redraw();
-    }
+    }, [mapId])
 
     useEffect(() => {
         if (pageState === WS) {
@@ -446,12 +461,6 @@ export function WindowListeners() {
             removeLandingListeners();
         }
     }, [pageState, mapRight]);
-
-    useEffect(() => {
-        if (landingData.length) {
-            loadLandingDataFrame(landingData, landingDataIndex);
-        }
-    }, [landingData, landingDataIndex]);
 
     return (
         <></>

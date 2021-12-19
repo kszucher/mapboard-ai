@@ -6,7 +6,7 @@ import {COLORS} from "../core/Utils";
 export default function Tabs() {
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const tabMapSelected = useSelector(state => state.tabMapSelected)
-    const isPlayback = useSelector(state => state.isPlayback)
+    const mapSource = useSelector(state => state.mapSource)
     const dispatch = useDispatch()
 
     const handleChange = (e, value) =>  {
@@ -33,7 +33,7 @@ export default function Tabs() {
                 onChange={handleChange}
                 orientation={'vertical'}
                 component={'tabs'}
-                disabled={isPlayback}
+                disabled={mapSource==='dataPlayback'}
             />
         </div>
     );

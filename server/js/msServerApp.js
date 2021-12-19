@@ -194,9 +194,9 @@ async function ressolveType(req, currUser) {
                 return { type: 'signUpStep2Success' }
             }
         }
-        case 'SIGN_IN': {
-            return { type: 'signInSuccess' }
-        }
+        // case 'SIGN_IN': {
+        //     return { type: 'signInSuccess' }
+        // }
         case 'OPEN_MAP_FROM_HISTORY': {
             const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]

@@ -19,6 +19,7 @@ const fetchPost = (req) => {
     ].includes(req.type)) {
         req = {...req, cred: JSON.parse(localStorage.getItem('cred'))}
     }
+    console.log('SERVER_MESSAGE: ' + req)
     return fetch(backendUrl, {
         method: 'POST',
         headers: {
@@ -36,7 +37,6 @@ function* legacySaga () {
         let fetchGen = []
         switch (type) {
             case 'PING':                        fetchGen = [0, 0];   break
-            case 'SIGN_IN':                     fetchGen = [0, 0];   break
             case 'OPEN_MAP_FROM_HISTORY':       fetchGen = [0, 0];   break
             case 'SIGN_UP_STEP_1':              fetchGen = [0, 0];   break
             case 'SIGN_UP_STEP_2':              fetchGen = [0, 0];   break
@@ -102,18 +102,8 @@ function* legacySaga () {
                     const cred = JSON.parse(localStorage.getItem('cred'));
                     if (cred && cred.email && cred.password) {
                         localStorage.setItem('cred', JSON.stringify(cred))
-                        yield put({type: 'SIGN_IN'})
+                        yield put({type: 'OPEN_MAP_FROM_HISTORY'})
                     }
-                    break;
-                }
-                case 'signInSuccess': {
-                    initDomData();
-
-                    yield put({type: 'SHOW_WS'});
-
-                    // remove double BE call here that came from useEffect on SHOW_WS,
-                    // instead, after sign in successs, IMMEDIATELY load appropriate map on be !!!!
-
                     break;
                 }
                 case 'authFail': {
@@ -122,56 +112,33 @@ function* legacySaga () {
                 }
             }
         }
-        // TODO erre az egészre egy spread-es NAGY reducer-t tuti hogy ki lehet találni!!!
-        if (resp.payload) {
-            if (resp.payload.hasOwnProperty('landingData') &&
-                resp.payload.hasOwnProperty('mapRight')) {
-                const {landingData, mapRight} = resp.payload;
-                initDomData();
-                yield put({type: 'SET_LANDING_DATA', payload: {landingData, mapRight}})
-            }
-            if (resp.payload.hasOwnProperty('mapId') &&
-                resp.payload.hasOwnProperty('mapSource') &&
-                resp.payload.hasOwnProperty('mapStorage') &&
-                resp.payload.hasOwnProperty('mapRight')) {
-                const {mapId, mapSource, mapStorage, mapRight} = resp.payload;
-                const frameSelected = resp.payload.hasOwnProperty('frameSelected') ? resp.payload.frameSelected : 0;
-                yield put({type: 'AFTER_OPEN', payload: {mapSource, mapRight}})
-                // this should be a useEffect!!!
-                mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
-                redraw();
-            }
-            if (resp.payload.hasOwnProperty('frameLen') &&
-                resp.payload.hasOwnProperty('frameSelected')) {
-                const {frameLen, frameSelected} = resp.payload;
-                yield put({type: 'SET_FRAME_INFO', payload: {frameLen, frameSelected}})
-            }
-            if (resp.payload.hasOwnProperty('breadcrumbMapNameList')) {
-                const {breadcrumbMapNameList} = resp.payload;
-                yield put({type: 'SET_BREADCRUMB_DATA', payload: {breadcrumbMapNameList}})
-            }
-            if (resp.payload.hasOwnProperty('tabMapNameList') &&
-                resp.payload.hasOwnProperty('tabMapSelected')) {
-                const {tabMapNameList, tabMapSelected} = resp.payload;
-                yield put({type: 'SET_TAB_DATA', payload: {tabMapNameList, tabMapSelected}})
-            }
-            if (resp.payload.hasOwnProperty('shareDataExport') &&
-                resp.payload.hasOwnProperty('shareDataImport')) {
-                const {shareDataExport, shareDataImport} = resp.payload;
-                yield put({type: 'SET_SHARE_DATA', payload: {shareDataExport, shareDataImport}})
-            }
-            // TODO: az auth message válaszokra kitalálni valamit
-        }
-    }
-}
 
-function* playbackSaga () {
-    // TODO create and open modal which checks if there is a frame already
+        yield put({ type: 'PARSE_BE', payload: resp.payload })
+    }
 }
 
 function* authSaga () {
     // TODO: this will make logic in auth obsolete,
     // also, since ALL state will be brought to central state, this can control everything from here!!!
+}
+
+function* wsSaga () {
+    while (true) {
+        yield take([
+            'CLOSE_SHARES',
+            'CLOSE_SHARING',
+        ])
+        yield put({type: 'SHOW_WS'})
+    }
+}
+
+function* demoSaga () {
+    while (true) {
+        yield take('LIVE_DEMO')
+        const { resp } = yield call(fetchPost, { type: 'GET_LANDING_DATA' })
+        yield put({ type: 'SHOW_DEMO' })
+        yield put({ type: 'PARSE_BE', payload: resp.payload })
+    }
 }
 
 function* profileSaga () {
@@ -191,28 +158,8 @@ function* profileSaga () {
     }
 }
 
-function* wsSaga () {
-    while (true) {
-        yield take([
-            'CLOSE_SHARES',
-            'CLOSE_SHARING',
-        ])
-        yield put({type: 'SHOW_WS'})
-    }
-}
-
-function* demoSaga () {
-    while (true) {
-        yield take([
-            'LIVE_DEMO',
-        ])
-        const { resp } = yield call(fetchPost, { type: 'GET_LANDING_DATA' })
-        yield put({ type: 'SHOW_DEMO' })
-        console.log(resp)
-
-        // TODO start here!!! make the universal parse, and move everything inside it to an appropriate side effect!!! this will be super cool
-        // yield put({ type: 'PARSE_BE', payload: resp })
-    }
+function* playbackSaga () {
+    // TODO create and open modal which checks if there is a frame already
 }
 
 export default function* rootSaga () {

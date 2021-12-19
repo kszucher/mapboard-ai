@@ -37,8 +37,10 @@ const editorState = {
     colorText: '',
     paletteVisible: 0,
     frameEditorVisible: 0,
-    isPlayback: false,
     // map
+    mapId: '',
+    mapSource: '',
+    mapStorage: {},
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
     // frame
     frameLen: 0,
@@ -94,7 +96,7 @@ const resolveActions = (state, action) => {
 
         case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
+        // case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
         case 'SET_PROFILE_NAME':          return {profileName: payload}
         case 'PARSE_BE':                  return {...payload}

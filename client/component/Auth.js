@@ -63,7 +63,7 @@ export default function Auth() {
         } else {
             let cred = {email, password}
             localStorage.setItem('cred', JSON.stringify(cred))
-            dispatch({type: 'SIGN_IN'})
+            dispatch({type: 'OPEN_MAP_FROM_HISTORY'})
         }
     }
     const signUpStep1Handler = () => {
