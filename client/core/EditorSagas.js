@@ -103,9 +103,17 @@ function* legacySaga (task) {
                 mapId: mapState.mapId,
             }
         }
+
+        // TODO put loader
+
         const { resp } = yield call(fetchPost, { type, payload })
 
-        console.log(resp)
+        if (type === 'OPEN_MAP_FROM_HISTORY') {
+            yield put({type: 'SHOW_WS'})
+        }
+
+
+        yield put({ type: 'PARSE_BE', payload: resp.payload })
 
         // if (resp.type) {
         //     switch (resp.type) {
@@ -124,10 +132,6 @@ function* legacySaga (task) {
         //     }
         // }
 
-
-        // yield put({ type: 'PARSE_BE', payload: resp.payload })
-
-        console.log('parse done')
 
     }
 }
