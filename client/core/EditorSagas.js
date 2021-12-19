@@ -19,7 +19,7 @@ const fetchPost = (req) => {
     ].includes(req.type)) {
         req = {...req, cred: JSON.parse(localStorage.getItem('cred'))}
     }
-    console.log('SERVER_MESSAGE: ' + req)
+    console.log('SERVER_MESSAGE: ' + req.type)
     return fetch(backendUrl, {
         method: 'POST',
         headers: {
@@ -30,39 +30,46 @@ const fetchPost = (req) => {
     }).then(resp => resp.json())
 }
 
-function* legacySaga () {
+function* legacySaga (task) {
     while (true) {
-        let { type, payload } = yield take('*')
-        console.log(type)
-        let fetchGen = []
-        switch (type) {
-            case 'PING':                        fetchGen = [0, 0];   break
-            case 'OPEN_MAP_FROM_HISTORY':       fetchGen = [0, 0];   break
-            case 'SIGN_UP_STEP_1':              fetchGen = [0, 0];   break
-            case 'SIGN_UP_STEP_2':              fetchGen = [0, 0];   break
-            case 'OPEN_MAP_FROM_TAB':           fetchGen = [1, 1];   break
-            case 'OPEN_MAP_FROM_MAP':           fetchGen = [1, 0];   break
-            case 'OPEN_MAP_FROM_BREADCRUMBS':   fetchGen = [1, 0];   break
-            case 'SAVE_MAP':                    fetchGen = [1, 0];   break
-            case 'CREATE_MAP_IN_MAP':           fetchGen = [1, 0];   break
-            case 'CREATE_MAP_IN_TAB':           fetchGen = [1, 1];   break
-            case 'REMOVE_MAP_IN_TAB':           fetchGen = [0, 1];   break
-            case 'MOVE_UP_MAP_IN_TAB':          fetchGen = [0, 1];   break
-            case 'MOVE_DOWN_MAP_IN_TAB':        fetchGen = [0, 1];   break
-            case 'OPEN_FRAME':                  fetchGen = [1, 0];   break
-            case 'IMPORT_FRAME':                fetchGen = [1, 0];   break
-            case 'DUPLICATE_FRAME':             fetchGen = [1, 0];   break
-            case 'DELETE_FRAME':                fetchGen = [0, 0];   break
-            case 'PREV_FRAME':                  fetchGen = [1, 0];   break
-            case 'NEXT_FRAME':                  fetchGen = [1, 0];   break
-            case 'GET_SHARES':                  fetchGen = [0, 0];   break
-            case 'CREATE_SHARE':                fetchGen = [0, 0];   break
-            case 'ACCEPT_SHARE':                fetchGen = [0, 0];   break
-            case 'DELETE_SHARE':                fetchGen = [0, 0];   break
-            default: return
-        }
-        const [shouldSaveCurrentMap, shouldSynchTabs] = fetchGen
-        if (shouldSaveCurrentMap) {
+        let { type, payload } = yield take([
+            'PING',
+            'OPEN_MAP_FROM_HISTORY',
+            'SIGN_UP_STEP_1',
+            'SIGN_UP_STEP_2',
+            'OPEN_MAP_FROM_TAB',
+            'OPEN_MAP_FROM_MAP',
+            'OPEN_MAP_FROM_BREADCRUMBS',
+            'SAVE_MAP',
+            'CREATE_MAP_IN_MAP',
+            'CREATE_MAP_IN_TAB',
+            'REMOVE_MAP_IN_TAB',
+            'MOVE_UP_MAP_IN_TAB',
+            'MOVE_DOWN_MAP_IN_TAB',
+            'OPEN_FRAME',
+            'IMPORT_FRAME',
+            'DUPLICATE_FRAME',
+            'DELETE_FRAME',
+            'PREV_FRAME',
+            'NEXT_FRAME',
+            'GET_SHARES',
+            'CREATE_SHARE',
+            'ACCEPT_SHARE',
+            'DELETE_SHARE',
+        ])
+        if ([
+            'OPEN_MAP_FROM_TAB',
+            'OPEN_MAP_FROM_MAP',
+            'OPEN_MAP_FROM_BREADCRUMBS',
+            'SAVE_MAP',
+            'CREATE_MAP_IN_MAP',
+            'CREATE_MAP_IN_TAB',
+            'OPEN_FRAME',
+            'IMPORT_FRAME',
+            'DUPLICATE_FRAME',
+            'PREV_FRAME',
+            'NEXT_FRAME'
+        ].includes(type)) {
             payload = {...payload,
                 mapIdOut: mapState.mapId,
                 mapSourceOut: mapState.mapSource,
@@ -70,13 +77,14 @@ function* legacySaga () {
                 frameSelectedOut: mapState.frameSelected
             }
         }
-        if (shouldSynchTabs) {
+        if ([
+        ].includes(type)) {
             payload = {...payload,
                 // tabMapIdListOut: state.tabMapIdList // TODO use
             }
         }
         if (type === 'OPEN_MAP_FROM_TAB') {
-            yield put ({type: 'SET_TAB_MAP_SELECTED', payload})
+            yield put({type: 'SET_TAB_MAP_SELECTED', payload})
         }
         if (type === 'CREATE_MAP_IN_MAP') {
             payload = {...payload,
@@ -116,7 +124,11 @@ function* legacySaga () {
         //     }
         // }
 
-        yield put({ type: 'PARSE_BE', payload: resp.payload })
+
+        // yield put({ type: 'PARSE_BE', payload: resp.payload })
+
+        console.log('parse done')
+
     }
 }
 
@@ -168,6 +180,7 @@ function* playbackSaga () {
 
 export default function* rootSaga () {
     yield all([
+        // authSaga(),
         legacySaga(),
         playbackSaga(),
         profileSaga(),
