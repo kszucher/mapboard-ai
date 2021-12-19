@@ -96,22 +96,25 @@ function* legacySaga () {
             }
         }
         const { resp } = yield call(fetchPost, { type, payload })
-        if (resp.type) {
-            switch (resp.type) {
-                case 'pingSuccess': {
-                    const cred = JSON.parse(localStorage.getItem('cred'));
-                    if (cred && cred.email && cred.password) {
-                        localStorage.setItem('cred', JSON.stringify(cred))
-                        yield put({type: 'OPEN_MAP_FROM_HISTORY'})
-                    }
-                    break;
-                }
-                case 'authFail': {
-                    localStorage.clear();
-                    break;
-                }
-            }
-        }
+
+        console.log(resp)
+
+        // if (resp.type) {
+        //     switch (resp.type) {
+        //         case 'pingSuccess': {
+        //             const cred = JSON.parse(localStorage.getItem('cred'));
+        //             if (cred && cred.email && cred.password) {
+        //                 localStorage.setItem('cred', JSON.stringify(cred))
+        //                 yield put({type: 'OPEN_MAP_FROM_HISTORY'})
+        //             }
+        //             break;
+        //         }
+        //         case 'authFail': {
+        //             localStorage.clear();
+        //             break;
+        //         }
+        //     }
+        // }
 
         yield put({ type: 'PARSE_BE', payload: resp.payload })
     }
@@ -120,6 +123,7 @@ function* legacySaga () {
 function* authSaga () {
     // TODO: this will make logic in auth obsolete,
     // also, since ALL state will be brought to central state, this can control everything from here!!!
+    // NOTE: you either return from saga which lets it restart or continue!!!
 }
 
 function* wsSaga () {

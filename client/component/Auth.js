@@ -6,6 +6,7 @@ import StyledButton from "../component-styled/StyledButton";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import StyledInput from "../component-styled/StyledInput";
 import {COLORS} from "../core/Utils";
+import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 
 let regEmail = '';
 let regPassword = '';
@@ -14,11 +15,15 @@ const mainTabValues = ['Sign In', 'Sign Up'];
 const subTabValues = ['Step 1', 'Step 2'];
 
 export default function Auth() {
-    // const serverResponse = useSelector(state => state.serverResponse)
-    // const serverResponseCntr = useSelector(state => state.serverResponseCntr)
 
-    // TODO const local states SIGN_IN_STEP_1, SIGN_IN_STEP_2, SIGN_UP
+    const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
+
+    const authPageState = useSelector(state => state.authPageState)
+
     const dispatch = useDispatch()
+
+
+
     const [mainTabValue, setMainTabValue] = useState(0);
     const [subTabValue, setSubTabValue] = useState(0);
     const [name, setName] = useState('');
@@ -34,10 +39,14 @@ export default function Auth() {
     const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
     const liveDemo = (e) => {dispatch({type: 'LIVE_DEMO'})}
+
     const switchMainMode = (e) => {
         if (e !== mainTabValues[mainTabValue]) {
             setMainTabValue(!mainTabValue & 1);
             if (mainTabValue) setSubTabValue(0);
+
+
+
             setName('');
             setEmail('')
             setPassword('');
@@ -49,6 +58,8 @@ export default function Auth() {
     const switchSubMode = (e) => {
         if (e !== subTabValues[subTabValue]) {
             setSubTabValue(!subTabValue & 1);
+
+
             setPassword('');
             setPasswordAgain('');
             setConfirmationCode('');
@@ -79,27 +90,26 @@ export default function Auth() {
         dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
     }
     const signAction = () => {
-        mainTabValue === 0
-            ? signInHandler()
-            : (subTabValue === 0
-                ? signUpStep1Handler()
-                : signUpStep2Handler()
-            )
+        switch (authPageState) {
+            case SIGN_IN: return signInHandler()
+            case SIGN_UP_STEP_1: return signUpStep1Handler()
+            case SIGN_UP_STEP_2: return  signUpStep2Handler()
+        }
     }
     const signActionDisabled = () => {
-        return mainTabValue === 0
+        return authPageState === SIGN_IN
             ? false // (email === '' || password === '') // autofill issue
-            : (subTabValue === 0
+            : (authPageState === SIGNUP_STEP_1
                 ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
                 : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
             )
     }
     const signActionText = () => {
-        return mainTabValue === 0
-            ? 'Sign In'
-            : (subTabValue === 0
-                ? 'Get Confirmation Code'
-                : 'Enter Confirmation Code')
+        switch (authPageState) {
+            case SIGN_IN: return 'Sign In'
+            case SIGN_UP_STEP_1: return 'Get Confirmation Code'
+            case SIGN_UP_STEP_2: return  'Enter Confirmation Code'
+        }
     }
 
     // useEffect(() => {
@@ -133,8 +143,10 @@ export default function Auth() {
             }}>
             <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-            <StyledButtonGroup open={true}                                 valueList={mainTabValues} value={mainTabValues[mainTabValue]} action={switchMainMode}/>
-            <StyledButtonGroup open={mainTabValue===1}                     valueList={subTabValues}  value={subTabValues[subTabValue]}   action={switchSubMode}/>
+
+            {/*<StyledButtonGroup open={true}                                 valueList={mainTabValues} value={mainTabValues[mainTabValue]} action={switchMainMode}/>*/}
+            {/*<StyledButtonGroup open={mainTabValue===1}                     valueList={subTabValues}  value={subTabValues[subTabValue]}   action={switchSubMode}/>*/}
+
             <StyledInput       open={mainTabValue===1 && subTabValue===0}  label="Your First Name"   value={name}                        action={typeName}              autoFocus/>
             <StyledInput       open={true}                                 label="Email"             value={email}                       action={typeEmail}/>
             <StyledInput       open={subTabValue===0}                      label="Password"          value={password}                    action={typePassword}          type="password"/>

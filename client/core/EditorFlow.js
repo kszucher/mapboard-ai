@@ -2,6 +2,12 @@ import {applyMiddleware, createStore} from "redux";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 
+export const AUTH_PAGE_STATES = {
+    SIGN_IN: 'SIGN_IN',
+    SIGN_UP_STEP_1: 'SIGN_UP_STEP_1',
+    SIGN_UP_STEP_2: 'SIGN_UP_STEP_2'
+}
+
 export const PAGE_STATES = {
     EMPTY: 'EMPTY',
     DEMO: 'DEMO',
@@ -24,6 +30,7 @@ export const MAP_RIGHTS = {
 // emiatt az AUTH és a SHARING flow-t ide be kell mozgatni, ami mint state ua-zon a useEffect-en frissíti a local state-et
 // továbbá, lokálisan egy reducer-t kell majd ehelyett használni
 const editorState = {
+    authPageState: AUTH_PAGE_STATES.SIGN_IN,
     pageState: PAGE_STATES.AUTH,
     landingData: [],
     landingDataIndex: 0,

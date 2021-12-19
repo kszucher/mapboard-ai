@@ -440,9 +440,11 @@ export function WindowListeners() {
     }, [landingData, landingDataIndex]);
 
     useEffect(() => {
-        initDomData(); // TODO don't apply this in case of editing frames
-        mapDispatch('initMapState', {mapId, mapSource, mapStorage, frameSelected});
-        redraw();
+        if (mapId !== '') {
+            initDomData(); // TODO don't apply this in case of editing frames
+            mapDispatch('initMapState', { mapId, mapSource, mapStorage, frameSelected });
+            redraw();
+        }
     }, [mapId])
 
     useEffect(() => {
