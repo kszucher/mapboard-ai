@@ -444,7 +444,7 @@ export function WindowListeners() {
             mapDispatch('initMapState', { mapId, mapSource, mapStorage, frameSelected });
             redraw();
         }
-    }, [mapId])
+    }, [mapId, frameSelected])
 
     useEffect(() => {
         if (pageState === WS) {
