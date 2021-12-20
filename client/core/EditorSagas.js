@@ -13,7 +13,7 @@ const backendUrl = process.env.NODE_ENV === 'development'
 const fetchPost = (req) => {
     if (![
         'PING',
-        'GET_LANDING_DATA',
+        'LIVE_DEMO',
         'SIGN_UP_STEP_1',
         'SIGN_UP_STEP_2'
     ].includes(req.type)) {
@@ -34,7 +34,8 @@ function* legacySaga (task) {
     while (true) {
         let { type, payload } = yield take([
             'PING',
-            'OPEN_MAP_FROM_HISTORY',
+            'SIGN_IN',
+            'LIVE_DEMO',
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2',
             'OPEN_MAP_FROM_TAB',
@@ -108,8 +109,12 @@ function* legacySaga (task) {
 
         const { resp } = yield call(fetchPost, { type, payload })
 
-        if (type === 'OPEN_MAP_FROM_HISTORY') {
+        if (type === 'SIGN_IN') {
             yield put({type: 'SHOW_WS'})
+        }
+
+        if (type === 'LIVE_DEMO') {
+            yield put({type: 'SHOW_DEMO'})
         }
 
 
@@ -121,7 +126,7 @@ function* legacySaga (task) {
         //             const cred = JSON.parse(localStorage.getItem('cred'));
         //             if (cred && cred.email && cred.password) {
         //                 localStorage.setItem('cred', JSON.stringify(cred))
-        //                 yield put({type: 'OPEN_MAP_FROM_HISTORY'})
+        //                 yield put({type: 'SIGN_IN'})
         //             }
         //             break;
         //         }
@@ -152,15 +157,6 @@ function* wsSaga () {
     }
 }
 
-function* demoSaga () {
-    while (true) {
-        yield take('LIVE_DEMO')
-        const { resp } = yield call(fetchPost, { type: 'GET_LANDING_DATA' })
-        yield put({ type: 'SHOW_DEMO' })
-        yield put({ type: 'PARSE_BE', payload: resp.payload })
-    }
-}
-
 function* profileSaga () {
     while (true) {
         yield take('OPEN_PROFILE')
@@ -182,6 +178,17 @@ function* playbackSaga () {
     // TODO create and open modal which checks if there is a frame already
 }
 
+function* domSaga() {
+    while (true) {
+        yield take([
+            'SIGN_IN',
+            'LIVE_DEMO',
+        ])
+        initDomData()
+        yield
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         // authSaga(),
@@ -189,6 +196,6 @@ export default function* rootSaga () {
         playbackSaga(),
         profileSaga(),
         wsSaga(),
-        demoSaga(),
+        domSaga(),
     ])
 }

@@ -27,18 +27,10 @@ export function Page() {
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
 
     useEffect(()=> {
-        getTextDim('Test')
-        getEquationDim('\\[Test\\]');
+        // getTextDim('Test')
+        // getEquationDim('\\[Test\\]');
         dispatch({type: 'PING'}) // OPEN_MAP_FROM_HISTORY makes auto-login
     }, [])
-
-    useEffect(() => {
-        if (pageState === DEMO) {
-            // dispatch({type: 'GET_LANDING_DATA'}); // MOVED TO SAGA!!!
-        } else if (pageState === WS) {
-            // dispatch({type: 'OPEN_MAP_FROM_HISTORY'}); // MOVED TO SAGA!!!
-        }
-    }, [pageState])
 
     return (
         <div id="page">

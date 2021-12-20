@@ -9,7 +9,6 @@ import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
 import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
-import { initDomData } from '../core/DomFlow'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
 let namedInterval;
@@ -428,7 +427,6 @@ export function WindowListeners() {
 
     useEffect(() => {
         if (landingData.length) {
-            initDomData();
             mapDispatch('initMapState', {
                 mapId: '',
                 mapSource: '',

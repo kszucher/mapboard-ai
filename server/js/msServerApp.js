@@ -126,7 +126,7 @@ async function ressolveType(req, currUser) {
         case 'PING': {
             return { type: 'pingSuccess' }
         }
-        case 'GET_LANDING_DATA': {
+        case 'LIVE_DEMO': {
             // this could depend on queryString
             let mapId = '5f3fd7ba7a84a4205428c96a'
             return {
@@ -197,7 +197,7 @@ async function ressolveType(req, currUser) {
         // case 'SIGN_IN': {
         //     return { type: 'signInSuccess' }
         // }
-        case 'OPEN_MAP_FROM_HISTORY': {
+        case 'SIGN_IN': {
             const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
@@ -514,7 +514,7 @@ async function appendStuff (resp, currUser) {
 async function processReq(req) {
     try {
         let currUser
-        if (!['PING', 'GET_LANDING_DATA', 'SIGN_UP_STEP_1', 'SIGN_UP_STEP_2'].includes(req.type)) {
+        if (!['PING', 'LIVE_DEMO', 'SIGN_UP_STEP_1', 'SIGN_UP_STEP_2'].includes(req.type)) {
             if (req.hasOwnProperty('cred')) {
                 currUser = await getUser(usersColl, req.cred)
                 if (currUser === null) {
