@@ -161,8 +161,8 @@ function* wsSaga () {
 function* profileSaga () {
     while (true) {
         yield take('OPEN_PROFILE')
-        const { name } = yield call(fetchPost, { type: 'GET_PROFILE_INFO' })
-        yield put({ type: 'SET_PROFILE_NAME', payload: name })
+        const { resp } = yield call(fetchPost, { type: 'GET_PROFILE_INFO' })
+        yield put({ type: 'SET_PROFILE_NAME', payload: resp.name })
         yield put({ type: 'SHOW_WS_PROFILE' })
         const { type } = yield take(['CLOSE_PROFILE'])
         switch (type) {
