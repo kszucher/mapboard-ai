@@ -50,8 +50,8 @@ function* legacySaga (task) {
             'IMPORT_FRAME',
             'DUPLICATE_FRAME',
             'DELETE_FRAME',
-            'PREV_FRAME',
-            'NEXT_FRAME',
+            'OPEN_PREV_FRAME',
+            'OPEN_NEXT_FRAME',
             'GET_SHARES',
             'CREATE_SHARE',
             'ACCEPT_SHARE',
@@ -67,8 +67,8 @@ function* legacySaga (task) {
             'OPEN_FRAME',
             'IMPORT_FRAME',
             'DUPLICATE_FRAME',
-            'PREV_FRAME',
-            'NEXT_FRAME'
+            'OPEN_PREV_FRAME',
+            'OPEN_NEXT_FRAME'
         ].includes(type)) {
             payload = {...payload,
                 mapIdOut: mapState.mapId,

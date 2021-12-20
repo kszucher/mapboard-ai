@@ -441,7 +441,6 @@ export function WindowListeners() {
 
     useEffect(() => {
         if (mapId !== '') {
-            initDomData(); // TODO don't apply this in case of editing frames
             mapDispatch('initMapState', { mapId, mapSource, mapStorage, frameSelected });
             redraw();
         }
