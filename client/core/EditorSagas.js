@@ -143,9 +143,10 @@ function* legacySaga (task) {
 }
 
 function* authSaga () {
-    // TODO: this will make logic in auth obsolete,
-    // also, since ALL state will be brought to central state, this can control everything from here!!!
-    // NOTE: you either return from saga which lets it restart or continue!!!
+    // VERY IMPORTANT NOTE
+    // I CAN VERY DIRECTLY MOVE SIGN_IN and LIVE_DEMO from legacySaga to here!!!
+    // this way I can keep everything related to that screen organized
+    // TODO move them here, and also handle buttons and their 3-state state
 }
 
 function* wsSaga () {
