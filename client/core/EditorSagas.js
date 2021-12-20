@@ -110,13 +110,14 @@ function* legacySaga (task) {
         const { resp } = yield call(fetchPost, { type, payload })
 
         if (type === 'SIGN_IN') {
+            initDomData()
             yield put({type: 'SHOW_WS'})
         }
 
         if (type === 'LIVE_DEMO') {
+            initDomData()
             yield put({type: 'SHOW_DEMO'})
         }
-
 
         yield put({ type: 'PARSE_BE', payload: resp.payload })
 
@@ -178,17 +179,6 @@ function* playbackSaga () {
     // TODO create and open modal which checks if there is a frame already
 }
 
-function* domSaga() {
-    while (true) {
-        yield take([
-            'SIGN_IN',
-            'LIVE_DEMO',
-        ])
-        initDomData()
-        yield
-    }
-}
-
 export default function* rootSaga () {
     yield all([
         // authSaga(),
@@ -196,6 +186,5 @@ export default function* rootSaga () {
         playbackSaga(),
         profileSaga(),
         wsSaga(),
-        domSaga(),
     ])
 }
