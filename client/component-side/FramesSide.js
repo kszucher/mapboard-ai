@@ -17,8 +17,8 @@ export function FramesSide () {
     const importFrame =         _ => dispatch({type: 'IMPORT_FRAME'})
     const duplicateFrame =      _ => dispatch({type: 'DUPLICATE_FRAME'})
     const deleteFrame =         _ => dispatch({type: 'DELETE_FRAME'})
-    const prevFrame =           _ => dispatch({type: 'PREV_FRAME'})
-    const nextFrame =           _ => dispatch({type: 'NEXT_FRAME'})
+    const openPrevFrame =       _ => dispatch({type: 'OPEN_PREV_FRAME'})
+    const openNextFrame =       _ => dispatch({type: 'OPEN_NEXT_FRAME'})
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
 
     return (
@@ -61,8 +61,8 @@ export function FramesSide () {
                     open={frameEditorVisible === 1}
                     valueList={['prev', 'next']}
                     action={e => {
-                        e === 'prev' && prevFrame();
-                        e === 'next' && nextFrame();
+                        e === 'prev' && openPrevFrame();
+                        e === 'next' && openNextFrame();
                     }}
                     valueListDisabled={[frameSelected === 0, frameSelected === frameLen - 1]}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}

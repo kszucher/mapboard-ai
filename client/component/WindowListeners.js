@@ -440,11 +440,11 @@ export function WindowListeners() {
     }, [landingData, landingDataIndex]);
 
     useEffect(() => {
-        if (mapId !== '') {
+        if (mapId !== '' && mapSource !== '') {
             mapDispatch('initMapState', { mapId, mapSource, mapStorage, frameSelected });
             redraw();
         }
-    }, [mapId, frameSelected])
+    }, [mapId, mapSource, frameSelected])
 
     useEffect(() => {
         if (pageState === WS) {

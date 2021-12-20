@@ -41,7 +41,6 @@ function mapReducer(action, payload) {
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.dataIndex = 0;
             mapState.frameSelected = payload.frameSelected;
-            console.log(mapState)
             break;
         }
         case 'undo': {
