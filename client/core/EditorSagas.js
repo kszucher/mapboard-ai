@@ -34,8 +34,6 @@ function* legacySaga (task) {
     while (true) {
         let { type, payload } = yield take([
             'PING',
-            'SIGN_IN',
-            'LIVE_DEMO',
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2',
             'OPEN_MAP_FROM_TAB',
@@ -104,22 +102,11 @@ function* legacySaga (task) {
                 mapId: mapState.mapId,
             }
         }
-
-        // TODO put loader
-
         const { resp } = yield call(fetchPost, { type, payload })
 
-        if (type === 'SIGN_IN') {
-            initDomData()
-            yield put({type: 'SHOW_WS'})
-        }
+        // ötlet: itt egy yield fork, ami a BE által adott TYPE szerint folytatja a működést?
 
-        if (type === 'LIVE_DEMO') {
-            initDomData()
-            yield put({type: 'SHOW_DEMO'})
-        }
-
-        yield put({ type: 'PARSE_BE', payload: resp.payload })
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
 
         // if (resp.type) {
         //     switch (resp.type) {
@@ -143,10 +130,22 @@ function* legacySaga (task) {
 }
 
 function* authSaga () {
-    // VERY IMPORTANT NOTE
-    // I CAN VERY DIRECTLY MOVE SIGN_IN and LIVE_DEMO from legacySaga to here!!!
-    // this way I can keep everything related to that screen organized
-    // TODO move them here, and also handle buttons and their 3-state state
+    while (true) {
+        let { type, payload } = yield take([
+            'SIGN_IN',
+            'LIVE_DEMO',
+        ])
+        const { resp } = yield call(fetchPost, { type, payload })
+        if (type === 'SIGN_IN') {
+            initDomData()
+            yield put({type: 'SHOW_WS'})
+        }
+        if (type === 'LIVE_DEMO') {
+            initDomData()
+            yield put({type: 'SHOW_DEMO'})
+        }
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+    }
 }
 
 function* wsSaga () {
@@ -182,7 +181,7 @@ function* playbackSaga () {
 
 export default function* rootSaga () {
     yield all([
-        // authSaga(),
+        authSaga(),
         legacySaga(),
         playbackSaga(),
         profileSaga(),

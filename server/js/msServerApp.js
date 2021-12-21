@@ -81,16 +81,6 @@ function getDefaultMap (mapName, ownerUser, path) {
     }
 }
 
-async function checkSynch (req) {
-    let inSynch = true
-    // let inSynch = false
-    // if (req.payload.hasOwnProperty('tabMapIdListOut') &&
-    //   !isEqual(req.payload.tabMapIdListOut, currUser.tabMapIdList)) {
-    //     inSynch = true
-    // }
-    return inSynch
-}
-
 async function checkSave (req, currUser) {
     if (req.hasOwnProperty('payload') &&
       req.payload.hasOwnProperty('mapIdOut') &&
@@ -514,7 +504,12 @@ async function appendStuff (resp, currUser) {
 async function processReq(req) {
     try {
         let currUser
-        if (!['PING', 'LIVE_DEMO', 'SIGN_UP_STEP_1', 'SIGN_UP_STEP_2'].includes(req.type)) {
+        if (![
+            'PING',
+            'LIVE_DEMO',
+            'SIGN_UP_STEP_1',
+            'SIGN_UP_STEP_2'
+        ].includes(req.type)) {
             if (req.hasOwnProperty('cred')) {
                 currUser = await getUser(usersColl, req.cred)
                 if (currUser === null) {
@@ -523,10 +518,6 @@ async function processReq(req) {
                     return { type: 'authFailIncompleteRegistration' }
                 }
             }
-        }
-        const inSynch = await checkSynch(req)
-        if (!inSynch) {
-            return {type: 'synchFail'}
         }
         await checkSave(req, currUser)
         let resp = await ressolveType(req, currUser)
