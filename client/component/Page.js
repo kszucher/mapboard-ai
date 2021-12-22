@@ -29,7 +29,11 @@ export function Page() {
     useEffect(()=> {
         // getTextDim('Test')
         // getEquationDim('\\[Test\\]');
-        // dispatch({type: 'SIGN_IN'})
+
+        const cred = JSON.parse(localStorage.getItem('cred'))
+        if (cred !== null) {
+            dispatch({type: 'SIGN_IN', payload: { cred }})
+        }
     }, [])
 
     return (

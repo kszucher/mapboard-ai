@@ -499,18 +499,12 @@ async function appendStuff (resp, currUser) {
 async function processReq(req) {
     try {
         let currUser
-        if (![
-            'LIVE_DEMO',
-            'SIGN_UP_STEP_1',
-            'SIGN_UP_STEP_2'
-        ].includes(req.type)) {
-            if (req.payload.hasOwnProperty('cred')) {
-                currUser = await getUser(usersColl, req.payload.cred)
-                if (currUser === null) {
-                    return { type: 'authFailWrongCred' }
-                } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
-                    return { type: 'authFailIncompleteRegistration' }
-                }
+        if (req.payload.hasOwnProperty('cred')) {
+            currUser = await getUser(usersColl, req.payload.cred)
+            if (currUser === null) {
+                return { type: 'authFailWrongCred' }
+            } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
+                return { type: 'authFailIncompleteRegistration' }
             }
         }
         await checkSave(req, currUser)

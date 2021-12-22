@@ -114,6 +114,7 @@ function* authSaga () {
                 initDomData()
                 yield put({type: 'SHOW_WS'})
                 break
+            // TODO on signOutSuccess, also clear cred
             case 'authFailWrongCred':
                 localStorage.clear();
                 console.log('wrong cred')
