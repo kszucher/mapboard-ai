@@ -2,17 +2,13 @@ import TextField from "@material-ui/core/TextField";
 import React from "react";
 
 export default function StyledInput (arg) {
-    const {open, value, label, type, action, autoFocus} = arg;
+    const {open, type} = arg;
     return (
         open && <TextField
+            {...arg}
             variant="outlined"
             fullWidth
-            type={type}
             autoComplete={type}
-            label={label}
-            value={value}
-            onChange={action}
-            autoFocus={autoFocus}
         />
     )
 }

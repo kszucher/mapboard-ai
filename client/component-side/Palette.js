@@ -105,10 +105,7 @@ export function Palette () {
                 justifyContent: 'center',
                 paddingTop: 12
             }}>
-                <StyledButton
-                    version={'shortOutlined'}
-                    name={'Close'}
-                    action={closePalette}/>
+                <StyledButton variant='outlined' onClick={closePalette} name={'Close'}/>
             </div>
         </div>
     );

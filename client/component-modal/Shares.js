@@ -116,14 +116,8 @@ export function Shares() {
                         disableSelectionOnClick
                         autoHeight={true}/>}
                 </div>
-                <StyledButton
-                    version={'shortOutlined'}
-                    name={'refresh'}
-                    action={getShares}/>
-                <StyledButton
-                    version={'shortOutlined'}
-                    name={'close'}
-                    action={closeShares}/>
+                <StyledButton variant='outlined' onClick={getShares} name={'refresh'}/>
+                <StyledButton variant='outlined' onClick={closeShares} name={'close'}/>
             </div>}
         </Modal>
     )

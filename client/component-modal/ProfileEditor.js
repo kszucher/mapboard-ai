@@ -38,12 +38,7 @@ export function ProfileEditor() {
                     variant="h5">
                     {profileName}
                 </Typography>
-                <StyledButton
-                    version="shortOutlined"
-                    disabled={false}
-                    action={closeProfile}
-                    name={'close'}
-                />
+                <StyledButton variant="outlined" onClick={closeProfile} name={'close'}/>
             </div>}
         </Modal>
     )

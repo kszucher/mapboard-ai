@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import StyledButton from "../component-styled/StyledButton";
-import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import StyledInput from "../component-styled/StyledInput";
 import {COLORS} from "../core/Utils";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
@@ -147,19 +146,25 @@ export default function Auth() {
             {/*<StyledButtonGroup open={true}                                 valueList={mainTabValues} value={mainTabValues[mainTabValue]} action={switchMainMode}/>*/}
             {/*<StyledButtonGroup open={mainTabValue===1}                     valueList={subTabValues}  value={subTabValues[subTabValue]}   action={switchSubMode}/>*/}
 
-            <StyledInput       open={mainTabValue===1 && subTabValue===0}  label="Your First Name"   value={name}                        action={typeName}              autoFocus/>
-            <StyledInput       open={true}                                 label="Email"             value={email}                       action={typeEmail}/>
-            <StyledInput       open={subTabValue===0}                      label="Password"          value={password}                    action={typePassword}          type="password"/>
-            <StyledInput       open={mainTabValue===1 && subTabValue===0}  label="Password Again"    value={passwordAgain}               action={typePasswordAgain}     type="password"/>
-            <StyledInput       open={mainTabValue===1 && subTabValue===1}  label="Confirmation Code" value={confirmationCode}            action={typeConfirmationCode}/>
-            {feedbackMessage !== '' && <Typography
-                variant="body2"
-                color="textSecondary"
-                align="center">
-                {feedbackMessage}
-            </Typography>}
-            <StyledButton version="longContained" disabled={signActionDisabled()} action={signAction}   name={signActionText()}/>
-            <StyledButton version="longContained" disabled={false}                action={liveDemo} name={'LIVE DEMO'}/>
+
+            {/*<StyledButton></StyledButton>*/}
+
+            <StyledInput open={authPageState === SIGN_UP_STEP_1} label="Your First Name"   value={name}             onChange={typeName}              autoFocus       />
+            <StyledInput open={true}                             label="Email"             value={email}            onChange={typeEmail}                             />
+            <StyledInput open={authPageState !== SIGN_UP_STEP_2} label="Password"          value={password}         onChange={typePassword}          type="password" />
+            <StyledInput open={authPageState === SIGN_UP_STEP_1} label="Password Again"    value={passwordAgain}    onChange={typePasswordAgain}     type="password" />
+            <StyledInput open={authPageState === SIGN_UP_STEP_2} label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode}                  />
+            {
+                feedbackMessage !== '' &&
+                <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center">
+                    {feedbackMessage}
+                </Typography>
+            }
+            <StyledButton variant='contained' fullWidth onClick={signAction} name={signActionText()} disabled={signActionDisabled()}/>
+            <StyledButton variant='contained' fullWidth onClick={liveDemo} name={'LIVE DEMO'}/>
             <Typography
                 variant="body2"
                 color="textSecondary"

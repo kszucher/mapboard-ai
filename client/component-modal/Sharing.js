@@ -63,7 +63,7 @@ export function Sharing() {
                     open={true}
                     label="Email"
                     value={email}
-                    action={typeEmail}
+                    onChange={typeEmail}
                 />
                 <StyledRadioButtonGroup
                     open={true}
@@ -78,17 +78,8 @@ export function Sharing() {
                     align="center">
                     {feedbackMessage}
                 </Typography>}
-                <StyledButton
-                    version="shortOutlined"
-                    disabled={false}
-                    action={createShare}
-                    name={'share'}
-                />
-                <StyledButton
-                    version={'shortOutlined'}
-                    name={'close'}
-                    action={closeSharing}
-                />
+                <StyledButton variant="outlined" onClick={createShare} name={'share'}/>
+                <StyledButton variant="outlined" onClick={closeSharing} name={'close'}/>
             </div>}
         </Modal>
     )
