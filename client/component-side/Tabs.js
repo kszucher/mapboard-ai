@@ -10,7 +10,6 @@ export default function Tabs() {
     const dispatch = useDispatch()
 
     const handleChange = (e, value) =>  {
-        // dispatch({type: 'SET_TAB_DATA', payload: {tabMapNameList, tabMapSelected: value}}) // moved to SAGA
         dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     };
 

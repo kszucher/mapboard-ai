@@ -4,35 +4,23 @@ import Tab from "@material-ui/core/Tab";
 import React from "react";
 
 export default function StyledTabs (arg) {
-    const {valueList, value, onChange, orientation, component, disabled} = arg;
+    const {valueList, value, onChange, orientation, disabled} = arg;
     const getStyle = (theme) => {
-        if (component === 'tabs') {
-            return {
-                root: {
-                    flexGrow: 1,
-                    display: 'flex-start',
-                },
-                tabs: {
-                    borderRight: `0px solid ${theme.palette.divider}`,
-                },
-                indicator: {
-                    left: "0px",
-                    width: "8px",
-                    borderTopRightRadius: "16px",
-                    borderBottomRightRadius: "16px",
-                    backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
-                },
-            }
-        } else if (component === 'sign') {
-            return {
-                indicator: {
-                    // top: "0px",
-                    // width: "8px",
-                    // borderTopRightRadius: "16px",
-                    // borderBottomRightRadius: "16px",
-                    // backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
-                },
-            }
+        return {
+            root: {
+                flexGrow: 1,
+                display: 'flex-start',
+            },
+            tabs: {
+                borderRight: `0px solid ${theme.palette.divider}`,
+            },
+            indicator: {
+                left: "0px",
+                width: "8px",
+                borderTopRightRadius: "16px",
+                borderBottomRightRadius: "16px",
+                backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
+            },
         }
     }
     const classes = makeStyles((theme) => (getStyle(theme)))()
