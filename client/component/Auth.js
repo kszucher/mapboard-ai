@@ -20,6 +20,7 @@ export default function Auth() {
     const authPageState = useSelector(state => state.authPageState)
 
     const dispatch = useDispatch()
+    const setAuthPageState = value => dispatch({type: 'SET_AUTH_PAGE_STATE', payload: value})
 
 
 
@@ -98,7 +99,7 @@ export default function Auth() {
     const signActionDisabled = () => {
         return authPageState === SIGN_IN
             ? false // (email === '' || password === '') // autofill issue
-            : (authPageState === SIGNUP_STEP_1
+            : (authPageState === SIGN_UP_STEP_1
                 ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
                 : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
             )
@@ -143,11 +144,32 @@ export default function Auth() {
             <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
 
-            {/*<StyledButtonGroup open={true}                                 valueList={mainTabValues} value={mainTabValues[mainTabValue]} action={switchMainMode}/>*/}
-            {/*<StyledButtonGroup open={mainTabValue===1}                     valueList={subTabValues}  value={subTabValues[subTabValue]}   action={switchSubMode}/>*/}
+            <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
+                <StyledButton
+                    onClick={_=>setAuthPageState(SIGN_IN)}
+                    name="SIGN IN"
+                    variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
+                />
+                <StyledButton
+                    onClick={_=>setAuthPageState(SIGN_UP_STEP_1)}
+                    name="SIGN UP"
+                    variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
+                />
+            </div>
 
-
-            {/*<StyledButton></StyledButton>*/}
+            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                <StyledButton
+                    onClick={_ => setAuthPageState(SIGN_UP_STEP_1)}
+                    name="STEP 1"
+                    variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
+                />
+                <StyledButton
+                    onClick={_ => setAuthPageState(SIGN_UP_STEP_2)}
+                    name="STEP 2"
+                    variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
+                />
+            </div>}
 
             <StyledInput open={authPageState === SIGN_UP_STEP_1} label="Your First Name"   value={name}             onChange={typeName}              autoFocus       />
             <StyledInput open={true}                             label="Email"             value={email}            onChange={typeEmail}                             />
