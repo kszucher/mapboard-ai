@@ -108,8 +108,8 @@ const resolveActions = (state, action) => {
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
         // AUTH
         case 'SET_AUTH_PAGE_STATE':       return {authPageState: payload}
-        case 'SIGN_IN_PANEL':             return {}
-        case 'SIGN_UP_PANEL':             return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: ''}
+        case 'SIGN_UP_PANEL':             return {authPageState: SIGN_IN}
+        case 'SIGN_IN_PANEL':             return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: ''}
         case 'SET_NAME':                  return {name: payload}
         case 'SET_EMAIL':                 return {email: payload}
         case 'SET_PASSWORD':              return {password: payload}

@@ -30,7 +30,10 @@ export default function Auth() {
     const [feedbackMessage, setFeedbackMessage] = useState('');
 
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
-    const liveDemo = (e) => {dispatch({type: 'LIVE_DEMO'})}
+
+    const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
+    const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
+    const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     const signInHandler = () =>    {
         if (email === '' || password === '') {
@@ -117,13 +120,13 @@ export default function Auth() {
 
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
                 <StyledButton
-                    onClick={_=>setAuthPageState(SIGN_IN)}
                     name="SIGN IN"
+                    onClick={signUpPanel}
                     variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
                 />
                 <StyledButton
-                    onClick={_=>dispatch({type: 'SIGN_UP_PANEL'})}
                     name="SIGN UP"
+                    onClick={signInPanel}
                     variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
                 />
             </div>
@@ -159,8 +162,8 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_2 && <>
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
-                    <StyledInput label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode}                  />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                              />
+                    <StyledInput label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode} autoFocus        />
 
                 </>
             }
