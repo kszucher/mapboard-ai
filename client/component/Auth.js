@@ -11,57 +11,27 @@ let regEmail = '';
 let regPassword = '';
 
 export default function Auth() {
-
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
 
     const authPageState = useSelector(state => state.authPageState)
+    const name = useSelector(state => state.name)
+    const email = useSelector(state => state.email)
+    const password = useSelector(state => state.password)
+    const passwordAgain = useSelector(state => state.passwordAgain)
 
     const dispatch = useDispatch()
     const setAuthPageState = value => dispatch({type: 'SET_AUTH_PAGE_STATE', payload: value})
+    const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
+    const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})
+    const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
+    const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
 
-
-    const [mainTabValue, setMainTabValue] = useState(0);
-    const [subTabValue, setSubTabValue] = useState(0);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordAgain, setPasswordAgain] = useState('');
     const [confirmationCode, setConfirmationCode] = useState('');
     const [feedbackMessage, setFeedbackMessage] = useState('');
 
-    const typeName = (e) => {setName(e.target.value)}
-    const typeEmail = (e) => {setEmail(e.target.value)}
-    const typePassword = (e) => {setPassword(e.target.value)}
-    const typePasswordAgain = (e) => {setPasswordAgain(e.target.value)}
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
     const liveDemo = (e) => {dispatch({type: 'LIVE_DEMO'})}
 
-    const switchMainMode = (e) => {
-        if (e !== mainTabValues[mainTabValue]) {
-            setMainTabValue(!mainTabValue & 1);
-            if (mainTabValue) setSubTabValue(0);
-
-
-
-            setName('');
-            setEmail('')
-            setPassword('');
-            setPasswordAgain('');
-            setConfirmationCode('');
-            setFeedbackMessage('');
-        }
-    }
-    const switchSubMode = (e) => {
-        if (e !== subTabValues[subTabValue]) {
-            setSubTabValue(!subTabValue & 1);
-
-
-            setPassword('');
-            setPasswordAgain('');
-            setConfirmationCode('');
-            setFeedbackMessage('');
-        }
-    }
     const signInHandler = () =>    {
         if (email === '' || password === '') {
             setFeedbackMessage('Missing information.')
@@ -73,6 +43,7 @@ export default function Auth() {
             dispatch({type: 'SIGN_IN'})
         }
     }
+
     const signUpStep1Handler = () => {
         if (password.length < 5)  {
             setFeedbackMessage('Your password must be at least 5 characters.')
@@ -82,9 +53,11 @@ export default function Auth() {
             dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
         }
     }
+
     const signUpStep2Handler = () => {
         dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
     }
+
     const signAction = () => {
         switch (authPageState) {
             case SIGN_IN: return signInHandler()
@@ -92,6 +65,7 @@ export default function Auth() {
             case SIGN_UP_STEP_2: return  signUpStep2Handler()
         }
     }
+
     const signActionDisabled = () => {
         return authPageState === SIGN_IN
             ? false // (email === '' || password === '') // autofill issue
@@ -100,6 +74,7 @@ export default function Auth() {
                 : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
             )
     }
+
     const signActionText = () => {
         switch (authPageState) {
             case SIGN_IN: return 'Sign In'
@@ -170,21 +145,21 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_IN && <>
-                    <StyledInput label="Email"             value={email}            onChange={typeEmail}                             />
-                    <StyledInput label="Password"          value={password}         onChange={typePassword}          type="password" />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
+                    <StyledInput label="Password"          value={password}         onChange={setPassword}          type="password" />
                 </>
             }
             {
                 authPageState === SIGN_UP_STEP_1 && <>
-                    <StyledInput label="Your First Name"   value={name}             onChange={typeName}              autoFocus       />
-                    <StyledInput label="Email"             value={email}            onChange={typeEmail}                             />
-                    <StyledInput label="Password"          value={password}         onChange={typePassword}          type="password" />
-                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={typePasswordAgain}     type="password" />
+                    <StyledInput label="Your First Name"   value={name}             onChange={setName}              autoFocus       />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
+                    <StyledInput label="Password"          value={password}         onChange={setPassword}          type="password" />
+                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={setPasswordAgain}     type="password" />
                 </>
             }
             {
                 authPageState === SIGN_UP_STEP_2 && <>
-                    <StyledInput label="Email"             value={email}            onChange={typeEmail}                             />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
                     <StyledInput label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode}                  />
 
                 </>

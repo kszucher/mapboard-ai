@@ -63,8 +63,6 @@ const editorState = {
     // share
     shareDataExport: [],
     shareDataImport: [],
-    //
-    profileName: '',
 };
 
 const editorStateDefault = JSON.stringify(editorState);
@@ -108,10 +106,15 @@ const resolveActions = (state, action) => {
         case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
-        case 'SET_PROFILE_NAME':          return {profileName: payload}
+        // AUTH
         case 'SET_AUTH_PAGE_STATE':       return {authPageState: payload}
         case 'SIGN_IN_PANEL':             return {}
         case 'SIGN_UP_PANEL':             return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: ''}
+        case 'SET_NAME':                  return {name: payload}
+        case 'SET_EMAIL':                 return {email: payload}
+        case 'SET_PASSWORD':              return {password: payload}
+        case 'SET_PASSWORD_AGAIN':        return {passwordAgain: payload}
+        //
         case 'PARSE_RESP_PAYLOAD':        return {...payload}
         default: return {}
     }

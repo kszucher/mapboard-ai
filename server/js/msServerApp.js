@@ -435,7 +435,7 @@ async function ressolveType(req, currUser) {
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
             return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
         }
-        case 'GET_PROFILE_INFO': {
+        case 'GET_NAME': {
             const { name } = currUser
             return { name } // no type as this goes to saga directly
         }

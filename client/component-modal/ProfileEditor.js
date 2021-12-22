@@ -7,7 +7,7 @@ import {COLORS} from "../core/Utils";
 import StyledButton from '../component-styled/StyledButton'
 
 export function ProfileEditor() {
-    const profileName = useSelector(state => state.profileName)
+    const name = useSelector(state => state.name)
     const dispatch = useDispatch()
     const closeProfile = _ => dispatch({type: 'CLOSE_PROFILE'})
     return(
@@ -36,7 +36,7 @@ export function ProfileEditor() {
                 <Typography
                     component="h1"
                     variant="h5">
-                    {profileName}
+                    {name}
                 </Typography>
                 <StyledButton variant="outlined" onClick={closeProfile} name={'close'}/>
             </div>}
