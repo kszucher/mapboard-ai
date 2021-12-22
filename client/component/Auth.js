@@ -10,9 +10,6 @@ import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 let regEmail = '';
 let regPassword = '';
 
-const mainTabValues = ['Sign In', 'Sign Up'];
-const subTabValues = ['Step 1', 'Step 2'];
-
 export default function Auth() {
 
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -21,7 +18,6 @@ export default function Auth() {
 
     const dispatch = useDispatch()
     const setAuthPageState = value => dispatch({type: 'SET_AUTH_PAGE_STATE', payload: value})
-
 
 
     const [mainTabValue, setMainTabValue] = useState(0);
@@ -151,31 +147,48 @@ export default function Auth() {
                     variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
                 />
                 <StyledButton
-                    onClick={_=>setAuthPageState(SIGN_UP_STEP_1)}
+                    onClick={_=>dispatch({type: 'SIGN_UP_PANEL'})}
                     name="SIGN UP"
                     variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
                 />
             </div>
 
-            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                <StyledButton
-                    onClick={_ => setAuthPageState(SIGN_UP_STEP_1)}
-                    name="STEP 1"
-                    variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
-                />
-                <StyledButton
-                    onClick={_ => setAuthPageState(SIGN_UP_STEP_2)}
-                    name="STEP 2"
-                    variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
-                />
-            </div>}
+            {
+                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                    <StyledButton
+                        onClick={_ => setAuthPageState(SIGN_UP_STEP_1)}
+                        name="STEP 1"
+                        variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
+                    />
+                    <StyledButton
+                        onClick={_ => setAuthPageState(SIGN_UP_STEP_2)}
+                        name="STEP 2"
+                        variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
+                    />
+                </div>
+            }
+            {
+                authPageState === SIGN_IN && <>
+                    <StyledInput label="Email"             value={email}            onChange={typeEmail}                             />
+                    <StyledInput label="Password"          value={password}         onChange={typePassword}          type="password" />
+                </>
+            }
+            {
+                authPageState === SIGN_UP_STEP_1 && <>
+                    <StyledInput label="Your First Name"   value={name}             onChange={typeName}              autoFocus       />
+                    <StyledInput label="Email"             value={email}            onChange={typeEmail}                             />
+                    <StyledInput label="Password"          value={password}         onChange={typePassword}          type="password" />
+                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={typePasswordAgain}     type="password" />
+                </>
+            }
+            {
+                authPageState === SIGN_UP_STEP_2 && <>
+                    <StyledInput label="Email"             value={email}            onChange={typeEmail}                             />
+                    <StyledInput label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode}                  />
 
-            <StyledInput open={authPageState === SIGN_UP_STEP_1} label="Your First Name"   value={name}             onChange={typeName}              autoFocus       />
-            <StyledInput open={true}                             label="Email"             value={email}            onChange={typeEmail}                             />
-            <StyledInput open={authPageState !== SIGN_UP_STEP_2} label="Password"          value={password}         onChange={typePassword}          type="password" />
-            <StyledInput open={authPageState === SIGN_UP_STEP_1} label="Password Again"    value={passwordAgain}    onChange={typePasswordAgain}     type="password" />
-            <StyledInput open={authPageState === SIGN_UP_STEP_2} label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode}                  />
+                </>
+            }
             {
                 feedbackMessage !== '' &&
                 <Typography

@@ -2,9 +2,9 @@ import TextField from "@material-ui/core/TextField";
 import React from "react";
 
 export default function StyledInput (arg) {
-    const {open, type} = arg;
+    const {type} = arg;
     return (
-        open && <TextField
+        <TextField
             {...arg}
             variant="outlined"
             fullWidth

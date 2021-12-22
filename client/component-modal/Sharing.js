@@ -60,7 +60,6 @@ export function Sharing() {
                     Sharing
                 </Typography>
                 <StyledInput
-                    open={true}
                     label="Email"
                     value={email}
                     onChange={typeEmail}

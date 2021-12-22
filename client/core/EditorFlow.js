@@ -30,7 +30,15 @@ export const MAP_RIGHTS = {
 // emiatt az AUTH és a SHARING flow-t ide be kell mozgatni, ami mint state ua-zon a useEffect-en frissíti a local state-et
 // továbbá, lokálisan egy reducer-t kell majd ehelyett használni
 const editorState = {
+    // auth
     authPageState: AUTH_PAGE_STATES.SIGN_IN,
+    name: '',
+    email: '',
+    password: '',
+    passwordAgain: '',
+    confirmationCode: '',
+    feedbackMessage: '',
+    //
     pageState: PAGE_STATES.AUTH,
     landingData: [],
     landingDataIndex: 0,
@@ -81,6 +89,7 @@ const extractNodeProps = (payload) => {
 
 const resolveActions = (state, action) => {
     const {payload} = action;
+    const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':               return JSON.parse(editorStateDefault)
@@ -101,6 +110,8 @@ const resolveActions = (state, action) => {
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
         case 'SET_PROFILE_NAME':          return {profileName: payload}
         case 'SET_AUTH_PAGE_STATE':       return {authPageState: payload}
+        case 'SIGN_IN_PANEL':             return {}
+        case 'SIGN_UP_PANEL':             return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: ''}
         case 'PARSE_RESP_PAYLOAD':        return {...payload}
         default: return {}
     }
