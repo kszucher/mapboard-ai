@@ -1,7 +1,7 @@
 import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapDispatch, mapref, mapState, redraw, saveMap } from './MapFlow'
+import { mapref, mapState, saveMap } from './MapFlow'
 import { selectionState } from './SelectionFlow'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
@@ -74,12 +74,6 @@ function* legacySaga (task) {
                 frameSelectedOut: mapState.frameSelected
             }
         }
-        if ([
-        ].includes(type)) {
-            payload = {...payload,
-                // tabMapIdListOut: state.tabMapIdList // TODO use
-            }
-        }
         if (type === 'OPEN_MAP_FROM_TAB') {
             yield put({type: 'SET_TAB_MAP_SELECTED', payload})
         }
@@ -102,9 +96,7 @@ function* legacySaga (task) {
         }
         const { resp } = yield call(fetchPost, { type, payload })
 
-        // ötlet: itt egy yield fork, ami a BE által adott TYPE szerint folytatja a működést?
-
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+        // vagy switch, vagy egy yield fork ami a type szerint megy
 
         // if (resp.type) {
         //     switch (resp.type) {
@@ -115,7 +107,7 @@ function* legacySaga (task) {
         //     }
         // }
 
-
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
 }
 
