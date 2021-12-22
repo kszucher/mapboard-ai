@@ -153,8 +153,8 @@ export default function Auth() {
                 authPageState === SIGN_UP_STEP_1 && <>
                     <StyledInput label="Your First Name"   value={name}             onChange={setName}              autoFocus       />
                     <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
-                    <StyledInput label="Password"          value={password}         onChange={setPassword}          type="password" />
-                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={setPasswordAgain}     type="password" />
+                    <StyledInput label="Password"          value={password}         onChange={setPassword}                          />
+                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={setPasswordAgain}                     />
                 </>
             }
             {
