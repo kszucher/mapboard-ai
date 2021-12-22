@@ -11,12 +11,9 @@ const backendUrl = process.env.NODE_ENV === 'development'
     : 'https://mapboard-server.herokuapp.com/beta';
 
 const fetchPost = (req) => {
-    if (![
-        'SIGN_IN',
-        'SIGN_UP_STEP_1',
-        'SIGN_UP_STEP_2',
-        'LIVE_DEMO',
-    ].includes(req.type)) {
+    if (['SIGN_IN', 'SIGN_UP_STEP_1', 'SIGN_UP_STEP_2', 'LIVE_DEMO'].includes(req.type)) {
+        // auto sign-in gets cred from localStorage, manual sign-in gets cred from state
+    } else {
         req = {...req, payload: {...req.payload, cred: JSON.parse(localStorage.getItem('cred')) }}
     }
     console.log('SERVER_MESSAGE: ' + req.type)
