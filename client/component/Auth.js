@@ -33,13 +33,7 @@ export default function Auth() {
 
     const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
-    const signIn = _ => {
-
-        console.log(email, password)
-
-        dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
-
-    }
+    const signIn = _ => dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
 
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 

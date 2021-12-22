@@ -12,9 +12,10 @@ const backendUrl = process.env.NODE_ENV === 'development'
 
 const fetchPost = (req) => {
     if (![
-        'LIVE_DEMO',
+        'SIGN_IN',
         'SIGN_UP_STEP_1',
-        'SIGN_UP_STEP_2'
+        'SIGN_UP_STEP_2',
+        'LIVE_DEMO',
     ].includes(req.type)) {
         req = {...req, payload: {...req.payload, cred: JSON.parse(localStorage.getItem('cred')) }}
     }
