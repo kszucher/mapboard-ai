@@ -29,7 +29,7 @@ export function Page() {
     useEffect(()=> {
         // getTextDim('Test')
         // getEquationDim('\\[Test\\]');
-        dispatch({type: 'SIGN_IN'})
+        // dispatch({type: 'SIGN_IN'})
     }, [])
 
     return (

@@ -182,12 +182,13 @@ async function ressolveType(req, currUser) {
             }
         }
         case 'SIGN_IN': {
+            const { cred } = req.payload
             const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
             return {
                 type: 'signInSuccess',
-                payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
+                payload: { cred, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
         case 'OPEN_MAP_FROM_TAB': {
@@ -255,7 +256,7 @@ async function ressolveType(req, currUser) {
                 isEqual((await getMapProps(mapsColl, mapIdToDelete)).ownerUser, currUser._id)
                   ? await deleteMapAll(usersColl, sharesColl, mapIdToDelete)
                   : await deleteMapOne(usersColl, sharesColl, mapIdToDelete, currUser._id)
-                const currUserUpdated = await usersColl.findOne({ email: req.cred.email })
+                const currUserUpdated = await usersColl.findOne({ email: req.payload.cred.email })
                 const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUserUpdated
                 const mapId = tabMapIdList[tabMapSelected]
                 const mapSource = 'data'
@@ -503,8 +504,8 @@ async function processReq(req) {
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2'
         ].includes(req.type)) {
-            if (req.hasOwnProperty('cred')) {
-                currUser = await getUser(usersColl, req.cred)
+            if (req.payload.hasOwnProperty('cred')) {
+                currUser = await getUser(usersColl, req.payload.cred)
                 if (currUser === null) {
                     return { type: 'authFailWrongCred' }
                 } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {

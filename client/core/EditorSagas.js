@@ -16,7 +16,7 @@ const fetchPost = (req) => {
         'SIGN_UP_STEP_1',
         'SIGN_UP_STEP_2'
     ].includes(req.type)) {
-        req = {...req, cred: JSON.parse(localStorage.getItem('cred'))}
+        req = {...req, payload: {...req.payload, cred: JSON.parse(localStorage.getItem('cred')) }}
     }
     console.log('SERVER_MESSAGE: ' + req.type)
     return fetch(backendUrl, {
@@ -108,6 +108,8 @@ function* authSaga () {
         const { resp } = yield call(fetchPost, { type, payload })
         switch (resp.type) {
             case 'signInSuccess':
+                const { cred } = resp.payload
+                localStorage.setItem('cred', JSON.stringify(cred))
                 initDomData()
                 yield put({type: 'SHOW_WS'})
                 break

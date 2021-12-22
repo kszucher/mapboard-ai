@@ -33,6 +33,14 @@ export default function Auth() {
 
     const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
+    const signIn = _ => {
+
+        console.log(email, password)
+
+        dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
+
+    }
+
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     const signInHandler = () =>    {
@@ -41,9 +49,7 @@ export default function Auth() {
         } else if (password.length < 5) {
             setFeedbackMessage('Too short password.')
         } else {
-            let cred = {email, password}
-            localStorage.setItem('cred', JSON.stringify(cred))
-            dispatch({type: 'SIGN_IN'})
+            signIn()
         }
     }
 
