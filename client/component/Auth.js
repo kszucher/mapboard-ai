@@ -26,17 +26,16 @@ export default function Auth() {
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
 
+    // TODO convert these into glabal state
     const [confirmationCode, setConfirmationCode] = useState('');
     const [feedbackMessage, setFeedbackMessage] = useState('');
-
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
 
     const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
+    // TODO STEP 1 PANEL
+    // TODO STEP 2 PANEL
     const signIn = _ => dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
-
-    const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
-
     const signInHandler = () =>    {
         if (email === '' || password === '') {
             setFeedbackMessage('Missing information.')
@@ -46,7 +45,6 @@ export default function Auth() {
             signIn()
         }
     }
-
     const signUpStep1Handler = () => {
         if (password.length < 5)  {
             setFeedbackMessage('Your password must be at least 5 characters.')
@@ -56,35 +54,10 @@ export default function Auth() {
             dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
         }
     }
-
     const signUpStep2Handler = () => {
         dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
     }
-
-    const signAction = () => {
-        switch (authPageState) {
-            case SIGN_IN: return signInHandler()
-            case SIGN_UP_STEP_1: return signUpStep1Handler()
-            case SIGN_UP_STEP_2: return  signUpStep2Handler()
-        }
-    }
-
-    const signActionDisabled = () => {
-        return authPageState === SIGN_IN
-            ? false // (email === '' || password === '') // autofill issue
-            : (authPageState === SIGN_UP_STEP_1
-                ? (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
-                : (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
-            )
-    }
-
-    const signActionText = () => {
-        switch (authPageState) {
-            case SIGN_IN: return 'Sign In'
-            case SIGN_UP_STEP_1: return 'Get Confirmation Code'
-            case SIGN_UP_STEP_2: return  'Enter Confirmation Code'
-        }
-    }
+    const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     // useEffect(() => {
     //     switch (serverResponse.cmd) {
@@ -130,7 +103,6 @@ export default function Auth() {
                     variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
                 />
             </div>
-
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
@@ -176,7 +148,35 @@ export default function Auth() {
                     {feedbackMessage}
                 </Typography>
             }
-            <StyledButton variant='contained' fullWidth onClick={signAction} name={signActionText()} disabled={signActionDisabled()}/>
+            {
+                authPageState === SIGN_IN &&
+                <StyledButton
+                    variant='contained'
+                    fullWidth
+                    onClick={signInHandler}
+                    name={'Sign In'}
+                    disabled={false} // how to check if autofill happened?
+                />
+            }
+            {
+                authPageState === SIGN_UP_STEP_1 &&
+                <StyledButton
+                    variant='contained'
+                    fullWidth
+                    onClick={signUpStep1Handler}
+                    name={'Get Confirmation Code'}
+                    disabled={(name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)}/>
+            }
+            {
+                authPageState === SIGN_UP_STEP_2 &&
+                <StyledButton
+                    variant='contained'
+                    fullWidth
+                    onClick={signUpStep2Handler}
+                    name={'Enter Confirmation Code'}
+                    disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
+                />
+            }
             <StyledButton variant='contained' fullWidth onClick={liveDemo} name={'LIVE DEMO'}/>
             <Typography
                 variant="body2"
