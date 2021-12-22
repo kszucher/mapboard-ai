@@ -74,7 +74,6 @@ export default function Auth() {
         } else {
             let cred = {email, password}
             localStorage.setItem('cred', JSON.stringify(cred))
-            console.log('shall disp...')
             dispatch({type: 'SIGN_IN'})
         }
     }

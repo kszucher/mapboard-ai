@@ -117,7 +117,7 @@ async function ressolveType(req, currUser) {
             // this could depend on queryString
             let mapId = '5f3fd7ba7a84a4205428c96a'
             return {
-                type: 'getLandingDataSuccess',
+                type: 'liveDemoSuccess',
                 payload: {
                     landingData: (await mapsColl.findOne({_id: ObjectId(mapId)})).dataPlayback,
                     mapRight: MAP_RIGHTS.VIEW
@@ -181,15 +181,12 @@ async function ressolveType(req, currUser) {
                 return { type: 'signUpStep2Success' }
             }
         }
-        // case 'SIGN_IN': {
-        //     return { type: 'signInSuccess' }
-        // }
         case 'SIGN_IN': {
             const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
             return {
-                type: 'openMapFromHistorySuccess',
+                type: 'signInSuccess',
                 payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }

@@ -95,18 +95,6 @@ function* legacySaga (task) {
             }
         }
         const { resp } = yield call(fetchPost, { type, payload })
-
-        // vagy switch, vagy egy yield fork ami a type szerint megy
-
-        // if (resp.type) {
-        //     switch (resp.type) {
-        //         case 'authFail': {
-        //             localStorage.clear();
-        //             break;
-        //         }
-        //     }
-        // }
-
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
 }
@@ -118,13 +106,22 @@ function* authSaga () {
             'LIVE_DEMO',
         ])
         const { resp } = yield call(fetchPost, { type, payload })
-        if (type === 'SIGN_IN') {
-            initDomData()
-            yield put({type: 'SHOW_WS'})
-        }
-        if (type === 'LIVE_DEMO') {
-            initDomData()
-            yield put({type: 'SHOW_DEMO'})
+        switch (resp.type) {
+            case 'signInSuccess':
+                initDomData()
+                yield put({type: 'SHOW_WS'})
+                break
+            case 'authFailWrongCred':
+                localStorage.clear();
+                console.log('wrong cred')
+                break
+            case 'authFailIncompleteRegistration':
+                console.log('incomplete registration')
+                break
+            case 'liveDemoSuccess':
+                initDomData()
+                yield put({type: 'SHOW_DEMO'})
+                break
         }
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
