@@ -12,7 +12,6 @@ const backendUrl = process.env.NODE_ENV === 'development'
 
 const fetchPost = (req) => {
     if (![
-        'PING',
         'LIVE_DEMO',
         'SIGN_UP_STEP_1',
         'SIGN_UP_STEP_2'
@@ -33,7 +32,6 @@ const fetchPost = (req) => {
 function* legacySaga (task) {
     while (true) {
         let { type, payload } = yield take([
-            'PING',
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2',
             'OPEN_MAP_FROM_TAB',
@@ -110,14 +108,6 @@ function* legacySaga (task) {
 
         // if (resp.type) {
         //     switch (resp.type) {
-        //         case 'pingSuccess': {
-        //             const cred = JSON.parse(localStorage.getItem('cred'));
-        //             if (cred && cred.email && cred.password) {
-        //                 localStorage.setItem('cred', JSON.stringify(cred))
-        //                 yield put({type: 'SIGN_IN'})
-        //             }
-        //             break;
-        //         }
         //         case 'authFail': {
         //             localStorage.clear();
         //             break;

@@ -113,9 +113,6 @@ async function checkSave (req, currUser) {
 
 async function ressolveType(req, currUser) {
     switch (req.type) {
-        case 'PING': {
-            return { type: 'pingSuccess' }
-        }
         case 'LIVE_DEMO': {
             // this could depend on queryString
             let mapId = '5f3fd7ba7a84a4205428c96a'
@@ -505,7 +502,6 @@ async function processReq(req) {
     try {
         let currUser
         if (![
-            'PING',
             'LIVE_DEMO',
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2'

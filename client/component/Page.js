@@ -29,7 +29,7 @@ export function Page() {
     useEffect(()=> {
         // getTextDim('Test')
         // getEquationDim('\\[Test\\]');
-        dispatch({type: 'PING'}) // OPEN_MAP_FROM_HISTORY makes auto-login
+        dispatch({type: 'SIGN_IN'})
     }, [])
 
     return (
