@@ -112,7 +112,7 @@ const resolveActions = (state, action) => {
         case 'SET_PASSWORD_AGAIN':      return {passwordAgain: payload}
         case 'SET_CONFIRMATION_CODE':   return {confirmationCode: payload}
         case 'SET_FEEDBACK_MESSAGE':    return {feedbackMessage: payload}
-        case 'SIGN_IN_PANEL':           return {authPageState: SIGN_IN}
+        case 'SIGN_IN_PANEL':           return {authPageState: SIGN_IN, feedbackMessage: ''}
         case 'SIGN_UP_PANEL':           return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', feedbackMessage: ''}
         case 'SIGN_UP_STEP_1_PANEL':    return {authPageState: SIGN_UP_STEP_1}
         case 'SIGN_UP_STEP_2_PANEL':    return {authPageState: SIGN_UP_STEP_2}

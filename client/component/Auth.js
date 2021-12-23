@@ -30,9 +30,11 @@ export default function Auth() {
     const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
+
     const signIn = _ => dispatch({ type: 'SIGN_IN', payload: {cred: { email, password }}})
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
     const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
+    const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     const checkSignIn = () =>    {
         if (email === '' || password === '') {
@@ -55,7 +57,6 @@ export default function Auth() {
             setConfirmationCode(e)
         }
     }
-    const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     return (
         <div
