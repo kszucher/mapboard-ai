@@ -81,16 +81,6 @@ function getDefaultMap (mapName, ownerUser, path) {
     }
 }
 
-async function checkSynch (req) {
-    let inSynch = true
-    // let inSynch = false
-    // if (req.payload.hasOwnProperty('tabMapIdListOut') &&
-    //   !isEqual(req.payload.tabMapIdListOut, currUser.tabMapIdList)) {
-    //     inSynch = true
-    // }
-    return inSynch
-}
-
 async function checkSave (req, currUser) {
     if (req.hasOwnProperty('payload') &&
       req.payload.hasOwnProperty('mapIdOut') &&
@@ -121,23 +111,20 @@ async function checkSave (req, currUser) {
     }
 }
 
-async function resolveCmd(req, currUser) {
-    switch (req.serverCmd) {
-        case 'ping': {
-            return { cmd: 'pingSuccess' }
-        }
-        case 'getLandingData': {
+async function ressolveType(req, currUser) {
+    switch (req.type) {
+        case 'LIVE_DEMO': {
             // this could depend on queryString
             let mapId = '5f3fd7ba7a84a4205428c96a'
             return {
-                cmd: 'getLandingDataSuccess',
+                type: 'liveDemoSuccess',
                 payload: {
                     landingData: (await mapsColl.findOne({_id: ObjectId(mapId)})).dataPlayback,
                     mapRight: MAP_RIGHTS.VIEW
                 },
             }
         }
-        case 'signUpStep1': {
+        case 'SIGN_UP_STEP_1': {
             const { name, email, password } = req.payload
             const currUser = await getUserByEmail(usersColl, email)
             if (currUser === null) {
@@ -163,21 +150,21 @@ async function resolveCmd(req, currUser) {
                     activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION,
                     confirmationCode
                 })
-                return { cmd: 'signUpStep1Success' }
+                return { type: 'signUpStep1Success' }
             } else {
-                return { cmd: 'signUpStep1FailEmailAlreadyInUse' }
+                return { type: 'signUpStep1FailEmailAlreadyInUse' }
 
             }
         }
-        case 'signUpStep2': {
+        case 'SIGN_UP_STEP_2': {
             let { email, confirmationCode } = req.payload
             const currUser = await getUserByEmail(usersColl, email)
             if (currUser === null) {
-                return { cmd: 'signUpStep2FailUnknownUser' }
+                return { type: 'signUpStep2FailUnknownUser' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
-                return { cmd: 'signUpStep2FailAlreadyActivated' }
+                return { type: 'signUpStep2FailAlreadyActivated' }
             } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
-                return { cmd: 'signUpStep2FailWrongCode' }
+                return { type: 'signUpStep2FailWrongCode' }
             } else {
                 let newMap = getDefaultMap('My First Map', currUser._id, [])
                 let mapId = (await mapsColl.insertOne(newMap)).insertedId
@@ -191,52 +178,50 @@ async function resolveCmd(req, currUser) {
                           breadcrumbMapIdList: [mapId]
                       }
                   })
-                return { cmd: 'signUpStep2Success' }
+                return { type: 'signUpStep2Success' }
             }
         }
-        case 'signIn': {
-            return { cmd: 'signInSuccess' }
-        }
-        case 'openMapFromHistory': {
+        case 'SIGN_IN': {
+            const { cred } = req.payload
             const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
             return {
-                cmd: 'openMapFromHistorySuccess',
-                payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
+                type: 'signInSuccess',
+                payload: { cred, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'openMapFromTab': {
+        case 'OPEN_MAP_FROM_TAB': {
             const { tabMapIdList } = currUser
             const { tabMapSelected } = req.payload
             const mapId = tabMapIdList[tabMapSelected]
             const breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
             return {
-                cmd: 'openMapFromTabSuccess',
+                type: 'openMapFromTabSuccess',
                 payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'openMapFromMap': {
+        case 'OPEN_MAP_FROM_MAP': {
             let { breadcrumbMapIdList } = currUser
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
             breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
             const mapSource = 'data'
-            return { cmd: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+            return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
-        case 'openMapFromBreadcrumbs': {
+        case 'OPEN_MAP_FROM_BREADCRUMBS': {
             let { breadcrumbMapIdList } = currUser
             let { breadcrumbMapSelected } = req.payload
             breadcrumbMapIdList.length = breadcrumbMapSelected + 1
             let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
-            return { cmd: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+            return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
-        case 'saveMap': {
-            return { cmd: 'saveMapSuccess' }
+        case 'SAVE_MAP': {
+            return { type: 'saveMapSuccess' }
         }
-        case 'createMapInMap': {
+        case 'CREATE_MAP_IN_MAP': {
             let { breadcrumbMapIdList } = currUser
             let { mapIdOut, lastPath, newMapName } = req.payload
             let newMap = getDefaultMap(newMapName, currUser._id, breadcrumbMapIdList)
@@ -248,9 +233,9 @@ async function resolveCmd(req, currUser) {
             )
             breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
             const mapSource = 'data'
-            return { cmd: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+            return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
-        case 'createMapInTab': {
+        case 'CREATE_MAP_IN_TAB': {
             let { tabMapIdList, tabMapSelected } = currUser
             const newMap = getDefaultMap('New Map', currUser._id, [])
             const mapId = (await mapsColl.insertOne(newMap)).insertedId
@@ -259,79 +244,79 @@ async function resolveCmd(req, currUser) {
             const { breadcrumbMapIdList } = currUser
             const mapSource = 'data'
             return {
-                cmd: 'createMapInTabSuccess',
+                type: 'createMapInTabSuccess',
                 payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'removeMapInTab': {
+        case 'REMOVE_MAP_IN_TAB': {
             if (currUser.tabMapIdList.length === 1) {
-                return { cmd: 'removeMapInTabFail' }
+                return { type: 'removeMapInTabFail' }
             } else {
                 const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
                 isEqual((await getMapProps(mapsColl, mapIdToDelete)).ownerUser, currUser._id)
                   ? await deleteMapAll(usersColl, sharesColl, mapIdToDelete)
                   : await deleteMapOne(usersColl, sharesColl, mapIdToDelete, currUser._id)
-                const currUserUpdated = await usersColl.findOne({ email: req.cred.email })
+                const currUserUpdated = await usersColl.findOne({ email: req.payload.cred.email })
                 const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUserUpdated
                 const mapId = tabMapIdList[tabMapSelected]
                 const mapSource = 'data'
                 return {
-                    cmd: 'removeMapInTabSuccess',
+                    type: 'removeMapInTabSuccess',
                     payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
                 }
             }
         }
-        case 'moveUpMapInTab': {
+        case 'MOVE_UP_MAP_IN_TAB': {
             let { tabMapIdList, tabMapSelected } = currUser
             if (tabMapSelected === 0) {
-                return { cmd: 'moveUpMapInTabFail' }
+                return { type: 'moveUpMapInTabFail' }
             } else {
                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                   [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                 tabMapSelected = tabMapSelected - 1
-                return { cmd: 'moveUpMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
+                return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
             }
         }
-        case 'moveDownMapInTab': {
+        case 'MOVE_DOWN_MAP_IN_TAB': {
             let { tabMapIdList, tabMapSelected } = currUser
             if (tabMapSelected >= tabMapIdList.length - 1) {
-                return { cmd: 'moveDownMapInTabFail' }
+                return { type: 'moveDownMapInTabFail' }
             } else {
                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                   [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                 tabMapSelected = tabMapSelected + 1
-                return { cmd: 'moveDownMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
+                return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
             }
         }
-        case 'openFrame': {
+        case 'OPEN_FRAME': {
             const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             const frameSelected = 0
             const frameLen = await getFrameLen(mapsColl, mapId)
             if (frameLen === 0) {
-                return { cmd: 'openFrameFail', payload: { frameLen, frameSelected } }
+                return { type: 'openFrameFail', payload: { frameLen, frameSelected } }
             } else {
                 const mapSource = 'dataPlayback'
-                return { cmd: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+                return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
             }
         }
-        case 'openPrevFrame': {
+        case 'OPEN_PREV_FRAME': {
             const { mapIdOut, frameSelectedOut } = req.payload
             const frameSelected = frameSelectedOut - 1
             const mapId = ObjectId(mapIdOut)
             const frameLen = await getFrameLen(mapsColl, mapId)
             const mapSource = 'dataPlayback'
-            return { cmd: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'openNextFrame': {
+        case 'OPEN_NEXT_FRAME': {
             const { mapIdOut, frameSelectedOut } = req.payload
             const frameSelected = frameSelectedOut + 1
             const mapId = ObjectId(mapIdOut)
             const frameLen = await getFrameLen(mapsColl, mapId)
             const mapSource = 'dataPlayback'
-            return { cmd: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'importFrame': {
+        case 'IMPORT_FRAME': {
             const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             const mapSource = 'dataPlayback'
@@ -339,15 +324,15 @@ async function resolveCmd(req, currUser) {
             await mapsColl.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
             const frameLen = await getFrameLen(mapsColl, mapId)
             const frameSelected = frameLen - 1
-            return { cmd: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'deleteFrame': {
+        case 'DELETE_FRAME': {
             const { mapIdDelete, frameSelectedOut } = req.payload
             const mapId = ObjectId(mapIdDelete)
             const frameSelected = frameSelectedOut > 0 ? frameSelectedOut - 1 : 0
             let frameLen = await getFrameLen(mapsColl, mapId)
             if (frameLen === 0) {
-                return { cmd: 'deleteFrameFail' }
+                return { type: 'deleteFrameFail' }
             } else {
                 await mapsColl.updateOne({ _id: mapId }, [{
                     $set: {
@@ -361,10 +346,10 @@ async function resolveCmd(req, currUser) {
                 }])
                 frameLen = frameLen - 1
                 const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
-                return { cmd: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+                return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
             }
         }
-        case 'duplicateFrame': {
+        case 'DUPLICATE_FRAME': {
             const { mapIdOut, mapStorageOut, frameSelectedOut } = req.payload
             const frameSelected = frameSelectedOut + 1
             const mapId = ObjectId(mapIdOut)
@@ -378,22 +363,22 @@ async function resolveCmd(req, currUser) {
             })
             const mapSource = "dataPlayback"
             const frameLen = await getFrameLen(mapsColl, mapId)
-            return { cmd: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'getShares': {
+        case 'GET_SHARES': {
             const {
                 shareDataExport,
                 shareDataImport
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
-            return { cmd: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
+            return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
         }
-        case 'createShare': {
+        case 'CREATE_SHARE': {
             const { mapId, email, access } = req.payload
             const shareUser = await usersColl.findOne({ email })
             if (shareUser === null) {
-                return { cmd: 'createShareFailNotAValidUser' }
+                return { type: 'createShareFailNotAValidUser' }
             } else if (isEqual(shareUser._id, currUser._id)) {
-                return { cmd: 'createShareFailCantShareWithYourself' }
+                return { type: 'createShareFailCantShareWithYourself' }
             } else {
                 const currShare = await sharesColl.findOne({
                     sharedMap: ObjectId(mapId),
@@ -409,18 +394,18 @@ async function resolveCmd(req, currUser) {
                         status: SHARE_STATUS.WAITING
                     }
                     await sharesColl.insertOne(newShare)
-                    return { cmd: 'createShareSuccess' }
+                    return { type: 'createShareSuccess' }
                 } else {
                     if (currShare.access === access) {
-                        return { cmd: 'createShareFailAlreadyShared' }
+                        return { type: 'createShareFailAlreadyShared' }
                     } else {
                         await sharesColl.updateOne({ _id: currShare._id }, { $set: { access } })
-                        return { cmd: 'updateShareSuccess' }
+                        return { type: 'updateShareSuccess' }
                     }
                 }
             }
         }
-        case 'acceptShare': {
+        case 'ACCEPT_SHARE': {
             let { tabMapIdList, tabMapSelected } = currUser
             const { shareIdOut } = req.payload
             const shareId = ObjectId(shareIdOut)
@@ -436,11 +421,11 @@ async function resolveCmd(req, currUser) {
                 shareDataImport
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
             return {
-                cmd: 'acceptShareSuccess',
+                type: 'acceptShareSuccess',
                 payload: { shareDataExport, shareDataImport, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'deleteShare': {
+        case 'DELETE_SHARE': {
             const { shareIdOut } = req.payload
             const shareId = ObjectId(shareIdOut)
             const { shareUser, sharedMap } = await getShareProps(sharesColl, shareId)
@@ -449,11 +434,11 @@ async function resolveCmd(req, currUser) {
                 shareDataExport,
                 shareDataImport
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
-            return { cmd: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
+            return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
         }
-        case 'getProfileInfo': {
+        case 'GET_NAME': {
             const { name } = currUser
-            return { name } // no cmd as this goes to saga directly
+            return { name } // no type as this goes to saga directly
         }
     }
 }
@@ -514,28 +499,22 @@ async function appendStuff (resp, currUser) {
 async function processReq(req) {
     try {
         let currUser
-        if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(req.serverCmd)) {
-            if (req.hasOwnProperty('cred')) {
-                currUser = await getUser(usersColl, req.cred)
-                if (currUser === null) {
-                    return { cmd: 'authFailWrongCred' }
-                } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
-                    return { cmd: 'authFailIncompleteRegistration' }
-                }
+        if (req.payload?.hasOwnProperty('cred')) {
+            currUser = await getUser(usersColl, req.payload.cred)
+            if (currUser === null) {
+                return { type: 'signInFailWrongCred' }
+            } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
+                return { type: 'signInFailIncompleteRegistration' }
             }
         }
-        const inSynch = await checkSynch(req)
-        if (!inSynch) {
-            return {cmd: 'synchFail'}
-        }
         await checkSave(req, currUser)
-        let resp = await resolveCmd(req, currUser)
+        let resp = await ressolveType(req, currUser)
         resp = await appendStuff(resp, currUser)
         return resp
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
-        return {cmd: 'error', payload: err.stack}
+        return {type: 'error', payload: err.stack}
     }
 }
 
@@ -549,7 +528,7 @@ app.post('/beta', function (req, res) {
         let req = JSON.parse(inputStream) // it must be a parameter to prevent async issues
         inputStream = []
         processReq(req).then(resp => {
-            res.json(resp)
+            res.json({resp})
             console.log('response sent')
         })
     })

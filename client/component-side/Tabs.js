@@ -6,11 +6,10 @@ import {COLORS} from "../core/Utils";
 export default function Tabs() {
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const tabMapSelected = useSelector(state => state.tabMapSelected)
-    const isPlayback = useSelector(state => state.isPlayback)
+    const mapSource = useSelector(state => state.mapSource)
     const dispatch = useDispatch()
 
     const handleChange = (e, value) =>  {
-        dispatch({type: 'SET_TAB_DATA', payload: {tabMapNameList, tabMapSelected: value}})
         dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     };
 
@@ -33,7 +32,7 @@ export default function Tabs() {
                 onChange={handleChange}
                 orientation={'vertical'}
                 component={'tabs'}
-                disabled={isPlayback}
+                disabled={mapSource==='dataPlayback'}
             />
         </div>
     );

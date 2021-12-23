@@ -27,17 +27,14 @@ export function Page() {
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
 
     useEffect(()=> {
-        getTextDim('Test')
-        getEquationDim('\\[Test\\]');
-    }, [])
+        // getTextDim('Test')
+        // getEquationDim('\\[Test\\]');
 
-    useEffect(() => {
-        if (pageState === DEMO) {
-            dispatch({type: 'GET_LANDING_DATA'});
-        } else if (pageState === WS) {
-            dispatch({type: 'OPEN_MAP_FROM_HISTORY'});
+        const cred = JSON.parse(localStorage.getItem('cred'))
+        if (cred !== null) {
+            dispatch({type: 'SIGN_IN', payload: { cred }})
         }
-    }, [pageState])
+    }, [])
 
     return (
         <div id="page">

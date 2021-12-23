@@ -7,7 +7,7 @@ import {COLORS} from "../core/Utils";
 
 export default function WorkspaceBreadcrumbs() {
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
-    const isPlayback = useSelector(state => state.isPlayback)
+    const mapSource = useSelector(state => state.mapSource)
     const dispatch = useDispatch()
 
     const handleClick = index => event => {
@@ -42,7 +42,7 @@ export default function WorkspaceBreadcrumbs() {
                     <Link
                         color="inherit"
                         href="/"
-                        onClick={isPlayback ? doNothing() : handleClick(index)}
+                        onClick={mapSource === 'dataPlayback' ? doNothing() : handleClick(index)}
                         key={index}>
                         {el}
                     </Link>

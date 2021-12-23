@@ -1,8 +1,12 @@
-import {mapref, mapState, saveMap} from "./MapFlow";
-import {selectionState} from "./SelectionFlow";
 import {applyMiddleware, createStore} from "redux";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
+
+export const AUTH_PAGE_STATES = {
+    SIGN_IN: 'SIGN_IN',
+    SIGN_UP_STEP_1: 'SIGN_UP_STEP_1',
+    SIGN_UP_STEP_2: 'SIGN_UP_STEP_2'
+}
 
 export const PAGE_STATES = {
     EMPTY: 'EMPTY',
@@ -21,25 +25,36 @@ export const MAP_RIGHTS = {
 }
 
 const editorState = {
+    // auth
+    authPageState: AUTH_PAGE_STATES.SIGN_IN,
+    name: '',
+    email: '',
+    password: '',
+    passwordAgain: '',
+    confirmationCode: '',
+    feedbackMessage: '',
+    //
     pageState: PAGE_STATES.AUTH,
+    paletteVisible: 0,
+    frameEditorVisible: 0,
+    //
     landingData: [],
     landingDataIndex: 0,
+    // breadcrumbs
     breadcrumbMapNameList: [''],
+    // tabs
     tabMapNameList: [],
     tabMapSelected: 0,
-    serverAction: {serverCmd: 'ping'},
-    serverActionCntr: 0,
-    serverResponse: {},
-    serverResponseCntr: 0,
+    //
     formatMode: '',
     colorLine: '',
     colorBorder: '',
     colorFill: '',
     colorText: '',
-    paletteVisible: 0,
-    frameEditorVisible: 0,
-    isPlayback: false,
     // map
+    mapId: '',
+    mapSource: '',
+    mapStorage: {},
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
     // frame
     frameLen: 0,
@@ -47,8 +62,6 @@ const editorState = {
     // share
     shareDataExport: [],
     shareDataImport: [],
-    //
-    profileName: ''
 };
 
 const editorStateDefault = JSON.stringify(editorState);
@@ -73,113 +86,45 @@ const extractNodeProps = (payload) => {
 
 const resolveActions = (state, action) => {
     const {payload} = action;
+    const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
     switch (action.type) {
-        case 'RESET_STATE':               return JSON.parse(editorStateDefault)
-        case 'SERVER_RESPONSE':           return {serverResponseCntr: state.serverResponseCntr + 1, serverResponse: payload}
-        case 'SHOW_AUTH':                 return {pageState: AUTH}
-        case 'SHOW_DEMO':                 return {pageState: DEMO}
-        case 'SHOW_WS':                   return {pageState: WS}
-        case 'SHOW_WS_SHARING':           return {pageState: WS_SHARING}
-        case 'SHOW_WS_SHARES':            return {pageState: WS_SHARES}
-        case 'SHOW_WS_PROFILE':           return {pageState: WS_PROFILE}
-        case 'OPEN_PALETTE':              return {formatMode: payload, paletteVisible: 1}
-        case 'CLOSE_PALETTE':             return {formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':      return {frameEditorVisible: 1}
-        case 'CLOSE_PLAYBACK_EDITOR':     return {frameEditorVisible: 0}
-        case 'SET_LANDING_DATA':          return {landingData: payload.landingData, mapRight: payload.mapRight}
-        case 'SET_BREADCRUMB_DATA':       return {breadcrumbMapNameList: payload.breadcrumbMapNameList}
-        case 'SET_TAB_DATA':              return {tabMapNameList: payload.tabMapNameList, tabMapSelected: payload.tabMapSelected}
-        case 'SET_FRAME_INFO':            return {frameLen: payload.frameLen, frameSelected: payload.frameSelected}
-        case 'SET_SHARE_DATA':            return {shareDataExport: payload.shareDataExport, shareDataImport: payload.shareDataImport}
-        case 'PLAY_LANDING_NEXT':         return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
-        case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'AFTER_OPEN':                return {isPlayback: payload.mapSource === 'dataPlayback', mapRight: payload.mapRight}
-        case 'SET_NODE_PROPS':            return extractNodeProps(payload)
-        case 'SET_PROFILE_NAME':          return {profileName: payload}
-        default: return {}
-    }
-}
+        case 'RESET_STATE':             return JSON.parse(editorStateDefault)
+        case 'SHOW_AUTH':               return {pageState: AUTH}
+        case 'SHOW_DEMO':               return {pageState: DEMO}
+        case 'SHOW_WS':                 return {pageState: WS}
+        case 'SHOW_WS_SHARING':         return {pageState: WS_SHARING}
+        case 'SHOW_WS_SHARES':          return {pageState: WS_SHARES}
+        case 'SHOW_WS_PROFILE':         return {pageState: WS_PROFILE}
+        case 'OPEN_PALETTE':            return {formatMode: payload, paletteVisible: 1}
+        case 'CLOSE_PALETTE':           return {formatMode: '', paletteVisible: 0, }
+        case 'OPEN_PLAYBACK_EDITOR':    return {frameEditorVisible: 1}
+        case 'CLOSE_PLAYBACK_EDITOR':   return {frameEditorVisible: 0}
+        case 'SET_LANDING_DATA':        return {landingData: payload.landingData, mapRight: payload.mapRight}
+        case 'SET_TAB_MAP_SELECTED':    return {tabMapSelected: payload.tabMapSelected}
+        case 'PLAY_LANDING_NEXT':       return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
+        case 'PLAY_LANDING_PREV':       return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
+        case 'SET_NODE_PROPS':          return extractNodeProps(payload)
+        // AUTH
+        case 'SET_NAME':                return {name: payload}
+        case 'SET_EMAIL':               return {email: payload}
+        case 'SET_PASSWORD':            return {password: payload}
+        case 'SET_PASSWORD_AGAIN':      return {passwordAgain: payload}
+        case 'SET_CONFIRMATION_CODE':   return {confirmationCode: payload}
+        case 'SET_FEEDBACK_MESSAGE':    return {feedbackMessage: payload}
+        case 'SIGN_IN_PANEL':           return {authPageState: SIGN_IN, feedbackMessage: ''}
+        case 'SIGN_UP_PANEL':           return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', feedbackMessage: ''}
+        case 'SIGN_UP_STEP_1_PANEL':    return {authPageState: SIGN_UP_STEP_1}
+        case 'SIGN_UP_STEP_2_PANEL':    return {authPageState: SIGN_UP_STEP_2}
 
-const assignMapProps = (state, shouldSaveCurrentMap, shouldSynchTabs, serverCmd, payload = {}) => {
-    let serverAction = {serverCmd, payload};
-    let serverActionCntr = state.serverActionCntr + 1;
-    if (!['ping', 'getLandingdata', 'signUpStep1', 'signUpStep2'].includes(serverCmd)) {
-        const cred = JSON.parse(localStorage.getItem('cred'));
-        if (cred && cred.email && cred.password) {
-            Object.assign(serverAction, {cred});
-        }
-    }
-    if (shouldSaveCurrentMap) {
-        Object.assign(serverAction.payload, {
-            mapIdOut: mapState.mapId,
-            mapSourceOut: mapState.mapSource,
-            mapStorageOut: saveMap(),
-            frameSelectedOut: mapState.frameSelected
-        })
-    }
-    if (shouldSynchTabs) {
-        Object.assign(serverAction.payload, {
-            // tabMapIdListOut: state.tabMapIdList // TODO use
-        })
-    }
-    if (['createMapInMap'].includes(serverCmd)) {
-        Object.assign(serverAction.payload, {
-            lastPath: selectionState.lastPath,
-            newMapName: mapref(selectionState.lastPath).content
-        })
-    }
-    if (['deleteFrame'].includes(serverCmd)) {
-        Object.assign(serverAction.payload, {
-            mapIdDelete: mapState.mapId,
-            frameSelectedOut: mapState.frameSelected
-        })
-    }
-    if (['createShare'].includes(serverCmd)) {
-        Object.assign(serverAction.payload, {
-            mapId: mapState.mapId,
-        })
-    }
-
-    return {serverAction, serverActionCntr}
-}
-
-const resolveServerActions = (state, action) => {
-    const {payload} = action;
-    switch (action.type) {
-        case 'SIGN_IN':                   return assignMapProps(state, 0, 0, 'signIn')
-        case 'OPEN_MAP_FROM_HISTORY':     return assignMapProps(state, 0, 0, 'openMapFromHistory')
-        case 'GET_LANDING_DATA':          return assignMapProps(state, 0, 0, 'getLandingData')
-        case 'SIGN_UP_STEP_1':            return assignMapProps(state, 0, 0, 'signUpStep1', payload)
-        case 'SIGN_UP_STEP_2':            return assignMapProps(state, 0, 0, 'signUpStep2', payload)
-        case 'OPEN_MAP_FROM_TAB':         return assignMapProps(state, 1, 1, 'openMapFromTab', payload)
-        case 'OPEN_MAP_FROM_MAP':         return assignMapProps(state, 1, 0, 'openMapFromMap', payload)
-        case 'OPEN_MAP_FROM_BREADCRUMBS': return assignMapProps(state, 1, 0, 'openMapFromBreadcrumbs', payload)
-        case 'SAVE_MAP':                  return assignMapProps(state, 1, 0, 'saveMap')
-        case 'CREATE_MAP_IN_MAP':         return assignMapProps(state, 1, 0, 'createMapInMap')
-        case 'CREATE_MAP_IN_TAB':         return assignMapProps(state, 1, 1, 'createMapInTab')
-        case 'REMOVE_MAP_IN_TAB':         return assignMapProps(state, 0, 1, 'removeMapInTab')
-        case 'MOVE_UP_MAP_IN_TAB':        return assignMapProps(state, 0, 1, 'moveUpMapInTab')
-        case 'MOVE_DOWN_MAP_IN_TAB':      return assignMapProps(state, 0, 1, 'moveDownMapInTab')
-        case 'OPEN_FRAME':                return assignMapProps(state, 1, 0, 'openFrame')
-        case 'IMPORT_FRAME':              return assignMapProps(state, 1, 0, 'importFrame')
-        case 'DUPLICATE_FRAME':           return assignMapProps(state, 1, 0, 'duplicateFrame')
-        case 'DELETE_FRAME':              return assignMapProps(state, 0, 0, 'deleteFrame')
-        case 'PREV_FRAME':                return assignMapProps(state, 1, 0, 'openPrevFrame')
-        case 'NEXT_FRAME':                return assignMapProps(state, 1, 0, 'openNextFrame')
-        case 'GET_SHARES':                return assignMapProps(state, 0, 0, 'getShares')
-        case 'CREATE_SHARE':              return assignMapProps(state, 0, 0, 'createShare', payload)
-        case 'ACCEPT_SHARE':              return assignMapProps(state, 0, 0, 'acceptShare', payload)
-        case 'DELETE_SHARE':              return assignMapProps(state, 0, 0, 'deleteShare', payload)
+        //
+        case 'PARSE_RESP_PAYLOAD':        return {...payload}
         default: return {}
     }
 }
 
 const editorReducer = (state, action) => {
-    return {...state,
-        ...resolveActions(state, action),
-        ...resolveServerActions(state, action)
-    };
+    return {...state, ...resolveActions(state, action) };
 };
 
 const sagaMiddleware = createSagaMiddleware()

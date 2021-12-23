@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import StyledButton from "../component-styled/StyledButton";
 import {COLORS} from "../core/Utils";
+import StyledIconButton from '../component-styled/StyledIconButton'
 
 export function Profile () {
     const dispatch = useDispatch()
@@ -26,14 +26,10 @@ export function Profile () {
                 borderTop: 0,
                 borderRight: 0
             }}>
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                <StyledButton version={'icon'} action={openProfile} icon={'person'}/>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <StyledIconButton onClick={openProfile} icon={'person'}/>
             </div>
         </div>
     );
 }
+
