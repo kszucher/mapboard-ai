@@ -8,8 +8,6 @@ import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 import {COLORS} from "../core/Utils";
 
 export function Sharing() {
-    // const serverResponse = useSelector(state => state.serverResponse)
-    // const serverResponseCntr = useSelector(state => state.serverResponseCntr)
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState('test2@mapboard.io');

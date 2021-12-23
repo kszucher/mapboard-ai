@@ -24,7 +24,7 @@ export default function Auth() {
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
     const setConfirmationCode = e => dispatch({type: 'SET_CONFIRMATION_CODE', payload: e.target.value})
-    const setAuthFeedbackMessage = e => dispatch({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: e.target.value})
+    const setAuthFeedbackMessage = value => dispatch({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: value})
 
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
     const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
