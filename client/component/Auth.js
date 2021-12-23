@@ -34,14 +34,16 @@ export default function Auth() {
     const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
-    const signIn = _ => dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
+
+    // MESE START
+
     const signInHandler = () =>    {
         if (email === '' || password === '') {
             setFeedbackMessage('Missing information.')
         } else if (password.length < 5) {
             setFeedbackMessage('Too short password.')
         } else {
-            signIn()
+            dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
         }
     }
     const signUpStep1Handler = () => {
@@ -68,6 +70,8 @@ export default function Auth() {
     //         case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break; // explicit mode by BE
     //     }
     // }, [serverResponseCntr]);
+
+    // MESE END
 
     return (
         <div
