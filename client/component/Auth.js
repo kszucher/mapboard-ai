@@ -20,7 +20,6 @@ export default function Auth() {
     const passwordAgain = useSelector(state => state.passwordAgain)
 
     const dispatch = useDispatch()
-    const setAuthPageState = value => dispatch({type: 'SET_AUTH_PAGE_STATE', payload: value})
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
     const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
@@ -31,10 +30,10 @@ export default function Auth() {
     const [feedbackMessage, setFeedbackMessage] = useState('');
     const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
 
-    const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
-    // TODO STEP 1 PANEL
-    // TODO STEP 2 PANEL
+    const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
+    const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
+    const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
     const signIn = _ => dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
     const signInHandler = () =>    {
         if (email === '' || password === '') {
@@ -90,7 +89,6 @@ export default function Auth() {
             }}>
             <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
-
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
                 <StyledButton
                     name="SIGN IN"
@@ -107,12 +105,12 @@ export default function Auth() {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                     <StyledButton
-                        onClick={_ => setAuthPageState(SIGN_UP_STEP_1)}
+                        onClick={signUpStep1Panel}
                         name="STEP 1"
                         variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
                     />
                     <StyledButton
-                        onClick={_ => setAuthPageState(SIGN_UP_STEP_2)}
+                        onClick={signUpStep2Panel}
                         name="STEP 2"
                         variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
                     />

@@ -107,9 +107,10 @@ const resolveActions = (state, action) => {
         case 'PLAY_LANDING_PREV':         return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
         case 'SET_NODE_PROPS':            return extractNodeProps(payload)
         // AUTH
-        case 'SET_AUTH_PAGE_STATE':       return {authPageState: payload}
-        case 'SIGN_UP_PANEL':             return {authPageState: SIGN_IN}
         case 'SIGN_IN_PANEL':             return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: ''}
+        case 'SIGN_UP_PANEL':             return {authPageState: SIGN_IN}
+        case 'SIGN_UP_STEP_1_PANEL':      return {authPageState: SIGN_UP_STEP_1}
+        case 'SIGN_UP_STEP_2_PANEL':      return {authPageState: SIGN_UP_STEP_2}
         case 'SET_NAME':                  return {name: payload}
         case 'SET_EMAIL':                 return {email: payload}
         case 'SET_PASSWORD':              return {password: payload}
