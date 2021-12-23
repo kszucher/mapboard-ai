@@ -32,7 +32,7 @@ const editorState = {
     password: '',
     passwordAgain: '',
     confirmationCode: '',
-    feedbackMessage: '',
+    authFeedbackMessage: '',
     //
     pageState: PAGE_STATES.AUTH,
     paletteVisible: 0,
@@ -89,33 +89,33 @@ const resolveActions = (state, action) => {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
     switch (action.type) {
-        case 'RESET_STATE':             return JSON.parse(editorStateDefault)
-        case 'SHOW_AUTH':               return {pageState: AUTH}
-        case 'SHOW_DEMO':               return {pageState: DEMO}
-        case 'SHOW_WS':                 return {pageState: WS}
-        case 'SHOW_WS_SHARING':         return {pageState: WS_SHARING}
-        case 'SHOW_WS_SHARES':          return {pageState: WS_SHARES}
-        case 'SHOW_WS_PROFILE':         return {pageState: WS_PROFILE}
-        case 'OPEN_PALETTE':            return {formatMode: payload, paletteVisible: 1}
-        case 'CLOSE_PALETTE':           return {formatMode: '', paletteVisible: 0, }
-        case 'OPEN_PLAYBACK_EDITOR':    return {frameEditorVisible: 1}
-        case 'CLOSE_PLAYBACK_EDITOR':   return {frameEditorVisible: 0}
-        case 'SET_LANDING_DATA':        return {landingData: payload.landingData, mapRight: payload.mapRight}
-        case 'SET_TAB_MAP_SELECTED':    return {tabMapSelected: payload.tabMapSelected}
-        case 'PLAY_LANDING_NEXT':       return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
-        case 'PLAY_LANDING_PREV':       return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'SET_NODE_PROPS':          return extractNodeProps(payload)
+        case 'RESET_STATE':                 return JSON.parse(editorStateDefault)
+        case 'SHOW_AUTH':                   return {pageState: AUTH}
+        case 'SHOW_DEMO':                   return {pageState: DEMO}
+        case 'SHOW_WS':                     return {pageState: WS}
+        case 'SHOW_WS_SHARING':             return {pageState: WS_SHARING}
+        case 'SHOW_WS_SHARES':              return {pageState: WS_SHARES}
+        case 'SHOW_WS_PROFILE':             return {pageState: WS_PROFILE}
+        case 'OPEN_PALETTE':                return {formatMode: payload, paletteVisible: 1}
+        case 'CLOSE_PALETTE':               return {formatMode: '', paletteVisible: 0, }
+        case 'OPEN_PLAYBACK_EDITOR':        return {frameEditorVisible: 1}
+        case 'CLOSE_PLAYBACK_EDITOR':       return {frameEditorVisible: 0}
+        case 'SET_LANDING_DATA':            return {landingData: payload.landingData, mapRight: payload.mapRight}
+        case 'SET_TAB_MAP_SELECTED':        return {tabMapSelected: payload.tabMapSelected}
+        case 'PLAY_LANDING_NEXT':           return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
+        case 'PLAY_LANDING_PREV':           return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
+        case 'SET_NODE_PROPS':              return extractNodeProps(payload)
         // AUTH
-        case 'SET_NAME':                return {name: payload}
-        case 'SET_EMAIL':               return {email: payload}
-        case 'SET_PASSWORD':            return {password: payload}
-        case 'SET_PASSWORD_AGAIN':      return {passwordAgain: payload}
-        case 'SET_CONFIRMATION_CODE':   return {confirmationCode: payload}
-        case 'SET_FEEDBACK_MESSAGE':    return {feedbackMessage: payload}
-        case 'SIGN_IN_PANEL':           return {authPageState: SIGN_IN, feedbackMessage: ''}
-        case 'SIGN_UP_PANEL':           return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', feedbackMessage: ''}
-        case 'SIGN_UP_STEP_1_PANEL':    return {authPageState: SIGN_UP_STEP_1}
-        case 'SIGN_UP_STEP_2_PANEL':    return {authPageState: SIGN_UP_STEP_2}
+        case 'SET_NAME':                    return {name: payload}
+        case 'SET_EMAIL':                   return {email: payload}
+        case 'SET_PASSWORD':                return {password: payload}
+        case 'SET_PASSWORD_AGAIN':          return {passwordAgain: payload}
+        case 'SET_CONFIRMATION_CODE':       return {confirmationCode: payload}
+        case 'SET_AUTH_FEEDBACK_MESSAGE':   return {authFeedbackMessage: payload}
+        case 'SIGN_IN_PANEL':               return {authPageState: SIGN_IN, authFeedbackMessage: ''}
+        case 'SIGN_UP_PANEL':               return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', authFeedbackMessage: ''}
+        case 'SIGN_UP_STEP_1_PANEL':        return {authPageState: SIGN_UP_STEP_1}
+        case 'SIGN_UP_STEP_2_PANEL':        return {authPageState: SIGN_UP_STEP_2}
 
         //
         case 'PARSE_RESP_PAYLOAD':        return {...payload}

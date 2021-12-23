@@ -118,19 +118,19 @@ function* authSaga () {
                 console.log('incomplete registration')
                 break
             case 'signUpStep1FailEmailAlreadyInUse':
-                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Email address already in use'})
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use'})
                 break
             case 'signUpStep1Success':
                 yield put({type: 'SIGN_UP_STEP_2_PANEL'})
                 break
             case 'signUpStep2FailUnknownUser':
-                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Unknown user'})
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user'})
                 break
             case 'signUpStep2FailWrongCode':
-                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Wrong code'})
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code'})
                 break
             case 'signUpStep2FailAlreadyActivated':
-                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Already activated'})
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated'})
                 break
             case 'signUpStep2Success':
                 yield put({type: 'SIGN_IN_PANEL'})

@@ -16,7 +16,7 @@ export default function Auth() {
     const password = useSelector(state => state.password)
     const passwordAgain = useSelector(state => state.passwordAgain)
     const confirmationCode = useSelector(state => state.confirmationCode)
-    const feedbackMessage = useSelector(state => state.feedbackMessage)
+    const authFeedbackMessage = useSelector(state => state.authFeedbackMessage)
 
     const dispatch = useDispatch()
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
@@ -24,7 +24,7 @@ export default function Auth() {
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
     const setConfirmationCode = e => dispatch({type: 'SET_CONFIRMATION_CODE', payload: e.target.value})
-    const setFeedbackMessage = e => dispatch({type: 'SET_FEEDBACK_MESSAGE', payload: e.target.value})
+    const setAuthFeedbackMessage = e => dispatch({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: e.target.value})
 
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
     const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
@@ -38,16 +38,16 @@ export default function Auth() {
 
     const checkSignIn = () =>    {
         if (email === '' || password === '') {
-            setFeedbackMessage('Missing information')
+            setAuthFeedbackMessage('Missing information')
         } else if (password.length < 5) {
-            setFeedbackMessage('Too short password')
+            setAuthFeedbackMessage('Too short password')
         } else {
             signIn()
         }
     }
     const checkSignUpStep1 = () => {
         if (password.length < 5)  {
-            setFeedbackMessage('Your password must be at least 5 characters')
+            setAuthFeedbackMessage('Your password must be at least 5 characters')
         } else {
             signUpStep1()
         }
@@ -127,12 +127,12 @@ export default function Auth() {
                 </>
             }
             {
-                feedbackMessage !== '' &&
+                authFeedbackMessage !== '' &&
                 <Typography
                     variant="body2"
                     color="textSecondary"
                     align="center">
-                    {feedbackMessage}
+                    {authFeedbackMessage}
                 </Typography>
             }
             {
