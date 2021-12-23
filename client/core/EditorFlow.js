@@ -60,6 +60,9 @@ const editorState = {
     frameLen: 0,
     frameSelected: 0,
     // share
+    shareEmail: '',
+    shareAccess: 'view',
+    shareFeedbackMessage: '',
     shareDataExport: [],
     shareDataImport: [],
 };
@@ -116,9 +119,12 @@ const resolveActions = (state, action) => {
         case 'SIGN_UP_PANEL':               return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', authFeedbackMessage: ''}
         case 'SIGN_UP_STEP_1_PANEL':        return {authPageState: SIGN_UP_STEP_1}
         case 'SIGN_UP_STEP_2_PANEL':        return {authPageState: SIGN_UP_STEP_2}
-
+        // SHARE
+        case 'SET_SHARE_EMAIL':             return {shareEmail: payload}
+        case 'SET_SHARE_ACCESS':            return {shareAccess: payload}
+        case 'SET_SHARE_FEEDBACK_MESSAGE':  return {shareFeedbackMessage: payload}
         //
-        case 'PARSE_RESP_PAYLOAD':        return {...payload}
+        case 'PARSE_RESP_PAYLOAD':          return {...payload}
         default: return {}
     }
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
 import {Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -6,27 +6,20 @@ import StyledButton from "../component-styled/StyledButton";
 import StyledInput from "../component-styled/StyledInput";
 import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 import {COLORS} from "../core/Utils";
+import { MAP_RIGHTS } from '../core/EditorFlow'
 
 export function Sharing() {
+    const {VIEW, EDIT} = MAP_RIGHTS
+
+    const shareEmail = useSelector(state => state.shareEmail)
+    const shareAccess = useSelector(state => state.shareAccess)
+    const shareFeedbackMessage = useSelector(state => state.shareFeedbackMessage)
+
     const dispatch = useDispatch()
-
-    const [email, setEmail] = useState('test2@mapboard.io');
-    const [access, setAccess] = useState('view')
-    const [feedbackMessage, setFeedbackMessage] = useState('');
-
-    const typeEmail =    (e) => setEmail(e.target.value)
-    const closeSharing = _ =>   dispatch({type: 'CLOSE_SHARING'})
-    const createShare =  _ =>   dispatch({type: 'CREATE_SHARE', payload: {email, access}})
-
-    // useEffect(() => {
-    //     switch (serverResponse.cmd) {
-    //         case 'createShareFailNotAValidUser':            setFeedbackMessage('There is no user associated with this address.'); break;
-    //         case 'createShareFailCantShareWithYourself':    setFeedbackMessage('Please choose a different address than yours.'); break;
-    //         case 'createShareSuccess':                      setFeedbackMessage('The map has been shared successfully.'); break;
-    //         case 'createShareFailAlreadyShared':            setFeedbackMessage('The map has already been shared.'); break;
-    //         case 'updateShareSuccess':                      setFeedbackMessage('Access has changed successfully.'); break;
-    //     }
-    // }, [serverResponseCntr]);
+    const setShareEmail = e => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
+    const setShareAccess = e => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
+    const createShare = _ => dispatch({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}})
+    const closeSharing = _ => dispatch({type: 'CLOSE_SHARING'})
 
     return(
         <Modal
@@ -35,7 +28,7 @@ export function Sharing() {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
         >
-            {<div style={{
+            <div style={{
                 position: 'relative',
                 left: '50%',
                 transform: 'translate(-50%)',
@@ -58,26 +51,26 @@ export function Sharing() {
                     Sharing
                 </Typography>
                 <StyledInput
-                    label="Email"
-                    value={email}
-                    onChange={typeEmail}
+                    label="Share email"
+                    value={shareEmail}
+                    onChange={setShareEmail}
                 />
                 <StyledRadioButtonGroup
                     open={true}
-                    valueList={['view', 'edit']}
-                    value={access}
-                    action={e=>setAccess(e.target.value)}
+                    valueList={[VIEW, EDIT]}
+                    value={shareAccess}
+                    action={setShareAccess}
                 />
-                {feedbackMessage !== '' &&
+                {shareFeedbackMessage !== '' &&
                 <Typography
                     variant="body2"
                     color="textSecondary"
                     align="center">
-                    {feedbackMessage}
+                    {shareFeedbackMessage}
                 </Typography>}
                 <StyledButton variant="outlined" onClick={createShare} name={'share'}/>
                 <StyledButton variant="outlined" onClick={closeSharing} name={'close'}/>
-            </div>}
+            </div>
         </Modal>
     )
 }
