@@ -499,7 +499,7 @@ async function appendStuff (resp, currUser) {
 async function processReq(req) {
     try {
         let currUser
-        if (req.payload.hasOwnProperty('cred')) {
+        if (req.payload?.hasOwnProperty('cred')) {
             currUser = await getUser(usersColl, req.payload.cred)
             if (currUser === null) {
                 return { type: 'signInFailWrongCred' }

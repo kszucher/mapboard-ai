@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -6,9 +6,6 @@ import StyledButton from "../component-styled/StyledButton";
 import StyledInput from "../component-styled/StyledInput";
 import {COLORS} from "../core/Utils";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
-
-let regEmail = '';
-let regPassword = '';
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -18,62 +15,47 @@ export default function Auth() {
     const email = useSelector(state => state.email)
     const password = useSelector(state => state.password)
     const passwordAgain = useSelector(state => state.passwordAgain)
+    const confirmationCode = useSelector(state => state.confirmationCode)
+    const feedbackMessage = useSelector(state => state.feedbackMessage)
 
     const dispatch = useDispatch()
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
     const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
-
-    // TODO convert these into glabal state
-    const [confirmationCode, setConfirmationCode] = useState('');
-    const [feedbackMessage, setFeedbackMessage] = useState('');
+    const setConfirmationCode = e => dispatch({type: 'SET_CONFIRMATION_CODE', payload: e.target.value})
+    const setFeedbackMessage = e => dispatch({type: 'SET_FEEDBACK_MESSAGE', payload: e.target.value})
 
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
-    const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
+    const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
+    const signIn = _ => dispatch({ type: 'SIGN_IN', payload: {cred: { email, password }}})
+    const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
+    const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
 
     const checkSignIn = () =>    {
         if (email === '' || password === '') {
-            setFeedbackMessage('Missing information.')
+            setFeedbackMessage('Missing information')
         } else if (password.length < 5) {
-            setFeedbackMessage('Too short password.')
+            setFeedbackMessage('Too short password')
         } else {
-            dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
+            signIn()
         }
     }
     const checkSignUpStep1 = () => {
         if (password.length < 5)  {
-            setFeedbackMessage('Your password must be at least 5 characters.')
+            setFeedbackMessage('Your password must be at least 5 characters')
         } else {
-            regEmail = email;
-            regPassword = password;
-            dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
+            signUpStep1()
         }
     }
     const checkSetConfirmationCode = (e) => {
         if (!isNaN(e.target.value) && e.target.value.length <= 4) {
-            setConfirmationCode(e.target.value)
+            setConfirmationCode(e)
         }
     }
-    const checkSignUpStep2 = () => {
-        dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
-    }
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
-
-    // TODO move this to the AUTH saga, and reuse the same setters and switchers that are being used by the app above
-    // TODO after this is done, this can be left this way, and once the app grows it turns out what is a better arrangement
-    // useEffect(() => {
-    //     switch (serverResponse.cmd) {
-    //         case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
-    //         case 'signUpStep1Success':                  switchSubMode(subTabValues[1]); break; // --> explicit mode by BE
-    //         case 'signUpStep2FailUnknownUser':          setFeedbackMessage('Unknown User.'); break;
-    //         case 'signUpStep2FailWrongCode':            setFeedbackMessage('Wrong code.'); break;
-    //         case 'signUpStep2FailAlreadyActivated':     setFeedbackMessage('Already activated.'); break;
-    //         case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break; // explicit mode by BE
-    //     }
-    // }, [serverResponseCntr]);
 
     return (
         <div
@@ -98,12 +80,12 @@ export default function Auth() {
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
                 <StyledButton
                     name="SIGN IN"
-                    onClick={signUpPanel}
+                    onClick={signInPanel}
                     variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
                 />
                 <StyledButton
                     name="SIGN UP"
-                    onClick={signInPanel}
+                    onClick={signUpPanel}
                     variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
                 />
             </div>
@@ -176,7 +158,7 @@ export default function Auth() {
                 <StyledButton
                     variant='contained'
                     fullWidth
-                    onClick={checkSignUpStep2}
+                    onClick={signUpStep2}
                     name={'Enter Confirmation Code'}
                     disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
                 />

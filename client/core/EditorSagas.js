@@ -30,8 +30,6 @@ const fetchPost = (req) => {
 function* legacySaga (task) {
     while (true) {
         let { type, payload } = yield take([
-            'SIGN_UP_STEP_1',
-            'SIGN_UP_STEP_2',
             'OPEN_MAP_FROM_TAB',
             'OPEN_MAP_FROM_MAP',
             'OPEN_MAP_FROM_BREADCRUMBS',
@@ -99,8 +97,10 @@ function* legacySaga (task) {
 
 function* authSaga () {
     while (true) {
-        let { type, payload } = yield take([
+        const { type, payload } = yield take([
             'SIGN_IN',
+            'SIGN_UP_STEP_1',
+            'SIGN_UP_STEP_2',
             'LIVE_DEMO',
         ])
         const { resp } = yield call(fetchPost, { type, payload })
@@ -111,12 +111,29 @@ function* authSaga () {
                 initDomData()
                 yield put({type: 'SHOW_WS'})
                 break
-            // TODO on signOutSuccess, also clear cred
             case 'signInFailWrongCred':
                 localStorage.clear();
                 break
             case 'signInFailIncompleteRegistration':
                 console.log('incomplete registration')
+                break
+            case 'signUpStep1FailEmailAlreadyInUse':
+                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Email address already in use'})
+                break
+            case 'signUpStep1Success':
+                yield put({type: 'SIGN_UP_STEP_2_PANEL'})
+                break
+            case 'signUpStep2FailUnknownUser':
+                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Unknown user'})
+                break
+            case 'signUpStep2FailWrongCode':
+                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Wrong code'})
+                break
+            case 'signUpStep2FailAlreadyActivated':
+                yield put({type: 'SET_FEEDBACK_MESSAGE', payload: 'Already activated'})
+                break
+            case 'signUpStep2Success':
+                yield put({type: 'SIGN_IN_PANEL'})
                 break
             case 'liveDemoSuccess':
                 initDomData()
