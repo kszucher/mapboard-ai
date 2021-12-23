@@ -502,9 +502,9 @@ async function processReq(req) {
         if (req.payload.hasOwnProperty('cred')) {
             currUser = await getUser(usersColl, req.payload.cred)
             if (currUser === null) {
-                return { type: 'authFailWrongCred' }
+                return { type: 'signInFailWrongCred' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
-                return { type: 'authFailIncompleteRegistration' }
+                return { type: 'signInFailIncompleteRegistration' }
             }
         }
         await checkSave(req, currUser)

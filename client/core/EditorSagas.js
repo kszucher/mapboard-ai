@@ -112,11 +112,10 @@ function* authSaga () {
                 yield put({type: 'SHOW_WS'})
                 break
             // TODO on signOutSuccess, also clear cred
-            case 'authFailWrongCred':
+            case 'signInFailWrongCred':
                 localStorage.clear();
-                console.log('wrong cred')
                 break
-            case 'authFailIncompleteRegistration':
+            case 'signInFailIncompleteRegistration':
                 console.log('incomplete registration')
                 break
             case 'liveDemoSuccess':

@@ -28,16 +28,13 @@ export default function Auth() {
     // TODO convert these into glabal state
     const [confirmationCode, setConfirmationCode] = useState('');
     const [feedbackMessage, setFeedbackMessage] = useState('');
-    const typeConfirmationCode = (e) => {if (!isNaN(e.target.value) && e.target.value.length <= 4) {setConfirmationCode(e.target.value)}}
 
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
     const signUpPanel = _=> dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
 
-    // MESE START
-
-    const signInHandler = () =>    {
+    const checkSignIn = () =>    {
         if (email === '' || password === '') {
             setFeedbackMessage('Missing information.')
         } else if (password.length < 5) {
@@ -46,7 +43,7 @@ export default function Auth() {
             dispatch({ type: 'SIGN_IN', payload: { cred: { email, password } } })
         }
     }
-    const signUpStep1Handler = () => {
+    const checkSignUpStep1 = () => {
         if (password.length < 5)  {
             setFeedbackMessage('Your password must be at least 5 characters.')
         } else {
@@ -55,11 +52,18 @@ export default function Auth() {
             dispatch({type: 'SIGN_UP_STEP_1', payload: {name, email, password}});
         }
     }
-    const signUpStep2Handler = () => {
+    const checkSetConfirmationCode = (e) => {
+        if (!isNaN(e.target.value) && e.target.value.length <= 4) {
+            setConfirmationCode(e.target.value)
+        }
+    }
+    const checkSignUpStep2 = () => {
         dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
     }
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
+    // TODO move this to the AUTH saga, and reuse the same setters and switchers that are being used by the app above
+    // TODO after this is done, this can be left this way, and once the app grows it turns out what is a better arrangement
     // useEffect(() => {
     //     switch (serverResponse.cmd) {
     //         case 'signUpStep1FailEmailAlreadyInUse':    setFeedbackMessage('Email address already in use.'); break;
@@ -70,8 +74,6 @@ export default function Auth() {
     //         case 'signUpStep2Success':                  switchMainMode(mainTabValues[0]); setEmail(regEmail); setPassword(regPassword); break; // explicit mode by BE
     //     }
     // }, [serverResponseCntr]);
-
-    // MESE END
 
     return (
         <div
@@ -122,22 +124,22 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_IN && <>
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
-                    <StyledInput label="Password"          value={password}         onChange={setPassword}          type="password" />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                                 />
+                    <StyledInput label="Password"          value={password}         onChange={setPassword}              type="password" />
                 </>
             }
             {
                 authPageState === SIGN_UP_STEP_1 && <>
-                    <StyledInput label="Your First Name"   value={name}             onChange={setName}              autoFocus       />
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                             />
-                    <StyledInput label="Password"          value={password}         onChange={setPassword}                          />
-                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={setPasswordAgain}                     />
+                    <StyledInput label="Your First Name"   value={name}             onChange={setName}                  autoFocus       />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                                 />
+                    <StyledInput label="Password"          value={password}         onChange={setPassword}                              />
+                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={setPasswordAgain}                         />
                 </>
             }
             {
                 authPageState === SIGN_UP_STEP_2 && <>
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                              />
-                    <StyledInput label="Confirmation Code" value={confirmationCode} onChange={typeConfirmationCode} autoFocus        />
+                    <StyledInput label="Email"             value={email}            onChange={setEmail}                                 />
+                    <StyledInput label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus       />
 
                 </>
             }
@@ -155,7 +157,7 @@ export default function Auth() {
                 <StyledButton
                     variant='contained'
                     fullWidth
-                    onClick={signInHandler}
+                    onClick={checkSignIn}
                     name={'Sign In'}
                     disabled={false} // how to check if autofill happened?
                 />
@@ -165,7 +167,7 @@ export default function Auth() {
                 <StyledButton
                     variant='contained'
                     fullWidth
-                    onClick={signUpStep1Handler}
+                    onClick={checkSignUpStep1}
                     name={'Get Confirmation Code'}
                     disabled={(name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)}/>
             }
@@ -174,7 +176,7 @@ export default function Auth() {
                 <StyledButton
                     variant='contained'
                     fullWidth
-                    onClick={signUpStep2Handler}
+                    onClick={checkSignUpStep2}
                     name={'Enter Confirmation Code'}
                     disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
                 />
