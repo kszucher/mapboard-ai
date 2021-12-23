@@ -46,7 +46,6 @@ function* legacySaga (task) {
             'OPEN_PREV_FRAME',
             'OPEN_NEXT_FRAME',
             'GET_SHARES',
-            'CREATE_SHARE',
             'ACCEPT_SHARE',
             'DELETE_SHARE',
         ])
@@ -83,11 +82,6 @@ function* legacySaga (task) {
             payload = { ...payload,
                 mapIdDelete: mapState.mapId,
                 frameSelectedOut: mapState.frameSelected
-            }
-        }
-        if (type === 'CREATE_SHARE') {
-            payload = {...payload,
-                mapId: mapState.mapId,
             }
         }
         const { resp } = yield call(fetchPost, { type, payload })
@@ -144,13 +138,35 @@ function* authSaga () {
     }
 }
 
-function* wsSaga () {
+function* shareSaga () {
     while (true) {
-        yield take([
-            'CLOSE_SHARES',
-            'CLOSE_SHARING',
+        let { type, payload } = yield take([
+            'CREATE_SHARE'
         ])
-        yield put({type: 'SHOW_WS'})
+        if (type === 'CREATE_SHARE') {
+            payload = {...payload,
+                mapId: mapState.mapId,
+            }
+        }
+        const { resp } = yield call(fetchPost, { type, payload })
+        switch (resp.type) {
+            case 'createShareFailNotAValidUser':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address'})
+                break
+            case 'createShareFailCantShareWithYourself':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours'})
+                break
+            case 'createShareSuccess':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has been shared successfully'})
+                break
+            case 'createShareFailAlreadyShared':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared'})
+                break
+            case 'updateShareSuccess':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Access has changed successfully'})
+                break
+        }
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
 }
 
@@ -171,16 +187,29 @@ function* profileSaga () {
     }
 }
 
-function* playbackSaga () {
-    // TODO create and open modal which checks if there is a frame already
+function* frameSaga () {
+
 }
+
+function* workspaceSaga () {
+    while (true) {
+        yield take([
+            'CLOSE_SHARES',
+            'CLOSE_SHARING',
+        ])
+        yield put({type: 'SHOW_WS'})
+    }
+}
+
+
 
 export default function* rootSaga () {
     yield all([
-        authSaga(),
         legacySaga(),
-        playbackSaga(),
+        authSaga(),
+        shareSaga(),
         profileSaga(),
-        wsSaga(),
+        frameSaga(),
+        workspaceSaga(),
     ])
 }

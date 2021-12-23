@@ -373,8 +373,8 @@ async function ressolveType(req, currUser) {
             return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'CREATE_SHARE': {
-            const { mapId, email, access } = req.payload
-            const shareUser = await usersColl.findOne({ email })
+            const { mapId, shareEmail, shareAccess } = req.payload
+            const shareUser = await usersColl.findOne({ email: shareEmail })
             if (shareUser === null) {
                 return { type: 'createShareFailNotAValidUser' }
             } else if (isEqual(shareUser._id, currUser._id)) {
@@ -390,16 +390,16 @@ async function ressolveType(req, currUser) {
                         sharedMap: ObjectId(mapId),
                         ownerUser: currUser._id,
                         shareUser: shareUser._id,
-                        access,
+                        access: shareAccess,
                         status: SHARE_STATUS.WAITING
                     }
                     await sharesColl.insertOne(newShare)
                     return { type: 'createShareSuccess' }
                 } else {
-                    if (currShare.access === access) {
+                    if (currShare.access === shareAccess) {
                         return { type: 'createShareFailAlreadyShared' }
                     } else {
-                        await sharesColl.updateOne({ _id: currShare._id }, { $set: { access } })
+                        await sharesColl.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
                         return { type: 'updateShareSuccess' }
                     }
                 }
