@@ -27,8 +27,8 @@ export function Page() {
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
 
     useEffect(()=> {
-        // getTextDim('Test')
-        // getEquationDim('\\[Test\\]');
+        getTextDim('Test')
+        getEquationDim('\\[Test\\]');
 
         const cred = JSON.parse(localStorage.getItem('cred'))
         if (cred !== null) {
