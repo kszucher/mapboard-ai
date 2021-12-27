@@ -201,8 +201,6 @@ function* workspaceSaga () {
     }
 }
 
-
-
 export default function* rootSaga () {
     yield all([
         legacySaga(),
