@@ -35,6 +35,9 @@ const getNativeEvent = (e) => {
 }
 
 export function WindowListeners() {
+    const {EDIT, VIEW} = MAP_RIGHTS
+    const {DEMO, WS} = PAGE_STATES;
+
     const mapId = useSelector(state => state.mapId)
     const mapSource = useSelector(state => state.mapSource)
     const mapStorage = useSelector(state => state.mapStorage)
@@ -45,8 +48,6 @@ export function WindowListeners() {
     const landingDataIndex = useSelector(state => state.landingDataIndex)
 
     const dispatch = useDispatch()
-
-    const {DEMO, WS} = PAGE_STATES;
 
     const mousewheel = (e) => {
         e.preventDefault();
@@ -402,63 +403,60 @@ export function WindowListeners() {
     }
 
     const addMapListeners = () => {
-        window.addEventListener("contextmenu", contextmenu);
-        window.addEventListener('resize', resize);
-        window.addEventListener('popstate', popstate);
-        window.addEventListener('dblclick', dblclick);
-        window.addEventListener('mousedown', mousedown);
-        window.addEventListener('mousemove', mousemove);
-        window.addEventListener('mouseup', mouseup);
-        window.addEventListener("keydown", keydown);
-        window.addEventListener("paste", paste);
+        window.addEventListener("contextmenu", contextmenu)
+        window.addEventListener('resize', resize)
+        window.addEventListener('popstate', popstate)
+        window.addEventListener('dblclick', dblclick)
+        window.addEventListener('mousedown', mousedown)
+        window.addEventListener('mousemove', mousemove)
+        window.addEventListener('mouseup', mouseup)
+        window.addEventListener("keydown", keydown)
+        window.addEventListener("paste", paste)
     }
 
     const removeMapListeners = () => {
-        window.removeEventListener("contextmenu", contextmenu);
-        window.removeEventListener('resize', resize);
-        window.removeEventListener('popstate', popstate);
-        window.removeEventListener('dblclick', dblclick);
-        window.removeEventListener('mousedown', mousedown);
-        window.removeEventListener('mousemove', mousemove);
-        window.removeEventListener('mouseup', mouseup);
-        window.removeEventListener("keydown", keydown);
-        window.removeEventListener("paste", paste);
+        window.removeEventListener("contextmenu", contextmenu)
+        window.removeEventListener('resize', resize)
+        window.removeEventListener('popstate', popstate)
+        window.removeEventListener('dblclick', dblclick)
+        window.removeEventListener('mousedown', mousedown)
+        window.removeEventListener('mousemove', mousemove)
+        window.removeEventListener('mouseup', mouseup)
+        window.removeEventListener("keydown", keydown)
+        window.removeEventListener("paste", paste)
     }
 
     useEffect(() => {
         if (landingData.length) {
-            mapDispatch('initMapState', {
-                mapId: '',
-                mapStorage: landingData[landingDataIndex],
-                frameSelected: 0
-            });
+            const mapId = '';
+            const mapStorage = landingData[landingDataIndex];
+            mapDispatch('initMapState', { mapId, mapStorage });
             redraw();
         }
-    }, [landingData, landingDataIndex]);
+    }, [landingData, landingDataIndex])
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
-            mapDispatch('initMapState', { mapId, mapSource, mapStorage, frameSelected });
+            mapDispatch('initMapState', { mapId, mapStorage });
             redraw();
         }
     }, [mapId, mapSource, frameSelected])
 
     useEffect(() => {
         if (pageState === WS) {
-            if (mapRight === MAP_RIGHTS.EDIT) {
-                addMapListeners();
-            } else if (mapRight === MAP_RIGHTS.VIEW) {
+            if (mapRight === EDIT) {
+                addMapListeners()
+            } else if (mapRight === VIEW) {
                 // TODO figure out view listeners
             }
         } else if (pageState === DEMO) {
             addLandingListeners()
         }
         return () => {
-            console.log('LISTENERS REMOVED')
-            removeMapListeners();
-            removeLandingListeners();
+            removeMapListeners()
+            removeLandingListeners()
         }
-    }, [pageState, mapRight]);
+    }, [pageState, mapRight])
 
     return (
         <></>

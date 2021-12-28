@@ -11,7 +11,12 @@ const backendUrl = process.env.NODE_ENV === 'development'
     : 'https://mapboard-server.herokuapp.com/beta';
 
 const fetchPost = (req) => {
-    if (['SIGN_IN', 'SIGN_UP_STEP_1', 'SIGN_UP_STEP_2', 'LIVE_DEMO'].includes(req.type)) {
+    if ([
+        'SIGN_IN',
+        'SIGN_UP_STEP_1',
+        'SIGN_UP_STEP_2',
+        'LIVE_DEMO'
+    ].includes(req.type)) {
         // auto sign-in gets cred from localStorage, manual sign-in gets cred from state
     } else {
         req = {...req, payload: {...req.payload, cred: JSON.parse(localStorage.getItem('cred')) }}
@@ -63,11 +68,12 @@ function* legacySaga (task) {
             'OPEN_NEXT_FRAME'
         ].includes(type)) {
             const mapSource = yield select(state => state.mapSource)
+            const frameSelected = yield select(state => state.frameSelected)
             payload = {...payload,
                 mapIdOut: mapState.mapId,
                 mapSourceOut: mapSource,
                 mapStorageOut: saveMap(),
-                frameSelectedOut: mapState.frameSelected
+                frameSelectedOut: frameSelected
             }
         }
         if (type === 'OPEN_MAP_FROM_TAB') {
@@ -80,9 +86,10 @@ function* legacySaga (task) {
             }
         }
         if (type === 'DELETE_FRAME') {
+            const frameSelected = yield select(state => state.frameSelected)
             payload = { ...payload,
                 mapIdDelete: mapState.mapId,
-                frameSelectedOut: mapState.frameSelected
+                frameSelectedOut: frameSelected
             }
         }
         const { resp } = yield call(fetchPost, { type, payload })

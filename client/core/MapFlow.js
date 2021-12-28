@@ -21,7 +21,6 @@ export let mapState = {
     mapId: '',
     data: [],
     dataIndex: 0,
-    frameSelected: 0,
 };
 
 export function mapDispatch(action, payload) {
@@ -38,7 +37,6 @@ function mapReducer(action, payload) {
             mapState.mapId = payload.mapId;
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.dataIndex = 0;
-            mapState.frameSelected = payload.frameSelected;
             break;
         }
         case 'undo': {
