@@ -2,7 +2,7 @@ import {isEditing, nodeDispatch} from "./NodeFlow";
 import {checkPop, push, redraw} from "./MapFlow";
 import {isUrl} from "./Utils";
 
-export const pasteDispatch = () => {
+export const pasteDispatch = (dispatch) => {
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
         if (result.state === "granted" || result.state === "prompt") {
             navigator.clipboard.read().then(item => {
@@ -27,7 +27,7 @@ export const pasteDispatch = () => {
                                 }
                             }
                             redraw();
-                            checkPop();
+                            checkPop(dispatch);
                         }
                     });
                 }
@@ -47,7 +47,7 @@ export const pasteDispatch = () => {
                                         nodeDispatch('insert_O_S');
                                         nodeDispatch('insertImageFromLinkAsNode', response);
                                         redraw();
-                                        checkPop();
+                                        checkPop(dispatch);
                                     }
                                 )
                             );

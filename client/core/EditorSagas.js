@@ -216,18 +216,14 @@ function* undoRedoSaga () {
         const { type } = yield take([
             'UNDO',
             'REDO',
+            'CHECK_POP'
         ])
         switch (type) {
-            case 'UNDO':
-                mapDispatch('undo')
-                yield put({ type: 'SET_UNDO_DISABLED', payload: mapState.dataIndex === 0})
-                break
-            case 'REDO':
-                mapDispatch('redo')
-                yield put({ type: 'SET_REDO_DISABLED', payload: mapState.dataIndex === mapState.data.length - 1})
-                break
+            case 'UNDO': mapDispatch('undo'); redraw(); break
+            case 'REDO': mapDispatch('redo'); redraw(); break
         }
-        redraw()
+        yield put({ type: 'SET_UNDO_DISABLED', payload: mapState.dataIndex === 0})
+        yield put({ type: 'SET_REDO_DISABLED', payload: mapState.dataIndex === mapState.data.length - 1})
     }
 }
 

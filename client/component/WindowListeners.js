@@ -115,7 +115,7 @@ export function WindowListeners() {
                     nodeDispatch('selectStructToo');
                 }
                 redraw();
-                checkPop();
+                checkPop(dispatch);
                 if (which === 1) {
                     let lm = mapref(selectionState.lastPath);
                     if (!e.shiftKey) {
@@ -147,7 +147,7 @@ export function WindowListeners() {
                                 svgId: path[1].id
                             });
                             redraw();
-                            checkPop();
+                            checkPop(dispatch);
                             break;
                         }
                     }
@@ -248,7 +248,7 @@ export function WindowListeners() {
                 push();
                 nodeDispatch('moveSelection');
                 redraw();
-                checkPop();
+                checkPop(dispatch);
             }
             cr.selectionRect = [];
             if (elapsed === 0) {
@@ -258,7 +258,7 @@ export function WindowListeners() {
                     push();
                     nodeDispatch('select_root');
                     redraw();
-                    checkPop();
+                    checkPop(dispatch);
                 }
             } else {
                 recalc();
@@ -385,7 +385,7 @@ export function WindowListeners() {
                 }
                 redraw();
                 if (keyStateMachine.m) {
-                    checkPop();
+                    checkPop(dispatch);
                 }
                 break;
             }
@@ -394,7 +394,7 @@ export function WindowListeners() {
 
     const paste = (e) => {
         e.preventDefault();
-        pasteDispatch();
+        pasteDispatch(dispatch);
     };
 
     const addLandingListeners = () => {

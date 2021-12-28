@@ -21,16 +21,16 @@ export function CommandTexts () {
     const [fontSize, setFontSize] = useState('')
 
     // TODO: put these all into the global state, and each one of them will trigger a useEffect in WindowListeners
-    const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(); setDensity(e)}
-    const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(); setAlignment(e)}
+    const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
+    const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    const updateLineWidth =   e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(); setLineWidth(e)}
-    const updateLineType =    e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(); setLineType(e)}
-    const updateBorderWidth = e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(); setBorderWidth(e)}
-    const updateFontSize =    e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(); setFontSize(e)}
-    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop()}
-    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop()}
-    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop()}
+    const updateLineWidth =   e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
+    const updateLineType =    e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
+    const updateBorderWidth = e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
+    const updateFontSize =    e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
+    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
+    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
+    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
     const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     return (

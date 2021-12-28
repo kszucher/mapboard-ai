@@ -92,12 +92,13 @@ export function push() {
     mapState.dataIndex++;
 }
 
-export function checkPop() {
+export function checkPop(dispatch) {
     if (JSON.stringify(mapState.data[mapState.dataIndex]) ===
         JSON.stringify(mapState.data[mapState.dataIndex - 1])) {
         mapState.data.length--;
         mapState.dataIndex--;
     }
+    dispatch({type: 'CHECK_POP'})
 }
 
 export function mapref(path) {
