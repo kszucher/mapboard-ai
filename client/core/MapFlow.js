@@ -25,9 +25,7 @@ export let mapState = {
 export function mapDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
     mapReducer(action, payload);
-    if (['initMapState', 'undo', 'redo'].includes(action)) {
-        recalc();
-    }
+    recalc();
 }
 
 function mapReducer(action, payload) {

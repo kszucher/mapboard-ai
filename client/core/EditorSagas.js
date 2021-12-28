@@ -1,7 +1,7 @@
 import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapDispatch, mapref, mapState, saveMap } from './MapFlow'
+import { mapDispatch, mapref, mapState, redraw, saveMap } from './MapFlow'
 import { selectionState } from './SelectionFlow'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
@@ -220,11 +220,14 @@ function* undoRedoSaga () {
         switch (type) {
             case 'UNDO':
                 mapDispatch('undo')
+                yield put({ type: 'SET_UNDO_DISABLED', payload: mapState.dataIndex === 0})
                 break
             case 'REDO':
                 mapDispatch('redo')
+                yield put({ type: 'SET_REDO_DISABLED', payload: mapState.dataIndex === mapState.data.length - 1})
                 break
         }
+        redraw()
     }
 }
 

@@ -65,6 +65,9 @@ const editorState = {
     shareFeedbackMessage: '',
     shareDataExport: [],
     shareDataImport: [],
+    // undo redo
+    undoDisabled: true,
+    redoDisabled: true,
 };
 
 const editorStateDefault = JSON.stringify(editorState);
@@ -123,6 +126,9 @@ const resolveActions = (state, action) => {
         case 'SET_SHARE_EMAIL':             return {shareEmail: payload}
         case 'SET_SHARE_ACCESS':            return {shareAccess: payload}
         case 'SET_SHARE_FEEDBACK_MESSAGE':  return {shareFeedbackMessage: payload}
+        // UNDO REDO
+        case 'SET_UNDO_DISABLED':           return {undoDisabled: payload}
+        case 'SET_REDO_DISABLED':           return {redoDisabled: payload}
         //
         case 'PARSE_RESP_PAYLOAD':          return {...payload}
         default: return {}

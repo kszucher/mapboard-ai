@@ -1,19 +1,19 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {mapDispatch, redraw} from "../core/MapFlow";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledIconButton from '../component-styled/StyledIconButton'
 
 export function UndoRedo () {
+    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+
     const mapRight = useSelector(state => state.mapRight)
+    const undoDisabled = useSelector(state => state.undoDisabled)
+    const redoDisabled = useSelector(state => state.redoDisabled)
 
     const dispatch = useDispatch()
-
-    const undo = _ => {mapDispatch('undo'); redraw()}
-    const redo = _ => {mapDispatch('redo'); redraw()}
-
-    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+    const undo = _ => dispatch({ type: 'UNDO'})
+    const redo = _ => dispatch({ type: 'REDO'})
 
     return (
         <div style={{
@@ -34,11 +34,21 @@ export function UndoRedo () {
             borderTop: 0,
             // borderRight: 0
         }}>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center' }}>
-                <StyledIconButton onClick={undo} icon={'undo'} disabled={[VIEW, UNAUTHORIZED].includes(mapRight)} />
-                <StyledIconButton onClick={redo} icon={'redo'} disabled={[VIEW, UNAUTHORIZED].includes(mapRight)} />
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center'
+                }}>
+                <StyledIconButton
+                    onClick={undo}
+                    icon={'undo'}
+                    disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}
+                />
+                <StyledIconButton
+                    onClick={redo}
+                    icon={'redo'}
+                    disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}
+                />
             </div>
         </div>
     );
