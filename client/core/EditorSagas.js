@@ -1,7 +1,7 @@
 import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapref, mapState, saveMap } from './MapFlow'
+import { mapDispatch, mapref, mapState, saveMap } from './MapFlow'
 import { selectionState } from './SelectionFlow'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
@@ -211,6 +211,23 @@ function* workspaceSaga () {
     }
 }
 
+function* undoRedoSaga () {
+    while (true) {
+        const { type } = yield take([
+            'UNDO',
+            'REDO',
+        ])
+        switch (type) {
+            case 'UNDO':
+                mapDispatch('undo')
+                break
+            case 'REDO':
+                mapDispatch('redo')
+                break
+        }
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         legacySaga(),
@@ -219,5 +236,6 @@ export default function* rootSaga () {
         profileSaga(),
         frameSaga(),
         workspaceSaga(),
+        undoRedoSaga(),
     ])
 }

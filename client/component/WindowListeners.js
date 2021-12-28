@@ -323,8 +323,8 @@ export function WindowListeners() {
             [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
             [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['SAVE_MAP']                               ],
             [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'SAVE_MAP']                 ],
-            [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
-            [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                   ],
+            [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['REDO']                                   ],
+            [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['UNDO']                                   ],
             [ 1,  0,  0,  code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose']                              ],
             [ 0,  1,  0,  [37,39].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CR']                              ],
             [ 0,  1,  0,  [38,40].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CC']                              ],
@@ -365,11 +365,14 @@ export function WindowListeners() {
                 }
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j];
-                    if (['CREATE_MAP_IN_MAP', 'SAVE_MAP'].includes(currExecution)) {
+                    if ([
+                        'CREATE_MAP_IN_MAP',
+                        'SAVE_MAP',
+                        'UNDO',
+                        'REDO',
+                    ].includes(currExecution)) {
                         dispatch({type: currExecution});
-                    } else if (['undo', 'redo'].includes(currExecution)) {
-                        mapDispatch(currExecution);
-                    } else if (currExecution === 'applyColorFromKey') {
+                    }else if (currExecution === 'applyColorFromKey') {
                         nodeDispatch(currExecution, {currColor: which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
                         nodeDispatch(currExecution, {currTaskStatus: which - 96});
