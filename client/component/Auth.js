@@ -25,15 +25,13 @@ export default function Auth() {
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
     const setConfirmationCode = e => dispatch({type: 'SET_CONFIRMATION_CODE', payload: e.target.value})
     const setAuthFeedbackMessage = value => dispatch({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: value})
-
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
     const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
-
     const signIn = _ => dispatch({ type: 'SIGN_IN', payload: {cred: { email, password }}})
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
-    const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: {email, confirmationCode}});
+    const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { email, confirmationCode }});
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     const checkSignIn = () =>    {
