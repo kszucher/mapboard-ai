@@ -1,4 +1,4 @@
-import { call, put, take, takeEvery, takeLatest, all } from 'redux-saga/effects'
+import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
 import { mapref, mapState, saveMap } from './MapFlow'
@@ -62,9 +62,10 @@ function* legacySaga (task) {
             'OPEN_PREV_FRAME',
             'OPEN_NEXT_FRAME'
         ].includes(type)) {
+            const mapSource = yield select(state => state.mapSource)
             payload = {...payload,
                 mapIdOut: mapState.mapId,
-                mapSourceOut: mapState.mapSource,
+                mapSourceOut: mapSource,
                 mapStorageOut: saveMap(),
                 frameSelectedOut: mapState.frameSelected
             }

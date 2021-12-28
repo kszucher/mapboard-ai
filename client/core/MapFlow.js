@@ -19,7 +19,6 @@ import { mapPrint } from '../map/MapPrint'
 
 export let mapState = {
     mapId: '',
-    mapSource: '',
     data: [],
     dataIndex: 0,
     frameSelected: 0,
@@ -37,7 +36,6 @@ function mapReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
             mapState.mapId = payload.mapId;
-            mapState.mapSource = payload.mapSource;
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.dataIndex = 0;
             mapState.frameSelected = payload.frameSelected;

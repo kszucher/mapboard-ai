@@ -429,7 +429,6 @@ export function WindowListeners() {
         if (landingData.length) {
             mapDispatch('initMapState', {
                 mapId: '',
-                mapSource: '',
                 mapStorage: landingData[landingDataIndex],
                 frameSelected: 0
             });
