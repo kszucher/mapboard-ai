@@ -18,7 +18,6 @@ import {mapCollect} from "../map/MapCollect";
 import { mapPrint } from '../map/MapPrint'
 
 export let mapState = {
-    mapId: '',
     data: [],
     dataIndex: 0,
 };
@@ -34,7 +33,6 @@ export function mapDispatch(action, payload) {
 function mapReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
-            mapState.mapId = payload.mapId;
             mapState.data = [mapAssembly(payload.mapStorage)];
             mapState.dataIndex = 0;
             break;

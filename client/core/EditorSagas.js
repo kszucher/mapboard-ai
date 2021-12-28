@@ -67,10 +67,11 @@ function* legacySaga (task) {
             'OPEN_PREV_FRAME',
             'OPEN_NEXT_FRAME'
         ].includes(type)) {
+            const mapId = yield select(state => state.mapId)
             const mapSource = yield select(state => state.mapSource)
             const frameSelected = yield select(state => state.frameSelected)
             payload = {...payload,
-                mapIdOut: mapState.mapId,
+                mapIdOut: mapId,
                 mapSourceOut: mapSource,
                 mapStorageOut: saveMap(),
                 frameSelectedOut: frameSelected
@@ -86,9 +87,10 @@ function* legacySaga (task) {
             }
         }
         if (type === 'DELETE_FRAME') {
+            const mapId = yield select(state => state.mapId)
             const frameSelected = yield select(state => state.frameSelected)
             payload = { ...payload,
-                mapIdDelete: mapState.mapId,
+                mapIdDelete: mapId,
                 frameSelectedOut: frameSelected
             }
         }

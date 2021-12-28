@@ -428,16 +428,15 @@ export function WindowListeners() {
 
     useEffect(() => {
         if (landingData.length) {
-            const mapId = '';
             const mapStorage = landingData[landingDataIndex];
-            mapDispatch('initMapState', { mapId, mapStorage });
+            mapDispatch('initMapState', { mapStorage });
             redraw();
         }
     }, [landingData, landingDataIndex])
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
-            mapDispatch('initMapState', { mapId, mapStorage });
+            mapDispatch('initMapState', { mapStorage });
             redraw();
         }
     }, [mapId, mapSource, frameSelected])
