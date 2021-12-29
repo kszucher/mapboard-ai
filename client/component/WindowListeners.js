@@ -236,40 +236,44 @@ export function WindowListeners() {
     };
 
     const mouseup = (e) => {
-        const {path, which} = getNativeEvent(e)
         e.preventDefault();
+        const {path, which} = getNativeEvent(e)
         isMouseDown = false;
-        if (which === 1) {
-            let m = mapref(['m']);
-            let cr = mapref(['r', 0]); // TODO use ['g']
-            if (m.moveTargetPath.length) {
-                cr.moveData = [];
-                m.shouldCenter = true; // outside push - checkPop?
-                push();
-                nodeDispatch('moveSelection');
-                redraw();
-                checkPop(dispatch);
-            }
-            cr.selectionRect = [];
-            if (elapsed) {
-                recalc();
-                checkPopSelectionState();
-                recalc();
-                redraw();
-            } else {
-                if (!isNodeClicked &&
-                    !isTaskClicked &&
-                    ['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
-                    push();
-                    nodeDispatch('select_root');
+        if (elapsed) {
+            if (which === 1) {
+                if (isNodeClicked) {
+                    let m = mapref(['m']);
+                    if (m.moveTargetPath.length) {
+                        let cr = mapref(['r', 0]); // TODO use ['g']
+                        cr.moveData = [];
+                        m.shouldCenter = true; // outside push - checkPop?
+                        push();
+                        nodeDispatch('moveSelection');
+                        redraw();
+                        checkPop(dispatch);
+                    }
+                } else if (isTaskClicked) {
+                } else {
+                    let cr = mapref(['r', 0]); // TODO use ['g']
+                    cr.selectionRect = [];
                     redraw();
-                    checkPop(dispatch);
                 }
             }
-        } else if (which === 2) {
-
+        } else {
+            if (which === 1) {
+                if (isNodeClicked) {
+                } else if (isTaskClicked) {
+                } else {
+                    if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
+                        push();
+                        nodeDispatch('select_root');
+                        redraw();
+                        checkPop(dispatch);
+                    }
+                }
+            }
         }
-    };
+    }
 
     const dblclick = (e) => {
         const {path} = getNativeEvent(e)
@@ -284,7 +288,7 @@ export function WindowListeners() {
             m.shouldCenter = true; // outside push - checkPop?
         }
         redraw();
-    };
+    }
 
     const keydown = (e) => {
         let {scope, lastPath} = selectionState;
@@ -390,12 +394,12 @@ export function WindowListeners() {
                 break;
             }
         }
-    };
+    }
 
     const paste = (e) => {
         e.preventDefault();
         pasteDispatch(dispatch);
-    };
+    }
 
     const addLandingListeners = () => {
         window.addEventListener("mousewheel", mousewheel, {passive: false});
