@@ -251,7 +251,12 @@ export function WindowListeners() {
                 checkPop(dispatch);
             }
             cr.selectionRect = [];
-            if (elapsed === 0) {
+            if (elapsed) {
+                recalc();
+                checkPopSelectionState();
+                recalc();
+                redraw();
+            } else {
                 if (!isNodeClicked &&
                     !isTaskClicked &&
                     ['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
@@ -260,11 +265,6 @@ export function WindowListeners() {
                     redraw();
                     checkPop(dispatch);
                 }
-            } else {
-                recalc();
-                checkPopSelectionState();
-                recalc();
-                redraw();
             }
         } else if (which === 2) {
 
