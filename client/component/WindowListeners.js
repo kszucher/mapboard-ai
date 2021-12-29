@@ -163,7 +163,7 @@ export function WindowListeners() {
                 redraw();
                 checkPop(dispatch);
             } else {
-                pushSelectionState();
+                push();
                 nodeDispatch('clearSelection');
             }
         } else if (which === 2) {
@@ -246,6 +246,7 @@ export function WindowListeners() {
                     let height = Math.abs(toY - fromY);
                     cr.selectionRect = [startX, startY, width, height];
                     mapFindOverRectangle.start(cr, startX, startY, width, height);
+                    recalc();
                     redraw();
                 }
             } else if (which === 2) {
@@ -265,19 +266,21 @@ export function WindowListeners() {
                 if (isNodeClicked) {
                     let m = mapref(['m']);
                     if (m.moveTargetPath.length) {
-                        let cr = mapref(['r', 0]); // TODO use ['g']
-                        cr.moveData = [];
-                        m.shouldCenter = true; // outside push - checkPop?
-                        push();
-                        nodeDispatch('moveSelection');
-                        redraw();
-                        checkPop(dispatch);
+                        let cr = mapref(['r', 0]) // TODO use ['g']
+                        cr.moveData = []
+                        m.shouldCenter = true // outside push - checkPop?
+                        push()
+                        nodeDispatch('moveSelection')
+                        redraw()
+                        checkPop(dispatch)
                     }
                 } else if (isTaskClicked) {
                 } else {
-                    let cr = mapref(['r', 0]); // TODO use ['g']
-                    cr.selectionRect = [];
-                    redraw();
+                    let cr = mapref(['r', 0]) // TODO use ['g']
+                    cr.selectionRect = []
+                    // if SELECTION is EMPTY, navigate it to root!!! if someone wants to go back, they use undo
+                    redraw()
+                    checkPop(dispatch)
                 }
             }
         } else {
@@ -286,10 +289,10 @@ export function WindowListeners() {
                 } else if (isTaskClicked) {
                 } else {
                     if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
-                        push();
-                        nodeDispatch('select_root');
-                        redraw();
-                        checkPop(dispatch);
+                        push()
+                        nodeDispatch('select_root')
+                        redraw()
+                        checkPop(dispatch)
                     }
                 }
             }
@@ -303,7 +306,7 @@ export function WindowListeners() {
             return;
         }
         if (isNodeClicked) {
-            nodeDispatch('startEdit');
+            nodeDispatch('startEdit')
         } else {
             let m = mapref(['m']);
             m.shouldCenter = true; // outside push - checkPop?
