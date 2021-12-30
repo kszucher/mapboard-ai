@@ -126,18 +126,17 @@ export function WindowListeners() {
         ).empty()
         elapsed = 0;
         isMouseDown = true;
+        push()
         if (which === 1) {
             isNodeClicked = checkNodeClicked(e)
             isTaskClicked = checkTaskClicked(path)
             if (isNodeClicked) {
-                push();
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                     nodeDispatch('selectStruct');
                 } else {
                     nodeDispatch('selectStructToo');
                 }
                 redraw();
-                checkPop(dispatch);
                 let lm = mapref(selectionState.lastPath);
                 if (!e.shiftKey) {
                     if (lm.linkType !== '') {
@@ -155,16 +154,13 @@ export function WindowListeners() {
                     dispatch({type: 'SET_NODE_PROPS', payload: lm});
                 }
             } else if (isTaskClicked) {
-                push();
                 nodeDispatch('setTaskStatus', {
                     taskStatus: parseInt(path[0].id.charAt(10), 10),
                     svgId: path[1].id
                 });
-                redraw();
-                checkPop(dispatch);
+                redraw()
             } else {
-                push();
-                nodeDispatch('clearSelection');
+                nodeDispatch('clearSelection')
             }
         } else if (which === 2) {
             let el = document.getElementById('mapHolderDiv');
@@ -175,17 +171,15 @@ export function WindowListeners() {
         } else if (which === 3) {
             const isNodeClicked = checkNodeClicked(e)
             if (isNodeClicked) {
-                push();
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    nodeDispatch('selectStructFamily');
+                    nodeDispatch('selectStructFamily')
                 } else {
-                    nodeDispatch('selectStructToo');
+                    nodeDispatch('selectStructToo')
                 }
-                redraw();
-                checkPop(dispatch);
+                redraw()
             }
         }
-    };
+    }
 
     const mousemove = (e) => {
         e.preventDefault();
@@ -236,7 +230,6 @@ export function WindowListeners() {
                     }
                     redraw();
                 } else if (isTaskClicked) {
-
                 } else {
                     let cr = mapref(['r', 0]); // TODO use ['g']
                     let [toX, toY] = getCoords(e);
@@ -253,9 +246,10 @@ export function WindowListeners() {
                 let el = document.getElementById('mapHolderDiv');
                 el.scrollLeft = scrollLeft - e.pageX  + pageX;
                 el.scrollTop = scrollTop -  e.pageY  + pageY;
+            } else if (which === 3) {
             }
         }
-    };
+    }
 
     const mouseup = (e) => {
         e.preventDefault();
@@ -269,10 +263,8 @@ export function WindowListeners() {
                         let cr = mapref(['r', 0]) // TODO use ['g']
                         cr.moveData = []
                         m.shouldCenter = true // outside push - checkPop?
-                        push()
                         nodeDispatch('moveSelection')
                         redraw()
-                        checkPop(dispatch)
                     }
                 } else if (isTaskClicked) {
                 } else {
@@ -280,8 +272,9 @@ export function WindowListeners() {
                     cr.selectionRect = []
                     // if SELECTION is EMPTY, navigate it to root!!! if someone wants to go back, they use undo
                     redraw()
-                    checkPop(dispatch)
                 }
+            } else if (which === 2) {
+            } else if (which === 3) {
             }
         } else {
             if (which === 1) {
@@ -289,14 +282,15 @@ export function WindowListeners() {
                 } else if (isTaskClicked) {
                 } else {
                     if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
-                        push()
                         nodeDispatch('select_root')
                         redraw()
-                        checkPop(dispatch)
                     }
                 }
+            } else if (which === 2) {
+            } else if (which === 3) {
             }
         }
+        checkPop(dispatch)
     }
 
     const dblclick = (e) => {
