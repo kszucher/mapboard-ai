@@ -235,7 +235,7 @@ function nodeReducer(action, payload) {
             }
             break;
         }
-        case 'select_root': {
+        case 'select_R': {
             clearSelection();
             let cr = mapref(['r', 0]);
             cr.selected = 1;

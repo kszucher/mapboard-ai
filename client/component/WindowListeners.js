@@ -140,7 +140,7 @@ export function WindowListeners() {
                 let lm = mapref(selectionState.lastPath);
                 if (!e.shiftKey) {
                     if (lm.linkType !== '') {
-                        nodeDispatch('select_root');
+                        nodeDispatch('select_R');
                     }
                     if (lm.linkType === 'internal') {
                         dispatch({type: 'OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
@@ -270,7 +270,10 @@ export function WindowListeners() {
                 } else {
                     let cr = mapref(['r', 0]) // TODO use ['g']
                     cr.selectionRect = []
-                    // if SELECTION is EMPTY, navigate it to root!!! if someone wants to go back, they use undo
+                    if (selectionState.structSelectedPathList.length === 0 &&
+                        selectionState.cellSelectedPathList.length === 0) {
+                        nodeDispatch('select_R')
+                    }
                     redraw()
                 }
             } else if (which === 2) {
@@ -282,7 +285,7 @@ export function WindowListeners() {
                 } else if (isTaskClicked) {
                 } else {
                     if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
-                        nodeDispatch('select_root')
+                        nodeDispatch('select_R')
                         redraw()
                     }
                 }
@@ -338,7 +341,7 @@ export function WindowListeners() {
             [ 0,  0,  0,  code === 'Backspace',          ['s'],                         0,  1,  1, ['select_S_B_M']                           ],
             [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['select_CCRCC_B_S']                       ],
             [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S']                          ],
-            [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_root']                            ],
+            [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_R']                               ],
             [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ],
             [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                      ],
             [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
