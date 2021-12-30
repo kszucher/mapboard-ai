@@ -216,7 +216,7 @@ function* undoRedoSaga () {
         const { type } = yield take([
             'UNDO',
             'REDO',
-            'CHECK_POP'
+            'MAP_STATE_CHANGED'
         ])
         switch (type) {
             case 'UNDO': mapDispatch('undo'); redraw(); break

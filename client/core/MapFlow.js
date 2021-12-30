@@ -97,8 +97,9 @@ export function checkPop(dispatch) {
         JSON.stringify(mapState.data[mapState.dataIndex - 1])) {
         mapState.data.length--;
         mapState.dataIndex--;
+    } else {
+        dispatch({ type: 'MAP_STATE_CHANGED' })
     }
-    dispatch({type: 'CHECK_POP'})
 }
 
 export function mapref(path) {
