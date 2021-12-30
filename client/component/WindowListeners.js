@@ -6,7 +6,7 @@ import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {checkPopSelectionState, pushSelectionState, selectionState} from "../core/SelectionFlow";
+import {selectionState} from "../core/SelectionFlow";
 import {pasteDispatch} from "../core/PasteFlow";
 import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
 

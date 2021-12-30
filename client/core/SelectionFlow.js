@@ -20,23 +20,6 @@ export let selectionState = {
 
 const InitSelectionState = JSON.stringify(selectionState);
 
-let selectionStateCopy = '';
-export const pushSelectionState = () => {
-    selectionStateCopy = JSON.stringify(selectionState);
-}
-
-export const checkPopSelectionState = () => {
-    if (!selectionState.structSelectedPathList.length && !selectionState.cellSelectedPathList.length) {
-        selectionState = JSON.parse(selectionStateCopy);
-        for (const currPath of selectionState.structSelectedPathList) {
-            mapref(currPath).selected = 1;
-        }
-        for (const currPath of selectionState.cellSelectedPathList) {
-            mapref(currPath).selected = 1;
-        }
-    }
-}
-
 export function initSelectionState() {
     selectionState = JSON.parse(InitSelectionState);
 }
