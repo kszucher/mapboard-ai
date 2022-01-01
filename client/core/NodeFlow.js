@@ -560,9 +560,10 @@ function nodeReducer(action, payload) {
 
 export function nodeDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action);
+    // eraseContent, startEdit, typeText and finishEdit related side-effects could be moved here as quasi-middleware
     nodeReducer(action, payload);
     recalc();
-    if (action !== 'typeText' && action !== 'startEdit') {
+    if (!['startEdit', 'typeText'].includes(action)) {
         document.getElementById("mapHolderDiv").focus();
     }
 }
