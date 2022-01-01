@@ -397,13 +397,16 @@ export function WindowListeners() {
                         'REDO',
                     ].includes(currExecution)) {
                         dispatch({type: currExecution});
-                    }else if (currExecution === 'applyColorFromKey') {
+                    } else if (currExecution === 'applyColorFromKey') {
                         nodeDispatch(currExecution, {currColor: which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
                         nodeDispatch(currExecution, {currTaskStatus: which - 96});
                     } else {
                         nodeDispatch(currExecution, {keyCode: e.code});
-                        if (['insert_O_S', 'insert_U_S', 'insert_D_S'].includes(currExecution)) {
+                        if (['insert_O_S',
+                            'insert_U_S',
+                            'insert_D_S'
+                        ].includes(currExecution)) {
                             redraw();
                         }
                     }
