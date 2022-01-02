@@ -49,7 +49,28 @@ const svgElementNameList = [
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
 
-export const updateSvgDom = (svgId, svgElementData, svgGroupList) => {
+export const updateSvgDom = (svgId, path, svgElementData) => {
+    let svgGroupList = [];
+    if (!mapSvgData.hasOwnProperty(svgId) ||
+        ((mapSvgData.hasOwnProperty(svgId) && mapSvgData[svgId].keepHash === keepHash))) {
+        if (svgId === '') {
+            svgId = 'svg' + genHash(8);
+        }
+        for (const i of [0,1,2,3,4,5]) {
+            mapSvgData[svgId] = {
+                svgElementData: [{},{},{},{},{},{}],
+                path: [],
+            };
+            svgGroupList.push(document.createElementNS("http://www.w3.org/2000/svg", "g"));
+            svgGroupList[i].setAttribute("id", svgId + i);
+            let parentG = document.getElementById('layer' + i);
+            parentG.appendChild(svgGroupList[i]);
+        }
+    } else {
+        for (const i of [0,1,2,3,4,5]) {
+            svgGroupList.push(document.getElementById(svgId + i));
+        }
+    }
     for (const i of [0,1,2,3,4,5]) {
         for (const svgElementName of svgElementNameList[i]) {
             let hadBefore = mapSvgData[svgId].svgElementData[i].hasOwnProperty(svgElementName);
@@ -78,7 +99,6 @@ export const updateSvgDom = (svgId, svgElementData, svgGroupList) => {
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke");
                             svgElement.style.transition = preventTransition ? '' : 'all 0.5s';
                             svgElement.style.transitionTimingFunction = preventTransition ? '' : 'cubic-bezier(0.0,0.0,0.58,1.0)';
-
                             svgElement.style.transitionProperty = 'd, fill, stroke-width';
                             if (!isChrome) {
                                 let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate');
@@ -166,4 +186,5 @@ export const updateSvgDom = (svgId, svgElementData, svgGroupList) => {
             }
         }
     }
+    Object.assign(mapSvgData[svgId], {keepHash, svgElementData, path})
 }
