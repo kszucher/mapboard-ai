@@ -1,7 +1,7 @@
 import { genHash } from '../core/Utils'
 import { keepHash, mapSvgData, updateSvgDom } from '../core/DomFlow'
 import { createMapSvgElementData } from './MapVisualizeSvgM'
-import { createNodeSvgElementData } from './MapVisualizeSvgR'
+import { createNodeSvgElementData } from './MapVisualizeSvgN'
 
 export const mapVisualizeSvg = {
     start: (m, cr) => {
