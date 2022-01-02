@@ -155,7 +155,6 @@ export const resolveConditions = (cm) => {
             !cm.hasCell,
         text:
             cm.contentType === 'text',
-        backgroundRect: cm.isRoot,
         branchFill: cm.ellipseBranchFillColor !== '' && cm.s.length,
         nodeFill: cm.ellipseNodeFillColor !== '',
         branchBorder: cm.ellipseBranchBorderColor !== '' && cm.s.length,
