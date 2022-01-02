@@ -7,16 +7,18 @@ export let keepHash = '';
 export function initDomData() {
     mapDivData = [];
 
-    for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < mapSvgData[i].length; i++) {
-            const currSvgData = mapSvgData[i][j]
-            currSvgData.op = 'delete'
-        }
-    }
 }
 
 export function initDomHash() {
     keepHash = genHash(8);
+
+
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < mapSvgData[i].length; i++) {
+            let currSvgData = mapSvgData[i][j]
+            currSvgData.op = 'delete'
+        }
+    }
 }
 
 const checkSvgField = (field) => {
@@ -31,6 +33,8 @@ export function updateDomData() {
             delete mapDivData[nodeId];
         }
     }
+
+    // console.log(mapSvgData)
 
     for (let i = 0; i < 6; i++) {
         for (let j = mapSvgData[i].length - 1; j >= 0; j--) {
@@ -133,7 +137,7 @@ export function updateDomData() {
                     break
                 }
                 case 'delete': {
-                    let svgElement = document.getElementById(currSvgData.svgId)
+                    let svgElement = document.getElementById(svgId)
 
                     console.log('delete???')
 
