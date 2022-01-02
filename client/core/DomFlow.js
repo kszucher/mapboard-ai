@@ -96,36 +96,38 @@ export function updateDomData() {
                 }
                 case 'update': {
                     let svgElement = document.getElementById(svgId)
-                    switch (type) {
-                        case 'path': {
-                            const {path, fill, stroke, strokeWidth} = params
-                            const prevPath = svgElement.getAttribute('d')
-                            svgElement.setAttribute("d", path)
-                            svgElement.setAttribute("fill", checkSvgField(fill))
-                            svgElement.setAttribute("stroke", stroke)
-                            svgElement.setAttribute("stroke-width", strokeWidth)
-                            if (!isChrome) {
-                                svgElement.lastChild.setAttribute("from", prevPath)
-                                svgElement.lastChild.setAttribute("to", path)
-                                svgElement.lastChild.beginElement()
+                    if (svgElement) { // this is used for handling the situation where it changes before even created
+                        switch (type) {
+                            case 'path': {
+                                const { path, fill, stroke, strokeWidth } = params
+                                const prevPath = svgElement.getAttribute('d')
+                                svgElement.setAttribute("d", path)
+                                svgElement.setAttribute("fill", checkSvgField(fill))
+                                svgElement.setAttribute("stroke", stroke)
+                                svgElement.setAttribute("stroke-width", strokeWidth)
+                                if (!isChrome) {
+                                    svgElement.lastChild.setAttribute("from", prevPath)
+                                    svgElement.lastChild.setAttribute("to", path)
+                                    svgElement.lastChild.beginElement()
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        case 'circle': {
-                            let {cx, cy, r, fill} = params
-                            svgElement.setAttribute("cx", cx);
-                            svgElement.setAttribute("cy", cy);
-                            svgElement.setAttribute("r", r);
-                            svgElement.setAttribute("fill", fill);
-                            break;
-                        }
-                        case 'rect': {
-                            let {x, y, width, height} = params
-                            svgElement.setAttribute("x", x);
-                            svgElement.setAttribute("y", y);
-                            svgElement.setAttribute("width", width);
-                            svgElement.setAttribute("height", height);
-                            break;
+                            case 'circle': {
+                                let { cx, cy, r, fill } = params
+                                svgElement.setAttribute("cx", cx);
+                                svgElement.setAttribute("cy", cy);
+                                svgElement.setAttribute("r", r);
+                                svgElement.setAttribute("fill", fill);
+                                break;
+                            }
+                            case 'rect': {
+                                let { x, y, width, height } = params
+                                svgElement.setAttribute("x", x);
+                                svgElement.setAttribute("y", y);
+                                svgElement.setAttribute("width", width);
+                                svgElement.setAttribute("height", height);
+                                break;
+                            }
                         }
                     }
                     break
