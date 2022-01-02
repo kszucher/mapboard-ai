@@ -6,7 +6,7 @@ export let keepHash = '';
 
 export function initDomData() {
     mapDivData = [];
-
+    mapSvgData = [[],[],[],[],[],[]];
 }
 
 export function initDomHash() {
@@ -24,6 +24,11 @@ export function initDomHash() {
 const checkSvgField = (field) => {
     return (field && field !== '') ? field: 'none'
 }
+
+// TODO
+// nodeId should be assigned to every node that hasn't been assigned one
+// also, unify again how div and svg work
+// re-introduce mapVisualizeSvgM
 
 export function updateDomData() {
     for (const nodeId in mapDivData) {
