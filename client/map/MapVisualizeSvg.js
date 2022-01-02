@@ -1,6 +1,5 @@
 import { createMapSvgElementData } from './MapVisualizeSvgM'
 import { createNodeSvgElementData } from './MapVisualizeSvgN'
-import { updateSvgDom } from '../core/DomFlow'
 
 export const mapVisualizeSvg = {
     start: (m, cr) => {
@@ -11,12 +10,10 @@ export const mapVisualizeSvg = {
     },
 
     iterate: (m, cm) => {
-        let svgElementData = [{},{},{},{},{},{}];
-        createMapSvgElementData(m, cm, svgElementData)
-        createNodeSvgElementData(m, cm, svgElementData)
-        updateSvgDom(cm.svgId, cm.path, svgElementData)
+        // createMapSvgElementData(m, cm)
+        createNodeSvgElementData(m, cm)
         cm.d.map(i => mapVisualizeSvg.iterate(m, i));
         cm.s.map(i => mapVisualizeSvg.iterate(m, i));
         cm.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j)));
     }
-};
+}

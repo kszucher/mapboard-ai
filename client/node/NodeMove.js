@@ -145,8 +145,7 @@ export function nodeMove(sc, target, key, mode) {
             for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(structSelectedPathList[i]);
                 let currRefCopy = copy(currRef);
-                currRefCopy.divId = '';
-                currRefCopy.svgId = '';
+                currRefCopy.nodeId = '';
                 clipboard.splice(0, 0, currRefCopy);
             }
             navigator.permissions.query({name: "clipboard-write"}).then(result => {

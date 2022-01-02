@@ -77,12 +77,12 @@ export const mapVisualizeDiv = {
                 // transitionProperty:     'left, top, background-color',
             };
             let div;
-            if (!mapDivData.hasOwnProperty(cm.divId) ||
-                (mapDivData.hasOwnProperty(cm.divId) && mapDivData[cm.divId].keepHash === keepHash)) {
-                if (cm.divId === '') {
-                    cm.divId = 'div' + genHash(8);
+            if (!mapDivData.hasOwnProperty(cm.nodeId) ||
+                (mapDivData.hasOwnProperty(cm.nodeId) && mapDivData[cm.nodeId].keepHash === keepHash)) {
+                if (cm.nodeId === '') {
+                    cm.nodeId = 'div' + genHash(8);
                 }
-                mapDivData[cm.divId] = {
+                mapDivData[cm.nodeId] = {
                     keepHash: '',
                     styleData: {},
                     contentType: '',
@@ -90,7 +90,7 @@ export const mapVisualizeDiv = {
                     path: [],
                 };
                 div = document.createElement('div');
-                div.id = cm.divId;
+                div.id = cm.nodeId;
                 div.contentEditable = false;
                 div.spellcheck = false;
                 div.appendChild(document.createTextNode(''));
@@ -101,21 +101,21 @@ export const mapVisualizeDiv = {
                 div.innerHTML = renderContent(cm.contentType, cm.content);
             }
             else {
-                div = document.getElementById(cm.divId);
+                div = document.getElementById(cm.nodeId);
                 for (const styleName in styleData) {
-                    if (styleData[styleName] !== mapDivData[cm.divId].styleData[styleName]) {
+                    if (styleData[styleName] !== mapDivData[cm.nodeId].styleData[styleName]) {
                         div.style[styleName] = styleData[styleName];
                     }
                 }
                 if (!cm.isEditing) {
-                    if ((cm.contentType !== mapDivData[cm.divId].contentType) ||
-                        (cm.content !== mapDivData[cm.divId].content)) {
+                    if ((cm.contentType !== mapDivData[cm.nodeId].contentType) ||
+                        (cm.content !== mapDivData[cm.nodeId].content)) {
                         div.innerHTML = renderContent(cm.contentType, cm.content);
                     }
                 }
             }
             let {contentType, content, path} = cm;
-            Object.assign(mapDivData[cm.divId], {keepHash, styleData, contentType, content, path})
+            Object.assign(mapDivData[cm.nodeId], {keepHash, styleData, contentType, content, path})
         }
         cm.d.map(i => mapVisualizeDiv.iterate(m, i));
         cm.s.map(i => mapVisualizeDiv.iterate(m, i));

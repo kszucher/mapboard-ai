@@ -156,7 +156,7 @@ export function WindowListeners() {
             } else if (isTaskClicked) {
                 nodeDispatch('setTaskStatus', {
                     taskStatus: parseInt(path[0].id.charAt(10), 10),
-                    svgId: path[1].id
+                    nodeId: path[1].id
                 });
                 redraw()
             } else {

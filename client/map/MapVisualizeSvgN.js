@@ -3,8 +3,53 @@ import { isOdd } from '../core/Utils'
 import { getArcPath, getLinePath, getPolygonPath } from './MapVisualizeSvgUtils'
 import { selectionState } from '../core/SelectionFlow'
 import { mapref } from '../core/MapFlow'
+import { mapSvgData } from '../core/DomFlow'
 
-export const createNodeSvgElementData = (m, cm, svgElementData) => {
+const svgElementNameList = [
+    ['backgroundRect'],
+    ['branchFill'],
+    ['nodeFill'],
+    ['line', 'branchBorder', 'nodeBorder', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
+    ['selectionBorder', 'selectionBorderTable'],
+    ['moveLine', 'moveRect', 'selectionRect'],
+];
+
+const updateMapSvgData = ( nodeId, name, params ) => {
+    let layer, type
+    switch (name) {
+        case 'branchFill':              layer = 1; type = 'path'; break;
+        case 'nodeFill':                layer = 2; type = 'path'; break;
+        case 'branchBorder':            layer = 3; type = 'path'; break;
+        case 'nodeBorder':              layer = 3; type = 'path'; break;
+        case 'line':                    layer = 3; type = 'path'; break;
+        case 'tableFrame':              layer = 3; type = 'path'; break;
+        case 'tableGrid':               layer = 3; type = 'path'; break;
+        case 'tableCellFrame':          layer = 3; type = 'path'; break;
+        case 'taskLine':                layer = 3; type = 'path'; break;
+        case 'taskCircle0':             layer = 3; type = 'circle'; break;
+        case 'taskCircle1':             layer = 3; type = 'circle'; break;
+        case 'taskCircle2':             layer = 3; type = 'circle'; break;
+        case 'taskCircle3':             layer = 3; type = 'circle'; break;
+        case 'selectionBorder':         layer = 4; type = 'path'; break;
+        case 'selectionBorderTable':    layer = 4; type = 'path'; break;
+    }
+    let el = mapSvgData[layer].find(el => el[nodeId] === nodeId && el[name] === name)
+    if (el) {
+        if (JSON.stringify(el.params) === JSON.stringify(params)) {
+            el.op = 'keep'
+        } else {
+            el.op = 'update'
+            el.params = params // probably works, but needs check
+        }
+    } else {
+        mapSvgData[layer].push({ svgId: `svg_${nodeId}_${name}`, type, params, op: 'create' })
+    }
+}
+
+// TODO complete this, complete for M, and then test what we've done...
+
+export const createNodeSvgElementData = (m, cm, mapSvgData) => {
+    const {nodeId} = cm
     const conditions = resolveConditions(cm);
     const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;
     const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH;
@@ -45,38 +90,33 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
             bcyd: cm.nodeY + maxHadj / 2,
         }
         if (conditions.branchFill) {
-            svgElementData[1].branchFill = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'branchFill', {
                 path: getPolygonPath(fParams, 'f', dir, 0),
                 fill: cm.ellipseBranchFillColor,
-            }
+            })
         }
         if (conditions.nodeFill) {
-            svgElementData[2].nodeFill = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'nodeFill', {
                 path: getPolygonPath(sParams, 's', dir, 0),
                 fill: cm.ellipseNodeFillColor,
-            }
+            })
         }
         if (conditions.branchBorder) {
-            svgElementData[3].branchBorder = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'branchBorder', {
                 path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
                 stroke: cm.ellipseBranchBorderColor,
                 strokeWidth: cm.ellipseBranchBorderWidth,
-            }
+            })
         }
         if (conditions.nodeBorder) {
-            svgElementData[3].nodeBorder = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'nodeBorder', {
                 path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
                 stroke: cm.ellipseNodeBorderColor,
                 strokeWidth: cm.ellipseNodeBorderWidth,
-            }
+            })
         }
         if (conditions.selectionBorder) {
-            svgElementData[4].selectionBorder = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'selectionBorder', {
                 path: getPolygonPath(
                     cm.selection  === 's'
                         ? sParams
@@ -89,15 +129,14 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
                 ),
                 stroke: '#666666',
                 strokeWidth: 1,
-            }
+            })
         }
         if (conditions.selectionBorderTable) {
-            svgElementData[4].selectionBorderTable = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'selectionBorderTable', {
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 4),
                 stroke: '#666666',
                 strokeWidth: 1,
-            };
+            })
         }
     }
     if (conditions.line) {
@@ -112,21 +151,19 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
         x1 = isOdd(x1)?x1-0.5:x1;
         x2 = nsx;
         y2 = cm.nodeY;
-        svgElementData[3].line = {
-            type: 'path',
+        updateMapSvgData(nodeId, 'line', {
             path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
             stroke: cm.lineColor,
             strokeWidth: cm.lineWidth,
-        }
+        })
     }
     if (conditions.table) {
         // frame
-        svgElementData[3].tableFrame = {
-            type: 'path',
+        updateMapSvgData(nodeId, 'tableFrame', {
             path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 0),
             stroke: cm.cBorderColor,
             strokeWidth: cm.ellipseNodeBorderWidth,
-        };
+        })
         // grid
         let path = '';
         let rowCount = Object.keys(cm.c).length;
@@ -141,12 +178,11 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
             let x = nsx + dir*cm.sumMaxColWidth[j];
             path += `M${x},${nsy} L${x},${ney}`;
         }
-        svgElementData[3].tableGrid = {
-            type: 'path',
+        updateMapSvgData(nodeId, 'tableGrid', {
             path: path,
             stroke: '#dddddd',
             strokeWidth: 1,
-        };
+        })
         // cell
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
@@ -169,12 +205,11 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
                         w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j];
                         h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i];
                     }
-                    svgElementData[3].tableCellFrame = {
-                        type: 'path',
+                    updateMapSvgData(nodeId, 'tableCellFrame', {
                         path: getArcPath(sx, sy, w, h, r, dir, 0),
                         stroke: '#000000',
                         strokeWidth: 1,
-                    };
+                    })
                     break;
                 }
             }
@@ -199,12 +234,11 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
         let x2 = startX;
         let y = cm.nodeY;
         if (!cm.isEditing) {
-            svgElementData[3].taskLine = {
-                type: 'path',
+            updateMapSvgData(nodeId, 'taskLine', {
                 path: `M${x1},${y} L${x2},${y}`,
                 stroke: '#eeeeee',
                 strokeWidth: 1,
-            };
+            })
         }
         for (let i = 0; i < taskConfigN; i++) {
             let centerX = cm.path[3]
@@ -227,13 +261,12 @@ export const createNodeSvgElementData = (m, cm, svgElementData) => {
                     case 3: fill = '#e5f9e5'; break;
                 }
             }
-            svgElementData[3]['taskCircle' + i] = {
-                type: 'circle',
+            updateMapSvgData(nodeId, `taskCircle${i}`, {
                 cx: centerX,
                 cy: centerY,
                 r: taskConfigD/2,
                 fill: fill,
-            };
+            })
         }
     }
 }

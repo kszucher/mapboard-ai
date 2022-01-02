@@ -40,10 +40,7 @@ export let nodeProps = {
         d: [],
         s: [],
         c: [[]],
-        // mapVisualizeDiv
-        divId: '',
-        // mapVisualizeSvg
-        svgId: ''
+        nodeId: '',
     },
     saveOptional: {
         contentType: 'text',

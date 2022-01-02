@@ -1,8 +1,9 @@
 import { COLORS } from '../core/Utils'
 
 export const createMapSvgElementData = (m, cm, svgElementData) => {
+    const {nodeId} = cm
     if (cm.isRoot) { // this will change
-        svgElementData[0].backgroundRect = {
+        svgElementData[0][nodeId].backgroundRect = {
             type: 'rect',
             x: 0,
             y: 0,
@@ -26,14 +27,14 @@ export const createMapSvgElementData = (m, cm, svgElementData) => {
         c2y = cm.moveData[1] + deltaY;
         x2 = cm.moveData[2];
         y2 = cm.moveData[3];
-        svgElementData[5].moveLine = {
+        svgElementData[5][nodeId].moveLine = {
             type: 'path',
             path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
             stroke: '#5f0a87',
             strokeWidth: 1,
             preventTransition: 1,
         }
-        svgElementData[5].moveRect = {
+        svgElementData[5][nodeId].moveRect = {
             type: 'rect',
             x: cm.moveData[2] - 10,
             y: cm.moveData[3] - 10,
@@ -49,7 +50,7 @@ export const createMapSvgElementData = (m, cm, svgElementData) => {
         };
     }
     if (cm.selectionRect.length) {
-        svgElementData[5].selectionRect = {
+        svgElementData[5][nodeId].selectionRect = {
             type: 'rect',
             x: cm.selectionRect[0],
             y: cm.selectionRect[1],
