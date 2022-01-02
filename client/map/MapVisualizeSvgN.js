@@ -33,22 +33,21 @@ const updateMapSvgData = ( nodeId, name, params ) => {
         case 'selectionBorder':         layer = 4; type = 'path'; break;
         case 'selectionBorderTable':    layer = 4; type = 'path'; break;
     }
-    let el = mapSvgData[layer].find(el => el[nodeId] === nodeId && el[name] === name)
+    const svgId = `svg_${nodeId}_${name}`
+    let el = mapSvgData[layer].find(el => el.svgId === svgId)
     if (el) {
         if (JSON.stringify(el.params) === JSON.stringify(params)) {
             el.op = 'keep'
         } else {
             el.op = 'update'
-            el.params = params // probably works, but needs check
+            el.params = JSON.parse(JSON.stringify(params)) // probably works, but needs check
         }
     } else {
-        mapSvgData[layer].push({ svgId: `svg_${nodeId}_${name}`, type, params, op: 'create' })
+        mapSvgData[layer].push({ svgId, type, params, op: 'create' })
     }
 }
 
-// TODO complete this, complete for M, and then test what we've done...
-
-export const createNodeSvgElementData = (m, cm, mapSvgData) => {
+export const createNodeSvgElementData = (m, cm) => {
     const {nodeId} = cm
     const conditions = resolveConditions(cm);
     const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH;

@@ -13,8 +13,6 @@ export function initDomData() {
             currSvgData.op = 'delete'
         }
     }
-
-
 }
 
 export function initDomHash() {
@@ -136,7 +134,6 @@ export function updateDomData() {
                     let svgElement = document.getElementById(currSvgData.svgId)
 
                     console.log('delete???')
-                    console.log(svgElement)
 
                     svgElement.parentNode.removeChild(svgElement)
                     mapSvgData[i].splice(j, 1) // probably this does the job??
