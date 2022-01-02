@@ -94,7 +94,6 @@ export function updateDomData() {
                         }
                     }
                     let parentG = document.getElementById('layer' + i)
-                    // can I just use .parentNode.appendChild ??
                     parentG.appendChild(svgElement)
                     break
                 }
@@ -139,7 +138,7 @@ export function updateDomData() {
                 case 'delete': {
                     let svgElement = document.getElementById(svgId)
 
-                    console.log('delete???')
+                    // console.log('delete', svgId)
 
                     svgElement.parentNode.removeChild(svgElement)
                     mapSvgData[i].splice(j, 1) // probably this does the job??
