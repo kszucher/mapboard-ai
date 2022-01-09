@@ -48,14 +48,20 @@ export const flagDomData = () => {
     }
 }
 
-export const getMapDivData  = (nodeId) => {
-    const divId = `${nodeId}_div`
-    return mapDivData.find(el => el.divId === divId)
-}
-
-export const updateMapDivData = ( nodeId, params ) => {
+export const updateMapDivData = ( nodeId, contentType, content, path, isEditing, styleData ) => {
     const divId = `${nodeId}_div`
     let el = mapDivData.find(el => el.divId === divId)
+    let shouldInnerHTMLUpdate = false
+    let shouldStyleUpdate = {}
+    if (el) {
+        if (!isEditing) {
+            shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
+        }
+        for (const style in styleData) {
+            shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
+        }
+    }
+    let params = { contentType, content, styleData, shouldInnerHTMLUpdate, shouldStyleUpdate }
     if (el) {
         if (JSON.stringify(el.params) === JSON.stringify(params)) {
             el.op = 'keep'
@@ -107,7 +113,7 @@ export function updateDomData() {
     for (let i = 0; i < mapDivData.length; i++) {
         const currDivData = mapDivData[i]
         const { op, divId, params } = currDivData
-        const { shouldInnerHTMLUpdate, contentType, content, shouldStyleUpdate, styleData } = params
+        const { contentType, content, styleData, shouldInnerHTMLUpdate, shouldStyleUpdate } = params
         switch (op) {
             case 'create': {
                 let div = document.createElement('div')
@@ -137,6 +143,7 @@ export function updateDomData() {
                 break
             }
             case 'delete': {
+                // TODO
                 let currDiv = document.getElementById(nodeId);
                 currDiv.parentNode.removeChild(currDiv);
                 delete mapDivData[nodeId];

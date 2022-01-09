@@ -1,4 +1,4 @@
-import { getMapDivData, updateMapDivData } from '../core/DomFlow'
+import { updateMapDivData } from '../core/DomFlow'
 
 const scrollTo = function(to, duration) {
     const
@@ -76,19 +76,7 @@ export const mapVisualizeDiv = {
                 transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:     'left, top, background-color',
             }
-            let shouldInnerHTMLUpdate = false
-            let shouldStyleUpdate = {}
-            const el = getMapDivData(nodeId)
-            if (el) {
-                if (!isEditing) {
-                    shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
-                }
-                for (const style in styleData) {
-                    shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
-                }
-            }
-            let params = { shouldInnerHTMLUpdate, contentType, content, shouldStyleUpdate, styleData, path }
-            updateMapDivData(nodeId, params)
+            updateMapDivData(nodeId, contentType, content, path, isEditing, styleData)
         }
         cm.d.map(i => mapVisualizeDiv.iterate(m, i));
         cm.s.map(i => mapVisualizeDiv.iterate(m, i));
