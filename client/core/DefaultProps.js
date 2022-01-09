@@ -180,5 +180,10 @@ export const resolveConditions = (cm) => {
 }
 
 export function getDefaultNode(attributes) {
-    return Object.assign({d: [], s: [],  c: [[]], content: ''}, attributes);
+    return Object.assign({
+        d: [],
+        s: [],
+        c: [[]],
+        content: '',
+    }, attributes);
 }
