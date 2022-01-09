@@ -499,7 +499,7 @@ function nodeReducer(action, payload) {
         case 'eraseContent': {
             if (!lm.hasCell) {
                 lm.content = '';
-                let holderElement = document.getElementById(lm.nodeId);
+                let holderElement = document.getElementById(`${lm.nodeId}_div`);
                 holderElement.innerHTML = '';
             }
             break;
@@ -511,7 +511,7 @@ function nodeReducer(action, payload) {
                     lm.isDimAssigned = 0;
                     redraw();
                 }
-                let holderElement = document.getElementById(lm.nodeId);
+                let holderElement = document.getElementById(`${lm.nodeId}_div`);
                 holderElement.contentEditable = 'true';
                 setEndOfContenteditable(holderElement);
                 isEditing = 1;
@@ -535,14 +535,14 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'typeText': {
-            let holderElement = document.getElementById(lm.nodeId);
+            let holderElement = document.getElementById(`${lm.nodeId}_div`);
             lm.content = holderElement.innerHTML;
             lm.isDimAssigned = 0;
             break;
         }
         case 'finishEdit': {
             mutationObserver.disconnect();
-            let holderElement = document.getElementById(lm.nodeId);
+            let holderElement = document.getElementById(`${lm.nodeId}_div`);
             holderElement.contentEditable = 'false';
             lm.isEditing = 0;
             isEditing = 0;
