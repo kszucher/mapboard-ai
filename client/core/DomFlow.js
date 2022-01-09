@@ -60,6 +60,11 @@ export const updateMapDivData = ( nodeId, contentType, content, path, isEditing,
         for (const style in styleData) {
             shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
         }
+    } else {
+        // shouldInnerHTMLUpdate = true
+        // for (const style in styleData) {
+        //     shouldStyleUpdate[style] = true
+        // }
     }
     let params = { contentType, content, styleData, shouldInnerHTMLUpdate, shouldStyleUpdate }
     if (el) {
@@ -125,6 +130,7 @@ export function updateDomData() {
                 for (const style in styleData) {
                     div.style[style] = styleData[style]
                 }
+                console.log('create stuff...')
                 div.innerHTML = renderContent(contentType, content)
                 break
             }
