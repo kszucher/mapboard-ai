@@ -63,7 +63,7 @@ export const updateMapDivData = ( nodeId, contentType, content, path, isEditing,
     }
     let params = { contentType, content, styleData, shouldInnerHTMLUpdate, shouldStyleUpdate }
     if (el) {
-        if (JSON.stringify(el.params) === JSON.stringify(params)) {
+        if (!shouldInnerHTMLUpdate && !shouldStyleUpdate) {
             el.op = 'keep'
         } else {
             el.op = 'update'
