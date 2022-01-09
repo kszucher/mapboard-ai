@@ -1,6 +1,7 @@
 import {getDefaultNode} from "../core/DefaultProps";
-import {copy, transpose} from "../core/Utils";
+import { copy, genHash, transpose } from '../core/Utils'
 import {mapref} from "../core/MapFlow";
+import { mapChangeProp } from '../map/MapChangeProp'
 
 let clipboard = [];
 
@@ -145,7 +146,10 @@ export function nodeMove(sc, target, key, mode) {
             for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(structSelectedPathList[i]);
                 let currRefCopy = copy(currRef);
-                currRefCopy.nodeId = '';
+
+                // TODO csak akkor generaljuk ujra, ha NINCS ilyen --> check somehow
+                mapChangeProp.start(currRefCopy, {nodeId: 'node' + genHash(8)}, '');
+
                 clipboard.splice(0, 0, currRefCopy);
             }
             navigator.permissions.query({name: "clipboard-write"}).then(result => {
