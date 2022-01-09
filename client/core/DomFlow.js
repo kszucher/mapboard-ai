@@ -151,7 +151,7 @@ export function updateDomData() {
             case 'delete': {
                 let currDiv = document.getElementById(divId);
                 currDiv.parentNode.removeChild(currDiv);
-                delete mapDivData[i];
+                mapDivData.splice(i, 1)
                 break
             }
         }
