@@ -3,7 +3,7 @@ import { isOdd } from '../core/Utils'
 import { getArcPath, getLinePath, getPolygonPath } from './MapVisualizeSvgUtils'
 import { selectionState } from '../core/SelectionFlow'
 import { mapref } from '../core/MapFlow'
-import { mapSvgData } from '../core/DomFlow'
+import { updateMapSvgData } from '../core/DomFlow'
 
 const svgElementNameList = [
     ['backgroundRect'],
@@ -13,39 +13,6 @@ const svgElementNameList = [
     ['selectionBorder', 'selectionBorderTable'],
     ['moveLine', 'moveRect', 'selectionRect'],
 ];
-
-const updateMapSvgData = ( nodeId, name, params ) => {
-    let layer, type
-    switch (name) {
-        case 'branchFill':              layer = 1; type = 'path'; break;
-        case 'nodeFill':                layer = 2; type = 'path'; break;
-        case 'branchBorder':            layer = 3; type = 'path'; break;
-        case 'nodeBorder':              layer = 3; type = 'path'; break;
-        case 'line':                    layer = 3; type = 'path'; break;
-        case 'tableFrame':              layer = 3; type = 'path'; break;
-        case 'tableGrid':               layer = 3; type = 'path'; break;
-        case 'tableCellFrame':          layer = 3; type = 'path'; break;
-        case 'taskLine':                layer = 3; type = 'path'; break;
-        case 'taskCircle0':             layer = 3; type = 'circle'; break;
-        case 'taskCircle1':             layer = 3; type = 'circle'; break;
-        case 'taskCircle2':             layer = 3; type = 'circle'; break;
-        case 'taskCircle3':             layer = 3; type = 'circle'; break;
-        case 'selectionBorder':         layer = 4; type = 'path'; break;
-        case 'selectionBorderTable':    layer = 4; type = 'path'; break;
-    }
-    const svgId = `svg_${nodeId}_${name}`
-    let el = mapSvgData[layer].find(el => el.svgId === svgId)
-    if (el) {
-        if (JSON.stringify(el.params) === JSON.stringify(params)) {
-            el.op = 'keep'
-        } else {
-            el.op = 'update'
-            el.params = JSON.parse(JSON.stringify(params)) // probably works, but needs check
-        }
-    } else {
-        mapSvgData[layer].push({ svgId, type, params, op: 'create' })
-    }
-}
 
 export const createNodeSvgElementData = (m, cm) => {
     const {nodeId} = cm

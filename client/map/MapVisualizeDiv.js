@@ -1,5 +1,4 @@
-import {genHash, getLatexString} from "../core/Utils";
-import {mapDivData, keepHash} from "../core/DomFlow";
+import { updateMapDivData } from '../core/DomFlow'
 
 const scrollTo = function(to, duration) {
     const
@@ -32,7 +31,7 @@ const scrollTo = function(to, duration) {
             }
         };
     animateScroll();
-};
+}
 
 export const mapVisualizeDiv = {
     start: (m, cr) => {
@@ -59,6 +58,7 @@ export const mapVisualizeDiv = {
 
     iterate: (m, cm) => {
         if (cm.type === 'struct' && !cm.hasCell) {
+            const { nodeId, contentType, content, path, isEditing } = cm
             let styleData = {
                 left:                   1 + cm.nodeStartX + 'px',
                 top:                    1 + cm.nodeY - cm.selfH / 2 + 'px',
@@ -75,77 +75,12 @@ export const mapVisualizeDiv = {
                 transition: 'all 0.5s',
                 transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:     'left, top, background-color',
-            };
-            let div;
-
-
-            if (!mapDivData.hasOwnProperty(cm.nodeId) ||
-                (mapDivData.hasOwnProperty(cm.nodeId) && mapDivData[cm.nodeId].keepHash === keepHash)) {
-                // if (cm.nodeId === '') {
-                //     cm.nodeId = 'div' + genHash(8);
-                // }
-                mapDivData[cm.nodeId] = {
-                    keepHash: '',
-                    styleData: {},
-                    contentType: '',
-                    content: '',
-                    path: [],
-                };
-                div = document.createElement('div');
-                div.id = cm.nodeId;
-                div.contentEditable = false;
-                div.spellcheck = false;
-                div.appendChild(document.createTextNode(''));
-                document.getElementById('mapDiv').appendChild(div);
-                for (const styleName in styleData) {
-                    div.style[styleName] = styleData[styleName];
-                }
-                div.innerHTML = renderContent(cm.contentType, cm.content);
             }
-            else {
-                div = document.getElementById(cm.nodeId);
-                for (const styleName in styleData) {
-                    if (styleData[styleName] !== mapDivData[cm.nodeId].styleData[styleName]) {
-                        div.style[styleName] = styleData[styleName];
-                    }
-                }
-                if (!cm.isEditing) {
-                    if ((cm.contentType !== mapDivData[cm.nodeId].contentType) ||
-                        (cm.content !== mapDivData[cm.nodeId].content)) {
-                        div.innerHTML = renderContent(cm.contentType, cm.content);
-                    }
-                }
-            }
-
-
-            let {contentType, content, path} = cm;
-            Object.assign(mapDivData[cm.nodeId], {keepHash, styleData, contentType, content, path})
+            let params = { styleData, contentType, content, path, isEditing }
+            updateMapDivData(nodeId, params)
         }
         cm.d.map(i => mapVisualizeDiv.iterate(m, i));
         cm.s.map(i => mapVisualizeDiv.iterate(m, i));
         cm.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j)));
-    }
-};
-
-function renderContent (contentType, content) {
-    switch (contentType) {
-        case 'text':
-            return content;
-        case 'equation':
-            if (content === '\\[rc\\]') {
-                return `<input type="radio" checked>`
-            } else  if (content === '\\[ruc\\]') {
-                return `<input type="radio">`;
-            } else  if (content === '\\[cc\\]') {
-                return `<input type="checkbox" checked>`;
-            } else  if (content === '\\[cuc\\]') {
-                return `<input type="checkbox">`;
-
-            } else {
-                return katex.renderToString(getLatexString(content), {throwOnError: false});
-            }
-        case 'image':
-            let imageLink = 'https://mapboard.io/file/';
-            return '<img src="' + imageLink + content + '" alt="" id="img">';
     }
 }

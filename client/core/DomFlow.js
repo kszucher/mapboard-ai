@@ -1,26 +1,45 @@
-import { genHash, isChrome } from './Utils'
+import { getLatexString, isChrome } from './Utils'
 
 export let mapDivData = [];
 export let mapSvgData = [[],[],[],[],[],[]];
-export let keepHash = '';
+
+const renderContent = (contentType, content) => {
+    switch (contentType) {
+        case 'text':
+            return content;
+        case 'equation':
+            if (content === '\\[rc\\]') {
+                return `<input type="radio" checked>`
+            } else  if (content === '\\[ruc\\]') {
+                return `<input type="radio">`;
+            } else  if (content === '\\[cc\\]') {
+                return `<input type="checkbox" checked>`;
+            } else  if (content === '\\[cuc\\]') {
+                return `<input type="checkbox">`;
+
+            } else {
+                return katex.renderToString(getLatexString(content), {throwOnError: false});
+            }
+        case 'image':
+            let imageLink = 'https://mapboard.io/file/';
+            return '<img src="' + imageLink + content + '" alt="" id="img">';
+    }
+}
 
 const checkSvgField = (field) => {
     return (field && field !== '') ? field: 'none'
 }
 
-// TODO
-// nodeId should be assigned to every node that hasn't been assigned one
-// also, unify again how div and svg work
-// re-introduce mapVisualizeSvgM
-
 export function initDomData() {
-    mapDivData = [];
-    mapSvgData = [[],[],[],[],[],[]];
+    mapDivData = []
+    mapSvgData = [[],[],[],[],[],[]]
 }
 
 export function flagDomData() {
-    keepHash = genHash(8);
-
+    for (let i = 0; i < mapDivData.length; i++) {
+        let currDivData = mapDivData[i]
+        currDivData.op = 'delete'
+    }
 
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < mapSvgData[i].length; i++) {
@@ -30,16 +49,100 @@ export function flagDomData() {
     }
 }
 
+export const updateMapDivData = ( nodeId, params ) => {
+    const divId = `${nodeId}_div`
+    let el = mapDivData.find(el => el.divId === divId)
+    if (el) {
+        if (JSON.stringify(el.params) === JSON.stringify(params)) {
+            el.op = 'keep'
+        } else {
+            el.op = 'update'
+            el.params = JSON.parse(JSON.stringify(params)) // probably works, but needs check
+        }
+    } else {
+        const op = 'create'
+        mapDivData.push({ divId, params, op })
+    }
+}
+
+export const updateMapSvgData = ( nodeId, name, params ) => {
+    let layer, type
+    switch (name) {
+        case 'branchFill':              layer = 1; type = 'path'; break;
+        case 'nodeFill':                layer = 2; type = 'path'; break;
+        case 'branchBorder':            layer = 3; type = 'path'; break;
+        case 'nodeBorder':              layer = 3; type = 'path'; break;
+        case 'line':                    layer = 3; type = 'path'; break;
+        case 'tableFrame':              layer = 3; type = 'path'; break;
+        case 'tableGrid':               layer = 3; type = 'path'; break;
+        case 'tableCellFrame':          layer = 3; type = 'path'; break;
+        case 'taskLine':                layer = 3; type = 'path'; break;
+        case 'taskCircle0':             layer = 3; type = 'circle'; break;
+        case 'taskCircle1':             layer = 3; type = 'circle'; break;
+        case 'taskCircle2':             layer = 3; type = 'circle'; break;
+        case 'taskCircle3':             layer = 3; type = 'circle'; break;
+        case 'selectionBorder':         layer = 4; type = 'path'; break;
+        case 'selectionBorderTable':    layer = 4; type = 'path'; break;
+    }
+    const svgId = `${nodeId}_svg_${name}`
+    let el = mapSvgData[layer].find(el => el.svgId === svgId)
+    if (el) {
+        if (JSON.stringify(el.params) === JSON.stringify(params)) {
+            el.op = 'keep'
+        } else {
+            el.op = 'update'
+            el.params = JSON.parse(JSON.stringify(params)) // probably works, but needs check
+        }
+    } else {
+        const op = 'create'
+        mapSvgData[layer].push({ svgId, type, params, op })
+    }
+}
+
 export function updateDomData() {
-    for (const nodeId in mapDivData) {
-        if (mapDivData[nodeId].keepHash !== keepHash) {
-            let currDiv = document.getElementById(nodeId);
-            currDiv.parentNode.removeChild(currDiv);
-            delete mapDivData[nodeId];
+    for (let i = 0; i < mapDivData.length; i++) {
+        const currDivData = mapDivData[i]
+        const { op, divId, params } = currDivData
+        const { styleData, contentType, content, isEditing } = params
+        switch (op) {
+            case 'create': {
+                let div = document.createElement('div')
+                div.id = divId
+                div.contentEditable = false
+                div.spellcheck = false
+                div.appendChild(document.createTextNode(''))
+                document.getElementById('mapDiv').appendChild(div)
+                for (const style in styleData) {
+                    div.style[style] = styleData[style]
+                }
+                div.innerHTML = renderContent(contentType, content);
+                break
+            }
+            case 'update': {
+                let div = document.getElementById(divId)
+                if (div) {
+                    for (const style in styleData) {
+                        if (styleData[style] !== styleData[style]) { // vs old HOW???
+                            div.style[style] = styleData[style]
+                        }
+                    }
+                    if (!isEditing) {
+                        if ((contentType !== contentType) || // vs old HOW???
+                            (content !== content)) {
+                            div.innerHTML = renderContent(contentType, content);
+                        }
+                    }
+                }
+                break
+            }
+            case 'delete': {
+                let currDiv = document.getElementById(nodeId);
+                currDiv.parentNode.removeChild(currDiv);
+                delete mapDivData[nodeId];
+                break
+            }
         }
     }
-
-    // console.log(mapSvgData)
 
     for (let i = 0; i < 6; i++) {
         for (let j = mapSvgData[i].length - 1; j >= 0; j--) {
@@ -47,8 +150,8 @@ export function updateDomData() {
             const { svgId, type, params, op } = currSvgData
             switch (op) {
                 case 'create': {
-                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type);
-                    svgElement.setAttribute("id", svgId);
+                    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type)
+                    svgElement.setAttribute("id", svgId)
                     switch (type) {
                         case 'path': {
                             const {path, fill, stroke, strokeWidth, preventTransition} = params
@@ -70,7 +173,7 @@ export function updateDomData() {
                                 svgElementAnimate.setAttribute("keyTimes", "0;1")
                                 svgElement.appendChild(svgElementAnimate)
                             }
-                            break;
+                            break
                         }
                         case 'circle': {
                             const {cx, cy, r, fill} = params
@@ -80,7 +183,7 @@ export function updateDomData() {
                             svgElement.setAttribute("fill", fill)
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke")
                             svgElement.style.transition = '0.5s ease-out'
-                            break;
+                            break
                         }
                         case 'rect': {
                             const {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = params
@@ -95,7 +198,7 @@ export function updateDomData() {
                             svgElement.setAttribute("stroke", checkSvgField(stroke))
                             svgElement.setAttribute("stroke-width", strokeWidth)
                             svgElement.style.transition = preventTransition ? '' : '0.5s ease-out'
-                            break;
+                            break
                         }
                     }
                     let parentG = document.getElementById('layer' + i)
@@ -118,23 +221,23 @@ export function updateDomData() {
                                     svgElement.lastChild.setAttribute("to", path)
                                     svgElement.lastChild.beginElement()
                                 }
-                                break;
+                                break
                             }
                             case 'circle': {
                                 let { cx, cy, r, fill } = params
-                                svgElement.setAttribute("cx", cx);
-                                svgElement.setAttribute("cy", cy);
-                                svgElement.setAttribute("r", r);
-                                svgElement.setAttribute("fill", fill);
-                                break;
+                                svgElement.setAttribute("cx", cx)
+                                svgElement.setAttribute("cy", cy)
+                                svgElement.setAttribute("r", r)
+                                svgElement.setAttribute("fill", fill)
+                                break
                             }
                             case 'rect': {
                                 let { x, y, width, height } = params
-                                svgElement.setAttribute("x", x);
-                                svgElement.setAttribute("y", y);
-                                svgElement.setAttribute("width", width);
-                                svgElement.setAttribute("height", height);
-                                break;
+                                svgElement.setAttribute("x", x)
+                                svgElement.setAttribute("y", y)
+                                svgElement.setAttribute("width", width)
+                                svgElement.setAttribute("height", height)
+                                break
                             }
                         }
                     }
