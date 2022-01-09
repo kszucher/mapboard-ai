@@ -110,7 +110,7 @@ export const updateMapSvgData = ( nodeId, name, params ) => {
 }
 
 export function updateDomData() {
-    for (let i = 0; i < mapDivData.length; i++) {
+    for (let i = mapDivData.length - 1; i >=0; i--) {
         const currDivData = mapDivData[i]
         const { op, divId, params } = currDivData
         const { contentType, content, styleData, shouldInnerHTMLUpdate, shouldStyleUpdate } = params
@@ -143,15 +143,13 @@ export function updateDomData() {
                 break
             }
             case 'delete': {
-                // TODO
-                let currDiv = document.getElementById(nodeId);
+                let currDiv = document.getElementById(divId);
                 currDiv.parentNode.removeChild(currDiv);
-                delete mapDivData[nodeId];
+                delete mapDivData[i];
                 break
             }
         }
     }
-
     for (let i = 0; i < 6; i++) {
         for (let j = mapSvgData[i].length - 1; j >= 0; j--) {
             const currSvgData = mapSvgData[i][j]
@@ -253,11 +251,8 @@ export function updateDomData() {
                 }
                 case 'delete': {
                     let svgElement = document.getElementById(svgId)
-
-                    // console.log('delete', svgId)
-
                     svgElement.parentNode.removeChild(svgElement)
-                    mapSvgData[i].splice(j, 1) // probably this does the job??
+                    mapSvgData[i].splice(j, 1)
                     break
                 }
             }

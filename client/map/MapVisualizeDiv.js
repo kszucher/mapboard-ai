@@ -60,21 +60,21 @@ export const mapVisualizeDiv = {
         if (cm.type === 'struct' && !cm.hasCell) {
             const { nodeId, contentType, content, path, isEditing } = cm
             let styleData = {
-                left:                   1 + cm.nodeStartX + 'px',
-                top:                    1 + cm.nodeY - cm.selfH / 2 + 'px',
-                minWidth:               (m.density === 'large'?  0 : -3) + cm.selfW - m.padding - 2  + 'px',
-                minHeight:              (m.density === 'large'? -2 : -1) + cm.selfH - m.padding      + 'px',
-                paddingLeft:            (m.density === 'large'?  0 :  3) +            m.padding - 2  + 'px',
-                paddingTop:             (m.density === 'large'?  0 :  0) +            m.padding - 2  + 'px',
-                position:               'absolute',
-                fontSize:               cm.sTextFontSize + 'px',
-                fontFamily:             'Roboto',
-                textDecoration:         cm.linkType !== "" ? "underline" : "",
-                cursor:                 'default',
-                color:                  cm.sTextColor,
-                transition: 'all 0.5s',
-                transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.58,1.0)',
-                // transitionProperty:     'left, top, background-color',
+                left:                       1 + cm.nodeStartX + 'px',
+                top:                        1 + cm.nodeY - cm.selfH / 2 + 'px',
+                minWidth:                   (m.density === 'large'?  0 : -3) + cm.selfW - m.padding - 2  + 'px',
+                minHeight:                  (m.density === 'large'? -2 : -1) + cm.selfH - m.padding      + 'px',
+                paddingLeft:                (m.density === 'large'?  0 :  3) +            m.padding - 2  + 'px',
+                paddingTop:                 (m.density === 'large'?  0 :  0) +            m.padding - 2  + 'px',
+                position:                   'absolute',
+                fontSize:                   cm.sTextFontSize + 'px',
+                fontFamily:                 'Roboto',
+                textDecoration:             cm.linkType !== "" ? "underline" : "",
+                cursor:                     'default',
+                color:                      cm.sTextColor,
+                transition:                 'all 0.5s',
+                transitionTimingFunction:   'cubic-bezier(0.0,0.0,0.58,1.0)',
+                // transitionProperty:         'left, top, background-color',
             }
             updateMapDivData(nodeId, contentType, content, path, isEditing, styleData)
         }
