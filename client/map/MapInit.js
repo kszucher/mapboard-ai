@@ -1,5 +1,5 @@
 import {mapProps, nodeProps} from "../core/DefaultProps"
-import {copy, shallowCopy} from "../core/Utils"
+import { copy, genHash, shallowCopy } from '../core/Utils'
 
 export const mapInit = {
     start: (m, cr) => {
@@ -27,7 +27,11 @@ export const mapInit = {
     iterate: (m, cm) => {
         for (const prop in nodeProps.saveAlways) {
             if (!cm.hasOwnProperty(prop)) {
-                cm[prop] = copy(nodeProps.saveAlways[prop]);
+                if (prop === 'nodeId') {
+                    cm[prop] = 'node' + genHash(8)
+                } else {
+                    cm[prop] = copy(nodeProps.saveAlways[prop]);
+                }
             }
         }
         for (const prop in nodeProps.saveOptional) {

@@ -40,7 +40,7 @@ export let nodeProps = {
         d: [],
         s: [],
         c: [[]],
-        nodeId: '',
+        nodeId: undefined,
     },
     saveOptional: {
         contentType: 'text',

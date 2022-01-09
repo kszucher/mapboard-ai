@@ -79,9 +79,9 @@ export const mapVisualizeDiv = {
             let div;
             if (!mapDivData.hasOwnProperty(cm.nodeId) ||
                 (mapDivData.hasOwnProperty(cm.nodeId) && mapDivData[cm.nodeId].keepHash === keepHash)) {
-                if (cm.nodeId === '') {
-                    cm.nodeId = 'div' + genHash(8);
-                }
+                // if (cm.nodeId === '') {
+                //     cm.nodeId = 'div' + genHash(8);
+                // }
                 mapDivData[cm.nodeId] = {
                     keepHash: '',
                     styleData: {},
