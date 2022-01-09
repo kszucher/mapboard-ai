@@ -30,23 +30,27 @@ const checkSvgField = (field) => {
     return (field && field !== '') ? field: 'none'
 }
 
-export function initDomData() {
+export const initDomData = () => {
     mapDivData = []
     mapSvgData = [[],[],[],[],[],[]]
 }
 
-export function flagDomData() {
+export const flagDomData = () => {
     for (let i = 0; i < mapDivData.length; i++) {
         let currDivData = mapDivData[i]
         currDivData.op = 'delete'
     }
-
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < mapSvgData[i].length; i++) {
             let currSvgData = mapSvgData[i][j]
             currSvgData.op = 'delete'
         }
     }
+}
+
+export const getMapDivData  = (nodeId) => {
+    const divId = `${nodeId}_div`
+    return mapDivData.find(el => el.divId === divId)
 }
 
 export const updateMapDivData = ( nodeId, params ) => {
@@ -103,7 +107,7 @@ export function updateDomData() {
     for (let i = 0; i < mapDivData.length; i++) {
         const currDivData = mapDivData[i]
         const { op, divId, params } = currDivData
-        const { styleData, contentType, content, isEditing } = params
+        const { innerHTMLShouldUpdate, contentType, content, styleShouldUpdate, styleData } = params
         switch (op) {
             case 'create': {
                 let div = document.createElement('div')
@@ -115,21 +119,18 @@ export function updateDomData() {
                 for (const style in styleData) {
                     div.style[style] = styleData[style]
                 }
-                div.innerHTML = renderContent(contentType, content);
+                div.innerHTML = renderContent(contentType, content)
                 break
             }
             case 'update': {
                 let div = document.getElementById(divId)
                 if (div) {
-                    for (const style in styleData) {
-                        if (styleData[style] !== styleData[style]) { // vs old HOW???
-                            div.style[style] = styleData[style]
-                        }
+                    if (innerHTMLShouldUpdate) {
+                        div.innerHTML = renderContent(contentType, content);
                     }
-                    if (!isEditing) {
-                        if ((contentType !== contentType) || // vs old HOW???
-                            (content !== content)) {
-                            div.innerHTML = renderContent(contentType, content);
+                    for (const style in styleData) {
+                        if (styleShouldUpdate[style]) {
+                            div.style[style] = styleData[style]
                         }
                     }
                 }
