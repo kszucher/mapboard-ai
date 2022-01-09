@@ -87,7 +87,7 @@ export const mapVisualizeDiv = {
                     shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
                 }
             }
-            let params = { innerHTMLShouldUpdate: shouldInnerHTMLUpdate, contentType, content, shouldStyleUpdate, styleData, path }
+            let params = { shouldInnerHTMLUpdate, contentType, content, shouldStyleUpdate, styleData, path }
             updateMapDivData(nodeId, params)
         }
         cm.d.map(i => mapVisualizeDiv.iterate(m, i));
