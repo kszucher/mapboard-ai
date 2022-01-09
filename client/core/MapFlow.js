@@ -10,7 +10,7 @@ import {mapTaskCalc} from "../map/MapTaskCalc";
 import {mapTaskColor} from "../map/MapTaskColor";
 import {mapDeinit} from "../map/MapDeinit";
 import {mapDisassembly} from "../map/MapDisassembly";
-import {initDomHash, updateDomData} from "./DomFlow";
+import {flagDomData, updateDomData} from "./DomFlow";
 import {mapVisualizeDiv} from "../map/MapVisualizeDiv";
 import {mapVisualizeSvg} from "../map/MapVisualizeSvg";
 import {initSelectionState, updateSelectionState} from "./SelectionFlow";
@@ -74,7 +74,7 @@ export function recalc() {
 }
 
 export function redraw() {
-    initDomHash();
+    flagDomData();
     let m = mapref(['m']);
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i]);

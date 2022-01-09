@@ -77,6 +77,8 @@ export const mapVisualizeDiv = {
                 // transitionProperty:     'left, top, background-color',
             };
             let div;
+
+
             if (!mapDivData.hasOwnProperty(cm.nodeId) ||
                 (mapDivData.hasOwnProperty(cm.nodeId) && mapDivData[cm.nodeId].keepHash === keepHash)) {
                 // if (cm.nodeId === '') {
@@ -114,6 +116,8 @@ export const mapVisualizeDiv = {
                     }
                 }
             }
+
+
             let {contentType, content, path} = cm;
             Object.assign(mapDivData[cm.nodeId], {keepHash, styleData, contentType, content, path})
         }
