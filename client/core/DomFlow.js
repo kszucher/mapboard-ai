@@ -41,7 +41,7 @@ export const flagDomData = () => {
         currDivData.op = 'delete'
     }
     for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < mapSvgData[i].length; i++) {
+        for (let j = 0; j < mapSvgData[i].length; j++) {
             let currSvgData = mapSvgData[i][j]
             currSvgData.op = 'delete'
         }
@@ -130,7 +130,6 @@ export function updateDomData() {
                 for (const style in styleData) {
                     div.style[style] = styleData[style]
                 }
-                console.log('create stuff...')
                 div.innerHTML = renderContent(contentType, content)
                 break
             }
