@@ -76,18 +76,18 @@ export const mapVisualizeDiv = {
                 transitionTimingFunction:             'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:     'left, top, background-color',
             }
-            let innerHTMLShouldUpdate = false
-            let styleShouldUpdate = {}
+            let shouldInnerHTMLUpdate = false
+            let shouldStyleUpdate = {}
             const el = getMapDivData(nodeId)
             if (el) {
                 if (!isEditing) {
-                    innerHTMLShouldUpdate = el.params.contentType !== contentType || el.params.content !== content
+                    shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
                 }
                 for (const style in styleData) {
-                    styleShouldUpdate[style] = el.params.styleData[style] !== styleData[style]
+                    shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
                 }
             }
-            let params = { innerHTMLShouldUpdate, contentType, content, styleShouldUpdate, styleData, path }
+            let params = { innerHTMLShouldUpdate: shouldInnerHTMLUpdate, contentType, content, shouldStyleUpdate, styleData, path }
             updateMapDivData(nodeId, params)
         }
         cm.d.map(i => mapVisualizeDiv.iterate(m, i));

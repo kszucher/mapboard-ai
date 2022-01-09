@@ -107,7 +107,7 @@ export function updateDomData() {
     for (let i = 0; i < mapDivData.length; i++) {
         const currDivData = mapDivData[i]
         const { op, divId, params } = currDivData
-        const { innerHTMLShouldUpdate, contentType, content, styleShouldUpdate, styleData } = params
+        const { shouldInnerHTMLUpdate, contentType, content, shouldStyleUpdate, styleData } = params
         switch (op) {
             case 'create': {
                 let div = document.createElement('div')
@@ -125,11 +125,11 @@ export function updateDomData() {
             case 'update': {
                 let div = document.getElementById(divId)
                 if (div) {
-                    if (innerHTMLShouldUpdate) {
+                    if (shouldInnerHTMLUpdate) {
                         div.innerHTML = renderContent(contentType, content);
                     }
                     for (const style in styleData) {
-                        if (styleShouldUpdate[style]) {
+                        if (shouldStyleUpdate[style]) {
                             div.style[style] = styleData[style]
                         }
                     }
