@@ -147,7 +147,8 @@ export function nodeMove(sc, target, key, mode) {
                 let currRef = mapref(structSelectedPathList[i]);
                 let currRefCopy = copy(currRef);
 
-                // TODO csak akkor generaljuk ujra, ha NINCS ilyen --> check somehow
+                // TODO check and only generate if this doesnt exist already
+                // TODO assignment must run each time, this below is static
                 mapChangeProp.start(currRefCopy, {nodeId: 'node' + genHash(8)}, '');
 
                 clipboard.splice(0, 0, currRefCopy);

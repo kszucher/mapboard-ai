@@ -480,6 +480,7 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'setTaskStatus': {
+            // TODO instead of storing path data in svg data, do a recursive lookup for a match
             let cm = mapref(mapSvgData[payload.nodeId.slice(0,-1)].path);
             cm.taskStatus = payload.taskStatus;
             cm.taskStatusInherited = -1;
