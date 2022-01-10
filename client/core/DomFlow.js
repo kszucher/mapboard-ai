@@ -213,7 +213,7 @@ export function updateDomData() {
                 }
                 case 'update': {
                     let svgElement = document.getElementById(svgId)
-                    if (svgElement) { // this is used for handling the situation where it changes before even created
+                    if (svgElement) {
                         switch (type) {
                             case 'path': {
                                 const { path, fill, stroke, strokeWidth } = params
