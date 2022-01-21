@@ -1,3 +1,5 @@
+import katex from 'katex/dist/katex.mjs'
+
 let colorMode = 'light';
 
 const COLOR_LIGHT = {
