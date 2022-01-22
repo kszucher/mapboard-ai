@@ -83,13 +83,13 @@ export function WindowListeners() {
         let m = mapref(['m']);
         m.selectionRect = [];
         [fromX, fromY] = getCoords(e);
-        let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY);
+        let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY); // TODO multi r rethink
         if (lastOverPath.length) {
             isNodeClicked = true;
             let m = mapref(['m']);
             m.deepestSelectablePath = copy(lastOverPath);
             if (m.deepestSelectablePath.length === 4) {
-                m.deepestSelectablePath = ['r', 0]; // TODO use ['g']
+                m.deepestSelectablePath = ['r', 0]; // TODO multi r rethink
             }
         }
         return isNodeClicked
@@ -199,7 +199,7 @@ export function WindowListeners() {
                         toX < lastSelected.nodeEndX &&
                         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-                        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY);
+                        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY); // TODO multi r rethink
                         if (lastNearestPath.length > 2) {
                             m.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
@@ -238,7 +238,7 @@ export function WindowListeners() {
                     let width = Math.abs(toX - fromX);
                     let height = Math.abs(toY - fromY);
                     m.selectionRect = [startX, startY, width, height];
-                    mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height);
+                    mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height); // TODO multi r rethink
                     recalc();
                     redraw();
                 }

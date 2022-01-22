@@ -237,7 +237,7 @@ function nodeReducer(action, payload) {
         }
         case 'select_R': {
             clearSelection();
-            let cr = mapref(['r', 0]);
+            let cr = mapref(['r', 0]); // TODO multi r rethink
             cr.selected = 1;
             break;
         }
