@@ -20,7 +20,9 @@ export function CommandTexts () {
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
-    // TODO: put these all into the global state, and each one of them will trigger a useEffect in WindowListeners
+    // TODO make an object inside the state and put cm related stuff there,
+    //  which is a subset of a cm property which is being modified when using checkPop(dispatch),
+    //  which is triggered here also and this should trigger useEffects inside mapFlow, so redraw is only used there
     const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
     const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
