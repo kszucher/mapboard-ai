@@ -6,11 +6,11 @@ export const mapVisualizeSvg = {
         let mapSvgOuter = document.getElementById('mapSvgOuter');
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)';
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)';
+        createMapSvgElementData(m)
         mapVisualizeSvg.iterate(m, cr);
     },
 
     iterate: (m, cm) => {
-        // createMapSvgElementData(m, cm)
         createNodeSvgElementData(m, cm)
         cm.d.map(i => mapVisualizeSvg.iterate(m, i));
         cm.s.map(i => mapVisualizeSvg.iterate(m, i));

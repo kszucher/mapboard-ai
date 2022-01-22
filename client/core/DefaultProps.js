@@ -3,6 +3,7 @@ import {filteredObj} from "./Utils";
 export let mapProps = {
     saveAlways: {
         path: [],
+        nodeId: undefined
     },
     saveOptional: {
         alignment: 'adaptive',

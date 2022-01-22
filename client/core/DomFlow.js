@@ -68,21 +68,25 @@ export const updateMapDivData = ( nodeId, contentType, content, path, isEditing,
 export const updateMapSvgData = ( nodeId, name, params ) => {
     let layer, type
     switch (name) {
-        case 'branchFill':              layer = 1; type = 'path'; break;
-        case 'nodeFill':                layer = 2; type = 'path'; break;
-        case 'branchBorder':            layer = 3; type = 'path'; break;
-        case 'nodeBorder':              layer = 3; type = 'path'; break;
-        case 'line':                    layer = 3; type = 'path'; break;
-        case 'tableFrame':              layer = 3; type = 'path'; break;
-        case 'tableGrid':               layer = 3; type = 'path'; break;
-        case 'tableCellFrame':          layer = 3; type = 'path'; break;
-        case 'taskLine':                layer = 3; type = 'path'; break;
-        case 'taskCircle0':             layer = 3; type = 'circle'; break;
-        case 'taskCircle1':             layer = 3; type = 'circle'; break;
-        case 'taskCircle2':             layer = 3; type = 'circle'; break;
-        case 'taskCircle3':             layer = 3; type = 'circle'; break;
-        case 'selectionBorder':         layer = 4; type = 'path'; break;
-        case 'selectionBorderTable':    layer = 4; type = 'path'; break;
+        case 'backgroundRect':          layer = 0; type = 'rect'; break
+        case 'moveLine':                layer = 5; type = 'path'; break
+        case 'moveRect':                layer = 5; type = 'rect'; break
+        case 'selectionRect':           layer = 5; type = 'rect'; break
+        case 'branchFill':              layer = 1; type = 'path'; break
+        case 'nodeFill':                layer = 2; type = 'path'; break
+        case 'branchBorder':            layer = 3; type = 'path'; break
+        case 'nodeBorder':              layer = 3; type = 'path'; break
+        case 'line':                    layer = 3; type = 'path'; break
+        case 'tableFrame':              layer = 3; type = 'path'; break
+        case 'tableGrid':               layer = 3; type = 'path'; break
+        case 'tableCellFrame':          layer = 3; type = 'path'; break
+        case 'taskLine':                layer = 3; type = 'path'; break
+        case 'taskCircle0':             layer = 3; type = 'circle'; break
+        case 'taskCircle1':             layer = 3; type = 'circle'; break
+        case 'taskCircle2':             layer = 3; type = 'circle'; break
+        case 'taskCircle3':             layer = 3; type = 'circle'; break
+        case 'selectionBorder':         layer = 4; type = 'path'; break
+        case 'selectionBorderTable':    layer = 4; type = 'path'; break
     }
     const svgId = `${nodeId}_svg_${name}`
     let el = mapSvgData[layer].find(el => el.svgId === svgId)

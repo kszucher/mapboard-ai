@@ -5,15 +5,6 @@ import { selectionState } from '../core/SelectionFlow'
 import { mapref } from '../core/MapFlow'
 import { updateMapSvgData } from '../core/DomFlow'
 
-const svgElementNameList = [
-    ['backgroundRect'],
-    ['branchFill'],
-    ['nodeFill'],
-    ['line', 'branchBorder', 'nodeBorder', 'tableFrame', 'tableGrid', 'tableCellFrame', 'taskLine', 'taskCircle0', 'taskCircle1', 'taskCircle2', 'taskCircle3'],
-    ['selectionBorder', 'selectionBorderTable'],
-    ['moveLine', 'moveRect', 'selectionRect'],
-];
-
 export const createNodeSvgElementData = (m, cm) => {
     const {nodeId} = cm
     const conditions = resolveConditions(cm);

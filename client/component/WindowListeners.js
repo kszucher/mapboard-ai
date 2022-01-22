@@ -80,10 +80,10 @@ export function WindowListeners() {
 
     const checkNodeClicked = (e) => {
         let isNodeClicked = false;
-        let cr = mapref(['r', 0]); // TODO use ['g']
-        cr.selectionRect = [];
+        let m = mapref(['m']);
+        m.selectionRect = [];
         [fromX, fromY] = getCoords(e);
-        let lastOverPath = mapFindOverPoint.start(cr, fromX, fromY);
+        let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY);
         if (lastOverPath.length) {
             isNodeClicked = true;
             let m = mapref(['m']);
@@ -189,23 +189,23 @@ export function WindowListeners() {
             if (which === 1) {
                 let m = mapref(['m']);
                 if (isNodeClicked) {
-                    let cr = mapref(['r', 0]); // TODO use ['g']
+                    let m = mapref(['m']);
                     let [toX, toY] = getCoords(e);
                     m.moveTargetPath = [];
-                    cr.moveData = [];
+                    m.moveData = [];
                     let lastSelectedPath = selectionState.structSelectedPathList[0];
                     let lastSelected = mapref(lastSelectedPath);
                     if (!(lastSelected.nodeStartX < toX &&
                         toX < lastSelected.nodeEndX &&
                         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-                        let lastNearestPath = mapFindNearest.start(cr, toX, toY);
+                        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY);
                         if (lastNearestPath.length > 2) {
                             m.moveTargetPath = copy(lastNearestPath);
                             let lastFound = mapref(lastNearestPath);
                             fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX;
                             fromY = lastFound.nodeY;
-                            cr.moveData = [fromX, fromY, toX, toY];
+                            m.moveData = [fromX, fromY, toX, toY];
                             if (lastFound.s.length === 0) {
                                 m.moveTargetIndex = 0;
                             } else {
@@ -231,14 +231,14 @@ export function WindowListeners() {
                     redraw();
                 } else if (isTaskClicked) {
                 } else {
-                    let cr = mapref(['r', 0]); // TODO use ['g']
+                    let m = mapref(['m']);
                     let [toX, toY] = getCoords(e);
                     let startX = fromX < toX ? fromX : toX;
                     let startY = fromY < toY ? fromY : toY;
                     let width = Math.abs(toX - fromX);
                     let height = Math.abs(toY - fromY);
-                    cr.selectionRect = [startX, startY, width, height];
-                    mapFindOverRectangle.start(cr, startX, startY, width, height);
+                    m.selectionRect = [startX, startY, width, height];
+                    mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height);
                     recalc();
                     redraw();
                 }
@@ -260,16 +260,15 @@ export function WindowListeners() {
                 if (isNodeClicked) {
                     let m = mapref(['m']);
                     if (m.moveTargetPath.length) {
-                        let cr = mapref(['r', 0]) // TODO use ['g']
-                        cr.moveData = []
+                        m.moveData = []
                         m.shouldCenter = true // outside push - checkPop?
                         nodeDispatch('moveSelection')
                         redraw()
                     }
                 } else if (isTaskClicked) {
                 } else {
-                    let cr = mapref(['r', 0]) // TODO use ['g']
-                    cr.selectionRect = []
+                    let m = mapref(['m']);
+                    m.selectionRect = []
                     if (selectionState.structSelectedPathList.length === 0 &&
                         selectionState.cellSelectedPathList.length === 0) {
                         nodeDispatch('select_R')
