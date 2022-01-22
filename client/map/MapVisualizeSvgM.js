@@ -1,5 +1,6 @@
 import { COLORS } from '../core/Utils'
 import { updateMapSvgData } from '../core/DomFlow'
+import { getBezierPath } from './MapVisualizeSvgUtils'
 
 export const createMapSvgElementData = (m) => {
     const {nodeId} = m
@@ -26,7 +27,7 @@ export const createMapSvgElementData = (m) => {
         x2 = m.moveData[2];
         y2 = m.moveData[3];
         updateMapSvgData(nodeId, 'moveLine', {
-            path: `M${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`,
+            path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
             stroke: '#5f0a87',
             strokeWidth: 1,
             preventTransition: 1,

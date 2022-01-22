@@ -9,7 +9,7 @@ function getCoordsInLine (a, b, dt) {
     return [xt, yt]
 }
 
-function getBezierPath (c, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]) {
+export function getBezierPath (c, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]) {
     return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
 }
 
