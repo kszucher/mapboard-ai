@@ -107,18 +107,17 @@ export const mapVisualizeSvg = {
             fill: COLORS.MAP_BACKGROUND,
         })
         if (m.moveData?.length) {
-            let x1, y1, c1x, c1y, c2x, c2y, x2, y2
-            let deltaX = m.moveData[2] - m.moveData[0]
-            let deltaY = m.moveData[3] - m.moveData[1]
-            // the elegant solution would be the inheritance of the target line type
-            x1 = m.moveData[0]
-            y1 = m.moveData[1]
-            c1x = m.moveData[0] + deltaX / 4
-            c1y = m.moveData[1]
-            c2x = m.moveData[0] + deltaX / 4
-            c2y = m.moveData[1] + deltaY
-            x2 = m.moveData[2]
-            y2 = m.moveData[3]
+            // TODO use parent bezier style
+            const deltaX = m.moveData[2] - m.moveData[0]
+            const deltaY = m.moveData[3] - m.moveData[1]
+            const x1 = m.moveData[0]
+            const y1 = m.moveData[1]
+            const c1x = m.moveData[0] + deltaX / 4
+            const c1y = m.moveData[1]
+            const c2x = m.moveData[0] + deltaX / 4
+            const c2y = m.moveData[1] + deltaY
+            const x2 = m.moveData[2]
+            const y2 = m.moveData[3]
             updateMapSvgData(nodeId, 'moveLine', {
                 path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
                 stroke: '#5f0a87',
@@ -126,8 +125,8 @@ export const mapVisualizeSvg = {
                 preventTransition: 1,
             })
             updateMapSvgData(nodeId, 'moveRect', {
-                x: m.moveData[2] - 10,
-                y: m.moveData[3] - 10,
+                x: x2 - 10,
+                y: y2 - 10,
                 width: 20,
                 height: 20,
                 rx: 8,
