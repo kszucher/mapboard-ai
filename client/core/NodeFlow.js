@@ -7,7 +7,7 @@ import {mapChangeProp} from "../map/MapChangeProp";
 import {getAllFormatDefault, getFormatDefault} from "./DefaultProps";
 import {selectionState} from "./SelectionFlow";
 import {mapref, pathMerge, recalc, redraw} from "./MapFlow";
-import {mapSvgData} from "./DomFlow";
+import { mapFindById } from '../map/MapFindById'
 
 let mutationObserver;
 export let isEditing = 0;
@@ -480,8 +480,8 @@ function nodeReducer(action, payload) {
             break;
         }
         case 'setTaskStatus': {
-            // TODO instead of storing path data in svg data, do a recursive lookup for a match
-            let cm = mapref(mapSvgData[payload.nodeId.slice(0,-1)].path);
+            let m = mapref(['m']);
+            let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId)) // TODO multi r rethink
             cm.taskStatus = payload.taskStatus;
             cm.taskStatusInherited = -1;
             break;

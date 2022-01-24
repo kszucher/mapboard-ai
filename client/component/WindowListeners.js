@@ -100,7 +100,7 @@ export function WindowListeners() {
         if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
             for (const pathItem of path) {
                 if (pathItem.id) {
-                    if (pathItem.id.substring(0, 10) === 'taskCircle') {
+                    if (pathItem.id.substring(17, 27) === 'taskCircle') {
                         isTaskClicked = true;
                         break;
                     }
@@ -155,8 +155,8 @@ export function WindowListeners() {
                 }
             } else if (isTaskClicked) {
                 nodeDispatch('setTaskStatus', {
-                    taskStatus: parseInt(path[0].id.charAt(10), 10),
-                    nodeId: path[1].id
+                    taskStatus: parseInt(path[0].id.charAt(27), 10),
+                    nodeId: path[0].id.substring(0, 12)
                 });
                 redraw()
             } else {
