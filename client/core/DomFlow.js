@@ -1,8 +1,8 @@
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
 
-export let mapDivData = [];
-export let mapSvgData = [[],[],[],[],[],[]];
+let mapDivData = [];
+let mapSvgData = [[],[],[],[],[],[]];
 
 const renderContent = (contentType, content) => {
     switch (contentType) {
