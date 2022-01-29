@@ -15,7 +15,7 @@ export let isEditing = 0;
 function clearSelection() {
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i]);
-        mapChangeProp.start(cr, {selected: 0, selection: 's'}, '', ()=>{}, false);
+        mapChangeProp.start(cr, {selected: 0, selection: 's'}, '', false);
     }
 }
 
@@ -30,7 +30,7 @@ function nodeReducer(action, payload) {
             m.shouldCenter = true;
             for (let i = 0; i < mapref(['r']).length; i++) {
                 let cr = mapref(['r', i]);
-                mapChangeProp.start(cr, {isDimAssigned: 0}, '', ()=>{}, false);
+                mapChangeProp.start(cr, {isDimAssigned: 0}, '', false);
             }
             break;
         }
@@ -89,7 +89,7 @@ function nodeReducer(action, payload) {
         case 'select_all': {
             for (let i = 0; i < mapref(['r']).length; i++) {
                 let cr = mapref(['r', i]);
-                mapChangeProp.start(cr, {selected: 1}, 'struct', ()=>{}, false);
+                mapChangeProp.start(cr, {selected: 1}, 'struct', false);
             }
             break;
         }
@@ -351,8 +351,8 @@ function nodeReducer(action, payload) {
         case 'resetAll': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
-                mapChangeProp.start(cm, getAllFormatDefault(), '', ()=>{}, false);
-                mapChangeProp.start(cm, {isDimAssigned: 0}, '', ()=>{}, false);
+                mapChangeProp.start(cm, getAllFormatDefault(), '', false);
+                mapChangeProp.start(cm, {isDimAssigned: 0}, '', false);
             }
             break;
         }
@@ -360,9 +360,9 @@ function nodeReducer(action, payload) {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i]);
                 let formatModeFilter = payload.formatMode + (['fill', 'border'].includes(payload.formatMode) ? '_' + cm.selection : '');
-                mapChangeProp.start(cm, getFormatDefault(formatModeFilter), '', ()=>{}, false);
+                mapChangeProp.start(cm, getFormatDefault(formatModeFilter), '', false);
                 if (payload.formatMode === 'text') {
-                    mapChangeProp.start(cm, {isDimAssigned: 0}, '', ()=>{}, false);
+                    mapChangeProp.start(cm, {isDimAssigned: 0}, '', false);
                 }
             }
             break;
@@ -374,7 +374,7 @@ function nodeReducer(action, payload) {
                 if (cm.selection === 's') {
                     cm.lineWidth = lineWidth;
                 } else {
-                    mapChangeProp.start(cm, {lineWidth}, 'line', ()=>{}, true);
+                    mapChangeProp.start(cm, {lineWidth}, 'line', true);
                 }
             }
             break;
@@ -386,7 +386,7 @@ function nodeReducer(action, payload) {
                 if (cm.selection === 's') {
                     cm.lineType = lineType;
                 } else {
-                    mapChangeProp.start(cm, {lineType}, 'line', ()=>{}, true);
+                    mapChangeProp.start(cm, {lineType}, 'line', true);
                 }
             }
             break;
@@ -411,7 +411,7 @@ function nodeReducer(action, payload) {
                 if (cm.selection === 's') {
                     Object.assign(cm, {sTextFontSize, isDimAssigned});
                 } else {
-                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned}, 'text', ()=>{}, true);
+                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned}, 'text', true);
                 }
             }
             break;
@@ -441,7 +441,7 @@ function nodeReducer(action, payload) {
                             lineColor: 'line',
                             sTextColor: 'text',
                         }[field];
-                        mapChangeProp.start(cm, {[field]: payload.color}, scope, ()=>{}, true);
+                        mapChangeProp.start(cm, {[field]: payload.color}, scope, true);
                     }
                 }
             }
@@ -488,12 +488,12 @@ function nodeReducer(action, payload) {
         }
         case 'taskCheckReset': {
             if (lm.task) {
-                mapChangeProp.start(lm, {taskStatus: -1}, '', ()=>{}, false);
+                mapChangeProp.start(lm, {taskStatus: -1}, '', false);
             }
             break;
         }
         case 'taskSwitch': {
-            mapChangeProp.start(lm, {task: !lm.task}, '', ()=>{}, false);
+            mapChangeProp.start(lm, {task: !lm.task}, '', false);
             break;
         }
         // NODE EDIT ---------------------------------------------------------------------------------------------------
