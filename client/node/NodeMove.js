@@ -168,7 +168,9 @@ export function nodeMove(sc, target, key, mode) {
                 currPasteRefCopy,
                 ()=>{return {nodeId: 'node' + genHash(8)}},
                 '',
-                ()=>{},
+                ()=>{
+
+                },
                 false
             )
             moveTarget.s.splice(moveTarget.s.length + i, 0, currPasteRefCopy);

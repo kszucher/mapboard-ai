@@ -10,7 +10,7 @@ export const mapChangeProp = {
             skip = false;
         } else {
             if (scope === '' || resolveScope(cm)[scope]) {
-                Object.assign(cm, assignment)
+                Object.assign(cm, typeof assignment === 'function' ? assignment() : assignment)
             }
         }
         cm.d.map(i => mapChangeProp.iterate(i, assignment, scope, check, skip));
