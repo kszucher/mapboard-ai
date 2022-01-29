@@ -146,11 +146,6 @@ export function nodeMove(sc, target, key, mode) {
             for (let i = structSelectedPathList.length - 1; i > -1; i--) {
                 let currRef = mapref(structSelectedPathList[i]);
                 let currRefCopy = copy(currRef);
-
-                // TODO check and only generate if this doesnt exist already
-                // TODO assignment must run each time, this below is static
-                mapChangeProp.start(currRefCopy, {nodeId: 'node' + genHash(8)}, '');
-
                 clipboard.splice(0, 0, currRefCopy);
             }
             navigator.permissions.query({name: "clipboard-write"}).then(result => {
@@ -168,7 +163,10 @@ export function nodeMove(sc, target, key, mode) {
     } else if (target === 'clipboard2struct') {
         let moveTarget = lm.isRoot? lm.d[0] : lm;
         for (let i = 0; i < clipboard.length; i++) {
-            moveTarget.s.splice(moveTarget.s.length + i, 0, copy(clipboard[i]));
+            let currPasteRefCopy = copy(clipboard[i])
+            // do inner check and go deep OK
+            mapChangeProp.start(currPasteRefCopy, {nodeId: 'node' + genHash(8)}, '')
+            moveTarget.s.splice(moveTarget.s.length + i, 0, currPasteRefCopy);
         }
     }
 }
