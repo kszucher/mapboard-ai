@@ -1,6 +1,6 @@
 import { updateMapSvgData } from '../core/DomFlow'
 import { COLORS, isOdd } from '../core/Utils'
-import { resolveConditions } from '../core/DefaultProps'
+import { resolveScope } from '../core/DefaultProps'
 import { selectionState } from '../core/SelectionFlow'
 import { mapref } from '../core/MapFlow'
 
@@ -157,7 +157,7 @@ export const mapVisualizeSvg = {
 
     iterate: (m, cm) => {
         const {nodeId} = cm
-        const conditions = resolveConditions(cm)
+        const conditions = resolveScope(cm)
         const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
         const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
         const nsx = cm.path[3] ? cm.nodeEndX : cm.nodeStartX

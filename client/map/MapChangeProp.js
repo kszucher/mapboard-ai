@@ -1,20 +1,20 @@
-import {resolveConditions} from "../core/DefaultProps";
+import {resolveScope} from "../core/DefaultProps";
 
 export const mapChangeProp = {
-    start: (cm, assignment, cond, skip) => {
-        mapChangeProp.iterate(cm, assignment, cond, skip);
+    start: (cm, assignment, scope, skip) => {
+        mapChangeProp.iterate(cm, assignment, scope, skip);
     },
 
-    iterate: (cm, assignment, cond, skip) => {
+    iterate: (cm, assignment, scope, skip) => {
         if (skip) {
             skip = false;
         } else {
-            if (cond === '' || resolveConditions(cm)[cond]) {
+            if (scope === '' || resolveScope(cm)[scope]) {
                 Object.assign(cm, assignment)
             }
         }
-        cm.d.map(i => mapChangeProp.iterate(i, assignment, cond, skip));
-        cm.s.map(i => mapChangeProp.iterate(i, assignment, cond, skip));
-        cm.c.map(i => i.map(j => mapChangeProp.iterate(j, assignment, cond, skip)));
+        cm.d.map(i => mapChangeProp.iterate(i, assignment, scope, skip));
+        cm.s.map(i => mapChangeProp.iterate(i, assignment, scope, skip));
+        cm.c.map(i => i.map(j => mapChangeProp.iterate(j, assignment, scope, skip)));
     }
 };

@@ -146,7 +146,7 @@ export const getAllFormatDefault = () => {
     return filteredObj(nodeProps.saveOptional, [].concat(...Object.values(formatParams)));
 }
 
-export const resolveConditions = (cm) => {
+export const resolveScope = (cm) => {
     return {
         struct:
             cm.type === 'struct' &&

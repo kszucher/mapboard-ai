@@ -437,11 +437,11 @@ function nodeReducer(action, payload) {
                     cm[field] = payload.color;
                 } else {
                     if (field !== 'cBorderColor') {
-                        let cond = {
+                        let scope = {
                             lineColor: 'line',
                             sTextColor: 'text',
                         }[field];
-                        mapChangeProp.start(cm, {[field]: payload.color}, cond, true);
+                        mapChangeProp.start(cm, {[field]: payload.color}, scope, true);
                     }
                 }
             }
