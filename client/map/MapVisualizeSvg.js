@@ -291,36 +291,37 @@ export const mapVisualizeSvg = {
                 strokeWidth: 1,
             })
             // cell
-            for (let i = 0; i < rowCount; i++) {
-                for (let j = 0; j < colCount; j++) {
-                    if (cm.c[i][j].selected) {
-                        let sx, sy, w, h
-                        let sc = selectionState
-                        if (sc.cellRowSelected) {
-                            sx = nsx
-                            sy = nsy + cm.sumMaxRowHeight[i]
-                            w = cm.selfW
-                            h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
-                        } else if (sc.cellColSelected) {
-                            sx = nsx + dir*cm.sumMaxColWidth[j]
-                            sy = nsy
-                            w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
-                            h = cm.selfH
-                        } else {
-                            sx = nsx + dir*cm.sumMaxColWidth[j]
-                            sy = nsy + cm.sumMaxRowHeight[i]
-                            w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
-                            h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
+            tableLoops:
+                for (let i = 0; i < rowCount; i++) {
+                    for (let j = 0; j < colCount; j++) {
+                        if (cm.c[i][j].selected) {
+                            let sx, sy, w, h
+                            let sc = selectionState
+                            if (sc.cellRowSelected) {
+                                sx = nsx
+                                sy = nsy + cm.sumMaxRowHeight[i]
+                                w = cm.selfW
+                                h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
+                            } else if (sc.cellColSelected) {
+                                sx = nsx + dir*cm.sumMaxColWidth[j]
+                                sy = nsy
+                                w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
+                                h = cm.selfH
+                            } else {
+                                sx = nsx + dir*cm.sumMaxColWidth[j]
+                                sy = nsy + cm.sumMaxRowHeight[i]
+                                w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
+                                h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
+                            }
+                            updateMapSvgData(nodeId, 'tableCellFrame', {
+                                path: getArcPath(sx, sy, w, h, r, dir, 0),
+                                stroke: '#000000',
+                                strokeWidth: 1,
+                            })
+                            break tableLoops
                         }
-                        updateMapSvgData(nodeId, 'tableCellFrame', {
-                            path: getArcPath(sx, sy, w, h, r, dir, 0),
-                            stroke: '#000000',
-                            strokeWidth: 1,
-                        })
-                        break
                     }
                 }
-            }
         }
         if (conditions.task) {
             let {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m
