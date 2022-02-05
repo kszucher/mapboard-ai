@@ -57,7 +57,7 @@ export const updateMapDivData = ( nodeId, contentType, content, path, isEditing,
             el.op = 'keep'
         } else {
             el.op = 'update'
-            el.params = JSON.parse(JSON.stringify(params)) // probably works, but needs check
+            el.params = params
         }
     } else {
         const op = 'create'
@@ -95,7 +95,7 @@ export const updateMapSvgData = ( nodeId, name, params ) => {
             el.op = 'keep'
         } else {
             el.op = 'update'
-            el.params = JSON.parse(JSON.stringify(params)) // probably works, but needs check
+            el.params = params
         }
     } else {
         const op = 'create'
