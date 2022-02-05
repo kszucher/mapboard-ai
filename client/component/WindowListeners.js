@@ -41,8 +41,8 @@ export function WindowListeners() {
     const mapId = useSelector(state => state.mapId)
     const mapSource = useSelector(state => state.mapSource)
     const mapStorage = useSelector(state => state.mapStorage)
-    const frameSelected = useSelector(state => state.frameSelected)
     const frameLen = useSelector(state => state.frameLen)
+    const frameSelected = useSelector(state => state.frameSelected)
     const mapRight = useSelector(state => state.mapRight)
     const pageState = useSelector(state => state.pageState)
     const landingData = useSelector(state => state.landingData)
@@ -470,7 +470,7 @@ export function WindowListeners() {
             mapDispatch('initMapState', { mapStorage });
             redraw();
         }
-    }, [mapId, mapSource, frameSelected, frameLen])
+    }, [mapId, mapSource, frameLen, frameSelected])
 
     useEffect(() => {
         if (pageState === WS) {
