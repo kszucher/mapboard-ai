@@ -1,8 +1,7 @@
 import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
-import { Modal, TextField } from '@material-ui/core'
+import { FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField } from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
-import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 import {COLORS} from "../core/Utils";
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import Button from '@material-ui/core/Button'
@@ -53,12 +52,27 @@ export function Sharing() {
                            value={shareEmail}
                            onChange={setShareEmail}
                 />
-                <StyledRadioButtonGroup
-                    open={true}
-                    valueList={[VIEW, EDIT]}
-                    value={shareAccess}
-                    action={setShareAccess}
-                />
+
+                <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
+                    <FormLabel component="legend">
+                        {'Access'}
+                    </FormLabel>
+                    <RadioGroup
+                        aria-label="my-aria-label"
+                        name="my-name"
+                        value={shareAccess}
+                        onChange={setShareAccess}
+                        row={true}>
+                        {[VIEW, EDIT].map((name, index) =>
+                            <FormControlLabel
+                                value={name}
+                                control={<Radio />}
+                                label={name}
+                                key={index}
+                            />
+                        )}
+                    </RadioGroup>
+                </div>
                 {shareFeedbackMessage !== '' &&
                 <Typography
                     variant="body2"
