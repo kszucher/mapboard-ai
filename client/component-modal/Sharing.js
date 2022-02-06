@@ -2,11 +2,11 @@ import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
 import {Modal} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import StyledButton from "../component-styled/StyledButton";
 import StyledInput from "../component-styled/StyledInput";
 import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 import {COLORS} from "../core/Utils";
 import { MAP_RIGHTS } from '../core/EditorFlow'
+import Button from '@material-ui/core/Button'
 
 export function Sharing() {
     const {VIEW, EDIT} = MAP_RIGHTS
@@ -68,8 +68,18 @@ export function Sharing() {
                     align="center">
                     {shareFeedbackMessage}
                 </Typography>}
-                <StyledButton variant="outlined" onClick={createShare} name={'share'}/>
-                <StyledButton variant="outlined" onClick={closeSharing} name={'close'}/>
+                <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={createShare}
+                    name={'share'}
+                />
+                <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={closeSharing}
+                    name={'close'}
+                />
             </div>
         </Modal>
     )

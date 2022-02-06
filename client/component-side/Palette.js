@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from "react-redux";
-import StyledButton from "../component-styled/StyledButton";
-import {nodeDispatch} from "../core/NodeFlow";
-import {push, checkPop, redraw} from "../core/MapFlow";
+import React, {useState, useEffect} from 'react'
+import {useSelector, useDispatch} from "react-redux"
+import {nodeDispatch} from "../core/NodeFlow"
+import {push, checkPop, redraw} from "../core/MapFlow"
+import Button from '@material-ui/core/Button'
 
 const colorList = [
     ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
@@ -17,7 +17,7 @@ const colorList = [
     ['#B4C2D6', '#BFE3DA', '#F5FCDC', '#FEFFF7', '#C0DDBE', '#f2dede'],
     ['#FFD6DE', '#E8CEE3', '#C7BAE1', '#BBD3EC', '#ECE4C5', '#82c5e2'],
     ['#391F19', '#B68E63', '#F2DFA9', '#E58119', '#746839', '#09415A'],
-];
+]
 
 export function Palette () {
     const formatMode = useSelector(state => state.formatMode)
@@ -26,10 +26,10 @@ export function Palette () {
     const colorFill = useSelector(state => state.colorFill)
     const colorText = useSelector(state => state.colorText)
     const dispatch = useDispatch()
-    const [sel, setSel] = useState({x: 0, y: 0});
+    const [sel, setSel] = useState({x: 0, y: 0})
 
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-    const setColor = (color) => {push(); nodeDispatch('applyColorFromPalette', {formatMode, color}); checkPop(dispatch); redraw()};
+    const setColor = (color) => {push(); nodeDispatch('applyColorFromPalette', {formatMode, color}); checkPop(dispatch); redraw()}
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};
@@ -40,32 +40,32 @@ export function Palette () {
                 }
             }
         }
-        return sel;
-    };
+        return sel
+    }
 
     useEffect(() => {
         switch (formatMode) {
-            case 'line':    setSel(findSel(colorLine)); break;
-            case 'border':  setSel(findSel(colorBorder)); break;
-            case 'fill':    setSel(findSel(colorFill)); break;
-            case 'text':    setSel(findSel(colorText)); break;
+            case 'line':    setSel(findSel(colorLine));     break
+            case 'border':  setSel(findSel(colorBorder));   break
+            case 'fill':    setSel(findSel(colorFill));     break
+            case 'text':    setSel(findSel(colorText));     break
         }
-    }, [formatMode]);
+    }, [formatMode])
 
-    useEffect(() => {if (formatMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine]);
-    useEffect(() => {if (formatMode === 'border' && colorBorder !== '') setSel(findSel(colorBorder))}, [colorBorder]);
-    useEffect(() => {if (formatMode === 'fill'   && colorFill !== '')   setSel(findSel(colorFill))},   [colorFill]);
-    useEffect(() => {if (formatMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText]);
+    useEffect(() => {if (formatMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine])
+    useEffect(() => {if (formatMode === 'border' && colorBorder !== '') setSel(findSel(colorBorder))}, [colorBorder])
+    useEffect(() => {if (formatMode === 'fill'   && colorFill !== '')   setSel(findSel(colorFill))},   [colorFill])
+    useEffect(() => {if (formatMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText])
 
     const handleClick = (i, j) => {
-        setSel({x: i, y: j});
-        setColor(colorList[i][j]);
-    };
+        setSel({x: i, y: j})
+        setColor(colorList[i][j])
+    }
 
-    const o = 32;
-    const r = 12;
-    const xWidth = o * colorList[0].length;
-    const yWidth = o * colorList.length;
+    const o = 32
+    const r = 12
+    const xWidth = o * colorList[0].length
+    const yWidth = o * colorList.length
 
     return (
         <div style={{
@@ -87,26 +87,33 @@ export function Palette () {
             borderRight: 0
         }}>
             <svg viewBox={`0 0 ${xWidth} ${yWidth}`}>
-                {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
-                    <circle
-                        cx={o/2 + j*o}
-                        cy={o/2 + i*o}
-                        r={r}
-                        key={'key' + i*10 + j}
-                        fill={jEl}
-                        stroke={(i === sel.x && j === sel.y) ? '#9040b8' : 'none'}
-                        strokeWidth={"2%"}
-                        onClick={()=>handleClick(i, j)}
-                    />))))}
+                {colorList.map((iEl, i) =>
+                    (iEl.map((jEl, j) => (
+                        <circle
+                            cx={o/2 + j*o}
+                            cy={o/2 + i*o}
+                            r={r}
+                            key={'key' + i*10 + j}
+                            fill={jEl}
+                            stroke={(i === sel.x && j === sel.y) ? '#9040b8' : 'none'}
+                            strokeWidth={"2%"}
+                            onClick={()=>handleClick(i, j)}
+                        />))))}
             </svg>
-            <div style={{
-                display: "flex",
-                flexDirection: 'row',
-                justifyContent: 'center',
-                paddingTop: 12
-            }}>
-                <StyledButton variant='outlined' onClick={closePalette} name={'Close'}/>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    paddingTop: 12
+                }}>
+                <Button
+                    color="primary"
+                    variant='outlined'
+                    onClick={closePalette}
+                    name={'Close'}
+                />
             </div>
         </div>
-    );
+    )
 }

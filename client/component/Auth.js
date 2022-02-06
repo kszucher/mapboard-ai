@@ -2,10 +2,10 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import StyledButton from "../component-styled/StyledButton";
 import StyledInput from "../component-styled/StyledInput";
 import {COLORS} from "../core/Utils";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
+import Button from '@material-ui/core/Button'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -77,12 +77,14 @@ export default function Auth() {
             <Typography component="h1" variant="h5">MapBoard</Typography>
             <Typography component="h1" variant="h6">Private Beta</Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
-                <StyledButton
+                <Button
+                    color="primary"
                     name="SIGN IN"
                     onClick={signInPanel}
                     variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
                 />
-                <StyledButton
+                <Button
+                    color="primary"
                     name="SIGN UP"
                     onClick={signUpPanel}
                     variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
@@ -91,12 +93,14 @@ export default function Auth() {
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                    <StyledButton
+                    <Button
+                        color="primary"
                         onClick={signUpStep1Panel}
                         name="STEP 1"
                         variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
                     />
-                    <StyledButton
+                    <Button
+                        color="primary"
                         onClick={signUpStep2Panel}
                         name="STEP 2"
                         variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
@@ -135,7 +139,8 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_IN &&
-                <StyledButton
+                <Button
+                    color="primary"
                     variant='contained'
                     fullWidth
                     onClick={checkSignIn}
@@ -145,7 +150,8 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_1 &&
-                <StyledButton
+                <Button
+                    color="primary"
                     variant='contained'
                     fullWidth
                     onClick={checkSignUpStep1}
@@ -154,7 +160,8 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_2 &&
-                <StyledButton
+                <Button
+                    color="primary"
                     variant='contained'
                     fullWidth
                     onClick={signUpStep2}
@@ -162,7 +169,13 @@ export default function Auth() {
                     disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
                 />
             }
-            <StyledButton variant='contained' fullWidth onClick={liveDemo} name={'LIVE DEMO'}/>
+            <Button
+                color="primary"
+                variant='contained'
+                fullWidth
+                onClick={liveDemo}
+                name={'LIVE DEMO'}
+            />
             <Typography
                 variant="body2"
                 color="textSecondary"
@@ -175,5 +188,5 @@ export default function Auth() {
                 {'.'}
             </Typography>
         </div>
-    );
+    )
 }

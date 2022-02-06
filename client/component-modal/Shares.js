@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from "react-redux";
 import {Modal} from "@material-ui/core";
-import StyledButton from "../component-styled/StyledButton";
 import {DataGrid} from "@mui/x-data-grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,6 +8,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {COLORS} from "../core/Utils";
+import Button from '@material-ui/core/Button'
 
 export function Shares() {
     const shareDataExport = useSelector(state => state.shareDataExport)
@@ -116,8 +116,18 @@ export function Shares() {
                         disableSelectionOnClick
                         autoHeight={true}/>}
                 </div>
-                <StyledButton variant='outlined' onClick={getShares} name={'refresh'}/>
-                <StyledButton variant='outlined' onClick={closeShares} name={'close'}/>
+                <Button
+                    color="primary"
+                    variant='outlined'
+                    onClick={getShares}
+                    name={'refresh'}
+                />
+                <Button
+                    color="primary"
+                    variant='outlined'
+                    onClick={closeShares}
+                    name={'close'}
+                />
             </div>}
         </Modal>
     )
