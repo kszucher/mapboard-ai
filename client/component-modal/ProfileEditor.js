@@ -42,9 +42,9 @@ export function ProfileEditor() {
                 <Button
                     color="primary"
                     variant="outlined"
-                    onClick={closeProfile}
-                    name={'close'}
-                />
+                    onClick={closeProfile}>
+                    {'CLOSE'}
+                </Button>
             </div>}
         </Modal>
     )

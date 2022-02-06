@@ -71,15 +71,15 @@ export function Sharing() {
                 <Button
                     color="primary"
                     variant="outlined"
-                    onClick={createShare}
-                    name={'share'}
-                />
+                    onClick={createShare}>
+                    {'SHARE'}
+                </Button>
                 <Button
                     color="primary"
                     variant="outlined"
-                    onClick={closeSharing}
-                    name={'close'}
-                />
+                    onClick={closeSharing}>
+                    {'CLOSE'}
+                </Button>
             </div>
         </Modal>
     )

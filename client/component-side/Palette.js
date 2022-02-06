@@ -110,9 +110,9 @@ export function Palette () {
                 <Button
                     color="primary"
                     variant='outlined'
-                    onClick={closePalette}
-                    name={'Close'}
-                />
+                    onClick={closePalette}>
+                    {'CLOSE'}
+                </Button>
             </div>
         </div>
     )

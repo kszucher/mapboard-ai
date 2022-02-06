@@ -74,82 +74,72 @@ export default function Auth() {
                 border: `1px solid ${COLORS.MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
-            <Typography
-                component="h1"
-                variant="h5">
-                MapBoard
+            <Typography component="h1"
+                        variant="h5">
+                {'MapBoard'}
             </Typography>
-            <Typography
-                component="h1"
-                variant="h6">
-                Private Beta
+            <Typography component="h1"
+                        variant="h6">
+                {'Private Beta'}
             </Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
                 <Button color="primary"
-                        name="SIGN IN"
                         onClick={signInPanel}
-                        variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
-                />
+                        variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>
+                    {'SIGN IN'}
+                </Button>
                 <Button color="primary"
-                        name="SIGN UP"
                         onClick={signUpPanel}
-                        variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
-                />
+                        variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>
+                    {'SIGN UP'}
+                </Button>
             </div>
             {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                 <Button color="primary"
                         onClick={signUpStep1Panel}
-                        name="STEP 1"
-                        variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
-                />
+                        variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
+                    {'STEP 1'}
+                </Button>
                 <Button color="primary"
                         onClick={signUpStep2Panel}
-                        name="STEP 2"
-                        variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
-                />
+                        variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
+                    {'STEP 2'}
+                </Button>
             </div>}
             {authPageState === SIGN_IN && <>
                 <StyledInput label="Email"
                              value={email}
-                             onChange={setEmail}
-                />
+                             onChange={setEmail}/>
                 <StyledInput label="Password"
                              value={password}
                              onChange={setPassword}
-                             type="password"
-                />
+                             type="password"/>
             </>}
             {authPageState === SIGN_UP_STEP_1 && <>
                 <StyledInput label="Your First Name"
                              value={name}
                              onChange={setName}
-                             autoFocus
-                />
+                             autoFocus/>
                 <StyledInput label="Email"
                              value={email}
-                             onChange={setEmail}
-                />
+                             onChange={setEmail}/>
                 <StyledInput label="Password"
                              value={password}
-                             onChange={setPassword}
-                />
+                             onChange={setPassword}/>
                 <StyledInput label="Password Again"
                              value={passwordAgain}
-                             onChange={setPasswordAgain}
-                />
+                             onChange={setPasswordAgain}/>
             </>
             }
             {authPageState === SIGN_UP_STEP_2 && <>
                 <StyledInput label="Email"
                              value={email}
-                             onChange={setEmail}
-                />
+                             onChange={setEmail}/>
                 <StyledInput label="Confirmation Code"
                              value={confirmationCode}
                              onChange={checkSetConfirmationCode}
-                             autoFocus
-                />
+                             autoFocus/>
             </>}
             {authFeedbackMessage !== '' && <Typography
                 variant="body2"
@@ -162,23 +152,23 @@ export default function Auth() {
                 variant='contained'
                 fullWidth
                 onClick={checkSignIn}
-                name={'Sign In'}
-                disabled={false} // how to check if autofill happened?
-            />}
+                disabled={false}>
+                {'SIGN IN'}
+            </Button>}
             {authPageState === SIGN_UP_STEP_1 && <Button
                 color="primary"
                 variant='contained'
                 fullWidth
                 onClick={checkSignUpStep1}
-                name={'Get Confirmation Code'}
                 disabled={(
                     name === '' ||
                     email === '' ||
                     password === '' ||
                     passwordAgain === '' ||
                     password !== passwordAgain
-                )}
-            />}
+                )}>
+                {'Get Confirmation Code'}
+            </Button>}
             {authPageState === SIGN_UP_STEP_2 && <Button
                 color="primary"
                 variant='contained'
@@ -195,9 +185,9 @@ export default function Auth() {
                 color="primary"
                 variant='contained'
                 fullWidth
-                onClick={liveDemo}
-                name={'LIVE DEMO'}
-            />
+                onClick={liveDemo}>
+                {'LIVE DEMO'}
+            </Button>
             <Typography
                 variant="body2"
                 color="textSecondary"

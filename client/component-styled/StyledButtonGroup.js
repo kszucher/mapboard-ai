@@ -31,7 +31,8 @@ export default function StyledButtonGroup (arg) {
                         disabled={valueListDisabled && valueListDisabled[index] || false}
                         style ={{backgroundColor: value === valueList[index]? '#eeeaf2':''}}
                         onClick={e=>action(valueList[index])}
-                        key={index}>{name}
+                        key={index}>
+                        {name}
                     </Button>
                 )}
             </ButtonGroup>

@@ -119,15 +119,15 @@ export function Shares() {
                 <Button
                     color="primary"
                     variant='outlined'
-                    onClick={getShares}
-                    name={'refresh'}
-                />
+                    onClick={getShares}>
+                    {'REFRESH'}
+                </Button>
                 <Button
                     color="primary"
                     variant='outlined'
-                    onClick={closeShares}
-                    name={'close'}
-                />
+                    onClick={closeShares}>
+                    {'CLOSE'}
+                </Button>
             </div>}
         </Modal>
     )
