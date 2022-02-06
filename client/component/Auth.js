@@ -89,22 +89,25 @@ export default function Auth() {
                     {'SIGN UP'}
                 </Button>
             </div>
-            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                <Button color="primary"
-                        onClick={signUpStep1Panel}
-                        variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
-                    {'STEP 1'}
-                </Button>
-                <Button color="primary"
-                        onClick={signUpStep2Panel}
-                        variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
-                    {'STEP 2'}
-                </Button>
-            </div>}
             {
-                authPageState === SIGN_IN && <>
-                    <TextField variant="outlined"
+                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                    <Button color="primary"
+                            onClick={signUpStep1Panel}
+                            variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
+                        {'STEP 1'}
+                    </Button>
+                    <Button color="primary"
+                            onClick={signUpStep2Panel}
+                            variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
+                        {'STEP 2'}
+                    </Button>
+                </div>
+            }
+            {
+                authPageState === SIGN_IN &&
+                <>
+                <TextField variant="outlined"
                                fullWidth
                                label="Email"
                                value={email}
