@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import {nodeDispatch} from "../core/NodeFlow"
 import {push, checkPop, redraw} from "../core/MapFlow"
-import Button from '@material-ui/core/Button'
+import { Button } from '@mui/material'
 
 const colorList = [
     ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],

@@ -3,7 +3,6 @@ import {useSelector, useDispatch} from "react-redux";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
-import Typography from "@material-ui/core/Typography";
 
 export function FramesSide () {
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)

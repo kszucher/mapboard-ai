@@ -1,23 +1,22 @@
 import React, {useEffect} from 'react'
-import {useDispatch, useSelector} from "react-redux";
-import Auth from "./Auth";
-import {MuiThemeProvider} from "@material-ui/core";
-import Logo from "../component-side/Logo";
-import Entries from "../component-side/Entries";
-import {UndoRedo} from "../component-side/UndoRedo";
-import Breadcrumbs from "../component-side/Breadcrumbs";
-import {CommandTexts} from "../component-side/CommandTexts";
-import {Palette} from "../component-side/Palette";
-import {FramesBottom} from "../component-side/FramesBottom";
-import {PAGE_STATES} from "../core/EditorFlow";
-import {Sharing} from "../component-modal/Sharing";
-import {Shares} from "../component-modal/Shares";
+import {useDispatch, useSelector} from "react-redux"
 import { COLORS, getEquationDim, getTextDim, isChrome } from '../core/Utils'
-import {WindowListeners} from "./WindowListeners";
-import {FramesSide} from "../component-side/FramesSide";
+import Auth from "./Auth"
+import Logo from "../component-side/Logo"
+import Entries from "../component-side/Entries"
+import { UndoRedo } from "../component-side/UndoRedo"
+import Breadcrumbs from "../component-side/Breadcrumbs"
+import { CommandTexts } from "../component-side/CommandTexts"
+import { Palette } from "../component-side/Palette"
+import { FramesBottom } from "../component-side/FramesBottom"
+import { Sharing } from "../component-modal/Sharing"
+import { Shares } from "../component-modal/Shares"
+import { WindowListeners } from "./WindowListeners"
+import { FramesSide } from "../component-side/FramesSide"
 import { Profile } from '../component-side/Profile'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
-import { createTheme } from '@material-ui/core/styles'
+import {PAGE_STATES} from "../core/EditorFlow"
+import { createTheme, ThemeProvider } from '@mui/material'
 
 const muiTheme = createTheme({
     props: {
@@ -94,7 +93,7 @@ export function Page() {
 
     return (
         <div id="page">
-            <MuiThemeProvider theme={muiTheme}>
+            <ThemeProvider theme={muiTheme}>
                 {[DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                     <Map/>
                     <Logo/>
@@ -114,7 +113,7 @@ export function Page() {
                 {pageState === WS_SHARING && <Sharing/>}
                 {pageState === WS_PROFILE && <ProfileEditor/>}
                 <WindowListeners/>
-            </MuiThemeProvider>
+            </ThemeProvider>
         </div>
     )
 }

@@ -1,14 +1,11 @@
 import React, {useEffect} from 'react'
-import {useSelector, useDispatch} from "react-redux";
-import {Modal} from "@material-ui/core";
-import {DataGrid} from "@mui/x-data-grid";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutlined'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
-import {COLORS} from "../core/Utils";
-import Button from '@material-ui/core/Button'
+import {useSelector, useDispatch} from "react-redux"
+import { Button, IconButton, Modal, Typography } from '@mui/material'
+import {DataGrid} from "@mui/x-data-grid"
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CheckCircleIcon from '@mui/icons-material/AddCircleOutline';
+import CancelIcon from '@mui/icons-material/AddCircleOutline';
+import {COLORS} from "../core/Utils"
 
 export function Shares() {
     const shareDataExport = useSelector(state => state.shareDataExport)

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
+import { IconButton } from '@mui/material'
 import {COLORS} from "../core/Utils";
-import IconButton from '@material-ui/core/IconButton'
 
 export function Profile () {
     const dispatch = useDispatch()

@@ -1,15 +1,11 @@
 import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
 import {COLORS} from "../core/Utils";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
-import Button from '@material-ui/core/Button'
-import { TextField } from '@material-ui/core'
+import { Button, Link, TextField, Typography } from '@mui/material'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
-
     const authPageState = useSelector(state => state.authPageState)
     const name = useSelector(state => state.name)
     const email = useSelector(state => state.email)
@@ -17,7 +13,6 @@ export default function Auth() {
     const passwordAgain = useSelector(state => state.passwordAgain)
     const confirmationCode = useSelector(state => state.confirmationCode)
     const authFeedbackMessage = useSelector(state => state.authFeedbackMessage)
-
     const dispatch = useDispatch()
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
     const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})

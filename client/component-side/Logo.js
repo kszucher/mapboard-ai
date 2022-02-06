@@ -1,14 +1,9 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import {PAGE_STATES} from "../core/EditorFlow";
-import {Divider} from "@material-ui/core";
+import { Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import MenuIcon from '@mui/icons-material/Menu'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,8 +36,8 @@ export default function Logo() {
     const showSharing =         _ => dispatch({type: 'SHOW_WS_SHARING'})
     const showShares =          _ => dispatch({type: 'SHOW_WS_SHARES'})
     const signOut = _ => {
-        localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}));
-        dispatch({type: 'RESET_STATE'});
+        localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}))
+        dispatch({type: 'RESET_STATE'})
     }
 
     const col1 = '#a4508b'

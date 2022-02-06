@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {MobileStepper} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import {KeyboardArrowLeft, KeyboardArrowRight} from "@material-ui/icons";
 import {COLORS} from "../core/Utils";
+import { Button, MobileStepper } from '@mui/material'
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 export function FramesBottom () {
     const frameLen = useSelector(state => state.frameLen)
@@ -54,7 +54,7 @@ export function FramesBottom () {
                                 size="large"
                                 onClick={openPrevFrame}
                                 disabled={frameSelected === 0}>
-                            <KeyboardArrowLeft />
+                            <KeyboardArrowLeftIcon />
                         </Button>
                     }
                     nextButton={
@@ -62,11 +62,11 @@ export function FramesBottom () {
                                 size="large"
                                 onClick={openNextFrame}
                                 disabled={frameSelected === frameLen - 1}>
-                            <KeyboardArrowRight />
+                            <KeyboardArrowRightIcon />
                         </Button>
                     }
                 />}
             </div>
         </div>
-    );
+    )
 }

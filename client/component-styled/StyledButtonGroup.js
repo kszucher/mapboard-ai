@@ -1,7 +1,6 @@
-import {makeStyles} from "@material-ui/core/styles";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
 import React from "react";
+import { Button, ButtonGroup } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -10,9 +9,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         '& > *': {
             margin: theme.spacing(1),
-        },
-    },
-}));
+        }
+    }
+}))
 
 export default function StyledButtonGroup (arg) {
     const {open, valueList, value, action, size, disabled, valueListDisabled} = arg;
@@ -24,8 +23,7 @@ export default function StyledButtonGroup (arg) {
                 size={size || 'small'}
                 variant="text"
                 color="primary"
-                aria-label="text primary button group"
-            >
+                aria-label="text primary button group">
                 {valueList.map((name, index) =>
                     <Button
                         disabled={valueListDisabled && valueListDisabled[index] || false}
@@ -37,5 +35,5 @@ export default function StyledButtonGroup (arg) {
                 )}
             </ButtonGroup>
         </div>
-    );
+    )
 }
