@@ -8,31 +8,26 @@ import Button from '@material-ui/core/Button'
 
 export function Sharing() {
     const {VIEW, EDIT} = MAP_RIGHTS
-
     const shareEmail = useSelector(state => state.shareEmail)
     const shareAccess = useSelector(state => state.shareAccess)
     const shareFeedbackMessage = useSelector(state => state.shareFeedbackMessage)
-
     const dispatch = useDispatch()
     const setShareEmail = e => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
     const setShareAccess = e => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
     const createShare = _ => dispatch({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}})
     const closeSharing = _ => dispatch({type: 'CLOSE_SHARING'})
-
     return(
         <Modal
             open={true}
             onClose={_=>{}}
             aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-        >
+            aria-describedby="simple-modal-description">
             <div style={{
                 position: 'relative',
                 left: '50%',
                 transform: 'translate(-50%)',
                 top: 96,
                 width: 48*8,
-                // height: 800,
                 flexDirection: 'column',
                 alignItems: 'center',
                 display: 'inline-flex',
@@ -50,9 +45,7 @@ export function Sharing() {
                            fullWidth
                            label="Share email"
                            value={shareEmail}
-                           onChange={setShareEmail}
-                />
-
+                           onChange={setShareEmail}/>
                 <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
                     <FormLabel component="legend">
                         {'Access'}
@@ -68,8 +61,7 @@ export function Sharing() {
                                 value={name}
                                 control={<Radio />}
                                 label={name}
-                                key={index}
-                            />
+                                key={index}/>
                         )}
                     </RadioGroup>
                 </div>
