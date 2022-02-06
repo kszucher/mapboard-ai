@@ -102,96 +102,111 @@ export default function Auth() {
                     {'STEP 2'}
                 </Button>
             </div>}
-            {authPageState === SIGN_IN && <>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Email"
-                           value={email}
-                           onChange={setEmail}/>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Password"
-                           value={password}
-                           onChange={setPassword}
-                           type="password"/>
-            </>}
-            {authPageState === SIGN_UP_STEP_1 && <>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Your First Name"
-                           value={name}
-                           onChange={setName}
-                           autoFocus/>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Email"
-                           value={email}
-                           onChange={setEmail}/>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Password"
-                           value={password}
-                           onChange={setPassword}/>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Password Again"
-                           value={passwordAgain}
-                           onChange={setPasswordAgain}/>
-            </>
+            {
+                authPageState === SIGN_IN && <>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Email"
+                               value={email}
+                               onChange={setEmail}/>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Password"
+                               value={password}
+                               onChange={setPassword}
+                               type="password"/>
+                </>
             }
-            {authPageState === SIGN_UP_STEP_2 && <>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Email"
-                           value={email}
-                           onChange={setEmail}/>
-                <TextField variant="outlined"
-                           fullWidth
-                           label="Confirmation Code"
-                           value={confirmationCode}
-                           onChange={checkSetConfirmationCode}
-                           autoFocus/>
-            </>}
-            {authFeedbackMessage !== '' && <Typography
-                variant="body2"
-                color="textSecondary"
-                align="center">
-                {authFeedbackMessage}
-            </Typography>}
-            {authPageState === SIGN_IN && <Button
-                color="primary"
-                variant='contained'
-                fullWidth
-                onClick={checkSignIn}
-                disabled={false}>
-                {'SIGN IN'}
-            </Button>}
-            {authPageState === SIGN_UP_STEP_1 && <Button
-                color="primary"
-                variant='contained'
-                fullWidth
-                onClick={checkSignUpStep1}
-                disabled={(
-                    name === '' ||
-                    email === '' ||
-                    password === '' ||
-                    passwordAgain === '' ||
-                    password !== passwordAgain
-                )}>
-                {'Get Confirmation Code'}
-            </Button>}
-            {authPageState === SIGN_UP_STEP_2 && <Button
-                color="primary"
-                variant='contained'
-                fullWidth
-                onClick={signUpStep2}
-                name={'Enter Confirmation Code'}
-                disabled={(
-                    email === '' ||
-                    confirmationCode === '' ||
-                    confirmationCode.length !== 4
-                )}
-            />}
+            {
+                authPageState === SIGN_UP_STEP_1 &&
+                <>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Your First Name"
+                               value={name}
+                               onChange={setName}
+                               autoFocus/>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Email"
+                               value={email}
+                               onChange={setEmail}/>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Password"
+                               value={password}
+                               onChange={setPassword}/>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Password Again"
+                               value={passwordAgain}
+                               onChange={setPasswordAgain}/>
+                </>
+            }
+            {
+                authPageState === SIGN_UP_STEP_2 &&
+                <>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Email"
+                               value={email}
+                               onChange={setEmail}/>
+                    <TextField variant="outlined"
+                               fullWidth
+                               label="Confirmation Code"
+                               value={confirmationCode}
+                               onChange={checkSetConfirmationCode}
+                               autoFocus/>
+                </>
+            }
+            {
+                authFeedbackMessage !== '' &&
+                <Typography variant="body2"
+                            color="textSecondary"
+                            align="center">
+                    {authFeedbackMessage}
+                </Typography>
+            }
+            {
+                authPageState === SIGN_IN &&
+                <Button color="primary"
+                        variant='contained'
+                        fullWidth
+                        onClick={checkSignIn}
+                        disabled={false}>
+                    {'SIGN IN'}
+                </Button>
+            }
+            {
+                authPageState === SIGN_UP_STEP_1 &&
+                <Button
+                    color="primary"
+                    variant='contained'
+                    fullWidth
+                    onClick={checkSignUpStep1}
+                    disabled={(
+                        name === '' ||
+                        email === '' ||
+                        password === '' ||
+                        passwordAgain === '' ||
+                        password !== passwordAgain
+                    )}>
+                    {'Get Confirmation Code'}
+                </Button>
+            }
+            {
+                authPageState === SIGN_UP_STEP_2 &&
+                <Button color="primary"
+                        variant='contained'
+                        fullWidth
+                        onClick={signUpStep2}
+                        name={'Enter Confirmation Code'}
+                        disabled={(
+                            email === '' ||
+                            confirmationCode === '' ||
+                            confirmationCode.length !== 4)}
+                />
+            }
             <Button
                 color="primary"
                 variant='contained'
