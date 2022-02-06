@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import Auth from "./Auth";
-import {muiTheme} from "../component-styled/Theme";
 import {MuiThemeProvider} from "@material-ui/core";
 import Logo from "../component-side/Logo";
 import Entries from "../component-side/Entries";
@@ -13,11 +12,68 @@ import {FramesBottom} from "../component-side/FramesBottom";
 import {PAGE_STATES} from "../core/EditorFlow";
 import {Sharing} from "../component-modal/Sharing";
 import {Shares} from "../component-modal/Shares";
-import {getEquationDim, getTextDim, isChrome} from "../core/Utils";
+import { COLORS, getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import {WindowListeners} from "./WindowListeners";
 import {FramesSide} from "../component-side/FramesSide";
 import { Profile } from '../component-side/Profile'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
+import { createTheme } from '@material-ui/core/styles'
+
+const muiTheme = createTheme({
+    props: {
+        MuiButtonBase: {
+            disableRipple: true
+        }
+    },
+    palette: {
+        primary: {
+            light: '#9040b8',
+            main: '#5f0a87',
+            dark: '#2e0059',
+            contrastText: COLORS.MAP_BACKGROUND,
+        },
+        secondary: {
+            light: '#9040b8',
+            main: '#5f0a87',
+            dark: '#2e0059',
+            contrastText: COLORS.MAP_BACKGROUND,
+        },
+    },
+    spacing: 2,
+    typography: {
+        fontFamily: 'Comfortaa',
+    },
+})
+
+const Layers = () => {
+    return (
+        <>
+            <g id="layer0"/>
+            <g id="layer1"/>
+            <g id="layer2"/>
+            <g id="layer3"/>
+            <g id="layer4"/>
+            <g id="layer5"/>
+        </>
+    )
+}
+
+const Map = () => {
+    return (
+        <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
+            <div
+                style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+                <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
+                    {isChrome
+                        ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
+                        : <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>
+                    }
+                </svg>
+                <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
+            </div>
+        </div>
+    )
+}
 
 export function Page() {
     const pageState = useSelector(state => state.pageState)
@@ -60,36 +116,5 @@ export function Page() {
                 <WindowListeners/>
             </MuiThemeProvider>
         </div>
-    )
-}
-
-const Map = () => {
-    return (
-        <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
-            <div
-                style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
-                <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
-                    {isChrome
-                        ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
-                        : <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>
-                    }
-                </svg>
-                <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
-            </div>
-        </div>
-    )
-}
-
-
-const Layers = () => {
-    return (
-        <>
-            <g id="layer0"/>
-            <g id="layer1"/>
-            <g id="layer2"/>
-            <g id="layer3"/>
-            <g id="layer4"/>
-            <g id="layer5"/>
-        </>
     )
 }
