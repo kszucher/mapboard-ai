@@ -4,7 +4,7 @@ import Auth from "./Auth";
 import {muiTheme} from "../component-styled/Theme";
 import {MuiThemeProvider} from "@material-ui/core";
 import Logo from "../component-side/Logo";
-import Tabs from "../component-side/Tabs";
+import Entries from "../component-side/Entries";
 import {UndoRedo} from "../component-side/UndoRedo";
 import Breadcrumbs from "../component-side/Breadcrumbs";
 import {CommandTexts} from "../component-side/CommandTexts";
@@ -43,7 +43,7 @@ export function Page() {
                     <Map/>
                     <Logo/>
                     {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
-                        <Tabs/>
+                        <Entries/>
                         <UndoRedo/>
                         <Profile/>
                         <Breadcrumbs/>

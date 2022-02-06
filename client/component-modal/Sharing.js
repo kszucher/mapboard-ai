@@ -44,9 +44,7 @@ export function Sharing() {
                 border: `1px solid ${COLORS.MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
-                <Typography
-                    component="h1"
-                    variant="h5">
+                <Typography component="h1" variant="h5">
                     {'Sharing'}
                 </Typography>
                 <TextField variant="outlined"
