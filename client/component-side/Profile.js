@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
 import {COLORS} from "../core/Utils";
-import StyledIconButton from '../component-styled/StyledIconButton'
+import IconButton from '@material-ui/core/IconButton'
 
 export function Profile () {
     const dispatch = useDispatch()
@@ -25,11 +25,13 @@ export function Profile () {
                 borderColor: '#dddddd',
                 borderTop: 0,
                 borderRight: 0
-            }}>
+            }}
+        >
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <StyledIconButton onClick={openProfile} icon={'person'}/>
+                <IconButton color='secondary' onClick={openProfile}>
+                    <span className="material-icons">{'person'}</span>
+                </IconButton>
             </div>
         </div>
-    );
+    )
 }
-
