@@ -74,101 +74,123 @@ export default function Auth() {
                 border: `1px solid ${COLORS.MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
-            <Typography component="h1" variant="h5">MapBoard</Typography>
-            <Typography component="h1" variant="h6">Private Beta</Typography>
+            <Typography
+                component="h1"
+                variant="h5">
+                MapBoard
+            </Typography>
+            <Typography
+                component="h1"
+                variant="h6">
+                Private Beta
+            </Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
-                <Button
-                    color="primary"
-                    name="SIGN IN"
-                    onClick={signInPanel}
-                    variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
+                <Button color="primary"
+                        name="SIGN IN"
+                        onClick={signInPanel}
+                        variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}
                 />
-                <Button
-                    color="primary"
-                    name="SIGN UP"
-                    onClick={signUpPanel}
-                    variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
+                <Button color="primary"
+                        name="SIGN UP"
+                        onClick={signUpPanel}
+                        variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}
                 />
             </div>
-            {
-                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                    <Button
-                        color="primary"
+            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                <Button color="primary"
                         onClick={signUpStep1Panel}
                         name="STEP 1"
                         variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
-                    />
-                    <Button
-                        color="primary"
+                />
+                <Button color="primary"
                         onClick={signUpStep2Panel}
                         name="STEP 2"
                         variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
-                    />
-                </div>
-            }
-            {
-                authPageState === SIGN_IN && <>
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                                 />
-                    <StyledInput label="Password"          value={password}         onChange={setPassword}              type="password" />
-                </>
-            }
-            {
-                authPageState === SIGN_UP_STEP_1 && <>
-                    <StyledInput label="Your First Name"   value={name}             onChange={setName}                  autoFocus       />
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                                 />
-                    <StyledInput label="Password"          value={password}         onChange={setPassword}                              />
-                    <StyledInput label="Password Again"    value={passwordAgain}    onChange={setPasswordAgain}                         />
-                </>
-            }
-            {
-                authPageState === SIGN_UP_STEP_2 && <>
-                    <StyledInput label="Email"             value={email}            onChange={setEmail}                                 />
-                    <StyledInput label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus       />
-
-                </>
-            }
-            {
-                authFeedbackMessage !== '' &&
-                <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    align="center">
-                    {authFeedbackMessage}
-                </Typography>
-            }
-            {
-                authPageState === SIGN_IN &&
-                <Button
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={checkSignIn}
-                    name={'Sign In'}
-                    disabled={false} // how to check if autofill happened?
                 />
-            }
-            {
-                authPageState === SIGN_UP_STEP_1 &&
-                <Button
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={checkSignUpStep1}
-                    name={'Get Confirmation Code'}
-                    disabled={(name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)}/>
-            }
-            {
-                authPageState === SIGN_UP_STEP_2 &&
-                <Button
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={signUpStep2}
-                    name={'Enter Confirmation Code'}
-                    disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
+            </div>}
+            {authPageState === SIGN_IN && <>
+                <StyledInput label="Email"
+                             value={email}
+                             onChange={setEmail}
                 />
+                <StyledInput label="Password"
+                             value={password}
+                             onChange={setPassword}
+                             type="password"
+                />
+            </>}
+            {authPageState === SIGN_UP_STEP_1 && <>
+                <StyledInput label="Your First Name"
+                             value={name}
+                             onChange={setName}
+                             autoFocus
+                />
+                <StyledInput label="Email"
+                             value={email}
+                             onChange={setEmail}
+                />
+                <StyledInput label="Password"
+                             value={password}
+                             onChange={setPassword}
+                />
+                <StyledInput label="Password Again"
+                             value={passwordAgain}
+                             onChange={setPasswordAgain}
+                />
+            </>
             }
+            {authPageState === SIGN_UP_STEP_2 && <>
+                <StyledInput label="Email"
+                             value={email}
+                             onChange={setEmail}
+                />
+                <StyledInput label="Confirmation Code"
+                             value={confirmationCode}
+                             onChange={checkSetConfirmationCode}
+                             autoFocus
+                />
+            </>}
+            {authFeedbackMessage !== '' && <Typography
+                variant="body2"
+                color="textSecondary"
+                align="center">
+                {authFeedbackMessage}
+            </Typography>}
+            {authPageState === SIGN_IN && <Button
+                color="primary"
+                variant='contained'
+                fullWidth
+                onClick={checkSignIn}
+                name={'Sign In'}
+                disabled={false} // how to check if autofill happened?
+            />}
+            {authPageState === SIGN_UP_STEP_1 && <Button
+                color="primary"
+                variant='contained'
+                fullWidth
+                onClick={checkSignUpStep1}
+                name={'Get Confirmation Code'}
+                disabled={(
+                    name === '' ||
+                    email === '' ||
+                    password === '' ||
+                    passwordAgain === '' ||
+                    password !== passwordAgain
+                )}
+            />}
+            {authPageState === SIGN_UP_STEP_2 && <Button
+                color="primary"
+                variant='contained'
+                fullWidth
+                onClick={signUpStep2}
+                name={'Enter Confirmation Code'}
+                disabled={(
+                    email === '' ||
+                    confirmationCode === '' ||
+                    confirmationCode.length !== 4
+                )}
+            />}
             <Button
                 color="primary"
                 variant='contained'
@@ -181,7 +203,8 @@ export default function Auth() {
                 color="textSecondary"
                 align="center">
                 {'Copyright © '}
-                <Link color="inherit" href="http://mapboard.io/">
+                <Link color="inherit"
+                      href="http://mapboard.io/">
                     MapBoard
                 </Link>{' '}
                 {new Date().getFullYear()}
