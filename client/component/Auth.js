@@ -107,7 +107,7 @@ export default function Auth() {
             {
                 authPageState === SIGN_IN &&
                 <>
-                <TextField variant="outlined"
+                    <TextField variant="outlined"
                                fullWidth
                                label="Email"
                                value={email}
@@ -182,18 +182,17 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_1 &&
-                <Button
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={checkSignUpStep1}
-                    disabled={(
-                        name === '' ||
-                        email === '' ||
-                        password === '' ||
-                        passwordAgain === '' ||
-                        password !== passwordAgain
-                    )}>
+                <Button color="primary"
+                        variant='contained'
+                        fullWidth
+                        onClick={checkSignUpStep1}
+                        disabled={(
+                            name === '' ||
+                            email === '' ||
+                            password === '' ||
+                            passwordAgain === '' ||
+                            password !== passwordAgain
+                        )}>
                     {'Get Confirmation Code'}
                 </Button>
             }
@@ -210,11 +209,10 @@ export default function Auth() {
                             confirmationCode.length !== 4)}
                 />
             }
-            <Button
-                color="primary"
-                variant='contained'
-                fullWidth
-                onClick={liveDemo}>
+            <Button color="primary"
+                    variant='contained'
+                    fullWidth
+                    onClick={liveDemo}>
                 {'LIVE DEMO'}
             </Button>
             <Typography
