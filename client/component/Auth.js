@@ -2,10 +2,10 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import StyledInput from "../component-styled/StyledInput";
 import {COLORS} from "../core/Utils";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 import Button from '@material-ui/core/Button'
+import { TextField } from '@material-ui/core'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -108,38 +108,54 @@ export default function Auth() {
                 </Button>
             </div>}
             {authPageState === SIGN_IN && <>
-                <StyledInput label="Email"
-                             value={email}
-                             onChange={setEmail}/>
-                <StyledInput label="Password"
-                             value={password}
-                             onChange={setPassword}
-                             type="password"/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Email"
+                           value={email}
+                           onChange={setEmail}/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Password"
+                           value={password}
+                           onChange={setPassword}
+                           autoComplete="password"/>
             </>}
             {authPageState === SIGN_UP_STEP_1 && <>
-                <StyledInput label="Your First Name"
-                             value={name}
-                             onChange={setName}
-                             autoFocus/>
-                <StyledInput label="Email"
-                             value={email}
-                             onChange={setEmail}/>
-                <StyledInput label="Password"
-                             value={password}
-                             onChange={setPassword}/>
-                <StyledInput label="Password Again"
-                             value={passwordAgain}
-                             onChange={setPasswordAgain}/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Your First Name"
+                           value={name}
+                           onChange={setName}
+                           autoFocus/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Email"
+                           value={email}
+                           onChange={setEmail}/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Password"
+                           value={password}
+                           onChange={setPassword}/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Password Again"
+                           value={passwordAgain}
+                           onChange={setPasswordAgain}/>
             </>
             }
             {authPageState === SIGN_UP_STEP_2 && <>
-                <StyledInput label="Email"
-                             value={email}
-                             onChange={setEmail}/>
-                <StyledInput label="Confirmation Code"
-                             value={confirmationCode}
-                             onChange={checkSetConfirmationCode}
-                             autoFocus/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Email"
+                           value={email}
+                           onChange={setEmail}/>
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Confirmation Code"
+                           value={confirmationCode}
+                           onChange={checkSetConfirmationCode}
+                           autoFocus/>
             </>}
             {authFeedbackMessage !== '' && <Typography
                 variant="body2"

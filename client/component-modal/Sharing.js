@@ -1,8 +1,7 @@
 import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
-import {Modal} from "@material-ui/core";
+import { Modal, TextField } from '@material-ui/core'
 import Typography from "@material-ui/core/Typography";
-import StyledInput from "../component-styled/StyledInput";
 import StyledRadioButtonGroup from "../component-styled/StyledRadioButtonGroup";
 import {COLORS} from "../core/Utils";
 import { MAP_RIGHTS } from '../core/EditorFlow'
@@ -48,12 +47,13 @@ export function Sharing() {
                 <Typography
                     component="h1"
                     variant="h5">
-                    Sharing
+                    {'Sharing'}
                 </Typography>
-                <StyledInput
-                    label="Share email"
-                    value={shareEmail}
-                    onChange={setShareEmail}
+                <TextField variant="outlined"
+                           fullWidth
+                           label="Share email"
+                           value={shareEmail}
+                           onChange={setShareEmail}
                 />
                 <StyledRadioButtonGroup
                     open={true}
