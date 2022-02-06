@@ -113,7 +113,7 @@ export default function Auth() {
                            label="Password"
                            value={password}
                            onChange={setPassword}
-                           autoComplete="password"/>
+                           type="password"/>
             </>}
             {authPageState === SIGN_UP_STEP_1 && <>
                 <TextField variant="outlined"
