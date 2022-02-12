@@ -15,7 +15,7 @@ export function CommandTexts () {
 
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
-    const [lineWidth, setLineWidth] = useState('')
+    // const [lineWidth, setLineWidth] = useState('')
     const [lineType, setLineType] = useState('')
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
@@ -26,7 +26,7 @@ export function CommandTexts () {
     const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
     const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    const updateLineWidth =   e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
+    // const updateLineWidth =   e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
     const updateLineType =    e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
     const updateBorderWidth = e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
     const updateFontSize =    e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
@@ -34,6 +34,9 @@ export function CommandTexts () {
     const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
     const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
     const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
+
+    const lineWidth = useSelector(state => state.node.lineWidth)
+    const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
 
     return (
         <div style={{
@@ -97,8 +100,8 @@ export function CommandTexts () {
                 <StyledButtonGroup
                     open={formatMode === 'line'}
                     valueList={['w1', 'w2', 'w3']}
-                    value={lineWidth}
-                    action={updateLineWidth}
+                    value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[lineWidth]}
+                    action={value => setNodeParam({ lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value] })}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup

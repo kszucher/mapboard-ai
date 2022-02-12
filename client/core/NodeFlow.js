@@ -367,8 +367,9 @@ function nodeReducer(action, payload) {
             }
             break
         }
+        // TODO unify setting params
         case 'applyLineWidth': {
-            let lineWidth = {w1: 1, w2: 2, w3: 3}[payload]
+            const lineWidth = payload
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
                 if (cm.selection === 's') {

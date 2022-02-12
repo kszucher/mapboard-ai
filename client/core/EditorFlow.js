@@ -56,6 +56,15 @@ const editorState = {
     mapSource: '',
     mapStorage: {},
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
+    // node
+    node: {
+        density: undefined,
+        alignment: undefined,
+        lineWidth: undefined,
+        lineType: undefined,
+        borderWidth: undefined,
+        fontSize: undefined
+    },
     // frame
     frameLen: 0,
     frameSelected: 0,
@@ -129,6 +138,9 @@ const resolveActions = (state, action) => {
         // UNDO REDO
         case 'SET_UNDO_DISABLED':           return {undoDisabled: payload}
         case 'SET_REDO_DISABLED':           return {redoDisabled: payload}
+        //
+        case 'SET_NODE_PARAMS':             return {node: payload }
+        case 'SET_NODE_PARAM':              return {node: {...state.node, ...payload}}
         //
         case 'PARSE_RESP_PAYLOAD':          return {...payload}
         default: return {}

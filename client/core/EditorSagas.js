@@ -219,8 +219,20 @@ function* undoRedoSaga () {
             'MAP_STATE_CHANGED'
         ])
         switch (type) {
-            case 'UNDO': mapDispatch('undo'); redraw(); break
-            case 'REDO': mapDispatch('redo'); redraw(); break
+            case 'UNDO': {
+                mapDispatch('undo')
+                redraw()
+                break
+            }
+            case 'REDO': {
+                mapDispatch('redo')
+                redraw()
+                break
+            }
+            case 'MAP_STATE_CHANGED': {
+                console.log('should update main state with SET_NODE_PARAMS...')
+                break
+            }
         }
         yield put({ type: 'SET_UNDO_DISABLED', payload: mapState.dataIndex === 0})
         yield put({ type: 'SET_REDO_DISABLED', payload: mapState.dataIndex === mapState.data.length - 1})
