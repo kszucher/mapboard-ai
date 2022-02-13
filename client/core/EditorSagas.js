@@ -211,7 +211,7 @@ function* workspaceSaga () {
     }
 }
 
-function* undoRedoSaga () {
+function* mapStateSaga () {
     while (true) {
         const { type } = yield take([
             'UNDO',
@@ -250,6 +250,6 @@ export default function* rootSaga () {
         profileSaga(),
         frameSaga(),
         workspaceSaga(),
-        undoRedoSaga(),
+        mapStateSaga(),
     ])
 }
