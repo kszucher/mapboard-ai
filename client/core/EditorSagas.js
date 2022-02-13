@@ -230,7 +230,10 @@ function* undoRedoSaga () {
                 break
             }
             case 'MAP_STATE_CHANGED': {
-                console.log('should update main state with SET_NODE_PARAMS...')
+                // TODO: backwards mapping, as we will not always use lm, sometimes we will have tp use checking family props
+                const lm = mapref(selectionState.lastPath)
+                // TODO: use SET_NODE_PARAMS instead
+                yield put({type: 'SET_NODE_PARAM', payload: {lineWidth: lm.lineWidth} })
                 break
             }
         }
