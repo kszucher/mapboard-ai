@@ -55,7 +55,7 @@ export function checkPop(dispatch) {
         mapStack.data.length--
         mapStack.dataIndex--
     } else {
-        dispatch({ type: 'MAP_STATE_CHANGED' })
+        dispatch({ type: 'MAP_STACK_CHANGED' })
     }
 }
 

@@ -217,7 +217,7 @@ function* mapStackSaga () {
         const { type } = yield take([
             'UNDO',
             'REDO',
-            'MAP_STATE_CHANGED'
+            'MAP_STACK_CHANGED'
         ])
         switch (type) {
             case 'UNDO': {
@@ -230,7 +230,7 @@ function* mapStackSaga () {
                 redraw()
                 break
             }
-            case 'MAP_STATE_CHANGED': {
+            case 'MAP_STACK_CHANGED': {
                 // TODO: backwards mapping, as we will not always use lm, sometimes we will have tp use checking family props
                 const lm = mapref(selectionState.lastPath)
                 // TODO: use SET_NODE_PARAMS instead

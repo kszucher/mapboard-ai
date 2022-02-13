@@ -153,7 +153,7 @@ export function WindowListeners() {
                     }
                 }
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    dispatch({type: 'SET_NODE_PROPS', payload: lm});
+                    // dispatch({type: 'SET_NODE_PROPS', payload: lm}); // will be replaced by MAP_STACK_CHANGED
                 }
             } else if (isTaskClicked) {
                 mapDispatch('setTaskStatus', {
