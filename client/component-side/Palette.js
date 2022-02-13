@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import {nodeDispatch} from "../core/NodeFlow"
-import {push, checkPop, redraw} from "../core/MapFlow"
+import {push, checkPop, redraw} from "../core/MapStateFlow"
 import { Button } from '@mui/material'
 
 const colorList = [

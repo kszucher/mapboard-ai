@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {checkPop, push, redraw} from "../core/MapFlow";
+import {checkPop, push, redraw} from "../core/MapStateFlow";
 import {nodeDispatch} from "../core/NodeFlow";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";

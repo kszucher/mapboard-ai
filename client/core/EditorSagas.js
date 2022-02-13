@@ -1,7 +1,7 @@
 import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapDispatch, mapref, mapState, redraw, saveMap } from './MapFlow'
+import { mapStateDispatch, mapref, mapState, redraw, saveMap } from './MapStateFlow'
 import { selectionState } from './SelectionFlow'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
@@ -220,12 +220,12 @@ function* mapStateSaga () {
         ])
         switch (type) {
             case 'UNDO': {
-                mapDispatch('undo')
+                mapStateDispatch('undo')
                 redraw()
                 break
             }
             case 'REDO': {
-                mapDispatch('redo')
+                mapStateDispatch('redo')
                 redraw()
                 break
             }

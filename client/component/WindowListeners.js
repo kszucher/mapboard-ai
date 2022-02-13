@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {isEditing, nodeDispatch} from "../core/NodeFlow";
 import {arraysSame, copy} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
-import {checkPop, mapDispatch, mapref, push, recalc, redraw} from "../core/MapFlow";
+import {checkPop, mapStateDispatch, mapref, push, recalc, redraw} from "../core/MapStateFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {selectionState} from "../core/SelectionFlow";
@@ -461,14 +461,14 @@ export function WindowListeners() {
     useEffect(() => {
         if (landingData.length) {
             const mapStorage = landingData[landingDataIndex];
-            mapDispatch('initMapState', { mapStorage });
+            mapStateDispatch('initMapState', { mapStorage });
             redraw();
         }
     }, [landingData, landingDataIndex])
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
-            mapDispatch('initMapState', { mapStorage });
+            mapStateDispatch('initMapState', { mapStorage });
             redraw();
         }
     }, [mapId, mapSource, frameLen, frameSelected])

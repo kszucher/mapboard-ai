@@ -1,5 +1,5 @@
 import {arrayValuesSame} from "./Utils";
-import {mapref} from "./MapFlow";
+import {mapref} from "./MapStateFlow";
 
 export let selectionState = {
     structSelectedPathList: [],

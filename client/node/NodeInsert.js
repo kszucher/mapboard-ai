@@ -1,5 +1,5 @@
 import {getDefaultNode} from "../core/DefaultProps";
-import {mapref} from "../core/MapFlow";
+import {mapref} from "../core/MapStateFlow";
 
 export function structInsert(lm, mode) {
     let parentRef;

@@ -22,13 +22,13 @@ export let mapState = {
     dataIndex: 0,
 };
 
-export function mapDispatch(action, payload) {
+export function mapStateDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
-    mapReducer(action, payload);
+    mapStateReducer(action, payload);
     recalc();
 }
 
-function mapReducer(action, payload) {
+function mapStateReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
             mapState.data = [mapAssembly(payload.mapStorage)];
