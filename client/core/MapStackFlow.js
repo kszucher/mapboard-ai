@@ -37,7 +37,7 @@ function mapStackReducer(action, payload) {
     }
 }
 
-const getMapData = () => {
+const getMapStackData = () => {
     return mapStack.data[mapStack.dataIndex]
 }
 
@@ -45,7 +45,7 @@ export function push() {
     if (mapStack.data.length > mapStack.dataIndex + 1) {
         mapStack.data.length = mapStack.dataIndex + 1
     }
-    mapStack.data.push(JSON.parse(JSON.stringify(getMapData())))
+    mapStack.data.push(JSON.parse(JSON.stringify(getMapStackData())))
     mapStack.dataIndex++
 }
 
@@ -60,7 +60,7 @@ export function checkPop(dispatch) {
 }
 
 export function mapref(path) {
-    return subsref(getMapData(), path)
+    return subsref(getMapStackData(), path)
 }
 
 export function pathMerge(path1, path2) {
@@ -72,7 +72,7 @@ export function pathMerge(path1, path2) {
 }
 
 export function saveMap() {
-    let cm = copy(getMapData())
+    let cm = copy(getMapStackData())
     mapDeinit.start(cm)
     return mapDisassembly.start(cm)
 }
