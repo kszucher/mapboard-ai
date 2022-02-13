@@ -1,4 +1,4 @@
-import {isEditing, nodeDispatch} from "./NodeFlow";
+import {isEditing, mapDispatch} from "./MapFlow";
 import {checkPop, push, redraw} from "./MapStateFlow";
 import {isUrl} from "./Utils";
 
@@ -10,20 +10,20 @@ export const pasteDispatch = (dispatch) => {
                 if (type === 'text/plain') {
                     navigator.clipboard.readText().then(text => {
                         if (isEditing) {
-                            nodeDispatch('insertTextFromClipboardAsText', text);
+                            mapDispatch('insertTextFromClipboardAsText', text);
                         } else {
                             push();
                             if (text.substring(0, 1) === '[') {
-                                nodeDispatch('insertMapFromClipboard', text);
+                                mapDispatch('insertMapFromClipboard', text);
                             } else {
-                                nodeDispatch('insert_O_S');
+                                mapDispatch('insert_O_S');
                                 redraw();
                                 if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                                    nodeDispatch('insertEquationFromClipboardAsNode', text);
+                                    mapDispatch('insertEquationFromClipboardAsNode', text);
                                 } else if (isUrl(text)) {
-                                    nodeDispatch('insertElinkFromClipboardAsNode', text);
+                                    mapDispatch('insertElinkFromClipboardAsNode', text);
                                 } else {
-                                    nodeDispatch('insertTextFromClipboardAsNode', text);
+                                    mapDispatch('insertTextFromClipboardAsNode', text);
                                 }
                             }
                             redraw();
@@ -44,8 +44,8 @@ export const pasteDispatch = (dispatch) => {
                             fetch(address, {method: 'post', body: formData}).then(response =>
                                 response.json().then(response => {
                                         push();
-                                        nodeDispatch('insert_O_S');
-                                        nodeDispatch('insertImageFromLinkAsNode', response);
+                                        mapDispatch('insert_O_S');
+                                        mapDispatch('insertImageFromLinkAsNode', response);
                                         redraw();
                                         checkPop(dispatch);
                                     }

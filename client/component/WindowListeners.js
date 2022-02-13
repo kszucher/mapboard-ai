@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {isEditing, nodeDispatch} from "../core/NodeFlow";
+import {isEditing, mapDispatch} from "../core/MapFlow";
 import {arraysSame, copy} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
 import {checkPop, mapStateDispatch, mapref, push, recalc, redraw} from "../core/MapStateFlow";
@@ -72,7 +72,7 @@ export function WindowListeners() {
     };
 
     const resize = () => {
-        nodeDispatch('setIsResizing');
+        mapDispatch('setIsResizing');
         redraw();
     };
 
@@ -119,7 +119,7 @@ export function WindowListeners() {
             return;
         }
         if (isEditing === 1) {
-            nodeDispatch('finishEdit');
+            mapDispatch('finishEdit');
             redraw();
         }
         (window.getSelection
@@ -134,15 +134,15 @@ export function WindowListeners() {
             isTaskClicked = checkTaskClicked(path)
             if (isNodeClicked) {
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    nodeDispatch('selectStruct');
+                    mapDispatch('selectStruct');
                 } else {
-                    nodeDispatch('selectStructToo');
+                    mapDispatch('selectStructToo');
                 }
                 redraw();
                 let lm = mapref(selectionState.lastPath);
                 if (!e.shiftKey) {
                     if (lm.linkType !== '') {
-                        nodeDispatch('select_R');
+                        mapDispatch('select_R');
                     }
                     if (lm.linkType === 'internal') {
                         dispatch({type: 'OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
@@ -156,13 +156,13 @@ export function WindowListeners() {
                     dispatch({type: 'SET_NODE_PROPS', payload: lm});
                 }
             } else if (isTaskClicked) {
-                nodeDispatch('setTaskStatus', {
+                mapDispatch('setTaskStatus', {
                     taskStatus: parseInt(path[0].id.charAt(27), 10),
                     nodeId: path[0].id.substring(0, 12)
                 });
                 redraw()
             } else {
-                nodeDispatch('clearSelection')
+                mapDispatch('clearSelection')
             }
         } else if (which === 2) {
             let el = document.getElementById('mapHolderDiv');
@@ -174,9 +174,9 @@ export function WindowListeners() {
             const isNodeClicked = checkNodeClicked(e)
             if (isNodeClicked) {
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    nodeDispatch('selectStructFamily')
+                    mapDispatch('selectStructFamily')
                 } else {
-                    nodeDispatch('selectStructToo')
+                    mapDispatch('selectStructToo')
                 }
                 redraw()
             }
@@ -264,7 +264,7 @@ export function WindowListeners() {
                     if (m.moveTargetPath.length) {
                         m.moveData = []
                         m.shouldCenter = true // outside push - checkPop?
-                        nodeDispatch('moveSelection')
+                        mapDispatch('moveSelection')
                         redraw()
                     }
                 } else if (isTaskClicked) {
@@ -273,7 +273,7 @@ export function WindowListeners() {
                     m.selectionRect = []
                     if (selectionState.structSelectedPathList.length === 0 &&
                         selectionState.cellSelectedPathList.length === 0) {
-                        nodeDispatch('select_R')
+                        mapDispatch('select_R')
                     }
                     redraw()
                 }
@@ -286,7 +286,7 @@ export function WindowListeners() {
                 } else if (isTaskClicked) {
                 } else {
                     if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
-                        nodeDispatch('select_R')
+                        mapDispatch('select_R')
                         redraw()
                     }
                 }
@@ -304,7 +304,7 @@ export function WindowListeners() {
             return;
         }
         if (isNodeClicked) {
-            nodeDispatch('startEdit')
+            mapDispatch('startEdit')
         } else {
             let m = mapref(['m']);
             m.shouldCenter = true; // outside push - checkPop?
@@ -399,11 +399,11 @@ export function WindowListeners() {
                     ].includes(currExecution)) {
                         dispatch({type: currExecution});
                     } else if (currExecution === 'applyColorFromKey') {
-                        nodeDispatch(currExecution, {currColor: which - 96});
+                        mapDispatch(currExecution, {currColor: which - 96});
                     } else if (currExecution === 'applyTaskStatus') {
-                        nodeDispatch(currExecution, {currTaskStatus: which - 96});
+                        mapDispatch(currExecution, {currTaskStatus: which - 96});
                     } else {
-                        nodeDispatch(currExecution, {keyCode: e.code});
+                        mapDispatch(currExecution, {keyCode: e.code});
                         if (['insert_O_S',
                             'insert_U_S',
                             'insert_D_S'
@@ -492,7 +492,7 @@ export function WindowListeners() {
     useEffect(() => {
         if (lineWidth) {
             push()
-            nodeDispatch('applyLineWidth', lineWidth)
+            mapDispatch('applyLineWidth', lineWidth)
             redraw()
             checkPop(dispatch)
         }

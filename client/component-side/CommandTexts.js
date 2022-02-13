@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {checkPop, push, redraw} from "../core/MapStateFlow";
-import {nodeDispatch} from "../core/NodeFlow";
+import {mapDispatch} from "../core/MapFlow";
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
@@ -23,16 +23,16 @@ export function CommandTexts () {
     // TODO make an object inside the state and put cm related stuff there,
     //  which is a subset of a cm property which is being modified when using checkPop(dispatch),
     //  which is triggered here also and this should trigger useEffects inside mapFlow, so redraw is only used there
-    const updateDensity =     e => {push(); nodeDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
-    const updateAlignment =   e => {push(); nodeDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
+    const updateDensity =     e => {push(); mapDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
+    const updateAlignment =   e => {push(); mapDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    // const updateLineWidth =   e => {push(); nodeDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
-    const updateLineType =    e => {push(); nodeDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
-    const updateBorderWidth = e => {push(); nodeDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
-    const updateFontSize =    e => {push(); nodeDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
-    const cmdResetAll =       e => {push(); nodeDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
-    const cmdReset =          e => {push(); nodeDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
-    const cmdTaskToggle =     e => {push(); nodeDispatch('taskCheckReset'); nodeDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
+    // const updateLineWidth =   e => {push(); mapDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
+    const updateLineType =    e => {push(); mapDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
+    const updateBorderWidth = e => {push(); mapDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
+    const updateFontSize =    e => {push(); mapDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
+    const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
+    const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
+    const cmdTaskToggle =     e => {push(); mapDispatch('taskCheckReset'); mapDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
     const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     const lineWidth = useSelector(state => state.node.lineWidth)

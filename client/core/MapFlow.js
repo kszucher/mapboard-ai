@@ -19,7 +19,7 @@ function clearSelection() {
     }
 }
 
-function nodeReducer(action, payload) {
+function mapReducer(action, payload) {
     let sc = selectionState
     let lm = mapref(sc.lastPath)
     switch (action) {
@@ -521,7 +521,7 @@ function nodeReducer(action, payload) {
                 const callback = function (mutationsList) {
                     for (let mutation of mutationsList) {
                         if (mutation.type === 'characterData') {
-                            nodeDispatch('typeText')
+                            mapDispatch('typeText')
                             redraw()
                         }
                     }
@@ -560,10 +560,10 @@ function nodeReducer(action, payload) {
     }
 }
 
-export function nodeDispatch(action, payload) {
+export function mapDispatch(action, payload) {
     console.log('NODEDISPATCH: ' + action)
     // eraseContent, startEdit, typeText and finishEdit related side-effects could be moved here as quasi-middleware
-    nodeReducer(action, payload)
+    mapReducer(action, payload)
     recalc()
     if (!['startEdit', 'typeText'].includes(action)) {
         document.getElementById("mapHolderDiv").focus()

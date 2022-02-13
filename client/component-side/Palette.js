@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useSelector, useDispatch} from "react-redux"
-import {nodeDispatch} from "../core/NodeFlow"
+import {mapDispatch} from "../core/MapFlow"
 import {push, checkPop, redraw} from "../core/MapStateFlow"
 import { Button } from '@mui/material'
 
@@ -29,7 +29,7 @@ export function Palette () {
     const [sel, setSel] = useState({x: 0, y: 0})
 
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-    const setColor = (color) => {push(); nodeDispatch('applyColorFromPalette', {formatMode, color}); checkPop(dispatch); redraw()}
+    const setColor = (color) => {push(); mapDispatch('applyColorFromPalette', {formatMode, color}); checkPop(dispatch); redraw()}
 
     const findSel = (color) => {
         let sel = {x: 0, y: 0};
