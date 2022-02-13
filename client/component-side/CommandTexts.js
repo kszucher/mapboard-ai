@@ -16,7 +16,7 @@ export function CommandTexts () {
     const [density, setDensity] = useState('')
     const [alignment, setAlignment] = useState('')
     // const [lineWidth, setLineWidth] = useState('')
-    const [lineType, setLineType] = useState('')
+    // const [lineType, setLineType] = useState('')
     const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
@@ -27,7 +27,7 @@ export function CommandTexts () {
     const updateAlignment =   e => {push(); mapDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
     // const updateLineWidth =   e => {push(); mapDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
-    const updateLineType =    e => {push(); mapDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
+    // const updateLineType =    e => {push(); mapDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
     const updateBorderWidth = e => {push(); mapDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
     const updateFontSize =    e => {push(); mapDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
     const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
@@ -36,6 +36,8 @@ export function CommandTexts () {
     const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     const lineWidth = useSelector(state => state.node.lineWidth)
+    const lineType = useSelector(state => state.node.lineType)
+
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
 
     return (
@@ -101,14 +103,14 @@ export function CommandTexts () {
                     open={formatMode === 'line'}
                     valueList={['w1', 'w2', 'w3']}
                     value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[lineWidth]}
-                    action={value => setNodeParam({ lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value] })}
+                    action={value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
                     open={formatMode === 'line'}
                     valueList={['bezier', 'edge']}
-                    value={lineType}
-                    action={updateLineType}
+                    value={{['b']: 'bezier', ['e']: 'edge'}[lineType]}
+                    action={value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup

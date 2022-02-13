@@ -48,6 +48,7 @@ export function WindowListeners() {
     const landingData = useSelector(state => state.landingData)
     const landingDataIndex = useSelector(state => state.landingDataIndex)
     const lineWidth = useSelector(state => state.node.lineWidth)
+    const lineType = useSelector(state => state.node.lineType)
 
     const dispatch = useDispatch()
 
@@ -497,6 +498,15 @@ export function WindowListeners() {
             checkPop(dispatch)
         }
     }, [lineWidth])
+
+    useEffect(() => {
+        if (lineType) {
+            push()
+            mapDispatch('applyLineType', lineType)
+            redraw()
+            checkPop(dispatch)
+        }
+    }, [lineType])
 
     return (
         <></>

@@ -88,8 +88,8 @@ const mapValues = (stringArray, valueArray, conditionValue) => {
 const extractNodeProps = (payload) => {
     let lm = payload;
     return {
-        lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
-        lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
+        // lineWidth:   mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.lineWidth),
+        // lineType:    mapValues(['bezier', 'edge'],            [1, 3],               lm.lineType),
         borderWidth: mapValues(['w1', 'w2', 'w3'],            [1, 2, 3],            lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth),
         fontSize:    mapValues(['h1', 'h2', 'h3', 'h4', 't'], [36, 24, 18, 16, 14], lm.sTextFontSize),
         colorLine:   lm.lineColor,
@@ -139,7 +139,7 @@ const resolveActions = (state, action) => {
         case 'SET_UNDO_DISABLED':           return {undoDisabled: payload}
         case 'SET_REDO_DISABLED':           return {redoDisabled: payload}
         //
-        case 'SET_NODE_PARAMS':             return {node: payload }
+        case 'SET_NODE_PARAMS':             return {node: payload}
         case 'SET_NODE_PARAM':              return {node: {...state.node, ...payload}}
         //
         case 'PARSE_RESP_PAYLOAD':          return {...payload}

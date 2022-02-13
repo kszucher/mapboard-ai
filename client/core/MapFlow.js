@@ -394,7 +394,7 @@ function mapReducer(action, payload) {
             break
         }
         case 'applyLineType': {
-            let lineType = {bezier: 'b', edge: 'e'}[payload]
+            let lineType = payload
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
                 if (cm.selection === 's') {

@@ -231,10 +231,19 @@ function* mapStackSaga () {
                 break
             }
             case 'MAP_STACK_CHANGED': {
-                // TODO: backwards mapping, as we will not always use lm, sometimes we will have tp use checking family props
+                // TODO: backwards mapping, as we will not always use lm, sometimes we will have to use checking family props
                 const lm = mapref(selectionState.lastPath)
-                // TODO: use SET_NODE_PARAMS instead
-                yield put({type: 'SET_NODE_PARAM', payload: {lineWidth: lm.lineWidth} })
+                yield put({
+                    type: 'SET_NODE_PARAMS',
+                    payload: {
+                        density: undefined,
+                        alignment: undefined,
+                        lineWidth: lm.lineWidth,
+                        lineType: lm.lineType,
+                        borderWidth: undefined,
+                        fontSize: undefined
+                    }
+                })
                 break
             }
         }
