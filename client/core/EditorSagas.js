@@ -1,8 +1,9 @@
 import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapStackDispatch, mapref, mapStack, redraw, saveMap } from './MapStackFlow'
+import { mapStackDispatch, mapref, mapStack, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
+import { redraw } from './MapFlow'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 

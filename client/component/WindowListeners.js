@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {isEditing, mapDispatch} from "../core/MapFlow";
+import { isEditing, mapDispatch, recalc, redraw } from '../core/MapFlow'
 import {arraysSame, copy} from "../core/Utils";
 import {mapFindNearest} from "../map/MapFindNearest";
-import {checkPop, mapStackDispatch, mapref, push, recalc, redraw} from "../core/MapStackFlow";
+import {checkPop, mapStackDispatch, mapref, push} from "../core/MapStackFlow";
 import {mapFindOverPoint} from "../map/MapFindOverPoint";
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
 import {selectionState} from "../core/SelectionFlow";

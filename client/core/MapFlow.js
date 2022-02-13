@@ -1,13 +1,25 @@
-import {cellBlockDeleteReselect, structDeleteReselect} from "../node/NodeDelete"
-import {cellInsert, structInsert} from "../node/NodeInsert"
-import {nodeMove, nodeMoveMouse, setClipboard} from "../node/NodeMove"
-import {nodeNavigate} from "../node/NodeNavigate"
-import {setEndOfContenteditable, transposeArray} from "./Utils"
-import {mapChangeProp} from "../map/MapChangeProp"
-import {getAllFormatDefault, getFormatDefault} from "./DefaultProps"
-import {selectionState} from "./SelectionFlow"
-import {mapref, pathMerge, recalc, redraw} from "./MapStackFlow"
+import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelete'
+import { cellInsert, structInsert } from '../node/NodeInsert'
+import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
+import { nodeNavigate } from '../node/NodeNavigate'
+import { setEndOfContenteditable, transposeArray } from './Utils'
+import { mapChangeProp } from '../map/MapChangeProp'
+import { getAllFormatDefault, getFormatDefault } from './DefaultProps'
+import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
+import { mapref, pathMerge } from './MapStackFlow'
 import { mapFindById } from '../map/MapFindById'
+import { mapAlgo } from '../map/MapAlgo'
+import { mapInit } from '../map/MapInit'
+import { mapChain } from '../map/MapChain'
+import { mapTaskCheck } from '../map/MapTaskCheck'
+import { mapMeasure } from '../map/MapMeasure'
+import { mapPlace } from '../map/MapPlace'
+import { mapTaskCalc } from '../map/MapTaskCalc'
+import { mapTaskColor } from '../map/MapTaskColor'
+import { mapCollect } from '../map/MapCollect'
+import { flagDomData, updateDomData } from './DomFlow'
+import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
+import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
 
 let mutationObserver
 export let isEditing = 0
@@ -568,4 +580,34 @@ export function mapDispatch(action, payload) {
     if (!['startEdit', 'typeText'].includes(action)) {
         document.getElementById("mapHolderDiv").focus()
     }
+}
+
+export function recalc () {
+    initSelectionState()
+    let m = mapref(['m'])
+    for (let i = 0; i < mapref(['r']).length; i++) {
+        let cr = mapref(['r', i])
+        mapAlgo.start(m, cr)
+        mapInit.start(m, cr)
+        mapChain.start(m, cr, i)
+        mapTaskCheck.start(m, cr)
+        mapMeasure.start(m, cr)
+        mapPlace.start(m, cr)
+        mapTaskCalc.start(m, cr)
+        mapTaskColor.start(m, cr)
+        mapCollect.start(m, cr)
+        // mapPrint.start(m, cr)
+    }
+    updateSelectionState()
+}
+
+export function redraw () {
+    flagDomData()
+    let m = mapref(['m'])
+    for (let i = 0; i < mapref(['r']).length; i++) {
+        let cr = mapref(['r', i])
+        mapVisualizeSvg.start(m, cr)
+        mapVisualizeDiv.start(m, cr)
+    }
+    updateDomData()
 }

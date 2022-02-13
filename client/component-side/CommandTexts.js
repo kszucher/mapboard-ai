@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {checkPop, push, redraw} from "../core/MapStackFlow";
-import {mapDispatch} from "../core/MapFlow";
+import {checkPop, push} from "../core/MapStackFlow";
+import { mapDispatch, redraw } from '../core/MapFlow'
 import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
