@@ -1,7 +1,7 @@
 import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapStateDispatch, mapref, mapState, redraw, saveMap } from './MapStateFlow'
+import { mapStackDispatch, mapref, mapStack, redraw, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
@@ -155,7 +155,7 @@ function* shareSaga () {
         ])
         if (type === 'CREATE_SHARE') {
             payload = {...payload,
-                mapId: mapState.mapId,
+                mapId: mapStack.mapId,
             }
         }
         const { resp } = yield call(fetchPost, { type, payload })
@@ -220,12 +220,12 @@ function* mapStateSaga () {
         ])
         switch (type) {
             case 'UNDO': {
-                mapStateDispatch('undo')
+                mapStackDispatch('undo')
                 redraw()
                 break
             }
             case 'REDO': {
-                mapStateDispatch('redo')
+                mapStackDispatch('redo')
                 redraw()
                 break
             }
@@ -237,8 +237,8 @@ function* mapStateSaga () {
                 break
             }
         }
-        yield put({ type: 'SET_UNDO_DISABLED', payload: mapState.dataIndex === 0})
-        yield put({ type: 'SET_REDO_DISABLED', payload: mapState.dataIndex === mapState.data.length - 1})
+        yield put({ type: 'SET_UNDO_DISABLED', payload: mapStack.dataIndex === 0})
+        yield put({ type: 'SET_REDO_DISABLED', payload: mapStack.dataIndex === mapStack.data.length - 1})
     }
 }
 

@@ -17,33 +17,33 @@ import {initSelectionState, updateSelectionState} from "./SelectionFlow";
 import {mapCollect} from "../map/MapCollect";
 import { mapPrint } from '../map/MapPrint'
 
-export let mapState = {
+export let mapStack = {
     data: [],
     dataIndex: 0,
 };
 
-export function mapStateDispatch(action, payload) {
+export function mapStackDispatch(action, payload) {
     console.log('MAPDISPATCH: ' + action);
-    mapStateReducer(action, payload);
+    mapStackReducer(action, payload);
     recalc();
 }
 
-function mapStateReducer(action, payload) {
+function mapStackReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
-            mapState.data = [mapAssembly(payload.mapStorage)];
-            mapState.dataIndex = 0;
+            mapStack.data = [mapAssembly(payload.mapStorage)];
+            mapStack.dataIndex = 0;
             break;
         }
         case 'undo': {
-            if (mapState.dataIndex > 0) {
-                mapState.dataIndex--;
+            if (mapStack.dataIndex > 0) {
+                mapStack.dataIndex--;
             }
             break;
         }
         case 'redo': {
-            if (mapState.dataIndex < mapState.data.length - 1) {
-                mapState.dataIndex++;
+            if (mapStack.dataIndex < mapStack.data.length - 1) {
+                mapStack.dataIndex++;
             }
             break;
         }
@@ -51,7 +51,7 @@ function mapStateReducer(action, payload) {
 }
 
 const getMapData = () => {
-    return mapState.data[mapState.dataIndex];
+    return mapStack.data[mapStack.dataIndex];
 };
 
 export function recalc() {
@@ -85,18 +85,18 @@ export function redraw() {
 }
 
 export function push() {
-    if (mapState.data.length > mapState.dataIndex + 1) {
-        mapState.data.length = mapState.dataIndex + 1;
+    if (mapStack.data.length > mapStack.dataIndex + 1) {
+        mapStack.data.length = mapStack.dataIndex + 1;
     }
-    mapState.data.push(JSON.parse(JSON.stringify(getMapData())));
-    mapState.dataIndex++;
+    mapStack.data.push(JSON.parse(JSON.stringify(getMapData())));
+    mapStack.dataIndex++;
 }
 
 export function checkPop(dispatch) {
-    if (JSON.stringify(mapState.data[mapState.dataIndex]) ===
-        JSON.stringify(mapState.data[mapState.dataIndex - 1])) {
-        mapState.data.length--;
-        mapState.dataIndex--;
+    if (JSON.stringify(mapStack.data[mapStack.dataIndex]) ===
+        JSON.stringify(mapStack.data[mapStack.dataIndex - 1])) {
+        mapStack.data.length--;
+        mapStack.dataIndex--;
     } else {
         dispatch({ type: 'MAP_STATE_CHANGED' })
     }

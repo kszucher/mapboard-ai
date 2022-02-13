@@ -1,5 +1,5 @@
 import {isEditing, mapDispatch} from "./MapFlow";
-import {checkPop, push, redraw} from "./MapStateFlow";
+import {checkPop, push, redraw} from "./MapStackFlow";
 import {isUrl} from "./Utils";
 
 export const pasteDispatch = (dispatch) => {

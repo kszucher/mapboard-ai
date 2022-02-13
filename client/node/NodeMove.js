@@ -1,6 +1,6 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { copy, genHash, transpose } from '../core/Utils'
-import {mapref} from "../core/MapStateFlow";
+import {mapref} from "../core/MapStackFlow";
 import { mapChangeProp } from '../map/MapChangeProp'
 
 let clipboard = [];

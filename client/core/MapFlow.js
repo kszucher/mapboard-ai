@@ -6,7 +6,7 @@ import {setEndOfContenteditable, transposeArray} from "./Utils"
 import {mapChangeProp} from "../map/MapChangeProp"
 import {getAllFormatDefault, getFormatDefault} from "./DefaultProps"
 import {selectionState} from "./SelectionFlow"
-import {mapref, pathMerge, recalc, redraw} from "./MapStateFlow"
+import {mapref, pathMerge, recalc, redraw} from "./MapStackFlow"
 import { mapFindById } from '../map/MapFindById'
 
 let mutationObserver
