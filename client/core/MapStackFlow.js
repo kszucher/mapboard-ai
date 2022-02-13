@@ -63,14 +63,6 @@ export function mapref(path) {
     return subsref(getMapStackData(), path)
 }
 
-export function pathMerge(path1, path2) {
-    let retPath = path1.slice()
-    for (let i = 0; i < Object.keys(path2).length; i++) {
-        retPath.push(path2[i])
-    }
-    return retPath
-}
-
 export function saveMap() {
     let cm = copy(getMapStackData())
     mapDeinit.start(cm)

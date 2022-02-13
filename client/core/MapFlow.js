@@ -6,7 +6,7 @@ import { setEndOfContenteditable, transposeArray } from './Utils'
 import { mapChangeProp } from '../map/MapChangeProp'
 import { getAllFormatDefault, getFormatDefault } from './DefaultProps'
 import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
-import { mapref, pathMerge } from './MapStackFlow'
+import { mapref } from './MapStackFlow'
 import { mapFindById } from '../map/MapFindById'
 import { mapAlgo } from '../map/MapAlgo'
 import { mapInit } from '../map/MapInit'
@@ -128,8 +128,9 @@ function mapReducer(action, payload) {
         }
         case 'select_S_F_M': {
             if (lm.hasCell) {
+                console.log('DISZ')
                 clearSelection()
-                let toPath = pathMerge(sc.lastPath, ['c', 0, 0])
+                let toPath = [...sc.lastPath, 'c', 0, 0]
                 mapref(toPath).selected = 1
                 mapref(toPath).s[0].selected = 1
             }
