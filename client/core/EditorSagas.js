@@ -237,10 +237,10 @@ function* mapStackSaga () {
                     payload: {
                         density: undefined,
                         alignment: undefined,
-                        lineWidth: lm.selection === 's' ? lm.lineWidth : 1, // TODO family, otherwise unchangeable
-                        lineType: lm.selection === 's' ? lm.lineType : 'b', // TODO family, otherwise unchangeable
+                        lineWidth: lm.selection === 's' ? lm.lineWidth : undefined,
+                        lineType: lm.selection === 's' ? lm.lineType : undefined,
                         borderWidth: lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
-                        fontSize: lm.selection === 's' ? lm.sTextFontSize : 14 // TODO family, otherwise unchangeable
+                        fontSize: lm.selection === 's' ? lm.sTextFontSize : undefined
                     }
                 })
                 break

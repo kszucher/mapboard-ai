@@ -384,16 +384,33 @@ function mapReducer(action, payload) {
             const {lineWidth, lineType, borderWidth, fontSize} = payload
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
-                if (cm.selection === 's') {
-                    cm.lineWidth = lineWidth
-                    cm.lineType = lineType
-                    cm.ellipseNodeBorderWidth = borderWidth
-                    Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
-                } else {
-                    mapChangeProp.start(cm, {lineWidth}, 'line', true)
-                    mapChangeProp.start(cm, {lineType}, 'line', true)
-                    cm.ellipseBranchBorderWidth = borderWidth
-                    mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
+                if (lineWidth !== undefined) {
+                    if (cm.selection === 's') {
+                        cm.lineWidth = lineWidth
+                    } else {
+                        mapChangeProp.start(cm, {lineWidth}, 'line', true)
+                    }
+                }
+                if (lineType !== undefined) {
+                    if (cm.selection === 's') {
+                        cm.lineType = lineType
+                    } else {
+                        mapChangeProp.start(cm, {lineType}, 'line', true)
+                    }
+                }
+                if (borderWidth !== undefined) {
+                    if (cm.selection === 's') {
+                        cm.ellipseNodeBorderWidth = borderWidth
+                    } else {
+                        cm.ellipseBranchBorderWidth = borderWidth
+                    }
+                }
+                if (fontSize !== undefined) {
+                    if (cm.selection === 's') {
+                        Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
+                    } else {
+                        mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
+                    }
                 }
             }
             break

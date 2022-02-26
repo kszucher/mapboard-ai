@@ -494,12 +494,7 @@ export function WindowListeners() {
     }, [pageState, mapRight])
 
     useEffect(() => {
-        if (node && (
-            node.lineWidth !== undefined &&
-            node.lineType !== undefined &&
-            node.borderWidth !== undefined &&
-            node.fontSize !== undefined
-        )) {
+        if (mapId !== '' && mapSource !== '') {
             push()
             mapDispatch('applyNodeParams', node)
             redraw()
