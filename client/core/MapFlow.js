@@ -384,31 +384,31 @@ function mapReducer(action, payload) {
             const {lineWidth, lineType, borderWidth, fontSize} = payload
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
-                if (lineWidth !== undefined) {
-                    if (cm.selection === 's') {
-                        cm.lineWidth = lineWidth
-                    } else {
+                if (cm.selection === 's') {
+                    cm.lineWidth = lineWidth
+                } else {
+                    if (lineWidth !== undefined) {
                         mapChangeProp.start(cm, {lineWidth}, 'line', true)
                     }
                 }
-                if (lineType !== undefined) {
-                    if (cm.selection === 's') {
-                        cm.lineType = lineType
-                    } else {
+                if (cm.selection === 's') {
+                    cm.lineType = lineType
+                } else {
+                    if (lineType !== undefined) {
                         mapChangeProp.start(cm, {lineType}, 'line', true)
                     }
                 }
-                if (borderWidth !== undefined) {
-                    if (cm.selection === 's') {
-                        cm.ellipseNodeBorderWidth = borderWidth
-                    } else {
+                if (cm.selection === 's') {
+                    cm.ellipseNodeBorderWidth = borderWidth
+                } else {
+                    if (borderWidth !== undefined) {
                         cm.ellipseBranchBorderWidth = borderWidth
                     }
                 }
-                if (fontSize !== undefined) {
-                    if (cm.selection === 's') {
-                        Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
-                    } else {
+                if (cm.selection === 's') {
+                    Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
+                } else {
+                    if (fontSize !== undefined) {
                         mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
                     }
                 }
