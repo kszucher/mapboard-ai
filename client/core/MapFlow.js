@@ -386,28 +386,19 @@ function mapReducer(action, payload) {
                 let cm = mapref(sc.structSelectedPathList[i])
                 if (cm.selection === 's') {
                     cm.lineWidth = lineWidth
+                    cm.lineType = lineType
+                    cm.ellipseNodeBorderWidth = borderWidth
+                    Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
                 } else {
                     if (lineWidth !== undefined) {
                         mapChangeProp.start(cm, {lineWidth}, 'line', true)
                     }
-                }
-                if (cm.selection === 's') {
-                    cm.lineType = lineType
-                } else {
                     if (lineType !== undefined) {
                         mapChangeProp.start(cm, {lineType}, 'line', true)
                     }
-                }
-                if (cm.selection === 's') {
-                    cm.ellipseNodeBorderWidth = borderWidth
-                } else {
                     if (borderWidth !== undefined) {
                         cm.ellipseBranchBorderWidth = borderWidth
                     }
-                }
-                if (cm.selection === 's') {
-                    Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
-                } else {
                     if (fontSize !== undefined) {
                         mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
                     }
