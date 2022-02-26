@@ -17,18 +17,15 @@ export function CommandTexts () {
     const [alignment, setAlignment] = useState('')
     // const [lineWidth, setLineWidth] = useState('')
     // const [lineType, setLineType] = useState('')
-    const [borderWidth, setBorderWidth] = useState('')
+    // const [borderWidth, setBorderWidth] = useState('')
     const [fontSize, setFontSize] = useState('')
 
-    // TODO make an object inside the state and put cm related stuff there,
-    //  which is a subset of a cm property which is being modified when using checkPop(dispatch),
-    //  which is triggered here also and this should trigger useEffects inside mapFlow, so redraw is only used there
     const updateDensity =     e => {push(); mapDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
     const updateAlignment =   e => {push(); mapDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
     const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
     // const updateLineWidth =   e => {push(); mapDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
     // const updateLineType =    e => {push(); mapDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
-    const updateBorderWidth = e => {push(); mapDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
+    // const updateBorderWidth = e => {push(); mapDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
     const updateFontSize =    e => {push(); mapDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
     const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
     const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
@@ -37,6 +34,7 @@ export function CommandTexts () {
 
     const lineWidth = useSelector(state => state.node.lineWidth)
     const lineType = useSelector(state => state.node.lineType)
+    const borderWidth = useSelector(state => state.node.borderWidth)
 
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
 
@@ -116,8 +114,8 @@ export function CommandTexts () {
                 <StyledButtonGroup
                     open={formatMode === 'border'}
                     valueList={['w1', 'w2', 'w3']}
-                    value={borderWidth}
-                    action={updateBorderWidth}
+                    value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
+                    action={value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
@@ -143,5 +141,5 @@ export function CommandTexts () {
                 />
             </div>
         </div>
-    );
+    )
 }

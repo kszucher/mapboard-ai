@@ -240,7 +240,7 @@ function* mapStackSaga () {
                         alignment: undefined,
                         lineWidth: lm.lineWidth,
                         lineType: lm.lineType,
-                        borderWidth: undefined,
+                        borderWidth: lm.borderWidth,
                         fontSize: undefined
                     }
                 })

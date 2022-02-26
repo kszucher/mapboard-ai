@@ -406,7 +406,7 @@ function mapReducer(action, payload) {
             break
         }
         case 'applyBorderWidth': {
-            let borderWidth = {w1: 1, w2: 2, w3: 3}[payload]
+            let borderWidth = payload
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
                 if (cm.selection === 's') {
