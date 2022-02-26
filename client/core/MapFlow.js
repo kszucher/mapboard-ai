@@ -380,52 +380,20 @@ function mapReducer(action, payload) {
             }
             break
         }
-        // TODO unify setting params
-        case 'applyLineWidth': {
-            const lineWidth = payload
+        case 'applyNodeParams': {
+            const {lineWidth, lineType, borderWidth, fontSize} = payload
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
                 if (cm.selection === 's') {
                     cm.lineWidth = lineWidth
+                    cm.lineType = lineType
+                    cm.ellipseNodeBorderWidth = borderWidth
+                    Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
                 } else {
                     mapChangeProp.start(cm, {lineWidth}, 'line', true)
-                }
-            }
-            break
-        }
-        case 'applyLineType': {
-            let lineType = payload
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                if (cm.selection === 's') {
-                    cm.lineType = lineType
-                } else {
                     mapChangeProp.start(cm, {lineType}, 'line', true)
-                }
-            }
-            break
-        }
-        case 'applyBorderWidth': {
-            let borderWidth = payload
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                if (cm.selection === 's') {
-                    cm.ellipseNodeBorderWidth = borderWidth
-                } else {
                     cm.ellipseBranchBorderWidth = borderWidth
-                }
-            }
-            break
-        }
-        case 'applyFontSize': {
-            let sTextFontSize = payload
-            let isDimAssigned = 0
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                if (cm.selection === 's') {
-                    Object.assign(cm, {sTextFontSize, isDimAssigned})
-                } else {
-                    mapChangeProp.start(cm, {sTextFontSize, isDimAssigned}, 'text', true)
+                    mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
                 }
             }
             break

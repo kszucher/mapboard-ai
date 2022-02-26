@@ -47,10 +47,11 @@ export function WindowListeners() {
     const pageState = useSelector(state => state.pageState)
     const landingData = useSelector(state => state.landingData)
     const landingDataIndex = useSelector(state => state.landingDataIndex)
-    const lineWidth = useSelector(state => state.node.lineWidth)
-    const lineType = useSelector(state => state.node.lineType)
-    const borderWidth = useSelector(state => state.node.borderWidth)
-    const fontSize = useSelector(state => state.node.fontSize)
+    // const lineWidth = useSelector(state => state.node.lineWidth)
+    // const lineType = useSelector(state => state.node.lineType)
+    // const borderWidth = useSelector(state => state.node.borderWidth)
+    // const fontSize = useSelector(state => state.node.fontSize)
+    const node = useSelector(state => state.node)
 
     const dispatch = useDispatch()
 
@@ -493,40 +494,18 @@ export function WindowListeners() {
     }, [pageState, mapRight])
 
     useEffect(() => {
-        if (lineWidth) {
+        if (node && (
+            node.lineWidth !== undefined &&
+            node.lineType !== undefined &&
+            node.borderWidth !== undefined &&
+            node.fontSize !== undefined
+        )) {
             push()
-            mapDispatch('applyLineWidth', lineWidth)
+            mapDispatch('applyNodeParams', node)
             redraw()
             checkPop(dispatch)
         }
-    }, [lineWidth])
-
-    useEffect(() => {
-        if (lineType) {
-            push()
-            mapDispatch('applyLineType', lineType)
-            redraw()
-            checkPop(dispatch)
-        }
-    }, [lineType])
-
-    useEffect(() => {
-        if (borderWidth) {
-            push()
-            mapDispatch('applyBorderWidth', borderWidth)
-            redraw()
-            checkPop(dispatch)
-        }
-    }, [borderWidth])
-
-    useEffect(() => {
-        if (fontSize) {
-            push()
-            mapDispatch('applyFontSize', fontSize)
-            redraw()
-            checkPop(dispatch)
-        }
-    }, [fontSize])
+    }, [node])
 
     return (
         <></>

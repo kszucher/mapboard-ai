@@ -231,17 +231,16 @@ function* mapStackSaga () {
                 break
             }
             case 'MAP_STACK_CHANGED': {
-
                 const lm = mapref(selectionState.lastPath)
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
                         density: undefined,
                         alignment: undefined,
-                        lineWidth: lm.selection === 's' ? lm.lineWidth : 0, // TODO family
-                        lineType: lm.selection === 's' ? lm.lineType : 0, // TODO family
+                        lineWidth: lm.selection === 's' ? lm.lineWidth : 1, // TODO family, otherwise unchangeable
+                        lineType: lm.selection === 's' ? lm.lineType : 'b', // TODO family, otherwise unchangeable
                         borderWidth: lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
-                        fontSize: lm.selection === 's' ? lm.sTextFontSize : 0 // TODO family
+                        fontSize: lm.selection === 's' ? lm.sTextFontSize : 14 // TODO family, otherwise unchangeable
                     }
                 })
                 break
