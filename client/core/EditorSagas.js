@@ -231,17 +231,17 @@ function* mapStackSaga () {
                 break
             }
             case 'MAP_STACK_CHANGED': {
-                // TODO: backwards mapping, as we will not always use lm, sometimes we will have to use checking family props
+
                 const lm = mapref(selectionState.lastPath)
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
                         density: undefined,
                         alignment: undefined,
-                        lineWidth: lm.lineWidth,
-                        lineType: lm.lineType,
-                        borderWidth: lm.borderWidth,
-                        fontSize: undefined
+                        lineWidth: lm.lineWidth, // TODO family mapping
+                        lineType: lm.lineType, // TODO family mapping
+                        borderWidth: lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
+                        fontSize: lm.fontSize // ???
                     }
                 })
                 break

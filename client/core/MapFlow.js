@@ -418,7 +418,7 @@ function mapReducer(action, payload) {
             break
         }
         case 'applyFontSize': {
-            let sTextFontSize = {h1: 36, h2: 24, h3: 18, h4: 16, t: 14}[payload]
+            let sTextFontSize = payload
             let isDimAssigned = 0
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])

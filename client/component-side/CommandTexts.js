@@ -18,7 +18,7 @@ export function CommandTexts () {
     // const [lineWidth, setLineWidth] = useState('')
     // const [lineType, setLineType] = useState('')
     // const [borderWidth, setBorderWidth] = useState('')
-    const [fontSize, setFontSize] = useState('')
+    // const [fontSize, setFontSize] = useState('')
 
     const updateDensity =     e => {push(); mapDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
     const updateAlignment =   e => {push(); mapDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
@@ -26,7 +26,7 @@ export function CommandTexts () {
     // const updateLineWidth =   e => {push(); mapDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
     // const updateLineType =    e => {push(); mapDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
     // const updateBorderWidth = e => {push(); mapDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
-    const updateFontSize =    e => {push(); mapDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
+    // const updateFontSize =    e => {push(); mapDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
     const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
     const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
     const cmdTaskToggle =     e => {push(); mapDispatch('taskCheckReset'); mapDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
@@ -35,6 +35,7 @@ export function CommandTexts () {
     const lineWidth = useSelector(state => state.node.lineWidth)
     const lineType = useSelector(state => state.node.lineType)
     const borderWidth = useSelector(state => state.node.borderWidth)
+    const fontSize = useSelector(state => state.node.fontSize)
 
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
 
@@ -121,8 +122,8 @@ export function CommandTexts () {
                 <StyledButtonGroup
                     open={formatMode === 'text'}
                     valueList={['h1', 'h2', 'h3', 'h4', 't']}
-                    value={fontSize}
-                    action={updateFontSize}
+                    value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[fontSize]}
+                    action={value => setNodeParam({fontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
