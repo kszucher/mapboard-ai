@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {useSelector, useDispatch} from "react-redux"
-import { mapDispatch, redraw } from '../core/MapFlow'
-import {push, checkPop} from "../core/MapStackFlow"
 import { Button } from '@mui/material'
 
 const colorList = [
@@ -21,45 +19,30 @@ const colorList = [
 
 export function Palette () {
     const formatMode = useSelector(state => state.formatMode)
-    const colorLine = useSelector(state => state.colorLine)
-    const colorBorder = useSelector(state => state.colorBorder)
-    const colorFill = useSelector(state => state.colorFill)
-    const colorText = useSelector(state => state.colorText)
+    const colorLine = useSelector(state => state.node.colorLine)
+    const colorBorder = useSelector(state => state.node.colorBorder)
+    const colorFill = useSelector(state => state.node.colorFill)
+    const colorText = useSelector(state => state.node.colorText)
     const dispatch = useDispatch()
-    const [sel, setSel] = useState({x: 0, y: 0})
-
+    const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-    const setColor = (color) => {push(); mapDispatch('applyColorFromPalette', {formatMode, color}); checkPop(dispatch); redraw()}
 
-    const findSel = (color) => {
-        let sel = {x: 0, y: 0};
-        for (let i = 0; i < colorList.length; i++) {
-            for (let j = 0; j < colorList[0].length; j++) {
-                if (colorList[i][j] === color) {
-                    sel = {x: i, y: j}
-                }
-            }
+    const resolveColor = (formatMode) => {
+        switch (formatMode) {
+            case 'line':    return colorLine
+            case 'border':  return colorBorder
+            case 'fill':    return colorFill
+            case 'text':    return colorText
         }
-        return sel
     }
 
-    useEffect(() => {
-        switch (formatMode) {
-            case 'line':    setSel(findSel(colorLine));     break
-            case 'border':  setSel(findSel(colorBorder));   break
-            case 'fill':    setSel(findSel(colorFill));     break
-            case 'text':    setSel(findSel(colorText));     break
-        }
-    }, [formatMode])
-
-    useEffect(() => {if (formatMode === 'line'   && colorLine !== '')   setSel(findSel(colorLine))},   [colorLine])
-    useEffect(() => {if (formatMode === 'border' && colorBorder !== '') setSel(findSel(colorBorder))}, [colorBorder])
-    useEffect(() => {if (formatMode === 'fill'   && colorFill !== '')   setSel(findSel(colorFill))},   [colorFill])
-    useEffect(() => {if (formatMode === 'text'   && colorText!== '')    setSel(findSel(colorText))},   [colorText])
-
-    const handleClick = (i, j) => {
-        setSel({x: i, y: j})
-        setColor(colorList[i][j])
+    const resolveColorName = (formatMode) => {
+        return {
+            line: 'colorLine',
+            text: 'colorText',
+            fill: 'colorFill',
+            border: 'colorBorder'
+        }[formatMode]
     }
 
     const o = 32
@@ -95,9 +78,9 @@ export function Palette () {
                             r={r}
                             key={'key' + i*10 + j}
                             fill={jEl}
-                            stroke={(i === sel.x && j === sel.y) ? '#9040b8' : 'none'}
+                            stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
                             strokeWidth={"2%"}
-                            onClick={()=>handleClick(i, j)}
+                            onClick={_ => setNodeParam({ [resolveColorName(formatMode)] : colorList[i][j] })}
                         />))))}
             </svg>
             <div

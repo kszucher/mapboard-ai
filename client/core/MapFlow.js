@@ -365,7 +365,8 @@ function mapReducer(action, payload) {
             break
         }
         case 'applyMapParams': {
-            const {density, alignment, lineWidth, lineType, borderWidth, fontSize} = payload
+            const {density, alignment, lineWidth, lineType, borderWidth, fontSize,
+                colorLine, colorBorder, colorFill, colorText} = payload
             let m = mapref(['m'])
             if (m.density !== density) {
                 m.density = density
@@ -386,54 +387,52 @@ function mapReducer(action, payload) {
                     cm.lineType = lineType
                     cm.ellipseNodeBorderWidth = borderWidth
                     Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
+                    cm.lineColor = colorLine
+                    cm.ellipseNodeBorderColor = colorBorder // TODO handle cBorderColor too
+                    cm.ellipseNodeFillColor = colorFill
+                    cm.sTextColor = colorText
                 } else {
-                    if (lineWidth !== undefined) {
-                        mapChangeProp.start(cm, {lineWidth}, 'line', true)
-                    }
-                    if (lineType !== undefined) {
-                        mapChangeProp.start(cm, {lineType}, 'line', true)
-                    }
-                    if (borderWidth !== undefined) {
-                        cm.ellipseBranchBorderWidth = borderWidth
-                    }
-                    if (fontSize !== undefined) {
-                        mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
-                    }
+                    if (lineWidth !== undefined) {mapChangeProp.start(cm, {lineWidth}, 'line', true)}
+                    if (lineType !== undefined) {mapChangeProp.start(cm, {lineType}, 'line', true)}
+                    cm.ellipseBranchBorderWidth = borderWidth
+                    if (fontSize !== undefined) {mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)}
+                    if (colorLine !== undefined) {mapChangeProp.start(cm, {lineColor: colorLine}, 'line', true)}
+                    cm.ellipseBranchBorderColor = colorBorder // TODO handle cBorderColor too
+                    cm.ellipseBranchFillColor = colorFill
+                    if (colorText !== undefined) {mapChangeProp.start(cm, {sTextColor: colorText}, 'text', true)}
                 }
             }
             break
         }
-        case 'applyColorFromPalette': {
-            let field = {
-                line: 'lineColor',
-                text: 'sTextColor',
-                fill: lm.selection === 's'
-                    ? 'ellipseNodeFillColor'
-                    : 'ellipseBranchFillColor',
-                border: lm.hasCell
-                    ? 'cBorderColor' :
-                    lm.selection === 's'
-                        ? 'ellipseNodeBorderColor'
-                        : 'ellipseBranchBorderColor'
-            }[payload.formatMode]
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                if (cm.selection === 's' ||
-                    field === 'ellipseBranchFillColor' ||
-                    field === 'ellipseBranchBorderColor') {
-                    cm[field] = payload.color
-                } else {
-                    if (field !== 'cBorderColor') {
-                        let scope = {
-                            lineColor: 'line',
-                            sTextColor: 'text',
-                        }[field]
-                        mapChangeProp.start(cm, {[field]: payload.color}, scope, true)
-                    }
-                }
-            }
-            break
-        }
+        // case 'applyColorFromPalette': {
+        //     let field = {
+        //         line: 'lineColor',
+        //         text: 'sTextColor',
+        //         fill: lm.selection === 's'
+        //             ? 'ellipseNodeFillColor'
+        //             : 'ellipseBranchFillColor',
+        //         border: lm.hasCell
+        //             ? 'cBorderColor' :
+        //             lm.selection === 's'
+        //                 ? 'ellipseNodeBorderColor'
+        //                 : 'ellipseBranchBorderColor'
+        //     }[payload.formatMode]
+        //     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+        //         let cm = mapref(sc.structSelectedPathList[i])
+        //         if (cm.selection === 's' || field === 'ellipseBranchFillColor' || field === 'ellipseBranchBorderColor') {
+        //             cm[field] = payload.color
+        //         } else {
+        //             if (field !== 'cBorderColor') {
+        //                 let scope = {
+        //                     lineColor: 'line',
+        //                     sTextColor: 'text',
+        //                 }[field]
+        //                 mapChangeProp.start(cm, {[field]: payload.color}, scope, true)
+        //             }
+        //         }
+        //     }
+        //     break
+        // }
         case 'applyColorFromKey': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])

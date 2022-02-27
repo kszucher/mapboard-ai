@@ -236,12 +236,16 @@ function* mapStackSaga () {
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
-                        density: m.density,
-                        alignment: m.alignment,
-                        lineWidth: lm.selection === 's' ? lm.lineWidth : undefined,
-                        lineType: lm.selection === 's' ? lm.lineType : undefined,
-                        borderWidth: lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
-                        fontSize: lm.selection === 's' ? lm.sTextFontSize : undefined
+                        density:        m.density,
+                        alignment:      m.alignment,
+                        lineWidth:      lm.selection === 's' ? lm.lineWidth : undefined,
+                        lineType:       lm.selection === 's' ? lm.lineType : undefined,
+                        borderWidth:    lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
+                        fontSize:       lm.selection === 's' ? lm.sTextFontSize : undefined,
+                        colorLine:      lm.selection === 's' ? lm.lineColor : undefined,
+                        colorBorder:    lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
+                        colorFill:      lm.selection === 's' ? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+                        colorText:      lm.selection === 's' ? lm.sTextColor: undefined
                     }
                 })
                 break
