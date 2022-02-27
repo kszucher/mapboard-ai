@@ -466,6 +466,7 @@ export function WindowListeners() {
         if (mapId !== '' && mapSource !== '') {
             mapStackDispatch('initMapState', { mapStorage });
             redraw();
+            dispatch({ type: 'MAP_STACK_CHANGED' })
         }
     }, [mapId, mapSource, frameLen, frameSelected])
 
