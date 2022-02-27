@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {checkPop, push} from "../core/MapStackFlow";
 import { mapDispatch, redraw } from '../core/MapFlow'
@@ -7,37 +7,26 @@ import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 
 export function CommandTexts () {
-    const formatMode = useSelector(state => state.formatMode)
-    const mapRight = useSelector(state => state.mapRight)
-    const dispatch = useDispatch()
-
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
 
-    const [density, setDensity] = useState('')
-    const [alignment, setAlignment] = useState('')
-    // const [lineWidth, setLineWidth] = useState('')
-    // const [lineType, setLineType] = useState('')
-    // const [borderWidth, setBorderWidth] = useState('')
-    // const [fontSize, setFontSize] = useState('')
-
-    const updateDensity =     e => {push(); mapDispatch('updateDensity', e);                           redraw(); checkPop(dispatch); setDensity(e)}
-    const updateAlignment =   e => {push(); mapDispatch('updateAlignment', e);                         redraw(); checkPop(dispatch); setAlignment(e)}
-    const updateFormatMode =  e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    // const updateLineWidth =   e => {push(); mapDispatch('applyLineWidth', e);                          redraw(); checkPop(dispatch); setLineWidth(e)}
-    // const updateLineType =    e => {push(); mapDispatch('applyLineType', e);                           redraw(); checkPop(dispatch); setLineType(e)}
-    // const updateBorderWidth = e => {push(); mapDispatch('applyBorderWidth', e);                        redraw(); checkPop(dispatch); setBorderWidth(e)}
-    // const updateFontSize =    e => {push(); mapDispatch('applyFontSize', e);                           redraw(); checkPop(dispatch); setFontSize(e)}
-    const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
-    const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
-    const cmdTaskToggle =     e => {push(); mapDispatch('taskCheckReset'); mapDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
-    const cmdSubmapToggle =   e => dispatch({type: 'CREATE_MAP_IN_MAP'})
-
+    const formatMode = useSelector(state => state.formatMode)
+    const mapRight = useSelector(state => state.mapRight)
+    const density = useSelector(state => state.node.density)
+    const alignment = useSelector(state => state.node.alignment)
     const lineWidth = useSelector(state => state.node.lineWidth)
     const lineType = useSelector(state => state.node.lineType)
     const borderWidth = useSelector(state => state.node.borderWidth)
     const fontSize = useSelector(state => state.node.fontSize)
 
+    const dispatch = useDispatch()
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
+    const updateFormatMode = e => dispatch({type: 'OPEN_PALETTE', payload: e})
+    const cmdSubmapToggle = e => dispatch({type: 'CREATE_MAP_IN_MAP'})
+
+    // TODO change
+    const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
+    const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
+    const cmdTaskToggle =     e => {push(); mapDispatch('taskCheckReset'); mapDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
 
     return (
         <div style={{
@@ -66,15 +55,15 @@ export function CommandTexts () {
                 <StyledButtonGroup
                     open={true}
                     valueList={['small', 'large']}
-                    value={density}
-                    action={updateDensity}
+                    value={{['small']: 'small', ['large']: 'large'}[density]}
+                    action={value => setNodeParam({density: {['small']: 'small', ['large']: 'large'}[value]})}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
                     open={true}
                     valueList={['adaptive', 'centered']}
-                    value={alignment}
-                    action={updateAlignment}
+                    value={{['adaptive']: 'adaptive', ['centered']: 'centered'}[alignment]}
+                    action={value => setNodeParam({alignment: {['adaptive']: 'adaptive', ['centered']: 'centered'}[value]})}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup

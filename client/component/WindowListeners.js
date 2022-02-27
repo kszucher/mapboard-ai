@@ -47,12 +47,7 @@ export function WindowListeners() {
     const pageState = useSelector(state => state.pageState)
     const landingData = useSelector(state => state.landingData)
     const landingDataIndex = useSelector(state => state.landingDataIndex)
-    // const lineWidth = useSelector(state => state.node.lineWidth)
-    // const lineType = useSelector(state => state.node.lineType)
-    // const borderWidth = useSelector(state => state.node.borderWidth)
-    // const fontSize = useSelector(state => state.node.fontSize)
     const node = useSelector(state => state.node)
-
     const dispatch = useDispatch()
 
     const mousewheel = (e) => {
@@ -155,9 +150,6 @@ export function WindowListeners() {
                         window.open(lm.link, '_blank');
                         window.focus();
                     }
-                }
-                if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    // dispatch({type: 'SET_NODE_PROPS', payload: lm}); // will be replaced by MAP_STACK_CHANGED
                 }
             } else if (isTaskClicked) {
                 mapDispatch('setTaskStatus', {
@@ -496,7 +488,7 @@ export function WindowListeners() {
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
             push()
-            mapDispatch('applyNodeParams', node)
+            mapDispatch('applyMapParams', node)
             redraw()
             checkPop(dispatch)
         }

@@ -231,12 +231,13 @@ function* mapStackSaga () {
                 break
             }
             case 'MAP_STACK_CHANGED': {
+                let m = mapref(['m'])
                 const lm = mapref(selectionState.lastPath)
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
-                        density: undefined,
-                        alignment: undefined,
+                        density: m.density,
+                        alignment: m.alignment,
                         lineWidth: lm.selection === 's' ? lm.lineWidth : undefined,
                         lineType: lm.selection === 's' ? lm.lineType : undefined,
                         borderWidth: lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,

@@ -36,22 +36,6 @@ function mapReducer(action, payload) {
     let lm = mapref(sc.lastPath)
     switch (action) {
         // MAP ---------------------------------------------------------------------------------------------------------
-        case 'updateDensity': {
-            let m = mapref(['m'])
-            m.density = payload
-            m.shouldCenter = true
-            for (let i = 0; i < mapref(['r']).length; i++) {
-                let cr = mapref(['r', i])
-                mapChangeProp.start(cr, {isDimAssigned: 0}, '', false)
-            }
-            break
-        }
-        case 'updateAlignment': {
-            let m = mapref(['m'])
-            m.alignment = payload
-            m.shouldCenter = true
-            break
-        }
         case 'setIsResizing': {
             let m = mapref(['m'])
             m.isResizing = true
@@ -380,8 +364,21 @@ function mapReducer(action, payload) {
             }
             break
         }
-        case 'applyNodeParams': {
-            const {lineWidth, lineType, borderWidth, fontSize} = payload
+        case 'applyMapParams': {
+            const {density, alignment, lineWidth, lineType, borderWidth, fontSize} = payload
+            let m = mapref(['m'])
+            if (m.density !== density) {
+                m.density = density
+                m.shouldCenter = true
+                for (let i = 0; i < mapref(['r']).length; i++) {
+                    let cr = mapref(['r', i])
+                    mapChangeProp.start(cr, { isDimAssigned: 0 }, '', false)
+                }
+            }
+            if (m.alignment !== alignment) {
+                m.alignment = alignment
+                m.shouldCenter = true
+            }
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
                 if (cm.selection === 's') {
