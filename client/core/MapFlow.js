@@ -388,7 +388,7 @@ function mapReducer(action, payload) {
                     cm.ellipseNodeBorderWidth = borderWidth
                     Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
                     cm.lineColor = colorLine
-                    cm.ellipseNodeBorderColor = colorBorder // TODO handle cBorderColor too
+                    cm.hasCell ? cm.cBorderColor = colorBorder :  cm.ellipseNodeBorderColor = colorBorder
                     cm.ellipseNodeFillColor = colorFill
                     cm.sTextColor = colorText
                 } else {
@@ -397,42 +397,13 @@ function mapReducer(action, payload) {
                     cm.ellipseBranchBorderWidth = borderWidth
                     if (fontSize !== undefined) {mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)}
                     if (colorLine !== undefined) {mapChangeProp.start(cm, {lineColor: colorLine}, 'line', true)}
-                    cm.ellipseBranchBorderColor = colorBorder // TODO handle cBorderColor too
+                    cm.ellipseBranchBorderColor = colorBorder
                     cm.ellipseBranchFillColor = colorFill
                     if (colorText !== undefined) {mapChangeProp.start(cm, {sTextColor: colorText}, 'text', true)}
                 }
             }
             break
         }
-        // case 'applyColorFromPalette': {
-        //     let field = {
-        //         line: 'lineColor',
-        //         text: 'sTextColor',
-        //         fill: lm.selection === 's'
-        //             ? 'ellipseNodeFillColor'
-        //             : 'ellipseBranchFillColor',
-        //         border: lm.hasCell
-        //             ? 'cBorderColor' :
-        //             lm.selection === 's'
-        //                 ? 'ellipseNodeBorderColor'
-        //                 : 'ellipseBranchBorderColor'
-        //     }[payload.formatMode]
-        //     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        //         let cm = mapref(sc.structSelectedPathList[i])
-        //         if (cm.selection === 's' || field === 'ellipseBranchFillColor' || field === 'ellipseBranchBorderColor') {
-        //             cm[field] = payload.color
-        //         } else {
-        //             if (field !== 'cBorderColor') {
-        //                 let scope = {
-        //                     lineColor: 'line',
-        //                     sTextColor: 'text',
-        //                 }[field]
-        //                 mapChangeProp.start(cm, {[field]: payload.color}, scope, true)
-        //             }
-        //         }
-        //     }
-        //     break
-        // }
         case 'applyColorFromKey': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])

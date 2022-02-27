@@ -243,7 +243,7 @@ function* mapStackSaga () {
                         borderWidth:    lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
                         fontSize:       lm.selection === 's' ? lm.sTextFontSize : undefined,
                         colorLine:      lm.selection === 's' ? lm.lineColor : undefined,
-                        colorBorder:    lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
+                        colorBorder:    lm.hasCell ? lm.cBorderColor : lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
                         colorFill:      lm.selection === 's' ? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
                         colorText:      lm.selection === 's' ? lm.sTextColor: undefined
                     }
