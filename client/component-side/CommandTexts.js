@@ -24,9 +24,9 @@ export function CommandTexts () {
     const cmdSubmapToggle = e => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     // TODO change
-    const cmdResetAll =       e => {push(); mapDispatch('resetAll');                                   redraw(); checkPop(dispatch)}
-    const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});                        redraw(); checkPop(dispatch)}
-    const cmdTaskToggle =     e => {push(); mapDispatch('taskCheckReset'); mapDispatch('taskSwitch'); redraw(); checkPop(dispatch)}
+    const cmdResetAll =       e => {push(); mapDispatch('resetAll');                redraw(); checkPop(dispatch)}
+    const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});     redraw(); checkPop(dispatch)}
+    const cmdTaskToggle =     e => {push(); mapDispatch('toggleTask');              redraw(); checkPop(dispatch)}
 
     return (
         <div style={{

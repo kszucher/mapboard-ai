@@ -443,14 +443,8 @@ function mapReducer(action, payload) {
             cm.taskStatusInherited = -1
             break
         }
-        case 'taskCheckReset': {
-            if (lm.task) {
-                mapChangeProp.start(lm, {taskStatus: -1}, '', false)
-            }
-            break
-        }
-        case 'taskSwitch': {
-            mapChangeProp.start(lm, {task: !lm.task}, '', false)
+        case 'toggleTask': {
+            mapChangeProp.start(lm, {task: !lm.task, taskStatus: -1}, '', false)
             break
         }
         // NODE EDIT ---------------------------------------------------------------------------------------------------
