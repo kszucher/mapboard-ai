@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
 import {COLORS} from "../core/Utils";
 import { MAP_RIGHTS } from '../core/EditorFlow'
-import { Button, FormLabel, RadioGroup, TextField, Typography } from '@mui/material'
+import { Button, FormControlLabel, FormLabel, Modal, RadioGroup, TextField, Typography, Radio } from '@mui/material'
 
 export function Sharing() {
     const {VIEW, EDIT} = MAP_RIGHTS
