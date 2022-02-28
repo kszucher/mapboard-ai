@@ -26,7 +26,7 @@ export function CommandTexts () {
     // TODO change
     const cmdResetAll =       e => {push(); mapDispatch('resetAll');                redraw(); checkPop(dispatch)}
     const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});     redraw(); checkPop(dispatch)}
-    const cmdTaskToggle =     e => {push(); mapDispatch('toggleTask');              redraw(); checkPop(dispatch)}
+    const cmdToggleTask =     e => {push(); mapDispatch('toggleTask');              redraw(); checkPop(dispatch)}
 
     return (
         <div style={{
@@ -119,7 +119,7 @@ export function CommandTexts () {
                     open={formatMode === ''}
                     valueList={['convert to task']}
                     value={''}
-                    action={cmdTaskToggle}
+                    action={cmdToggleTask}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
