@@ -45,9 +45,8 @@ const editorState = {
     // tabs
     tabMapNameList: [],
     tabMapSelected: 0,
-
+    //
     formatMode: '',
-
     // map
     mapId: '',
     mapSource: '',
@@ -102,7 +101,6 @@ const resolveActions = (state, action) => {
         case 'SET_TAB_MAP_SELECTED':        return {tabMapSelected: payload.tabMapSelected}
         case 'PLAY_LANDING_NEXT':           return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':           return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        case 'SET_NODE_PROPS':              return extractNodeProps(payload)
         // AUTH
         case 'SET_NAME':                    return {name: payload}
         case 'SET_EMAIL':                   return {email: payload}
