@@ -20,13 +20,12 @@ export function CommandTexts () {
 
     const dispatch = useDispatch()
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
-    const updateFormatMode = e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    const cmdSubmapToggle = e => dispatch({type: 'CREATE_MAP_IN_MAP'})
+    const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
+    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
-    // TODO change
-    const cmdResetAll =       e => {push(); mapDispatch('resetAll');                redraw(); checkPop(dispatch)}
-    const cmdReset =          e => {push(); mapDispatch('reset', {formatMode});     redraw(); checkPop(dispatch)}
-    const cmdToggleTask =     e => {push(); mapDispatch('toggleTask');              redraw(); checkPop(dispatch)}
+    const mapResetAll = _ => {push(); mapDispatch('resetAll'); redraw(); checkPop(dispatch)}
+    const mapReset = _ => {push(); mapDispatch('reset', {formatMode}); redraw(); checkPop(dispatch)}
+    const mapToggleTask = _ => {push(); mapDispatch('toggleTask'); redraw(); checkPop(dispatch)}
 
     return (
         <div style={{
@@ -70,21 +69,21 @@ export function CommandTexts () {
                     open={true}
                     valueList={['line', 'border', 'fill', 'text']}
                     value={formatMode}
-                    action={updateFormatMode}
+                    action={openPalette}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
                     open={formatMode === '' }
                     valueList={['reset format']}
                     value={''}
-                    action={cmdResetAll}
+                    action={mapResetAll}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
                     open={formatMode !== '' }
                     valueList={['reset ' + formatMode]}
                     value={''}
-                    action={cmdReset}
+                    action={mapReset}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
@@ -119,14 +118,14 @@ export function CommandTexts () {
                     open={formatMode === ''}
                     valueList={['convert to task']}
                     value={''}
-                    action={cmdToggleTask}
+                    action={mapToggleTask}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
                 <StyledButtonGroup
                     open={formatMode === ''}
                     valueList={['convert to submap']}
                     value={''}
-                    action={cmdSubmapToggle}
+                    action={createMapInMap}
                     disabled={[UNAUTHORIZED, VIEW].includes(mapRight)}
                 />
             </div>
