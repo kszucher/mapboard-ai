@@ -422,20 +422,6 @@ function mapReducer(action, payload) {
             }
             break
         }
-        case 'applyTaskStatus': {
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                cm.taskStatus = 2
-                cm.taskStatusInherited = -1
-                switch (payload.currTaskStatus) {
-                    case 0: cm.taskStatus = 0; break
-                    case 1: cm.taskStatus = 1; break
-                    case 2: cm.taskStatus = 2; break
-                    case 3: cm.taskStatus = 3; break
-                }
-            }
-            break
-        }
         case 'setTaskStatus': {
             let m = mapref(['m'])
             let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId)) // TODO multi r rethink

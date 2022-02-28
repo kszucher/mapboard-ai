@@ -363,7 +363,6 @@ export function WindowListeners() {
             [ 0,  0,  1,  [38,40].includes(which),       ['cr',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
             [ 0,  0,  1,  [37,38,39,40].includes(which), ['s', 'c', 'cr', 'cc'],        0,  1,  0, []                                         ],
             [ 1,  0,  0,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyColorFromKey']                      ],
-            [ 1,  0,  1,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyTaskStatus']                        ],
             [ 0,  0,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
             [ 0,  1,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
         ];
@@ -396,8 +395,6 @@ export function WindowListeners() {
                         dispatch({type: currExecution});
                     } else if (currExecution === 'applyColorFromKey') {
                         mapDispatch(currExecution, {currColor: which - 96});
-                    } else if (currExecution === 'applyTaskStatus') {
-                        mapDispatch(currExecution, {currTaskStatus: which - 96});
                     } else {
                         mapDispatch(currExecution, {keyCode: e.code});
                         if (['insert_O_S',
