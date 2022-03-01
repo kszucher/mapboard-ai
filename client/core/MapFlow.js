@@ -388,7 +388,7 @@ function mapReducer(action, payload) {
                     cm.sBorderWidth = borderWidth
                     Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
                     cm.lineColor = lineColor
-                    cm.hasCell ? cm.cBorderColor = borderColor :  cm.sBorderColor = borderColor
+                    cm.hasCell ? cm.cBorderColor = borderColor : cm.sBorderColor = borderColor
                     cm.sFillColor = fillColor
                     cm.sTextColor = textColor
                 } else {
