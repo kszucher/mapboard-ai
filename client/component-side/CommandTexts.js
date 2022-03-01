@@ -23,9 +23,9 @@ export function CommandTexts () {
     const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
-    const mapResetAll = _ => {push(); mapDispatch('resetAll'); redraw(); checkPop(dispatch)}
-    const mapReset = _ => {push(); mapDispatch('reset', {formatMode}); redraw(); checkPop(dispatch)}
-    const mapToggleTask = _ => {push(); mapDispatch('toggleTask'); redraw(); checkPop(dispatch)}
+    const mapResetAll = _ =>    {push(); mapDispatch('resetAll');               redraw(); checkPop(dispatch)}
+    const mapReset = _ =>       {push(); mapDispatch('reset', {formatMode});    redraw(); checkPop(dispatch)}
+    const mapToggleTask = _ =>  {push(); mapDispatch('toggleTask');             redraw(); checkPop(dispatch)}
 
     return (
         <div style={{
