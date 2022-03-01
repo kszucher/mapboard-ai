@@ -19,29 +19,29 @@ const colorList = [
 
 export function Palette () {
     const formatMode = useSelector(state => state.formatMode)
-    const colorLine = useSelector(state => state.node.colorLine)
-    const colorBorder = useSelector(state => state.node.colorBorder)
-    const colorFill = useSelector(state => state.node.colorFill)
-    const colorText = useSelector(state => state.node.colorText)
+    const lineColor = useSelector(state => state.node.lineColor)
+    const borderColor = useSelector(state => state.node.borderColor)
+    const fillColor = useSelector(state => state.node.fillColor)
+    const textColor = useSelector(state => state.node.textColor)
     const dispatch = useDispatch()
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
 
     const resolveColor = (formatMode) => {
         switch (formatMode) {
-            case 'line':    return colorLine
-            case 'border':  return colorBorder
-            case 'fill':    return colorFill
-            case 'text':    return colorText
+            case 'line':    return lineColor
+            case 'border':  return borderColor
+            case 'fill':    return fillColor
+            case 'text':    return textColor
         }
     }
 
     const resolveColorName = (formatMode) => {
         return {
-            line: 'colorLine',
-            text: 'colorText',
-            fill: 'colorFill',
-            border: 'colorBorder'
+            line: 'lineColor',
+            text: 'textColor',
+            fill: 'fillColor',
+            border: 'borderColor'
         }[formatMode]
     }
 

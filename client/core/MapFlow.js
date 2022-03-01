@@ -366,7 +366,7 @@ function mapReducer(action, payload) {
         }
         case 'applyMapParams': {
             const {density, alignment, lineWidth, lineType, borderWidth, fontSize,
-                colorLine, colorBorder, colorFill, colorText} = payload
+                lineColor, borderColor, fillColor, textColor} = payload
             let m = mapref(['m'])
             if (m.density !== density) {
                 m.density = density
@@ -387,19 +387,19 @@ function mapReducer(action, payload) {
                     cm.lineType = lineType
                     cm.sBorderWidth = borderWidth
                     Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
-                    cm.lineColor = colorLine
-                    cm.hasCell ? cm.cBorderColor = colorBorder :  cm.sBorderColor = colorBorder
-                    cm.sFillColor = colorFill
-                    cm.sTextColor = colorText
+                    cm.lineColor = lineColor
+                    cm.hasCell ? cm.cBorderColor = borderColor :  cm.sBorderColor = borderColor
+                    cm.sFillColor = fillColor
+                    cm.sTextColor = textColor
                 } else {
                     if (lineWidth !== undefined) {mapChangeProp.start(cm, {lineWidth}, 'line', true)}
                     if (lineType !== undefined) {mapChangeProp.start(cm, {lineType}, 'line', true)}
                     cm.fBorderWidth = borderWidth
                     if (fontSize !== undefined) {mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)}
-                    if (colorLine !== undefined) {mapChangeProp.start(cm, {lineColor: colorLine}, 'line', true)}
-                    cm.fBorderColor = colorBorder
-                    cm.fFillColor = colorFill
-                    if (colorText !== undefined) {mapChangeProp.start(cm, {sTextColor: colorText}, 'text', true)}
+                    if (lineColor !== undefined) {mapChangeProp.start(cm, {lineColor: lineColor}, 'line', true)}
+                    cm.fBorderColor = borderColor
+                    cm.fFillColor = fillColor
+                    if (textColor !== undefined) {mapChangeProp.start(cm, {sTextColor: textColor}, 'text', true)}
                 }
             }
             break
