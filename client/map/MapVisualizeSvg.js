@@ -199,27 +199,27 @@ export const mapVisualizeSvg = {
             if (conditions.branchFill) {
                 updateMapSvgData(nodeId, 'branchFill', {
                     path: getPolygonPath(fParams, 'f', dir, 0),
-                    fill: cm.ellipseBranchFillColor,
+                    fill: cm.fFillColor,
                 })
             }
             if (conditions.nodeFill) {
                 updateMapSvgData(nodeId, 'nodeFill', {
                     path: getPolygonPath(sParams, 's', dir, 0),
-                    fill: cm.ellipseNodeFillColor,
+                    fill: cm.sFillColor,
                 })
             }
             if (conditions.branchBorder) {
                 updateMapSvgData(nodeId, 'branchBorder', {
                     path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
-                    stroke: cm.ellipseBranchBorderColor,
-                    strokeWidth: cm.ellipseBranchBorderWidth,
+                    stroke: cm.fBorderColor,
+                    strokeWidth: cm.fBorderWidth,
                 })
             }
             if (conditions.nodeBorder) {
                 updateMapSvgData(nodeId, 'nodeBorder', {
                     path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
-                    stroke: cm.ellipseNodeBorderColor,
-                    strokeWidth: cm.ellipseNodeBorderWidth,
+                    stroke: cm.sBorderColor,
+                    strokeWidth: cm.sBorderWidth,
                 })
             }
             if (conditions.selectionBorder) {
@@ -231,8 +231,8 @@ export const mapVisualizeSvg = {
                         cm.selection,
                         dir,
                         cm.selection === 's'
-                            ? cm.ellipseNodeBorderColor !== '' ? 4 : 0
-                            : cm.ellipseBranchBorderColor !== '' ? 4 : 0
+                            ? cm.sBorderColor !== '' ? 4 : 0
+                            : cm.fBorderColor !== '' ? 4 : 0
                     ),
                     stroke: '#666666',
                     strokeWidth: 1,
@@ -269,7 +269,7 @@ export const mapVisualizeSvg = {
             updateMapSvgData(nodeId, 'tableFrame', {
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 0),
                 stroke: cm.cBorderColor,
-                strokeWidth: cm.ellipseNodeBorderWidth,
+                strokeWidth: cm.sBorderWidth,
             })
             // grid
             let path = ''

@@ -385,20 +385,20 @@ function mapReducer(action, payload) {
                 if (cm.selection === 's') {
                     cm.lineWidth = lineWidth
                     cm.lineType = lineType
-                    cm.ellipseNodeBorderWidth = borderWidth
+                    cm.sBorderWidth = borderWidth
                     Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
                     cm.lineColor = colorLine
-                    cm.hasCell ? cm.cBorderColor = colorBorder :  cm.ellipseNodeBorderColor = colorBorder
-                    cm.ellipseNodeFillColor = colorFill
+                    cm.hasCell ? cm.cBorderColor = colorBorder :  cm.sBorderColor = colorBorder
+                    cm.sFillColor = colorFill
                     cm.sTextColor = colorText
                 } else {
                     if (lineWidth !== undefined) {mapChangeProp.start(cm, {lineWidth}, 'line', true)}
                     if (lineType !== undefined) {mapChangeProp.start(cm, {lineType}, 'line', true)}
-                    cm.ellipseBranchBorderWidth = borderWidth
+                    cm.fBorderWidth = borderWidth
                     if (fontSize !== undefined) {mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)}
                     if (colorLine !== undefined) {mapChangeProp.start(cm, {lineColor: colorLine}, 'line', true)}
-                    cm.ellipseBranchBorderColor = colorBorder
-                    cm.ellipseBranchFillColor = colorFill
+                    cm.fBorderColor = colorBorder
+                    cm.fFillColor = colorFill
                     if (colorText !== undefined) {mapChangeProp.start(cm, {sTextColor: colorText}, 'text', true)}
                 }
             }

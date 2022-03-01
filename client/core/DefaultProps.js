@@ -59,12 +59,12 @@ export let nodeProps = {
         lineWidth: 1,
         lineType: 'b',
         lineColor: '#bbbbbb',
-        ellipseBranchFillColor: '',
-        ellipseBranchBorderColor: '',
-        ellipseBranchBorderWidth: 1,
-        ellipseNodeFillColor: '',
-        ellipseNodeBorderColor: '',
-        ellipseNodeBorderWidth: 1,
+        fFillColor: '',
+        fBorderColor: '',
+        fBorderWidth: 1,
+        sFillColor: '',
+        sBorderColor: '',
+        sBorderWidth: 1,
         taskStatus: -1,
         // subMapStartX: 0, // only applies for root <-- calculate (how?)
         // subMapStartY: 0,  // only applies for root <-- calculate (how?)
@@ -131,10 +131,10 @@ export let nodeProps = {
 
 const formatParams =  {
     line: ['lineWidth', 'lineType', 'lineColor'],
-    border_s: ['cBorderColor', 'ellipseNodeBorderColor', 'ellipseNodeBorderWidth'],
-    border_f: ['ellipseBranchBorderColor', 'ellipseBranchBorderWidth'],
-    fill_s: ['ellipseNodeFillColor'],
-    fill_f: ['ellipseBranchFillColor'],
+    border_s: ['cBorderColor', 'sBorderColor', 'sBorderWidth'],
+    border_f: ['fBorderColor', 'fBorderWidth'],
+    fill_s: ['sFillColor'],
+    fill_f: ['fFillColor'],
     text: ['sTextColor', 'sTextFontSize'],
 }
 
@@ -153,10 +153,10 @@ export const resolveScope = (cm) => {
             !cm.hasCell,
         text:
             cm.contentType === 'text',
-        branchFill: cm.ellipseBranchFillColor !== '' && cm.s.length,
-        nodeFill: cm.ellipseNodeFillColor !== '',
-        branchBorder: cm.ellipseBranchBorderColor !== '' && cm.s.length,
-        nodeBorder: cm.ellipseNodeBorderColor !== '',
+        branchFill: cm.fFillColor !== '' && cm.s.length,
+        nodeFill: cm.sFillColor !== '',
+        branchBorder: cm.fBorderColor !== '' && cm.s.length,
+        nodeBorder: cm.sBorderColor !== '',
         selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
         selectionBorderTable: cm.selected && cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
         line:

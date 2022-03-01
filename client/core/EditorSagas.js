@@ -240,11 +240,11 @@ function* mapStackSaga () {
                         alignment:      m.alignment,
                         lineWidth:      lm.selection === 's' ? lm.lineWidth : undefined,
                         lineType:       lm.selection === 's' ? lm.lineType : undefined,
-                        borderWidth:    lm.selection === 's' ? lm.ellipseNodeBorderWidth : lm.ellipseBranchBorderWidth,
+                        borderWidth:    lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth,
                         fontSize:       lm.selection === 's' ? lm.sTextFontSize : undefined,
                         colorLine:      lm.selection === 's' ? lm.lineColor : undefined,
-                        colorBorder:    lm.hasCell ? lm.cBorderColor : lm.selection === 's' ? lm.ellipseNodeBorderColor : lm.ellipseBranchBorderColor,
-                        colorFill:      lm.selection === 's' ? lm.ellipseNodeFillColor : lm.ellipseBranchFillColor,
+                        colorBorder:    lm.hasCell ? lm.cBorderColor : lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor,
+                        colorFill:      lm.selection === 's' ? lm.sFillColor : lm.fFillColor,
                         colorText:      lm.selection === 's' ? lm.sTextColor: undefined
                     }
                 })
