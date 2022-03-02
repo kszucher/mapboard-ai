@@ -1,29 +1,29 @@
-import React, {useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
+import React, {useEffect} from "react"
+import {useSelector, useDispatch} from "react-redux"
 import { isEditing, mapDispatch, recalc, redraw } from '../core/MapFlow'
-import {arraysSame, copy} from "../core/Utils";
-import {mapFindNearest} from "../map/MapFindNearest";
-import {checkPop, mapStackDispatch, mapref, push} from "../core/MapStackFlow";
-import {mapFindOverPoint} from "../map/MapFindOverPoint";
-import {mapFindOverRectangle} from "../map/MapFindOverRectangle";
-import {selectionState} from "../core/SelectionFlow";
-import {pasteDispatch} from "../core/PasteFlow";
-import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow";
+import {arraysSame, copy} from "../core/Utils"
+import {mapFindNearest} from "../map/MapFindNearest"
+import {checkPop, mapStackDispatch, mapref, push} from "../core/MapStackFlow"
+import {mapFindOverPoint} from "../map/MapFindOverPoint"
+import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
+import {selectionState} from "../core/SelectionFlow"
+import {pasteDispatch} from "../core/PasteFlow"
+import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow"
 
-let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0;
-let namedInterval;
-let isIntervalRunning = false;
-let isNodeClicked = false;
-let isTaskClicked = false;
+let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0
+let namedInterval
+let isIntervalRunning = false
+let isNodeClicked = false
+let isTaskClicked = false
 
 const getCoords = (e) => {
-    let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    let mapHolderDiv = document.getElementById('mapHolderDiv');
-    let x = e.pageX - winWidth + mapHolderDiv.scrollLeft;
-    let y = e.pageY - winHeight + mapHolderDiv.scrollTop;
+    let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+    let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+    let mapHolderDiv = document.getElementById('mapHolderDiv')
+    let x = e.pageX - winWidth + mapHolderDiv.scrollLeft
+    let y = e.pageY - winHeight + mapHolderDiv.scrollTop
     return [x, y]
-};
+}
 
 const getNativeEvent = (e) => {
     return {
@@ -31,12 +31,12 @@ const getNativeEvent = (e) => {
         key: e.key,
         code: e.code,
         which: e.which
-    };
+    }
 }
 
 export function WindowListeners() {
     const {EDIT, VIEW} = MAP_RIGHTS
-    const {DEMO, WS} = PAGE_STATES;
+    const {DEMO, WS} = PAGE_STATES
 
     const mapId = useSelector(state => state.mapId)
     const mapSource = useSelector(state => state.mapSource)
@@ -51,59 +51,59 @@ export function WindowListeners() {
     const dispatch = useDispatch()
 
     const mousewheel = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         if (!isIntervalRunning) {
             namedInterval = setInterval(function () {
-                clearInterval(namedInterval);
-                isIntervalRunning = false;
+                clearInterval(namedInterval)
+                isIntervalRunning = false
                 if (Math.sign(e.deltaY) === 1) {
                     dispatch({type: 'PLAY_LANDING_NEXT'})
                 } else {
                     dispatch({type: 'PLAY_LANDING_PREV'})
                 }
-            }, 100);
+            }, 100)
         }
-        isIntervalRunning = true;
+        isIntervalRunning = true
     }
 
     const contextmenu = (e) => {
         e.preventDefault()
-    };
+    }
 
     const resize = () => {
-        mapDispatch('setIsResizing');
-        redraw();
-    };
+        mapDispatch('setIsResizing')
+        redraw()
+    }
 
     const popstate = (e) => {
         dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
-    };
+    }
 
     const checkNodeClicked = (e) => {
-        let isNodeClicked = false;
-        let m = mapref(['m']);
-        m.selectionRect = [];
-        [fromX, fromY] = getCoords(e);
-        let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY); // TODO multi r rethink
+        let isNodeClicked = false
+        let m = mapref(['m'])
+        m.selectionRect = []
+        [fromX, fromY] = getCoords(e)
+        let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY) // TODO multi r rethink
         if (lastOverPath.length) {
-            isNodeClicked = true;
-            let m = mapref(['m']);
-            m.deepestSelectablePath = copy(lastOverPath);
+            isNodeClicked = true
+            let m = mapref(['m'])
+            m.deepestSelectablePath = copy(lastOverPath)
             if (m.deepestSelectablePath.length === 4) {
-                m.deepestSelectablePath = ['r', 0]; // TODO multi r rethink
+                m.deepestSelectablePath = ['r', 0] // TODO multi r rethink
             }
         }
         return isNodeClicked
     }
 
     const checkTaskClicked = (path) => {
-        let isTaskClicked = false;
+        let isTaskClicked = false
         if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
             for (const pathItem of path) {
                 if (pathItem.id) {
                     if (pathItem.id.substring(17, 27) === 'taskCircle') {
-                        isTaskClicked = true;
-                        break;
+                        isTaskClicked = true
+                        break
                     }
                 }
             }
@@ -112,60 +112,60 @@ export function WindowListeners() {
     }
 
     const mousedown = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const {path, which} = getNativeEvent(e)
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-            return;
+            return
         }
         if (isEditing === 1) {
-            mapDispatch('finishEdit');
-            redraw();
+            mapDispatch('finishEdit')
+            redraw()
         }
         (window.getSelection
             ? window.getSelection()
             : document.selection
         ).empty()
-        elapsed = 0;
-        isMouseDown = true;
+        elapsed = 0
+        isMouseDown = true
         push()
         if (which === 1) {
             isNodeClicked = checkNodeClicked(e)
             isTaskClicked = checkTaskClicked(path)
             if (isNodeClicked) {
                 if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    mapDispatch('selectStruct');
+                    mapDispatch('selectStruct')
                 } else {
-                    mapDispatch('selectStructToo');
+                    mapDispatch('selectStructToo')
                 }
-                redraw();
-                let lm = mapref(selectionState.lastPath);
+                redraw()
+                let lm = mapref(selectionState.lastPath)
                 if (!e.shiftKey) {
                     if (lm.linkType !== '') {
-                        mapDispatch('select_R');
+                        mapDispatch('select_R')
                     }
                     if (lm.linkType === 'internal') {
                         dispatch({type: 'OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
                     } else if (lm.linkType === 'external') {
-                        isMouseDown = false;
-                        window.open(lm.link, '_blank');
-                        window.focus();
+                        isMouseDown = false
+                        window.open(lm.link, '_blank')
+                        window.focus()
                     }
                 }
             } else if (isTaskClicked) {
                 mapDispatch('setTaskStatus', {
                     taskStatus: parseInt(path[0].id.charAt(27), 10),
                     nodeId: path[0].id.substring(0, 12)
-                });
+                })
                 redraw()
             } else {
                 mapDispatch('clearSelection')
             }
         } else if (which === 2) {
-            let el = document.getElementById('mapHolderDiv');
-            scrollLeft = el.scrollLeft;
-            scrollTop = el.scrollTop;
-            pageX = e.pageX;
-            pageY = e.pageY;
+            let el = document.getElementById('mapHolderDiv')
+            scrollLeft = el.scrollLeft
+            scrollTop = el.scrollTop
+            pageX = e.pageX
+            pageY = e.pageY
         } else if (which === 3) {
             const isNodeClicked = checkNodeClicked(e)
             if (isNodeClicked) {
@@ -180,83 +180,83 @@ export function WindowListeners() {
     }
 
     const mousemove = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const {which} = getNativeEvent(e)
         if (isMouseDown) {
-            elapsed++;
+            elapsed++
             if (which === 1) {
-                let m = mapref(['m']);
+                let m = mapref(['m'])
                 if (isNodeClicked) {
-                    let m = mapref(['m']);
-                    let [toX, toY] = getCoords(e);
-                    m.moveTargetPath = [];
-                    m.moveData = [];
-                    let lastSelectedPath = selectionState.structSelectedPathList[0];
-                    let lastSelected = mapref(lastSelectedPath);
+                    let m = mapref(['m'])
+                    let [toX, toY] = getCoords(e)
+                    m.moveTargetPath = []
+                    m.moveData = []
+                    let lastSelectedPath = selectionState.structSelectedPathList[0]
+                    let lastSelected = mapref(lastSelectedPath)
                     if (!(lastSelected.nodeStartX < toX &&
                         toX < lastSelected.nodeEndX &&
                         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
                         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-                        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY); // TODO multi r rethink
+                        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY) // TODO multi r rethink
                         if (lastNearestPath.length > 2) {
-                            m.moveTargetPath = copy(lastNearestPath);
-                            let lastFound = mapref(lastNearestPath);
-                            fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX;
-                            fromY = lastFound.nodeY;
-                            m.moveData = [fromX, fromY, toX, toY];
+                            m.moveTargetPath = copy(lastNearestPath)
+                            let lastFound = mapref(lastNearestPath)
+                            fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
+                            fromY = lastFound.nodeY
+                            m.moveData = [fromX, fromY, toX, toY]
                             if (lastFound.s.length === 0) {
-                                m.moveTargetIndex = 0;
+                                m.moveTargetIndex = 0
                             } else {
-                                let insertIndex = 0;
+                                let insertIndex = 0
                                 for (let i = 0; i < lastFound.s.length - 1; i++) {
                                     if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
-                                        insertIndex = i + 1;
+                                        insertIndex = i + 1
                                     }
                                 }
                                 if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-                                    insertIndex = lastFound.s.length;
+                                    insertIndex = lastFound.s.length
                                 }
-                                let lastSelectedParentPath = lastSelected.parentPath;
+                                let lastSelectedParentPath = lastSelected.parentPath
                                 if (arraysSame(lastFound.path, lastSelectedParentPath)) {
                                     if (lastSelected.index < insertIndex) {
-                                        insertIndex -= 1;
+                                        insertIndex -= 1
                                     }
                                 }
-                                m.moveTargetIndex = insertIndex;
+                                m.moveTargetIndex = insertIndex
                             }
                         }
                     }
-                    redraw();
+                    redraw()
                 } else if (isTaskClicked) {
                 } else {
-                    let m = mapref(['m']);
-                    let [toX, toY] = getCoords(e);
-                    let startX = fromX < toX ? fromX : toX;
-                    let startY = fromY < toY ? fromY : toY;
-                    let width = Math.abs(toX - fromX);
-                    let height = Math.abs(toY - fromY);
-                    m.selectionRect = [startX, startY, width, height];
-                    mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height); // TODO multi r rethink
-                    recalc();
-                    redraw();
+                    let m = mapref(['m'])
+                    let [toX, toY] = getCoords(e)
+                    let startX = fromX < toX ? fromX : toX
+                    let startY = fromY < toY ? fromY : toY
+                    let width = Math.abs(toX - fromX)
+                    let height = Math.abs(toY - fromY)
+                    m.selectionRect = [startX, startY, width, height]
+                    mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
+                    recalc()
+                    redraw()
                 }
             } else if (which === 2) {
-                let el = document.getElementById('mapHolderDiv');
-                el.scrollLeft = scrollLeft - e.pageX  + pageX;
-                el.scrollTop = scrollTop -  e.pageY  + pageY;
+                let el = document.getElementById('mapHolderDiv')
+                el.scrollLeft = scrollLeft - e.pageX  + pageX
+                el.scrollTop = scrollTop -  e.pageY  + pageY
             } else if (which === 3) {
             }
         }
     }
 
     const mouseup = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const {path, which} = getNativeEvent(e)
-        isMouseDown = false;
+        isMouseDown = false
         if (elapsed) {
             if (which === 1) {
                 if (isNodeClicked) {
-                    let m = mapref(['m']);
+                    let m = mapref(['m'])
                     if (m.moveTargetPath.length) {
                         m.moveData = []
                         m.shouldCenter = true // outside push - checkPop?
@@ -265,7 +265,7 @@ export function WindowListeners() {
                     }
                 } else if (isTaskClicked) {
                 } else {
-                    let m = mapref(['m']);
+                    let m = mapref(['m'])
                     m.selectionRect = []
                     if (selectionState.structSelectedPathList.length === 0 &&
                         selectionState.cellSelectedPathList.length === 0) {
@@ -295,22 +295,22 @@ export function WindowListeners() {
 
     const dblclick = (e) => {
         const {path} = getNativeEvent(e)
-        e.preventDefault();
+        e.preventDefault()
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-            return;
+            return
         }
         if (isNodeClicked) {
             mapDispatch('startEdit')
         } else {
-            let m = mapref(['m']);
-            m.shouldCenter = true; // outside push - checkPop?
+            let m = mapref(['m'])
+            m.shouldCenter = true // outside push - checkPop?
         }
-        redraw();
+        redraw()
     }
 
     const keydown = (e) => {
-        let {scope, lastPath} = selectionState;
-        let {key, code, which} = getNativeEvent(e);
+        let {scope, lastPath} = selectionState
+        let {key, code, which} = getNativeEvent(e)
         // [37,38,39,40] = [left,up,right,down]
         let keyStateMachineDb = [
             ['c','s','a', 'keyMatch',                     'scope',                     'e','p','m', 'executionList',                          ],
@@ -365,12 +365,12 @@ export function WindowListeners() {
             [ 1,  0,  0,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyColorFromKey']                      ],
             [ 0,  0,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
             [ 0,  1,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
-        ];
+        ]
 
-        let keyStateMachine = {};
+        let keyStateMachine = {}
         for (let i = 0; i < keyStateMachineDb.length; i++) {
             for (let h = 0; h < keyStateMachineDb[0].length; h++) {
-                keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h];
+                keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h]
             }
             if (keyStateMachine.scope.includes(scope) &&
                 keyStateMachine.e === isEditing &&
@@ -379,52 +379,52 @@ export function WindowListeners() {
                 keyStateMachine.a === +e.altKey &&
                 keyStateMachine.keyMatch === true) {
                 if (keyStateMachine.p) {
-                    e.preventDefault();
+                    e.preventDefault()
                 }
                 if (keyStateMachine.m) {
-                    push();
+                    push()
                 }
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
-                    let currExecution = keyStateMachine.executionList[j];
+                    let currExecution = keyStateMachine.executionList[j]
                     if ([
                         'CREATE_MAP_IN_MAP',
                         'SAVE_MAP',
                         'UNDO',
                         'REDO',
                     ].includes(currExecution)) {
-                        dispatch({type: currExecution});
+                        dispatch({type: currExecution})
                     } else if (currExecution === 'applyColorFromKey') {
-                        mapDispatch(currExecution, {currColor: which - 96});
+                        mapDispatch(currExecution, {currColor: which - 96})
                     } else {
-                        mapDispatch(currExecution, {keyCode: e.code});
+                        mapDispatch(currExecution, {keyCode: e.code})
                         if (['insert_O_S',
                             'insert_U_S',
                             'insert_D_S'
                         ].includes(currExecution)) {
-                            redraw();
+                            redraw()
                         }
                     }
                 }
-                redraw();
+                redraw()
                 if (keyStateMachine.m) {
-                    checkPop(dispatch);
+                    checkPop(dispatch)
                 }
-                break;
+                break
             }
         }
     }
 
     const paste = (e) => {
-        e.preventDefault();
-        pasteDispatch(dispatch);
+        e.preventDefault()
+        pasteDispatch(dispatch)
     }
 
     const addLandingListeners = () => {
-        window.addEventListener("mousewheel", mousewheel, {passive: false});
+        window.addEventListener("mousewheel", mousewheel, {passive: false})
     }
 
     const removeLandingListeners = () => {
-        window.removeEventListener("mousewheel", mousewheel);
+        window.removeEventListener("mousewheel", mousewheel)
     }
 
     const addMapListeners = () => {
@@ -453,16 +453,16 @@ export function WindowListeners() {
 
     useEffect(() => {
         if (landingData.length) {
-            const mapStorage = landingData[landingDataIndex];
-            mapStackDispatch('initMapState', { mapStorage });
-            redraw();
+            const mapStorage = landingData[landingDataIndex]
+            mapStackDispatch('initMapState', { mapStorage })
+            redraw()
         }
     }, [landingData, landingDataIndex])
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
-            mapStackDispatch('initMapState', { mapStorage });
-            redraw();
+            mapStackDispatch('initMapState', { mapStorage })
+            redraw()
             dispatch({ type: 'MAP_STACK_CHANGED' })
         }
     }, [mapId, mapSource, frameLen, frameSelected])
