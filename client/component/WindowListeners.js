@@ -82,7 +82,7 @@ export function WindowListeners() {
     const checkNodeClicked = (e) => {
         let isNodeClicked = false
         let m = mapref(['m'])
-        m.selectionRect = []
+        m.selectionRect = [];
         [fromX, fromY] = getCoords(e)
         let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY) // TODO multi r rethink
         if (lastOverPath.length) {
