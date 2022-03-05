@@ -382,25 +382,40 @@ function mapReducer(action, payload) {
             }
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
-                if (cm.selection === 's') {
-                    cm.lineWidth = lineWidth
-                    cm.lineType = lineType
-                    cm.sBorderWidth = borderWidth
-                    Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
-                    cm.lineColor = lineColor
-                    cm.hasCell ? cm.cBorderColor = borderColor : cm.sBorderColor = borderColor
-                    cm.sFillColor = fillColor
-                    cm.sTextColor = textColor
-                } else {
-                    if (lineWidth !== undefined) {mapChangeProp.start(cm, {lineWidth}, 'line', true)}
-                    if (lineType !== undefined) {mapChangeProp.start(cm, {lineType}, 'line', true)}
-                    cm.fBorderWidth = borderWidth
-                    if (fontSize !== undefined) {mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)}
-                    if (lineColor !== undefined) {mapChangeProp.start(cm, {lineColor: lineColor}, 'line', true)}
-                    cm.fBorderColor = borderColor
-                    cm.fFillColor = fillColor
-                    if (textColor !== undefined) {mapChangeProp.start(cm, {sTextColor: textColor}, 'text', true)}
-                }
+                if (lineWidth !== undefined)
+                    cm.selection === 's'
+                        ? cm.lineWidth = lineWidth
+                        : mapChangeProp.start(cm, {lineWidth}, 'line', true)
+                if (lineType !== undefined)
+                    cm.selection === 's'
+                        ? cm.lineType = lineType
+                        : mapChangeProp.start(cm, {lineType}, 'line', true)
+                if (borderWidth !== undefined)
+                    cm.selection === 's'
+                        ? cm.sBorderWidth = borderWidth
+                        : cm.fBorderWidth = borderWidth
+                if (fontSize !== undefined)
+                    cm.selection === 's'
+                        ? Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
+                        : mapChangeProp.start(cm, {sTextFontSize: fontSize, isDimAssigned: 0}, 'text', true)
+                if (lineColor !== undefined)
+                    cm.selection === 's'
+                        ? cm.lineColor = lineColor
+                        : mapChangeProp.start(cm, {lineColor: lineColor}, 'line', true)
+                if (borderColor !== undefined)
+                    cm.selection === 's'
+                        ? cm.hasCell
+                            ? cm.cBorderColor = borderColor
+                            : cm.sBorderColor = borderColor
+                        : cm.fBorderColor = borderColor
+                if (fillColor !== undefined)
+                    cm.selection === 's'
+                        ? cm.sFillColor = fillColor
+                        : cm.fFillColor = fillColor
+                if (textColor !== undefined)
+                    cm.selection === 's'
+                        ? cm.sTextColor = textColor
+                        : mapChangeProp.start(cm, {sTextColor: textColor}, 'text', true)
             }
             break
         }

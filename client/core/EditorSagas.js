@@ -233,19 +233,45 @@ function* mapStackSaga () {
             case 'MAP_STACK_CHANGED': {
                 let m = mapref(['m'])
                 const lm = mapref(selectionState.lastPath)
+                const sc = selectionState
+                const sspll = sc.structSelectedPathList.length
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
-                        density:        m.density,
-                        alignment:      m.alignment,
-                        lineWidth:      lm.selection === 's' ? lm.lineWidth : undefined,
-                        lineType:       lm.selection === 's' ? lm.lineType : undefined,
-                        borderWidth:    lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth,
-                        fontSize:       lm.selection === 's' ? lm.sTextFontSize : undefined,
-                        lineColor:      lm.selection === 's' ? lm.lineColor : undefined,
-                        borderColor:    lm.hasCell ? lm.cBorderColor : lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor,
-                        fillColor:      lm.selection === 's' ? lm.sFillColor : lm.fFillColor,
-                        textColor:      lm.selection === 's' ? lm.sTextColor: undefined
+                        density: m.density,
+                        alignment: m.alignment,
+                        lineWidth: (sspll === 1 && lm.selection === 's')
+                            ? lm.lineWidth
+                            : undefined,
+                        lineType: (sspll === 1 && lm.selection === 's')
+                            ? lm.lineType
+                            : undefined,
+                        borderWidth: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.sBorderWidth
+                                : lm.fBorderWidth
+                            : undefined,
+                        fontSize: (sspll === 1 && lm.selection === 's')
+                            ? lm.sTextFontSize
+                            : undefined,
+                        lineColor: (sspll === 1 && lm.selection === 's')
+                            ? lm.lineColor
+                            : undefined,
+                        borderColor: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.hasCell
+                                    ? lm.cBorderColor
+                                    : lm.sBorderColor
+                                : lm.fBorderColor
+                            : undefined,
+                        fillColor: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.sFillColor
+                                : lm.fFillColor
+                            :undefined,
+                        textColor: (sspll === 1 && lm.selection === 's')
+                            ? lm.sTextColor
+                            : undefined
                     }
                 })
                 break
