@@ -118,6 +118,7 @@ export function WindowListeners() {
             return
         }
         if (!isMouseDown) {
+            isMouseDown = true
             if (isEditing === 1) {
                 mapDispatch('finishEdit')
                 redraw()
@@ -127,7 +128,6 @@ export function WindowListeners() {
                     : document.selection
             ).empty()
             elapsed = 0
-            isMouseDown = true
             push()
             if (which === 1) {
                 isNodeClicked = checkNodeClicked(e)
