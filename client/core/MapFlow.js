@@ -4,7 +4,7 @@ import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
 import { nodeNavigate } from '../node/NodeNavigate'
 import { setEndOfContenteditable, transposeArray } from './Utils'
 import { mapChangeProp } from '../map/MapChangeProp'
-import { getAllFormatDefault, getFormatDefault } from './DefaultProps'
+import { getAllFormatDefault, getFormatDefault, nodeProps } from './DefaultProps'
 import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
 import { mapref } from './MapStackFlow'
 import { mapFindById } from '../map/MapFindById'
@@ -390,10 +390,14 @@ function mapReducer(action, payload) {
                     cm.selection === 's'
                         ? cm.lineType = lineType
                         : mapChangeProp.start(cm, {lineType}, 'line', true)
-                if (borderWidth !== undefined)
-                    cm.selection === 's'
-                        ? cm.sBorderWidth = borderWidth
-                        : cm.fBorderWidth = borderWidth
+                if (borderWidth !== undefined) // EXPERIMENTAL
+                    borderWidth === 'clear'
+                        ? cm.selection === 's'
+                            ? cm.sBorderWidth = nodeProps.saveOptional.sBorderWidth
+                            : cm.fBorderWidth = nodeProps.saveOptional.fBorderWidth
+                        : cm.selection === 's'
+                            ? cm.sBorderWidth = borderWidth
+                            : cm.fBorderWidth = borderWidth
                 if (fontSize !== undefined)
                     cm.selection === 's'
                         ? Object.assign(cm, {sTextFontSize: fontSize, isDimAssigned: 0})
