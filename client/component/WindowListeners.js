@@ -252,6 +252,9 @@ export function WindowListeners() {
     const mouseup = (e) => {
         e.preventDefault()
         const {path, which} = getNativeEvent(e)
+        if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
+            return
+        }
         isMouseDown = false
         if (elapsed) {
             if (which === 1) {
@@ -281,10 +284,8 @@ export function WindowListeners() {
                 if (isNodeClicked) {
                 } else if (isTaskClicked) {
                 } else {
-                    // if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
-                        mapDispatch('select_R')
-                        redraw()
-                    // }
+                    mapDispatch('select_R')
+                    redraw()
                 }
             } else if (which === 2) {
             } else if (which === 3) {
