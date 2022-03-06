@@ -54,6 +54,7 @@ export let nodeProps = {
         imageW: 0,
         imageH: 0,
         selected: 0,
+        selection: 's',
         task: 0,
         taskStatus: -1,
         lastSelectedChild: -1, // -1 means not selected ever
@@ -79,7 +80,6 @@ export let nodeProps = {
         parentNodeStartXFrom: 0,
         parentNodeYFrom: 0,
         lineAnimationRequested: 0,
-        selection: 's',
         // mapAlgo
         contentCalc: '',
         // mapMeasure
