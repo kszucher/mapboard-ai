@@ -281,10 +281,10 @@ export function WindowListeners() {
                 if (isNodeClicked) {
                 } else if (isTaskClicked) {
                 } else {
-                    if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
+                    // if (['mapSvgOuter', 'backgroundRect'].includes(path[0].id)) {
                         mapDispatch('select_R')
                         redraw()
-                    }
+                    // }
                 }
             } else if (which === 2) {
             } else if (which === 3) {
