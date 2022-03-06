@@ -27,7 +27,10 @@ export let mapProps = {
         isResizing: false,
         // navigators
         deepestSelectablePath: [],
+        //
+        selectionRect: [],
         moveTargetPath: [],
+        moveData: [],
         moveTargetIndex: 0,
     },
     saveNeverInitAlways: {
@@ -76,8 +79,6 @@ export let nodeProps = {
         parentNodeStartXFrom: 0,
         parentNodeYFrom: 0,
         lineAnimationRequested: 0,
-        moveData: [],
-        selectionRect: [],
         selection: 's',
         // mapAlgo
         contentCalc: '',
