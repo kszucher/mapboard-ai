@@ -117,64 +117,66 @@ export function WindowListeners() {
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return
         }
-        if (isEditing === 1) {
-            mapDispatch('finishEdit')
-            redraw()
-        }
-        (window.getSelection
-            ? window.getSelection()
-            : document.selection
-        ).empty()
-        elapsed = 0
-        isMouseDown = true
-        push()
-        if (which === 1) {
-            isNodeClicked = checkNodeClicked(e)
-            isTaskClicked = checkTaskClicked(path)
-            if (isNodeClicked) {
-                if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    mapDispatch('selectStruct')
-                } else {
-                    mapDispatch('selectStructToo')
-                }
+        if (!isMouseDown) {
+            if (isEditing === 1) {
+                mapDispatch('finishEdit')
                 redraw()
-                let lm = mapref(selectionState.lastPath)
-                if (!e.shiftKey) {
-                    if (lm.linkType !== '') {
-                        mapDispatch('select_R')
-                    }
-                    if (lm.linkType === 'internal') {
-                        dispatch({type: 'OPEN_MAP_FROM_MAP', payload: {mapId: lm.link}})
-                    } else if (lm.linkType === 'external') {
-                        isMouseDown = false
-                        window.open(lm.link, '_blank')
-                        window.focus()
-                    }
-                }
-            } else if (isTaskClicked) {
-                mapDispatch('setTaskStatus', {
-                    taskStatus: parseInt(path[0].id.charAt(27), 10),
-                    nodeId: path[0].id.substring(0, 12)
-                })
-                redraw()
-            } else {
-                mapDispatch('clearSelection')
             }
-        } else if (which === 2) {
-            let el = document.getElementById('mapHolderDiv')
-            scrollLeft = el.scrollLeft
-            scrollTop = el.scrollTop
-            pageX = e.pageX
-            pageY = e.pageY
-        } else if (which === 3) {
-            const isNodeClicked = checkNodeClicked(e)
-            if (isNodeClicked) {
-                if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                    mapDispatch('selectStructFamily')
+            (window.getSelection
+                    ? window.getSelection()
+                    : document.selection
+            ).empty()
+            elapsed = 0
+            isMouseDown = true
+            push()
+            if (which === 1) {
+                isNodeClicked = checkNodeClicked(e)
+                isTaskClicked = checkTaskClicked(path)
+                if (isNodeClicked) {
+                    if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                        mapDispatch('selectStruct')
+                    } else {
+                        mapDispatch('selectStructToo')
+                    }
+                    redraw()
+                    let lm = mapref(selectionState.lastPath)
+                    if (!e.shiftKey) {
+                        if (lm.linkType !== '') {
+                            mapDispatch('select_R')
+                        }
+                        if (lm.linkType === 'internal') {
+                            dispatch({ type: 'OPEN_MAP_FROM_MAP', payload: { mapId: lm.link } })
+                        } else if (lm.linkType === 'external') {
+                            isMouseDown = false
+                            window.open(lm.link, '_blank')
+                            window.focus()
+                        }
+                    }
+                } else if (isTaskClicked) {
+                    mapDispatch('setTaskStatus', {
+                        taskStatus: parseInt(path[0].id.charAt(27), 10),
+                        nodeId: path[0].id.substring(0, 12)
+                    })
+                    redraw()
                 } else {
-                    mapDispatch('selectStructToo')
+                    mapDispatch('clearSelection')
                 }
-                redraw()
+            } else if (which === 2) {
+                let el = document.getElementById('mapHolderDiv')
+                scrollLeft = el.scrollLeft
+                scrollTop = el.scrollTop
+                pageX = e.pageX
+                pageY = e.pageY
+            } else if (which === 3) {
+                const isNodeClicked = checkNodeClicked(e)
+                if (isNodeClicked) {
+                    if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                        mapDispatch('selectStructFamily')
+                    } else {
+                        mapDispatch('selectStructToo')
+                    }
+                    redraw()
+                }
             }
         }
     }
