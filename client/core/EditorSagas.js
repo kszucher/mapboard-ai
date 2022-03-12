@@ -281,7 +281,7 @@ function* mapStackSaga () {
                             ? lm.selection === 's'
                                 ? lm.sTextColor
                                 : undefined
-                            : sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
+                            : undefined //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
                     }
                 })
                 break
