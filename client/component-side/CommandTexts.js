@@ -50,7 +50,7 @@ export function CommandTexts () {
     const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
-    const mapResetAll = _ =>    {push(); mapDispatch('resetAll');               redraw(); checkPop(dispatch)}
+    // TODO
     const mapToggleTask = _ =>  {push(); mapDispatch('toggleTask');             redraw(); checkPop(dispatch)}
 
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
@@ -66,7 +66,7 @@ export function CommandTexts () {
                 <StyledButtonGroup open={true} valueList={DENSITY_TYPES} value={density} action={setDensity} disabled={disabled}/>
                 <StyledButtonGroup open={true} valueList={ALIGNMENT_TYPES} value={alignment} action={setAlignment} disabled={disabled}/>
                 <StyledButtonGroup open={true} valueList={FORMAT_MODE_TYPES} value={formatMode} action={openPalette} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={mapResetAll} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'line'} valueList={['reset line']} value={''} action={resetLine} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'border'} valueList={['reset border']} value={''} action={resetBorder} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'fill'} valueList={['reset fill']} value={''} action={resetFill} disabled={disabled}/>

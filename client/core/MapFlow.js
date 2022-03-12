@@ -345,14 +345,6 @@ function mapReducer(action, payload) {
             break
         }
         // NODE FORMAT -------------------------------------------------------------------------------------------------
-        case 'resetAll': {
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                mapChangeProp.start(cm, getAllFormatDefault(), '', false)
-                mapChangeProp.start(cm, {isDimAssigned: 0}, '', false)
-            }
-            break
-        }
         case 'applyMapParams': {
             const {density, alignment,
                 lineWidth, lineType, lineColor,
