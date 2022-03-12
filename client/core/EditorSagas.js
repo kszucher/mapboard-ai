@@ -1,7 +1,7 @@
-import { call, put, take, takeEvery, takeLatest, all, select } from 'redux-saga/effects'
+import { all, call, put, select, take } from 'redux-saga/effects'
 import '@babel/polyfill'
 import { initDomData } from './DomFlow'
-import { mapStackDispatch, mapref, mapStack, saveMap } from './MapStackFlow'
+import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
 
@@ -233,29 +233,37 @@ function* mapStackSaga () {
             case 'MAP_STACK_CHANGED': {
                 let m = mapref(['m'])
                 const lm = mapref(selectionState.lastPath)
-                const sc = selectionState
-                const sspll = sc.structSelectedPathList.length
+                const sspll = selectionState.structSelectedPathList.length
+
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
                         density: m.density,
                         alignment: m.alignment,
-                        lineWidth: (sspll === 1 && lm.selection === 's')
-                            ? lm.lineWidth
+                        lineWidth: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.lineWidth
+                                : undefined
                             : undefined,
-                        lineType: (sspll === 1 && lm.selection === 's')
-                            ? lm.lineType
+                        lineType: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.lineType
+                                : undefined
                             : undefined,
                         borderWidth: sspll === 1
                             ? lm.selection === 's'
                                 ? lm.sBorderWidth
                                 : lm.fBorderWidth
                             : undefined,
-                        fontSize: (sspll === 1 && lm.selection === 's')
-                            ? lm.sTextFontSize
+                        fontSize: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.sTextFontSize
+                                : undefined
                             : undefined,
-                        lineColor: (sspll === 1 && lm.selection === 's')
-                            ? lm.lineColor
+                        lineColor: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.lineColor
+                                : undefined
                             : undefined,
                         borderColor: sspll === 1
                             ? lm.selection === 's'
@@ -269,8 +277,10 @@ function* mapStackSaga () {
                                 ? lm.sFillColor
                                 : lm.fFillColor
                             :undefined,
-                        textColor: (sspll === 1 && lm.selection === 's')
-                            ? lm.sTextColor
+                        textColor: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.sTextColor
+                                : undefined
                             : undefined
                     }
                 })
