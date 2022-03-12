@@ -25,14 +25,8 @@ const getCoords = (e) => {
     return [x, y]
 }
 
-const getNativeEvent = (e) => {
-    return {
-        path: e.path || (e.composedPath && e.composedPath()),
-        key: e.key,
-        code: e.code,
-        which: e.which
-    }
-}
+const getNativeEvent = ({path, composedPath, key, code, which}) =>
+    ({ path: path || (composedPath && composedPath()), key, code, which })
 
 export function WindowListeners() {
     const {EDIT, VIEW} = MAP_RIGHTS
