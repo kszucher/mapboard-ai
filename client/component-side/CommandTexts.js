@@ -9,6 +9,7 @@ import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 export function CommandTexts () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
 
+    const FORMAT_MODE_TYPES = ['line', 'border', 'fill', 'text']
     const DENSITY_TYPES = ['small', 'large']
     const ALIGNMENT_TYPES = ['adaptive', 'centered']
     const LINE_WIDTH_TYPES = ['w1', 'w2', 'w3']
@@ -45,105 +46,23 @@ export function CommandTexts () {
 
     return (
         <div style={{
-            position: 'fixed',
-            right: 0,
-            top: 96,
-            width: 216,
+            position: 'fixed', right: 0, top: 96, width: 216,
             backgroundColor: COLORS.MAP_BACKGROUND,
-            paddingTop: 6,
-            paddingBottom: 6,
-            borderTopLeftRadius: 16,
-            borderBottomLeftRadius: 16,
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#dddddd',
-            borderRight: 0
+            paddingTop: 6, paddingBottom: 6,
+            borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0
         }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingLeft: 12,
-                paddingRight: 12
-            }}>
-                <StyledButtonGroup
-                    open={true}
-                    valueList={DENSITY_TYPES}
-                    value={density}
-                    action={setDensity}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={true}
-                    valueList={ALIGNMENT_TYPES}
-                    value={alignment}
-                    action={setAlignment}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={true}
-                    valueList={['line', 'border', 'fill', 'text']}
-                    value={formatMode}
-                    action={openPalette}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === '' }
-                    valueList={['reset format']}
-                    value={''}
-                    action={mapResetAll}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode !== '' }
-                    valueList={['reset ' + formatMode]}
-                    value={''}
-                    action={mapReset}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === 'line'}
-                    valueList={LINE_WIDTH_TYPES}
-                    value={lineWidth}
-                    action={setLineWidth}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === 'line'}
-                    valueList={LINE_TYPE_TYPES}
-                    value={lineType}
-                    action={setLineType}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === 'border'}
-                    valueList={BORDER_WIDTH_TYPES}
-                    value={borderWidth}
-                    action={setBorderWidth}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === 'text'}
-                    valueList={FONT_SIZE_TYPES}
-                    value={fontSize}
-                    action={setFontSize}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === ''}
-                    valueList={['convert to task']}
-                    value={''}
-                    action={mapToggleTask}
-                    disabled={disabled}
-                />
-                <StyledButtonGroup
-                    open={formatMode === ''}
-                    valueList={['convert to submap']}
-                    value={''}
-                    action={createMapInMap}
-                    disabled={disabled}
-                />
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
+                <StyledButtonGroup open={true} valueList={DENSITY_TYPES} value={density} action={setDensity} disabled={disabled}/>
+                <StyledButtonGroup open={true} valueList={ALIGNMENT_TYPES} value={alignment} action={setAlignment} disabled={disabled}/>
+                <StyledButtonGroup open={true} valueList={FORMAT_MODE_TYPES} value={formatMode} action={openPalette} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={mapResetAll} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode !== '' } valueList={['reset ' + formatMode]} value={''} action={mapReset} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_WIDTH_TYPES} value={lineWidth} action={setLineWidth} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'text'} valueList={FONT_SIZE_TYPES} value={fontSize} action={setFontSize} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={mapToggleTask} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
             </div>
         </div>
     )
