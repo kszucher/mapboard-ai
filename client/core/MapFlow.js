@@ -358,7 +358,7 @@ function mapReducer(action, payload) {
                 lineWidth, lineType, lineColor,
                 borderWidth, borderColor,
                 fillColor,
-                fontSize, textColor,
+                textFontSize, textColor,
             } = payload
             let m = mapref(['m'])
             if (m.density !== density) {
@@ -379,7 +379,7 @@ function mapReducer(action, payload) {
                     lineWidth,
                     lineType,
                     [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
-                    sTextFontSize: fontSize,
+                    sTextFontSize: textFontSize,
                     lineColor,
                     [cm.hasCell ? 'cBorderColor' : cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
                     [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,

@@ -255,7 +255,7 @@ function* mapStackSaga () {
                                 ? lm.sBorderWidth
                                 : lm.fBorderWidth
                             : undefined,
-                        fontSize: sspll === 1
+                        textFontSize: sspll === 1
                             ? lm.selection === 's'
                                 ? lm.sTextFontSize
                                 : undefined

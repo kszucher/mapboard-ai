@@ -59,7 +59,7 @@ const editorState = {
         lineWidth: undefined,
         lineType: undefined,
         borderWidth: undefined,
-        fontSize: undefined,
+        textFontSize: undefined,
         lineColor: undefined,
         borderColor: undefined,
         fillColor: undefined,
