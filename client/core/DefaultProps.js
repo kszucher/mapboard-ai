@@ -181,11 +181,4 @@ export const resolveScope = (cm) => {
     }
 }
 
-export function getDefaultNode(attributes) {
-    return Object.assign({
-        d: [],
-        s: [],
-        c: [[]],
-        content: '',
-    }, attributes);
-}
+export const getDefaultNode = attributes => ({d: [], s: [], c: [[]], content: '', ...attributes})
