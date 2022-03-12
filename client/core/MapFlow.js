@@ -4,7 +4,7 @@ import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
 import { nodeNavigate } from '../node/NodeNavigate'
 import { setEndOfContenteditable, transposeArray } from './Utils'
 import { mapChangeProp } from '../map/MapChangeProp'
-import { getAllFormatDefault, getFormatDefault, nodeProps } from './DefaultProps'
+import { getAllFormatDefault, nodeProps } from './DefaultProps'
 import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
 import { mapref } from './MapStackFlow'
 import { mapFindById } from '../map/MapFindById'
@@ -353,20 +353,13 @@ function mapReducer(action, payload) {
             }
             break
         }
-        case 'reset': {
-            for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-                let cm = mapref(sc.structSelectedPathList[i])
-                let formatModeFilter = payload.formatMode + (['fill', 'border'].includes(payload.formatMode) ? '_' + cm.selection : '')
-                mapChangeProp.start(cm, getFormatDefault(formatModeFilter), '', false)
-                if (payload.formatMode === 'text') {
-                    mapChangeProp.start(cm, {isDimAssigned: 0}, '', false)
-                }
-            }
-            break
-        }
         case 'applyMapParams': {
-            const {density, alignment, lineWidth, lineType, borderWidth, fontSize,
-                lineColor, borderColor, fillColor, textColor} = payload
+            const {density, alignment,
+                lineWidth, lineType, lineColor,
+                borderWidth, borderColor,
+                fillColor,
+                fontSize, textColor,
+            } = payload
             let m = mapref(['m'])
             if (m.density !== density) {
                 m.density = density

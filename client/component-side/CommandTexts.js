@@ -28,6 +28,7 @@ export function CommandTexts () {
 
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAM', payload: obj })
+
     const setDensity = value => setNodeParam({density: {['small']: 'small', ['large']: 'large'}[value]})
     const setAlignment = value => setNodeParam({alignment: {['adaptive']: 'adaptive', ['centered']: 'centered'}[value]})
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
@@ -35,11 +36,15 @@ export function CommandTexts () {
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setFontSize = value => setNodeParam({fontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
 
+    const resetLine = _ => setNodeParam({lineType: 'clear', lineWidth: 'clear', lineColor: 'clear'})
+    const resetBorder = _ => setNodeParam({borderWidth: 'clear', borderColor: 'clear'})
+    const resetFill = _ => setNodeParam({fillColor: 'clear'})
+    const resetText = _ => setNodeParam({textColor: 'clear', fontSize: 'clear'})
+
     const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     const mapResetAll = _ =>    {push(); mapDispatch('resetAll');               redraw(); checkPop(dispatch)}
-    const mapReset = _ =>       {push(); mapDispatch('reset', {formatMode});    redraw(); checkPop(dispatch)}
     const mapToggleTask = _ =>  {push(); mapDispatch('toggleTask');             redraw(); checkPop(dispatch)}
 
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
@@ -56,7 +61,10 @@ export function CommandTexts () {
                 <StyledButtonGroup open={true} valueList={ALIGNMENT_TYPES} value={alignment} action={setAlignment} disabled={disabled}/>
                 <StyledButtonGroup open={true} valueList={FORMAT_MODE_TYPES} value={formatMode} action={openPalette} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={mapResetAll} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode !== '' } valueList={['reset ' + formatMode]} value={''} action={mapReset} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'line'} valueList={['reset line']} value={''} action={resetLine} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'border'} valueList={['reset border']} value={''} action={resetBorder} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'fill'} valueList={['reset fill']} value={''} action={resetFill} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'text'} valueList={['reset text']} value={''} action={resetText} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_WIDTH_TYPES} value={lineWidth} action={setLineWidth} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>

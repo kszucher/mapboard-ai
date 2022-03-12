@@ -139,10 +139,6 @@ const formatParams =  {
     text: ['sTextColor', 'sTextFontSize'],
 }
 
-export const getFormatDefault = (type) => {
-    return filteredObj(nodeProps.saveOptional, formatParams[type]);
-}
-
 export const getAllFormatDefault = () => {
     return filteredObj(nodeProps.saveOptional, [].concat(...Object.values(formatParams)));
 }
