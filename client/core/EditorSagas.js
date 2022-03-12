@@ -233,8 +233,8 @@ function* mapStackSaga () {
             case 'MAP_STACK_CHANGED': {
                 let m = mapref(['m'])
                 const lm = mapref(selectionState.lastPath)
-                const sspll = selectionState.structSelectedPathList.length
-
+                const sc = selectionState
+                const sspll = sc.structSelectedPathList.length
                 yield put({
                     type: 'SET_NODE_PARAMS',
                     payload: {
@@ -281,7 +281,7 @@ function* mapStackSaga () {
                             ? lm.selection === 's'
                                 ? lm.sTextColor
                                 : undefined
-                            : undefined
+                            : sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
                     }
                 })
                 break
