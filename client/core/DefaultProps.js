@@ -1,5 +1,3 @@
-import {filteredObj} from "./Utils";
-
 export let mapProps = {
     saveAlways: {
         path: [],
@@ -129,19 +127,6 @@ export let nodeProps = {
         isBottom: 0,
     }
 };
-
-const formatParams =  {
-    line: ['lineWidth', 'lineType', 'lineColor'],
-    border_s: ['cBorderColor', 'sBorderColor', 'sBorderWidth'],
-    border_f: ['fBorderColor', 'fBorderWidth'],
-    fill_s: ['sFillColor'],
-    fill_f: ['fFillColor'],
-    text: ['sTextColor', 'sTextFontSize'],
-}
-
-export const getAllFormatDefault = () => {
-    return filteredObj(nodeProps.saveOptional, [].concat(...Object.values(formatParams)));
-}
 
 export const resolveScope = (cm) => {
     return {
