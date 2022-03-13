@@ -1,25 +1,5 @@
 import katex from 'katex/dist/katex.mjs'
 
-let colorMode = 'light';
-
-const COLOR_LIGHT = {
-    MAP_BACKGROUND: '#fbfafc',
-}
-
-const COLOR_DARK = {
-    MAP_BACKGROUND: '#222529',
-}
-
-const getColors = (colorMode) => {
-    if (colorMode === 'light') {
-        return COLOR_LIGHT;
-    } else if (colorMode === 'dark') {
-        return COLOR_DARK;
-    }
-}
-
-export const COLORS = getColors(colorMode)
-
 export function arrayValuesSame(array) {
     let first = JSON.stringify(array[0]);
     for (let i = 1; i < array.length; i++) {

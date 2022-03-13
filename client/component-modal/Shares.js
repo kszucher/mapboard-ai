@@ -5,7 +5,7 @@ import {DataGrid} from "@mui/x-data-grid"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline';
 import CancelIcon from '@mui/icons-material/AddCircleOutline';
-import {COLORS} from "../core/Utils"
+import { COLORS } from '../core/Colors'
 
 export function Shares() {
     const shareDataExport = useSelector(state => state.shareDataExport)

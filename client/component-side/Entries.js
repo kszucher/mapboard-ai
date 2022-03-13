@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {COLORS} from "../core/Utils";
 import { Tab, Tabs } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import { COLORS } from '../core/Colors'
 
 const getStyle = (theme) => {
     return {

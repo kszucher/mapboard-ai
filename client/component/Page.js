@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import { COLORS, getEquationDim, getTextDim, isChrome } from '../core/Utils'
+import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
 import Logo from "../component-side/Logo"
 import Entries from "../component-side/Entries"
@@ -17,6 +17,7 @@ import { Profile } from '../component-side/Profile'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
+import { COLORS } from '../core/Colors'
 
 const muiTheme = createTheme({
     props: {

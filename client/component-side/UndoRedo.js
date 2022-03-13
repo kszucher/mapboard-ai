@@ -1,8 +1,8 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {COLORS} from "../core/Utils"
 import {MAP_RIGHTS} from "../core/EditorFlow"
 import { IconButton } from '@mui/material'
+import { COLORS } from '../core/Colors'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS

@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {COLORS} from "../core/Utils";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import { COLORS } from '../core/Colors'
 
 export function FramesBottom () {
     const frameLen = useSelector(state => state.frameLen)

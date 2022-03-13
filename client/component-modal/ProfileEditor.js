@@ -1,7 +1,7 @@
 import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
-import {COLORS} from "../core/Utils";
 import { Button, Modal, Typography } from '@mui/material'
+import { COLORS } from '../core/Colors'
 
 export function ProfileEditor() {
     const name = useSelector(state => state.name)

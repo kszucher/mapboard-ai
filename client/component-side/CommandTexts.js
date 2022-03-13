@@ -2,9 +2,9 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {checkPop, push} from "../core/MapStackFlow";
 import { mapDispatch, redraw } from '../core/MapFlow'
-import {COLORS} from "../core/Utils";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
+import { COLORS } from '../core/Colors'
 
 export function CommandTexts () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS

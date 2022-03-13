@@ -1,3 +1,5 @@
+import { getColorMode } from './Colors'
+
 export let mapProps = {
     saveAlways: {
         path: [],
@@ -56,7 +58,7 @@ export let nodeProps = {
         task: 0,
         taskStatus: -1,
         lastSelectedChild: -1, // -1 means not selected ever
-        sTextColor: '#222222',
+        sTextColor: getColorMode() === 'light' ? '#222222' : '#dddddd',
         sTextFontSize: 14,
         sFillColor: '',
         sBorderColor: '',

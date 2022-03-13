@@ -1,8 +1,9 @@
 import { updateMapSvgData } from '../core/DomFlow'
-import { COLORS, isOdd } from '../core/Utils'
+import { isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { selectionState } from '../core/SelectionFlow'
 import { mapref } from '../core/MapStackFlow'
+import { COLORS } from '../core/Colors'
 
 const getCoordsInLine = (a, b, dt) => {
     const [x0, y0] = a

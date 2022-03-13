@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {COLORS} from "../core/Utils";
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { COLORS } from '../core/Colors'
 
 export default function WorkspaceBreadcrumbs() {
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)

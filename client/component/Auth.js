@@ -1,8 +1,8 @@
 import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {COLORS} from "../core/Utils";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 import { Button, Link, TextField, Typography } from '@mui/material'
+import { COLORS } from '../core/Colors'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
