@@ -1,4 +1,4 @@
-let colorMode = 'dark'
+let colorMode = 'light'
 export const getColorMode = _ => colorMode
 
 const COLOR_DARK = {
@@ -19,5 +19,5 @@ const getColors = (colorMode) => {
 export const COLORS = getColors(colorMode)
 
 export var element = document.body
-element.classList.toggle("dark-mode");
+// element.classList.toggle("dark-mode");
 // element.style.backgroundColor = '#000000'
