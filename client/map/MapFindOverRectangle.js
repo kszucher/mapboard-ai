@@ -1,12 +1,12 @@
-let startX, startY, width, height = 0;
+let startX, startY, width, height = 0
 
 export const mapFindOverRectangle = {
     start: (cr, x, y, w, h) => {
-        startX = x;
-        startY = y;
-        width = w;
-        height = h;
-        mapFindOverRectangle.iterate(cr);
+        startX = x
+        startY = y
+        width = w
+        height = h
+        mapFindOverRectangle.iterate(cr)
     },
 
     iterate: (cm) => {
@@ -16,9 +16,9 @@ export const mapFindOverRectangle = {
                 cm.nodeStartX, cm.nodeY, cm.nodeEndX, cm.nodeY
             )
         }
-        cm.d.map(i => mapFindOverRectangle.iterate(i));
-        cm.s.map(i => mapFindOverRectangle.iterate(i));
-        cm.c.map(i => i.map(j => mapFindOverRectangle.iterate(j)));
+        cm.d.map(i => mapFindOverRectangle.iterate(i))
+        cm.s.map(i => mapFindOverRectangle.iterate(i))
+        cm.c.map(i => i.map(j => mapFindOverRectangle.iterate(j)))
     }
 }
 

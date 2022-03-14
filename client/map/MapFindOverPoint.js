@@ -1,15 +1,15 @@
-import {copy} from "../core/Utils";
+import {copy} from "../core/Utils"
 
-let currX, currY = 0;
-let lastOverPath = [];
+let currX, currY = 0
+let lastOverPath = []
 
 export const mapFindOverPoint = {
     start: (cr, x, y) => {
-        currX = x;
-        currY = y;
-        lastOverPath = [];
-        mapFindOverPoint.iterate(cr);
-        return lastOverPath;
+        currX = x
+        currY = y
+        lastOverPath = []
+        mapFindOverPoint.iterate(cr)
+        return lastOverPath
     },
 
     iterate: (cm) => {
@@ -18,11 +18,11 @@ export const mapFindOverPoint = {
             cm.nodeY - cm.selfH / 2 < currY &&
             currY < cm.nodeY + cm.selfH  / 2 ) {
             if (cm.index.length !== 2) {
-                lastOverPath = copy(cm.path);
+                lastOverPath = copy(cm.path)
             }
         }
-        cm.d.map(i => mapFindOverPoint.iterate(i));
-        cm.s.map(i => mapFindOverPoint.iterate(i));
-        cm.c.map(i => i.map(j => mapFindOverPoint.iterate(j)));
+        cm.d.map(i => mapFindOverPoint.iterate(i))
+        cm.s.map(i => mapFindOverPoint.iterate(i))
+        cm.c.map(i => i.map(j => mapFindOverPoint.iterate(j)))
     }
-};
+}
