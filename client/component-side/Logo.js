@@ -35,6 +35,7 @@ export default function Logo() {
     const openPlaybackEditor =  _ => dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
     const showSharing =         _ => dispatch({type: 'SHOW_WS_SHARING'})
     const showShares =          _ => dispatch({type: 'SHOW_WS_SHARES'})
+    const changeColorMode =     _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const signOut = _ => {
         localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}))
         dispatch({type: 'RESET_STATE'})
@@ -70,17 +71,19 @@ export default function Logo() {
                     transformOrigin={{vertical: 'top', horizontal: 'right'}}
                     open={open}
                     onClose={handleClose}>
-                    <MenuItem onClick={() => {handleClose(); createMapInTab()}}>        {'Add Map'}         </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); removeMapInTab()}}>        {'Remove Map'}      </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); moveUpMapInTab()}}>        {'Move Up Map'}     </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); moveDownMapInTab()}}>      {'Move Down Map'}   </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); createMapInTab()}}>        {'Add Map'}           </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); removeMapInTab()}}>        {'Remove Map'}        </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); moveUpMapInTab()}}>        {'Move Up Map'}       </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); moveDownMapInTab()}}>      {'Move Down Map'}     </MenuItem>
                     <Divider />
-                    <MenuItem onClick={() => {handleClose(); openPlaybackEditor()}}>    {'Playback Editor'} </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); openPlaybackEditor()}}>    {'Playback Editor'}   </MenuItem>
                     <Divider />
-                    <MenuItem onClick={() => {handleClose(); showSharing()}}>           {'Sharing'}         </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); showShares()}}>            {'Shares'}          </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); showSharing()}}>           {'Sharing'}           </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); showShares()}}>            {'Shares'}            </MenuItem>
                     <Divider />
-                    <MenuItem onClick={() => {handleClose(); signOut()}}>               {'Sign Out'}        </MenuItem>
+                    <MenuItem onClick={() => {handleClose(); changeColorMode()}}>       {'Change Color Mode'} </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={() => {handleClose(); signOut()}}>               {'Sign Out'}          </MenuItem>
                 </Menu>}
                 {pageState === DEMO && <Menu
                     id="menu-appbar"

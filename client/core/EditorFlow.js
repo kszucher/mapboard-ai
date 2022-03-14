@@ -77,6 +77,8 @@ const editorState = {
     // undo redo
     undoDisabled: true,
     redoDisabled: true,
+    //
+    colorMode: 'light'
 };
 
 const editorStateDefault = JSON.stringify(editorState);
@@ -123,6 +125,8 @@ const resolveActions = (state, action) => {
         case 'SET_NODE_PARAMS':             return {node: {...state.node, ...payload}}
         //
         case 'PARSE_RESP_PAYLOAD':          return {...payload}
+        //
+        case 'CHANGE_COLOR_MODE':           return {colorMode: state.colorMode === 'light' ? 'dark' : 'light'}
         default: return {}
     }
 }

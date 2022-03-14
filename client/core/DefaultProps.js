@@ -1,5 +1,3 @@
-import { getColorMode } from './Colors'
-
 export let mapProps = {
     saveAlways: {
         path: [],
@@ -36,7 +34,7 @@ export let mapProps = {
     saveNeverInitAlways: {
 
     }
-};
+}
 
 export let nodeProps = {
     saveAlways: {
@@ -58,7 +56,8 @@ export let nodeProps = {
         task: 0,
         taskStatus: -1,
         lastSelectedChild: -1, // -1 means not selected ever
-        sTextColor: getColorMode() === 'light' ? '#222222' : '#dddddd',
+        // sTextColor: 'default',
+        sTextColor: '#222222',
         sTextFontSize: 14,
         sFillColor: '',
         sBorderColor: '',
@@ -128,7 +127,7 @@ export let nodeProps = {
         isTop: 0,
         isBottom: 0,
     }
-};
+}
 
 export const resolveScope = (cm) => {
     return {

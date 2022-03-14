@@ -1,5 +1,3 @@
-let colorMode = 'light'
-export const getColorMode = _ => colorMode
 
 const COLOR_DARK = {
     MAP_BACKGROUND: '#222529',
@@ -16,7 +14,7 @@ const getColors = (colorMode) => {
         return COLOR_DARK
     }
 }
-export const COLORS = getColors(colorMode)
+export const COLORS = getColors('light')
 
 export var element = document.body
 // element.classList.toggle("dark-mode");

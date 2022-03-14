@@ -50,8 +50,8 @@ export function CommandTexts () {
     const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
-    // TODO
-    const mapToggleTask = _ =>  {push(); mapDispatch('toggleTask');             redraw(); checkPop(dispatch)}
+    // TODO remove this from here altogether
+    // const mapToggleTask = _ =>  {push(); mapDispatch('toggFleTask'); recalc(colorMode); redraw(); checkPop(dispatch)}
 
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
 
@@ -75,7 +75,7 @@ export function CommandTexts () {
                 <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'text'} valueList={FONT_SIZE_TYPES} value={textFontSize} action={setTextFontSize} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={mapToggleTask} disabled={disabled}/>
+                {/*<StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={mapToggleTask} disabled={disabled}/>*/}
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
             </div>
         </div>

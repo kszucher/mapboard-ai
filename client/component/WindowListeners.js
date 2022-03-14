@@ -42,6 +42,7 @@ export function WindowListeners() {
     const landingData = useSelector(state => state.landingData)
     const landingDataIndex = useSelector(state => state.landingDataIndex)
     const node = useSelector(state => state.node)
+    const colorMode = useSelector(state => state.colorMode)
     const dispatch = useDispatch()
 
     const mousewheel = (e) => {
@@ -488,6 +489,13 @@ export function WindowListeners() {
             checkPop(dispatch)
         }
     }, [node])
+
+    useEffect(() => {
+        if (mapId !== '' && mapSource !== '') {
+            console.log('REDRAW BECAUSE OF COLOR')
+            redraw()
+        }
+    }, [colorMode])
 
     return (
         <></>

@@ -494,7 +494,7 @@ export function mapDispatch(action, payload) {
     }
 }
 
-export function recalc () {
+export const recalc = () => {
     initSelectionState()
     let m = mapref(['m'])
     for (let i = 0; i < mapref(['r']).length; i++) {
@@ -513,7 +513,7 @@ export function recalc () {
     updateSelectionState()
 }
 
-export function redraw () {
+export const redraw = () => {
     flagDomData()
     let m = mapref(['m'])
     for (let i = 0; i < mapref(['r']).length; i++) {
