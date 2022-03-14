@@ -24,7 +24,7 @@ export function Palette () {
     const fillColor = useSelector(state => state.node.fillColor)
     const textColor = useSelector(state => state.node.textColor)
     const dispatch = useDispatch()
-    const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAM', payload: nodeParamObj })
+    const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
 
     const resolveColor = (formatMode) => {

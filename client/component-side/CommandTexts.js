@@ -27,7 +27,7 @@ export function CommandTexts () {
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[useSelector(state => state.node.textFontSize)]
 
     const dispatch = useDispatch()
-    const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAM', payload: obj })
+    const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
 
     const setDensity = value => setNodeParam({density: {['small']: 'small', ['large']: 'large'}[value]})
     const setAlignment = value => setNodeParam({alignment: {['adaptive']: 'adaptive', ['centered']: 'centered'}[value]})
