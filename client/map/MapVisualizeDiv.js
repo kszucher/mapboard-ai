@@ -15,45 +15,45 @@ const scrollTo = function(to, duration) {
             // https://easings.net/
             // https://css-tricks.com/ease-out-in-ease-in-out/
             // TODO: trying to set if for everything
-            t /= d;
-            t--;
-            return c*(t*t*t + 1) + b;
+            t /= d
+            t--
+            return c*(t*t*t + 1) + b
         },
         animateScroll = function() {
-            const currentDate = +new Date();
-            const currentTime = currentDate - startDate;
-            element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration));
+            const currentDate = +new Date()
+            const currentTime = currentDate - startDate
+            element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration))
             if(currentTime < duration) {
-                requestAnimationFrame(animateScroll);
+                requestAnimationFrame(animateScroll)
             }
             else {
-                element.scrollLeft = to;
+                element.scrollLeft = to
             }
-        };
-    animateScroll();
+        }
+    animateScroll()
 }
 
 export const mapVisualizeDiv = {
     start: (m, cr) => {
-        let mapDiv = document.getElementById('mapDiv');
-        mapDiv.style.width = "" + m.mapWidth + "px";
-        mapDiv.style.height = "" + m.mapHeight + "px";
-        let mapHolderDiv = document.getElementById('mapHolderDiv');
-        let currScrollLeft = (window.innerWidth + m.mapWidth) / 2;
+        let mapDiv = document.getElementById('mapDiv')
+        mapDiv.style.width = "" + m.mapWidth + "px"
+        mapDiv.style.height = "" + m.mapHeight + "px"
+        let mapHolderDiv = document.getElementById('mapHolderDiv')
+        let currScrollLeft = (window.innerWidth + m.mapWidth) / 2
         if (m.isLoading) {
-            m.isLoading = false;
-            mapHolderDiv.scrollLeft = currScrollLeft;
-            mapHolderDiv.scrollTop = window.innerHeight - 48 * 2;
+            m.isLoading = false
+            mapHolderDiv.scrollLeft = currScrollLeft
+            mapHolderDiv.scrollTop = window.innerHeight - 48 * 2
         }
         if (m.isResizing) {
-            m.isResizing = false;
-            mapHolderDiv.scrollLeft = currScrollLeft;
+            m.isResizing = false
+            mapHolderDiv.scrollLeft = currScrollLeft
         }
         if (m.shouldCenter) {
-            m.shouldCenter = false;
-            scrollTo(currScrollLeft, 500);
+            m.shouldCenter = false
+            scrollTo(currScrollLeft, 500)
         }
-        mapVisualizeDiv.iterate(m, cr);
+        mapVisualizeDiv.iterate(m, cr)
     },
 
     iterate: (m, cm) => {
@@ -84,8 +84,8 @@ export const mapVisualizeDiv = {
             }
             updateMapDivData(nodeId, contentType, content, path, isEditing, styleData)
         }
-        cm.d.map(i => mapVisualizeDiv.iterate(m, i));
-        cm.s.map(i => mapVisualizeDiv.iterate(m, i));
-        cm.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j)));
+        cm.d.map(i => mapVisualizeDiv.iterate(m, i))
+        cm.s.map(i => mapVisualizeDiv.iterate(m, i))
+        cm.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j)))
     }
 }
