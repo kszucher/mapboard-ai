@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import {MAP_RIGHTS} from "../core/EditorFlow";
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export function FramesSide () {
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
@@ -26,7 +26,7 @@ export function FramesSide () {
             right: 0,
             top: 400,
             width: 216,
-            backgroundColor: COLORS.MAP_BACKGROUND,
+            backgroundColor: getColors('light').MAP_BACKGROUND,
             paddingTop: 6,
             paddingBottom: 6,
             borderTopLeftRadius: 16,

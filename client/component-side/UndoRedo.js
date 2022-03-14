@@ -2,7 +2,7 @@ import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {MAP_RIGHTS} from "../core/EditorFlow"
 import { IconButton } from '@mui/material'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
@@ -22,7 +22,7 @@ export function UndoRedo () {
             height: 48,
             paddingLeft: 12,
             paddingRight: 12,
-            backgroundColor: COLORS.MAP_BACKGROUND,
+            backgroundColor: getColors('light').MAP_BACKGROUND,
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
             borderWidth: '1px',

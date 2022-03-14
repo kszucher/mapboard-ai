@@ -3,7 +3,7 @@ import { isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { selectionState } from '../core/SelectionFlow'
 import { mapref } from '../core/MapStackFlow'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 const getCoordsInLine = (a, b, dt) => {
     const [x0, y0] = a
@@ -93,11 +93,14 @@ const getArcPath = (sx, sy, w, h, r, dir, margin) => {
 }
 
 export const mapVisualizeSvg = {
-    start: (m, cr) => {
+    start: (m, cr, colorMode) => {
         let mapSvgOuter = document.getElementById('mapSvgOuter')
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
         const {nodeId} = m
+
+        console.log(getColors(colorMode).MAP_BACKGROUND)
+
         updateMapSvgData(nodeId, 'backgroundRect', {
             x: 0,
             y: 0,
@@ -105,7 +108,7 @@ export const mapVisualizeSvg = {
             height: m.mapHeight,
             rx: 32,
             ry: 32,
-            fill: COLORS.MAP_BACKGROUND,
+            fill: getColors(colorMode).MAP_BACKGROUND,
         })
         if (m.moveData?.length) {
             // TODO use parent bezier style
@@ -132,7 +135,7 @@ export const mapVisualizeSvg = {
                 height: 20,
                 rx: 8,
                 ry: 8,
-                fill: COLORS.MAP_BACKGROUND,
+                fill: getColors('light').MAP_BACKGROUND,
                 fillOpacity: 1,
                 stroke: '#5f0a87',
                 strokeWidth: 5,

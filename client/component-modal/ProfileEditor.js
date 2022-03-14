@@ -1,7 +1,7 @@
 import React from 'react'
 import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export function ProfileEditor() {
     const name = useSelector(state => state.name)
@@ -27,9 +27,9 @@ export function ProfileEditor() {
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: 16,
-                    backgroundColor: COLORS.MAP_BACKGROUND,
+                    backgroundColor: getColors('light').MAP_BACKGROUND,
                     padding: 20,
-                    border: `1px solid ${COLORS.MAP_BACKGROUND}`,
+                    border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
                     borderRadius: '16px'}}
             >
                 <Typography

@@ -17,7 +17,7 @@ import { Profile } from '../component-side/Profile'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 const muiTheme = createTheme({
     props: {
@@ -30,13 +30,13 @@ const muiTheme = createTheme({
             light: '#9040b8',
             main: '#5f0a87',
             dark: '#2e0059',
-            contrastText: COLORS.MAP_BACKGROUND,
+            contrastText: getColors('light').MAP_BACKGROUND,
         },
         secondary: {
             light: '#9040b8',
             main: '#5f0a87',
             dark: '#2e0059',
-            contrastText: COLORS.MAP_BACKGROUND,
+            contrastText: getColors('light').MAP_BACKGROUND,
         },
     },
     spacing: 2,

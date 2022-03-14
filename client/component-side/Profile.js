@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
 import { IconButton } from '@mui/material'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export function Profile () {
     const dispatch = useDispatch()
@@ -17,7 +17,7 @@ export function Profile () {
                 height: 48,
                 paddingLeft: 12,
                 paddingRight: 12,
-                backgroundColor: COLORS.MAP_BACKGROUND,
+                backgroundColor: getColors('light').MAP_BACKGROUND,
                 borderTopLeftRadius: 16,
                 borderBottomLeftRadius: 16,
                 borderWidth: '1px',

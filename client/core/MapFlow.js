@@ -461,7 +461,7 @@ export const redraw = (colorMode) => {
     let m = mapref(['m'])
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i])
-        mapVisualizeSvg.start(m, cr)
+        mapVisualizeSvg.start(m, cr, colorMode)
         mapVisualizeDiv.start(m, cr, colorMode)
     }
     updateDomData()

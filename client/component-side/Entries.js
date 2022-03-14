@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import { Tab, Tabs } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 const getStyle = (theme) => {
     return {
@@ -35,7 +35,7 @@ export default function Entries() {
             position: 'fixed',
             top: 48*2,
             width: 216,
-            backgroundColor: COLORS.MAP_BACKGROUND,
+            backgroundColor: getColors('light').MAP_BACKGROUND,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
             borderWidth: '1px',

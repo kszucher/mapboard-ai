@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 import { Button, Link, TextField, Typography } from '@mui/material'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -64,9 +64,9 @@ export default function Auth() {
                 display: 'inline-flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: COLORS.MAP_BACKGROUND,
+                backgroundColor: getColors('light').MAP_BACKGROUND,
                 padding: 20,
-                border: `1px solid ${COLORS.MAP_BACKGROUND}`,
+                border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
             <Typography component="h1"

@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export default function WorkspaceBreadcrumbs() {
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
@@ -28,7 +28,7 @@ export default function WorkspaceBreadcrumbs() {
             height: '48px',
             paddingLeft: '20px',
             paddingRight: '20px',
-            backgroundColor: COLORS.MAP_BACKGROUND,
+            backgroundColor: getColors('light').MAP_BACKGROUND,
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px',
             borderWidth: '2px',

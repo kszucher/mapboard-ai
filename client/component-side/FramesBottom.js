@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export function FramesBottom () {
     const frameLen = useSelector(state => state.frameLen)
@@ -37,7 +37,7 @@ export function FramesBottom () {
                 {frameLen > 0 &&
                 <MobileStepper
                     style={{
-                        backgroundColor: COLORS.MAP_BACKGROUND,
+                        backgroundColor: getColors('light').MAP_BACKGROUND,
                         borderTopLeftRadius: '16px',
                         borderTopRightRadius: '16px',
                         borderWidth: '2px',

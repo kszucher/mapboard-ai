@@ -4,7 +4,7 @@ import {checkPop, push} from "../core/MapStackFlow";
 import { mapDispatch, redraw } from '../core/MapFlow'
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
-import { COLORS } from '../core/Colors'
+import { getColors } from '../core/Colors'
 
 export function CommandTexts () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
@@ -58,7 +58,7 @@ export function CommandTexts () {
     return (
         <div style={{
             position: 'fixed', right: 0, top: 96, width: 216,
-            backgroundColor: COLORS.MAP_BACKGROUND,
+            backgroundColor: getColors('light').MAP_BACKGROUND,
             paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0
         }}>
