@@ -98,9 +98,6 @@ export const mapVisualizeSvg = {
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
         const {nodeId} = m
-
-        console.log(getColors(colorMode).MAP_BACKGROUND)
-
         updateMapSvgData(nodeId, 'backgroundRect', {
             x: 0,
             y: 0,

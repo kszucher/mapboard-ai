@@ -232,11 +232,12 @@ export function updateDomData() {
                                 break
                             }
                             case 'rect': {
-                                let { x, y, width, height } = params
+                                let { x, y, width, height, fill } = params
                                 svgElement.setAttribute("x", x)
                                 svgElement.setAttribute("y", y)
                                 svgElement.setAttribute("width", width)
                                 svgElement.setAttribute("height", height)
+                                svgElement.setAttribute("fill", fill)
                                 break
                             }
                         }
