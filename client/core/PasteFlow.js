@@ -1,8 +1,8 @@
-import { isEditing, mapDispatch, recalc, redraw } from './MapFlow'
-import {checkPop, push} from "./MapStackFlow"
-import {isUrl} from "./Utils"
+import { mapDispatch, redraw } from './MapFlow'
+import { checkPop, push } from "./MapStackFlow"
+import { isUrl} from "./Utils"
 
-export const pasteDispatch = (colorMode, dispatch) => {
+export const pasteDispatch = (isEditing, colorMode, dispatch) => {
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
         if (result.state === "granted" || result.state === "prompt") {
             navigator.clipboard.read().then(item => {

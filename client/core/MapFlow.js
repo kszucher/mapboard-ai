@@ -2,7 +2,7 @@ import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelet
 import { cellInsert, structInsert } from '../node/NodeInsert'
 import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
 import { nodeNavigate } from '../node/NodeNavigate'
-import { setEndOfContenteditable, transposeArray } from './Utils'
+import { transposeArray } from './Utils'
 import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
 import { flagDomData, updateDomData } from './DomFlow'
 import { mapref } from './MapStackFlow'
@@ -20,9 +20,6 @@ import { mapTaskColor } from '../map/MapTaskColor'
 import { mapCollect } from '../map/MapCollect'
 import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
 import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
-
-let mutationObserver
-export let isEditing = 0
 
 function clearSelection() {
     for (let i = 0; i < mapref(['r']).length; i++) {
@@ -430,68 +427,14 @@ function mapReducer(action, payload) {
             }
             break
         }
-        case 'startEdit': {
-            if (!lm.hasCell) {
-                if (lm.contentType === 'equation') {
-                    lm.contentType = 'text'
-                    lm.isDimAssigned = 0
-                    redraw(colorMode)
-                }
-                let holderElement = document.getElementById(`${lm.nodeId}_div`)
-                holderElement.contentEditable = 'true'
-                setEndOfContenteditable(holderElement)
-                isEditing = 1
-                lm.isEditing = 1
-                const callback = function (mutationsList) {
-                    for (let mutation of mutationsList) {
-                        if (mutation.type === 'characterData') {
-                            mapDispatch('typeText')
-                            redraw(colorMode)
-                        }
-                    }
-                }
-                mutationObserver = new MutationObserver(callback)
-                mutationObserver.observe(holderElement, {
-                    attributes: false,
-                    childList: false,
-                    subtree: true,
-                    characterData: true
-                })
-            }
-            break
-        }
-        case 'typeText': {
-            let holderElement = document.getElementById(`${lm.nodeId}_div`)
-            lm.content = holderElement.innerHTML
-            lm.isDimAssigned = 0
-            break
-        }
-        case 'finishEdit': {
-            mutationObserver.disconnect()
-            let holderElement = document.getElementById(`${lm.nodeId}_div`)
-            holderElement.contentEditable = 'false'
-            lm.isEditing = 0
-            isEditing = 0
-            if (lm.content.substring(0, 2) === '\\[') {
-                lm.contentType = 'equation'
-                lm.isDimAssigned = 0
-            } else if (lm.content.substring(0, 1) === '=') {
-                lm.contentCalc = lm.content
-                lm.isDimAssigned = 0
-            }
-            break
-        }
     }
 }
 
-export function mapDispatch(action, payload) {
+export const mapDispatch = (action, payload) => {
     console.log('NODEDISPATCH: ' + action)
-    // eraseContent, startEdit, typeText and finishEdit related side-effects could be moved here as quasi-middleware
     mapReducer(action, payload)
     recalc()
-    if (!['startEdit', 'typeText'].includes(action)) {
-        document.getElementById("mapHolderDiv").focus()
-    }
+    document.getElementById("mapHolderDiv").focus()
 }
 
 export const recalc = () => {

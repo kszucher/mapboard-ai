@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {useSelector, useDispatch} from "react-redux"
-import { isEditing, mapDispatch, recalc, redraw } from '../core/MapFlow'
-import {arraysSame, copy} from "../core/Utils"
+import { mapDispatch, recalc, redraw } from '../core/MapFlow'
+import { arraysSame, copy, setEndOfContenteditable } from '../core/Utils'
 import {mapFindNearest} from "../map/MapFindNearest"
 import {checkPop, mapStackDispatch, mapref, push} from "../core/MapStackFlow"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
@@ -15,6 +15,8 @@ let namedInterval
 let isIntervalRunning = false
 let isNodeClicked = false
 let isTaskClicked = false
+let mutationObserver
+let isEditing = 0
 
 const getCoords = (e) => {
     let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
@@ -306,8 +308,21 @@ export function WindowListeners() {
         redraw(colorMode)
     }
 
+    const mutationFun = (lm, mutationsList) => {
+        for (let mutation of mutationsList) {
+            if (mutation.type === 'characterData') {
+                let holderElement = document.getElementById(`${lm.nodeId}_div`)
+                lm.content = holderElement.innerHTML
+                lm.isDimAssigned = 0
+                recalc()
+                redraw(colorMode)
+            }
+        }
+    }
+
     const keydown = (e) => {
         let {scope, lastPath} = selectionState
+        let lm = mapref(selectionState.lastPath)
         let {key, code, which} = getNativeEvent(e)
         // [37,38,39,40] = [left,up,right,down]
         let keyStateMachineDb = [
@@ -391,6 +406,40 @@ export function WindowListeners() {
                         'REDO',
                     ].includes(currExecution)) {
                         dispatch({type: currExecution})
+                    } else if (currExecution === 'startEdit') {
+                        lm = mapref(selectionState.lastPath)
+                        if (!lm.hasCell) {
+                            if (lm.contentType === 'equation') {
+                                lm.contentType = 'text'
+                                lm.isDimAssigned = 0
+                                redraw(colorMode)
+                            }
+                            let holderElement = document.getElementById(`${lm.nodeId}_div`)
+                            holderElement.contentEditable = 'true'
+                            setEndOfContenteditable(holderElement)
+                            isEditing = 1
+                            lm.isEditing = 1
+                            mutationObserver = new MutationObserver(mutationsList => mutationFun(lm, mutationsList))
+                            mutationObserver.observe(holderElement, {
+                                attributes: false,
+                                childList: false,
+                                subtree: true,
+                                characterData: true
+                            })
+                        }
+                    } else if (currExecution === 'finishEdit') {
+                        mutationObserver.disconnect()
+                        let holderElement = document.getElementById(`${lm.nodeId}_div`)
+                        holderElement.contentEditable = 'false'
+                        lm.isEditing = 0
+                        isEditing = 0
+                        if (lm.content.substring(0, 2) === '\\[') {
+                            lm.contentType = 'equation'
+                            lm.isDimAssigned = 0
+                        } else if (lm.content.substring(0, 1) === '=') {
+                            lm.contentCalc = lm.content
+                            lm.isDimAssigned = 0
+                        }
                     } else if (currExecution === 'applyColorFromKey') {
                         mapDispatch(currExecution, {currColor: which - 96})
                     } else {
@@ -400,6 +449,7 @@ export function WindowListeners() {
                             'insert_D_S'
                         ].includes(currExecution)) {
                             redraw(colorMode)
+                            recalc()
                         }
                     }
                 }
@@ -414,7 +464,7 @@ export function WindowListeners() {
 
     const paste = (e) => {
         e.preventDefault()
-        pasteDispatch(dispatch)
+        pasteDispatch(isEditing, dispatch)
     }
 
     const addLandingListeners = () => {
