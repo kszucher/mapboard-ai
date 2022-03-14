@@ -47,6 +47,57 @@ export function WindowListeners() {
     const colorMode = useSelector(state => state.colorMode)
     const dispatch = useDispatch()
 
+    const mutationFun = (lm, mutationsList) => {
+        for (let mutation of mutationsList) {
+            if (mutation.type === 'characterData') {
+                let holderElement = document.getElementById(`${lm.nodeId}_div`)
+                lm.content = holderElement.innerHTML
+                lm.isDimAssigned = 0
+                recalc()
+                redraw(colorMode)
+            }
+        }
+    }
+
+    const startEdit = () => {
+        let lm = mapref(selectionState.lastPath)
+        if (!lm.hasCell) {
+            if (lm.contentType === 'equation') {
+                lm.contentType = 'text'
+                lm.isDimAssigned = 0
+                redraw(colorMode)
+            }
+            let holderElement = document.getElementById(`${lm.nodeId}_div`)
+            holderElement.contentEditable = 'true'
+            setEndOfContenteditable(holderElement)
+            isEditing = 1
+            lm.isEditing = 1
+            mutationObserver = new MutationObserver(mutationsList => mutationFun(lm, mutationsList))
+            mutationObserver.observe(holderElement, {
+                attributes: false,
+                childList: false,
+                subtree: true,
+                characterData: true
+            })
+        }
+    }
+
+    const finishEdit = () => {
+        let lm = mapref(selectionState.lastPath)
+        mutationObserver.disconnect()
+        let holderElement = document.getElementById(`${lm.nodeId}_div`)
+        holderElement.contentEditable = 'false'
+        lm.isEditing = 0
+        isEditing = 0
+        if (lm.content.substring(0, 2) === '\\[') {
+            lm.contentType = 'equation'
+            lm.isDimAssigned = 0
+        } else if (lm.content.substring(0, 1) === '=') {
+            lm.contentCalc = lm.content
+            lm.isDimAssigned = 0
+        }
+    }
+
     const mousewheel = (e) => {
         e.preventDefault()
         if (!isIntervalRunning) {
@@ -117,7 +168,7 @@ export function WindowListeners() {
         if (!isMouseDown) {
             isMouseDown = true
             if (isEditing === 1) {
-                mapDispatch('finishEdit')
+                finishEdit()
                 redraw(colorMode)
             }
             (window.getSelection
@@ -300,24 +351,12 @@ export function WindowListeners() {
             return
         }
         if (isNodeClicked) {
-            mapDispatch('startEdit')
+            startEdit()
         } else {
             let m = mapref(['m'])
             m.shouldCenter = true // outside push - checkPop?
         }
         redraw(colorMode)
-    }
-
-    const mutationFun = (lm, mutationsList) => {
-        for (let mutation of mutationsList) {
-            if (mutation.type === 'characterData') {
-                let holderElement = document.getElementById(`${lm.nodeId}_div`)
-                lm.content = holderElement.innerHTML
-                lm.isDimAssigned = 0
-                recalc()
-                redraw(colorMode)
-            }
-        }
     }
 
     const keydown = (e) => {
@@ -407,39 +446,9 @@ export function WindowListeners() {
                     ].includes(currExecution)) {
                         dispatch({type: currExecution})
                     } else if (currExecution === 'startEdit') {
-                        lm = mapref(selectionState.lastPath)
-                        if (!lm.hasCell) {
-                            if (lm.contentType === 'equation') {
-                                lm.contentType = 'text'
-                                lm.isDimAssigned = 0
-                                redraw(colorMode)
-                            }
-                            let holderElement = document.getElementById(`${lm.nodeId}_div`)
-                            holderElement.contentEditable = 'true'
-                            setEndOfContenteditable(holderElement)
-                            isEditing = 1
-                            lm.isEditing = 1
-                            mutationObserver = new MutationObserver(mutationsList => mutationFun(lm, mutationsList))
-                            mutationObserver.observe(holderElement, {
-                                attributes: false,
-                                childList: false,
-                                subtree: true,
-                                characterData: true
-                            })
-                        }
+                        startEdit()
                     } else if (currExecution === 'finishEdit') {
-                        mutationObserver.disconnect()
-                        let holderElement = document.getElementById(`${lm.nodeId}_div`)
-                        holderElement.contentEditable = 'false'
-                        lm.isEditing = 0
-                        isEditing = 0
-                        if (lm.content.substring(0, 2) === '\\[') {
-                            lm.contentType = 'equation'
-                            lm.isDimAssigned = 0
-                        } else if (lm.content.substring(0, 1) === '=') {
-                            lm.contentCalc = lm.content
-                            lm.isDimAssigned = 0
-                        }
+                        finishEdit()
                     } else if (currExecution === 'applyColorFromKey') {
                         mapDispatch(currExecution, {currColor: which - 96})
                     } else {
