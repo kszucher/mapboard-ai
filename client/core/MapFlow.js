@@ -435,7 +435,7 @@ function mapReducer(action, payload) {
                 if (lm.contentType === 'equation') {
                     lm.contentType = 'text'
                     lm.isDimAssigned = 0
-                    redraw()
+                    redraw(colorMode)
                 }
                 let holderElement = document.getElementById(`${lm.nodeId}_div`)
                 holderElement.contentEditable = 'true'
@@ -446,7 +446,7 @@ function mapReducer(action, payload) {
                     for (let mutation of mutationsList) {
                         if (mutation.type === 'characterData') {
                             mapDispatch('typeText')
-                            redraw()
+                            redraw(colorMode)
                         }
                     }
                 }
@@ -513,13 +513,13 @@ export const recalc = () => {
     updateSelectionState()
 }
 
-export const redraw = () => {
+export const redraw = (colorMode) => {
     flagDomData()
     let m = mapref(['m'])
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i])
         mapVisualizeSvg.start(m, cr)
-        mapVisualizeDiv.start(m, cr)
+        mapVisualizeDiv.start(m, cr, colorMode)
     }
     updateDomData()
 }

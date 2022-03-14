@@ -51,7 +51,7 @@ export function CommandTexts () {
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     // TODO remove this from here altogether
-    // const mapToggleTask = _ =>  {push(); mapDispatch('toggFleTask'); recalc(colorMode); redraw(); checkPop(dispatch)}
+    // const mapToggleTask = _ =>  {push(); mapDispatch('toggFleTask'); recalc(); redraw(colorMode); checkPop(dispatch)}
 
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
 

@@ -34,7 +34,7 @@ const scrollTo = function(to, duration) {
 }
 
 export const mapVisualizeDiv = {
-    start: (m, cr) => {
+    start: (m, cr, colorMode) => {
         let mapDiv = document.getElementById('mapDiv')
         mapDiv.style.width = "" + m.mapWidth + "px"
         mapDiv.style.height = "" + m.mapHeight + "px"
@@ -53,10 +53,10 @@ export const mapVisualizeDiv = {
             m.shouldCenter = false
             scrollTo(currScrollLeft, 500)
         }
-        mapVisualizeDiv.iterate(m, cr)
+        mapVisualizeDiv.iterate(m, cr, colorMode)
     },
 
-    iterate: (m, cm) => {
+    iterate: (m, cm, colorMode) => {
         if (cm.type === 'struct' && !cm.hasCell) {
             const { nodeId, contentType, content, path, isEditing } = cm
             let styleData = {
@@ -71,21 +71,15 @@ export const mapVisualizeDiv = {
                 fontFamily:                 'Roboto',
                 textDecoration:             cm.linkType !== "" ? "underline" : "",
                 cursor:                     'default',
-                color:                      cm.sTextColor,
-                // color: cm.sTextColor === 'default'
-                //     ? colorMode === 'light'
-                //         ? '#222222'
-                //         : '#ff0000'
-                //     : cm.sTextColor,
-
+                color:                      cm.sTextColor === 'default' ? colorMode === 'light' ? '#222222' : '#ff0000' : cm.sTextColor,
                 transition:                 'all 0.5s',
                 transitionTimingFunction:   'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:         'left, top, background-color',
             }
             updateMapDivData(nodeId, contentType, content, path, isEditing, styleData)
         }
-        cm.d.map(i => mapVisualizeDiv.iterate(m, i))
-        cm.s.map(i => mapVisualizeDiv.iterate(m, i))
-        cm.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j)))
+        cm.d.map(i => mapVisualizeDiv.iterate(m, i, colorMode))
+        cm.s.map(i => mapVisualizeDiv.iterate(m, i, colorMode))
+        cm.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j, colorMode)))
     }
 }

@@ -67,7 +67,7 @@ export function WindowListeners() {
 
     const resize = () => {
         mapDispatch('setIsResizing')
-        redraw()
+        redraw(colorMode)
     }
 
     const popstate = (e) => {
@@ -116,7 +116,7 @@ export function WindowListeners() {
             isMouseDown = true
             if (isEditing === 1) {
                 mapDispatch('finishEdit')
-                redraw()
+                redraw(colorMode)
             }
             (window.getSelection
                     ? window.getSelection()
@@ -133,7 +133,7 @@ export function WindowListeners() {
                     } else {
                         mapDispatch('selectStructToo')
                     }
-                    redraw()
+                    redraw(colorMode)
                     let lm = mapref(selectionState.lastPath)
                     if (!e.shiftKey) {
                         if (lm.linkType !== '') {
@@ -152,7 +152,7 @@ export function WindowListeners() {
                         taskStatus: parseInt(path[0].id.charAt(27), 10),
                         nodeId: path[0].id.substring(0, 12)
                     })
-                    redraw()
+                    redraw(colorMode)
                 } else {
                     mapDispatch('clearSelection')
                 }
@@ -170,7 +170,7 @@ export function WindowListeners() {
                     } else {
                         mapDispatch('selectStructToo')
                     }
-                    redraw()
+                    redraw(colorMode)
                 }
             }
         }
@@ -223,7 +223,7 @@ export function WindowListeners() {
                             }
                         }
                     }
-                    redraw()
+                    redraw(colorMode)
                 } else if (isTaskClicked) {
                 } else {
                     let m = mapref(['m'])
@@ -235,7 +235,7 @@ export function WindowListeners() {
                     m.selectionRect = [startX, startY, width, height]
                     mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
                     recalc()
-                    redraw()
+                    redraw(colorMode)
                 }
             } else if (which === 2) {
                 let el = document.getElementById('mapHolderDiv')
@@ -261,7 +261,7 @@ export function WindowListeners() {
                         m.moveData = []
                         m.shouldCenter = true // outside push - checkPop?
                         mapDispatch('moveSelection')
-                        redraw()
+                        redraw(colorMode)
                     }
                 } else if (isTaskClicked) {
                 } else {
@@ -271,7 +271,7 @@ export function WindowListeners() {
                         selectionState.cellSelectedPathList.length === 0) {
                         mapDispatch('select_R')
                     }
-                    redraw()
+                    redraw(colorMode)
                 }
             } else if (which === 2) {
             } else if (which === 3) {
@@ -282,7 +282,7 @@ export function WindowListeners() {
                 } else if (isTaskClicked) {
                 } else {
                     mapDispatch('select_R')
-                    redraw()
+                    redraw(colorMode)
                 }
             } else if (which === 2) {
             } else if (which === 3) {
@@ -303,7 +303,7 @@ export function WindowListeners() {
             let m = mapref(['m'])
             m.shouldCenter = true // outside push - checkPop?
         }
-        redraw()
+        redraw(colorMode)
     }
 
     const keydown = (e) => {
@@ -399,11 +399,11 @@ export function WindowListeners() {
                             'insert_U_S',
                             'insert_D_S'
                         ].includes(currExecution)) {
-                            redraw()
+                            redraw(colorMode)
                         }
                     }
                 }
-                redraw()
+                redraw(colorMode)
                 if (keyStateMachine.m) {
                     checkPop(dispatch)
                 }
@@ -453,14 +453,14 @@ export function WindowListeners() {
         if (landingData.length) {
             const mapStorage = landingData[landingDataIndex]
             mapStackDispatch('initMapState', { mapStorage })
-            redraw()
+            redraw(colorMode)
         }
     }, [landingData, landingDataIndex])
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
             mapStackDispatch('initMapState', { mapStorage })
-            redraw()
+            redraw(colorMode)
             dispatch({ type: 'MAP_STACK_CHANGED' })
         }
     }, [mapId, mapSource, frameLen, frameSelected])
@@ -485,7 +485,7 @@ export function WindowListeners() {
         if (mapId !== '' && mapSource !== '') {
             push()
             mapDispatch('applyMapParams', node)
-            redraw()
+            redraw(colorMode)
             checkPop(dispatch)
         }
     }, [node])
@@ -493,7 +493,7 @@ export function WindowListeners() {
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
             console.log('REDRAW BECAUSE OF COLOR')
-            redraw()
+            redraw(colorMode)
         }
     }, [colorMode])
 

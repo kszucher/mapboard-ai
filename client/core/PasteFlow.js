@@ -2,7 +2,7 @@ import { isEditing, mapDispatch, recalc, redraw } from './MapFlow'
 import {checkPop, push} from "./MapStackFlow"
 import {isUrl} from "./Utils"
 
-export const pasteDispatch = (dispatch) => {
+export const pasteDispatch = (colorMode, dispatch) => {
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
         if (result.state === "granted" || result.state === "prompt") {
             navigator.clipboard.read().then(item => {
@@ -17,7 +17,7 @@ export const pasteDispatch = (dispatch) => {
                                 mapDispatch('insertMapFromClipboard', text)
                             } else {
                                 mapDispatch('insert_O_S')
-                                redraw()
+                                redraw(colorMode)
                                 if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                                     mapDispatch('insertEquationFromClipboardAsNode', text)
                                 } else if (isUrl(text)) {
@@ -26,7 +26,7 @@ export const pasteDispatch = (dispatch) => {
                                     mapDispatch('insertTextFromClipboardAsNode', text)
                                 }
                             }
-                            redraw()
+                            redraw(colorMode)
                             checkPop(dispatch)
                         }
                     })
@@ -46,7 +46,7 @@ export const pasteDispatch = (dispatch) => {
                                         push()
                                         mapDispatch('insert_O_S')
                                         mapDispatch('insertImageFromLinkAsNode', response)
-                                        redraw()
+                                        redraw(colorMode)
                                         checkPop(dispatch)
                                     }
                                 )
