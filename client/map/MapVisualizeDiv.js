@@ -1,4 +1,5 @@
 import { updateMapDivData } from '../core/DomFlow'
+import { getColors } from '../core/Colors'
 
 const scrollTo = function(to, duration) {
     const
@@ -59,6 +60,7 @@ export const mapVisualizeDiv = {
     iterate: (m, cm, colorMode) => {
         if (cm.type === 'struct' && !cm.hasCell) {
             const { nodeId, contentType, content, path, isEditing } = cm
+            const {TEXT_COLOR} = getColors(colorMode)
             if (cm.task) {
                 if (cm.taskStatus !== -1) {
                     cm.sTextColor = '#222222'
@@ -76,7 +78,7 @@ export const mapVisualizeDiv = {
                 fontFamily:                 'Roboto',
                 textDecoration:             cm.linkType !== "" ? "underline" : "",
                 cursor:                     'default',
-                color:                      cm.sTextColor === 'default' ? colorMode === 'light' ? '#222222' : '#ff0000' : cm.sTextColor,
+                color:                      cm.sTextColor === 'default' ? TEXT_COLOR : cm.sTextColor,
                 transition:                 'all 0.5s',
                 transitionTimingFunction:   'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:         'left, top, background-color',

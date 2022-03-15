@@ -12,6 +12,7 @@ export const mapVisualizeSvg = {
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
         const {nodeId} = m
+        const {MAP_BACKGROUND} = getColors(colorMode)
         updateMapSvgData(nodeId, 'backgroundRect', {
             x: 0,
             y: 0,
@@ -19,7 +20,7 @@ export const mapVisualizeSvg = {
             height: m.mapHeight,
             rx: 32,
             ry: 32,
-            fill: getColors(colorMode).MAP_BACKGROUND,
+            fill: MAP_BACKGROUND,
         })
         if (m.moveData?.length) {
             // TODO use parent bezier style
@@ -46,7 +47,7 @@ export const mapVisualizeSvg = {
                 height: 20,
                 rx: 8,
                 ry: 8,
-                fill: getColors('light').MAP_BACKGROUND,
+                fill: MAP_BACKGROUND,
                 fillOpacity: 1,
                 stroke: '#5f0a87',
                 strokeWidth: 5,

@@ -1,9 +1,11 @@
 const COLOR_DARK = {
     MAP_BACKGROUND: '#222529',
+    TEXT_COLOR: '#dddddd'
 }
 
 const COLOR_LIGHT = {
     MAP_BACKGROUND: '#fbfafc',
+    TEXT_COLOR: '#222222'
 }
 
 export const getColors = (colorMode) => {
