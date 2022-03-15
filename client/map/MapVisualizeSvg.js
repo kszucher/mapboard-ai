@@ -68,12 +68,14 @@ export const mapVisualizeSvg = {
                 preventTransition: 1,
             })
         }
-        mapVisualizeSvg.iterate(m, cr)
+        mapVisualizeSvg.iterate(m, cr, colorMode)
     },
 
-    iterate: (m, cm) => {
+    iterate: (m, cm, colorMode) => {
         const {nodeId} = cm
         const conditions = resolveScope(cm)
+        const {TABLE_GRID} = getColors(colorMode)
+
         const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
         const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
         const nsx = cm.path[3] ? cm.nodeEndX : cm.nodeStartX
@@ -228,7 +230,7 @@ export const mapVisualizeSvg = {
             }
             updateMapSvgData(nodeId, 'tableGrid', {
                 path: path,
-                stroke: '#dddddd',
+                stroke: TABLE_GRID,
                 strokeWidth: 1,
             })
             // cell
@@ -318,8 +320,8 @@ export const mapVisualizeSvg = {
                 })
             }
         }
-        cm.d.map(i => mapVisualizeSvg.iterate(m, i))
-        cm.s.map(i => mapVisualizeSvg.iterate(m, i))
-        cm.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j)))
+        cm.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode))
+        cm.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode))
+        cm.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode)))
     }
 }

@@ -1,11 +1,13 @@
-const COLOR_DARK = {
-    MAP_BACKGROUND: '#222529',
-    TEXT_COLOR: '#dddddd'
-}
-
 const COLOR_LIGHT = {
     MAP_BACKGROUND: '#fbfafc',
-    TEXT_COLOR: '#222222'
+    TEXT_COLOR: '#222222',
+    TABLE_GRID: '#dddddd',
+}
+
+const COLOR_DARK = {
+    MAP_BACKGROUND: '#222529',
+    TEXT_COLOR: '#dddddd',
+    TABLE_GRID: '#aaaaaa',
 }
 
 export const getColors = (colorMode) => {
