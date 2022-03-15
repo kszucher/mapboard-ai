@@ -118,6 +118,7 @@ export const mapVisualizeSvg = {
                 })
             }
             if (conditions.nodeFill) {
+                // important note: if we don't assign this directly, we can remember settings BEFORE task mode on
                 if (cm.task) {
                     if (cm.taskStatus !== -1) {
                         if (cm.taskStatus === 0) {
