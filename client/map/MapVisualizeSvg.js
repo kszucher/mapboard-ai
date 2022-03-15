@@ -74,7 +74,7 @@ export const mapVisualizeSvg = {
     iterate: (m, cm, colorMode) => {
         const {nodeId} = cm
         const conditions = resolveScope(cm)
-        const {TABLE_GRID} = getColors(colorMode)
+        const {TABLE_GRID, TASK_FILL_TODO, TASK_FILL_IN_PROGRESS, TASK_FILL_DONE, TASK_LINE} = getColors(colorMode)
 
         const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
         const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
@@ -128,10 +128,10 @@ export const mapVisualizeSvg = {
                             cm.sFillColor = ''
                         } else {
                             switch (cm.taskStatus) {
-                                case 0: cm.sFillColor = ''       ;  break
-                                case 1: cm.sFillColor = '#d4ebfe';  break
-                                case 2: cm.sFillColor = '#f6e5d4';  break
-                                case 3: cm.sFillColor = '#d4f6d4';  break
+                                case 0: cm.sFillColor = ''; break
+                                case 1: cm.sFillColor = TASK_FILL_TODO; break
+                                case 2: cm.sFillColor = TASK_FILL_IN_PROGRESS; break
+                                case 3: cm.sFillColor = TASK_FILL_DONE; break
                             }
                         }
                     }
@@ -287,7 +287,7 @@ export const mapVisualizeSvg = {
             if (!cm.isEditing) {
                 updateMapSvgData(nodeId, 'taskLine', {
                     path: `M${x1},${y} L${x2},${y}`,
-                    stroke: '#eeeeee',
+                    stroke: TASK_LINE,
                     strokeWidth: 1,
                 })
             }
