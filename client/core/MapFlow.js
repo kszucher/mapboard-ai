@@ -16,7 +16,6 @@ import { mapTaskCheck } from '../map/MapTaskCheck'
 import { mapMeasure } from '../map/MapMeasure'
 import { mapPlace } from '../map/MapPlace'
 import { mapTaskCalc } from '../map/MapTaskCalc'
-import { mapTaskColor } from '../map/MapTaskColor'
 import { mapCollect } from '../map/MapCollect'
 import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
 import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
@@ -449,7 +448,6 @@ export const recalc = () => {
         mapMeasure.start(m, cr)
         mapPlace.start(m, cr)
         mapTaskCalc.start(m, cr)
-        mapTaskColor.start(m, cr)
         mapCollect.start(m, cr)
         // mapPrint.start(m, cr)
     }

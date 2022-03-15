@@ -118,6 +118,20 @@ export const mapVisualizeSvg = {
                 })
             }
             if (conditions.nodeFill) {
+                if (cm.task) {
+                    if (cm.taskStatus !== -1) {
+                        if (cm.taskStatus === 0) {
+                            cm.sFillColor = ''
+                        } else {
+                            switch (cm.taskStatus) {
+                                case 0: cm.sFillColor = ''       ;  break
+                                case 1: cm.sFillColor = '#d4ebfe';  break
+                                case 2: cm.sFillColor = '#f6e5d4';  break
+                                case 3: cm.sFillColor = '#d4f6d4';  break
+                            }
+                        }
+                    }
+                }
                 updateMapSvgData(nodeId, 'nodeFill', {
                     path: getPolygonPath(sParams, 's', dir, 0),
                     fill: cm.sFillColor,
@@ -173,6 +187,16 @@ export const mapVisualizeSvg = {
             x1 = isOdd(x1)?x1-0.5:x1
             x2 = nsx
             y2 = cm.nodeY
+            if (cm.task) {
+                if (cm.taskStatus !== -1) {
+                    switch (cm.taskStatus) {
+                        case 0: cm.lineColor = '#bbbbbb';  break
+                        case 1: cm.lineColor = '#2c9dfc';  break
+                        case 2: cm.lineColor = '#d5802a';  break
+                        case 3: cm.lineColor = '#25bf25';  break
+                    }
+                }
+            }
             updateMapSvgData(nodeId, 'line', {
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
                 stroke: cm.lineColor,
