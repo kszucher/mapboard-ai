@@ -127,24 +127,15 @@ export const mapVisualizeSvg = {
                 })
             }
             if (conditions.nodeFill) {
-                // important note: if we don't assign this directly, we can remember settings BEFORE task mode on
-                if (cm.task) {
-                    if (cm.taskStatus !== -1) {
-                        if (cm.taskStatus === 0) {
-                            cm.sFillColor = ''
-                        } else {
-                            switch (cm.taskStatus) {
-                                case 0: cm.sFillColor = ''; break
-                                case 1: cm.sFillColor = TASK_FILL_1; break
-                                case 2: cm.sFillColor = TASK_FILL_2; break
-                                case 3: cm.sFillColor = TASK_FILL_3; break
-                            }
-                        }
-                    }
+                let sFillColorOverride = ''
+                if (cm.task && cm.taskStatus > 0) {
+                    sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
                 }
                 updateMapSvgData(nodeId, 'nodeFill', {
                     path: getPolygonPath(sParams, 's', dir, 0),
-                    fill: cm.sFillColor,
+                    fill: sFillColorOverride === ''
+                        ? cm.sFillColor
+                        : sFillColorOverride
                 })
             }
             if (conditions.branchBorder) {
