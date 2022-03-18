@@ -74,7 +74,13 @@ export const mapVisualizeSvg = {
     iterate: (m, cm, colorMode) => {
         const {nodeId} = cm
         const conditions = resolveScope(cm)
-        const {TABLE_GRID, TASK_FILL_TODO, TASK_FILL_IN_PROGRESS, TASK_FILL_DONE, TASK_LINE} = getColors(colorMode)
+        const {TABLE_GRID,
+            TASK_LINE_0, TASK_LINE_1, TASK_LINE_2, TASK_LINE_3,
+            TASK_FILL_1, TASK_FILL_2, TASK_FILL_3,
+            TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE,
+            TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
+            TASK_LINE
+        } = getColors(colorMode)
 
         const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
         const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
@@ -129,9 +135,9 @@ export const mapVisualizeSvg = {
                         } else {
                             switch (cm.taskStatus) {
                                 case 0: cm.sFillColor = ''; break
-                                case 1: cm.sFillColor = TASK_FILL_TODO; break
-                                case 2: cm.sFillColor = TASK_FILL_IN_PROGRESS; break
-                                case 3: cm.sFillColor = TASK_FILL_DONE; break
+                                case 1: cm.sFillColor = TASK_FILL_1; break
+                                case 2: cm.sFillColor = TASK_FILL_2; break
+                                case 3: cm.sFillColor = TASK_FILL_3; break
                             }
                         }
                     }
@@ -191,15 +197,8 @@ export const mapVisualizeSvg = {
             x1 = isOdd(x1)?x1-0.5:x1
             x2 = nsx
             y2 = cm.nodeY
-            if (cm.task) {
-                if (cm.taskStatus !== -1) {
-                    switch (cm.taskStatus) {
-                        case 0: cm.lineColor = '#bbbbbb';  break
-                        case 1: cm.lineColor = '#2c9dfc';  break
-                        case 2: cm.lineColor = '#d5802a';  break
-                        case 3: cm.lineColor = '#25bf25';  break
-                    }
-                }
+            if (cm.task && cm.taskStatus !== -1) {
+                cm.lineColor = [TASK_LINE_0, TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cm.taskStatus)
             }
             updateMapSvgData(nodeId, 'line', {
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
@@ -296,22 +295,9 @@ export const mapVisualizeSvg = {
                     ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
                     : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
                 let centerY = cm.nodeY
-                let fill
-                if (cm.taskStatus === i) {
-                    switch (i) {
-                        case 0: fill = '#eeeeee'; break
-                        case 1: fill = '#2c9dfc'; break
-                        case 2: fill = '#d5802a'; break
-                        case 3: fill = '#25bf25'; break
-                    }
-                } else {
-                    switch (i) {
-                        case 0: fill = '#eeeeee'; break
-                        case 1: fill = '#e5f3fe'; break
-                        case 2: fill = '#f6e5d4'; break
-                        case 3: fill = '#e5f9e5'; break
-                    }
-                }
+                let fill = cm.taskStatus === i
+                    ? [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
+                    : [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
                 updateMapSvgData(nodeId, `taskCircle${i}`, {
                     cx: centerX,
                     cy: centerY,
