@@ -61,11 +61,6 @@ export const mapVisualizeDiv = {
         if (cm.type === 'struct' && !cm.hasCell) {
             const { nodeId, contentType, content, path, isEditing } = cm
             const {TEXT_COLOR} = getColors(colorMode)
-            if (cm.task) {
-                if (cm.taskStatus !== -1) {
-                    cm.sTextColor = '#222222'
-                }
-            }
             let styleData = {
                 left:                       1 + cm.nodeStartX + 'px',
                 top:                        1 + cm.nodeY - cm.selfH / 2 + 'px',
