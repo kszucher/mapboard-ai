@@ -3,7 +3,6 @@ const COLOR_LIGHT = {
     TEXT_COLOR: '#222222',
     TABLE_GRID: '#dddddd',
 
-    TASK_LINE_0: '#bbbbbb',
     TASK_LINE_1: '#2c9dfc',
     TASK_LINE_2: '#d5802a',
     TASK_LINE_3: '#25bf25',
@@ -26,7 +25,6 @@ const COLOR_DARK = {
     TEXT_COLOR: '#dddddd',
     TABLE_GRID: '#aaaaaa',
     // TODO define
-    TASK_LINE_0: '#bbbbbb',
     TASK_LINE_1: '#2c9dfc',
     TASK_LINE_2: '#d5802a',
     TASK_LINE_3: '#25bf25',
