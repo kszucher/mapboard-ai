@@ -9,17 +9,17 @@ const COLOR_LIGHT = {
     TASK_LINE_1: '#2c9dfc',
     TASK_CIRCLE_1_ACTIVE: '#2c9dfc',
     TASK_FILL_1: '#d4ebfe',
-    TASK_CIRCLE_1_INACTIVE: '#e5f3fe',
+    TASK_CIRCLE_1_INACTIVE: '#e9f5fe',
 
     TASK_LINE_2: '#d5802a',
     TASK_CIRCLE_2_ACTIVE: '#d5802a',
     TASK_FILL_2: '#f6e5d4',
-    TASK_CIRCLE_2_INACTIVE: '#f6e5d4',
+    TASK_CIRCLE_2_INACTIVE: '#faf2e9',
 
     TASK_LINE_3: '#25bf25',
     TASK_CIRCLE_3_ACTIVE: '#25bf25',
-    TASK_FILL_3: '#d4f6d4',
-    TASK_CIRCLE_3_INACTIVE: '#e5f9e5',
+    TASK_FILL_3: '#d3f2d3',
+    TASK_CIRCLE_3_INACTIVE: '#e9f8e9',
 
     TASK_LINE: '#eeeeee',
 }
