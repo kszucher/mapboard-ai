@@ -188,13 +188,16 @@ export const mapVisualizeSvg = {
             x1 = isOdd(x1)?x1-0.5:x1
             x2 = nsx
             y2 = cm.nodeY
+            let lineColorOverride = ''
             if (cm.task && cm.taskStatus !== -1) {
-                cm.lineColor = [TASK_LINE_0, TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cm.taskStatus)
+                lineColorOverride = [TASK_LINE_0, TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cm.taskStatus)
             }
             updateMapSvgData(nodeId, 'line', {
                 path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
-                stroke: cm.lineColor,
                 strokeWidth: cm.lineWidth,
+                stroke: lineColorOverride === ''
+                    ? cm.lineColor
+                    : lineColorOverride
             })
         }
         if (conditions.table) {
