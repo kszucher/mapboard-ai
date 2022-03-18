@@ -7,9 +7,9 @@ const COLOR_LIGHT = {
     TASK_LINE_1: '#2c9dfc',
     TASK_LINE_2: '#d5802a',
     TASK_LINE_3: '#25bf25',
-    TASK_FILL_1: '#d4ebfe',
-    TASK_FILL_2: '#f6e5d4',
-    TASK_FILL_3: '#d4f6d4',
+    TASK_FILL_1: '#d4ebfe', // TODO remove from mongo because it is runtime overridden
+    TASK_FILL_2: '#f6e5d4', // TODO remove from mongo because it is runtime overridden
+    TASK_FILL_3: '#d4f6d4', // TODO remove from mongo because it is runtime overridden
     TASK_CIRCLE_0_INACTIVE: '#eeeeee',
     TASK_CIRCLE_1_INACTIVE: '#2c9dfc',
     TASK_CIRCLE_2_INACTIVE: '#d5802a',
