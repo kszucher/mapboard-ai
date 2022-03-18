@@ -290,8 +290,8 @@ export const mapVisualizeSvg = {
                     : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
                 let centerY = cm.nodeY
                 let fill = cm.taskStatus === i
-                    ? [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
-                    : [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
+                    ? [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
+                    : [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
                 updateMapSvgData(nodeId, `taskCircle${i}`, {
                     cx: centerX,
                     cy: centerY,
