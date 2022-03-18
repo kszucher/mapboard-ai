@@ -136,7 +136,7 @@ export const resolveScope = (cm) => {
         text:
             cm.contentType === 'text',
         branchFill: cm.fFillColor !== '' && cm.s.length,
-        nodeFill: cm.sFillColor !== '',
+        nodeFill: cm.sFillColor !== '' || cm.task,
         branchBorder: cm.fBorderColor !== '' && cm.s.length,
         nodeBorder: cm.sBorderColor !== '',
         selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
