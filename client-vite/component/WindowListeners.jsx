@@ -17,6 +17,7 @@ let isNodeClicked = false
 let isTaskClicked = false
 let mutationObserver
 let isEditing = 0
+let areaListener = new AbortController()
 
 const getCoords = (e) => {
     let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
@@ -98,35 +99,6 @@ export function WindowListeners() {
         }
     }
 
-    const mousewheel = (e) => {
-        e.preventDefault()
-        if (!isIntervalRunning) {
-            namedInterval = setInterval(function () {
-                clearInterval(namedInterval)
-                isIntervalRunning = false
-                if (Math.sign(e.deltaY) === 1) {
-                    dispatch({type: 'PLAY_LANDING_NEXT'})
-                } else {
-                    dispatch({type: 'PLAY_LANDING_PREV'})
-                }
-            }, 100)
-        }
-        isIntervalRunning = true
-    }
-
-    const contextmenu = (e) => {
-        e.preventDefault()
-    }
-
-    const resize = () => {
-        mapDispatch('setIsResizing')
-        redraw(colorMode)
-    }
-
-    const popstate = (e) => {
-        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
-    }
-
     const checkNodeClicked = (e) => {
         let isNodeClicked = false
         let m = mapref(['m'])
@@ -159,7 +131,38 @@ export function WindowListeners() {
         return isTaskClicked
     }
 
-    const mousedown = (e) => {
+    // LANDING LISTENERS
+    const mousewheel = (e) => {
+        e.preventDefault()
+        if (!isIntervalRunning) {
+            namedInterval = setInterval(function () {
+                clearInterval(namedInterval)
+                isIntervalRunning = false
+                if (Math.sign(e.deltaY) === 1) {
+                    dispatch({type: 'PLAY_LANDING_NEXT'})
+                } else {
+                    dispatch({type: 'PLAY_LANDING_PREV'})
+                }
+            }, 100)
+        }
+        isIntervalRunning = true
+    }
+
+    // MAP LISTENERS
+    const contextmenu = colorMode => e => {
+        e.preventDefault()
+    }
+
+    const resize = colorMode => e => {
+        mapDispatch('setIsResizing')
+        redraw(colorMode)
+    }
+
+    const popstate = colorMode => e => {
+        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
+    }
+
+    const mousedown = colorMode => e => {
         e.preventDefault()
         const {path, which} = getNativeEvent(e)
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
@@ -229,7 +232,7 @@ export function WindowListeners() {
         }
     }
 
-    const mousemove = (e) => {
+    const mousemove = colorMode => e => {
         e.preventDefault()
         const {which} = getNativeEvent(e)
         if (isMouseDown) {
@@ -299,7 +302,7 @@ export function WindowListeners() {
         }
     }
 
-    const mouseup = (e) => {
+    const mouseup = colorMode => e => {
         e.preventDefault()
         const {path, which} = getNativeEvent(e)
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
@@ -344,7 +347,7 @@ export function WindowListeners() {
         checkPop(dispatch)
     }
 
-    const dblclick = (e) => {
+    const dblclick = colorMode => e => {
         const {path} = getNativeEvent(e)
         e.preventDefault()
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
@@ -359,7 +362,7 @@ export function WindowListeners() {
         redraw(colorMode)
     }
 
-    const keydown = (e) => {
+    const keydown = colorMode => e => {
         let {scope, lastPath} = selectionState
         let lm = mapref(selectionState.lastPath)
         let {key, code, which} = getNativeEvent(e)
@@ -471,7 +474,7 @@ export function WindowListeners() {
         }
     }
 
-    const paste = (e) => {
+    const paste = colorMode => e => {
         e.preventDefault()
         pasteDispatch(isEditing, dispatch)
     }
@@ -484,28 +487,30 @@ export function WindowListeners() {
         window.removeEventListener("mousewheel", mousewheel)
     }
 
-    const addMapListeners = () => {
-        window.addEventListener("contextmenu", contextmenu)
-        window.addEventListener('resize', resize)
-        window.addEventListener('popstate', popstate)
-        window.addEventListener('dblclick', dblclick)
-        window.addEventListener('mousedown', mousedown)
-        window.addEventListener('mousemove', mousemove)
-        window.addEventListener('mouseup', mouseup)
-        window.addEventListener("keydown", keydown)
-        window.addEventListener("paste", paste)
+    const addMapListeners = (colorMode) => {
+        window.addEventListener("contextmenu", contextmenu(colorMode), { signal: areaListener.signal })
+        window.addEventListener('resize', resize(colorMode), { signal: areaListener.signal })
+        window.addEventListener('popstate', popstate(colorMode), { signal: areaListener.signal })
+        window.addEventListener('dblclick', dblclick(colorMode), { signal: areaListener.signal })
+        window.addEventListener('mousedown', mousedown(colorMode), { signal: areaListener.signal })
+        window.addEventListener('mousemove', mousemove(colorMode), { signal: areaListener.signal })
+        window.addEventListener('mouseup', mouseup(colorMode), { signal: areaListener.signal })
+        window.addEventListener("keydown", keydown(colorMode), { signal: areaListener.signal })
+        window.addEventListener("paste", paste(colorMode), { signal: areaListener.signal })
     }
 
     const removeMapListeners = () => {
-        window.removeEventListener("contextmenu", contextmenu)
-        window.removeEventListener('resize', resize)
-        window.removeEventListener('popstate', popstate)
-        window.removeEventListener('dblclick', dblclick)
-        window.removeEventListener('mousedown', mousedown)
-        window.removeEventListener('mousemove', mousemove)
-        window.removeEventListener('mouseup', mouseup)
-        window.removeEventListener("keydown", keydown)
-        window.removeEventListener("paste", paste)
+        // window.removeEventListener("contextmenu", contextmenu)
+        // window.removeEventListener('resize', resize)
+        // window.removeEventListener('popstate', popstate)
+        // window.removeEventListener('dblclick', dblclick)
+        // window.removeEventListener('mousedown', mousedown)
+        // window.removeEventListener('mousemove', mousemove)
+        // window.removeEventListener('mouseup', mouseup)
+        // window.removeEventListener("keydown", keydown)
+        // window.removeEventListener("paste", paste)
+        areaListener.abort()
+        areaListener = new AbortController()
     }
 
     useEffect(() => {
@@ -527,7 +532,7 @@ export function WindowListeners() {
     useEffect(() => {
         if (pageState === WS) {
             if (mapRight === EDIT) {
-                addMapListeners()
+                addMapListeners(colorMode)
             } else if (mapRight === VIEW) {
                 // TODO figure out view listeners
             }
@@ -553,6 +558,8 @@ export function WindowListeners() {
         if (mapId !== '' && mapSource !== '') {
             console.log('REDRAW BECAUSE OF COLOR')
             redraw(colorMode)
+            removeMapListeners()
+            addMapListeners(colorMode)
         }
     }, [colorMode])
 
