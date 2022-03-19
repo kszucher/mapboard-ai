@@ -1,5 +1,5 @@
 import { all, call, put, select, take } from 'redux-saga/effects'
-import '@babel/polyfill'
+// import '@babel/polyfill'
 import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
