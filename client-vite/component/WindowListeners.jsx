@@ -476,7 +476,7 @@ export function WindowListeners() {
 
     const paste = colorMode => e => {
         e.preventDefault()
-        pasteDispatch(isEditing, dispatch)
+        pasteDispatch(isEditing, colorMode, dispatch)
     }
 
     const addLandingListeners = () => {
