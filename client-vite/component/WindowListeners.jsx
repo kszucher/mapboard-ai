@@ -17,7 +17,7 @@ let isNodeClicked = false
 let isTaskClicked = false
 let mutationObserver
 let isEditing = 0
-let areaListener = new AbortController()
+let areaListener
 
 const getCoords = (e) => {
     let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
@@ -488,6 +488,7 @@ export function WindowListeners() {
     }
 
     const addMapListeners = (colorMode) => {
+        areaListener = new AbortController()
         window.addEventListener("contextmenu", contextmenu(colorMode), { signal: areaListener.signal })
         window.addEventListener('resize', resize(colorMode), { signal: areaListener.signal })
         window.addEventListener('popstate', popstate(colorMode), { signal: areaListener.signal })
@@ -500,17 +501,7 @@ export function WindowListeners() {
     }
 
     const removeMapListeners = () => {
-        // window.removeEventListener("contextmenu", contextmenu)
-        // window.removeEventListener('resize', resize)
-        // window.removeEventListener('popstate', popstate)
-        // window.removeEventListener('dblclick', dblclick)
-        // window.removeEventListener('mousedown', mousedown)
-        // window.removeEventListener('mousemove', mousemove)
-        // window.removeEventListener('mouseup', mouseup)
-        // window.removeEventListener("keydown", keydown)
-        // window.removeEventListener("paste", paste)
         areaListener.abort()
-        areaListener = new AbortController()
     }
 
     useEffect(() => {
