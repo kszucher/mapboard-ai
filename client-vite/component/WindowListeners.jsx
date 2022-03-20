@@ -17,7 +17,8 @@ let isNodeClicked = false
 let isTaskClicked = false
 let mutationObserver
 let isEditing = 0
-let areaListener
+let mapAreaListener
+let landingAreaListener
 
 const getCoords = (e) => {
     let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
@@ -480,28 +481,29 @@ export function WindowListeners() {
     }
 
     const addLandingListeners = () => {
-        window.addEventListener("mousewheel", mousewheel, {passive: false})
+        landingAreaListener = new AbortController()
+        window.addEventListener("mousewheel", mousewheel, /*{passive: false}*/ { signal: mapAreaListener.signal })
     }
 
     const removeLandingListeners = () => {
-        window.removeEventListener("mousewheel", mousewheel)
+        mapAreaListener.abort()
     }
 
     const addMapListeners = (colorMode) => {
-        areaListener = new AbortController()
-        window.addEventListener("contextmenu", contextmenu(colorMode), { signal: areaListener.signal })
-        window.addEventListener('resize', resize(colorMode), { signal: areaListener.signal })
-        window.addEventListener('popstate', popstate(colorMode), { signal: areaListener.signal })
-        window.addEventListener('dblclick', dblclick(colorMode), { signal: areaListener.signal })
-        window.addEventListener('mousedown', mousedown(colorMode), { signal: areaListener.signal })
-        window.addEventListener('mousemove', mousemove(colorMode), { signal: areaListener.signal })
-        window.addEventListener('mouseup', mouseup(colorMode), { signal: areaListener.signal })
-        window.addEventListener("keydown", keydown(colorMode), { signal: areaListener.signal })
-        window.addEventListener("paste", paste(colorMode), { signal: areaListener.signal })
+        mapAreaListener = new AbortController()
+        window.addEventListener("contextmenu", contextmenu(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener('resize', resize(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener('popstate', popstate(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener('dblclick', dblclick(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener('mousedown', mousedown(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener('mousemove', mousemove(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener('mouseup', mouseup(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener("keydown", keydown(colorMode), { signal: mapAreaListener.signal })
+        window.addEventListener("paste", paste(colorMode), { signal: mapAreaListener.signal })
     }
 
     const removeMapListeners = () => {
-        areaListener.abort()
+        mapAreaListener.abort()
     }
 
     useEffect(() => {
