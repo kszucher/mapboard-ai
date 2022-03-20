@@ -486,7 +486,9 @@ export function WindowListeners() {
     }
 
     const removeLandingListeners = () => {
-        mapAreaListener.abort()
+        if (mapAreaListener !== undefined) {
+            mapAreaListener.abort()
+        }
     }
 
     const addMapListeners = (colorMode) => {
@@ -503,7 +505,9 @@ export function WindowListeners() {
     }
 
     const removeMapListeners = () => {
-        mapAreaListener.abort()
+        if (mapAreaListener !== undefined) {
+            mapAreaListener.abort()
+        }
     }
 
     useEffect(() => {
