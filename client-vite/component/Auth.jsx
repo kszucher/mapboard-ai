@@ -51,6 +51,9 @@ export default function Auth() {
         }
     }
 
+    const getConfirmationCodeDisabled = (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
+    const enterConfirmationCodeDisabled = (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
+
     return (
         <div
             style={{
@@ -69,159 +72,61 @@ export default function Auth() {
                 border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
-            <Typography component="h1"
-                        variant="h5">
-                {'MapBoard'}
-            </Typography>
-            <Typography component="h1"
-                        variant="h6">
-                {'Private Beta'}
-            </Typography>
+            <Typography component="h1" variant="h5">{'MapBoard'}</Typography>
+            <Typography component="h1" variant="h6">{'Private Beta'}</Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
-                <Button color="primary"
-                        onClick={signInPanel}
-                        variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>
+                <Button color="primary" onClick={signInPanel} variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>
                     {'SIGN IN'}
                 </Button>
-                <Button color="primary"
-                        onClick={signUpPanel}
-                        variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>
+                <Button color="primary" onClick={signUpPanel} variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>
                     {'SIGN UP'}
                 </Button>
             </div>
-            {
-                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                    <Button color="primary"
-                            onClick={signUpStep1Panel}
-                            variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
-                        {'STEP 1'}
-                    </Button>
-                    <Button color="primary"
-                            onClick={signUpStep2Panel}
-                            variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
-                        {'STEP 2'}
-                    </Button>
-                </div>
-            }
-            {
-                authPageState === SIGN_IN &&
-                <>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Email"
-                               value={email}
-                               onChange={setEmail}/>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Password"
-                               value={password}
-                               onChange={setPassword}
-                               type="password"/>
-                </>
-            }
-            {
-                authPageState === SIGN_UP_STEP_1 &&
-                <>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Your First Name"
-                               value={name}
-                               onChange={setName}
-                               autoFocus/>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Email"
-                               value={email}
-                               onChange={setEmail}/>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Password"
-                               value={password}
-                               onChange={setPassword}/>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Password Again"
-                               value={passwordAgain}
-                               onChange={setPasswordAgain}/>
-                </>
-            }
-            {
-                authPageState === SIGN_UP_STEP_2 &&
-                <>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Email"
-                               value={email}
-                               onChange={setEmail}/>
-                    <TextField variant="outlined"
-                               fullWidth
-                               label="Confirmation Code"
-                               value={confirmationCode}
-                               onChange={checkSetConfirmationCode}
-                               autoFocus/>
-                </>
-            }
-            {
-                authFeedbackMessage !== '' &&
-                <Typography variant="body2"
-                            color="textSecondary"
-                            align="center">
-                    {authFeedbackMessage}
-                </Typography>
-            }
-            {
-                authPageState === SIGN_IN &&
-                <Button color="primary"
-                        variant='contained'
-                        fullWidth
-                        onClick={checkSignIn}
-                        disabled={false}>
-                    {'SIGN IN'}
+            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                <Button color="primary" onClick={signUpStep1Panel} variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
+                    {'STEP 1'}
                 </Button>
-            }
-            {
-                authPageState === SIGN_UP_STEP_1 &&
-                <Button color="primary"
-                        variant='contained'
-                        fullWidth
-                        onClick={checkSignUpStep1}
-                        disabled={(
-                            name === '' ||
-                            email === '' ||
-                            password === '' ||
-                            passwordAgain === '' ||
-                            password !== passwordAgain
-                        )}>
-                    {'Get Confirmation Code'}
+                <Button color="primary" onClick={signUpStep2Panel} variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
+                    {'STEP 2'}
                 </Button>
-            }
-            {
-                authPageState === SIGN_UP_STEP_2 &&
-                <Button color="primary"
-                        variant='contained'
-                        fullWidth
-                        onClick={signUpStep2}
-                        name={'Enter Confirmation Code'}
-                        disabled={(
-                            email === '' ||
-                            confirmationCode === '' ||
-                            confirmationCode.length !== 4)}
-                />
-            }
-            <Button color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={liveDemo}>
+            </div>}
+            {authPageState === SIGN_IN && <>
+                <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
+                <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword} type="password"/>
+            </>}
+            {authPageState === SIGN_UP_STEP_1 && <>
+                <TextField variant="outlined" fullWidth label="Your First Name" value={name} onChange={setName} autoFocus/>
+                <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
+                <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword}/>
+                <TextField variant="outlined" fullWidth label="Password Again" value={passwordAgain} onChange={setPasswordAgain}/>
+            </>}
+            {authPageState === SIGN_UP_STEP_2 && <>
+                <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
+                <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus/>
+            </>}
+            {authFeedbackMessage !== '' &&
+            <Typography variant="body2" color="textSecondary" align="center">
+                {authFeedbackMessage}
+            </Typography>}
+            {authPageState === SIGN_IN &&
+            <Button color="primary" variant='contained' fullWidth onClick={checkSignIn} disabled={false}>
+                {'SIGN IN'}
+            </Button>}
+            {authPageState === SIGN_UP_STEP_1 &&
+            <Button color="primary" variant='contained' fullWidth onClick={checkSignUpStep1} disabled={getConfirmationCodeDisabled}>
+                {'Get Confirmation Code'}
+            </Button>}
+            {authPageState === SIGN_UP_STEP_2 &&
+            <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
+                {'Enter Confirmation Code'}
+                </Button>}
+            <Button color="primary" variant='contained' fullWidth onClick={liveDemo}>
                 {'LIVE DEMO'}
             </Button>
-            <Typography
-                variant="body2"
-                color="textSecondary"
-                align="center">
+            <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
-                <Link color="inherit"
-                      href="http://mapboard.io/">
+                <Link color="inherit" href="http://mapboard.io/">
                     MapBoard
                 </Link>{' '}
                 {new Date().getFullYear()}
