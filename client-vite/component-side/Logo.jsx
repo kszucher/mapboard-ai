@@ -2,26 +2,12 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {PAGE_STATES} from "../core/EditorFlow";
 import { Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
-import { makeStyles } from '@mui/styles'
 import MenuIcon from '@mui/icons-material/Menu'
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-    },
-}));
 
 export default function Logo() {
     const pageState = useSelector(state => state.pageState)
     const dispatch = useDispatch()
     const {DEMO, WS} = PAGE_STATES;
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -56,8 +42,8 @@ export default function Logo() {
             justifyContent: 'center'}}>
             <Toolbar variant={"dense"}>
                 <IconButton
+                    sx={{ mr: 2 }}
                     edge="start"
-                    className={classes.menuButton}
                     aria-label="menu"
                     onClick={handleMenu}
                     color="inherit">
@@ -95,12 +81,10 @@ export default function Logo() {
                     onClose={handleClose}>
                     <MenuItem onClick={_=>dispatch({type: 'SHOW_AUTH'})}>Sign In / Sign Up</MenuItem>
                 </Menu>}
-                <Typography
-                    variant="h6"
-                    className={classes.title}>
+                <Typography variant="h6">
                     {'mapboard'}
                 </Typography>
             </Toolbar>
         </div>
-    );
+    )
 }
