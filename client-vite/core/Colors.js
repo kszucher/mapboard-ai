@@ -50,13 +50,7 @@ const COLOR_DARK = {
     TASK_LINE: '#555555',
 }
 
-export const getColors = (colorMode) => {
-    if (colorMode === 'light') {
-        return COLOR_LIGHT
-    } else if (colorMode === 'dark') {
-        return COLOR_DARK
-    }
-}
+export const getColors = colorMode => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
 
 export var element = document.body
 // element.classList.toggle("dark-mode");
