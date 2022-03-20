@@ -236,12 +236,12 @@ async function ressolveType(req, currUser) {
             return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
         case 'CREATE_MAP_IN_TAB': {
-            let { tabMapIdList, tabMapSelected } = currUser
+            let { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const newMap = getDefaultMap('New Map', currUser._id, [])
             const mapId = (await mapsColl.insertOne(newMap)).insertedId
             tabMapIdList = [...tabMapIdList, mapId]
             tabMapSelected = tabMapIdList.length - 1
-            const { breadcrumbMapIdList } = currUser
+            breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
             return {
                 type: 'createMapInTabSuccess',
