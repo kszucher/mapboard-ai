@@ -342,7 +342,8 @@ function mapReducer(action, payload) {
         }
         // NODE FORMAT -------------------------------------------------------------------------------------------------
         case 'applyMapParams': {
-            const {density, alignment,
+            const {
+                density, alignment,
                 lineWidth, lineType, lineColor,
                 borderWidth, borderColor,
                 fillColor,
@@ -364,14 +365,11 @@ function mapReducer(action, payload) {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 const cm = mapref(sc.structSelectedPathList[i])
                 const props = {
-                    lineWidth,
-                    lineType,
+                    lineWidth, lineType, lineColor,
                     [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
-                    sTextFontSize: textFontSize,
-                    lineColor,
                     [cm.hasCell ? 'cBorderColor' : cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
                     [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
-                    sTextColor: textColor
+                    sTextFontSize: textFontSize, sTextColor: textColor
                 }
                 for (const prop in props) {
                     if (props[prop] !== undefined) {
