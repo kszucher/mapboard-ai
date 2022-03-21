@@ -4,6 +4,7 @@ import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
+import { getColors } from './Colors'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
@@ -293,6 +294,14 @@ function* mapStackSaga () {
     }
 }
 
+function* colorSaga () {
+    while (true) {
+        yield take('CHANGE_COLOR_MODE')
+        const colorMode = yield select(state => state.colorMode)
+        document.body.style.backgroundColor = getColors(colorMode).PAGE_BACKGROUND
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         legacySaga(),
@@ -302,5 +311,6 @@ export default function* rootSaga () {
         frameSaga(),
         workspaceSaga(),
         mapStackSaga(),
+        colorSaga(),
     ])
 }

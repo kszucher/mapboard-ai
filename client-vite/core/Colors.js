@@ -1,4 +1,5 @@
 const COLOR_LIGHT = {
+    PAGE_BACKGROUND: '#dddddd',
     MAP_BACKGROUND: '#fbfafc',
     TEXT_COLOR: '#222222',
     TABLE_GRID: '#dddddd',
@@ -25,6 +26,7 @@ const COLOR_LIGHT = {
 }
 
 const COLOR_DARK = {
+    PAGE_BACKGROUND: '#333333',
     MAP_BACKGROUND: '#222529',
     TEXT_COLOR: '#dddddd',
     TABLE_GRID: '#aaaaaa',
@@ -51,7 +53,3 @@ const COLOR_DARK = {
 }
 
 export const getColors = colorMode => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
-
-export var element = document.body
-// element.classList.toggle("dark-mode");
-// element.style.backgroundColor = '#000000'

@@ -17,6 +17,7 @@ export function CommandTexts () {
     const BORDER_WIDTH_TYPES = ['w1', 'w2', 'w3']
     const FONT_SIZE_TYPES = ['h1', 'h2', 'h3', 'h4', 't']
 
+    const colorMode = useSelector(state => state.colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const mapRight = useSelector(state => state.mapRight)
     const density = {['small']: 'small', ['large']: 'large'}[useSelector(state => state.node.density)]
@@ -58,7 +59,7 @@ export function CommandTexts () {
     return (
         <div style={{
             position: 'fixed', right: 0, top: 96, width: 216,
-            backgroundColor: getColors('light').MAP_BACKGROUND,
+            backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0
         }}>

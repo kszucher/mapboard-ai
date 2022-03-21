@@ -6,6 +6,7 @@ import { getColors } from '../core/Colors'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+    const colorMode = useSelector(state => state.colorMode)
     const mapRight = useSelector(state => state.mapRight)
     const undoDisabled = useSelector(state => state.undoDisabled)
     const redoDisabled = useSelector(state => state.redoDisabled)
@@ -22,7 +23,7 @@ export function UndoRedo () {
             height: 48,
             paddingLeft: 12,
             paddingRight: 12,
-            backgroundColor: getColors('light').MAP_BACKGROUND,
+            backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
             borderWidth: '1px',

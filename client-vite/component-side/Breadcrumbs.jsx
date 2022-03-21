@@ -5,6 +5,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { getColors } from '../core/Colors'
 
 export default function WorkspaceBreadcrumbs() {
+    const colorMode = useSelector(state => state.colorMode)
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
     const mapSource = useSelector(state => state.mapSource)
     const dispatch = useDispatch()
@@ -28,7 +29,7 @@ export default function WorkspaceBreadcrumbs() {
             height: '48px',
             paddingLeft: '20px',
             paddingRight: '20px',
-            backgroundColor: getColors('light').MAP_BACKGROUND,
+            backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px',
             borderWidth: '2px',
