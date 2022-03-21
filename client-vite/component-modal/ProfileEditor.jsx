@@ -30,7 +30,7 @@ export function ProfileEditor() {
                     gap: 16,
                     backgroundColor: getColors(colorMode).MAP_BACKGROUND,
                     padding: 20,
-                    border: `1px solid ${getColors(colorMode).MAP_BACKGROUND}`,
+                    borderColor: getColors(colorMode).MAP_BACKGROUND,
                     borderRadius: '16px'}}
             >
                 <Typography

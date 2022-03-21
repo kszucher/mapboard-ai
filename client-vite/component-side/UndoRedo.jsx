@@ -26,9 +26,7 @@ export function UndoRedo () {
             backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#dddddd',
+            borderColor: getColors(colorMode).MAP_BACKGROUND,
             borderTop: 0,
         }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>

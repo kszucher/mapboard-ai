@@ -1,9 +1,10 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import { IconButton } from '@mui/material'
 import { getColors } from '../core/Colors'
 
 export function Profile () {
+    const colorMode = useSelector(state => state.colorMode)
     const dispatch = useDispatch()
     const openProfile = () => dispatch({type: 'OPEN_PROFILE'})
     return (
@@ -17,12 +18,10 @@ export function Profile () {
                 height: 48,
                 paddingLeft: 12,
                 paddingRight: 12,
-                backgroundColor: getColors('light').MAP_BACKGROUND,
+                backgroundColor: getColors(colorMode).MAP_BACKGROUND,
                 borderTopLeftRadius: 16,
                 borderBottomLeftRadius: 16,
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: '#dddddd',
+                borderColor: getColors(colorMode).MAP_BACKGROUND,
                 borderTop: 0,
                 borderRight: 0
             }}

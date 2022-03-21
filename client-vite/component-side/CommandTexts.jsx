@@ -58,10 +58,13 @@ export function CommandTexts () {
 
     return (
         <div style={{
-            position: 'fixed', right: 0, top: 96, width: 216,
+            position: 'fixed',
+            right: 0, top: 96, width: 216,
             backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             paddingTop: 6, paddingBottom: 6,
-            borderTopLeftRadius: 16, borderBottomLeftRadius: 16, borderWidth: '1px', borderStyle: 'solid', borderColor: '#dddddd', borderRight: 0
+            borderTopLeftRadius: 16, borderBottomLeftRadius: 16,
+            borderColor: getColors(colorMode).MAP_BACKGROUND,
+            borderRight: 0
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
                 <StyledButtonGroup open={true} valueList={DENSITY_TYPES} value={density} action={setDensity} disabled={disabled}/>

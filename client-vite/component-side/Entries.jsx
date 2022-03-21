@@ -18,9 +18,7 @@ export default function Entries() {
             backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: '#dddddd',
+            borderColor: getColors(colorMode).MAP_BACKGROUND,
             borderLeft: 0
         }}>
             <Tabs
