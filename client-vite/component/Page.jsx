@@ -17,9 +17,8 @@ import { Profile } from '../component-side/Profile'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
-import { getColors } from '../core/Colors'
 
-const muiTheme = createTheme({
+const getMuiTheme = colorMode  => createTheme({
     props: {
         MuiButtonBase: {
             disableRipple: true
@@ -27,16 +26,16 @@ const muiTheme = createTheme({
     },
     palette: {
         primary: {
-            light: '#9040b8',
-            main: '#5f0a87',
-            dark: '#2e0059',
-            contrastText: getColors('light').MAP_BACKGROUND,
+            // light: colorMode === 'light' ? '#9040b8' : '#00ff00',
+            main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
+            // dark: colorMode === 'light' ? '#2e0059' : '#dddddd',
+            // contrastText: getColors(colorMode).MAP_BACKGROUND,
         },
         secondary: {
-            light: '#9040b8',
-            main: '#5f0a87',
-            dark: '#2e0059',
-            contrastText: getColors('light').MAP_BACKGROUND,
+            // light: colorMode === 'light' ? '#9040b8' : '#00ff00',
+            main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
+            // dark: '#2e0059',
+            // contrastText: getColors(colorMode).MAP_BACKGROUND,
         },
     },
     spacing: 2,
@@ -76,6 +75,7 @@ const Map = () => {
 }
 
 export function Page() {
+    const colorMode = useSelector(state => state.colorMode)
     const pageState = useSelector(state => state.pageState)
     const paletteVisible = useSelector(state => state.paletteVisible)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
@@ -94,7 +94,7 @@ export function Page() {
 
     return (
         <div id="page">
-            <ThemeProvider theme={muiTheme}>
+            <ThemeProvider theme={getMuiTheme(colorMode)}>
                 {[DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                     <Map/>
                     <Logo/>
