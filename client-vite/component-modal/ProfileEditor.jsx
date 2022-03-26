@@ -5,6 +5,7 @@ import { getColors } from '../core/Colors'
 
 export function ProfileEditor() {
     const colorMode = useSelector(state => state.colorMode)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const name = useSelector(state => state.name)
     const dispatch = useDispatch()
     const closeProfile = _ => dispatch({type: 'CLOSE_PROFILE'})
@@ -28,11 +29,11 @@ export function ProfileEditor() {
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: 16,
-                    backgroundColor: getColors(colorMode).MAP_BACKGROUND,
+                    backgroundColor: MAP_BACKGROUND,
                     padding: 20,
-                    borderColor: getColors(colorMode).MAP_BACKGROUND,
-                    borderRadius: '16px'}}
-            >
+                    borderColor: MAP_BACKGROUND,
+                    borderRadius: '16px'
+                }}>
                 <Typography
                     component="h1"
                     variant="h5">

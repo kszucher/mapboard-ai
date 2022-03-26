@@ -5,6 +5,7 @@ import { getColors } from '../core/Colors'
 
 export default function Entries() {
     const colorMode = useSelector(state => state.colorMode)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const tabMapSelected = useSelector(state => state.tabMapSelected)
     const mapSource = useSelector(state => state.mapSource)
@@ -15,11 +16,11 @@ export default function Entries() {
             position: 'fixed',
             top: 48*2,
             width: 216,
-            backgroundColor: getColors(colorMode).MAP_BACKGROUND,
+            backgroundColor: MAP_BACKGROUND,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
             borderLeft: 0,
-            borderColor: getColors(colorMode).MAP_BACKGROUND,
+            borderColor: MAP_BACKGROUND,
         }}>
             <Tabs
                 sx={{

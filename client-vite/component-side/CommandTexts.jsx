@@ -1,7 +1,5 @@
 import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
-import {checkPop, push} from "../core/MapStackFlow";
-import { mapDispatch, redraw } from '../core/MapFlow'
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import { getColors } from '../core/Colors'
@@ -18,6 +16,7 @@ export function CommandTexts () {
     const FONT_SIZE_TYPES = ['h1', 'h2', 'h3', 'h4', 't']
 
     const colorMode = useSelector(state => state.colorMode)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const mapRight = useSelector(state => state.mapRight)
     const density = {['small']: 'small', ['large']: 'large'}[useSelector(state => state.node.density)]
@@ -60,11 +59,11 @@ export function CommandTexts () {
         <div style={{
             position: 'fixed',
             right: 0, top: 96, width: 216,
-            backgroundColor: getColors(colorMode).MAP_BACKGROUND,
+            backgroundColor: MAP_BACKGROUND,
             paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16,
             borderRight: 0,
-            borderColor: getColors(colorMode).MAP_BACKGROUND,
+            borderColor: MAP_BACKGROUND,
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
                 <StyledButtonGroup open={true} valueList={DENSITY_TYPES} value={density} action={setDensity} disabled={disabled}/>
