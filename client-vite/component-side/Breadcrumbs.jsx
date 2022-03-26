@@ -41,7 +41,7 @@ export default function WorkspaceBreadcrumbs() {
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                 {breadcrumbMapNameList.map((el, index) => (
                     <Link
-                        color="inherit"
+                        // color="inherit"
                         href="/"
                         onClick={mapSource === 'dataPlayback' ? doNothing() : handleClick(index)}
                         key={index}>

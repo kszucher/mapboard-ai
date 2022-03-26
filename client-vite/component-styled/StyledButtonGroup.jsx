@@ -9,7 +9,7 @@ export default function StyledButtonGroup (arg) {
                 disabled={disabled || false}
                 size={size || 'small'}
                 variant="text"
-                color="primary"
+                // color="primary"
                 aria-label="text primary button group">
                 {valueList.map((name, index) =>
                     <Button
