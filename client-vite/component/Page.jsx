@@ -19,23 +19,18 @@ import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
 
 const getMuiTheme = colorMode  => createTheme({
-    props: {
-        MuiButtonBase: {
-            disableRipple: true
-        }
-    },
+    // props: {
+    //     MuiButtonBase: {
+    //         disableRipple: true
+    //     }
+    // },
     palette: {
+        mode: colorMode,
         primary: {
-            // light: colorMode === 'light' ? '#9040b8' : '#00ff00',
             main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
-            // dark: colorMode === 'light' ? '#2e0059' : '#dddddd',
-            // contrastText: getColors(colorMode).MAP_BACKGROUND,
         },
         secondary: {
-            // light: colorMode === 'light' ? '#9040b8' : '#00ff00',
             main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
-            // dark: '#2e0059',
-            // contrastText: getColors(colorMode).MAP_BACKGROUND,
         },
     },
     spacing: 2,

@@ -6,6 +6,7 @@ import { getColors } from '../core/Colors'
 
 export default function WorkspaceBreadcrumbs() {
     const colorMode = useSelector(state => state.colorMode)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
     const mapSource = useSelector(state => state.mapSource)
     const dispatch = useDispatch()
@@ -29,7 +30,7 @@ export default function WorkspaceBreadcrumbs() {
             height: '48px',
             paddingLeft: '20px',
             paddingRight: '20px',
-            backgroundColor: getColors(colorMode).MAP_BACKGROUND,
+            backgroundColor: MAP_BACKGROUND,
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px',
             borderWidth: '2px',
