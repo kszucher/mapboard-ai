@@ -23,7 +23,7 @@ export function UndoRedo () {
             alignItems: 'center',
             height: 48,
             paddingLeft: 12,
-            paddingRight: 12,
+            // paddingRight: 12,
             backgroundColor: MAP_BACKGROUND,
             borderBottomLeftRadius: 16,
             borderBottomRightRadius: 16,
