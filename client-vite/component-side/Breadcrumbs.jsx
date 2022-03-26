@@ -34,8 +34,8 @@ export default function WorkspaceBreadcrumbs() {
             borderBottomRightRadius: '16px',
             borderWidth: '2px',
             borderStyle: 'solid',
-            borderColor: '#9040b8',
             borderTop: 0,
+            borderColor: '#9040b8',
         }}>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                 {breadcrumbMapNameList.map((el, index) => (

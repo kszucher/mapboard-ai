@@ -21,9 +21,9 @@ export function Profile () {
                 backgroundColor: getColors(colorMode).MAP_BACKGROUND,
                 borderTopLeftRadius: 16,
                 borderBottomLeftRadius: 16,
-                borderColor: getColors(colorMode).MAP_BACKGROUND,
                 borderTop: 0,
-                borderRight: 0
+                borderRight: 0,
+                borderColor: getColors(colorMode).MAP_BACKGROUND,
             }}
         >
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

@@ -66,8 +66,8 @@ export function Palette () {
             borderBottomLeftRadius: 16,
             borderWidth: '1px',
             borderStyle: 'solid',
+            borderRight: 0,
             borderColor: '#dddddd',
-            borderRight: 0
         }}>
             <svg viewBox={`0 0 ${xWidth} ${yWidth}`}>
                 {colorList.map((iEl, i) =>

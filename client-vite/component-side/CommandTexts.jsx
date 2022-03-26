@@ -63,8 +63,8 @@ export function CommandTexts () {
             backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16,
+            borderRight: 0,
             borderColor: getColors(colorMode).MAP_BACKGROUND,
-            borderRight: 0
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
                 <StyledButtonGroup open={true} valueList={DENSITY_TYPES} value={density} action={setDensity} disabled={disabled}/>

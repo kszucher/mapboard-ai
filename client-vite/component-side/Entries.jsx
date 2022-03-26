@@ -18,8 +18,8 @@ export default function Entries() {
             backgroundColor: getColors(colorMode).MAP_BACKGROUND,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
+            borderLeft: 0,
             borderColor: getColors(colorMode).MAP_BACKGROUND,
-            borderLeft: 0
         }}>
             <Tabs
                 sx={{

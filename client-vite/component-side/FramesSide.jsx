@@ -31,10 +31,8 @@ export function FramesSide () {
             paddingBottom: 6,
             borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
-            borderWidth: '1px',
-            borderStyle: 'solid',
+            borderRight: 0,
             borderColor: '#dddddd',
-            borderRight: 0
         }}>
             <div style={{
                 display: 'flex',
