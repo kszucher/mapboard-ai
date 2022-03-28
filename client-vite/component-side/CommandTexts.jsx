@@ -6,7 +6,6 @@ import { getColors } from '../core/Colors'
 
 export function CommandTexts () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-
     const FORMAT_MODE_TYPES = ['line', 'border', 'fill', 'text']
     const DENSITY_TYPES = ['small', 'large']
     const ALIGNMENT_TYPES = ['adaptive', 'centered']
@@ -19,6 +18,7 @@ export function CommandTexts () {
     const {MAP_BACKGROUND} = getColors(colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const mapRight = useSelector(state => state.mapRight)
+    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
     const density = {['small']: 'small', ['large']: 'large'}[useSelector(state => state.node.density)]
     const alignment = {['adaptive']: 'adaptive', ['centered']: 'centered'}[useSelector(state => state.node.alignment)]
     const lineWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.lineWidth)]
@@ -27,15 +27,15 @@ export function CommandTexts () {
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[useSelector(state => state.node.textFontSize)]
 
     const dispatch = useDispatch()
+    const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
+    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
-
     const setDensity = value => setNodeParam({density: {['small']: 'small', ['large']: 'large'}[value]})
     const setAlignment = value => setNodeParam({alignment: {['adaptive']: 'adaptive', ['centered']: 'centered'}[value]})
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
-
     const resetFormat = _ => setNodeParam({
         lineType: 'clear', lineWidth: 'clear', lineColor: 'clear',
         borderWidth: 'clear', borderColor: 'clear',
@@ -47,13 +47,8 @@ export function CommandTexts () {
     const resetFill = _ => setNodeParam({fillColor: 'clear'})
     const resetText = _ => setNodeParam({textColor: 'clear', textFontSize: 'clear'})
 
-    const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
-    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
-
     // TODO remove this from here altogether
-    // const mapToggleTask = _ =>  {push(); mapDispatch('toggFleTask'); recalc(); redraw(colorMode); checkPop(dispatch)}
-
-    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+    // const mapToggleTask = _ =>  {push(); mapDispatch('toggleTask'); recalc(); redraw(colorMode); checkPop(dispatch)}
 
     return (
         <div style={{
