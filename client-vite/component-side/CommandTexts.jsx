@@ -4,6 +4,8 @@ import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";
 import { getColors } from '../core/Colors'
 
+const setClear = arr => arr.reduce((o, key) => ({ ...o, [key]: 'clear'}), {})
+
 export function CommandTexts () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
     const FORMAT_MODE_TYPES = ['line', 'border', 'fill', 'text']
@@ -36,16 +38,11 @@ export function CommandTexts () {
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
-    const resetFormat = _ => setNodeParam({
-        lineType: 'clear', lineWidth: 'clear', lineColor: 'clear',
-        borderWidth: 'clear', borderColor: 'clear',
-        fillColor: 'clear',
-        textColor: 'clear', textFontSize: 'clear'
-    })
-    const resetLine = _ => setNodeParam({lineType: 'clear', lineWidth: 'clear', lineColor: 'clear'})
-    const resetBorder = _ => setNodeParam({borderWidth: 'clear', borderColor: 'clear'})
-    const resetFill = _ => setNodeParam({fillColor: 'clear'})
-    const resetText = _ => setNodeParam({textColor: 'clear', textFontSize: 'clear'})
+    const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
+    const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
+    const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
+    const resetFill = _ => setNodeParam(setClear(['fillColor']))
+    const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
 
     // TODO remove this from here altogether
     // const mapToggleTask = _ =>  {push(); mapDispatch('toggleTask'); recalc(); redraw(colorMode); checkPop(dispatch)}
