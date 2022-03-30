@@ -20,14 +20,14 @@ import { mapCollect } from '../map/MapCollect'
 import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
 import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
 
-function clearSelection() {
+const clearSelection = _ => {
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i])
         mapChangeProp.start(cr, {selected: 0, selection: 's'}, '', false)
     }
 }
 
-function mapReducer(action, payload) {
+const mapReducer = (action, payload) => {
     let sc = selectionState
     let lm = mapref(sc.lastPath)
     switch (action) {
@@ -308,30 +308,20 @@ function mapReducer(action, payload) {
             break
         }
         case 'insertTextFromClipboardAsNode': {
-            lm.contentType = 'text'
-            lm.content = payload
-            lm.isDimAssigned = 0
+            Object.assign(lm, {contentType: 'text', content: payload, isDimAssigned: 0})
             break
         }
         case 'insertElinkFromClipboardAsNode': {
-            lm.contentType = 'text'
-            lm.content = payload
-            lm.linkType = 'external'
-            lm.link = payload
-            lm.isDimAssigned = 0
+            Object.assign(lm, {contentType: 'text', content: payload, linkType: 'external', link: payload, isDimAssigned: 0})
             break
         }
         case 'insertEquationFromClipboardAsNode': {
-            lm.contentType = 'equation'
-            lm.content = payload
-            lm.isDimAssigned = 0
+            Object.assign(lm, {contentType: 'equation', content: payload, isDimAssigned: 0})
             break
         }
         case 'insertImageFromLinkAsNode': {
-            lm.contentType = 'image'
-            lm.content = payload.imageId
-            lm.imageW = payload.imageSize.width
-            lm.imageH = payload.imageSize.height
+            const {width, height} = payload.imageSize
+            Object.assign(lm, {contentType: 'image', content: payload.imageId, imageW: width, imageH: height})
             break
         }
         case 'insertMapFromClipboard': {
@@ -427,13 +417,6 @@ function mapReducer(action, payload) {
     }
 }
 
-export const mapDispatch = (action, payload) => {
-    console.log('NODEDISPATCH: ' + action)
-    mapReducer(action, payload)
-    recalc()
-    document.getElementById("mapHolderDiv").focus()
-}
-
 export const recalc = () => {
     initSelectionState()
     let m = mapref(['m'])
@@ -461,4 +444,11 @@ export const redraw = (colorMode) => {
         mapVisualizeDiv.start(m, cr, colorMode)
     }
     updateDomData()
+}
+
+export const mapDispatch = (action, payload) => {
+    console.log('NODEDISPATCH: ' + action)
+    mapReducer(action, payload)
+    recalc()
+    document.getElementById("mapHolderDiv").focus()
 }
