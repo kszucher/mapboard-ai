@@ -21,8 +21,6 @@ export function CommandTexts () {
     const formatMode = useSelector(state => state.formatMode)
     const mapRight = useSelector(state => state.mapRight)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
-    const density = {['small']: 'small', ['large']: 'large'}[useSelector(state => state.node.density)]
-    const alignment = {['adaptive']: 'adaptive', ['centered']: 'centered'}[useSelector(state => state.node.alignment)]
     const lineWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.lineWidth)]
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
@@ -32,8 +30,6 @@ export function CommandTexts () {
     const openPalette = e => dispatch({type: 'OPEN_PALETTE', payload: e})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
-    const setDensity = value => setNodeParam({density: {['small']: 'small', ['large']: 'large'}[value]})
-    const setAlignment = value => setNodeParam({alignment: {['adaptive']: 'adaptive', ['centered']: 'centered'}[value]})
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
@@ -58,8 +54,6 @@ export function CommandTexts () {
             borderColor: MAP_BACKGROUND,
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
-                <StyledButtonGroup open={true} valueList={DENSITY_TYPES} value={density} action={setDensity} disabled={disabled}/>
-                <StyledButtonGroup open={true} valueList={ALIGNMENT_TYPES} value={alignment} action={setAlignment} disabled={disabled}/>
                 <StyledButtonGroup open={true} valueList={FORMAT_MODE_TYPES} value={formatMode} action={openPalette} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'line'} valueList={['reset line']} value={''} action={resetLine} disabled={disabled}/>
