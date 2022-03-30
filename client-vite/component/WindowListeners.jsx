@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import {useEffect} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import { mapDispatch, recalc, redraw } from '../core/MapFlow'
 import { arraysSame, copy, setEndOfContenteditable } from '../core/Utils'

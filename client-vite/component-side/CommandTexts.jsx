@@ -1,4 +1,3 @@
-import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {MAP_RIGHTS} from "../core/EditorFlow";
 import StyledButtonGroup from "../component-styled/StyledButtonGroup";

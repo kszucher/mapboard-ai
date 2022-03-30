@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import {useEffect} from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import { Button, IconButton, Modal, Typography } from '@mui/material'
 import {DataGrid} from "@mui/x-data-grid"

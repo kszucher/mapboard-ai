@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {PAGE_STATES} from "../core/EditorFlow";
 import { Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'

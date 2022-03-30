@@ -1,4 +1,3 @@
-import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import { Tab, Tabs } from '@mui/material'
 import { getColors } from '../core/Colors'
