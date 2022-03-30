@@ -13,7 +13,7 @@ import { Sharing } from "../component-modal/Sharing"
 import { Shares } from "../component-modal/Shares"
 import { WindowListeners } from "./WindowListeners"
 import { FramesSide } from "../component-side/FramesSide"
-import { Profile } from '../component-side/Profile'
+import { IconBar } from '../component-side/IconBar'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
@@ -96,7 +96,7 @@ export function Page() {
                     {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                         <TabMaps/>
                         <UndoRedo/>
-                        <Profile/>
+                        <IconBar/>
                         <Breadcrumbs/>
                         <CommandTexts/>
                     </>}
