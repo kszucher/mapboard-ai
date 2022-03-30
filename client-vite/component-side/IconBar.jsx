@@ -7,6 +7,7 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak'
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+import PersonIcon from '@mui/icons-material/Person';
 
 export function IconBar () {
     const colorMode = useSelector(state => state.colorMode)
@@ -50,7 +51,7 @@ export function IconBar () {
                     {colorMode === 'dark' && <DarkModeIcon/>}
                 </IconButton>
                 <IconButton color='secondary' onClick={openProfile}>
-                    <span className="material-icons">{'person'}</span>
+                    <PersonIcon/>
                 </IconButton>
             </div>
         </div>

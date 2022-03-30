@@ -2,6 +2,8 @@ import {useSelector, useDispatch} from 'react-redux'
 import {MAP_RIGHTS} from "../core/EditorFlow"
 import { IconButton } from '@mui/material'
 import { getColors } from '../core/Colors'
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
@@ -30,19 +32,11 @@ export function UndoRedo () {
             borderColor: MAP_BACKGROUND,
         }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <IconButton color='secondary'
-                            onClick={undo}
-                            disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
-                    <span className="material-icons">
-                        {'undo'}
-                    </span>
+                <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
+                    <UndoIcon/>
                 </IconButton>
-                <IconButton color='secondary'
-                            onClick={redo}
-                            disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}>
-                    <span className="material-icons">
-                        {'redo'}
-                    </span>
+                <IconButton color='secondary' onClick={redo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}>
+                    <RedoIcon/>
                 </IconButton>
             </div>
         </div>
