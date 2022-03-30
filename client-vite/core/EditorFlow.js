@@ -64,6 +64,7 @@ const editorState = {
         borderColor: undefined,
         fillColor: undefined,
         textColor: undefined,
+        // TODO taskStatus
     },
     // frame
     frameLen: 0,

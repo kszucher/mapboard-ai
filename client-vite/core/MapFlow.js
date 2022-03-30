@@ -360,6 +360,7 @@ const mapReducer = (action, payload) => {
                     [cm.hasCell ? 'cBorderColor' : cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
                     [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
                     sTextFontSize: textFontSize, sTextColor: textColor
+                    // TODO taskStatus
                 }
                 for (const prop in props) {
                     if (props[prop] !== undefined) {
@@ -447,7 +448,7 @@ export const redraw = (colorMode) => {
 }
 
 export const mapDispatch = (action, payload) => {
-    console.log('NODEDISPATCH: ' + action)
+    console.log('NODE_DISPATCH: ' + action)
     mapReducer(action, payload)
     recalc()
     document.getElementById("mapHolderDiv").focus()

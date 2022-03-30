@@ -232,6 +232,7 @@ function* mapStackSaga () {
                 redraw(colorMode)
                 break
             }
+            // TODO map stack should change after undo or redo
             case 'MAP_STACK_CHANGED': {
                 let m = mapref(['m'])
                 const lm = mapref(selectionState.lastPath)
@@ -284,6 +285,7 @@ function* mapStackSaga () {
                                 ? lm.sTextColor
                                 : undefined
                             : undefined //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
+                        // TODO taskStatus
                     }
                 })
                 break
