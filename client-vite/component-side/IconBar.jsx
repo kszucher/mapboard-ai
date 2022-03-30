@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { getColors } from '../core/Colors'
 import { IconButton } from '@mui/material'
-import LightModeIcon from '@mui/icons-material/LightMode'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium'
 import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak'
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
 
 export function IconBar () {
     const colorMode = useSelector(state => state.colorMode)
