@@ -4,7 +4,7 @@ import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { getColors } from '../core/Colors'
 
-export default function WorkspaceBreadcrumbs() {
+export default function BreadcrumbMaps() {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND} = getColors(colorMode)
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
