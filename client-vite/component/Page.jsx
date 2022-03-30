@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
 import Logo from "../component-side/Logo"
-import Entries from "../component-side/Entries"
+import TabMaps from "../component-side/TabMaps"
 import { UndoRedo } from "../component-side/UndoRedo"
 import Breadcrumbs from "../component-side/Breadcrumbs"
 import { CommandTexts } from "../component-side/CommandTexts"
@@ -94,7 +94,7 @@ export function Page() {
                     <Map/>
                     <Logo/>
                     {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
-                        <Entries/>
+                        <TabMaps/>
                         <UndoRedo/>
                         <Profile/>
                         <Breadcrumbs/>

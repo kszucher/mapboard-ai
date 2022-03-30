@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { Tab, Tabs } from '@mui/material'
 import { getColors } from '../core/Colors'
 
-export default function Entries() {
+export default function TabMaps() {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)
