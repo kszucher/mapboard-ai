@@ -8,8 +8,6 @@ const setClear = arr => arr.reduce((o, key) => ({ ...o, [key]: 'clear'}), {})
 export function CommandTexts () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
     const FORMAT_MODE_TYPES = ['line', 'border', 'fill', 'text']
-    const DENSITY_TYPES = ['small', 'large']
-    const ALIGNMENT_TYPES = ['adaptive', 'centered']
     const LINE_WIDTH_TYPES = ['w1', 'w2', 'w3']
     const LINE_TYPE_TYPES = ['bezier', 'edge']
     const BORDER_WIDTH_TYPES = ['w1', 'w2', 'w3']
