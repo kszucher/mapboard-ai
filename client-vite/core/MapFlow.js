@@ -380,18 +380,11 @@ const mapReducer = (action, payload) => {
         case 'applyColorFromKey': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
-                switch (payload.currColor) {
-                    case 0: cm.sTextColor = '#222222'; break
-                    case 1: cm.sTextColor = '#999999'; break
-                    case 2: cm.sTextColor = '#bbbbbb'; break
-                    case 3: cm.sTextColor = '#dddddd'; break
-                    case 4: cm.sTextColor = '#d5802a'; break
-                    case 5: cm.sTextColor = '#1c8e1c'; break
-                    case 6: cm.sTextColor = '#8e1c8e'; break
-                    case 7: cm.sTextColor = '#990000'; break
-                    case 8: cm.sTextColor = '#000099'; break
-                    case 9: cm.sTextColor = '#ffffff'; break
-                }
+                cm.sTextColor = [
+                    '#222222',
+                    '#999999', '#bbbbbb', '#dddddd',
+                    '#d5802a', '#1c8e1c', '#8e1c8e',
+                    '#990000', '#000099', '#ffffff'][payload.currColor]
             }
             break
         }
