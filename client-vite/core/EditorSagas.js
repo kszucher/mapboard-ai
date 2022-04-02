@@ -244,19 +244,13 @@ function* mapStackSaga () {
                         density: m.density,
                         alignment: m.alignment,
                         lineWidth: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.lineWidth
-                                : undefined
+                            ? lm.lineWidth
                             : undefined,
                         lineType: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.lineType
-                                : undefined
+                            ? lm.lineType
                             : undefined,
                         lineColor: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.lineColor
-                                : undefined
+                            ? lm.lineColor
                             : undefined,
                         borderWidth: sspll === 1
                             ? lm.selection === 's'
@@ -272,16 +266,12 @@ function* mapStackSaga () {
                             ? lm.selection === 's'
                                 ? lm.sFillColor
                                 : lm.fFillColor
-                            :undefined,
+                            : undefined,
                         textFontSize: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.textFontSize
-                                : undefined
+                            ? lm.textFontSize
                             : undefined,
                         textColor: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.textColor
-                                : undefined
+                            ? lm.textColor
                             : undefined //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
                         // TODO taskStatus
                     }
