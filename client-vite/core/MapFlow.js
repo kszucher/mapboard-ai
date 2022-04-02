@@ -359,14 +359,14 @@ const mapReducer = (action, payload) => {
                     [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
                     [cm.hasCell ? 'cBorderColor' : cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
                     [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
-                    sTextFontSize: textFontSize, sTextColor: textColor
+                    textFontSize, textColor
                     // TODO taskStatus
                 }
                 for (const prop in props) {
                     if (props[prop] !== undefined) {
                         const assignment = {}
                         assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
-                        if (prop === 'sTextFontSize') {assignment.isDimAssigned =  0}
+                        if (prop === 'textFontSize') {assignment.isDimAssigned =  0}
                         if (cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop)) {
                             Object.assign(cm, assignment)
                         } else {
@@ -380,7 +380,7 @@ const mapReducer = (action, payload) => {
         case 'applyColorFromKey': {
             for (let i = 0; i < sc.structSelectedPathList.length; i++) {
                 let cm = mapref(sc.structSelectedPathList[i])
-                cm.sTextColor = [
+                cm.textColor = [
                     '#222222',
                     '#999999', '#bbbbbb', '#dddddd',
                     '#d5802a', '#1c8e1c', '#8e1c8e',

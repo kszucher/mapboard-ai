@@ -56,8 +56,8 @@ export let nodeProps = {
         task: 0,
         taskStatus: -1,
         lastSelectedChild: -1, // -1 means not selected ever
-        sTextColor: 'default',
-        sTextFontSize: 14,
+        textColor: 'default',
+        textFontSize: 14,
         sFillColor: '',
         sBorderColor: '',
         sBorderWidth: 1,

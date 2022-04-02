@@ -260,7 +260,7 @@ function* mapStackSaga () {
                             : undefined,
                         textFontSize: sspll === 1
                             ? lm.selection === 's'
-                                ? lm.sTextFontSize
+                                ? lm.textFontSize
                                 : undefined
                             : undefined,
                         lineColor: sspll === 1
@@ -282,7 +282,7 @@ function* mapStackSaga () {
                             :undefined,
                         textColor: sspll === 1
                             ? lm.selection === 's'
-                                ? lm.sTextColor
+                                ? lm.textColor
                                 : undefined
                             : undefined //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
                         // TODO taskStatus

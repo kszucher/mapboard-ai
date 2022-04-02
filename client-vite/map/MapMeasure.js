@@ -101,7 +101,7 @@ export const mapMeasure = {
                 if (cm.contentType === 'text') {
                     if (cm.isDimAssigned === 0) {
                         cm.isDimAssigned = 1
-                        let dimVec = getTextDim(cm.content, cm.sTextFontSize)
+                        let dimVec = getTextDim(cm.content, cm.textFontSize)
                         let x = dimVec[0]
                         let y = dimVec[1]
                         let lineCount = y/17
