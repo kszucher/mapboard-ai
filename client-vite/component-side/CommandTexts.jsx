@@ -51,7 +51,7 @@ export function CommandTexts () {
             borderColor: MAP_BACKGROUND,
         }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
-                <StyledButtonGroup open={true} valueList={['NODE', 'BRANCH']} value={'NODE'} action={_=>{}} disabled={disabled}/>
+                {/*<StyledButtonGroup open={true} valueList={['NODE', 'BRANCH']} value={'NODE'} action={_=>{}} disabled={disabled}/>*/}
                 <StyledButtonGroup open={true} valueList={FORMAT_MODE_TYPES} value={formatMode} action={openPalette} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === 'line'} valueList={['reset line']} value={''} action={resetLine} disabled={disabled}/>
