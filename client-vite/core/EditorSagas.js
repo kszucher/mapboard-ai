@@ -253,20 +253,15 @@ function* mapStackSaga () {
                                 ? lm.lineType
                                 : undefined
                             : undefined,
-                        borderWidth: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.sBorderWidth
-                                : lm.fBorderWidth
-                            : undefined,
-                        textFontSize: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.textFontSize
-                                : undefined
-                            : undefined,
                         lineColor: sspll === 1
                             ? lm.selection === 's'
                                 ? lm.lineColor
                                 : undefined
+                            : undefined,
+                        borderWidth: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.sBorderWidth
+                                : lm.fBorderWidth
                             : undefined,
                         borderColor: sspll === 1
                             ? lm.selection === 's'
@@ -278,6 +273,11 @@ function* mapStackSaga () {
                                 ? lm.sFillColor
                                 : lm.fFillColor
                             :undefined,
+                        textFontSize: sspll === 1
+                            ? lm.selection === 's'
+                                ? lm.textFontSize
+                                : undefined
+                            : undefined,
                         textColor: sspll === 1
                             ? lm.selection === 's'
                                 ? lm.textColor

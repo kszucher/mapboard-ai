@@ -58,12 +58,13 @@ const editorState = {
         alignment: undefined,
         lineWidth: undefined,
         lineType: undefined,
-        borderWidth: undefined,
-        textFontSize: undefined,
         lineColor: undefined,
+        borderWidth: undefined,
         borderColor: undefined,
         fillColor: undefined,
+        textFontSize: undefined,
         textColor: undefined,
+
         // TODO taskStatus
     },
     // frame

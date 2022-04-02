@@ -65,8 +65,8 @@ export let nodeProps = {
         fBorderColor: '',
         sFillColor: '',
         fFillColor: '',
-        textColor: 'default',
         textFontSize: 14,
+        textColor: 'default',
         // subMapStartX: 0, // only applies for root <-- calculate (how?)
         // subMapStartY: 0,  // only applies for root <-- calculate (how?)
     },
