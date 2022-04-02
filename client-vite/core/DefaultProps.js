@@ -61,7 +61,7 @@ export let nodeProps = {
         lineColor: '#bbbbbb',
         sBorderWidth: 1,
         fBorderWidth: 1,
-        sBorderColor: '', cBorderColor: '#eac6fb',
+        sBorderColor: '',
         fBorderColor: '',
         sFillColor: '',
         fFillColor: '',

@@ -270,9 +270,7 @@ function* mapStackSaga () {
                             : undefined,
                         borderColor: sspll === 1
                             ? lm.selection === 's'
-                                ? lm.hasCell
-                                    ? lm.cBorderColor
-                                    : lm.sBorderColor
+                                ? lm.sBorderColor
                                 : lm.fBorderColor
                             : undefined,
                         fillColor: sspll === 1

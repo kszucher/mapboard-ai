@@ -204,8 +204,7 @@ export const mapVisualizeSvg = {
             // frame
             updateMapSvgData(nodeId, 'tableFrame', {
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 0),
-                // TODO
-                stroke: cm.cBorderColor,
+                stroke: cm.sBorderColor === '' ? '#eac6fb' : cm.sBorderColor,
                 strokeWidth: cm.sBorderWidth,
             })
             // grid

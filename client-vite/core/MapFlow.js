@@ -354,7 +354,7 @@ const mapReducer = (action, payload) => {
                 const props = {
                     lineWidth, lineType, lineColor,
                     [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
-                    [cm.hasCell ? 'cBorderColor' : cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
+                    [cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
                     [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
                     textFontSize, textColor
                     // TODO taskStatus
