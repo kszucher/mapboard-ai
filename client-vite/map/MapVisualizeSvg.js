@@ -75,7 +75,7 @@ export const mapVisualizeSvg = {
         const {nodeId} = cm
         const conditions = resolveScope(cm)
         const {TABLE_GRID,
-            TASK_LINE_0, TASK_LINE_1, TASK_LINE_2, TASK_LINE_3,
+            TASK_LINE_1, TASK_LINE_2, TASK_LINE_3,
             TASK_FILL_1, TASK_FILL_2, TASK_FILL_3,
             TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE,
             TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
@@ -204,6 +204,7 @@ export const mapVisualizeSvg = {
             // frame
             updateMapSvgData(nodeId, 'tableFrame', {
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 0),
+                // TODO
                 stroke: cm.cBorderColor,
                 strokeWidth: cm.sBorderWidth,
             })
@@ -260,7 +261,7 @@ export const mapVisualizeSvg = {
                 }
         }
         if (conditions.task) {
-            let {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m
+            const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m
             let startX
             if (cm.path.includes('c')) {
                 let coverCellPath = cm.path.slice(0, cm.path.lastIndexOf('c'))
@@ -285,19 +286,15 @@ export const mapVisualizeSvg = {
                 })
             }
             for (let i = 0; i < taskConfigN; i++) {
-                let centerX = cm.path[3]
+                const cx = cm.path[3]
                     ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
                     : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
-                let centerY = cm.nodeY
-                let fill = cm.taskStatus === i
+                const cy = cm.nodeY
+                const r = taskConfigD / 2
+                const fill = cm.taskStatus === i
                     ? [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
                     : [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
-                updateMapSvgData(nodeId, `taskCircle${i}`, {
-                    cx: centerX,
-                    cy: centerY,
-                    r: taskConfigD/2,
-                    fill: fill,
-                })
+                updateMapSvgData(nodeId, `taskCircle${i}`, { cx, cy, r, fill })
             }
         }
         cm.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode))
