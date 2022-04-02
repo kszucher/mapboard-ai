@@ -334,10 +334,7 @@ const mapReducer = (action, payload) => {
         case 'applyMapParams': {
             const {
                 density, alignment,
-                lineWidth, lineType, lineColor,
-                borderWidth, borderColor,
-                fillColor,
-                textFontSize, textColor,
+                lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor,
             } = payload
             let m = mapref(['m'])
             if (m.density !== density) {
