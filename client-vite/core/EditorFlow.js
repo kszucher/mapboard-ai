@@ -80,8 +80,10 @@ const editorState = {
     undoDisabled: true,
     redoDisabled: true,
     //
-    colorMode: 'light'
-};
+    colorMode: 'light',
+    // menu
+    moreMenu: false,
+}
 
 const editorStateDefault = JSON.stringify(editorState);
 
@@ -129,6 +131,9 @@ const resolveActions = (state, action) => {
         case 'PARSE_RESP_PAYLOAD':          return {...payload}
         //
         case 'CHANGE_COLOR_MODE':           return {colorMode: state.colorMode === 'light' ? 'dark' : 'light'}
+        // MENU
+        case 'OPEN_MORE_MENU':              return {moreMenu: payload.currentTarget}
+        case 'CLOSE_MORE_MENU':             return {moreMenu: null}
         default: return {}
     }
 }

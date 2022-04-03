@@ -1,30 +1,9 @@
-import {useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {PAGE_STATES} from "../core/EditorFlow";
-import { Divider, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import { IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 
 export default function Logo() {
-    const pageState = useSelector(state => state.pageState)
-    const dispatch = useDispatch()
-    const {DEMO, WS} = PAGE_STATES;
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
 
-    const handleMenu = (event) => {setAnchorEl(event.currentTarget)};
-    const handleClose = () => {setAnchorEl(null)};
-
-    const createMapInTab =      _ => dispatch({type: 'CREATE_MAP_IN_TAB'})
-    const removeMapInTab =      _ => dispatch({type: 'REMOVE_MAP_IN_TAB'})
-    const moveUpMapInTab =      _ => dispatch({type: 'MOVE_UP_MAP_IN_TAB'})
-    const moveDownMapInTab =    _ => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
-    const openPlaybackEditor =  _ => dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
-    const showSharing =         _ => dispatch({type: 'SHOW_WS_SHARING'})
-    const showShares =          _ => dispatch({type: 'SHOW_WS_SHARES'})
-    const signOut = _ => {
-        localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}))
-        dispatch({type: 'RESET_STATE'})
-    }
+    const hamburger = () => console.log('change breadcrumbs width')
 
     const col1 = '#a4508b'
     const col2 = '#5f0a87'
@@ -44,40 +23,11 @@ export default function Logo() {
                     sx={{ mr: 2 }}
                     edge="start"
                     aria-label="menu"
-                    onClick={handleMenu}
+                    onClick={hamburger}
                     color="inherit">
                     <MenuIcon/>
                 </IconButton>
-                {pageState === WS && <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={open}
-                    onClose={handleClose}>
-                    <MenuItem onClick={() => {handleClose(); createMapInTab()}}>        {'Add Map'}           </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); removeMapInTab()}}>        {'Remove Map'}        </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); moveUpMapInTab()}}>        {'Move Up Map'}       </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); moveDownMapInTab()}}>      {'Move Down Map'}     </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={() => {handleClose(); openPlaybackEditor()}}>    {'Playback Editor'}   </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={() => {handleClose(); showSharing()}}>           {'Sharing'}           </MenuItem>
-                    <MenuItem onClick={() => {handleClose(); showShares()}}>            {'Shares'}            </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={() => {handleClose(); signOut()}}>               {'Sign Out'}          </MenuItem>
-                </Menu>}
-                {pageState === DEMO && <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={open}
-                    onClose={handleClose}>
-                    <MenuItem onClick={_=>dispatch({type: 'SHOW_AUTH'})}>Sign In / Sign Up</MenuItem>
-                </Menu>}
+
                 <Typography variant="h6">
                     {'mapboard'}
                 </Typography>

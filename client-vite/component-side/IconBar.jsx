@@ -9,6 +9,7 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import PersonIcon from '@mui/icons-material/Person'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import IconBarMore from './IconBarMore'
 
 export function IconBar () {
     const colorMode = useSelector(state => state.colorMode)
@@ -21,6 +22,8 @@ export function IconBar () {
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
+    const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
+
     return (
         <div style={{
             position: 'fixed',
@@ -54,9 +57,10 @@ export function IconBar () {
                 <IconButton color='secondary' onClick={openProfile}>
                     <PersonIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={_=>{}}>
+                <IconButton color='secondary' onClick={openMoreMenu}>
                     <MoreVertIcon/>
                 </IconButton>
+                <IconBarMore/>
             </div>
         </div>
     )
