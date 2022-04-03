@@ -365,14 +365,23 @@ const mapReducer = (action, payload) => {
                         assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
                         if (prop === 'textFontSize') {assignment.isDimAssigned =  0}
 
-                        if (prop !== 'taskStatus') return
+                        // if (prop !== 'taskStatus') return
 
                         if (prop !== 'taskStatus' && (cm.selection === 's'
                             || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop)
                         )) {
                             Object.assign(cm, assignment)
                         } else {
-                            mapChangeProp.start(cm, assignment, '', true)
+
+
+                            if (prop === 'taskStatus') {
+                                if (props[prop] === -1  || props[prop] === 0 ) {
+                                    mapChangeProp.start(cm, assignment, '', false)
+                                }
+
+                            } else {
+                                mapChangeProp.start(cm, assignment, '', true)
+                            }
                         }
                     }
                 }
