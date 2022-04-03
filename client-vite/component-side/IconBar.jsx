@@ -7,7 +7,8 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak'
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from '@mui/icons-material/Person'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 
 export function IconBar () {
     const colorMode = useSelector(state => state.colorMode)
@@ -24,7 +25,7 @@ export function IconBar () {
         <div style={{
             position: 'fixed',
             right: 0,
-            width: 160,
+            width: 5*40, // n is the number of icons
             display: 'flex',
             alignItems: 'center',
             height: 48,
@@ -52,6 +53,9 @@ export function IconBar () {
                 </IconButton>
                 <IconButton color='secondary' onClick={openProfile}>
                     <PersonIcon/>
+                </IconButton>
+                <IconButton color='secondary' onClick={_=>{}}>
+                    <MoreVertIcon/>
                 </IconButton>
             </div>
         </div>
