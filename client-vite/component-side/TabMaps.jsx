@@ -4,6 +4,7 @@ import { getColors } from '../core/Colors'
 
 export default function TabMaps() {
     const colorMode = useSelector(state => state.colorMode)
+    const tabShrink = useSelector(state => state.tabShrink)
     const {MAP_BACKGROUND} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const tabMapSelected = useSelector(state => state.tabMapSelected)
@@ -14,7 +15,7 @@ export default function TabMaps() {
         <div style={{
             position: 'fixed',
             top: 48*2,
-            width: 216,
+            width: tabShrink ? 60 : 216,
             backgroundColor: MAP_BACKGROUND,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
@@ -24,11 +25,14 @@ export default function TabMaps() {
             <Tabs
                 sx={{
                     '.MuiTabs-indicator': {
-                        left: "0px",
-                        width: "8px",
-                        borderTopRightRadius: "16px",
-                        borderBottomRightRadius: "16px",
+                        left: 0,
+                        width: 8,
+                        borderTopRightRadius: 16,
+                        borderBottomRightRadius: 16,
                         backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
+                    },
+                    '.MuiButtonBase-root': {
+                        minWidth: tabShrink ? 60 : 90
                     }
                 }}
                 orientation={'vertical'}
@@ -40,7 +44,7 @@ export default function TabMaps() {
                 {tabMapNameList.map((name, index) => (
                     <Tab
                         disabled={mapSource==='dataPlayback'}
-                        label={name}
+                        label={tabShrink ? name.at(0) : name}
                         key={index}
                     />
                 ))}>

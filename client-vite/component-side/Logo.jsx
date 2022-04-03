@@ -1,10 +1,10 @@
 import { IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useDispatch } from 'react-redux'
 
 export default function Logo() {
-
-    const hamburger = () => console.log('change breadcrumbs width')
-
+    const dispatch = useDispatch()
+    const toggleTabShrink = _ => dispatch({type: 'TOGGLE_TAB_SHRINK'})
     const col1 = '#a4508b'
     const col2 = '#5f0a87'
     return (
@@ -23,7 +23,7 @@ export default function Logo() {
                     sx={{ mr: 2 }}
                     edge="start"
                     aria-label="menu"
-                    onClick={hamburger}
+                    onClick={toggleTabShrink}
                     color="inherit">
                     <MenuIcon/>
                 </IconButton>

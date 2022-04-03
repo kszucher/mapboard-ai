@@ -80,6 +80,7 @@ const editorState = {
     redoDisabled: true,
     //
     colorMode: 'light',
+    tabShrink: false,
     // menu
     moreMenu: false,
 }
@@ -130,6 +131,7 @@ const resolveActions = (state, action) => {
         case 'PARSE_RESP_PAYLOAD':          return {...payload}
         //
         case 'CHANGE_COLOR_MODE':           return {colorMode: state.colorMode === 'light' ? 'dark' : 'light'}
+        case 'TOGGLE_TAB_SHRINK':           return {tabShrink: !state.tabShrink}
         // MENU
         case 'OPEN_MORE_MENU':              return {moreMenu: payload.currentTarget}
         case 'CLOSE_MORE_MENU':             return {moreMenu: null}
