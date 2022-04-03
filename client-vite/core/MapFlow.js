@@ -364,21 +364,17 @@ const mapReducer = (action, payload) => {
                         const assignment = {}
                         assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
                         if (prop === 'textFontSize') {assignment.isDimAssigned =  0}
-
-                        // if (prop !== 'taskStatus') return
-
                         if (prop !== 'taskStatus' && (cm.selection === 's'
                             || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop)
                         )) {
                             Object.assign(cm, assignment)
                         } else {
-
-
                             if (prop === 'taskStatus') {
-                                if (props[prop] === -1  || props[prop] === 0 ) {
-                                    mapChangeProp.start(cm, assignment, '', false)
+                                if (props[prop] === 'setTask') {
+                                    mapChangeProp.start(cm, {taskStatus: 0}, '', false)
+                                } else if (props[prop] === 'clearTask') {
+                                    mapChangeProp.start(cm, {taskStatus: -1}, '', false)
                                 }
-
                             } else {
                                 mapChangeProp.start(cm, assignment, '', true)
                             }
@@ -403,7 +399,6 @@ const mapReducer = (action, payload) => {
             let m = mapref(['m'])
             let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId)) // TODO multi r rethink
             cm.taskStatus = payload.taskStatus
-            cm.taskStatusInherited = -1
             break
         }
         case 'toggleTask': {

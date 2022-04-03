@@ -31,7 +31,7 @@ export function CommandTexts () {
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
-    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 0 : -1})
+    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
     const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
     const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))

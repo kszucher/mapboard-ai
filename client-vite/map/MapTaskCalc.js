@@ -6,11 +6,7 @@ export const mapTaskCalc = {
     iterate: (m, cm) => {
         cm.d.map(i => mapTaskCalc.iterate(m, i))
         let sCount = Object.keys(cm.s).length
-        if (sCount === 0) {
-            if (cm.taskStatusInherited === 1) {
-                cm.taskStatus = 0
-            }
-        } else {
+        if (sCount) {
             cm.taskStatus = 0
             let firstTaskStatus = 0
             let isSameTaskStatus = true
@@ -27,7 +23,6 @@ export const mapTaskCalc = {
             }
             if (isSameTaskStatus) {
                 cm.taskStatus = firstTaskStatus
-                cm.taskStatusInherited = 1
             }
         }
         cm.c.map(i => i.map(j => mapTaskCalc.iterate(m, j)))

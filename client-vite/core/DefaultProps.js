@@ -53,7 +53,6 @@ export let nodeProps = {
         imageH: 0,
         selected: 0,
         selection: 's',
-        taskStatus: -1,
         lastSelectedChild: -1, // -1 means not selected ever
         lineWidth: 1,
         lineType: 'b',
@@ -66,6 +65,7 @@ export let nodeProps = {
         fFillColor: '',
         textFontSize: 14,
         textColor: 'default',
+        taskStatus: -1,
         // subMapStartX: 0, // only applies for root <-- calculate (how?)
         // subMapStartY: 0,  // only applies for root <-- calculate (how?)
     },
@@ -82,8 +82,6 @@ export let nodeProps = {
         isDimAssigned: 0,
         contentW: 0,
         contentH: 0,
-        // mapTaskCalc
-        taskStatusInherited: 0,
         // subMapWidth: 0, // only applies for root <-- channel mapWidth here
         // subMapHeight: 0, // only applies for root <-- channel mapHeight here
     },

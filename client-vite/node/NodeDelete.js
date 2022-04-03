@@ -29,7 +29,6 @@ export function structDeleteReselect(sc) {
         let cm = mapref(sc.structSelectedPathList[i]);
         let cmParent = mapref(cm.parentPath);
         cmParent.taskStatus = cm.taskStatus;
-        cmParent.taskStatusInherited = 0;
         cmParent.s.splice(cm.index, 1);
     }
     // reselect on jumpback
