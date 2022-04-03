@@ -35,7 +35,7 @@ export function IconBar () {
             paddingLeft: 12,
             paddingRight: 12,
             backgroundColor: MAP_BACKGROUND,
-            borderTopLeftRadius: 16,
+            // borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
             borderTop: 0,
             borderRight: 0,

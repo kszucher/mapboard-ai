@@ -13,7 +13,7 @@ export default function Logo() {
             width: 216,
             height: 48,
             backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)`,
-            borderTopRightRadius: 16,
+            // borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
             color: '#fff',
             display: 'flex',
