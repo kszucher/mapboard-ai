@@ -34,7 +34,7 @@ const fetchPost = (req) => {
     }).then(resp => resp.json())
 }
 
-function* legacySaga (task) {
+function* legacySaga () {
     while (true) {
         let { type, payload } = yield take([
             'OPEN_MAP_FROM_TAB',

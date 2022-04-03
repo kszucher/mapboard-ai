@@ -128,7 +128,7 @@ export const mapVisualizeSvg = {
             }
             if (conditions.nodeFill) {
                 let sFillColorOverride = ''
-                if (cm.task && cm.taskStatus > 0) {
+                if (cm.taskStatus > 0) {
                     sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
                 }
                 updateMapSvgData(nodeId, 'nodeFill', {
@@ -189,7 +189,7 @@ export const mapVisualizeSvg = {
             x2 = nsx
             y2 = cm.nodeY
             let lineColorOverride = ''
-            if (cm.task && cm.taskStatus > 0) {
+            if (cm.taskStatus > 0) {
                 lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cm.taskStatus - 1)
             }
             updateMapSvgData(nodeId, 'line', {

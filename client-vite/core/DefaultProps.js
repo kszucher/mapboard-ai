@@ -53,7 +53,6 @@ export let nodeProps = {
         imageH: 0,
         selected: 0,
         selection: 's',
-        task: 0,
         taskStatus: -1,
         lastSelectedChild: -1, // -1 means not selected ever
         lineWidth: 1,
@@ -135,7 +134,7 @@ export const resolveScope = (cm) => {
         text:
             cm.contentType === 'text',
         branchFill: cm.fFillColor !== '' && cm.s.length,
-        nodeFill: cm.sFillColor !== '' || cm.task,
+        nodeFill: cm.sFillColor !== '' || cm.taskStatus !== -1,
         branchBorder: cm.fBorderColor !== '' && cm.s.length,
         nodeBorder: cm.sBorderColor !== '',
         selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
@@ -149,7 +148,7 @@ export const resolveScope = (cm) => {
             cm.type === "struct" &&
             cm.hasCell,
         task:
-            cm.task &&
+            cm.taskStatus !== -1 &&
             // !cm.path.includes('c') &&
             !cm.hasDir &&
             !cm.hasStruct &&
