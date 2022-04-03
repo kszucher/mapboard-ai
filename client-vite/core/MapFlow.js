@@ -334,7 +334,7 @@ const mapReducer = (action, payload) => {
         case 'applyMapParams': {
             const {
                 density, alignment,
-                lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor,
+                lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor, taskStatus
             } = payload
             let m = mapref(['m'])
             if (m.density !== density) {
@@ -356,15 +356,20 @@ const mapReducer = (action, payload) => {
                     [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
                     [cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
                     [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
-                    textFontSize, textColor
-                    // TODO taskStatus
+                    textFontSize, textColor,
+                    taskStatus
                 }
                 for (const prop in props) {
                     if (props[prop] !== undefined) {
                         const assignment = {}
                         assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
                         if (prop === 'textFontSize') {assignment.isDimAssigned =  0}
-                        if (cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop)) {
+
+                        if (prop !== 'taskStatus') return
+
+                        if (prop !== 'taskStatus' && (cm.selection === 's'
+                            || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop)
+                        )) {
                             Object.assign(cm, assignment)
                         } else {
                             mapChangeProp.start(cm, assignment, '', true)
@@ -393,7 +398,7 @@ const mapReducer = (action, payload) => {
             break
         }
         case 'toggleTask': {
-            mapChangeProp.start(lm, {task: !lm.task, taskStatus: -1}, '', false)
+            mapChangeProp.start(lm, {taskStatus: lm.taskStatus === -1 ? 0 : -1}, '', false)
             break
         }
         // NODE EDIT ---------------------------------------------------------------------------------------------------

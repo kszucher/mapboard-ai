@@ -1,8 +1,8 @@
 import {resolveScope} from "../core/DefaultProps"
 
 export const mapChangeProp = {
-    start: (cm, assignment, scope, check, skip) => {
-        mapChangeProp.iterate(cm, assignment, scope, check, skip)
+    start: (cm, assignment, scope, skip) => {
+        mapChangeProp.iterate(cm, assignment, scope, skip)
     },
 
     iterate: (cm, assignment, scope, skip) => {

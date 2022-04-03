@@ -238,53 +238,61 @@ function* mapStackSaga () {
                 const lm = mapref(selectionState.lastPath)
                 const sc = selectionState
                 const sspll = sc.structSelectedPathList.length
+                const assignment = {
+                    density: m.density,
+                    alignment: m.alignment,
+                    lineWidth: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.lineWidth
+                            : undefined
+                        : undefined,
+                    lineType: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.lineType
+                            : undefined
+                        : undefined,
+                    lineColor: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.lineColor
+                            : undefined
+                        : undefined,
+                    borderWidth: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.sBorderWidth
+                            : lm.fBorderWidth
+                        : undefined,
+                    borderColor: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.sBorderColor
+                            : lm.fBorderColor
+                        : undefined,
+                    fillColor: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.sFillColor
+                            : lm.fFillColor
+                        :undefined,
+                    textFontSize: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.textFontSize
+                            : undefined
+                        : undefined,
+                    textColor: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.textColor
+                            : undefined
+                        : undefined, //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
+                    taskStatus: sspll === 1
+                        ? lm.selection === 's'
+                            ? lm.taskStatus
+                            : undefined
+                        : undefined,
+                }
+
+                console.log(assignment)
+
                 yield put({
                     type: 'SET_NODE_PARAMS',
-                    payload: {
-                        density: m.density,
-                        alignment: m.alignment,
-                        lineWidth: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.lineWidth
-                                : undefined
-                            : undefined,
-                        lineType: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.lineType
-                                : undefined
-                            : undefined,
-                        lineColor: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.lineColor
-                                : undefined
-                            : undefined,
-                        borderWidth: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.sBorderWidth
-                                : lm.fBorderWidth
-                            : undefined,
-                        borderColor: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.sBorderColor
-                                : lm.fBorderColor
-                            : undefined,
-                        fillColor: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.sFillColor
-                                : lm.fFillColor
-                            :undefined,
-                        textFontSize: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.textFontSize
-                                : undefined
-                            : undefined,
-                        textColor: sspll === 1
-                            ? lm.selection === 's'
-                                ? lm.textColor
-                                : undefined
-                            : undefined //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
-                        // TODO taskStatus
-                    }
+                    payload: assignment
                 })
                 break
             }
