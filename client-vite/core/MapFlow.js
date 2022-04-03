@@ -401,10 +401,6 @@ const mapReducer = (action, payload) => {
             cm.taskStatus = payload.taskStatus
             break
         }
-        case 'toggleTask': {
-            mapChangeProp.start(lm, {taskStatus: lm.taskStatus === -1 ? 0 : -1}, '', false)
-            break
-        }
         // NODE EDIT ---------------------------------------------------------------------------------------------------
         case 'eraseContent': {
             if (!lm.hasCell) {
