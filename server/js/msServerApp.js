@@ -183,12 +183,12 @@ async function ressolveType(req, currUser) {
         }
         case 'SIGN_IN': {
             const { cred } = req.payload
-            const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
+            const { tabMapIdList, tabMapSelected, breadcrumbMapIdList, colorMode } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
             return {
                 type: 'signInSuccess',
-                payload: { cred, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
+                payload: { cred, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource, colorMode }
             }
         }
         case 'OPEN_MAP_FROM_TAB': {
