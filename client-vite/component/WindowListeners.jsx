@@ -9,6 +9,7 @@ import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {selectionState} from "../core/SelectionFlow"
 import {pasteDispatch} from "../core/PasteFlow"
 import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow"
+import { getColors } from '../core/Colors'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0
 let namedInterval
@@ -555,10 +556,10 @@ export function WindowListeners() {
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
-            console.log('REDRAW BECAUSE OF COLOR')
             redraw(colorMode)
             removeMapListeners()
             addMapListeners(colorMode)
+            document.body.style.backgroundColor = getColors(colorMode).PAGE_BACKGROUND
         }
     }, [colorMode])
 
