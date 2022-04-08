@@ -302,6 +302,14 @@ function* mapStackSaga () {
     }
 }
 
+function* colorSaga () {
+    while (true) {
+        yield take('CHANGE_COLOR_MODE')
+        const colorMode = yield select(state => state.colorMode)
+        yield call(fetchPost, { type: 'CHANGE_COLOR_MODE', payload: {colorMode} })
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         legacySaga(),
@@ -311,5 +319,6 @@ export default function* rootSaga () {
         frameSaga(),
         workspaceSaga(),
         mapStackSaga(),
+        colorSaga(),
     ])
 }

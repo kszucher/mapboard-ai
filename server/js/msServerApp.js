@@ -440,6 +440,11 @@ async function ressolveType(req, currUser) {
             const { name } = currUser
             return { name } // no type as this goes to saga directly
         }
+        case 'CHANGE_COLOR_MODE': {
+            const { colorMode } = req.payload
+            await usersColl.updateOne({ _id: currUser._id }, { $set: { colorMode } })
+            return { type: 'changeColorModeSuccess' }
+        }
     }
 }
 
