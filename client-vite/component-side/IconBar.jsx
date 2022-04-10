@@ -68,6 +68,28 @@ export function IconBar () {
                     </svg>
                 </IconButton>
 
+                <IconButton color='secondary' onClick={_=>console.log('clicked')}>
+                    <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                        <g>
+                            <line style={{ fill:'#5f0a87', stroke: '#5f0a87', strokeWidth:24 }}
+                                  x1={96}
+                                  y1={96}
+                                  x2={384}
+                                  y2={96}
+                            />
+                            <line style={{ fill:'#5f0a87', stroke: '#5f0a87', strokeWidth:24 }}
+                                  x1={240}
+                                  y1={384}
+                                  x2={240}
+                                  y2={96}
+                            />
+                        </g>
+
+                    </svg>
+                </IconButton>
+
+
+
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}

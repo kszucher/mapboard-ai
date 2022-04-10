@@ -241,6 +241,7 @@ function* mapStackSaga () {
                 const assignment = {
                     density: m.density,
                     alignment: m.alignment,
+                    // TODO add selection to make icon based on this
                     lineWidth: sspll === 1
                         ? lm.selection === 's'
                             ? lm.lineWidth
