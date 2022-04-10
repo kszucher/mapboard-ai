@@ -48,21 +48,21 @@ export function IconBar () {
 
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                         <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                            <path style={{ fill: 'none', stroke: 'rgb(216, 0, 0)', strokeWidth:24}}
+                            <path style={{ fill: 'none', stroke: '#5f0a87', strokeWidth:24}}
                                 d="M 408 72 C 72 72 408 408 72 408"
                             />
                         </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill: 'none', stroke: 'rgb(216, 0, 0)', strokeWidth:24 }}
+                        <path style={{ fill: 'none', stroke: '#5f0a87', strokeWidth:24 }}
                             d="M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432 384 408 408 360 408 L 312 408 C 264 408 120 312 72 312 C 24 312 24 168 72 168 C 120 168 264 72 312 72 Z"
                         />
                     </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill:'rgb(216, 0, 0)', stroke: 'rgb(216, 0, 0)', strokeWidth:24 }}
+                        <path style={{ fill:'#5f0a87', stroke: '#5f0a87', strokeWidth:24 }}
                               d="M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432 384 408 408 360 408 L 312 408 C 264 408 120 312 72 312 C 24 312 24 168 72 168 C 120 168 264 72 312 72 Z"
                         />
                     </svg>
