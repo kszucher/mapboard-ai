@@ -42,24 +42,9 @@ export function IconBar () {
             borderColor: MAP_BACKGROUND,
         }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <IconButton color='secondary' onClick={changeDensity}>
-                    {density === 'small' && <DensitySmallIcon/>}
-                    {density === 'large' && <DensityMediumIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={changeAlignment}>
-                    {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
-                    {alignment === 'centered' && <CenterFocusStrongIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={changeColorMode}>
-                    {colorMode === 'light' && <LightModeIcon/>}
-                    {colorMode === 'dark' && <DarkModeIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={openProfile}>
-                    <PersonIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={openMoreMenu}>
-                    <MoreVertIcon/>
-                </IconButton>
+
+
+
 
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                         <svg viewBox="0 0 480 480" width="24px" height="24px" >
@@ -82,7 +67,28 @@ export function IconBar () {
                         />
                     </svg>
                 </IconButton>
-                
+
+
+
+
+                <IconButton color='secondary' onClick={changeDensity}>
+                    {density === 'small' && <DensitySmallIcon/>}
+                    {density === 'large' && <DensityMediumIcon/>}
+                </IconButton>
+                <IconButton color='secondary' onClick={changeAlignment}>
+                    {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
+                    {alignment === 'centered' && <CenterFocusStrongIcon/>}
+                </IconButton>
+                <IconButton color='secondary' onClick={changeColorMode}>
+                    {colorMode === 'light' && <LightModeIcon/>}
+                    {colorMode === 'dark' && <DarkModeIcon/>}
+                </IconButton>
+                <IconButton color='secondary' onClick={openProfile}>
+                    <PersonIcon/>
+                </IconButton>
+                <IconButton color='secondary' onClick={openMoreMenu}>
+                    <MoreVertIcon/>
+                </IconButton>
                 <IconBarMore/>
             </div>
         </div>
