@@ -28,7 +28,7 @@ export function IconBar () {
         <div style={{
             position: 'fixed',
             right: 0,
-            width: 5*40, // n is the number of icons
+            width: 6*40, // n is the number of icons
             display: 'flex',
             alignItems: 'center',
             height: 48,
@@ -60,6 +60,37 @@ export function IconBar () {
                 <IconButton color='secondary' onClick={openMoreMenu}>
                     <MoreVertIcon/>
                 </IconButton>
+
+
+                <IconButton color='secondary' onClick={_=>console.log('clicked')}>
+                    {/*<?xml version="1.0" encoding="utf-8"?>*/}
+                    <div style={{width:24, height: 24, /*backgroundColor: '#ff0000'*/}}>
+                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                            <path
+                                style={{
+                                    // fill:'rgb(216, 0, 0)',
+                                    fill: 'none',
+                                    stroke: 'rgb(216, 0, 0)',
+                                    strokeWidth:24,
+
+                                }}
+                                // d="M 432 48 C 48 48 432 432 48 432"
+
+                                // d="M 240 72 L 360 72 C 432 72 432 120 432 144 L 432 336 C 432 336 432 408 360 408 L 240 408 L 48 288 C 24 288 24 192 48 192 L 240 72 Z"
+
+
+                                d="M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432 384 408 408 360 408 L 312 408 C 264 408 120 312 72 312 C 24 312 24 168 72 168 C 120 168 264 72 312 72 Z"
+                                
+
+
+                            />
+                        </svg>
+                    </div>
+
+                </IconButton>
+
+
+
                 <IconBarMore/>
             </div>
         </div>
