@@ -38,7 +38,6 @@ export function IconBar () {
             paddingLeft: 12,
             paddingRight: 12,
             backgroundColor: MAP_BACKGROUND,
-            // borderTopLeftRadius: 16,
             borderBottomLeftRadius: 16,
             borderTop: 0,
             borderRight: 0,
@@ -56,15 +55,10 @@ export function IconBar () {
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
                 </IconButton>
-
                 <IconButton color='secondary' onClick={changeAlignment}>
                     {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
-
-
-
-
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
                         <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
@@ -90,16 +84,10 @@ export function IconBar () {
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
                         <g>
                             <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                  x1={96}
-                                  y1={96}
-                                  x2={384}
-                                  y2={96}
+                                  x1={96} y1={96} x2={384} y2={96}
                             />
                             <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                  x1={240}
-                                  y1={384}
-                                  x2={240}
-                                  y2={96}
+                                  x1={240} y1={384} x2={240} y2={96}
                             />
                         </g>
                     </svg>
