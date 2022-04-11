@@ -49,23 +49,23 @@ export function Palette () {
 
     const o = 32
     const r = 12
-    const xWidth = o * colorList[0].length
-    const yWidth = o * colorList.length
+    const width = o * colorList[0].length
+    const height = o * colorList.length
 
     return (
         <div style={{
             position: 'fixed',
             top: 12 + 40*4,
             right: 80,
-            width: xWidth,
-            height: yWidth,
+            width,
+            height,
             backgroundColor: MAP_BACKGROUND,
             padding: 4,
             borderRadius: '16px 16px 16px 16px',
             borderRight: 0,
             borderColor: '#dddddd',
         }}>
-            <svg viewBox={`0 0 ${xWidth} ${yWidth}`}>
+            <svg viewBox={`0 0 ${width} ${height}`}>
                 {colorList.map((iEl, i) =>
                     (iEl.map((jEl, j) => (
                         <circle
