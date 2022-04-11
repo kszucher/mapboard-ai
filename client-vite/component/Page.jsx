@@ -72,7 +72,7 @@ const Map = () => {
 export function Page() {
     const colorMode = useSelector(state => state.colorMode)
     const pageState = useSelector(state => state.pageState)
-    const paletteVisible = useSelector(state => state.paletteVisible)
+    const formatMode = useSelector(state => state.formatMode)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
@@ -100,7 +100,7 @@ export function Page() {
                         <Breadcrumbs/>
                         <CommandTexts/>
                     </>}
-                    {paletteVisible===1 && <Palette/>}
+                    {formatMode!=='' && <Palette/>}
                     {frameEditorVisible===1 && <FramesSide/>}
                     {frameEditorVisible===1 && <FramesBottom/>}
                 </>}

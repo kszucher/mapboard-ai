@@ -51,11 +51,17 @@ export function Palette () {
     const r = 12
     const width = o * colorList[0].length
     const height = o * colorList.length
+    const offset = {
+        line: 4,
+        border: 5,
+        fill: 6,
+        text: 7
+    }[formatMode]
 
     return (
         <div style={{
             position: 'fixed',
-            top: 12 + 40*4,
+            top: 12 + 40*offset,
             right: 80,
             width,
             height,

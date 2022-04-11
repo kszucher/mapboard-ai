@@ -35,7 +35,6 @@ const editorState = {
     authFeedbackMessage: '',
     //
     pageState: PAGE_STATES.AUTH,
-    paletteVisible: 0,
     frameEditorVisible: 0,
     //
     landingData: [],
@@ -99,8 +98,8 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS_SHARING':             return {pageState: WS_SHARING}
         case 'SHOW_WS_SHARES':              return {pageState: WS_SHARES}
         case 'SHOW_WS_PROFILE':             return {pageState: WS_PROFILE}
-        case 'OPEN_PALETTE':                return {formatMode: payload, paletteVisible: 1}
-        case 'CLOSE_PALETTE':               return {formatMode: '', paletteVisible: 0, }
+        case 'SET_FORMAT_MODE':             return {formatMode: payload}
+        case 'CLOSE_PALETTE':               return {formatMode: ''}
         case 'OPEN_PLAYBACK_EDITOR':        return {frameEditorVisible: 1}
         case 'CLOSE_PLAYBACK_EDITOR':       return {frameEditorVisible: 0}
         case 'SET_LANDING_DATA':            return {landingData: payload.landingData, mapRight: payload.mapRight}
