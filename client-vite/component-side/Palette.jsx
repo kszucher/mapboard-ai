@@ -1,5 +1,6 @@
 import {useSelector, useDispatch} from "react-redux"
 import { Button } from '@mui/material'
+import { getColors } from '../core/Colors'
 
 const colorList = [
     // ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
@@ -17,6 +18,8 @@ const colorList = [
 ]
 
 export function Palette () {
+    const colorMode = useSelector(state => state.colorMode)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const lineColor = useSelector(state => state.node.lineColor)
     const borderColor = useSelector(state => state.node.borderColor)
@@ -56,7 +59,7 @@ export function Palette () {
             right: 80,
             width: xWidth,
             height: yWidth,
-            backgroundColor: 'rgba(251,250,252,1)',
+            backgroundColor: MAP_BACKGROUND,
             padding: 4,
             borderRadius: '16px 16px 16px 16px',
             borderRight: 0,
@@ -76,13 +79,7 @@ export function Palette () {
                             onClick={_ => setNodeParam({ [resolveColorName(formatMode)] : colorList[i][j] })}
                         />))))}
             </svg>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    paddingTop: 12
-                }}>
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
                 <Button
                     color="primary"
                     variant='outlined'
