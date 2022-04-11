@@ -31,10 +31,10 @@ export function IconBar () {
         <div style={{
             position: 'fixed',
             right: 0,
-            width: 8*40, // n is the number of icons
+            width: 1*40, // n is the number of icons
             display: 'flex',
             alignItems: 'center',
-            height: 48,
+            height: 48*8,
             paddingLeft: 12,
             paddingRight: 12,
             backgroundColor: MAP_BACKGROUND,
@@ -44,14 +44,33 @@ export function IconBar () {
             borderRight: 0,
             borderColor: MAP_BACKGROUND,
         }}>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column'}}>
+                <IconButton color='secondary' onClick={openProfile}>
+                    <PersonIcon/>
+                </IconButton>
+                <IconButton color='secondary' onClick={changeColorMode}>
+                    {colorMode === 'light' && <LightModeIcon/>}
+                    {colorMode === 'dark' && <DarkModeIcon/>}
+                </IconButton>
+                <IconButton color='secondary' onClick={changeDensity}>
+                    {density === 'small' && <DensitySmallIcon/>}
+                    {density === 'large' && <DensityMediumIcon/>}
+                </IconButton>
+
+                <IconButton color='secondary' onClick={changeAlignment}>
+                    {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
+                    {alignment === 'centered' && <CenterFocusStrongIcon/>}
+                </IconButton>
+
+
+
 
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
-                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
-                                d="M 408 72 C 72 72 408 408 72 408"
-                            />
-                        </svg>
+                    <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
+                              d="M 408 72 C 72 72 408 408 72 408"
+                        />
+                    </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
@@ -67,7 +86,6 @@ export function IconBar () {
                         />
                     </svg>
                 </IconButton>
-
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
                         <g>
@@ -84,26 +102,7 @@ export function IconBar () {
                                   y2={96}
                             />
                         </g>
-
                     </svg>
-                </IconButton>
-
-
-
-                <IconButton color='secondary' onClick={changeDensity}>
-                    {density === 'small' && <DensitySmallIcon/>}
-                    {density === 'large' && <DensityMediumIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={changeAlignment}>
-                    {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
-                    {alignment === 'centered' && <CenterFocusStrongIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={changeColorMode}>
-                    {colorMode === 'light' && <LightModeIcon/>}
-                    {colorMode === 'dark' && <DarkModeIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={openProfile}>
-                    <PersonIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={openMoreMenu}>
                     <MoreVertIcon/>

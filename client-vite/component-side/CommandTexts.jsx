@@ -42,7 +42,7 @@ export function CommandTexts () {
     return (
         <div style={{
             position: 'fixed',
-            right: 0, top: 96, width: 216,
+            right: 0, top: 48*20, width: 216,
             backgroundColor: MAP_BACKGROUND,
             paddingTop: 6, paddingBottom: 6,
             borderTopLeftRadius: 16, borderBottomLeftRadius: 16,
