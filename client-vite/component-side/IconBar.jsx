@@ -34,7 +34,7 @@ export function IconBar () {
             width: 1*40, // n is the number of icons
             display: 'flex',
             alignItems: 'center',
-            height: 48*8,
+            height: 9*40 + 2*12,
             paddingLeft: 12,
             paddingRight: 12,
             backgroundColor: MAP_BACKGROUND,

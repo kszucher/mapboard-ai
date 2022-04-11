@@ -52,12 +52,12 @@ export function Palette () {
     return (
         <div style={{
             position: 'fixed',
-            top: 80,
+            top: 12 + 40*4,
             right: 80,
             width: xWidth,
             height: yWidth,
             backgroundColor: 'rgba(251,250,252,1)',
-            padding: 12,
+            padding: 4,
             borderRadius: '16px 16px 16px 16px',
             borderRight: 0,
             borderColor: '#dddddd',
