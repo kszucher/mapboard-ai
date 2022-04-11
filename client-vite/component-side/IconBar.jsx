@@ -16,7 +16,7 @@ const fSelectionSvg = "M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432
 
 export function IconBar () {
     const colorMode = useSelector(state => state.colorMode)
-    const {MAP_BACKGROUND} = getColors(colorMode)
+    const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
     const dispatch = useDispatch()
@@ -48,21 +48,21 @@ export function IconBar () {
 
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                         <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                            <path style={{ fill: 'none', stroke: '#5f0a87', strokeWidth:24}}
+                            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
                                 d="M 408 72 C 72 72 408 408 72 408"
                             />
                         </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill: 'none', stroke: '#5f0a87', strokeWidth:24 }}
+                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
                               d={sSelectionSvg}
                         />
                     </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill:'#5f0a87', stroke: '#5f0a87', strokeWidth:24 }}
+                        <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
                               d={sSelectionSvg}
                         />
                     </svg>
@@ -71,13 +71,13 @@ export function IconBar () {
                 <IconButton color='secondary' onClick={_=>console.log('clicked')}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
                         <g>
-                            <line style={{ fill:'#5f0a87', stroke: '#5f0a87', strokeWidth:24 }}
+                            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
                                   x1={96}
                                   y1={96}
                                   x2={384}
                                   y2={96}
                             />
-                            <line style={{ fill:'#5f0a87', stroke: '#5f0a87', strokeWidth:24 }}
+                            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
                                   x1={240}
                                   y1={384}
                                   x2={240}

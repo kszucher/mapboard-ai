@@ -1,4 +1,5 @@
 const COLOR_LIGHT = {
+    MAIN_COLOR: '#5f0a87',
     PAGE_BACKGROUND: '#dddddd',
     MAP_BACKGROUND: '#fbfafc',
     TEXT_COLOR: '#222222',
@@ -26,6 +27,7 @@ const COLOR_LIGHT = {
 }
 
 const COLOR_DARK = {
+    MAIN_COLOR: '#dddddd',
     PAGE_BACKGROUND: '#333333',
     MAP_BACKGROUND: '#222529',
     TEXT_COLOR: '#dddddd',
