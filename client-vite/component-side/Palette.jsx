@@ -118,7 +118,7 @@ export function Palette () {
                 </svg>
             </div>
             <div>
-                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
+                <IconButton disableRipple={true} color='secondary' onClick={_=>{}}>
                     <ArrowDropDownIcon/>
                 </IconButton>
             </div>
