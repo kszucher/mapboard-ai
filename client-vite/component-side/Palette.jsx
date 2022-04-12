@@ -3,6 +3,7 @@ import { Button, IconButton } from '@mui/material'
 import { getColors } from '../core/Colors'
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { setClear } from '../core/Utils'
 
 const colorList = [
@@ -30,7 +31,6 @@ export function Palette () {
     const textColor = useSelector(state => state.node.textColor)
     const dispatch = useDispatch()
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
-    const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
 
 
     const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
@@ -94,6 +94,7 @@ export function Palette () {
                     <DoDisturbIcon/>
                 </IconButton>
             </div>
+
             <div
                 style={{
                     top: 12 + 40*offset,
@@ -117,8 +118,8 @@ export function Palette () {
                 </svg>
             </div>
             <div>
-                <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
-                    <CloseIcon/>
+                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
+                    <ArrowDropDownIcon/>
                 </IconButton>
             </div>
         </div>
