@@ -89,11 +89,7 @@ export function Palette () {
                 backgroundColor: MAP_BACKGROUND,
                 border: `1px solid ${PAGE_BACKGROUND}`,
             }}>
-            <div>
-                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
-                    <DoDisturbIcon/>
-                </IconButton>
-            </div>
+
 
             <div
                 style={{
@@ -120,6 +116,11 @@ export function Palette () {
             <div>
                 <IconButton disableRipple={true} color='secondary' onClick={_=>{}}>
                     <ArrowDropDownIcon/>
+                </IconButton>
+            </div>
+            <div>
+                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
+                    <DoDisturbIcon/>
                 </IconButton>
             </div>
         </div>
