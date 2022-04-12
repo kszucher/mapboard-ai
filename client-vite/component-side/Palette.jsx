@@ -3,7 +3,9 @@ import { Button, IconButton } from '@mui/material'
 import { getColors } from '../core/Colors'
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 import { setClear } from '../core/Utils'
 
 const colorList = [
@@ -31,6 +33,8 @@ export function Palette () {
     const textColor = useSelector(state => state.node.textColor)
     const dispatch = useDispatch()
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
+
+    const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
 
 
     const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
@@ -82,7 +86,7 @@ export function Palette () {
                 position: 'fixed',
                 top: 12 + 40*offset,
                 right: 80,
-                width: width + 40*2 + 12,
+                width: width + 40*3 + 12,
                 display: 'flex',
                 flexDirection: 'row',
                 borderRadius: 16,
@@ -90,7 +94,11 @@ export function Palette () {
                 border: `1px solid ${PAGE_BACKGROUND}`,
             }}>
 
-
+            <div>
+                <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
+                    <ArrowRightIcon/>
+                </IconButton>
+            </div>
             <div
                 style={{
                     top: 12 + 40*offset,
