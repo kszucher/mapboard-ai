@@ -157,3 +157,5 @@ export function filteredObj (originalObj, filterKeys) {
 }
 
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+export const setClear = arr => arr.reduce((o, key) => ({ ...o, [key]: 'clear'}), {})

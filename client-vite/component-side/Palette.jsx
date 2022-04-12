@@ -1,6 +1,8 @@
 import {useSelector, useDispatch} from "react-redux"
-import { Button } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
 import { getColors } from '../core/Colors'
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import { setClear } from '../core/Utils'
 
 const colorList = [
     // ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
@@ -29,6 +31,12 @@ export function Palette () {
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
 
+
+    const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
+    const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
+    const resetFill = _ => setNodeParam(setClear(['fillColor']))
+    const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
+
     const resolveColor = (formatMode) => {
         switch (formatMode) {
             case 'line':    return lineColor
@@ -47,6 +55,15 @@ export function Palette () {
         }[formatMode]
     }
 
+    const resolveReset = (formatMode) => {
+        return {
+            line: resetLine,
+            text: resetText,
+            fill: resetFill,
+            border: resetBorder
+        }[formatMode]
+    }
+
     const o = 32
     const r = 12
     const width = o * colorList[0].length
@@ -59,39 +76,60 @@ export function Palette () {
     }[formatMode]
 
     return (
-        <div style={{
-            position: 'fixed',
-            top: 12 + 40*offset,
-            right: 80,
-            width,
-            height,
-            backgroundColor: MAP_BACKGROUND,
-            padding: 4,
-            borderRadius: '16px 16px 16px 16px',
-            borderRight: 0,
-            borderColor: '#dddddd',
-        }}>
-            <svg viewBox={`0 0 ${width} ${height}`}>
-                {colorList.map((iEl, i) =>
-                    (iEl.map((jEl, j) => (
-                        <circle
-                            cx={o/2 + j*o}
-                            cy={o/2 + i*o}
-                            r={r}
-                            key={'key' + i*10 + j}
-                            fill={jEl}
-                            stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
-                            strokeWidth={"2%"}
-                            onClick={_ => setNodeParam({ [resolveColorName(formatMode)] : colorList[i][j] })}
-                        />))))}
-            </svg>
-            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
-                <Button
-                    color="primary"
-                    variant='outlined'
-                    onClick={closePalette}>
-                    {'CLOSE'}
-                </Button>
+        <div
+            style={{
+                position: 'fixed',
+                top: 12 + 40*offset,
+                right: 80,
+                width: width + 40 + 12,
+                // backgroundColor: '#ff0000',
+                display: 'flex',
+                flexDirection: 'row',
+                borderRadius: '16px 16px 16px 16px',
+                backgroundColor: MAP_BACKGROUND,
+
+
+            }}>
+            <div
+                style={{
+                    // position: 'fixed',
+                    top: 12 + 40*offset,
+                    right: 80,
+                    width,
+                    height,
+                    backgroundColor: MAP_BACKGROUND,
+                    padding: 4,
+                    // borderRadius: '16px 16px 16px 16px',
+                    borderRight: 0,
+                    borderColor: '#dddddd',
+                }}>
+                <svg viewBox={`0 0 ${width} ${height}`}>
+                    {colorList.map((iEl, i) =>
+                        (iEl.map((jEl, j) => (
+                            <circle
+                                cx={o/2 + j*o}
+                                cy={o/2 + i*o}
+                                r={r}
+                                key={'key' + i*10 + j}
+                                fill={jEl}
+                                stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
+                                strokeWidth={"2%"}
+                                onClick={_ => setNodeParam({ [resolveColorName(formatMode)] : colorList[i][j] })}
+                            />))))}
+                </svg>
+                <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
+                    <Button
+                        color="primary"
+                        variant='outlined'
+                        onClick={closePalette}>
+                        {'CLOSE'}
+                    </Button>
+                </div>
+            </div>
+            <div>
+                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
+                    <DoDisturbIcon/>
+                </IconButton>
             </div>
         </div>
     )
