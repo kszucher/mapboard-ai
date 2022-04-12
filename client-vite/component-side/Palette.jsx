@@ -2,6 +2,7 @@ import {useSelector, useDispatch} from "react-redux"
 import { Button, IconButton } from '@mui/material'
 import { getColors } from '../core/Colors'
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import CloseIcon from '@mui/icons-material/Close';
 import { setClear } from '../core/Utils'
 
 const colorList = [
@@ -21,7 +22,7 @@ const colorList = [
 
 export function Palette () {
     const colorMode = useSelector(state => state.colorMode)
-    const {MAP_BACKGROUND} = getColors(colorMode)
+    const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const lineColor = useSelector(state => state.node.lineColor)
     const borderColor = useSelector(state => state.node.borderColor)
@@ -81,27 +82,24 @@ export function Palette () {
                 position: 'fixed',
                 top: 12 + 40*offset,
                 right: 80,
-                width: width + 40 + 12,
-                // backgroundColor: '#ff0000',
+                width: width + 40*2 + 12,
                 display: 'flex',
                 flexDirection: 'row',
-                borderRadius: '16px 16px 16px 16px',
+                borderRadius: 16,
                 backgroundColor: MAP_BACKGROUND,
-
-
+                border: `1px solid ${PAGE_BACKGROUND}`,
             }}>
+            <div>
+                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
+                    <DoDisturbIcon/>
+                </IconButton>
+            </div>
             <div
                 style={{
-                    // position: 'fixed',
                     top: 12 + 40*offset,
-                    right: 80,
                     width,
                     height,
-                    backgroundColor: MAP_BACKGROUND,
                     padding: 4,
-                    // borderRadius: '16px 16px 16px 16px',
-                    borderRight: 0,
-                    borderColor: '#dddddd',
                 }}>
                 <svg viewBox={`0 0 ${width} ${height}`}>
                     {colorList.map((iEl, i) =>
@@ -117,18 +115,10 @@ export function Palette () {
                                 onClick={_ => setNodeParam({ [resolveColorName(formatMode)] : colorList[i][j] })}
                             />))))}
                 </svg>
-                <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12 }}>
-                    <Button
-                        color="primary"
-                        variant='outlined'
-                        onClick={closePalette}>
-                        {'CLOSE'}
-                    </Button>
-                </div>
             </div>
             <div>
-                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
-                    <DoDisturbIcon/>
+                <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
+                    <CloseIcon/>
                 </IconButton>
             </div>
         </div>
