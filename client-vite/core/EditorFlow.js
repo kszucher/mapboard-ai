@@ -55,6 +55,7 @@ const editorState = {
     node: {
         density: undefined,
         alignment: undefined,
+        selection: undefined,
         lineWidth: undefined,
         lineType: undefined,
         lineColor: undefined,

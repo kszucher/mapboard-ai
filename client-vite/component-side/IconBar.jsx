@@ -19,6 +19,7 @@ export function IconBar () {
     const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
+    const selection = useSelector(state => state.node.selection)
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
@@ -74,14 +75,14 @@ export function IconBar () {
                 <IconButton color='secondary' onClick={setFormatModeBorder}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
                         <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d={sSelectionSvg}
+                              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
                         />
                     </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={setFormatModeFill}>
                     <svg viewBox="0 0 480 480" width="24px" height="24px" >
                         <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d={sSelectionSvg}
+                              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
                         />
                     </svg>
                 </IconButton>
