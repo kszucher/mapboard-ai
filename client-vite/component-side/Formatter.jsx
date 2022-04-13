@@ -74,7 +74,17 @@ export function Formatter () {
     const offset = { line: 4, border: 5, fill: 6, text: 7 }[formatMode]
 
     return (
-        <div style={{ position: 'fixed', top: 12, right: 40 + 4*12, width: width + 40*2, display: 'flex', flexDirection: 'column', borderRadius: 16, background: MAP_BACKGROUND, border: `1px solid ${PAGE_BACKGROUND}`, }}>
+        <div style={{
+            position: 'fixed',
+            top: 48*2,
+            right: 48*2,
+            width: width + 40*2,
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: 16,
+            background: MAP_BACKGROUND,
+            border: `1px solid ${PAGE_BACKGROUND}`,
+        }}>
             <div style={{display: 'flex', flexDirection: 'row'}}>
                 <div>
                     <IconButton disableRipple={true} color='secondary' onClick={closePalette}>

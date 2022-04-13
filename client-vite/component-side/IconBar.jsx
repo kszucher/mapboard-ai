@@ -36,76 +36,98 @@ export function IconBar () {
 
 
     return (
-        <div style={{
-            position: 'fixed',
-            right: 12,
-            top: 12,
-            width: 1*40, // n is the number of icons
-            display: 'flex',
-            alignItems: 'center',
-            height: 9*40 + 2*12,
-            paddingLeft: 12,
-            paddingRight: 12,
-            backgroundColor: MAP_BACKGROUND,
-            borderRadius: 16,
-            borderTop: 0,
-            borderRight: 0,
-            borderColor: MAP_BACKGROUND,
-        }}>
-            <div style={{ display: 'flex', flexDirection: 'column'}}>
-                <IconButton color='secondary' onClick={openProfile}>
-                    <PersonIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={changeColorMode}>
-                    {colorMode === 'light' && <LightModeIcon/>}
-                    {colorMode === 'dark' && <DarkModeIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={changeDensity}>
-                    {density === 'small' && <DensitySmallIcon/>}
-                    {density === 'large' && <DensityMediumIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={changeAlignment}>
-                    {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
-                    {alignment === 'centered' && <CenterFocusStrongIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'line' ? closePalette : setFormatModeLine}>
-                    <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
-                              d="M 408 72 C 72 72 408 408 72 408"
-                        />
-                    </svg>
-                </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'border' ? closePalette : setFormatModeBorder}>
-                    <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
-                        />
-                    </svg>
-                </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'fill' ? closePalette : setFormatModeFill}>
-                    <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
-                        />
-                    </svg>
-                </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'text' ? closePalette : setFormatModeText}>
-                    <svg viewBox="0 0 480 480" width="24px" height="24px" >
-                        <g>
-                            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                  x1={96} y1={96} x2={384} y2={96}
-                            />
-                            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                  x1={240} y1={384} x2={240} y2={96}
-                            />
-                        </g>
-                    </svg>
-                </IconButton>
-                <IconButton color='secondary' onClick={openMoreMenu}>
-                    <MoreVertIcon/>
-                </IconButton>
-                <IconBarMore/>
+        <>
+            <div style={{
+                position: 'fixed',
+                right: 0,
+                top: 0,
+                width: 1*40, // n is the number of icons
+                display: 'flex',
+                alignItems: 'center',
+                height: 1*40 + 2*12,
+                paddingLeft: 12,
+                paddingRight: 12,
+                backgroundColor: MAP_BACKGROUND,
+                borderRadius: '0 0 0 16px',
+                borderTop: 0,
+                borderRight: 0,
+                borderColor: MAP_BACKGROUND,
+            }}>
+                <div style={{ display: 'flex', flexDirection: 'column'}}>
+                    <IconButton color='secondary' onClick={openProfile}>
+                        <PersonIcon/>
+                    </IconButton>
+                </div>
             </div>
-        </div>
+            <div style={{
+                position: 'fixed',
+                right: 0,
+                top: 48*2,
+                width: 40,
+                display: 'flex',
+                alignItems: 'center',
+                height: 8*40 + 2*12,
+                paddingLeft: 12,
+                paddingRight: 12,
+                backgroundColor: MAP_BACKGROUND,
+                borderRadius: '16px 0 0 16px',
+                borderTop: 0,
+                borderRight: 0,
+                borderColor: MAP_BACKGROUND,
+            }}>
+                <div style={{ display: 'flex', flexDirection: 'column'}}>
+                    <IconButton color='secondary' onClick={changeColorMode}>
+                        {colorMode === 'light' && <LightModeIcon/>}
+                        {colorMode === 'dark' && <DarkModeIcon/>}
+                    </IconButton>
+                    <IconButton color='secondary' onClick={changeDensity}>
+                        {density === 'small' && <DensitySmallIcon/>}
+                        {density === 'large' && <DensityMediumIcon/>}
+                    </IconButton>
+                    <IconButton color='secondary' onClick={changeAlignment}>
+                        {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
+                        {alignment === 'centered' && <CenterFocusStrongIcon/>}
+                    </IconButton>
+                    <IconButton color='secondary' onClick={formatMode === 'line' ? closePalette : setFormatModeLine}>
+                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
+                                  d="M 408 72 C 72 72 408 408 72 408"
+                            />
+                        </svg>
+                    </IconButton>
+                    <IconButton color='secondary' onClick={formatMode === 'border' ? closePalette : setFormatModeBorder}>
+                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
+                                  d={selection === 's' ? sSelectionSvg : fSelectionSvg}
+                            />
+                        </svg>
+                    </IconButton>
+                    <IconButton color='secondary' onClick={formatMode === 'fill' ? closePalette : setFormatModeFill}>
+                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
+                                  d={selection === 's' ? sSelectionSvg : fSelectionSvg}
+                            />
+                        </svg>
+                    </IconButton>
+                    <IconButton color='secondary' onClick={formatMode === 'text' ? closePalette : setFormatModeText}>
+                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                            <g>
+                                <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
+                                      x1={96} y1={96} x2={384} y2={96}
+                                />
+                                <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
+                                      x1={240} y1={384} x2={240} y2={96}
+                                />
+                            </g>
+                        </svg>
+                    </IconButton>
+                    <IconButton color='secondary' onClick={openMoreMenu}>
+                        <MoreVertIcon/>
+                    </IconButton>
+                    <IconBarMore/>
+                </div>
+            </div>
+        </>
+
     )
 }
