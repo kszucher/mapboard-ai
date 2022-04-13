@@ -78,20 +78,20 @@ export function Formatter () {
             position: 'fixed',
             top: 48*2,
             right: 48*2,
-            width: width + 40*2,
+            width: width + 2*12,
             display: 'flex',
             flexDirection: 'column',
             borderRadius: 16,
             background: MAP_BACKGROUND,
             border: `1px solid ${PAGE_BACKGROUND}`,
         }}>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <div>
-                    <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
-                        <ArrowRightIcon/>
-                    </IconButton>
-                </div>
-                <div style={{ top: 12 + 40*offset, width, height, padding: 4 }}>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                {/*<div>*/}
+                {/*    <IconButton disableRipple={true} color='secondary' onClick={closePalette}>*/}
+                {/*        <ArrowRightIcon/>*/}
+                {/*    </IconButton>*/}
+                {/*</div>*/}
+                <div style={{ width, height, padding: 12 }}>
                     <svg viewBox={`0 0 ${width} ${height}`}>
                         {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                             <circle
@@ -106,11 +106,11 @@ export function Formatter () {
                             />))))}
                     </svg>
                 </div>
-                <div>
-                    <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
-                        <DoDisturbIcon/>
-                    </IconButton>
-                </div>
+                {/*<div>*/}
+                {/*    <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>*/}
+                {/*        <DoDisturbIcon/>*/}
+                {/*    </IconButton>*/}
+                {/*</div>*/}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingBottom: 12}}>
                 <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
