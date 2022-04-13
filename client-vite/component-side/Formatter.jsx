@@ -1,8 +1,6 @@
 import {useSelector, useDispatch} from "react-redux"
-import { Button, ButtonGroup, IconButton, Typography } from '@mui/material'
+import { Button, ButtonGroup, Typography } from '@mui/material'
 import { colorList, getColors } from '../core/Colors'
-import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { setClear } from '../core/Utils'
 import StyledButtonGroup from '../component-styled/StyledButtonGroup'
 import { MAP_RIGHTS } from '../core/EditorFlow'
@@ -55,7 +53,7 @@ export function Formatter () {
             case 'text':    return textColor
         }
     }
-    
+
     const resolveReset = (formatMode) => {
         return {
             line: resetLine,
