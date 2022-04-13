@@ -86,11 +86,6 @@ export function Formatter () {
             border: `1px solid ${PAGE_BACKGROUND}`,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                {/*<div>*/}
-                {/*    <IconButton disableRipple={true} color='secondary' onClick={closePalette}>*/}
-                {/*        <ArrowRightIcon/>*/}
-                {/*    </IconButton>*/}
-                {/*</div>*/}
                 <div style={{ width, height, paddingTop: 12 }}>
                     <svg viewBox={`0 0 ${width} ${height}`}>
                         {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
@@ -106,11 +101,6 @@ export function Formatter () {
                             />))))}
                     </svg>
                 </div>
-                {/*<div>*/}
-                {/*    <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>*/}
-                {/*        <DoDisturbIcon/>*/}
-                {/*    </IconButton>*/}
-                {/*</div>*/}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 12}}>
 
