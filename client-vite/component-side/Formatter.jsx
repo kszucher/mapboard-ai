@@ -7,7 +7,6 @@ import { setClear } from '../core/Utils'
 import StyledButtonGroup from '../component-styled/StyledButtonGroup'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 
-
 export function Formatter () {
     const LINE_WIDTH_TYPES = ['w1', 'w2', 'w3']
     const LINE_TYPE_TYPES = ['bezier', 'edge']
@@ -57,14 +56,7 @@ export function Formatter () {
         }
     }
 
-    const resolveColorName = (formatMode) => {
-        return {
-            line: 'lineColor',
-            text: 'textColor',
-            fill: 'fillColor',
-            border: 'borderColor'
-        }[formatMode]
-    }
+    // const resolveColorName = formatMode => formatMode + 'Color'
 
     const resolveReset = (formatMode) => {
         return {
@@ -79,53 +71,28 @@ export function Formatter () {
     const r = 12
     const width = o * colorList[0].length
     const height = o * colorList.length
-    const offset = {
-        line: 4,
-        border: 5,
-        fill: 6,
-        text: 7
-    }[formatMode]
+    const offset = { line: 4, border: 5, fill: 6, text: 7 }[formatMode]
 
     return (
-        <div
-            style={{
-                position: 'fixed',
-                // top: 12 + 40*offset,
-                top: 12,
-                right: 40 + 4*12,
-                width: width + 40*2 + 12,
-                display: 'flex',
-                flexDirection: 'row',
-                borderRadius: 16,
-                backgroundColor: MAP_BACKGROUND,
-                border: `1px solid ${PAGE_BACKGROUND}`,
-            }}>
-
+        <div style={{ position: 'fixed', top: 12, right: 40 + 4*12, width: width + 40*2 + 12, display: 'flex', borderRadius: 16, background: MAP_BACKGROUND, border: `1px solid ${PAGE_BACKGROUND}`, }}>
             <div>
                 <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
                     <ArrowRightIcon/>
                 </IconButton>
             </div>
-            <div
-                style={{
-                    top: 12 + 40*offset,
-                    width,
-                    height,
-                    padding: 4,
-                }}>
+            <div style={{ top: 12 + 40*offset, width, height, padding: 4 }}>
                 <svg viewBox={`0 0 ${width} ${height}`}>
-                    {colorList.map((iEl, i) =>
-                        (iEl.map((jEl, j) => (
-                            <circle
-                                cx={o/2 + j*o}
-                                cy={o/2 + i*o}
-                                r={r}
-                                key={'key' + i*10 + j}
-                                fill={jEl}
-                                stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
-                                strokeWidth={"2%"}
-                                onClick={_ => setNodeParam({ [resolveColorName(formatMode)] : colorList[i][j] })}
-                            />))))}
+                    {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
+                        <circle
+                            cx={o/2 + j*o}
+                            cy={o/2 + i*o}
+                            r={r}
+                            key={'key' + i*10 + j}
+                            fill={jEl}
+                            stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
+                            strokeWidth={"2%"}
+                            onClick={_ => setNodeParam({ [formatMode + 'Color'] : colorList[i][j] })}
+                        />))))}
                 </svg>
             </div>
             <div>
