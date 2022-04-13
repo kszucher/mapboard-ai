@@ -41,33 +41,13 @@ export function Formatter () {
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
     const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
 
-
     const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
-
-    const resolveColor = (formatMode) => {
-        switch (formatMode) {
-            case 'line':    return lineColor
-            case 'border':  return borderColor
-            case 'fill':    return fillColor
-            case 'text':    return textColor
-        }
-    }
-
-    const resolveReset = (formatMode) => {
-        return {
-            line: resetLine,
-            text: resetText,
-            fill: resetFill,
-            border: resetBorder
-        }[formatMode]
-    }
 
     const o = 32
     const r = 12
     const width = o * colorList[0].length
     const height = o * colorList.length
-    const offset = { line: 4, border: 5, fill: 6, text: 7 }[formatMode]
 
     return (
         <div style={{
@@ -90,6 +70,14 @@ export function Formatter () {
                     {formatMode.toUpperCase()}
                 </Typography>
             </div>
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
+                <Button
+                    color="primary"
+                    variant='outlined'
+                    onClick={{ line: resetLine, text: resetText, fill: resetFill, border: resetBorder }[formatMode]}>
+                    {'RESET'}
+                </Button>
+            </div>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <div style={{ width, height }}>
                     <svg viewBox={`0 0 ${width} ${height}`}>
@@ -100,17 +88,19 @@ export function Formatter () {
                                 r={r}
                                 key={'key' + i*10 + j}
                                 fill={jEl}
-                                stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
+                                stroke={
+                                    colorList[i][j] ===
+                                    {line: lineColor, border: borderColor, fill: fillColor, text: textColor}[formatMode]
+                                        ? '#9040b8'
+                                        : 'none'
+                                }
                                 strokeWidth={"2%"}
                                 onClick={_ => setNodeParam({ [formatMode + 'Color'] : colorList[i][j] })}
                             />))))}
                     </svg>
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-
-
-
+            <div style={{ display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
                 {formatMode === 'line' && <ButtonGroup disabled={disabled} variant="text" color="primary">
                     {LINE_WIDTH_TYPES.map((name, index) =>
                         <Button
@@ -157,13 +147,9 @@ export function Formatter () {
                     )}
                 </ButtonGroup>}
 
-
-                <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
+                {/*TODO remove these*/}
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={toggleTask} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
-
-
-
 
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
