@@ -86,7 +86,7 @@ export function Formatter () {
             paddingBottom: 12,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                <Typography component="h4" variant="h5">
+                <Typography variant="h6">
                     {formatMode.toUpperCase()}
                 </Typography>
             </div>
