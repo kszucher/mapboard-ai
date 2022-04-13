@@ -1,5 +1,5 @@
 import {useSelector, useDispatch} from "react-redux"
-import { Button, ButtonGroup, IconButton } from '@mui/material'
+import { Button, ButtonGroup, IconButton, Typography } from '@mui/material'
 import { colorList, getColors } from '../core/Colors'
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -55,9 +55,7 @@ export function Formatter () {
             case 'text':    return textColor
         }
     }
-
-    // const resolveColorName = formatMode => formatMode + 'Color'
-
+    
     const resolveReset = (formatMode) => {
         return {
             line: resetLine,
@@ -84,9 +82,18 @@ export function Formatter () {
             borderRadius: 16,
             background: MAP_BACKGROUND,
             border: `1px solid ${PAGE_BACKGROUND}`,
+            flexWrap: 'wrap',
+            gap: 12,
+            paddingTop: 12,
+            paddingBottom: 12,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                <div style={{ width, height, paddingTop: 12 }}>
+                <Typography component="h4" variant="h5">
+                    {formatMode.toUpperCase()}
+                </Typography>
+            </div>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                <div style={{ width, height }}>
                     <svg viewBox={`0 0 ${width} ${height}`}>
                         {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                             <circle
@@ -102,7 +109,7 @@ export function Formatter () {
                     </svg>
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 12}}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
 
 
 
@@ -161,7 +168,7 @@ export function Formatter () {
 
 
             </div>
-            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12, paddingBottom: 12 }}>
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
                 <Button
                     color="primary"
                     variant='outlined'
