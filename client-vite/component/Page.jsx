@@ -6,7 +6,6 @@ import Logo from "../component-side/Logo"
 import TabMaps from "../component-side/TabMaps"
 import { UndoRedo } from "../component-side/UndoRedo"
 import Breadcrumbs from "../component-side/BreadcrumbMaps"
-import { CommandTexts } from "../component-side/CommandTexts"
 import { Palette } from "../component-side/Palette"
 import { FramesBottom } from "../component-side/FramesBottom"
 import { Sharing } from "../component-modal/Sharing"
@@ -98,7 +97,6 @@ export function Page() {
                         <UndoRedo/>
                         <IconBar/>
                         <Breadcrumbs/>
-                        <CommandTexts/>
                     </>}
                     {formatMode!=='' && <Palette/>}
                     {frameEditorVisible===1 && <FramesSide/>}

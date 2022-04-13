@@ -7,6 +7,8 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { setClear } from '../core/Utils'
+import { MAP_RIGHTS } from '../core/EditorFlow'
+import StyledButtonGroup from '../component-styled/StyledButtonGroup'
 
 const colorList = [
     ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
@@ -41,6 +43,50 @@ export function Palette () {
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
+
+
+
+
+
+    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+    const LINE_WIDTH_TYPES = ['w1', 'w2', 'w3']
+    const LINE_TYPE_TYPES = ['bezier', 'edge']
+    const BORDER_WIDTH_TYPES = ['w1', 'w2', 'w3']
+    const FONT_SIZE_TYPES = ['h1', 'h2', 'h3', 'h4', 't']
+
+
+    const mapRight = useSelector(state => state.mapRight)
+    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+    const lineWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.lineWidth)]
+    const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
+    const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
+    const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[useSelector(state => state.node.textFontSize)]
+    const taskStatus = useSelector(state => state.node.taskStatus)
+
+    const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
+    const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
+    const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
+    const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
+    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
+    const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
+
+    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     const resolveColor = (formatMode) => {
         switch (formatMode) {
@@ -122,15 +168,21 @@ export function Palette () {
                             />))))}
                 </svg>
             </div>
-            {/*<div>*/}
-            {/*    <IconButton disableRipple={true} color='secondary' onClick={_=>{}}>*/}
-            {/*        <ArrowDropDownIcon/>*/}
-            {/*    </IconButton>*/}
-            {/*</div>*/}
             <div>
                 <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
                     <DoDisturbIcon/>
                 </IconButton>
+            </div>
+            <div>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
+                    <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
+                    <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_WIDTH_TYPES} value={lineWidth} action={setLineWidth} disabled={disabled}/>
+                    <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
+                    <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>
+                    <StyledButtonGroup open={formatMode === 'text'} valueList={FONT_SIZE_TYPES} value={textFontSize} action={setTextFontSize} disabled={disabled}/>
+                    <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={toggleTask} disabled={disabled}/>
+                    <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
+                </div>
             </div>
         </div>
     )
