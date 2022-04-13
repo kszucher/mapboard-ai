@@ -39,7 +39,6 @@ export function Formatter () {
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
-    const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
 
     const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
