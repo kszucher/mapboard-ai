@@ -6,7 +6,7 @@ import Logo from "../component-side/Logo"
 import TabMaps from "../component-side/TabMaps"
 import { UndoRedo } from "../component-side/UndoRedo"
 import Breadcrumbs from "../component-side/BreadcrumbMaps"
-import { Palette } from "../component-side/Palette"
+import { Formatter } from "../component-side/Formatter"
 import { FramesBottom } from "../component-side/FramesBottom"
 import { Sharing } from "../component-modal/Sharing"
 import { Shares } from "../component-modal/Shares"
@@ -98,7 +98,7 @@ export function Page() {
                         <IconBar/>
                         <Breadcrumbs/>
                     </>}
-                    {formatMode!=='' && <Palette/>}
+                    {formatMode!=='' && <Formatter/>}
                     {frameEditorVisible===1 && <FramesSide/>}
                     {frameEditorVisible===1 && <FramesBottom/>}
                 </>}

@@ -25,7 +25,7 @@ const colorList = [
     ['#391F19', '#B68E63', '#F2DFA9', '#E58119', '#746839', '#09415A'],
 ]
 
-export function Palette () {
+export function Formatter () {
     const colorMode = useSelector(state => state.colorMode)
     const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
     const formatMode = useSelector(state => state.formatMode)
