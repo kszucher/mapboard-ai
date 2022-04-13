@@ -74,42 +74,42 @@ export function Formatter () {
     const offset = { line: 4, border: 5, fill: 6, text: 7 }[formatMode]
 
     return (
-        <div style={{ position: 'fixed', top: 12, right: 40 + 4*12, width: width + 40*2 + 12, display: 'flex', borderRadius: 16, background: MAP_BACKGROUND, border: `1px solid ${PAGE_BACKGROUND}`, }}>
-            <div>
-                <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
-                    <ArrowRightIcon/>
-                </IconButton>
-            </div>
-            <div style={{ top: 12 + 40*offset, width, height, padding: 4 }}>
-                <svg viewBox={`0 0 ${width} ${height}`}>
-                    {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
-                        <circle
-                            cx={o/2 + j*o}
-                            cy={o/2 + i*o}
-                            r={r}
-                            key={'key' + i*10 + j}
-                            fill={jEl}
-                            stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
-                            strokeWidth={"2%"}
-                            onClick={_ => setNodeParam({ [formatMode + 'Color'] : colorList[i][j] })}
-                        />))))}
-                </svg>
-            </div>
-            <div>
-                <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
-                    <DoDisturbIcon/>
-                </IconButton>
-            </div>
-            <div>
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingLeft: 12, paddingRight: 12 }}>
-                    <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
-                    <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_WIDTH_TYPES} value={lineWidth} action={setLineWidth} disabled={disabled}/>
-                    <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
-                    <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>
-                    <StyledButtonGroup open={formatMode === 'text'} valueList={FONT_SIZE_TYPES} value={textFontSize} action={setTextFontSize} disabled={disabled}/>
-                    <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={toggleTask} disabled={disabled}/>
-                    <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
+        <div style={{ position: 'fixed', top: 12, right: 40 + 4*12, width: width + 40*2, display: 'flex', flexDirection: 'column', borderRadius: 16, background: MAP_BACKGROUND, border: `1px solid ${PAGE_BACKGROUND}`, }}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div>
+                    <IconButton disableRipple={true} color='secondary' onClick={closePalette}>
+                        <ArrowRightIcon/>
+                    </IconButton>
                 </div>
+                <div style={{ top: 12 + 40*offset, width, height, padding: 4 }}>
+                    <svg viewBox={`0 0 ${width} ${height}`}>
+                        {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
+                            <circle
+                                cx={o/2 + j*o}
+                                cy={o/2 + i*o}
+                                r={r}
+                                key={'key' + i*10 + j}
+                                fill={jEl}
+                                stroke={colorList[i][j] === resolveColor(formatMode) ? '#9040b8' : 'none'}
+                                strokeWidth={"2%"}
+                                onClick={_ => setNodeParam({ [formatMode + 'Color'] : colorList[i][j] })}
+                            />))))}
+                    </svg>
+                </div>
+                <div>
+                    <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
+                        <DoDisturbIcon/>
+                    </IconButton>
+                </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingBottom: 12}}>
+                <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_WIDTH_TYPES} value={lineWidth} action={setLineWidth} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === 'text'} valueList={FONT_SIZE_TYPES} value={textFontSize} action={setTextFontSize} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={toggleTask} disabled={disabled}/>
+                <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
             </div>
         </div>
     )
