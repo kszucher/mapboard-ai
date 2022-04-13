@@ -1,92 +1,52 @@
 import {useSelector, useDispatch} from "react-redux"
-import { Button, IconButton } from '@mui/material'
-import { getColors } from '../core/Colors'
+import { IconButton } from '@mui/material'
+import { colorList, getColors } from '../core/Colors'
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import CloseIcon from '@mui/icons-material/Close';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
 import { setClear } from '../core/Utils'
-import { MAP_RIGHTS } from '../core/EditorFlow'
 import StyledButtonGroup from '../component-styled/StyledButtonGroup'
+import { MAP_RIGHTS } from '../core/EditorFlow'
 
-const colorList = [
-    ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
-    ['#EFEFEF', '#DEDEE8', '#F3F0E0', '#E4EADE', '#DCE5E6', '#DCE5E6'],
-    ['#9086A6', '#E0C1D2', '#EFF0ED', '#9DD4C9', '#75A3BA', '#75A3BA'],
-    ['#A0D7D9', '#FBE7A3', '#F4CBA1', '#F8FDDF', '#AE99BF', '#AE99BF'],
-    ['#1C5D6C', '#70A18F', '#B7CFAE', '#EDDDCF', '#B25C6D', '#B25C6D'],
-    ['#B2CFC9', '#95BABD', '#9292B0', '#F6A7A7', '#FFD6C9', '#FFD6C9'],
-    ['#04A4B5', '#30BFBF', '#56D3CB', '#EEEE99', '#EBD295', '#fafafa'],
-    ['#285588', '#E36273', '#FCC40F', '#ECE7C7', '#A8875E', '#347ab7'],
-    ['#605E85', '#6CCC86', '#F7D36F', '#FD7780', '#994D80', '#aa0011'],
-    ['#B4C2D6', '#BFE3DA', '#F5FCDC', '#FEFFF7', '#C0DDBE', '#f2dede'],
-    ['#FFD6DE', '#E8CEE3', '#C7BAE1', '#BBD3EC', '#ECE4C5', '#82c5e2'],
-    ['#391F19', '#B68E63', '#F2DFA9', '#E58119', '#746839', '#09415A'],
-]
 
 export function Formatter () {
-    const colorMode = useSelector(state => state.colorMode)
-    const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
-    const formatMode = useSelector(state => state.formatMode)
-    const lineColor = useSelector(state => state.node.lineColor)
-    const borderColor = useSelector(state => state.node.borderColor)
-    const fillColor = useSelector(state => state.node.fillColor)
-    const textColor = useSelector(state => state.node.textColor)
-    const dispatch = useDispatch()
-    const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
-
-    const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-
-
-    const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
-    const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
-    const resetFill = _ => setNodeParam(setClear(['fillColor']))
-    const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
-
-
-
-
-
-    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
     const LINE_WIDTH_TYPES = ['w1', 'w2', 'w3']
     const LINE_TYPE_TYPES = ['bezier', 'edge']
     const BORDER_WIDTH_TYPES = ['w1', 'w2', 'w3']
     const FONT_SIZE_TYPES = ['h1', 'h2', 'h3', 'h4', 't']
 
+    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
 
+    const colorMode = useSelector(state => state.colorMode)
     const mapRight = useSelector(state => state.mapRight)
-    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+    const formatMode = useSelector(state => state.formatMode)
+    const lineColor = useSelector(state => state.node.lineColor)
+    const borderColor = useSelector(state => state.node.borderColor)
+    const fillColor = useSelector(state => state.node.fillColor)
+    const textColor = useSelector(state => state.node.textColor)
     const lineWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.lineWidth)]
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[useSelector(state => state.node.textFontSize)]
     const taskStatus = useSelector(state => state.node.taskStatus)
 
+    const dispatch = useDispatch()
+    const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
+    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
+    const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
     const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
+    const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
+    const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
+    const resetFill = _ => setNodeParam(setClear(['fillColor']))
+    const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
     const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
 
-    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
+    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
 
     const resolveColor = (formatMode) => {
         switch (formatMode) {
