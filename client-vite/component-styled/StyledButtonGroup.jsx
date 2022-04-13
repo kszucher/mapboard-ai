@@ -6,10 +6,10 @@ export default function StyledButtonGroup (arg) {
         open && <div>
             <ButtonGroup
                 disabled={disabled || false}
-                size={size || 'small'}
+                // size={size || 'small'}
                 variant="text"
-                // color="primary"
-                aria-label="text primary button group">
+                color="primary"
+                >
                 {valueList.map((name, index) =>
                     <Button
                         disabled={valueListDisabled && valueListDisabled[index] || false}

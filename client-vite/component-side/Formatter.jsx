@@ -1,5 +1,5 @@
 import {useSelector, useDispatch} from "react-redux"
-import { IconButton } from '@mui/material'
+import { Button, ButtonGroup, IconButton } from '@mui/material'
 import { colorList, getColors } from '../core/Colors'
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -91,7 +91,7 @@ export function Formatter () {
                 {/*        <ArrowRightIcon/>*/}
                 {/*    </IconButton>*/}
                 {/*</div>*/}
-                <div style={{ width, height, padding: 12 }}>
+                <div style={{ width, height, paddingTop: 12 }}>
                     <svg viewBox={`0 0 ${width} ${height}`}>
                         {colorList.map((iEl, i) => (iEl.map((jEl, j) => (
                             <circle
@@ -112,14 +112,72 @@ export function Formatter () {
                 {/*    </IconButton>*/}
                 {/*</div>*/}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingBottom: 12}}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', paddingTop: 12}}>
+
+
+
+                {formatMode === 'line' && <ButtonGroup disabled={disabled} variant="text" color="primary">
+                    {LINE_WIDTH_TYPES.map((name, index) =>
+                        <Button
+                            style={{ backgroundColor: lineWidth === LINE_WIDTH_TYPES[index] ? '#eeeaf2' : '' }}
+                            onClick={_=>setLineWidth(LINE_WIDTH_TYPES[index])}
+                            key={index}
+                        >
+                            {name}
+                        </Button>
+                    )}
+                </ButtonGroup>}
+                {formatMode === 'line' && <ButtonGroup disabled={disabled} variant="text" color="primary">
+                    {LINE_TYPE_TYPES.map((name, index) =>
+                        <Button
+                            style={{ backgroundColor: lineType === LINE_TYPE_TYPES[index] ? '#eeeaf2' : '' }}
+                            onClick={_=>setLineType(LINE_TYPE_TYPES[index])}
+                            key={index}
+                        >
+                            {name}
+                        </Button>
+                    )}
+                </ButtonGroup>}
+                {formatMode === 'border' && <ButtonGroup disabled={disabled} variant="text" color="primary">
+                    {BORDER_WIDTH_TYPES.map((name, index) =>
+                        <Button
+                            style={{ backgroundColor: borderWidth === BORDER_WIDTH_TYPES[index] ? '#eeeaf2' : '' }}
+                            onClick={_=>setBorderWidth(BORDER_WIDTH_TYPES[index])}
+                            key={index}
+                        >
+                            {name}
+                        </Button>
+                    )}
+                </ButtonGroup>}
+
+                {formatMode === 'text' && <ButtonGroup disabled={disabled} variant="text" color="primary">
+                    {FONT_SIZE_TYPES.map((name, index) =>
+                        <Button
+                            style={{ backgroundColor: textFontSize === FONT_SIZE_TYPES[index] ? '#eeeaf2' : '' }}
+                            onClick={_=>setTextFontSize(FONT_SIZE_TYPES[index])}
+                            key={index}
+                        >
+                            {name}
+                        </Button>
+                    )}
+                </ButtonGroup>}
+
+
                 <StyledButtonGroup open={formatMode === '' } valueList={['reset format']} value={''} action={resetFormat} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_WIDTH_TYPES} value={lineWidth} action={setLineWidth} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode === 'line'} valueList={LINE_TYPE_TYPES} value={lineType} action={setLineType} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode === 'border'} valueList={BORDER_WIDTH_TYPES} value={borderWidth} action={setBorderWidth} disabled={disabled}/>
-                <StyledButtonGroup open={formatMode === 'text'} valueList={FONT_SIZE_TYPES} value={textFontSize} action={setTextFontSize} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={toggleTask} disabled={disabled}/>
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
+
+
+
+
+            </div>
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', paddingTop: 12, paddingBottom: 12 }}>
+                <Button
+                    color="primary"
+                    variant='outlined'
+                    onClick={closePalette}>
+                    {'CLOSE'}
+                </Button>
             </div>
         </div>
     )
