@@ -9,17 +9,17 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { setClear } from '../core/Utils'
 
 const colorList = [
-    // ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
-    // ['#EFEFEF', '#DEDEE8', '#F3F0E0', '#E4EADE', '#DCE5E6', '#DCE5E6'],
-    // ['#9086A6', '#E0C1D2', '#EFF0ED', '#9DD4C9', '#75A3BA', '#75A3BA'],
-    // ['#A0D7D9', '#FBE7A3', '#F4CBA1', '#F8FDDF', '#AE99BF', '#AE99BF'],
-    // ['#1C5D6C', '#70A18F', '#B7CFAE', '#EDDDCF', '#B25C6D', '#B25C6D'],
-    // ['#B2CFC9', '#95BABD', '#9292B0', '#F6A7A7', '#FFD6C9', '#FFD6C9'],
-    // ['#04A4B5', '#30BFBF', '#56D3CB', '#EEEE99', '#EBD295', '#fafafa'],
-    // ['#285588', '#E36273', '#FCC40F', '#ECE7C7', '#A8875E', '#347ab7'],
-    // ['#605E85', '#6CCC86', '#F7D36F', '#FD7780', '#994D80', '#aa0011'],
-    // ['#B4C2D6', '#BFE3DA', '#F5FCDC', '#FEFFF7', '#C0DDBE', '#f2dede'],
-    // ['#FFD6DE', '#E8CEE3', '#C7BAE1', '#BBD3EC', '#ECE4C5', '#82c5e2'],
+    ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
+    ['#EFEFEF', '#DEDEE8', '#F3F0E0', '#E4EADE', '#DCE5E6', '#DCE5E6'],
+    ['#9086A6', '#E0C1D2', '#EFF0ED', '#9DD4C9', '#75A3BA', '#75A3BA'],
+    ['#A0D7D9', '#FBE7A3', '#F4CBA1', '#F8FDDF', '#AE99BF', '#AE99BF'],
+    ['#1C5D6C', '#70A18F', '#B7CFAE', '#EDDDCF', '#B25C6D', '#B25C6D'],
+    ['#B2CFC9', '#95BABD', '#9292B0', '#F6A7A7', '#FFD6C9', '#FFD6C9'],
+    ['#04A4B5', '#30BFBF', '#56D3CB', '#EEEE99', '#EBD295', '#fafafa'],
+    ['#285588', '#E36273', '#FCC40F', '#ECE7C7', '#A8875E', '#347ab7'],
+    ['#605E85', '#6CCC86', '#F7D36F', '#FD7780', '#994D80', '#aa0011'],
+    ['#B4C2D6', '#BFE3DA', '#F5FCDC', '#FEFFF7', '#C0DDBE', '#f2dede'],
+    ['#FFD6DE', '#E8CEE3', '#C7BAE1', '#BBD3EC', '#ECE4C5', '#82c5e2'],
     ['#391F19', '#B68E63', '#F2DFA9', '#E58119', '#746839', '#09415A'],
 ]
 
@@ -84,9 +84,10 @@ export function Palette () {
         <div
             style={{
                 position: 'fixed',
-                top: 12 + 40*offset,
-                right: 80,
-                width: width + 40*3 + 12,
+                // top: 12 + 40*offset,
+                top: 12,
+                right: 40 + 4*12,
+                width: width + 40*2 + 12,
                 display: 'flex',
                 flexDirection: 'row',
                 borderRadius: 16,
@@ -121,11 +122,11 @@ export function Palette () {
                             />))))}
                 </svg>
             </div>
-            <div>
-                <IconButton disableRipple={true} color='secondary' onClick={_=>{}}>
-                    <ArrowDropDownIcon/>
-                </IconButton>
-            </div>
+            {/*<div>*/}
+            {/*    <IconButton disableRipple={true} color='secondary' onClick={_=>{}}>*/}
+            {/*        <ArrowDropDownIcon/>*/}
+            {/*    </IconButton>*/}
+            {/*</div>*/}
             <div>
                 <IconButton disableRipple={true} color='secondary' onClick={resolveReset(formatMode)}>
                     <DoDisturbIcon/>

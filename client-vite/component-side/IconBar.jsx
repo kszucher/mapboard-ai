@@ -38,7 +38,8 @@ export function IconBar () {
     return (
         <div style={{
             position: 'fixed',
-            right: 0,
+            right: 12,
+            top: 12,
             width: 1*40, // n is the number of icons
             display: 'flex',
             alignItems: 'center',
@@ -46,7 +47,7 @@ export function IconBar () {
             paddingLeft: 12,
             paddingRight: 12,
             backgroundColor: MAP_BACKGROUND,
-            borderBottomLeftRadius: 16,
+            borderRadius: 16,
             borderTop: 0,
             borderRight: 0,
             borderColor: MAP_BACKGROUND,
