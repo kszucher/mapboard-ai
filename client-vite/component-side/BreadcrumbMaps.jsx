@@ -26,16 +26,19 @@ export default function BreadcrumbMaps() {
             transform: 'translate(-50%)',
             display: 'flex',
             alignItems: 'center',
-            height: 48,
+            height: 40,
+            paddingTop: 12,
+            paddingBottom: 12,
             paddingLeft: '20px',
             paddingRight: '20px',
             backgroundColor: MAP_BACKGROUND,
             borderBottomLeftRadius: '16px',
             borderBottomRightRadius: '16px',
-            borderWidth: '2px',
-            borderStyle: 'solid',
             borderTop: 0,
-            borderColor: '#9040b8',
+            borderLeft: '2px solid #9040b8',
+            borderBottom: '2px solid #9040b8',
+            borderRight: '2px solid #9040b8',
+
         }}>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                 {breadcrumbMapNameList.map((el, index) => (

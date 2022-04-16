@@ -59,22 +59,19 @@ export function Icons () {
         <>
             <div style={{
                 position: 'fixed',
-                left: 216+48,
+                left: 216+32,
                 width: 80,
                 display: 'flex',
                 alignItems: 'center',
                 height: 40,
-                paddingTop: 4,
-                paddingBottom: 4,
-                paddingLeft: 12,
-                paddingRight: 12,
+                padding: 12,
                 backgroundColor: MAP_BACKGROUND,
                 borderBottomLeftRadius: 16,
                 borderBottomRightRadius: 16,
                 borderTop: 0,
                 borderColor: MAP_BACKGROUND,
             }}>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ display: 'flex',  }}>
                     <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
                         <UndoIcon/>
                     </IconButton>
@@ -86,13 +83,11 @@ export function Icons () {
             <div style={{
                 position: 'fixed',
                 right: 0,
-                top: 0,
                 width: 40,
+                height: 40,
+                padding: 12,
                 display: 'flex',
                 alignItems: 'center',
-                height: 40+2*12,
-                paddingLeft: 12,
-                paddingRight: 12,
                 backgroundColor: MAP_BACKGROUND,
                 borderRadius: '0 0 0 16px',
                 borderTop: 0,
