@@ -59,7 +59,7 @@ export function Icons () {
         <>
             <div style={{
                 position: 'fixed',
-                left: 216+32,
+                left: 216+48,
                 width: 80,
                 display: 'flex',
                 alignItems: 'center',
