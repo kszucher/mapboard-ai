@@ -26,10 +26,14 @@ export function Formatter () {
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[useSelector(state => state.node.textFontSize)]
     const taskStatus = useSelector(state => state.node.taskStatus)
 
+    const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
+    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+
     const dispatch = useDispatch()
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
+
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
@@ -39,9 +43,6 @@ export function Formatter () {
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
-
-    const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
-    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
 
     const o = 32
     const r = 12
