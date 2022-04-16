@@ -26,7 +26,7 @@ export default function BreadcrumbMaps() {
             transform: 'translate(-50%)',
             display: 'flex',
             alignItems: 'center',
-            height: 40+2*12,
+            height: 48,
             paddingLeft: '20px',
             paddingRight: '20px',
             backgroundColor: MAP_BACKGROUND,

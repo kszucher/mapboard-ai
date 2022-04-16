@@ -11,13 +11,16 @@ export default function Logo() {
         <div style={{
             position: 'absolute',
             width: 216,
-            height: 40+2*12,
+            height: 40,
+            paddingTop: 4,
+            paddingBottom: 4,
             backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)`,
-            // borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
             color: '#fff',
             display: 'flex',
-            justifyContent: 'center'}}>
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
             <Toolbar variant={"dense"}>
                 <IconButton
                     sx={{ mr: 2 }}
