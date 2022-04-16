@@ -39,7 +39,10 @@ export function Icons () {
     const undo = _ => dispatch({ type: 'UNDO'})
     const redo = _ => dispatch({ type: 'REDO'})
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
-
+    const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
+    const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
+    const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
+    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
     const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
@@ -48,12 +51,7 @@ export function Icons () {
     const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-
-    const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
-    const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
-    const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
-    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
-
+    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
 
     return (
         <>
@@ -109,7 +107,7 @@ export function Icons () {
                 width: 40,
                 display: 'flex',
                 alignItems: 'center',
-                height: 10*40 + 2*12,
+                height: 11*40 + 2*12,
                 paddingLeft: 12,
                 paddingRight: 12,
                 backgroundColor: MAP_BACKGROUND,
@@ -155,12 +153,8 @@ export function Icons () {
                     <IconButton color='secondary' onClick={formatMode === 'text' ? closePalette : setFormatModeText}>
                         <svg {...svgCommonParams}>
                             <g>
-                                <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                      x1={96} y1={96} x2={384} y2={96}
-                                />
-                                <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                      x1={240} y1={384} x2={240} y2={96}
-                                />
+                                <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={96} y1={96} x2={384} y2={96}/>
+                                <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={240} y1={384} x2={240} y2={96}/>
                             </g>
                         </svg>
                     </IconButton>
@@ -171,15 +165,27 @@ export function Icons () {
                     <IconButton color='secondary' onClick={toggleTask}>
                         <svg {...svgCommonParams}>
                             <g>
-                                <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                      d="M 168 240 L 48 240"
-                                />
-                                <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
-                                         cx={240} cy={240} rx={60} ry={60}
-                                />
-                                <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                                         cx={380} cy={240} rx={60} ry={60}
-                                />
+                                <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} d="M 168 240 L 48 240"/>
+
+                                <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} cx={240} cy={240} rx={60} ry={60}/>
+                                <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} cx={380} cy={240} rx={60} ry={60}/>
+                            </g>
+                        </svg>
+                    </IconButton>
+
+                    <IconButton color='secondary' onClick={createMapInMap}>
+                        <svg {...svgCommonParams}>
+                            <g>
+                                <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 168 240 L 24 240"/>
+                                <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 96 168 L 96 312"/>
+
+                                <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 240 216 C 336 216 240 48 336 48"/>
+                                <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 240 240 L 336 240"/>
+                                <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 240 264 C 336 264 240 432 336 432"/>
+
+                                <ellipse style={{ fill: MAIN_COLOR }} cx={408} cy={48} rx={48} ry={48}/>
+                                <ellipse style={{ fill: MAIN_COLOR }} cx={408} cy={240} rx={48} ry={48}/>
+                                <ellipse style={{ fill: MAIN_COLOR }} cx={408} cy={432} rx={48} ry={48}/>
                             </g>
                         </svg>
                     </IconButton>

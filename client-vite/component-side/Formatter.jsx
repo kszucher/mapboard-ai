@@ -30,9 +30,7 @@ export function Formatter () {
 
     const dispatch = useDispatch()
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
-
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
@@ -132,7 +130,6 @@ export function Formatter () {
                         </Button>
                     )}
                 </ButtonGroup>}
-
                 {formatMode === 'text' && <ButtonGroup disabled={disabled} variant="text" color="primary">
                     {FONT_SIZE_TYPES.map((name, index) =>
                         <Button
@@ -144,9 +141,6 @@ export function Formatter () {
                         </Button>
                     )}
                 </ButtonGroup>}
-
-                <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
-
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
                 <Button
