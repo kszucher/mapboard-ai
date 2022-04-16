@@ -9,11 +9,11 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import PersonIcon from '@mui/icons-material/Person'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import EditOffIcon from '@mui/icons-material/EditOff';
+import EditOffIcon from '@mui/icons-material/EditOff'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
-import ShareIcon from '@mui/icons-material/Share';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
+import ShareIcon from '@mui/icons-material/Share'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import More from './More'
 import { setClear } from '../core/Utils'
@@ -182,7 +182,7 @@ export function Icons () {
                         </svg>
                     </IconButton>
                     <IconButton color='secondary' onClick={_=>{}}>
-                        <AutoAwesomeMotionIcon/>
+                        <DynamicFeedIcon/>
                     </IconButton>
                     <IconButton color='secondary' onClick={_=>{}}>
                         <ShareIcon/>
