@@ -4,7 +4,6 @@ import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
 import Logo from "../component-side/Logo"
 import TabMaps from "../component-side/TabMaps"
-import { UndoRedo } from "../component-side/UndoRedo"
 import Breadcrumbs from "../component-side/BreadcrumbMaps"
 import { Formatter } from "../component-side/Formatter"
 import { FramesBottom } from "../component-side/FramesBottom"
@@ -94,7 +93,6 @@ export function Page() {
                     <Logo/>
                     {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                         <TabMaps/>
-                        <UndoRedo/>
                         <IconBar/>
                         <Breadcrumbs/>
                     </>}

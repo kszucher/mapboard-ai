@@ -12,21 +12,32 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import EditOffIcon from '@mui/icons-material/EditOff';
 import IconBarMore from './IconBarMore'
 import { setClear } from '../core/Utils'
+import UndoIcon from '@mui/icons-material/Undo'
+import RedoIcon from '@mui/icons-material/Redo'
+import { MAP_RIGHTS } from '../core/EditorFlow'
 
 const sSelectionSvg = "M 120 144 L 360 144 C 408 144 432 168 432 216 L 432 264 C 432 312 408 336 360 336 L 120 336 C 72 336 48 312 48 264 C 48 216 48 264 48 216 C 48 168 72 144 120 144 Z"
 const fSelectionSvg = "M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432 384 408 408 360 408 L 312 408 C 264 408 120 312 72 312 C 24 312 24 168 72 168 C 120 168 264 72 312 72 Z"
 
 export function IconBar () {
+    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+
     const colorMode = useSelector(state => state.colorMode)
+    const mapRight = useSelector(state => state.mapRight)
+    const undoDisabled = useSelector(state => state.undoDisabled)
+    const redoDisabled = useSelector(state => state.redoDisabled)
     const formatMode = useSelector(state => state.formatMode)
-    const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
     const selection = useSelector(state => state.node.selection)
+
+    const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
+
     const dispatch = useDispatch()
+    const undo = _ => dispatch({ type: 'UNDO'})
+    const redo = _ => dispatch({ type: 'REDO'})
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
-    const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
-    const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
+
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
     const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
@@ -35,10 +46,37 @@ export function IconBar () {
     const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
+
+    const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
+    const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
     const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
 
     return (
         <>
+            <div style={{
+                position: 'fixed',
+                left: 216+48,
+                width: 96,
+                display: 'flex',
+                alignItems: 'center',
+                height: 48,
+                paddingLeft: 12,
+                // paddingRight: 12,
+                backgroundColor: MAP_BACKGROUND,
+                borderBottomLeftRadius: 16,
+                borderBottomRightRadius: 16,
+                borderTop: 0,
+                borderColor: MAP_BACKGROUND,
+            }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
+                        <UndoIcon/>
+                    </IconButton>
+                    <IconButton color='secondary' onClick={redo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}>
+                        <RedoIcon/>
+                    </IconButton>
+                </div>
+            </div>
             <div style={{
                 position: 'fixed',
                 right: 0,
