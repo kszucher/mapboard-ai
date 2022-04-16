@@ -9,7 +9,6 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import PersonIcon from '@mui/icons-material/Person'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import EditOffIcon from '@mui/icons-material/EditOff'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
@@ -43,7 +42,6 @@ export function Icons () {
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
-    const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
     const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
@@ -107,7 +105,7 @@ export function Icons () {
                 width: 40,
                 display: 'flex',
                 alignItems: 'center',
-                height: 13*40 + 2*12,
+                height: 12*40 + 2*12,
                 paddingLeft: 12,
                 paddingRight: 12,
                 backgroundColor: MAP_BACKGROUND,
@@ -157,9 +155,6 @@ export function Icons () {
                                 <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={240} y1={384} x2={240} y2={96}/>
                             </g>
                         </svg>
-                    </IconButton>
-                    <IconButton color='secondary' onClick={resetFormat}>
-                        <EditOffIcon/>
                     </IconButton>
                     <IconButton color='secondary' onClick={toggleTask}>
                         <svg {...svgCommonParams}>
