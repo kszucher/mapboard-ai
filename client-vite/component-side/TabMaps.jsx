@@ -5,7 +5,7 @@ import { getColors } from '../core/Colors'
 export default function TabMaps() {
     const colorMode = useSelector(state => state.colorMode)
     const tabShrink = useSelector(state => state.tabShrink)
-    const {MAP_BACKGROUND} = getColors(colorMode)
+    const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const tabMapSelected = useSelector(state => state.tabMapSelected)
     const mapSource = useSelector(state => state.mapSource)
@@ -25,11 +25,12 @@ export default function TabMaps() {
             <Tabs
                 sx={{
                     '.MuiTabs-indicator': {
-                        left: 0,
-                        width: 8,
-                        borderTopRightRadius: 16,
-                        borderBottomRightRadius: 16,
-                        backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
+                        // left: 0,
+                        // width: 4,
+                        // borderTopRightRadius: 16,
+                        // borderBottomRightRadius: 16,
+                        backgroundColor: MAIN_COLOR,
+                        // backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
                     },
                     '.MuiButtonBase-root': {
                         minWidth: tabShrink ? 60 : 90
@@ -52,3 +53,8 @@ export default function TabMaps() {
         </div>
     )
 }
+
+// TODO no borderRadius if selection == 0 or selection == end
+// TODO selection on the right too for formatters
+// TODO dont close formatters on click, only by CLOSE!
+// TODO open modal for mapinmap
