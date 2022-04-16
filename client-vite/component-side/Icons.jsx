@@ -15,7 +15,6 @@ import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
 import ShareIcon from '@mui/icons-material/Share'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import More from './More'
-import { setClear } from '../core/Utils'
 
 const svgCommonParams = {viewBox:"0 0 480 480", width:"24px", height:"24px"}
 const sSelectionSvg = "M 120 144 L 360 144 C 408 144 432 168 432 216 L 432 264 C 432 312 408 336 360 336 L 120 336 C 72 336 48 312 48 264 C 48 216 48 264 48 216 C 48 168 72 144 120 144 Z"
