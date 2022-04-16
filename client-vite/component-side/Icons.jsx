@@ -30,6 +30,7 @@ export function Icons () {
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
     const selection = useSelector(state => state.node.selection)
+    const taskStatus = useSelector(state => state.node.taskStatus)
 
     const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
 
@@ -50,6 +51,8 @@ export function Icons () {
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
     const resetFormat = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textColor', 'textFontSize']))
+    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
+
 
     return (
         <>
@@ -105,7 +108,7 @@ export function Icons () {
                 width: 40,
                 display: 'flex',
                 alignItems: 'center',
-                height: 9*40 + 2*12,
+                height: 10*40 + 2*12,
                 paddingLeft: 12,
                 paddingRight: 12,
                 backgroundColor: MAP_BACKGROUND,
@@ -163,6 +166,23 @@ export function Icons () {
                     <IconButton color='secondary' onClick={resetFormat}>
                         <EditOffIcon/>
                     </IconButton>
+
+                    <IconButton color='secondary' onClick={toggleTask}>
+                        <svg viewBox="0 0 480 480" width="24px" height="24px" >
+                            <g>
+                                <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
+                                      d="M 168 240 L 48 240"
+                                />
+                                <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:20 }}
+                                         cx={240} cy={240} rx={60} ry={60}
+                                />
+                                <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:20 }}
+                                         cx={380} cy={240} rx={60} ry={60}
+                                />
+                            </g>
+                        </svg>
+                    </IconButton>
+
                     <IconButton color='secondary' onClick={openMoreMenu}>
                         <MoreVertIcon/>
                     </IconButton>

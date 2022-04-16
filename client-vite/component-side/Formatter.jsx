@@ -24,7 +24,6 @@ export function Formatter () {
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[useSelector(state => state.node.textFontSize)]
-    const taskStatus = useSelector(state => state.node.taskStatus)
 
     const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
@@ -38,7 +37,6 @@ export function Formatter () {
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
     const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})
-    const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
     const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
@@ -146,9 +144,7 @@ export function Formatter () {
                         </Button>
                     )}
                 </ButtonGroup>}
-
-                {/*TODO remove these*/}
-                <StyledButtonGroup open={formatMode === ''} valueList={['convert to task']} value={''} action={toggleTask} disabled={disabled}/>
+                
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
 
             </div>
