@@ -173,10 +173,10 @@ export function Icons () {
                                 <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
                                       d="M 168 240 L 48 240"
                                 />
-                                <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:20 }}
+                                <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
                                          cx={240} cy={240} rx={60} ry={60}
                                 />
-                                <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:20 }}
+                                <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
                                          cx={380} cy={240} rx={60} ry={60}
                                 />
                             </g>

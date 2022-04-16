@@ -144,7 +144,7 @@ export function Formatter () {
                         </Button>
                     )}
                 </ButtonGroup>}
-                
+
                 <StyledButtonGroup open={formatMode === ''} valueList={['convert to submap']} value={''} action={createMapInMap} disabled={disabled}/>
 
             </div>
