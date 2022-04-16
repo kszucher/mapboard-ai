@@ -12,6 +12,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import EditOffIcon from '@mui/icons-material/EditOff';
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
+import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
+import ShareIcon from '@mui/icons-material/Share';
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import More from './More'
 import { setClear } from '../core/Utils'
@@ -107,7 +109,7 @@ export function Icons () {
                 width: 40,
                 display: 'flex',
                 alignItems: 'center',
-                height: 11*40 + 2*12,
+                height: 13*40 + 2*12,
                 paddingLeft: 12,
                 paddingRight: 12,
                 backgroundColor: MAP_BACKGROUND,
@@ -161,7 +163,6 @@ export function Icons () {
                     <IconButton color='secondary' onClick={resetFormat}>
                         <EditOffIcon/>
                     </IconButton>
-
                     <IconButton color='secondary' onClick={toggleTask}>
                         <svg {...svgCommonParams}>
                             <g>
@@ -170,7 +171,6 @@ export function Icons () {
                             </g>
                         </svg>
                     </IconButton>
-
                     <IconButton color='secondary' onClick={createMapInMap}>
                         <svg {...svgCommonParams}>
                             <g>
@@ -181,7 +181,12 @@ export function Icons () {
                             </g>
                         </svg>
                     </IconButton>
-
+                    <IconButton color='secondary' onClick={_=>{}}>
+                        <AutoAwesomeMotionIcon/>
+                    </IconButton>
+                    <IconButton color='secondary' onClick={openMoreMenu}>
+                        <ShareIcon/>
+                    </IconButton>
                     <IconButton color='secondary' onClick={openMoreMenu}>
                         <MoreVertIcon/>
                     </IconButton>
