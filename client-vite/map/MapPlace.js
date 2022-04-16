@@ -22,7 +22,7 @@ export const mapPlace = {
         } else if (alignment === 'centered') {
             sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + cr.selfW
         }
-        let divMinWidth = window.screen.availWidth > 1366 ? 1366 : 800
+        let divMinWidth = window.screen.availWidth > 1280 ? 1280 : 800
         let mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
         let mapStartCenterX = 0
         if (alignment === 'centered') {
