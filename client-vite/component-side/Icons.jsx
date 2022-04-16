@@ -165,8 +165,6 @@ export function Icons () {
                     <IconButton color='secondary' onClick={toggleTask}>
                         <svg {...svgCommonParams}>
                             <g>
-                                {/*<path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} d="M 168 240 L 48 240"/>*/}
-
                                 <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} cx={120} cy={240} rx={80} ry={80}/>
                                 <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} cx={360} cy={240} rx={80} ry={80}/>
                             </g>
@@ -179,16 +177,7 @@ export function Icons () {
                                 <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 216 240 L 24 240"/>
                                 <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 120 144 L 120 336"/>
 
-                                {/*<path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 240 216 C 336 216 240 48 336 48"/>*/}
-                                {/*<path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 240 240 L 336 240"/>*/}
-                                {/*<path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 240 264 C 336 264 240 432 336 432"/>*/}
-
-                                {/*<ellipse style={{ fill: MAIN_COLOR }} cx={408} cy={48} rx={48} ry={48}/>*/}
-                                {/*<ellipse style={{ fill: MAIN_COLOR }} cx={408} cy={240} rx={48} ry={48}/>*/}
-                                {/*<ellipse style={{ fill: MAIN_COLOR }} cx={408} cy={432} rx={48} ry={48}/>*/}
-
                                 <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 288 48 L 408 240 L 288 432"/>
-
                             </g>
                         </svg>
                     </IconButton>
