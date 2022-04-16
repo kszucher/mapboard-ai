@@ -184,7 +184,7 @@ export function Icons () {
                     <IconButton color='secondary' onClick={_=>{}}>
                         <AutoAwesomeMotionIcon/>
                     </IconButton>
-                    <IconButton color='secondary' onClick={openMoreMenu}>
+                    <IconButton color='secondary' onClick={_=>{}}>
                         <ShareIcon/>
                     </IconButton>
                     <IconButton color='secondary' onClick={openMoreMenu}>
