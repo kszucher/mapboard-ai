@@ -11,7 +11,7 @@ import { Sharing } from "../component-modal/Sharing"
 import { Shares } from "../component-modal/Shares"
 import { WindowListeners } from "./WindowListeners"
 import { FramesSide } from "../component-side/FramesSide"
-import { IconBar } from '../component-side/IconBar'
+import { Icons } from '../component-side/Icons'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
@@ -93,7 +93,7 @@ export function Page() {
                     <Logo/>
                     {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
                         <TabMaps/>
-                        <IconBar/>
+                        <Icons/>
                         <Breadcrumbs/>
                     </>}
                     {formatMode!=='' && <Formatter/>}

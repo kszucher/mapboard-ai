@@ -2,7 +2,7 @@ import { Divider, Menu, MenuItem } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { PAGE_STATES } from '../core/EditorFlow'
 
-export default function IconBarMore () {
+export default function More () {
     const moreMenu = useSelector(state => state.moreMenu)
     const booleanMoreMenu = Boolean(moreMenu)
     const pageState = useSelector(state => state.pageState)
