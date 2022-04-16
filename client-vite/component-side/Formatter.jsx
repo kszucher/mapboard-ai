@@ -2,7 +2,6 @@ import {useSelector, useDispatch} from "react-redux"
 import { Button, ButtonGroup, Typography } from '@mui/material'
 import { colorList, getColors } from '../core/Colors'
 import { setClear } from '../core/Utils'
-import StyledButtonGroup from '../component-styled/StyledButtonGroup'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 
 export function Formatter () {
