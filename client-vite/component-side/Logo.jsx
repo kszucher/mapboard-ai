@@ -11,7 +11,7 @@ export default function Logo() {
         <div style={{
             position: 'absolute',
             width: 216,
-            height: 48,
+            height: 40+2*12,
             backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)`,
             // borderTopRightRadius: 16,
             borderBottomRightRadius: 16,

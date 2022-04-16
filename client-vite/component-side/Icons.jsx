@@ -59,11 +59,11 @@ export function Icons () {
         <>
             <div style={{
                 position: 'fixed',
-                left: 216+48,
+                left: 216+32,
                 width: 96,
                 display: 'flex',
                 alignItems: 'center',
-                height: 48,
+                height: 40+2*12,
                 paddingLeft: 12,
                 backgroundColor: MAP_BACKGROUND,
                 borderBottomLeftRadius: 16,
@@ -87,7 +87,7 @@ export function Icons () {
                 width: 40,
                 display: 'flex',
                 alignItems: 'center',
-                height: 48,
+                height: 40+2*12,
                 paddingLeft: 12,
                 paddingRight: 12,
                 backgroundColor: MAP_BACKGROUND,
