@@ -49,7 +49,7 @@ export function Formatter () {
             position: 'fixed',
             top: 48*2,
             right: 48*2,
-            width: width + 2*12,
+            width: width,
             display: 'flex',
             flexDirection: 'column',
             borderRadius: 16,
@@ -58,7 +58,6 @@ export function Formatter () {
             flexWrap: 'wrap',
             gap: 12,
             paddingTop: 12,
-            paddingBottom: 12,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <Typography variant="h6">
