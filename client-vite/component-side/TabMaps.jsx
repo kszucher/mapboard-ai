@@ -15,7 +15,7 @@ export default function TabMaps() {
         <div style={{
             position: 'fixed',
             top: 48*2,
-            width: tabShrink ? 60 : 216,
+            width: tabShrink ? 64 : 216,
             backgroundColor: MAP_BACKGROUND,
             borderTopRightRadius: '16px',
             borderBottomRightRadius: '16px',
@@ -33,7 +33,7 @@ export default function TabMaps() {
                         // backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
                     },
                     '.MuiButtonBase-root': {
-                        minWidth: tabShrink ? 60 : 90
+                        minWidth: tabShrink ? 0 : 90
                     }
                 }}
                 orientation={'vertical'}
