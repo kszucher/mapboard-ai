@@ -48,7 +48,7 @@ export function Formatter () {
         <div style={{
             position: 'fixed',
             top: 48*2,
-            right: 40+2*12+32,
+            right: 40 + 2*12 + 48,
             width: width + 2*12,
             display: 'flex',
             flexDirection: 'column',
