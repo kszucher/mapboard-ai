@@ -17,8 +17,8 @@ export default function TabMaps() {
             top: 48*2,
             width: tabShrink ? 64 : 216,
             backgroundColor: MAP_BACKGROUND,
-            borderTopRightRadius: '16px',
-            borderBottomRightRadius: '16px',
+            borderTopRightRadius: tabMapSelected === 0 ? 0 : 16,
+            borderBottomRightRadius: tabMapSelected === tabMapNameList.length - 1 ? 0 : 16,
             borderLeft: 0,
             borderColor: MAP_BACKGROUND,
         }}>
@@ -53,8 +53,3 @@ export default function TabMaps() {
         </div>
     )
 }
-
-// TODO no borderRadius if selection == 0 or selection == end
-// TODO selection on the right too for formatters
-// TODO dont close formatters on click, only by CLOSE!
-// TODO open modal for mapinmap

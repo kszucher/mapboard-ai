@@ -15,7 +15,8 @@ export const PAGE_STATES = {
     WS: 'WS',
     WS_SHARES: 'WS_SHARES',
     WS_SHARING: 'WS_SHARING',
-    WS_PROFILE: 'WS_PROFILE'
+    WS_PROFILE: 'WS_PROFILE',
+    WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP'
 }
 
 export const MAP_RIGHTS = {
@@ -90,7 +91,7 @@ const editorStateDefault = JSON.stringify(editorState);
 const resolveActions = (state, action) => {
     const {payload} = action;
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
-    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
+    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':                 return JSON.parse(editorStateDefault)
         case 'SHOW_AUTH':                   return {pageState: AUTH}
@@ -99,6 +100,7 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS_SHARING':             return {pageState: WS_SHARING}
         case 'SHOW_WS_SHARES':              return {pageState: WS_SHARES}
         case 'SHOW_WS_PROFILE':             return {pageState: WS_PROFILE}
+        case 'SHOW_WS_CREATE_MAP_IN_MAP':   return {pageState: WS_CREATE_MAP_IN_MAP}
         case 'SET_FORMAT_MODE':             return {formatMode: payload}
         case 'CLOSE_PALETTE':               return {formatMode: ''}
         case 'OPEN_PLAYBACK_EDITOR':        return {frameEditorVisible: 1}

@@ -50,7 +50,7 @@ export function Icons () {
     const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
-    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
+    const showWsCreateMapInMap = _ => dispatch({type: 'SHOW_WS_CREATE_MAP_IN_MAP'})
 
     return (
         <>
@@ -104,9 +104,7 @@ export function Icons () {
                 width: 40,
                 display: 'flex',
                 alignItems: 'center',
-                height: 12*40 + 2*12,
-                paddingLeft: 12,
-                paddingRight: 12,
+                padding: '12px 12px 12px 12px',
                 backgroundColor: MAP_BACKGROUND,
                 borderRadius: '16px 0 0 16px',
                 borderTop: 0,
@@ -163,7 +161,7 @@ export function Icons () {
                             </g>
                         </svg>
                     </IconButton>
-                    <IconButton color='secondary' onClick={createMapInMap}>
+                    <IconButton color='secondary' onClick={showWsCreateMapInMap}>
                         <svg {...svgCommonParams}>
                             <g>
                                 <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 216 240 L 24 240"/>
@@ -182,6 +180,16 @@ export function Icons () {
                     <IconButton color='secondary' onClick={openMoreMenu}>
                         <MoreVertIcon/>
                     </IconButton>
+                    {formatMode !== '' && <div
+                        style={{
+                            position: 'fixed',
+                            top: 2*48 + 12 + 40*({ line: 3, border: 4, fill: 5, text: 6 }[formatMode]),
+                            right: 62,
+                            width: 2,
+                            height: 40,
+                            backgroundColor: MAIN_COLOR,
+                        }}/>
+                    }
                     <More/>
                 </div>
             </div>

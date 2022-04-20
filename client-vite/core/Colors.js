@@ -2,6 +2,7 @@ const COLOR_LIGHT = {
     MAIN_COLOR: '#5f0a87',
     PAGE_BACKGROUND: '#dddddd',
     MAP_BACKGROUND: '#fbfafc',
+    BUTTON_BG: '#EEEAF2',
     TEXT_COLOR: '#222222',
     TABLE_GRID: '#dddddd',
 
@@ -30,6 +31,7 @@ const COLOR_DARK = {
     MAIN_COLOR: '#dddddd',
     PAGE_BACKGROUND: '#333333',
     MAP_BACKGROUND: '#222529',
+    BUTTON_BG: '#444444',
     TEXT_COLOR: '#dddddd',
     TABLE_GRID: '#aaaaaa',
 

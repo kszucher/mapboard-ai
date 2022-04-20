@@ -15,6 +15,7 @@ import { Icons } from '../component-side/Icons'
 import { ProfileEditor } from '../component-modal/ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
+import { CreateMapInMap } from '../component-modal/CreateMapInMap'
 
 const getMuiTheme = colorMode  => createTheme({
     // props: {
@@ -73,7 +74,7 @@ export function Page() {
     const formatMode = useSelector(state => state.formatMode)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE} = PAGE_STATES;
+    const {AUTH, EMPTY, DEMO, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -88,10 +89,11 @@ export function Page() {
     return (
         <div id="page">
             <ThemeProvider theme={getMuiTheme(colorMode)}>
-                {[DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
+                {pageState === AUTH && <Auth/>}
+                {![AUTH, EMPTY].includes(pageState) && <>
                     <Map/>
                     <Logo/>
-                    {[WS, WS_SHARES, WS_SHARING, WS_PROFILE].includes(pageState) && <>
+                    {![AUTH, EMPTY, DEMO].includes(pageState) && <>
                         <TabMaps/>
                         <Icons/>
                         <Breadcrumbs/>
@@ -100,10 +102,10 @@ export function Page() {
                     {frameEditorVisible===1 && <FramesSide/>}
                     {frameEditorVisible===1 && <FramesBottom/>}
                 </>}
-                {pageState === AUTH && <Auth/>}
                 {pageState === WS_SHARES && <Shares/>}
                 {pageState === WS_SHARING && <Sharing/>}
                 {pageState === WS_PROFILE && <ProfileEditor/>}
+                {pageState === WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
                 <WindowListeners/>
             </ThemeProvider>
         </div>
