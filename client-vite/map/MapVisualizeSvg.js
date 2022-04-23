@@ -104,18 +104,19 @@ export const mapVisualizeSvg = {
             conditions.nodeBorder ||
             conditions.selectionBorder
         ) {
+            let corr = dir === -1 ? -1 : 0
             let sParams = {
-                ax: nsx - dir * (cm.hasCell ? 4 : 0),
-                bx: nex - 3 * dir,
-                cx: nex - 2 * dir + dir * (cm.hasCell ? 6 : 0),
+                ax: nsx + 1 * dir - dir * (cm.hasCell ? 4 : 0) + corr,
+                bx: nex - 3 * dir + corr,
+                cx: nex - 2 * dir + dir * (cm.hasCell ? 6 : 0) + corr,
                 ayu: nsy + 1 - (cm.hasCell ? 5 : 0),
-                ayd: ney - 3 + (cm.hasCell ? 6 : 0),
+                ayd: ney - 3 + (cm.hasCell ? 7 : 0),
                 bcyu: nsy + 1 - (cm.hasCell ? 5 : 0),
-                bcyd: ney - 3 + (cm.hasCell ? 6 : 0),
+                bcyd: ney - 3 + (cm.hasCell ? 7 : 0),
             }
             let fParams = {
-                ax: nsx,
-                bx: nex + dir * cm.lineDeltaX,
+                ax: nsx + corr,
+                bx: nex + dir * cm.lineDeltaX + corr,
                 cx: nsx + dir * (cm.familyW + cm.selfW /*+ 4*/),
                 ayu: nsy,
                 ayd: ney,
