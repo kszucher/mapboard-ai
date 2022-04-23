@@ -7,18 +7,14 @@ import { MAP_RIGHTS } from '../core/EditorFlow'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-
     const colorMode = useSelector(state => state.colorMode)
     const mapRight = useSelector(state => state.mapRight)
     const undoDisabled = useSelector(state => state.undoDisabled)
     const redoDisabled = useSelector(state => state.redoDisabled)
-
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
-
     const dispatch = useDispatch()
     const undo = _ => dispatch({ type: 'UNDO'})
     const redo = _ => dispatch({ type: 'REDO'})
-
     return (
         <div style={{
             position: 'fixed',

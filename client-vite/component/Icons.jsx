@@ -18,15 +18,12 @@ const fSelectionSvg = "M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432
 
 export function Icons () {
     const colorMode = useSelector(state => state.colorMode)
-
     const formatMode = useSelector(state => state.formatMode)
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
     const selection = useSelector(state => state.node.selection)
     const taskStatus = useSelector(state => state.node.taskStatus)
-
     const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
-
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
@@ -41,7 +38,6 @@ export function Icons () {
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
     const showWsCreateMapInMap = _ => dispatch({type: 'SHOW_WS_CREATE_MAP_IN_MAP'})
     const openPlaybackEditor =  _ => dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
-
     return (
         <div style={{
             position: 'fixed',
@@ -58,7 +54,7 @@ export function Icons () {
             borderRight: 0,
             borderRadius: '16px 0 0 16px',
         }}>
-            <div style={{ display: 'flex', flexDirection: 'column'}}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <IconButton color='secondary' onClick={changeColorMode}>
                     {colorMode === 'light' && <LightModeIcon/>}
                     {colorMode === 'dark' && <DarkModeIcon/>}
@@ -73,7 +69,7 @@ export function Icons () {
                 </IconButton>
                 <IconButton color='secondary' onClick={formatMode === 'line' ? closePalette : setFormatModeLine}>
                     <svg {...svgCommonParams}>
-                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24}}
+                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
                               d="M 408 72 C 72 72 408 408 72 408"
                         />
                     </svg>

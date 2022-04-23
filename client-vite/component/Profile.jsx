@@ -5,12 +5,9 @@ import PersonIcon from '@mui/icons-material/Person'
 
 export function Profile () {
     const colorMode = useSelector(state => state.colorMode)
-
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
-
     const dispatch = useDispatch()
     const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
-
     return (
         <div style={{
             position: 'fixed',
@@ -27,7 +24,7 @@ export function Profile () {
             borderRight: 0,
             borderRadius: '0 0 0 16px',
         }}>
-            <div style={{ display: 'flex', flexDirection: 'column'}}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <IconButton color='secondary' onClick={openProfile}>
                     <PersonIcon/>
                 </IconButton>

@@ -20,11 +20,6 @@ import { UndoRedo } from './UndoRedo'
 import { Profile } from './Profile'
 
 const getMuiTheme = colorMode  => createTheme({
-    // props: {
-    //     MuiButtonBase: {
-    //         disableRipple: true
-    //     }
-    // },
     palette: {
         mode: colorMode,
         primary: {

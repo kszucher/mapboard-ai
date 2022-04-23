@@ -10,9 +10,11 @@ export function Formatter () {
     const BORDER_WIDTH_KEYS = ['w1', 'w2', 'w3']
     const FONT_SIZE_KEYS_1 = ['h1', 'h2', 'h3', 'h4']
     const FONT_SIZE_KEYS_2 = ['text']
-
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-
+    const o = 32
+    const r = 12
+    const width = o * colorList[0].length
+    const height = o * colorList.length
     const colorMode = useSelector(state => state.colorMode)
     const mapRight = useSelector(state => state.mapRight)
     const formatMode = useSelector(state => state.formatMode)
@@ -24,10 +26,8 @@ export function Formatter () {
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[useSelector(state => state.node.textFontSize)]
-
     const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
-
     const dispatch = useDispatch()
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
@@ -39,12 +39,6 @@ export function Formatter () {
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
-
-    const o = 32
-    const r = 12
-    const width = o * colorList[0].length
-    const height = o * colorList.length
-
     return (
         <div style={{ position: 'fixed', top: 96, right: 64,
             display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 12,
