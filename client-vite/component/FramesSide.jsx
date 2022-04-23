@@ -11,7 +11,7 @@ export function FramesSide () {
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
     const duplicateFrame = _ => dispatch({type: 'DUPLICATE_FRAME'})
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
-    const closePlaybackEditor = _ => dispatch({type: 'CLOSE_PLAYBACK_EDITOR'})
+    const closePlaybackEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
 
     return (
         <div style={{ position: 'fixed', top: 96, right: 64, width: 6*32,
