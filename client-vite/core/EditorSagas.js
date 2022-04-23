@@ -157,7 +157,6 @@ function* mapSaga () {
     }
 }
 
-
 function* mapStackSaga () {
     while (true) {
         const { type } = yield take([
@@ -266,7 +265,23 @@ function* profileSaga () {
 }
 
 function* frameSaga () {
-
+    while (true) {
+        const { type } = yield take([
+            'OPEN_FRAME_EDITOR',
+            'CLOSE_FRAME_EDITOR',
+        ])
+        switch (type) {
+            case 'OPEN_FRAME_EDITOR':
+                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: 1})
+                yield put({type: 'OPEN_FRAME'})
+                break
+            case 'CLOSE_FRAME_EDITOR':
+                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: 0})
+                const breadcrumbMapNameList = yield select(state => state.breadcrumbMapNameList)
+                yield put({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: breadcrumbMapNameList.length - 1}})
+                break
+        }
+    }
 }
 
 function* shareSaga () {

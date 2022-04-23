@@ -1,4 +1,3 @@
-import {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
@@ -9,19 +8,10 @@ export function FramesBottom () {
     const colorMode = useSelector(state => state.colorMode)
     const frameLen = useSelector(state => state.frameLen)
     const frameSelected = useSelector(state => state.frameSelected)
-    const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
     const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})
-
-    useEffect(() => {
-        dispatch({type: 'OPEN_FRAME'});
-        return () => {
-            dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: breadcrumbMapNameList.length - 1}})
-        }
-    }, []);
-
     return (
         <div style={{ position: 'fixed', left: '50%', transform: 'translate(-50%)', bottom: 0 }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
