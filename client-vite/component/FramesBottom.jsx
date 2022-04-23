@@ -10,9 +10,7 @@ export function FramesBottom () {
     const frameLen = useSelector(state => state.frameLen)
     const frameSelected = useSelector(state => state.frameSelected)
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
-
     const {MAP_BACKGROUND} = getColors(colorMode)
-
     const dispatch = useDispatch()
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})

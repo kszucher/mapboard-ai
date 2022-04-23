@@ -27,7 +27,6 @@ export default function Auth() {
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
     const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { email, confirmationCode }});
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
-
     const checkSignIn = () =>    {
         if (email === '' || password === '') {
             setAuthFeedbackMessage('Missing information')
@@ -49,10 +48,8 @@ export default function Auth() {
             setConfirmationCode(e)
         }
     }
-
     const getConfirmationCodeDisabled = (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
     const enterConfirmationCodeDisabled = (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
-
     return (
         <div
             style={{

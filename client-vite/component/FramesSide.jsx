@@ -4,15 +4,12 @@ import { Button } from '@mui/material'
 
 export function FramesSide () {
     const colorMode = useSelector(state => state.colorMode)
-
     const { PAGE_BACKGROUND, MAP_BACKGROUND } = getColors(colorMode)
-
     const dispatch = useDispatch()
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
     const duplicateFrame = _ => dispatch({type: 'DUPLICATE_FRAME'})
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
     const closePlaybackEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
-
     return (
         <div style={{ position: 'fixed', top: 96, right: 64, width: 6*32,
             display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 12,
