@@ -9,48 +9,27 @@ export default function BreadcrumbMaps() {
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
     const mapSource = useSelector(state => state.mapSource)
     const dispatch = useDispatch()
-
-    const handleClick = index => event => {
-        event.preventDefault();
-        dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}})
-    };
-
-    const doNothing = _ => event => {
-        event.preventDefault();
-    }
-
+    const openMapFromBreadcrumbs = index => dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}})
     return (
-        <div style={{
-            position: 'fixed',
-            left: '50%',
-            transform: 'translate(-50%)',
-            display: 'flex',
-            alignItems: 'center',
-            height: 40,
-            paddingTop: 4,
-            paddingBottom: 4,
-            paddingLeft: 16,
-            paddingRight: 16,
-            backgroundColor: MAP_BACKGROUND,
-            borderBottomLeftRadius: '16px',
-            borderBottomRightRadius: '16px',
-            borderTop: 0,
-            borderLeft: '2px solid #9040b8',
-            borderBottom: '2px solid #9040b8',
-            borderRight: '2px solid #9040b8',
-
+        <div style={{ display: 'flex', alignItems: 'center',
+            position: 'fixed', left: '50%', transform: 'translate(-50%)',
+            height: 40,  background: MAP_BACKGROUND,
+            padding: '4px 16px 4px 16px', borderRadius: '0 0 16px 16px', border: '2px solid #9040b8', borderTop: 0,
         }}>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                 {breadcrumbMapNameList.map((el, index) => (
                     <Link
-                        // color="inherit"
+                        underline={mapSource === 'dataPlayback' ? 'none': 'hover'}
                         href="/"
-                        onClick={mapSource === 'dataPlayback' ? doNothing() : handleClick(index)}
+                        onClick={e => {
+                            e.preventDefault()
+                            mapSource === 'dataPlayback' ? console.log('prevent') : openMapFromBreadcrumbs(index)
+                        }}
                         key={index}>
                         {el}
                     </Link>
                 ))}>
             </Breadcrumbs>
         </div>
-    );
+    )
 }

@@ -6,11 +6,14 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { getColors } from '../core/Colors'
 
 export function FramesBottom () {
+    const colorMode = useSelector(state => state.colorMode)
     const frameLen = useSelector(state => state.frameLen)
     const frameSelected = useSelector(state => state.frameSelected)
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)
-    const dispatch = useDispatch()
 
+    const {MAP_BACKGROUND} = getColors(colorMode)
+
+    const dispatch = useDispatch()
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})
 
@@ -22,46 +25,25 @@ export function FramesBottom () {
     }, []);
 
     return (
-        <div style={{
-            position: 'fixed',
-            left: '50%',
-            transform: 'translate(-50%)',
-            bottom: 0,
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
+        <div style={{ position: 'fixed', left: '50%', transform: 'translate(-50%)', bottom: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {frameLen > 0 &&
                 <MobileStepper
                     style={{
-                        backgroundColor: getColors('light').MAP_BACKGROUND,
-                        borderTopLeftRadius: '16px',
-                        borderTopRightRadius: '16px',
-                        borderWidth: '2px',
-                        borderStyle: 'solid',
-                        borderColor: '#9040b8',
-                        borderBottom: 0
+                        flexWrap: 'wrap', gap: 12, background: MAP_BACKGROUND,
+                        borderRadius: '16px 16px 0 0', border: `2px solid ${'#9040b8'}`, borderBottom: 0,
                     }}
                     variant="dots"
                     steps={frameLen}
                     position="static"
                     activeStep={frameSelected}
                     backButton={
-                        <Button style={{paddingRight:20}}
-                                size="large"
-                                onClick={openPrevFrame}
-                                disabled={frameSelected === 0}>
+                        <Button style={{paddingLeft:12}} size="large" onClick={openPrevFrame} disabled={frameSelected === 0}>
                             <KeyboardArrowLeftIcon />
                         </Button>
                     }
                     nextButton={
-                        <Button style={{paddingLeft:20}}
-                                size="large"
-                                onClick={openNextFrame}
-                                disabled={frameSelected === frameLen - 1}>
+                        <Button style={{paddingRight:12}} size="large" onClick={openNextFrame} disabled={frameSelected === frameLen - 1}>
                             <KeyboardArrowRightIcon />
                         </Button>
                     }

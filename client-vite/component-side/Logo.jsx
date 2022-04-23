@@ -9,7 +9,7 @@ export default function Logo() {
     const col2 = '#5f0a87'
     return (
         <div style={{
-            position: 'absolute',
+            position: 'fixed',
             width: 216,
             height: 40,
             paddingTop: 4,

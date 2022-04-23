@@ -5,7 +5,7 @@ import { getColors } from '../core/Colors'
 export default function TabMaps() {
     const colorMode = useSelector(state => state.colorMode)
     const tabShrink = useSelector(state => state.tabShrink)
-    const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
+    const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const tabMapSelected = useSelector(state => state.tabMapSelected)
     const mapSource = useSelector(state => state.mapSource)
@@ -19,22 +19,15 @@ export default function TabMaps() {
             backgroundColor: MAP_BACKGROUND,
             borderTopRightRadius: tabMapSelected === 0 ? 0 : 16,
             borderBottomRightRadius: tabMapSelected === tabMapNameList.length - 1 ? 0 : 16,
+            borderTop: `1px solid ${PAGE_BACKGROUND}`,
+            borderRight: `1px solid ${PAGE_BACKGROUND}`,
+            borderBottom: `1px solid ${PAGE_BACKGROUND}`,
             borderLeft: 0,
-            borderColor: MAP_BACKGROUND,
         }}>
             <Tabs
                 sx={{
-                    '.MuiTabs-indicator': {
-                        // left: 0,
-                        // width: 4,
-                        // borderTopRightRadius: 16,
-                        // borderBottomRightRadius: 16,
-                        backgroundColor: MAIN_COLOR,
-                        // backgroundImage: "linear-gradient(180deg, #a4508b 0%, #5f0a87 74%)",
-                    },
-                    '.MuiButtonBase-root': {
-                        minWidth: tabShrink ? 0 : 90
-                    }
+                    '.MuiTabs-indicator': { backgroundColor: MAIN_COLOR },
+                    '.MuiButtonBase-root': { minWidth: tabShrink ? 0 : 90 }
                 }}
                 orientation={'vertical'}
                 variant="scrollable"

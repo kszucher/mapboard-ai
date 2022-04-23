@@ -4,10 +4,13 @@ import { getColors } from '../core/Colors'
 
 export function ProfileEditor() {
     const colorMode = useSelector(state => state.colorMode)
-    const {MAP_BACKGROUND} = getColors(colorMode)
     const name = useSelector(state => state.name)
+
+    const {MAP_BACKGROUND} = getColors(colorMode)
+
     const dispatch = useDispatch()
     const closeProfile = _ => dispatch({type: 'CLOSE_PROFILE'})
+
     return(
         <Modal
             open={true}
@@ -16,13 +19,11 @@ export function ProfileEditor() {
             aria-describedby="simple-modal-description">
             {<div
                 style={{
-                    position: 'relative',
+                    position: 'fixed',
                     left: '50%',
                     transform: 'translate(-50%)',
                     top: 96,
-                    // maxWidth: 'fit-content',
                     width: 200+250+140+140+200,
-                    // height: 1200,
                     flexDirection: 'column',
                     alignItems: 'center',
                     display: 'flex',
@@ -31,19 +32,10 @@ export function ProfileEditor() {
                     backgroundColor: MAP_BACKGROUND,
                     padding: 20,
                     borderColor: MAP_BACKGROUND,
-                    borderRadius: '16px'
+                    borderRadius: 16
                 }}>
-                <Typography
-                    component="h1"
-                    variant="h5">
-                    {name}
-                </Typography>
-                <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={closeProfile}>
-                    {'CLOSE'}
-                </Button>
+                <Typography component="h1" variant="h5" color="primary">{name}</Typography>
+                <Button color="primary" variant="outlined" onClick={closeProfile}>{'CLOSE'}</Button>
             </div>}
         </Modal>
     )

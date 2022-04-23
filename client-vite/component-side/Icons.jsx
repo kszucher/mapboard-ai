@@ -33,7 +33,7 @@ export function Icons () {
     const selection = useSelector(state => state.node.selection)
     const taskStatus = useSelector(state => state.node.taskStatus)
 
-    const {MAP_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
+    const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
 
     const dispatch = useDispatch()
     const undo = _ => dispatch({ type: 'UNDO'})
@@ -51,6 +51,7 @@ export function Icons () {
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
     const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
     const showWsCreateMapInMap = _ => dispatch({type: 'SHOW_WS_CREATE_MAP_IN_MAP'})
+    const openPlaybackEditor =  _ => dispatch({type: 'OPEN_PLAYBACK_EDITOR'})
 
     return (
         <>
@@ -63,10 +64,12 @@ export function Icons () {
                 height: 40,
                 padding: '4px 12px 4px 12px',
                 backgroundColor: MAP_BACKGROUND,
+                borderTop: 0,
+                borderLeft: `1px solid ${PAGE_BACKGROUND}`,
+                borderBottom: `1px solid ${PAGE_BACKGROUND}`,
+                borderRight: `1px solid ${PAGE_BACKGROUND}`,
                 borderBottomLeftRadius: 16,
                 borderBottomRightRadius: 16,
-                borderTop: 0,
-                borderColor: MAP_BACKGROUND,
             }}>
                 <div style={{ display: 'flex',  }}>
                     <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
@@ -86,10 +89,11 @@ export function Icons () {
                 display: 'flex',
                 alignItems: 'center',
                 backgroundColor: MAP_BACKGROUND,
-                borderRadius: '0 0 0 16px',
                 borderTop: 0,
+                borderLeft: `1px solid ${PAGE_BACKGROUND}`,
+                borderBottom: `1px solid ${PAGE_BACKGROUND}`,
                 borderRight: 0,
-                borderColor: MAP_BACKGROUND,
+                borderRadius: '0 0 0 16px',
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column'}}>
                     <IconButton color='secondary' onClick={openProfile}>
@@ -106,10 +110,11 @@ export function Icons () {
                 alignItems: 'center',
                 padding: '12px 12px 12px 12px',
                 backgroundColor: MAP_BACKGROUND,
-                borderRadius: '16px 0 0 16px',
-                borderTop: 0,
+                borderTop: `1px solid ${PAGE_BACKGROUND}`,
+                borderLeft: `1px solid ${PAGE_BACKGROUND}`,
+                borderBottom: `1px solid ${PAGE_BACKGROUND}`,
                 borderRight: 0,
-                borderColor: MAP_BACKGROUND,
+                borderRadius: '16px 0 0 16px',
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column'}}>
                     <IconButton color='secondary' onClick={changeColorMode}>
@@ -166,12 +171,11 @@ export function Icons () {
                             <g>
                                 <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 216 240 L 24 240"/>
                                 <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 120 144 L 120 336"/>
-
                                 <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 288 48 L 408 240 L 288 432"/>
                             </g>
                         </svg>
                     </IconButton>
-                    <IconButton color='secondary' onClick={_=>{}}>
+                    <IconButton color='secondary' onClick={openPlaybackEditor}>
                         <DynamicFeedIcon/>
                     </IconButton>
                     <IconButton color='secondary' onClick={_=>{}}>
@@ -180,7 +184,7 @@ export function Icons () {
                     <IconButton color='secondary' onClick={openMoreMenu}>
                         <MoreVertIcon/>
                     </IconButton>
-                    {formatMode !== '' && <div
+                    {formatMode !== '' && <span
                         style={{
                             position: 'fixed',
                             top: 2*48 + 12 + 40*({ line: 3, border: 4, fill: 5, text: 6 }[formatMode]),

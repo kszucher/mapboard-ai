@@ -8,14 +8,15 @@ import CancelIcon from '@mui/icons-material/AddCircleOutline';
 import { getColors } from '../core/Colors'
 
 export function Shares() {
+    const colorMode = useSelector(state => state.colorMode)
     const shareDataExport = useSelector(state => state.shareDataExport)
     const shareDataImport = useSelector(state => state.shareDataImport)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
-
-    const getShares =     _ =>      dispatch({type: 'GET_SHARES'})
-    const closeShares =   _ =>      dispatch({type: 'CLOSE_SHARES'})
-    const acceptShare =   params => dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
-    const deleteShare =   params => dispatch({type: 'DELETE_SHARE', payload: {shareIdOut: params.row._id}})
+    const getShares = _ => dispatch({type: 'GET_SHARES'})
+    const closeShares = _ => dispatch({type: 'CLOSE_SHARES'})
+    const acceptShare = params => dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
+    const deleteShare = params => dispatch({type: 'DELETE_SHARE', payload: {shareIdOut: params.row._id}})
 
     const columnsExport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false},
@@ -71,23 +72,17 @@ export function Shares() {
                 left: '50%',
                 transform: 'translate(-50%)',
                 top: 96,
-                // maxWidth: 'fit-content',
                 width: 200+250+140+140+200,
-                // height: 1200,
                 flexDirection: 'column',
                 alignItems: 'center',
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: getColors('light').MAP_BACKGROUND,
+                backgroundColor: MAP_BACKGROUND,
                 padding: 20,
-                border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
+                border: `1px solid ${MAP_BACKGROUND}`,
                 borderRadius: '16px'}}>
-                <Typography
-                    component="h1"
-                    variant="h5">
-                    Maps I Share With Others
-                </Typography>
+                <Typography component="h1" variant="h5" color="primary">{'Maps I Share With Others'}</Typography>
                 <div style={{ width: '100%' }}>
                     {shareDataExport.length > 0 && <DataGrid
                         rows={shareDataExport}
@@ -98,11 +93,7 @@ export function Shares() {
                         disableSelectionOnClick
                         autoHeight={true}/>}
                 </div>
-                <Typography
-                    component="h1"
-                    variant="h5">
-                    Maps Others Share With Me
-                </Typography>
+                <Typography component="h1" variant="h5" color="primary">{'Maps Others Share With Me'}</Typography>
                 <div style={{ width: '100%' }}>
                     {shareDataImport.length > 0 && <DataGrid
                         rows={shareDataImport}
@@ -113,18 +104,8 @@ export function Shares() {
                         disableSelectionOnClick
                         autoHeight={true}/>}
                 </div>
-                <Button
-                    color="primary"
-                    variant='outlined'
-                    onClick={getShares}>
-                    {'REFRESH'}
-                </Button>
-                <Button
-                    color="primary"
-                    variant='outlined'
-                    onClick={closeShares}>
-                    {'CLOSE'}
-                </Button>
+                <Button color="primary" variant='outlined' onClick={getShares}>{'REFRESH'}</Button>
+                <Button color="primary" variant='outlined' onClick={closeShares}>{'CLOSE'}</Button>
             </div>}
         </Modal>
     )

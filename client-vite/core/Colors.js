@@ -2,8 +2,13 @@ const COLOR_LIGHT = {
     MAIN_COLOR: '#5f0a87',
     PAGE_BACKGROUND: '#dddddd',
     MAP_BACKGROUND: '#fbfafc',
-    BUTTON_BG: '#EEEAF2',
+    BUTTON_COLOR: '#EEEAF2',
     TEXT_COLOR: '#222222',
+    SELECTION_COLOR: '#666666',
+    TABLE_FRAME_COLOR: '#eac6fb',
+    MOVE_LINE_COLOR: '#5f0a87',
+    MOVE_RECT_COLOR: '#5f0a87',
+    SELECTION_RECT_COLOR: '#5f0a87',
     TABLE_GRID: '#dddddd',
 
     TASK_CIRCLE_0_ACTIVE: '#eeeeee',
@@ -29,11 +34,16 @@ const COLOR_LIGHT = {
 
 const COLOR_DARK = {
     MAIN_COLOR: '#dddddd',
-    PAGE_BACKGROUND: '#333333',
+    PAGE_BACKGROUND: '#444444',
     MAP_BACKGROUND: '#222529',
-    BUTTON_BG: '#444444',
+    BUTTON_COLOR: '#444444',
     TEXT_COLOR: '#dddddd',
-    TABLE_GRID: '#aaaaaa',
+    SELECTION_COLOR: '#aaaaaa',
+    TABLE_FRAME_COLOR: '#eac6fb',
+    MOVE_LINE_COLOR: '#ffffff',
+    MOVE_RECT_COLOR: '#ffffff',
+    SELECTION_RECT_COLOR: '#ffffff',
+    TABLE_GRID: '#666666',
 
     TASK_CIRCLE_0_ACTIVE: '#333333',
     TASK_CIRCLE_0_INACTIVE: '#333333',
@@ -53,7 +63,7 @@ const COLOR_DARK = {
     TASK_CIRCLE_3_ACTIVE: '#198519',
     TASK_CIRCLE_3_INACTIVE: '#0e4c0e',
 
-    TASK_LINE: '#555555',
+    TASK_LINE: '#333333',
 }
 
 export const getColors = colorMode => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)

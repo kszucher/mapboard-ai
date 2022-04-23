@@ -12,7 +12,7 @@ export const mapVisualizeSvg = {
         mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
         mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
         const {nodeId} = m
-        const {MAP_BACKGROUND} = getColors(colorMode)
+        const {MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
         updateMapSvgData(nodeId, 'backgroundRect', {
             x: 0,
             y: 0,
@@ -36,7 +36,7 @@ export const mapVisualizeSvg = {
             const y2 = m.moveData[3]
             updateMapSvgData(nodeId, 'moveLine', {
                 path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
-                stroke: '#5f0a87',
+                stroke: MOVE_LINE_COLOR,
                 strokeWidth: 1,
                 preventTransition: 1,
             })
@@ -49,7 +49,7 @@ export const mapVisualizeSvg = {
                 ry: 8,
                 fill: MAP_BACKGROUND,
                 fillOpacity: 1,
-                stroke: '#5f0a87',
+                stroke: MOVE_RECT_COLOR,
                 strokeWidth: 5,
                 preventTransition: 1,
             })
@@ -62,7 +62,7 @@ export const mapVisualizeSvg = {
                 height: m.selectionRect[3],
                 rx: 8,
                 ry: 8,
-                fill: '#5f0a87',
+                fill: SELECTION_RECT_COLOR,
                 fillOpacity: 0.05,
                 strokeWidth: 2,
                 preventTransition: 1,
@@ -74,7 +74,10 @@ export const mapVisualizeSvg = {
     iterate: (m, cm, colorMode) => {
         const {nodeId} = cm
         const conditions = resolveScope(cm)
-        const {TABLE_GRID,
+        const {
+            SELECTION_COLOR,
+            TABLE_FRAME_COLOR,
+            TABLE_GRID,
             TASK_LINE_1, TASK_LINE_2, TASK_LINE_3,
             TASK_FILL_1, TASK_FILL_2, TASK_FILL_3,
             TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE,
@@ -164,14 +167,14 @@ export const mapVisualizeSvg = {
                             ? cm.sBorderColor !== '' ? 4 : 0
                             : cm.fBorderColor !== '' ? 4 : 0
                     ),
-                    stroke: '#666666',
+                    stroke: SELECTION_COLOR,
                     strokeWidth: 1,
                 })
             }
             if (conditions.selectionBorderTable) {
                 updateMapSvgData(nodeId, 'selectionBorderTable', {
                     path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 4),
-                    stroke: '#666666',
+                    stroke: SELECTION_COLOR,
                     strokeWidth: 1,
                 })
             }
@@ -204,7 +207,7 @@ export const mapVisualizeSvg = {
             // frame
             updateMapSvgData(nodeId, 'tableFrame', {
                 path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 0),
-                stroke: cm.sBorderColor === '' ? '#eac6fb' : cm.sBorderColor,
+                stroke: cm.sBorderColor === '' ? TABLE_FRAME_COLOR : cm.sBorderColor,
                 strokeWidth: cm.sBorderWidth,
             })
             // grid
@@ -249,9 +252,13 @@ export const mapVisualizeSvg = {
                                 w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
                                 h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
                             }
+                            sx -= 4
+                            sy -= 4
+                            w += 8
+                            h += 8
                             updateMapSvgData(nodeId, 'tableCellFrame', {
                                 path: getArcPath(sx, sy, w, h, r, dir, 0),
-                                stroke: '#000000',
+                                stroke: SELECTION_COLOR,
                                 strokeWidth: 1,
                             })
                             break tableLoops

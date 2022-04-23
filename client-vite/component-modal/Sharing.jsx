@@ -5,9 +5,11 @@ import { getColors } from '../core/Colors'
 
 export function Sharing() {
     const {VIEW, EDIT} = MAP_RIGHTS
+    const colorMode = useSelector(state => state.colorMode)
     const shareEmail = useSelector(state => state.shareEmail)
     const shareAccess = useSelector(state => state.shareAccess)
     const shareFeedbackMessage = useSelector(state => state.shareFeedbackMessage)
+    const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const setShareEmail = e => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
     const setShareAccess = e => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
@@ -30,12 +32,12 @@ export function Sharing() {
                 display: 'inline-flex',
                 flexWrap: 'wrap',
                 gap: 16,
-                backgroundColor: getColors('light').MAP_BACKGROUND,
+                backgroundColor: MAP_BACKGROUND,
                 padding: 20,
-                border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
+                border: `1px solid ${MAP_BACKGROUND}`,
                 borderRadius: '16px'
             }}>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" color="primary">
                     {'Sharing'}
                 </Typography>
                 <TextField variant="outlined"
