@@ -158,7 +158,8 @@ export const mapVisualizeSvg = {
                     (cm.selection === 's' && cm.sBorderColor !== '') ||
                     (cm.selection === 'f' && cm.fBorderColor !== '') ||
                     (cm.selection === 's' && cm.sFillColor !== '') ||
-                    (cm.selection === 'f' && cm.fFillColor !== '')
+                    (cm.selection === 'f' && cm.fFillColor !== '') ||
+                    (cm.taskStatus > 0)
                     // TODO figure out cell border
                 updateMapSvgData(nodeId, 'selectionBorder', {
                     path: getPolygonPath(
