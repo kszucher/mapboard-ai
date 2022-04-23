@@ -117,11 +117,11 @@ export const mapVisualizeSvg = {
             let fParams = {
                 ax: nsx + corr,
                 bx: nex + dir * cm.lineDeltaX + corr,
-                cx: nsx + dir * (cm.familyW + cm.selfW + 4),
+                cx: nsx + dir * (cm.familyW + cm.selfW /*+ 4*/),
                 ayu: nsy,
                 ayd: ney,
-                bcyu: cm.nodeY - maxHadj / 2 - 4,
-                bcyd: cm.nodeY + maxHadj / 2 + 4,
+                bcyu: cm.nodeY - maxHadj / 2 /*- 4*/,
+                bcyd: cm.nodeY + maxHadj / 2 /*+ 4*/,
             }
             if (conditions.branchFill) {
                 updateMapSvgData(nodeId, 'branchFill', {
@@ -245,7 +245,7 @@ export const mapVisualizeSvg = {
                                 w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
                                 h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
                             }
-                            sx -= 4
+                            sx -= dir*4
                             sy -= 4
                             w += 8
                             h += 8
