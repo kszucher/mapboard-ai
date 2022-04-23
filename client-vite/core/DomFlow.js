@@ -86,7 +86,6 @@ export const updateMapSvgData = ( nodeId, name, params ) => {
         case 'taskCircle2':             layer = 3; type = 'circle'; break
         case 'taskCircle3':             layer = 3; type = 'circle'; break
         case 'selectionBorder':         layer = 4; type = 'path'; break
-        case 'selectionBorderTable':    layer = 4; type = 'path'; break
     }
     const svgId = `${nodeId}_svg_${name}`
     let el = mapSvgData[layer].find(el => el.svgId === svgId)

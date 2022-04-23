@@ -135,8 +135,7 @@ export const resolveScope = (cm) => {
         nodeFill: cm.sFillColor !== '' || cm.taskStatus !== -1,
         branchBorder: cm.fBorderColor !== '' && cm.s.length,
         nodeBorder: cm.sBorderColor !== '',
-        selectionBorder: cm.selected && !cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
-        selectionBorderTable: cm.selected && cm.hasCell && cm.type !== 'cell' && !cm.isEditing,
+        selectionBorder: cm.selected && cm.type !== 'cell' && !cm.isEditing,
         line:
             !cm.isRoot &&
             !cm.isRootChild &&

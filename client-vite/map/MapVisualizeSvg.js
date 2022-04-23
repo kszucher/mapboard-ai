@@ -102,8 +102,8 @@ export const mapVisualizeSvg = {
             conditions.nodeFill ||
             conditions.branchBorder ||
             conditions.nodeBorder ||
-            conditions.selectionBorder ||
-            conditions.selectionBorderTable) {
+            conditions.selectionBorder
+        ) {
             let corr = dir === -1 ? -1 : 0
             let sParams = {
                 ax: nsx + 1 * dir + corr,
@@ -136,9 +136,7 @@ export const mapVisualizeSvg = {
                 }
                 updateMapSvgData(nodeId, 'nodeFill', {
                     path: getPolygonPath(sParams, 's', dir, 0),
-                    fill: sFillColorOverride === ''
-                        ? cm.sFillColor
-                        : sFillColorOverride
+                    fill: sFillColorOverride === '' ? cm.sFillColor : sFillColorOverride
                 })
             }
             if (conditions.branchBorder) {
@@ -156,24 +154,20 @@ export const mapVisualizeSvg = {
                 })
             }
             if (conditions.selectionBorder) {
+                const shouldHaveMargin =
+                    (cm.selection === 's' && cm.sBorderColor !== '') ||
+                    (cm.selection === 'f' && cm.fBorderColor !== '') ||
+                    (cm.selection === 's' && cm.sFillColor !== '') ||
+                    (cm.selection === 'f' && cm.fFillColor !== '') ||
+                    cm.hasCell
+
                 updateMapSvgData(nodeId, 'selectionBorder', {
                     path: getPolygonPath(
-                        cm.selection  === 's'
-                            ? sParams
-                            : fParams,
+                        {s: sParams, f: fParams}[cm.selection],
                         cm.selection,
                         dir,
-                        cm.selection === 's'
-                            ? cm.sBorderColor !== '' ? 4 : 0
-                            : cm.fBorderColor !== '' ? 4 : 0
+                        shouldHaveMargin === true ? 4 : 0
                     ),
-                    stroke: SELECTION_COLOR,
-                    strokeWidth: 1,
-                })
-            }
-            if (conditions.selectionBorderTable) {
-                updateMapSvgData(nodeId, 'selectionBorderTable', {
-                    path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 4),
                     stroke: SELECTION_COLOR,
                     strokeWidth: 1,
                 })
