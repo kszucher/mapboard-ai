@@ -155,9 +155,8 @@ export const mapVisualizeSvg = {
             if (conditions.selectionBorder) {
                 let margin = (
                     (cm.selection === 's' && cm.sBorderColor !== '') ||
-                    (cm.selection === 'f' && cm.fBorderColor !== '') ||
                     (cm.selection === 's' && cm.sFillColor !== '') ||
-                    (cm.selection === 'f' && cm.fFillColor !== '') ||
+                    (cm.selection === 'f') ||
                     (cm.taskStatus > 0) ||
                     (cm.hasCell)
                 ) ? 4 : -2
