@@ -65,7 +65,7 @@ export const getPolygonPath = (params, selection, dir, margin) => {
     return path + 'z'
 }
 
-export const getArcPath = (sx, sy, w, h, r, dir, margin) => {
+export const getArcPath = (sx, sy, w, h, r, dir, margin, closed) => {
     const x1 = sx - margin * dir
     const y1 = sy + r - margin
     const horz = w - 2 * r + 2 * margin
@@ -75,12 +75,14 @@ export const getArcPath = (sx, sy, w, h, r, dir, margin) => {
         a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
         a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
         a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
-        a${+r},${+r} 0 0 1 ${-r},${-r}`
+        a${+r},${+r} 0 0 1 ${-r},${-r}
+        ${closed? 'Z' : ''}`
     } else {
         return `M${x1},${y1} 
         a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
         a${+r},${+r} 0 0 0 ${-r},${+r} v${+vert} 
         a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
-        a${+r},${+r} 0 0 0 ${+r},${-r}`
+        a${+r},${+r} 0 0 0 ${+r},${-r}
+        ${closed ? 'Z' : ''}`
     }
 }

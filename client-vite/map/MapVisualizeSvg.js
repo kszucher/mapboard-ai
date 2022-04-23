@@ -134,7 +134,7 @@ export const mapVisualizeSvg = {
                     sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
                 }
                 updateMapSvgData(nodeId, 'nodeFill', {
-                    path: getPolygonPath(sParams, 's', dir, 0), // TODO --> this should NOT be polygonpath...
+                    path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
                     fill: sFillColorOverride === '' ? cm.sFillColor : sFillColorOverride
                 })
             }
@@ -255,7 +255,7 @@ export const mapVisualizeSvg = {
                                 bcyd: sy + h,
                             }
                             updateMapSvgData(nodeId, 'tableCellFrame', {
-                                path: getPolygonPath(sParams, 's', dir,  4),
+                                path: getPolygonPath(sParams, 's', dir, 4),
                                 stroke: SELECTION_COLOR,
                                 strokeWidth: 1,
                             })
