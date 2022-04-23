@@ -162,12 +162,7 @@ export const mapVisualizeSvg = {
                     (cm.hasCell)
                 ) ? 4 : -2
                 updateMapSvgData(nodeId, 'selectionBorder', {
-                    path: getPolygonPath(
-                        {s: sParams, f: fParams}[cm.selection],
-                        cm.selection,
-                        dir,
-                        margin
-                    ),
+                    path: getPolygonPath({s: sParams, f: fParams}[cm.selection], cm.selection, dir, margin),
                     stroke: SELECTION_COLOR,
                     strokeWidth: 1,
                 })
