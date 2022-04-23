@@ -105,27 +105,23 @@ export const mapVisualizeSvg = {
             conditions.selectionBorder
         ) {
             let corr = dir === -1 ? -1 : 0
-            let xl_offs = cm.hasCell ? 4 : 0
-            let xr_offs = cm.hasCell ? 6 : 0
-            let yu_offs = cm.hasCell ? 5 : 0
-            let yd_offs = cm.hasCell ? 7 : 0
             let sParams = {
-                ax: nsx + 1 * dir + corr - dir* xl_offs,
+                ax: nsx + 1 * dir - dir * (cm.hasCell ? 4 : 0) + corr,
                 bx: nex - 3 * dir + corr,
-                cx: nex - 2 * dir + corr + dir* xr_offs,
-                ayu: nsy + 1 - yu_offs,
-                ayd: ney - 3 + yd_offs,
-                bcyu: nsy + 1 - yu_offs,
-                bcyd: ney - 3 + yd_offs,
+                cx: nex - 2 * dir + dir * (cm.hasCell ? (2 + 4) : 0) + corr,
+                ayu: nsy + 1 - (cm.hasCell ? (1 + 4) : 0),
+                ayd: ney - 3 + (cm.hasCell ? (3 + 4) : 0),
+                bcyu: nsy + 1 - (cm.hasCell ? (1 + 4) : 0),
+                bcyd: ney - 3 + (cm.hasCell ? (3 + 4) : 0),
             }
             let fParams = {
                 ax: nsx + corr,
                 bx: nex + dir * cm.lineDeltaX + corr,
-                cx: nsx + dir * (cm.familyW + cm.selfW),
+                cx: nsx + dir * (cm.familyW + cm.selfW + 4),
                 ayu: nsy,
                 ayd: ney,
-                bcyu: cm.nodeY - maxHadj / 2,
-                bcyd: cm.nodeY + maxHadj / 2,
+                bcyu: cm.nodeY - maxHadj / 2 - 4,
+                bcyd: cm.nodeY + maxHadj / 2 + 4,
             }
             if (conditions.branchFill) {
                 updateMapSvgData(nodeId, 'branchFill', {
