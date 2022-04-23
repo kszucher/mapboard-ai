@@ -119,7 +119,7 @@ const resolveActions = (state, action) => {
         case 'PLAY_LANDING_NEXT':           return { landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0 }
         case 'PLAY_LANDING_PREV':           return { landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1 }
 
-        case 'CHANGE_COLOR_MODE':           return { colorMode: state.colorMode === 'light' ? 'dark' : 'light' }
+        case 'SET_COLOR_MODE':              return { colorMode: payload }
 
         case 'SET_FORMAT_MODE':             return { formatMode: payload }
         case 'CLOSE_FORMATTER':             return { formatMode: '' }

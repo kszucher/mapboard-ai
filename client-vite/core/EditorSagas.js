@@ -306,8 +306,10 @@ function* mapStackSaga () {
 function* colorSaga () {
     while (true) {
         yield take('CHANGE_COLOR_MODE')
-        const colorMode = yield select(state => state.colorMode)
-        yield call(fetchPost, { type: 'CHANGE_COLOR_MODE', payload: {colorMode} })
+        const colorMode = (yield select(state => state.colorMode)) === 'light' ? 'dark' : 'light'
+        yield put({ type: 'SET_COLOR_MODE', payload: colorMode})
+        const changeColorMode = {type: 'CHANGE_COLOR_MODE', payload: {colorMode}}
+        yield call(fetchPost, changeColorMode)
     }
 }
 
