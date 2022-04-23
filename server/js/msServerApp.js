@@ -111,7 +111,7 @@ async function checkSave (req, currUser) {
     }
 }
 
-async function ressolveType(req, currUser) {
+async function resolveType(req, currUser) {
     switch (req.type) {
         case 'LIVE_DEMO': {
             // this could depend on queryString
@@ -513,7 +513,7 @@ async function processReq(req) {
             }
         }
         await checkSave(req, currUser)
-        let resp = await ressolveType(req, currUser)
+        let resp = await resolveType(req, currUser)
         resp = await appendStuff(resp, currUser)
         return resp
     } catch (err) {
