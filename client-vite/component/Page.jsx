@@ -2,20 +2,20 @@ import {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
-import Logo from "../component-side/Logo"
-import TabMaps from "../component-side/TabMaps"
-import Breadcrumbs from "../component-side/BreadcrumbMaps"
-import { Formatter } from "../component-side/Formatter"
-import { FramesBottom } from "../component-side/FramesBottom"
-import { Sharing } from "../component-modal/Sharing"
-import { Shares } from "../component-modal/Shares"
+import Logo from "./Logo"
+import TabMaps from "./TabMaps"
+import Breadcrumbs from "./BreadcrumbMaps"
+import { Formatter } from "./Formatter"
+import { FramesBottom } from "./FramesBottom"
+import { Sharing } from "./Sharing"
+import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
-import { FramesSide } from "../component-side/FramesSide"
-import { Icons } from '../component-side/Icons'
-import { ProfileEditor } from '../component-modal/ProfileEditor'
+import { FramesSide } from "./FramesSide"
+import { Icons } from './Icons'
+import { ProfileEditor } from './ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
-import { CreateMapInMap } from '../component-modal/CreateMapInMap'
+import { CreateMapInMap } from './CreateMapInMap'
 
 const getMuiTheme = colorMode  => createTheme({
     // props: {
