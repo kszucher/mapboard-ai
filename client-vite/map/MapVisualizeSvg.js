@@ -106,7 +106,7 @@ export const mapVisualizeSvg = {
         ) {
             let sParams = {
                 ax: nsx,
-                bx: nex - dir,
+                bx: nex - dir * r,
                 cx: nex,
                 ayu: nsy,
                 ayd: ney,
@@ -116,11 +116,11 @@ export const mapVisualizeSvg = {
             let fParams = {
                 ax: nsx,
                 bx: nex + dir * cm.lineDeltaX,
-                cx: nsx + dir * (cm.familyW + cm.selfW /*+ 4*/),
+                cx: nsx + dir * (cm.familyW + cm.selfW),
                 ayu: nsy,
                 ayd: ney,
-                bcyu: cm.nodeY - maxHadj / 2 /*- 4*/,
-                bcyd: cm.nodeY + maxHadj / 2 /*+ 4*/,
+                bcyu: cm.nodeY - maxHadj / 2,
+                bcyd: cm.nodeY + maxHadj / 2,
             }
             if (conditions.branchFill) {
                 updateMapSvgData(nodeId, 'branchFill', {
@@ -153,19 +153,26 @@ export const mapVisualizeSvg = {
                 })
             }
             if (conditions.selectionBorder) {
-                const shouldHaveMargin =
-                    !cm.hasCell && (
+                let margin
+                if (
                     (cm.selection === 's' && cm.sBorderColor !== '') ||
                     (cm.selection === 'f' && cm.fBorderColor !== '') ||
                     (cm.selection === 's' && cm.sFillColor !== '') ||
                     (cm.selection === 'f' && cm.fFillColor !== '') ||
-                    (cm.taskStatus > 0))
+                    (cm.taskStatus > 0)
+                ) {
+                    margin = 4
+                } else {
+                    margin = -2
+                }
+                if (cm.isRoot) margin = -2
+                if (cm.hasCell) margin = 4
                 updateMapSvgData(nodeId, 'selectionBorder', {
                     path: getPolygonPath(
                         {s: sParams, f: fParams}[cm.selection],
                         cm.selection,
                         dir,
-                        shouldHaveMargin === true ? 4 : 0
+                        margin
                     ),
                     stroke: SELECTION_COLOR,
                     strokeWidth: 1,
