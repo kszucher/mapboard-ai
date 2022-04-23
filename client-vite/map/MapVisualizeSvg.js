@@ -104,19 +104,18 @@ export const mapVisualizeSvg = {
             conditions.nodeBorder ||
             conditions.selectionBorder
         ) {
-            let corr = dir === -1 ? -1 : 0
             let sParams = {
-                ax: nsx + 1 * dir - dir * (cm.hasCell ? 4 : 0) + corr,
-                bx: nex - 3 * dir + corr,
-                cx: nex - 2 * dir + dir * (cm.hasCell ? 6 : 0) + corr,
-                ayu: nsy + 1 - (cm.hasCell ? 5 : 0),
-                ayd: ney - 3 + (cm.hasCell ? 7 : 0),
-                bcyu: nsy + 1 - (cm.hasCell ? 5 : 0),
-                bcyd: ney - 3 + (cm.hasCell ? 7 : 0),
+                ax: nsx,
+                bx: nex - dir,
+                cx: nex,
+                ayu: nsy,
+                ayd: ney,
+                bcyu: nsy,
+                bcyd: ney,
             }
             let fParams = {
-                ax: nsx + corr,
-                bx: nex + dir * cm.lineDeltaX + corr,
+                ax: nsx,
+                bx: nex + dir * cm.lineDeltaX,
                 cx: nsx + dir * (cm.familyW + cm.selfW /*+ 4*/),
                 ayu: nsy,
                 ayd: ney,
@@ -135,7 +134,7 @@ export const mapVisualizeSvg = {
                     sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
                 }
                 updateMapSvgData(nodeId, 'nodeFill', {
-                    path: getPolygonPath(sParams, 's', dir, 0),
+                    path: getPolygonPath(sParams, 's', dir, 0), // TODO --> this should NOT be polygonpath...
                     fill: sFillColorOverride === '' ? cm.sFillColor : sFillColorOverride
                 })
             }
@@ -148,7 +147,7 @@ export const mapVisualizeSvg = {
             }
             if (conditions.nodeBorder) {
                 updateMapSvgData(nodeId, 'nodeBorder', {
-                    path: getPolygonPath(sParams, 's', dir, 0), // margin will depend on stroke width
+                    path: getPolygonPath(sParams, 's', dir, cm.hasCell ? 4 : 0), // margin will depend on stroke width
                     stroke: cm.sBorderColor,
                     strokeWidth: cm.sBorderWidth,
                 })
