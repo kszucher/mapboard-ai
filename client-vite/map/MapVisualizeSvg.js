@@ -104,19 +104,18 @@ export const mapVisualizeSvg = {
             conditions.nodeBorder ||
             conditions.selectionBorder
         ) {
-            let corr = dir === -1 ? -1 : 0
             let sParams = {
-                ax: nsx + 1 * dir - dir * (cm.hasCell ? 4 : 0) + corr,
-                bx: nex - 3 * dir + corr,
-                cx: nex - 2 * dir + dir * (cm.hasCell ? (2 + 4) : 0) + corr,
+                ax: nsx - dir * (cm.hasCell ? 4 : 0),
+                bx: nex - 3 * dir,
+                cx: nex - 2 * dir + dir * (cm.hasCell ? (2 + 4) : 0),
                 ayu: nsy + 1 - (cm.hasCell ? (1 + 4) : 0),
                 ayd: ney - 3 + (cm.hasCell ? (3 + 4) : 0),
                 bcyu: nsy + 1 - (cm.hasCell ? (1 + 4) : 0),
                 bcyd: ney - 3 + (cm.hasCell ? (3 + 4) : 0),
             }
             let fParams = {
-                ax: nsx + corr,
-                bx: nex + dir * cm.lineDeltaX + corr,
+                ax: nsx,
+                bx: nex + dir * cm.lineDeltaX,
                 cx: nsx + dir * (cm.familyW + cm.selfW /*+ 4*/),
                 ayu: nsy,
                 ayd: ney,
@@ -245,12 +244,17 @@ export const mapVisualizeSvg = {
                                 w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
                                 h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
                             }
-                            sx -= dir*4
-                            sy -= 4
-                            w += 8
-                            h += 8
+                            let sParams = {
+                                ax: sx ,
+                                bx: sx + dir*w ,
+                                cx: sx + dir*w,
+                                ayu: sy,
+                                ayd: sy + h ,
+                                bcyu: sy ,
+                                bcyd: sy + h,
+                            }
                             updateMapSvgData(nodeId, 'tableCellFrame', {
-                                path: getArcPath(sx, sy, w, h, r, dir, 0),
+                                path: getPolygonPath(sParams, 's', dir,  4),
                                 stroke: SELECTION_COLOR,
                                 strokeWidth: 1,
                             })
