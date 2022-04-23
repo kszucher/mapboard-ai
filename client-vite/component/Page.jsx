@@ -16,6 +16,7 @@ import { ProfileEditor } from './ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
 import { CreateMapInMap } from './CreateMapInMap'
+import { UndoRedo } from './UndoRedo'
 
 const getMuiTheme = colorMode  => createTheme({
     // props: {
@@ -95,6 +96,7 @@ export function Page() {
                     <Logo/>
                     {![AUTH, EMPTY, DEMO].includes(pageState) && <>
                         <TabMaps/>
+                        <UndoRedo/>
                         <Icons/>
                         <Breadcrumbs/>
                     </>}

@@ -9,11 +9,8 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import PersonIcon from '@mui/icons-material/Person'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import UndoIcon from '@mui/icons-material/Undo'
-import RedoIcon from '@mui/icons-material/Redo'
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
 import ShareIcon from '@mui/icons-material/Share'
-import { MAP_RIGHTS } from '../core/EditorFlow'
 import More from './More'
 
 const svgCommonParams = {viewBox:"0 0 480 480", width:"24px", height:"24px"}
@@ -21,12 +18,8 @@ const sSelectionSvg = "M 120 144 L 360 144 C 408 144 432 168 432 216 L 432 264 C
 const fSelectionSvg = "M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432 384 408 408 360 408 L 312 408 C 264 408 120 312 72 312 C 24 312 24 168 72 168 C 120 168 264 72 312 72 Z"
 
 export function Icons () {
-    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-
     const colorMode = useSelector(state => state.colorMode)
-    const mapRight = useSelector(state => state.mapRight)
-    const undoDisabled = useSelector(state => state.undoDisabled)
-    const redoDisabled = useSelector(state => state.redoDisabled)
+
     const formatMode = useSelector(state => state.formatMode)
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
@@ -36,8 +29,6 @@ export function Icons () {
     const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
 
     const dispatch = useDispatch()
-    const undo = _ => dispatch({ type: 'UNDO'})
-    const redo = _ => dispatch({ type: 'REDO'})
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
@@ -55,31 +46,6 @@ export function Icons () {
 
     return (
         <>
-            <div style={{
-                position: 'fixed',
-                left: 216+48,
-                width: 2*40,
-                display: 'flex',
-                alignItems: 'center',
-                height: 40,
-                padding: '4px 12px 4px 12px',
-                backgroundColor: MAP_BACKGROUND,
-                borderTop: 0,
-                borderLeft: `1px solid ${PAGE_BACKGROUND}`,
-                borderBottom: `1px solid ${PAGE_BACKGROUND}`,
-                borderRight: `1px solid ${PAGE_BACKGROUND}`,
-                borderBottomLeftRadius: 16,
-                borderBottomRightRadius: 16,
-            }}>
-                <div style={{ display: 'flex',  }}>
-                    <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
-                        <UndoIcon/>
-                    </IconButton>
-                    <IconButton color='secondary' onClick={redo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}>
-                        <RedoIcon/>
-                    </IconButton>
-                </div>
-            </div>
             <div style={{
                 position: 'fixed',
                 right: 0,
