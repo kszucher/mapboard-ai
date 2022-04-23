@@ -140,14 +140,14 @@ export const mapVisualizeSvg = {
             }
             if (conditions.branchBorder) {
                 updateMapSvgData(nodeId, 'branchBorder', {
-                    path: getPolygonPath(fParams, 'f', dir, 0), // margin will depend on stroke width
+                    path: getPolygonPath(fParams, 'f', dir, 0),
                     stroke: cm.fBorderColor,
                     strokeWidth: cm.fBorderWidth,
                 })
             }
             if (conditions.nodeBorder) {
                 updateMapSvgData(nodeId, 'nodeBorder', {
-                    path: getPolygonPath(sParams, 's', dir, cm.hasCell ? 4 : 0), // margin will depend on stroke width
+                    path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
                     stroke: cm.sBorderColor,
                     strokeWidth: cm.sBorderWidth,
                 })
