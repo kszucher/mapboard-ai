@@ -155,12 +155,12 @@ export const mapVisualizeSvg = {
             }
             if (conditions.selectionBorder) {
                 const shouldHaveMargin =
+                    !cm.hasCell && (
                     (cm.selection === 's' && cm.sBorderColor !== '') ||
                     (cm.selection === 'f' && cm.fBorderColor !== '') ||
                     (cm.selection === 's' && cm.sFillColor !== '') ||
                     (cm.selection === 'f' && cm.fFillColor !== '') ||
-                    (cm.taskStatus > 0)
-                    // TODO figure out cell border
+                    (cm.taskStatus > 0))
                 updateMapSvgData(nodeId, 'selectionBorder', {
                     path: getPolygonPath(
                         {s: sParams, f: fParams}[cm.selection],
