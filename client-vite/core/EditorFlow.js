@@ -27,6 +27,7 @@ export const MAP_RIGHTS = {
 
 const editorState = {
     authPageState: AUTH_PAGE_STATES.SIGN_IN,
+
     name: '',
     email: '',
     password: '',
@@ -93,6 +94,19 @@ const resolveActions = (state, action) => {
     const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':                 return JSON.parse(editorStateDefault)
+
+        case 'SIGN_IN_PANEL':               return { authPageState: SIGN_IN, authFeedbackMessage: '' }
+        case 'SIGN_UP_PANEL':               return { authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', authFeedbackMessage: '' }
+        case 'SIGN_UP_STEP_1_PANEL':        return { authPageState: SIGN_UP_STEP_1 }
+        case 'SIGN_UP_STEP_2_PANEL':        return { authPageState: SIGN_UP_STEP_2 }
+
+        case 'SET_NAME':                    return { name: payload }
+        case 'SET_EMAIL':                   return { email: payload }
+        case 'SET_PASSWORD':                return { password: payload }
+        case 'SET_PASSWORD_AGAIN':          return { passwordAgain: payload }
+        case 'SET_CONFIRMATION_CODE':       return { confirmationCode: payload }
+        case 'SET_AUTH_FEEDBACK_MESSAGE':   return { authFeedbackMessage: payload }
+
         case 'SHOW_AUTH':                   return { pageState: AUTH }
         case 'SHOW_DEMO':                   return { pageState: DEMO }
         case 'SHOW_WS':                     return { pageState: WS }
@@ -100,35 +114,36 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS_SHARES':              return { pageState: WS_SHARES }
         case 'SHOW_WS_PROFILE':             return { pageState: WS_PROFILE }
         case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: WS_CREATE_MAP_IN_MAP }
-        case 'SET_FORMAT_MODE':             return { formatMode: payload }
-        case 'CLOSE_FORMATTER':             return { formatMode: '' }
-        case 'OPEN_PLAYBACK_EDITOR':        return { frameEditorVisible: 1 }
-        case 'CLOSE_PLAYBACK_EDITOR':       return { frameEditorVisible: 0 }
+
         case 'SET_LANDING_DATA':            return { landingData: payload.landingData, mapRight: payload.mapRight }
-        case 'SET_TAB_MAP_SELECTED':        return { tabMapSelected: payload.tabMapSelected }
         case 'PLAY_LANDING_NEXT':           return { landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0 }
         case 'PLAY_LANDING_PREV':           return { landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1 }
-        case 'SET_NAME':                    return { name: payload }
-        case 'SET_EMAIL':                   return { email: payload }
-        case 'SET_PASSWORD':                return { password: payload }
-        case 'SET_PASSWORD_AGAIN':          return { passwordAgain: payload }
-        case 'SET_CONFIRMATION_CODE':       return { confirmationCode: payload }
-        case 'SET_AUTH_FEEDBACK_MESSAGE':   return { authFeedbackMessage: payload }
-        case 'SIGN_IN_PANEL':               return { authPageState: SIGN_IN, authFeedbackMessage: '' }
-        case 'SIGN_UP_PANEL':               return { authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', authFeedbackMessage: '' }
-        case 'SIGN_UP_STEP_1_PANEL':        return { authPageState: SIGN_UP_STEP_1 }
-        case 'SIGN_UP_STEP_2_PANEL':        return { authPageState: SIGN_UP_STEP_2 }
-        case 'TOGGLE_TAB_SHRINK':           return { tabShrink: !state.tabShrink }
+
+        case 'CHANGE_COLOR_MODE':           return { colorMode: state.colorMode === 'light' ? 'dark' : 'light' }
+
+        case 'SET_FORMAT_MODE':             return { formatMode: payload }
+        case 'CLOSE_FORMATTER':             return { formatMode: '' }
+
         case 'SET_UNDO_DISABLED':           return { undoDisabled: payload }
         case 'SET_REDO_DISABLED':           return { redoDisabled: payload }
-        case 'CHANGE_COLOR_MODE':           return { colorMode: state.colorMode === 'light' ? 'dark' : 'light' }
-        case 'OPEN_MORE_MENU':              return { moreMenu: payload.currentTarget }
-        case 'CLOSE_MORE_MENU':             return { moreMenu: null }
+
+        case 'SET_TAB_MAP_SELECTED':        return { tabMapSelected: payload.tabMapSelected }
+        case 'TOGGLE_TAB_SHRINK':           return { tabShrink: !state.tabShrink }
+
         case 'SET_NODE_PARAMS':             return { node: {...state.node, ...payload} }
+
+        case 'OPEN_PLAYBACK_EDITOR':        return { frameEditorVisible: 1 }
+        case 'CLOSE_PLAYBACK_EDITOR':       return { frameEditorVisible: 0 }
+
         case 'SET_SHARE_EMAIL':             return { shareEmail: payload }
         case 'SET_SHARE_ACCESS':            return { shareAccess: payload }
         case 'SET_SHARE_FEEDBACK_MESSAGE':  return { shareFeedbackMessage: payload }
+
+        case 'OPEN_MORE_MENU':              return { moreMenu: payload.currentTarget }
+        case 'CLOSE_MORE_MENU':             return { moreMenu: null }
+
         case 'PARSE_RESP_PAYLOAD':          return {...payload }
+
         default: return {}
     }
 }
