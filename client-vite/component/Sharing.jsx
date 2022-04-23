@@ -14,7 +14,7 @@ export function Sharing() {
     const setShareEmail = e => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
     const setShareAccess = e => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
     const createShare = _ => dispatch({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}})
-    const closeSharing = _ => dispatch({type: 'CLOSE_SHARING'})
+    const showWs = _ => dispatch({type: 'SHOW_WS'})
     return(
         <Modal
             open={true}
@@ -80,7 +80,7 @@ export function Sharing() {
                 <Button
                     color="primary"
                     variant="outlined"
-                    onClick={closeSharing}>
+                    onClick={showWs}>
                     {'CLOSE'}
                 </Button>
             </div>

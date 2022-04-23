@@ -132,8 +132,8 @@ const resolveActions = (state, action) => {
 
         case 'SET_NODE_PARAMS':             return { node: {...state.node, ...payload} }
 
-        case 'OPEN_FRAME_EDITOR':           return { frameEditorVisible: 1 }
-        case 'CLOSE_FRAME_EDITOR':          return { frameEditorVisible: 0 }
+        case 'OPEN_FRAME_EDITOR':           return { frameEditorVisible: 1 } // prevent saga mixin
+        case 'CLOSE_FRAME_EDITOR':          return { frameEditorVisible: 0 } // prevent saga mixin
 
         case 'SET_SHARE_EMAIL':             return { shareEmail: payload }
         case 'SET_SHARE_ACCESS':            return { shareAccess: payload }

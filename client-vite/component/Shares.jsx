@@ -14,7 +14,7 @@ export function Shares() {
     const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const getShares = _ => dispatch({type: 'GET_SHARES'})
-    const closeShares = _ => dispatch({type: 'CLOSE_SHARES'})
+    const showWs = _ => dispatch({type: 'SHOW_WS'})
     const acceptShare = params => dispatch({type: 'ACCEPT_SHARE', payload: {shareIdOut: params.row._id}})
     const deleteShare = params => dispatch({type: 'DELETE_SHARE', payload: {shareIdOut: params.row._id}})
 
@@ -105,7 +105,7 @@ export function Shares() {
                         autoHeight={true}/>}
                 </div>
                 <Button color="primary" variant='outlined' onClick={getShares}>{'REFRESH'}</Button>
-                <Button color="primary" variant='outlined' onClick={closeShares}>{'CLOSE'}</Button>
+                <Button color="primary" variant='outlined' onClick={showWs}>{'CLOSE'}</Button>
             </div>}
         </Modal>
     )

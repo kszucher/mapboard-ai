@@ -32,7 +32,65 @@ const fetchPost = (req) => {
     }).then(resp => resp.json())
 }
 
-function* legacySaga () {
+function* authSaga () {
+    while (true) {
+        const { type, payload } = yield take([
+            'SIGN_IN',
+            'SIGN_UP_STEP_1',
+            'SIGN_UP_STEP_2',
+            'LIVE_DEMO',
+        ])
+        const { resp } = yield call(fetchPost, { type, payload })
+        switch (resp.type) {
+            case 'signInSuccess':
+                const { cred } = resp.payload
+                localStorage.setItem('cred', JSON.stringify(cred))
+                initDomData()
+                yield put({type: 'SHOW_WS'})
+                break
+            case 'signInFailWrongCred':
+                localStorage.clear();
+                break
+            case 'signInFailIncompleteRegistration':
+                console.log('incomplete registration')
+                break
+            case 'signUpStep1FailEmailAlreadyInUse':
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use'})
+                break
+            case 'signUpStep1Success':
+                yield put({type: 'SIGN_UP_STEP_2_PANEL'})
+                break
+            case 'signUpStep2FailUnknownUser':
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user'})
+                break
+            case 'signUpStep2FailWrongCode':
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code'})
+                break
+            case 'signUpStep2FailAlreadyActivated':
+                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated'})
+                break
+            case 'signUpStep2Success':
+                yield put({type: 'SIGN_IN_PANEL'})
+                break
+            case 'liveDemoSuccess':
+                initDomData()
+                yield put({type: 'SHOW_DEMO'})
+                break
+        }
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+    }
+}
+
+function* colorSaga () {
+    while (true) {
+        yield take('CHANGE_COLOR_MODE')
+        const colorMode = (yield select(state => state.colorMode)) === 'light' ? 'dark' : 'light'
+        yield put({ type: 'SET_COLOR_MODE', payload: colorMode})
+        yield call(fetchPost, { type: 'CHANGE_COLOR_MODE', payload: {colorMode} })
+    }
+}
+
+function* mapSaga () {
     while (true) {
         let { type, payload } = yield take([
             'OPEN_MAP_FROM_TAB',
@@ -99,117 +157,6 @@ function* legacySaga () {
     }
 }
 
-function* authSaga () {
-    while (true) {
-        const { type, payload } = yield take([
-            'SIGN_IN',
-            'SIGN_UP_STEP_1',
-            'SIGN_UP_STEP_2',
-            'LIVE_DEMO',
-        ])
-        const { resp } = yield call(fetchPost, { type, payload })
-        switch (resp.type) {
-            case 'signInSuccess':
-                const { cred } = resp.payload
-                localStorage.setItem('cred', JSON.stringify(cred))
-                initDomData()
-                yield put({type: 'SHOW_WS'})
-                break
-            case 'signInFailWrongCred':
-                localStorage.clear();
-                break
-            case 'signInFailIncompleteRegistration':
-                console.log('incomplete registration')
-                break
-            case 'signUpStep1FailEmailAlreadyInUse':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use'})
-                break
-            case 'signUpStep1Success':
-                yield put({type: 'SIGN_UP_STEP_2_PANEL'})
-                break
-            case 'signUpStep2FailUnknownUser':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user'})
-                break
-            case 'signUpStep2FailWrongCode':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code'})
-                break
-            case 'signUpStep2FailAlreadyActivated':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated'})
-                break
-            case 'signUpStep2Success':
-                yield put({type: 'SIGN_IN_PANEL'})
-                break
-            case 'liveDemoSuccess':
-                initDomData()
-                yield put({type: 'SHOW_DEMO'})
-                break
-        }
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
-    }
-}
-
-function* shareSaga () {
-    while (true) {
-        let { type, payload } = yield take([
-            'CREATE_SHARE'
-        ])
-        if (type === 'CREATE_SHARE') {
-            payload = {...payload,
-                mapId: mapStack.mapId,
-            }
-        }
-        const { resp } = yield call(fetchPost, { type, payload })
-        switch (resp.type) {
-            case 'createShareFailNotAValidUser':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address'})
-                break
-            case 'createShareFailCantShareWithYourself':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours'})
-                break
-            case 'createShareSuccess':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has been shared successfully'})
-                break
-            case 'createShareFailAlreadyShared':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared'})
-                break
-            case 'updateShareSuccess':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Access has changed successfully'})
-                break
-        }
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
-    }
-}
-
-function* profileSaga () {
-    while (true) {
-        yield take('OPEN_PROFILE')
-        const { resp } = yield call(fetchPost, { type: 'GET_NAME' })
-        yield put({ type: 'SET_NAME', payload: resp.name })
-        yield put({ type: 'SHOW_WS_PROFILE' })
-        const { type } = yield take(['CLOSE_PROFILE'])
-        switch (type) {
-            case 'CLOSE_PROFILE':
-                yield put({ type: 'SHOW_WS' })
-                break;
-            case 'OTHERSTUFF':
-                break;
-        }
-    }
-}
-
-function* frameSaga () {
-
-}
-
-function* workspaceSaga () {
-    while (true) {
-        yield take([
-            'CLOSE_SHARES',
-            'CLOSE_SHARING',
-        ])
-        yield put({type: 'SHOW_WS'})
-    }
-}
 
 function* mapStackSaga () {
     while (true) {
@@ -301,25 +248,67 @@ function* mapStackSaga () {
     }
 }
 
-function* colorSaga () {
+function* profileSaga () {
     while (true) {
-        yield take('CHANGE_COLOR_MODE')
-        const colorMode = (yield select(state => state.colorMode)) === 'light' ? 'dark' : 'light'
-        yield put({ type: 'SET_COLOR_MODE', payload: colorMode})
-        const changeColorMode = {type: 'CHANGE_COLOR_MODE', payload: {colorMode}}
-        yield call(fetchPost, changeColorMode)
+        yield take('OPEN_PROFILE')
+        const { resp } = yield call(fetchPost, { type: 'GET_NAME' })
+        yield put({ type: 'SET_NAME', payload: resp.name })
+        yield put({ type: 'SHOW_WS_PROFILE' })
+        const { type } = yield take(['CLOSE_PROFILE'])
+        switch (type) {
+            case 'CLOSE_PROFILE':
+                yield put({ type: 'SHOW_WS' })
+                break;
+            case 'OTHERSTUFF':
+                break;
+        }
+    }
+}
+
+function* frameSaga () {
+
+}
+
+function* shareSaga () {
+    while (true) {
+        let { type, payload } = yield take([
+            'CREATE_SHARE'
+        ])
+        if (type === 'CREATE_SHARE') {
+            payload = {...payload,
+                mapId: mapStack.mapId,
+            }
+        }
+        const { resp } = yield call(fetchPost, { type, payload })
+        switch (resp.type) {
+            case 'createShareFailNotAValidUser':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address'})
+                break
+            case 'createShareFailCantShareWithYourself':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours'})
+                break
+            case 'createShareSuccess':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has been shared successfully'})
+                break
+            case 'createShareFailAlreadyShared':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared'})
+                break
+            case 'updateShareSuccess':
+                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Access has changed successfully'})
+                break
+        }
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
 }
 
 export default function* rootSaga () {
     yield all([
-        legacySaga(),
         authSaga(),
-        shareSaga(),
+        colorSaga(),
+        mapSaga(),
+        mapStackSaga(),
         profileSaga(),
         frameSaga(),
-        workspaceSaga(),
-        mapStackSaga(),
-        colorSaga(),
+        shareSaga(),
     ])
 }
