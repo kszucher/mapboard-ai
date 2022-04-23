@@ -153,20 +153,14 @@ export const mapVisualizeSvg = {
                 })
             }
             if (conditions.selectionBorder) {
-                let margin
-                if (
+                let margin = (
                     (cm.selection === 's' && cm.sBorderColor !== '') ||
                     (cm.selection === 'f' && cm.fBorderColor !== '') ||
                     (cm.selection === 's' && cm.sFillColor !== '') ||
                     (cm.selection === 'f' && cm.fFillColor !== '') ||
-                    (cm.taskStatus > 0)
-                ) {
-                    margin = 4
-                } else {
-                    margin = -2
-                }
-                if (cm.isRoot) margin = -2
-                if (cm.hasCell) margin = 4
+                    (cm.taskStatus > 0) ||
+                    (cm.hasCell)
+                ) ? 4 : -2
                 updateMapSvgData(nodeId, 'selectionBorder', {
                     path: getPolygonPath(
                         {s: sParams, f: fParams}[cm.selection],
