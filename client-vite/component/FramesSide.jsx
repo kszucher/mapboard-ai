@@ -9,7 +9,7 @@ export function FramesSide () {
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
     const duplicateFrame = _ => dispatch({type: 'DUPLICATE_FRAME'})
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
-    const closePlaybackEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
+    const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
     return (
         <div style={{ position: 'fixed', top: 96, right: 64, width: 6*32,
             display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 12,
@@ -26,7 +26,7 @@ export function FramesSide () {
                 <Button color="primary" variant='outlined' onClick={deleteFrame}>{'DELETE'}</Button>
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
-                <Button color="primary" variant='outlined' onClick={closePlaybackEditor}>{'CLOSE'}</Button>
+                <Button color="primary" variant='outlined' onClick={closeFrameEditor}>{'CLOSE'}</Button>
             </div>
         </div>
     )

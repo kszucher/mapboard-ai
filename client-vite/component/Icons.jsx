@@ -37,7 +37,7 @@ export function Icons () {
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
     const closePalette = _ => dispatch({type: 'CLOSE_FORMATTER'})
     const showWsCreateMapInMap = _ => dispatch({type: 'SHOW_WS_CREATE_MAP_IN_MAP'})
-    const openPlaybackEditor =  _ => dispatch({type: 'OPEN_FRAME_EDITOR'})
+    const openFrameEditor =  _ => dispatch({type: 'OPEN_FRAME_EDITOR'})
     return (
         <div style={{
             position: 'fixed',
@@ -113,7 +113,7 @@ export function Icons () {
                         </g>
                     </svg>
                 </IconButton>
-                <IconButton color='secondary' onClick={openPlaybackEditor}>
+                <IconButton color='secondary' onClick={openFrameEditor}>
                     <DynamicFeedIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>{}}>
