@@ -105,14 +105,18 @@ export const mapVisualizeSvg = {
             conditions.selectionBorder
         ) {
             let corr = dir === -1 ? -1 : 0
+            let xl_offs = cm.hasCell ? 4 : 0
+            let xr_offs = cm.hasCell ? 6 : 0
+            let yu_offs = cm.hasCell ? 5 : 0
+            let yd_offs = cm.hasCell ? 7 : 0
             let sParams = {
-                ax: nsx + 1 * dir + corr,
+                ax: nsx + 1 * dir + corr - dir* xl_offs,
                 bx: nex - 3 * dir + corr,
-                cx: nex - 2 * dir + corr,
-                ayu: nsy + 1,
-                ayd: ney - 3,
-                bcyu: nsy + 1,
-                bcyd: ney - 3,
+                cx: nex - 2 * dir + corr + dir* xr_offs,
+                ayu: nsy + 1 - yu_offs,
+                ayd: ney - 3 + yd_offs,
+                bcyu: nsy + 1 - yu_offs,
+                bcyd: ney - 3 + yd_offs,
             }
             let fParams = {
                 ax: nsx + corr,
@@ -159,7 +163,7 @@ export const mapVisualizeSvg = {
                     (cm.selection === 'f' && cm.fBorderColor !== '') ||
                     (cm.selection === 's' && cm.sFillColor !== '') ||
                     (cm.selection === 'f' && cm.fFillColor !== '')
-
+                    // TODO figure out cell border
                 updateMapSvgData(nodeId, 'selectionBorder', {
                     path: getPolygonPath(
                         {s: sParams, f: fParams}[cm.selection],
