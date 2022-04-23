@@ -29,7 +29,7 @@ export function Formatter () {
     const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
     const dispatch = useDispatch()
-    const closePalette = _ => dispatch({type: 'CLOSE_PALETTE'})
+    const closePalette = _ => dispatch({type: 'CLOSE_FORMATTER'})
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})

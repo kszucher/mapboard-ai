@@ -26,7 +26,6 @@ export const MAP_RIGHTS = {
 }
 
 const editorState = {
-    // auth
     authPageState: AUTH_PAGE_STATES.SIGN_IN,
     name: '',
     email: '',
@@ -34,25 +33,30 @@ const editorState = {
     passwordAgain: '',
     confirmationCode: '',
     authFeedbackMessage: '',
-    //
+
     pageState: PAGE_STATES.AUTH,
-    frameEditorVisible: 0,
-    //
+
     landingData: [],
     landingDataIndex: 0,
-    // breadcrumbs
-    breadcrumbMapNameList: [''],
-    // tabs
+
+    undoDisabled: true,
+    redoDisabled: true,
+
     tabMapNameList: [],
     tabMapSelected: 0,
-    //
+    tabShrink: false,
+
+    breadcrumbMapNameList: [''],
+
     formatMode: '',
-    // map
+
     mapId: '',
     mapSource: '',
     mapStorage: {},
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
-    // node
+
+    colorMode: 'light',
+
     node: {
         density: undefined,
         alignment: undefined,
@@ -67,22 +71,17 @@ const editorState = {
         textColor: undefined,
         taskStatus: undefined,
     },
-    // frame
+
+    frameEditorVisible: 0,
     frameLen: 0,
     frameSelected: 0,
-    // share
+
     shareEmail: '',
     shareAccess: 'view',
     shareFeedbackMessage: '',
     shareDataExport: [],
     shareDataImport: [],
-    // undo redo
-    undoDisabled: true,
-    redoDisabled: true,
-    //
-    colorMode: 'light',
-    tabShrink: false,
-    // menu
+
     moreMenu: false,
 }
 
@@ -102,14 +101,13 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS_PROFILE':             return {pageState: WS_PROFILE}
         case 'SHOW_WS_CREATE_MAP_IN_MAP':   return {pageState: WS_CREATE_MAP_IN_MAP}
         case 'SET_FORMAT_MODE':             return {formatMode: payload}
-        case 'CLOSE_PALETTE':               return {formatMode: ''}
+        case 'CLOSE_FORMATTER':             return {formatMode: ''}
         case 'OPEN_PLAYBACK_EDITOR':        return {frameEditorVisible: 1}
         case 'CLOSE_PLAYBACK_EDITOR':       return {frameEditorVisible: 0}
         case 'SET_LANDING_DATA':            return {landingData: payload.landingData, mapRight: payload.mapRight}
         case 'SET_TAB_MAP_SELECTED':        return {tabMapSelected: payload.tabMapSelected}
         case 'PLAY_LANDING_NEXT':           return {landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0}
         case 'PLAY_LANDING_PREV':           return {landingDataIndex: state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1}
-        // AUTH
         case 'SET_NAME':                    return {name: payload}
         case 'SET_EMAIL':                   return {email: payload}
         case 'SET_PASSWORD':                return {password: payload}
@@ -120,23 +118,17 @@ const resolveActions = (state, action) => {
         case 'SIGN_UP_PANEL':               return {authPageState: SIGN_UP_STEP_1, name: '', email: '', password: '', passwordAgain: '', authFeedbackMessage: ''}
         case 'SIGN_UP_STEP_1_PANEL':        return {authPageState: SIGN_UP_STEP_1}
         case 'SIGN_UP_STEP_2_PANEL':        return {authPageState: SIGN_UP_STEP_2}
-        // SHARE
+        case 'TOGGLE_TAB_SHRINK':           return {tabShrink: !state.tabShrink}
+        case 'SET_UNDO_DISABLED':           return {undoDisabled: payload}
+        case 'SET_REDO_DISABLED':           return {redoDisabled: payload}
+        case 'CHANGE_COLOR_MODE':           return {colorMode: state.colorMode === 'light' ? 'dark' : 'light'}
+        case 'OPEN_MORE_MENU':              return {moreMenu: payload.currentTarget}
+        case 'CLOSE_MORE_MENU':             return {moreMenu: null}
+        case 'SET_NODE_PARAMS':             return {node: {...state.node, ...payload}}
         case 'SET_SHARE_EMAIL':             return {shareEmail: payload}
         case 'SET_SHARE_ACCESS':            return {shareAccess: payload}
         case 'SET_SHARE_FEEDBACK_MESSAGE':  return {shareFeedbackMessage: payload}
-        // UNDO REDO
-        case 'SET_UNDO_DISABLED':           return {undoDisabled: payload}
-        case 'SET_REDO_DISABLED':           return {redoDisabled: payload}
-        //
-        case 'SET_NODE_PARAMS':             return {node: {...state.node, ...payload}}
-        //
         case 'PARSE_RESP_PAYLOAD':          return {...payload}
-        //
-        case 'CHANGE_COLOR_MODE':           return {colorMode: state.colorMode === 'light' ? 'dark' : 'light'}
-        case 'TOGGLE_TAB_SHRINK':           return {tabShrink: !state.tabShrink}
-        // MENU
-        case 'OPEN_MORE_MENU':              return {moreMenu: payload.currentTarget}
-        case 'CLOSE_MORE_MENU':             return {moreMenu: null}
         default: return {}
     }
 }
