@@ -107,11 +107,11 @@ export const mapVisualizeSvg = {
             let sParams = {
                 ax: nsx - dir * (cm.hasCell ? 4 : 0),
                 bx: nex - 3 * dir,
-                cx: nex - 2 * dir + dir * (cm.hasCell ? (2 + 4) : 0),
-                ayu: nsy + 1 - (cm.hasCell ? (1 + 4) : 0),
-                ayd: ney - 3 + (cm.hasCell ? (3 + 4) : 0),
-                bcyu: nsy + 1 - (cm.hasCell ? (1 + 4) : 0),
-                bcyd: ney - 3 + (cm.hasCell ? (3 + 4) : 0),
+                cx: nex - 2 * dir + dir * (cm.hasCell ? 6 : 0),
+                ayu: nsy + 1 - (cm.hasCell ? 5 : 0),
+                ayd: ney - 3 + (cm.hasCell ? 6 : 0),
+                bcyu: nsy + 1 - (cm.hasCell ? 5 : 0),
+                bcyd: ney - 3 + (cm.hasCell ? 6 : 0),
             }
             let fParams = {
                 ax: nsx,
