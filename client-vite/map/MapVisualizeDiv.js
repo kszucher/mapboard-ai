@@ -74,7 +74,7 @@ export const mapVisualizeDiv = {
                 textDecoration:             cm.linkType !== "" ? "underline" : "",
                 cursor:                     'default',
                 color:                      cm.textColor === 'default' ? TEXT_COLOR : cm.textColor,
-                transition:                 'all 0.5s',
+                transition:                 'all 0.3s',
                 transitionTimingFunction:   'cubic-bezier(0.0,0.0,0.58,1.0)',
                 // transitionProperty:         'left, top, background-color',
             }

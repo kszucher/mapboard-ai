@@ -158,14 +158,14 @@ export function updateDomData() {
                             svgElement.setAttribute("stroke", checkSvgField(stroke))
                             svgElement.setAttribute("stroke-width", strokeWidth)
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke")
-                            svgElement.style.transition = preventTransition ? '' : 'all 0.5s'
+                            svgElement.style.transition = preventTransition ? '' : 'all 0.3s'
                             svgElement.style.transitionTimingFunction = preventTransition ? '' : 'cubic-bezier(0.0,0.0,0.58,1.0)'
                             svgElement.style.transitionProperty = 'd, fill, stroke-width'
                             if (!isChrome) {
                                 let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate')
                                 svgElementAnimate.setAttribute("attributeName", "d")
                                 svgElementAnimate.setAttribute("attributeType", "XML")
-                                svgElementAnimate.setAttribute("dur", "0.5s")
+                                svgElementAnimate.setAttribute("dur", "0.3s")
                                 svgElementAnimate.setAttribute("calcMode", "spline")
                                 svgElementAnimate.setAttribute("keySplines", "0 0 0.58 1")
                                 svgElementAnimate.setAttribute("keyTimes", "0;1")
@@ -180,7 +180,7 @@ export function updateDomData() {
                             svgElement.setAttribute("r", r)
                             svgElement.setAttribute("fill", fill)
                             svgElement.setAttribute("vector-effect", "non-scaling-stroke")
-                            svgElement.style.transition = '0.5s ease-out'
+                            svgElement.style.transition = '0.3s ease-out'
                             break
                         }
                         case 'rect': {
@@ -195,7 +195,7 @@ export function updateDomData() {
                             svgElement.setAttribute("fill-opacity", fillOpacity)
                             svgElement.setAttribute("stroke", checkSvgField(stroke))
                             svgElement.setAttribute("stroke-width", strokeWidth)
-                            svgElement.style.transition = preventTransition ? '' : '0.5s ease-out'
+                            svgElement.style.transition = preventTransition ? '' : '0.3s ease-out'
                             break
                         }
                     }
