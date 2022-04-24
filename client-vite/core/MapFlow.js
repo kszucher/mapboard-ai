@@ -48,6 +48,10 @@ const mapReducer = (action, payload) => {
             clearSelection()
             lm.selected = 1
             lm.selection = 's'
+            if (!lm.isRoot) {
+                let parentRef = mapref(lm.parentPath)
+                parentRef.lastSelectedChild = lm.index
+            }
             break
         }
         case 'selectStructFamily': {
@@ -71,11 +75,19 @@ const mapReducer = (action, payload) => {
                     lm.selection = 'f'
                 }
             }
+            if (!lm.isRoot) {
+                let parentRef = mapref(lm.parentPath)
+                parentRef.lastSelectedChild = lm.index
+            }
             break
         }
         case 'selectStructToo': {
             let m = mapref(['m'])
             mapref(m.deepestSelectablePath).selected = sc.maxSel + 1
+            if (!lm.isRoot) {
+                let parentRef = mapref(lm.parentPath)
+                parentRef.lastSelectedChild = lm.index
+            }
             break
         }
         case 'select_all': {
