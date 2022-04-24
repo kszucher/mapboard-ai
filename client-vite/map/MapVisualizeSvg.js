@@ -159,16 +159,11 @@ export const mapVisualizeSvg = {
                     (cm.hasCell)
                 ) ? 4 : -2
                 let isLast = arraysSame(selectionState.lastPath, cm.path)
-                console.log(isLast, selectionState.lastPath, cm.path)
-                updateMapSvgData(
-                    isLast ? m.nodeId : cm.nodeId,
-                    'selectionBorder',
-                    {
-                        path: getPolygonPath({s: sParams, f: fParams}[cm.selection], cm.selection, dir, margin),
-                        stroke: SELECTION_COLOR,
-                        strokeWidth: 1,
-                    }
-                )
+                updateMapSvgData(isLast ? m.nodeId : cm.nodeId, 'selectionBorder', {
+                    path: getPolygonPath({s: sParams, f: fParams}[cm.selection], cm.selection, dir, margin),
+                    stroke: SELECTION_COLOR,
+                    strokeWidth: 1,
+                })
             }
         }
         if (conditions.line) {
