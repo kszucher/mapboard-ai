@@ -170,6 +170,7 @@ export function WindowListeners() {
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return
         }
+        console.log('mousedown...')
         if (!isMouseDown) {
             isMouseDown = true
             if (isEditing === 1) {
@@ -306,47 +307,46 @@ export function WindowListeners() {
 
     const mouseup = colorMode => e => {
         e.preventDefault()
-        const {path, which} = getNativeEvent(e)
-        if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-            return
-        }
-        isMouseDown = false
-        if (elapsed) {
-            if (which === 1) {
-                if (isNodeClicked) {
-                    let m = mapref(['m'])
-                    if (m.moveTargetPath.length) {
-                        m.moveData = []
-                        m.shouldCenter = true // outside push - checkPop?
-                        mapDispatch('moveSelection')
+        const {which} = getNativeEvent(e)
+        if (isMouseDown) {
+            isMouseDown = false
+            if (elapsed) {
+                if (which === 1) {
+                    if (isNodeClicked) {
+                        let m = mapref(['m'])
+                        if (m.moveTargetPath.length) {
+                            m.moveData = []
+                            m.shouldCenter = true // outside push - checkPop?
+                            mapDispatch('moveSelection')
+                            redraw(colorMode)
+                        }
+                    } else if (isTaskClicked) {
+                    } else {
+                        let m = mapref(['m'])
+                        m.selectionRect = []
+                        if (selectionState.structSelectedPathList.length === 0 &&
+                            selectionState.cellSelectedPathList.length === 0) {
+                            mapDispatch('select_R')
+                        }
                         redraw(colorMode)
                     }
-                } else if (isTaskClicked) {
-                } else {
-                    let m = mapref(['m'])
-                    m.selectionRect = []
-                    if (selectionState.structSelectedPathList.length === 0 &&
-                        selectionState.cellSelectedPathList.length === 0) {
+                } else if (which === 2) {
+                } else if (which === 3) {
+                }
+            } else {
+                if (which === 1) {
+                    if (isNodeClicked) {
+                    } else if (isTaskClicked) {
+                    } else {
                         mapDispatch('select_R')
+                        redraw(colorMode)
                     }
-                    redraw(colorMode)
+                } else if (which === 2) {
+                } else if (which === 3) {
                 }
-            } else if (which === 2) {
-            } else if (which === 3) {
             }
-        } else {
-            if (which === 1) {
-                if (isNodeClicked) {
-                } else if (isTaskClicked) {
-                } else {
-                    mapDispatch('select_R')
-                    redraw(colorMode)
-                }
-            } else if (which === 2) {
-            } else if (which === 3) {
-            }
+            checkPop(dispatch)
         }
-        checkPop(dispatch)
     }
 
     const dblclick = colorMode => e => {
