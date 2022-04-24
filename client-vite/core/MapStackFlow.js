@@ -55,6 +55,8 @@ export function checkPop(dispatch) {
         mapStack.data.length--
         mapStack.dataIndex--
     } else {
+        // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex]))
+        // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
         dispatch({ type: 'MAP_STACK_CHANGED' })
     }
 }
