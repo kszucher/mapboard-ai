@@ -24,7 +24,7 @@ export let mapProps = {
         isLoading: true,
         isResizing: false,
         // navigators
-        deepestSelectablePath: [],
+        deepestSelectablePath: ['r', 0],
         //
         selectionRect: [],
         moveTargetPath: [],
