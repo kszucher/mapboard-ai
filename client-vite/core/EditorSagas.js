@@ -233,7 +233,7 @@ function* mapStackSaga () {
                         : undefined,
                 }
 
-                console.log(assignment)
+                // console.log(assignment)
 
                 yield put({
                     type: 'SET_NODE_PARAMS',

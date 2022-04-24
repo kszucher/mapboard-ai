@@ -79,7 +79,6 @@ export const updateMapSvgData = ( nodeId, name, params ) => {
         case 'line':                    layer = 3; type = 'path'; break
         case 'tableFrame':              layer = 3; type = 'path'; break
         case 'tableGrid':               layer = 3; type = 'path'; break
-        case 'tableCellFrame':          layer = 3; type = 'path'; break
         case 'taskLine':                layer = 3; type = 'path'; break
         case 'taskCircle0':             layer = 3; type = 'circle'; break
         case 'taskCircle1':             layer = 3; type = 'circle'; break
