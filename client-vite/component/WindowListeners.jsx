@@ -11,7 +11,7 @@ import {pasteDispatch} from "../core/PasteFlow"
 import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow"
 import { getColors } from '../core/Colors'
 
-let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, isMouseDown, elapsed = 0
+let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, whichDown = 0, elapsed = 0
 let namedInterval
 let isIntervalRunning = false
 let isNodeClicked = false
@@ -168,9 +168,8 @@ export function WindowListeners() {
         if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
             return
         }
-        console.log('mousedown...')
-        if (!isMouseDown) {
-            isMouseDown = true
+        if (whichDown === 0) {
+            whichDown = which
             if (isEditing === 1) {
                 finishEdit()
                 redraw(colorMode)
@@ -199,7 +198,7 @@ export function WindowListeners() {
                         if (lm.linkType === 'internal') {
                             dispatch({ type: 'OPEN_MAP_FROM_MAP', payload: { mapId: lm.link } })
                         } else if (lm.linkType === 'external') {
-                            isMouseDown = false
+                            whichDown = 0
                             window.open(lm.link, '_blank')
                             window.focus()
                         }
@@ -236,7 +235,7 @@ export function WindowListeners() {
     const mousemove = colorMode => e => {
         e.preventDefault()
         const {which} = getNativeEvent(e)
-        if (isMouseDown) {
+        if (whichDown === which) {
             elapsed++
             if (which === 1) {
                 let m = mapref(['m'])
@@ -307,8 +306,8 @@ export function WindowListeners() {
     const mouseup = colorMode => e => {
         e.preventDefault()
         const {which} = getNativeEvent(e)
-        if (isMouseDown) {
-            isMouseDown = false
+        if (whichDown === which) {
+            whichDown = 0
             if (elapsed) {
                 if (which === 1) {
                     if (isNodeClicked) {
