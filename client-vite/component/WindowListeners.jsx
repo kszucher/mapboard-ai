@@ -102,9 +102,7 @@ export function WindowListeners() {
     }
 
     const checkNodeClicked = (e) => {
-        let isNodeClicked = false
-        let m = mapref(['m'])
-        m.selectionRect = [];
+        let isNodeClicked = false;
         [fromX, fromY] = getCoords(e)
         let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY) // TODO multi r rethink
         if (lastOverPath.length) {
@@ -295,6 +293,7 @@ export function WindowListeners() {
                     mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
                     recalc()
                     redraw(colorMode)
+                    m.selectionRect = []
                 }
             } else if (which === 2) {
                 let el = document.getElementById('mapHolderDiv')
@@ -322,8 +321,6 @@ export function WindowListeners() {
                         }
                     } else if (isTaskClicked) {
                     } else {
-                        let m = mapref(['m'])
-                        m.selectionRect = []
                         if (selectionState.structSelectedPathList.length === 0 &&
                             selectionState.cellSelectedPathList.length === 0) {
                             mapDispatch('select_R')

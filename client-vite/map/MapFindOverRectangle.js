@@ -11,7 +11,7 @@ export const mapFindOverRectangle = {
 
     iterate: (cm) => {
         if (cm.type === 'struct' && !cm.hasCell && cm.content !== '') {
-            cm.selected = rectanglesIntersect(
+            cm.selected = + rectanglesIntersect(
                 startX, startY, startX + width, startY + height,
                 cm.nodeStartX, cm.nodeY, cm.nodeEndX, cm.nodeY
             )
