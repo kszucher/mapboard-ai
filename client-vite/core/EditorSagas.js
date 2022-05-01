@@ -3,6 +3,7 @@ import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
+import { mapGetProp } from '../map/MapGetProp'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
@@ -194,15 +195,15 @@ function* mapStackSaga () {
             if (selectionState.structSelectedPathList.map(el => (mapref(el))[realProp]).every((el, i, arr) => el  === arr[0])) {
                 const propAssignment = {
                     selection: lm.selection,
-                    lineWidth: lm.selection === 's' ? lm.lineWidth : undefined, // TODO gather recursively
-                    lineType: lm.selection === 's' ? lm.lineType : undefined,
-                    lineColor: lm.selection === 's' ? lm.lineColor : undefined,
+                    lineWidth: lm.selection === 's' ? lm.lineWidth : mapGetProp.start(m, lm, 'lineWidth'),
+                    lineType: lm.selection === 's' ? lm.lineType : mapGetProp.start(m, lm, 'lineType'),
+                    lineColor: lm.selection === 's' ? lm.lineColor : mapGetProp.start(m, lm, 'lineColor'),
                     borderWidth: lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth,
                     borderColor: lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor,
                     fillColor: lm.selection === 's' ? lm.sFillColor : lm.fFillColor,
-                    textFontSize: lm.selection === 's' ? lm.textFontSize : undefined,
-                    textColor: lm.selection === 's'? lm.textColor: undefined,
-                    taskStatus: lm.selection === 's'? lm.taskStatus: undefined
+                    textFontSize: lm.selection === 's' ? lm.textFontSize : mapGetProp.start(m, lm, 'textFontSize'),
+                    textColor: lm.selection === 's'? lm.textColor: mapGetProp.start(m, lm, 'textColor'),
+                    taskStatus: lm.selection === 's'? lm.taskStatus: mapGetProp.start(m, lm, 'taskStatus'),
                 }[prop]
                 Object.assign(assignment, {[prop]: propAssignment})
             } else {
