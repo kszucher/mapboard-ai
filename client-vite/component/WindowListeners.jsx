@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux"
 import { mapDispatch, recalc, redraw } from '../core/MapFlow'
 import { arraysSame, copy, setEndOfContenteditable } from '../core/Utils'
 import {mapFindNearest} from "../map/MapFindNearest"
-import {checkPop, mapStackDispatch, mapref, push} from "../core/MapStackFlow"
+import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../core/MapStackFlow'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {selectionState} from "../core/SelectionFlow"
@@ -542,7 +542,7 @@ export function WindowListeners() {
     }, [pageState, mapRight])
 
     useEffect(() => {
-        if (mapId !== '' && mapSource !== '') {
+        if (mapId !== '' && mapSource !== '' && mapStack.dataIndex === mapStack.data.length - 1) {
             push()
             mapDispatch('applyMapParams', node)
             redraw(colorMode)

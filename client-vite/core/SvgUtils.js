@@ -35,15 +35,17 @@ export const getLinePath = (lineType, sx, sy, dx, dy, ex, ey, dir) => {
 }
 
 export const getPolygonPath = (params, selection, dir, margin) => {
-    let { ax, bx, cx, ayu, ayd, bcyu, bcyd } = params
-    ax -= dir * margin
+    let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = params
+    ax -= margin
     bx -= dir * margin
-    cx += dir * margin
+    cx += margin
     ayu -= margin
     ayd += margin
-    bcyu -= margin
-    bcyd += margin
-    const points = [[ax, ayu], [bx, bcyu], [cx, bcyu], [cx, bcyd], [bx, bcyd], [ax, ayd]]
+    byu -= margin
+    byd += margin
+    cyu -= margin
+    cyd += margin
+    const points = [[ax, ayu], [bx, byu], [cx, cyu], [cx, cyd], [bx, byd], [ax, ayd]]
     const radius = 12
     let path = ''
     for (let i = 0; i < points.length; i++) {
@@ -54,9 +56,9 @@ export const getPolygonPath = (params, selection, dir, margin) => {
         const [c1x, c1y] = currPoint
         const [c2x, c2y] = currPoint
         const [ex, ey] = getCoordsInLine(currPoint, nextPoint, radius)
-        if (selection === 's' && i === 1) {
+        if (selection === 's' && i === (dir === 1 ? 1 : 4)) {
             path += getBezierPath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
-        } else if (selection === 's' && i === 4) {
+        } else if (selection === 's' && i === (dir === 1 ? 4 : 1)) {
             path += getBezierPath('L', [sx - dir * 24, sy, ex, ey, ex, ey, ex, ey])
         } else {
             path += getBezierPath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])

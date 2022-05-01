@@ -7,7 +7,7 @@ export function structInsert(lm, mode) {
         parentRef = mapref(lm.parentPath);
         parentRef.s.splice(lm.index, 0, getDefaultNode({
             selected: 1,
-            taskStatus: parentRef.taskStatus,
+            taskStatus: lm.taskStatus > - 1 ?  0 : -1,
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeStartXFrom: parentRef.nodeStartX,
             parentNodeYFrom: parentRef.nodeY,
@@ -17,7 +17,7 @@ export function structInsert(lm, mode) {
         parentRef = mapref(lm.parentPath);
         parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
             selected: 1,
-            taskStatus: parentRef.taskStatus,
+            taskStatus: lm.taskStatus > - 1 ? 0 : -1,
             parentNodeEndXFrom: parentRef.nodeEndX,
             parentNodeStartXFrom: parentRef.nodeStartX,
             parentNodeYFrom: parentRef.nodeY,

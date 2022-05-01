@@ -27,6 +27,13 @@ const clearSelection = _ => {
     }
 }
 
+const updateParentLastSelectedChild = lm => {
+    if (!lm.isRoot) {
+        let parentRef = mapref(lm.parentPath)
+        parentRef.lastSelectedChild = lm.index
+    }
+}
+
 const mapReducer = (action, payload) => {
     let sc = selectionState
     let lm = mapref(sc.lastPath)
@@ -48,10 +55,13 @@ const mapReducer = (action, payload) => {
             clearSelection()
             lm.selected = 1
             lm.selection = 's'
-            if (!lm.isRoot) {
-                let parentRef = mapref(lm.parentPath)
-                parentRef.lastSelectedChild = lm.index
-            }
+            updateParentLastSelectedChild(lm)
+            break
+        }
+        case 'selectStructToo': {
+            let m = mapref(['m'])
+            mapref(m.deepestSelectablePath).selected = sc.maxSel + 1
+            updateParentLastSelectedChild(lm)
             break
         }
         case 'selectStructFamily': {
@@ -64,8 +74,9 @@ const mapReducer = (action, payload) => {
                     lm.d[1].selected = 1
                     lm.d[1].selection = 'f'
                 } else {
-                    lm.d[1].selected = 0
+                    clearSelection()
                     lm.d[0].selected = 1
+                    lm.d[1].selected = 0
                     lm.d[0].selection = 'f'
                 }
             } else {
@@ -75,19 +86,7 @@ const mapReducer = (action, payload) => {
                     lm.selection = 'f'
                 }
             }
-            if (!lm.isRoot) {
-                let parentRef = mapref(lm.parentPath)
-                parentRef.lastSelectedChild = lm.index
-            }
-            break
-        }
-        case 'selectStructToo': {
-            let m = mapref(['m'])
-            mapref(m.deepestSelectablePath).selected = sc.maxSel + 1
-            if (!lm.isRoot) {
-                let parentRef = mapref(lm.parentPath)
-                parentRef.lastSelectedChild = lm.index
-            }
+            updateParentLastSelectedChild(lm)
             break
         }
         case 'select_all': {
@@ -98,23 +97,25 @@ const mapReducer = (action, payload) => {
             break
         }
         case 'selectDescendantsOut': {
-            if (lm.path.length === 2) {
-                lm.selected = 0
-                if (payload.keyCode === 'ArrowRight') {
-                    lm.d[0].selected = 1
-                    lm.d[0].selection = 'f'
-                } else if (payload.keyCode === 'ArrowLeft') {
-                    lm.d[1].selected = 1
-                    lm.d[1].selection = 'f'
+            if (lm.s.length > 0) {
+                if (lm.path.length === 2) {
+                    lm.selected = 0
+                    if (payload.keyCode === 'ArrowRight') {
+                        lm.d[0].selected = 1
+                        lm.d[0].selection = 'f'
+                    } else if (payload.keyCode === 'ArrowLeft') {
+                        lm.d[1].selected = 1
+                        lm.d[1].selection = 'f'
+                    }
+                } else if (
+                    lm.path[3] === 0 && payload.keyCode === 'ArrowRight' ||
+                    lm.path[3] === 1 && payload.keyCode === 'ArrowLeft') {
+                    lm.selection = 'f'
+                } else if (
+                    lm.path[3] === 0 && payload.keyCode === 'ArrowLeft' ||
+                    lm.path[3] === 1 && payload.keyCode === 'ArrowRight') {
+                    lm.selection = 's'
                 }
-            } else if (
-                lm.path[3] === 0 && payload.keyCode === 'ArrowRight' ||
-                lm.path[3] === 1 && payload.keyCode === 'ArrowLeft') {
-                lm.selection = 'f'
-            } else if (
-                lm.path[3] === 0 && payload.keyCode === 'ArrowLeft' ||
-                lm.path[3] === 1 && payload.keyCode === 'ArrowRight') {
-                lm.selection = 's'
             }
             break
         }

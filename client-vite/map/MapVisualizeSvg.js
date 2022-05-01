@@ -103,22 +103,26 @@ export const mapVisualizeSvg = {
             conditions.selectionBorder
         ) {
             let sParams = {
-                ax: nsx,
+                ax: dir === 1 ? nsx : nex,
                 bx: nex - dir * r,
-                cx: nex,
+                cx: dir === 1 ? nex : nsx,
                 ayu: nsy,
                 ayd: ney,
-                bcyu: nsy,
-                bcyd: ney,
+                byu: nsy,
+                byd: ney,
+                cyu: nsy,
+                cyd: ney
             }
             let fParams = {
-                ax: nsx,
+                ax: dir === 1 ? nsx : nsx + dir * (cm.familyW + cm.selfW),
                 bx: nex + dir * cm.lineDeltaX,
-                cx: nsx + dir * (cm.familyW + cm.selfW),
-                ayu: nsy,
-                ayd: ney,
-                bcyu: cm.nodeY - maxHadj / 2,
-                bcyd: cm.nodeY + maxHadj / 2,
+                cx: dir === 1 ? nsx + dir * (cm.familyW + cm.selfW) : nsx,
+                ayu: dir === 1 ? nsy : cm.nodeY - maxHadj / 2,
+                ayd: dir === 1 ? ney : cm.nodeY + maxHadj / 2,
+                byu: cm.nodeY - maxHadj / 2,
+                byd: cm.nodeY + maxHadj / 2,
+                cyu: dir === 1 ? cm.nodeY - maxHadj / 2 : nsy,
+                cyd: dir === 1 ? cm.nodeY + maxHadj / 2 : ney,
             }
             if (conditions.branchFill) {
                 updateMapSvgData(cm.nodeId, 'branchFill', {
@@ -240,13 +244,15 @@ export const mapVisualizeSvg = {
                                 h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
                             }
                             let sParams = {
-                                ax: sx ,
-                                bx: sx + dir*w ,
-                                cx: sx + dir*w,
+                                ax: dir === 1 ? sx : sx + dir * w,
+                                bx: sx + dir*w,
+                                cx: dir === 1 ? sx + dir * w : sx,
                                 ayu: sy,
-                                ayd: sy + h ,
-                                bcyu: sy ,
-                                bcyd: sy + h,
+                                ayd: sy + h,
+                                byu: sy,
+                                byd: sy + h,
+                                cyu: sy,
+                                cyd: sy + h,
                             }
                             updateMapSvgData(cm.nodeId, 'selectionBorder', {
                                 path: getPolygonPath(sParams, 's', dir, 4),

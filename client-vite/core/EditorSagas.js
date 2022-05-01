@@ -159,11 +159,7 @@ function* mapSaga () {
 
 function* mapStackSaga () {
     while (true) {
-        const { type } = yield take([
-            'UNDO',
-            'REDO',
-            'MAP_STACK_CHANGED'
-        ])
+        const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
         const colorMode = yield select(state => state.colorMode)
         switch (type) {
             case 'UNDO': {
@@ -176,72 +172,64 @@ function* mapStackSaga () {
                 redraw(colorMode)
                 break
             }
-            // TODO map stack should change after undo or redo
-            case 'MAP_STACK_CHANGED': {
-                let m = mapref(['m'])
-                const lm = mapref(selectionState.lastPath)
-                const sc = selectionState
-                const sspll = sc.structSelectedPathList.length
-                const assignment = {
-                    density: m.density,
-                    alignment: m.alignment,
-                    selection: lm.selection,
-                    lineWidth: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.lineWidth
-                            : undefined
-                        : undefined,
-                    lineType: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.lineType
-                            : undefined
-                        : undefined,
-                    lineColor: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.lineColor
-                            : undefined
-                        : undefined,
-                    borderWidth: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.sBorderWidth
-                            : lm.fBorderWidth
-                        : undefined,
-                    borderColor: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.sBorderColor
-                            : lm.fBorderColor
-                        : undefined,
-                    fillColor: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.sFillColor
-                            : lm.fFillColor
-                        :undefined,
-                    textFontSize: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.textFontSize
-                            : undefined
-                        : undefined,
-                    textColor: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.textColor
-                            : undefined
-                        : undefined, //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
-                    taskStatus: sspll === 1
-                        ? lm.selection === 's'
-                            ? lm.taskStatus
-                            : undefined
-                        : undefined,
-                }
-
-                // console.log(assignment)
-
-                yield put({
-                    type: 'SET_NODE_PARAMS',
-                    payload: assignment
-                })
-                break
-            }
         }
+        let m = mapref(['m'])
+        const lm = mapref(selectionState.lastPath)
+        const sspll = selectionState.structSelectedPathList.length
+        const assignment = {
+            density: m.density,
+            alignment: m.alignment,
+            selection: lm.selection,
+            lineWidth: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.lineWidth
+                    : undefined
+                : undefined,
+            lineType: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.lineType
+                    : undefined
+                : undefined,
+            lineColor: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.lineColor
+                    : undefined
+                : undefined,
+            borderWidth: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.sBorderWidth
+                    : lm.fBorderWidth
+                : undefined,
+            borderColor: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.sBorderColor
+                    : lm.fBorderColor
+                : undefined,
+            fillColor: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.sFillColor
+                    : lm.fFillColor
+                :undefined,
+            textFontSize: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.textFontSize
+                    : undefined
+                : undefined,
+            textColor: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.textColor
+                    : undefined
+                : undefined, //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
+            taskStatus: sspll === 1
+                ? lm.selection === 's'
+                    ? lm.taskStatus
+                    : undefined
+                : undefined,
+        }
+
+        // console.log(assignment)
+
+        yield put({ type: 'SET_NODE_PARAMS', payload: assignment })
         yield put({ type: 'SET_UNDO_DISABLED', payload: mapStack.dataIndex === 0})
         yield put({ type: 'SET_REDO_DISABLED', payload: mapStack.dataIndex === mapStack.data.length - 1})
     }
