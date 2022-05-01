@@ -203,7 +203,7 @@ function* mapStackSaga () {
                     fillColor: lm.selection === 's' ? lm.sFillColor : lm.fFillColor,
                     textFontSize: lm.selection === 's' ? lm.textFontSize : mapGetProp.start(m, lm, 'textFontSize'),
                     textColor: lm.selection === 's'? lm.textColor: mapGetProp.start(m, lm, 'textColor'),
-                    taskStatus: lm.selection === 's'? lm.taskStatus: mapGetProp.start(m, lm, 'taskStatus'),
+                    taskStatus: lm.selection === 's'? lm.taskStatus: undefined,
                 }[prop]
                 Object.assign(assignment, {[prop]: propAssignment})
             } else {
