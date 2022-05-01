@@ -175,60 +175,30 @@ function* mapStackSaga () {
         }
         let m = mapref(['m'])
         const lm = mapref(selectionState.lastPath)
-        const sspll = selectionState.structSelectedPathList.length
-        const assignment = {
-            density: m.density,
-            alignment: m.alignment,
-            selection: lm.selection,
-            lineWidth: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.lineWidth
-                    : undefined
-                : undefined,
-            lineType: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.lineType
-                    : undefined
-                : undefined,
-            lineColor: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.lineColor
-                    : undefined
-                : undefined,
-            borderWidth: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.sBorderWidth
-                    : lm.fBorderWidth
-                : undefined,
-            borderColor: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.sBorderColor
-                    : lm.fBorderColor
-                : undefined,
-            fillColor: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.sFillColor
-                    : lm.fFillColor
-                :undefined,
-            textFontSize: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.textFontSize
-                    : undefined
-                : undefined,
-            textColor: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.textColor
-                    : undefined
-                : undefined, //sc.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
-            taskStatus: sspll === 1
-                ? lm.selection === 's'
-                    ? lm.taskStatus
-                    : undefined
-                : undefined,
+        const { density, alignment } = m
+        const { selection,
+            lineWidth, lineType, lineColor,
+            sBorderWidth, fBorderWidth, sBorderColor, fBorderColor, sFillColor, fFillColor,
+            textFontSize, textColor, taskStatus } = lm
+        const props = {
+            lineWidth: selection === 's' ? lineWidth : undefined,
+            lineType: selection === 's' ? lineType : undefined,
+            lineColor: selection === 's' ? lineColor : undefined,
+            borderWidth: selection === 's' ? sBorderWidth : fBorderWidth,
+            borderColor: selection === 's' ? sBorderColor : fBorderColor,
+            fillColor: selection === 's' ? sFillColor : fFillColor,
+            textFontSize: selection === 's' ? textFontSize : undefined,
+            textColor: selection === 's'? textColor: undefined,
+            taskStatus: selection === 's'? taskStatus: undefined
         }
-
-        // console.log(assignment)
-
+        const assignment = { density, alignment, selection }
+        for (const prop in props) {
+            if (selectionState.structSelectedPathList.length === 1) {
+                Object.assign(assignment, {[prop]: props[prop]})
+            } else {
+                //selectionState.structSelectedPathList.map(el => mapGetProp(mapref(el))).reduce((p, c) =>  p === c),
+            }
+        }
         yield put({ type: 'SET_NODE_PARAMS', payload: assignment })
         yield put({ type: 'SET_UNDO_DISABLED', payload: mapStack.dataIndex === 0})
         yield put({ type: 'SET_REDO_DISABLED', payload: mapStack.dataIndex === mapStack.data.length - 1})
