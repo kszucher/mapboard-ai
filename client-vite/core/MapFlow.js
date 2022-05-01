@@ -7,7 +7,7 @@ import { initSelectionState, selectionState, updateSelectionState } from './Sele
 import { flagDomData, updateDomData } from './DomFlow'
 import { mapref } from './MapStackFlow'
 import { nodeProps } from './DefaultProps'
-import { mapChangeProp } from '../map/MapChangeProp'
+import { mapSetProp } from '../map/MapSetProp'
 import { mapFindById } from '../map/MapFindById'
 import { mapAlgo } from '../map/MapAlgo'
 import { mapInit } from '../map/MapInit'
@@ -23,7 +23,7 @@ import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
 const clearSelection = _ => {
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i])
-        mapChangeProp.start(cr, {selected: 0, selection: 's'}, '', false)
+        mapSetProp.start(cr, {selected: 0, selection: 's'}, '', false)
     }
 }
 
@@ -92,7 +92,7 @@ const mapReducer = (action, payload) => {
         case 'select_all': {
             for (let i = 0; i < mapref(['r']).length; i++) {
                 let cr = mapref(['r', i])
-                mapChangeProp.start(cr, {selected: 1}, 'struct', false)
+                mapSetProp.start(cr, {selected: 1}, 'struct', false)
             }
             break
         }
@@ -355,7 +355,7 @@ const mapReducer = (action, payload) => {
                 m.shouldCenter = true
                 for (let i = 0; i < mapref(['r']).length; i++) {
                     let cr = mapref(['r', i])
-                    mapChangeProp.start(cr, { isDimAssigned: 0 }, '', false)
+                    mapSetProp.start(cr, { isDimAssigned: 0 }, '', false)
                 }
             }
             if (m.alignment !== alignment) {
@@ -384,12 +384,12 @@ const mapReducer = (action, payload) => {
                         } else {
                             if (prop === 'taskStatus') {
                                 if (props[prop] === 'setTask') {
-                                    mapChangeProp.start(cm, {taskStatus: 0}, '', false)
+                                    mapSetProp.start(cm, {taskStatus: 0}, '', false)
                                 } else if (props[prop] === 'clearTask') {
-                                    mapChangeProp.start(cm, {taskStatus: -1}, '', false)
+                                    mapSetProp.start(cm, {taskStatus: -1}, '', false)
                                 }
                             } else {
-                                mapChangeProp.start(cm, assignment, '', true)
+                                mapSetProp.start(cm, assignment, '', true)
                             }
                         }
                     }

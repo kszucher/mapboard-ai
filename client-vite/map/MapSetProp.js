@@ -1,8 +1,8 @@
 import {resolveScope} from "../core/DefaultProps"
 
-export const mapChangeProp = {
+export const mapSetProp = {
     start: (cm, assignment, scope, skip) => {
-        mapChangeProp.iterate(cm, assignment, scope, skip)
+        mapSetProp.iterate(cm, assignment, scope, skip)
     },
 
     iterate: (cm, assignment, scope, skip) => {
@@ -13,8 +13,8 @@ export const mapChangeProp = {
                 Object.assign(cm, typeof assignment === 'function' ? assignment() : assignment)
             }
         }
-        cm.d.map(i => mapChangeProp.iterate(i, assignment, scope, skip))
-        cm.s.map(i => mapChangeProp.iterate(i, assignment, scope, skip))
-        cm.c.map(i => i.map(j => mapChangeProp.iterate(j, assignment, scope, skip)))
+        cm.d.map(i => mapSetProp.iterate(i, assignment, scope, skip))
+        cm.s.map(i => mapSetProp.iterate(i, assignment, scope, skip))
+        cm.c.map(i => i.map(j => mapSetProp.iterate(j, assignment, scope, skip)))
     }
 }
