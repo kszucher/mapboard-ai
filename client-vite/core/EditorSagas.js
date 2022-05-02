@@ -163,16 +163,8 @@ function* mapStackSaga () {
         const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
         const colorMode = yield select(state => state.colorMode)
         switch (type) {
-            case 'UNDO': {
-                mapStackDispatch('undo')
-                redraw(colorMode)
-                break
-            }
-            case 'REDO': {
-                mapStackDispatch('redo')
-                redraw(colorMode)
-                break
-            }
+            case 'UNDO': { mapStackDispatch('undo'); redraw(colorMode); break }
+            case 'REDO': { mapStackDispatch('redo'); redraw(colorMode); break }
         }
         let m = mapref(['m'])
         const lm = mapref(selectionState.lastPath)
@@ -193,26 +185,24 @@ function* mapStackSaga () {
                 taskStatus: 'taskStatus'
             }[prop]
             if (selectionState.structSelectedPathList.map(el => (mapref(el))[realProp]).every((el, i, arr) => el  === arr[0])) {
-                const propAssignment = {
-                    selection: lm.selection,
-                    lineWidth: lm.selection === 's' ? lm.lineWidth : mapGetProp.start(m, lm, 'lineWidth'),
-                    lineType: lm.selection === 's' ? lm.lineType : mapGetProp.start(m, lm, 'lineType'),
-                    lineColor: lm.selection === 's' ? lm.lineColor : mapGetProp.start(m, lm, 'lineColor'),
-                    borderWidth: lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth,
-                    borderColor: lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor,
-                    fillColor: lm.selection === 's' ? lm.sFillColor : lm.fFillColor,
-                    textFontSize: lm.selection === 's' ? lm.textFontSize : mapGetProp.start(m, lm, 'textFontSize'),
-                    textColor: lm.selection === 's'? lm.textColor: mapGetProp.start(m, lm, 'textColor'),
-                    taskStatus: lm.selection === 's'? lm.taskStatus: undefined,
-                }[prop]
+                let propAssignment
+                switch (prop) {
+                    case 'selection': propAssignment = lm.selection; break
+                    case 'lineWidth': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+                    case 'lineType': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+                    case 'lineColor': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+                    case 'borderWidth': propAssignment = lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth; break
+                    case 'borderColor': propAssignment = lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor; break
+                    case 'fillColor': propAssignment = lm.selection === 's' ? lm.sFillColor : lm.fFillColor; break
+                    case 'textFontSize': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+                    case 'textColor': propAssignment = lm.selection === 's'? lm[prop] : mapGetProp.start(m, lm, prop); break
+                    case 'taskStatus': propAssignment = lm.selection === 's'? lm[prop]: undefined; break
+                }
                 Object.assign(assignment, {[prop]: propAssignment})
             } else {
                 Object.assign(assignment, {[prop]: undefined})
             }
         }
-
-        // console.log(assignment)
-
         yield put({ type: 'SET_NODE_PARAMS', payload: assignment })
         yield put({ type: 'SET_UNDO_DISABLED', payload: mapStack.dataIndex === 0})
         yield put({ type: 'SET_REDO_DISABLED', payload: mapStack.dataIndex === mapStack.data.length - 1})
