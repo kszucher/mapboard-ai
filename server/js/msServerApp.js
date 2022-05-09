@@ -134,13 +134,14 @@ async function resolveType(req, currUser) {
                     to: email,
                     subject: "MapBoard Email Confirmation",
                     text: "",
-                    html: `
-                        // <p>Hello ${name}!</p>
-                        // <p>Welcome to MapBoard!<br>You can complete your registration using the following code:</p>
-                        // <p>${confirmationCode}</p>
-                        // <p>You can also join the conversation, propose features and get product news here:<br>
-                        // <a href="MindBoard Slack">https://join.slack.com/t/mindboardio/shared_invite/zt-qunqabbo-fE_2dnrU7GPuEiDsAy6L~A</a></p>
-                        // <p>Cheers,<br>Krisztian from MapBoard</p>
+                    html:
+                        `
+                        <p>Hello ${name}!</p>
+                        <p>Welcome to MapBoard!<br>You can complete your registration using the following code:</p>
+                        <p>${confirmationCode}</p>
+                        <p>You can also join the conversation, propose features and get product news here:<br>
+                        <a href="MindBoard Slack">https://join.slack.com/t/mindboardio/shared_invite/zt-qunqabbo-fE_2dnrU7GPuEiDsAy6L~A</a></p>
+                        <p>Cheers,<br>Krisztian from MapBoard</p>
                         `
                 })
                 await usersColl.insertOne({
