@@ -252,9 +252,8 @@ function* shareSaga () {
             'CREATE_SHARE'
         ])
         if (type === 'CREATE_SHARE') {
-            payload = {...payload,
-                mapId: mapStack.mapId,
-            }
+            const mapId = yield select(state => state.mapId)
+            payload = {...payload, mapId }
         }
         const { resp } = yield call(fetchPost, { type, payload })
         switch (resp.type) {
