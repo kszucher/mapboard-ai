@@ -2,9 +2,9 @@ import {useEffect} from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import { Button, IconButton, Modal, Typography } from '@mui/material'
 import {DataGrid} from "@mui/x-data-grid"
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import CheckCircleIcon from '@mui/icons-material/AddCircleOutline';
-import CancelIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import { getColors } from '../core/Colors'
 
 export function Shares() {
@@ -30,7 +30,7 @@ export function Shares() {
                         size="small"
                         onClick={_=>deleteShare(params)}
                         disabled={false}>
-                        <CancelIcon/>
+                        <CancelOutlinedIcon/>
                     </IconButton>
                 </strong>
             ),
