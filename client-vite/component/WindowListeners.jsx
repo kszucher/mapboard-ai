@@ -554,7 +554,11 @@ export function WindowListeners() {
         if (mapId !== '' && mapSource !== '') {
             redraw(colorMode)
             removeMapListeners()
-            addMapListeners(colorMode)
+            if (mapRight === EDIT) {
+                addMapListeners(colorMode)
+            } else if (mapRight === VIEW) {
+                // TODO figure out view listeners
+            }
             document.body.style.backgroundColor = getColors(colorMode).PAGE_BACKGROUND
         }
     }, [colorMode])
