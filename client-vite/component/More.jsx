@@ -17,7 +17,7 @@ export default function More () {
     const showSharing = _ => dispatch({type: 'SHOW_WS_SHARING'})
     const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
     const signOut = _ => {
-        localStorage.setItem('cred', JSON.stringify({name: '', pass: ''}))
+        localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
         dispatch({type: 'RESET_STATE'})
     }
 
