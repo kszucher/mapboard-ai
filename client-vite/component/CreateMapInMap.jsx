@@ -8,7 +8,6 @@ export function CreateMapInMap() {
     const dispatch = useDispatch()
     const showWs = _ => dispatch({type: 'SHOW_WS'})
     const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
-
     return(
         <Modal
             open={true}

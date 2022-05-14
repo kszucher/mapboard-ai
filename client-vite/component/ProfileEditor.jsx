@@ -5,12 +5,9 @@ import { getColors } from '../core/Colors'
 export function ProfileEditor() {
     const colorMode = useSelector(state => state.colorMode)
     const name = useSelector(state => state.name)
-
     const {MAP_BACKGROUND} = getColors(colorMode)
-
     const dispatch = useDispatch()
     const closeProfile = _ => dispatch({type: 'CLOSE_PROFILE'})
-
     return(
         <Modal
             open={true}
