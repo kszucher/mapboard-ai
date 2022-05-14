@@ -12,44 +12,22 @@ export default function Auth() {
     const passwordAgain = useSelector(state => state.passwordAgain)
     const confirmationCode = useSelector(state => state.confirmationCode)
     const authFeedbackMessage = useSelector(state => state.authFeedbackMessage)
+    const getConfirmationCodeDisabled = (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
+    const enterConfirmationCodeDisabled = (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
     const dispatch = useDispatch()
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
     const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
     const setConfirmationCode = e => dispatch({type: 'SET_CONFIRMATION_CODE', payload: e.target.value})
-    const setAuthFeedbackMessage = value => dispatch({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: value})
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
     const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
-    const signIn = _ => dispatch({ type: 'SIGN_IN', payload: {cred: { email, password }}})
+    const signIn = _ => dispatch({type: 'SIGN_IN', payload: { cred: { email, password } }})
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
     const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { email, confirmationCode }});
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
-    const checkSignIn = () =>    {
-        if (email === '' || password === '') {
-            setAuthFeedbackMessage('Missing information')
-        } else if (password.length < 5) {
-            setAuthFeedbackMessage('Too short password')
-        } else {
-            signIn()
-        }
-    }
-    const checkSignUpStep1 = () => {
-        if (password.length < 5)  {
-            setAuthFeedbackMessage('Your password must be at least 5 characters')
-        } else {
-            signUpStep1()
-        }
-    }
-    const checkSetConfirmationCode = (e) => {
-        if (!isNaN(e.target.value) && e.target.value.length <= 4) {
-            setConfirmationCode(e)
-        }
-    }
-    const getConfirmationCodeDisabled = (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
-    const enterConfirmationCodeDisabled = (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
     return (
         <div
             style={{
@@ -71,21 +49,12 @@ export default function Auth() {
             <Typography component="h1" variant="h5">{'MapBoard'}</Typography>
             <Typography component="h1" variant="h6">{'Private Beta'}</Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
-                <Button color="primary" onClick={signInPanel} variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>
-                    {'SIGN IN'}
-                </Button>
-                <Button color="primary" onClick={signUpPanel} variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>
-                    {'SIGN UP'}
-                </Button>
+                <Button color="primary" onClick={signInPanel} variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>{'SIGN IN'}</Button>
+                <Button color="primary" onClick={signUpPanel} variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>{'SIGN UP'}</Button>
             </div>
-            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                <Button color="primary" onClick={signUpStep1Panel} variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
-                    {'STEP 1'}
-                </Button>
-                <Button color="primary" onClick={signUpStep2Panel} variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
-                    {'STEP 2'}
-                </Button>
+            {[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) && <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                <Button color="primary" onClick={signUpStep1Panel} variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>{'STEP 1'}</Button>
+                <Button color="primary" onClick={signUpStep2Panel} variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>{'STEP 2'}</Button>
             </div>}
             {authPageState === SIGN_IN && <>
                 <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
@@ -99,32 +68,15 @@ export default function Auth() {
             </>}
             {authPageState === SIGN_UP_STEP_2 && <>
                 <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
-                <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus/>
+                <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={setConfirmationCode} autoFocus/>
             </>}
-            {authFeedbackMessage !== '' &&
-            <Typography variant="body2" color="textSecondary" align="center">
-                {authFeedbackMessage}
-            </Typography>}
-            {authPageState === SIGN_IN &&
-            <Button color="primary" variant='contained' fullWidth onClick={checkSignIn} disabled={false}>
-                {'SIGN IN'}
-            </Button>}
-            {authPageState === SIGN_UP_STEP_1 &&
-            <Button color="primary" variant='contained' fullWidth onClick={checkSignUpStep1} disabled={getConfirmationCodeDisabled}>
-                {'Get Confirmation Code'}
-            </Button>}
-            {authPageState === SIGN_UP_STEP_2 &&
-            <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
-                {'Enter Confirmation Code'}
-                </Button>}
-            <Button color="primary" variant='contained' fullWidth onClick={liveDemo}>
-                {'LIVE DEMO'}
-            </Button>
-            <Typography variant="body2" color="textSecondary" align="center">
-                {'Copyright © '}
-                <Link color="inherit" href="http://mapboard.io/">
-                    MapBoard
-                </Link>{' '}
+            {authFeedbackMessage !== '' && <Typography variant="body2" color="textSecondary" align="center">{authFeedbackMessage}</Typography>}
+            {authPageState === SIGN_IN && <Button color="primary" variant='contained' fullWidth onClick={signIn} disabled={false}>{'SIGN IN'}</Button>}
+            {authPageState === SIGN_UP_STEP_1 && <Button color="primary" variant='contained' fullWidth onClick={signUpStep1} disabled={getConfirmationCodeDisabled}>{'Get Confirmation Code'}</Button>}
+            {authPageState === SIGN_UP_STEP_2 && <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>{'Enter Confirmation Code'}</Button>}
+            <Button color="primary" variant='contained' fullWidth onClick={liveDemo}>{'LIVE DEMO'}</Button>
+            <Typography variant="body2" color="textSecondary" align="center">{'Copyright © '}
+                <Link color="inherit" href="http://mapboard.io/">MapBoard</Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>

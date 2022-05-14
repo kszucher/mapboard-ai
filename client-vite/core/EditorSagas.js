@@ -39,46 +39,57 @@ function* authSaga () {
             'SIGN_IN',
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2',
+            'SET_CONFIRMATION_CODE',
             'LIVE_DEMO',
         ])
-        const { resp } = yield call(fetchPost, { type, payload })
-        switch (resp.type) {
-            case 'signInSuccess':
-                const { cred } = resp.payload
-                localStorage.setItem('cred', JSON.stringify(cred))
-                initDomData()
-                yield put({type: 'SHOW_WS'})
-                break
-            case 'signInFailWrongCred':
-                localStorage.clear();
-                break
-            case 'signInFailIncompleteRegistration':
-                console.log('incomplete registration')
-                break
-            case 'signUpStep1FailEmailAlreadyInUse':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use'})
-                break
-            case 'signUpStep1Success':
-                yield put({type: 'SIGN_UP_STEP_2_PANEL'})
-                break
-            case 'signUpStep2FailUnknownUser':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user'})
-                break
-            case 'signUpStep2FailWrongCode':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code'})
-                break
-            case 'signUpStep2FailAlreadyActivated':
-                yield put({type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated'})
-                break
-            case 'signUpStep2Success':
-                yield put({type: 'SIGN_IN_PANEL'})
-                break
-            case 'liveDemoSuccess':
-                initDomData()
-                yield put({type: 'SHOW_DEMO'})
-                break
+        if (type === 'SIGN_IN' && (payload.cred.email === '' || payload.cred.password === '')) {
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Missing information' })
+        } else if (type === 'SIGN_IN' && payload.cred.password.length < 5) {
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Too short password' })
+        } else if (type === 'SIGN_UP_STEP_1' && payload.password.length < 5 ) {
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Your password must be at least 5 characters' })
+        } else if (type === 'SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
+            yield put({ type: 'SET_CONFIRMATION_CODE', payload })
+        } else {
+            const { resp } = yield call(fetchPost, { type, payload })
+            switch (resp.type) {
+                case 'signInSuccess':
+                    const { cred } = resp.payload
+                    localStorage.setItem('cred', JSON.stringify(cred))
+                    initDomData()
+                    yield put({ type: 'SHOW_WS' })
+                    break
+                case 'signInFailWrongCred':
+                    localStorage.clear();
+                    break
+                case 'signInFailIncompleteRegistration':
+                    console.log('incomplete registration')
+                    break
+                case 'signUpStep1FailEmailAlreadyInUse':
+                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use' })
+                    break
+                case 'signUpStep1Success':
+                    yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
+                    break
+                case 'signUpStep2FailUnknownUser':
+                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user' })
+                    break
+                case 'signUpStep2FailWrongCode':
+                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
+                    break
+                case 'signUpStep2FailAlreadyActivated':
+                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
+                    break
+                case 'signUpStep2Success':
+                    yield put({ type: 'SIGN_IN_PANEL' })
+                    break
+                case 'liveDemoSuccess':
+                    initDomData()
+                    yield put({ type: 'SHOW_DEMO' })
+                    break
+            }
+            yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
         }
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
 }
 
