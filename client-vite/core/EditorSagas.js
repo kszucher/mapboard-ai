@@ -1,11 +1,11 @@
-import { all, call, put, select, take } from 'redux-saga/effects'
+import { all, call, put, select, take, race, delay } from 'redux-saga/effects'
 import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
 import { mapGetProp } from '../map/MapGetProp'
 
-const delay = (ms) => new Promise(res => setTimeout(res, ms))
+// const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
@@ -288,6 +288,22 @@ function* shareSaga () {
     }
 }
 
+function* saveSaga() {
+    while (true) {
+
+        // https://stackoverflow.com/questions/55847810/how-to-clear-previous-delay-effect-when-starting-a-new-one-in-redux-saga
+
+        // todo learn how cancel and cancelled work
+        // todo note - before save, also it needs to be ensured, that we are at the end of undo-redo
+
+        // yield race([
+        //     take('MAP_STACK_CHANGED'),
+        //     delay(5000)
+        // ])
+
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         authSaga(),
@@ -297,5 +313,7 @@ export default function* rootSaga () {
         profileSaga(),
         frameSaga(),
         shareSaga(),
+        frameSaga(),
+        // saveSaga(),
     ])
 }
