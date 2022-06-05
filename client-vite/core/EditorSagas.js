@@ -124,6 +124,10 @@ function* mapSaga () {
             'ACCEPT_SHARE',
             'DELETE_SHARE',
         ])
+
+        // TODO make this a separate call to the server, because of
+        // - introducing graphQL
+        // - OPERATIONAL TRANSFORMATIONS
         if ([
             'OPEN_MAP_FROM_TAB',
             'OPEN_MAP_FROM_MAP',
@@ -147,6 +151,7 @@ function* mapSaga () {
                 frameSelectedOut: frameSelected
             }
         }
+
         if (type === 'OPEN_MAP_FROM_TAB') {
             yield put({type: 'SET_TAB_MAP_SELECTED', payload})
         }

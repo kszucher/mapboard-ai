@@ -114,7 +114,7 @@ async function checkSave (req, currUser) {
 
 async function resolveType(req, currUser) {
     switch (req.type) {
-        case 'LIVE_DEMO': {
+        case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
             let mapId = '5f3fd7ba7a84a4205428c96a'
             return {
@@ -125,7 +125,7 @@ async function resolveType(req, currUser) {
                 },
             }
         }
-        case 'SIGN_UP_STEP_1': {
+        case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
             const currUser = await getUserByEmail(usersColl, email)
             if (currUser === null) {
@@ -158,7 +158,7 @@ async function resolveType(req, currUser) {
 
             }
         }
-        case 'SIGN_UP_STEP_2': {
+        case 'SIGN_UP_STEP_2': { // MUTATION
             let { email, confirmationCode } = req.payload
             const currUser = await getUserByEmail(usersColl, email)
             if (currUser === null) {
@@ -183,7 +183,7 @@ async function resolveType(req, currUser) {
                 return { type: 'signUpStep2Success' }
             }
         }
-        case 'SIGN_IN': {
+        case 'SIGN_IN': { // QUERY
             const { cred } = req.payload
             const { tabMapIdList, tabMapSelected, breadcrumbMapIdList, colorMode } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
@@ -193,7 +193,7 @@ async function resolveType(req, currUser) {
                 payload: { cred, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource, colorMode }
             }
         }
-        case 'OPEN_MAP_FROM_TAB': {
+        case 'OPEN_MAP_FROM_TAB': { // QUERY
             const { tabMapIdList } = currUser
             const { tabMapSelected } = req.payload
             const mapId = tabMapIdList[tabMapSelected]
@@ -204,7 +204,7 @@ async function resolveType(req, currUser) {
                 payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'OPEN_MAP_FROM_MAP': {
+        case 'OPEN_MAP_FROM_MAP': { // QUERY
             let { breadcrumbMapIdList } = currUser
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
@@ -212,7 +212,7 @@ async function resolveType(req, currUser) {
             const mapSource = 'data'
             return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
-        case 'OPEN_MAP_FROM_BREADCRUMBS': {
+        case 'OPEN_MAP_FROM_BREADCRUMBS': { // QUERY
             let { breadcrumbMapIdList } = currUser
             let { breadcrumbMapSelected } = req.payload
             breadcrumbMapIdList.length = breadcrumbMapSelected + 1
@@ -220,10 +220,10 @@ async function resolveType(req, currUser) {
             const mapSource = 'data'
             return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
-        case 'SAVE_MAP': {
+        case 'SAVE_MAP': { // MUTATION
             return { type: 'saveMapSuccess' }
         }
-        case 'CREATE_MAP_IN_MAP': {
+        case 'CREATE_MAP_IN_MAP': { // MUTATION
             let { breadcrumbMapIdList } = currUser
             let { mapIdOut, lastPath, newMapName } = req.payload
             let newMap = getDefaultMap(newMapName, currUser._id, breadcrumbMapIdList)
@@ -237,7 +237,7 @@ async function resolveType(req, currUser) {
             const mapSource = 'data'
             return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
-        case 'CREATE_MAP_IN_TAB': {
+        case 'CREATE_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
             const newMap = getDefaultMap('New Map', currUser._id, [])
             const mapId = (await mapsColl.insertOne(newMap)).insertedId
@@ -250,7 +250,7 @@ async function resolveType(req, currUser) {
                 payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'REMOVE_MAP_IN_TAB': {
+        case 'REMOVE_MAP_IN_TAB': { // MUTATION
             if (currUser.tabMapIdList.length === 1) {
                 return { type: 'removeMapInTabFail' }
             } else {
@@ -268,7 +268,7 @@ async function resolveType(req, currUser) {
                 }
             }
         }
-        case 'MOVE_UP_MAP_IN_TAB': {
+        case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, tabMapSelected } = currUser
             if (tabMapSelected === 0) {
                 return { type: 'moveUpMapInTabFail' }
@@ -279,7 +279,7 @@ async function resolveType(req, currUser) {
                 return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
             }
         }
-        case 'MOVE_DOWN_MAP_IN_TAB': {
+        case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, tabMapSelected } = currUser
             if (tabMapSelected >= tabMapIdList.length - 1) {
                 return { type: 'moveDownMapInTabFail' }
@@ -290,7 +290,7 @@ async function resolveType(req, currUser) {
                 return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
             }
         }
-        case 'OPEN_FRAME': {
+        case 'OPEN_FRAME': { // QUERY
             const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             const frameSelected = 0
@@ -302,7 +302,7 @@ async function resolveType(req, currUser) {
                 return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
             }
         }
-        case 'OPEN_PREV_FRAME': {
+        case 'OPEN_PREV_FRAME': { // QUERY
             const { mapIdOut, frameSelectedOut } = req.payload
             const frameSelected = frameSelectedOut - 1
             const mapId = ObjectId(mapIdOut)
@@ -310,7 +310,7 @@ async function resolveType(req, currUser) {
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'OPEN_NEXT_FRAME': {
+        case 'OPEN_NEXT_FRAME': { // QUERY
             const { mapIdOut, frameSelectedOut } = req.payload
             const frameSelected = frameSelectedOut + 1
             const mapId = ObjectId(mapIdOut)
@@ -318,7 +318,7 @@ async function resolveType(req, currUser) {
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'IMPORT_FRAME': {
+        case 'IMPORT_FRAME': { // MUTATION
             const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             const mapSource = 'dataPlayback'
@@ -328,7 +328,7 @@ async function resolveType(req, currUser) {
             const frameSelected = frameLen - 1
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'DELETE_FRAME': {
+        case 'DELETE_FRAME': { // MUTATION
             const { mapIdDelete, frameSelectedOut } = req.payload
             const mapId = ObjectId(mapIdDelete)
             const frameSelected = frameSelectedOut > 0 ? frameSelectedOut - 1 : 0
@@ -351,7 +351,7 @@ async function resolveType(req, currUser) {
                 return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
             }
         }
-        case 'DUPLICATE_FRAME': {
+        case 'DUPLICATE_FRAME': { // MUTATION
             const { mapIdOut, mapStorageOut, frameSelectedOut } = req.payload
             const frameSelected = frameSelectedOut + 1
             const mapId = ObjectId(mapIdOut)
@@ -367,14 +367,14 @@ async function resolveType(req, currUser) {
             const frameLen = await getFrameLen(mapsColl, mapId)
             return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'GET_SHARES': {
+        case 'GET_SHARES': { // QUERY
             const {
                 shareDataExport,
                 shareDataImport
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
             return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
         }
-        case 'CREATE_SHARE': {
+        case 'CREATE_SHARE': { // MUTATION
             const { mapId, shareEmail, shareAccess } = req.payload
             const shareUser = await usersColl.findOne({ email: shareEmail })
             if (shareUser === null) {
@@ -407,7 +407,7 @@ async function resolveType(req, currUser) {
                 }
             }
         }
-        case 'ACCEPT_SHARE': {
+        case 'ACCEPT_SHARE': { // MUTATION
             let { tabMapIdList, tabMapSelected } = currUser
             const { shareIdOut } = req.payload
             const shareId = ObjectId(shareIdOut)
@@ -427,7 +427,7 @@ async function resolveType(req, currUser) {
                 payload: { shareDataExport, shareDataImport, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
             }
         }
-        case 'DELETE_SHARE': {
+        case 'DELETE_SHARE': { // MUTATION
             const { shareIdOut } = req.payload
             const shareId = ObjectId(shareIdOut)
             const { shareUser, sharedMap } = await getShareProps(sharesColl, shareId)
@@ -438,11 +438,11 @@ async function resolveType(req, currUser) {
             } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
             return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
         }
-        case 'GET_NAME': {
+        case 'GET_NAME': { // QUERY
             const { name } = currUser
             return { name } // no type as this goes to saga directly
         }
-        case 'CHANGE_COLOR_MODE': {
+        case 'CHANGE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
             await usersColl.updateOne({ _id: currUser._id }, { $set: { colorMode } })
             return { type: 'changeColorModeSuccess' }
