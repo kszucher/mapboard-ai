@@ -15,6 +15,10 @@ async function getPlaybackMapData(mapsColl, mapId, frameSelected) {
     return (await mapsColl.findOne({_id: mapId})).dataPlayback[frameSelected]
 }
 
+async function getFrameSelected(mapsColl, mapId) {
+    return (await mapsColl.findOne({_id: mapId})).frameSelected
+}
+
 async function getFrameLen(mapsColl, mapId) {
     return (await mapsColl.findOne({_id: mapId})).dataPlayback.length
 }
@@ -137,6 +141,7 @@ module.exports = {
     getUserByEmail,
     getUser,
     getMapData,
+    getFrameSelected,
     getFrameLen,
     getPlaybackMapData,
     getMapProps,

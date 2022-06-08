@@ -10,6 +10,7 @@ const {
     getUserByEmail,
     getUser,
     getMapData,
+    getFrameSelected,
     getFrameLen,
     getPlaybackMapData,
     getMapProps,
@@ -293,7 +294,7 @@ async function resolveType(req, currUser) {
         case 'OPEN_FRAME': { // QUERY
             const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
-            const frameSelected = 0
+            const frameSelected = await getFrameSelected(mapsColl, mapId)
             const frameLen = await getFrameLen(mapsColl, mapId)
             if (frameLen === 0) {
                 return { type: 'openFrameFail', payload: { frameLen, frameSelected } }
