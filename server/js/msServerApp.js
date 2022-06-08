@@ -336,8 +336,8 @@ async function resolveType(req, currUser) {
         case 'DELETE_FRAME': { // MUTATION
             const { mapIdDelete, frameSelectedOut } = req.payload
             const mapId = ObjectId(mapIdDelete)
-            const frameSelected = frameSelectedOut > 0 ? frameSelectedOut - 1 : 0
             let frameLen = await getFrameLen(mapsColl, mapId)
+            let frameSelected = await getFrameSelected(mapsColl, mapId)
             if (frameLen === 0) {
                 return { type: 'deleteFrameFail' }
             } else {
@@ -345,13 +345,15 @@ async function resolveType(req, currUser) {
                     $set: {
                         dataPlayback: {
                             $concatArrays: [
-                                { $slice: ["$dataPlayback", frameSelectedOut] },
-                                { $slice: ["$dataPlayback", { $add: [1, frameSelectedOut] }, { $size: "$dataPlayback" }] }
+                                { $slice: ["$dataPlayback", frameSelected] },
+                                { $slice: ["$dataPlayback", { $add: [1, frameSelected] }, { $size: "$dataPlayback" }] }
                             ]
                         }
                     }
                 }])
                 frameLen = frameLen - 1
+                frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
+                await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
                 const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
                 return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
             }
