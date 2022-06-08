@@ -360,13 +360,15 @@ async function resolveType(req, currUser) {
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const { mapIdOut, mapStorageOut, frameSelectedOut } = req.payload
-            const frameSelected = frameSelectedOut + 1
             const mapId = ObjectId(mapIdOut)
+            let frameSelected = await getFrameSelected(mapsColl, mapId)
+            frameSelected = frameSelected + 1
+            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
             await mapsColl.updateOne({ _id: mapId }, {
                 $push: {
                     "dataPlayback": {
                         $each: [mapStorageOut],
-                        $position: frameSelectedOut
+                        $position: frameSelected
                     }
                 }
             })
