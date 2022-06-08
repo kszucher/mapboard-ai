@@ -305,17 +305,21 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_PREV_FRAME': { // QUERY
             const { mapIdOut, frameSelectedOut } = req.payload
-            const frameSelected = frameSelectedOut - 1
             const mapId = ObjectId(mapIdOut)
             const frameLen = await getFrameLen(mapsColl, mapId)
+            let frameSelected = await getFrameSelected(mapsColl, mapId)
+            frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
+            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'OPEN_NEXT_FRAME': { // QUERY
             const { mapIdOut, frameSelectedOut } = req.payload
-            const frameSelected = frameSelectedOut + 1
             const mapId = ObjectId(mapIdOut)
             const frameLen = await getFrameLen(mapsColl, mapId)
+            let frameSelected = await getFrameSelected(mapsColl, mapId)
+            frameSelected = frameSelected < frameLen - 1 ? frameSelected + 1 : frameLen - 1
+            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
