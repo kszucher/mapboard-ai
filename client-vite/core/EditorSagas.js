@@ -148,7 +148,6 @@ function* mapSaga () {
                 mapIdOut: mapId,
                 mapSourceOut: mapSource,
                 mapStorageOut: saveMap(),
-                frameSelectedOut: frameSelected
             }
         }
 
@@ -166,7 +165,6 @@ function* mapSaga () {
             const frameSelected = yield select(state => state.frameSelected)
             payload = { ...payload,
                 mapIdDelete: mapId,
-                frameSelectedOut: frameSelected
             }
         }
         const { resp } = yield call(fetchPost, { type, payload })

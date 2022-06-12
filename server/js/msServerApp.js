@@ -103,10 +103,10 @@ async function checkSave (req, currUser) {
                   {$set: {data: mapStorageOut}}
                 )
             } else if (mapSourceOut === 'dataPlayback') {
-                const {frameSelectedOut} = req.payload
+                const frameSelected = await getFrameSelected(mapsColl, mapIdOut)
                 await mapsColl.updateOne(
                   {_id: ObjectId(mapIdOut)},
-                  {$set: {[`dataPlayback.${frameSelectedOut}`]: mapStorageOut}}
+                  {$set: {[`dataPlayback.${frameSelected}`]: mapStorageOut}}
                 )
             }
         }
@@ -303,8 +303,8 @@ async function resolveType(req, currUser) {
                 return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
             }
         }
-        case 'OPEN_PREV_FRAME': { // QUERY
-            const { mapIdOut, frameSelectedOut } = req.payload
+        case 'OPEN_PREV_FRAME': { // MUTATION
+            const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             const frameLen = await getFrameLen(mapsColl, mapId)
             let frameSelected = await getFrameSelected(mapsColl, mapId)
@@ -313,8 +313,8 @@ async function resolveType(req, currUser) {
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'OPEN_NEXT_FRAME': { // QUERY
-            const { mapIdOut, frameSelectedOut } = req.payload
+        case 'OPEN_NEXT_FRAME': { // MUTATION
+            const { mapIdOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             const frameLen = await getFrameLen(mapsColl, mapId)
             let frameSelected = await getFrameSelected(mapsColl, mapId)
@@ -334,7 +334,7 @@ async function resolveType(req, currUser) {
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
-            const { mapIdDelete, frameSelectedOut } = req.payload
+            const { mapIdDelete } = req.payload
             const mapId = ObjectId(mapIdDelete)
             let frameLen = await getFrameLen(mapsColl, mapId)
             let frameSelected = await getFrameSelected(mapsColl, mapId)
@@ -359,7 +359,7 @@ async function resolveType(req, currUser) {
             }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
-            const { mapIdOut, mapStorageOut, frameSelectedOut } = req.payload
+            const { mapIdOut, mapStorageOut } = req.payload
             const mapId = ObjectId(mapIdOut)
             let frameSelected = await getFrameSelected(mapsColl, mapId)
             frameSelected = frameSelected + 1
