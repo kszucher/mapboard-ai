@@ -143,7 +143,6 @@ function* mapSaga () {
         ].includes(type)) {
             const mapId = yield select(state => state.mapId)
             const mapSource = yield select(state => state.mapSource)
-            const frameSelected = yield select(state => state.frameSelected)
             payload = {...payload,
                 mapIdOut: mapId,
                 mapSourceOut: mapSource,
@@ -162,7 +161,6 @@ function* mapSaga () {
         }
         if (type === 'DELETE_FRAME') {
             const mapId = yield select(state => state.mapId)
-            const frameSelected = yield select(state => state.frameSelected)
             payload = { ...payload,
                 mapIdDelete: mapId,
             }
