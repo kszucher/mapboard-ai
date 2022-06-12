@@ -103,7 +103,7 @@ async function checkSave (req, currUser) {
                   {$set: {data: mapStorageOut}}
                 )
             } else if (mapSourceOut === 'dataPlayback') {
-                const frameSelected = await getFrameSelected(mapsColl, mapIdOut)
+                const frameSelected = await getFrameSelected(mapsColl, ObjectId(mapIdOut))
                 await mapsColl.updateOne(
                   {_id: ObjectId(mapIdOut)},
                   {$set: {[`dataPlayback.${frameSelected}`]: mapStorageOut}}
