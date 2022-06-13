@@ -102,13 +102,46 @@ function* colorSaga () {
     }
 }
 
+function* saveSaga() {
+    while (true) {
+
+        // https://stackoverflow.com/questions/55847810/how-to-clear-previous-delay-effect-when-starting-a-new-one-in-redux-saga
+
+        // todo learn how cancel and cancelled work
+        // todo note - before save, also it needs to be ensured, that we are at the end of undo-redo
+
+        // yield race([
+        //     take('MAP_STACK_CHANGED'),
+        //     delay(5000)
+        // ])
+
+        const { type } = yield take ([
+            'SAVE_MAP',
+            'OPEN_MAP_FROM_TAB',
+            'OPEN_MAP_FROM_MAP',
+            'OPEN_MAP_FROM_BREADCRUMBS',
+            'CREATE_MAP_IN_MAP',
+            'CREATE_MAP_IN_TAB',
+            'OPEN_FRAME',
+            'IMPORT_FRAME',
+            'DUPLICATE_FRAME',
+            'OPEN_PREV_FRAME',
+            'OPEN_NEXT_FRAME'
+        ])
+        const mapId = yield select(state => state.mapId)
+        const mapSource = yield select(state => state.mapSource)
+        const payload = { mapId, mapSource, mapStorage: saveMap() }
+        const { resp } = yield call(fetchPost, { type: 'SAVE_MAP', payload })
+        console.log(resp)
+    }
+}
+
 function* mapSaga () {
     while (true) {
         let { type, payload } = yield take([
             'OPEN_MAP_FROM_TAB',
             'OPEN_MAP_FROM_MAP',
             'OPEN_MAP_FROM_BREADCRUMBS',
-            'SAVE_MAP',
             'CREATE_MAP_IN_MAP',
             'CREATE_MAP_IN_TAB',
             'REMOVE_MAP_IN_TAB',
@@ -124,46 +157,31 @@ function* mapSaga () {
             'ACCEPT_SHARE',
             'DELETE_SHARE',
         ])
-
-        // TODO make this a separate call to the server, because of
-        // - introducing graphQL
-        // - OPERATIONAL TRANSFORMATIONS
+        if (type === 'OPEN_MAP_FROM_TAB') {
+            yield put({type: 'SET_TAB_MAP_SELECTED', payload})
+        }
         if ([
             'OPEN_MAP_FROM_TAB',
             'OPEN_MAP_FROM_MAP',
             'OPEN_MAP_FROM_BREADCRUMBS',
-            'SAVE_MAP',
             'CREATE_MAP_IN_MAP',
             'CREATE_MAP_IN_TAB',
             'OPEN_FRAME',
             'IMPORT_FRAME',
             'DUPLICATE_FRAME',
+            'DELETE_FRAME',
             'OPEN_PREV_FRAME',
             'OPEN_NEXT_FRAME'
         ].includes(type)) {
             const mapId = yield select(state => state.mapId)
-            const mapSource = yield select(state => state.mapSource)
-            payload = {...payload,
-                mapIdOut: mapId,
-                mapSourceOut: mapSource,
-                mapStorageOut: saveMap(),
-            }
-        }
-
-        if (type === 'OPEN_MAP_FROM_TAB') {
-            yield put({type: 'SET_TAB_MAP_SELECTED', payload})
+            payload = {...payload, mapId }
         }
         if (type === 'CREATE_MAP_IN_MAP') {
-            payload = {...payload,
-                lastPath: selectionState.lastPath,
-                newMapName: mapref(selectionState.lastPath).content
-            }
+            const { lastPath } = selectionState
+            payload = {...payload, lastPath, newMapName: mapref(lastPath).content }
         }
-        if (type === 'DELETE_FRAME') {
-            const mapId = yield select(state => state.mapId)
-            payload = { ...payload,
-                mapIdDelete: mapId,
-            }
+        if (type === 'DUPLICATE_FRAME') {
+            payload = { ...payload, mapStorage: saveMap() }
         }
         const { resp } = yield call(fetchPost, { type, payload })
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
@@ -289,32 +307,16 @@ function* shareSaga () {
     }
 }
 
-function* saveSaga() {
-    while (true) {
-
-        // https://stackoverflow.com/questions/55847810/how-to-clear-previous-delay-effect-when-starting-a-new-one-in-redux-saga
-
-        // todo learn how cancel and cancelled work
-        // todo note - before save, also it needs to be ensured, that we are at the end of undo-redo
-
-        // yield race([
-        //     take('MAP_STACK_CHANGED'),
-        //     delay(5000)
-        // ])
-
-    }
-}
-
 export default function* rootSaga () {
     yield all([
         authSaga(),
         colorSaga(),
+        saveSaga(),
         mapSaga(),
         mapStackSaga(),
         profileSaga(),
         frameSaga(),
         shareSaga(),
         frameSaga(),
-        // saveSaga(),
     ])
 }
