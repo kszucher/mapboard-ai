@@ -161,11 +161,7 @@ function* mapSaga () {
             yield put({type: 'SET_TAB_MAP_SELECTED', payload})
         }
         if ([
-            'OPEN_MAP_FROM_TAB',
-            'OPEN_MAP_FROM_MAP',
-            'OPEN_MAP_FROM_BREADCRUMBS',
             'CREATE_MAP_IN_MAP',
-            'CREATE_MAP_IN_TAB',
             'OPEN_FRAME',
             'IMPORT_FRAME',
             'DUPLICATE_FRAME',
