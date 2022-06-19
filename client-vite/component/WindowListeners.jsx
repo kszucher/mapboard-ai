@@ -521,7 +521,7 @@ export function WindowListeners() {
         if (mapId !== '' && mapSource !== '') {
             mapStackDispatch('initMapState', { mapStorage })
             redraw(colorMode)
-            dispatch({ type: 'MAP_STACK_CHANGED' })
+            dispatch({ type: 'MAP_STACK_LOADED' })
         }
     }, [mapId, mapSource, frameLen, frameSelected])
 

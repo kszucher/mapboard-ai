@@ -102,19 +102,33 @@ function* colorSaga () {
     }
 }
 
-function* saveSaga() {
+function* autoSaveSaga() {
     while (true) {
 
+
         // https://stackoverflow.com/questions/55847810/how-to-clear-previous-delay-effect-when-starting-a-new-one-in-redux-saga
+
+        // history length > 0, hiszen otherwise nincs change
 
         // todo learn how cancel and cancelled work
         // todo note - before save, also it needs to be ensured, that we are at the end of undo-redo
 
-        // yield race([
-        //     take('MAP_STACK_CHANGED'),
-        //     delay(5000)
-        // ])
+        yield take('MAP_STACK_LOADED')
 
+        console.log('MAP STACK LOADED')
+
+        const { type, payload} = yield race([
+            take('MAP_STACK_CHANGED'),
+            delay(5000)
+        ])
+
+        console.log('end_of_race', type, payload)
+
+    }
+}
+
+function* saveSaga() {
+    while (true) {
         const { type } = yield take ([
             'SAVE_MAP',
             'OPEN_MAP_FROM_TAB',
@@ -186,7 +200,7 @@ function* mapSaga () {
 
 function* mapStackSaga () {
     while (true) {
-        const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
+        const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_LOADED', 'MAP_STACK_CHANGED'])
         const colorMode = yield select(state => state.colorMode)
         switch (type) {
             case 'UNDO': { mapStackDispatch('undo'); redraw(colorMode); break }
@@ -307,6 +321,7 @@ export default function* rootSaga () {
     yield all([
         authSaga(),
         colorSaga(),
+        autoSaveSaga(),
         saveSaga(),
         mapSaga(),
         mapStackSaga(),
