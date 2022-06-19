@@ -4,6 +4,7 @@ import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
 import { mapGetProp } from '../map/MapGetProp'
+import { isEqual } from './Utils'
 
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
@@ -108,7 +109,7 @@ function* autoSaveSaga() {
         })
         if (autoSaveTimeout) {
             if (mapStack.dataIndex > 0) {
-                console.log('should save')
+                yield put({ type: 'SAVE_MAP' })
             }
         }
     }
@@ -129,15 +130,22 @@ function* saveSaga() {
             'OPEN_PREV_FRAME',
             'OPEN_NEXT_FRAME'
         ])
-        // TODO ellenőrzöm, hogy amit most tervezek elmenteni, nincs-e már elmentve
         const mapId = yield select(state => state.mapId)
         const mapSource = yield select(state => state.mapSource)
-
-        // TODO: mapIdSaved, mapSourceSaved, mapStorageSaved comparison
-
-        const payload = { mapId, mapSource, mapStorage: saveMap() }
-        const { resp } = yield call(fetchPost, { type: 'SAVE_MAP', payload })
-        console.log(resp)
+        const mapStorage = saveMap()
+        const mapIdSaved = yield select(state => state.mapIdSaved)
+        const mapSourceSaved = yield select(state => state.mapSourceSaved)
+        const mapStorageSaved = yield select(state => state.mapStorageSaved)
+        if (mapId !== mapIdSaved &&
+            mapSource !== mapSourceSaved &&
+            !isEqual(mapStorage, mapStorageSaved)
+        ) {
+            const payload = { mapId, mapSource, mapStorage }
+            const { resp } = yield call(fetchPost, { type: 'SAVE_MAP', payload })
+            yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+        } else {
+            console.log('already saved')
+        }
     }
 }
 

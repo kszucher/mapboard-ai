@@ -159,3 +159,7 @@ export function filteredObj (originalObj, filterKeys) {
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 export const setClear = arr => arr.reduce((o, key) => ({ ...o, [key]: 'clear'}), {})
+
+export const isEqual = (obj1, obj2) => {
+    return JSON.stringify(obj1)===JSON.stringify(obj2)
+}

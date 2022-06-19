@@ -56,6 +56,9 @@ const editorState = {
     mapId: '',
     mapSource: '',
     mapStorage: {},
+    mapIdSaved: '',
+    mapSourceSaved: '',
+    mapStorageSaved: {},
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
 
     node: {
