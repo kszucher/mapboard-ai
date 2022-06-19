@@ -79,6 +79,7 @@ const editorState = {
     frameEditorVisible: 0,
     frameLen: 0,
     frameSelected: 0,
+    framaNavigationVisible: true,
 
     shareEmail: '',
     shareAccess: 'view',
@@ -136,6 +137,7 @@ const resolveActions = (state, action) => {
         case 'SET_NODE_PARAMS':             return { node: {...state.node, ...payload} }
 
         case 'SET_FRAME_EDITOR_VISIBLE':    return { frameEditorVisible: payload }
+        case 'SET_FRAME_NAVIGATION_VISIBLE':return {framaNavigationVisible: payload}
 
         case 'SET_SHARE_EMAIL':             return { shareEmail: payload }
         case 'SET_SHARE_ACCESS':            return { shareAccess: payload }

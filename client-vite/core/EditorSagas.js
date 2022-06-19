@@ -162,6 +162,9 @@ function* mapSaga () {
         if (type === 'OPEN_MAP_FROM_TAB') {
             yield put({type: 'SET_TAB_MAP_SELECTED', payload})
         }
+        if (['OPEN_PREV_FRAME', 'OPEN_NEXT_FRAME'].includes(type)) {
+            yield put({type: 'SET_FRAME_NAVIGATION_VISIBLE', payload: false})
+        }
         if ([
             'CREATE_MAP_IN_MAP',
             'OPEN_FRAME',
@@ -183,6 +186,9 @@ function* mapSaga () {
         }
         const { resp } = yield call(fetchPost, { type, payload })
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+        if (['OPEN_PREV_FRAME', 'OPEN_NEXT_FRAME'].includes(type)) {
+            yield put({type: 'SET_FRAME_NAVIGATION_VISIBLE', payload: true})
+        }
     }
 }
 
@@ -319,3 +325,5 @@ export default function* rootSaga () {
         frameSaga(),
     ])
 }
+
+// TODO: prevent OPEN_PREV, OPEN_NEXT buttons to be clickable UNTIL the previous op finished, to prevent save error
