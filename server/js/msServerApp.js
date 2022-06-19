@@ -180,10 +180,7 @@ async function resolveType(req, currUser) {
                     await mapsColl.updateOne({_id: ObjectId(mapId)}, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
                 }
             }
-            return {
-                type: 'saveMapSuccess',
-                payload: { mapIdSaved: mapId, mapSourceSaved: mapSource, mapStorageSaved: mapStorage }
-            }
+            return { type: 'saveMapSuccess' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const { tabMapSelected } = req.payload

@@ -133,19 +133,8 @@ function* saveSaga() {
         const mapId = yield select(state => state.mapId)
         const mapSource = yield select(state => state.mapSource)
         const mapStorage = saveMap()
-        const mapIdSaved = yield select(state => state.mapIdSaved)
-        const mapSourceSaved = yield select(state => state.mapSourceSaved)
-        const mapStorageSaved = yield select(state => state.mapStorageSaved)
-        if (mapId !== mapIdSaved &&
-            mapSource !== mapSourceSaved &&
-            !isEqual(mapStorage, mapStorageSaved)
-        ) {
-            const payload = { mapId, mapSource, mapStorage }
-            const { resp } = yield call(fetchPost, { type: 'SAVE_MAP', payload })
-            yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
-        } else {
-            console.log('already saved')
-        }
+        const payload = { mapId, mapSource, mapStorage }
+        yield call(fetchPost, { type: 'SAVE_MAP', payload })
     }
 }
 
