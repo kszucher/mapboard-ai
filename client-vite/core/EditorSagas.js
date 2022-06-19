@@ -1,11 +1,9 @@
-import { all, call, put, select, take, race, delay } from 'redux-saga/effects'
+import { all, call, put, select, take, race, delay, fork, cancel } from 'redux-saga/effects'
 import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
 import { mapGetProp } from '../map/MapGetProp'
-
-// const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
@@ -104,32 +102,21 @@ function* colorSaga () {
 
 function* autoSaveSaga() {
     while (true) {
-
-
-        // https://stackoverflow.com/questions/55847810/how-to-clear-previous-delay-effect-when-starting-a-new-one-in-redux-saga
-
-        // history length > 0, hiszen otherwise nincs change
-
-        // todo learn how cancel and cancelled work
-        // todo note - before save, also it needs to be ensured, that we are at the end of undo-redo
-
-        yield take('MAP_STACK_LOADED')
-
-        console.log('MAP STACK LOADED')
-
-        const { type, payload} = yield race([
-            take('MAP_STACK_CHANGED'),
-            delay(5000)
-        ])
-
-        console.log('end_of_race', type, payload)
-
+        const { autoSaveReset, autoSaveTimeout } = yield race({
+            autoSaveReset: take('MAP_STACK_CHANGED'),
+            autoSaveTimeout: delay(5000)
+        })
+        if (autoSaveTimeout) {
+            if (mapStack.dataIndex > 0) {
+                console.log('should save')
+            }
+        }
     }
 }
 
 function* saveSaga() {
     while (true) {
-        const { type } = yield take ([
+        yield take ([
             'SAVE_MAP',
             'OPEN_MAP_FROM_TAB',
             'OPEN_MAP_FROM_MAP',
@@ -142,8 +129,12 @@ function* saveSaga() {
             'OPEN_PREV_FRAME',
             'OPEN_NEXT_FRAME'
         ])
+        // TODO ellenőrzöm, hogy amit most tervezek elmenteni, nincs-e már elmentve
         const mapId = yield select(state => state.mapId)
         const mapSource = yield select(state => state.mapSource)
+
+        // TODO: mapIdSaved, mapSourceSaved, mapStorageSaved comparison
+
         const payload = { mapId, mapSource, mapStorage: saveMap() }
         const { resp } = yield call(fetchPost, { type: 'SAVE_MAP', payload })
         console.log(resp)
@@ -200,7 +191,7 @@ function* mapSaga () {
 
 function* mapStackSaga () {
     while (true) {
-        const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_LOADED', 'MAP_STACK_CHANGED'])
+        const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
         const colorMode = yield select(state => state.colorMode)
         switch (type) {
             case 'UNDO': { mapStackDispatch('undo'); redraw(colorMode); break }
