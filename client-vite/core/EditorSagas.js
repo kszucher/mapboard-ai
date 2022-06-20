@@ -1,10 +1,9 @@
-import { all, call, put, select, take, race, delay, fork, cancel } from 'redux-saga/effects'
+import { all, call, put, select, take, race, delay } from 'redux-saga/effects'
 import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
 import { redraw } from './MapFlow'
 import { mapGetProp } from '../map/MapGetProp'
-import { isEqual } from './Utils'
 
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
@@ -115,32 +114,10 @@ function* autoSaveSaga() {
     }
 }
 
-function* saveSaga() {
-    while (true) {
-        yield take ([
-            'SAVE_MAP',
-            'OPEN_MAP_FROM_TAB',
-            'OPEN_MAP_FROM_MAP',
-            'OPEN_MAP_FROM_BREADCRUMBS',
-            'CREATE_MAP_IN_MAP',
-            'CREATE_MAP_IN_TAB',
-            'OPEN_FRAME',
-            'IMPORT_FRAME',
-            'DUPLICATE_FRAME',
-            'OPEN_PREV_FRAME',
-            'OPEN_NEXT_FRAME'
-        ])
-        const mapId = yield select(state => state.mapId)
-        const mapSource = yield select(state => state.mapSource)
-        const mapStorage = saveMap()
-        const payload = { mapId, mapSource, mapStorage }
-        yield call(fetchPost, { type: 'SAVE_MAP', payload })
-    }
-}
-
 function* mapSaga () {
     while (true) {
         let { type, payload } = yield take([
+            'SAVE_MAP',
             'OPEN_MAP_FROM_TAB',
             'OPEN_MAP_FROM_MAP',
             'OPEN_MAP_FROM_BREADCRUMBS',
@@ -164,6 +141,24 @@ function* mapSaga () {
         }
         if (['OPEN_PREV_FRAME', 'OPEN_NEXT_FRAME'].includes(type)) {
             yield put({type: 'SET_FRAME_NAVIGATION_VISIBLE', payload: false})
+        }
+        if ([
+            'SAVE_MAP',
+            'OPEN_MAP_FROM_TAB',
+            'OPEN_MAP_FROM_MAP',
+            'OPEN_MAP_FROM_BREADCRUMBS',
+            'CREATE_MAP_IN_MAP',
+            'CREATE_MAP_IN_TAB',
+            'OPEN_FRAME',
+            'IMPORT_FRAME',
+            'DUPLICATE_FRAME',
+            'OPEN_PREV_FRAME',
+            'OPEN_NEXT_FRAME'
+        ].includes(type)) {
+            const mapId = yield select(state => state.mapId)
+            const mapSource = yield select(state => state.mapSource)
+            const mapStorage = saveMap()
+            payload = { ...payload, save: { mapId, mapSource, mapStorage } }
         }
         if ([
             'CREATE_MAP_IN_MAP',
@@ -316,7 +311,6 @@ export default function* rootSaga () {
         authSaga(),
         colorSaga(),
         autoSaveSaga(),
-        saveSaga(),
         mapSaga(),
         mapStackSaga(),
         profileSaga(),
@@ -325,5 +319,3 @@ export default function* rootSaga () {
         frameSaga(),
     ])
 }
-
-// TODO: prevent OPEN_PREV, OPEN_NEXT buttons to be clickable UNTIL the previous op finished, to prevent save error

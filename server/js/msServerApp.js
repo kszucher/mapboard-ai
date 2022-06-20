@@ -83,6 +83,26 @@ function getDefaultMap (mapName, ownerUser, path) {
     }
 }
 
+async function checkSave (req, currUser) {
+    if (req.payload.hasOwnProperty('save')) {
+        const { mapId, mapSource, mapStorage } = req.payload.save
+        const { ownerUser } = await getMapProps(mapsColl, ObjectId(mapId))
+        const shareToEdit = await sharesColl.findOne({
+            shareUser: currUser._id,
+            sharedMap: ObjectId(mapId),
+            access: 'edit'
+        })
+        if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
+            if (mapSource === 'data') {
+                await mapsColl.updateOne({ _id: ObjectId(mapId) }, { $set: { data: mapStorage } })
+            } else if (mapSource === 'dataPlayback') {
+                const frameSelected = await getFrameSelected(mapsColl, ObjectId(mapId))
+                await mapsColl.updateOne({ _id: ObjectId(mapId) }, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
+            }
+        }
+    }
+}
+
 async function resolveType(req, currUser) {
     switch (req.type) {
         case 'LIVE_DEMO': { // QUERY
@@ -165,21 +185,6 @@ async function resolveType(req, currUser) {
             }
         }
         case 'SAVE_MAP': { // MUTATION
-            const { mapId, mapSource, mapStorage } = req.payload
-            const { ownerUser } = await getMapProps(mapsColl, ObjectId(mapId))
-            const shareToEdit = await sharesColl.findOne({
-                shareUser: currUser._id,
-                sharedMap: ObjectId(mapId),
-                access: 'edit'
-            })
-            if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
-                if (mapSource === 'data') {
-                    await mapsColl.updateOne({_id: ObjectId(mapId)}, { $set: { data: mapStorage } })
-                } else if (mapSource === 'dataPlayback') {
-                    const frameSelected = await getFrameSelected(mapsColl, ObjectId(mapId))
-                    await mapsColl.updateOne({_id: ObjectId(mapId)}, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
-                }
-            }
             return { type: 'saveMapSuccess' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
@@ -512,6 +517,7 @@ async function processReq(req) {
                 return { type: 'signInFailIncompleteRegistration' }
             }
         }
+        await checkSave(req, currUser)
         let resp = await resolveType(req, currUser)
         resp = await appendStuff(resp, currUser)
         return resp
@@ -590,5 +596,3 @@ async function stuff () {
 }
 
 // stuff()
-
-// this is faster, since the user does not have to wait for the previous save to finish to get new data
