@@ -84,7 +84,8 @@ function getDefaultMap (mapName, ownerUser, path) {
 }
 
 async function checkSave (req, currUser) {
-    if (req.payload.hasOwnProperty('save')) {
+    if (req.hasOwnProperty('payload') &&
+        req.payload.hasOwnProperty('save')) {
         const { mapId, mapSource, mapStorage } = req.payload.save
         const { ownerUser } = await getMapProps(mapsColl, ObjectId(mapId))
         const shareToEdit = await sharesColl.findOne({

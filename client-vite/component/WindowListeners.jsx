@@ -480,7 +480,7 @@ export function WindowListeners() {
     const addLandingListeners = () => {
         landingAreaListener = new AbortController()
         const {signal} = landingAreaListener
-        window.addEventListener("mousewheel", mousewheel, /*{passive: false}*/ { signal })
+        window.addEventListener("mousewheel", mousewheel, {passive: false}, { signal })
     }
 
     const removeLandingListeners = () => {
