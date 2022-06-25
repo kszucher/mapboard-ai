@@ -231,7 +231,7 @@ async function resolveType(req, currUser) {
                 { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
                 { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
             )
-            return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+            return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId: newMapId, mapSource } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
