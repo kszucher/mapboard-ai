@@ -561,39 +561,3 @@ MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, func
 })
 
 module.exports = app
-
-async function stuff () {
-
-    const finalUri = uri + '/app_dev';
-
-    await mongoose.connect(finalUri, { useNewUrlParser: true, useUnifiedTopology: true })
-    console.log(mongoose.connection.readyState);
-    console.log('poststuff')
-
-    const users = new mongoose.Schema({
-        name: String,
-        email: String,
-        password: String,
-        tabMapSelected: Number,
-        tabMapIdList: [ObjectId], // [mongoose.Schema.Types.ObjectId]
-        activationStatus: String,
-        breadcrumbMapIdList: [ObjectId], // [mongoose.Schema.Types.ObjectId]
-        colorMode: String
-    })
-
-    const Users = mongoose.model('Users', users)
-
-    const maya = new Users({ name: 'Maya' })
-
-    console.log('go maya...')
-
-    await maya.save().then(err => console.log(err));
-
-    // TODO: putting things together using REF
-    // TODO: trying to put apollo on top of all that
-
-    console.log('SAVED')
-
-}
-
-// stuff()
