@@ -8,7 +8,7 @@ export function FramesBottom () {
     const colorMode = useSelector(state => state.colorMode)
     const frameLen = useSelector(state => state.frameLen)
     const frameSelected = useSelector(state => state.frameSelected)
-    const framaNavigationVisible = useSelector(state => state.framaNavigationVisible)
+    const interactionDisabled = useSelector(state => state.interactionDisabled)
     const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
@@ -28,13 +28,13 @@ export function FramesBottom () {
                     activeStep={frameSelected}
                     backButton={
                         <Button style={{paddingLeft:12}} size="large" onClick={openPrevFrame}
-                                disabled={frameSelected === 0 || !framaNavigationVisible}>
+                                disabled={frameSelected === 0 || interactionDisabled}>
                             <KeyboardArrowLeftIcon />
                         </Button>
                     }
                     nextButton={
                         <Button style={{paddingRight:12}} size="large" onClick={openNextFrame}
-                                disabled={frameSelected === frameLen - 1 || !framaNavigationVisible}>
+                                disabled={frameSelected === frameLen - 1 || interactionDisabled}>
                             <KeyboardArrowRightIcon />
                         </Button>
                     }

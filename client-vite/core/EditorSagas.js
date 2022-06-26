@@ -49,7 +49,9 @@ function* authSaga () {
         } else if (type === 'SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
             yield put({ type: 'SET_CONFIRMATION_CODE', payload })
         } else {
+            yield put({type: 'INTERACTION_DISABLED'})
             const { resp } = yield call(fetchPost, { type, payload })
+            yield put({type: 'INTERACTION_ENABLED'})
             switch (resp.type) {
                 case 'signInSuccess':
                     const { cred } = resp.payload
@@ -179,7 +181,9 @@ function* mapSaga () {
         if (type === 'DUPLICATE_FRAME') {
             payload = { ...payload, mapStorage: saveMap() }
         }
+        yield put({type: 'INTERACTION_DISABLED'})
         const { resp } = yield call(fetchPost, { type, payload })
+        yield put({type: 'INTERACTION_ENABLED'})
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
         if (type === 'CREATE_MAP_IN_MAP') {
             yield put({type: 'SHOW_WS'})
@@ -287,7 +291,9 @@ function* shareSaga () {
             const mapId = yield select(state => state.mapId)
             payload = {...payload, mapId }
         }
+        yield put({type: 'INTERACTION_DISABLED'})
         const { resp } = yield call(fetchPost, { type, payload })
+        yield put({type: 'INTERACTION_ENABLED'})
         switch (resp.type) {
             case 'createShareFailNotAValidUser':
                 yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address'})
