@@ -47,11 +47,12 @@ const editorState = {
     undoDisabled: true,
     redoDisabled: true,
 
+    tabMapIdList: [],
     tabMapNameList: [],
-    tabMapSelected: 0,
-    tabShrink: false,
-
+    breadcrumbMapIdList: [],
     breadcrumbMapNameList: [''],
+
+    tabShrink: false,
 
     mapId: '',
     mapSource: '',
@@ -132,7 +133,6 @@ const resolveActions = (state, action) => {
         case 'SET_UNDO_DISABLED':           return { undoDisabled: payload }
         case 'SET_REDO_DISABLED':           return { redoDisabled: payload }
 
-        case 'SET_TAB_MAP_SELECTED':        return { tabMapSelected: payload.tabMapSelected }
         case 'TOGGLE_TAB_SHRINK':           return { tabShrink: !state.tabShrink }
 
         case 'SET_NODE_PARAMS':             return { node: {...state.node, ...payload} }

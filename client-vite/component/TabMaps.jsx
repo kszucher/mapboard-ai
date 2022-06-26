@@ -6,9 +6,11 @@ export default function TabMaps() {
     const colorMode = useSelector(state => state.colorMode)
     const tabShrink = useSelector(state => state.tabShrink)
     const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
-    const tabMapNameList = useSelector(state => state.tabMapNameList)
-    const tabMapSelected = useSelector(state => state.tabMapSelected)
     const mapSource = useSelector(state => state.mapSource)
+    const tabMapIdList = useSelector(state => state.tabMapIdList)
+    const tabMapNameList = useSelector(state => state.tabMapNameList)
+    const breadcrumbMapIdList = useSelector(state => state.breadcrumbMapIdList)
+    const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
     const dispatch = useDispatch()
     const openMapFromTab = (e, value) =>  dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     return (

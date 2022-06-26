@@ -139,10 +139,11 @@ function* mapSaga () {
             'DELETE_SHARE',
         ])
         if (type === 'OPEN_MAP_FROM_TAB') {
-            yield put({type: 'SET_TAB_MAP_SELECTED', payload})
-        }
-        if (['OPEN_PREV_FRAME', 'OPEN_NEXT_FRAME'].includes(type)) {
-            yield put({type: 'SET_FRAME_NAVIGATION_VISIBLE', payload: false})
+            const { tabMapSelected } = payload
+            // TODO change breadcrumbMapIdList here if you'd like to to have something before server return
+            const tabMapIdList = yield select(state => state.tabMapIdList)
+            const mapId = tabMapIdList[tabMapSelected]
+            payload = { ...payload, mapId }
         }
         if ([
             'SAVE_MAP',
@@ -172,11 +173,11 @@ function* mapSaga () {
             'OPEN_NEXT_FRAME'
         ].includes(type)) {
             const mapId = yield select(state => state.mapId)
-            payload = {...payload, mapId }
+            payload = { ...payload, mapId }
         }
         if (type === 'CREATE_MAP_IN_MAP') {
             const { lastPath } = selectionState
-            payload = {...payload, lastPath, newMapName: mapref(lastPath).content }
+            payload = { ...payload, lastPath, newMapName: mapref(lastPath).content }
         }
         if (type === 'DUPLICATE_FRAME') {
             payload = { ...payload, mapStorage: saveMap() }
@@ -187,9 +188,6 @@ function* mapSaga () {
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
         if (type === 'CREATE_MAP_IN_MAP') {
             yield put({type: 'SHOW_WS'})
-        }
-        if (['OPEN_PREV_FRAME', 'OPEN_NEXT_FRAME'].includes(type)) {
-            yield put({type: 'SET_FRAME_NAVIGATION_VISIBLE', payload: true})
         }
     }
 }

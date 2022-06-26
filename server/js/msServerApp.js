@@ -168,7 +168,7 @@ async function resolveType(req, currUser) {
                         $set: {
                             activationStatus: ACTIVATION_STATUS.COMPLETED,
                             tabMapIdList: [...systemMaps, mapId],
-                            tabMapSelected: systemMaps.length,
+                            // tabMapSelected: systemMaps.length,
                             breadcrumbMapIdList: [mapId]
                         }
                     })
@@ -177,28 +177,24 @@ async function resolveType(req, currUser) {
         }
         case 'SIGN_IN': { // QUERY
             const { cred } = req.payload
-            const { tabMapIdList, tabMapSelected, breadcrumbMapIdList, colorMode } = currUser
+            const { tabMapIdList, breadcrumbMapIdList, colorMode } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
             return {
                 type: 'signInSuccess',
-                payload: { cred, tabMapIdList, tabMapSelected, breadcrumbMapIdList, colorMode, mapId, mapSource }
+                payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, mapId, mapSource }
             }
         }
         case 'SAVE_MAP': { // MUTATION
             return { type: 'saveMapSuccess' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
-            const { tabMapSelected } = req.payload
-            const { tabMapIdList } = currUser
-            const mapId = tabMapIdList[tabMapSelected]
+            let { mapId } = req.payload
+            mapId = ObjectId(mapId)
             const breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
             await usersColl.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-            return {
-                type: 'openMapFromTabSuccess',
-                payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
-            }
+            return { type: 'openMapFromTabSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             let { mapId } = req.payload
@@ -496,8 +492,7 @@ async function appendStuff (resp, currUser) {
             }
             Object.assign(resp.payload, { mapStorage, mapRight })
         }
-        if (resp.payload.hasOwnProperty('tabMapIdList') &&
-            resp.payload.hasOwnProperty('tabMapSelected')) {
+        if (resp.payload.hasOwnProperty('tabMapIdList')) {
             const { tabMapIdList } = resp.payload
             const tabMapNameList = await getMapNameList(mapsColl, tabMapIdList)
             Object.assign(resp.payload, { tabMapNameList })
