@@ -4,6 +4,7 @@ import { getColors } from '../core/Colors'
 
 export function CreateMapInMap() {
     const colorMode = useSelector(state => state.colorMode)
+    const interactionDisabled = useSelector(state => state.interactionDisabled)
     const {PAGE_BACKGROUND, MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const showWs = _ => dispatch({type: 'SHOW_WS'})
@@ -33,8 +34,12 @@ export function CreateMapInMap() {
                     <Typography variant="string" color='primary'>{'CREATE SUBMAP?'}</Typography>
                 </div>
                 <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-                    <Button color="primary" variant='outlined' onClick={createMapInMap}>{'OK'}</Button>
-                    <Button color="primary" variant='outlined' onClick={showWs}>{'CANCEL'}</Button>
+                    <Button color="primary" variant='outlined' onClick={createMapInMap} disabled={interactionDisabled}>
+                        {'OK'}
+                    </Button>
+                    <Button color="primary" variant='outlined' onClick={showWs} disabled={interactionDisabled}>
+                        {'CANCEL'}
+                    </Button>
                 </div>
             </div>}
         </Modal>
