@@ -84,35 +84,34 @@ async function deleteMapFromUsers (usersColl, mapIdToDelete, userFilter = {}) {
         [
             {
                 $set: {
-                    tabMapSelected: {
-                        $cond: {
-                            if: {$eq: ["$tabMapSelected", {$indexOfArray: ["$tabMapIdList", mapIdToDelete]}]},
-                            then: {
-                                $cond: {
-                                    if: {$gt: ["$tabMapSelected", 0]},
-                                    then: {$subtract: ["$tabMapSelected", 1]},
-                                    else: 0
-                                }
-                            },
-                            else: "$tabMapSelected"
-                        }
-                    },
-                    tabMapIdList : {
-                        $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapIdToDelete]}}
-                    },
-                }
-            },
-            {
-                $set: {
                     breadcrumbMapIdList: {
                         $cond: {
                             if: {$in: [mapIdToDelete, "$breadcrumbMapIdList"]},
-                            then: [{$arrayElemAt: ["$tabMapIdList", "$tabMapSelected"]}],
+                            then: {
+                                $cond: {
+                                    if: {$eq: [0, {$indexOfArray: ["$tabMapIdList", mapIdToDelete]}]},
+                                    then: {
+                                        $cond: {
+                                            if: { $gt: [{ $size: "$tabMapIdList" }, 1] },
+                                            then: [{ $arrayElemAt: ["$tabMapIdList", 0] }],
+                                            else: []
+                                        }
+                                    },
+                                    else: [{$arrayElemAt: ["$tabMapIdList", {$subtract: [{$indexOfArray: ["$tabMapIdList", mapIdToDelete]}, 1]}]}]
+                                }
+                            },
                             else: "$breadcrumbMapIdList"
                         }
                     }
                 }
             },
+            {
+                $set: {
+                    tabMapIdList : {
+                        $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapIdToDelete]}}
+                    }
+                }
+            }
         ]
     )
 }

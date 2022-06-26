@@ -26,9 +26,9 @@ async function mongoTests(cmd) {
             {
                 dbContent = {
                     users: [
-                        {_id: 'user1', breadcrumbMapIdList: ['map2'], tabMapSelected: 1, tabMapIdList: ['map1', 'map2', 'map3']},
-                        {_id: 'user2', breadcrumbMapIdList: ['map2'], tabMapSelected: 0, tabMapIdList: ['map2']},
-                        {_id: 'user3', breadcrumbMapIdList: ['map1'], tabMapSelected: 3, tabMapIdList: ['map3']},
+                        {_id: 'user1', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map1', 'map2', 'map3']},
+                        {_id: 'user2', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map2']},
+                        {_id: 'user3', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map3']},
                     ],
                     maps: [
                         {_id: 'map1'},
@@ -68,9 +68,9 @@ async function mongoTests(cmd) {
         if (cmd === 'deleteMapOne') {
             resultExpected = {
                 "users": [
-                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapSelected": 0, "tabMapIdList": ["map1", "map3"] },
-                    { "_id": "user2", "breadcrumbMapIdList": ["map2"], "tabMapSelected": 0, "tabMapIdList": ["map2"] },
-                    { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapSelected": 3, "tabMapIdList": ["map3"] }
+                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
+                    { "_id": "user2", "breadcrumbMapIdList": ["map2"], "tabMapIdList": ["map2"] },
+                    { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
                 ],
                 "maps": [
                     { "_id": "map1" },
@@ -87,9 +87,9 @@ async function mongoTests(cmd) {
         if (cmd === 'deleteMapAll') {
             resultExpected = {
                 "users": [
-                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapSelected": 0, "tabMapIdList": ["map1", "map3"] },
-                    { "_id": "user2", "breadcrumbMapIdList": [null], "tabMapSelected": 0, "tabMapIdList": [] },
-                    { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapSelected": 3, "tabMapIdList": ["map3"] }
+                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
+                    { "_id": "user2", "breadcrumbMapIdList": [], "tabMapIdList": [] },
+                    { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
                 ],
                 "maps": [
                     { "_id": "map1" },
@@ -103,11 +103,11 @@ async function mongoTests(cmd) {
             }
 
         }
-        // console.log(JSON.stringify(result, null, 4))
         if (isEqual(result, resultExpected)) {
             console.log(cmd, 'TEST PASSED')
         } else {
             console.log(cmd, 'TEST FAILED')
+            console.log(JSON.stringify(result, null, 4))
         }
     }
     catch (err) {
