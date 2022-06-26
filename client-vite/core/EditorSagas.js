@@ -181,6 +181,9 @@ function* mapSaga () {
         }
         const { resp } = yield call(fetchPost, { type, payload })
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+        if (type === 'CREATE_MAP_IN_MAP') {
+            yield put({type: 'SHOW_WS'})
+        }
         if (['OPEN_PREV_FRAME', 'OPEN_NEXT_FRAME'].includes(type)) {
             yield put({type: 'SET_FRAME_NAVIGATION_VISIBLE', payload: true})
         }

@@ -30,26 +30,11 @@ export function CreateMapInMap() {
                     padding: '12px 12px 12px 12px'
                 }}>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                    <Typography variant="string" color='primary'>
-                        {'CREATE SUBMAP?'}
-                    </Typography>
+                    <Typography variant="string" color='primary'>{'CREATE SUBMAP?'}</Typography>
                 </div>
                 <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-                    <Button
-                        color="primary"
-                        variant='outlined'
-                        onClick={_=>{
-                            createMapInMap()
-                            showWs()
-                        }}>
-                        {'OK'}
-                    </Button>
-                    <Button
-                        color="primary"
-                        variant='outlined'
-                        onClick={showWs}>
-                        {'CANCEL'}
-                    </Button>
+                    <Button color="primary" variant='outlined' onClick={createMapInMap}>{'OK'}</Button>
+                    <Button color="primary" variant='outlined' onClick={showWs}>{'CANCEL'}</Button>
                 </div>
             </div>}
         </Modal>

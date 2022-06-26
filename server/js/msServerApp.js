@@ -453,6 +453,10 @@ async function resolveType(req, currUser) {
             await usersColl.updateOne({ _id: currUser._id }, { $set: { colorMode } })
             return { type: 'changeColorModeSuccess' }
         }
+        case 'CHANGE_TAB_WIDTH': { // MUTATION
+            // const {  }
+
+        }
     }
 }
 
