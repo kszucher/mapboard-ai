@@ -68,12 +68,7 @@ async function mongoTests(cmd) {
         if (cmd === 'deleteMapOne') {
             resultExpected = {
                 "users": [
-                    {
-                        "_id": "user1",
-                        "breadcrumbMapIdList": ["map1"],
-                        "tabMapSelected": 0,
-                        "tabMapIdList": ["map1", "map3"]
-                    },
+                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapSelected": 0, "tabMapIdList": ["map1", "map3"] },
                     { "_id": "user2", "breadcrumbMapIdList": ["map2"], "tabMapSelected": 0, "tabMapIdList": ["map2"] },
                     { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapSelected": 3, "tabMapIdList": ["map3"] }
                 ],
