@@ -165,6 +165,7 @@ function* mapSaga () {
         }
         if ([
             'CREATE_MAP_IN_MAP',
+            'REMOVE_MAP_IN_TAB',
             'OPEN_FRAME',
             'IMPORT_FRAME',
             'DUPLICATE_FRAME',

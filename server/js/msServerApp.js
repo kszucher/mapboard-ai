@@ -243,22 +243,16 @@ async function resolveType(req, currUser) {
             }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
-            if (currUser.tabMapIdList.length === 1) {
-                return { type: 'removeMapInTabFail' }
-            } else {
-                const mapIdToDelete = currUser.tabMapIdList[currUser.tabMapSelected]
-                isEqual((await getMapProps(mapsColl, mapIdToDelete)).ownerUser, currUser._id)
-                    ? await deleteMapAll(usersColl, sharesColl, mapIdToDelete)
-                    : await deleteMapOne(usersColl, sharesColl, mapIdToDelete, currUser._id)
-                const currUserUpdated = await usersColl.findOne({ email: req.payload.cred.email })
-                const { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUserUpdated
-                const mapId = tabMapIdList[tabMapSelected]
-                const mapSource = 'data'
-                return {
-                    type: 'removeMapInTabSuccess',
-                    payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
-                }
-            }
+            let { mapId } = req.payload
+            mapId = ObjectId(mapId)
+            isEqual((await getMapProps(mapsColl, mapId)).ownerUser, currUser._id)
+                ? await deleteMapAll(usersColl, sharesColl, mapId)
+                : await deleteMapOne(usersColl, sharesColl, mapId, currUser._id)
+            const currUserUpdated = await usersColl.findOne({ email: req.payload.cred.email })
+            const { tabMapIdList, breadcrumbMapIdList } = currUserUpdated
+            const newMapId = breadcrumbMapIdList[0]
+            const mapSource = 'data'
+            return { type: 'removeMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId: newMapId, mapSource } }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, tabMapSelected } = currUser
