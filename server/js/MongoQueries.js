@@ -134,27 +134,31 @@ async function deleteMapOne (usersColl, sharesColl, mapIdToDelete, userId) {
 }
 
 async function deleteFrame (mapsColl, mapId) {
-    await mapsColl.updateOne({ _id: mapId }, [{
-        $set: {
-            dataPlayback: {
-                $concatArrays: [
-                    { $slice: ["$dataPlayback", "$frameSelected"] },
-                    { $slice: ["$dataPlayback",
-                            { $add: [1, "$frameSelected"] },
-                            { $subtract: [ { $size: "$dataPlayback" }, 1 ] },
-                        ]
+    await mapsColl.updateOne({ _id: mapId }, [
+        {
+            $set: {
+                dataPlayback: {
+                    $concatArrays: [
+                        { $slice: [ "$dataPlayback", "$frameSelected" ] },
+                        { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
+                    ]
+                },
+                frameSelected: {
+                    $cond: {
+                        if: { $eq: ["$frameSelected", 0] },
+                        then: {
+                            $cond: {
+                                if: { $eq: [ { $size: "$dataPlayback" }, 1 ] },
+                                then: null,
+                                else: 0
+                            }
+                        },
+                        else: { $subtract: [ "$frameSelected", 1 ] }
                     }
-                ]
-            },
-            frameSelected: {
-                $cond: {
-                    if: { $eq: ["$frameSelected", 0] },
-                    then: 0,
-                    else: { $subtract: [ "$frameSelected", 1 ] }
                 }
             }
-        }
-    }])
+        },
+    ])
 }
 
 // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"

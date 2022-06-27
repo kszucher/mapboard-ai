@@ -48,6 +48,8 @@ async function mongoTests(cmd) {
                 maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 1 } ] }; break
             case 'deleteFrameTest3': dbContent = {
                 maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 2 } ] }; break
+            case 'deleteFrameTest4': dbContent = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame1'], frameSelected: 0 } ] }; break
         }
         if(dbContent.hasOwnProperty('users')) {await users.insertMany(dbContent.users)}
         if(dbContent.hasOwnProperty('maps')) {await maps.insertMany(dbContent.maps)}
@@ -58,6 +60,7 @@ async function mongoTests(cmd) {
             case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
+            case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
         }
         let result = {}
         if (dbContent.hasOwnProperty('users')) { result.users = await users.find().toArray() }
@@ -108,6 +111,8 @@ async function mongoTests(cmd) {
                 maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame3'], frameSelected: 0 } ] }; break
             case 'deleteFrameTest3': resultExpected = {
                 maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2'], frameSelected: 1 } ] }; break
+            case 'deleteFrameTest4': resultExpected = {
+                maps: [ {_id: 'map1', dataPlayback: [], frameSelected: null } ] }; break
         }
         if (isEqual(result, resultExpected)) {
             console.log(cmd, 'TEST PASSED')
@@ -129,6 +134,7 @@ async function allTest () {
     await mongoTests('deleteFrameTest1')
     await mongoTests('deleteFrameTest2')
     await mongoTests('deleteFrameTest3')
+    await mongoTests('deleteFrameTest4')
 }
 
 allTest()
