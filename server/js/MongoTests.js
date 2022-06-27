@@ -7,23 +7,22 @@ const isEqual = (obj1, obj2) => {
 const MongoClient = require('mongodb').MongoClient;
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`;
 
-let db, users, maps, shares;
+let db, users, maps, shares
 async function mongoTests(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         db = client.db("app_dev_mongo")
-        users = db.collection("users");
-        maps = db.collection("maps");
-        shares = db.collection("shares");
-        await users.deleteMany({});
-        await maps.deleteMany({});
-        await shares.deleteMany({});
+        users = db.collection("users")
+        maps = db.collection("maps")
+        shares = db.collection("shares")
+        await users.deleteMany({})
+        await maps.deleteMany({})
+        await shares.deleteMany({})
         let dbContent;
         switch (cmd) {
             case 'deleteMapOne':
             case 'deleteMapAll':
-            {
                 dbContent = {
                     users: [
                         {_id: 'user1', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map1', 'map2', 'map3']},
@@ -42,67 +41,73 @@ async function mongoTests(cmd) {
                         {_id: 'share4', shareUser: 'user3', sharedMap: "map3"},
                     ]
                 }
-                break;
-            }
-            case 'moveUpMap': {
-                dbContent = {
-                    users: [
-                        {_id: 'user1', tabMapIdList: ['map1', 'map2', 'map3']},
-                        {_id: 'user2', tabMapIdList: ['map2']},
-                        {_id: 'user3', tabMapIdList: ['map3']},
-                    ]
-                }
-            }
+                break
+            case 'deleteFrameTest1': dbContent = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 0 } ] }; break
+            case 'deleteFrameTest2': dbContent = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 1 } ] }; break
+            case 'deleteFrameTest3': dbContent = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 2 } ] }; break
         }
         if(dbContent.hasOwnProperty('users')) {await users.insertMany(dbContent.users)}
         if(dbContent.hasOwnProperty('maps')) {await maps.insertMany(dbContent.maps)}
         if(dbContent.hasOwnProperty('shares')) {await shares.insertMany(dbContent.shares)}
         switch(cmd) {
-            case 'deleteMapOne': { await MongoQueries.deleteMapOne(users, shares, 'map2', 'user1'); break }
-            case 'deleteMapAll': { await MongoQueries.deleteMapAll(users, shares, 'map2'); break }
+            case 'deleteMapOne': await MongoQueries.deleteMapOne(users, shares, 'map2', 'user1'); break
+            case 'deleteMapAll': await MongoQueries.deleteMapAll(users, shares, 'map2'); break
+            case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
+            case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
+            case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
         }
         let result = {}
         if (dbContent.hasOwnProperty('users')) { result.users = await users.find().toArray() }
         if (dbContent.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
         if (dbContent.hasOwnProperty('shares')) { result.shares = await shares.find().toArray() }
         let resultExpected = {}
-        if (cmd === 'deleteMapOne') {
-            resultExpected = {
-                "users": [
-                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
-                    { "_id": "user2", "breadcrumbMapIdList": ["map2"], "tabMapIdList": ["map2"] },
-                    { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
-                ],
-                "maps": [
-                    { "_id": "map1" },
-                    { "_id": "map2" },
-                    { "_id": "map3" }
-                ],
-                "shares": [
-                    { "_id": "share1", "shareUser": "user1", "sharedMap": "map1" },
-                    { "_id": "share3", "shareUser": "user2", "sharedMap": "map2" },
-                    { "_id": "share4", "shareUser": "user3", "sharedMap": "map3" }
-                ]
-            }
-        }
-        if (cmd === 'deleteMapAll') {
-            resultExpected = {
-                "users": [
-                    { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
-                    { "_id": "user2", "breadcrumbMapIdList": [], "tabMapIdList": [] },
-                    { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
-                ],
-                "maps": [
-                    { "_id": "map1" },
-                    { "_id": "map2" },
-                    { "_id": "map3" }
-                ],
-                "shares": [
-                    { "_id": "share1", "shareUser": "user1", "sharedMap": "map1" },
-                    { "_id": "share4", "shareUser": "user3", "sharedMap": "map3" }
-                ]
-            }
-
+        switch (cmd) {
+            case 'deleteMapOne':
+                resultExpected = {
+                    "users": [
+                        { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
+                        { "_id": "user2", "breadcrumbMapIdList": ["map2"], "tabMapIdList": ["map2"] },
+                        { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
+                    ],
+                    "maps": [
+                        { "_id": "map1" },
+                        { "_id": "map2" },
+                        { "_id": "map3" }
+                    ],
+                    "shares": [
+                        { "_id": "share1", "shareUser": "user1", "sharedMap": "map1" },
+                        { "_id": "share3", "shareUser": "user2", "sharedMap": "map2" },
+                        { "_id": "share4", "shareUser": "user3", "sharedMap": "map3" }
+                    ]
+                }
+                break
+            case 'deleteMapAll':
+                resultExpected = {
+                    "users": [
+                        { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
+                        { "_id": "user2", "breadcrumbMapIdList": [], "tabMapIdList": [] },
+                        { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
+                    ],
+                    "maps": [
+                        { "_id": "map1" },
+                        { "_id": "map2" },
+                        { "_id": "map3" }
+                    ],
+                    "shares": [
+                        { "_id": "share1", "shareUser": "user1", "sharedMap": "map1" },
+                        { "_id": "share4", "shareUser": "user3", "sharedMap": "map3" }
+                    ]
+                }
+                break
+            case 'deleteFrameTest1': resultExpected = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame2', 'frame3'], frameSelected: 0 } ] }; break // frameSelected will change
+            case 'deleteFrameTest2': resultExpected = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame3'], frameSelected: 1 } ] }; break // frameSelected will change
+            case 'deleteFrameTest3': resultExpected = {
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2'], frameSelected: 2 } ] }; break // frameSelected will change
         }
         if (isEqual(result, resultExpected)) {
             console.log(cmd, 'TEST PASSED')
@@ -119,8 +124,11 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-    await mongoTests('deleteMapOne');
-    await mongoTests('deleteMapAll');
+    await mongoTests('deleteMapOne')
+    await mongoTests('deleteMapAll')
+    await mongoTests('deleteFrameTest1')
+    await mongoTests('deleteFrameTest2')
+    await mongoTests('deleteFrameTest3')
 }
 
 allTest()

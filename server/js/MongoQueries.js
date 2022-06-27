@@ -133,6 +133,23 @@ async function deleteMapOne (usersColl, sharesColl, mapIdToDelete, userId) {
     await deleteMapFromShares(sharesColl, mapIdToDelete, {shareUser: userId})
 }
 
+async function deleteFrame (mapsColl, mapId) {
+    await mapsColl.updateOne({ _id: mapId }, [{
+        $set: {
+            dataPlayback: {
+                $concatArrays: [
+                    { $slice: ["$dataPlayback", "$frameSelected"] },
+                    { $slice: ["$dataPlayback",
+                            { $add: [1, "$frameSelected"] },
+                            { $subtract: [ { $size: "$dataPlayback" }, 1 ] },
+                        ]
+                    }
+                ]
+            }
+        }
+    }])
+}
+
 // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
 // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
@@ -148,5 +165,6 @@ module.exports = {
     getMapNameList,
     getUserShares,
     deleteMapAll,
-    deleteMapOne
+    deleteMapOne,
+    deleteFrame,
 }
