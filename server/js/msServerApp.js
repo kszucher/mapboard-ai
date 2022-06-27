@@ -172,7 +172,6 @@ async function resolveType(req, currUser) {
                         $set: {
                             activationStatus: ACTIVATION_STATUS.COMPLETED,
                             tabMapIdList: [...systemMaps, mapId],
-                            // tabMapSelected: systemMaps.length,
                             breadcrumbMapIdList: [mapId]
                         }
                     })
@@ -378,21 +377,19 @@ async function resolveType(req, currUser) {
             }
         }
         case 'ACCEPT_SHARE': { // MUTATION
-            let { shareId } = req.payload
-            shareId = ObjectId(shareId)
-            let { tabMapIdList, tabMapSelected } = currUser
+            const { shareId } = ObjectId(req.payload.shareId)
+            let { tabMapIdList } = currUser
             const { sharedMap } = await getShareProps(shares, shareId)
             tabMapIdList = [...tabMapIdList, sharedMap]
-            tabMapSelected = tabMapIdList.length - 1
-            const mapId = tabMapIdList[tabMapSelected]
+            const mapId = sharedMap
             const breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
             await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
             const { shareDataExport, shareDataImport } = await getUserShares(users, maps, shares, currUser._id)
-            await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected, breadcrumbMapIdList } })
+            await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
             return {
                 type: 'acceptShareSuccess',
-                payload: { shareDataExport, shareDataImport, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
+                payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId, mapSource }
             }
         }
         case 'DELETE_SHARE': { // MUTATION
