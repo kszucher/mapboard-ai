@@ -19,7 +19,9 @@ const {
     getUserShares,
     deleteMapAll,
     deleteMapOne,
-    deleteFrame
+    deleteFrame,
+    moveUpMapInTab,
+    moveDownMapInTab,
 } = require("./MongoQueries")
 const mongoose = require('mongoose')
 
@@ -255,28 +257,19 @@ async function resolveType(req, currUser) {
             return { type: 'removeMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId: newMapId, mapSource } }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
-            let { tabMapIdList, tabMapSelected } = currUser
-            if (tabMapSelected === 0) {
-                return { type: 'moveUpMapInTabFail' }
-            } else {
-                [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
-                    [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
-                tabMapSelected = tabMapSelected - 1
-                await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected } })
-                return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
-            }
+            const mapId = ObjectId(req.payload.mapId)
+            await moveUpMapInTab(users, currUser._id, mapId)
+            const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
+            const { tabMapIdList } = currUserUpdated
+            return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList } }
+
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
-            let { tabMapIdList, tabMapSelected } = currUser
-            if (tabMapSelected >= tabMapIdList.length - 1) {
-                return { type: 'moveDownMapInTabFail' }
-            } else {
-                [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
-                    [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
-                tabMapSelected = tabMapSelected + 1
-                await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected } })
-                return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
-            }
+            const mapId = ObjectId(req.payload.mapId)
+            await moveDownMapInTab(users, currUser._id, mapId)
+            const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
+            const { tabMapIdList } = currUserUpdated
+            return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)

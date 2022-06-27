@@ -111,6 +111,22 @@ async function mongoTests(cmd) {
                 dbOriginal = { maps: [ {_id: 'map1', dataPlayback: ['frame1'], frameSelected: 0 } ] }
                 dbExpected = { maps: [ {_id: 'map1', dataPlayback: [], frameSelected: null } ] }
                 break
+            case 'moveUpMapInTabTest1':
+                dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+                dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+                break
+            case 'moveUpMapInTabTest2':
+                dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+                dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+                break
+            case 'moveDownMapInTabTest1':
+                dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+                dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+                break
+            case 'moveDownMapInTabTest2':
+                dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+                dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+                break
         }
         if(dbOriginal.hasOwnProperty('users')) {await users.insertMany(dbOriginal.users)}
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
@@ -122,6 +138,10 @@ async function mongoTests(cmd) {
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
+            case 'moveUpMapInTabTest1': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
+            case 'moveUpMapInTabTest2': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
+            case 'moveDownMapInTabTest1': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
+            case 'moveDownMapInTabTest2': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
         }
         let result = {}
         if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }

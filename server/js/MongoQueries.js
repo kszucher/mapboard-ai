@@ -161,6 +161,22 @@ async function deleteFrame (maps, mapId) {
     ])
 }
 
+async function moveUpMapInTab (users, userId) {
+    await users.updateOne({ _id: userId }, [
+        {
+
+        }
+    ])
+}
+
+async function moveDownMapInTab (users, userId) {
+    await users.updateOne({ _id: userId }, [
+        {
+
+        }
+    ])
+}
+
 // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
 // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
@@ -178,4 +194,6 @@ module.exports = {
     deleteMapAll,
     deleteMapOne,
     deleteFrame,
+    moveUpMapInTab,
+    moveDownMapInTab,
 }
