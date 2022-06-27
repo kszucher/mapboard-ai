@@ -19,6 +19,7 @@ const {
     getUserShares,
     deleteMapAll,
     deleteMapOne,
+    deleteFrame
 } = require("./MongoQueries")
 const mongoose = require('mongoose')
 
@@ -324,31 +325,11 @@ async function resolveType(req, currUser) {
         case 'DELETE_FRAME': { // MUTATION
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
-            let frameLen = await getFrameLen(mapsColl, mapId)
-            let frameSelected = await getFrameSelected(mapsColl, mapId)
-            if (frameLen === 0) {
-                return { type: 'deleteFrameFail' }
-            } else {
-                await mapsColl.updateOne({ _id: mapId }, [{
-                    $set: {
-                        dataPlayback: {
-                            $concatArrays: [
-                                { $slice: ["$dataPlayback", frameSelected] },
-                                { $slice: ["$dataPlayback",
-                                        { $add: [1, frameSelected] },
-                                        { $subtract: [ { $size: "$dataPlayback" }, 1 ] },
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                }])
-                frameLen = frameLen - 1
-                frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
-                await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
-                const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
-                return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
-            }
+            await deleteFrame(mapsColl, mapId)
+            const frameLen = await getFrameLen(mapsColl, mapId)
+            const frameSelected = await getFrameSelected(mapsColl, mapId)
+            const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
+            return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             let { mapId, mapStorage } = req.payload
