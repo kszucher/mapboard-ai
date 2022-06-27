@@ -7,18 +7,18 @@ const isEqual = (obj1, obj2) => {
 const MongoClient = require('mongodb').MongoClient;
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`;
 
-let db, usersColl, mapsColl, sharesColl;
+let db, users, maps, shares;
 async function mongoTests(cmd) {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
     try {
         await client.connect();
         db = client.db("app_dev_mongo")
-        usersColl = db.collection("users");
-        mapsColl = db.collection("maps");
-        sharesColl = db.collection("shares");
-        await usersColl.deleteMany();
-        await mapsColl.deleteMany();
-        await sharesColl.deleteMany();
+        users = db.collection("users");
+        maps = db.collection("maps");
+        shares = db.collection("shares");
+        await users.deleteMany({});
+        await maps.deleteMany({});
+        await shares.deleteMany({});
         let dbContent;
         switch (cmd) {
             case 'deleteMapOne':
@@ -44,27 +44,28 @@ async function mongoTests(cmd) {
                 }
                 break;
             }
+            case 'moveUpMap': {
+                dbContent = {
+                    users: [
+                        {_id: 'user1', tabMapIdList: ['map1', 'map2', 'map3']},
+                        {_id: 'user2', tabMapIdList: ['map2']},
+                        {_id: 'user3', tabMapIdList: ['map3']},
+                    ]
+                }
+            }
         }
-        await usersColl.insertMany(dbContent.users);
-        await mapsColl.insertMany(dbContent.maps);
-        await sharesColl.insertMany(dbContent.shares);
+        if(dbContent.hasOwnProperty('users')) {await users.insertMany(dbContent.users)}
+        if(dbContent.hasOwnProperty('maps')) {await maps.insertMany(dbContent.maps)}
+        if(dbContent.hasOwnProperty('shares')) {await shares.insertMany(dbContent.shares)}
         switch(cmd) {
-            case 'deleteMapOne': {
-                await MongoQueries.deleteMapOne(usersColl, sharesColl, 'map2', 'user1');
-                break;
-            }
-            case 'deleteMapAll': {
-                await MongoQueries.deleteMapAll(usersColl, sharesColl, 'map2');
-
-                break;
-            }
+            case 'deleteMapOne': { await MongoQueries.deleteMapOne(users, shares, 'map2', 'user1'); break }
+            case 'deleteMapAll': { await MongoQueries.deleteMapAll(users, shares, 'map2'); break }
         }
-        let result = {
-            users: await usersColl.find().toArray(),
-            maps: await mapsColl.find().toArray(),
-            shares: await sharesColl.find().toArray(),
-        };
-        let resultExpected
+        let result = {}
+        if (dbContent.hasOwnProperty('users')) { result.users = await users.find().toArray() }
+        if (dbContent.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
+        if (dbContent.hasOwnProperty('shares')) { result.shares = await shares.find().toArray() }
+        let resultExpected = {}
         if (cmd === 'deleteMapOne') {
             resultExpected = {
                 "users": [
