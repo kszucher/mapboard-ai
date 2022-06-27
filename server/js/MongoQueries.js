@@ -89,11 +89,11 @@ async function deleteMapFromUsers (usersColl, mapIdToDelete, userFilter = {}) {
                             if: {$in: [mapIdToDelete, "$breadcrumbMapIdList"]},
                             then: {
                                 $cond: {
-                                    if: {$eq: [0, {$indexOfArray: ["$tabMapIdList", mapIdToDelete]}]},
+                                    if: {$eq: [{$indexOfArray: ["$tabMapIdList", mapIdToDelete]}, 0]},
                                     then: {
                                         $cond: {
                                             if: { $gt: [{ $size: "$tabMapIdList" }, 1] },
-                                            then: [{ $arrayElemAt: ["$tabMapIdList", 0] }],
+                                            then: [{ $arrayElemAt: ["$tabMapIdList", 1] }],
                                             else: []
                                         }
                                     },
