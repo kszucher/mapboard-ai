@@ -62,7 +62,7 @@ const isEqual = (obj1, obj2) => {
     return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
 
-let usersColl, mapsColl, sharesColl, db
+let users, maps, shares, db
 
 function getConfirmationCode() {
     let [min, max] = [1000, 9999]
@@ -88,18 +88,18 @@ async function checkSave (req, currUser) {
     if (req.hasOwnProperty('payload') &&
         req.payload.hasOwnProperty('save')) {
         const { mapId, mapSource, mapStorage } = req.payload.save
-        const { ownerUser } = await getMapProps(mapsColl, ObjectId(mapId))
-        const shareToEdit = await sharesColl.findOne({
+        const { ownerUser } = await getMapProps(maps, ObjectId(mapId))
+        const shareToEdit = await shares.findOne({
             shareUser: currUser._id,
             sharedMap: ObjectId(mapId),
             access: 'edit'
         })
         if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
             if (mapSource === 'data') {
-                await mapsColl.updateOne({ _id: ObjectId(mapId) }, { $set: { data: mapStorage } })
+                await maps.updateOne({ _id: ObjectId(mapId) }, { $set: { data: mapStorage } })
             } else if (mapSource === 'dataPlayback') {
-                const frameSelected = await getFrameSelected(mapsColl, ObjectId(mapId))
-                await mapsColl.updateOne({ _id: ObjectId(mapId) }, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
+                const frameSelected = await getFrameSelected(maps, ObjectId(mapId))
+                await maps.updateOne({ _id: ObjectId(mapId) }, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
             }
         }
     }
@@ -113,14 +113,14 @@ async function resolveType(req, currUser) {
             return {
                 type: 'liveDemoSuccess',
                 payload: {
-                    landingData: (await mapsColl.findOne({_id: ObjectId(mapId)})).dataPlayback,
+                    landingData: (await maps.findOne({_id: ObjectId(mapId)})).dataPlayback,
                     mapRight: MAP_RIGHTS.VIEW
                 },
             }
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
-            const currUser = await getUserByEmail(usersColl, email)
+            const currUser = await getUserByEmail(users, email)
             if (currUser === null) {
                 let confirmationCode = getConfirmationCode()
                 await transporter.sendMail({
@@ -138,7 +138,7 @@ async function resolveType(req, currUser) {
                         <p>Cheers,<br>Krisztian from MapBoard</p>
                         `
                 })
-                await usersColl.insertOne({
+                await users.insertOne({
                     email,
                     password,
                     name,
@@ -153,7 +153,7 @@ async function resolveType(req, currUser) {
         }
         case 'SIGN_UP_STEP_2': { // MUTATION
             let { email, confirmationCode } = req.payload
-            const currUser = await getUserByEmail(usersColl, email)
+            const currUser = await getUserByEmail(users, email)
             if (currUser === null) {
                 return { type: 'signUpStep2FailUnknownUser' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
@@ -162,8 +162,8 @@ async function resolveType(req, currUser) {
                 return { type: 'signUpStep2FailWrongCode' }
             } else {
                 let newMap = getDefaultMap('My First Map', currUser._id, [])
-                let mapId = (await mapsColl.insertOne(newMap)).insertedId
-                await usersColl.updateOne(
+                let mapId = (await maps.insertOne(newMap)).insertedId
+                await users.updateOne(
                     { _id: currUser._id },
                     {
                         $set: {
@@ -194,7 +194,7 @@ async function resolveType(req, currUser) {
             mapId = ObjectId(mapId)
             const breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
-            await usersColl.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
+            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
             return { type: 'openMapFromTabSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
@@ -203,7 +203,7 @@ async function resolveType(req, currUser) {
             let { breadcrumbMapIdList } = currUser
             breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
             const mapSource = 'data'
-            await usersColl.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
+            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
             return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
@@ -212,18 +212,18 @@ async function resolveType(req, currUser) {
             breadcrumbMapIdList.length = breadcrumbMapSelected + 1
             let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
-            await usersColl.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
+            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
             return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             const { mapId, lastPath, newMapName } = req.payload
             let { breadcrumbMapIdList } = currUser
             const newMap = getDefaultMap(newMapName, currUser._id, breadcrumbMapIdList)
-            const newMapId = (await mapsColl.insertOne(newMap)).insertedId
+            const newMapId = (await maps.insertOne(newMap)).insertedId
             const mapSource = 'data'
             breadcrumbMapIdList = [...breadcrumbMapIdList, newMapId]
-            await usersColl.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-            await mapsColl.updateOne(
+            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
+            await maps.updateOne(
                 { _id: ObjectId(mapId) },
                 { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
                 { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
@@ -233,10 +233,10 @@ async function resolveType(req, currUser) {
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, breadcrumbMapIdList } = currUser
             const newMap = getDefaultMap('New Map', currUser._id, [])
-            const mapId = (await mapsColl.insertOne(newMap)).insertedId
+            const mapId = (await maps.insertOne(newMap)).insertedId
             tabMapIdList = [...tabMapIdList, mapId]
             breadcrumbMapIdList = [mapId]
-            await usersColl.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList }})
+            await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList }})
             const mapSource = 'data'
             return {
                 type: 'createMapInTabSuccess',
@@ -246,10 +246,10 @@ async function resolveType(req, currUser) {
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
-            isEqual((await getMapProps(mapsColl, mapId)).ownerUser, currUser._id)
-                ? await deleteMapAll(usersColl, sharesColl, mapId)
-                : await deleteMapOne(usersColl, sharesColl, mapId, currUser._id)
-            const currUserUpdated = await usersColl.findOne({ email: req.payload.cred.email })
+            isEqual((await getMapProps(maps, mapId)).ownerUser, currUser._id)
+                ? await deleteMapAll(users, shares, mapId)
+                : await deleteMapOne(users, shares, mapId, currUser._id)
+            const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList, breadcrumbMapIdList } = currUserUpdated
             const newMapId = breadcrumbMapIdList[0]
             const mapSource = 'data'
@@ -263,7 +263,7 @@ async function resolveType(req, currUser) {
                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected - 1]] =
                     [tabMapIdList[tabMapSelected - 1], tabMapIdList[tabMapSelected]]
                 tabMapSelected = tabMapSelected - 1
-                await usersColl.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected } })
+                await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected } })
                 return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
             }
         }
@@ -275,15 +275,15 @@ async function resolveType(req, currUser) {
                 [tabMapIdList[tabMapSelected], tabMapIdList[tabMapSelected + 1]] =
                     [tabMapIdList[tabMapSelected + 1], tabMapIdList[tabMapSelected]]
                 tabMapSelected = tabMapSelected + 1
-                await usersColl.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected } })
+                await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected } })
                 return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList, tabMapSelected } }
             }
         }
         case 'OPEN_FRAME': { // QUERY
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
-            const frameLen = await getFrameLen(mapsColl, mapId)
-            const frameSelected = await getFrameSelected(mapsColl, mapId)
+            const frameLen = await getFrameLen(maps, mapId)
+            const frameSelected = await getFrameSelected(maps, mapId)
             if (frameLen === 0) {
                 return { type: 'openFrameFail', payload: { frameLen, frameSelected } }
             } else {
@@ -294,20 +294,20 @@ async function resolveType(req, currUser) {
         case 'OPEN_PREV_FRAME': { // MUTATION
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
-            const frameLen = await getFrameLen(mapsColl, mapId)
-            let frameSelected = await getFrameSelected(mapsColl, mapId)
+            const frameLen = await getFrameLen(maps, mapId)
+            let frameSelected = await getFrameSelected(maps, mapId)
             frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
-            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
+            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
-            const frameLen = await getFrameLen(mapsColl, mapId)
-            let frameSelected = await getFrameSelected(mapsColl, mapId)
+            const frameLen = await getFrameLen(maps, mapId)
+            let frameSelected = await getFrameSelected(maps, mapId)
             frameSelected = frameSelected < frameLen - 1 ? frameSelected + 1 : frameLen - 1
-            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
+            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
@@ -315,29 +315,29 @@ async function resolveType(req, currUser) {
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
             const mapSource = 'dataPlayback'
-            const mapStorage = await getMapData(mapsColl, mapId)
-            await mapsColl.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
-            const frameLen = await getFrameLen(mapsColl, mapId)
+            const mapStorage = await getMapData(maps, mapId)
+            await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
+            const frameLen = await getFrameLen(maps, mapId)
             const frameSelected = frameLen - 1
-            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
+            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
             let { mapId } = req.payload
             mapId = ObjectId(mapId)
-            await deleteFrame(mapsColl, mapId)
-            const frameLen = await getFrameLen(mapsColl, mapId)
-            const frameSelected = await getFrameSelected(mapsColl, mapId)
+            await deleteFrame(maps, mapId)
+            const frameLen = await getFrameLen(maps, mapId)
+            const frameSelected = await getFrameSelected(maps, mapId)
             const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
             return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             let { mapId, mapStorage } = req.payload
             mapId = ObjectId(mapId)
-            let frameSelected = await getFrameSelected(mapsColl, mapId)
+            let frameSelected = await getFrameSelected(maps, mapId)
             frameSelected = frameSelected + 1
-            await mapsColl.updateOne({ _id: mapId }, { $set: { frameSelected } })
-            await mapsColl.updateOne({ _id: mapId }, {
+            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
+            await maps.updateOne({ _id: mapId }, {
                 $push: {
                     "dataPlayback": {
                         $each: [mapStorage],
@@ -346,25 +346,25 @@ async function resolveType(req, currUser) {
                 }
             })
             const mapSource = "dataPlayback"
-            const frameLen = await getFrameLen(mapsColl, mapId)
+            const frameLen = await getFrameLen(maps, mapId)
             return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'GET_SHARES': { // QUERY
             const {
                 shareDataExport,
                 shareDataImport
-            } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
+            } = await getUserShares(users, maps, shares, currUser._id)
             return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'CREATE_SHARE': { // MUTATION
             const { mapId, shareEmail, shareAccess } = req.payload
-            const shareUser = await usersColl.findOne({ email: shareEmail })
+            const shareUser = await users.findOne({ email: shareEmail })
             if (shareUser === null) {
                 return { type: 'createShareFailNotAValidUser' }
             } else if (isEqual(shareUser._id, currUser._id)) {
                 return { type: 'createShareFailCantShareWithYourself' }
             } else {
-                const currShare = await sharesColl.findOne({
+                const currShare = await shares.findOne({
                     sharedMap: ObjectId(mapId),
                     ownerUser: currUser._id,
                     shareUser: shareUser._id
@@ -377,13 +377,13 @@ async function resolveType(req, currUser) {
                         access: shareAccess,
                         status: SHARE_STATUS.WAITING
                     }
-                    await sharesColl.insertOne(newShare)
+                    await shares.insertOne(newShare)
                     return { type: 'createShareSuccess' }
                 } else {
                     if (currShare.access === shareAccess) {
                         return { type: 'createShareFailAlreadyShared' }
                     } else {
-                        await sharesColl.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
+                        await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
                         return { type: 'updateShareSuccess' }
                     }
                 }
@@ -393,15 +393,15 @@ async function resolveType(req, currUser) {
             let { shareId } = req.payload
             shareId = ObjectId(shareId)
             let { tabMapIdList, tabMapSelected } = currUser
-            const { sharedMap } = await getShareProps(sharesColl, shareId)
+            const { sharedMap } = await getShareProps(shares, shareId)
             tabMapIdList = [...tabMapIdList, sharedMap]
             tabMapSelected = tabMapIdList.length - 1
             const mapId = tabMapIdList[tabMapSelected]
             const breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
-            await sharesColl.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
-            const { shareDataExport, shareDataImport } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
-            await usersColl.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected, breadcrumbMapIdList } })
+            await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
+            const { shareDataExport, shareDataImport } = await getUserShares(users, maps, shares, currUser._id)
+            await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected, breadcrumbMapIdList } })
             return {
                 type: 'acceptShareSuccess',
                 payload: { shareDataExport, shareDataImport, tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
@@ -410,12 +410,12 @@ async function resolveType(req, currUser) {
         case 'DELETE_SHARE': { // MUTATION
             let { shareId } = req.payload
             shareId = ObjectId(shareId)
-            const { shareUser, sharedMap } = await getShareProps(sharesColl, shareId)
-            await deleteMapOne(usersColl, sharesColl, sharedMap, shareUser)
+            const { shareUser, sharedMap } = await getShareProps(shares, shareId)
+            await deleteMapOne(users, shares, sharedMap, shareUser)
             const {
                 shareDataExport,
                 shareDataImport
-            } = await getUserShares(usersColl, mapsColl, sharesColl, currUser._id)
+            } = await getUserShares(users, maps, shares, currUser._id)
             return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'GET_NAME': { // QUERY
@@ -424,7 +424,7 @@ async function resolveType(req, currUser) {
         }
         case 'CHANGE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
-            await usersColl.updateOne({ _id: currUser._id }, { $set: { colorMode } })
+            await users.updateOne({ _id: currUser._id }, { $set: { colorMode } })
             return { type: 'changeColorModeSuccess' }
         }
         case 'CHANGE_TAB_WIDTH': { // MUTATION
@@ -441,11 +441,11 @@ async function appendStuff (resp, currUser) {
             const {mapId, mapSource} = resp.payload
             let mapStorage = {}
             if (mapSource === 'data') {
-                mapStorage = await getMapData(mapsColl, mapId)
+                mapStorage = await getMapData(maps, mapId)
             } else if (mapSource === 'dataPlayback') {
-                mapStorage = await getPlaybackMapData(mapsColl, mapId, resp.payload.frameSelected)
+                mapStorage = await getPlaybackMapData(maps, mapId, resp.payload.frameSelected)
             }
-            const {path, ownerUser} = await getMapProps(mapsColl, mapId)
+            const {path, ownerUser} = await getMapProps(maps, mapId)
             let mapRight = MAP_RIGHTS.UNAUTHORIZED
             if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
                 mapRight = isEqual(currUser._id, adminUser)
@@ -458,7 +458,7 @@ async function appendStuff (resp, currUser) {
                     const fullPath = [...path, mapId]
                     for (let i = fullPath.length - 1; i > -1; i--) {
                         const currMapId = fullPath[i]
-                        const shareData = await sharesColl.findOne({
+                        const shareData = await shares.findOne({
                             shareUser: currUser._id,
                             sharedMap: currMapId
                         })
@@ -472,12 +472,12 @@ async function appendStuff (resp, currUser) {
         }
         if (resp.payload.hasOwnProperty('tabMapIdList')) {
             const { tabMapIdList } = resp.payload
-            const tabMapNameList = await getMapNameList(mapsColl, tabMapIdList)
+            const tabMapNameList = await getMapNameList(maps, tabMapIdList)
             Object.assign(resp.payload, { tabMapNameList })
         }
         if (resp.payload.hasOwnProperty('breadcrumbMapIdList')) {
             const { breadcrumbMapIdList } = resp.payload
-            const breadcrumbMapNameList = await getMapNameList(mapsColl, breadcrumbMapIdList)
+            const breadcrumbMapNameList = await getMapNameList(maps, breadcrumbMapIdList)
             Object.assign(resp.payload, { breadcrumbMapNameList })
         }
     }
@@ -488,7 +488,7 @@ async function processReq(req) {
     try {
         let currUser
         if (req.payload?.hasOwnProperty('cred')) {
-            currUser = await getUser(usersColl, req.payload.cred)
+            currUser = await getUser(users, req.payload.cred)
             if (currUser === null) {
                 return { type: 'signInFailWrongCred' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
@@ -528,9 +528,9 @@ MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, func
     } else {
         console.log('connected')
         db = client.db(process.env.MONGO_TARGET_DB || "app_dev")
-        usersColl = db.collection('users')
-        mapsColl = db.collection('maps')
-        sharesColl = db.collection('shares')
+        users = db.collection('users')
+        maps = db.collection('maps')
+        shares = db.collection('shares')
         app.listen(process.env.PORT || 8082, function () {
             console.log('CORS-enabled web server listening on port 8082')
         })
