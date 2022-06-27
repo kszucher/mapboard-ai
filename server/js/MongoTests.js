@@ -103,11 +103,11 @@ async function mongoTests(cmd) {
                 }
                 break
             case 'deleteFrameTest1': resultExpected = {
-                maps: [ {_id: 'map1', dataPlayback: ['frame2', 'frame3'], frameSelected: 0 } ] }; break // frameSelected will change
+                maps: [ {_id: 'map1', dataPlayback: ['frame2', 'frame3'], frameSelected: 0 } ] }; break
             case 'deleteFrameTest2': resultExpected = {
-                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame3'], frameSelected: 1 } ] }; break // frameSelected will change
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame3'], frameSelected: 0 } ] }; break
             case 'deleteFrameTest3': resultExpected = {
-                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2'], frameSelected: 2 } ] }; break // frameSelected will change
+                maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2'], frameSelected: 1 } ] }; break
         }
         if (isEqual(result, resultExpected)) {
             console.log(cmd, 'TEST PASSED')

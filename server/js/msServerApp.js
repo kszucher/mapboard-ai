@@ -334,7 +334,11 @@ async function resolveType(req, currUser) {
                         dataPlayback: {
                             $concatArrays: [
                                 { $slice: ["$dataPlayback", frameSelected] },
-                                { $slice: ["$dataPlayback", { $add: [1, frameSelected] }, { $size: "$dataPlayback" }] }
+                                { $slice: ["$dataPlayback",
+                                        { $add: [1, frameSelected] },
+                                        { $subtract: [ { $size: "$dataPlayback" }, 1 ] },
+                                    ]
+                                }
                             ]
                         }
                     }

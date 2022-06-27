@@ -145,6 +145,13 @@ async function deleteFrame (mapsColl, mapId) {
                         ]
                     }
                 ]
+            },
+            frameSelected: {
+                $cond: {
+                    if: { $eq: ["$frameSelected", 0] },
+                    then: 0,
+                    else: { $subtract: [ "$frameSelected", 1 ] }
+                }
             }
         }
     }])
