@@ -230,17 +230,16 @@ async function resolveType(req, currUser) {
             return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId: newMapId, mapSource } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
-            let { tabMapIdList, tabMapSelected, breadcrumbMapIdList } = currUser
+            let { tabMapIdList, breadcrumbMapIdList } = currUser
             const newMap = getDefaultMap('New Map', currUser._id, [])
             const mapId = (await mapsColl.insertOne(newMap)).insertedId
             tabMapIdList = [...tabMapIdList, mapId]
-            tabMapSelected = tabMapIdList.length - 1
             breadcrumbMapIdList = [mapId]
-            await usersColl.updateOne({_id: currUser._id}, { $set: { tabMapIdList, tabMapSelected, breadcrumbMapIdList }})
+            await usersColl.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList }})
             const mapSource = 'data'
             return {
                 type: 'createMapInTabSuccess',
-                payload: { tabMapIdList, tabMapSelected, breadcrumbMapIdList, mapId, mapSource }
+                payload: { tabMapIdList, breadcrumbMapIdList, mapId, mapSource }
             }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
