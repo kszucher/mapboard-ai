@@ -168,6 +168,10 @@ async function allTest () {
     await mongoTests('deleteFrameTest2')
     await mongoTests('deleteFrameTest3')
     await mongoTests('deleteFrameTest4')
+    await mongoTests('moveUpMapInTabTest1')
+    await mongoTests('moveUpMapInTabTest2')
+    await mongoTests('moveDownMapInTabTest1')
+    await mongoTests('moveDownMapInTabTest2')
 }
 
 allTest()
