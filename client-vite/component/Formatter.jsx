@@ -40,9 +40,17 @@ export function Formatter () {
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
     return (
-        <div style={{ position: 'fixed', top: 96, right: 64,
-            display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 12,
-            borderRadius: 16, border: `1px solid ${PAGE_BACKGROUND}`, padding: 12,
+        <div style={{
+            position: 'fixed',
+            top: 96,
+            right: 64,
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            gap: 12,
+            borderRadius: 16,
+            border: `1px solid ${PAGE_BACKGROUND}`,
+            padding: 12,
             background: MAP_BACKGROUND,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>

@@ -14,13 +14,22 @@ export function FramesBottom () {
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})
     return (
-        <div style={{ position: 'fixed', left: '50%', transform: 'translate(-50%)', bottom: 0 }}>
+        <div style={{
+            position: 'fixed',
+            left: '50%',
+            transform: 'translate(-50%)',
+            bottom: 0
+        }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {frameLen > 0 &&
                 <MobileStepper
                     style={{
-                        flexWrap: 'wrap', gap: 12, background: MAP_BACKGROUND,
-                        borderRadius: '16px 16px 0 0', border: `2px solid ${'#9040b8'}`, borderBottom: 0,
+                        flexWrap: 'wrap',
+                        gap: 12,
+                        background: MAP_BACKGROUND,
+                        borderRadius: '16px 16px 0 0',
+                        border: `2px solid ${'#9040b8'}`,
+                        borderBottom: 0,
                     }}
                     variant="dots"
                     steps={frameLen}

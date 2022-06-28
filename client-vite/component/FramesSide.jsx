@@ -11,9 +11,17 @@ export function FramesSide () {
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
     const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
     return (
-        <div style={{ position: 'fixed', top: 96, right: 64, width: 6*32,
-            display: 'flex', flexDirection: 'column', flexWrap: 'wrap', gap: 12,
-            borderRadius: 16, border: `1px solid ${PAGE_BACKGROUND}`, padding: 12,
+        <div style={{
+            position: 'fixed',
+            top: 96,
+            right: 64,
+            width: 6*32,
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap', gap: 12,
+            borderRadius: 16,
+            border: `1px solid ${PAGE_BACKGROUND}`,
+            padding: 12,
             background: MAP_BACKGROUND,
         }}>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
