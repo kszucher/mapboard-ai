@@ -10,7 +10,7 @@ import { Frames } from "./Frames"
 import { Sharing } from "./Sharing"
 import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
-import { Icons } from './Icons'
+import { SideBar } from './SideBar'
 import { ProfileEditor } from './ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
@@ -93,7 +93,7 @@ export function Page() {
                         <TabMaps/>
                         <UndoRedo/>
                         <Profile/>
-                        <Icons/>
+                        <SideBar/>
                         <Breadcrumbs/>
                     </>}
                     {formatMode!=='' && <Formatter/>}
