@@ -6,11 +6,10 @@ import Logo from "./Logo"
 import TabMaps from "./TabMaps"
 import Breadcrumbs from "./BreadcrumbMaps"
 import { Formatter } from "./Formatter"
-import { FramesBottom } from "./FramesBottom"
+import { Frames } from "./Frames"
 import { Sharing } from "./Sharing"
 import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
-import { FramesSide } from "./FramesSide"
 import { Icons } from './Icons'
 import { ProfileEditor } from './ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
@@ -98,8 +97,7 @@ export function Page() {
                         <Breadcrumbs/>
                     </>}
                     {formatMode!=='' && <Formatter/>}
-                    {frameEditorVisible===1 && <FramesSide/>}
-                    {frameEditorVisible===1 && <FramesBottom/>}
+                    {frameEditorVisible===1 && <Frames/>}
                 </>}
                 {pageState === WS_SHARES && <Shares/>}
                 {pageState === WS_SHARING && <Sharing/>}
