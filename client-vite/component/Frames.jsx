@@ -63,10 +63,10 @@ export function Frames () {
                 <IconButton color='secondary' onClick={importFrame}>
                     <InputIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={duplicateFrame}>
+                <IconButton color='secondary' onClick={duplicateFrame} disabled={frameLen === 0}>
                     <ContentCopyIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={deleteFrame}>
+                <IconButton color='secondary' onClick={deleteFrame} disabled={frameLen === 0}>
                     <DeleteIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={closeFrameEditor}>
