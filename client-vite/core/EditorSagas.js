@@ -102,16 +102,22 @@ function* colorSaga () {
     }
 }
 
+let lastWinner = ''
 function* autoSaveSaga() {
     while (true) {
         const { autoSaveReset, autoSaveTimeout } = yield race({
             autoSaveReset: take('MAP_STACK_CHANGED'),
             autoSaveTimeout: delay(3000)
         })
-        if (autoSaveTimeout) {
-            if (mapStack.dataIndex > 0) {
-                yield put({ type: 'SAVE_MAP' })
+        if (autoSaveReset) {
+            lastWinner = 'reset'
+        } else if (autoSaveTimeout) {
+            if (lastWinner !== 'timeout') {
+                if (mapStack.dataIndex > 0) {
+                    yield put({ type: 'SAVE_MAP' })
+                }
             }
+            lastWinner = 'timeout'
         }
     }
 }
