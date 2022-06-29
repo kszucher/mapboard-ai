@@ -6,7 +6,7 @@ import Logo from "./Logo"
 import TabMaps from "./TabMaps"
 import Breadcrumbs from "./BreadcrumbMaps"
 import { Formatter } from "./Formatter"
-import { Frames } from "./Frames"
+import { FrameCarousel } from "./FrameCarousel"
 import { Sharing } from "./Sharing"
 import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
@@ -99,7 +99,7 @@ export function Page() {
                         <Breadcrumbs/>
                     </>}
                     {formatMode!=='' && <Formatter/>}
-                    {frameEditorVisible===1 && <Frames/>}
+                    {frameEditorVisible===1 && <FrameCarousel/>}
                 </>}
                 {pageState === WS_SHARES && <Shares/>}
                 {pageState === WS_SHARING && <Sharing/>}

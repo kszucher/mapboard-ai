@@ -3,12 +3,8 @@ import { Button, IconButton, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { getColors } from '../core/Colors'
-import InputIcon from '@mui/icons-material/Input'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import DeleteIcon from '@mui/icons-material/Delete'
-import CloseIcon from '@mui/icons-material/Close'
 
-export function Frames () {
+export function FrameCarousel () {
     const colorMode = useSelector(state => state.colorMode)
     const frameLen = useSelector(state => state.frameLen)
     const frameSelected = useSelector(state => state.frameSelected)
@@ -17,10 +13,7 @@ export function Frames () {
     const dispatch = useDispatch()
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})
-    const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
-    const duplicateFrame = _ => dispatch({type: 'DUPLICATE_FRAME'})
-    const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
-    const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
+
     return (
         <div style={{
             position: 'fixed',
@@ -54,25 +47,6 @@ export function Frames () {
                     </Button>
                 }
             />}
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                height: 40,
-                padding: '4px 12px 4px 12px',
-            }}>
-                <IconButton color='secondary' onClick={importFrame}>
-                    <InputIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={duplicateFrame} disabled={frameLen === 0}>
-                    <ContentCopyIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={deleteFrame} disabled={frameLen === 0}>
-                    <DeleteIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={closeFrameEditor}>
-                    <CloseIcon/>
-                </IconButton>
-            </div>
         </div>
     )
 }
