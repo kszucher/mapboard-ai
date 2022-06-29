@@ -63,7 +63,7 @@ export function SideBarRight () {
                 borderLeft: `1px solid ${PAGE_BACKGROUND}`,
                 borderBottom: `1px solid ${PAGE_BACKGROUND}`,
                 borderRight: 0,
-                borderRadius: '16px 0 0 16px',
+                borderRadius: '16px 0 0 0',
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
 
@@ -141,7 +141,7 @@ export function SideBarRight () {
                 <div style={{
                     position: 'fixed',
                     right: 0,
-                    top: 48*2 + 40*8 + 2*12 + 48,
+                    top: 48*2 + 40*8 + 2*12 + 0,
                     width: 40,
                     display: 'flex',
                     flexDirection: 'column',
@@ -152,7 +152,7 @@ export function SideBarRight () {
                     borderLeft: `1px solid ${PAGE_BACKGROUND}`,
                     borderBottom: `1px solid ${PAGE_BACKGROUND}`,
                     borderRight: 0,
-                    borderRadius: '16px 0 0 16px',
+                    borderRadius: '0 0 0 0',
                 }}>
                     <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
                         <DynamicFeedIcon/>
@@ -175,7 +175,7 @@ export function SideBarRight () {
                 <div style={{
                     position: 'fixed',
                     right: 0,
-                    top: 48*2 + 40*8 + 2*12 + 48 + 5*40 + 2*12 + 48,
+                    top: 48*2 + 40*8 + 2*12 + 0 + 5*40 + 2*12 + 0,
                     width: 40,
                     display: 'flex',
                     flexDirection: 'column',
@@ -186,7 +186,7 @@ export function SideBarRight () {
                     borderLeft: `1px solid ${PAGE_BACKGROUND}`,
                     borderBottom: `1px solid ${PAGE_BACKGROUND}`,
                     borderRight: 0,
-                    borderRadius: '16px 0 0 16px',
+                    borderRadius: '0 0 0 16px',
                 }}>
                     <IconButton color='secondary' onClick={_=>{}}>
                         <ShareIcon/>
