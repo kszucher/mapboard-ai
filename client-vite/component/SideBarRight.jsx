@@ -28,6 +28,7 @@ export function SideBarRight () {
     const selection = useSelector(state => state.node.selection)
     const taskStatus = useSelector(state => state.node.taskStatus)
     const frameLen = useSelector(state => state.frameLen)
+    const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
@@ -153,19 +154,19 @@ export function SideBarRight () {
                     borderRight: 0,
                     borderRadius: '16px 0 0 16px',
                 }}>
-                    <IconButton color='secondary' onClick={openFrameEditor}>
+                    <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
                         <DynamicFeedIcon/>
                     </IconButton>
-                    <IconButton color='secondary' onClick={importFrame}>
+                    <IconButton color='secondary' onClick={importFrame} disabled={!frameEditorVisible}>
                         <InputIcon/>
                     </IconButton>
-                    <IconButton color='secondary' onClick={duplicateFrame} disabled={frameLen === 0}>
+                    <IconButton color='secondary' onClick={duplicateFrame} disabled={!frameEditorVisible || frameLen === 0}>
                         <ContentCopyIcon/>
                     </IconButton>
-                    <IconButton color='secondary' onClick={deleteFrame} disabled={frameLen === 0}>
+                    <IconButton color='secondary' onClick={deleteFrame} disabled={!frameEditorVisible || frameLen === 0}>
                         <DeleteIcon/>
                     </IconButton>
-                    <IconButton color='secondary' onClick={closeFrameEditor}>
+                    <IconButton color='secondary' onClick={closeFrameEditor} disabled={!frameEditorVisible}>
                         <CloseIcon/>
                     </IconButton>
                 </div>
