@@ -18,7 +18,7 @@ export function UndoRedo () {
     return (
         <div style={{
             position: 'fixed',
-            left: 216+48,
+            left: 224+48,
             width: 2*40,
             display: 'flex',
             alignItems: 'center',

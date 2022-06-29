@@ -17,7 +17,7 @@ export default function TabMaps() {
         <div style={{
             position: 'fixed',
             top: 48*2,
-            width: tabShrink ? 64 : 216,
+            width: tabShrink ? 64 : 224,
             backgroundColor: MAP_BACKGROUND,
             borderTopRightRadius: tabMapSelected === 0 ? 0 : 16,
             borderBottomRightRadius: tabMapSelected === tabMapNameList.length - 1 ? 0 : 16,

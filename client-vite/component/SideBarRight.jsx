@@ -120,12 +120,6 @@ export function SideBarRight () {
                             </g>
                         </svg>
                     </IconButton>
-                    <IconButton color='secondary' onClick={openFrameEditor}>
-                        <DynamicFeedIcon/>
-                    </IconButton>
-                    <IconButton color='secondary' onClick={_=>{}}>
-                        <ShareIcon/>
-                    </IconButton>
                     {/*<IconButton color='secondary' onClick={openMoreMenu}>*/}
                     {/*    <MoreVertIcon/>*/}
                     {/*</IconButton>*/}
@@ -146,7 +140,7 @@ export function SideBarRight () {
                 <div style={{
                     position: 'fixed',
                     right: 0,
-                    top: 48*12,
+                    top: 48*2 + 40*8 + 2*12 + 48,
                     width: 40,
                     display: 'flex',
                     flexDirection: 'column',
@@ -159,6 +153,9 @@ export function SideBarRight () {
                     borderRight: 0,
                     borderRadius: '16px 0 0 16px',
                 }}>
+                    <IconButton color='secondary' onClick={openFrameEditor}>
+                        <DynamicFeedIcon/>
+                    </IconButton>
                     <IconButton color='secondary' onClick={importFrame}>
                         <InputIcon/>
                     </IconButton>
@@ -170,6 +167,28 @@ export function SideBarRight () {
                     </IconButton>
                     <IconButton color='secondary' onClick={closeFrameEditor}>
                         <CloseIcon/>
+                    </IconButton>
+                </div>
+            </div>
+            <div>
+                <div style={{
+                    position: 'fixed',
+                    right: 0,
+                    top: 48*2 + 40*8 + 2*12 + 48 + 5*40 + 2*12 + 48,
+                    width: 40,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '12px 12px 12px 12px',
+                    backgroundColor: MAP_BACKGROUND,
+                    borderTop: `1px solid ${PAGE_BACKGROUND}`,
+                    borderLeft: `1px solid ${PAGE_BACKGROUND}`,
+                    borderBottom: `1px solid ${PAGE_BACKGROUND}`,
+                    borderRight: 0,
+                    borderRadius: '16px 0 0 16px',
+                }}>
+                    <IconButton color='secondary' onClick={_=>{}}>
+                        <ShareIcon/>
                     </IconButton>
                 </div>
             </div>

@@ -10,7 +10,7 @@ export default function Logo() {
     return (
         <div style={{
             position: 'fixed',
-            width: 216,
+            width: 224,
             height: 40,
             paddingTop: 4,
             paddingBottom: 4,
