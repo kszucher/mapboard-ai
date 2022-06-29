@@ -6,7 +6,7 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-export function TasMapsControl () {
+export function SideBarLeft () {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)

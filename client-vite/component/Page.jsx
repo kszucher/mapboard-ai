@@ -10,14 +10,14 @@ import { Frames } from "./Frames"
 import { Sharing } from "./Sharing"
 import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
-import { SideBar } from './SideBar'
+import { SideBarRight } from './SideBarRight'
 import { ProfileEditor } from './ProfileEditor'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
 import { CreateMapInMap } from './CreateMapInMap'
 import { UndoRedo } from './UndoRedo'
-import { Profile } from './Profile'
-import { TasMapsControl } from './TasMapsControl'
+import { SideBarTop } from './SideBarTop'
+import { SideBarLeft } from './SideBarLeft'
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {
@@ -92,10 +92,10 @@ export function Page() {
                     <Logo/>
                     {![AUTH, EMPTY, DEMO].includes(pageState) && <>
                         <TabMaps/>
-                        <TasMapsControl/>
+                        <SideBarLeft/>
                         <UndoRedo/>
-                        <Profile/>
-                        <SideBar/>
+                        <SideBarTop/>
+                        <SideBarRight/>
                         <Breadcrumbs/>
                     </>}
                     {formatMode!=='' && <Formatter/>}

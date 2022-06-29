@@ -16,7 +16,7 @@ const svgCommonParams = {viewBox:"0 0 480 480", width:"24px", height:"24px"}
 const sSelectionSvg = "M 120 144 L 360 144 C 408 144 432 168 432 216 L 432 264 C 432 312 408 336 360 336 L 120 336 C 72 336 48 312 48 264 C 48 216 48 264 48 216 C 48 168 72 144 120 144 Z"
 const fSelectionSvg = "M 312 72 L 360 72 C 408 72 432 96 432 144 L 432 336 C 432 384 408 408 360 408 L 312 408 C 264 408 120 312 72 312 C 24 312 24 168 72 168 C 120 168 264 72 312 72 Z"
 
-export function SideBar () {
+export function SideBarRight () {
     const colorMode = useSelector(state => state.colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const density = useSelector(state => state.node.density)
@@ -29,7 +29,6 @@ export function SideBar () {
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
     const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
-    const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
     const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'line'})
     const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
@@ -55,10 +54,7 @@ export function SideBar () {
             borderRadius: '16px 0 0 16px',
         }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <IconButton color='secondary' onClick={changeColorMode}>
-                    {colorMode === 'light' && <LightModeIcon/>}
-                    {colorMode === 'dark' && <DarkModeIcon/>}
-                </IconButton>
+
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -119,20 +115,20 @@ export function SideBar () {
                 <IconButton color='secondary' onClick={_=>{}}>
                     <ShareIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={openMoreMenu}>
-                    <MoreVertIcon/>
-                </IconButton>
-                {formatMode !== '' && <span
-                    style={{
-                        position: 'fixed',
-                        top: 2*48 + 12 + 40*({ line: 3, border: 4, fill: 5, text: 6 }[formatMode]),
-                        right: 62,
-                        width: 2,
-                        height: 40,
-                        backgroundColor: MAIN_COLOR,
-                    }}/>
-                }
-                <More/>
+                {/*<IconButton color='secondary' onClick={openMoreMenu}>*/}
+                {/*    <MoreVertIcon/>*/}
+                {/*</IconButton>*/}
+                {/*{formatMode !== '' && <span*/}
+                {/*    style={{*/}
+                {/*        position: 'fixed',*/}
+                {/*        top: 2*48 + 12 + 40*({ line: 3, border: 4, fill: 5, text: 6 }[formatMode]),*/}
+                {/*        right: 62,*/}
+                {/*        width: 2,*/}
+                {/*        height: 40,*/}
+                {/*        backgroundColor: MAIN_COLOR,*/}
+                {/*    }}/>*/}
+                {/*}*/}
+                {/*<More/>*/}
             </div>
         </div>
     )
