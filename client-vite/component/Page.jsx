@@ -17,6 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { CreateMapInMap } from './CreateMapInMap'
 import { UndoRedo } from './UndoRedo'
 import { Profile } from './Profile'
+import { CreateMapInTab } from './CreateMapInTab'
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {
@@ -91,6 +92,7 @@ export function Page() {
                     <Logo/>
                     {![AUTH, EMPTY, DEMO].includes(pageState) && <>
                         <TabMaps/>
+                        <CreateMapInTab/>
                         <UndoRedo/>
                         <Profile/>
                         <SideBar/>
