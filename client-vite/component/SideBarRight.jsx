@@ -32,6 +32,48 @@ const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
     borderRight: 0,
 })
 
+const LineIcon = ({MAIN_COLOR}) => (
+    <svg {...svgCommonParams}>
+        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
+              d="M 408 72 C 72 72 408 408 72 408"
+        />
+    </svg>
+)
+
+const BorderIcon = ({MAIN_COLOR, selection}) => (
+    <svg {...svgCommonParams}>
+        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
+              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
+        />
+    </svg>
+)
+
+const FillIcon = ({MAIN_COLOR, selection}) => (
+    <svg {...svgCommonParams}>
+        <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
+              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
+        />
+    </svg>
+)
+
+const TextIcon = ({MAIN_COLOR}) => (
+    <svg {...svgCommonParams}>
+        <g>
+            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={96} y1={96} x2={384} y2={96}/>
+            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={240} y1={384} x2={240} y2={96}/>
+        </g>
+    </svg>
+)
+
+const TaskIcon = ({MAIN_COLOR}) => (
+    <svg {...svgCommonParams}>
+        <g>
+            <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} cx={120} cy={240} rx={80} ry={80}/>
+            <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} cx={360} cy={240} rx={80} ry={80}/>
+        </g>
+    </svg>
+)
+
 const CreateMapInMapIcon = ({MAIN_COLOR}) => (
     <svg {...svgCommonParams}>
         <g>
@@ -96,41 +138,19 @@ export function SideBarRight () {
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
                 <IconButton color='secondary' onClick={formatMode === 'line' ? closePalette : setFormatModeLine}>
-                    <svg {...svgCommonParams}>
-                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d="M 408 72 C 72 72 408 408 72 408"
-                        />
-                    </svg>
+                    <LineIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={formatMode === 'border' ? closePalette : setFormatModeBorder}>
-                    <svg {...svgCommonParams}>
-                        <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
-                        />
-                    </svg>
+                    <BorderIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={formatMode === 'fill' ? closePalette : setFormatModeFill}>
-                    <svg {...svgCommonParams}>
-                        <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }}
-                              d={selection === 's' ? sSelectionSvg : fSelectionSvg}
-                        />
-                    </svg>
+                    <FillIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={formatMode === 'text' ? closePalette : setFormatModeText}>
-                    <svg {...svgCommonParams}>
-                        <g>
-                            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={96} y1={96} x2={384} y2={96}/>
-                            <line style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} x1={240} y1={384} x2={240} y2={96}/>
-                        </g>
-                    </svg>
+                    <TextIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={toggleTask}>
-                    <svg {...svgCommonParams}>
-                        <g>
-                            <ellipse style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} cx={120} cy={240} rx={80} ry={80}/>
-                            <ellipse style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:24 }} cx={360} cy={240} rx={80} ry={80}/>
-                        </g>
-                    </svg>
+                    <TaskIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={showWsCreateMapInMap}>
                     <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
