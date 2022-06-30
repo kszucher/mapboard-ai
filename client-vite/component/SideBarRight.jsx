@@ -11,6 +11,7 @@ import InputIcon from '@mui/icons-material/Input'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import ImageIcon from '@mui/icons-material/Image';
 import { BorderIcon, CreateMapInMapIcon, FillIcon, LineIcon, TaskIcon, TextIcon } from './Icons'
 
@@ -44,6 +45,11 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
     </>
 )
 
+const topOffs1 = 48*2
+const topOffs2 = topOffs1 + 40*6 + 2*12
+const topOffs3 = topOffs2 + 40*4 + 2*12
+const topOffs4 = topOffs3 + 40*5 + 2*12
+
 export function SideBarRight () {
     const colorMode = useSelector(state => state.colorMode)
     const formatMode = useSelector(state => state.formatMode)
@@ -73,7 +79,7 @@ export function SideBarRight () {
     const showSharing = _ => dispatch({type: 'SHOW_WS_SHARING'})
     return (
         <>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2, borderRadius: '16px 0 0 0' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs1, borderRadius: '16px 0 0 0' }}>
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -94,15 +100,23 @@ export function SideBarRight () {
                 <IconButton color='secondary' onClick={formatMode === 'text' ? closePalette : setFormatModeText}>
                     <TextIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
+                <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
+            </div>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '0 0 0 0' }}>
+                <IconButton color='secondary' onClick={_=>{}}>
+                    <CalendarViewMonthIcon/>
+                </IconButton>
+                <IconButton color='secondary' onClick={_=>{}}>
+                    <ImageIcon/>
+                </IconButton>
                 <IconButton color='secondary' onClick={toggleTask}>
                     <TaskIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={showWsCreateMapInMap}>
                     <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
-                <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12, borderRadius: '0 0 0 0' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
                     <DynamicFeedIcon/>
                 </IconButton>
@@ -119,7 +133,7 @@ export function SideBarRight () {
                     <CloseIcon/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12 + 5*40 + 2*12, borderRadius: '0 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '0 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>
