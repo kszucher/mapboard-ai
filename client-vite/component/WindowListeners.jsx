@@ -193,7 +193,7 @@ export function WindowListeners() {
                     let lm = mapref(selectionState.lastPath)
                     if (!e.shiftKey) {
                         if (lm.linkType !== '') {
-                            mapDispatch('select_R')
+                            // mapDispatch('select_R')
                         }
                         if (lm.linkType === 'internal') {
                             dispatch({ type: 'OPEN_MAP_FROM_MAP', payload: { mapId: lm.link } })
