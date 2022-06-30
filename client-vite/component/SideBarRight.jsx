@@ -46,9 +46,10 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
 )
 
 const topOffs1 = 48*2
-const topOffs2 = topOffs1 + 40*6 + 2*12
+const topOffs2 = topOffs1 + 40*2 + 2*12
 const topOffs3 = topOffs2 + 40*4 + 2*12
-const topOffs4 = topOffs3 + 40*5 + 2*12
+const topOffs4 = topOffs3 + 40*4 + 2*12
+const topOffs5 = topOffs4 + 40*5 + 2*12
 
 export function SideBarRight () {
     const colorMode = useSelector(state => state.colorMode)
@@ -88,6 +89,8 @@ export function SideBarRight () {
                     {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
+            </div>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={formatMode === 'line' ? closePalette : setFormatModeLine}>
                     <LineIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
@@ -102,7 +105,7 @@ export function SideBarRight () {
                 </IconButton>
                 <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '0 0 0 0' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={_=>{}}>
                     <CalendarViewMonthIcon/>
                 </IconButton>
@@ -116,7 +119,7 @@ export function SideBarRight () {
                     <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '0 0 0 0' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
                     <DynamicFeedIcon/>
                 </IconButton>
@@ -133,7 +136,7 @@ export function SideBarRight () {
                     <CloseIcon/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '0 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs5, borderRadius: '0 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>
