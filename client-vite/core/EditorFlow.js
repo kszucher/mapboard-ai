@@ -77,7 +77,7 @@ const editorState = {
         taskStatus: undefined,
     },
 
-    frameEditorVisible: 0,
+    frameEditorVisible: false,
     frameLen: 0,
     frameSelected: 0,
 

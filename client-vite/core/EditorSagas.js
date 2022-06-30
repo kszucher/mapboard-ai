@@ -277,11 +277,11 @@ function* frameSaga () {
         ])
         switch (type) {
             case 'OPEN_FRAME_EDITOR':
-                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: 1})
+                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: true})
                 yield put({type: 'OPEN_FRAME'})
                 break
             case 'CLOSE_FRAME_EDITOR':
-                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: 0})
+                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: false})
                 const breadcrumbMapNameList = yield select(state => state.breadcrumbMapNameList)
                 yield put({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: breadcrumbMapNameList.length - 1}})
                 break

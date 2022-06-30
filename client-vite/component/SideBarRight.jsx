@@ -127,7 +127,7 @@ export function SideBarRight () {
                 }
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12, borderRadius: '0 0 0 0' }}>
-                <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
+                <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible}>
                     <DynamicFeedIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={importFrame} disabled={!frameEditorVisible}>

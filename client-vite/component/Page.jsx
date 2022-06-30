@@ -99,7 +99,7 @@ export function Page() {
                         <Breadcrumbs/>
                     </>}
                     {formatMode!=='' && <Formatter/>}
-                    {frameEditorVisible===1 && <FrameCarousel/>}
+                    {frameEditorVisible && <FrameCarousel/>}
                 </>}
                 {pageState === WS_SHARES && <Shares/>}
                 {pageState === WS_SHARING && <Sharing/>}
