@@ -6,6 +6,7 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import PersonIcon from '@mui/icons-material/Person'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+import More from './More'
 
 
 export function SideBarTop () {
@@ -14,6 +15,8 @@ export function SideBarTop () {
     const dispatch = useDispatch()
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
+    const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
+
     return (
         <div style={{
             position: 'fixed',
@@ -35,15 +38,16 @@ export function SideBarTop () {
                     {colorMode === 'light' && <LightModeIcon/>}
                     {colorMode === 'dark' && <DarkModeIcon/>}
                 </IconButton>
-                <IconButton color='secondary' onClick={openProfile}>
+                <IconButton color='secondary' onClick={_=>{}}>
                     <HelpIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={openProfile}>
+                <IconButton color='secondary' onClick={_=>{}}>
                     <SettingsIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={openProfile}>
+                <IconButton color='secondary' onClick={openMoreMenu}>
                     <PersonIcon/>
                 </IconButton>
+                <More/>
             </div>
         </div>
     )

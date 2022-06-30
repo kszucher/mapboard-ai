@@ -7,7 +7,6 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak'
 import CenterFocusStrongIcon from '@mui/icons-material/CenterFocusStrong'
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed'
 import ShareIcon from '@mui/icons-material/Share'
-import More from './More'
 import InputIcon from '@mui/icons-material/Input'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -47,8 +46,6 @@ export function SideBarRight () {
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
     const toggleTask = _ => setNodeParam({taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'})
-    const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
-
     const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'line'})
     const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
     const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
@@ -60,6 +57,7 @@ export function SideBarRight () {
     const duplicateFrame = _ => dispatch({type: 'DUPLICATE_FRAME'})
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
     const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
+    const showSharing = _ => dispatch({type: 'SHOW_WS_SHARING'})
     return (
         <>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2, borderRadius: '16px 0 0 0' }}>
@@ -117,9 +115,6 @@ export function SideBarRight () {
                         </g>
                     </svg>
                 </IconButton>
-                {/*<IconButton color='secondary' onClick={openMoreMenu}>*/}
-                {/*    <MoreVertIcon/>*/}
-                {/*</IconButton>*/}
                 {formatMode !== '' && <span
                     style={{
                         position: 'fixed',
@@ -130,7 +125,6 @@ export function SideBarRight () {
                         backgroundColor: MAIN_COLOR,
                     }}/>
                 }
-                <More/>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
@@ -150,7 +144,7 @@ export function SideBarRight () {
                 </IconButton>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12 + 5*40 + 2*12, borderRadius: '0 0 0 16px' }}>
-                <IconButton color='secondary' onClick={_=>{}}>
+                <IconButton color='secondary' onClick={showSharing}>
                     <ShareIcon/>
                 </IconButton>
             </div>

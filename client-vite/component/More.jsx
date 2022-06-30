@@ -10,8 +10,6 @@ export default function More () {
     const {DEMO, WS} = PAGE_STATES;
 
     const closeMoreMenu =  _ => dispatch({type: 'CLOSE_MORE_MENU'})
-
-    const showSharing = _ => dispatch({type: 'SHOW_WS_SHARING'})
     const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
     const signOut = _ => {
         localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
@@ -29,10 +27,13 @@ export default function More () {
                 open={booleanMoreMenu}
                 onClose={closeMoreMenu}>
 
-                <MenuItem onClick={() => {closeMoreMenu(); showSharing()}}>           {'Sharing'}           </MenuItem>
-                <MenuItem onClick={() => {closeMoreMenu(); showShares()}}>            {'Shares'}            </MenuItem>
+                <MenuItem onClick={() => {closeMoreMenu(); showShares()}}>
+                    {'Shares'}
+                </MenuItem>
                 <Divider />
-                <MenuItem onClick={() => {closeMoreMenu(); signOut()}}>               {'Sign Out'}          </MenuItem>
+                <MenuItem onClick={() => {closeMoreMenu(); signOut()}}>
+                    {'Sign Out'}
+                </MenuItem>
             </Menu>}
             {pageState === DEMO && <Menu
                 id="menu-appbar"
