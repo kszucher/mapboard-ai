@@ -11,6 +11,7 @@ import InputIcon from '@mui/icons-material/Input'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
+import ImageIcon from '@mui/icons-material/Image';
 
 const svgCommonParams = {viewBox:"0 0 480 480", width:"24px", height:"24px"}
 const sSelectionSvg = "M 120 144 L 360 144 C 408 144 432 168 432 216 L 432 264 C 432 312 408 336 360 336 L 120 336 C 72 336 48 312 48 264 C 48 216 48 264 48 216 C 48 168 72 144 120 144 Z"
@@ -30,6 +31,31 @@ const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
     borderBottom: `1px solid ${PAGE_BACKGROUND}`,
     borderRight: 0,
 })
+
+const CreateMapInMapIcon = ({MAIN_COLOR}) => (
+    <svg {...svgCommonParams}>
+        <g>
+            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 216 240 L 24 240"/>
+            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 120 144 L 120 336"/>
+            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 288 48 L 408 240 L 288 432"/>
+        </g>
+    </svg>
+)
+
+const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
+    <>
+        {formatMode !== '' && <span
+            style={{
+                position: 'fixed',
+                top: 2*48 + 12 + 40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]),
+                right: 62,
+                width: 2,
+                height: 40,
+                backgroundColor: MAIN_COLOR,
+            }}/>
+        }
+    </>
+)
 
 export function SideBarRight () {
     const colorMode = useSelector(state => state.colorMode)
@@ -107,27 +133,12 @@ export function SideBarRight () {
                     </svg>
                 </IconButton>
                 <IconButton color='secondary' onClick={showWsCreateMapInMap}>
-                    <svg {...svgCommonParams}>
-                        <g>
-                            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 216 240 L 24 240"/>
-                            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 120 144 L 120 336"/>
-                            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 288 48 L 408 240 L 288 432"/>
-                        </g>
-                    </svg>
+                    <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
-                {formatMode !== '' && <span
-                    style={{
-                        position: 'fixed',
-                        top: 2*48 + 12 + 40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]),
-                        right: 62,
-                        width: 2,
-                        height: 40,
-                        backgroundColor: MAIN_COLOR,
-                    }}/>
-                }
+                <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12, borderRadius: '0 0 0 0' }}>
-                <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible}>
+                <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible===1}>
                     <DynamicFeedIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={importFrame} disabled={!frameEditorVisible}>
