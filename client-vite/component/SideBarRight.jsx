@@ -144,7 +144,7 @@ export function SideBarRight () {
                 </IconButton>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: 48*2 + 40*8 + 2*12 + 5*40 + 2*12, borderRadius: '0 0 0 16px' }}>
-                <IconButton color='secondary' onClick={showSharing}>
+                <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>
             </div>

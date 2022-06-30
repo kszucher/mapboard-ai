@@ -10,6 +10,7 @@ export function SideBarLeft () {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
     const tabMapNameList = useSelector(state => state.tabMapNameList)
+    const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
     const createMapInTab = _ => dispatch({type: 'CREATE_MAP_IN_TAB'})
     const moveUpMapInTab = _ => dispatch({type: 'MOVE_UP_MAP_IN_TAB'})
@@ -33,16 +34,16 @@ export function SideBarLeft () {
             borderRadius: '0 16px 16px 0',
         }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <IconButton color='secondary' onClick={createMapInTab}>
+                <IconButton color='secondary' onClick={createMapInTab} disabled={frameEditorVisible}>
                     <AddCircleOutlineIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={moveUpMapInTab}>
+                <IconButton color='secondary' onClick={moveUpMapInTab} disabled={frameEditorVisible}>
                     <MoveUpIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={moveDownMapInTab}>
+                <IconButton color='secondary' onClick={moveDownMapInTab} disabled={frameEditorVisible}>
                     <MoveDownIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={removeMapInTab}>
+                <IconButton color='secondary' onClick={removeMapInTab} disabled={frameEditorVisible}>
                     <DeleteIcon/>
                 </IconButton>
             </div>
