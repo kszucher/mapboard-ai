@@ -121,7 +121,6 @@ const mapReducer = (action, payload) => {
         }
         case 'select_S_F_M': {
             if (lm.hasCell) {
-                console.log('DISZ')
                 clearSelection()
                 let toPath = [...sc.lastPath, 'c', 0, 0]
                 mapref(toPath).selected = 1
