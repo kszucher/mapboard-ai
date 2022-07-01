@@ -343,7 +343,8 @@ const mapReducer = (action, payload) => {
             break
         }
         case 'insertTable': {
-            console.log('inserting table...')
+            clearSelection()
+            structInsert(lm, 'childTable', payload)
             break
         }
         // NODE FORMAT -------------------------------------------------------------------------------------------------

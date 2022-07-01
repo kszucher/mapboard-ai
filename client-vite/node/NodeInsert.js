@@ -1,7 +1,7 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import {mapref} from "../core/MapStackFlow";
 
-export function structInsert(lm, mode) {
+export function structInsert(lm, mode, payload ) {
     let parentRef;
     if (mode === 'siblingUp') {
         parentRef = mapref(lm.parentPath);
@@ -32,6 +32,26 @@ export function structInsert(lm, mode) {
             parentNodeStartXFrom: parentRef.nodeStartX,
             parentNodeYFrom: parentRef.nodeY,
             lineAnimationRequested: 1,
+        }));
+    } else if (mode === 'childTable') {
+        parentRef = lm.isRoot? lm.d[0] : lm;
+        const tableGen = []
+        const {rowLen, colLen} = payload
+        for (let i = 0; i < rowLen; i++) {
+            tableGen.push([])
+            for (let j = 0; j < colLen; j++) {
+                tableGen[i].push([])
+                tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
+            }
+        }
+        parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
+            selected: 1,
+            taskStatus: -1,
+            parentNodeEndXFrom: parentRef.nodeEndX,
+            parentNodeStartXFrom: parentRef.nodeStartX,
+            parentNodeYFrom: parentRef.nodeY,
+            lineAnimationRequested: 1,
+            c: tableGen
         }));
     }
 }

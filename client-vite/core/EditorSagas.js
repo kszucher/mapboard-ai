@@ -206,7 +206,7 @@ function* mapStackMacroSaga() {
         yield take('INSERT_TABLE')
         const colorMode = yield select(state => state.colorMode)
         push()
-        mapDispatch('insertTable', 1, 2)
+        mapDispatch('insertTable', { rowLen: 2, colLen: 3 })
         redraw(colorMode)
         yield put({ type: 'MAP_STACK_CHANGED' })
         yield put({ type: 'SHOW_WS'})
