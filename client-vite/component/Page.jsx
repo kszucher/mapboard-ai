@@ -19,6 +19,7 @@ import { SideBarLeft } from './SideBarLeft'
 import { CreateMapInMap } from './CreateMapInMap'
 import { CreateTable } from './CreateTable'
 import {PAGE_STATES} from "../core/EditorFlow"
+import { CreateTask } from './CreateTask'
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {
@@ -72,7 +73,7 @@ export function Page() {
     const formatMode = useSelector(state => state.formatMode)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const {AUTH, EMPTY, DEMO, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP, WS_CREATE_TABLE} = PAGE_STATES;
+    const {AUTH, EMPTY, DEMO, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP, WS_CREATE_TABLE, WS_CREATE_TASK} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -107,6 +108,7 @@ export function Page() {
                 {pageState === WS_PROFILE && <ProfileEditor/>}
                 {pageState === WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
                 {pageState === WS_CREATE_TABLE && <CreateTable/>}
+                {pageState === WS_CREATE_TASK && <CreateTask/>}
                 <WindowListeners/>
             </ThemeProvider>
         </div>
