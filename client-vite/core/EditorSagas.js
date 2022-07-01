@@ -201,7 +201,7 @@ function* mapSaga () {
     }
 }
 
-function* mapStackMacroSaga() {
+function* mapStackEventSaga() {
     while (true) {
         const { type, payload } = yield take(['INSERT_TABLE', 'TOGGLE_TASK'])
         push()
@@ -344,7 +344,7 @@ export default function* rootSaga () {
         colorSaga(),
         autoSaveSaga(),
         mapSaga(),
-        mapStackMacroSaga(),
+        mapStackEventSaga(),
         mapStackSaga(),
         profileSaga(),
         frameSaga(),
