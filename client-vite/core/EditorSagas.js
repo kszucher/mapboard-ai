@@ -1,8 +1,8 @@
 import { all, call, put, select, take, race, delay } from 'redux-saga/effects'
 import { initDomData } from './DomFlow'
-import { mapref, mapStack, mapStackDispatch, saveMap } from './MapStackFlow'
+import { mapref, mapStack, mapStackDispatch, push, saveMap } from './MapStackFlow'
 import { selectionState } from './SelectionFlow'
-import { redraw } from './MapFlow'
+import { mapDispatch, redraw } from './MapFlow'
 import { mapGetProp } from '../map/MapGetProp'
 
 const backendUrl = process.env.NODE_ENV === 'development'
@@ -201,6 +201,18 @@ function* mapSaga () {
     }
 }
 
+function* mapStackMacroSaga() {
+    while (true) {
+        yield take('INSERT_TABLE')
+        const colorMode = yield select(state => state.colorMode)
+        push()
+        mapDispatch('insertTable', 1, 2)
+        redraw(colorMode)
+        yield put({ type: 'MAP_STACK_CHANGED' })
+        yield put({ type: 'SHOW_WS'})
+    }
+}
+
 function* mapStackSaga () {
     while (true) {
         const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
@@ -328,6 +340,7 @@ export default function* rootSaga () {
         colorSaga(),
         autoSaveSaga(),
         mapSaga(),
+        mapStackMacroSaga(),
         mapStackSaga(),
         profileSaga(),
         frameSaga(),

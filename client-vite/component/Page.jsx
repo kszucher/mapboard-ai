@@ -12,12 +12,13 @@ import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
 import { SideBarRight } from './SideBarRight'
 import { ProfileEditor } from './ProfileEditor'
-import {PAGE_STATES} from "../core/EditorFlow"
 import { createTheme, ThemeProvider } from '@mui/material'
-import { CreateMapInMap } from './CreateMapInMap'
 import { UndoRedo } from './UndoRedo'
 import { SideBarTop } from './SideBarTop'
 import { SideBarLeft } from './SideBarLeft'
+import { CreateMapInMap } from './CreateMapInMap'
+import { CreateTable } from './CreateTable'
+import {PAGE_STATES} from "../core/EditorFlow"
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {
@@ -71,7 +72,7 @@ export function Page() {
     const formatMode = useSelector(state => state.formatMode)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const {AUTH, EMPTY, DEMO, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP} = PAGE_STATES;
+    const {AUTH, EMPTY, DEMO, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP, WS_CREATE_TABLE} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -105,6 +106,7 @@ export function Page() {
                 {pageState === WS_SHARING && <Sharing/>}
                 {pageState === WS_PROFILE && <ProfileEditor/>}
                 {pageState === WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
+                {pageState === WS_CREATE_TABLE && <CreateTable/>}
                 <WindowListeners/>
             </ThemeProvider>
         </div>

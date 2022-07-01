@@ -16,7 +16,8 @@ export const PAGE_STATES = {
     WS_SHARES: 'WS_SHARES',
     WS_SHARING: 'WS_SHARING',
     WS_PROFILE: 'WS_PROFILE',
-    WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP'
+    WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP',
+    WS_CREATE_TABLE: 'WS_CREATE_TABLE',
 }
 
 export const MAP_RIGHTS = {
@@ -97,7 +98,7 @@ const editorStateDefault = JSON.stringify(editorState);
 const resolveActions = (state, action) => {
     const {payload} = action;
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
-    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP} = PAGE_STATES;
+    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP, WS_CREATE_TABLE} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':                 return JSON.parse(editorStateDefault)
 
@@ -120,6 +121,7 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS_SHARES':              return { pageState: WS_SHARES }
         case 'SHOW_WS_PROFILE':             return { pageState: WS_PROFILE }
         case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: WS_CREATE_MAP_IN_MAP }
+        case 'SHOW_WS_CREATE_TABLE':        return { pageState: WS_CREATE_TABLE }
 
         case 'SET_LANDING_DATA':            return { landingData: payload.landingData, mapRight: payload.mapRight }
         case 'PLAY_LANDING_NEXT':           return { landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0 }

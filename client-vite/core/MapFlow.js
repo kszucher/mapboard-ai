@@ -342,6 +342,10 @@ const mapReducer = (action, payload) => {
             nodeMove(sc, 'clipboard2struct', '', 'PASTE')
             break
         }
+        case 'insertTable': {
+            console.log('inserting table...')
+            break
+        }
         // NODE FORMAT -------------------------------------------------------------------------------------------------
         case 'applyMapParams': {
             const {

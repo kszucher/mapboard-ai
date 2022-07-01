@@ -78,6 +78,7 @@ export function SideBarRight () {
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
     const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
     const showSharing = _ => dispatch({type: 'SHOW_WS_SHARING'})
+    const showCreateTable = _ => dispatch({type: 'SHOW_WS_CREATE_TABLE'})
     return (
         <>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs1, borderRadius: '16px 0 0 0' }}>
@@ -106,7 +107,7 @@ export function SideBarRight () {
                 <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '0 0 0 0' }}>
-                <IconButton color='secondary' onClick={_=>{}}>
+                <IconButton color='secondary' onClick={showCreateTable}>
                     <CalendarViewMonthIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={_=>{}}>
