@@ -348,6 +348,3 @@ export default function* rootSaga () {
         frameSaga(),
     ])
 }
-
-// there's a ton of FE work...
-// TODO: table factory...
