@@ -204,17 +204,14 @@ function* mapSaga () {
 function* mapStackMacroSaga() {
     while (true) {
         const { type, payload } = yield take(['INSERT_TABLE', 'TOGGLE_TASK'])
-        const colorMode = yield select(state => state.colorMode)
         push()
         if (type === 'INSERT_TABLE') {
             mapDispatch('insertTable', payload)
-            yield put({ type: 'MAP_STACK_CHANGED' })
         } else if (type === 'TOGGLE_TASK') {
-            console.log('yes or what')
-            const taskStatus = yield select(state => state.node.taskStatus)
-            console.log(taskStatus)
-            yield put({ type: 'SET_NODE_PARAMS', payload: {taskStatus: taskStatus === -1 ? 'setTask' : 'clearTask'} })
+            mapDispatch('toggleTask')
         }
+        yield put({ type: 'MAP_STACK_CHANGED' })
+        const colorMode = yield select(state => state.colorMode)
         redraw(colorMode)
         yield put({ type: 'SHOW_WS'})
     }
@@ -231,7 +228,7 @@ function* mapStackSaga () {
         let m = mapref(['m'])
         const lm = mapref(selectionState.lastPath)
         const { density, alignment } = m
-        const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor', 'taskStatus']
+        const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
         const assignment = { density, alignment }
         for (const prop of propList) {
             const realProp = {

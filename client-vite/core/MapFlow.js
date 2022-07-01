@@ -381,17 +381,9 @@ const mapReducer = (action, payload) => {
                         const assignment = {}
                         assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
                         if (prop === 'textFontSize') {assignment.isDimAssigned =  0}
-                        if (prop !== 'taskStatus' && (cm.selection === 's'
-                            || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop)
-                        )) {
-                            Object.assign(cm, assignment)
-                        } else {
-                            if (prop === 'taskStatus') {
-                                if (props[prop] === 'setTask') {
-                                    mapSetProp.start(cm, {taskStatus: 0}, '', false)
-                                } else if (props[prop] === 'clearTask') {
-                                    mapSetProp.start(cm, {taskStatus: -1}, '', false)
-                                }
+                        if (prop !== 'taskStatus') {
+                            if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
+                                Object.assign(cm, assignment)
                             } else {
                                 mapSetProp.start(cm, assignment, '', true)
                             }
@@ -409,6 +401,14 @@ const mapReducer = (action, payload) => {
                     '#999999', '#bbbbbb', '#dddddd',
                     '#d5802a', '#1c8e1c', '#8e1c8e',
                     '#990000', '#000099', '#ffffff'][payload.currColor]
+            }
+            break
+        }
+        case 'toggleTask': {
+            if (lm.taskStatus === -1) {
+                mapSetProp.start(lm, {taskStatus: 0}, '', false)
+            } else {
+                mapSetProp.start(lm, {taskStatus: -1}, '', false)
             }
             break
         }
