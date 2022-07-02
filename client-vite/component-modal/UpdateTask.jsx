@@ -2,7 +2,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { getColors } from '../core/Colors'
 
-export function CreateTask() {
+export function UpdateTask() {
     const colorMode = useSelector(state => state.colorMode)
     const interactionDisabled = useSelector(state => state.interactionDisabled)
     const {PAGE_BACKGROUND, MAP_BACKGROUND} = getColors(colorMode)

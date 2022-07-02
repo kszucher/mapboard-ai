@@ -15,10 +15,10 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { UndoRedo } from '../component-side/UndoRedo'
 import { Profile } from '../component-side/Profile'
 import { SideBarLeft } from '../component-side/SideBarLeft'
-import { CreateMapInMap } from '../component-modal/CreateMapInMap'
+import { UpdateMapInMap } from '../component-modal/UpdateMapInMap'
 import { CreateTable } from '../component-modal/CreateTable'
 import {PAGE_STATES} from "../core/EditorFlow"
-import { CreateTask } from '../component-modal/CreateTask'
+import { UpdateTask } from '../component-modal/UpdateTask'
 import { Settings } from '../component-modal/Settings'
 
 const getMuiTheme = colorMode  => createTheme({
@@ -105,9 +105,9 @@ export function Page() {
                 </>}
                 {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
                 {pageState === PAGE_STATES.WS_SHARING && <ShareThisMap/>}
-                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
+                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <UpdateMapInMap/>}
                 {pageState === PAGE_STATES.WS_CREATE_TABLE && <CreateTable/>}
-                {pageState === PAGE_STATES.WS_CREATE_TASK && <CreateTask/>}
+                {pageState === PAGE_STATES.WS_CREATE_TASK && <UpdateTask/>}
                 {pageState === PAGE_STATES.WS_SETTINGS && <Settings/>}
                 <WindowListeners/>
             </ThemeProvider>
