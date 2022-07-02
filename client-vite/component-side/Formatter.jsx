@@ -5,6 +5,23 @@ import { setClear } from '../core/Utils'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../component/Icons'
 
+const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
+    <>
+        {formatMode !== '' && <span
+            style={{
+                position: 'fixed',
+                right: 40 + 2*12 -(3*4) + 4*40 - 40* ({ text: 0, border: 1, fill: 2, line: 3 }[formatMode]),
+                // right: 10,
+                top: 48*2+2,
+                width: 40,
+                height: 2,
+                backgroundColor: MAIN_COLOR,
+                // borderRadius: 8,
+            }}/>
+        }
+    </>
+)
+
 export function Formatter () {
     const LINE_WIDTH_KEYS = ['w1', 'w2', 'w3']
     const LINE_TYPE_KEYS = ['bezier', 'edge']
@@ -34,7 +51,6 @@ export function Formatter () {
     const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
-    const closeFormatter = _ => dispatch({type: 'CLOSE_FORMATTER'})
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
@@ -49,6 +65,8 @@ export function Formatter () {
     const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
     const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
+    const closeFormatter = _ => dispatch({type: 'SET_FORMAT_MODE', payload: ''})
+
     return (
         <div style={{
             position: 'fixed',
@@ -64,20 +82,19 @@ export function Formatter () {
             background: MAP_BACKGROUND,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                <IconButton color='secondary' onClick={formatMode === 'text' ? closeFormatter : setFormatModeText}>
+                <IconButton color='secondary' onClick={setFormatModeText}>
                     <TextIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
-
-                <IconButton color='secondary' onClick={formatMode === 'border' ? closeFormatter : setFormatModeBorder}>
+                <IconButton color='secondary' onClick={setFormatModeBorder}>
                     <BorderIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
                 </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'fill' ? closeFormatter : setFormatModeFill}>
+                <IconButton color='secondary' onClick={setFormatModeFill}>
                     <FillIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
                 </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'line' ? closeFormatter : setFormatModeLine}>
+                <IconButton color='secondary' onClick={setFormatModeLine}>
                     <LineIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
-                {/*<SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>*/}
+                <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <div style={{ width, height }}>

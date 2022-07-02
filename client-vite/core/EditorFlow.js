@@ -133,7 +133,6 @@ const resolveActions = (state, action) => {
         case 'SET_COLOR_MODE':              return { colorMode: payload }
 
         case 'SET_FORMAT_MODE':             return { formatMode: payload }
-        case 'CLOSE_FORMATTER':             return { formatMode: '' }
 
         case 'SET_UNDO_DISABLED':           return { undoDisabled: payload }
         case 'SET_REDO_DISABLED':           return { redoDisabled: payload }

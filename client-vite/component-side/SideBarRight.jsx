@@ -11,9 +11,10 @@ import InputIcon from '@mui/icons-material/Input'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
-import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
-import ImageIcon from '@mui/icons-material/Image';
-import { BorderIcon, CreateMapInMapIcon, FillIcon, LineIcon, TaskIcon, TextIcon } from '../component/Icons'
+import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
+import ImageIcon from '@mui/icons-material/Image'
+import PaletteIcon from '@mui/icons-material/Palette'
+import { CreateMapInMapIcon, TaskIcon } from '../component/Icons'
 
 const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
     position: 'fixed',
@@ -30,34 +31,18 @@ const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
     borderRight: 0,
 })
 
-const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
-    <>
-        {formatMode !== '' && <span
-            style={{
-                position: 'fixed',
-                top: 2*48 + 8 +  40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]) + 20,
-                right: 10,
-                width: 10,
-                height: 10,
-                backgroundColor: MAIN_COLOR,
-                borderRadius: 8,
-            }}/>
-        }
-    </>
-)
-
+const iconSize = 40
 const topOffs1 = 48*2
-const topOffs2 = topOffs1 + 40*2 + 2*4
-const topOffs3 = topOffs2 + 40*4 + 2*4
-const topOffs4 = topOffs3 + 40*4 + 2*4
-const topOffs5 = topOffs4 + 40*5 + 2*4
+const topOffs2 = topOffs1 + iconSize*2 + 2*4
+const topOffs3 = topOffs2 + iconSize + 2*4
+const topOffs4 = topOffs3 + iconSize*4 + 2*4
+const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 export function SideBarRight () {
     const colorMode = useSelector(state => state.colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const density = useSelector(state => state.node.density)
     const alignment = useSelector(state => state.node.alignment)
-    const selection = useSelector(state => state.node.selection)
     const frameLen = useSelector(state => state.frameLen)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
@@ -65,11 +50,8 @@ export function SideBarRight () {
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
-    const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'line'})
-    const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
-    const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
-    const closePalette = _ => dispatch({type: 'CLOSE_FORMATTER'})
+    const closeFormatter = _ => dispatch({type: 'SET_FORMAT_MODE', payload: ''})
     const showWsCreateMapInMap = _ => dispatch({type: 'SHOW_WS_CREATE_MAP_IN_MAP'})
     const openFrameEditor =  _ => dispatch({type: 'OPEN_FRAME_EDITOR'})
     const importFrame = _ => dispatch({type: 'IMPORT_FRAME'})
@@ -92,19 +74,9 @@ export function SideBarRight () {
                 </IconButton>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '16px 0 0 16px' }}>
-                <IconButton color='secondary' onClick={formatMode === 'line' ? closePalette : setFormatModeLine}>
-                    <LineIcon MAIN_COLOR={MAIN_COLOR}/>
+                <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
+                    <PaletteIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'border' ? closePalette : setFormatModeBorder}>
-                    <BorderIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
-                </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'fill' ? closePalette : setFormatModeFill}>
-                    <FillIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
-                </IconButton>
-                <IconButton color='secondary' onClick={formatMode === 'text' ? closePalette : setFormatModeText}>
-                    <TextIcon MAIN_COLOR={MAIN_COLOR}/>
-                </IconButton>
-                <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '16px 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showCreateTable}>
