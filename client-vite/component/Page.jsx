@@ -14,7 +14,7 @@ import { SideBarRight } from './SideBarRight'
 import { ProfileEditor } from './ProfileEditor'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { UndoRedo } from './UndoRedo'
-import { SideBarTop } from './SideBarTop'
+import { Profile } from './Profile'
 import { SideBarLeft } from './SideBarLeft'
 import { CreateMapInMap } from './CreateMapInMap'
 import { CreateTable } from './CreateTable'
@@ -96,7 +96,7 @@ export function Page() {
                         <TabMaps/>
                         <SideBarLeft/>
                         <UndoRedo/>
-                        <SideBarTop/>
+                        <Profile/>
                         <SideBarRight/>
                         <Breadcrumbs/>
                     </>}

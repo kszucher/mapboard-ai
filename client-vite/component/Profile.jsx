@@ -9,7 +9,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode'
 import More from './More'
 
 
-export function SideBarTop () {
+export function Profile () {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
