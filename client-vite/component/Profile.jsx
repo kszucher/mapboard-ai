@@ -6,17 +6,14 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import PersonIcon from '@mui/icons-material/Person'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import More from './More'
+import ProfileMenu from './ProfileMenu'
 
 
 export function Profile () {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
-    const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
-    const openProfile = _ => dispatch({type: 'OPEN_PROFILE'})
-    const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
-
+     const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
     return (
         <div style={{
             position: 'fixed',
@@ -47,7 +44,7 @@ export function Profile () {
                 <IconButton color='secondary' onClick={openMoreMenu}>
                     <PersonIcon/>
                 </IconButton>
-                <More/>
+                <ProfileMenu/>
             </div>
         </div>
     )

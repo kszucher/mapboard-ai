@@ -19,6 +19,7 @@ export const PAGE_STATES = {
     WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP',
     WS_CREATE_TABLE: 'WS_CREATE_TABLE',
     WS_CREATE_TASK: 'WS_CREATE_TASK',
+    WS_SETTINGS: 'WS_SETTINGS',
 }
 
 export const MAP_RIGHTS = {
@@ -99,7 +100,6 @@ const editorStateDefault = JSON.stringify(editorState);
 const resolveActions = (state, action) => {
     const {payload} = action;
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
-    const {AUTH, DEMO, WS, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP, WS_CREATE_TABLE, WS_CREATE_TASK} = PAGE_STATES;
     switch (action.type) {
         case 'RESET_STATE':                 return JSON.parse(editorStateDefault)
 
@@ -115,15 +115,16 @@ const resolveActions = (state, action) => {
         case 'SET_CONFIRMATION_CODE':       return { confirmationCode: payload }
         case 'SET_AUTH_FEEDBACK_MESSAGE':   return { authFeedbackMessage: payload }
 
-        case 'SHOW_AUTH':                   return { pageState: AUTH }
-        case 'SHOW_DEMO':                   return { pageState: DEMO }
-        case 'SHOW_WS':                     return { pageState: WS }
-        case 'SHOW_WS_SHARING':             return { pageState: WS_SHARING }
-        case 'SHOW_WS_SHARES':              return { pageState: WS_SHARES }
-        case 'SHOW_WS_PROFILE':             return { pageState: WS_PROFILE }
-        case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: WS_CREATE_MAP_IN_MAP }
-        case 'SHOW_WS_CREATE_TABLE':        return { pageState: WS_CREATE_TABLE }
-        case 'SHOW_WS_CREATE_TASK':         return { pageState: WS_CREATE_TASK }
+        case 'SHOW_AUTH':                   return { pageState: PAGE_STATES.AUTH }
+        case 'SHOW_DEMO':                   return { pageState: PAGE_STATES.DEMO }
+        case 'SHOW_WS':                     return { pageState: PAGE_STATES.WS }
+        case 'SHOW_WS_SHARING':             return { pageState: PAGE_STATES.WS_SHARING }
+        case 'SHOW_WS_SHARES':              return { pageState: PAGE_STATES.WS_SHARES }
+        case 'SHOW_WS_PROFILE':             return { pageState: PAGE_STATES.WS_PROFILE }
+        case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: PAGE_STATES.WS_CREATE_MAP_IN_MAP }
+        case 'SHOW_WS_CREATE_TABLE':        return { pageState: PAGE_STATES.WS_CREATE_TABLE }
+        case 'SHOW_WS_CREATE_TASK':         return { pageState: PAGE_STATES.WS_CREATE_TASK }
+        case 'SHOW_WS_SETTINGS':            return { pageState: PAGE_STATES.WS_SETTINGS }
 
         case 'SET_LANDING_DATA':            return { landingData: payload.landingData, mapRight: payload.mapRight }
         case 'PLAY_LANDING_NEXT':           return { landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0 }

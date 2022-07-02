@@ -2,12 +2,12 @@ import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { getColors } from '../core/Colors'
 
-export function ProfileEditor() {
+export function Settings() {
     const colorMode = useSelector(state => state.colorMode)
     const name = useSelector(state => state.name)
     const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
-    const closeProfile = _ => dispatch({type: 'CLOSE_PROFILE'})
+    const closeSettings = _ => dispatch({type: 'CLOSE_SETTINGS'})
     return(
         <Modal
             open={true}
@@ -32,7 +32,7 @@ export function ProfileEditor() {
                     borderRadius: 16
                 }}>
                 <Typography component="h1" variant="h5" color="primary">{name}</Typography>
-                <Button color="primary" variant="outlined" onClick={closeProfile}>{'CLOSE'}</Button>
+                <Button color="primary" variant="outlined" onClick={closeSettings}>{'CLOSE'}</Button>
             </div>}
         </Modal>
     )

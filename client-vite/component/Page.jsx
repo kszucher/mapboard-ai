@@ -11,7 +11,6 @@ import { Sharing } from "./Sharing"
 import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
 import { SideBarRight } from './SideBarRight'
-import { ProfileEditor } from './ProfileEditor'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { UndoRedo } from './UndoRedo'
 import { Profile } from './Profile'
@@ -20,6 +19,7 @@ import { CreateMapInMap } from './CreateMapInMap'
 import { CreateTable } from './CreateTable'
 import {PAGE_STATES} from "../core/EditorFlow"
 import { CreateTask } from './CreateTask'
+import { Settings } from './Settings'
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {
@@ -73,7 +73,7 @@ export function Page() {
     const formatMode = useSelector(state => state.formatMode)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const {AUTH, EMPTY, DEMO, WS_SHARES, WS_SHARING, WS_PROFILE, WS_CREATE_MAP_IN_MAP, WS_CREATE_TABLE, WS_CREATE_TASK} = PAGE_STATES;
+    const {AUTH, EMPTY, DEMO} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test')
@@ -103,12 +103,12 @@ export function Page() {
                     {formatMode!=='' && <Formatter/>}
                     {frameEditorVisible && <FrameCarousel/>}
                 </>}
-                {pageState === WS_SHARES && <Shares/>}
-                {pageState === WS_SHARING && <Sharing/>}
-                {pageState === WS_PROFILE && <ProfileEditor/>}
-                {pageState === WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
-                {pageState === WS_CREATE_TABLE && <CreateTable/>}
-                {pageState === WS_CREATE_TASK && <CreateTask/>}
+                {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
+                {pageState === PAGE_STATES.WS_SHARING && <Sharing/>}
+                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
+                {pageState === PAGE_STATES.WS_CREATE_TABLE && <CreateTable/>}
+                {pageState === PAGE_STATES.WS_CREATE_TASK && <CreateTask/>}
+                {pageState === PAGE_STATES.WS_SETTINGS && <Settings/>}
                 <WindowListeners/>
             </ThemeProvider>
         </div>
