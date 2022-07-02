@@ -22,7 +22,7 @@ const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '12px 12px 12px 12px',
+    padding: '4px 12px 4px 12px',
     backgroundColor: MAP_BACKGROUND,
     borderTop: `1px solid ${PAGE_BACKGROUND}`,
     borderLeft: `1px solid ${PAGE_BACKGROUND}`,
@@ -35,21 +35,22 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
         {formatMode !== '' && <span
             style={{
                 position: 'fixed',
-                top: 2*48 + 36 + 40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]),
-                right: 62,
-                width: 2,
-                height: 40,
+                top: 2*48 + 8 +  40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]) + 20,
+                right: 10,
+                width: 10,
+                height: 10,
                 backgroundColor: MAIN_COLOR,
+                borderRadius: 8,
             }}/>
         }
     </>
 )
 
 const topOffs1 = 48*2
-const topOffs2 = topOffs1 + 40*2 + 2*12
-const topOffs3 = topOffs2 + 40*4 + 2*12
-const topOffs4 = topOffs3 + 40*4 + 2*12
-const topOffs5 = topOffs4 + 40*5 + 2*12
+const topOffs2 = topOffs1 + 40*2 + 2*4
+const topOffs3 = topOffs2 + 40*4 + 2*4
+const topOffs4 = topOffs3 + 40*4 + 2*4
+const topOffs5 = topOffs4 + 40*5 + 2*4
 
 export function SideBarRight () {
     const colorMode = useSelector(state => state.colorMode)
