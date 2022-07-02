@@ -16,6 +16,7 @@ export function Formatter () {
     const r = 12
     const width = o * colorList[0].length
     const height = o * colorList.length
+
     const colorMode = useSelector(state => state.colorMode)
     const mapRight = useSelector(state => state.mapRight)
     const formatMode = useSelector(state => state.formatMode)
@@ -29,8 +30,8 @@ export function Formatter () {
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[useSelector(state => state.node.textFontSize)]
-    const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+    const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
     const closeFormatter = _ => dispatch({type: 'CLOSE_FORMATTER'})
@@ -96,45 +97,50 @@ export function Formatter () {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
                 {formatMode === 'line' && <>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">{LINE_WIDTH_KEYS.map((name, idx) =>
-                        <Button style={{ backgroundColor: lineWidth === LINE_WIDTH_KEYS[idx] ? BUTTON_COLOR : '' }}
-                                onClick={ _=>setLineWidth(LINE_WIDTH_KEYS[idx]) }
-                                key={idx}>
-                            {name}
-                        </Button>
-                    )}
+                    <ButtonGroup disabled={disabled} variant="text" color="primary">
+                        {LINE_WIDTH_KEYS.map((name, idx) =>
+                            <Button style={{ backgroundColor: lineWidth === LINE_WIDTH_KEYS[idx] ? BUTTON_COLOR : '' }}
+                                    onClick={ _=>setLineWidth(LINE_WIDTH_KEYS[idx]) }
+                                    key={idx}>
+                                {name}
+                            </Button>
+                        )}
                     </ButtonGroup>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">{LINE_TYPE_KEYS.map((name, idx) =>
-                        <Button style={{ backgroundColor: lineType === LINE_TYPE_KEYS[idx] ? BUTTON_COLOR : '' }}
-                                onClick={ _=>setLineType(LINE_TYPE_KEYS[idx]) }
-                                key={idx}>
-                            {name}
-                        </Button>
-                    )}
+                    <ButtonGroup disabled={disabled} variant="text" color="primary">
+                        {LINE_TYPE_KEYS.map((name, idx) =>
+                            <Button style={{ backgroundColor: lineType === LINE_TYPE_KEYS[idx] ? BUTTON_COLOR : '' }}
+                                    onClick={ _=>setLineType(LINE_TYPE_KEYS[idx]) }
+                                    key={idx}>
+                                {name}
+                            </Button>
+                        )}
                     </ButtonGroup>
                 </>}
                 {formatMode === 'border' &&
-                <ButtonGroup disabled={disabled} variant="text" color="primary">{BORDER_WIDTH_KEYS.map((name, idx) =>
-                    <Button style={{ backgroundColor: borderWidth === BORDER_WIDTH_KEYS[idx] ? BUTTON_COLOR : '' }}
-                            onClick={ _=>setBorderWidth(BORDER_WIDTH_KEYS[idx]) }
-                            key={idx}>{name}
-                    </Button>
-                )}
+                <ButtonGroup disabled={disabled} variant="text" color="primary">
+                    {BORDER_WIDTH_KEYS.map((name, idx) =>
+                        <Button style={{ backgroundColor: borderWidth === BORDER_WIDTH_KEYS[idx] ? BUTTON_COLOR : '' }}
+                                onClick={ _=>setBorderWidth(BORDER_WIDTH_KEYS[idx]) }
+                                key={idx}>{name}
+                        </Button>
+                    )}
                 </ButtonGroup>}
                 {formatMode === 'text' && <>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">{FONT_SIZE_KEYS_1.map((name, idx) =>
-                        <Button style={{ backgroundColor: textFontSize === FONT_SIZE_KEYS_1[idx] ? BUTTON_COLOR : '' }}
-                                onClick={ _=>setTextFontSize(FONT_SIZE_KEYS_1[idx]) }
-                                key={idx}>{name}
-                        </Button>
-                    )}
+                    <ButtonGroup disabled={disabled} variant="text" color="primary">
+                        {FONT_SIZE_KEYS_1.map((name, idx) =>
+                            <Button style={{ backgroundColor: textFontSize === FONT_SIZE_KEYS_1[idx] ? BUTTON_COLOR : '' }}
+                                    onClick={ _=>setTextFontSize(FONT_SIZE_KEYS_1[idx]) }
+                                    key={idx}>{name}
+                            </Button>
+                        )}
                     </ButtonGroup>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">{FONT_SIZE_KEYS_2.map((name, idx) =>
-                        <Button style={{ backgroundColor: textFontSize === FONT_SIZE_KEYS_2[idx] ? BUTTON_COLOR : '' }}
-                                onClick={ _=>setTextFontSize(FONT_SIZE_KEYS_2[idx]) }
-                                key={idx}>{name}
-                        </Button>
-                    )}
+                    <ButtonGroup disabled={disabled} variant="text" color="primary">
+                        {FONT_SIZE_KEYS_2.map((name, idx) =>
+                            <Button style={{ backgroundColor: textFontSize === FONT_SIZE_KEYS_2[idx] ? BUTTON_COLOR : '' }}
+                                    onClick={ _=>setTextFontSize(FONT_SIZE_KEYS_2[idx]) }
+                                    key={idx}>{name}
+                            </Button>
+                        )}
                     </ButtonGroup>
                 </>}
             </div>
