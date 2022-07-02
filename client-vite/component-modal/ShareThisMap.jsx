@@ -3,7 +3,7 @@ import { MAP_RIGHTS } from '../core/EditorFlow'
 import { Button, FormControlLabel, FormLabel, Modal, RadioGroup, TextField, Typography, Radio } from '@mui/material'
 import { getColors } from '../core/Colors'
 
-export function Sharing() {
+export function ShareThisMap() {
     const {VIEW, EDIT} = MAP_RIGHTS
     const colorMode = useSelector(state => state.colorMode)
     const shareEmail = useSelector(state => state.shareEmail)
@@ -38,7 +38,7 @@ export function Sharing() {
                 borderRadius: '16px'
             }}>
                 <Typography component="h1" variant="h5" color="primary">
-                    {'Sharing'}
+                    {'Share This Map'}
                 </Typography>
                 <TextField variant="outlined"
                            fullWidth

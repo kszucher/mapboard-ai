@@ -7,7 +7,7 @@ import TabMaps from "../component-side/TabMaps"
 import Breadcrumbs from "../component-side/BreadcrumbMaps"
 import { Formatter } from "../component-side/Formatter"
 import { FrameCarousel } from "../component-side/FrameCarousel"
-import { Sharing } from "../component-modal/Sharing"
+import { ShareThisMap } from "../component-modal/ShareThisMap"
 import { Shares } from "../component-modal/Shares"
 import { WindowListeners } from "./WindowListeners"
 import { SideBarRight } from '../component-side/SideBarRight'
@@ -104,7 +104,7 @@ export function Page() {
                     {frameEditorVisible && <FrameCarousel/>}
                 </>}
                 {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
-                {pageState === PAGE_STATES.WS_SHARING && <Sharing/>}
+                {pageState === PAGE_STATES.WS_SHARING && <ShareThisMap/>}
                 {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
                 {pageState === PAGE_STATES.WS_CREATE_TABLE && <CreateTable/>}
                 {pageState === PAGE_STATES.WS_CREATE_TASK && <CreateTask/>}
