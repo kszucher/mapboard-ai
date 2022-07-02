@@ -21,7 +21,7 @@ export function SideBarTop () {
         <div style={{
             position: 'fixed',
             right: 0,
-            width: 40*4,
+            width: 40,
             height: 40,
             padding: '4px 12px 4px 12px',
             display: 'flex',
@@ -34,16 +34,16 @@ export function SideBarTop () {
             borderRadius: '0 0 0 16px',
         }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <IconButton color='secondary' onClick={changeColorMode}>
-                    {colorMode === 'light' && <LightModeIcon/>}
-                    {colorMode === 'dark' && <DarkModeIcon/>}
-                </IconButton>
-                <IconButton color='secondary' onClick={_=>{}}>
-                    <HelpIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={_=>{}}>
-                    <SettingsIcon/>
-                </IconButton>
+                {/*<IconButton color='secondary' onClick={changeColorMode}>*/}
+                {/*    {colorMode === 'light' && <LightModeIcon/>}*/}
+                {/*    {colorMode === 'dark' && <DarkModeIcon/>}*/}
+                {/*</IconButton>*/}
+                {/*<IconButton color='secondary' onClick={_=>{}}>*/}
+                {/*    <HelpIcon/>*/}
+                {/*</IconButton>*/}
+                {/*<IconButton color='secondary' onClick={_=>{}}>*/}
+                {/*    <SettingsIcon/>*/}
+                {/*</IconButton>*/}
                 <IconButton color='secondary' onClick={openMoreMenu}>
                     <PersonIcon/>
                 </IconButton>
