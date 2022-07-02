@@ -2,24 +2,24 @@ import {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
-import Logo from "./Logo"
-import TabMaps from "./TabMaps"
-import Breadcrumbs from "./BreadcrumbMaps"
-import { Formatter } from "./Formatter"
-import { FrameCarousel } from "./FrameCarousel"
-import { Sharing } from "./Sharing"
-import { Shares } from "./Shares"
+import Logo from "../component-side/Logo"
+import TabMaps from "../component-side/TabMaps"
+import Breadcrumbs from "../component-side/BreadcrumbMaps"
+import { Formatter } from "../component-side/Formatter"
+import { FrameCarousel } from "../component-side/FrameCarousel"
+import { Sharing } from "../component-modal/Sharing"
+import { Shares } from "../component-modal/Shares"
 import { WindowListeners } from "./WindowListeners"
-import { SideBarRight } from './SideBarRight'
+import { SideBarRight } from '../component-side/SideBarRight'
 import { createTheme, ThemeProvider } from '@mui/material'
-import { UndoRedo } from './UndoRedo'
-import { Profile } from './Profile'
-import { SideBarLeft } from './SideBarLeft'
-import { CreateMapInMap } from './CreateMapInMap'
-import { CreateTable } from './CreateTable'
+import { UndoRedo } from '../component-side/UndoRedo'
+import { Profile } from '../component-side/Profile'
+import { SideBarLeft } from '../component-side/SideBarLeft'
+import { CreateMapInMap } from '../component-modal/CreateMapInMap'
+import { CreateTable } from '../component-modal/CreateTable'
 import {PAGE_STATES} from "../core/EditorFlow"
-import { CreateTask } from './CreateTask'
-import { Settings } from './Settings'
+import { CreateTask } from '../component-modal/CreateTask'
+import { Settings } from '../component-modal/Settings'
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {

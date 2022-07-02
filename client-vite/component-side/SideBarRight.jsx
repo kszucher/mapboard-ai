@@ -13,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import ImageIcon from '@mui/icons-material/Image';
-import { BorderIcon, CreateMapInMapIcon, FillIcon, LineIcon, TaskIcon, TextIcon } from './Icons'
+import { BorderIcon, CreateMapInMapIcon, FillIcon, LineIcon, TaskIcon, TextIcon } from '../component/Icons'
 
 const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
     position: 'fixed',
