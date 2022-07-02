@@ -35,7 +35,7 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
         {formatMode !== '' && <span
             style={{
                 position: 'fixed',
-                top: 2*48 + 12 + 40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]),
+                top: 2*48 + 36 + 40*({ line: 2, border: 3, fill: 4, text: 5 }[formatMode]),
                 right: 62,
                 width: 2,
                 height: 40,
