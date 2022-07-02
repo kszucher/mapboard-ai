@@ -4,7 +4,6 @@ import { IconButton } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import ProfileMenu from './ProfileMenu'
 
-
 export function Profile () {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)

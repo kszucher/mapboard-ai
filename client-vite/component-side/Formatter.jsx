@@ -1,8 +1,9 @@
 import {useSelector, useDispatch} from "react-redux"
-import { Button, ButtonGroup, Typography } from '@mui/material'
+import { Button, ButtonGroup, IconButton, Typography } from '@mui/material'
 import { colorList, getColors } from '../core/Colors'
 import { setClear } from '../core/Utils'
 import { MAP_RIGHTS } from '../core/EditorFlow'
+import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../component/Icons'
 
 export function Formatter () {
     const LINE_WIDTH_KEYS = ['w1', 'w2', 'w3']
@@ -22,14 +23,17 @@ export function Formatter () {
     const borderColor = useSelector(state => state.node.borderColor)
     const fillColor = useSelector(state => state.node.fillColor)
     const textColor = useSelector(state => state.node.textColor)
+    const selection = useSelector(state => state.node.selection)
+
     const lineWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.lineWidth)]
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[useSelector(state => state.node.textFontSize)]
-    const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR } = getColors(colorMode)
+    const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+
     const dispatch = useDispatch()
-    const closePalette = _ => dispatch({type: 'CLOSE_FORMATTER'})
+    const closeFormatter = _ => dispatch({type: 'CLOSE_FORMATTER'})
     const setNodeParam = (nodeParamObj) => dispatch({type: 'SET_NODE_PARAMS', payload: nodeParamObj })
     const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
     const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
@@ -39,6 +43,11 @@ export function Formatter () {
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
     const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
+
+    const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'line'})
+    const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
+    const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
+    const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
     return (
         <div style={{
             position: 'fixed',
@@ -54,13 +63,20 @@ export function Formatter () {
             background: MAP_BACKGROUND,
         }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                <Typography variant="h6" color='primary'>{formatMode.toUpperCase()}</Typography>
-            </div>
-            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
-                <Button color="primary" variant='outlined'
-                        onClick={{ line: resetLine, text: resetText, fill: resetFill, border: resetBorder }[formatMode]}>
-                    {'RESET'}
-                </Button>
+                <IconButton color='secondary' onClick={formatMode === 'text' ? closeFormatter : setFormatModeText}>
+                    <TextIcon MAIN_COLOR={MAIN_COLOR}/>
+                </IconButton>
+
+                <IconButton color='secondary' onClick={formatMode === 'border' ? closeFormatter : setFormatModeBorder}>
+                    <BorderIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
+                </IconButton>
+                <IconButton color='secondary' onClick={formatMode === 'fill' ? closeFormatter : setFormatModeFill}>
+                    <FillIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
+                </IconButton>
+                <IconButton color='secondary' onClick={formatMode === 'line' ? closeFormatter : setFormatModeLine}>
+                    <LineIcon MAIN_COLOR={MAIN_COLOR}/>
+                </IconButton>
+                {/*<SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>*/}
             </div>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <div style={{ width, height }}>
@@ -123,7 +139,13 @@ export function Formatter () {
                 </>}
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
-                <Button color="primary" variant='outlined' onClick={closePalette}>{'CLOSE'}</Button>
+                <Button color="primary" variant='outlined'
+                        onClick={{ line: resetLine, text: resetText, fill: resetFill, border: resetBorder }[formatMode]}>
+                    {'RESET'}
+                </Button>
+            </div>
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
+                <Button color="primary" variant='outlined' onClick={closeFormatter}>{'CLOSE'}</Button>
             </div>
         </div>
     )
