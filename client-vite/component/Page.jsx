@@ -89,20 +89,26 @@ export function Page() {
         <div id="page">
             <ThemeProvider theme={getMuiTheme(colorMode)}>
                 {pageState === AUTH && <Auth/>}
-                {![AUTH, EMPTY].includes(pageState) && <>
-                    <Map/>
-                    <Logo/>
-                    {![AUTH, EMPTY, DEMO].includes(pageState) && <>
-                        <TabMaps/>
-                        <SideBarLeft/>
-                        <UndoRedo/>
+                {
+                    ![AUTH, EMPTY].includes(pageState) &&
+                    <>
+                        <Map/>
+                        <Logo/>
                         <Profile/>
-                        <SideBarRight/>
-                        <Breadcrumbs/>
-                    </>}
-                    {formatMode!=='' && <Formatter/>}
-                    {frameEditorVisible && <FrameCarousel/>}
-                </>}
+                        {
+                            ![AUTH, EMPTY, DEMO].includes(pageState) &&
+                            <>
+                                <UndoRedo/>
+                                <Breadcrumbs/>
+                                <TabMaps/>
+                                <SideBarLeft/>
+                                <SideBarRight/>
+                            </>
+                        }
+                        {formatMode!=='' && <Formatter/>}
+                        {frameEditorVisible && <FrameCarousel/>}
+                    </>
+                }
                 {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
                 {pageState === PAGE_STATES.WS_SHARING && <ShareThisMap/>}
                 {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <UpdateMapInMap/>}

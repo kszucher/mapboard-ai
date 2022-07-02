@@ -12,53 +12,46 @@ export default function ProfileMenu () {
     const closeMoreMenu =  _ => dispatch({type: 'CLOSE_MORE_MENU'})
     const openSettings = _ => dispatch({type: 'OPEN_SETTINGS'})
     const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
+    const showAuth = _ => dispatch({type: 'SHOW_AUTH'})
     const signOut = _ => {
         localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
         dispatch({type: 'RESET_STATE'})
     }
 
     return (
-        <>
+        <Menu
+            id="menu-appbar"
+            anchorEl={moreMenu}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            keepMounted
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            open={booleanMoreMenu}
+            onClose={closeMoreMenu}
+        >
             {
                 pageState === WS &&
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={moreMenu}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={booleanMoreMenu}
-                    onClose={closeMoreMenu}
-                >
-                    <MenuItem onClick={() => {closeMoreMenu(); openSettings()}}>
+                [
+                    <MenuItem key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
                         {'Settings'}
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={() => {closeMoreMenu(); showShares()}}>
+                    </MenuItem>,
+                    <Divider key={1}/>,
+                    <MenuItem key={2} onClick={() => {closeMoreMenu(); showShares()}}>
                         {'Shares'}
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={() => {closeMoreMenu(); signOut()}}>
+                    </MenuItem>,
+                    <Divider key={3} />,
+                    <MenuItem key={4} onClick={() => {closeMoreMenu(); signOut()}}>
                         {'Sign Out'}
                     </MenuItem>
-                </Menu>
+                ]
             }
             {
                 pageState === DEMO &&
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={moreMenu}
-                    anchorOrigin={{vertical: 'top', horizontal: 'right'}}
-                    keepMounted
-                    transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                    open={booleanMoreMenu}
-                    onClose={closeMoreMenu}
-                >
-                    <MenuItem onClick={_=>dispatch({type: 'SHOW_AUTH'})}>
+                [
+                    <MenuItem key={0} onClick={() => {closeMoreMenu(); showAuth()}}>
                         Sign In / Sign Up
                     </MenuItem>
-                </Menu>
+                ]
             }
-        </>
+        </Menu>
     )
 }
