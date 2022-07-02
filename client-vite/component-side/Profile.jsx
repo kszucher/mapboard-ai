@@ -1,11 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { getColors } from '../core/Colors'
 import { IconButton } from '@mui/material'
-import HelpIcon from '@mui/icons-material/Help'
-import SettingsIcon from '@mui/icons-material/Settings'
 import PersonIcon from '@mui/icons-material/Person'
-import LightModeIcon from '@mui/icons-material/LightMode'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
 import ProfileMenu from './ProfileMenu'
 
 
@@ -13,7 +9,7 @@ export function Profile () {
     const colorMode = useSelector(state => state.colorMode)
     const {MAP_BACKGROUND, PAGE_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
-     const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
+    const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
     return (
         <div style={{
             position: 'fixed',
@@ -31,16 +27,6 @@ export function Profile () {
             borderRadius: '0 0 0 16px',
         }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                {/*<IconButton color='secondary' onClick={changeColorMode}>*/}
-                {/*    {colorMode === 'light' && <LightModeIcon/>}*/}
-                {/*    {colorMode === 'dark' && <DarkModeIcon/>}*/}
-                {/*</IconButton>*/}
-                {/*<IconButton color='secondary' onClick={_=>{}}>*/}
-                {/*    <HelpIcon/>*/}
-                {/*</IconButton>*/}
-                {/*<IconButton color='secondary' onClick={_=>{}}>*/}
-                {/*    <SettingsIcon/>*/}
-                {/*</IconButton>*/}
                 <IconButton color='secondary' onClick={openMoreMenu}>
                     <PersonIcon/>
                 </IconButton>
