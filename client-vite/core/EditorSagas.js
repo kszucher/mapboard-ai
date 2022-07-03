@@ -113,9 +113,7 @@ function* autoSaveSaga() {
             lastWinner = 'reset'
         } else if (autoSaveTimeout) {
             if (lastWinner !== 'timeout') {
-                if (mapStack.dataIndex > 0) {
-                    yield put({ type: 'SAVE_MAP' })
-                }
+                yield put({ type: 'SAVE_MAP' })
             }
             lastWinner = 'timeout'
         }
