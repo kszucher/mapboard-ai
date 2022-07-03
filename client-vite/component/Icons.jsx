@@ -52,9 +52,9 @@ export const TaskIcon = ({MAIN_COLOR}) => (
 export const CreateMapInMapIcon = ({MAIN_COLOR}) => (
     <svg {...svgCommonParams}>
         <g>
-            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 216 240 L 24 240"/>
-            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 120 144 L 120 336"/>
-            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:24 }} d="M 288 48 L 408 240 L 288 432"/>
+            <path style={{ fill: 'none', stroke: MAIN_COLOR, strokeWidth:48 }} d="M 48 96 L 144 240 L 48 384"/>
+            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 432 240 L 240 240"/>
+            <path style={{ fill: MAIN_COLOR, stroke: MAIN_COLOR, strokeWidth:48 }} d="M 336 144 L 336 336"/>
         </g>
     </svg>
 )
