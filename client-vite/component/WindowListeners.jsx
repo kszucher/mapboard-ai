@@ -132,7 +132,7 @@ export function WindowListeners() {
     }
 
     // LANDING LISTENERS
-    const mousewheel = (e) => {
+    const wheel = (e) => {
         e.preventDefault()
         if (!isIntervalRunning) {
             namedInterval = setInterval(function () {
@@ -480,7 +480,7 @@ export function WindowListeners() {
     const addLandingListeners = () => {
         landingAreaListener = new AbortController()
         const {signal} = landingAreaListener
-        window.addEventListener("mousewheel", mousewheel, {passive: false}, { signal })
+        window.addEventListener("wheel", wheel, { signal, passive: false })
     }
 
     const removeLandingListeners = () => {
