@@ -1,9 +1,6 @@
 export const mapGetProp = {
     start: (m, cm, prop) => {
-        let firstProp = {[prop]: undefined}
-        if (Object.keys(cm.s).length) {
-            firstProp = {[prop]: cm.s[0][prop]}
-        }
+        let firstProp = {[prop]: cm[prop]}
         mapGetProp.iterate(m, cm, prop, firstProp)
         return firstProp[prop]
     },

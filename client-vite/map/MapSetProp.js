@@ -1,20 +1,16 @@
 import {resolveScope} from "../core/DefaultProps"
 
 export const mapSetProp = {
-    start: (cm, assignment, scope, skip) => {
-        mapSetProp.iterate(cm, assignment, scope, skip)
+    start: (cm, assignment, scope) => {
+        mapSetProp.iterate(cm, assignment, scope)
     },
 
-    iterate: (cm, assignment, scope, skip) => {
-        if (skip === true) {
-            skip = false
-        } else {
-            if (scope === '' || resolveScope(cm)[scope]) {
-                Object.assign(cm, typeof assignment === 'function' ? assignment() : assignment)
-            }
+    iterate: (cm, assignment, scope) => {
+        if (scope === '' || resolveScope(cm)[scope]) {
+            Object.assign(cm, typeof assignment === 'function' ? assignment() : assignment)
         }
-        cm.d.map(i => mapSetProp.iterate(i, assignment, scope, skip))
-        cm.s.map(i => mapSetProp.iterate(i, assignment, scope, skip))
-        cm.c.map(i => i.map(j => mapSetProp.iterate(j, assignment, scope, skip)))
+        cm.d.map(i => mapSetProp.iterate(i, assignment, scope))
+        cm.s.map(i => mapSetProp.iterate(i, assignment, scope))
+        cm.c.map(i => i.map(j => mapSetProp.iterate(j, assignment, scope)))
     }
 }

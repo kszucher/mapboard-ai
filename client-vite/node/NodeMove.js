@@ -164,7 +164,7 @@ export function nodeMove(sc, target, key, mode) {
         let moveTarget = lm.isRoot? lm.d[0] : lm;
         for (let i = 0; i < clipboard.length; i++) {
             let currPasteRefCopy = copy(clipboard[i])
-            mapSetProp.start(currPasteRefCopy, ()=>({nodeId: 'node' + genHash(8)}), '', false)
+            mapSetProp.start(currPasteRefCopy, ()=>({nodeId: 'node' + genHash(8)}), '')
             moveTarget.s.splice(moveTarget.s.length + i, 0, currPasteRefCopy);
         }
     }

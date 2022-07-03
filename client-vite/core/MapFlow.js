@@ -23,7 +23,7 @@ import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
 const clearSelection = _ => {
     for (let i = 0; i < mapref(['r']).length; i++) {
         let cr = mapref(['r', i])
-        mapSetProp.start(cr, {selected: 0, selection: 's'}, '', false)
+        mapSetProp.start(cr, {selected: 0, selection: 's'}, '')
     }
 }
 
@@ -92,7 +92,7 @@ const mapReducer = (action, payload) => {
         case 'select_all': {
             for (let i = 0; i < mapref(['r']).length; i++) {
                 let cr = mapref(['r', i])
-                mapSetProp.start(cr, {selected: 1}, 'struct', false)
+                mapSetProp.start(cr, {selected: 1}, 'struct')
             }
             break
         }
@@ -359,7 +359,7 @@ const mapReducer = (action, payload) => {
                 m.shouldCenter = true
                 for (let i = 0; i < mapref(['r']).length; i++) {
                     let cr = mapref(['r', i])
-                    mapSetProp.start(cr, { isDimAssigned: 0 }, '', false)
+                    mapSetProp.start(cr, { isDimAssigned: 0 }, '')
                 }
             }
             if (m.alignment !== alignment) {
@@ -385,7 +385,7 @@ const mapReducer = (action, payload) => {
                             if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
                                 Object.assign(cm, assignment)
                             } else {
-                                mapSetProp.start(cm, assignment, '', true)
+                                mapSetProp.start(cm, assignment, '')
                             }
                         }
                     }
@@ -406,9 +406,9 @@ const mapReducer = (action, payload) => {
         }
         case 'toggleTask': {
             if (lm.taskStatus === -1) {
-                mapSetProp.start(lm, {taskStatus: 0}, '', false)
+                mapSetProp.start(lm, {taskStatus: 0}, '')
             } else {
-                mapSetProp.start(lm, {taskStatus: -1}, '', false)
+                mapSetProp.start(lm, {taskStatus: -1}, '')
             }
             break
         }
