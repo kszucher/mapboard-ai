@@ -12,7 +12,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
-import ImageIcon from '@mui/icons-material/Image'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from '../component/Icons'
 
@@ -33,9 +32,9 @@ const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
 
 const iconSize = 40
 const topOffs1 = 48*2
-const topOffs2 = topOffs1 + iconSize*2 + 2*4
-const topOffs3 = topOffs2 + iconSize + 2*4
-const topOffs4 = topOffs3 + iconSize*4 + 2*4
+const topOffs2 = topOffs1 + iconSize + 2*4
+const topOffs3 = topOffs2 + iconSize*3 + 2*4
+const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 export function SideBarRight () {
@@ -64,6 +63,22 @@ export function SideBarRight () {
     return (
         <>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs1, borderRadius: '16px 0 0 16px' }}>
+                <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
+                    <PaletteIcon/>
+                </IconButton>
+            </div>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '16px 0 0 16px' }}>
+                <IconButton color='secondary' onClick={showCreateTable}>
+                    <CalendarViewMonthIcon/>
+                </IconButton>
+                <IconButton color='secondary' onClick={showCreateTask}>
+                    <TaskIcon MAIN_COLOR={MAIN_COLOR}/>
+                </IconButton>
+                <IconButton color='secondary' onClick={showWsCreateMapInMap}>
+                    <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
+                </IconButton>
+            </div>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '16px 0 0 16px' }}>
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -71,25 +86,6 @@ export function SideBarRight () {
                 <IconButton color='secondary' onClick={changeAlignment}>
                     {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
-                </IconButton>
-            </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '16px 0 0 16px' }}>
-                <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
-                    <PaletteIcon/>
-                </IconButton>
-            </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '16px 0 0 16px' }}>
-                <IconButton color='secondary' onClick={showCreateTable}>
-                    <CalendarViewMonthIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={_=>{}}>
-                    <ImageIcon/>
-                </IconButton>
-                <IconButton color='secondary' onClick={showCreateTask}>
-                    <TaskIcon MAIN_COLOR={MAIN_COLOR}/>
-                </IconButton>
-                <IconButton color='secondary' onClick={showWsCreateMapInMap}>
-                    <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
             </div>
             <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '16px 0 0 16px' }}>
