@@ -106,7 +106,7 @@ let lastWinner = ''
 function* autoSaveSaga() {
     while (true) {
         const { autoSaveReset, autoSaveTimeout } = yield race({
-            autoSaveReset: take('MAP_STACK_CHANGED'),
+            autoSaveReset: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']),
             autoSaveTimeout: delay(1000)
         })
         if (autoSaveReset) {
