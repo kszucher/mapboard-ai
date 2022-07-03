@@ -62,12 +62,12 @@ export function SideBarRight () {
     const showCreateTask = _ => dispatch({type: 'SHOW_WS_CREATE_TASK'})
     return (
         <>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs1, borderRadius: '16px 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs1, borderRadius: '16px 0 0 0' }}>
                 <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
                     <PaletteIcon/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '16px 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={showCreateTable}>
                     <CalendarViewMonthIcon/>
                 </IconButton>
@@ -78,7 +78,7 @@ export function SideBarRight () {
                     <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '16px 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -88,7 +88,7 @@ export function SideBarRight () {
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '16px 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible}>
                     <DynamicFeedIcon/>
                 </IconButton>
@@ -105,7 +105,7 @@ export function SideBarRight () {
                     <CloseIcon/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs5, borderRadius: '16px 0 0 16px' }}>
+            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs5, borderRadius: '0 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>
