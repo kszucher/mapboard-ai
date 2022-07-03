@@ -79,6 +79,7 @@ const editorState = {
         textColor: undefined,
         taskStatus: undefined,
     },
+    nodeTriggersMap: false,
 
     frameEditorVisible: false,
     frameLen: 0,
@@ -139,7 +140,7 @@ const resolveActions = (state, action) => {
 
         case 'TOGGLE_TAB_SHRINK':           return { tabShrink: !state.tabShrink }
 
-        case 'SET_NODE_PARAMS':             return { node: {...state.node, ...payload} }
+        case 'SET_NODE_PARAMS':             return { node: {...state.node, ...payload.node}, nodeTriggersMap: payload.nodeTriggersMap }
 
         case 'SET_FRAME_EDITOR_VISIBLE':    return { frameEditorVisible: payload }
 

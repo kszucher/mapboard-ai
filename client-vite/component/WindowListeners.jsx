@@ -47,6 +47,7 @@ export function WindowListeners() {
     const landingData = useSelector(state => state.landingData)
     const landingDataIndex = useSelector(state => state.landingDataIndex)
     const node = useSelector(state => state.node)
+    const nodeTriggersMap = useSelector(state => state.nodeTriggersMap)
     const colorMode = useSelector(state => state.colorMode)
     const dispatch = useDispatch()
 
@@ -542,7 +543,7 @@ export function WindowListeners() {
     }, [pageState, mapRight])
 
     useEffect(() => {
-        if (mapId !== '' && mapSource !== '' && mapStack.dataIndex === mapStack.data.length - 1) {
+        if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
             push()
             mapDispatch('applyMapParams', node)
             redraw(colorMode)

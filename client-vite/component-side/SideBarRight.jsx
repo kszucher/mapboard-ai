@@ -46,7 +46,7 @@ export function SideBarRight () {
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
     const dispatch = useDispatch()
-    const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: obj })
+    const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = _ => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
     const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})

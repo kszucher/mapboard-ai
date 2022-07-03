@@ -262,7 +262,7 @@ function* mapStackSaga () {
                 Object.assign(assignment, {[prop]: undefined})
             }
         }
-        yield put({ type: 'SET_NODE_PARAMS', payload: assignment })
+        yield put({ type: 'SET_NODE_PARAMS', payload: {node: assignment, nodeTriggersMap: false } })
         yield put({ type: 'SET_UNDO_DISABLED', payload: mapStack.dataIndex === 0})
         yield put({ type: 'SET_REDO_DISABLED', payload: mapStack.dataIndex === mapStack.data.length - 1})
     }
