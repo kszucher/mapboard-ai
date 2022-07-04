@@ -6,24 +6,7 @@ const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
 const nodemailer = require("nodemailer")
-const {
-    getUserByEmail,
-    getUser,
-    getMapData,
-    getFrameSelected,
-    getFrameLen,
-    getPlaybackMapData,
-    getMapProps,
-    getShareProps,
-    getMapNameList,
-    getUserShares,
-    deleteMapAll,
-    deleteMapOne,
-    deleteFrame,
-    moveUpMapInTab,
-    moveDownMapInTab,
-} = require("./MongoQueries")
-const mongoose = require('mongoose')
+const MongoQueries = require("./MongoQueries");
 
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
@@ -91,7 +74,7 @@ async function checkSave (req, currUser) {
         req.payload.hasOwnProperty('save')) {
         const mapId = ObjectId(req.payload.save.mapId)
         const { mapSource, mapStorage } = req.payload.save
-        const { ownerUser } = await getMapProps(maps, mapId)
+        const { ownerUser } = await MongoQueries.getMapProps(maps, mapId)
         const shareToEdit = await shares.findOne({
             shareUser: currUser._id,
             sharedMap: mapId,
@@ -101,7 +84,7 @@ async function checkSave (req, currUser) {
             if (mapSource === 'data') {
                 await maps.updateOne({ _id: mapId }, { $set: { data: mapStorage } })
             } else if (mapSource === 'dataPlayback') {
-                const frameSelected = await getFrameSelected(maps, mapId)
+                const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
                 await maps.updateOne({ _id: mapId }, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
             }
         }
@@ -123,7 +106,7 @@ async function resolveType(req, currUser) {
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
-            const currUser = await getUserByEmail(users, email)
+            const currUser = await MongoQueries.getUserByEmail(users, email)
             if (currUser === null) {
                 let confirmationCode = getConfirmationCode()
                 await transporter.sendMail({
@@ -156,7 +139,7 @@ async function resolveType(req, currUser) {
         }
         case 'SIGN_UP_STEP_2': { // MUTATION
             let { email, confirmationCode } = req.payload
-            const currUser = await getUserByEmail(users, email)
+            const currUser = await MongoQueries.getUserByEmail(users, email)
             if (currUser === null) {
                 return { type: 'signUpStep2FailUnknownUser' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
@@ -246,9 +229,9 @@ async function resolveType(req, currUser) {
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            isEqual((await getMapProps(maps, mapId)).ownerUser, currUser._id)
-                ? await deleteMapAll(users, shares, mapId)
-                : await deleteMapOne(users, shares, mapId, currUser._id)
+            isEqual((await MongoQueries.getMapProps(maps, mapId)).ownerUser, currUser._id)
+                ? await MongoQueries.deleteMapAll(users, shares, mapId)
+                : await MongoQueries.deleteMapOne(users, shares, mapId, currUser._id)
             const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList, breadcrumbMapIdList } = currUserUpdated
             const newMapId = breadcrumbMapIdList[0]
@@ -257,23 +240,23 @@ async function resolveType(req, currUser) {
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await moveUpMapInTab(users, currUser._id, mapId)
+            await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
             const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList } = currUserUpdated
-            return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList } }
+            return { type: 'MongoQueries.moveUpMapInTabSuccess', payload: { tabMapIdList } }
 
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await moveDownMapInTab(users, currUser._id, mapId)
+            await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
             const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList } = currUserUpdated
-            return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList } }
+            return { type: 'MongoQueries.moveDownMapInTabSuccess', payload: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)
-            const frameLen = await getFrameLen(maps, mapId)
-            const frameSelected = await getFrameSelected(maps, mapId)
+            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
+            const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             if (frameLen === 0) {
                 return { type: 'openFrameFail', payload: { frameLen, frameSelected } }
             } else {
@@ -283,8 +266,8 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const frameLen = await getFrameLen(maps, mapId)
-            let frameSelected = await getFrameSelected(maps, mapId)
+            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
+            let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             const mapSource = 'dataPlayback'
@@ -292,8 +275,8 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const frameLen = await getFrameLen(maps, mapId)
-            let frameSelected = await getFrameSelected(maps, mapId)
+            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
+            let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             frameSelected = frameSelected < frameLen - 1 ? frameSelected + 1 : frameLen - 1
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             const mapSource = 'dataPlayback'
@@ -302,25 +285,25 @@ async function resolveType(req, currUser) {
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
-            const mapStorage = await getMapData(maps, mapId)
+            const mapStorage = await MongoQueries.getMapData(maps, mapId)
             await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
-            const frameLen = await getFrameLen(maps, mapId)
+            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             const frameSelected = frameLen - 1
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await deleteFrame(maps, mapId)
-            const frameLen = await getFrameLen(maps, mapId)
-            const frameSelected = await getFrameSelected(maps, mapId)
+            await MongoQueries.deleteFrame(maps, mapId)
+            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
+            const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
-            return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            return { type: 'MongoQueries.deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { mapStorage } = req.payload
-            let frameSelected = await getFrameSelected(maps, mapId)
+            let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             frameSelected = frameSelected + 1
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
             await maps.updateOne({ _id: mapId }, {
@@ -332,14 +315,14 @@ async function resolveType(req, currUser) {
                 }
             })
             const mapSource = "dataPlayback"
-            const frameLen = await getFrameLen(maps, mapId)
+            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'GET_SHARES': { // QUERY
             const {
                 shareDataExport,
                 shareDataImport
-            } = await getUserShares(users, maps, shares, currUser._id)
+            } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'CREATE_SHARE': { // MUTATION
@@ -379,13 +362,13 @@ async function resolveType(req, currUser) {
         case 'ACCEPT_SHARE': { // MUTATION
             const { shareId } = ObjectId(req.payload.shareId)
             let { tabMapIdList } = currUser
-            const { sharedMap } = await getShareProps(shares, shareId)
+            const { sharedMap } = await MongoQueries.getShareProps(shares, shareId)
             tabMapIdList = [...tabMapIdList, sharedMap]
             const mapId = sharedMap
             const breadcrumbMapIdList = [mapId]
             const mapSource = 'data'
             await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
-            const { shareDataExport, shareDataImport } = await getUserShares(users, maps, shares, currUser._id)
+            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
             return {
                 type: 'acceptShareSuccess',
@@ -395,12 +378,12 @@ async function resolveType(req, currUser) {
         case 'DELETE_SHARE': { // MUTATION
             let { shareId } = req.payload
             shareId = ObjectId(shareId)
-            const { shareUser, sharedMap } = await getShareProps(shares, shareId)
-            await deleteMapOne(users, shares, sharedMap, shareUser)
+            const { shareUser, sharedMap } = await MongoQueries.getShareProps(shares, shareId)
+            await MongoQueries.deleteMapOne(users, shares, sharedMap, shareUser)
             const {
                 shareDataExport,
                 shareDataImport
-            } = await getUserShares(users, maps, shares, currUser._id)
+            } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'GET_NAME': { // QUERY
@@ -426,11 +409,11 @@ async function appendStuff (resp, currUser) {
             const {mapId, mapSource} = resp.payload
             let mapStorage = {}
             if (mapSource === 'data') {
-                mapStorage = await getMapData(maps, mapId)
+                mapStorage = await MongoQueries.getMapData(maps, mapId)
             } else if (mapSource === 'dataPlayback') {
-                mapStorage = await getPlaybackMapData(maps, mapId, resp.payload.frameSelected)
+                mapStorage = await MongoQueries.getPlaybackMapData(maps, mapId, resp.payload.frameSelected)
             }
-            const {path, ownerUser} = await getMapProps(maps, mapId)
+            const {path, ownerUser} = await MongoQueries.getMapProps(maps, mapId)
             let mapRight = MAP_RIGHTS.UNAUTHORIZED
             if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
                 mapRight = isEqual(currUser._id, adminUser)
@@ -457,12 +440,12 @@ async function appendStuff (resp, currUser) {
         }
         if (resp.payload.hasOwnProperty('tabMapIdList')) {
             const { tabMapIdList } = resp.payload
-            const tabMapNameList = await getMapNameList(maps, tabMapIdList)
+            const tabMapNameList = await MongoQueries.getMapNameList(maps, tabMapIdList)
             Object.assign(resp.payload, { tabMapNameList })
         }
         if (resp.payload.hasOwnProperty('breadcrumbMapIdList')) {
             const { breadcrumbMapIdList } = resp.payload
-            const breadcrumbMapNameList = await getMapNameList(maps, breadcrumbMapIdList)
+            const breadcrumbMapNameList = await MongoQueries.getMapNameList(maps, breadcrumbMapIdList)
             Object.assign(resp.payload, { breadcrumbMapNameList })
         }
     }
@@ -473,7 +456,7 @@ async function processReq(req) {
     try {
         let currUser
         if (req.payload?.hasOwnProperty('cred')) {
-            currUser = await getUser(users, req.payload.cred)
+            currUser = await MongoQueries.getUser(users, req.payload.cred)
             if (currUser === null) {
                 return { type: 'signInFailWrongCred' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
