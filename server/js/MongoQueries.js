@@ -78,7 +78,7 @@ async function getUserShares(users, maps, shares, userId) {
 }
 
 async function deleteMapFromUsers (users, mapId, userFilter = {}) {
-    const filter = {tabMapIdList: mapId, ...userFilter}
+    const filter = { tabMapIdList: mapId, ...userFilter }
     await users.updateMany(
         filter,
         [
@@ -116,21 +116,14 @@ async function deleteMapFromUsers (users, mapId, userFilter = {}) {
     )
 }
 
-async function deleteMapFromShares(shares, mapIdToDelete, userFilter = {}) {
-    const filter = {sharedMap: mapIdToDelete, ...userFilter}
-    await shares.deleteMany(
-        filter
-    )
+async function deleteMapForOne (users, shares, userId, mapId) {
+    await deleteMapFromUsers(users, mapId, { _id: userId } )
+    await shares.deleteMany({ shareUser: userId, sharedMap: mapId })
 }
 
-async function deleteMapAll (users, shares, mapIdToDelete) {
-    await deleteMapFromUsers(users, mapIdToDelete)
-    await deleteMapFromShares(shares, mapIdToDelete)
-}
-
-async function deleteMapOne (users, shares, mapIdToDelete, userId) {
-    await deleteMapFromUsers(users, mapIdToDelete, {_id: userId})
-    await deleteMapFromShares(shares, mapIdToDelete, {shareUser: userId})
+async function deleteMapForAll (users, shares, mapId) {
+    await deleteMapFromUsers(users, mapId)
+    await shares.deleteMany({ sharedMap: mapId })
 }
 
 async function deleteFrame (maps, mapId) {
@@ -209,9 +202,6 @@ async function moveDownMapInTab (users, userId, mapId) {
     ])
 }
 
-// in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
-// https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
-
 module.exports = {
     getUserByEmail,
     getUser,
@@ -223,8 +213,8 @@ module.exports = {
     getShareProps,
     getMapNameList,
     getUserShares,
-    deleteMapAll,
-    deleteMapOne,
+    deleteMapForOne,
+    deleteMapForAll,
     deleteFrame,
     moveUpMapInTab,
     moveDownMapInTab,

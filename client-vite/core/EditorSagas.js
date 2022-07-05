@@ -125,6 +125,8 @@ function* autoSaveSaga() {
     }
 }
 
+// TODO probably the map operations for example tab map should ALSO reset this, to avoid open issue
+
 function* mapSaga () {
     while (true) {
         let { type, payload } = yield take([

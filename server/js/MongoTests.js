@@ -22,76 +22,32 @@ async function mongoTests(cmd) {
         let dbOriginal
         let dbExpected
         switch (cmd) {
-            case 'deleteMapOne':
-                dbOriginal = {
-                    users: [
-                        {_id: 'user1', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map1', 'map2', 'map3']},
-                        {_id: 'user2', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map2']},
-                        {_id: 'user3', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map3']},
-                    ],
-                    maps: [
-                        {_id: 'map1'},
-                        {_id: 'map2'},
-                        {_id: 'map3'},
-                    ],
-                    shares: [
-                        {_id: 'share1', shareUser: 'user1', sharedMap: "map1"},
-                        {_id: 'share2', shareUser: 'user1', sharedMap: "map2"},
-                        {_id: 'share3', shareUser: 'user2', sharedMap: "map2"},
-                        {_id: 'share4', shareUser: 'user3', sharedMap: "map3"},
-                    ]
-                }
-                dbExpected = {
-                    "users": [
-                        { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
-                        { "_id": "user2", "breadcrumbMapIdList": ["map2"], "tabMapIdList": ["map2"] },
-                        { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
-                    ],
-                    "maps": [
-                        { "_id": "map1" },
-                        { "_id": "map2" },
-                        { "_id": "map3" }
-                    ],
-                    "shares": [
-                        { "_id": "share1", "shareUser": "user1", "sharedMap": "map1" },
-                        { "_id": "share3", "shareUser": "user2", "sharedMap": "map2" },
-                        { "_id": "share4", "shareUser": "user3", "sharedMap": "map3" }
-                    ]
-                }
+            case 'deleteMapForOneTest1':
+                dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1', 'mapDelete'] } ] }
+                dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1'] } ] }
                 break
-            case 'deleteMapAll':
+            case 'deleteMapForOneTest2':
+                dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['mapDelete'], tabMapIdList: ['mapDelete', 'map1'] } ] }
+                dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1'] } ] }
+                break
+            case 'deleteMapForAllTest':
                 dbOriginal = {
                     users: [
-                        {_id: 'user1', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map1', 'map2', 'map3']},
-                        {_id: 'user2', breadcrumbMapIdList: ['map2'], tabMapIdList: ['map2']},
-                        {_id: 'user3', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map3']},
-                    ],
-                    maps: [
-                        {_id: 'map1'},
-                        {_id: 'map2'},
-                        {_id: 'map3'},
+                        {_id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1', 'mapShared']},
+                        {_id: 'user2', breadcrumbMapIdList: ['mapShared'], tabMapIdList: ['map1', 'mapShared']},
+                        {_id: 'user3', breadcrumbMapIdList: ['mapShared'], tabMapIdList: ['mapShared']},
                     ],
                     shares: [
-                        {_id: 'share1', shareUser: 'user1', sharedMap: "map1"},
-                        {_id: 'share2', shareUser: 'user1', sharedMap: "map2"},
-                        {_id: 'share3', shareUser: 'user2', sharedMap: "map2"},
-                        {_id: 'share4', shareUser: 'user3', sharedMap: "map3"},
+                        {_id: 'shareOther', ownerUser: 'ownerUser', shareUser: 'userOther', sharedMap: 'mapShared'},
                     ]
                 }
                 dbExpected = {
-                    "users": [
-                        { "_id": "user1", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map1", "map3"] },
-                        { "_id": "user2", "breadcrumbMapIdList": [], "tabMapIdList": [] },
-                        { "_id": "user3", "breadcrumbMapIdList": ["map1"], "tabMapIdList": ["map3"] }
+                    users: [
+                        { _id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1'] },
+                        { _id: 'user2', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1'] },
+                        { _id: 'user3', breadcrumbMapIdList: [], tabMapIdList: [] },
                     ],
-                    "maps": [
-                        { "_id": "map1" },
-                        { "_id": "map2" },
-                        { "_id": "map3" }
-                    ],
-                    "shares": [
-                        { "_id": "share1", "shareUser": "user1", "sharedMap": "map1" },
-                        { "_id": "share4", "shareUser": "user3", "sharedMap": "map3" }
+                    shares: [
                     ]
                 }
                 break
@@ -132,8 +88,9 @@ async function mongoTests(cmd) {
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
         if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
         switch(cmd) {
-            case 'deleteMapOne': await MongoQueries.deleteMapOne(users, shares, 'map2', 'user1'); break
-            case 'deleteMapAll': await MongoQueries.deleteMapAll(users, shares, 'map2'); break
+            case 'deleteMapForOneTest1': await MongoQueries.deleteMapForOne(users, shares, 'user1', 'mapDelete' ); break
+            case 'deleteMapForOneTest2': await MongoQueries.deleteMapForOne(users, shares, 'user1', 'mapDelete' ); break
+            case 'deleteMapForAllTest': await MongoQueries.deleteMapForAll(users, shares, 'mapShared'); break
             case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
@@ -162,16 +119,18 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-    // await mongoTests('deleteMapOne')
-    // await mongoTests('deleteMapAll')
+    await mongoTests('deleteMapForOneTest1')
+    await mongoTests('deleteMapForOneTest2')
+    await mongoTests('deleteMapForAllTest')
+
     // await mongoTests('deleteFrameTest1')
     // await mongoTests('deleteFrameTest2')
     // await mongoTests('deleteFrameTest3')
     // await mongoTests('deleteFrameTest4')
-    await mongoTests('moveUpMapInTabTest1')
-    await mongoTests('moveUpMapInTabTest2')
-    await mongoTests('moveDownMapInTabTest1')
-    await mongoTests('moveDownMapInTabTest2')
+    // await mongoTests('moveUpMapInTabTest1')
+    // await mongoTests('moveUpMapInTabTest2')
+    // await mongoTests('moveDownMapInTabTest1')
+    // await mongoTests('moveDownMapInTabTest2')
 }
 
 allTest()
