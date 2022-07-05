@@ -180,28 +180,29 @@ async function moveUpMapInTab (users, userId, mapId) {
 
 async function moveDownMapInTab (users, userId, mapId) {
     const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
-    return (await users.findOneAndUpdate(
-        { _id: userId },
-        [{
-            $set: {
-                tabMapIdList: {
-                    $cond: {
-                        if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
-                        then: "$tabMapIdList",
-                        else: {
-                            $concatArrays: [
-                                { $slice: [ "$tabMapIdList", tabIndex ] },
-                                [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
-                                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
-                            ]
+    return (
+        await users.findOneAndUpdate(
+            { _id: userId },
+            [{
+                $set: {
+                    tabMapIdList: {
+                        $cond: {
+                            if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
+                            then: "$tabMapIdList",
+                            else: {
+                                $concatArrays: [
+                                    { $slice: [ "$tabMapIdList", tabIndex ] },
+                                    [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
+                                    [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
+                                    { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
+                                ]
+                            }
                         }
                     }
                 }
-            }
-        }],
-        { returnDocument: 'after' }
-    )).value
+            }],
+            { returnDocument: 'after' }
+        )).value
 }
 
 module.exports = {
