@@ -367,15 +367,14 @@ async function resolveType(req, currUser) {
             let { tabMapIdList } = currUser
             const { sharedMap } = await MongoQueries.getShareProps(shares, shareId)
             tabMapIdList = [...tabMapIdList, sharedMap]
-            const mapId = sharedMap
-            const breadcrumbMapIdList = [mapId]
+            const breadcrumbMapIdList = [sharedMap]
             const mapSource = 'data'
             await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
             const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
             return {
                 type: 'acceptShareSuccess',
-                payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId, mapSource }
+                payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId: sharedMap, mapSource }
             }
         }
         case 'DELETE_SHARE': { // MUTATION
