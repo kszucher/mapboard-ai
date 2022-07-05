@@ -119,9 +119,9 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-    await mongoTests('deleteMapForOneTest1')
-    await mongoTests('deleteMapForOneTest2')
-    await mongoTests('deleteMapForAllTest')
+    // await mongoTests('deleteMapForOneTest1')
+    // await mongoTests('deleteMapForOneTest2')
+    // await mongoTests('deleteMapForAllTest')
 
     // await mongoTests('deleteFrameTest1')
     // await mongoTests('deleteFrameTest2')
@@ -129,8 +129,8 @@ async function allTest () {
     // await mongoTests('deleteFrameTest4')
     // await mongoTests('moveUpMapInTabTest1')
     // await mongoTests('moveUpMapInTabTest2')
-    // await mongoTests('moveDownMapInTabTest1')
-    // await mongoTests('moveDownMapInTabTest2')
+    await mongoTests('moveDownMapInTabTest1')
+    await mongoTests('moveDownMapInTabTest2')
 }
 
 allTest()

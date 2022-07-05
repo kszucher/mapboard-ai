@@ -180,8 +180,9 @@ async function moveUpMapInTab (users, userId, mapId) {
 
 async function moveDownMapInTab (users, userId, mapId) {
     const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
-    await users.updateOne({ _id: userId }, [
-        {
+    return (await users.findOneAndUpdate(
+        { _id: userId },
+        [{
             $set: {
                 tabMapIdList: {
                     $cond: {
@@ -198,8 +199,9 @@ async function moveDownMapInTab (users, userId, mapId) {
                     }
                 }
             }
-        }
-    ])
+        }],
+        { returnDocument: 'after' }
+    )).value
 }
 
 module.exports = {
@@ -219,3 +221,6 @@ module.exports = {
     moveUpMapInTab,
     moveDownMapInTab,
 }
+
+// mongodb driver naming issue
+// https://stackoverflow.com/questions/35626040/how-to-get-updated-document-back-from-the-findoneandupdate-method

@@ -251,9 +251,9 @@ async function resolveType(req, currUser) {
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
-            const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
-            const { tabMapIdList } = currUserUpdated
+            const { tabMapIdList } = await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
+            // const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
+            // const { tabMapIdList } = currUserUpdated
             return { type: 'MongoQueries.moveDownMapInTabSuccess', payload: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
