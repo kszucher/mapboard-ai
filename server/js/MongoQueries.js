@@ -77,8 +77,8 @@ async function getUserShares(users, maps, shares, userId) {
     return {shareDataExport, shareDataImport}
 }
 
-async function deleteMapFromUsers (users, mapIdToDelete, userFilter = {}) {
-    const filter = {tabMapIdList: mapIdToDelete, ...userFilter}
+async function deleteMapFromUsers (users, mapId, userFilter = {}) {
+    const filter = {tabMapIdList: mapId, ...userFilter}
     await users.updateMany(
         filter,
         [
@@ -86,10 +86,10 @@ async function deleteMapFromUsers (users, mapIdToDelete, userFilter = {}) {
                 $set: {
                     breadcrumbMapIdList: {
                         $cond: {
-                            if: {$in: [mapIdToDelete, "$breadcrumbMapIdList"]},
+                            if: {$in: [mapId, "$breadcrumbMapIdList"]},
                             then: {
                                 $cond: {
-                                    if: {$eq: [{$indexOfArray: ["$tabMapIdList", mapIdToDelete]}, 0]},
+                                    if: {$eq: [{$indexOfArray: ["$tabMapIdList", mapId]}, 0]},
                                     then: {
                                         $cond: {
                                             if: { $gt: [{ $size: "$tabMapIdList" }, 1] },
@@ -97,7 +97,7 @@ async function deleteMapFromUsers (users, mapIdToDelete, userFilter = {}) {
                                             else: []
                                         }
                                     },
-                                    else: [{$arrayElemAt: ["$tabMapIdList", {$subtract: [{$indexOfArray: ["$tabMapIdList", mapIdToDelete]}, 1]}]}]
+                                    else: [{$arrayElemAt: ["$tabMapIdList", {$subtract: [{$indexOfArray: ["$tabMapIdList", mapId]}, 1]}]}]
                                 }
                             },
                             else: "$breadcrumbMapIdList"
@@ -108,7 +108,7 @@ async function deleteMapFromUsers (users, mapIdToDelete, userFilter = {}) {
             {
                 $set: {
                     tabMapIdList : {
-                        $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapIdToDelete]}}
+                        $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapId]}}
                     }
                 }
             }
