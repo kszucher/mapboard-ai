@@ -246,7 +246,7 @@ async function resolveType(req, currUser) {
             await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
             const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList } = currUserUpdated
-            return { type: 'MongoQueries.moveUpMapInTabSuccess', payload: { tabMapIdList } }
+            return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList } }
 
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
@@ -254,7 +254,7 @@ async function resolveType(req, currUser) {
             const { tabMapIdList } = await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
             // const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             // const { tabMapIdList } = currUserUpdated
-            return { type: 'MongoQueries.moveDownMapInTabSuccess', payload: { tabMapIdList } }
+            return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)
@@ -301,7 +301,7 @@ async function resolveType(req, currUser) {
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
-            return { type: 'MongoQueries.deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
