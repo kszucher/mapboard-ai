@@ -7,7 +7,6 @@ const {ObjectId} = require('mongodb')
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries");
-const { importFrame } = require('./MongoQueries')
 
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
@@ -286,7 +285,7 @@ async function resolveType(req, currUser) {
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
-            const { dataPlayback, frameSelected } = await importFrame(maps, mapId)
+            const { dataPlayback, frameSelected } = await MongoQueries.importFrame(maps, mapId)
             const frameLen = dataPlayback.length
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
