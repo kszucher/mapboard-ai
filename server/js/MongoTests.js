@@ -80,10 +80,8 @@ async function mongoTests(cmd) {
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
         if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
         switch(cmd) {
-
             case 'deleteMapFromUsersTest': await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
-            case  'deleteMapFromSharesTest': await MongoQueries.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
-
+            case 'deleteMapFromSharesTest': await MongoQueries.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
             case 'moveUpMapInTabTest1': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
             case 'moveUpMapInTabTest2': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
             case 'moveDownMapInTabTest1': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
