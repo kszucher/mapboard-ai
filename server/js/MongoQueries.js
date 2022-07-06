@@ -116,16 +116,6 @@ async function deleteMapFromUsers (users, mapId, userFilter = {}) {
     )
 }
 
-async function deleteMapForOne (users, shares, userId, mapId) {
-    await deleteMapFromUsers(users, mapId, { _id: userId } )
-    await shares.deleteMany({ shareUser: userId, sharedMap: mapId })
-}
-
-async function deleteMapForAll (users, shares, mapId) {
-    await deleteMapFromUsers(users, mapId)
-    await shares.deleteMany({ sharedMap: mapId })
-}
-
 async function deleteFrame (maps, mapId) {
     await maps.updateOne({ _id: mapId }, [
         {
@@ -221,8 +211,7 @@ module.exports = {
     getShareProps,
     getMapNameList,
     getUserShares,
-    deleteMapForOne,
-    deleteMapForAll,
+    deleteMapFromUsers,
     deleteFrame,
     moveUpMapInTab,
     moveDownMapInTab,

@@ -231,9 +231,11 @@ async function resolveType(req, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const iAmTheOwner = isEqual((await MongoQueries.getMapProps(maps, mapId)).ownerUser, currUser._id)
             if (iAmTheOwner) {
-                await MongoQueries.deleteMapForAll(users, shares, mapId)
+                await MongoQueries.deleteMapFromUsers(users, mapId)
+                await shares.deleteMany({ sharedMap: mapId })
             } else {
-                await MongoQueries.deleteMapForOne(users, shares, currUser._id, mapId)
+                await MongoQueries.deleteMapFromUsers(users, mapId, { _id: currUser._id } )
+                await shares.deleteMany({ shareUser: currUser._id, sharedMap: mapId })
             }
             const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList, breadcrumbMapIdList } = currUserUpdated
@@ -376,10 +378,15 @@ async function resolveType(req, currUser) {
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
             const { shareUser, sharedMap } = await MongoQueries.getShareProps(shares, shareId)
-            await MongoQueries.deleteMapForOne(users, shares, shareUser, sharedMap)
+
+            await MongoQueries.deleteMapFromUsers(users, sharedMap, { _id: shareUser } )
+            await shares.deleteMany({ shareUser, sharedMap })
+
             // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
             // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
+
             const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+
             return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'GET_NAME': { // QUERY
