@@ -77,8 +77,8 @@ async function getUserShares(users, maps, shares, userId) {
     return {shareDataExport, shareDataImport}
 }
 
-async function deleteMapFromUsers (users, mapId, userFilter = {}) {
-    const filter = { tabMapIdList: mapId, ...userFilter }
+async function deleteMapFromUsers (users, filter) {
+    const mapId = filter.tabMapIdList
     await users.updateMany(
         filter,
         [

@@ -231,10 +231,10 @@ async function resolveType(req, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const iAmTheOwner = isEqual((await MongoQueries.getMapProps(maps, mapId)).ownerUser, currUser._id)
             if (iAmTheOwner) {
-                await MongoQueries.deleteMapFromUsers(users, mapId)
+                await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: mapId })
                 await shares.deleteMany({ sharedMap: mapId })
             } else {
-                await MongoQueries.deleteMapFromUsers(users, mapId, { _id: currUser._id } )
+                await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: mapId, _id: currUser._id } )
                 await shares.deleteMany({ shareUser: currUser._id, sharedMap: mapId })
             }
             const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
@@ -379,7 +379,7 @@ async function resolveType(req, currUser) {
             const shareId = ObjectId(req.payload.shareId)
             const { shareUser, sharedMap } = await MongoQueries.getShareProps(shares, shareId)
 
-            await MongoQueries.deleteMapFromUsers(users, sharedMap, { _id: shareUser } )
+            await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: sharedMap, _id: shareUser } )
             await shares.deleteMany({ shareUser, sharedMap })
 
             // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
