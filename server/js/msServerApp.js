@@ -245,7 +245,6 @@ async function resolveType(req, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const { tabMapIdList } = await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
             return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList } }
-
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
