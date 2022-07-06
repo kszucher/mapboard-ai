@@ -53,7 +53,7 @@ function* authSaga () {
             const { resp } = yield call(fetchPost, { type, payload })
             yield put({type: 'INTERACTION_ENABLED'})
             switch (resp.type) {
-                case 'signInSuccess':
+                case 'signInSuccess': // no need for success here, instead we can have a switch based on type as above!!! only handle errors!!!
                     const { cred } = resp.payload
                     localStorage.setItem('cred', JSON.stringify(cred))
                     initDomData()
