@@ -207,7 +207,7 @@ async function importFrame (maps, mapId) {
     //                 }
     //             }
     //         }
-    //     },
+    //     }
     // ])
 }
 
@@ -235,7 +235,7 @@ async function deleteFrame (maps, mapId) {
                     }
                 }
             }
-        },
+        }
     ])
 }
 

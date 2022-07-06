@@ -65,7 +65,7 @@ async function mongoTests(cmd) {
                     maps: [ {
                         _id: 'map1',
                         data: ['originalNode1', 'originalNode2'],
-                        dataPlayback: [['mutatedNode1', 'mutatedNode2'],],
+                        dataPlayback: [['mutatedNode1', 'mutatedNode2']],
                         frameSelected: 0
                     } ] }
                 dbExpected = {
