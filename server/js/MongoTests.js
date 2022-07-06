@@ -82,7 +82,7 @@ async function mongoTests(cmd) {
         switch(cmd) {
 
             case 'deleteMapFromUsersTest': await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
-            // case  'deleteMapFromSharesTest':
+            case  'deleteMapFromSharesTest': await MongoQueries.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
 
             case 'moveUpMapInTabTest1': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
             case 'moveUpMapInTabTest2': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
@@ -114,6 +114,7 @@ async function mongoTests(cmd) {
 async function allTest () {
 
     await mongoTests('deleteMapFromUsersTest')
+    await mongoTests('deleteMapFromSharesTest')
 
     // TODO openMapFromTab
     // TODO openMapFromMap
