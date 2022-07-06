@@ -114,31 +114,17 @@ async function allTest () {
     await mongoTests('deleteMapFromUsersTest')
     await mongoTests('deleteMapFromSharesTest')
 
-    // TODO openMapFromTab
-    // TODO openMapFromMap
-    // TODO openMapFromBreadcrumbs
-    // TODO createMapInMap
-    // TODO createMapInTab
-    // TODO removeMapInTab
-
     // await mongoTests('moveUpMapInTabTest1')
     // await mongoTests('moveUpMapInTabTest2')
     // await mongoTests('moveDownMapInTabTest1')
     // await mongoTests('moveDownMapInTabTest2')
 
-    // TODO openFrame
-    // TODO openPrevFrame
-    // TODO openNextFrame
     // TODO importFrame
 
     // await mongoTests('deleteFrameTest1')
     // await mongoTests('deleteFrameTest2')
     // await mongoTests('deleteFrameTest3')
     // await mongoTests('deleteFrameTest4')
-
-    // TODO duplicateFrame
-    // TODO getShares
-    // TODO createShare
 }
 
 allTest()

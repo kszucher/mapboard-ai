@@ -285,12 +285,14 @@ async function resolveType(req, currUser) {
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
+
             const mapStorage = await MongoQueries.getMapData(maps, mapId)
             // TODO one query the below
             await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             const frameSelected = frameLen - 1
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
+
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
