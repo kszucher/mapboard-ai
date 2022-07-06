@@ -156,26 +156,30 @@ async function deleteFrame (maps, mapId) {
 
 async function moveUpMapInTab (users, userId, mapId) {
     const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
-    await users.updateOne({ _id: userId }, [
-        {
-            $set: {
-                tabMapIdList: {
-                    $cond: {
-                        if: { $eq: [ tabIndex, 0 ] },
-                        then: "$tabMapIdList",
-                        else: {
-                            $concatArrays: [
-                                { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
-                                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                                [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
-                                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
-                            ]
+    return (
+        await users.findOneAndUpdate(
+            { _id: userId },
+            [{
+                $set: {
+                    tabMapIdList: {
+                        $cond: {
+                            if: { $eq: [ tabIndex, 0 ] },
+                            then: "$tabMapIdList",
+                            else: {
+                                $concatArrays: [
+                                    { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
+                                    [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
+                                    [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
+                                    { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
+                                ]
+                            }
                         }
                     }
                 }
-            }
-        }
-    ])
+            }],
+            { returnDocument: 'after' }
+        )
+    ).value
 }
 
 async function moveDownMapInTab (users, userId, mapId) {
@@ -202,7 +206,8 @@ async function moveDownMapInTab (users, userId, mapId) {
                 }
             }],
             { returnDocument: 'after' }
-        )).value
+        )
+    ).value
 }
 
 module.exports = {

@@ -243,17 +243,13 @@ async function resolveType(req, currUser) {
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
-            const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
-            const { tabMapIdList } = currUserUpdated
+            const { tabMapIdList } = await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
             return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList } }
 
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { tabMapIdList } = await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
-            // const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
-            // const { tabMapIdList } = currUserUpdated
             return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
@@ -289,6 +285,7 @@ async function resolveType(req, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
             const mapStorage = await MongoQueries.getMapData(maps, mapId)
+            // TODO one query the below
             await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             const frameSelected = frameLen - 1
