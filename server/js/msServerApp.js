@@ -7,6 +7,7 @@ const {ObjectId} = require('mongodb')
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries");
+const { importFrame } = require('./MongoQueries')
 
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
@@ -285,14 +286,8 @@ async function resolveType(req, currUser) {
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
-
-            // TODO one query the below, it would be exciting
-            const mapStorage = await MongoQueries.getMapData(maps, mapId)
-            await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
-            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
-            const frameSelected = frameLen - 1
-            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
-
+            const { dataPlayback, frameSelected } = await importFrame(maps, mapId)
+            const frameLen = dataPlayback.length
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
