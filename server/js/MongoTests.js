@@ -140,10 +140,10 @@ async function allTest () {
 
     await mongoTests('importFrameTest')
 
-    // await mongoTests('deleteFrameTest1')
-    // await mongoTests('deleteFrameTest2')
-    // await mongoTests('deleteFrameTest3')
-    // await mongoTests('deleteFrameTest4')
+    await mongoTests('deleteFrameTest1')
+    await mongoTests('deleteFrameTest2')
+    await mongoTests('deleteFrameTest3')
+    await mongoTests('deleteFrameTest4')
 }
 
 allTest()

@@ -297,12 +297,8 @@ async function resolveType(req, currUser) {
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-
-            // TODO simplify
-            await MongoQueries.deleteFrame(maps, mapId)
-            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
-            const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
-
+            const { dataPlayback, frameSelected } = await MongoQueries.deleteFrame(maps, mapId)
+            const frameLen = dataPlayback.length
             const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
             return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
