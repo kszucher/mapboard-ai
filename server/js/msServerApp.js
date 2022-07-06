@@ -286,8 +286,8 @@ async function resolveType(req, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
 
+            // TODO one query the below, it would be exciting
             const mapStorage = await MongoQueries.getMapData(maps, mapId)
-            // TODO one query the below
             await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             const frameSelected = frameLen - 1

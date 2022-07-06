@@ -120,34 +120,6 @@ async function deleteMapFromShares (shares, filter) {
     await shares.deleteMany(filter)
 }
 
-async function deleteFrame (maps, mapId) {
-    await maps.updateOne({ _id: mapId }, [
-        {
-            $set: {
-                dataPlayback: {
-                    $concatArrays: [
-                        { $slice: [ "$dataPlayback", "$frameSelected" ] },
-                        { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
-                    ]
-                },
-                frameSelected: {
-                    $cond: {
-                        if: { $eq: ["$frameSelected", 0] },
-                        then: {
-                            $cond: {
-                                if: { $eq: [ { $size: "$dataPlayback" }, 1 ] },
-                                then: null,
-                                else: 0
-                            }
-                        },
-                        else: { $subtract: [ "$frameSelected", 1 ] }
-                    }
-                }
-            }
-        },
-    ])
-}
-
 async function moveUpMapInTab (users, userId, mapId) {
     const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
     return (
@@ -204,6 +176,36 @@ async function moveDownMapInTab (users, userId, mapId) {
     ).value
 }
 
+// TODO importFrame
+
+async function deleteFrame (maps, mapId) {
+    await maps.updateOne({ _id: mapId }, [
+        {
+            $set: {
+                dataPlayback: {
+                    $concatArrays: [
+                        { $slice: [ "$dataPlayback", "$frameSelected" ] },
+                        { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
+                    ]
+                },
+                frameSelected: {
+                    $cond: {
+                        if: { $eq: ["$frameSelected", 0] },
+                        then: {
+                            $cond: {
+                                if: { $eq: [ { $size: "$dataPlayback" }, 1 ] },
+                                then: null,
+                                else: 0
+                            }
+                        },
+                        else: { $subtract: [ "$frameSelected", 1 ] }
+                    }
+                }
+            }
+        },
+    ])
+}
+
 module.exports = {
     getUserByEmail,
     getUser,
@@ -217,9 +219,9 @@ module.exports = {
     getUserShares,
     deleteMapFromUsers,
     deleteMapFromShares,
-    deleteFrame,
     moveUpMapInTab,
     moveDownMapInTab,
+    deleteFrame,
 }
 
 // mongodb driver naming issue
