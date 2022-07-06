@@ -59,6 +59,24 @@ async function mongoTests(cmd) {
                 dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
                 dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
                 break
+
+            case 'importFrameTest': {
+                dbOriginal = {
+                    maps: [ {
+                        _id: 'map1',
+                        data: ['originalNode1', 'originalNode2'],
+                        dataPlayback: [['mutatedNode1', 'mutatedNode2'],],
+                        frameSelected: 0
+                    } ] }
+                dbExpected = {
+                    maps: [ {
+                        _id: 'map1',
+                        data: ['originalNode1', 'originalNode2'],
+                        dataPlayback: [['mutatedNode1', 'mutatedNode2'], ['originalNode1', 'originalNode2']],
+                        frameSelected: 1
+                    } ] }
+                break
+            }
             case 'deleteFrameTest1':
                 dbOriginal = { maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 0 } ] }
                 dbExpected = { maps: [ {_id: 'map1', dataPlayback: ['frame2', 'frame3'], frameSelected: 0 } ] }
@@ -86,6 +104,7 @@ async function mongoTests(cmd) {
             case 'moveUpMapInTabTest2': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
             case 'moveDownMapInTabTest1': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
             case 'moveDownMapInTabTest2': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
+            case 'importFrameTest': await MongoQueries.importFrame(maps, 'map1'); break
             case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
@@ -111,15 +130,15 @@ async function mongoTests(cmd) {
 
 async function allTest () {
 
-    await mongoTests('deleteMapFromUsersTest')
-    await mongoTests('deleteMapFromSharesTest')
+    // await mongoTests('deleteMapFromUsersTest')
+    // await mongoTests('deleteMapFromSharesTest')
 
     // await mongoTests('moveUpMapInTabTest1')
     // await mongoTests('moveUpMapInTabTest2')
     // await mongoTests('moveDownMapInTabTest1')
     // await mongoTests('moveDownMapInTabTest2')
 
-    // TODO importFrame
+    await mongoTests('importFrameTest')
 
     // await mongoTests('deleteFrameTest1')
     // await mongoTests('deleteFrameTest2')

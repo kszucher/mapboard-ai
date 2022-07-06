@@ -176,7 +176,40 @@ async function moveDownMapInTab (users, userId, mapId) {
     ).value
 }
 
-// TODO importFrame
+async function importFrame (maps, mapId) {
+
+    const mapStorage = await getMapData(maps, mapId)
+    await maps.updateOne({ _id: mapId }, { $push: { "dataPlayback": mapStorage } })
+    const frameLen = await getFrameLen(maps, mapId)
+    const frameSelected = frameLen - 1
+    await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
+
+    // await maps.updateOne({ _id: mapId }, [
+    //     {
+    //         $set: {
+    //             dataPlayback: {
+    //                 $concatArrays: [
+    //                     { $slice: [ "$dataPlayback", "$frameSelected" ] },
+    //                     { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
+    //                 ]
+    //             },
+    //             frameSelected: {
+    //                 $cond: {
+    //                     if: { $eq: ["$frameSelected", 0] },
+    //                     then: {
+    //                         $cond: {
+    //                             if: { $eq: [ { $size: "$dataPlayback" }, 1 ] },
+    //                             then: null,
+    //                             else: 0
+    //                         }
+    //                     },
+    //                     else: { $subtract: [ "$frameSelected", 1 ] }
+    //                 }
+    //             }
+    //         }
+    //     },
+    // ])
+}
 
 async function deleteFrame (maps, mapId) {
     await maps.updateOne({ _id: mapId }, [
@@ -221,6 +254,7 @@ module.exports = {
     deleteMapFromShares,
     moveUpMapInTab,
     moveDownMapInTab,
+    importFrame,
     deleteFrame,
 }
 
