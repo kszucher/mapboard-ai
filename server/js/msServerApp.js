@@ -266,19 +266,25 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
+
+            // TODO simplify
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
+
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
+
+            // TODO simplify
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             frameSelected = frameSelected < frameLen - 1 ? frameSelected + 1 : frameLen - 1
             await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
+
             const mapSource = 'dataPlayback'
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
@@ -291,14 +297,19 @@ async function resolveType(req, currUser) {
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
+
+            // TODO simplify
             await MongoQueries.deleteFrame(maps, mapId)
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
             const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
+
             const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
             return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
+
+            // TODO simplify
             const { mapStorage } = req.payload
             let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
             frameSelected = frameSelected + 1
@@ -311,8 +322,9 @@ async function resolveType(req, currUser) {
                     }
                 }
             })
-            const mapSource = "dataPlayback"
             const frameLen = await MongoQueries.getFrameLen(maps, mapId)
+
+            const mapSource = "dataPlayback"
             return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'GET_SHARES': { // QUERY
