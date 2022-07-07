@@ -297,23 +297,9 @@ async function resolveType(req, currUser) {
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-
-            // TODO simplify
-            const { mapStorage } = req.payload
-            let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
-            frameSelected = frameSelected + 1
-            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
-            await maps.updateOne({ _id: mapId }, {
-                $push: {
-                    "dataPlayback": {
-                        $each: [mapStorage],
-                        $position: frameSelected
-                    }
-                }
-            })
-            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
-
             const mapSource = "dataPlayback"
+            const { dataPlayback, frameSelected } = await MongoQueries.duplicateFrame(maps, mapId)
+            const frameLen = dataPlayback.length
             return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
