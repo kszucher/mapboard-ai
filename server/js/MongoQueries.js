@@ -181,9 +181,30 @@ async function importFrame (maps, mapId) {
         await maps.findOneAndUpdate(
             { _id: mapId },
             [
-                { $set: { dataPlayback: { $concatArrays: [ "$dataPlayback", ["$data"] ] } } },
-                { $set: { frameSelected: { $subtract : [ {$size: "$dataPlayback"}, 1] } } }
+                { $set: { dataPlayback: { $concatArrays: [ "$dataPlayback", [ "$data" ] ] } } },
+                { $set: { frameSelected: { $subtract : [ { $size: "$dataPlayback" }, 1 ] } } }
             ],
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
+async function duplicateFrame (maps, mapId) {
+    return (
+        await maps.findOneAndUpdate(
+            { _id: mapId },
+            [{
+                $set: {
+                    dataPlayback: {
+                        $concatArrays: [
+                            { $slice: [ "$dataPlayback", {$add: [ "$frameSelected", 1 ]  } ] },
+                            [ { $arrayElemAt: [ "$dataPlayback", "$frameSelected" ] } ],
+                            { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
+                        ]
+                    },
+                    frameSelected: { $add : [ "$frameSelected", 1 ] }
+                }
+            }],
             { returnDocument: 'after' }
         )
     ).value
@@ -237,6 +258,7 @@ module.exports = {
     moveUpMapInTab,
     moveDownMapInTab,
     importFrame,
+    duplicateFrame,
     deleteFrame,
 }
 

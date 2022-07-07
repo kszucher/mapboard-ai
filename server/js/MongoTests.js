@@ -66,20 +66,8 @@ async function mongoTests(cmd) {
                 break
             }
             case 'duplicateFrameTest': {
-                dbOriginal = {
-                    maps: [ {
-                        _id: 'map1',
-                        data: ['o1', 'o2'],
-                        dataPlayback: [['f1', 'f2']],
-                        frameSelected: 0
-                    } ] }
-                dbExpected = {
-                    maps: [ {
-                        _id: 'map1',
-                        data: ['o1', 'o2'],
-                        dataPlayback: [['f1', 'f2'], ['o1', 'o2']],
-                        frameSelected: 1
-                    } ] }
+                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: [['fa', 'fa'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 1 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataPlayback: [['fa', 'fa'], ['fb', 'fb'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 2 } ] }
                 break
             }
             case 'deleteFrameTest1':
@@ -110,6 +98,7 @@ async function mongoTests(cmd) {
             case 'moveDownMapInTabTest1': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
             case 'moveDownMapInTabTest2': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
             case 'importFrameTest': await MongoQueries.importFrame(maps, 'map1'); break
+            case 'duplicateFrameTest': await MongoQueries.duplicateFrame(maps, 'map1'); break
             case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
@@ -144,6 +133,8 @@ async function allTest () {
     // await mongoTests('moveDownMapInTabTest2')
 
     await mongoTests('importFrameTest')
+
+    await mongoTests('duplicateFrameTest')
 
     await mongoTests('deleteFrameTest1')
     await mongoTests('deleteFrameTest2')
