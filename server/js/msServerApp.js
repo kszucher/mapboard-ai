@@ -400,12 +400,15 @@ async function appendStuff (resp, currUser) {
         if (resp.payload.hasOwnProperty('mapId') &&
             resp.payload.hasOwnProperty('mapSource')) {
             const {mapId, mapSource} = resp.payload
+
+            // TODO remove this, as this is usually already returned
             let mapStorage = {}
             if (mapSource === 'data') {
                 mapStorage = await MongoQueries.getMapData(maps, mapId)
             } else if (mapSource === 'dataPlayback') {
                 mapStorage = await MongoQueries.getPlaybackMapData(maps, mapId, resp.payload.frameSelected)
             }
+
             const {path, ownerUser} = await MongoQueries.getMapProps(maps, mapId)
             let mapRight = MAP_RIGHTS.UNAUTHORIZED
             if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
