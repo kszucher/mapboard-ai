@@ -96,13 +96,7 @@ async function resolveType(req, currUser) {
         case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
             const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
-            return {
-                type: 'liveDemoSuccess',
-                payload: {
-                    landingData: (await maps.findOne({_id: mapId})).dataPlayback,
-                    mapRight: MAP_RIGHTS.VIEW
-                },
-            }
+            return { type: 'liveDemoSuccess', payload: { landingData: (await maps.findOne({_id: mapId})).dataPlayback, mapRight: MAP_RIGHTS.VIEW } }
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
@@ -166,10 +160,7 @@ async function resolveType(req, currUser) {
             const { tabMapIdList, breadcrumbMapIdList, colorMode } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
-            return {
-                type: 'signInSuccess',
-                payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, mapId, mapSource }
-            }
+            return { type: 'signInSuccess', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, mapId, mapSource } }
         }
         case 'SAVE_MAP': { // MUTATION
             return { type: 'saveMapSuccess' }
@@ -222,10 +213,7 @@ async function resolveType(req, currUser) {
             breadcrumbMapIdList = [mapId]
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList }})
             const mapSource = 'data'
-            return {
-                type: 'createMapInTabSuccess',
-                payload: { tabMapIdList, breadcrumbMapIdList, mapId, mapSource }
-            }
+            return { type: 'createMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId, mapSource } }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -350,10 +338,7 @@ async function resolveType(req, currUser) {
             await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
             const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
-            return {
-                type: 'acceptShareSuccess',
-                payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId: sharedMap, mapSource }
-            }
+            return { type: 'acceptShareSuccess', payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId: sharedMap, mapSource } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
