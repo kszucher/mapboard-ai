@@ -288,10 +288,7 @@ async function resolveType(req, currUser) {
             return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'GET_SHARES': { // QUERY
-            const {
-                shareDataExport,
-                shareDataImport
-            } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
         }
         case 'CREATE_SHARE': { // MUTATION
