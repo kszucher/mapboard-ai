@@ -295,13 +295,6 @@ async function resolveType(req, currUser) {
             const frameLen = dataPlayback.length
             return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
-        case 'DELETE_FRAME': { // MUTATION
-            const mapId = ObjectId(req.payload.mapId)
-            const { dataPlayback, frameSelected } = await MongoQueries.deleteFrame(maps, mapId)
-            const frameLen = dataPlayback.length
-            const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
-            return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
-        }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
 
@@ -322,6 +315,13 @@ async function resolveType(req, currUser) {
 
             const mapSource = "dataPlayback"
             return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+        }
+        case 'DELETE_FRAME': { // MUTATION
+            const mapId = ObjectId(req.payload.mapId)
+            const { dataPlayback, frameSelected } = await MongoQueries.deleteFrame(maps, mapId)
+            const frameLen = dataPlayback.length
+            const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
+            return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'GET_SHARES': { // QUERY
             const {
