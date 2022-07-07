@@ -243,8 +243,8 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)
-            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
-            const frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
+            const { dataPlayback, frameSelected } = await maps.findOne({_id: mapId})
+            const frameLen = dataPlayback.length
             if (frameLen === 0) {
                 return { type: 'openFrameFail', payload: { frameLen, frameSelected } }
             } else {

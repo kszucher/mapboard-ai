@@ -19,10 +19,6 @@ async function getFrameSelected(maps, mapId) {
     return (await maps.findOne({_id: mapId})).frameSelected
 }
 
-async function getFrameLen(maps, mapId) {
-    return (await maps.findOne({_id: mapId})).dataPlayback.length
-}
-
 async function getMapProps(maps, mapId) {
     const currMap = await maps.findOne({_id: mapId})
     const {path, ownerUser} = currMap
@@ -287,7 +283,6 @@ module.exports = {
     getUser,
     getMapData,
     getFrameSelected,
-    getFrameLen,
     getPlaybackMapData,
     getMapProps,
     getShareProps,
