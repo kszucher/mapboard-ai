@@ -225,8 +225,8 @@ async function resolveType(req, currUser) {
                 await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: mapId, _id: currUser._id })
                 await MongoQueries.deleteMapFromShares(shares, { shareUser: currUser._id, sharedMap: mapId })
             }
-            const currUserUpdated = await users.findOne({ email: req.payload.cred.email })
-            const { tabMapIdList, breadcrumbMapIdList } = currUserUpdated
+            const userUpdated = await users.findOne({ email: req.payload.cred.email })
+            const { tabMapIdList, breadcrumbMapIdList } = userUpdated
             const newMapId = breadcrumbMapIdList[0]
             const mapSource = 'data'
             return { type: 'removeMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId: newMapId, mapSource } }
