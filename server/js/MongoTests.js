@@ -61,18 +61,23 @@ async function mongoTests(cmd) {
                 break
 
             case 'importFrameTest': {
+                dbOriginal = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataPlayback: [['u1', 'u2']], frameSelected: 0 } ] }
+                dbExpected = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataPlayback: [['u1', 'u2'], ['o1', 'o2']], frameSelected: 1 } ] }
+                break
+            }
+            case 'duplicateFrameTest': {
                 dbOriginal = {
                     maps: [ {
                         _id: 'map1',
-                        data: ['originalNode1', 'originalNode2'],
-                        dataPlayback: [['mutatedNode1', 'mutatedNode2']],
+                        data: ['o1', 'o2'],
+                        dataPlayback: [['u1', 'u2']],
                         frameSelected: 0
                     } ] }
                 dbExpected = {
                     maps: [ {
                         _id: 'map1',
-                        data: ['originalNode1', 'originalNode2'],
-                        dataPlayback: [['mutatedNode1', 'mutatedNode2'], ['originalNode1', 'originalNode2']],
+                        data: ['o1', 'o2'],
+                        dataPlayback: [['u1', 'u2'], ['o1', 'o2']],
                         frameSelected: 1
                     } ] }
                 break
