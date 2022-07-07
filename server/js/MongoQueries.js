@@ -176,6 +176,46 @@ async function moveDownMapInTab (users, userId, mapId) {
     ).value
 }
 
+async function openPrevFrame (maps, mapId) {
+    return (
+        await maps.findOneAndUpdate(
+            { _id: mapId },
+            [{
+                $set: {
+                    frameSelected: {
+                        $cond: {
+                            if: { $gt: [ "$frameSelected", 0 ] },
+                            then: { $subtract: [ "$frameSelected", 1 ] },
+                            else: "$frameSelected"
+                        }
+                    }
+                }
+            }],
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
+async function openNextFrame (maps, mapId) {
+    return (
+        await maps.findOneAndUpdate(
+            { _id: mapId },
+            [{
+                $set: {
+                    frameSelected: {
+                        $cond: {
+                            if: { $lt: [ "$frameSelected", { $subtract: [ { $size: "$dataPlayback" }, 1 ] } ] },
+                            then: { $add: [ "$frameSelected", 1 ] },
+                            else: "$frameSelected"
+                        }
+                    }
+                }
+            }],
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
 async function importFrame (maps, mapId) {
     return (
         await maps.findOneAndUpdate(
@@ -197,7 +237,7 @@ async function duplicateFrame (maps, mapId) {
                 $set: {
                     dataPlayback: {
                         $concatArrays: [
-                            { $slice: [ "$dataPlayback", {$add: [ "$frameSelected", 1 ]  } ] },
+                            { $slice: [ "$dataPlayback", { $add: [ "$frameSelected", 1 ]  } ] },
                             [ { $arrayElemAt: [ "$dataPlayback", "$frameSelected" ] } ],
                             { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
                         ]
@@ -224,7 +264,7 @@ async function deleteFrame (maps, mapId) {
                     },
                     frameSelected: {
                         $cond: {
-                            if: { $eq: ["$frameSelected", 0] },
+                            if: { $eq: [ "$frameSelected", 0 ] },
                             then: {
                                 $cond: {
                                     if: { $eq: [ { $size: "$dataPlayback" }, 1 ] },
@@ -257,6 +297,8 @@ module.exports = {
     deleteMapFromShares,
     moveUpMapInTab,
     moveDownMapInTab,
+    openPrevFrame,
+    openNextFrame,
     importFrame,
     duplicateFrame,
     deleteFrame,

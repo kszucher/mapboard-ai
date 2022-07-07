@@ -59,7 +59,26 @@ async function mongoTests(cmd) {
                 dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
                 dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
                 break
-
+            case 'openPrevFrameTest1': {
+                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
+                break
+            }
+            case 'openPrevFrameTest2': {
+                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
+                break
+            }
+            case 'openNextFrameTest1': {
+                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
+                break
+            }
+            case 'openNextFrameTest2': {
+                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
+                break
+            }
             case 'importFrameTest': {
                 dbOriginal = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataPlayback: [['f1', 'f2']], frameSelected: 0 } ] }
                 dbExpected = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataPlayback: [['f1', 'f2'], ['o1', 'o2']], frameSelected: 1 } ] }
@@ -97,6 +116,10 @@ async function mongoTests(cmd) {
             case 'moveUpMapInTabTest2': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
             case 'moveDownMapInTabTest1': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
             case 'moveDownMapInTabTest2': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
+            case 'openPrevFrameTest1': await MongoQueries.openPrevFrame(maps, 'map1'); break
+            case 'openPrevFrameTest2': await MongoQueries.openPrevFrame(maps, 'map1'); break
+            case 'openNextFrameTest1': await MongoQueries.openNextFrame(maps, 'map1'); break
+            case 'openNextFrameTest2': await MongoQueries.openNextFrame(maps, 'map1'); break
             case 'importFrameTest': await MongoQueries.importFrame(maps, 'map1'); break
             case 'duplicateFrameTest': await MongoQueries.duplicateFrame(maps, 'map1'); break
             case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
@@ -132,14 +155,20 @@ async function allTest () {
     // await mongoTests('moveDownMapInTabTest1')
     // await mongoTests('moveDownMapInTabTest2')
 
-    await mongoTests('importFrameTest')
 
-    await mongoTests('duplicateFrameTest')
+    await mongoTests('openPrevFrameTest1')
+    await mongoTests('openPrevFrameTest2')
+    await mongoTests('openNextFrameTest1')
+    await mongoTests('openNextFrameTest2')
 
-    await mongoTests('deleteFrameTest1')
-    await mongoTests('deleteFrameTest2')
-    await mongoTests('deleteFrameTest3')
-    await mongoTests('deleteFrameTest4')
+    // await mongoTests('importFrameTest')
+
+    // await mongoTests('duplicateFrameTest')
+
+    // await mongoTests('deleteFrameTest1')
+    // await mongoTests('deleteFrameTest2')
+    // await mongoTests('deleteFrameTest3')
+    // await mongoTests('deleteFrameTest4')
 }
 
 allTest()

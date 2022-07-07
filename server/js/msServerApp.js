@@ -266,26 +266,16 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-
-            // TODO simplify
-            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
-            let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
-            frameSelected = frameSelected > 0 ? frameSelected - 1 : 0
-            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
-
             const mapSource = 'dataPlayback'
+            const { dataPlayback, frameSelected } = await MongoQueries.openPrevFrame(maps, mapId)
+            const frameLen = dataPlayback.length
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-
-            // TODO simplify
-            const frameLen = await MongoQueries.getFrameLen(maps, mapId)
-            let frameSelected = await MongoQueries.getFrameSelected(maps, mapId)
-            frameSelected = frameSelected < frameLen - 1 ? frameSelected + 1 : frameLen - 1
-            await maps.updateOne({ _id: mapId }, { $set: { frameSelected } })
-
             const mapSource = 'dataPlayback'
+            const { dataPlayback, frameSelected } = await MongoQueries.openNextFrame(maps, mapId)
+            const frameLen = dataPlayback.length
             return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
         }
         case 'IMPORT_FRAME': { // MUTATION
