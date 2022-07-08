@@ -83,6 +83,16 @@ async function sliceBreadcrumbs(users, userId, breadcrumbMapSelected) {
     ).value
 }
 
+async function appendTabReplaceBreadcrumbs(users, userId, mapId) {
+    return (
+        await users.findOneAndUpdate(
+            { _id: userId },
+            [ { $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] }, breadcrumbMapIdList: [ mapId ] } } ],
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
 async function deleteMapFromUsers (users, filter) {
     const mapId = filter.tabMapIdList
     await users.updateMany(
@@ -297,6 +307,7 @@ module.exports = {
     replaceBreadcrumbs,
     appendBreadcrumbs,
     sliceBreadcrumbs,
+    appendTabReplaceBreadcrumbs,
     deleteMapFromUsers,
     deleteMapFromShares,
     moveUpMapInTab,

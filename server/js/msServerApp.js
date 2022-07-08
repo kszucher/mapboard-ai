@@ -238,13 +238,8 @@ async function resolveType(req, currUser) {
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             const mapId = (await maps.insertOne(getDefaultMap('New Map', currUser._id, []))).insertedId
-
-            // TODO unify
-            let { tabMapIdList, breadcrumbMapIdList } = currUser
-            tabMapIdList = [...tabMapIdList, mapId]
-            breadcrumbMapIdList = [mapId]
-            await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList }})
-
+            const user = await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
+            const { tabMapIdList, breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { type: 'createMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
@@ -360,13 +355,8 @@ async function resolveType(req, currUser) {
                 { returnDocument: 'after' }
             )).value
             const mapId = share.sharedMap
-
-            // TODO unify
-            let { tabMapIdList } = currUser
-            tabMapIdList = [...tabMapIdList, mapId]
-            const breadcrumbMapIdList = [mapId]
-            await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
-
+            const user = await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
+            const { tabMapIdList, breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)

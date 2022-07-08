@@ -164,29 +164,21 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-
-    await mongoTests('replaceBreadcrumbsTest')
-    await mongoTests('appendBreadcrumbsTest')
-    await mongoTests('sliceBreadcrumbsTest')
-
+    // await mongoTests('replaceBreadcrumbsTest')
+    // await mongoTests('appendBreadcrumbsTest')
+    // await mongoTests('sliceBreadcrumbsTest')
     // await mongoTests('deleteMapFromUsersTest')
     // await mongoTests('deleteMapFromSharesTest')
-
     // await mongoTests('moveUpMapInTabTest1')
     // await mongoTests('moveUpMapInTabTest2')
     // await mongoTests('moveDownMapInTabTest1')
     // await mongoTests('moveDownMapInTabTest2')
-
-
     // await mongoTests('openPrevFrameTest1')
     // await mongoTests('openPrevFrameTest2')
     // await mongoTests('openNextFrameTest1')
     // await mongoTests('openNextFrameTest2')
-
     // await mongoTests('importFrameTest')
-
     // await mongoTests('duplicateFrameTest')
-
     // await mongoTests('deleteFrameTest1')
     // await mongoTests('deleteFrameTest2')
     // await mongoTests('deleteFrameTest3')
