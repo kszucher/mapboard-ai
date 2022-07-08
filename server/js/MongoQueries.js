@@ -11,24 +11,6 @@ async function getMap(maps, mapId) {
     return await maps.findOne({_id: mapId})
 }
 
-// async function getMapData(maps, mapId) {
-//     return (await maps.findOne({_id: mapId})).data
-// }
-
-// async function getPlaybackMapData(maps, mapId, frameSelected) {
-//     return (await maps.findOne({_id: mapId})).dataPlayback[frameSelected]
-// }
-
-// async function getFrameSelected(maps, mapId) {
-//     return (await maps.findOne({_id: mapId})).frameSelected
-// }
-//
-// async function getMapProps(maps, mapId) {
-//     const currMap = await maps.findOne({_id: mapId})
-//     const {path, ownerUser} = currMap
-//     return {path, ownerUser}
-// }
-
 async function getShareProps(shares, shareId) {
     const currShare = await shares.findOne({_id: shareId})
     const {shareUser, sharedMap} = currShare
@@ -286,10 +268,6 @@ module.exports = {
     getUserByEmail,
     getUser,
     getMap,
-    // getMapData,
-    // getFrameSelected,
-    // getPlaybackMapData,
-    // getMapProps,
     getShareProps,
     getMapNameList,
     getUserShares,
