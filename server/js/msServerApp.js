@@ -369,22 +369,23 @@ async function resolveType(req, currUser) {
         }
         case 'ACCEPT_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
-
-            await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } }) // this could return shared map in one step
-            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-
-            const { sharedMap } = await MongoQueries.getShareProps(shares, shareId) // this is redundant see above
-            // also I could write: const mapId = share.sharedMap, for simplicity
+            const share = (await shares.findOneAndUpdate(
+                { _id: shareId },
+                { $set: { status: SHARE_STATUS.ACCEPTED }},
+                { returnDocument: 'after' }
+            )).value
+            const mapId = share.sharedMap
 
             // TODO unify
             let { tabMapIdList } = currUser
-            tabMapIdList = [...tabMapIdList, sharedMap]
-            const breadcrumbMapIdList = [sharedMap]
+            tabMapIdList = [...tabMapIdList, mapId]
+            const breadcrumbMapIdList = [mapId]
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
 
-            const map = await MongoQueries.getMap(maps, sharedMap)
-            const mapInfo = await getMapInfo(currUser, shares, map, sharedMap, 'data')
-            return { type: 'acceptShareSuccess', payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
+            const map = await MongoQueries.getMap(maps, mapId)
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            return { type: 'acceptShareSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, shareDataExport, shareDataImport } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
