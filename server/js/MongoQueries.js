@@ -53,7 +53,7 @@ async function getUserShares(users, maps, shares, userId) {
     return {shareDataExport, shareDataImport}
 }
 
-async function openMapFromTab(users, userId, mapId) {
+async function replaceBreadcrumbs(users, userId, mapId) {
     return (
         await users.findOneAndUpdate(
             { _id: userId },
@@ -63,7 +63,7 @@ async function openMapFromTab(users, userId, mapId) {
     ).value
 }
 
-async function openMapFromMap(users, userId, mapId) {
+async function appendBreadcrumbs(users, userId, mapId) {
     return (
         await users.findOneAndUpdate(
             { _id: userId },
@@ -73,7 +73,7 @@ async function openMapFromMap(users, userId, mapId) {
     ).value
 }
 
-async function openMapFromBreadcrumbs(users, userId, breadcrumbMapSelected) {
+async function sliceBreadcrumbs(users, userId, breadcrumbMapSelected) {
     return (
         await users.findOneAndUpdate(
             { _id: userId },
@@ -294,9 +294,9 @@ module.exports = {
     getMap,
     getMapNameList,
     getUserShares,
-    openMapFromTab,
-    openMapFromMap,
-    openMapFromBreadcrumbs,
+    replaceBreadcrumbs,
+    appendBreadcrumbs,
+    sliceBreadcrumbs,
     deleteMapFromUsers,
     deleteMapFromShares,
     moveUpMapInTab,

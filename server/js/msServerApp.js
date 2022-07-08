@@ -195,7 +195,7 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const user = await MongoQueries.openMapFromTab(users, currUser._id, mapId)
+            const user = await MongoQueries.replaceBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
@@ -203,7 +203,7 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const user = await MongoQueries.openMapFromMap(users, currUser._id, mapId)
+            const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
@@ -211,7 +211,7 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const { breadcrumbMapSelected } = req.payload
-            const user = await MongoQueries.openMapFromBreadcrumbs(users, currUser._id, breadcrumbMapSelected)
+            const user = await MongoQueries.sliceBreadcrumbs(users, currUser._id, breadcrumbMapSelected)
             const { breadcrumbMapIdList } = user
             const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
@@ -221,13 +221,9 @@ async function resolveType(req, currUser) {
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             // CREATE NEW
             const { lastPath, newMapName } = req.payload
-            let { breadcrumbMapIdList } = currUser
-            const newMapId = (await maps.insertOne(getDefaultMap(newMapName, currUser._id, breadcrumbMapIdList))).insertedId
-
-            // TODO unify
-            breadcrumbMapIdList = [...breadcrumbMapIdList, newMapId]
-            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-
+            const newMapId = (await maps.insertOne(getDefaultMap(newMapName, currUser._id, currUser.breadcrumbMapIdList))).insertedId
+            const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, newMapId)
+            const { breadcrumbMapIdList } = user
             // UPDATE OLD
             const mapId = ObjectId(req.payload.mapId) // maybe use .save mapId, as it is already there
             await maps.updateOne(
