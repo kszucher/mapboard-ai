@@ -160,7 +160,8 @@ async function resolveType(req, currUser) {
             const { tabMapIdList, breadcrumbMapIdList, colorMode } = currUser
             const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
             const mapSource = 'data'
-            return { type: 'signInSuccess', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, mapId, mapSource } }
+            const mapStorage = await MongoQueries.getMapData(maps, mapId)
+            return { type: 'signInSuccess', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, mapId, mapSource, mapStorage } }
         }
         case 'SAVE_MAP': { // MUTATION
             return { type: 'saveMapSuccess' }
@@ -168,9 +169,10 @@ async function resolveType(req, currUser) {
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const breadcrumbMapIdList = [mapId]
-            const mapSource = 'data'
             await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-            return { type: 'openMapFromTabSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+            const mapSource = 'data'
+            const mapStorage = await MongoQueries.getMapData(maps, mapId)
+            return { type: 'openMapFromTabSuccess', payload: { breadcrumbMapIdList, mapId, mapSource, mapStorage } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -178,16 +180,21 @@ async function resolveType(req, currUser) {
             breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
             const mapSource = 'data'
             await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-            return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+            const mapStorage = await MongoQueries.getMapData(maps, mapId)
+            return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, mapId, mapSource, mapStorage } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             let { breadcrumbMapSelected } = req.payload
+
+            // TODO unify
             let { breadcrumbMapIdList } = currUser
             breadcrumbMapIdList.length = breadcrumbMapSelected + 1
-            let mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
-            const mapSource = 'data'
             await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-            return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, mapId, mapSource } }
+
+            const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
+            const mapSource = 'data'
+            const mapStorage = await MongoQueries.getMapData(maps, mapId)
+            return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, mapId, mapSource, mapStorage } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -203,7 +210,8 @@ async function resolveType(req, currUser) {
                 { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
                 { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
             )
-            return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId: newMapId, mapSource } }
+            const mapStorage = await MongoQueries.getMapData(maps, newMapId)
+            return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, mapId: newMapId, mapSource, mapStorage } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             let { tabMapIdList, breadcrumbMapIdList } = currUser
@@ -213,7 +221,8 @@ async function resolveType(req, currUser) {
             breadcrumbMapIdList = [mapId]
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList }})
             const mapSource = 'data'
-            return { type: 'createMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId, mapSource } }
+            const mapStorage = await MongoQueries.getMapData(maps, mapId)
+            return { type: 'createMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId, mapSource, mapStorage } }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -229,7 +238,8 @@ async function resolveType(req, currUser) {
             const { tabMapIdList, breadcrumbMapIdList } = userUpdated
             const newMapId = breadcrumbMapIdList[0]
             const mapSource = 'data'
-            return { type: 'removeMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId: newMapId, mapSource } }
+            const mapStorage = await MongoQueries.getMapData(maps, newMapId)
+            return { type: 'removeMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, mapId: newMapId, mapSource, mapStorage } }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -249,7 +259,8 @@ async function resolveType(req, currUser) {
                 return { type: 'openFrameFail', payload: { frameLen, frameSelected } }
             } else {
                 const mapSource = 'dataPlayback'
-                return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+                const mapStorage = await MongoQueries.getPlaybackMapData(maps, mapId, frameSelected)
+                return { type: 'openFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
             }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
@@ -257,35 +268,46 @@ async function resolveType(req, currUser) {
             const mapSource = 'dataPlayback'
             const { dataPlayback, frameSelected } = await MongoQueries.openPrevFrame(maps, mapId)
             const frameLen = dataPlayback.length
-            return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            const mapStorage = dataPlayback[frameSelected]
+            return { type: 'openFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
             const { dataPlayback, frameSelected } = await MongoQueries.openNextFrame(maps, mapId)
             const frameLen = dataPlayback.length
-            return { type: 'openFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            const mapStorage = dataPlayback[frameSelected]
+            return { type: 'openFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
         }
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = 'dataPlayback'
             const { dataPlayback, frameSelected } = await MongoQueries.importFrame(maps, mapId)
             const frameLen = dataPlayback.length
-            return { type: 'importFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            const mapStorage = dataPlayback[frameSelected]
+            return { type: 'importFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const mapSource = "dataPlayback"
             const { dataPlayback, frameSelected } = await MongoQueries.duplicateFrame(maps, mapId)
             const frameLen = dataPlayback.length
-            return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            const mapStorage = dataPlayback[frameSelected]
+            return { type: 'duplicateFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { dataPlayback, frameSelected } = await MongoQueries.deleteFrame(maps, mapId)
             const frameLen = dataPlayback.length
-            const mapSource = frameLen === 0 ? 'data' : 'dataPlayback'
-            return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, frameLen, frameSelected } }
+            if (frameLen === 0) {
+                const mapSource = 'data'
+                const mapStorage = await MongoQueries.getMapData(maps, mapId)
+                return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
+            } else {
+                const mapSource = 'dataPlayback'
+                const mapStorage = dataPlayback[frameSelected]
+                return { type: 'deleteFrameSuccess', payload: { mapId, mapSource, mapStorage, frameLen, frameSelected } }
+            }
         }
         case 'GET_SHARES': { // QUERY
             const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
@@ -335,7 +357,8 @@ async function resolveType(req, currUser) {
             await shares.updateOne({ _id: shareId }, { $set: { status: SHARE_STATUS.ACCEPTED } })
             const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             await users.updateOne({_id: currUser._id}, { $set: { tabMapIdList, breadcrumbMapIdList } })
-            return { type: 'acceptShareSuccess', payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId: sharedMap, mapSource } }
+            const mapStorage = await MongoQueries.getMapData(maps, sharedMap)
+            return { type: 'acceptShareSuccess', payload: { shareDataExport, shareDataImport, tabMapIdList, breadcrumbMapIdList, mapId: sharedMap, mapStorage, mapSource } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
@@ -369,18 +392,8 @@ async function resolveType(req, currUser) {
 
 async function appendStuff (resp, currUser) {
     if (resp.hasOwnProperty('payload')) {
-        if (resp.payload.hasOwnProperty('mapId') &&
-            resp.payload.hasOwnProperty('mapSource')) {
-            const {mapId, mapSource} = resp.payload
-
-            // TODO remove this, as this is usually already returned
-            let mapStorage = {}
-            if (mapSource === 'data') {
-                mapStorage = await MongoQueries.getMapData(maps, mapId)
-            } else if (mapSource === 'dataPlayback') {
-                mapStorage = await MongoQueries.getPlaybackMapData(maps, mapId, resp.payload.frameSelected)
-            }
-
+        if (resp.payload.hasOwnProperty('mapId')) {
+            const {mapId} = resp.payload
             const {path, ownerUser} = await MongoQueries.getMapProps(maps, mapId)
             let mapRight = MAP_RIGHTS.UNAUTHORIZED
             if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
@@ -404,7 +417,7 @@ async function appendStuff (resp, currUser) {
                     }
                 }
             }
-            Object.assign(resp.payload, { mapStorage, mapRight })
+            Object.assign(resp.payload, { mapRight })
         }
         if (resp.payload.hasOwnProperty('tabMapIdList')) {
             const { tabMapIdList } = resp.payload
