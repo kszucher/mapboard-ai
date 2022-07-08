@@ -195,11 +195,8 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-
-            // TODO unify
-            const breadcrumbMapIdList = [mapId]
-            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-
+            const user = await MongoQueries.openMapFromTab(users, currUser._id, mapId)
+            const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { type: 'openMapFromTabSuccess', payload: { breadcrumbMapIdList, ...mapInfo } }

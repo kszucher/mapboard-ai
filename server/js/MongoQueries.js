@@ -53,6 +53,16 @@ async function getUserShares(users, maps, shares, userId) {
     return {shareDataExport, shareDataImport}
 }
 
+async function openMapFromTab(users, userId, mapId) {
+    return (
+        await users.findOneAndUpdate(
+            { _id: userId },
+            { $set: { breadcrumbMapIdList: [ mapId ] } },
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
 async function deleteMapFromUsers (users, filter) {
     const mapId = filter.tabMapIdList
     await users.updateMany(
@@ -264,6 +274,8 @@ module.exports = {
     getMap,
     getMapNameList,
     getUserShares,
+    openMapFromTab,
+
     deleteMapFromUsers,
     deleteMapFromShares,
     moveUpMapInTab,
