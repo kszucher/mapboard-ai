@@ -57,7 +57,27 @@ async function openMapFromTab(users, userId, mapId) {
     return (
         await users.findOneAndUpdate(
             { _id: userId },
-            { $set: { breadcrumbMapIdList: [ mapId ] } },
+            [ { $set: { breadcrumbMapIdList: [ mapId ] } } ],
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
+async function openMapFromMap(users, userId, mapId) {
+    return (
+        await users.findOneAndUpdate(
+            { _id: userId },
+            [ { $set: { breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] } } } ],
+            { returnDocument: 'after' }
+        )
+    ).value
+}
+
+async function openMapFromBreadcrumbs(users, userId, breadcrumbMapSelected) {
+    return (
+        await users.findOneAndUpdate(
+            { _id: userId },
+            [ { $set: { breadcrumbMapIdList: { $slice: [ "$breadcrumbMapIdList", { $add: [ breadcrumbMapSelected, 1 ] } ] } } } ],
             { returnDocument: 'after' }
         )
     ).value
@@ -275,7 +295,8 @@ module.exports = {
     getMapNameList,
     getUserShares,
     openMapFromTab,
-
+    openMapFromMap,
+    openMapFromBreadcrumbs,
     deleteMapFromUsers,
     deleteMapFromShares,
     moveUpMapInTab,

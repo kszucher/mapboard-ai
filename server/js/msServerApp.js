@@ -185,7 +185,7 @@ async function resolveType(req, currUser) {
         case 'SIGN_IN': { // QUERY
             const { cred } = req.payload
             const { tabMapIdList, breadcrumbMapIdList, colorMode } = currUser
-            const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
+            const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { type: 'signInSuccess', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
@@ -203,25 +203,17 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-
-            // TODO unify
-            let { breadcrumbMapIdList } = currUser
-            breadcrumbMapIdList = [...breadcrumbMapIdList, mapId]
-            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-
+            const user = await MongoQueries.openMapFromMap(users, currUser._id, mapId)
+            const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
-            let { breadcrumbMapSelected } = req.payload
-
-            // TODO unify
-            let { breadcrumbMapIdList } = currUser
-            breadcrumbMapIdList.length = breadcrumbMapSelected + 1
-            await users.updateOne({_id: currUser._id}, { $set: { breadcrumbMapIdList } })
-
-            const mapId = breadcrumbMapIdList[breadcrumbMapIdList.length - 1]
+            const { breadcrumbMapSelected } = req.payload
+            const user = await MongoQueries.openMapFromBreadcrumbs(users, currUser._id, breadcrumbMapSelected)
+            const { breadcrumbMapIdList } = user
+            const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, ...mapInfo } }

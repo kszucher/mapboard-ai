@@ -22,6 +22,21 @@ async function mongoTests(cmd) {
         let dbOriginal
         let dbExpected
         switch (cmd) {
+            case 'openMapFromTabTest': {
+                dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
+                dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['mapNew'] } ] }
+                break
+            }
+            case 'openMapFromMapTest': {
+                dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
+                dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3', 'mapNew'] } ] }
+                break
+            }
+            case 'openMapFromBreadcrumbs': {
+                dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3', 'map4'] } ] }
+                dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2'] } ] }
+                break
+            }
             case 'deleteMapFromUsersTest':
                 dbOriginal = {
                     users: [
@@ -110,6 +125,9 @@ async function mongoTests(cmd) {
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
         if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
         switch(cmd) {
+            case 'openMapFromTabTest': await MongoQueries.openMapFromTab(users, 'user1', 'mapNew' ); break
+            case 'openMapFromMapTest': await MongoQueries.openMapFromMap(users, 'user1', 'mapNew' ); break
+            case 'openMapFromBreadcrumbs': await MongoQueries.openMapFromBreadcrumbs(users, 'user1', 1 ); break
             case 'deleteMapFromUsersTest': await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
             case 'deleteMapFromSharesTest': await MongoQueries.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
             case 'moveUpMapInTabTest1': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
@@ -147,6 +165,10 @@ async function mongoTests(cmd) {
 
 async function allTest () {
 
+    await mongoTests('openMapFromTabTest')
+    await mongoTests('openMapFromMapTest')
+    await mongoTests('openMapFromBreadcrumbs')
+
     // await mongoTests('deleteMapFromUsersTest')
     // await mongoTests('deleteMapFromSharesTest')
 
@@ -156,10 +178,10 @@ async function allTest () {
     // await mongoTests('moveDownMapInTabTest2')
 
 
-    await mongoTests('openPrevFrameTest1')
-    await mongoTests('openPrevFrameTest2')
-    await mongoTests('openNextFrameTest1')
-    await mongoTests('openNextFrameTest2')
+    // await mongoTests('openPrevFrameTest1')
+    // await mongoTests('openPrevFrameTest2')
+    // await mongoTests('openNextFrameTest1')
+    // await mongoTests('openNextFrameTest2')
 
     // await mongoTests('importFrameTest')
 
