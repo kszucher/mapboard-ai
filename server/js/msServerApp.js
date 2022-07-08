@@ -330,8 +330,8 @@ async function resolveType(req, currUser) {
             return { type: 'deleteFrameSuccess', payload: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY
-            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { type: 'getSharesSuccess', payload: { shareDataExport, shareDataImport } }
+            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            return { type: 'getSharesSuccess', payload: { ...shareInfo } }
         }
         case 'CREATE_SHARE': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -384,8 +384,8 @@ async function resolveType(req, currUser) {
 
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { type: 'acceptShareSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, shareDataExport, shareDataImport } }
+            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            return { type: 'acceptShareSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
@@ -397,9 +397,8 @@ async function resolveType(req, currUser) {
             // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
             // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
-            const { shareDataExport, shareDataImport } = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-
-            return { type: 'deleteShareSuccess', payload: { shareDataExport, shareDataImport } }
+            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            return { type: 'deleteShareSuccess', payload: { ...shareInfo } }
         }
         case 'GET_NAME': { // QUERY
             const { name } = currUser
