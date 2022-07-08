@@ -389,7 +389,7 @@ async function resolveType(req, currUser) {
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
-            const { shareUser, sharedMap } = await MongoQueries.getShareProps(shares, shareId)
+            const { shareUser, sharedMap } = await shares.findOne({ _id: shareId })
 
             await MongoQueries.deleteMapFromUsers(users, { _id: shareUser, tabMapIdList: sharedMap } )
             await MongoQueries.deleteMapFromShares(shares, { shareUser, sharedMap })

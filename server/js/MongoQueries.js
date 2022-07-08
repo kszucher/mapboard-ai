@@ -11,12 +11,6 @@ async function getMap(maps, mapId) {
     return await maps.findOne({_id: mapId})
 }
 
-async function getShareProps(shares, shareId) {
-    const currShare = await shares.findOne({_id: shareId})
-    const {shareUser, sharedMap} = currShare
-    return {shareUser, sharedMap}
-}
-
 async function getMapNameList(maps, mapIdList) {
     let mapNameList = []
     await maps.aggregate([
@@ -268,7 +262,6 @@ module.exports = {
     getUserByEmail,
     getUser,
     getMap,
-    getShareProps,
     getMapNameList,
     getUserShares,
     deleteMapFromUsers,
