@@ -7,23 +7,27 @@ async function getUser(users, cred) {
     return (await users.findOne({ email, password }))
 }
 
-async function getMapData(maps, mapId) {
-    return (await maps.findOne({_id: mapId})).data
+async function getMap(maps, mapId) {
+    return await maps.findOne({_id: mapId})
 }
 
-async function getPlaybackMapData(maps, mapId, frameSelected) {
-    return (await maps.findOne({_id: mapId})).dataPlayback[frameSelected]
-}
+// async function getMapData(maps, mapId) {
+//     return (await maps.findOne({_id: mapId})).data
+// }
 
-async function getFrameSelected(maps, mapId) {
-    return (await maps.findOne({_id: mapId})).frameSelected
-}
+// async function getPlaybackMapData(maps, mapId, frameSelected) {
+//     return (await maps.findOne({_id: mapId})).dataPlayback[frameSelected]
+// }
 
-async function getMapProps(maps, mapId) {
-    const currMap = await maps.findOne({_id: mapId})
-    const {path, ownerUser} = currMap
-    return {path, ownerUser}
-}
+// async function getFrameSelected(maps, mapId) {
+//     return (await maps.findOne({_id: mapId})).frameSelected
+// }
+//
+// async function getMapProps(maps, mapId) {
+//     const currMap = await maps.findOne({_id: mapId})
+//     const {path, ownerUser} = currMap
+//     return {path, ownerUser}
+// }
 
 async function getShareProps(shares, shareId) {
     const currShare = await shares.findOne({_id: shareId})
@@ -281,10 +285,11 @@ async function deleteFrame (maps, mapId) {
 module.exports = {
     getUserByEmail,
     getUser,
-    getMapData,
-    getFrameSelected,
-    getPlaybackMapData,
-    getMapProps,
+    getMap,
+    // getMapData,
+    // getFrameSelected,
+    // getPlaybackMapData,
+    // getMapProps,
     getShareProps,
     getMapNameList,
     getUserShares,

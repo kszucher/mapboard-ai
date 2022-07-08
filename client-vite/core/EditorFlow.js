@@ -60,9 +60,8 @@ const editorState = {
     mapId: '',
     mapSource: '',
     mapStorage: {},
-    mapIdSaved: '',
-    mapSourceSaved: '',
-    mapStorageSaved: {},
+    frameLen: 0,
+    frameSelected: 0,
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
 
     node: {
@@ -82,8 +81,6 @@ const editorState = {
     nodeTriggersMap: false,
 
     frameEditorVisible: false,
-    frameLen: 0,
-    frameSelected: 0,
 
     shareEmail: '',
     shareAccess: 'view',
