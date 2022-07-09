@@ -5,6 +5,29 @@ import { selectionState } from './SelectionFlow'
 import { mapDispatch, redraw } from './MapFlow'
 import { mapGetProp } from '../map/MapGetProp'
 
+const SAVE_INCLUDED = [
+    'OPEN_MAP_FROM_TAB',
+    'OPEN_MAP_FROM_MAP',
+    'OPEN_MAP_FROM_BREADCRUMBS',
+    'CREATE_MAP_IN_MAP',
+    'CREATE_MAP_IN_TAB',
+    'OPEN_FRAME',
+    'IMPORT_FRAME',
+    'DUPLICATE_FRAME',
+    'OPEN_PREV_FRAME',
+    'OPEN_NEXT_FRAME'
+]
+
+const SAVE_NOT_INCLUDED = [
+    'REMOVE_MAP_IN_TAB',
+    'MOVE_UP_MAP_IN_TAB',
+    'MOVE_DOWN_MAP_IN_TAB',
+    'DELETE_FRAME',
+    'GET_SHARES',
+    'ACCEPT_SHARE',
+    'DELETE_SHARE',
+]
+
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
     : 'https://mapboard-server.herokuapp.com/beta';
@@ -107,16 +130,8 @@ let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
     while (true) {
         const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
-            autoSaveNow: take([
-                'SHOW_WS_CREATE_MAP_IN_MAP',
-                'OPEN_MAP_FROM_TAB',
-                // TODO add all
-            ]),
-            autoSaveLater: take([
-                'UNDO',
-                'REDO',
-                'MAP_STACK_CHANGED',
-            ]),
+            autoSaveNow: take(['SHOW_WS_CREATE_MAP_IN_MAP', ...SAVE_INCLUDED]),
+            autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED',]),
             autoSaveNowByTimeout: delay(1000)
         })
         if (autoSaveNow) {
@@ -149,45 +164,14 @@ function* saveSaga() {
 
 function* mapSaga () {
     while (true) {
-        let { type, payload } = yield take([
-            'SAVE_MAP',
-            'OPEN_MAP_FROM_TAB',
-            'OPEN_MAP_FROM_MAP',
-            'OPEN_MAP_FROM_BREADCRUMBS',
-            'CREATE_MAP_IN_MAP',
-            'CREATE_MAP_IN_TAB',
-            'REMOVE_MAP_IN_TAB',
-            'MOVE_UP_MAP_IN_TAB',
-            'MOVE_DOWN_MAP_IN_TAB',
-            'OPEN_FRAME',
-            'IMPORT_FRAME',
-            'DUPLICATE_FRAME',
-            'DELETE_FRAME',
-            'OPEN_PREV_FRAME',
-            'OPEN_NEXT_FRAME',
-            'GET_SHARES',
-            'ACCEPT_SHARE',
-            'DELETE_SHARE',
-        ])
+        let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
         if (type === 'OPEN_MAP_FROM_TAB') {
             const { tabMapSelected } = payload
             const tabMapIdList = yield select(state => state.tabMapIdList)
             const mapId = tabMapIdList[tabMapSelected]
             payload = { ...payload, mapId }
         }
-        if ([
-            'SAVE_MAP',
-            'OPEN_MAP_FROM_TAB',
-            'OPEN_MAP_FROM_MAP',
-            'OPEN_MAP_FROM_BREADCRUMBS',
-            'CREATE_MAP_IN_MAP',
-            'CREATE_MAP_IN_TAB',
-            'OPEN_FRAME',
-            'IMPORT_FRAME',
-            'DUPLICATE_FRAME',
-            'OPEN_PREV_FRAME',
-            'OPEN_NEXT_FRAME'
-        ].includes(type)) {
+        if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
             const mapId = yield select(state => state.mapId)
             const mapSource = yield select(state => state.mapSource)
             const mapData = saveMap()
