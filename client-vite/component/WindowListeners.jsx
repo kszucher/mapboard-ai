@@ -197,7 +197,7 @@ export function WindowListeners() {
                             // mapDispatch('select_R')
                         }
                         if (lm.linkType === 'internal') {
-                            dispatch({ type: 'OPEN_MAP_FROM_MAP', payload: { mapId: lm.link } })
+                            dispatch({ type: 'OPEN_MAP_FROM_MAP' })
                         } else if (lm.linkType === 'external') {
                             whichDown = 0
                             window.open(lm.link, '_blank')
