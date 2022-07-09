@@ -18,16 +18,6 @@ const SAVE_INCLUDED = [
     'OPEN_NEXT_FRAME'
 ]
 
-const SAVE_NOT_INCLUDED = [
-    'REMOVE_MAP_IN_TAB',
-    'MOVE_UP_MAP_IN_TAB',
-    'MOVE_DOWN_MAP_IN_TAB',
-    'DELETE_FRAME',
-    'GET_SHARES',
-    'ACCEPT_SHARE',
-    'DELETE_SHARE',
-]
-
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
     : 'https://mapboard-server.herokuapp.com/beta';
@@ -164,19 +154,31 @@ function* saveSaga() {
 
 function* mapSaga () {
     while (true) {
-        let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
-        if (type === 'OPEN_MAP_FROM_TAB') {
-            const { tabMapSelected } = payload
-            const tabMapIdList = yield select(state => state.tabMapIdList)
-            const mapId = tabMapIdList[tabMapSelected]
-            payload = { ...payload, mapId }
-        }
+        let { type, payload } = yield take([
+            'SAVE_MAP',
+            ...SAVE_INCLUDED,
+            'REMOVE_MAP_IN_TAB',
+            'MOVE_UP_MAP_IN_TAB',
+            'MOVE_DOWN_MAP_IN_TAB',
+            'DELETE_FRAME',
+            'GET_SHARES',
+            'ACCEPT_SHARE',
+            'DELETE_SHARE',
+        ])
         if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
             const mapId = yield select(state => state.mapId)
             const mapSource = yield select(state => state.mapSource)
             const mapData = saveMap()
             payload = { ...payload, save: { mapId, mapSource, mapData } }
         }
+        if (type === 'OPEN_MAP_FROM_TAB') {
+            const { tabMapSelected } = payload
+            const tabMapIdList = yield select(state => state.tabMapIdList)
+            const mapId = tabMapIdList[tabMapSelected]
+            payload = { ...payload, mapId }
+        }
+        // TODO for completeness, assign mapId for OPEN_MAP_FROM_MAP HERE
+        // TODO for symmetry, OPEN_MAP_FROM_BREADCRUMBS should also open based on id and not index
         if ([
             'REMOVE_MAP_IN_TAB',
             'MOVE_UP_MAP_IN_TAB',
