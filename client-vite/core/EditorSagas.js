@@ -180,6 +180,7 @@ function* mapSaga () {
         // TODO for completeness, assign mapId for OPEN_MAP_FROM_MAP HERE
         // TODO for symmetry, OPEN_MAP_FROM_BREADCRUMBS should also open based on id and not index
         //  --> could introduce CLOSE_FRAME, so it is distinguished, otherwise we cant know what we assign here --> do it
+        // with this, we achieve one action = one action creator also, and that can be used to simplify code...
         if ([
             'REMOVE_MAP_IN_TAB',
             'MOVE_UP_MAP_IN_TAB',
