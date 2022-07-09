@@ -106,24 +106,24 @@ const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
     while (true) {
-        const { autoSaveNow, autoSaveReset, autoSaveTimeout } = yield race({
+        const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
             autoSaveNow: take([
                 'SHOW_WS_CREATE_MAP_IN_MAP',
                 'OPEN_MAP_FROM_TAB',
                 // TODO add all
             ]),
-            autoSaveReset: take([
+            autoSaveLater: take([
                 'UNDO',
                 'REDO',
                 'MAP_STACK_CHANGED',
             ]),
-            autoSaveTimeout: delay(1000)
+            autoSaveNowByTimeout: delay(1000)
         })
         if (autoSaveNow) {
             autoSaveState = AUTO_SAVE_STATES.IDLE
-        } else if (autoSaveReset) {
+        } else if (autoSaveLater) {
             autoSaveState = AUTO_SAVE_STATES.WAIT
-        } else if (autoSaveTimeout) {
+        } else if (autoSaveNowByTimeout) {
             if (autoSaveState === AUTO_SAVE_STATES.WAIT) {
                 autoSaveState = AUTO_SAVE_STATES.IDLE
                 if (mapStack.data.length === 1 && mapStack.dataIndex === 0 ||
