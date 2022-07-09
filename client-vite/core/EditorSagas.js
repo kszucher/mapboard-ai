@@ -151,7 +151,6 @@ function* mapSaga () {
         ])
         if (type === 'OPEN_MAP_FROM_TAB') {
             const { tabMapSelected } = payload
-            // TODO change breadcrumbMapIdList here if you'd like to to have something before server return
             const tabMapIdList = yield select(state => state.tabMapIdList)
             const mapId = tabMapIdList[tabMapSelected]
             payload = { ...payload, mapId }
@@ -175,7 +174,6 @@ function* mapSaga () {
             payload = { ...payload, save: { mapId, mapSource, mapStorage } }
         }
         if ([
-            'CREATE_MAP_IN_MAP',
             'REMOVE_MAP_IN_TAB',
             'MOVE_UP_MAP_IN_TAB',
             'MOVE_DOWN_MAP_IN_TAB',
@@ -279,7 +277,7 @@ function* settingsSaga () {
         const { resp } = yield call(fetchPost, { type: 'GET_NAME' })
         yield put({ type: 'SET_NAME', payload: resp.name })
         yield put({ type: 'SHOW_WS_SETTINGS' })
-        const { type } = yield take(['CLOSE_SETTINGS'])
+        yield take(['CLOSE_SETTINGS'])
         yield put({ type: 'SHOW_WS' })
     }
 }

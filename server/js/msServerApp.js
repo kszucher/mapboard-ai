@@ -225,7 +225,7 @@ async function resolveType(req, currUser) {
             const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, newMapId)
             const { breadcrumbMapIdList } = user
             // UPDATE OLD
-            const mapId = ObjectId(req.payload.mapId) // maybe use .save mapId, as it is already there
+            const mapId = ObjectId(req.payload.save.mapId)
             await maps.updateOne(
                 { _id: mapId },
                 { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
