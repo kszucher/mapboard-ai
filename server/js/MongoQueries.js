@@ -220,7 +220,7 @@ async function openNextFrame (maps, mapId) {
                 $set: {
                     frameSelected: {
                         $cond: {
-                            if: { $lt: [ "$frameSelected", { $subtract: [ { $size: "$dataPlayback" }, 1 ] } ] },
+                            if: { $lt: [ "$frameSelected", { $subtract: [ { $size: "$dataFrames" }, 1 ] } ] },
                             then: { $add: [ "$frameSelected", 1 ] },
                             else: "$frameSelected"
                         }
@@ -237,8 +237,8 @@ async function importFrame (maps, mapId) {
         await maps.findOneAndUpdate(
             { _id: mapId },
             [
-                { $set: { dataPlayback: { $concatArrays: [ "$dataPlayback", [ "$data" ] ] } } },
-                { $set: { frameSelected: { $subtract : [ { $size: "$dataPlayback" }, 1 ] } } }
+                { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ "$data" ] ] } } },
+                { $set: { frameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
             ],
             { returnDocument: 'after' }
         )
@@ -251,11 +251,11 @@ async function duplicateFrame (maps, mapId) {
             { _id: mapId },
             [{
                 $set: {
-                    dataPlayback: {
+                    dataFrames: {
                         $concatArrays: [
-                            { $slice: [ "$dataPlayback", { $add: [ "$frameSelected", 1 ]  } ] },
-                            [ { $arrayElemAt: [ "$dataPlayback", "$frameSelected" ] } ],
-                            { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
+                            { $slice: [ "$dataFrames", { $add: [ "$frameSelected", 1 ]  } ] },
+                            [ { $arrayElemAt: [ "$dataFrames", "$frameSelected" ] } ],
+                            { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
                         ]
                     },
                     frameSelected: { $add : [ "$frameSelected", 1 ] }
@@ -272,10 +272,10 @@ async function deleteFrame (maps, mapId) {
             { _id: mapId },
             [{
                 $set: {
-                    dataPlayback: {
+                    dataFrames: {
                         $concatArrays: [
-                            { $slice: [ "$dataPlayback", "$frameSelected" ] },
-                            { $slice: [ "$dataPlayback", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataPlayback" } ] }
+                            { $slice: [ "$dataFrames", "$frameSelected" ] },
+                            { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
                         ]
                     },
                     frameSelected: {
@@ -283,7 +283,7 @@ async function deleteFrame (maps, mapId) {
                             if: { $eq: [ "$frameSelected", 0 ] },
                             then: {
                                 $cond: {
-                                    if: { $eq: [ { $size: "$dataPlayback" }, 1 ] },
+                                    if: { $eq: [ { $size: "$dataFrames" }, 1 ] },
                                     then: null,
                                     else: 0
                                 }

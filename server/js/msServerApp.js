@@ -63,7 +63,7 @@ function getDefaultMap (mapName, ownerUser, path) {
             {path: ['r', 0, 'd', 1]},
         ],
         dataHistory: [],
-        dataPlayback: [],
+        dataFrames: [],
         ownerUser,
         path
     }
@@ -79,20 +79,20 @@ async function checkSave (req, currUser) {
         if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
             if (mapSource === 'data') {
                 await maps.updateOne({ _id: mapId }, { $set: { data: mapStorage } })
-            } else if (mapSource === 'dataPlayback') {
-                await maps.updateOne({ _id: mapId }, { $set: { [`dataPlayback.${frameSelected}`]: mapStorage } })
+            } else if (mapSource === 'dataFrames') {
+                await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapStorage } })
             }
         }
     }
 }
 
 async function getMapInfo (currUser, shares, map, mapId, mapSource) {
-    const { path, ownerUser, data, dataPlayback, frameSelected } = map
-    const frameLen = dataPlayback.length
-    if (frameLen === 0 && mapSource === 'dataPlayback') {
+    const { path, ownerUser, data, dataFrames, frameSelected } = map
+    const frameLen = dataFrames.length
+    if (frameLen === 0 && mapSource === 'dataFrames') {
         mapSource = 'data'
     }
-    const mapStorage = mapSource === 'data' ? data: dataPlayback[frameSelected]
+    const mapStorage = mapSource === 'data' ? data: dataFrames[frameSelected]
     let mapRight = MAP_RIGHTS.UNAUTHORIZED
     if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
         mapRight = isEqual(currUser._id, adminUser)
@@ -123,7 +123,7 @@ async function resolveType(req, currUser) {
         case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
             const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
-            return { error: '', payload: { landingData: (await maps.findOne({_id: mapId})).dataPlayback, mapRight: MAP_RIGHTS.VIEW } }
+            return { error: '', payload: { landingData: (await maps.findOne({_id: mapId})).dataFrames, mapRight: MAP_RIGHTS.VIEW } }
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
@@ -276,37 +276,37 @@ async function resolveType(req, currUser) {
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', payload: { ...mapInfo } }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.openPrevFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', payload: { ...mapInfo } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.openNextFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', payload: { ...mapInfo } }
         }
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.importFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', payload: { ...mapInfo } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.duplicateFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', payload: { ...mapInfo } }
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.deleteFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
+            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', payload: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY

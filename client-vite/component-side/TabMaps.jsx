@@ -39,7 +39,7 @@ export default function TabMaps() {
                 indicatorColor="primary" >
                 {tabMapNameList.map((name, index) => (
                     <Tab
-                        disabled={mapSource==='dataPlayback'}
+                        disabled={mapSource==='dataFrames'}
                         label={tabShrink ? name.at(0) : name}
                         key={index}
                     />

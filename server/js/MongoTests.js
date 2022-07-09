@@ -75,50 +75,50 @@ async function mongoTests(cmd) {
                 dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
                 break
             case 'openPrevFrameTest1': {
-                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
-                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
+                dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
                 break
             }
             case 'openPrevFrameTest2': {
-                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
-                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
+                dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
                 break
             }
             case 'openNextFrameTest1': {
-                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 0 } ] }
-                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
+                dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
                 break
             }
             case 'openNextFrameTest2': {
-                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
-                dbExpected = { maps: [ { _id: 'map1', dataPlayback: ['f1', 'f2'], frameSelected: 1 } ] }
+                dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
                 break
             }
             case 'importFrameTest': {
-                dbOriginal = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataPlayback: [['f1', 'f2']], frameSelected: 0 } ] }
-                dbExpected = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataPlayback: [['f1', 'f2'], ['o1', 'o2']], frameSelected: 1 } ] }
+                dbOriginal = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataFrames: [['f1', 'f2']], frameSelected: 0 } ] }
+                dbExpected = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataFrames: [['f1', 'f2'], ['o1', 'o2']], frameSelected: 1 } ] }
                 break
             }
             case 'duplicateFrameTest': {
-                dbOriginal = { maps: [ { _id: 'map1', dataPlayback: [['fa', 'fa'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 1 } ] }
-                dbExpected = { maps: [ { _id: 'map1', dataPlayback: [['fa', 'fa'], ['fb', 'fb'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 2 } ] }
+                dbOriginal = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 1 } ] }
+                dbExpected = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 2 } ] }
                 break
             }
             case 'deleteFrameTest1':
-                dbOriginal = { maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 0 } ] }
-                dbExpected = { maps: [ {_id: 'map1', dataPlayback: ['frame2', 'frame3'], frameSelected: 0 } ] }
+                dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], frameSelected: 0 } ] }
+                dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame2', 'frame3'], frameSelected: 0 } ] }
                 break
             case 'deleteFrameTest2':
-                dbOriginal = { maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 1 } ] }
-                dbExpected = { maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame3'], frameSelected: 0 } ] }
+                dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], frameSelected: 1 } ] }
+                dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame3'], frameSelected: 0 } ] }
                 break
             case 'deleteFrameTest3':
-                dbOriginal = { maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2', 'frame3'], frameSelected: 2 } ] }
-                dbExpected = { maps: [ {_id: 'map1', dataPlayback: ['frame1', 'frame2'], frameSelected: 1 } ] }
+                dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], frameSelected: 2 } ] }
+                dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2'], frameSelected: 1 } ] }
                 break
             case 'deleteFrameTest4':
-                dbOriginal = { maps: [ {_id: 'map1', dataPlayback: ['frame1'], frameSelected: 0 } ] }
-                dbExpected = { maps: [ {_id: 'map1', dataPlayback: [], frameSelected: null } ] }
+                dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], frameSelected: 0 } ] }
+                dbExpected = { maps: [ {_id: 'map1', dataFrames: [], frameSelected: null } ] }
                 break
         }
         if(dbOriginal.hasOwnProperty('users')) {await users.insertMany(dbOriginal.users)}

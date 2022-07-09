@@ -27,11 +27,11 @@ export default function BreadcrumbMaps() {
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                 {breadcrumbMapNameList.map((el, index) => (
                     <Link
-                        underline={mapSource === 'dataPlayback' ? 'none': 'hover'}
+                        underline={mapSource === 'dataFrames' ? 'none': 'hover'}
                         href="/"
                         onClick={e => {
                             e.preventDefault()
-                            mapSource === 'dataPlayback' ? console.log('prevent') : openMapFromBreadcrumbs(index)
+                            mapSource === 'dataFrames' ? console.log('prevent') : openMapFromBreadcrumbs(index)
                         }}
                         key={index}>
                         {el}
