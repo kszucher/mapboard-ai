@@ -102,30 +102,50 @@ function* colorSaga () {
     }
 }
 
-let lastWinner = ''
+const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
+let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
     while (true) {
-        const { autoSaveReset, autoSaveTimeout } = yield race({
-            autoSaveReset: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']),
+        const { autoSaveIdle, autoSaveReset, autoSaveTimeout } = yield race({
+            autoSaveIdle: take([
+                'SHOW_WS_CREATE_MAP_IN_MAP',
+                'OPEN_MAP_FROM_TAB',
+                // TODO add all
+            ]),
+            autoSaveReset: take([
+                'UNDO',
+                'REDO',
+                'MAP_STACK_CHANGED',
+            ]),
             autoSaveTimeout: delay(1000)
         })
-        if (autoSaveReset) {
-            lastWinner = 'reset'
+        if (autoSaveIdle) {
+            autoSaveState = AUTO_SAVE_STATES.IDLE
+        } else if (autoSaveReset) {
+            autoSaveState = AUTO_SAVE_STATES.WAIT
         } else if (autoSaveTimeout) {
-            if (lastWinner !== 'timeout') {
+            if (autoSaveState === AUTO_SAVE_STATES.WAIT) {
+                autoSaveState = AUTO_SAVE_STATES.IDLE
                 if (mapStack.data.length === 1 && mapStack.dataIndex === 0 ||
                     mapStack.data.length === 0) {
                     console.log('skip save')
                 } else {
+                    console.log('apply save')
                     yield put({ type: 'SAVE_MAP' })
                 }
             }
-            lastWinner = 'timeout'
         }
     }
 }
 
-// TODO probably the map operations for example tab map should ALSO reset this, to avoid open issue
+function* saveSaga() {
+    while (true) {
+        yield take([
+            'SHOW_WS_CREATE_MAP_IN_MAP'
+        ])
+        yield put({ type: 'SAVE_MAP' })
+    }
+}
 
 function* mapSaga () {
     while (true) {
@@ -332,6 +352,7 @@ export default function* rootSaga () {
         authSaga(),
         colorSaga(),
         autoSaveSaga(),
+        saveSaga(),
         mapSaga(),
         mapStackEventSaga(),
         mapStackSaga(),
