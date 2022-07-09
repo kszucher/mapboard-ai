@@ -73,14 +73,14 @@ async function checkSave (req, currUser) {
     if (req.hasOwnProperty('payload') &&
         req.payload.hasOwnProperty('save')) {
         const mapId = ObjectId(req.payload.save.mapId)
-        const { mapSource, mapStorage } = req.payload.save
+        const { mapSource, mapData } = req.payload.save
         const { ownerUser, frameSelected } = await MongoQueries.getMap(maps, mapId)
         const shareToEdit = await shares.findOne({ shareUser: currUser._id, sharedMap: mapId, access: 'edit' })
         if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
             if (mapSource === 'data') {
-                await maps.updateOne({ _id: mapId }, { $set: { data: mapStorage } })
+                await maps.updateOne({ _id: mapId }, { $set: { data: mapData } })
             } else if (mapSource === 'dataFrames') {
-                await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapStorage } })
+                await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } })
             }
         }
     }
@@ -92,7 +92,7 @@ async function getMapInfo (currUser, shares, map, mapId, mapSource) {
     if (frameLen === 0 && mapSource === 'dataFrames') {
         mapSource = 'data'
     }
-    const mapStorage = mapSource === 'data' ? data: dataFrames[frameSelected]
+    const mapData = mapSource === 'data' ? data: dataFrames[frameSelected]
     let mapRight = MAP_RIGHTS.UNAUTHORIZED
     if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
         mapRight = isEqual(currUser._id, adminUser)
@@ -115,7 +115,7 @@ async function getMapInfo (currUser, shares, map, mapId, mapSource) {
             }
         }
     }
-    return { mapId, mapSource, mapStorage, frameLen, frameSelected, mapRight }
+    return { mapId, mapSource, mapData, frameLen, frameSelected, mapRight }
 }
 
 async function resolveType(req, currUser) {

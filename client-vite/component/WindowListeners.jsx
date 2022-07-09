@@ -39,7 +39,7 @@ export function WindowListeners() {
 
     const mapId = useSelector(state => state.mapId)
     const mapSource = useSelector(state => state.mapSource)
-    const mapStorage = useSelector(state => state.mapStorage)
+    const mapData = useSelector(state => state.mapData)
     const frameLen = useSelector(state => state.frameLen)
     const frameSelected = useSelector(state => state.frameSelected)
     const mapRight = useSelector(state => state.mapRight)
@@ -512,15 +512,15 @@ export function WindowListeners() {
 
     useEffect(() => {
         if (landingData.length) {
-            const mapStorage = landingData[landingDataIndex]
-            mapStackDispatch('initMapState', { mapStorage })
+            const mapData = landingData[landingDataIndex]
+            mapStackDispatch('initMapState', { mapData })
             redraw(colorMode)
         }
     }, [landingData, landingDataIndex])
 
     useEffect(() => {
         if (mapId !== '' && mapSource !== '') {
-            mapStackDispatch('initMapState', { mapStorage })
+            mapStackDispatch('initMapState', { mapData })
             redraw(colorMode)
             dispatch({ type: 'MAP_STACK_CHANGED' })
         }

@@ -170,8 +170,8 @@ function* mapSaga () {
         ].includes(type)) {
             const mapId = yield select(state => state.mapId)
             const mapSource = yield select(state => state.mapSource)
-            const mapStorage = saveMap()
-            payload = { ...payload, save: { mapId, mapSource, mapStorage } }
+            const mapData = saveMap()
+            payload = { ...payload, save: { mapId, mapSource, mapData } }
         }
         if ([
             'REMOVE_MAP_IN_TAB',
@@ -192,7 +192,7 @@ function* mapSaga () {
             payload = { ...payload, lastPath, newMapName: mapref(lastPath).content }
         }
         if (type === 'DUPLICATE_FRAME') {
-            payload = { ...payload, mapStorage: saveMap() }
+            payload = { ...payload, mapData: saveMap() }
         }
         yield put({type: 'INTERACTION_DISABLED'})
         const { resp } = yield call(fetchPost, { type, payload })

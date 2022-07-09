@@ -18,7 +18,7 @@ export function mapStackDispatch(action, payload) {
 function mapStackReducer(action, payload) {
     switch (action) {
         case 'initMapState': {
-            mapStack.data = [mapAssembly(payload.mapStorage)]
+            mapStack.data = [mapAssembly(payload.mapData)]
             mapStack.dataIndex = 0
             break
         }

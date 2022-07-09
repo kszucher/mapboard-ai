@@ -59,7 +59,7 @@ const editorState = {
 
     mapId: '',
     mapSource: '',
-    mapStorage: {},
+    mapData: {},
     frameLen: 0,
     frameSelected: 0,
     mapRight: MAP_RIGHTS.UNAUTHORIZED,
