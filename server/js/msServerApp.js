@@ -200,19 +200,18 @@ async function resolveType(req, currUser) {
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
-        case 'OPEN_MAP_FROM_MAP': { // MUTATION
+        case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
+            const user = await MongoQueries.sliceBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
-        case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
-            const { breadcrumbMapSelected } = req.payload
-            const user = await MongoQueries.sliceBreadcrumbs(users, currUser._id, breadcrumbMapSelected)
+        case 'OPEN_MAP_FROM_MAP': { // MUTATION
+            const mapId = ObjectId(req.payload.mapId)
+            const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
-            const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }

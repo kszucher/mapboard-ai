@@ -77,10 +77,10 @@ export function Page() {
 
     useEffect(()=> {
         getTextDim('Test')
-        getEquationDim('\\[Test\\]');
-
+        getEquationDim('\\[Test\\]')
         const cred = JSON.parse(localStorage.getItem('cred'))
         if (cred !== null) {
+            // TODO type check
             dispatch({type: 'SIGN_IN', payload: { cred }})
         }
     }, [])

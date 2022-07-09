@@ -7,8 +7,8 @@ import { mapGetProp } from '../map/MapGetProp'
 
 const SAVE_INCLUDED = [
     'OPEN_MAP_FROM_TAB',
-    'OPEN_MAP_FROM_MAP',
     'OPEN_MAP_FROM_BREADCRUMBS',
+    'OPEN_MAP_FROM_MAP',
     'CREATE_MAP_IN_MAP',
     'CREATE_MAP_IN_TAB',
     'OPEN_FRAME',
@@ -176,16 +176,16 @@ function* mapSaga () {
             const tabMapIdList = yield select(state => state.tabMapIdList)
             const mapId = tabMapIdList[tabMapSelected]
             payload = { ...payload, mapId }
+        } else if (type === 'OPEN_MAP_FROM_BREADCRUMBS') {
+            const { breadcrumbMapSelected } = payload
+            const breadcrumbMapIdList = yield select(state => state.breadcrumbMapIdList)
+            const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
+            payload = { ...payload, mapId }
         } else if (type === 'OPEN_MAP_FROM_MAP') {
             const lm = mapref(selectionState.lastPath)
             const mapId = lm.link
             payload = { ...payload, mapId }
-        } else if (type === 'OPEN_MAP_FROM_BREADCRUMBS')
-        // TODO for completeness, assign mapId for OPEN_MAP_FROM_MAP HERE
-        // TODO for symmetry, OPEN_MAP_FROM_BREADCRUMBS should also open based on id and not index
-        //  --> could introduce CLOSE_FRAME, so it is distinguished, otherwise we cant know what we assign here --> do it
-        // with this, we achieve one action = one action creator also, and that can be used to simplify code...
-        if ([
+        } else if ([
             'REMOVE_MAP_IN_TAB',
             'MOVE_UP_MAP_IN_TAB',
             'MOVE_DOWN_MAP_IN_TAB',

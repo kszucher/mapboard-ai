@@ -73,11 +73,18 @@ async function appendBreadcrumbs(users, userId, mapId) {
     ).value
 }
 
-async function sliceBreadcrumbs(users, userId, breadcrumbMapSelected) {
+async function sliceBreadcrumbs(users, userId, mapId) {
     return (
         await users.findOneAndUpdate(
             { _id: userId },
-            [ { $set: { breadcrumbMapIdList: { $slice: [ "$breadcrumbMapIdList", { $add: [ breadcrumbMapSelected, 1 ] } ] } } } ],
+            [{
+                $set: {
+                    breadcrumbMapIdList: { $slice: [
+                            "$breadcrumbMapIdList", { $add: [{ $indexOfArray: ["$breadcrumbMapIdList", mapId] }, 1] }
+                        ]
+                    }
+                }
+            }],
             { returnDocument: 'after' }
         )
     ).value
