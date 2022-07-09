@@ -50,11 +50,11 @@ function* authSaga () {
             yield put({ type: 'SET_CONFIRMATION_CODE', payload })
         } else {
             yield put({type: 'INTERACTION_DISABLED'})
-            const { resp } = yield call(fetchPost, { type, payload })
+            const { resp: { error, data } } = yield call(fetchPost, { type, payload })
             yield put({type: 'INTERACTION_ENABLED'})
-            if (resp.error === 'authFailWrongCred') {
+            if (error === 'authFailWrongCred') {
                 localStorage.clear()
-            } else if (resp.error === 'signInFailIncompleteRegistration') {
+            } else if (error === 'signInFailIncompleteRegistration') {
                 console.log('incomplete registration')
             } else {
                 switch (type) {
@@ -63,31 +63,31 @@ function* authSaga () {
                         yield put({ type: 'SHOW_DEMO' })
                         break
                     case 'SIGN_UP_STEP_1':
-                        if (resp.error === 'signUpStep1FailEmailAlreadyInUse') {
+                        if (error === 'signUpStep1FailEmailAlreadyInUse') {
                             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use' })
                         } else {
                             yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
                         }
                         break
                     case 'SIGN_UP_STEP_2':
-                        if (resp.error === 'signUpStep2FailUnknownUser') {
+                        if (error === 'signUpStep2FailUnknownUser') {
                             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user' })
-                        } else if (resp.error === 'signUpStep2FailWrongCode') {
+                        } else if (error === 'signUpStep2FailWrongCode') {
                             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
-                        } else if (resp.error === 'signUpStep2FailAlreadyActivated') {
+                        } else if (error === 'signUpStep2FailAlreadyActivated') {
                             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
                         } else {
                             yield put({ type: 'SIGN_IN_PANEL' })
                         }
                         break
                     case 'SIGN_IN':
-                        const { cred } = resp.data
+                        const { cred } = data
                         localStorage.setItem('cred', JSON.stringify(cred))
                         initDomData()
                         yield put({ type: 'SHOW_WS' })
                         break
                 }
-                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.data })
+                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
             }
         }
     }
@@ -195,9 +195,9 @@ function* mapSaga () {
             payload = { ...payload, mapData: saveMap() }
         }
         yield put({type: 'INTERACTION_DISABLED'})
-        const { resp } = yield call(fetchPost, { type, payload })
+        const { resp: { error, data } } = yield call(fetchPost, { type, payload })
         yield put({type: 'INTERACTION_ENABLED'})
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.data })
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
         if (type === 'CREATE_MAP_IN_MAP') {
             yield put({type: 'SHOW_WS'})
         }
@@ -274,8 +274,8 @@ function* mapStackSaga () {
 function* settingsSaga () {
     while (true) {
         yield take('OPEN_SETTINGS')
-        const { resp } = yield call(fetchPost, { type: 'GET_NAME' })
-        yield put({ type: 'SET_NAME', payload: resp.name })
+        const { resp: { error, data } } = yield call(fetchPost, { type: 'GET_NAME' })
+        yield put({ type: 'SET_NAME', payload: data.name })
         yield put({ type: 'SHOW_WS_SETTINGS' })
         yield take(['CLOSE_SETTINGS'])
         yield put({ type: 'SHOW_WS' })
@@ -312,18 +312,18 @@ function* shareSaga () {
             payload = {...payload, mapId }
         }
         yield put({type: 'INTERACTION_DISABLED'})
-        const { resp } = yield call(fetchPost, { type, payload })
+        const { resp: { error, data } } = yield call(fetchPost, { type, payload })
         yield put({type: 'INTERACTION_ENABLED'})
-        if (resp.error === 'createShareFailNotAValidUser') {
+        if (error === 'createShareFailNotAValidUser') {
             yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address' })
-        } else if (resp.error === 'createShareFailCantShareWithYourself') {
+        } else if (error === 'createShareFailCantShareWithYourself') {
             yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours' })
-        } else if (resp.error === 'createShareFailAlreadyShared') {
+        } else if (error === 'createShareFailAlreadyShared') {
             yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared' })
         } else {
             yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Share settings saved' })
         }
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.data })
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
     }
 }
 

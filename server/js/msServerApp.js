@@ -155,7 +155,6 @@ async function resolveType(req, currUser) {
                 return { error: '' }
             } else {
                 return { error: 'signUpStep1FailEmailAlreadyInUse' }
-
             }
         }
         case 'SIGN_UP_STEP_2': { // MUTATION
@@ -377,7 +376,7 @@ async function resolveType(req, currUser) {
         }
         case 'GET_NAME': { // QUERY
             const { name } = currUser
-            return { name } // no type as this goes to saga directly
+            return { err: '', data: { name } }
         }
         case 'CHANGE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
