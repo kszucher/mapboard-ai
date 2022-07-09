@@ -123,7 +123,7 @@ async function resolveType(req, currUser) {
         case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
             const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
-            return { type: 'liveDemoSuccess', payload: { landingData: (await maps.findOne({_id: mapId})).dataPlayback, mapRight: MAP_RIGHTS.VIEW } }
+            return { error: '', payload: { landingData: (await maps.findOne({_id: mapId})).dataPlayback, mapRight: MAP_RIGHTS.VIEW } }
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
@@ -152,9 +152,9 @@ async function resolveType(req, currUser) {
                     activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION,
                     confirmationCode
                 })
-                return { type: 'signUpStep1Success' }
+                return { error: '' }
             } else {
-                return { type: 'signUpStep1FailEmailAlreadyInUse' }
+                return { error: 'signUpStep1FailEmailAlreadyInUse' }
 
             }
         }
@@ -162,11 +162,11 @@ async function resolveType(req, currUser) {
             let { email, confirmationCode } = req.payload
             const currUser = await MongoQueries.getUserByEmail(users, email)
             if (currUser === null) {
-                return { type: 'signUpStep2FailUnknownUser' }
+                return { error: 'signUpStep2FailUnknownUser' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
-                return { type: 'signUpStep2FailAlreadyActivated' }
+                return { error: 'signUpStep2FailAlreadyActivated' }
             } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
-                return { type: 'signUpStep2FailWrongCode' }
+                return { error: 'signUpStep2FailWrongCode' }
             } else {
                 let newMap = getDefaultMap('My First Map', currUser._id, [])
                 let mapId = (await maps.insertOne(newMap)).insertedId
@@ -179,7 +179,7 @@ async function resolveType(req, currUser) {
                             breadcrumbMapIdList: [mapId]
                         }
                     })
-                return { type: 'signUpStep2Success' }
+                return { error: '' }
             }
         }
         case 'SIGN_IN': { // QUERY
@@ -188,10 +188,10 @@ async function resolveType(req, currUser) {
             const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { type: 'signInSuccess', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
+            return { error: '', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
-            return { type: 'saveMapSuccess' }
+            return { error: '' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -199,7 +199,7 @@ async function resolveType(req, currUser) {
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { type: 'openMapFromTabSuccess', payload: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', payload: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -207,7 +207,7 @@ async function resolveType(req, currUser) {
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { type: 'openMapFromMapSuccess', payload: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', payload: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const { breadcrumbMapSelected } = req.payload
@@ -216,7 +216,7 @@ async function resolveType(req, currUser) {
             const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { type: 'openMapFromBreadcrumbsSuccess', payload: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', payload: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             // CREATE NEW
@@ -234,7 +234,7 @@ async function resolveType(req, currUser) {
             // RETURN NEW
             const newMap = await MongoQueries.getMap(maps, newMapId)
             const newMapInfo = await getMapInfo(currUser, shares, newMap, newMapId, 'data')
-            return { type: 'createMapInMapSuccess', payload: { breadcrumbMapIdList, ...newMapInfo } }
+            return { error: '', payload: { breadcrumbMapIdList, ...newMapInfo } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             const mapId = (await maps.insertOne(getDefaultMap('New Map', currUser._id, []))).insertedId
@@ -242,7 +242,7 @@ async function resolveType(req, currUser) {
             const { tabMapIdList, breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { type: 'createMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -261,66 +261,66 @@ async function resolveType(req, currUser) {
             const newMapId = breadcrumbMapIdList[0]
             const newMap = await MongoQueries.getMap(maps, newMapId)
             const newMapInfo = await getMapInfo(currUser, shares, newMap, newMapId, 'data')
-            return { type: 'removeMapInTabSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...newMapInfo} }
+            return { error: '', payload: { tabMapIdList, breadcrumbMapIdList, ...newMapInfo} }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { tabMapIdList } = await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
-            return { type: 'moveUpMapInTabSuccess', payload: { tabMapIdList } }
+            return { error: '', payload: { tabMapIdList } }
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { tabMapIdList } = await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
-            return { type: 'moveDownMapInTabSuccess', payload: { tabMapIdList } }
+            return { error: '', payload: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
-            return { type: 'openFrameFail', payload: { ...mapInfo } }
+            return { error: '', payload: { ...mapInfo } }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.openPrevFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
-            return { type: 'openFrameSuccess', payload: { ...mapInfo } }
+            return { error: '', payload: { ...mapInfo } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.openNextFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
-            return { type: 'openFrameSuccess', payload: { ...mapInfo } }
+            return { error: '', payload: { ...mapInfo } }
         }
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.importFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
-            return { type: 'importFrameSuccess', payload: { ...mapInfo } }
+            return { error: '', payload: { ...mapInfo } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.duplicateFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
-            return { type: 'duplicateFrameSuccess', payload: { ...mapInfo } }
+            return { error: '', payload: { ...mapInfo } }
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.deleteFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataPlayback')
-            return { type: 'deleteFrameSuccess', payload: { ...mapInfo } }
+            return { error: '', payload: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { type: 'getSharesSuccess', payload: { ...shareInfo } }
+            return { error: '', payload: { ...shareInfo } }
         }
         case 'CREATE_SHARE': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { shareEmail, shareAccess } = req.payload
             const shareUser = await users.findOne({ email: shareEmail })
             if (shareUser === null) {
-                return { type: 'createShareFailNotAValidUser' }
+                return { error: 'createShareFailNotAValidUser' }
             } else if (isEqual(shareUser._id, currUser._id)) {
-                return { type: 'createShareFailCantShareWithYourself' }
+                return { error: 'createShareFailCantShareWithYourself' }
             } else {
                 const currShare = await shares.findOne({
                     sharedMap: mapId,
@@ -336,13 +336,13 @@ async function resolveType(req, currUser) {
                         status: SHARE_STATUS.WAITING
                     }
                     await shares.insertOne(newShare)
-                    return { type: 'createShareSuccess' }
+                    return { error: '' }
                 } else {
                     if (currShare.access === shareAccess) {
-                        return { type: 'createShareFailAlreadyShared' }
+                        return { error: 'createShareFailAlreadyShared' }
                     } else {
                         await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
-                        return { type: 'updateShareSuccess' }
+                        return { error: '' }
                     }
                 }
             }
@@ -360,7 +360,7 @@ async function resolveType(req, currUser) {
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { type: 'acceptShareSuccess', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
+            return { error: '', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
@@ -373,7 +373,7 @@ async function resolveType(req, currUser) {
             // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { type: 'deleteShareSuccess', payload: { ...shareInfo } }
+            return { error: '', payload: { ...shareInfo } }
         }
         case 'GET_NAME': { // QUERY
             const { name } = currUser
@@ -382,7 +382,7 @@ async function resolveType(req, currUser) {
         case 'CHANGE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
             await users.updateOne({ _id: currUser._id }, { $set: { colorMode } })
-            return { type: 'changeColorModeSuccess' }
+            return { error: '' }
         }
         case 'CHANGE_TAB_WIDTH': { // MUTATION
             // const {  }
@@ -413,9 +413,9 @@ async function processReq(req) {
         if (req.payload?.hasOwnProperty('cred')) {
             currUser = await MongoQueries.getUser(users, req.payload.cred)
             if (currUser === null) {
-                return { type: 'signInFailWrongCred' }
+                return { error: 'authFailWrongCred' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
-                return { type: 'signInFailIncompleteRegistration' }
+                return { error: 'authFailIncompleteRegistration' }
             }
         }
         await checkSave(req, currUser)
@@ -425,7 +425,7 @@ async function processReq(req) {
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
-        return {type: 'error', payload: err.stack}
+        return {error: 'error', payload: err.stack}
     }
 }
 

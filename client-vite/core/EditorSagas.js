@@ -34,11 +34,11 @@ const fetchPost = (req) => {
 function* authSaga () {
     while (true) {
         const { type, payload } = yield take([
-            'SIGN_IN',
+            'LIVE_DEMO',
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2',
+            'SIGN_IN',
             'SET_CONFIRMATION_CODE',
-            'LIVE_DEMO',
         ])
         if (type === 'SIGN_IN' && (payload.cred.email === '' || payload.cred.password === '')) {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Missing information' })
@@ -52,43 +52,43 @@ function* authSaga () {
             yield put({type: 'INTERACTION_DISABLED'})
             const { resp } = yield call(fetchPost, { type, payload })
             yield put({type: 'INTERACTION_ENABLED'})
-            switch (resp.type) {
-                case 'signInSuccess': // no need for success here, instead we can have a switch based on type as above!!! only handle errors!!!
-                    const { cred } = resp.payload
-                    localStorage.setItem('cred', JSON.stringify(cred))
-                    initDomData()
-                    yield put({ type: 'SHOW_WS' })
-                    break
-                case 'signInFailWrongCred':
-                    localStorage.clear();
-                    break
-                case 'signInFailIncompleteRegistration':
-                    console.log('incomplete registration')
-                    break
-                case 'signUpStep1FailEmailAlreadyInUse':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use' })
-                    break
-                case 'signUpStep1Success':
-                    yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
-                    break
-                case 'signUpStep2FailUnknownUser':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user' })
-                    break
-                case 'signUpStep2FailWrongCode':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
-                    break
-                case 'signUpStep2FailAlreadyActivated':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
-                    break
-                case 'signUpStep2Success':
-                    yield put({ type: 'SIGN_IN_PANEL' })
-                    break
-                case 'liveDemoSuccess':
-                    initDomData()
-                    yield put({ type: 'SHOW_DEMO' })
-                    break
+            if (resp.error === 'authFailWrongCred') {
+                localStorage.clear()
+            } else if (resp.error === 'signInFailIncompleteRegistration') {
+                console.log('incomplete registration')
+            } else {
+                switch (type) {
+                    case 'LIVE_DEMO':
+                        initDomData()
+                        yield put({ type: 'SHOW_DEMO' })
+                        break
+                    case 'SIGN_UP_STEP_1':
+                        if (resp.error === 'signUpStep1FailEmailAlreadyInUse') {
+                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use' })
+                        } else {
+                            yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
+                        }
+                        break
+                    case 'SIGN_UP_STEP_2':
+                        if (resp.error === 'signUpStep2FailUnknownUser') {
+                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user' })
+                        } else if (resp.error === 'signUpStep2FailWrongCode') {
+                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
+                        } else if (resp.error === 'signUpStep2FailAlreadyActivated') {
+                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
+                        } else {
+                            yield put({ type: 'SIGN_IN_PANEL' })
+                        }
+                        break
+                    case 'SIGN_IN':
+                        const { cred } = resp.payload
+                        localStorage.setItem('cred', JSON.stringify(cred))
+                        initDomData()
+                        yield put({ type: 'SHOW_WS' })
+                        break
+                }
+                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
             }
-            yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
         }
     }
 }
@@ -316,22 +316,14 @@ function* shareSaga () {
         yield put({type: 'INTERACTION_DISABLED'})
         const { resp } = yield call(fetchPost, { type, payload })
         yield put({type: 'INTERACTION_ENABLED'})
-        switch (resp.type) {
-            case 'createShareFailNotAValidUser':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address'})
-                break
-            case 'createShareFailCantShareWithYourself':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours'})
-                break
-            case 'createShareSuccess':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has been shared successfully'})
-                break
-            case 'createShareFailAlreadyShared':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared'})
-                break
-            case 'updateShareSuccess':
-                yield put({type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Access has changed successfully'})
-                break
+        if (resp.error === 'createShareFailNotAValidUser') {
+            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address' })
+        } else if (resp.error === 'createShareFailCantShareWithYourself') {
+            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours' })
+        } else if (resp.error === 'createShareFailAlreadyShared') {
+            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared' })
+        } else {
+            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Share settings saved' })
         }
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
     }
