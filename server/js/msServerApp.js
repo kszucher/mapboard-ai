@@ -123,7 +123,7 @@ async function resolveType(req, currUser) {
         case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
             const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
-            return { error: '', payload: { landingData: (await maps.findOne({_id: mapId})).dataFrames, mapRight: MAP_RIGHTS.VIEW } }
+            return { error: '', data: { landingData: (await maps.findOne({_id: mapId})).dataFrames, mapRight: MAP_RIGHTS.VIEW } }
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
@@ -188,7 +188,7 @@ async function resolveType(req, currUser) {
             const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { error: '', payload: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
+            return { error: '', data: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
             return { error: '' }
@@ -199,7 +199,7 @@ async function resolveType(req, currUser) {
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { error: '', payload: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -207,7 +207,7 @@ async function resolveType(req, currUser) {
             const { breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { error: '', payload: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const { breadcrumbMapSelected } = req.payload
@@ -216,7 +216,7 @@ async function resolveType(req, currUser) {
             const mapId = breadcrumbMapIdList.at(-1)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { error: '', payload: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             // CREATE NEW
@@ -234,7 +234,7 @@ async function resolveType(req, currUser) {
             // RETURN NEW
             const newMap = await MongoQueries.getMap(maps, newMapId)
             const newMapInfo = await getMapInfo(currUser, shares, newMap, newMapId, 'data')
-            return { error: '', payload: { breadcrumbMapIdList, ...newMapInfo } }
+            return { error: '', data: { breadcrumbMapIdList, ...newMapInfo } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             const mapId = (await maps.insertOne(getDefaultMap('New Map', currUser._id, []))).insertedId
@@ -242,7 +242,7 @@ async function resolveType(req, currUser) {
             const { tabMapIdList, breadcrumbMapIdList } = user
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
-            return { error: '', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -261,57 +261,57 @@ async function resolveType(req, currUser) {
             const newMapId = breadcrumbMapIdList[0]
             const newMap = await MongoQueries.getMap(maps, newMapId)
             const newMapInfo = await getMapInfo(currUser, shares, newMap, newMapId, 'data')
-            return { error: '', payload: { tabMapIdList, breadcrumbMapIdList, ...newMapInfo} }
+            return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...newMapInfo} }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { tabMapIdList } = await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
-            return { error: '', payload: { tabMapIdList } }
+            return { error: '', data: { tabMapIdList } }
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const { tabMapIdList } = await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
-            return { error: '', payload: { tabMapIdList } }
+            return { error: '', data: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
-            return { error: '', payload: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo } }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.openPrevFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
-            return { error: '', payload: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.openNextFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
-            return { error: '', payload: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo } }
         }
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.importFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
-            return { error: '', payload: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.duplicateFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
-            return { error: '', payload: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo } }
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.deleteFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
-            return { error: '', payload: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { error: '', payload: { ...shareInfo } }
+            return { error: '', data: { ...shareInfo } }
         }
         case 'CREATE_SHARE': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -360,7 +360,7 @@ async function resolveType(req, currUser) {
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { error: '', payload: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
+            return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
@@ -373,7 +373,7 @@ async function resolveType(req, currUser) {
             // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
 
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { error: '', payload: { ...shareInfo } }
+            return { error: '', data: { ...shareInfo } }
         }
         case 'GET_NAME': { // QUERY
             const { name } = currUser
@@ -392,16 +392,16 @@ async function resolveType(req, currUser) {
 }
 
 async function appendStuff (resp) {
-    if (resp.hasOwnProperty('payload')) {
-        if (resp.payload.hasOwnProperty('tabMapIdList')) {
-            const { tabMapIdList } = resp.payload
+    if (resp.hasOwnProperty('data')) {
+        if (resp.data.hasOwnProperty('tabMapIdList')) {
+            const { tabMapIdList } = resp.data
             const tabMapNameList = await MongoQueries.getMapNameList(maps, tabMapIdList)
-            Object.assign(resp.payload, { tabMapNameList })
+            Object.assign(resp.data, { tabMapNameList })
         }
-        if (resp.payload.hasOwnProperty('breadcrumbMapIdList')) {
-            const { breadcrumbMapIdList } = resp.payload
+        if (resp.data.hasOwnProperty('breadcrumbMapIdList')) {
+            const { breadcrumbMapIdList } = resp.data
             const breadcrumbMapNameList = await MongoQueries.getMapNameList(maps, breadcrumbMapIdList)
-            Object.assign(resp.payload, { breadcrumbMapNameList })
+            Object.assign(resp.data, { breadcrumbMapNameList })
         }
     }
     return resp
@@ -425,7 +425,7 @@ async function processReq(req) {
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
-        return {error: 'error', payload: err.stack}
+        return {error: 'error', data: err.stack}
     }
 }
 

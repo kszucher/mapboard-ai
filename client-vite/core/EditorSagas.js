@@ -81,13 +81,13 @@ function* authSaga () {
                         }
                         break
                     case 'SIGN_IN':
-                        const { cred } = resp.payload
+                        const { cred } = resp.data
                         localStorage.setItem('cred', JSON.stringify(cred))
                         initDomData()
                         yield put({ type: 'SHOW_WS' })
                         break
                 }
-                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.data })
             }
         }
     }
@@ -197,7 +197,7 @@ function* mapSaga () {
         yield put({type: 'INTERACTION_DISABLED'})
         const { resp } = yield call(fetchPost, { type, payload })
         yield put({type: 'INTERACTION_ENABLED'})
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.data })
         if (type === 'CREATE_MAP_IN_MAP') {
             yield put({type: 'SHOW_WS'})
         }
@@ -323,7 +323,7 @@ function* shareSaga () {
         } else {
             yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Share settings saved' })
         }
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.payload })
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: resp.data })
     }
 }
 
