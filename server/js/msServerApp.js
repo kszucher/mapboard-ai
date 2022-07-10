@@ -190,6 +190,7 @@ async function resolveType(req, currUser) {
             return { error: '', data: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
+            // await new Promise(resolve => setTimeout(resolve, 5000))
             return { error: '' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
