@@ -360,6 +360,5 @@ export default function* rootSaga () {
         settingsSaga(),
         frameSaga(),
         shareSaga(),
-        frameSaga(),
     ])
 }
