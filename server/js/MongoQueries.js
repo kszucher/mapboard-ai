@@ -260,7 +260,7 @@ async function duplicateFrame (maps, mapId) {
                 $set: {
                     dataFrames: {
                         $concatArrays: [
-                            { $slice: [ "$dataFrames", { $add: [ "$frameSelected", 1 ]  } ] },
+                            { $slice: [ "$dataFrames", { $add: [ "$frameSelected", 1 ] } ] },
                             [ { $arrayElemAt: [ "$dataFrames", "$frameSelected" ] } ],
                             { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
                         ]
