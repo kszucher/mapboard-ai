@@ -136,7 +136,21 @@ function* autoSaveSaga() {
                     console.log('skip save')
                 } else {
                     console.log('apply save')
-                    yield put({ type: 'SAVE_MAP' })
+                    // yield put({ type: 'SAVE_MAP' })
+
+                    // experiment, whether this is cancelled
+                    // TODO emulate slow server
+                    const mapId = yield select(state => state.mapId)
+                    const mapSource = yield select(state => state.mapSource)
+                    const mapData = saveMap()
+
+                    const type = 'SAVE_MAP'
+                    const payload = { save: { mapId, mapSource, mapData } }
+
+                    yield put({type: 'INTERACTION_DISABLED'})
+                    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
+                    yield put({type: 'INTERACTION_ENABLED'})
+
                 }
             }
         }
