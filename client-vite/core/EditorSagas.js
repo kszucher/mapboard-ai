@@ -144,9 +144,7 @@ function* autoSaveSaga() {
                     const type = 'SAVE_MAP'
                     const payload = { save: { mapId, mapSource, mapData } }
 
-                    yield put({type: 'INTERACTION_DISABLED'})
-                    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-                    yield put({type: 'INTERACTION_ENABLED'})
+                    yield call(fetchPost, { type, payload })
                 }
             }
         }
