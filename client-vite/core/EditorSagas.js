@@ -136,14 +136,11 @@ function* autoSaveSaga() {
                     console.log('skip save')
                 } else {
                     console.log('apply save')
-
                     const mapId = yield select(state => state.mapId)
                     const mapSource = yield select(state => state.mapSource)
                     const mapData = saveMap()
-
                     const type = 'SAVE_MAP'
                     const payload = { save: { mapId, mapSource, mapData } }
-
                     yield call(fetchPost, { type, payload })
                 }
             }
