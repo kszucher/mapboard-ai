@@ -18,6 +18,13 @@ const SAVE_INCLUDED = [
     'OPEN_NEXT_FRAME'
 ]
 
+const SAVE_NOT_INCLUDED = [
+    'REMOVE_MAP_IN_TAB',
+    'MOVE_UP_MAP_IN_TAB',
+    'MOVE_DOWN_MAP_IN_TAB',
+    'DELETE_FRAME',
+]
+
 const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://127.0.0.1:8082/beta'
     : 'https://mapboard-server.herokuapp.com/beta';
@@ -159,54 +166,35 @@ function* saveSaga() {
 
 function* mapSaga () {
     while (true) {
-        let { type, payload } = yield take([
-            'SAVE_MAP',
-            ...SAVE_INCLUDED,
-            'REMOVE_MAP_IN_TAB',
-            'MOVE_UP_MAP_IN_TAB',
-            'MOVE_DOWN_MAP_IN_TAB',
-            'DELETE_FRAME',
-        ])
+        let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
         if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
             const mapId = yield select(state => state.mapId)
             const mapSource = yield select(state => state.mapSource)
             const mapData = saveMap()
             payload = { ...payload, save: { mapId, mapSource, mapData } }
-        }
-        if (type === 'OPEN_MAP_FROM_TAB') {
-            const { tabMapSelected } = payload
-            const tabMapIdList = yield select(state => state.tabMapIdList)
-            const mapId = tabMapIdList[tabMapSelected]
-            payload = { ...payload, mapId }
-        } else if (type === 'OPEN_MAP_FROM_BREADCRUMBS') {
-            const { breadcrumbMapSelected } = payload
-            const breadcrumbMapIdList = yield select(state => state.breadcrumbMapIdList)
-            const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
-            payload = { ...payload, mapId }
-        } else if (type === 'OPEN_MAP_FROM_MAP') {
-            const lm = mapref(selectionState.lastPath)
-            const mapId = lm.link
-            payload = { ...payload, mapId }
-        } else if ([
-            'REMOVE_MAP_IN_TAB',
-            'MOVE_UP_MAP_IN_TAB',
-            'MOVE_DOWN_MAP_IN_TAB',
-            'OPEN_FRAME',
-            'IMPORT_FRAME',
-            'DUPLICATE_FRAME',
-            'DELETE_FRAME',
-            'OPEN_PREV_FRAME',
-            'OPEN_NEXT_FRAME'
-        ].includes(type)) {
+            if (type === 'OPEN_MAP_FROM_TAB') {
+                const { tabMapSelected } = payload
+                const tabMapIdList = yield select(state => state.tabMapIdList)
+                const mapId = tabMapIdList[tabMapSelected]
+                payload = { ...payload, mapId }
+            } else if (type === 'OPEN_MAP_FROM_BREADCRUMBS') {
+                const { breadcrumbMapSelected } = payload
+                const breadcrumbMapIdList = yield select(state => state.breadcrumbMapIdList)
+                const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
+                payload = { ...payload, mapId }
+            } else if (type === 'OPEN_MAP_FROM_MAP') {
+                const lm = mapref(selectionState.lastPath)
+                const mapId = lm.link
+                payload = { ...payload, mapId }
+            } else if (type === 'CREATE_MAP_IN_MAP') {
+                const { lastPath } = selectionState
+                payload = { ...payload, lastPath, newMapName: mapref(lastPath).content }
+            } else if (type === 'DUPLICATE_FRAME') {
+                payload = { ...payload, mapData: saveMap() }
+            }
+        } else if ([...SAVE_NOT_INCLUDED].includes(type)) {
             const mapId = yield select(state => state.mapId)
             payload = { ...payload, mapId }
-        }
-        if (type === 'CREATE_MAP_IN_MAP') {
-            const { lastPath } = selectionState
-            payload = { ...payload, lastPath, newMapName: mapref(lastPath).content }
-        }
-        if (type === 'DUPLICATE_FRAME') {
-            payload = { ...payload, mapData: saveMap() }
         }
         yield put({type: 'INTERACTION_DISABLED'})
         const { resp: { error, data } } = yield call(fetchPost, { type, payload })

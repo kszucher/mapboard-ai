@@ -273,31 +273,31 @@ async function resolveType(req, currUser) {
             return { error: '', data: { tabMapIdList } }
         }
         case 'OPEN_FRAME': { // QUERY
-            const mapId = ObjectId(req.payload.mapId)
+            const mapId = ObjectId(req.payload.save.mapId)
             const map = await MongoQueries.getMap(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
-            const mapId = ObjectId(req.payload.mapId)
+            const mapId = ObjectId(req.payload.save.mapId)
             const map = await MongoQueries.openPrevFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
-            const mapId = ObjectId(req.payload.mapId)
+            const mapId = ObjectId(req.payload.save.mapId)
             const map = await MongoQueries.openNextFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'IMPORT_FRAME': { // MUTATION
-            const mapId = ObjectId(req.payload.mapId)
+            const mapId = ObjectId(req.payload.save.mapId)
             const map = await MongoQueries.importFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
-            const mapId = ObjectId(req.payload.mapId)
+            const mapId = ObjectId(req.payload.save.mapId)
             const map = await MongoQueries.duplicateFrame(maps, mapId)
             const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
