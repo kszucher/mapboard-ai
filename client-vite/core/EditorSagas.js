@@ -166,9 +166,6 @@ function* mapSaga () {
             'MOVE_UP_MAP_IN_TAB',
             'MOVE_DOWN_MAP_IN_TAB',
             'DELETE_FRAME',
-            'GET_SHARES',
-            'ACCEPT_SHARE',
-            'DELETE_SHARE',
         ])
         if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
             const mapId = yield select(state => state.mapId)
@@ -322,7 +319,10 @@ function* frameSaga () {
 function* shareSaga () {
     while (true) {
         let { type, payload } = yield take([
-            'CREATE_SHARE'
+            'GET_SHARES',
+            'CREATE_SHARE',
+            'ACCEPT_SHARE',
+            'DELETE_SHARE',
         ])
         if (type === 'CREATE_SHARE') {
             const mapId = yield select(state => state.mapId)
@@ -331,14 +331,18 @@ function* shareSaga () {
         yield put({type: 'INTERACTION_DISABLED'})
         const { resp: { error, data } } = yield call(fetchPost, { type, payload })
         yield put({type: 'INTERACTION_ENABLED'})
-        if (error === 'createShareFailNotAValidUser') {
-            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address' })
-        } else if (error === 'createShareFailCantShareWithYourself') {
-            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours' })
-        } else if (error === 'createShareFailAlreadyShared') {
-            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared' })
-        } else {
-            yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Share settings saved' })
+        switch (type) {
+            case 'CREATE_SHARE':
+                if (error === 'createShareFailNotAValidUser') {
+                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address' })
+                } else if (error === 'createShareFailCantShareWithYourself') {
+                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours' })
+                } else if (error === 'createShareFailAlreadyShared') {
+                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared' })
+                } else {
+                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Share settings saved' })
+                }
+                break
         }
         yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
     }
