@@ -76,7 +76,8 @@ export default function Auth() {
                 <>
                     <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
                     <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword} type="password"/>
-                </>}
+                </>
+            }
             {
                 authPageState === SIGN_UP_STEP_1 &&
                 <>
@@ -91,7 +92,8 @@ export default function Auth() {
                 <>
                     <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
                     <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={setConfirmationCode} autoFocus/>
-                </>}
+                </>
+            }
             {
                 authFeedbackMessage !== '' &&
                 <Typography variant="body2" color="textSecondary" align="center">
