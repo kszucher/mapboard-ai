@@ -320,40 +320,6 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
     //     { $set: { [`data.$.${nodeProp}`]: nodePropValTo } },
     // )
 
-    // await maps.aggregate([
-    //     {
-    //         $match: {
-    //             _id: mapId,
-    //         }
-    //     },
-    //     {
-    //         $project: {
-    //             data: {
-    //                 $map: {
-    //                     input: "$data",
-    //                     as: "dataElem",
-    //                     in: {
-    //                         $cond: {
-    //                             if: { $eq: [`$$dataElem.${nodeProp}`, nodePropValFrom]},
-    //                             then: {
-    //                                 $setField: {
-    //                                     field: nodeProp,
-    //                                     input: '$$dataElem',
-    //                                     value: nodePropValTo
-    //                                 }
-    //                             },
-    //                             else: "$$dataElem"
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     },
-    //     {
-    //         $merge: { into: 'maps' }
-    //     }
-    // ]).forEach(_ => {})
-
     await maps.updateOne(
         {
             _id: mapId,
@@ -366,7 +332,7 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
                         as: "dataElem",
                         in: {
                             $cond: {
-                                if: { $eq: [`$$dataElem.${nodeProp}`, nodePropValFrom]},
+                                if: { $eq: [`$$dataElem.${nodeProp}`, nodePropValFrom] },
                                 then: {
                                     $setField: {
                                         field: nodeProp,
