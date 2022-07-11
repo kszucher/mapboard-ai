@@ -325,7 +325,7 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
             _id: mapId,
         },
         [{
-            $project: {
+            $set: {
                 data: {
                     $map: {
                         input: "$data",
