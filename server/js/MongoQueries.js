@@ -305,6 +305,45 @@ async function deleteFrame (maps, mapId) {
     ).value
 }
 
+async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropValTo) {
+    // await maps.updateOne(
+    //     { _id: mapId },
+    //     { $set: { [`data.$[elem].${nodeProp}`]: nodePropValTo } },
+    //     { "arrayFilters": [{ [`elem.${nodeProp}`]: nodePropValFrom }] }
+    // )
+
+    // await maps.updateOne(
+    //     {
+    //         _id: mapId,
+    //         data: { $elemMatch: { [nodeProp]: nodePropValFrom } }
+    //     },
+    //     { $set: { [`data.$.${nodeProp}`]: nodePropValTo } },
+    // )
+
+    await maps.updateOne(
+        {
+            _id: mapId,
+            // data: { $elemMatch: { [nodeProp]: nodePropValFrom } }
+        },
+        [
+            {
+                $project: {
+                    data: {
+                        $filter: {
+                            input: "$data",
+                            as: "dataElem",
+                            cond: {$eq: [`$$dataElem.${nodeProp}`, `${nodePropValFrom}`]}
+                        }
+                    }
+                }
+            },
+
+            // https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/
+
+        ],
+    )
+}
+
 module.exports = {
     getUserByEmail,
     getUser,
@@ -324,6 +363,7 @@ module.exports = {
     importFrame,
     duplicateFrame,
     deleteFrame,
+    changeNodeProp,
 }
 
 // mongodb driver naming issue

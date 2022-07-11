@@ -120,6 +120,34 @@ async function mongoTests(cmd) {
                 dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], frameSelected: 0 } ] }
                 dbExpected = { maps: [ {_id: 'map1', dataFrames: [], frameSelected: null } ] }
                 break
+            case 'changeNodePropTest': {
+                dbOriginal = {
+                    maps: [{
+                        _id: 'map1',
+                        data:
+                            [ {np: 'a'}, {np: 'b'}],
+                        // dataFrames: [
+                        //     [ {np: 'a'} ],
+                        //     [ {np: 'b'} ],
+                        //     [ {np: 'c'} ],
+                        //     [ {np: 'd'} ],
+                        // ]
+                    }]
+                }
+                dbExpected = {
+                    maps: [{
+                        _id: 'map1',
+                        data:
+                            [ {np: 'x'}, {np: 'b'} ],
+                        // dataFrames: [
+                        //     [ {np: 'x'} ],
+                        //     [ {np: 'b'} ],
+                        //     [ {np: 'c'} ],
+                        //     [ {np: 'd'} ],
+                        // ]
+                    }]
+                }
+            }
         }
         if(dbOriginal.hasOwnProperty('users')) {await users.insertMany(dbOriginal.users)}
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
@@ -144,6 +172,7 @@ async function mongoTests(cmd) {
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
+            case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 'a', 'x' ); break
         }
         let result = {}
         if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
@@ -183,6 +212,7 @@ async function allTest () {
     // await mongoTests('deleteFrameTest2')
     // await mongoTests('deleteFrameTest3')
     // await mongoTests('deleteFrameTest4')
+    await mongoTests('changeNodePropTest')
 }
 
 allTest()
