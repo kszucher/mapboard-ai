@@ -320,13 +320,45 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
     //     { $set: { [`data.$.${nodeProp}`]: nodePropValTo } },
     // )
 
-    await maps.aggregate([
+    // await maps.aggregate([
+    //     {
+    //         $match: {
+    //             _id: mapId,
+    //         }
+    //     },
+    //     {
+    //         $project: {
+    //             data: {
+    //                 $map: {
+    //                     input: "$data",
+    //                     as: "dataElem",
+    //                     in: {
+    //                         $cond: {
+    //                             if: { $eq: [`$$dataElem.${nodeProp}`, nodePropValFrom]},
+    //                             then: {
+    //                                 $setField: {
+    //                                     field: nodeProp,
+    //                                     input: '$$dataElem',
+    //                                     value: nodePropValTo
+    //                                 }
+    //                             },
+    //                             else: "$$dataElem"
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     },
+    //     {
+    //         $merge: { into: 'maps' }
+    //     }
+    // ]).forEach(_ => {})
+
+    await maps.updateOne(
         {
-            $match: {
-                _id: mapId,
-            }
+            _id: mapId,
         },
-        {
+        [{
             $project: {
                 data: {
                     $map: {
@@ -348,11 +380,8 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
                     }
                 }
             }
-        },
-        {
-            $merge: { into: 'maps' }
-        }
-    ]).forEach(_ => {})
+        }]
+    )
 }
 
 module.exports = {
