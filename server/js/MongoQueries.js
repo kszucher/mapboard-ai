@@ -320,28 +320,39 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
     //     { $set: { [`data.$.${nodeProp}`]: nodePropValTo } },
     // )
 
-    await maps.updateOne(
+    await maps.aggregate([
         {
-            _id: mapId,
-            // data: { $elemMatch: { [nodeProp]: nodePropValFrom } }
+            $match: {
+                _id: mapId,
+            }
         },
-        [
-            {
-                $project: {
-                    data: {
-                        $filter: {
-                            input: "$data",
-                            as: "dataElem",
-                            cond: {$eq: [`$$dataElem.${nodeProp}`, `${nodePropValFrom}`]}
+        {
+            $project: {
+                data: {
+                    $map: {
+                        input: "$data",
+                        as: "dataElem",
+                        in: {
+                            $cond: {
+                                if: { $eq: ["$$dataElem.np", "a"]},
+                                then: {
+                                    $setField: {
+                                        field: "np",
+                                        input: '$$dataElem',
+                                        value: "x"
+                                    }
+                                },
+                                else: "$$dataElem"
+                            }
                         }
                     }
                 }
-            },
-
-            // https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/
-
-        ],
-    )
+            }
+        },
+        {
+            $merge: { into: 'maps' }
+        }
+    ]).forEach(_ => {})
 }
 
 module.exports = {
