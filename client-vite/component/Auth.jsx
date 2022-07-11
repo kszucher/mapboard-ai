@@ -19,7 +19,7 @@ export default function Auth() {
     const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})
     const setPassword = e => dispatch({type: 'SET_PASSWORD', payload: e.target.value})
     const setPasswordAgain = e => dispatch({type: 'SET_PASSWORD_AGAIN', payload: e.target.value})
-    const setConfirmationCode = e => dispatch({type: 'SET_CONFIRMATION_CODE', payload: e.target.value})
+    const checkSetConfirmationCode = e => dispatch({type: 'CHECK_SET_CONFIRMATION_CODE', payload: e.target.value})
     const signInPanel = _ => dispatch({type: 'SIGN_IN_PANEL'})
     const signUpPanel = _ => dispatch({type: 'SIGN_UP_PANEL'})
     const signUpStep1Panel = _ => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
@@ -91,7 +91,7 @@ export default function Auth() {
                 authPageState === SIGN_UP_STEP_2 &&
                 <>
                     <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
-                    <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={setConfirmationCode} autoFocus/>
+                    <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus/>
                 </>
             }
             {

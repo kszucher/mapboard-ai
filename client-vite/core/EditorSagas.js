@@ -58,7 +58,7 @@ function* authSaga () {
             'SIGN_UP_STEP_1',
             'SIGN_UP_STEP_2',
             'SIGN_IN',
-            'SET_CONFIRMATION_CODE',
+            'CHECK_SET_CONFIRMATION_CODE',
         ])
         if (type === 'SIGN_IN' && (payload.cred.email === '' || payload.cred.password === '')) {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Missing information' })
@@ -66,7 +66,7 @@ function* authSaga () {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Too short password' })
         } else if (type === 'SIGN_UP_STEP_1' && payload.password.length < 5 ) {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Your password must be at least 5 characters' })
-        } else if (type === 'SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
+        } else if (type === 'CHECK_SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
             yield put({ type: 'SET_CONFIRMATION_CODE', payload })
         } else {
             yield put({type: 'INTERACTION_DISABLED'})
