@@ -212,7 +212,7 @@ async function allTest () {
     // await mongoTests('deleteFrameTest2')
     // await mongoTests('deleteFrameTest3')
     // await mongoTests('deleteFrameTest4')
-    await mongoTests('changeNodePropTest')
+    // await mongoTests('changeNodePropTest')
 }
 
 allTest()

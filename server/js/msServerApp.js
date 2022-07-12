@@ -248,13 +248,10 @@ async function resolveType(req, currUser) {
             const map = await MongoQueries.getMap(maps, mapId)
             const { ownerUser } = map
             const iAmTheOwner = isEqual(ownerUser, currUser._id)
-            if (iAmTheOwner) {
-                await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: mapId })
-                await MongoQueries.deleteMapFromShares(shares, { sharedMap: mapId })
-            } else {
-                await MongoQueries.deleteMapFromUsers(users, { _id: currUser._id, tabMapIdList: mapId })
-                await MongoQueries.deleteMapFromShares(shares, { shareUser: currUser._id, sharedMap: mapId })
-            }
+            const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: currUser._id, tabMapIdList: mapId }
+            const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: currUser._id, sharedMap: mapId }
+            await MongoQueries.deleteMapFromUsers(users, userFilter)
+            await MongoQueries.deleteMapFromShares(shares, shareFilter)
             const userUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList, breadcrumbMapIdList } = userUpdated
             const newMapId = breadcrumbMapIdList[0]
@@ -364,13 +361,10 @@ async function resolveType(req, currUser) {
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
             const { shareUser, sharedMap } = await shares.findOne({ _id: shareId })
-
-            await MongoQueries.deleteMapFromUsers(users, { _id: shareUser, tabMapIdList: sharedMap } )
-            await MongoQueries.deleteMapFromShares(shares, { shareUser, sharedMap })
-
-            // in case I want to remove share for ALL user I ever shared it with: "deleteMapAllButOne"
-            // https://stackoverflow.com/questions/18439612/mongodb-find-all-except-from-one-or-two-criteria
-
+            const userFilter = { _id: shareUser, tabMapIdList: sharedMap }
+            const shareFilter = { shareUser, sharedMap }
+            await MongoQueries.deleteMapFromUsers(users, userFilter)
+            await MongoQueries.deleteMapFromShares(shares, shareFilter)
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             return { error: '', data: { ...shareInfo } }
         }
@@ -384,8 +378,7 @@ async function resolveType(req, currUser) {
             return { error: '' }
         }
         case 'CHANGE_TAB_WIDTH': { // MUTATION
-            // const {  }
-
+            // TODO
         }
     }
 }
