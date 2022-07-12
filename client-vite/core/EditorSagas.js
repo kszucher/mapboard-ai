@@ -68,6 +68,9 @@ function* authSaga () {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Your password must be at least 5 characters' })
         } else if (type === 'CHECK_SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
             yield put({ type: 'SET_CONFIRMATION_CODE', payload })
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: '' })
+        } else if (type === 'CHECK_SET_CONFIRMATION_CODE') {
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Invalid character' })
         } else {
             yield put({type: 'INTERACTION_DISABLED'})
             const { resp: { error, data } } = yield call(fetchPost, { type, payload })
