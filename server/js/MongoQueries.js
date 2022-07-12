@@ -344,6 +344,31 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
                             }
                         }
                     }
+                },
+                dataFrames: {
+                    $map: {
+                        input: "$dataFrames",
+                        as: "dataFramesElem",
+                        in: {
+                            $map: {
+                                input: "$$dataFramesElem",
+                                as: "dataFramesElem",
+                                in: {
+                                    $cond: {
+                                        if: { $eq: [`$$dataFramesElem.${nodeProp}`, nodePropValFrom] },
+                                        then: {
+                                            $setField: {
+                                                field: nodeProp,
+                                                input: '$$dataFramesElem',
+                                                value: nodePropValTo
+                                            }
+                                        },
+                                        else: "$$dataFramesElem"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }]

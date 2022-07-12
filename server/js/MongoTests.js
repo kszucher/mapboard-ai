@@ -125,26 +125,26 @@ async function mongoTests(cmd) {
                     maps: [{
                         _id: 'map1',
                         data:
-                            [ {np: 'a'}, {np: 'b'}],
-                        // dataFrames: [
-                        //     [ {np: 'a'} ],
-                        //     [ {np: 'b'} ],
-                        //     [ {np: 'c'} ],
-                        //     [ {np: 'd'} ],
-                        // ]
+                            [ {np: 'a'}, {np: 's'}],
+                        dataFrames: [
+                            [ {np: 'a'} ],
+                            [ {np: 'b'} ],
+                            [ {np: 'c'} ],
+                            [ {np: 's'} ],
+                        ]
                     }]
                 }
                 dbExpected = {
                     maps: [{
                         _id: 'map1',
                         data:
-                            [ {np: 'x'}, {np: 'b'} ],
-                        // dataFrames: [
-                        //     [ {np: 'x'} ],
-                        //     [ {np: 'b'} ],
-                        //     [ {np: 'c'} ],
-                        //     [ {np: 'd'} ],
-                        // ]
+                            [ {np: 'a'}, {np: 't'} ],
+                        dataFrames: [
+                            [ {np: 'a'} ],
+                            [ {np: 'b'} ],
+                            [ {np: 'c'} ],
+                            [ {np: 't'} ],
+                        ]
                     }]
                 }
             }
@@ -172,7 +172,7 @@ async function mongoTests(cmd) {
             case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
-            case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 'a', 'x' ); break
+            case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 's', 't' ); break
         }
         let result = {}
         if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
