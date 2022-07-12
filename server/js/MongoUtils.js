@@ -1,5 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://admin:TNszfBws4@JQ8!t@cluster0.wbdxy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`;
 const ObjectId = require('mongodb').ObjectId;
 
 async function mapFilter (mapsColl, params) {
