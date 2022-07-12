@@ -306,20 +306,6 @@ async function deleteFrame (maps, mapId) {
 }
 
 async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropValTo) {
-    // await maps.updateOne(
-    //     { _id: mapId },
-    //     { $set: { [`data.$[elem].${nodeProp}`]: nodePropValTo } },
-    //     { "arrayFilters": [{ [`elem.${nodeProp}`]: nodePropValFrom }] }
-    // )
-
-    // await maps.updateOne(
-    //     {
-    //         _id: mapId,
-    //         data: { $elemMatch: { [nodeProp]: nodePropValFrom } }
-    //     },
-    //     { $set: { [`data.$.${nodeProp}`]: nodePropValTo } },
-    // )
-
     await maps.updateOne(
         {
             _id: mapId,
