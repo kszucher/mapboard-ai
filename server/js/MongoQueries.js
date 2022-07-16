@@ -11,16 +11,6 @@ async function getMap(maps, mapId) {
     return await maps.findOne({_id: mapId})
 }
 
-async function getMapNameList(maps, mapIdList) {
-    let mapNameList = []
-    await maps.aggregate([
-        {$match: {_id: {$in: mapIdList}}},
-        {$addFields: {"__order": {$indexOfArray: [mapIdList, "$_id"]}}},
-        {$sort: {"__order": 1}},
-    ]).forEach(function (m) {mapNameList.push(m.data[1].content)})
-    return mapNameList
-}
-
 async function getUserEmail(users, userId) {
     return (await users.findOne({_id: userId})).email
 }
@@ -52,6 +42,22 @@ async function getUserShares(users, maps, shares, userId) {
     }
     return {shareDataExport, shareDataImport}
 }
+
+async function nameLookup(users, maps) {
+
+    // https://stackoverflow.com/questions/65047670/mongodb-lookup-and-map-array-of-objects
+
+    // let mapNameList = []
+    // await maps.aggregate([
+    //     {$match: {_id: {$in: mapIdList}}},
+    //     {$addFields: {"__order": {$indexOfArray: [mapIdList, "$_id"]}}},
+    //     {$sort: {"__order": 1}},
+    // ]).forEach(function (m) {mapNameList.push(m.data[1].content)})
+    // return mapNameList
+
+    return ['mapName1', 'mapName2']
+}
+
 
 async function replaceBreadcrumbs(users, userId, mapId) {
     return (
@@ -359,8 +365,9 @@ module.exports = {
     getUserByEmail,
     getUser,
     getMap,
-    getMapNameList,
+    // getMapNameList,
     getUserShares,
+    nameLookup,
     replaceBreadcrumbs,
     appendBreadcrumbs,
     sliceBreadcrumbs,

@@ -86,6 +86,10 @@ async function checkSave (req, currUser) {
     }
 }
 
+async function getUserInfo () {
+    // TODO
+}
+
 async function getMapInfo (currUser, shares, map, mapId, mapSource) {
     const { path, ownerUser, data, dataFrames, frameSelected } = map
     const frameLen = dataFrames.length

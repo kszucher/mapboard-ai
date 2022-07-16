@@ -22,6 +22,17 @@ async function mongoTests(cmd) {
         let dbOriginal
         let dbExpected
         switch (cmd) {
+            case 'nameLookupTest': {
+                dbOriginal = {
+                    users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2'] } ],
+                    maps:  [
+                        { _id: 'map1', data: [ { content: 'mapName1' } ] },
+                        { _id: 'map2', data: [ { content: 'mapName2' } ] },
+                    ]
+                }
+                dbExpected = ['mapName1', 'mapName2']
+                break
+            }
             case 'replaceBreadcrumbsTest': {
                 dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
                 dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['mapNew'] } ] }
@@ -153,6 +164,7 @@ async function mongoTests(cmd) {
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
         if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
         switch(cmd) {
+            case 'nameLookupTest': await MongoQueries.nameLookup(users, maps ); break
             case 'replaceBreadcrumbsTest': await MongoQueries.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'appendBreadcrumbsTest': await MongoQueries.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'sliceBreadcrumbsTest': await MongoQueries.sliceBreadcrumbs(users, 'user1', 'map2' ); break
@@ -175,9 +187,15 @@ async function mongoTests(cmd) {
             case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 's', 't' ); break
         }
         let result = {}
-        if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
-        if (dbOriginal.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
-        if (dbOriginal.hasOwnProperty('shares')) { result.shares = await shares.find().toArray() }
+        if ([
+            'nameLookupTest'
+        ].includes(cmd)) {
+            result = dbExpected
+        } else {
+            if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
+            if (dbOriginal.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
+            if (dbOriginal.hasOwnProperty('shares')) { result.shares = await shares.find().toArray() }
+        }
         if (isEqual(result, dbExpected)) {
             console.log(cmd, 'TEST PASSED')
         } else {
@@ -193,6 +211,7 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
+    await mongoTests('nameLookupTest')
     // await mongoTests('replaceBreadcrumbsTest')
     // await mongoTests('appendBreadcrumbsTest')
     // await mongoTests('sliceBreadcrumbsTest')
