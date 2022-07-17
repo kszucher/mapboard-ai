@@ -26,8 +26,8 @@ async function mongoTests(cmd) {
                 dbOriginal = {
                     users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2'] } ],
                     maps:  [
-                        { _id: 'map1', data: [ { content: 'mapName1' } ] },
-                        { _id: 'map2', data: [ { content: 'mapName2' } ] },
+                        { _id: 'map1', data: [ { }, { content: 'mapName1' } ] },
+                        { _id: 'map2', data: [ { }, { content: 'mapName2' } ] },
                     ]
                 }
                 dbExpected = ['mapName1', 'mapName2']
@@ -163,8 +163,9 @@ async function mongoTests(cmd) {
         if(dbOriginal.hasOwnProperty('users')) {await users.insertMany(dbOriginal.users)}
         if(dbOriginal.hasOwnProperty('maps')) {await maps.insertMany(dbOriginal.maps)}
         if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
+        let result = {}
         switch(cmd) {
-            case 'nameLookupTest': await MongoQueries.nameLookup(users, maps ); break
+            case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1'); break
             case 'replaceBreadcrumbsTest': await MongoQueries.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'appendBreadcrumbsTest': await MongoQueries.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'sliceBreadcrumbsTest': await MongoQueries.sliceBreadcrumbs(users, 'user1', 'map2' ); break
@@ -186,11 +187,7 @@ async function mongoTests(cmd) {
             case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 's', 't' ); break
         }
-        let result = {}
-        if ([
-            'nameLookupTest'
-        ].includes(cmd)) {
-            result = dbExpected
+        if (['nameLookupTest'].includes(cmd)) {
         } else {
             if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
             if (dbOriginal.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
