@@ -48,15 +48,16 @@ async function nameLookup(users, userId, mapIdList) {
         await users.aggregate(
             [
                 {
-                    $match: {
-                        _id: userId
-                    }
+                    $match: { _id: userId }
                 },
                 {
                     $lookup: {
                         from: "maps",
-                        localField: mapIdList,
-                        foreignField: "_id",
+                        let: { originalArray: `$${mapIdList}` },
+                        pipeline: [
+                            { $set: { "order": { $indexOfArray: ['$$originalArray', '$_id'] } } },
+                            { $sort: { "order": 1 } },
+                        ],
                         as: "fromMaps"
                     },
                 },
