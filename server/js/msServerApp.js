@@ -177,10 +177,10 @@ async function resolveType(req, userId, currUser) {
             } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
                 return { error: 'signUpStep2FailWrongCode' }
             } else {
-                let newMap = getDefaultMap('My First Map', currUser._id, [])
+                let newMap = getDefaultMap('My First Map', userId, [])
                 let mapId = (await maps.insertOne(newMap)).insertedId
                 await users.updateOne(
-                    { _id: currUser._id },
+                    { _id: userId },
                     {
                         $set: {
                             activationStatus: ACTIVATION_STATUS.COMPLETED,
@@ -203,21 +203,21 @@ async function resolveType(req, userId, currUser) {
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.replaceBreadcrumbs(users, currUser._id, mapId)
+            await MongoQueries.replaceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.sliceBreadcrumbs(users, currUser._id, mapId)
+            await MongoQueries.sliceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
+            await MongoQueries.appendBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { ...userInfo, ...mapInfo } }
@@ -225,8 +225,8 @@ async function resolveType(req, userId, currUser) {
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             // CREATE NEW
             const { lastPath, newMapName } = req.payload
-            const newMapId = (await maps.insertOne(getDefaultMap(newMapName, currUser._id, currUser.breadcrumbMapIdList))).insertedId
-            await MongoQueries.appendBreadcrumbs(users, currUser._id, newMapId)
+            const newMapId = (await maps.insertOne(getDefaultMap(newMapName, userId, currUser.breadcrumbMapIdList))).insertedId
+            await MongoQueries.appendBreadcrumbs(users, userId, newMapId)
             const userInfo = await getUserInfo(userId)
             // UPDATE OLD
             const mapId = ObjectId(req.payload.save.mapId)
@@ -240,8 +240,8 @@ async function resolveType(req, userId, currUser) {
             return { error: '', data: { ...userInfo, ...newMapInfo } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
-            const mapId = (await maps.insertOne(getDefaultMap('New Map', currUser._id, []))).insertedId
-            await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
+            const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
+            await MongoQueries.appendTabReplaceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { ...userInfo, ...mapInfo } }
@@ -250,9 +250,9 @@ async function resolveType(req, userId, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const map = await MongoQueries.getMap(maps, mapId)
             const { ownerUser } = map
-            const iAmTheOwner = isEqual(ownerUser, currUser._id)
-            const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: currUser._id, tabMapIdList: mapId }
-            const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: currUser._id, sharedMap: mapId }
+            const iAmTheOwner = isEqual(ownerUser, userId)
+            const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
+            const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
             await MongoQueries.deleteMapFromUsers(users, userFilter)
             await MongoQueries.deleteMapFromShares(shares, shareFilter)
             const userInfo = await getUserInfo(userId)
@@ -261,13 +261,13 @@ async function resolveType(req, userId, currUser) {
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
+            await MongoQueries.moveUpMapInTab(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             return { error: '', data: { ...userInfo } }
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
+            await MongoQueries.moveDownMapInTab(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             return { error: '', data: { ...userInfo } }
         }
@@ -307,7 +307,7 @@ async function resolveType(req, userId, currUser) {
             return { error: '', data: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY
-            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, userId)
             return { error: '', data: { ...shareInfo } }
         }
         case 'CREATE_SHARE': { // MUTATION
@@ -316,18 +316,18 @@ async function resolveType(req, userId, currUser) {
             const shareUser = await users.findOne({ email: shareEmail })
             if (shareUser === null) {
                 return { error: 'createShareFailNotAValidUser' }
-            } else if (isEqual(shareUser._id, currUser._id)) {
+            } else if (isEqual(shareUser._id, userId)) {
                 return { error: 'createShareFailCantShareWithYourself' }
             } else {
                 const currShare = await shares.findOne({
                     sharedMap: mapId,
-                    ownerUser: currUser._id,
+                    ownerUser: userId,
                     shareUser: shareUser._id
                 })
                 if (currShare === null) {
                     const newShare = {
                         sharedMap: mapId,
-                        ownerUser: currUser._id,
+                        ownerUser: userId,
                         shareUser: shareUser._id,
                         access: shareAccess,
                         status: SHARE_STATUS.WAITING
@@ -352,10 +352,10 @@ async function resolveType(req, userId, currUser) {
                 { returnDocument: 'after' }
             )).value
             const mapId = share.sharedMap
-            await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
+            await MongoQueries.appendTabReplaceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
-            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, userId)
             return { error: '', data: { ...userInfo, ...mapInfo, ...shareInfo } }
         }
         case 'DELETE_SHARE': { // MUTATION
@@ -365,7 +365,7 @@ async function resolveType(req, userId, currUser) {
             const shareFilter = { shareUser, sharedMap }
             await MongoQueries.deleteMapFromUsers(users, userFilter)
             await MongoQueries.deleteMapFromShares(shares, shareFilter)
-            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
+            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, userId)
             return { error: '', data: { ...shareInfo } }
         }
         case 'GET_NAME': { // QUERY
@@ -374,7 +374,7 @@ async function resolveType(req, userId, currUser) {
         }
         case 'CHANGE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
-            await users.updateOne({ _id: currUser._id }, { $set: { colorMode } })
+            await users.updateOne({ _id: userId }, { $set: { colorMode } })
             return { error: '' }
         }
         case 'CHANGE_TAB_WIDTH': { // MUTATION
