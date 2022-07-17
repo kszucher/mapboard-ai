@@ -86,10 +86,6 @@ async function checkSave (req, currUser) {
     }
 }
 
-async function getUserInfo () {
-    // TODO
-}
-
 async function getMapInfo (currUser, shares, map, mapId, mapSource) {
     const { path, ownerUser, data, dataFrames, frameSelected } = map
     const frameLen = dataFrames.length
@@ -387,16 +383,14 @@ async function resolveType(req, currUser) {
     }
 }
 
-async function appendStuff (resp) {
+async function appendStuff (resp, users, userId) {
     if (resp.hasOwnProperty('data')) {
         if (resp.data.hasOwnProperty('tabMapIdList')) {
-            const { tabMapIdList } = resp.data
-            const tabMapNameList = await MongoQueries.getMapNameList(maps, tabMapIdList)
+            const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
             Object.assign(resp.data, { tabMapNameList })
         }
         if (resp.data.hasOwnProperty('breadcrumbMapIdList')) {
-            const { breadcrumbMapIdList } = resp.data
-            const breadcrumbMapNameList = await MongoQueries.getMapNameList(maps, breadcrumbMapIdList)
+            const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
             Object.assign(resp.data, { breadcrumbMapNameList })
         }
     }
@@ -416,7 +410,7 @@ async function processReq(req) {
         }
         await checkSave(req, currUser)
         let resp = await resolveType(req, currUser)
-        resp = await appendStuff(resp)
+        resp = await appendStuff(resp, users, currUser._id)
         return resp
     } catch (err) {
         console.log('server error')
