@@ -86,7 +86,15 @@ async function checkSave (req, currUser) {
     }
 }
 
-async function getMapInfo (currUser, shares, map, mapId, mapSource) {
+// new philosophy:
+// - do the mutation
+// - getMapInfo which inside does the appropriate QUERY
+// - getUserInfo which inside does the appropriate QUERY
+// - saying GOODBYE to return after
+// - saying GOODBYE to currUserUpdated
+
+async function getMapInfo (userId, mapId, mapSource) {
+    const map = await maps.findOne({_id: mapId})
     const { path, ownerUser, data, dataFrames, frameSelected } = map
     const frameLen = dataFrames.length
     if (frameLen === 0 && mapSource === 'dataFrames') {
@@ -95,18 +103,18 @@ async function getMapInfo (currUser, shares, map, mapId, mapSource) {
     const mapData = mapSource === 'data' ? data: dataFrames[frameSelected]
     let mapRight = MAP_RIGHTS.UNAUTHORIZED
     if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
-        mapRight = isEqual(currUser._id, adminUser)
+        mapRight = isEqual(userId, adminUser)
             ? MAP_RIGHTS.EDIT
             : MAP_RIGHTS.VIEW
     } else {
-        if (isEqual(currUser._id, ownerUser)) {
+        if (isEqual(userId, ownerUser)) {
             mapRight = MAP_RIGHTS.EDIT
         } else {
             const fullPath = [...path, mapId]
             for (let i = fullPath.length - 1; i > -1; i--) {
                 const currMapId = fullPath[i]
                 const shareData = await shares.findOne({
-                    shareUser: currUser._id,
+                    shareUser: userId,
                     sharedMap: currMapId
                 })
                 if (shareData !== null) {
@@ -118,7 +126,7 @@ async function getMapInfo (currUser, shares, map, mapId, mapSource) {
     return { mapId, mapSource, mapData, frameLen, frameSelected, mapRight }
 }
 
-async function resolveType(req, currUser) {
+async function resolveType(req, userId, currUser) {
     switch (req.type) {
         case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
@@ -185,8 +193,7 @@ async function resolveType(req, currUser) {
             const { cred } = req.payload
             const { tabMapIdList, breadcrumbMapIdList, colorMode } = currUser
             const mapId = breadcrumbMapIdList.at(-1)
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
@@ -197,24 +204,21 @@ async function resolveType(req, currUser) {
             const mapId = ObjectId(req.payload.mapId)
             const user = await MongoQueries.replaceBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const user = await MongoQueries.sliceBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
             const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
             const { breadcrumbMapIdList } = user
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
@@ -231,16 +235,14 @@ async function resolveType(req, currUser) {
                 { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
             )
             // RETURN NEW
-            const newMap = await MongoQueries.getMap(maps, newMapId)
-            const newMapInfo = await getMapInfo(currUser, shares, newMap, newMapId, 'data')
+            const newMapInfo = await getMapInfo(userId, newMapId, 'data')
             return { error: '', data: { breadcrumbMapIdList, ...newMapInfo } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             const mapId = (await maps.insertOne(getDefaultMap('New Map', currUser._id, []))).insertedId
             const user = await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
             const { tabMapIdList, breadcrumbMapIdList } = user
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
@@ -255,8 +257,7 @@ async function resolveType(req, currUser) {
             const userUpdated = await users.findOne({ email: req.payload.cred.email })
             const { tabMapIdList, breadcrumbMapIdList } = userUpdated
             const newMapId = breadcrumbMapIdList[0]
-            const newMap = await MongoQueries.getMap(maps, newMapId)
-            const newMapInfo = await getMapInfo(currUser, shares, newMap, newMapId, 'data')
+            const newMapInfo = await getMapInfo(userId, newMapId, 'data')
             return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...newMapInfo} }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
@@ -271,38 +272,37 @@ async function resolveType(req, currUser) {
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.save.mapId)
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
+            const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.save.mapId)
-            const map = await MongoQueries.openPrevFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
+            await MongoQueries.openPrevFrame(maps, mapId)
+            const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'OPEN_NEXT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.save.mapId)
-            const map = await MongoQueries.openNextFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
+            await MongoQueries.openNextFrame(maps, mapId)
+            const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'IMPORT_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.save.mapId)
-            const map = await MongoQueries.importFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
+            await MongoQueries.importFrame(maps, mapId)
+            const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'DUPLICATE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.save.mapId)
-            const map = await MongoQueries.duplicateFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
+            await MongoQueries.duplicateFrame(maps, mapId)
+            const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'DELETE_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const map = await MongoQueries.deleteFrame(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'dataFrames')
+            await MongoQueries.deleteFrame(maps, mapId)
+            const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
             return { error: '', data: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY
@@ -353,8 +353,7 @@ async function resolveType(req, currUser) {
             const mapId = share.sharedMap
             const user = await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
             const { tabMapIdList, breadcrumbMapIdList } = user
-            const map = await MongoQueries.getMap(maps, mapId)
-            const mapInfo = await getMapInfo(currUser, shares, map, mapId, 'data')
+            const mapInfo = await getMapInfo(userId, mapId, 'data')
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
             return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
         }
@@ -409,7 +408,7 @@ async function processReq(req) {
             }
         }
         await checkSave(req, currUser)
-        let resp = await resolveType(req, currUser)
+        let resp = await resolveType(req, currUser._id, currUser)
         resp = await appendStuff(resp, users, currUser._id)
         return resp
     } catch (err) {
