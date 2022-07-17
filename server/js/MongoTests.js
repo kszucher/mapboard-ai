@@ -24,13 +24,15 @@ async function mongoTests(cmd) {
         switch (cmd) {
             case 'nameLookupTest': {
                 dbOriginal = {
-                    users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2'] } ],
+                    users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
                     maps:  [
                         { _id: 'map1', data: [ { }, { content: 'mapName1' } ] },
                         { _id: 'map2', data: [ { }, { content: 'mapName2' } ] },
+                        { _id: 'map3', data: [ { }, { content: 'mapName3' } ] },
+                        { _id: 'map4', data: [ { }, { content: 'mapName4' } ] },
                     ]
                 }
-                dbExpected = ['mapName1', 'mapName2']
+                dbExpected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
                 break
             }
             case 'replaceBreadcrumbsTest': {
