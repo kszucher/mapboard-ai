@@ -7,7 +7,6 @@ const {ObjectId} = require('mongodb')
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries");
-const { getUser } = require('./MongoQueries')
 
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
