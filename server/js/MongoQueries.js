@@ -68,11 +68,11 @@ async function nameLookup(users, userId) {
                         from: "maps",
                         localField: "breadcrumbMapIdList",
                         foreignField: "_id",
-                        as: "selectedMaps"
+                        as: "fromMaps"
                     },
                 },
                 {
-                    $unwind: '$selectedMaps'
+                    $unwind: '$fromMaps'
                 },
                 {
                     $replaceWith: {
@@ -80,7 +80,7 @@ async function nameLookup(users, userId) {
                             $getField: {
                                 field: 'content',
                                 input: {
-                                    $arrayElemAt: [ '$selectedMaps.data', 1 ]
+                                    $arrayElemAt: [ '$fromMaps.data', 1 ]
                                 }
                             }
                         }
