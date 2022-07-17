@@ -406,6 +406,3 @@ module.exports = {
     deleteFrame,
     changeNodeProp,
 }
-
-// mongodb driver naming issue
-// https://stackoverflow.com/questions/35626040/how-to-get-updated-document-back-from-the-findoneandupdate-method

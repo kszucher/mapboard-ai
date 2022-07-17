@@ -89,8 +89,8 @@ async function checkSave (req, currUser) {
 async function getUserInfo (userId) {
     const user = await users.findOne({_id: userId})
     const { colorMode, breadcrumbMapIdList, tabMapIdList } = user
-    const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
     const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
+    const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
     return { colorMode, breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList }
 }
 
@@ -437,3 +437,8 @@ MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, func
 })
 
 module.exports = app
+
+// TODO
+// simplify settings saga, as saga is not even needed as all data is available,
+// remove return value from findAndModify
+// delete one-liner queries from mongoqueries and apply them natively in msServerApp
