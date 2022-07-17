@@ -53,6 +53,8 @@ async function nameLookup(users, userId, mapIdList) {
                 {
                     $lookup: {
                         from: "maps",
+                        localField: mapIdList,
+                        foreignField: "_id",
                         let: { originalArray: `$${mapIdList}` },
                         pipeline: [
                             { $set: { "order": { $indexOfArray: ['$$originalArray', '$_id'] } } },
