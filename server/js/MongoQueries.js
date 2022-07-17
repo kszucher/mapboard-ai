@@ -56,26 +56,39 @@ async function nameLookup(users, userId) {
     // return mapNameList
 
     return (
-        await users.aggregate([
-            {
-                $match: {
-                    _id: userId
-                }
-            },
-            {
-                $lookup: {
-                    from: "maps",
-                    localField: "breadcrumbMapIdList",
-                    foreignField: "_id",
-                    as: "selectedMaps"
+        await users.aggregate(
+            [
+                {
+                    $match: {
+                        _id: userId
+                    }
                 },
-            },
-            {
-                $unwind:
-                    "$selectedMaps"
-            },
-        ]
-    ).toArray()).map(el => el.selectedMaps.data[1].content)
+                {
+                    $lookup: {
+                        from: "maps",
+                        localField: "breadcrumbMapIdList",
+                        foreignField: "_id",
+                        as: "selectedMaps"
+                    },
+                },
+                {
+                    $unwind: '$selectedMaps'
+                },
+                {
+                    $replaceWith: {
+                        "mapName": {
+                            $getField: {
+                                field: 'content',
+                                input: {
+                                    $arrayElemAt: [ '$selectedMaps.data', 1 ]
+                                }
+                            }
+                        }
+                    }
+                },
+            ]
+        ).toArray()
+    ).map(el => el.mapName)
 }
 
 async function replaceBreadcrumbs(users, userId, mapId) {
