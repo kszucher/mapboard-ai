@@ -7,6 +7,7 @@ const {ObjectId} = require('mongodb')
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries");
+const { getUser } = require('./MongoQueries')
 
 const transporter = nodemailer.createTransport({
     host: 'mail.privateemail.com',
@@ -86,12 +87,13 @@ async function checkSave (req, currUser) {
     }
 }
 
-// new philosophy:
-// - do the mutation
-// - getMapInfo which inside does the appropriate QUERY
-// - getUserInfo which inside does the appropriate QUERY
-// - saying GOODBYE to return after
-// - saying GOODBYE to currUserUpdated
+async function getUserInfo (userId) {
+    const user = await users.findOne({_id: userId})
+    const { colorMode, breadcrumbMapIdList, tabMapIdList } = user
+    const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
+    const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
+    return { colorMode, breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList }
+}
 
 async function getMapInfo (userId, mapId, mapSource) {
     const map = await maps.findOne({_id: mapId})
@@ -191,10 +193,9 @@ async function resolveType(req, userId, currUser) {
         }
         case 'SIGN_IN': { // QUERY
             const { cred } = req.payload
-            const { tabMapIdList, breadcrumbMapIdList, colorMode } = currUser
-            const mapId = breadcrumbMapIdList.at(-1)
-            const mapInfo = await getMapInfo(userId, mapId, 'data')
-            return { error: '', data: { cred, tabMapIdList, breadcrumbMapIdList, colorMode, ...mapInfo } }
+            const userInfo = await getUserInfo(userId)
+            const mapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList.at(-1), 'data')
+            return { error: '', data: { cred, ...userInfo, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
             // await new Promise(resolve => setTimeout(resolve, 5000))
@@ -202,31 +203,31 @@ async function resolveType(req, userId, currUser) {
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const user = await MongoQueries.replaceBreadcrumbs(users, currUser._id, mapId)
-            const { breadcrumbMapIdList } = user
+            await MongoQueries.replaceBreadcrumbs(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
-            return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const user = await MongoQueries.sliceBreadcrumbs(users, currUser._id, mapId)
-            const { breadcrumbMapIdList } = user
+            await MongoQueries.sliceBreadcrumbs(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
-            return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'OPEN_MAP_FROM_MAP': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
-            const { breadcrumbMapIdList } = user
+            await MongoQueries.appendBreadcrumbs(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
-            return { error: '', data: { breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             // CREATE NEW
             const { lastPath, newMapName } = req.payload
             const newMapId = (await maps.insertOne(getDefaultMap(newMapName, currUser._id, currUser.breadcrumbMapIdList))).insertedId
-            const user = await MongoQueries.appendBreadcrumbs(users, currUser._id, newMapId)
-            const { breadcrumbMapIdList } = user
+            await MongoQueries.appendBreadcrumbs(users, currUser._id, newMapId)
+            const userInfo = await getUserInfo(userId)
             // UPDATE OLD
             const mapId = ObjectId(req.payload.save.mapId)
             await maps.updateOne(
@@ -236,14 +237,14 @@ async function resolveType(req, userId, currUser) {
             )
             // RETURN NEW
             const newMapInfo = await getMapInfo(userId, newMapId, 'data')
-            return { error: '', data: { breadcrumbMapIdList, ...newMapInfo } }
+            return { error: '', data: { ...userInfo, ...newMapInfo } }
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             const mapId = (await maps.insertOne(getDefaultMap('New Map', currUser._id, []))).insertedId
-            const user = await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
-            const { tabMapIdList, breadcrumbMapIdList } = user
+            await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
-            return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...mapInfo } }
+            return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
@@ -254,21 +255,21 @@ async function resolveType(req, userId, currUser) {
             const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: currUser._id, sharedMap: mapId }
             await MongoQueries.deleteMapFromUsers(users, userFilter)
             await MongoQueries.deleteMapFromShares(shares, shareFilter)
-            const userUpdated = await users.findOne({ email: req.payload.cred.email })
-            const { tabMapIdList, breadcrumbMapIdList } = userUpdated
-            const newMapId = breadcrumbMapIdList[0]
-            const newMapInfo = await getMapInfo(userId, newMapId, 'data')
-            return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...newMapInfo} }
+            const userInfo = await getUserInfo(userId)
+            const newMapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList[0], 'data')
+            return { error: '', data: { ...userInfo, ...newMapInfo} }
         }
         case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const { tabMapIdList } = await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
-            return { error: '', data: { tabMapIdList } }
+            await MongoQueries.moveUpMapInTab(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
+            return { error: '', data: { ...userInfo } }
         }
         case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const { tabMapIdList } = await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
-            return { error: '', data: { tabMapIdList } }
+            await MongoQueries.moveDownMapInTab(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
+            return { error: '', data: { ...userInfo } }
         }
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.save.mapId)
@@ -351,11 +352,11 @@ async function resolveType(req, userId, currUser) {
                 { returnDocument: 'after' }
             )).value
             const mapId = share.sharedMap
-            const user = await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
-            const { tabMapIdList, breadcrumbMapIdList } = user
+            await MongoQueries.appendTabReplaceBreadcrumbs(users, currUser._id, mapId)
+            const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             const shareInfo = await MongoQueries.getUserShares(users, maps, shares, currUser._id)
-            return { error: '', data: { tabMapIdList, breadcrumbMapIdList, ...mapInfo, ...shareInfo } }
+            return { error: '', data: { ...userInfo, ...mapInfo, ...shareInfo } }
         }
         case 'DELETE_SHARE': { // MUTATION
             const shareId = ObjectId(req.payload.shareId)
@@ -382,20 +383,6 @@ async function resolveType(req, userId, currUser) {
     }
 }
 
-async function appendStuff (resp, users, userId) {
-    if (resp.hasOwnProperty('data')) {
-        if (resp.data.hasOwnProperty('tabMapIdList')) {
-            const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-            Object.assign(resp.data, { tabMapNameList })
-        }
-        if (resp.data.hasOwnProperty('breadcrumbMapIdList')) {
-            const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
-            Object.assign(resp.data, { breadcrumbMapNameList })
-        }
-    }
-    return resp
-}
-
 async function processReq(req) {
     try {
         let currUser
@@ -408,13 +395,11 @@ async function processReq(req) {
             }
         }
         await checkSave(req, currUser)
-        let resp = await resolveType(req, currUser._id, currUser)
-        resp = await appendStuff(resp, users, currUser._id)
-        return resp
+        return await resolveType(req, currUser._id, currUser)
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
-        return {error: 'error', data: err.stack}
+        return { error: 'error', data: err.stack }
     }
 }
 
