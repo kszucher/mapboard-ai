@@ -24,7 +24,7 @@ async function mongoTests(cmd) {
         switch (cmd) {
             case 'nameLookupTest': {
                 dbOriginal = {
-                    users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2'] } ],
+                    users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2'] } ],
                     maps:  [
                         { _id: 'map1', data: [ { }, { content: 'mapName1' } ] },
                         { _id: 'map2', data: [ { }, { content: 'mapName2' } ] },
@@ -165,7 +165,7 @@ async function mongoTests(cmd) {
         if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
         let result = {}
         switch(cmd) {
-            case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1'); break
+            case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList'); break
             case 'replaceBreadcrumbsTest': await MongoQueries.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'appendBreadcrumbsTest': await MongoQueries.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'sliceBreadcrumbsTest': await MongoQueries.sliceBreadcrumbs(users, 'user1', 'map2' ); break

@@ -43,18 +43,7 @@ async function getUserShares(users, maps, shares, userId) {
     return {shareDataExport, shareDataImport}
 }
 
-async function nameLookup(users, userId) {
-
-    // https://stackoverflow.com/questions/65047670/mongodb-lookup-and-map-array-of-objects
-
-    // let mapNameList = []
-    // await maps.aggregate([
-    //     {$match: {_id: {$in: mapIdList}}},
-    //     {$addFields: {"__order": {$indexOfArray: [mapIdList, "$_id"]}}},
-    //     {$sort: {"__order": 1}},
-    // ]).forEach(function (m) {mapNameList.push(m.data[1].content)})
-    // return mapNameList
-
+async function nameLookup(users, userId, mapIdList) {
     return (
         await users.aggregate(
             [
@@ -66,7 +55,7 @@ async function nameLookup(users, userId) {
                 {
                     $lookup: {
                         from: "maps",
-                        localField: "breadcrumbMapIdList",
+                        localField: mapIdList,
                         foreignField: "_id",
                         as: "fromMaps"
                     },
@@ -397,7 +386,6 @@ module.exports = {
     getUserByEmail,
     getUser,
     getMap,
-    // getMapNameList,
     getUserShares,
     nameLookup,
     replaceBreadcrumbs,
