@@ -128,7 +128,7 @@ async function getMapInfo (userId, mapId, mapSource) {
     return { mapId, mapSource, mapData, frameLen, frameSelected, mapRight }
 }
 
-async function resolveType(req, userId, currUser) {
+async function resolveType(req, userId) {
     switch (req.type) {
         case 'LIVE_DEMO': { // QUERY
             // this could depend on queryString
@@ -223,13 +223,16 @@ async function resolveType(req, userId, currUser) {
             return { error: '', data: { ...userInfo, ...mapInfo } }
         }
         case 'CREATE_MAP_IN_MAP': { // MUTATION
+            // LOAD OLD
+            const mapId = ObjectId(req.payload.save.mapId)
+            const map = await MongoQueries.getMap(maps, mapId)
+            const { path } = map
             // CREATE NEW
             const { lastPath, newMapName } = req.payload
-            const newMapId = (await maps.insertOne(getDefaultMap(newMapName, userId, currUser.breadcrumbMapIdList))).insertedId
+            const newMapId = (await maps.insertOne(getDefaultMap(newMapName, userId, [ ...path, mapId ] ))).insertedId
             await MongoQueries.appendBreadcrumbs(users, userId, newMapId)
             const userInfo = await getUserInfo(userId)
             // UPDATE OLD
-            const mapId = ObjectId(req.payload.save.mapId)
             await maps.updateOne(
                 { _id: mapId },
                 { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
@@ -369,7 +372,7 @@ async function resolveType(req, userId, currUser) {
             return { error: '', data: { ...shareInfo } }
         }
         case 'GET_NAME': { // QUERY
-            const { name } = currUser
+            const { name } = 'Krisztian' // TODO use getUserInfo, and name will be available already
             return { err: '', data: { name } }
         }
         case 'CHANGE_COLOR_MODE': { // MUTATION
@@ -395,7 +398,7 @@ async function processReq(req) {
             }
         }
         await checkSave(req, currUser)
-        return await resolveType(req, currUser._id, currUser)
+        return await resolveType(req, currUser._id)
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
