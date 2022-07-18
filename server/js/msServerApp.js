@@ -403,7 +403,7 @@ async function processReq(req) {
             }
         }
         await checkSave(req, currUser)
-        return await resolveType(req, currUser._id)
+        return await resolveType(req, currUser?._id)
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
