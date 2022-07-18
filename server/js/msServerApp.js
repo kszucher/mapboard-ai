@@ -180,10 +180,10 @@ async function resolveType(req, userId) {
             } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
                 return { error: 'signUpStep2FailWrongCode' }
             } else {
-                let newMap = getDefaultMap('My First Map', userId, [])
+                let newMap = getDefaultMap('My First Map', currUser._id, [])
                 let mapId = (await maps.insertOne(newMap)).insertedId
                 await users.updateOne(
-                    { _id: userId },
+                    { _id: currUser._id },
                     {
                         $set: {
                             activationStatus: ACTIVATION_STATUS.COMPLETED,
