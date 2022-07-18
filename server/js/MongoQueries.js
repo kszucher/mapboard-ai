@@ -71,50 +71,38 @@ async function nameLookup(users, userId, mapIdList) {
 }
 
 async function replaceBreadcrumbs(users, userId, mapId) {
-    return (
-        await users.findOneAndUpdate(
-            { _id: userId },
-            [ { $set: { breadcrumbMapIdList: [ mapId ] } } ],
-            { returnDocument: 'after' }
-        )
-    ).value
+    await users.findOneAndUpdate(
+        { _id: userId },
+        [ { $set: { breadcrumbMapIdList: [ mapId ] } } ],
+    )
 }
 
 async function appendBreadcrumbs(users, userId, mapId) {
-    return (
-        await users.findOneAndUpdate(
-            { _id: userId },
-            [ { $set: { breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] } } } ],
-            { returnDocument: 'after' }
-        )
-    ).value
+    await users.findOneAndUpdate(
+        { _id: userId },
+        [ { $set: { breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] } } } ],
+    )
 }
 
 async function sliceBreadcrumbs(users, userId, mapId) {
-    return (
-        await users.findOneAndUpdate(
-            { _id: userId },
-            [{
-                $set: {
-                    breadcrumbMapIdList: { $slice: [
-                            "$breadcrumbMapIdList", { $add: [{ $indexOfArray: ["$breadcrumbMapIdList", mapId] }, 1] }
-                        ]
-                    }
+    await users.findOneAndUpdate(
+        { _id: userId },
+        [{
+            $set: {
+                breadcrumbMapIdList: { $slice: [
+                        "$breadcrumbMapIdList", { $add: [{ $indexOfArray: ["$breadcrumbMapIdList", mapId] }, 1] }
+                    ]
                 }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+            }
+        }],
+    )
 }
 
 async function appendTabReplaceBreadcrumbs(users, userId, mapId) {
-    return (
-        await users.findOneAndUpdate(
-            { _id: userId },
-            [ { $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] }, breadcrumbMapIdList: [ mapId ] } } ],
-            { returnDocument: 'after' }
-        )
-    ).value
+    await users.findOneAndUpdate(
+        { _id: userId },
+        [ { $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] }, breadcrumbMapIdList: [ mapId ] } } ],
+    )
 }
 
 async function deleteMapFromUsers (users, filter) {
@@ -156,171 +144,148 @@ async function deleteMapFromShares (shares, filter) {
 
 async function moveUpMapInTab (users, userId, mapId) {
     const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
-    return (
-        await users.findOneAndUpdate(
-            { _id: userId },
-            [{
-                $set: {
-                    tabMapIdList: {
-                        $cond: {
-                            if: { $eq: [ tabIndex, 0 ] },
-                            then: "$tabMapIdList",
-                            else: {
-                                $concatArrays: [
-                                    { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
-                                    [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                                    [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
-                                    { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
-                                ]
-                            }
+    await users.findOneAndUpdate(
+        { _id: userId },
+        [{
+            $set: {
+                tabMapIdList: {
+                    $cond: {
+                        if: { $eq: [ tabIndex, 0 ] },
+                        then: "$tabMapIdList",
+                        else: {
+                            $concatArrays: [
+                                { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
+                                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
+                                [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
+                                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
+                            ]
                         }
                     }
                 }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+            }
+        }]
+    )
 }
 
 async function moveDownMapInTab (users, userId, mapId) {
     const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
-    return (
-        await users.findOneAndUpdate(
-            { _id: userId },
-            [{
-                $set: {
-                    tabMapIdList: {
-                        $cond: {
-                            if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
-                            then: "$tabMapIdList",
-                            else: {
-                                $concatArrays: [
-                                    { $slice: [ "$tabMapIdList", tabIndex ] },
-                                    [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
-                                    [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                                    { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
-                                ]
-                            }
+    await users.findOneAndUpdate(
+        { _id: userId },
+        [{
+            $set: {
+                tabMapIdList: {
+                    $cond: {
+                        if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
+                        then: "$tabMapIdList",
+                        else: {
+                            $concatArrays: [
+                                { $slice: [ "$tabMapIdList", tabIndex ] },
+                                [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
+                                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
+                                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
+                            ]
                         }
                     }
                 }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+            }
+        }]
+    )
 }
 
 async function openPrevFrame (maps, mapId) {
-    return (
-        await maps.findOneAndUpdate(
-            { _id: mapId },
-            [{
-                $set: {
-                    frameSelected: {
-                        $cond: {
-                            if: { $gt: [ "$frameSelected", 0 ] },
-                            then: { $subtract: [ "$frameSelected", 1 ] },
-                            else: "$frameSelected"
-                        }
+    await maps.findOneAndUpdate(
+        { _id: mapId },
+        [{
+            $set: {
+                frameSelected: {
+                    $cond: {
+                        if: { $gt: [ "$frameSelected", 0 ] },
+                        then: { $subtract: [ "$frameSelected", 1 ] },
+                        else: "$frameSelected"
                     }
                 }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+            }
+        }]
+    )
 }
 
 async function openNextFrame (maps, mapId) {
-    return (
-        await maps.findOneAndUpdate(
-            { _id: mapId },
-            [{
-                $set: {
-                    frameSelected: {
-                        $cond: {
-                            if: { $lt: [ "$frameSelected", { $subtract: [ { $size: "$dataFrames" }, 1 ] } ] },
-                            then: { $add: [ "$frameSelected", 1 ] },
-                            else: "$frameSelected"
-                        }
+    await maps.findOneAndUpdate(
+        { _id: mapId },
+        [{
+            $set: {
+                frameSelected: {
+                    $cond: {
+                        if: { $lt: [ "$frameSelected", { $subtract: [ { $size: "$dataFrames" }, 1 ] } ] },
+                        then: { $add: [ "$frameSelected", 1 ] },
+                        else: "$frameSelected"
                     }
                 }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+            }
+        }]
+    )
 }
 
 async function importFrame (maps, mapId) {
-    return (
-        await maps.findOneAndUpdate(
-            { _id: mapId },
-            [
-                { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ "$data" ] ] } } },
-                { $set: { frameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
-            ],
-            { returnDocument: 'after' }
-        )
-    ).value
+    await maps.findOneAndUpdate(
+        { _id: mapId },
+        [
+            { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ "$data" ] ] } } },
+            { $set: { frameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
+        ],
+    )
 }
 
 async function duplicateFrame (maps, mapId) {
-    return (
-        await maps.findOneAndUpdate(
-            { _id: mapId },
-            [{
-                $set: {
-                    dataFrames: {
-                        $concatArrays: [
-                            { $slice: [ "$dataFrames", { $add: [ "$frameSelected", 1 ] } ] },
-                            [ { $arrayElemAt: [ "$dataFrames", "$frameSelected" ] } ],
-                            { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
-                        ]
-                    },
-                    frameSelected: { $add : [ "$frameSelected", 1 ] }
-                }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+    await maps.findOneAndUpdate(
+        { _id: mapId },
+        [{
+            $set: {
+                dataFrames: {
+                    $concatArrays: [
+                        { $slice: [ "$dataFrames", { $add: [ "$frameSelected", 1 ] } ] },
+                        [ { $arrayElemAt: [ "$dataFrames", "$frameSelected" ] } ],
+                        { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
+                    ]
+                },
+                frameSelected: { $add : [ "$frameSelected", 1 ] }
+            }
+        }]
+    )
 }
 
 async function deleteFrame (maps, mapId) {
-    return (
-        await maps.findOneAndUpdate(
-            { _id: mapId },
-            [{
-                $set: {
-                    dataFrames: {
-                        $concatArrays: [
-                            { $slice: [ "$dataFrames", "$frameSelected" ] },
-                            { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
-                        ]
-                    },
-                    frameSelected: {
-                        $cond: {
-                            if: { $eq: [ "$frameSelected", 0 ] },
-                            then: {
-                                $cond: {
-                                    if: { $eq: [ { $size: "$dataFrames" }, 1 ] },
-                                    then: null,
-                                    else: 0
-                                }
-                            },
-                            else: { $subtract: [ "$frameSelected", 1 ] }
-                        }
+    await maps.findOneAndUpdate(
+        { _id: mapId },
+        [{
+            $set: {
+                dataFrames: {
+                    $concatArrays: [
+                        { $slice: [ "$dataFrames", "$frameSelected" ] },
+                        { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
+                    ]
+                },
+                frameSelected: {
+                    $cond: {
+                        if: { $eq: [ "$frameSelected", 0 ] },
+                        then: {
+                            $cond: {
+                                if: { $eq: [ { $size: "$dataFrames" }, 1 ] },
+                                then: null,
+                                else: 0
+                            }
+                        },
+                        else: { $subtract: [ "$frameSelected", 1 ] }
                     }
                 }
-            }],
-            { returnDocument: 'after' }
-        )
-    ).value
+            }
+        }]
+    )
 }
 
 async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropValTo) {
     await maps.updateOne(
-        {
-            _id: mapId,
-        },
+        { _id: mapId },
         [{
             $set: {
                 data: {
