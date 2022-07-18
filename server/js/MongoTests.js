@@ -137,27 +137,15 @@ async function mongoTests(cmd) {
                 dbOriginal = {
                     maps: [{
                         _id: 'map1',
-                        data:
-                            [ {np: 'a'}, {np: 's'}],
-                        dataFrames: [
-                            [ {np: 'a'} ],
-                            [ {np: 'b'} ],
-                            [ {np: 'c'} ],
-                            [ {np: 's'} ],
-                        ]
+                        data: [ {np: 'a'}, {np: 's'}],
+                        dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 's'} ] ]
                     }]
                 }
                 dbExpected = {
                     maps: [{
                         _id: 'map1',
-                        data:
-                            [ {np: 'a'}, {np: 't'} ],
-                        dataFrames: [
-                            [ {np: 'a'} ],
-                            [ {np: 'b'} ],
-                            [ {np: 'c'} ],
-                            [ {np: 't'} ],
-                        ]
+                        data: [ {np: 'a'}, {np: 't'} ],
+                        dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 't'} ] ]
                     }]
                 }
             }
@@ -210,7 +198,7 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-    await mongoTests('nameLookupTest')
+    // await mongoTests('nameLookupTest')
     // await mongoTests('replaceBreadcrumbsTest')
     // await mongoTests('appendBreadcrumbsTest')
     // await mongoTests('sliceBreadcrumbsTest')

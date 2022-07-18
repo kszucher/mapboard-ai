@@ -64,7 +64,7 @@ async function nameLookup(users, userId, mapIdList) {
                             }
                         }
                     }
-                },
+                }
             ]
         ).toArray()
     ).map(el => el.mapName)
@@ -94,7 +94,7 @@ async function sliceBreadcrumbs(users, userId, mapId) {
                     ]
                 }
             }
-        }],
+        }]
     )
 }
 
@@ -109,32 +109,26 @@ async function deleteMapFromUsers (users, filter) {
     const mapId = filter.tabMapIdList
     await users.updateMany(
         filter,
-        [
-            {
-                $set: {
-                    breadcrumbMapIdList: {
-                        $cond: {
-                            if: {$eq: [{$indexOfArray: ["$tabMapIdList", mapId]}, 0]},
-                            then: {
-                                $cond: {
-                                    if: { $gt: [{ $size: "$tabMapIdList" }, 1] },
-                                    then: [{ $arrayElemAt: ["$tabMapIdList", 1] }],
-                                    else: []
-                                }
-                            },
-                            else: [{$arrayElemAt: ["$tabMapIdList", {$subtract: [{$indexOfArray: ["$tabMapIdList", mapId]}, 1]}]}]
-                        }
+        [{
+            $set: {
+                breadcrumbMapIdList: {
+                    $cond: {
+                        if: {$eq: [{$indexOfArray: ["$tabMapIdList", mapId]}, 0]},
+                        then: {
+                            $cond: {
+                                if: { $gt: [{ $size: "$tabMapIdList" }, 1] },
+                                then: [{ $arrayElemAt: ["$tabMapIdList", 1] }],
+                                else: []
+                            }
+                        },
+                        else: [{$arrayElemAt: ["$tabMapIdList", {$subtract: [{$indexOfArray: ["$tabMapIdList", mapId]}, 1]}]}]
                     }
-                }
-            },
-            {
-                $set: {
-                    tabMapIdList : {
-                        $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapId]}}
-                    }
+                },
+                tabMapIdList : {
+                    $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapId]}}
                 }
             }
-        ]
+        }]
     )
 }
 

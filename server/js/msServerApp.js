@@ -446,4 +446,3 @@ module.exports = app
 
 // TODO
 // simplify settings saga, as saga is not even needed as all data is available,
-// remove return value from findAndModify
