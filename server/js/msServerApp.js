@@ -74,7 +74,7 @@ async function checkSave (req, currUser) {
         req.payload.hasOwnProperty('save')) {
         const mapId = ObjectId(req.payload.save.mapId)
         const { mapSource, mapData } = req.payload.save
-        const { ownerUser, frameSelected } = await MongoQueries.getMap(maps, mapId)
+        const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
         const shareToEdit = await shares.findOne({ shareUser: currUser._id, sharedMap: mapId, access: 'edit' })
         if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
             if (mapSource === 'data') {
@@ -127,6 +127,10 @@ async function getMapInfo (userId, mapId, mapSource) {
     return { mapId, mapSource, mapData, frameLen, frameSelected, mapRight }
 }
 
+async function getShareInfo () {
+    // TODO call stuff which looks up everything that is NEEDED
+}
+
 async function resolveType(req, userId) {
     switch (req.type) {
         case 'LIVE_DEMO': { // QUERY
@@ -136,7 +140,7 @@ async function resolveType(req, userId) {
         }
         case 'SIGN_UP_STEP_1': { // MUTATION
             const { name, email, password } = req.payload
-            const currUser = await MongoQueries.getUserByEmail(users, email)
+            const currUser = await users.findOne({ email })
             if (currUser === null) {
                 let confirmationCode = getConfirmationCode()
                 await transporter.sendMail({
@@ -168,7 +172,7 @@ async function resolveType(req, userId) {
         }
         case 'SIGN_UP_STEP_2': { // MUTATION
             let { email, confirmationCode } = req.payload
-            const currUser = await MongoQueries.getUserByEmail(users, email)
+            const currUser = await users.findOne({ email })
             if (currUser === null) {
                 return { error: 'signUpStep2FailUnknownUser' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
@@ -224,7 +228,7 @@ async function resolveType(req, userId) {
         case 'CREATE_MAP_IN_MAP': { // MUTATION
             // LOAD OLD
             const mapId = ObjectId(req.payload.save.mapId)
-            const map = await MongoQueries.getMap(maps, mapId)
+            const map = await maps.findOne({_id: mapId})
             const { path } = map
             // CREATE NEW
             const { lastPath, newMapName } = req.payload
@@ -250,7 +254,7 @@ async function resolveType(req, userId) {
         }
         case 'REMOVE_MAP_IN_TAB': { // MUTATION
             const mapId = ObjectId(req.payload.mapId)
-            const map = await MongoQueries.getMap(maps, mapId)
+            const map = await maps.findOne({_id: mapId})
             const { ownerUser } = map
             const iAmTheOwner = isEqual(ownerUser, userId)
             const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
@@ -389,7 +393,9 @@ async function processReq(req) {
     try {
         let currUser
         if (req.payload?.hasOwnProperty('cred')) {
-            currUser = await MongoQueries.getUser(users, req.payload.cred)
+            const { email, password } = req.payload.cred
+            currUser = await users.findOne({ email, password })
+
             if (currUser === null) {
                 return { error: 'authFailWrongCred' }
             } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
@@ -441,4 +447,3 @@ module.exports = app
 // TODO
 // simplify settings saga, as saga is not even needed as all data is available,
 // remove return value from findAndModify
-// delete one-liner queries from mongoqueries and apply them natively in msServerApp

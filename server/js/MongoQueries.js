@@ -1,16 +1,3 @@
-async function getUserByEmail(users, email) {
-    return (await users.findOne({ email }))
-}
-
-async function getUser(users, cred) {
-    const {email, password} = cred
-    return (await users.findOne({ email, password }))
-}
-
-async function getMap(maps, mapId) {
-    return await maps.findOne({_id: mapId})
-}
-
 async function getUserEmail(users, userId) {
     return (await users.findOne({_id: userId})).email
 }
@@ -386,9 +373,6 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
 }
 
 module.exports = {
-    getUserByEmail,
-    getUser,
-    getMap,
     getUserShares,
     nameLookup,
     replaceBreadcrumbs,
