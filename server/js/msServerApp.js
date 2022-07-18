@@ -446,3 +446,4 @@ module.exports = app
 
 // TODO
 // simplify settings saga, as saga is not even needed as all data is available,
+// it is really time to start doing cypress-based integration tests...
