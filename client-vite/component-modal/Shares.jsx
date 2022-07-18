@@ -9,8 +9,8 @@ import { getColors } from '../core/Colors'
 
 export function Shares() {
     const colorMode = useSelector(state => state.colorMode)
-    const shareDataExport = useSelector(state => state.shareDataExport)
-    const shareDataImport = useSelector(state => state.shareDataImport)
+    const shareDataExport = useSelector(state => state.shareDataExport).map((el, idx) => ({...el, id: idx}))
+    const shareDataImport = useSelector(state => state.shareDataImport).map((el, idx) => ({...el, id: idx}))
     const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const getShares = _ => dispatch({type: 'GET_SHARES'})
@@ -19,7 +19,7 @@ export function Shares() {
     const deleteShare = params => dispatch({type: 'DELETE_SHARE', payload: {shareId: params.row._id}})
 
     const columnsExport = [
-        {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false},
+        {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
         {field: 'shareUserEmail', headerName: 'Shared With', width: 250, sortable: false, editable: false},
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false},
@@ -38,8 +38,8 @@ export function Shares() {
     ];
 
     const columnsImport = [
-        {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false},
-        {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false}, // TODO call this ownerUserEmail
+        {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
+        {field: 'ownerUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false},
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false},
         {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (

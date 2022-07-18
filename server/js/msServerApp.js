@@ -313,7 +313,7 @@ async function resolveType(req, userId) {
             return { error: '', data: { ...mapInfo } }
         }
         case 'GET_SHARES': { // QUERY
-            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, userId)
+            const shareInfo = await MongoQueries.getUserShares(shares, userId)
             return { error: '', data: { ...shareInfo } }
         }
         case 'CREATE_SHARE': { // MUTATION
@@ -361,7 +361,7 @@ async function resolveType(req, userId) {
             await MongoQueries.appendTabReplaceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
-            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, userId)
+            const shareInfo = await MongoQueries.getUserShares(shares, userId)
             return { error: '', data: { ...userInfo, ...mapInfo, ...shareInfo } }
         }
         case 'DELETE_SHARE': { // MUTATION
@@ -371,7 +371,7 @@ async function resolveType(req, userId) {
             const shareFilter = { shareUser, sharedMap }
             await MongoQueries.deleteMapFromUsers(users, userFilter)
             await MongoQueries.deleteMapFromShares(shares, shareFilter)
-            const shareInfo = await MongoQueries.getUserShares(users, maps, shares, userId)
+            const shareInfo = await MongoQueries.getUserShares(shares, userId)
             return { error: '', data: { ...shareInfo } }
         }
         case 'GET_NAME': { // QUERY

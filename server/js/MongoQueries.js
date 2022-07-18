@@ -1,37 +1,3 @@
-async function getUserEmail(users, userId) {
-    return (await users.findOne({_id: userId})).email
-}
-
-async function getUserShares(users, maps, shares, userId) {
-    // let ownerUserData = await shares.find({ownerUser: userId}).toArray()
-    // let shareDataExport = []
-    // for (let i = 0; i < ownerUserData.length; i++) {
-    //     shareDataExport.push({
-    //         '_id': ownerUserData[i]._id,
-    //         'id': i,
-    //         'map': (await getMapNameList(maps, [ownerUserData[i].sharedMap]))[0],
-    //         'shareUserEmail': await getUserEmail(users, ownerUserData[i].shareUser),
-    //         'access': ownerUserData[i].access,
-    //         'status': ownerUserData[i].status
-    //     })
-    // }
-    // let shareUserData = await shares.find({shareUser: userId}).toArray()
-    // let shareDataImport = []
-    // for (let i = 0; i < shareUserData.length; i++) {
-    //     shareDataImport.push({
-    //         '_id': shareUserData[i]._id,
-    //         'id': i,
-    //         'map': (await getMapNameList(maps, [shareUserData[i].sharedMap]))[0],
-    //         'shareUserEmail': await getUserEmail(users, shareUserData[i].ownerUser),
-    //         'access': shareUserData[i].access,
-    //         'status': shareUserData[i].status
-    //     })
-    // }
-    // return {shareDataExport, shareDataImport}
-
-
-}
-
 async function nameLookup(users, userId, mapIdList) {
     return (
         await users.aggregate(
@@ -70,6 +36,29 @@ async function nameLookup(users, userId, mapIdList) {
             ]
         ).toArray()
     ).map(el => el.mapName)
+}
+
+async function getUserShares(shares, userId) {
+    const shareDataExport = await shares.aggregate(
+        [
+            { $match: { ownerUser: userId } },
+            { $lookup: { from: "maps", localField: "sharedMap", foreignField: "_id", as: 'map' } },
+            { $unwind: "$map" },
+            { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ "$map.data", 1 ] } } } } },
+            { $unset: [ "map" ] }
+
+
+            // TODO figure out shareUserMail
+
+        ]
+    ).toArray()
+    const shareDataImport = await shares.aggregate(
+        [
+            { $match: { ownerUser: userId } },
+            // TODO stuff
+        ]
+    ).toArray()
+    return { shareDataExport, shareDataImport }
 }
 
 async function replaceBreadcrumbs(users, userId, mapId) {

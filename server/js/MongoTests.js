@@ -41,6 +41,12 @@ async function mongoTests(cmd) {
                         { _id: 'user1', email: 'user1@mail.com' },
                         { _id: 'user2', email: 'user2@mail.com' },
                     ],
+                    maps: [
+                        { _id: 'map1', data: [ { }, { content: 'mapName1' } ] },
+                        { _id: 'map2', data: [ { }, { content: 'mapName2' } ] },
+                        { _id: 'map3', data: [ { }, { content: 'mapName3' } ] },
+                        { _id: 'map4', data: [ { }, { content: 'mapName4' } ] },
+                    ],
                     shares: [
                         { _id: 'share1', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map1', access: 'view', status: 'accepted'},
                         { _id: 'share2', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map2', access: 'edit', status: 'accepted'},
@@ -49,13 +55,13 @@ async function mongoTests(cmd) {
                     ]
                 }
                 dbExpected = {
-                    mapsIShareWithOthers: [
-                        { _id: 'share1', id: 0, map: 'map1', shareUserEmail: 'user2@mail.com', access: 'view', status: 'accepted' },
-                        { _id: 'share2', id: 1, map: 'map2', shareUserEmail: 'user2@mail.com', access: 'edit', status: 'accepted' }
+                    shareDataExport: [
+                        { _id: 'share1', sharedMap: 'map1', shareUserEmail: 'user2@mail.com', access: 'view', status: 'accepted' },
+                        { _id: 'share2', sharedMap: 'map2', shareUserEmail: 'user2@mail.com', access: 'edit', status: 'accepted' }
                     ],
-                    mapsOthersShareWithMe: [
-                        { _id: 'share1', id: 0, map: 'map3', ownerUserEmail: 'user2@mail.com', access: 'view', status: 'accepted' },
-                        { _id: 'share2', id: 1, map: 'map4', ownerUserEmail: 'user2@mail.com', access: 'edit', status: 'accepted' }
+                    shareDataImport: [
+                        { _id: 'share3', sharedMap: 'map3', ownerUserEmail: 'user2@mail.com', access: 'view', status: 'accepted' },
+                        { _id: 'share4', sharedMap: 'map4', ownerUserEmail: 'user2@mail.com', access: 'edit', status: 'accepted' }
                     ]
                 }
                 break
