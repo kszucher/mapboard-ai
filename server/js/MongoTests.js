@@ -35,6 +35,31 @@ async function mongoTests(cmd) {
                 dbExpected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
                 break
             }
+            case 'getUserSharesTest': {
+                dbOriginal = {
+                    users: [
+                        { _id: 'user1', email: 'user1@mail.com' },
+                        { _id: 'user2', email: 'user2@mail.com' },
+                    ],
+                    shares: [
+                        { _id: 'share1', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map1', access: 'view', status: 'accepted'},
+                        { _id: 'share2', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map2', access: 'edit', status: 'accepted'},
+                        { _id: 'share3', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map3', access: 'view', status: 'accepted'},
+                        { _id: 'share4', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map4', access: 'edit', status: 'accepted'}
+                    ]
+                }
+                dbExpected = {
+                    mapsIShareWithOthers: [
+                        { _id: 'share1', id: 0, map: 'map1', shareUserEmail: 'user2@mail.com', access: 'view', status: 'accepted' },
+                        { _id: 'share2', id: 1, map: 'map2', shareUserEmail: 'user2@mail.com', access: 'edit', status: 'accepted' }
+                    ],
+                    mapsOthersShareWithMe: [
+                        { _id: 'share1', id: 0, map: 'map3', ownerUserEmail: 'user2@mail.com', access: 'view', status: 'accepted' },
+                        { _id: 'share2', id: 1, map: 'map4', ownerUserEmail: 'user2@mail.com', access: 'edit', status: 'accepted' }
+                    ]
+                }
+                break
+            }
             case 'replaceBreadcrumbsTest': {
                 dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
                 dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['mapNew'] } ] }
@@ -67,7 +92,7 @@ async function mongoTests(cmd) {
                 }
                 break
             case 'deleteMapFromSharesTest': {
-                dbOriginal = { shares: [{_id: 'shareOther', ownerUser: 'ownerUser', shareUser: 'userOther', sharedMap: 'mapShared'} ] }
+                dbOriginal = { shares: [ {_id: 'shareOther', ownerUser: 'ownerUser', shareUser: 'userOther', sharedMap: 'mapShared'} ] }
                 dbExpected = { shares: [] }
                 break
             }
@@ -177,7 +202,10 @@ async function mongoTests(cmd) {
             case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
             case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 's', 't' ); break
         }
-        if (['nameLookupTest'].includes(cmd)) {
+        if ([
+            'nameLookupTest',
+            'getUserSharesTest',
+        ].includes(cmd)) {
         } else {
             if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
             if (dbOriginal.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }

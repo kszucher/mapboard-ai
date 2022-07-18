@@ -39,7 +39,7 @@ export function Shares() {
 
     const columnsImport = [
         {field: 'map',            headerName: 'Map Name',    width: 200, sortable: false, editable: false},
-        {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false},
+        {field: 'shareUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false}, // TODO call this ownerUserEmail
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false},
         {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
