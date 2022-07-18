@@ -181,6 +181,7 @@ async function mongoTests(cmd) {
         let result = {}
         switch(cmd) {
             case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList'); break
+            case 'getUserSharesTest': result = await MongoQueries.getUserShares(shares, 'user1'); break
             case 'replaceBreadcrumbsTest': await MongoQueries.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'appendBreadcrumbsTest': await MongoQueries.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
             case 'sliceBreadcrumbsTest': await MongoQueries.sliceBreadcrumbs(users, 'user1', 'map2' ); break
@@ -227,6 +228,7 @@ async function mongoTests(cmd) {
 
 async function allTest () {
     // await mongoTests('nameLookupTest')
+    await mongoTests('getUserSharesTest')
     // await mongoTests('replaceBreadcrumbsTest')
     // await mongoTests('appendBreadcrumbsTest')
     // await mongoTests('sliceBreadcrumbsTest')

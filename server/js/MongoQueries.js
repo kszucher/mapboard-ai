@@ -3,31 +3,33 @@ async function getUserEmail(users, userId) {
 }
 
 async function getUserShares(users, maps, shares, userId) {
-    let ownerUserData = await shares.find({ownerUser: userId}).toArray()
-    let shareDataExport = []
-    for (let i = 0; i < ownerUserData.length; i++) {
-        shareDataExport.push({
-            '_id': ownerUserData[i]._id,
-            'id': i,
-            'map': (await getMapNameList(maps, [ownerUserData[i].sharedMap]))[0],
-            'shareUserEmail': await getUserEmail(users, ownerUserData[i].shareUser),
-            'access': ownerUserData[i].access,
-            'status': ownerUserData[i].status
-        })
-    }
-    let shareUserData = await shares.find({shareUser: userId}).toArray()
-    let shareDataImport = []
-    for (let i = 0; i < shareUserData.length; i++) {
-        shareDataImport.push({
-            '_id': shareUserData[i]._id,
-            'id': i,
-            'map': (await getMapNameList(maps, [shareUserData[i].sharedMap]))[0],
-            'shareUserEmail': await getUserEmail(users, shareUserData[i].ownerUser),
-            'access': shareUserData[i].access,
-            'status': shareUserData[i].status
-        })
-    }
-    return {shareDataExport, shareDataImport}
+    // let ownerUserData = await shares.find({ownerUser: userId}).toArray()
+    // let shareDataExport = []
+    // for (let i = 0; i < ownerUserData.length; i++) {
+    //     shareDataExport.push({
+    //         '_id': ownerUserData[i]._id,
+    //         'id': i,
+    //         'map': (await getMapNameList(maps, [ownerUserData[i].sharedMap]))[0],
+    //         'shareUserEmail': await getUserEmail(users, ownerUserData[i].shareUser),
+    //         'access': ownerUserData[i].access,
+    //         'status': ownerUserData[i].status
+    //     })
+    // }
+    // let shareUserData = await shares.find({shareUser: userId}).toArray()
+    // let shareDataImport = []
+    // for (let i = 0; i < shareUserData.length; i++) {
+    //     shareDataImport.push({
+    //         '_id': shareUserData[i]._id,
+    //         'id': i,
+    //         'map': (await getMapNameList(maps, [shareUserData[i].sharedMap]))[0],
+    //         'shareUserEmail': await getUserEmail(users, shareUserData[i].ownerUser),
+    //         'access': shareUserData[i].access,
+    //         'status': shareUserData[i].status
+    //     })
+    // }
+    // return {shareDataExport, shareDataImport}
+
+
 }
 
 async function nameLookup(users, userId, mapIdList) {
