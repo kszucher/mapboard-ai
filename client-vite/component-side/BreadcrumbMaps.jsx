@@ -2,6 +2,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { getColors } from '../core/Colors'
+import '../css/Component-Side.css'
 
 export default function BreadcrumbMaps() {
     const colorMode = useSelector(state => state.colorMode)
@@ -11,19 +12,9 @@ export default function BreadcrumbMaps() {
     const dispatch = useDispatch()
     const openMapFromBreadcrumbs = index => dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}})
     return (
-        <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            position: 'fixed',
-            left: '50%',
-            transform: 'translate(-50%)',
-            height: 40,
-            background: MAP_BACKGROUND,
-            padding: '4px 16px 4px 16px',
-            borderRadius: '0 0 16px 16px',
-            border: '2px solid #9040b8',
-            borderTop: 0,
-        }}>
+        <div id="breadcrumb-maps"
+             style={{ background: MAP_BACKGROUND }}
+        >
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                 {breadcrumbMapNameList.map((el, index) => (
                     <Link

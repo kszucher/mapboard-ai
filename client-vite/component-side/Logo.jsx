@@ -8,19 +8,7 @@ export default function Logo() {
     const col1 = '#a4508b'
     const col2 = '#5f0a87'
     return (
-        <div style={{
-            position: 'fixed',
-            width: 224,
-            height: 40,
-            paddingTop: 4,
-            paddingBottom: 4,
-            backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)`,
-            borderBottomRightRadius: 16,
-            color: '#fff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
+        <div id="logo" style={{ backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)` }}>
             <Toolbar variant={"dense"}>
                 <IconButton
                     sx={{ mr: 2 }}

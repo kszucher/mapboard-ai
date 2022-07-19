@@ -1,0 +1,81 @@
+#breadcrumb-maps {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    height: 40px;
+    /*background: MAP_BACKGROUND,*/
+    padding: 4px 16px 4px 16px;
+    border-radius: 0 0 16px 16px;
+    border: 2px solid #9040b8;
+    border-top: 0;
+}
+
+#formatter {
+    position: fixed;
+    top: 96px;
+    right: 64px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-radius: 16px;
+    padding: 12px;
+}
+
+#frame-carousel {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 0;
+    /*borderLeft: `1px solid ${PAGE_BACKGROUND}`,*/
+    /*borderRight: `1px solid ${PAGE_BACKGROUND}`,*/
+    border-radius: 16px 16px 0 0;
+    border: 2px solid #9040b8;
+    border-bottom: 0;
+    /*backgroundColor: MAP_BACKGROUND,*/
+}
+
+#logo {
+    position: fixed;
+    width: 224px;
+    height: 40px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    /*background-image: linear-gradient(330deg, ${col1} 0%, ${col2} 74%);*/
+    border-bottom-right-radius: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#auth {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    top: 96px;
+    width: calc(48*8px);
+    flex-direction: column;
+    align-items: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+#profile {
+    position: fixed;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    padding: 4px 12px 4px 12px;
+    display: flex;
+    align-items: center;
+    border-top: 0;
+    border-right: 0;
+    border-radius: 0 0 0 16px;
+    flex-direction: row;
+}

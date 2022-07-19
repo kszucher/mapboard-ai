@@ -3,6 +3,7 @@ import { Button, IconButton, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { getColors } from '../core/Colors'
+import '../css/Component-Side.css'
 
 export function FrameCarousel () {
     const colorMode = useSelector(state => state.colorMode)
@@ -15,21 +16,16 @@ export function FrameCarousel () {
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})
 
     return (
-        <div style={{
-            position: 'fixed',
-            left: '50%',
-            transform: 'translate(-50%)',
-            bottom: 0,
-            borderTop: 0,
-            borderLeft: `1px solid ${PAGE_BACKGROUND}`,
-            borderRight: `1px solid ${PAGE_BACKGROUND}`,
-            borderRadius: '16px 16px 0 0',
-            border: `2px solid ${'#9040b8'}`,
-            borderBottom: 0,
-            backgroundColor: MAP_BACKGROUND,
-        }}>
-            {frameLen > 0 && <MobileStepper
-                style={{ flexWrap: 'wrap', gap: 12, borderTopLeftRadius: 16, borderTopRightRadius: 16, background: MAP_BACKGROUND }}
+        <div id="frame-carousel" >
+            {frameLen > 0 &&
+            <MobileStepper
+                style={{
+                    flexWrap: 'wrap',
+                    gap: 12,
+                    borderTopLeftRadius: 16,
+                    borderTopRightRadius: 16,
+                    background: MAP_BACKGROUND
+                }}
                 variant="dots"
                 steps={frameLen}
                 position="static"

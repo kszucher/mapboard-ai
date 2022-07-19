@@ -4,6 +4,7 @@ import { colorList, getColors } from '../core/Colors'
 import { setClear } from '../core/Utils'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../component/Icons'
+import '../css/Component-Side.css'
 
 const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
     <>
@@ -68,19 +69,7 @@ export function Formatter () {
     const closeFormatter = _ => dispatch({type: 'SET_FORMAT_MODE', payload: ''})
 
     return (
-        <div style={{
-            position: 'fixed',
-            top: 96,
-            right: 64,
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            gap: 12,
-            borderRadius: 16,
-            border: `1px solid ${PAGE_BACKGROUND}`,
-            padding: 12,
-            background: MAP_BACKGROUND,
-        }}>
+        <div id="formatter" style={{ border: `1px solid ${PAGE_BACKGROUND}`, background: MAP_BACKGROUND }}>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <IconButton color='secondary' onClick={setFormatModeText}>
                     <TextIcon MAIN_COLOR={MAIN_COLOR}/>

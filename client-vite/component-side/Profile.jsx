@@ -3,6 +3,7 @@ import { getColors } from '../core/Colors'
 import { IconButton } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import ProfileMenu from './ProfileMenu'
+import '../css/Component-Side.css'
 
 export function Profile () {
     const colorMode = useSelector(state => state.colorMode)
@@ -10,27 +11,16 @@ export function Profile () {
     const dispatch = useDispatch()
     const openMoreMenu = ({currentTarget}) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
     return (
-        <div style={{
-            position: 'fixed',
-            right: 0,
-            width: 40,
-            height: 40,
-            padding: '4px 12px 4px 12px',
-            display: 'flex',
-            alignItems: 'center',
+        <div id="profile" style={{
             backgroundColor: MAP_BACKGROUND,
-            borderTop: 0,
             borderLeft: `1px solid ${PAGE_BACKGROUND}`,
             borderBottom: `1px solid ${PAGE_BACKGROUND}`,
-            borderRight: 0,
-            borderRadius: '0 0 0 16px',
+
         }}>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <IconButton color='secondary' onClick={openMoreMenu}>
-                    <PersonIcon/>
-                </IconButton>
-                <ProfileMenu/>
-            </div>
+            <IconButton color='secondary' onClick={openMoreMenu}>
+                <PersonIcon/>
+            </IconButton>
+            <ProfileMenu/>
         </div>
     )
 }

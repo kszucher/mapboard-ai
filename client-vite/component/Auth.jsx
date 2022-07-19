@@ -2,6 +2,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 import { Button, Link, TextField, Typography } from '@mui/material'
 import { getColors } from '../core/Colors'
+import '../css/Component-Side.css'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -30,21 +31,9 @@ export default function Auth() {
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
     return (
         <div
-            style={{
-                position: 'relative',
-                left: '50%',
-                transform: 'translate(-50%)',
-                top: 96,
-                width: 48*8,
-                flexDirection: 'column',
-                alignItems: 'center',
-                display: 'inline-flex',
-                flexWrap: 'wrap',
-                gap: 16,
+            id="auth" style={{
                 backgroundColor: getColors('light').MAP_BACKGROUND,
-                padding: 20,
                 border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
-                borderRadius: '16px'
             }}>
             <Typography component="h1" variant="h5">
                 {'MapBoard'}
