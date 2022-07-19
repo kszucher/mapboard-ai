@@ -85,11 +85,11 @@ export const mapVisualizeSvg = {
 
         const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
         const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
-        const nsx = cm.path[3] ? cm.nodeEndX : cm.nodeStartX
-        const nex = cm.path[3] ? cm.nodeStartX : cm.nodeEndX
+        const dir = cm.path[3] ? - 1 : 1
+        const nsx = dir === - 1 ? cm.nodeEndX : cm.nodeStartX
+        const nex = dir === - 1 ? cm.nodeStartX : cm.nodeEndX
         const nsy = cm.nodeY - selfHadj/2
         const ney = cm.nodeY + selfHadj/2
-        const dir = cm.path[3] ? -1 : 1
         const r = 8
         let animationInit = ''
         if (cm.lineAnimationRequested) {
@@ -173,10 +173,10 @@ export const mapVisualizeSvg = {
         if (conditions.line) {
             let x1, y1, x2, y2
             if (animationInit === 'l') {
-                x1 = cm.path[3] ? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom
+                x1 = dir === - 1 ? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom
                 y1 = cm.parentNodeYFrom
             } else {
-                x1 = cm.path[3] ? cm.parentNodeStartX : cm.parentNodeEndX
+                x1 = dir === - 1 ? cm.parentNodeStartX : cm.parentNodeEndX
                 y1 = cm.parentNodeY
             }
             x1 = isOdd(x1)?x1-0.5:x1
@@ -277,7 +277,7 @@ export const mapVisualizeSvg = {
                     ? coverCellRef.nodeEndX - smcv - mcv + 120
                     : coverCellRef.nodeStartX + smcv + mcv - 120
             } else {
-                startX = cm.path[3] ? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
+                startX = dir === - 1 ? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
             }
             let x1 = nex
             let x2 = startX
