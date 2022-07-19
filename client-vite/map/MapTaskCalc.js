@@ -10,9 +10,15 @@ export const mapTaskCalc = {
             for (let i = 0; i < dCount; i++) {
                 mapTaskCalc.iterate(m, cm.d[i])
             }
-            let taskStatusRight = cm.d[0].taskStatus
-            let taskStatusLeft = cm.d[1].taskStatus
-            cm.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
+            const taskStatusRight = cm.d[0].taskStatus
+            const taskStatusLeft = cm.d[1].taskStatus
+            if (cm.d[0].s.length && cm.d[1].s.length) {
+                cm.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
+            } else if (cm.d[0].s.length) {
+                cm.taskStatus = taskStatusRight
+            } else if (cm.d[1].s.length) {
+                cm.taskStatus = taskStatusLeft
+            }
         }
         let sCount = Object.keys(cm.s).length
         if (sCount) {
