@@ -12,8 +12,7 @@ export const mapTaskCalc = {
             }
             let taskStatusRight = cm.d[0].taskStatus
             let taskStatusLeft = cm.d[1].taskStatus
-            let taskStatusMin = Math.min(...[taskStatusRight, taskStatusLeft])
-            cm.taskStatus = taskStatusMin
+            cm.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
         }
         let sCount = Object.keys(cm.s).length
         if (sCount) {
