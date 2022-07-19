@@ -56,9 +56,9 @@ export const getPolygonPath = (params, selection, dir, margin) => {
         const [c1x, c1y] = currPoint
         const [c2x, c2y] = currPoint
         const [ex, ey] = getCoordsInLine(currPoint, nextPoint, radius)
-        if (selection === 's' && i === (dir === 1 ? 1 : 4)) {
+        if (selection === 's' && i === (dir === - 1 ? 4 : 1)) {
             path += getBezierPath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
-        } else if (selection === 's' && i === (dir === 1 ? 4 : 1)) {
+        } else if (selection === 's' && i === (dir === - 1 ? 1 : 4)) {
             path += getBezierPath('L', [sx - dir * 24, sy, ex, ey, ex, ey, ex, ey])
         } else {
             path += getBezierPath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
@@ -72,19 +72,19 @@ export const getArcPath = (sx, sy, w, h, r, dir, margin, closed) => {
     const y1 = sy + r - margin
     const horz = w - 2 * r + 2 * margin
     const vert = h - 2 * r + 2 * margin
-    if (dir === 1) {
-        return `M${x1},${y1} 
-        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
-        a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
-        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
-        a${+r},${+r} 0 0 1 ${-r},${-r}
-        ${closed? 'Z' : ''}`
-    } else {
+    if (dir === - 1) {
         return `M${x1},${y1} 
         a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
         a${+r},${+r} 0 0 0 ${-r},${+r} v${+vert} 
         a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
         a${+r},${+r} 0 0 0 ${+r},${-r}
         ${closed ? 'Z' : ''}`
+    } else {
+        return `M${x1},${y1} 
+        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
+        a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
+        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
+        a${+r},${+r} 0 0 1 ${-r},${-r}
+        ${closed? 'Z' : ''}`
     }
 }

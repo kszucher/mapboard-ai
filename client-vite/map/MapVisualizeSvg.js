@@ -103,9 +103,9 @@ export const mapVisualizeSvg = {
             conditions.selectionBorder
         ) {
             let sParams = {
-                ax: dir === 1 ? nsx : nex,
+                ax: dir ===  - 1 ? nex : nsx,
                 bx: nex - dir * r,
-                cx: dir === 1 ? nex : nsx,
+                cx: dir === - 1 ? nsx : nex,
                 ayu: nsy,
                 ayd: ney,
                 byu: nsy,
@@ -114,15 +114,15 @@ export const mapVisualizeSvg = {
                 cyd: ney
             }
             let fParams = {
-                ax: dir === 1 ? nsx : nsx + dir * (cm.familyW + cm.selfW),
+                ax: dir === - 1 ? nsx + dir * (cm.familyW + cm.selfW) : nsx,
                 bx: nex + dir * cm.lineDeltaX,
-                cx: dir === 1 ? nsx + dir * (cm.familyW + cm.selfW) : nsx,
-                ayu: dir === 1 ? nsy : cm.nodeY - maxHadj / 2,
-                ayd: dir === 1 ? ney : cm.nodeY + maxHadj / 2,
+                cx: dir === - 1 ? nsx : nsx + dir * (cm.familyW + cm.selfW),
+                ayu: dir === - 1 ? cm.nodeY - maxHadj / 2 : nsy,
+                ayd: dir === - 1 ? cm.nodeY + maxHadj / 2 : ney,
                 byu: cm.nodeY - maxHadj / 2,
                 byd: cm.nodeY + maxHadj / 2,
-                cyu: dir === 1 ? cm.nodeY - maxHadj / 2 : nsy,
-                cyd: dir === 1 ? cm.nodeY + maxHadj / 2 : ney,
+                cyu: dir === - 1 ? nsy : cm.nodeY - maxHadj / 2,
+                cyd: dir === - 1 ? ney : cm.nodeY + maxHadj / 2,
             }
             if (conditions.branchFill) {
                 updateMapSvgData(cm.nodeId, 'branchFill', {
@@ -244,9 +244,9 @@ export const mapVisualizeSvg = {
                                 h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
                             }
                             let sParams = {
-                                ax: dir === 1 ? sx : sx + dir * w,
+                                ax: dir === - 1 ? sx + dir * w : sx,
                                 bx: sx + dir*w,
-                                cx: dir === 1 ? sx + dir * w : sx,
+                                cx: dir === - 1 ? sx : sx + dir * w,
                                 ayu: sy,
                                 ayd: sy + h,
                                 byu: sy,
@@ -273,11 +273,13 @@ export const mapVisualizeSvg = {
                 let coverCellRef = mapref(coverCellPath)
                 let smcv = coverCellRef.sumMaxColWidth[currCol]
                 let mcv = coverCellRef.maxColWidth[currCol]
-                startX = cm.path[3]
+                startX = dir === - 1
                     ? coverCellRef.nodeEndX - smcv - mcv + 120
                     : coverCellRef.nodeStartX + smcv + mcv - 120
             } else {
-                startX = dir === - 1 ? margin + taskConfigWidth : mapWidth - taskConfigWidth - margin
+                startX = dir === - 1
+                    ? margin + taskConfigWidth
+                    : mapWidth - taskConfigWidth - margin
             }
             let x1 = nex
             let x2 = startX
@@ -290,7 +292,7 @@ export const mapVisualizeSvg = {
                 })
             }
             for (let i = 0; i < taskConfigN; i++) {
-                const cx = cm.path[3]
+                const cx = dir === - 1
                     ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
                     : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
                 const cy = cm.nodeY
