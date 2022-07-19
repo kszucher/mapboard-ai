@@ -1,7 +1,11 @@
 import {resolveScope} from "../core/DefaultProps"
+import { mapref } from '../core/MapStackFlow'
 
 export const mapSetProp = {
     start: (cm, assignment, scope) => {
+        if (cm.path.length === 4) {
+            Object.assign(mapref(['r', 0]), typeof assignment === 'function' ? assignment() : assignment)
+        }
         mapSetProp.iterate(cm, assignment, scope)
     },
 
