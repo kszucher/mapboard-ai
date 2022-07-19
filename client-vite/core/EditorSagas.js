@@ -276,17 +276,6 @@ function* mapStackSaga () {
     }
 }
 
-function* settingsSaga () {
-    while (true) {
-        yield take('OPEN_SETTINGS')
-        const { resp: { error, data } } = yield call(fetchPost, { type: 'GET_NAME' })
-        yield put({ type: 'SET_NAME', payload: data.name })
-        yield put({ type: 'SHOW_WS_SETTINGS' })
-        yield take(['CLOSE_SETTINGS'])
-        yield put({ type: 'SHOW_WS' })
-    }
-}
-
 function* frameSaga () {
     while (true) {
         const { type } = yield take([
@@ -348,7 +337,6 @@ export default function* rootSaga () {
         mapSaga(),
         mapStackEventSaga(),
         mapStackSaga(),
-        settingsSaga(),
         frameSaga(),
         shareSaga(),
     ])

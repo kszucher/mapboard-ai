@@ -10,7 +10,7 @@ export function Settings() {
     const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
-    const closeSettings = _ => dispatch({type: 'CLOSE_SETTINGS'})
+    const closeSettings = _ => dispatch({type: 'SHOW_WS'})
     return(
         <Modal
             open={true}

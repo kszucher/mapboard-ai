@@ -10,7 +10,7 @@ export default function ProfileMenu () {
     const {DEMO, WS} = PAGE_STATES;
 
     const closeMoreMenu =  _ => dispatch({type: 'CLOSE_MORE_MENU'})
-    const openSettings = _ => dispatch({type: 'OPEN_SETTINGS'})
+    const openSettings = _ => dispatch({type: 'SHOW_WS_SETTINGS'})
     const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
     const showAuth = _ => dispatch({type: 'SHOW_AUTH'})
     const signOut = _ => {

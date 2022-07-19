@@ -88,10 +88,10 @@ async function checkSave (req, currUser) {
 
 async function getUserInfo (userId) {
     const user = await users.findOne({_id: userId})
-    const { colorMode, breadcrumbMapIdList, tabMapIdList } = user
+    const { name, colorMode, breadcrumbMapIdList, tabMapIdList } = user
     const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
     const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-    return { colorMode, breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList }
+    return { name, colorMode, breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList }
 }
 
 async function getMapInfo (userId, mapId, mapSource) {
@@ -374,10 +374,6 @@ async function resolveType(req, userId) {
             const shareInfo = await getShareInfo(userId)
             return { error: '', data: { ...shareInfo } }
         }
-        case 'GET_NAME': { // QUERY
-            const { name } = 'Krisztian' // TODO use getUserInfo, and name will be available already
-            return { err: '', data: { name } }
-        }
         case 'CHANGE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
             await users.updateOne({ _id: userId }, { $set: { colorMode } })
@@ -443,7 +439,3 @@ MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, func
 })
 
 module.exports = app
-
-// TODO
-// simplify settings saga, as saga is not even needed as all data is available,
-// it is really time to start doing cypress-based integration tests...
