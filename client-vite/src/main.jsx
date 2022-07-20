@@ -4,7 +4,7 @@ import './index.css'
 import {Provider} from "react-redux";
 import {store} from "./core/EditorFlow";
 import {Page} from "./component/unsorted/Page";
-import './css/Layout.css';
+import './component-css/Layout.css';
 import './component-css/side/BreadcrumbMaps.css'
 import './component-css/side/Formatter.css'
 import './component-css/side/FrameCarousel.css'
