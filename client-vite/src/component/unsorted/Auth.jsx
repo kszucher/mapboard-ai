@@ -35,14 +35,6 @@ export default function Auth() {
             <Typography color="primary" component="h1" variant="h6">
                 {'Private Beta'}
             </Typography>
-            <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
-                {/*<Button color="primary" onClick={signInPanel} variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>*/}
-                {/*    {'SIGN IN'}*/}
-                {/*</Button>*/}
-                {/*<Button color="primary" onClick={signUpPanel} variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>*/}
-                {/*    {'SIGN UP'}*/}
-                {/*</Button>*/}
-            </div>
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
