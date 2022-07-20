@@ -36,12 +36,12 @@ export default function Auth() {
                 {'Private Beta'}
             </Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
-                <Button color="primary" onClick={signInPanel} variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>
-                    {'SIGN IN'}
-                </Button>
-                <Button color="primary" onClick={signUpPanel} variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>
-                    {'SIGN UP'}
-                </Button>
+                {/*<Button color="primary" onClick={signInPanel} variant={authPageState === SIGN_IN ? 'contained' : 'outlined'}>*/}
+                {/*    {'SIGN IN'}*/}
+                {/*</Button>*/}
+                {/*<Button color="primary" onClick={signUpPanel} variant={[SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) ? 'contained' : 'outlined'}>*/}
+                {/*    {'SIGN UP'}*/}
+                {/*</Button>*/}
             </div>
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
@@ -99,6 +99,18 @@ export default function Auth() {
                 authPageState === SIGN_UP_STEP_2 &&
                 <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
                     {'Enter Confirmation Code'}
+                </Button>
+            }
+            {
+                authPageState === SIGN_IN &&
+                <Button fullWidth color="primary" onClick={signUpPanel} variant="outlined">
+                    {'SIGN UP INSTEAD'}
+                </Button>
+            }
+            {
+                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                <Button fullWidth color="primary" onClick={signInPanel} variant="outlined">
+                    {'SIGN IN INSTEAD'}
                 </Button>
             }
             <Button color="primary" variant='contained' fullWidth onClick={liveDemo}>
