@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { getColors } from '../../core/Colors'
+import { getColors } from '../../src/core/Colors'
 import { IconButton } from '@mui/material'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium'

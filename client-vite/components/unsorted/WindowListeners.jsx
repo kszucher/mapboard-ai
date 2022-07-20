@@ -1,15 +1,15 @@
 import {useEffect} from "react"
 import {useSelector, useDispatch} from "react-redux"
-import { mapDispatch, recalc, redraw } from '../../core/MapFlow'
-import { arraysSame, copy, setEndOfContenteditable } from '../../core/Utils'
-import {mapFindNearest} from "../../map/MapFindNearest"
-import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../../core/MapStackFlow'
-import {mapFindOverPoint} from "../../map/MapFindOverPoint"
-import {mapFindOverRectangle} from "../../map/MapFindOverRectangle"
-import {selectionState} from "../../core/SelectionFlow"
-import {pasteDispatch} from "../../core/PasteFlow"
-import {MAP_RIGHTS, PAGE_STATES} from "../../core/EditorFlow"
-import { getColors } from '../../core/Colors'
+import { mapDispatch, recalc, redraw } from '../../src/core/MapFlow'
+import { arraysSame, copy, setEndOfContenteditable } from '../../src/core/Utils'
+import {mapFindNearest} from "../../src/map/MapFindNearest"
+import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../../src/core/MapStackFlow'
+import {mapFindOverPoint} from "../../src/map/MapFindOverPoint"
+import {mapFindOverRectangle} from "../../src/map/MapFindOverRectangle"
+import {selectionState} from "../../src/core/SelectionFlow"
+import {pasteDispatch} from "../../src/core/PasteFlow"
+import {MAP_RIGHTS, PAGE_STATES} from "../../src/core/EditorFlow"
+import { getColors } from '../../src/core/Colors'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, whichDown = 0, elapsed = 0
 let namedInterval

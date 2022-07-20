@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import {Provider} from "react-redux";
-import {store} from "../core/EditorFlow";
+import {store} from "./core/EditorFlow";
 import {Page} from "../components/unsorted/Page";
-import '../css/Layout.css';
+import './css/Layout.css';
 import '../components/side-css/BreadcrumbMaps.css'
 import '../components/side-css/Formatter.css'
 import '../components/side-css/FrameCarousel.css'
