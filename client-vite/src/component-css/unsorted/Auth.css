@@ -11,4 +11,5 @@
     gap: 16px;
     padding: 20px;
     border-radius: 16px;
+    background: var(--map-background-color);
 }

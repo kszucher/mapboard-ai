@@ -5,13 +5,10 @@ import {DataGrid} from "@mui/x-data-grid"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import { getColors } from '../../core/Colors'
 
 export function Shares() {
-    const colorMode = useSelector(state => state.colorMode)
     const shareDataExport = useSelector(state => state.shareDataExport).map((el, idx) => ({...el, id: idx}))
     const shareDataImport = useSelector(state => state.shareDataImport).map((el, idx) => ({...el, id: idx}))
-    const {MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const getShares = _ => dispatch({type: 'GET_SHARES'})
     const showWs = _ => dispatch({type: 'SHOW_WS'})
@@ -67,21 +64,7 @@ export function Shares() {
             onClose={_=>{}}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
-            {<div style={{
-                position: 'relative',
-                left: '50%',
-                transform: 'translate(-50%)',
-                top: 96,
-                width: 200+250+140+140+200,
-                flexDirection: 'column',
-                alignItems: 'center',
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 16,
-                backgroundColor: MAP_BACKGROUND,
-                padding: 20,
-                border: `1px solid ${MAP_BACKGROUND}`,
-                borderRadius: '16px'}}>
+            {<div id="shares">
                 <Typography component="h1" variant="h5" color="primary">{'Maps I Share With Others'}</Typography>
                 <div style={{ width: '100%' }}>
                     {shareDataExport.length > 0 && <DataGrid

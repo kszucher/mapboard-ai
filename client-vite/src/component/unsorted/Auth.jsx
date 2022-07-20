@@ -1,7 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
 import { AUTH_PAGE_STATES } from '../../core/EditorFlow'
 import { Button, Link, TextField, Typography } from '@mui/material'
-import { getColors } from '../../core/Colors'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
@@ -29,11 +28,7 @@ export default function Auth() {
     const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { email, confirmationCode }});
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
     return (
-        <div
-            id="auth" style={{
-                backgroundColor: getColors('light').MAP_BACKGROUND,
-                border: `1px solid ${getColors('light').MAP_BACKGROUND}`,
-            }}>
+        <div id="auth">
             <Typography component="h1" variant="h5">
                 {'MapBoard'}
             </Typography>
