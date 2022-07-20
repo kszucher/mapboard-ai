@@ -27,7 +27,7 @@ const TargetedButtonGroup = ({KEYS, value, setValue, BUTTON_COLOR}) => {
     const mapRight = useSelector(state => state.mapRight)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
     return (
-        <ButtonGroup disabled={disabled} variant="text" color="primary">
+        <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {KEYS.map((name, idx) =>
                 <Button
                     style={{ backgroundColor: value === KEYS[idx] ? BUTTON_COLOR : '' }}
@@ -138,13 +138,7 @@ export function Formatter () {
                     formatMode === 'text' &&
                     <>
                         <TargetedButtonGroup
-                            KEYS={['h1', 'h2', 'h3', 'h4']}
-                            value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[textFontSize]}
-                            setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['text']: 14}[value]})}
-                            BUTTON_COLOR={BUTTON_COLOR}
-                        />
-                        <TargetedButtonGroup
-                            KEYS={['text']}
+                            KEYS={['h1', 'h2', 'h3', 'h4', 'text']}
                             value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[textFontSize]}
                             setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['text']: 14}[value]})}
                             BUTTON_COLOR={BUTTON_COLOR}
