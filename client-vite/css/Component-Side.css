@@ -98,21 +98,6 @@ body {
     background: var(--map-background-color);
 }
 
-#auth {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    top: 96px;
-    width: calc(48*8px);
-    flex-direction: column;
-    align-items: center;
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding: 20px;
-    border-radius: 16px;
-}
-
 #profile {
     position: fixed;
     right: 0;
