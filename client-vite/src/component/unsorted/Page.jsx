@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { UndoRedo } from '../side/UndoRedo'
 import { Profile } from '../side/Profile'
 import { ControlsLeft } from '../side/ControlsLeft'
-import { UpdateMapInMap } from '../modal/UpdateMapInMap'
+import { CreateMapInMap } from '../modal/CreateMapInMap'
 import { CreateTable } from '../modal/CreateTable'
 import {PAGE_STATES} from "../../core/EditorFlow"
 import { UpdateTask } from '../modal/UpdateTask'
@@ -111,7 +111,7 @@ export function Page() {
                 }
                 {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
                 {pageState === PAGE_STATES.WS_SHARING && <ShareThisMap/>}
-                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <UpdateMapInMap/>}
+                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
                 {pageState === PAGE_STATES.WS_CREATE_TABLE && <CreateTable/>}
                 {pageState === PAGE_STATES.WS_CREATE_TASK && <UpdateTask/>}
                 {pageState === PAGE_STATES.WS_SETTINGS && <Settings/>}
