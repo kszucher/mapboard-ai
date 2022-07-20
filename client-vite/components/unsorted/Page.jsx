@@ -1,25 +1,25 @@
 import {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
+import { getEquationDim, getTextDim, isChrome } from '../../core/Utils'
 import Auth from "./Auth"
-import Logo from "../component-side/Logo"
-import TabMaps from "../component-side/TabMaps"
-import Breadcrumbs from "../component-side/BreadcrumbMaps"
-import { Formatter } from "../component-side/Formatter"
-import { FrameCarousel } from "../component-side/FrameCarousel"
-import { ShareThisMap } from "../component-modal/ShareThisMap"
-import { Shares } from "../component-modal/Shares"
+import Logo from "../side/Logo"
+import TabMaps from "../side/TabMaps"
+import Breadcrumbs from "../side/BreadcrumbMaps"
+import { Formatter } from "../side/Formatter"
+import { FrameCarousel } from "../side/FrameCarousel"
+import { ShareThisMap } from "../modal/ShareThisMap"
+import { Shares } from "../modal/Shares"
 import { WindowListeners } from "./WindowListeners"
-import { SideBarRight } from '../component-side/SideBarRight'
+import { SideBarRight } from '../side/SideBarRight'
 import { createTheme, ThemeProvider } from '@mui/material'
-import { UndoRedo } from '../component-side/UndoRedo'
-import { Profile } from '../component-side/Profile'
-import { SideBarLeft } from '../component-side/SideBarLeft'
-import { UpdateMapInMap } from '../component-modal/UpdateMapInMap'
-import { CreateTable } from '../component-modal/CreateTable'
-import {PAGE_STATES} from "../core/EditorFlow"
-import { UpdateTask } from '../component-modal/UpdateTask'
-import { Settings } from '../component-modal/Settings'
+import { UndoRedo } from '../side/UndoRedo'
+import { Profile } from '../side/Profile'
+import { SideBarLeft } from '../side/SideBarLeft'
+import { UpdateMapInMap } from '../modal/UpdateMapInMap'
+import { CreateTable } from '../modal/CreateTable'
+import {PAGE_STATES} from "../../core/EditorFlow"
+import { UpdateTask } from '../modal/UpdateTask'
+import { Settings } from '../modal/Settings'
 
 const getMuiTheme = colorMode  => createTheme({
     palette: {

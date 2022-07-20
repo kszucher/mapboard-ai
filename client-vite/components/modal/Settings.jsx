@@ -1,6 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
 import { Button, IconButton, Modal, Typography } from '@mui/material'
-import { getColors } from '../core/Colors'
+import { getColors } from '../../core/Colors'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 

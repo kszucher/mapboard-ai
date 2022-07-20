@@ -1,9 +1,9 @@
 import {useSelector, useDispatch} from "react-redux"
 import { Button, ButtonGroup, IconButton, Typography } from '@mui/material'
-import { colorList, getColors } from '../core/Colors'
-import { setClear } from '../core/Utils'
-import { MAP_RIGHTS } from '../core/EditorFlow'
-import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../component/Icons'
+import { colorList, getColors } from '../../core/Colors'
+import { setClear } from '../../core/Utils'
+import { MAP_RIGHTS } from '../../core/EditorFlow'
+import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
 
 const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
     <>

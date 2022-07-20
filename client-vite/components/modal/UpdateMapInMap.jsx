@@ -1,16 +1,20 @@
 import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import { getColors } from '../core/Colors'
+import { getColors } from '../../core/Colors'
 
-export function UpdateTask() {
+export function UpdateMapInMap() {
     const colorMode = useSelector(state => state.colorMode)
     const interactionDisabled = useSelector(state => state.interactionDisabled)
     const {PAGE_BACKGROUND, MAP_BACKGROUND} = getColors(colorMode)
     const dispatch = useDispatch()
     const showWs = _ => dispatch({type: 'SHOW_WS'})
-    const toggleTask = _=> dispatch({type: 'TOGGLE_TASK'})
+    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
     return(
-        <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
+        <Modal
+            open={true}
+            onClose={_=>{}}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description">
             {<div
                 style={{
                     position: 'fixed',
@@ -27,10 +31,10 @@ export function UpdateTask() {
                     padding: '12px 12px 12px 12px'
                 }}>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                    <Typography variant="string" color='primary'>{'TOGGLE TASK MODE?'}</Typography>
+                    <Typography variant="string" color='primary'>{'CREATE SUBMAP?'}</Typography>
                 </div>
                 <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-                    <Button color="primary" variant='outlined' onClick={toggleTask} disabled={interactionDisabled}>
+                    <Button color="primary" variant='outlined' onClick={createMapInMap} disabled={interactionDisabled}>
                         {'OK'}
                     </Button>
                     <Button color="primary" variant='outlined' onClick={showWs} disabled={interactionDisabled}>

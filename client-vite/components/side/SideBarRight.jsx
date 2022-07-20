@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { getColors } from '../core/Colors'
+import { getColors } from '../../core/Colors'
 import { IconButton } from '@mui/material'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium'
@@ -13,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
-import { CreateMapInMapIcon, TaskIcon } from '../component/Icons'
+import { CreateMapInMapIcon, TaskIcon } from '../unsorted/Icons'
 
 const iconSize = 40
 const topOffs1 = 48*2
