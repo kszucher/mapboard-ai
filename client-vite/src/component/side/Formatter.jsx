@@ -162,10 +162,10 @@ export function Formatter () {
                 <Button color="primary" variant='outlined'
                         onClick={
                             {
-                                line: setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor'])),
-                                text: setNodeParam(setClear(['textColor', 'textFontSize'])),
-                                fill: setNodeParam(setClear(['fillColor'])),
-                                border: setNodeParam(setClear(['borderWidth', 'borderColor']))
+                                line: _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor'])),
+                                text: _ => setNodeParam(setClear(['textColor', 'textFontSize'])),
+                                fill: _ => setNodeParam(setClear(['fillColor'])),
+                                border: _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
                             }[formatMode]
                         }>
                     {'RESET'}
