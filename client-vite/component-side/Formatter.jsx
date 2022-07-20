@@ -55,18 +55,15 @@ export function Formatter () {
     const textColor = useSelector(state => state.node.textColor)
     const selection = useSelector(state => state.node.selection)
 
-    const lineWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.lineWidth)]
-    const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
-    const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
-    const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[useSelector(state => state.node.textFontSize)]
+    const lineWidth = useSelector(state => state.node.lineWidth)
+    const lineType = useSelector(state => state.node.lineType)
+    const borderWidth = useSelector(state => state.node.borderWidth)
+    const textFontSize = useSelector(state => state.node.textFontSize)
+    
     const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
-    const setLineWidth = value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
-    const setLineType = value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})
-    const setBorderWidth = value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})
-    const setTextFontSize = value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['text']: 14}[value]})
     const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
     const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
     const resetFill = _ => setNodeParam(setClear(['fillColor']))
@@ -117,14 +114,14 @@ export function Formatter () {
                     <>
                         <TargetedButtonGroup
                             KEYS={['w1', 'w2', 'w3']}
-                            value={lineWidth}
-                            setValue={setLineWidth}
+                            value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[lineWidth]}
+                            setValue={value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
                             BUTTON_COLOR={BUTTON_COLOR}
                         />
                         <TargetedButtonGroup
                             KEYS={['bezier', 'edge']}
-                            value={lineType}
-                            setValue={setLineType}
+                            value={{['b']: 'bezier', ['e']: 'edge'}[lineType]}
+                            setValue={value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})}
                             BUTTON_COLOR={BUTTON_COLOR}
                         />
                     </>
@@ -133,8 +130,8 @@ export function Formatter () {
                     formatMode === 'border' &&
                     <TargetedButtonGroup
                         KEYS={['w1', 'w2', 'w3']}
-                        value={borderWidth}
-                        setValue={setBorderWidth}
+                        value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
+                        setValue={value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
                         BUTTON_COLOR={BUTTON_COLOR}
                     />
                 }
@@ -143,14 +140,14 @@ export function Formatter () {
                     <>
                         <TargetedButtonGroup
                             KEYS={['h1', 'h2', 'h3', 'h4']}
-                            value={textFontSize}
-                            setValue={setTextFontSize}
+                            value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[textFontSize]}
+                            setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['text']: 14}[value]})}
                             BUTTON_COLOR={BUTTON_COLOR}
                         />
                         <TargetedButtonGroup
                             KEYS={['text']}
-                            value={textFontSize}
-                            setValue={setTextFontSize}
+                            value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[textFontSize]}
+                            setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['text']: 14}[value]})}
                             BUTTON_COLOR={BUTTON_COLOR}
                         />
                     </>
@@ -158,7 +155,14 @@ export function Formatter () {
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
                 <Button color="primary" variant='outlined'
-                        onClick={{ line: resetLine, text: resetText, fill: resetFill, border: resetBorder }[formatMode]}>
+                        onClick={
+                            {
+                                line: resetLine,
+                                text: resetText,
+                                fill: resetFill,
+                                border: resetBorder
+                            }[formatMode]
+                        }>
                     {'RESET'}
                 </Button>
             </div>
