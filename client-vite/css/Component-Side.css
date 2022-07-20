@@ -7,6 +7,37 @@ body {
     background: var(--page-background-color);
 }
 
+#logo {
+    position: fixed;
+    width: 224px;
+    height: 40px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-image: linear-gradient(330deg, #a4508b 0%, #5f0a87 74%);
+    border-bottom-right-radius: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#undo-redo {
+    position: fixed;
+    left: calc(224px + 48px);
+    width: calc(2*40px);
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 4px 12px 4px 12px;
+    background: var(--map-background-color);
+    border-top: 0;
+    border-left: 1px solid var(--page-background-color);
+    border-bottom: 1px solid var(--page-background-color);
+    border-right: 1px solid var(--page-background-color);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
 #breadcrumb-maps {
     display: flex;
     align-items: center;
@@ -19,6 +50,16 @@ body {
     border-radius: 0 0 16px 16px;
     border: 2px solid #9040b8;
     border-top: 0;
+}
+
+#tab-maps {
+    position: fixed;
+    top: calc(48px*2);
+    background: var(--map-background-color);
+    border-top: var(--page-background-color);
+    border-right: var(--page-background-color);
+    border-bottom: var(--page-background-color);
+    border-left: 0;
 }
 
 #formatter {
@@ -42,12 +83,9 @@ body {
     left: 50%;
     transform: translate(-50%);
     bottom: 0;
-    /*borderLeft: `1px solid ${PAGE_BACKGROUND}`,*/
-    /*borderRight: `1px solid ${PAGE_BACKGROUND}`,*/
     border-radius: 16px 16px 0 0;
     border: 2px solid #9040b8;
     border-bottom: 0;
-    /*backgroundColor: MAP_BACKGROUND,*/
 }
 
 #frame-carousel-mobile-stepper {
@@ -56,20 +94,6 @@ body {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     background: var(--map-background-color);
-}
-
-#logo {
-    position: fixed;
-    width: 224px;
-    height: 40px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    background-image: linear-gradient(330deg, #a4508b 0%, #5f0a87 74%);
-    border-bottom-right-radius: 16px;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #auth {
@@ -134,3 +158,5 @@ body {
     border-bottom: 1px solid var(--page-background-color);
     border-right: 0;
 }
+
+
