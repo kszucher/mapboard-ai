@@ -23,20 +23,31 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
     </>
 )
 
-export function Formatter () {
-    const LINE_WIDTH_KEYS = ['w1', 'w2', 'w3']
-    const LINE_TYPE_KEYS = ['bezier', 'edge']
-    const BORDER_WIDTH_KEYS = ['w1', 'w2', 'w3']
-    const FONT_SIZE_KEYS_1 = ['h1', 'h2', 'h3', 'h4']
-    const FONT_SIZE_KEYS_2 = ['text']
+const TargetedButtonGroup = ({KEYS, value, setValue, BUTTON_COLOR}) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+    const mapRight = useSelector(state => state.mapRight)
+    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
+    return (
+        <ButtonGroup disabled={disabled} variant="text" color="primary">
+            {KEYS.map((name, idx) =>
+                <Button
+                    style={{ backgroundColor: value === KEYS[idx] ? BUTTON_COLOR : '' }}
+                    onClick={ _ => setValue(KEYS[idx]) }
+                    key={idx}>
+                    {name}
+                </Button>
+            )}
+        </ButtonGroup>
+    )
+}
+
+export function Formatter () {
     const o = 32
     const r = 12
     const width = o * colorList[0].length
     const height = o * colorList.length
 
     const colorMode = useSelector(state => state.colorMode)
-    const mapRight = useSelector(state => state.mapRight)
     const formatMode = useSelector(state => state.formatMode)
     const lineColor = useSelector(state => state.node.lineColor)
     const borderColor = useSelector(state => state.node.borderColor)
@@ -48,7 +59,6 @@ export function Formatter () {
     const lineType = {['b']: 'bezier', ['e']: 'edge'}[useSelector(state => state.node.lineType)]
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[useSelector(state => state.node.textFontSize)]
-    const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
     const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
@@ -102,53 +112,49 @@ export function Formatter () {
                 </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
-                {formatMode === 'line' && <>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">
-                        {LINE_WIDTH_KEYS.map((name, idx) =>
-                            <Button style={{ backgroundColor: lineWidth === LINE_WIDTH_KEYS[idx] ? BUTTON_COLOR : '' }}
-                                    onClick={ _=>setLineWidth(LINE_WIDTH_KEYS[idx]) }
-                                    key={idx}>
-                                {name}
-                            </Button>
-                        )}
-                    </ButtonGroup>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">
-                        {LINE_TYPE_KEYS.map((name, idx) =>
-                            <Button style={{ backgroundColor: lineType === LINE_TYPE_KEYS[idx] ? BUTTON_COLOR : '' }}
-                                    onClick={ _=>setLineType(LINE_TYPE_KEYS[idx]) }
-                                    key={idx}>
-                                {name}
-                            </Button>
-                        )}
-                    </ButtonGroup>
-                </>}
-                {formatMode === 'border' &&
-                <ButtonGroup disabled={disabled} variant="text" color="primary">
-                    {BORDER_WIDTH_KEYS.map((name, idx) =>
-                        <Button style={{ backgroundColor: borderWidth === BORDER_WIDTH_KEYS[idx] ? BUTTON_COLOR : '' }}
-                                onClick={ _=>setBorderWidth(BORDER_WIDTH_KEYS[idx]) }
-                                key={idx}>{name}
-                        </Button>
-                    )}
-                </ButtonGroup>}
-                {formatMode === 'text' && <>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">
-                        {FONT_SIZE_KEYS_1.map((name, idx) =>
-                            <Button style={{ backgroundColor: textFontSize === FONT_SIZE_KEYS_1[idx] ? BUTTON_COLOR : '' }}
-                                    onClick={ _=>setTextFontSize(FONT_SIZE_KEYS_1[idx]) }
-                                    key={idx}>{name}
-                            </Button>
-                        )}
-                    </ButtonGroup>
-                    <ButtonGroup disabled={disabled} variant="text" color="primary">
-                        {FONT_SIZE_KEYS_2.map((name, idx) =>
-                            <Button style={{ backgroundColor: textFontSize === FONT_SIZE_KEYS_2[idx] ? BUTTON_COLOR : '' }}
-                                    onClick={ _=>setTextFontSize(FONT_SIZE_KEYS_2[idx]) }
-                                    key={idx}>{name}
-                            </Button>
-                        )}
-                    </ButtonGroup>
-                </>}
+                {
+                    formatMode === 'line' &&
+                    <>
+                        <TargetedButtonGroup
+                            KEYS={['w1', 'w2', 'w3']}
+                            value={lineWidth}
+                            setValue={setLineWidth}
+                            BUTTON_COLOR={BUTTON_COLOR}
+                        />
+                        <TargetedButtonGroup
+                            KEYS={['bezier', 'edge']}
+                            value={lineType}
+                            setValue={setLineType}
+                            BUTTON_COLOR={BUTTON_COLOR}
+                        />
+                    </>
+                }
+                {
+                    formatMode === 'border' &&
+                    <TargetedButtonGroup
+                        KEYS={['w1', 'w2', 'w3']}
+                        value={borderWidth}
+                        setValue={setBorderWidth}
+                        BUTTON_COLOR={BUTTON_COLOR}
+                    />
+                }
+                {
+                    formatMode === 'text' &&
+                    <>
+                        <TargetedButtonGroup
+                            KEYS={['h1', 'h2', 'h3', 'h4']}
+                            value={textFontSize}
+                            setValue={setTextFontSize}
+                            BUTTON_COLOR={BUTTON_COLOR}
+                        />
+                        <TargetedButtonGroup
+                            KEYS={['text']}
+                            value={textFontSize}
+                            setValue={setTextFontSize}
+                            BUTTON_COLOR={BUTTON_COLOR}
+                        />
+                    </>
+                }
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
                 <Button color="primary" variant='outlined'
