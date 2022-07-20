@@ -61,9 +61,15 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_1 &&
+                <TextField variant="outlined" fullWidth label="Your First Name" value={name} onChange={setName} autoFocus/>
+            }
+            {
+                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
+            }
+            {
+                authPageState === SIGN_UP_STEP_1 &&
                 <>
-                    <TextField variant="outlined" fullWidth label="Your First Name" value={name} onChange={setName} autoFocus/>
-                    <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
                     <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword}/>
                     <TextField variant="outlined" fullWidth label="Password Again" value={passwordAgain} onChange={setPasswordAgain}/>
                     <Button color="primary" variant='contained' fullWidth onClick={signUpStep1} disabled={getConfirmationCodeDisabled}>
@@ -74,7 +80,6 @@ export default function Auth() {
             {
                 authPageState === SIGN_UP_STEP_2 &&
                 <>
-                    <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
                     <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus/>
                     <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
                         {'Enter Confirmation Code'}
