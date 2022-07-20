@@ -36,19 +36,6 @@ export default function Auth() {
                 {'Private Beta'}
             </Typography>
             {
-                authPageState === SIGN_IN &&
-                <>
-                    <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
-                    <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword} type="password"/>
-                    <Button color="primary" variant='contained' fullWidth onClick={signIn} disabled={false}>
-                        {'SIGN IN'}
-                    </Button>
-                    <Button fullWidth color="primary" onClick={signUpPanel} variant="outlined">
-                        {'SIGN UP INSTEAD'}
-                    </Button>
-                </>
-            }
-            {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                     <Button color="primary" onClick={signUpStep1Panel} variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
@@ -64,13 +51,16 @@ export default function Auth() {
                 <TextField variant="outlined" fullWidth label="Your First Name" value={name} onChange={setName} autoFocus/>
             }
             {
-                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                [SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
+            }
+            {
+                [SIGN_IN, SIGN_UP_STEP_1].includes(authPageState) &&
+                <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword}/>
             }
             {
                 authPageState === SIGN_UP_STEP_1 &&
                 <>
-                    <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword}/>
                     <TextField variant="outlined" fullWidth label="Password Again" value={passwordAgain} onChange={setPasswordAgain}/>
                     <Button color="primary" variant='contained' fullWidth onClick={signUpStep1} disabled={getConfirmationCodeDisabled}>
                         {'Get Confirmation Code'}
@@ -93,9 +83,24 @@ export default function Auth() {
                 </Typography>
             }
             {
+                authPageState === SIGN_IN &&
+                <Button color="primary" variant='contained' fullWidth onClick={signIn} disabled={false}>
+                    {'SIGN IN'}
+                </Button>
+            }
+            {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-                <Button fullWidth color="primary" onClick={signInPanel} variant="outlined">
-                    {'SIGN IN INSTEAD'}
+                <>
+
+                    <Button fullWidth color="primary" onClick={signInPanel} variant="outlined">
+                        {'SIGN IN INSTEAD'}
+                    </Button>
+                </>
+            }
+            {
+                authPageState === SIGN_IN &&
+                <Button fullWidth color="primary" onClick={signUpPanel} variant="outlined">
+                    {'SIGN UP INSTEAD'}
                 </Button>
             }
             <Button color="primary" variant='contained' fullWidth onClick={liveDemo}>
