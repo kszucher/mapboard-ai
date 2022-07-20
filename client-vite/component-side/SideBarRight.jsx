@@ -15,21 +15,6 @@ import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from '../component/Icons'
 
-const commonCss = (MAP_BACKGROUND, PAGE_BACKGROUND) => ({
-    position: 'fixed',
-    right: 0,
-    width: 40,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '4px 12px 4px 12px',
-    backgroundColor: MAP_BACKGROUND,
-    borderTop: `1px solid ${PAGE_BACKGROUND}`,
-    borderLeft: `1px solid ${PAGE_BACKGROUND}`,
-    borderBottom: `1px solid ${PAGE_BACKGROUND}`,
-    borderRight: 0,
-})
-
 const iconSize = 40
 const topOffs1 = 48*2
 const topOffs2 = topOffs1 + iconSize + 2*4
@@ -44,7 +29,7 @@ export function SideBarRight () {
     const alignment = useSelector(state => state.node.alignment)
     const frameLen = useSelector(state => state.frameLen)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
-    const {MAP_BACKGROUND, PAGE_BACKGROUND, MAIN_COLOR} = getColors(colorMode)
+    const {MAIN_COLOR} = getColors(colorMode)
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
     const changeDensity = _ => setNodeParam({density: density === 'small' ? 'large' : 'small'})
@@ -62,12 +47,12 @@ export function SideBarRight () {
     const showCreateTask = _ => dispatch({type: 'SHOW_WS_CREATE_TASK'})
     return (
         <>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs1, borderRadius: '16px 0 0 0' }}>
+            <div className="sidebar-right-section" style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
                 <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
                     <PaletteIcon/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs2, borderRadius: '0 0 0 0' }}>
+            <div className="sidebar-right-section" style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={showCreateTable}>
                     <CalendarViewMonthIcon/>
                 </IconButton>
@@ -78,7 +63,7 @@ export function SideBarRight () {
                     <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs3, borderRadius: '0 0 0 0' }}>
+            <div className="sidebar-right-section" style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -88,7 +73,7 @@ export function SideBarRight () {
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs4, borderRadius: '0 0 0 0' }}>
+            <div className="sidebar-right-section" style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible}>
                     <DynamicFeedIcon/>
                 </IconButton>
@@ -105,7 +90,7 @@ export function SideBarRight () {
                     <CloseIcon/>
                 </IconButton>
             </div>
-            <div style={{ ...commonCss(MAP_BACKGROUND, PAGE_BACKGROUND), top: topOffs5, borderRadius: '0 0 0 16px' }}>
+            <div className="sidebar-right-section" style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>

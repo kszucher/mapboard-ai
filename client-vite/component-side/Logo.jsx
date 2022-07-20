@@ -5,10 +5,8 @@ import { useDispatch } from 'react-redux'
 export default function Logo() {
     const dispatch = useDispatch()
     const toggleTabShrink = _ => dispatch({type: 'TOGGLE_TAB_SHRINK'})
-    const col1 = '#a4508b'
-    const col2 = '#5f0a87'
     return (
-        <div id="logo" style={{ backgroundImage: `linear-gradient(330deg, ${col1} 0%, ${col2} 74%)` }}>
+        <div id="logo">
             <Toolbar variant={"dense"}>
                 <IconButton
                     sx={{ mr: 2 }}
