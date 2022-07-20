@@ -6,20 +6,15 @@ import { MAP_RIGHTS } from '../../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
 
 const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
-    <>
-        {formatMode !== '' && <span
-            style={{
-                position: 'fixed',
-                right: 225 - 40* ({ text: 0, border: 1, fill: 2, line: 3 }[formatMode]),
-                // right: 10,
-                top: 48*2+2,
-                width: 40,
-                height: 2,
-                backgroundColor: MAIN_COLOR,
-                // borderRadius: 8,
-            }}/>
-        }
-    </>
+    <span
+        style={{
+            position: 'fixed',
+            right: 225 - 40* ({ text: 0, border: 1, fill: 2, line: 3 }[formatMode]),
+            top: 48*2+2,
+            width: 40,
+            height: 2,
+            backgroundColor: MAIN_COLOR,
+        }}/>
 )
 
 const TargetedButtonGroup = ({KEYS, value, setValue, BUTTON_COLOR}) => {
@@ -83,7 +78,10 @@ export function Formatter () {
                 <IconButton color='secondary' onClick={setFormatModeLine}>
                     <LineIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
-                <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
+                {
+                    formatMode !== '' &&
+                    <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode} />
+                }
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <div style={{ width, height }}>
