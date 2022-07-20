@@ -10,11 +10,11 @@ import { FrameCarousel } from "../side/FrameCarousel"
 import { ShareThisMap } from "../modal/ShareThisMap"
 import { Shares } from "../modal/Shares"
 import { WindowListeners } from "./WindowListeners"
-import { SideBarRight } from '../side/SideBarRight'
+import { ControlsRight } from '../side/ControlsRight'
 import { createTheme, ThemeProvider } from '@mui/material'
 import { UndoRedo } from '../side/UndoRedo'
 import { Profile } from '../side/Profile'
-import { SideBarLeft } from '../side/SideBarLeft'
+import { ControlsLeft } from '../side/ControlsLeft'
 import { UpdateMapInMap } from '../modal/UpdateMapInMap'
 import { CreateTable } from '../modal/CreateTable'
 import {PAGE_STATES} from "../../core/EditorFlow"
@@ -101,8 +101,8 @@ export function Page() {
                                 <UndoRedo/>
                                 <Breadcrumbs/>
                                 <TabMaps/>
-                                <SideBarLeft/>
-                                <SideBarRight/>
+                                <ControlsLeft/>
+                                <ControlsRight/>
                             </>
                         }
                         {formatMode!=='' && <Formatter/>}

@@ -5,7 +5,7 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-export function SideBarLeft () {
+export function ControlsLeft () {
     const tabMapNameList = useSelector(state => state.tabMapNameList)
     const frameEditorVisible = useSelector(state => state.frameEditorVisible)
     const dispatch = useDispatch()

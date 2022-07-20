@@ -22,7 +22,7 @@ const topOffs3 = topOffs2 + iconSize*3 + 2*4
 const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
-export function SideBarRight () {
+export function ControlsRight () {
     const colorMode = useSelector(state => state.colorMode)
     const formatMode = useSelector(state => state.formatMode)
     const density = useSelector(state => state.node.density)
