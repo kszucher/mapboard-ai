@@ -1,0 +1,16 @@
+#share-this-map-modal {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    top: 96px;
+    width: calc(48*8px);
+    flex-direction: column;
+    align-items: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: var(--map-background-color);
+    padding: 20px;
+    border: 1px solid var(--map-background-color);
+    border-radius: 16px;
+}
