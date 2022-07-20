@@ -1,7 +1,7 @@
 import {useSelector, useDispatch} from "react-redux";
-import { MAP_RIGHTS } from '../../src/core/EditorFlow'
+import { MAP_RIGHTS } from '../../core/EditorFlow'
 import { Button, FormControlLabel, FormLabel, Modal, RadioGroup, TextField, Typography, Radio } from '@mui/material'
-import { getColors } from '../../src/core/Colors'
+import { getColors } from '../../core/Colors'
 
 export function ShareThisMap() {
     const {VIEW, EDIT} = MAP_RIGHTS

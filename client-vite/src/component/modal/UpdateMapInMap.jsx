@@ -1,6 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import { getColors } from '../../src/core/Colors'
+import { getColors } from '../../core/Colors'
 
 export function UpdateMapInMap() {
     const colorMode = useSelector(state => state.colorMode)

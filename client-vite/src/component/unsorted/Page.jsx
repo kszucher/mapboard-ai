@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import { getEquationDim, getTextDim, isChrome } from '../../src/core/Utils'
+import { getEquationDim, getTextDim, isChrome } from '../../core/Utils'
 import Auth from "./Auth"
 import Logo from "../side/Logo"
 import TabMaps from "../side/TabMaps"
@@ -17,7 +17,7 @@ import { Profile } from '../side/Profile'
 import { SideBarLeft } from '../side/SideBarLeft'
 import { UpdateMapInMap } from '../modal/UpdateMapInMap'
 import { CreateTable } from '../modal/CreateTable'
-import {PAGE_STATES} from "../../src/core/EditorFlow"
+import {PAGE_STATES} from "../../core/EditorFlow"
 import { UpdateTask } from '../modal/UpdateTask'
 import { Settings } from '../modal/Settings'
 

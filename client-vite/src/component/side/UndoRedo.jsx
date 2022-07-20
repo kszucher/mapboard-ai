@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IconButton } from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import { MAP_RIGHTS } from '../../src/core/EditorFlow'
+import { MAP_RIGHTS } from '../../core/EditorFlow'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS

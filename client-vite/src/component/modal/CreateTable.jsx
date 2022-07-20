@@ -11,7 +11,7 @@ import {
     TextField,
     Typography
 } from '@mui/material'
-import { getColors } from '../../src/core/Colors'
+import { getColors } from '../../core/Colors'
 import { useState } from 'react'
 
 export function CreateTable() {
