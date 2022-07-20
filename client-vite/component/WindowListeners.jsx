@@ -560,8 +560,10 @@ export function WindowListeners() {
             } else if (mapRight === VIEW) {
                 // TODO figure out view listeners
             }
-            document.body.style.backgroundColor = getColors(colorMode).PAGE_BACKGROUND
         }
+        const root = document.querySelector(':root')
+        root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
+        root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
     }, [colorMode])
 
     return (

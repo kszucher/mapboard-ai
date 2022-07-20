@@ -1,3 +1,12 @@
+:root {
+    --page-background-color: #000;
+    --map-background-color: #000;
+}
+
+body {
+    background: var(--page-background-color);
+}
+
 #breadcrumb-maps {
     display: flex;
     align-items: center;
@@ -5,7 +14,7 @@
     left: 50%;
     transform: translate(-50%);
     height: 40px;
-    /*background: MAP_BACKGROUND,*/
+    background: var(--map-background-color);
     padding: 4px 16px 4px 16px;
     border-radius: 0 0 16px 16px;
     border: 2px solid #9040b8;
@@ -78,4 +87,7 @@
     border-right: 0;
     border-radius: 0 0 0 16px;
     flex-direction: row;
+    background: var(--map-background-color);
+    border-left: 1px solid var(--page-background-color);
+    border-bottom: 1px solid var(--page-background-color);
 }
