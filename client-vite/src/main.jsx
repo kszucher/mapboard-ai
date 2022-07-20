@@ -15,6 +15,7 @@ import './component-css/side/SideBarLeft.css'
 import './component-css/side/SideBarRight.css'
 import './component-css/side/TabMaps.css'
 import './component-css/side/UndoRedo.css'
+import './component-css/unsorted/Auth.css'
 
 
 ReactDOM.render(
