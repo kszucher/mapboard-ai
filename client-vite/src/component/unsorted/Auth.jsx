@@ -90,12 +90,9 @@ export default function Auth() {
             }
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
-                <>
-
-                    <Button fullWidth color="primary" onClick={signInPanel} variant="outlined">
-                        {'SIGN IN INSTEAD'}
-                    </Button>
-                </>
+                <Button fullWidth color="primary" onClick={signInPanel} variant="outlined">
+                    {'SIGN IN INSTEAD'}
+                </Button>
             }
             {
                 authPageState === SIGN_IN &&
