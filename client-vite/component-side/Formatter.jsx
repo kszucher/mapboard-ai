@@ -49,7 +49,7 @@ export function Formatter () {
     const borderWidth = {[1]: 'w1', [2]: 'w2', [3]: 'w3'}[useSelector(state => state.node.borderWidth)]
     const textFontSize = {[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[useSelector(state => state.node.textFontSize)]
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
-    const { PAGE_BACKGROUND, MAP_BACKGROUND, BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
+    const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
@@ -69,7 +69,7 @@ export function Formatter () {
     const closeFormatter = _ => dispatch({type: 'SET_FORMAT_MODE', payload: ''})
 
     return (
-        <div id="formatter" style={{ border: `1px solid ${PAGE_BACKGROUND}`, background: MAP_BACKGROUND }}>
+        <div id="formatter">
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <IconButton color='secondary' onClick={setFormatModeText}>
                     <TextIcon MAIN_COLOR={MAIN_COLOR}/>
