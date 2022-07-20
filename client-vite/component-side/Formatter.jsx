@@ -4,7 +4,6 @@ import { colorList, getColors } from '../core/Colors'
 import { setClear } from '../core/Utils'
 import { MAP_RIGHTS } from '../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../component/Icons'
-import '../css/Component-Side.css'
 
 const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
     <>
@@ -59,7 +58,7 @@ export function Formatter () {
     const lineType = useSelector(state => state.node.lineType)
     const borderWidth = useSelector(state => state.node.borderWidth)
     const textFontSize = useSelector(state => state.node.textFontSize)
-    
+
     const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()

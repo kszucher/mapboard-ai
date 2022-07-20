@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux'
 import { IconButton } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import ProfileMenu from './ProfileMenu'
-import '../css/Component-Side.css'
 
 export function Profile () {
     const dispatch = useDispatch()

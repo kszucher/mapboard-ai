@@ -2,7 +2,6 @@ import {useSelector, useDispatch} from 'react-redux'
 import { Button, IconButton, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import '../css/Component-Side.css'
 
 export function FrameCarousel () {
     const frameLen = useSelector(state => state.frameLen)

@@ -1,7 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import '../css/Component-Side.css'
 
 export default function BreadcrumbMaps() {
     const breadcrumbMapNameList = useSelector(state => state.breadcrumbMapNameList)

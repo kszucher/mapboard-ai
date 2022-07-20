@@ -1,0 +1,13 @@
+#breadcrumb-maps {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    height: 40px;
+    background: var(--map-background-color);
+    padding: 4px 16px 4px 16px;
+    border-radius: 0 0 16px 16px;
+    border: 2px solid #9040b8;
+    border-top: 0;
+}
