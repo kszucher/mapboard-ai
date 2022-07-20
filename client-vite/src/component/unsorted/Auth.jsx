@@ -36,6 +36,19 @@ export default function Auth() {
                 {'Private Beta'}
             </Typography>
             {
+                authPageState === SIGN_IN &&
+                <>
+                    <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
+                    <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword} type="password"/>
+                    <Button color="primary" variant='contained' fullWidth onClick={signIn} disabled={false}>
+                        {'SIGN IN'}
+                    </Button>
+                    <Button fullWidth color="primary" onClick={signUpPanel} variant="outlined">
+                        {'SIGN UP INSTEAD'}
+                    </Button>
+                </>
+            }
+            {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                     <Button color="primary" onClick={signUpStep1Panel} variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
@@ -47,19 +60,15 @@ export default function Auth() {
                 </div>
             }
             {
-                authPageState === SIGN_IN &&
-                <>
-                    <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
-                    <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword} type="password"/>
-                </>
-            }
-            {
                 authPageState === SIGN_UP_STEP_1 &&
                 <>
                     <TextField variant="outlined" fullWidth label="Your First Name" value={name} onChange={setName} autoFocus/>
                     <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
                     <TextField variant="outlined" fullWidth label="Password" value={password} onChange={setPassword}/>
                     <TextField variant="outlined" fullWidth label="Password Again" value={passwordAgain} onChange={setPasswordAgain}/>
+                    <Button color="primary" variant='contained' fullWidth onClick={signUpStep1} disabled={getConfirmationCodeDisabled}>
+                        {'Get Confirmation Code'}
+                    </Button>
                 </>
             }
             {
@@ -67,6 +76,9 @@ export default function Auth() {
                 <>
                     <TextField variant="outlined" fullWidth label="Email" value={email} onChange={setEmail}/>
                     <TextField variant="outlined" fullWidth label="Confirmation Code" value={confirmationCode} onChange={checkSetConfirmationCode} autoFocus/>
+                    <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
+                        {'Enter Confirmation Code'}
+                    </Button>
                 </>
             }
             {
@@ -74,30 +86,6 @@ export default function Auth() {
                 <Typography variant="body2" color="textSecondary" align="center">
                     {authFeedbackMessage}
                 </Typography>
-            }
-            {
-                authPageState === SIGN_IN &&
-                <Button color="primary" variant='contained' fullWidth onClick={signIn} disabled={false}>
-                    {'SIGN IN'}
-                </Button>
-            }
-            {
-                authPageState === SIGN_UP_STEP_1 &&
-                <Button color="primary" variant='contained' fullWidth onClick={signUpStep1} disabled={getConfirmationCodeDisabled}>
-                    {'Get Confirmation Code'}
-                </Button>
-            }
-            {
-                authPageState === SIGN_UP_STEP_2 &&
-                <Button color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
-                    {'Enter Confirmation Code'}
-                </Button>
-            }
-            {
-                authPageState === SIGN_IN &&
-                <Button fullWidth color="primary" onClick={signUpPanel} variant="outlined">
-                    {'SIGN UP INSTEAD'}
-                </Button>
             }
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
