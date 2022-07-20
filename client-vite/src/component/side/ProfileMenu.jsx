@@ -31,15 +31,15 @@ export default function ProfileMenu () {
             {
                 pageState === WS &&
                 [
-                    <MenuItem key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
+                    <MenuItem id="settings" key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
                         {'Settings'}
                     </MenuItem>,
                     <Divider key={1}/>,
-                    <MenuItem key={2} onClick={() => {closeMoreMenu(); showShares()}}>
+                    <MenuItem id="shares" key={2} onClick={() => {closeMoreMenu(); showShares()}}>
                         {'Shares'}
                     </MenuItem>,
                     <Divider key={3} />,
-                    <MenuItem key={4} onClick={() => {closeMoreMenu(); signOut()}}>
+                    <MenuItem id="sign-out" key={4} onClick={() => {closeMoreMenu(); signOut()}}>
                         {'Sign Out'}
                     </MenuItem>
                 ]
