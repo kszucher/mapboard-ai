@@ -1,6 +1,5 @@
 import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import { getColors } from '../../core/Colors'
 
 export function UpdateTask() {
     const interactionDisabled = useSelector(state => state.interactionDisabled)
