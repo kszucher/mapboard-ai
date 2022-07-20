@@ -4,6 +4,7 @@ import { Button, Link, TextField, Typography } from '@mui/material'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
+
     const authPageState = useSelector(state => state.authPageState)
     const name = useSelector(state => state.name)
     const email = useSelector(state => state.email)
@@ -11,8 +12,7 @@ export default function Auth() {
     const passwordAgain = useSelector(state => state.passwordAgain)
     const confirmationCode = useSelector(state => state.confirmationCode)
     const authFeedbackMessage = useSelector(state => state.authFeedbackMessage)
-    const getConfirmationCodeDisabled = (name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)
-    const enterConfirmationCodeDisabled = (email === '' || confirmationCode === '' || confirmationCode.length !== 4)
+
     const dispatch = useDispatch()
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})
     const setEmail = e => dispatch({type: 'SET_EMAIL', payload: e.target.value})
@@ -27,6 +27,7 @@ export default function Auth() {
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
     const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { email, confirmationCode }});
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
+    
     return (
         <div id="auth">
             <Typography color="primary" component="h1" variant="h5">
@@ -68,13 +69,17 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_1 &&
-                <Button id="get-confirmation-code" color="primary" variant='contained' fullWidth onClick={signUpStep1} disabled={getConfirmationCodeDisabled}>
+                <Button id="get-confirmation-code" color="primary" variant='contained' fullWidth onClick={signUpStep1}
+                        disabled={(name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)}
+                >
                     {'Get Confirmation Code'}
                 </Button>
             }
             {
                 authPageState === SIGN_UP_STEP_2 &&
-                <Button id="enter-confirmation-code" color="primary" variant='contained' fullWidth onClick={signUpStep2} disabled={enterConfirmationCodeDisabled}>
+                <Button id="enter-confirmation-code" color="primary" variant='contained' fullWidth onClick={signUpStep2}
+                        disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
+                >
                     {'Enter Confirmation Code'}
                 </Button>
             }
