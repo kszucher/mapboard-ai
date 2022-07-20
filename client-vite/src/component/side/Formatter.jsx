@@ -10,7 +10,7 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
         {formatMode !== '' && <span
             style={{
                 position: 'fixed',
-                right: 40 + 2*12 -(3*4) + 4*40 - 40* ({ text: 0, border: 1, fill: 2, line: 3 }[formatMode]),
+                right: 225 - 40* ({ text: 0, border: 1, fill: 2, line: 3 }[formatMode]),
                 // right: 10,
                 top: 48*2+2,
                 width: 40,
@@ -43,7 +43,7 @@ const TargetedButtonGroup = ({KEYS, value, setValue, BUTTON_COLOR}) => {
 export function Formatter () {
     const o = 32
     const r = 12
-    const width = o * colorList[0].length
+    const width =  o * colorList[0].length
     const height = o * colorList.length
 
     const colorMode = useSelector(state => state.colorMode)
@@ -76,7 +76,7 @@ export function Formatter () {
 
     return (
         <div id="formatter">
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
                 <IconButton color='secondary' onClick={setFormatModeText}>
                     <TextIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
@@ -91,19 +91,39 @@ export function Formatter () {
                 </IconButton>
                 <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode}/>
             </div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
                 <div style={{ width, height }}>
-                    <svg viewBox={`0 0 ${width} ${height}`}>{colorList.map((iEl, i) => (iEl.map((jEl, j) => (
-                        <circle cx={o/2 + j*o} cy={o/2 + i*o} r={r} key={'key' + i*10 + j} fill={jEl}
-                                stroke={
-                                    colorList[i][j] ===
-                                    {line: lineColor, border: borderColor, fill: fillColor, text: textColor}[formatMode]
-                                        ? '#9040b8'
-                                        : 'none'
-                                }
-                                strokeWidth={"2%"}
-                                onClick={_ => setNodeParam({ [formatMode + 'Color'] : colorList[i][j] })}
-                        />))))}
+                    <svg viewBox={`0 0 ${width} ${height}`}>{
+                        colorList.map((iEl, i) => (
+                                iEl.map((jEl, j) => (
+                                        <circle
+                                            cx={o/2 + j*o}
+                                            cy={o/2 + i*o}
+                                            r={r}
+                                            key={'key' + i*10 + j}
+                                            fill={jEl}
+                                            stroke={
+                                                colorList[i][j] === {
+                                                    line: lineColor,
+                                                    border: borderColor,
+                                                    fill: fillColor,
+                                                    text: textColor
+                                                }[formatMode]
+                                                    ? '#9040b8'
+                                                    : 'none'
+                                            }
+                                            strokeWidth={"2%"}
+                                            onClick={_ =>
+                                                setNodeParam({
+                                                    [formatMode + 'Color'] : colorList[i][j]
+                                                })
+                                            }
+                                        />
+                                    )
+                                )
+                            )
+                        )
+                    }
                     </svg>
                 </div>
             </div>
@@ -138,9 +158,9 @@ export function Formatter () {
                     formatMode === 'text' &&
                     <>
                         <TargetedButtonGroup
-                            KEYS={['h1', 'h2', 'h3', 'h4', 'text']}
-                            value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 'text'}[textFontSize]}
-                            setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['text']: 14}[value]})}
+                            KEYS={['h1', 'h2', 'h3', 'h4', 't']}
+                            value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
+                            setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
                             BUTTON_COLOR={BUTTON_COLOR}
                         />
                     </>

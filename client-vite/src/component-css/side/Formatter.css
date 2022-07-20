@@ -1,5 +1,6 @@
 #formatter {
     position: fixed;
+    width: 216px;
     top: 96px;
     right: 64px;
     display: flex;
