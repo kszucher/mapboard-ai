@@ -3,3 +3,7 @@
 /client/dist
 /server/node_modules
 /server/uploads/
+/cypress/cypress/e2e/spec.cy.js
+/cypress/cypress/fixtures/example.json
+/cypress/cypress/support/commands.js
+/cypress/cypress/support/e2e.js
