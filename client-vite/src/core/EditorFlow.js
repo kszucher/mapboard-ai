@@ -43,7 +43,7 @@ const editorState = {
     landingData: [],
     landingDataIndex: 0,
 
-    colorMode: 'light',
+    colorMode: 'dark',
 
     formatMode: '',
 

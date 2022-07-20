@@ -29,10 +29,10 @@ export default function Auth() {
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
     return (
         <div id="auth">
-            <Typography component="h1" variant="h5">
+            <Typography color="primary" component="h1" variant="h5">
                 {'MapBoard'}
             </Typography>
-            <Typography component="h1" variant="h6">
+            <Typography color="primary" component="h1" variant="h6">
                 {'Private Beta'}
             </Typography>
             <div style={{display: 'flex', flexWrap: 'wrap', gap: 16}}>
