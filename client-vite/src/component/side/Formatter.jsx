@@ -53,7 +53,6 @@ export function Formatter () {
     const fillColor = useSelector(state => state.node.fillColor)
     const textColor = useSelector(state => state.node.textColor)
     const selection = useSelector(state => state.node.selection)
-
     const lineWidth = useSelector(state => state.node.lineWidth)
     const lineType = useSelector(state => state.node.lineType)
     const borderWidth = useSelector(state => state.node.borderWidth)
@@ -63,11 +62,6 @@ export function Formatter () {
 
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
-    const resetLine = _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
-    const resetBorder = _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
-    const resetFill = _ => setNodeParam(setClear(['fillColor']))
-    const resetText = _ => setNodeParam(setClear(['textColor', 'textFontSize']))
-
     const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'line'})
     const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
     const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
@@ -170,10 +164,10 @@ export function Formatter () {
                 <Button color="primary" variant='outlined'
                         onClick={
                             {
-                                line: resetLine,
-                                text: resetText,
-                                fill: resetFill,
-                                border: resetBorder
+                                line: setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor'])),
+                                text: setNodeParam(setClear(['textColor', 'textFontSize'])),
+                                fill: setNodeParam(setClear(['fillColor'])),
+                                border: setNodeParam(setClear(['borderWidth', 'borderColor']))
                             }[formatMode]
                         }>
                     {'RESET'}
