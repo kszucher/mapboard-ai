@@ -1,4 +1,4 @@
-#sidebar-left {
+#controls-left {
     position: fixed;
     left: 0;
     width: 40px;
@@ -14,7 +14,7 @@
     border-radius: 0 16px 16px 0;
 }
 
-.sidebar-right-section {
+.controls-right-section {
     position: fixed;
     right: 0;
     width: 40px;

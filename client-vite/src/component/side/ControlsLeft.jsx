@@ -14,7 +14,7 @@ export function ControlsLeft () {
     const moveDownMapInTab = _ => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
     const removeMapInTab = _ => dispatch({type: 'REMOVE_MAP_IN_TAB'})
     return (
-        <div id="sidebar-left" style={{top: 48*2 + 48*tabMapNameList.length + 48}}>
+        <div id="controls-left" style={{top: 48*2 + 48*tabMapNameList.length + 48}}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <IconButton color='secondary' onClick={createMapInTab} disabled={frameEditorVisible}>
                     <AddCircleOutlineIcon/>

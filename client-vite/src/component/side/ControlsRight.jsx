@@ -47,12 +47,12 @@ export function ControlsRight () {
     const showCreateTask = _ => dispatch({type: 'SHOW_WS_CREATE_TASK'})
     return (
         <>
-            <div className="sidebar-right-section" style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
+            <div className="controls-right-section" style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
                 <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
                     <PaletteIcon/>
                 </IconButton>
             </div>
-            <div className="sidebar-right-section" style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
+            <div className="controls-right-section" style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={showCreateTable}>
                     <CalendarViewMonthIcon/>
                 </IconButton>
@@ -63,7 +63,7 @@ export function ControlsRight () {
                     <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
             </div>
-            <div className="sidebar-right-section" style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
+            <div className="controls-right-section" style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -73,7 +73,7 @@ export function ControlsRight () {
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
             </div>
-            <div className="sidebar-right-section" style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
+            <div className="controls-right-section" style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible}>
                     <DynamicFeedIcon/>
                 </IconButton>
@@ -90,7 +90,7 @@ export function ControlsRight () {
                     <CloseIcon/>
                 </IconButton>
             </div>
-            <div className="sidebar-right-section" style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
+            <div className="controls-right-section" style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>
