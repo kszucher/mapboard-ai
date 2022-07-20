@@ -27,7 +27,7 @@ export default function Auth() {
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { name, email, password }});
     const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { email, confirmationCode }});
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
-    
+
     return (
         <div id="auth">
             <Typography color="primary" component="h1" variant="h5">
@@ -39,10 +39,12 @@ export default function Auth() {
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-                    <Button id="step-1" color="primary" onClick={signUpStep1Panel} variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
+                    <Button id="step-1" color="primary" onClick={signUpStep1Panel}
+                            variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}>
                         {'STEP 1'}
                     </Button>
-                    <Button id="step2" color="primary" onClick={signUpStep2Panel} variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
+                    <Button id="step2" color="primary" onClick={signUpStep2Panel}
+                            variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}>
                         {'STEP 2'}
                     </Button>
                 </div>
@@ -70,16 +72,14 @@ export default function Auth() {
             {
                 authPageState === SIGN_UP_STEP_1 &&
                 <Button id="get-confirmation-code" color="primary" variant='contained' fullWidth onClick={signUpStep1}
-                        disabled={(name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain)}
-                >
+                        disabled={name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain}>
                     {'Get Confirmation Code'}
                 </Button>
             }
             {
                 authPageState === SIGN_UP_STEP_2 &&
                 <Button id="enter-confirmation-code" color="primary" variant='contained' fullWidth onClick={signUpStep2}
-                        disabled={(email === '' || confirmationCode === '' || confirmationCode.length !== 4)}
-                >
+                        disabled={email === '' || confirmationCode === '' || confirmationCode.length !== 4}>
                     {'Enter Confirmation Code'}
                 </Button>
             }
