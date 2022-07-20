@@ -77,16 +77,16 @@ export default function Auth() {
                 </>
             }
             {
-                authFeedbackMessage !== '' &&
-                <Typography variant="body2" color="textSecondary" align="center">
-                    {authFeedbackMessage}
-                </Typography>
-            }
-            {
                 authPageState === SIGN_IN &&
                 <Button color="primary" variant='contained' fullWidth onClick={signIn} disabled={false}>
                     {'SIGN IN'}
                 </Button>
+            }
+            {
+                authFeedbackMessage !== '' &&
+                <Typography variant="body2" color="textSecondary" align="center">
+                    {authFeedbackMessage}
+                </Typography>
             }
             {
                 [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
