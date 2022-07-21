@@ -40,6 +40,9 @@ export const mapPlace = {
         let rightMapHeight = cr.d.length > 0 ? cr.d[0].familyH : 0
         let leftMapHeight =  cr.d.length > 1? cr.d[1].familyH : 0
         let minHeight = Math.max(...[rightMapHeight, leftMapHeight])
+
+         minHeight = 1000
+
         let mapHeight = minHeight + 60
         m.mapWidth = mapWidth
         m.mapHeight = mapHeight
