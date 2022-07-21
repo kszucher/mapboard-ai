@@ -20,7 +20,7 @@ export default function ProfileMenu () {
 
     return (
         <Menu
-            id="menu-appbar"
+            id="profile-menu"
             anchorEl={moreMenu}
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             keepMounted
@@ -31,15 +31,15 @@ export default function ProfileMenu () {
             {
                 pageState === WS &&
                 [
-                    <MenuItem id="settings" key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
+                    <MenuItem key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
                         {'Settings'}
                     </MenuItem>,
                     <Divider key={1}/>,
-                    <MenuItem id="shares" key={2} onClick={() => {closeMoreMenu(); showShares()}}>
+                    <MenuItem key={2} onClick={() => {closeMoreMenu(); showShares()}}>
                         {'Shares'}
                     </MenuItem>,
                     <Divider key={3} />,
-                    <MenuItem id="sign-out" key={4} onClick={() => {closeMoreMenu(); signOut()}}>
+                    <MenuItem key={4} onClick={() => {closeMoreMenu(); signOut()}}>
                         {'Sign Out'}
                     </MenuItem>
                 ]

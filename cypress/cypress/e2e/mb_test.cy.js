@@ -2,18 +2,20 @@ describe('empty spec', () => {
     it('passes', () => {
         cy.visit('http://localhost:3000/')
 
-        // cy.get('#email').type('krisztian@szucher.com')
-        // cy.get('#password').type('mncvmncv')
-        // cy.get('#sign-in').click()
-        // cy.get('#profile').click()
-        // cy.get('#sign-out').click()
+        cy.get('#email').type('krisztian@szucher.com')
+        cy.get('#password').type('mncvmncv')
+        cy.get('#sign-in').click()
+        cy.get('#profile').click()
+        // cy.get('#profile-menu').select('Sign Out').click()
 
-        cy.get('#sign-up-instead').click()
-        cy.get('#your-first-name').type('Mekk Elek')
-        cy.get('#email').type('mekk@elek.com')
-        cy.get('#password').type('mekkpass')
-        cy.get('#password-again').type('mekkpass')
-        cy.get('#get-confirmation-code').click()
+        cy.get('#profile-menu').contains('Sign Out').click()
+
+        // cy.get('#sign-up-instead').click()
+        // cy.get('#your-first-name').type('Mekk Elek')
+        // cy.get('#email').type('mekk@elek.com')
+        // cy.get('#password').type('mekkpass')
+        // cy.get('#password-again').type('mekkpass')
+        // cy.get('#get-confirmation-code').click()
 
     })
 })
