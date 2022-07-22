@@ -19,7 +19,7 @@ export const PAGE_STATES = {
     WS_CREATE_TABLE: 'WS_CREATE_TABLE',
     WS_CREATE_TASK: 'WS_CREATE_TASK',
     WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP',
-    WS_SHARING: 'WS_SHARING',
+    WS_SHARE_THIS_MAP: 'WS_SHARE_THIS_MAP',
 }
 
 export const MAP_RIGHTS = {
@@ -122,7 +122,7 @@ const resolveActions = (state, action) => {
         case 'SHOW_WS_CREATE_TABLE':        return { pageState: PAGE_STATES.WS_CREATE_TABLE }
         case 'SHOW_WS_CREATE_TASK':         return { pageState: PAGE_STATES.WS_CREATE_TASK }
         case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: PAGE_STATES.WS_CREATE_MAP_IN_MAP }
-        case 'SHOW_WS_SHARING':             return { pageState: PAGE_STATES.WS_SHARING }
+        case 'SHOW_WS_SHARE_THIS_MAP':             return { pageState: PAGE_STATES.WS_SHARE_THIS_MAP }
 
         case 'SET_LANDING_DATA':            return { landingData: payload.landingData, mapRight: payload.mapRight }
         case 'PLAY_LANDING_NEXT':           return { landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0 }

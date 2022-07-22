@@ -5,7 +5,6 @@ import DarkModeIcon from '@mui/icons-material/DarkMode'
 
 export function Settings() {
     const colorMode = useSelector(state => state.colorMode)
-    const name = useSelector(state => state.name)
     const dispatch = useDispatch()
     const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
     const closeSettings = _ => dispatch({type: 'SHOW_WS'})
@@ -17,9 +16,6 @@ export function Settings() {
             aria-describedby="simple-modal-description">
 
             <div id="settings">
-                <Typography component="h1" variant="h5" color="primary">
-                    {name}
-                </Typography>
                 <IconButton color='secondary' onClick={changeColorMode}>
                     {colorMode === 'light' && <LightModeIcon/>}
                     {colorMode === 'dark' && <DarkModeIcon/>}

@@ -42,7 +42,7 @@ export function ControlsRight () {
     const duplicateFrame = _ => dispatch({type: 'DUPLICATE_FRAME'})
     const deleteFrame = _ => dispatch({type: 'DELETE_FRAME'})
     const closeFrameEditor = _ => dispatch({type: 'CLOSE_FRAME_EDITOR'})
-    const showSharing = _ => dispatch({type: 'SHOW_WS_SHARING'})
+    const showShareThisMap = _ => dispatch({type: 'SHOW_WS_SHARE_THIS_MAP'})
     const showCreateTable = _ => dispatch({type: 'SHOW_WS_CREATE_TABLE'})
     const showCreateTask = _ => dispatch({type: 'SHOW_WS_CREATE_TASK'})
     return (
@@ -91,7 +91,7 @@ export function ControlsRight () {
                 </IconButton>
             </div>
             <div className="controls-right-section" style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
-                <IconButton color='secondary' onClick={showSharing} disabled={frameEditorVisible}>
+                <IconButton color='secondary' onClick={showShareThisMap} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>
             </div>

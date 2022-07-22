@@ -10,7 +10,8 @@ export default function ProfileMenu () {
     const {DEMO, WS} = PAGE_STATES;
 
     const closeMoreMenu =  _ => dispatch({type: 'CLOSE_MORE_MENU'})
-    const openSettings = _ => dispatch({type: 'SHOW_WS_SETTINGS'})
+    const showProfile = _ => dispatch({type: 'SHOW_WS_PROFILE'})
+    const showSettings = _ => dispatch({type: 'SHOW_WS_SETTINGS'})
     const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
     const showAuth = _ => dispatch({type: 'SHOW_AUTH'})
     const signOut = _ => {
@@ -30,10 +31,10 @@ export default function ProfileMenu () {
         >
             {
                 pageState === WS && [
-                    <MenuItem key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
+                    <MenuItem key={0} onClick={() => {closeMoreMenu(); showProfile()}}>
                         {'Profile'}
                     </MenuItem>,
-                    <MenuItem key={1} onClick={() => {closeMoreMenu(); openSettings()}}>
+                    <MenuItem key={1} onClick={() => {closeMoreMenu(); showSettings()}}>
                         {'Settings'}
                     </MenuItem>,
                     // <Divider key={2}/>,
