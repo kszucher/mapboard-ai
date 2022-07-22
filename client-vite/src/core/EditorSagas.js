@@ -70,6 +70,7 @@ function* serverCallSaga({ type, payload }) {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
             break
     }
+    // cant put parse here, but can put all error here
     return { error, data }
 }
 
