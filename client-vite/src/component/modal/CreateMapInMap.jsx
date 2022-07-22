@@ -12,7 +12,7 @@ export function CreateMapInMap() {
             onClose={_=>{}}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
-            {<div id="update-map-in-map">
+            {<div id="create-map-in-map">
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                     <Typography variant="string" color='primary'>{'CREATE SUBMAP?'}</Typography>
                 </div>
