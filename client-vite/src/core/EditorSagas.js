@@ -328,6 +328,21 @@ function* shareSaga () {
     }
 }
 
+function* signOutSaga () {
+    while (true) {
+        yield take ('SIGN_OUT')
+        localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
+        yield put({type: 'RESET_STATE'})
+    }
+}
+
+function* deleteAccountSaga () {
+    while (true) {
+        yield take('DELETE_ACCOUNT')
+        yield put({type: 'SIGN_OUT'})
+    }
+}
+
 export default function* rootSaga () {
     yield all([
         authSaga(),
@@ -339,5 +354,7 @@ export default function* rootSaga () {
         mapStackSaga(),
         frameSaga(),
         shareSaga(),
+        signOutSaga(),
+        deleteAccountSaga(),
     ])
 }

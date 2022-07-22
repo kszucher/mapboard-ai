@@ -14,10 +14,7 @@ export default function ProfileMenu () {
     const showSettings = _ => dispatch({type: 'SHOW_WS_SETTINGS'})
     const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
     const showAuth = _ => dispatch({type: 'SHOW_AUTH'})
-    const signOut = _ => {
-        localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
-        dispatch({type: 'RESET_STATE'})
-    }
+    const signOut = _ => dispatch({type: 'SIGN_OUT'})
 
     return (
         <Menu
@@ -42,7 +39,7 @@ export default function ProfileMenu () {
                         {'Shares'}
                     </MenuItem>,
                     // <Divider key={4} />,
-                    <MenuItem key={5} onClick={() => {closeMoreMenu(); signOut()}}>
+                    <MenuItem key={5} onClick={signOut}>
                         {'Sign Out'}
                     </MenuItem>
                 ]
