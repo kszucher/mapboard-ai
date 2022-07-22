@@ -51,6 +51,36 @@ const fetchPost = (req) => {
     }).then(resp => resp.json())
 }
 
+function* serverCallSaga({ type, payload }) {
+    yield put({type: 'INTERACTION_DISABLED'})
+    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
+    yield put({type: 'INTERACTION_ENABLED'})
+    switch (error) {
+        case 'authFailWrongCred':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
+            localStorage.clear()
+            break
+        case 'authFailIncompleteRegistration':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
+            break
+        case 'signUpStep1FailEmailAlreadyInUse':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use' })
+            break
+        case 'signUpStep2FailWrongCode':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
+            break
+        case 'signUpStep2FailAlreadyActivated':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
+            break
+
+
+    }
+    if (error === '') {
+        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
+    }
+    return { error, data }
+}
+
 function* authSaga () {
     while (true) {
         const { type, payload } = yield take([
@@ -64,7 +94,7 @@ function* authSaga () {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Missing information' })
         } else if (type === 'SIGN_IN' && payload.cred.password.length < 5) {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Too short password' })
-        } else if (type === 'SIGN_UP_STEP_1' && payload.password.length < 5 ) {
+        } else if (type === 'SIGN_UP_STEP_1' && payload.cred.password.length < 5 ) {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Your password must be at least 5 characters' })
         } else if (type === 'CHECK_SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
             yield put({ type: 'SET_CONFIRMATION_CODE', payload })
@@ -72,37 +102,18 @@ function* authSaga () {
         } else if (type === 'CHECK_SET_CONFIRMATION_CODE') {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Invalid character' })
         } else {
-            yield put({type: 'INTERACTION_DISABLED'})
-            const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-            yield put({type: 'INTERACTION_ENABLED'})
-            if (error === 'authFailWrongCred') {
-                yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
-                localStorage.clear()
-            } else if (error === 'authFailIncompleteRegistration') {
-                yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
-            } else {
+            const { error, data } = yield call(serverCallSaga, { type, payload })
+            if (error === '') {
                 switch (type) {
                     case 'LIVE_DEMO':
                         initDomData()
                         yield put({ type: 'SHOW_DEMO' })
                         break
                     case 'SIGN_UP_STEP_1':
-                        if (error === 'signUpStep1FailEmailAlreadyInUse') {
-                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Email address already in use' })
-                        } else {
-                            yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
-                        }
+                        yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
                         break
                     case 'SIGN_UP_STEP_2':
-                        if (error === 'signUpStep2FailUnknownUser') {
-                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Unknown user' })
-                        } else if (error === 'signUpStep2FailWrongCode') {
-                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
-                        } else if (error === 'signUpStep2FailAlreadyActivated') {
-                            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
-                        } else {
-                            yield put({ type: 'SIGN_IN_PANEL' })
-                        }
+                        yield put({ type: 'SIGN_IN_PANEL' })
                         break
                     case 'SIGN_IN':
                         const { cred } = data
@@ -111,7 +122,6 @@ function* authSaga () {
                         yield put({ type: 'SHOW_WS' })
                         break
                 }
-                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
             }
         }
     }

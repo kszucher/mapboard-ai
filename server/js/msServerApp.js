@@ -69,14 +69,14 @@ function getDefaultMap (mapName, ownerUser, path) {
     }
 }
 
-async function checkSave (req, currUser) {
+async function checkSave (req, userId) {
     if (req.hasOwnProperty('payload') &&
         req.payload.hasOwnProperty('save')) {
         const mapId = ObjectId(req.payload.save.mapId)
         const { mapSource, mapData } = req.payload.save
         const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
-        const shareToEdit = await shares.findOne({ shareUser: currUser._id, sharedMap: mapId, access: 'edit' })
-        if (isEqual(currUser._id, ownerUser) || shareToEdit !== null) {
+        const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
+        if (isEqual(userId, ownerUser) || shareToEdit !== null) {
             if (mapSource === 'data') {
                 await maps.updateOne({ _id: mapId }, { $set: { data: mapData } })
             } else if (mapSource === 'dataFrames') {
@@ -133,69 +133,6 @@ async function getShareInfo (userId) {
 
 async function resolveType(req, userId) {
     switch (req.type) {
-        case 'LIVE_DEMO': { // QUERY
-            // this could depend on queryString
-            const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
-            return { error: '', data: { landingData: (await maps.findOne({_id: mapId})).dataFrames, mapRight: MAP_RIGHTS.VIEW } }
-        }
-        case 'SIGN_UP_STEP_1': { // MUTATION
-            const { name, email, password } = req.payload
-            const currUser = await users.findOne({ email })
-            if (currUser === null) {
-                let confirmationCode = ( name === 'Cypress Test' && email === 'cypress@test.com')
-                    ? 1234
-                    : getConfirmationCode()
-                await transporter.sendMail({
-                    from: "info@mapboard.io",
-                    to: email,
-                    subject: "MapBoard Email Confirmation",
-                    text: "",
-                    html:
-                        `
-                        <p>Hello ${name}!</p>
-                        <p>Welcome to MapBoard!<br>You can complete your registration using the following code:</p>
-                        <p>${confirmationCode}</p>
-                        <p>You can also join the conversation, propose features and get product news here:<br>
-                        <a href="MapBoard Slack">https://join.slack.com/t/mapboardinc/shared_invite/zt-18h31ogqv-~MoUZJ_06XCV7st8tfKIBg</a></p>
-                        <p>Cheers,<br>Krisztian from MapBoard</p>
-                        `
-                })
-                await users.insertOne({
-                    email,
-                    password,
-                    name,
-                    activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION,
-                    confirmationCode
-                })
-                return { error: '' }
-            } else {
-                return { error: 'signUpStep1FailEmailAlreadyInUse' }
-            }
-        }
-        case 'SIGN_UP_STEP_2': { // MUTATION
-            let { email, confirmationCode } = req.payload
-            const currUser = await users.findOne({ email })
-            if (currUser === null) {
-                return { error: 'signUpStep2FailUnknownUser' }
-            } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
-                return { error: 'signUpStep2FailAlreadyActivated' }
-            } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
-                return { error: 'signUpStep2FailWrongCode' }
-            } else {
-                let newMap = getDefaultMap('My First Map', currUser._id, [])
-                let mapId = (await maps.insertOne(newMap)).insertedId
-                await users.updateOne(
-                    { _id: currUser._id },
-                    {
-                        $set: {
-                            activationStatus: ACTIVATION_STATUS.COMPLETED,
-                            tabMapIdList: [...systemMaps, mapId],
-                            breadcrumbMapIdList: [mapId]
-                        }
-                    })
-                return { error: '' }
-            }
-        }
         case 'SIGN_IN': { // QUERY
             const { cred } = req.payload
             const userInfo = await getUserInfo(userId)
@@ -394,19 +331,71 @@ async function resolveType(req, userId) {
 
 async function processReq(req) {
     try {
-        let currUser
-        if (req.payload?.hasOwnProperty('cred')) {
-            const { email, password } = req.payload.cred
-            currUser = await users.findOne({ email, password })
-
+        if (req.type === 'LIVE_DEMO') {
+            // this could depend on queryString
+            const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
+            const landingData = (await maps.findOne({_id: mapId})).dataFrames
+            const mapRight = MAP_RIGHTS.VIEW
+            return { error: '', data: { landingData, mapRight } }
+        } else if (req.type === 'SIGN_UP_STEP_1') {
+            const { name, email, password } = req.payload.cred
+            let confirmationCode = ( name === 'Cypress Test' && email === 'cypress@test.com')
+                ? 1234
+                : getConfirmationCode()
+            await transporter.sendMail({
+                from: "info@mapboard.io",
+                to: email,
+                subject: "MapBoard Email Confirmation",
+                text: "",
+                html: `
+                    <p>Hello ${name}!</p>
+                    <p>Welcome to MapBoard!<br>You can complete your registration using the following code:</p>
+                    <p>${confirmationCode}</p>
+                    <p>You can also join the conversation, propose features and get product news here:<br>
+                    <a href="MapBoard Slack">https://join.slack.com/t/mapboardinc/shared_invite/zt-18h31ogqv-~MoUZJ_06XCV7st8tfKIBg</a></p>
+                    <p>Cheers,<br>Krisztian from MapBoard</p>
+                    `
+            })
+            await users.insertOne({
+                name,
+                email,
+                password,
+                activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION,
+                confirmationCode
+            })
+            return { error: '' }
+        } else if (req.type === 'SIGN_UP_STEP_2') {
+            const { email, confirmationCode } = req.payload.cred
+            const currUser = await users.findOne({ email, confirmationCode })
+            if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
+                return { error: 'signUpStep2FailAlreadyActivated' }
+            } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
+                return { error: 'signUpStep2FailWrongCode' }
+            } else {
+                let newMap = getDefaultMap('My First Map', currUser._id, [])
+                let mapId = (await maps.insertOne(newMap)).insertedId
+                await users.updateOne(
+                    { _id: currUser._id },
+                    {
+                        $set: {
+                            activationStatus: ACTIVATION_STATUS.COMPLETED,
+                            tabMapIdList: [...systemMaps, mapId],
+                            breadcrumbMapIdList: [mapId]
+                        }
+                    })
+                return { error: '' }
+            }
+        } else {
+            const currUser = await users.findOne( req.payload?.cred )
             if (currUser === null) {
                 return { error: 'authFailWrongCred' }
-            } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
+            } else if ( currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION ) {
                 return { error: 'authFailIncompleteRegistration' }
+            } else {
+                await checkSave(req, currUser?.id)
+                return await resolveType(req, currUser?._id)
             }
         }
-        await checkSave(req, currUser)
-        return await resolveType(req, currUser?._id)
     } catch (err) {
         console.log('server error')
         console.log(err.stack)
