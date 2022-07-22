@@ -78,7 +78,7 @@ function* authSaga () {
             if (error === 'authFailWrongCred') {
                 yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
                 localStorage.clear()
-            } else if (error === 'signInFailIncompleteRegistration') {
+            } else if (error === 'authFailIncompleteRegistration') {
                 yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
             } else {
                 switch (type) {
