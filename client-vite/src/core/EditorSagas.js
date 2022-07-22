@@ -338,7 +338,8 @@ function* signOutSaga () {
 
 function* deleteAccountSaga () {
     while (true) {
-        yield take('DELETE_ACCOUNT')
+        const { type } = yield take('DELETE_ACCOUNT')
+        yield call(fetchPost, { type })
         yield put({type: 'SIGN_OUT'})
     }
 }

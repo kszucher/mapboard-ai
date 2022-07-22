@@ -381,6 +381,12 @@ async function resolveType(req, userId) {
         }
         case 'CHANGE_TAB_WIDTH': { // MUTATION
             // TODO
+            return { error: '' }
+        }
+        case 'DELETE_ACCOUNT': {
+            console.log('delete me???')
+            await users.deleteOne({_id: userId})
+            return { error: ''}
         }
     }
 }
