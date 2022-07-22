@@ -51,6 +51,28 @@ const fetchPost = (req) => {
     }).then(resp => resp.json())
 }
 
+function* serverCallSaga({ type, payload }) {
+    yield put({type: 'INTERACTION_DISABLED'})
+    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
+    yield put({type: 'INTERACTION_ENABLED'})
+    switch (error) {
+        case 'authFailWrongCred':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
+            localStorage.clear()
+            break
+        case 'authFailIncompleteRegistration':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
+            break
+        case 'signUpStep2FailWrongEmailOrConfirmationCode':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong email or code' })
+            break
+        case 'signUpStep2FailAlreadyActivated':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
+            break
+    }
+    return { error, data }
+}
+
 function* authSaga () {
     while (true) {
         const { type, payload } = yield take([
@@ -72,24 +94,7 @@ function* authSaga () {
         } else if (type === 'CHECK_SET_CONFIRMATION_CODE') {
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Invalid character' })
         } else {
-            yield put({type: 'INTERACTION_DISABLED'})
-            const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-            yield put({type: 'INTERACTION_ENABLED'})
-            switch (error) {
-                case 'authFailWrongCred':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
-                    localStorage.clear()
-                    break
-                case 'authFailIncompleteRegistration':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
-                    break
-                case 'signUpStep2FailWrongEmailOrConfirmationCode':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong email or code' })
-                    break
-                case 'signUpStep2FailAlreadyActivated':
-                    yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
-                    break
-            }
+            const { error, data } = yield call(serverCallSaga, { type, payload })
             if (error === '') {
                 switch (type) {
                     case 'LIVE_DEMO':

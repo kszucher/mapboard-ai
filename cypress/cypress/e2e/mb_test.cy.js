@@ -25,5 +25,7 @@ describe('empty spec', () => {
         cy.get('#confirmation-code').type('1234')
         cy.get('#enter-confirmation-code').click()
         cy.get('#sign-in').click()
+
+        // TODO figure out a test for ALL 4 error code in auth
     })
 })
