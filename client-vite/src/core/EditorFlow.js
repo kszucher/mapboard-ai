@@ -13,13 +13,13 @@ export const PAGE_STATES = {
     DEMO: 'DEMO',
     AUTH: 'AUTH',
     WS: 'WS',
-    WS_SHARES: 'WS_SHARES',
-    WS_SHARING: 'WS_SHARING',
     WS_PROFILE: 'WS_PROFILE',
-    WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP',
+    WS_SETTINGS: 'WS_SETTINGS',
+    WS_SHARES: 'WS_SHARES',
     WS_CREATE_TABLE: 'WS_CREATE_TABLE',
     WS_CREATE_TASK: 'WS_CREATE_TASK',
-    WS_SETTINGS: 'WS_SETTINGS',
+    WS_CREATE_MAP_IN_MAP: 'WS_CREATE_MAP_IN_MAP',
+    WS_SHARING: 'WS_SHARING',
 }
 
 export const MAP_RIGHTS = {
@@ -116,13 +116,13 @@ const resolveActions = (state, action) => {
         case 'SHOW_AUTH':                   return { pageState: PAGE_STATES.AUTH }
         case 'SHOW_DEMO':                   return { pageState: PAGE_STATES.DEMO }
         case 'SHOW_WS':                     return { pageState: PAGE_STATES.WS }
-        case 'SHOW_WS_SHARING':             return { pageState: PAGE_STATES.WS_SHARING }
-        case 'SHOW_WS_SHARES':              return { pageState: PAGE_STATES.WS_SHARES }
         case 'SHOW_WS_PROFILE':             return { pageState: PAGE_STATES.WS_PROFILE }
-        case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: PAGE_STATES.WS_CREATE_MAP_IN_MAP }
+        case 'SHOW_WS_SETTINGS':            return { pageState: PAGE_STATES.WS_SETTINGS }
+        case 'SHOW_WS_SHARES':              return { pageState: PAGE_STATES.WS_SHARES }
         case 'SHOW_WS_CREATE_TABLE':        return { pageState: PAGE_STATES.WS_CREATE_TABLE }
         case 'SHOW_WS_CREATE_TASK':         return { pageState: PAGE_STATES.WS_CREATE_TASK }
-        case 'SHOW_WS_SETTINGS':            return { pageState: PAGE_STATES.WS_SETTINGS }
+        case 'SHOW_WS_CREATE_MAP_IN_MAP':   return { pageState: PAGE_STATES.WS_CREATE_MAP_IN_MAP }
+        case 'SHOW_WS_SHARING':             return { pageState: PAGE_STATES.WS_SHARING }
 
         case 'SET_LANDING_DATA':            return { landingData: payload.landingData, mapRight: payload.mapRight }
         case 'PLAY_LANDING_NEXT':           return { landingDataIndex: state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0 }
