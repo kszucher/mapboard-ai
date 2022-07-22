@@ -69,11 +69,6 @@ function* serverCallSaga({ type, payload }) {
         case 'signUpStep2FailAlreadyActivated':
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
             break
-
-
-    }
-    if (error === '') {
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
     }
     return { error, data }
 }
@@ -119,6 +114,7 @@ function* authSaga () {
                         yield put({ type: 'SHOW_WS' })
                         break
                 }
+                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
             }
         }
     }
