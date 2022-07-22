@@ -20,7 +20,7 @@ describe('empty spec', () => {
         cy.get('#password-again').type('cypressPass')
         cy.get('#get-confirmation-code').click()
 
-        // FIRST: clear db, and do the happy path
+        // first sign in, but then NO HAPPY but try all the error again... at least this is linear
 
         cy.get('#confirmation-code').type('1234')
 
