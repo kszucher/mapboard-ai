@@ -29,24 +29,25 @@ export default function ProfileMenu () {
             onClose={closeMoreMenu}
         >
             {
-                pageState === WS &&
-                [
+                pageState === WS && [
                     <MenuItem key={0} onClick={() => {closeMoreMenu(); openSettings()}}>
+                        {'Profile'}
+                    </MenuItem>,
+                    <MenuItem key={1} onClick={() => {closeMoreMenu(); openSettings()}}>
                         {'Settings'}
                     </MenuItem>,
-                    <Divider key={1}/>,
-                    <MenuItem key={2} onClick={() => {closeMoreMenu(); showShares()}}>
+                    // <Divider key={2}/>,
+                    <MenuItem key={3} onClick={() => {closeMoreMenu(); showShares()}}>
                         {'Shares'}
                     </MenuItem>,
-                    <Divider key={3} />,
-                    <MenuItem key={4} onClick={() => {closeMoreMenu(); signOut()}}>
+                    // <Divider key={4} />,
+                    <MenuItem key={5} onClick={() => {closeMoreMenu(); signOut()}}>
                         {'Sign Out'}
                     </MenuItem>
                 ]
             }
             {
-                pageState === DEMO &&
-                [
+                pageState === DEMO && [
                     <MenuItem key={0} onClick={() => {closeMoreMenu(); showAuth()}}>
                         Sign In / Sign Up
                     </MenuItem>
