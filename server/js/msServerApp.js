@@ -342,7 +342,7 @@ async function processReq(req) {
             if (currUser === null) {
                 if (req.type === 'SIGN_UP_STEP_1') {
                     const { name, email, password } = req.payload.cred
-                    let confirmationCode = (name === 'Cypress Test' && email === 'cypress@test.com')
+                    let confirmationCode = (name === 'Cypress Test')
                         ? 1234
                         : getConfirmationCode()
                     await transporter.sendMail({

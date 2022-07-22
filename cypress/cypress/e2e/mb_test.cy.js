@@ -24,6 +24,6 @@ describe('empty spec', () => {
         cy.get('#get-confirmation-code').click()
         cy.get('#confirmation-code').type('1234')
         cy.get('#enter-confirmation-code').click()
-
+        cy.get('#sign-in').click()
     })
 })
