@@ -15,10 +15,10 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { UndoRedo } from '../side/UndoRedo'
 import { ProfileButton } from '../side/ProfileButton'
 import { ControlsLeft } from '../side/ControlsLeft'
-import { CreateMapInMap } from '../modal/CreateMapInMap'
+import { ShouldCreateMapInMap } from '../modal/ShouldCreateMapInMap'
 import { CreateTable } from '../modal/CreateTable'
 import {PAGE_STATES} from "../../core/EditorFlow"
-import { UpdateTask } from '../modal/UpdateTask'
+import { ShouldUpdateTask } from '../modal/ShouldUpdateTask'
 import { Settings } from '../modal/Settings'
 import { Profile } from '../modal/Profile'
 
@@ -113,9 +113,9 @@ export function Page() {
                 {pageState === PAGE_STATES.WS_PROFILE && <Profile/>}
                 {pageState === PAGE_STATES.WS_SETTINGS && <Settings/>}
                 {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
-                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <CreateMapInMap/>}
+                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <ShouldCreateMapInMap/>}
                 {pageState === PAGE_STATES.WS_CREATE_TABLE && <CreateTable/>}
-                {pageState === PAGE_STATES.WS_CREATE_TASK && <UpdateTask/>}
+                {pageState === PAGE_STATES.WS_CREATE_TASK && <ShouldUpdateTask/>}
                 {pageState === PAGE_STATES.WS_SHARE_THIS_MAP && <ShareThisMap/>}
 
                 <WindowListeners/>
