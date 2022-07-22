@@ -63,7 +63,7 @@ export default function Auth() {
             }
             {
                 authPageState === SIGN_UP_STEP_1 &&
-                <TextField id="password-again" variant="outlined" fullWidth label="Password Again" value={passwordAgain} onChange={setPasswordAgain}/>
+                <TextField id="password-again" variant="outlined" fullWidth label="Password Again" value={passwordAgain} onChange={setPasswordAgain} type="password"/>
             }
             {
                 authPageState === SIGN_UP_STEP_2 &&
