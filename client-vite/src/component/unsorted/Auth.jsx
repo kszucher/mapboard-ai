@@ -25,7 +25,7 @@ export default function Auth() {
     const signUpStep2Panel = _ => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
     const signIn = _ => dispatch({type: 'SIGN_IN', payload: { cred: { email, password } }})
     const signUpStep1 = _ => dispatch({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } })
-    const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode } } })
+    const signUpStep2 = _ => dispatch({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode: parseInt(confirmationCode) } } })
     const liveDemo = _ => dispatch({type: 'LIVE_DEMO'})
 
     return (

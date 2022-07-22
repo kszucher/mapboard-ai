@@ -338,7 +338,7 @@ async function processReq(req) {
             const mapRight = MAP_RIGHTS.VIEW
             return { error: '', data: { landingData, mapRight } }
         } else {
-            const currUser = await users.findOne({ ...req.payload?.cred })
+            const currUser = await users.findOne({ ...req.payload.cred })
             if (currUser === null) {
                 if (req.type === 'SIGN_UP_STEP_1') {
                     const { name, email, password } = req.payload.cred
@@ -367,35 +367,32 @@ async function processReq(req) {
                         confirmationCode
                     })
                     return { error: '' }
+                } else if (req.type === 'SIGN_UP_STEP_2') {
+                    return { error: 'signUpStep2FailWrongEmailOrConfirmationCode' }
                 }
             } else {
-                if ( currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION ) {
+                if (req.type === 'SIGN_UP_STEP_2') {
+                    if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
+                        return { error: 'signUpStep2FailAlreadyActivated' }
+                    } else {
+                        let newMap = getDefaultMap('My First Map', currUser._id, [])
+                        let mapId = (await maps.insertOne(newMap)).insertedId
+                        await users.updateOne(
+                            { _id: currUser._id },
+                            {
+                                $set: {
+                                    activationStatus: ACTIVATION_STATUS.COMPLETED,
+                                    tabMapIdList: [...systemMaps, mapId],
+                                    breadcrumbMapIdList: [mapId]
+                                }
+                            })
+                        return { error: '' }
+                    }
+                } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
                     return { error: 'authFailIncompleteRegistration' }
                 } else {
-                    if (req.type === 'SIGN_UP_STEP_2') {
-                        const { confirmationCode } = req.payload.cred
-                        if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
-                            return { error: 'signUpStep2FailAlreadyActivated' }
-                        } else if (parseInt(confirmationCode) !== currUser.confirmationCode) {
-                            return { error: 'signUpStep2FailWrongCode' }
-                        } else {
-                            let newMap = getDefaultMap('My First Map', currUser._id, [])
-                            let mapId = (await maps.insertOne(newMap)).insertedId
-                            await users.updateOne(
-                                { _id: currUser._id },
-                                {
-                                    $set: {
-                                        activationStatus: ACTIVATION_STATUS.COMPLETED,
-                                        tabMapIdList: [...systemMaps, mapId],
-                                        breadcrumbMapIdList: [mapId]
-                                    }
-                                })
-                            return { error: '' }
-                        }
-                    } else {
-                        await checkSave(req, currUser?.id)
-                        return await resolveType(req, currUser?._id)
-                    }
+                    await checkSave(req, currUser?.id)
+                    return await resolveType(req, currUser?._id)
                 }
             }
         }

@@ -63,8 +63,8 @@ function* serverCallSaga({ type, payload }) {
         case 'authFailIncompleteRegistration':
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
             break
-        case 'signUpStep2FailWrongCode':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong code' })
+        case 'signUpStep2FailWrongEmailOrConfirmationCode':
+            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong email or code' })
             break
         case 'signUpStep2FailAlreadyActivated':
             yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
