@@ -76,9 +76,10 @@ function* authSaga () {
             const { resp: { error, data } } = yield call(fetchPost, { type, payload })
             yield put({type: 'INTERACTION_ENABLED'})
             if (error === 'authFailWrongCred') {
+                yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
                 localStorage.clear()
             } else if (error === 'signInFailIncompleteRegistration') {
-                console.log('incomplete registration')
+                yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
             } else {
                 switch (type) {
                     case 'LIVE_DEMO':

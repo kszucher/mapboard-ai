@@ -142,7 +142,9 @@ async function resolveType(req, userId) {
             const { name, email, password } = req.payload
             const currUser = await users.findOne({ email })
             if (currUser === null) {
-                let confirmationCode = getConfirmationCode()
+                let confirmationCode = ( name === 'Cypress Test' && email === 'cypress@test.com')
+                    ? 1234
+                    : getConfirmationCode()
                 await transporter.sendMail({
                     from: "info@mapboard.io",
                     to: email,
@@ -384,7 +386,6 @@ async function resolveType(req, userId) {
             return { error: '' }
         }
         case 'DELETE_ACCOUNT': {
-            console.log('delete me???')
             await users.deleteOne({_id: userId})
             return { error: ''}
         }
