@@ -20,7 +20,11 @@ describe('empty spec', () => {
         cy.get('#password-again').type('cypressPass')
         cy.get('#get-confirmation-code').click()
 
+        // FIRST: clear db, and do the happy path
+
         cy.get('#confirmation-code').type('1234')
+
+        // THIS
 
     })
 })
