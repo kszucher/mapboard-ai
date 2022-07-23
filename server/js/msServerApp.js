@@ -371,7 +371,13 @@ async function processReq(req) {
                     return { error: 'signUpStep2FailWrongEmailOrConfirmationCode' }
                 }
             } else {
-                if (req.type === 'SIGN_UP_STEP_2') {
+                if (req.type === 'SIGN_UP_STEP_1') {
+                    if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
+                        return { error: 'signUpStep1FailAlreadyAwaitingConfirmation' }
+                    } else if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
+                        return { error: 'signUpStep1FailAlreadyConfirmed' }
+                    }
+                } else if (req.type === 'SIGN_UP_STEP_2') {
                     if (currUser.activationStatus === ACTIVATION_STATUS.COMPLETED) {
                         return { error: 'signUpStep2FailAlreadyActivated' }
                     } else {

@@ -18,6 +18,17 @@ describe('empty spec', () => {
         cy.get('#profile-button').click()
         cy.get('#profile-menu').contains('Sign Out').click()
 
+
+        cy.get('#sign-up-instead').click()
+        cy.get('#your-first-name').type('Cypress Test')
+        cy.get('#email').type(randomUserEmail)
+        cy.get('#password').type('cypressPass')
+        cy.get('#password-again').type('cypressPass')
+        cy.get('#get-confirmation-code').click()
+
+        cy.get('#auth-feedback-message').should('have.text', 'Already confirmed')
+
+
         // TODO figure out a test for ALL 4 error code in auth
     })
 })
