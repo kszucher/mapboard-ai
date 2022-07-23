@@ -391,7 +391,7 @@ async function processReq(req) {
                 } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
                     return { error: 'authFailIncompleteRegistration' }
                 } else {
-                    await checkSave(req, currUser?.id)
+                    await checkSave(req, currUser?._id)
                     return await resolveType(req, currUser?._id)
                 }
             }
