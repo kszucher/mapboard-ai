@@ -185,17 +185,16 @@ export function WindowListeners() {
                 isNodeClicked = checkNodeClicked(e)
                 isTaskClicked = checkTaskClicked(path)
                 if (isNodeClicked) {
-                    if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                        mapDispatch('selectStruct')
-                    } else {
-                        mapDispatch('selectStructToo')
-                    }
-                    redraw(colorMode)
-                    let lm = mapref(selectionState.lastPath)
-                    if (!e.shiftKey) {
-                        if (lm.linkType !== '') {
-                            // mapDispatch('select_R')
+                    let m = mapref(['m'])
+                    let lm = mapref(m.deepestSelectablePath)
+                    if (lm.linkType === '') {
+                        if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                            mapDispatch('selectStruct')
+                        } else {
+                            mapDispatch('selectStructToo')
                         }
+                        redraw(colorMode)
+                    } else {
                         if (lm.linkType === 'internal') {
                             dispatch({ type: 'OPEN_MAP_FROM_MAP' })
                         } else if (lm.linkType === 'external') {

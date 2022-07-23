@@ -191,7 +191,8 @@ function* mapSaga () {
                 const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
                 payload = { ...payload, mapId }
             } else if (type === 'OPEN_MAP_FROM_MAP') {
-                const lm = mapref(selectionState.lastPath)
+                const m = mapref(['m'])
+                const lm = mapref(m.deepestSelectablePath)
                 const mapId = lm.link
                 payload = { ...payload, mapId }
             } else if (type === 'CREATE_MAP_IN_MAP') {
