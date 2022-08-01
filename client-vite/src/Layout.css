@@ -8,8 +8,7 @@ html, body, div, table, td, tr {
     outline: none;
 }
 
-#Test {
-    position: absolute;
+#Test {    position: absolute;
     visibility: hidden;
     height: auto;
     width: auto;
