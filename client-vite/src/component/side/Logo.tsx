@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 export default function Logo() {
     const dispatch = useDispatch()
-    const toggleTabShrink = _ => dispatch({type: 'TOGGLE_TAB_SHRINK'})
+    const toggleTabShrink = () => dispatch({type: 'TOGGLE_TAB_SHRINK'})
     return (
         <div id="logo">
             <Toolbar variant={"dense"}>

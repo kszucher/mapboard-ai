@@ -9,12 +9,12 @@ export default function ProfileMenu () {
     const dispatch = useDispatch()
     const {DEMO, WS} = PAGE_STATES;
 
-    const closeMoreMenu =  _ => dispatch({type: 'CLOSE_MORE_MENU'})
-    const showProfile = _ => dispatch({type: 'SHOW_WS_PROFILE'})
-    const showSettings = _ => dispatch({type: 'SHOW_WS_SETTINGS'})
-    const showShares = _ => dispatch({type: 'SHOW_WS_SHARES'})
-    const showAuth = _ => dispatch({type: 'SHOW_AUTH'})
-    const signOut = _ => dispatch({type: 'SIGN_OUT'})
+    const closeMoreMenu = () => dispatch({type: 'CLOSE_MORE_MENU'})
+    const showProfile = () => dispatch({type: 'SHOW_WS_PROFILE'})
+    const showSettings = () => dispatch({type: 'SHOW_WS_SETTINGS'})
+    const showShares = () => dispatch({type: 'SHOW_WS_SHARES'})
+    const showAuth = () => dispatch({type: 'SHOW_AUTH'})
+    const signOut = () => dispatch({type: 'SIGN_OUT'})
 
     return (
         <Menu
