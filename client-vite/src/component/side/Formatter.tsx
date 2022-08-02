@@ -54,7 +54,7 @@ export function Formatter () {
     const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.line})
     const closeFormatter = _ => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
 
-    const resolveFormatMode = () => {
+    const resolveFormatColor = () => {
         if (formatMode === FormatMode.text) return textColor
         if (formatMode === FormatMode.border) return borderColor
         if (formatMode === FormatMode.fill) return fillColor
@@ -67,7 +67,7 @@ export function Formatter () {
         if (formatMode === FormatMode.fill) setNodeParam(setClear(['fillColor']))
         if (formatMode === FormatMode.line) setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
     }
-    
+
     return (
         <div id="formatter">
             <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -96,7 +96,7 @@ export function Formatter () {
                                             r={r}
                                             key={'key' + i*10 + j}
                                             fill={jEl}
-                                            stroke={colorList[i][j] === resolveFormatMode() ? '#9040b8' : 'none'}
+                                            stroke={colorList[i][j] === resolveFormatColor() ? '#9040b8' : 'none'}
                                             strokeWidth={"2%"}
                                             onClick={_ => setNodeParam({[formatMode + 'Color'] : colorList[i][j]})}
                                         />
