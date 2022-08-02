@@ -1,15 +1,15 @@
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Tab, Tabs } from '@mui/material'
 import { getColors } from '../../core/Colors'
 
 export default function TabMaps() {
-    const colorMode = useSelector(state => state.colorMode)
-    const tabShrink = useSelector(state => state.tabShrink)
+    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+    const tabShrink = useSelector((state: RootStateOrAny) => state.tabShrink)
     const {MAIN_COLOR} = getColors(colorMode)
-    const mapSource = useSelector(state => state.mapSource)
-    const tabMapIdList = useSelector(state => state.tabMapIdList)
-    const tabMapNameList = useSelector(state => state.tabMapNameList)
-    const breadcrumbMapIdList = useSelector(state => state.breadcrumbMapIdList)
+    const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
+    const tabMapIdList = useSelector((state: RootStateOrAny) => state.tabMapIdList)
+    const tabMapNameList = useSelector((state: RootStateOrAny) => state.tabMapNameList)
+    const breadcrumbMapIdList = useSelector((state: RootStateOrAny) => state.breadcrumbMapIdList)
     const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
     const dispatch = useDispatch()
     const openMapFromTab = (e, value) =>  dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})

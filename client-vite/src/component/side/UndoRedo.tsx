@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
@@ -6,9 +6,9 @@ import { MAP_RIGHTS } from '../../core/EditorFlow'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-    const mapRight = useSelector(state => state.mapRight)
-    const undoDisabled = useSelector(state => state.undoDisabled)
-    const redoDisabled = useSelector(state => state.redoDisabled)
+    const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
+    const undoDisabled = useSelector((state: RootStateOrAny) => state.undoDisabled)
+    const redoDisabled = useSelector((state: RootStateOrAny) => state.redoDisabled)
     const dispatch = useDispatch()
     const undo = _ => dispatch({ type: 'UNDO'})
     const redo = _ => dispatch({ type: 'REDO'})

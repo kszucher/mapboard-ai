@@ -1,13 +1,13 @@
-import {useSelector, useDispatch} from "react-redux";
-import { Button, IconButton, Modal, Typography } from '@mui/material'
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
+import { Button, IconButton, Modal } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 
 export function Settings() {
-    const colorMode = useSelector(state => state.colorMode)
+    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
     const dispatch = useDispatch()
-    const changeColorMode = _ => dispatch({type: 'CHANGE_COLOR_MODE'})
-    const closeSettings = _ => dispatch({type: 'SHOW_WS'})
+    const changeColorMode = () => dispatch({type: 'CHANGE_COLOR_MODE'})
+    const closeSettings = () => dispatch({type: 'SHOW_WS'})
     return(
         <Modal
             open={true}
@@ -24,7 +24,6 @@ export function Settings() {
                     {'CLOSE'}
                 </Button>
             </div>
-
         </Modal>
     )
 }

@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import {useSelector, useDispatch} from "react-redux"
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { Button, IconButton, Modal, Typography } from '@mui/material'
 import {DataGrid} from "@mui/x-data-grid"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
@@ -7,20 +7,20 @@ import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 
 export function Shares() {
-    const shareDataExport = useSelector(state => state.shareDataExport).map((el, idx) => ({...el, id: idx}))
-    const shareDataImport = useSelector(state => state.shareDataImport).map((el, idx) => ({...el, id: idx}))
+    const shareDataExport = useSelector((state: RootStateOrAny) => state.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))
+    const shareDataImport = useSelector((state: RootStateOrAny) => state.shareDataImport).map((el: any, idx: any) => ({...el, id: idx}))
     const dispatch = useDispatch()
-    const getShares = _ => dispatch({type: 'GET_SHARES'})
-    const showWs = _ => dispatch({type: 'SHOW_WS'})
-    const acceptShare = params => dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
-    const deleteShare = params => dispatch({type: 'DELETE_SHARE', payload: {shareId: params.row._id}})
+    const getShares = () => dispatch({type: 'GET_SHARES'})
+    const showWs = () => dispatch({type: 'SHOW_WS'})
+    const acceptShare = (params: any) => dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
+    const deleteShare = (params: any) => dispatch({type: 'DELETE_SHARE', payload: {shareId: params.row._id}})
 
     const columnsExport = [
         {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
         {field: 'shareUserEmail', headerName: 'Shared With', width: 250, sortable: false, editable: false},
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false},
-        {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
+        {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params: any) => (
                 <strong>
                     <IconButton
                         aria-label="xxx"
@@ -39,7 +39,7 @@ export function Shares() {
         {field: 'ownerUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false},
         {field: 'access',         headerName: 'Access',      width: 140, sortable: false, editable: false},
         {field: 'status',         headerName: 'Status',      width: 140, sortable: false, editable: false},
-        {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params) => (
+        {field: ' ',              headerName: 'Actions',     width: 200, renderCell: (params: any) => (
                 <strong>
                     <IconButton
                         aria-label="xxx"
@@ -58,7 +58,7 @@ export function Shares() {
         getShares()
     }, []);
 
-    return(
+    return (
         <Modal
             open={true}
             onClose={_=>{}}

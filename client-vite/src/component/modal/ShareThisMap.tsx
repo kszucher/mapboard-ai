@@ -1,17 +1,17 @@
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { MAP_RIGHTS } from '../../core/EditorFlow'
 import { Button, FormControlLabel, FormLabel, Modal, RadioGroup, TextField, Typography, Radio } from '@mui/material'
 
 export function ShareThisMap() {
     const {VIEW, EDIT} = MAP_RIGHTS
-    const shareEmail = useSelector(state => state.shareEmail)
-    const shareAccess = useSelector(state => state.shareAccess)
-    const shareFeedbackMessage = useSelector(state => state.shareFeedbackMessage)
+    const shareEmail = useSelector((state: RootStateOrAny) => state.shareEmail)
+    const shareAccess = useSelector((state: RootStateOrAny) => state.shareAccess)
+    const shareFeedbackMessage = useSelector((state: RootStateOrAny) => state.shareFeedbackMessage)
     const dispatch = useDispatch()
-    const setShareEmail = e => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
-    const setShareAccess = e => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
-    const createShare = _ => dispatch({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}})
-    const showWs = _ => dispatch({type: 'SHOW_WS'})
+    const setShareEmail = (e) => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
+    const setShareAccess = (e) => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
+    const createShare = () => dispatch({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}})
+    const showWs = () => dispatch({type: 'SHOW_WS'})
     return(
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
             <div id="share-this-map-modal">

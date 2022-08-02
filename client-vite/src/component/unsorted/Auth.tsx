@@ -1,17 +1,17 @@
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { AUTH_PAGE_STATES } from '../../core/EditorFlow'
 import { Button, Link, TextField, Typography } from '@mui/material'
 
 export default function Auth() {
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
 
-    const authPageState = useSelector(state => state.authPageState)
-    const name = useSelector(state => state.name)
-    const email = useSelector(state => state.email)
-    const password = useSelector(state => state.password)
-    const passwordAgain = useSelector(state => state.passwordAgain)
-    const confirmationCode = useSelector(state => state.confirmationCode)
-    const authFeedbackMessage = useSelector(state => state.authFeedbackMessage)
+    const authPageState = useSelector((state: RootStateOrAny) => state.authPageState)
+    const name = useSelector((state: RootStateOrAny) => state.name)
+    const email = useSelector((state: RootStateOrAny) => state.email)
+    const password = useSelector((state: RootStateOrAny) => state.password)
+    const passwordAgain = useSelector((state: RootStateOrAny) => state.passwordAgain)
+    const confirmationCode = useSelector((state: RootStateOrAny) => state.confirmationCode)
+    const authFeedbackMessage = useSelector((state: RootStateOrAny) => state.authFeedbackMessage)
 
     const dispatch = useDispatch()
     const setName = e => dispatch({type: 'SET_NAME', payload: e.target.value})

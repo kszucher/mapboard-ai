@@ -1,12 +1,12 @@
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { useState } from 'react'
 import { ShouldDeleteUser } from './ShouldDeleteUser'
 
 export function Profile() {
-    const name = useSelector(state => state.name)
+    const name = useSelector((state: RootStateOrAny) => state.name)
     const dispatch = useDispatch()
-    const closeSettings = _ => dispatch({type: 'SHOW_WS'})
+    const closeSettings = () => dispatch({type: 'SHOW_WS'})
     const [childModalOpen, setChildModalOpen] = useState(false)
     return(
         <Modal

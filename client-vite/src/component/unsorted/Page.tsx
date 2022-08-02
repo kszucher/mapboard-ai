@@ -1,5 +1,5 @@
 import {useEffect} from 'react'
-import {useDispatch, useSelector} from "react-redux"
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import { getEquationDim, getTextDim, isChrome } from '../../core/Utils'
 import Auth from "./Auth"
 import Logo from "../side/Logo"
@@ -69,10 +69,10 @@ const Map = () => {
 }
 
 export function Page() {
-    const colorMode = useSelector(state => state.colorMode)
-    const pageState = useSelector(state => state.pageState)
-    const formatMode = useSelector(state => state.formatMode)
-    const frameEditorVisible = useSelector(state => state.frameEditorVisible)
+    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+    const pageState = useSelector((state: RootStateOrAny) => state.pageState)
+    const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
+    const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
     const dispatch = useDispatch()
     const {AUTH, EMPTY, DEMO} = PAGE_STATES;
 

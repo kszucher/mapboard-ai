@@ -1,12 +1,12 @@
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector, useDispatch, RootStateOrAny} from 'react-redux'
 import { Button, IconButton, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 
 export function FrameCarousel () {
-    const frameLen = useSelector(state => state.frameLen)
-    const frameSelected = useSelector(state => state.frameSelected)
-    const interactionDisabled = useSelector(state => state.interactionDisabled)
+    const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
+    const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
+    const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
     const dispatch = useDispatch()
     const openPrevFrame = _=> dispatch({type: 'OPEN_PREV_FRAME'})
     const openNextFrame = _ => dispatch({type: 'OPEN_NEXT_FRAME'})

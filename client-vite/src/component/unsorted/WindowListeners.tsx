@@ -1,5 +1,5 @@
 import {useEffect} from "react"
-import {useSelector, useDispatch} from "react-redux"
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { mapDispatch, recalc, redraw } from '../../core/MapFlow'
 import { arraysSame, copy, setEndOfContenteditable } from '../../core/Utils'
 import {mapFindNearest} from "../../map/MapFindNearest"
@@ -37,18 +37,18 @@ export function WindowListeners() {
     const {EDIT, VIEW} = MAP_RIGHTS
     const {DEMO, WS} = PAGE_STATES
 
-    const mapId = useSelector(state => state.mapId)
-    const mapSource = useSelector(state => state.mapSource)
-    const mapData = useSelector(state => state.mapData)
-    const frameLen = useSelector(state => state.frameLen)
-    const frameSelected = useSelector(state => state.frameSelected)
-    const mapRight = useSelector(state => state.mapRight)
-    const pageState = useSelector(state => state.pageState)
-    const landingData = useSelector(state => state.landingData)
-    const landingDataIndex = useSelector(state => state.landingDataIndex)
-    const node = useSelector(state => state.node)
-    const nodeTriggersMap = useSelector(state => state.nodeTriggersMap)
-    const colorMode = useSelector(state => state.colorMode)
+    const mapId = useSelector((state: RootStateOrAny) => state.mapId)
+    const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
+    const mapData = useSelector((state: RootStateOrAny) => state.mapData)
+    const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
+    const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
+    const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
+    const pageState = useSelector((state: RootStateOrAny) => state.pageState)
+    const landingData = useSelector((state: RootStateOrAny) => state.landingData)
+    const landingDataIndex = useSelector((state: RootStateOrAny) => state.landingDataIndex)
+    const node = useSelector((state: RootStateOrAny) => state.node)
+    const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
+    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
     const dispatch = useDispatch()
 
     const mutationFun = (lm, mutationsList) => {

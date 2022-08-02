@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { getColors } from '../../core/Colors'
 import { IconButton } from '@mui/material'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
@@ -23,12 +23,12 @@ const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 export function ControlsRight () {
-    const colorMode = useSelector(state => state.colorMode)
-    const formatMode = useSelector(state => state.formatMode)
-    const density = useSelector(state => state.node.density)
-    const alignment = useSelector(state => state.node.alignment)
-    const frameLen = useSelector(state => state.frameLen)
-    const frameEditorVisible = useSelector(state => state.frameEditorVisible)
+    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+    const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
+    const density = useSelector((state: RootStateOrAny) => state.node.density)
+    const alignment = useSelector((state: RootStateOrAny) => state.node.alignment)
+    const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
+    const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
     const {MAIN_COLOR} = getColors(colorMode)
     const dispatch = useDispatch()
     const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })

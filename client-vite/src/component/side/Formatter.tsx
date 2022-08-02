@@ -1,4 +1,4 @@
-import {useSelector, useDispatch} from "react-redux"
+import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { Button, ButtonGroup, IconButton, Typography } from '@mui/material'
 import { colorList, getColors } from '../../core/Colors'
 import { setClear } from '../../core/Utils'
@@ -19,7 +19,7 @@ const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
 
 const TargetedButtonGroup = ({KEYS, value, setValue, BUTTON_COLOR}) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-    const mapRight = useSelector(state => state.mapRight)
+    const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
     return (
         <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
@@ -41,17 +41,17 @@ export function Formatter () {
     const width =  o * colorList[0].length
     const height = o * colorList.length
 
-    const colorMode = useSelector(state => state.colorMode)
-    const formatMode = useSelector(state => state.formatMode)
-    const lineColor = useSelector(state => state.node.lineColor)
-    const borderColor = useSelector(state => state.node.borderColor)
-    const fillColor = useSelector(state => state.node.fillColor)
-    const textColor = useSelector(state => state.node.textColor)
-    const selection = useSelector(state => state.node.selection)
-    const lineWidth = useSelector(state => state.node.lineWidth)
-    const lineType = useSelector(state => state.node.lineType)
-    const borderWidth = useSelector(state => state.node.borderWidth)
-    const textFontSize = useSelector(state => state.node.textFontSize)
+    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+    const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
+    const lineColor = useSelector((state: RootStateOrAny) => state.node.lineColor)
+    const borderColor = useSelector((state: RootStateOrAny) => state.node.borderColor)
+    const fillColor = useSelector((state: RootStateOrAny) => state.node.fillColor)
+    const textColor = useSelector((state: RootStateOrAny) => state.node.textColor)
+    const selection = useSelector((state: RootStateOrAny) => state.node.selection)
+    const lineWidth = useSelector((state: RootStateOrAny) => state.node.lineWidth)
+    const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
+    const borderWidth = useSelector((state: RootStateOrAny) => state.node.borderWidth)
+    const textFontSize = useSelector((state: RootStateOrAny) => state.node.textFontSize)
 
     const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
