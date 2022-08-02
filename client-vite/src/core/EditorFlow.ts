@@ -2,6 +2,10 @@ import {applyMiddleware, createStore} from "redux";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 
+export enum FormatMode {
+    text, border, fill, line
+}
+
 export const AUTH_PAGE_STATES = {
     SIGN_IN: 'SIGN_IN',
     SIGN_UP_STEP_1: 'SIGN_UP_STEP_1',
@@ -45,7 +49,7 @@ const editorState = {
 
     colorMode: 'dark',
 
-    formatMode: '',
+    formatMode: FormatMode.text,
 
     undoDisabled: true,
     redoDisabled: true,
@@ -80,6 +84,7 @@ const editorState = {
     },
     nodeTriggersMap: false,
 
+    formatterVisible: false,
     frameEditorVisible: false,
 
     shareEmail: '',
@@ -131,6 +136,7 @@ const resolveActions = (state, action) => {
         case 'SET_COLOR_MODE':              return { colorMode: payload }
 
         case 'SET_FORMAT_MODE':             return { formatMode: payload }
+        case 'SET_FORMATTER_VISIBLE':       return { formatterVisible: payload }
 
         case 'SET_UNDO_DISABLED':           return { undoDisabled: payload }
         case 'SET_REDO_DISABLED':           return { redoDisabled: payload }

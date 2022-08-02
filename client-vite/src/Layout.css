@@ -60,6 +60,7 @@ body {
 :root {
     --page-background-color: #000;
     --map-background-color: #000;
+    --main-color: #000;
 }
 
 body {

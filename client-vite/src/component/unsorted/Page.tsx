@@ -11,7 +11,7 @@ import { ShareThisMap } from "../modal/ShareThisMap"
 import { Shares } from "../modal/Shares"
 import { WindowListeners } from "./WindowListeners"
 import { ControlsRight } from '../side/ControlsRight'
-import { createTheme, ThemeProvider } from '@mui/material'
+import {createTheme, PaletteMode, ThemeProvider} from '@mui/material'
 import { UndoRedo } from '../side/UndoRedo'
 import { ProfileButton } from '../side/ProfileButton'
 import { ControlsLeft } from '../side/ControlsLeft'
@@ -22,9 +22,9 @@ import { ShouldUpdateTask } from '../modal/ShouldUpdateTask'
 import { Settings } from '../modal/Settings'
 import { Profile } from '../modal/Profile'
 
-const getMuiTheme = colorMode  => createTheme({
+const getMuiTheme = (colorMode: string)  => createTheme({
     palette: {
-        mode: colorMode,
+        mode: colorMode as PaletteMode,
         primary: {
             main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
         },
@@ -71,15 +71,15 @@ const Map = () => {
 export function Page() {
     const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
     const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-    const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
+    const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
     const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
     const dispatch = useDispatch()
     const {AUTH, EMPTY, DEMO} = PAGE_STATES;
 
     useEffect(()=> {
-        getTextDim('Test')
+        getTextDim('Test', 12)
         getEquationDim('\\[Test\\]')
-        const cred = JSON.parse(localStorage.getItem('cred'))
+        const cred = JSON.parse(localStorage.getItem('cred') as string)
         if (cred !== null) {
             // TODO type check
             dispatch({type: 'SIGN_IN', payload: { cred }})
@@ -106,7 +106,7 @@ export function Page() {
                                 <ControlsRight/>
                             </>
                         }
-                        {formatMode!=='' && <Formatter/>}
+                        {formatterVisible && <Formatter/>}
                         {frameEditorVisible && <FrameCarousel/>}
                     </>
                 }

@@ -9,7 +9,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    background-color: var(--map-background-color);
+    background: var(--map-background-color);
     padding: 20px;
     border: 1px solid var(--map-background-color);
     border-radius: 16px;

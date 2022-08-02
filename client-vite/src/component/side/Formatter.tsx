@@ -1,23 +1,17 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
-import { Button, ButtonGroup, IconButton, Typography } from '@mui/material'
+import { Button, ButtonGroup, IconButton } from '@mui/material'
 import { colorList, getColors } from '../../core/Colors'
 import { setClear } from '../../core/Utils'
-import { MAP_RIGHTS } from '../../core/EditorFlow'
+import {FormatMode, MAP_RIGHTS} from '../../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
 
-const SpanHighlight = ({MAIN_COLOR, formatMode}) => (
-    <span
-        style={{
-            position: 'fixed',
-            right: 225 - 40* ({ text: 0, border: 1, fill: 2, line: 3 }[formatMode]),
-            top: 48*2+2,
-            width: 40,
-            height: 2,
-            backgroundColor: MAIN_COLOR,
-        }}/>
-)
-
-const TargetedButtonGroup = ({KEYS, value, setValue, BUTTON_COLOR}) => {
+const TargetedButtonGroup = (
+    {KEYS, value, setValue, BUTTON_COLOR}: {
+        KEYS: string[],
+        value: string,
+        setValue: Function,
+        BUTTON_COLOR: string,
+    }) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
     const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
@@ -56,12 +50,13 @@ export function Formatter () {
     const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
-    const setNodeParam = obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
-    const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'line'})
-    const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'border'})
-    const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'fill'})
-    const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
-    const closeFormatter = _ => dispatch({type: 'SET_FORMAT_MODE', payload: ''})
+    const setNodeParam =
+        obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
+    const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.text})
+    const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.fill})
+    const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.border})
+    const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.line})
+    const closeFormatter = _ => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
 
     return (
         <div id="formatter">
@@ -78,10 +73,7 @@ export function Formatter () {
                 <IconButton color='secondary' onClick={setFormatModeLine}>
                     <LineIcon MAIN_COLOR={MAIN_COLOR}/>
                 </IconButton>
-                {
-                    formatMode !== '' &&
-                    <SpanHighlight MAIN_COLOR={MAIN_COLOR} formatMode={formatMode} />
-                }
+                <span className='formatter-highlight' style={{right: 225 - 40* formatMode}}/>
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <div style={{ width, height }}>
@@ -121,7 +113,7 @@ export function Formatter () {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
                 {
-                    formatMode === 'line' &&
+                    formatMode === FormatMode.line &&
                     <>
                         <TargetedButtonGroup
                             KEYS={['w1', 'w2', 'w3']}
@@ -138,7 +130,7 @@ export function Formatter () {
                     </>
                 }
                 {
-                    formatMode === 'border' &&
+                    formatMode === FormatMode.border &&
                     <TargetedButtonGroup
                         KEYS={['w1', 'w2', 'w3']}
                         value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
@@ -147,15 +139,13 @@ export function Formatter () {
                     />
                 }
                 {
-                    formatMode === 'text' &&
-                    <>
-                        <TargetedButtonGroup
-                            KEYS={['h1', 'h2', 'h3', 'h4', 't']}
-                            value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
-                            setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
-                            BUTTON_COLOR={BUTTON_COLOR}
-                        />
-                    </>
+                    formatMode === FormatMode.text &&
+                    <TargetedButtonGroup
+                        KEYS={['h1', 'h2', 'h3', 'h4', 't']}
+                        value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
+                        setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
+                        BUTTON_COLOR={BUTTON_COLOR}
+                    />
                 }
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>

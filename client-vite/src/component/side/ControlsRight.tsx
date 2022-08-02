@@ -24,7 +24,7 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 export function ControlsRight () {
     const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-    const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
+    const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
     const density = useSelector((state: RootStateOrAny) => state.node.density)
     const alignment = useSelector((state: RootStateOrAny) => state.node.alignment)
     const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
@@ -36,8 +36,8 @@ export function ControlsRight () {
             dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
     const changeDensity = () => setNodeParam({density: density === 'small' ? 'large' : 'small'})
     const changeAlignment = () => setNodeParam({alignment: alignment === 'centered' ? 'adaptive' : 'centered'})
-    const setFormatModeText = () => dispatch({type: 'SET_FORMAT_MODE', payload: 'text'})
-    const closeFormatter = () => dispatch({type: 'SET_FORMAT_MODE', payload: ''})
+    const openFormatter = () => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: true})
+    const closeFormatter = () => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
     const showWsCreateMapInMap = () => dispatch({type: 'SHOW_WS_CREATE_MAP_IN_MAP'})
     const openFrameEditor =  () => dispatch({type: 'OPEN_FRAME_EDITOR'})
     const importFrame = () => dispatch({type: 'IMPORT_FRAME'})
@@ -50,7 +50,7 @@ export function ControlsRight () {
     return (
         <>
             <div className="controls-right-section" style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
-                <IconButton color='secondary' onClick={formatMode !== '' ? closeFormatter : setFormatModeText}>
+                <IconButton color='secondary' onClick={formatterVisible === true ? closeFormatter : openFormatter}>
                     <PaletteIcon/>
                 </IconButton>
             </div>
