@@ -4,8 +4,8 @@ import { Button, Modal, Typography } from '@mui/material'
 export function ShouldCreateMapInMap() {
     const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
     const dispatch = useDispatch()
-    const showWs = _ => dispatch({type: 'SHOW_WS'})
-    const createMapInMap = _ => dispatch({type: 'CREATE_MAP_IN_MAP'})
+    const showWs = () => dispatch({type: 'SHOW_WS'})
+    const createMapInMap = () => dispatch({type: 'CREATE_MAP_IN_MAP'})
     return(
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
             {<div id="create-map-in-map">

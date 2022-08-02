@@ -4,8 +4,8 @@ import { Button, Modal, Typography } from '@mui/material'
 export function ShouldUpdateTask() {
     const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
     const dispatch = useDispatch()
-    const showWs = _ => dispatch({type: 'SHOW_WS'})
-    const toggleTask = _=> dispatch({type: 'TOGGLE_TASK'})
+    const showWs = () => dispatch({type: 'SHOW_WS'})
+    const toggleTask = () => dispatch({type: 'TOGGLE_TASK'})
     return(
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
             {<div id="update-task">

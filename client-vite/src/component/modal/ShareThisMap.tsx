@@ -8,8 +8,8 @@ export function ShareThisMap() {
     const shareAccess = useSelector((state: RootStateOrAny) => state.shareAccess)
     const shareFeedbackMessage = useSelector((state: RootStateOrAny) => state.shareFeedbackMessage)
     const dispatch = useDispatch()
-    const setShareEmail = (e) => dispatch({type: 'SET_SHARE_EMAIL', payload: e.target.value})
-    const setShareAccess = (e) => dispatch({type: 'SET_SHARE_ACCESS', payload: e.target.value})
+    const setShareEmail = (value: string) => dispatch({type: 'SET_SHARE_EMAIL', payload: value})
+    const setShareAccess = (value: string) => dispatch({type: 'SET_SHARE_ACCESS', payload: value})
     const createShare = () => dispatch({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}})
     const showWs = () => dispatch({type: 'SHOW_WS'})
     return(
@@ -18,14 +18,28 @@ export function ShareThisMap() {
                 <Typography component="h1" variant="h5" color="primary">
                     {'Share This Map'}
                 </Typography>
-                <TextField variant="outlined" fullWidth label="Share email" value={shareEmail} onChange={setShareEmail}/>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    label="Share email"
+                    value={shareEmail}
+                    onChange={(e) => setShareEmail(e.target.value)}
+                />
                 <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
                     <FormLabel component="legend">
                         {'Access'}
                     </FormLabel>
-                    <RadioGroup aria-label="my-aria-label" name="my-name" value={shareAccess} onChange={setShareAccess} row={true}>
-                        {[VIEW, EDIT].map((name, index) =>
-                            <FormControlLabel value={name} control={<Radio />} label={name} key={index}/>)}
+                    <RadioGroup
+                        aria-label="my-aria-label"
+                        name="my-name"
+                        value={shareAccess}
+                        onChange={(e) => setShareAccess(e.target.value)}
+                        row={true}
+                    >
+                        {
+                            [VIEW, EDIT].map((name, index) =>
+                                <FormControlLabel value={name} control={<Radio />} label={name} key={index}/>)
+                        }
                     </RadioGroup>
                 </div>
                 {shareFeedbackMessage !== '' &&
