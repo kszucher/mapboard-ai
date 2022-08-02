@@ -5,6 +5,18 @@ import { setClear } from '../../core/Utils'
 import {FormatMode, MAP_RIGHTS} from '../../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
 
+enum TextTypes {
+    h1 = 36,
+    h2 = 24,
+    h3 = 18,
+    h4 = 16,
+    t = 14,
+    // [36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}
+    // TODO zeigarnik: try to use it for all 3 parameters
+    // https://www.typescriptlang.org/docs/handbook/enums.html
+    // https://bobbyhadz.com/blog/typescript-get-enum-key-by-value
+}
+
 const TargetedButtonGroup = (
     {KEYS, value, setValue}: {
         KEYS: string[],
@@ -35,15 +47,15 @@ export function Formatter () {
     const height = o * colorList.length
 
     const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
-    const lineColor = useSelector((state: RootStateOrAny) => state.node.lineColor)
-    const borderColor = useSelector((state: RootStateOrAny) => state.node.borderColor)
-    const fillColor = useSelector((state: RootStateOrAny) => state.node.fillColor)
-    const textColor = useSelector((state: RootStateOrAny) => state.node.textColor)
     const selection = useSelector((state: RootStateOrAny) => state.node.selection)
+    const textColor = useSelector((state: RootStateOrAny) => state.node.textColor)
+    const textFontSize = useSelector((state: RootStateOrAny) => state.node.textFontSize)
+    const borderColor = useSelector((state: RootStateOrAny) => state.node.borderColor)
+    const borderWidth = useSelector((state: RootStateOrAny) => state.node.borderWidth)
+    const fillColor = useSelector((state: RootStateOrAny) => state.node.fillColor)
+    const lineColor = useSelector((state: RootStateOrAny) => state.node.lineColor)
     const lineWidth = useSelector((state: RootStateOrAny) => state.node.lineWidth)
     const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
-    const borderWidth = useSelector((state: RootStateOrAny) => state.node.borderWidth)
-    const textFontSize = useSelector((state: RootStateOrAny) => state.node.textFontSize)
 
     const dispatch = useDispatch()
     const setNodeParam =
@@ -110,6 +122,22 @@ export function Formatter () {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
                 {
+                    formatMode === FormatMode.text &&
+                    <TargetedButtonGroup
+                        KEYS={['h1', 'h2', 'h3', 'h4', 't']}
+                        value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
+                        setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
+                    />
+                }
+                {
+                    formatMode === FormatMode.border &&
+                    <TargetedButtonGroup
+                        KEYS={['w1', 'w2', 'w3']}
+                        value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
+                        setValue={value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
+                    />
+                }
+                {
                     formatMode === FormatMode.line &&
                     <>
                         <TargetedButtonGroup
@@ -123,22 +151,6 @@ export function Formatter () {
                             setValue={value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})}
                         />
                     </>
-                }
-                {
-                    formatMode === FormatMode.border &&
-                    <TargetedButtonGroup
-                        KEYS={['w1', 'w2', 'w3']}
-                        value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
-                        setValue={value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
-                    />
-                }
-                {
-                    formatMode === FormatMode.text &&
-                    <TargetedButtonGroup
-                        KEYS={['h1', 'h2', 'h3', 'h4', 't']}
-                        value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
-                        setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
-                    />
                 }
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
