@@ -58,9 +58,10 @@ body {
 }
 
 :root {
+    --main-color: #000;
     --page-background-color: #000;
     --map-background-color: #000;
-    --main-color: #000;
+    --button-color: #000;
 }
 
 body {

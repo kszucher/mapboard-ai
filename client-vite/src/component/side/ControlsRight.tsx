@@ -1,5 +1,4 @@
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
-import { getColors } from '../../core/Colors'
 import { IconButton } from '@mui/material'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium'
@@ -23,13 +22,11 @@ const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 export function ControlsRight () {
-    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
     const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
     const density = useSelector((state: RootStateOrAny) => state.node.density)
     const alignment = useSelector((state: RootStateOrAny) => state.node.alignment)
     const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
     const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
-    const {MAIN_COLOR} = getColors(colorMode)
     const dispatch = useDispatch()
     const setNodeParam =
         (obj: { density?: string; alignment?: string }) =>
@@ -59,10 +56,10 @@ export function ControlsRight () {
                     <CalendarViewMonthIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={showCreateTask}>
-                    <TaskIcon MAIN_COLOR={MAIN_COLOR}/>
+                    <TaskIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={showWsCreateMapInMap}>
-                    <CreateMapInMapIcon MAIN_COLOR={MAIN_COLOR}/>
+                    <CreateMapInMapIcon/>
                 </IconButton>
             </div>
             <div className="controls-right-section" style={{top: topOffs3, borderRadius: '0 0 0 0' }}>

@@ -561,9 +561,10 @@ export function WindowListeners() {
             }
         }
         const root = document.querySelector(':root')
+        root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
         root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
         root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
-        root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
+        root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
     }, [colorMode])
 
     return (

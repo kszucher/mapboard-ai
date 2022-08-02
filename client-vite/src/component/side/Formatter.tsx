@@ -1,16 +1,15 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { Button, ButtonGroup, IconButton } from '@mui/material'
-import { colorList, getColors } from '../../core/Colors'
+import { colorList } from '../../core/Colors'
 import { setClear } from '../../core/Utils'
 import {FormatMode, MAP_RIGHTS} from '../../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
 
 const TargetedButtonGroup = (
-    {KEYS, value, setValue, BUTTON_COLOR}: {
+    {KEYS, value, setValue}: {
         KEYS: string[],
         value: string,
         setValue: Function,
-        BUTTON_COLOR: string,
     }) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
     const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
@@ -19,7 +18,7 @@ const TargetedButtonGroup = (
         <ButtonGroup className="targeted-button-group" disabled={disabled} variant="text" color="primary">
             {KEYS.map((name, idx) =>
                 <Button
-                    style={{ backgroundColor: value === KEYS[idx] ? BUTTON_COLOR : '' }}
+                    style={{ backgroundColor: value === KEYS[idx] ? 'var(--button-color)' : '' }}
                     onClick={ _ => setValue(KEYS[idx]) }
                     key={idx}>
                     {name}
@@ -35,7 +34,6 @@ export function Formatter () {
     const width =  o * colorList[0].length
     const height = o * colorList.length
 
-    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
     const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
     const lineColor = useSelector((state: RootStateOrAny) => state.node.lineColor)
     const borderColor = useSelector((state: RootStateOrAny) => state.node.borderColor)
@@ -46,8 +44,6 @@ export function Formatter () {
     const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
     const borderWidth = useSelector((state: RootStateOrAny) => state.node.borderWidth)
     const textFontSize = useSelector((state: RootStateOrAny) => state.node.textFontSize)
-
-    const { BUTTON_COLOR, MAIN_COLOR } = getColors(colorMode)
 
     const dispatch = useDispatch()
     const setNodeParam =
@@ -62,16 +58,16 @@ export function Formatter () {
         <div id="formatter">
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <IconButton color='secondary' onClick={setFormatModeText}>
-                    <TextIcon MAIN_COLOR={MAIN_COLOR}/>
+                    <TextIcon/>
                 </IconButton>
                 <IconButton color='secondary' onClick={setFormatModeBorder}>
-                    <BorderIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
+                    <BorderIcon selection={selection}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={setFormatModeFill}>
-                    <FillIcon MAIN_COLOR={MAIN_COLOR} selection={selection}/>
+                    <FillIcon selection={selection}/>
                 </IconButton>
                 <IconButton color='secondary' onClick={setFormatModeLine}>
-                    <LineIcon MAIN_COLOR={MAIN_COLOR}/>
+                    <LineIcon/>
                 </IconButton>
                 <span className='formatter-highlight' style={{right: 225 - 40* formatMode}}/>
             </div>
@@ -119,13 +115,11 @@ export function Formatter () {
                             KEYS={['w1', 'w2', 'w3']}
                             value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[lineWidth]}
                             setValue={value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
-                            BUTTON_COLOR={BUTTON_COLOR}
                         />
                         <TargetedButtonGroup
                             KEYS={['bezier', 'edge']}
                             value={{['b']: 'bezier', ['e']: 'edge'}[lineType]}
                             setValue={value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})}
-                            BUTTON_COLOR={BUTTON_COLOR}
                         />
                     </>
                 }
@@ -135,7 +129,6 @@ export function Formatter () {
                         KEYS={['w1', 'w2', 'w3']}
                         value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
                         setValue={value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
-                        BUTTON_COLOR={BUTTON_COLOR}
                     />
                 }
                 {
@@ -144,7 +137,6 @@ export function Formatter () {
                         KEYS={['h1', 'h2', 'h3', 'h4', 't']}
                         value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
                         setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
-                        BUTTON_COLOR={BUTTON_COLOR}
                     />
                 }
             </div>

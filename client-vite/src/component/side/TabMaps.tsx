@@ -1,11 +1,8 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Tab, Tabs } from '@mui/material'
-import { getColors } from '../../core/Colors'
 
 export default function TabMaps() {
-    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
     const tabShrink = useSelector((state: RootStateOrAny) => state.tabShrink)
-    const {MAIN_COLOR} = getColors(colorMode)
     const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
     const tabMapIdList = useSelector((state: RootStateOrAny) => state.tabMapIdList)
     const tabMapNameList = useSelector((state: RootStateOrAny) => state.tabMapNameList)
@@ -23,7 +20,7 @@ export default function TabMaps() {
             }}>
             <Tabs
                 sx={{
-                    '.MuiTabs-indicator': { backgroundColor: MAIN_COLOR },
+                    '.MuiTabs-indicator': { backgroundColor: 'var(--main-color)' },
                     '.MuiButtonBase-root': { minWidth: tabShrink ? 0 : 90 }
                 }}
                 orientation={'vertical'}
