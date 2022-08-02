@@ -61,6 +61,13 @@ export function Formatter () {
         if (formatMode === FormatMode.line) return lineColor
     }
 
+    const resolveFormatClear = () => {
+        if (formatMode === FormatMode.text) setNodeParam(setClear(['textColor', 'textFontSize']))
+        if (formatMode === FormatMode.border) setNodeParam(setClear(['borderWidth', 'borderColor']))
+        if (formatMode === FormatMode.fill) setNodeParam(setClear(['fillColor']))
+        if (formatMode === FormatMode.line) setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
+    }
+    
     return (
         <div id="formatter">
             <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -136,14 +143,7 @@ export function Formatter () {
             </div>
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
                 <Button color="primary" variant='outlined'
-                        onClick={
-                            {
-                                line: _ => setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor'])),
-                                text: _ => setNodeParam(setClear(['textColor', 'textFontSize'])),
-                                fill: _ => setNodeParam(setClear(['fillColor'])),
-                                border: _ => setNodeParam(setClear(['borderWidth', 'borderColor']))
-                            }[formatMode]
-                        }>
+                        onClick={resolveFormatClear}>
                     {'RESET'}
                 </Button>
             </div>
