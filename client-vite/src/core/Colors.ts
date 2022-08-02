@@ -66,7 +66,7 @@ const COLOR_DARK = {
     TASK_LINE: '#333333',
 }
 
-export const getColors = colorMode => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
+export const getColors = (colorMode: string) => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
 
 export const colorList = [
     ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],

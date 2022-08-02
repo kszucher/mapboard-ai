@@ -9,10 +9,10 @@ export function ControlsLeft () {
     const tabMapNameList = useSelector((state: RootStateOrAny) => state.tabMapNameList)
     const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const createMapInTab = _ => dispatch({type: 'CREATE_MAP_IN_TAB'})
-    const moveUpMapInTab = _ => dispatch({type: 'MOVE_UP_MAP_IN_TAB'})
-    const moveDownMapInTab = _ => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
-    const removeMapInTab = _ => dispatch({type: 'REMOVE_MAP_IN_TAB'})
+    const createMapInTab = () => dispatch({type: 'CREATE_MAP_IN_TAB'})
+    const moveUpMapInTab = () => dispatch({type: 'MOVE_UP_MAP_IN_TAB'})
+    const moveDownMapInTab = () => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
+    const removeMapInTab = () => dispatch({type: 'REMOVE_MAP_IN_TAB'})
     return (
         <div id="controls-left" style={{top: 48*2 + 48*tabMapNameList.length + 48}}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
