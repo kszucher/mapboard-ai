@@ -1,3 +1,7 @@
+export enum TextTypes { h1 = 36, h2 = 24, h3 = 18, h4 = 16, t = 14 }
+export enum WidthTypes { w1 = 1, w2, w3}
+export enum LineTypes { bezier, edge }
+
 export let mapProps = {
     saveAlways: {
         path: [],
@@ -55,7 +59,7 @@ export let nodeProps = {
         selection: 's',
         lastSelectedChild: -1, // -1 means not selected ever
         lineWidth: 1,
-        lineType: 0,
+        lineType: LineTypes.bezier,
         lineColor: '#bbbbbb',
         sBorderWidth: 1,
         fBorderWidth: 1,

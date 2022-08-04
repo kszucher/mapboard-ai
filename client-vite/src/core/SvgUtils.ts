@@ -1,3 +1,5 @@
+import {LineTypes} from "./DefaultProps";
+
 const getCoordsInLine = (a, b, dt) => {
     const [x0, y0] = a
     const [x1, y1] = b
@@ -18,13 +20,13 @@ const getEdgePath = (c, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]) => {
 
 export const getLinePath = (lineType, sx, sy, dx, dy, ex, ey, dir) => {
     let path
-    if (lineType === 0) {
+    if (lineType === LineTypes.bezier) {
         const c1x = sx + dir * dx / 4
         const c1y = sy
         const c2x = sx + dir * dx / 4
         const c2y = sy + dy
         path = getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
-    } else if (lineType === 1) {
+    } else if (lineType === LineTypes.edge) {
         const m1x = sx + dir * dx / 2
         const m1y = sy
         const m2x = sx + dir * dx / 2

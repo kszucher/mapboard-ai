@@ -1,13 +1,10 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
-import { Button, ButtonGroup, IconButton } from '@mui/material'
-import { colorList } from '../../core/Colors'
-import { setClear } from '../../core/Utils'
+import {Button, ButtonGroup, IconButton} from '@mui/material'
+import {colorList} from '../../core/Colors'
+import {setClear} from '../../core/Utils'
 import {FormatMode, MAP_RIGHTS} from '../../core/EditorFlow'
-import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
-
-export enum TextTypes { h1 = 36, h2 = 24, h3 = 18, h4 = 16, t = 14 }
-export enum WidthTypes { w1 = 1, w2, w3}
-export enum LineTypes { bezier, edge }
+import {BorderIcon, FillIcon, LineIcon, TextIcon} from '../unsorted/Icons'
+import {LineTypes, TextTypes, WidthTypes} from "../../core/DefaultProps";
 
 const TargetedButtonGroup = ({KEYS, value, setValue}: { KEYS: string[], value: string, setValue: Function }) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
