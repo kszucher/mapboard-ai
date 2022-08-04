@@ -10,8 +10,8 @@ export function UndoRedo () {
     const undoDisabled = useSelector((state: RootStateOrAny) => state.undoDisabled)
     const redoDisabled = useSelector((state: RootStateOrAny) => state.redoDisabled)
     const dispatch = useDispatch()
-    const undo = _ => dispatch({ type: 'UNDO'})
-    const redo = _ => dispatch({ type: 'REDO'})
+    const undo = () => dispatch({ type: 'UNDO'})
+    const redo = () => dispatch({ type: 'REDO'})
     return (
         <div id="undo-redo">
             <div style={{ display: 'flex',  }}>
