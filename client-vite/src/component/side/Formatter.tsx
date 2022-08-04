@@ -5,24 +5,11 @@ import { setClear } from '../../core/Utils'
 import {FormatMode, MAP_RIGHTS} from '../../core/EditorFlow'
 import { BorderIcon, FillIcon, LineIcon, TextIcon } from '../unsorted/Icons'
 
-enum TextTypes {
-    h1 = 36,
-    h2 = 24,
-    h3 = 18,
-    h4 = 16,
-    t = 14,
-    // [36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}
-    // TODO zeigarnik: try to use it for all 3 parameters
-    // https://www.typescriptlang.org/docs/handbook/enums.html
-    // https://bobbyhadz.com/blog/typescript-get-enum-key-by-value
-}
+export enum TextTypes { h1 = 36, h2 = 24, h3 = 18, h4 = 16, t = 14 }
+export enum WidthTypes { w1 = 1, w2, w3}
+export enum LineTypes { bezier, edge }
 
-const TargetedButtonGroup = (
-    {KEYS, value, setValue}: {
-        KEYS: string[],
-        value: string,
-        setValue: Function,
-    }) => {
+const TargetedButtonGroup = ({KEYS, value, setValue}: { KEYS: string[], value: string, setValue: Function }) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
     const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
     const disabled = [UNAUTHORIZED, VIEW].includes(mapRight)
@@ -31,7 +18,7 @@ const TargetedButtonGroup = (
             {KEYS.map((name, idx) =>
                 <Button
                     style={{ backgroundColor: value === KEYS[idx] ? 'var(--button-color)' : '' }}
-                    onClick={ _ => setValue(KEYS[idx]) }
+                    onClick={() => setValue(KEYS[idx])}
                     key={idx}>
                     {name}
                 </Button>
@@ -58,13 +45,12 @@ export function Formatter () {
     const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
 
     const dispatch = useDispatch()
-    const setNodeParam =
-        obj => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
-    const setFormatModeText = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.text})
-    const setFormatModeFill = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.fill})
-    const setFormatModeBorder = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.border})
-    const setFormatModeLine = _ => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.line})
-    const closeFormatter = _ => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
+    const setNodeParam = (obj: object) => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
+    const setFormatModeText = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.text})
+    const setFormatModeFill = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.fill})
+    const setFormatModeBorder = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.border})
+    const setFormatModeLine = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.line})
+    const closeFormatter = () => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
 
     const resolveFormatColor = () => {
         if (formatMode === FormatMode.text) return textColor
@@ -124,31 +110,31 @@ export function Formatter () {
                 {
                     formatMode === FormatMode.text &&
                     <TargetedButtonGroup
-                        KEYS={['h1', 'h2', 'h3', 'h4', 't']}
-                        value={{[36]: 'h1', [24]: 'h2', [18]: 'h3', [16]: 'h4', [14]: 't'}[textFontSize]}
-                        setValue={value => setNodeParam({textFontSize: {['h1']: 36, ['h2']: 24, ['h3']: 18, ['h4']: 16, ['t']: 14}[value]})}
+                        KEYS={Object.keys(TextTypes).filter(x => !(parseInt(x) >= 0))}
+                        value={TextTypes[textFontSize]}
+                        setValue={(value: number) => setNodeParam({textFontSize: TextTypes[value]})}
                     />
                 }
                 {
                     formatMode === FormatMode.border &&
                     <TargetedButtonGroup
-                        KEYS={['w1', 'w2', 'w3']}
-                        value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[borderWidth]}
-                        setValue={value => setNodeParam({borderWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
+                        KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
+                        value={WidthTypes[borderWidth]}
+                        setValue={(value: number) => setNodeParam({borderWidth: WidthTypes[value]})}
                     />
                 }
                 {
                     formatMode === FormatMode.line &&
                     <>
                         <TargetedButtonGroup
-                            KEYS={['w1', 'w2', 'w3']}
-                            value={{[1]: 'w1', [2]: 'w2', [3]: 'w3'}[lineWidth]}
-                            setValue={value => setNodeParam({lineWidth: {['w1']: 1, ['w2']: 2, ['w3']: 3}[value]})}
+                            KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
+                            value={WidthTypes[lineWidth]}
+                            setValue={(value: number) => setNodeParam({lineWidth: WidthTypes[value]})}
                         />
                         <TargetedButtonGroup
-                            KEYS={['bezier', 'edge']}
-                            value={{['b']: 'bezier', ['e']: 'edge'}[lineType]}
-                            setValue={value => setNodeParam({lineType: {['bezier']: 'b', ['edge']: 'e'}[value]})}
+                            KEYS={Object.keys(LineTypes).filter(x => !(parseInt(x) >= 0))}
+                            value={LineTypes[lineType]}
+                            setValue={(value: number) => setNodeParam({lineType: LineTypes[value]})}
                         />
                     </>
                 }

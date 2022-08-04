@@ -55,7 +55,7 @@ export let nodeProps = {
         selection: 's',
         lastSelectedChild: -1, // -1 means not selected ever
         lineWidth: 1,
-        lineType: 'b',
+        lineType: 0,
         lineColor: '#bbbbbb',
         sBorderWidth: 1,
         fBorderWidth: 1,
