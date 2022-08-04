@@ -42,12 +42,24 @@ export function Formatter () {
     const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
 
     const dispatch = useDispatch()
-    const setNodeParam = (obj: object) => dispatch({type: 'SET_NODE_PARAMS', payload: { node: obj, nodeTriggersMap: true } })
+    const setNodeParam = (obj: object) => {
+
+     console.log(obj)
+        dispatch({type: 'SET_NODE_PARAMS', payload: {node: obj, nodeTriggersMap: true}})
+    }
+
     const setFormatModeText = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.text})
     const setFormatModeFill = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.fill})
     const setFormatModeBorder = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.border})
     const setFormatModeLine = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.line})
     const closeFormatter = () => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
+
+    const setNodeColor = (value: string) => {
+        if (formatMode === FormatMode.text) setNodeParam({textColor: value})
+        if (formatMode === FormatMode.border) setNodeParam({borderColor: value})
+        if (formatMode === FormatMode.fill) setNodeParam({fillColor: value})
+        if (formatMode === FormatMode.line) setNodeParam({lineColor: value})
+    }
 
     const resolveFormatColor = () => {
         if (formatMode === FormatMode.text) return textColor
@@ -93,7 +105,7 @@ export function Formatter () {
                                             fill={jEl}
                                             stroke={colorList[i][j] === resolveFormatColor() ? '#9040b8' : 'none'}
                                             strokeWidth={"2%"}
-                                            onClick={_ => setNodeParam({[formatMode + 'Color'] : colorList[i][j]})}
+                                            onClick={() => setNodeColor(colorList[i][j])}
                                         />
                                     )
                                 )
