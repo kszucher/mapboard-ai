@@ -5,7 +5,7 @@ import ProfileMenu from './ProfileMenu'
 
 export function ProfileButton () {
     const dispatch = useDispatch()
-    const openMoreMenu = (currentTarget: EventTarget & HTMLButtonElement) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
+    const openMoreMenu = (currentTarget: EventTarget) => dispatch({type: 'OPEN_MORE_MENU', payload: {currentTarget}})
     return (
         <div id="profile-button">
             <IconButton
