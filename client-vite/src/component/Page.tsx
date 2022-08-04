@@ -1,26 +1,26 @@
 import {useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import { getEquationDim, getTextDim, isChrome } from '../../core/Utils'
+import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
-import Logo from "../side/Logo"
-import TabMaps from "../side/TabMaps"
-import Breadcrumbs from "../side/BreadcrumbMaps"
-import { Formatter } from "../side/Formatter"
-import { FrameCarousel } from "../side/FrameCarousel"
-import { ShareThisMap } from "../modal/ShareThisMap"
-import { Shares } from "../modal/Shares"
+import Logo from "./side/Logo"
+import TabMaps from "./side/TabMaps"
+import Breadcrumbs from "./side/BreadcrumbMaps"
+import { Formatter } from "./side/Formatter"
+import { FrameCarousel } from "./side/FrameCarousel"
+import { ShareThisMap } from "./modal/ShareThisMap"
+import { Shares } from "./modal/Shares"
 import { WindowListeners } from "./WindowListeners"
-import { ControlsRight } from '../side/ControlsRight'
+import { ControlsRight } from './side/ControlsRight'
 import {createTheme, PaletteMode, ThemeProvider} from '@mui/material'
-import { UndoRedo } from '../side/UndoRedo'
-import { ProfileButton } from '../side/ProfileButton'
-import { ControlsLeft } from '../side/ControlsLeft'
-import { ShouldCreateMapInMap } from '../modal/ShouldCreateMapInMap'
-import { CreateTable } from '../modal/CreateTable'
-import {PAGE_STATES} from "../../core/EditorFlow"
-import { ShouldUpdateTask } from '../modal/ShouldUpdateTask'
-import { Settings } from '../modal/Settings'
-import { Profile } from '../modal/Profile'
+import { UndoRedo } from './side/UndoRedo'
+import { ProfileButton } from './side/ProfileButton'
+import { ControlsLeft } from './side/ControlsLeft'
+import { ShouldCreateMapInMap } from './modal/ShouldCreateMapInMap'
+import { CreateTable } from './modal/CreateTable'
+import {PAGE_STATES} from "../core/EditorFlow"
+import { ShouldUpdateTask } from './modal/ShouldUpdateTask'
+import { Settings } from './modal/Settings'
+import { Profile } from './modal/Profile'
 
 const getMuiTheme = (colorMode: string)  => createTheme({
     palette: {
