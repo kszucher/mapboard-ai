@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {LineTypes} from "./DefaultProps";
 
 const getCoordsInLine = (a, b, dt) => {

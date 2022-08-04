@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { mapDispatch, redraw } from './MapFlow'
 import { checkPop, push } from "./MapStackFlow"
 import { isUrl} from "./Utils"

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelete'
 import { cellInsert, structInsert } from '../node/NodeInsert'
 import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'

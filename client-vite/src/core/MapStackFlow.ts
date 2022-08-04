@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { mapAssembly } from '../map/MapAssembly'
 import { copy, subsref } from './Utils'
 import { mapDeinit } from '../map/MapDeinit'

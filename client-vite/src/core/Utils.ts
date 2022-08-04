@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import katex from 'katex/dist/katex.mjs'
 
 export function arrayValuesSame(array) {

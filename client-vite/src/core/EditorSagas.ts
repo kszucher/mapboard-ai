@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { all, call, put, select, take, race, delay } from 'redux-saga/effects'
 import { initDomData } from './DomFlow'
 import { mapref, mapStack, mapStackDispatch, push, saveMap } from './MapStackFlow'

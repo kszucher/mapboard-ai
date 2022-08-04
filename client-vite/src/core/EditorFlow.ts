@@ -100,7 +100,7 @@ const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState);
 
-const resolveActions = (state, action) => {
+const resolveActions = (state: any, action: any) => {
     const {payload} = action;
     const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES;
     switch (action.type) {
@@ -162,7 +162,7 @@ const resolveActions = (state, action) => {
     }
 }
 
-const editorReducer = (state, action) => {
+const editorReducer = (state: any, action: any) => {
     return {...state, ...resolveActions(state, action) };
 };
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
 
