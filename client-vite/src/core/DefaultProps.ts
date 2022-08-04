@@ -128,7 +128,7 @@ export let nodeProps = {
     }
 }
 
-export const resolveScope = (cm) => {
+export const resolveScope = (cm: any) => {
     return {
         struct:
             cm.type === 'struct' &&
@@ -161,4 +161,4 @@ export const resolveScope = (cm) => {
     }
 }
 
-export const getDefaultNode = attributes => ({d: [], s: [], c: [[]], content: '', ...attributes})
+export const getDefaultNode = (attributes: any) => ({d: [], s: [], c: [[]], content: '', ...attributes})
