@@ -15,7 +15,7 @@ export const LineIcon = () => (
     </svg>
 )
 
-export const BorderIcon = ({selection}) => (
+export const BorderIcon = ({selection} : {selection: any}) => (
     <svg {...svgCommonParams}>
         <path style={{ fill: 'none', stroke: 'var(--main-color)', strokeWidth:24 }}
               d={selection === 's' ? sSelectionSvg : fSelectionSvg}
@@ -23,7 +23,7 @@ export const BorderIcon = ({selection}) => (
     </svg>
 )
 
-export const FillIcon = ({selection}) => (
+export const FillIcon = ({selection} : {selection: any}) => (
     <svg {...svgCommonParams}>
         <path style={{ fill: 'var(--main-color)', stroke: 'var(--main-color)', strokeWidth:24 }}
               d={selection === 's' ? sSelectionSvg : fSelectionSvg}
