@@ -1,5 +1,5 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
-import { Tab, Tabs } from '@mui/material'
+import {Tab, Tabs} from "@mui/material";
 
 export default function TabMaps() {
     const tabShrink = useSelector((state: RootStateOrAny) => state.tabShrink)
@@ -9,7 +9,7 @@ export default function TabMaps() {
     const breadcrumbMapIdList = useSelector((state: RootStateOrAny) => state.breadcrumbMapIdList)
     const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
     const dispatch = useDispatch()
-    const openMapFromTab = (e, value) =>  dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
+    const openMapFromTab = (value: number) =>  dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     return (
         <div
             id="tab-maps"
@@ -27,11 +27,11 @@ export default function TabMaps() {
                 variant="scrollable"
                 aria-label="Vertical tabs example"
                 value={tabMapSelected}
-                onChange={openMapFromTab}
+                onChange={(e, value) => openMapFromTab(value)}
                 indicatorColor="primary"
             >
                 {
-                    tabMapNameList.map((name, index) => (
+                    tabMapNameList.map((name: string, index: number) => (
                         <Tab
                             disabled={mapSource==='dataFrames'}
                             label={tabShrink ? name.at(0) : name}
