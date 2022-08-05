@@ -42,11 +42,7 @@ export function Formatter () {
     const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
 
     const dispatch = useDispatch()
-    const setNodeParam = (obj: object) => {
-
-     console.log(obj)
-        dispatch({type: 'SET_NODE_PARAMS', payload: {node: obj, nodeTriggersMap: true}})
-    }
+    const setNodeParam = (obj: object) => dispatch({type: 'SET_NODE_PARAMS', payload: {node: obj, nodeTriggersMap: true}})
 
     const setFormatModeText = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.text})
     const setFormatModeFill = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.fill})
