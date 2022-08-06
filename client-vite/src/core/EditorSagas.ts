@@ -244,8 +244,16 @@ function* mapStackSaga () {
         const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
         const colorMode = yield select(state => state.colorMode)
         switch (type) {
-            case 'UNDO': { mapStackDispatch('undo'); redraw(colorMode); break }
-            case 'REDO': { mapStackDispatch('redo'); redraw(colorMode); break }
+            case 'UNDO': {
+                mapStackDispatch('undo')
+                redraw(colorMode)
+                break
+            }
+            case 'REDO': {
+                mapStackDispatch('redo')
+                redraw(colorMode)
+                break
+            }
         }
         let m = mapref(['m'])
         const lm = mapref(selectionState.lastPath)
