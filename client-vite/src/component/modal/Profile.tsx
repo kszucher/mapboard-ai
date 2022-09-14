@@ -10,7 +10,7 @@ export function Profile() {
     const [childModalOpen, setChildModalOpen] = useState(false)
     return(
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-            <div id={"profile"} className="fixed left-1/2 -translate-x-1/2 flex flex-col items-center flex-wrap gap-4 top-[96px] w-[1000px]">
+            <div id={"profile"} className="fixed left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 top-[96px] p-5 rounded-2xl">
                 <Typography component="h1" variant="h5" color="primary">
                     {name}
                 </Typography>
