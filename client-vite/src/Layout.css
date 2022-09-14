@@ -70,5 +70,5 @@ body {
 
 ._bg {
     background: var(--map-background-color);
-    border-color: var(--map-background-color);
+    border: 1px solid var(--page-background-color);
 }
