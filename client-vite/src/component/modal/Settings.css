@@ -9,8 +9,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    background: var(--map-background-color);
+    /*background: var(--map-background-color);*/
     padding: 20px;
-    border-color: var(--map-background-color);
+    /*border-color: var(--map-background-color);*/
     border-radius: 16px;
 }

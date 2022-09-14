@@ -67,3 +67,8 @@ body {
 body {
     background: var(--page-background-color);
 }
+
+._bg {
+    background: var(--map-background-color);
+    border-color: var(--map-background-color);
+}

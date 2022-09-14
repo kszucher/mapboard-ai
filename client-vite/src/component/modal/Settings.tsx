@@ -15,7 +15,7 @@ export function Settings() {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description">
 
-            <div id="settings">
+            <div id="settings" className="_bg">
                 <IconButton color='secondary' onClick={changeColorMode}>
                     {colorMode === 'light' && <LightModeIcon/>}
                     {colorMode === 'dark' && <DarkModeIcon/>}

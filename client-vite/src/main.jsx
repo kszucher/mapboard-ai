@@ -7,7 +7,6 @@ import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
 import './component/modal/CreateTable.css'
-import './component/modal/Profile.css'
 import './component/modal/Settings.css'
 import './component/modal/Shares.css'
 import './component/modal/ShareThisMap.css'
