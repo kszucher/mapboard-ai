@@ -5,6 +5,7 @@ import {Provider} from "react-redux";
 import {store} from "./core/EditorFlow";
 import {Page} from "./component/Page";
 import './Layout.css';
+import './input.css';
 import './component/modal/CreateTable.css'
 import './component/modal/Profile.css'
 import './component/modal/Settings.css'
