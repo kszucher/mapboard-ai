@@ -6,7 +6,6 @@ import {store} from "./core/EditorFlow";
 import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
-import './component/modal/Settings.css'
 import './component/modal/Shares.css'
 import './component/modal/ShareThisMap.css'
 import './component/modal/ShouldCreateMapInMap.css'

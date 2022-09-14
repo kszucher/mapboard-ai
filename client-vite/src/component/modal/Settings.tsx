@@ -9,13 +9,8 @@ export function Settings() {
     const changeColorMode = () => dispatch({type: 'CHANGE_COLOR_MODE'})
     const closeSettings = () => dispatch({type: 'SHOW_WS'})
     return(
-        <Modal
-            open={true}
-            onClose={_=>{}}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description">
-
-            <div id="settings" className="_bg">
+        <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
+            <div className="_bg fixed left-1/2 -translate-x-1/2 top-[96px] width-[1000px] flex flex-col items-center gap-4 p-5 rounded-2xl">
                 <IconButton color='secondary' onClick={changeColorMode}>
                     {colorMode === 'light' && <LightModeIcon/>}
                     {colorMode === 'dark' && <DarkModeIcon/>}
