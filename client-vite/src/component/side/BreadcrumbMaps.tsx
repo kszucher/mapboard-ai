@@ -8,7 +8,7 @@ export default function BreadcrumbMaps() {
     const dispatch = useDispatch()
     const openMapFromBreadcrumbs = (index: number) => dispatch({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}})
     return (
-        <div id="breadcrumb-maps">
+        <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-2xl py-1 px-4 border-2 border-mb-pink border-t-0">
             <Breadcrumbs
                 separator={<NavigateNextIcon fontSize="small" />}
                 aria-label="breadcrumb"

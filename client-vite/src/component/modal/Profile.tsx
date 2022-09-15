@@ -14,11 +14,6 @@ export function Profile() {
                 <Typography component="h1" variant="h5" color="primary">
                     {name}
                 </Typography>
-
-                <h1 className="text-yellow-500">
-                    Hello world!
-                </h1>
-
                 <Button color="primary" variant="contained" onClick={_=>setChildModalOpen(true)}>
                     {'DELETE ACCOUNT'}
                 </Button>
