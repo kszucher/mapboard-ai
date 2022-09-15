@@ -72,8 +72,8 @@ export function Formatter () {
     }
 
     return (
-        <div id="formatter">
-            <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-2xl p-3">
+            <div className="flex justify-center">
                 <IconButton color='secondary' onClick={setFormatModeText}>
                     <TextIcon/>
                 </IconButton>
@@ -86,7 +86,7 @@ export function Formatter () {
                 <IconButton color='secondary' onClick={setFormatModeLine}>
                     <LineIcon/>
                 </IconButton>
-                <span className='formatter-highlight' style={{right: 225 - 40* formatMode}}/>
+                <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <div style={{ width, height }}>

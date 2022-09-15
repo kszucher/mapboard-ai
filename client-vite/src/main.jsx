@@ -6,7 +6,6 @@ import {store} from "./core/EditorFlow";
 import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
-import './component/side/Formatter.css'
 import './component/side/FrameCarousel.css'
 import './component/side/Logo.css'
 import './component/side/ProfileButton.css'
