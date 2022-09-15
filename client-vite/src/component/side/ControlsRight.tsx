@@ -21,6 +21,8 @@ const topOffs3 = topOffs2 + iconSize*3 + 2*4
 const topOffs4 = topOffs3 + iconSize*2 + 2*4
 const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
+const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
+
 export function ControlsRight () {
     const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
     const density = useSelector((state: RootStateOrAny) => state.node.density)
@@ -46,12 +48,12 @@ export function ControlsRight () {
     const showCreateTask = () => dispatch({type: 'SHOW_WS_CREATE_TASK'})
     return (
         <>
-            <div className="controls-right-section" style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
+            <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
                 <IconButton color='secondary' onClick={formatterVisible === true ? closeFormatter : openFormatter}>
                     <PaletteIcon/>
                 </IconButton>
             </div>
-            <div className="controls-right-section" style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
+            <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={showCreateTable}>
                     <CalendarViewMonthIcon/>
                 </IconButton>
@@ -62,7 +64,7 @@ export function ControlsRight () {
                     <CreateMapInMapIcon/>
                 </IconButton>
             </div>
-            <div className="controls-right-section" style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
+            <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={changeDensity}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
@@ -72,7 +74,7 @@ export function ControlsRight () {
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>
             </div>
-            <div className="controls-right-section" style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
+            <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
                 <IconButton color='secondary' onClick={openFrameEditor} disabled={frameEditorVisible}>
                     <DynamicFeedIcon/>
                 </IconButton>
@@ -89,7 +91,7 @@ export function ControlsRight () {
                     <CloseIcon/>
                 </IconButton>
             </div>
-            <div className="controls-right-section" style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
+            <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
                 <IconButton color='secondary' onClick={showShareThisMap} disabled={frameEditorVisible}>
                     <ShareIcon/>
                 </IconButton>

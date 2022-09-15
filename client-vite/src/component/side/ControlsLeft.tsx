@@ -6,7 +6,6 @@ import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 export function ControlsLeft () {
-    const tabMapNameList = useSelector((state: RootStateOrAny) => state.tabMapNameList)
     const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
     const dispatch = useDispatch()
     const createMapInTab = () => dispatch({type: 'CREATE_MAP_IN_TAB'})
@@ -14,7 +13,7 @@ export function ControlsLeft () {
     const moveDownMapInTab = () => dispatch({type: 'MOVE_DOWN_MAP_IN_TAB'})
     const removeMapInTab = () => dispatch({type: 'REMOVE_MAP_IN_TAB'})
     return (
-        <div id="controls-left" style={{top: 48*2 + 48*tabMapNameList.length + 48}}>
+        <div className="_bg fixed left-0 width-[40px] py-1 px-3 flex items-center border-l-0 bottom-[48px] rounded-r-2xl">
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <IconButton color='secondary' onClick={createMapInTab} disabled={frameEditorVisible}>
                     <AddCircleOutlineIcon/>
