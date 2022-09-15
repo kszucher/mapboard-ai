@@ -6,10 +6,6 @@ import {store} from "./core/EditorFlow";
 import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
-import './component/modal/ShareThisMap.css'
-import './component/modal/ShouldCreateMapInMap.css'
-import './component/modal/ShouldDeleteUser.css'
-import './component/modal/ShouldUpdateTask.css'
 import './component/side/BreadcrumbMaps.css'
 import './component/side/Formatter.css'
 import './component/side/FrameCarousel.css'
@@ -23,7 +19,6 @@ import './component/side/UndoRedo.css'
 import './component/Auth.css'
 import './component/Icons.css'
 import './component/Page.css'
-
 
 ReactDOM.render(
     <Provider store={store}>

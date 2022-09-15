@@ -8,7 +8,7 @@ export function ShouldUpdateTask() {
     const toggleTask = () => dispatch({type: 'TOGGLE_TASK'})
     return(
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-            {<div id="update-task">
+            {<div className="_bg fixed top-[96px] right-[64px] w-[192px] flex flex-col gap-4 p-4 rounded-2xl">
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                     <Typography variant="subtitle2" color='primary'>{'TOGGLE TASK MODE?'}</Typography>
                 </div>

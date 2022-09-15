@@ -8,9 +8,11 @@ export function ShouldCreateMapInMap() {
     const createMapInMap = () => dispatch({type: 'CREATE_MAP_IN_MAP'})
     return(
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-            {<div id="create-map-in-map">
+            {<div className="_bg fixed top-[96px] right-[64px] w-[192px] flex flex-col gap-4 p-4 rounded-2xl">
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                    <Typography variant="subtitle2" color='primary'>{'CREATE SUBMAP?'}</Typography>
+                    <Typography variant="subtitle2" color='primary'>
+                        {'CREATE SUBMAP?'}
+                    </Typography>
                 </div>
                 <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
                     <Button color="primary" variant='outlined' onClick={createMapInMap} disabled={interactionDisabled}>

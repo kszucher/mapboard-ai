@@ -60,7 +60,7 @@ export function Shares() {
 
     return (
         <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-            {<div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[790px] flex-col items-center flex gap-4 p-5 rounded-2xl">
+            {<div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[790px] flex flex-col items-center gap-4 p-5 rounded-2xl">
                 <Typography component="h1" variant="h5" color="primary">{'Maps I Share With Others'}</Typography>
                 <div style={{ width: '100%' }}>
                     {shareDataExport.length > 0 && <DataGrid
