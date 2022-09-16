@@ -12,10 +12,11 @@ export function FrameCarousel () {
     const openNextFrame = () => dispatch({type: 'OPEN_NEXT_FRAME'})
 
     return (
-        <div id="frame-carousel">
+        <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
             {frameLen > 0 &&
             <MobileStepper
-                id="frame-carousel-mobile-stepper"
+                className="gap-3 rounded-t-2xl bg-mb-pink"
+                sx={{background: 'var(--map-background-color)'}}
                 variant="dots"
                 steps={frameLen}
                 position="static"
