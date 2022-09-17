@@ -1,9 +1,0 @@
-#tab-maps {
-    position: fixed;
-    top: calc(48px*2);
-    background: var(--map-background-color);
-    border-top: var(--page-background-color);
-    border-right: var(--page-background-color);
-    border-bottom: var(--page-background-color);
-    border-left: 0;
-}

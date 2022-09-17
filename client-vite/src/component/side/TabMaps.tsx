@@ -12,7 +12,7 @@ export default function TabMaps() {
     const openMapFromTab = (value: number) =>  dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     return (
         <div
-            id="tab-maps"
+            className="_bg fixed top-[96px] border-l-0"
             style={{
                 width: tabShrink ? 64 : 224,
                 borderTopRightRadius: tabMapSelected === 0 ? 0 : 16,
