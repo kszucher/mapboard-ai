@@ -88,7 +88,7 @@ export function Formatter () {
                 </IconButton>
                 <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
             </div>
-            <div style={{display: 'flex', justifyContent: 'center'}}>
+            <div className="flex justify-center">
                 <div style={{ width, height }}>
                     <svg viewBox={`0 0 ${width} ${height}`}>{
                         colorList.map((iEl, i) => (
@@ -111,7 +111,7 @@ export function Formatter () {
                     </svg>
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column',  alignItems: 'center'}}>
+            <div className="flex flex-col items-center">
                 {
                     formatMode === FormatMode.text &&
                     <TargetedButtonGroup
@@ -144,13 +144,13 @@ export function Formatter () {
                     </>
                 }
             </div>
-            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
+            <div className="flex flex-row justify-center">
                 <Button color="primary" variant='outlined'
                         onClick={resolveFormatClear}>
                     {'RESET'}
                 </Button>
             </div>
-            <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center' }}>
+            <div className="flex flex-row justify-center">
                 <Button color="primary" variant='outlined' onClick={closeFormatter}>{'CLOSE'}</Button>
             </div>
         </div>
