@@ -145,13 +145,14 @@ export function Formatter () {
                 }
             </div>
             <div className="flex flex-row justify-center">
-                <Button color="primary" variant='outlined'
-                        onClick={resolveFormatClear}>
+                <Button color="primary" variant='outlined' onClick={resolveFormatClear}>
                     {'RESET'}
                 </Button>
             </div>
             <div className="flex flex-row justify-center">
-                <Button color="primary" variant='outlined' onClick={closeFormatter}>{'CLOSE'}</Button>
+                <Button color="primary" variant='outlined' onClick={closeFormatter}>
+                    {'CLOSE'}
+                </Button>
             </div>
         </div>
     )
