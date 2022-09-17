@@ -18,7 +18,6 @@ export default function ProfileMenu () {
 
     return (
         <Menu
-            id="profile-menu"
             anchorEl={moreMenu}
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             keepMounted
