@@ -6,7 +6,6 @@ import {store} from "./core/EditorFlow";
 import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
-import './component/Auth.css'
 
 ReactDOM.render(
     <Provider store={store}>

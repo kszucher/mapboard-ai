@@ -29,7 +29,7 @@ export default function Auth() {
     const liveDemo = () => dispatch({type: 'LIVE_DEMO'})
 
     return (
-        <div id="auth">
+        <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-2xl">
             <Typography color="primary" component="h1" variant="h5">
                 {'MapBoard'}
             </Typography>
