@@ -13,7 +13,7 @@ export function UndoRedo () {
     const undo = () => dispatch({ type: 'UNDO'})
     const redo = () => dispatch({ type: 'REDO'})
     return (
-        <div id="undo-redo">
+        <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">
             <div style={{ display: 'flex',  }}>
                 <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
                     <UndoIcon/>

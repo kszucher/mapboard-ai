@@ -7,7 +7,6 @@ import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
 import './component/side/TabMaps.css'
-import './component/side/UndoRedo.css'
 import './component/Auth.css'
 
 ReactDOM.render(
