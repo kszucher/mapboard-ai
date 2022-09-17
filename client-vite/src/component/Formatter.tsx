@@ -1,10 +1,10 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import {Button, ButtonGroup, IconButton} from '@mui/material'
-import {colorList} from '../../core/Colors'
-import {setClear} from '../../core/Utils'
-import {FormatMode, MAP_RIGHTS} from '../../core/EditorFlow'
-import {BorderIcon, FillIcon, LineIcon, TextIcon} from '../Icons'
-import {LineTypes, TextTypes, WidthTypes} from "../../core/DefaultProps";
+import {colorList} from '../core/Colors'
+import {setClear} from '../core/Utils'
+import {FormatMode, MAP_RIGHTS} from '../core/EditorFlow'
+import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
+import {LineTypes, TextTypes, WidthTypes} from "../core/DefaultProps";
 
 const TargetedButtonGroup = ({KEYS, value, setValue}: { KEYS: string[], value: string, setValue: Function }) => {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS

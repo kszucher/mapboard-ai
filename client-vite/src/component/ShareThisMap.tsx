@@ -1,5 +1,5 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
-import { MAP_RIGHTS } from '../../core/EditorFlow'
+import { MAP_RIGHTS } from '../core/EditorFlow'
 import { Button, FormControlLabel, FormLabel, Modal, RadioGroup, TextField, Typography, Radio } from '@mui/material'
 
 export function ShareThisMap() {

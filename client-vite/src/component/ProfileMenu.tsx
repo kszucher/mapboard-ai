@@ -1,6 +1,6 @@
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
-import { PAGE_STATES } from '../../core/EditorFlow'
+import { PAGE_STATES } from '../core/EditorFlow'
 
 export default function ProfileMenu () {
     const moreMenu = useSelector((state: RootStateOrAny) => state.moreMenu)

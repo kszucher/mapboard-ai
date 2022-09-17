@@ -2,25 +2,25 @@ import {useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
 import Auth from "./Auth"
-import Logo from "./side/Logo"
-import TabMaps from "./side/TabMaps"
-import Breadcrumbs from "./side/BreadcrumbMaps"
-import { Formatter } from "./side/Formatter"
-import { FrameCarousel } from "./side/FrameCarousel"
-import { ShareThisMap } from "./modal/ShareThisMap"
-import { Shares } from "./modal/Shares"
+import Logo from "./Logo"
+import TabMaps from "./TabMaps"
+import Breadcrumbs from "./BreadcrumbMaps"
+import { Formatter } from "./Formatter"
+import { FrameCarousel } from "./FrameCarousel"
+import { ShareThisMap } from "./ShareThisMap"
+import { Shares } from "./Shares"
 import { WindowListeners } from "./WindowListeners"
-import { ControlsRight } from './side/ControlsRight'
+import { ControlsRight } from './ControlsRight'
 import {createTheme, PaletteMode, ThemeProvider} from '@mui/material'
-import { UndoRedo } from './side/UndoRedo'
-import { ProfileButton } from './side/ProfileButton'
-import { ControlsLeft } from './side/ControlsLeft'
-import { ShouldCreateMapInMap } from './modal/ShouldCreateMapInMap'
-import { CreateTable } from './modal/CreateTable'
+import { UndoRedo } from './UndoRedo'
+import { ProfileButton } from './ProfileButton'
+import { ControlsLeft } from './ControlsLeft'
+import { ShouldCreateMapInMap } from './ShouldCreateMapInMap'
+import { CreateTable } from './CreateTable'
 import {PAGE_STATES} from "../core/EditorFlow"
-import { ShouldUpdateTask } from './modal/ShouldUpdateTask'
-import { Settings } from './modal/Settings'
-import { Profile } from './modal/Profile'
+import { ShouldUpdateTask } from './ShouldUpdateTask'
+import { Settings } from './Settings'
+import { Profile } from './Profile'
 
 const getMuiTheme = (colorMode: string)  => createTheme({
     palette: {
