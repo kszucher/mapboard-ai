@@ -6,7 +6,7 @@ export default function Logo() {
     const dispatch = useDispatch()
     const toggleTabShrink = () => dispatch({type: 'TOGGLE_TAB_SHRINK'})
     return (
-        <div id="logo">
+        <div className="fixed w-[224px] h-[40px] py-1 rounded-br-2xl flex items-center justify-center bg-gradient-to-r from-mb-purple to-mb-pink text-white">
             <Toolbar variant={"dense"}>
                 <IconButton
                     sx={{ mr: 2 }}
