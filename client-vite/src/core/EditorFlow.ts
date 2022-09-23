@@ -190,6 +190,7 @@ export const sagaActions = {
     moveUpMapInTab: () => ({type: 'MOVE_UP_MAP_IN_TAB'}),
     moveDownMapInTab: () => ({type: 'MOVE_DOWN_MAP_IN_TAB'}),
     openFrame: () => ({type: 'OPEN_FRAME'}),
+    closeFrame: () => ({type: 'CLOSE_FRAME'}),
     openPrevFrame: () => ({type: 'OPEN_PREV_FRAME'}),
     openNextFrame: () => ({type: 'OPEN_NEXT_FRAME'}),
     importFrame: () => ({type: 'IMPORT_FRAME'}),
@@ -209,10 +210,8 @@ export const sagaActions = {
     redo: () => ({type: 'REDO'}),
     setUndoDisabled: () => ({type: 'SET_UNDO_DISABLED'}),
     setRedoDisabled: () => ({type: 'SET_REDO_DISABLED'}),
-    toggleTask: () => ({type: 'TOGGLE_TASK'}),
-    openFrameEditor : () => ({type: 'OPEN_FRAME_EDITOR'}),
-    closeFrameEditor: () => ({type: 'CLOSE_FRAME_EDITOR'}),
     mapStackChanged: () => ({type: 'MAP_STACK_CHANGED'}),
+    toggleTask: () => ({type: 'TOGGLE_TASK'}),
     insertTable: (row: number, col: number) => ({type: 'INSERT_TABLE', payload: {rowLen: row, colLen: col}}),
 }
 

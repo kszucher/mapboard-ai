@@ -71,7 +71,7 @@ export function ControlsRight () {
             <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
                 <IconButton
                     color='secondary' disabled={frameEditorVisible}
-                    onClick={_=>dispatch(sagaActions.openFrameEditor())}>
+                    onClick={_=>dispatch(sagaActions.openFrame())}>
                     <DynamicFeedIcon/>
                 </IconButton>
                 <IconButton
@@ -91,7 +91,7 @@ export function ControlsRight () {
                 </IconButton>
                 <IconButton
                     color='secondary' disabled={!frameEditorVisible}
-                    onClick={_=>dispatch(sagaActions.closeFrameEditor())}>
+                    onClick={_=>dispatch(sagaActions.closeFrame())}>
                     <CloseIcon/>
                 </IconButton>
             </div>

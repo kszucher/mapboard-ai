@@ -15,6 +15,7 @@ const SAVE_INCLUDED = [
     'CREATE_MAP_IN_MAP',
     'CREATE_MAP_IN_TAB',
     'OPEN_FRAME',
+    'CLOSE_FRAME',
     'IMPORT_FRAME',
     'DUPLICATE_FRAME',
     'OPEN_PREV_FRAME',
@@ -280,27 +281,6 @@ function* mapStackSaga () {
     }
 }
 
-function* frameSaga () {
-    while (true) {
-        const { type } = yield take([
-            'OPEN_FRAME_EDITOR',
-            'CLOSE_FRAME_EDITOR',
-        ])
-        switch (type) {
-            case 'OPEN_FRAME_EDITOR':
-                yield put(actions.setFrameEditorVisible(true))
-                yield put(sagaActions.openFrame())
-                break
-            case 'CLOSE_FRAME_EDITOR':
-                yield put(actions.setFrameEditorVisible(false))
-                const breadcrumbMapNameList = yield select(state => state.breadcrumbMapNameList)
-                yield put(sagaActions.openMapFromBreadcrumbs(breadcrumbMapNameList.length - 1))
-                break
-            // TODO make a "CLOSE_FRAME" endpoint, move setting frameEditorVisible to the server, remove reducer, remove saga
-        }
-    }
-}
-
 function* shareSaga () {
     while (true) {
         let { type, payload } = yield take([
@@ -357,7 +337,6 @@ export default function* rootSaga () {
         mapSaga(),
         mapStackEventSaga(),
         mapStackSaga(),
-        frameSaga(),
         shareSaga(),
         signOutSaga(),
         deleteAccountSaga(),

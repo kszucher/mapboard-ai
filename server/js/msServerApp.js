@@ -219,7 +219,12 @@ async function resolveType(req, userId) {
         case 'OPEN_FRAME': { // QUERY
             const mapId = ObjectId(req.payload.save.mapId)
             const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
-            return { error: '', data: { ...mapInfo } }
+            return { error: '', data: { ...mapInfo, frameEditorVisible: true } }
+        }
+        case 'CLOSE_FRAME': {
+            const userInfo = await getUserInfo(userId)
+            const mapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList.at(-1), 'data')
+            return { error: '', data: { ...mapInfo, frameEditorVisible: false } }
         }
         case 'OPEN_PREV_FRAME': { // MUTATION
             const mapId = ObjectId(req.payload.save.mapId)
