@@ -118,14 +118,14 @@ function* authSaga () {
     }
 }
 
-// function* colorSaga () {
-//     while (true) {
-//         yield take('CHANGE_COLOR_MODE')
-//         const colorMode = (yield select(state => state.colorMode)) === 'light' ? 'dark' : 'light'
-//         yield put({ type: 'SET_COLOR_MODE', payload: colorMode})
-//         yield call(fetchPost, { type: 'CHANGE_COLOR_MODE', payload: {colorMode} })
-//     }
-// }
+function* colorSaga () {
+    while (true) {
+        yield take('TOGGLE_COLOR_MODE')
+        const colorMode = (yield select(state => state.colorMode))
+        const { error, data } = yield call(serverCallSaga, { type: 'TOGGLE_COLOR_MODE', payload: { colorMode } })
+        yield put(actions.parseRespPayload(data))
+    }
+}
 
 const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
@@ -133,7 +133,7 @@ function* autoSaveSaga() {
     while (true) {
         const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
             autoSaveNow: take(SAVE_INCLUDED),
-            autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED',]),
+            autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']),
             autoSaveNowByTimeout: delay(1000)
         })
         if (autoSaveNow) {
@@ -334,7 +334,7 @@ function* shareSaga () {
 
 function* signOutSaga () {
     while (true) {
-        yield take ('SIGN_OUT')
+        yield take('SIGN_OUT')
         localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
         yield put(actions.resetState())
     }
@@ -351,7 +351,7 @@ function* deleteAccountSaga () {
 export default function* rootSaga () {
     yield all([
         authSaga(),
-        // colorSaga(),
+        colorSaga(),
         autoSaveSaga(),
         mapSaga(),
         mapStackEventSaga(),

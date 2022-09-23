@@ -140,7 +140,7 @@ async function resolveType(req, userId) {
             return { error: '', data: { cred, ...userInfo, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
-            await new Promise(resolve => setTimeout(resolve, 5000))
+            // await new Promise(resolve => setTimeout(resolve, 5000))
             return { error: '' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION
@@ -313,10 +313,11 @@ async function resolveType(req, userId) {
             const shareInfo = await getShareInfo(userId)
             return { error: '', data: { ...shareInfo } }
         }
-        case 'CHANGE_COLOR_MODE': { // MUTATION
+        case 'TOGGLE_COLOR_MODE': { // MUTATION
             const { colorMode } = req.payload
-            await users.updateOne({ _id: userId }, { $set: { colorMode } })
-            return { error: '' }
+            const newColorMode = colorMode === 'light' ? 'dark' : 'light'
+            await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
+            return { error: '', data:  { colorMode: newColorMode } }
         }
         case 'CHANGE_TAB_WIDTH': { // MUTATION
             // TODO
