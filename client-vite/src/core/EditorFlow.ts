@@ -152,9 +152,7 @@ const allSlice = createSlice({
         setNodeParams(state, action: PayloadAction<any>) {
             return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
         }},
-
-        setFrameEditorVisible(state, action: PayloadAction<boolean>) { state.frameEditorVisible = action.payload }, // TODO remove
-
+        
         setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
         setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
         setShareFeedbackMessage(state, action: PayloadAction<string>) { state.shareFeedbackMessage = action.payload },
