@@ -141,9 +141,9 @@ export function WindowListeners() {
                 clearInterval(namedInterval)
                 isIntervalRunning = false
                 if (Math.sign(e.deltaY) === 1) {
-                    actions.playLandingNext()
+                    dispatch(actions.playLandingNext())
                 } else {
-                    actions.playLandingPrev()
+                    dispatch(actions.playLandingPrev())
                 }
             }, 100)
         }
