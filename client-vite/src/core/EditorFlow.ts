@@ -141,8 +141,6 @@ const allSlice = createSlice({
             state.landingDataIndex = state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1
         },
 
-        // setColorMode(state, action: PayloadAction<string>) { state.colorMode = action.payload },
-
         setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
         toggleFormatterVisible(state) { state.formatterVisible = !state.formatterVisible },
 
@@ -155,7 +153,7 @@ const allSlice = createSlice({
             return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
         }},
 
-        setFrameEditorVisible(state, action: PayloadAction<boolean>) { state.frameEditorVisible = action.payload },
+        setFrameEditorVisible(state, action: PayloadAction<boolean>) { state.frameEditorVisible = action.payload }, // TODO remove
 
         setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
         setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },

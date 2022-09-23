@@ -280,7 +280,7 @@ function* mapStackSaga () {
     }
 }
 
-function* frameSaga () { // TODO remove
+function* frameSaga () {
     while (true) {
         const { type } = yield take([
             'OPEN_FRAME_EDITOR',
@@ -296,6 +296,7 @@ function* frameSaga () { // TODO remove
                 const breadcrumbMapNameList = yield select(state => state.breadcrumbMapNameList)
                 yield put(sagaActions.openMapFromBreadcrumbs(breadcrumbMapNameList.length - 1))
                 break
+            // TODO make a "CLOSE_FRAME" endpoint, move setting frameEditorVisible to the server, remove reducer, remove saga
         }
     }
 }
