@@ -48,7 +48,7 @@ export default function ProfileMenu () {
                     // <Divider key={4} />,
                     <MenuItem
                         key={5}
-                        onClick={() => {dispatch(sagaActions.signOut)}}
+                        onClick={_=>dispatch(sagaActions.signOut())}
                     >
                         {'Sign Out'}
                     </MenuItem>

@@ -108,7 +108,7 @@ const allSlice = createSlice({
     initialState: editorState,
     reducers: {
         resetState(state) {
-            state = JSON.parse(editorStateDefault)
+            return JSON.parse(editorStateDefault)
         },
 
         signInPanel(state) {
@@ -152,7 +152,7 @@ const allSlice = createSlice({
         setNodeParams(state, action: PayloadAction<any>) {
             return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
         }},
-        
+
         setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
         setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
         setShareFeedbackMessage(state, action: PayloadAction<string>) { state.shareFeedbackMessage = action.payload },
@@ -172,7 +172,7 @@ const allSlice = createSlice({
 export const { actions, reducer } = allSlice
 
 export const sagaActions = {
-    // *** SERVER RELATED ***
+    // SERVER RELATED
     liveDemo: () => ({type: 'LIVE_DEMO'}),
     signIn: (email: string, password: string) => ({type: 'SIGN_IN', payload: { cred: { email, password } }}),
     signUpStep1: (name: string, email: string, password: string) => ({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } }),
@@ -198,12 +198,12 @@ export const sagaActions = {
     createShare: (shareEmail: string, shareAccess: any) => ({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}}),
     acceptShare: (_id: number) => ({type: 'ACCEPT_SHARE', payload: {shareId: _id}}),
     deleteShare: (_id: number) => ({type: 'DELETE_SHARE', payload: {shareId: _id}}),
-    toggleColorMode: () => ({type: 'TOGGLE_COLOR_MODE'}), // TODO try apollo on this one to update local AND global state at the same time
-    changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}),
+    toggleColorMode: () => ({type: 'TOGGLE_COLOR_MODE'}),
+    changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
     deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
-    signOut: () => ({type: 'SIGN_OUT'}), // TODO make it server related
+    signOut: () => ({type: 'SIGN_OUT'}),
 
-    // *** NON-SERVER-RELATED ***
+    // SIDE EFFECT RELATED
     undo: () => ({type: 'UNDO'}),
     redo: () => ({type: 'REDO'}),
     setUndoDisabled: () => ({type: 'SET_UNDO_DISABLED'}),
