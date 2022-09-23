@@ -112,7 +112,7 @@ function* authSaga () {
                     initDomData()
                     yield put(actions.setPageState(PageState.WS))
                 }
-                yield put({type: 'PARSE_RESP_PAYLOAD', payload: data})
+                yield put(actions.parseRespPayload(data))
             }
         }
     }
@@ -205,7 +205,7 @@ function* mapSaga () {
         yield put(actions.interactionDisabled())
         const { resp: { error, data } } = yield call(fetchPost, { type, payload })
         yield put(actions.interactionEnabled())
-        yield put({type: 'PARSE_RESP_PAYLOAD', payload: data})
+        yield put(actions.parseRespPayload(data))
         if (type === 'CREATE_MAP_IN_MAP') {
             yield put(actions.setPageState(PageState.WS))
         }
@@ -281,7 +281,7 @@ function* mapStackSaga () {
                 Object.assign(assignment, {[prop]: undefined})
             }
         }
-        yield put({ type: 'SET_NODE_PARAMS', payload: {node: assignment, nodeTriggersMap: false } })
+        yield put(actions.setNodeParams({ node: assignment, nodeTriggersMap: false }))
         yield put(sagaActions.setUndoDisabled(mapStack.dataIndex === 0))
         yield put(sagaActions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
     }
@@ -335,7 +335,7 @@ function* shareSaga () {
                 }
                 break
         }
-        yield put({type: 'PARSE_RESP_PAYLOAD', payload: data})
+        yield put(actions.parseRespPayload(data))
     }
 }
 

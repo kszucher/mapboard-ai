@@ -44,13 +44,13 @@ export function Formatter () {
 
     const setNodeColor = (value: string) => {
         if (formatMode === FormatMode.text)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {textColor: value}}, nodeTriggersMap: true})
+            dispatch(actions.setNodeParams({node: {textColor: value}, nodeTriggersMap: true}))
         else if (formatMode === FormatMode.border)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {borderColor: value}}, nodeTriggersMap: true})
+            dispatch(actions.setNodeParams({node: {borderColor: value}, nodeTriggersMap: true}))
         else if (formatMode === FormatMode.fill)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {fillColor: value}}, nodeTriggersMap: true})
+            dispatch(actions.setNodeParams({node: {fillColor: value}, nodeTriggersMap: true}))
         else if (formatMode === FormatMode.line)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineColor: value}}, nodeTriggersMap: true})
+            dispatch(actions.setNodeParams({node: {lineColor: value}, nodeTriggersMap: true}))
     }
 
     const resolveFormatColor = () => {
@@ -62,13 +62,13 @@ export function Formatter () {
 
     const resolveFormatClear = () => {
         if (formatMode === FormatMode.text)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {textColor: null, textFontSize: null}, nodeTriggersMap: true}})
+            dispatch(actions.setNodeParams({node: {textColor: 'clear', textFontSize: 'clear'}, nodeTriggersMap: true}))
         else if (formatMode === FormatMode.border)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {borderWidth: null, borderColor: null}, nodeTriggersMap: true}})
+            dispatch(actions.setNodeParams({node: {borderWidth: 'clear', borderColor: 'clear'}, nodeTriggersMap: true}))
         else if (formatMode === FormatMode.fill)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {fillColor: null}, nodeTriggersMap: true}})
+            dispatch(actions.setNodeParams({node: {fillColor: 'clear'}, nodeTriggersMap: true}))
         else if (formatMode === FormatMode.line)
-            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineType: null, lineWidth: null, lineColor: null}, nodeTriggersMap: true}})
+            dispatch(actions.setNodeParams({node: {lineType: 'clear', lineWidth: 'clear', lineColor: 'clear'}, nodeTriggersMap: true}))
     }
 
     return (
@@ -117,8 +117,7 @@ export function Formatter () {
                     <TargetedButtonGroup
                         KEYS={Object.keys(TextTypes).filter(x => !(parseInt(x) >= 0))}
                         value={TextTypes[textFontSize]}
-                        setValue={(value: number) =>
-                            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {textFontSize: TextTypes[value]}, nodeTriggersMap: true}})}
+                        setValue={(value: number) => dispatch(actions.setNodeParams({node: {textFontSize: TextTypes[value]}, nodeTriggersMap: true}))}
                     />
                 }
                 {
@@ -126,8 +125,7 @@ export function Formatter () {
                     <TargetedButtonGroup
                         KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
                         value={WidthTypes[borderWidth]}
-                        setValue={(value: number) =>
-                            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {borderWidth: WidthTypes[value]}, nodeTriggersMap: true}})}
+                        setValue={(value: number) => dispatch(actions.setNodeParams({node: {borderWidth: WidthTypes[value]}, nodeTriggersMap: true}))}
                     />
                 }
                 {
@@ -136,14 +134,12 @@ export function Formatter () {
                         <TargetedButtonGroup
                             KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
                             value={WidthTypes[lineWidth]}
-                            setValue={(value: number) =>
-                                dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineWidth: WidthTypes[value]}, nodeTriggersMap: true}})}
+                            setValue={(value: number) => dispatch(actions.setNodeParams({node: {lineWidth: WidthTypes[value]}, nodeTriggersMap: true}))}
                         />
                         <TargetedButtonGroup
                             KEYS={Object.keys(LineTypes).filter(x => !(parseInt(x) >= 0))}
                             value={LineTypes[lineType]}
-                            setValue={(value: number) =>
-                                dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineType: LineTypes[value]}, nodeTriggersMap: true}})}
+                            setValue={(value: number) => dispatch(actions.setNodeParams({node: {lineType: LineTypes[value]}, nodeTriggersMap: true}))}
                         />
                     </>
                 }

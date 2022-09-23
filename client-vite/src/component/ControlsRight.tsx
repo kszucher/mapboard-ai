@@ -57,19 +57,13 @@ export function ControlsRight () {
             <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
                 <IconButton
                     color='secondary'
-                    onClick={_=>dispatch({
-                        type: 'SET_NODE_PARAMS',
-                        payload: { node: { density: density === 'small' ? 'large' : 'small' }, nodeTriggersMap: true }
-                    })}>
+                    onClick={_=>dispatch(actions.setNodeParams({ node: { density: density === 'small' ? 'large' : 'small' }, nodeTriggersMap: true }))}>
                     {density === 'small' && <DensitySmallIcon/>}
                     {density === 'large' && <DensityMediumIcon/>}
                 </IconButton>
                 <IconButton
                     color='secondary'
-                    onClick={_=>dispatch({
-                        type: 'SET_NODE_PARAMS',
-                        payload: { node: { alignment: alignment === 'centered' ? 'adaptive' : 'centered'}, nodeTriggersMap: true }
-                    })}>
+                    onClick={_=>dispatch(actions.setNodeParams({ node: { alignment: alignment === 'centered' ? 'adaptive' : 'centered' }, nodeTriggersMap: true }))}>
                     {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
                     {alignment === 'centered' && <CenterFocusStrongIcon/>}
                 </IconButton>

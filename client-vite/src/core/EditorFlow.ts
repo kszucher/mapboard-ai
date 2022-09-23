@@ -1,6 +1,6 @@
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
-import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export enum FormatMode {
     text,
@@ -151,12 +151,9 @@ const allSlice = createSlice({
 
         toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
 
-        // TODO make classicActions and include it there
-
-        // setNodeParams(state, action: PayloadAction<any>) {
-        //     state.node = {...state.node, ...action.payload.node }
-        //     state.nodeTriggersMap = action.payload.nodeTriggersMap
-        // },
+        setNodeParams(state, action: PayloadAction<any>) {
+            return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
+        }},
 
         setFrameEditorVisible(state, action: PayloadAction<boolean>) { state.frameEditorVisible = action.payload },
 
@@ -167,9 +164,9 @@ const allSlice = createSlice({
         openMoreMenu(state, action: PayloadAction<any>) { state.moreMenu = action.payload },
         closeMoreMenu(state) { state.moreMenu = null },
 
-        // TODO make classicActions and include it there
-
-        parseRespPayload(state, action: PayloadAction<any>) { state = { ...state, ...action.payload } },
+        parseRespPayload(state, action: PayloadAction<any>) {
+            return { ...state, ...action.payload }
+        },
 
         interactionEnabled(state) { state.interactionDisabled =  false },
         interactionDisabled(state) { state.interactionDisabled = true },
@@ -177,18 +174,6 @@ const allSlice = createSlice({
 })
 
 export const { actions, reducer } = allSlice
-
-const classicReducer = (state: any, action: any) => {
-    switch (action.type) {
-        case 'SET_NODE_PARAMS':
-            return {...state, ...{ node: {...state.node, ...action.payload.node}, nodeTriggersMap: action.payload.nodeTriggersMap } }
-        case 'PARSE_RESP_PAYLOAD':
-            return {...state, ...{...action.payload } }
-        default: return state
-    }
-}
-
-const classicSlice = {reducer: classicReducer}
 
 export const sagaActions = {
     // *** SERVER RELATED ***
