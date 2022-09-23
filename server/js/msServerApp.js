@@ -140,7 +140,7 @@ async function resolveType(req, userId) {
             return { error: '', data: { cred, ...userInfo, ...mapInfo } }
         }
         case 'SAVE_MAP': { // MUTATION
-            // await new Promise(resolve => setTimeout(resolve, 5000))
+            await new Promise(resolve => setTimeout(resolve, 5000))
             return { error: '' }
         }
         case 'OPEN_MAP_FROM_TAB': { // MUTATION

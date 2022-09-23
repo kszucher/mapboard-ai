@@ -132,7 +132,7 @@ let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
     while (true) {
         const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
-            autoSaveNow: take(['SHOW_WS_CREATE_MAP_IN_MAP', ...SAVE_INCLUDED]), // TODO not good! must listen to setPageState
+            autoSaveNow: take(SAVE_INCLUDED),
             autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED',]),
             autoSaveNowByTimeout: delay(1000)
         })
@@ -153,19 +153,12 @@ function* autoSaveSaga() {
                     const mapData = saveMap()
                     const type = 'SAVE_MAP'
                     const payload = { save: { mapId, mapSource, mapData } }
+                    yield put(actions.interactionDisabled())
                     yield call(fetchPost, { type, payload })
+                    yield put(actions.interactionEnabled())
                 }
             }
         }
-    }
-}
-
-function* saveSaga() {
-    while (true) {
-        yield take([
-            'SHOW_WS_CREATE_MAP_IN_MAP' // TODO not good! must listen to setPageState
-        ])
-        yield put(sagaActions.saveMap())
     }
 }
 
@@ -360,7 +353,6 @@ export default function* rootSaga () {
         authSaga(),
         // colorSaga(),
         autoSaveSaga(),
-        saveSaga(),
         mapSaga(),
         mapStackEventSaga(),
         mapStackSaga(),
