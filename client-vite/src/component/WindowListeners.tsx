@@ -10,7 +10,7 @@ import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {selectionState} from "../core/SelectionFlow"
 import {pasteDispatch} from "../core/PasteFlow"
-import {MAP_RIGHTS, PAGE_STATES} from "../core/EditorFlow"
+import {MAP_RIGHTS, actions, PageState, sagaActions} from "../core/EditorFlow"
 import { getColors } from '../core/Colors'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, whichDown = 0, elapsed = 0
@@ -37,7 +37,6 @@ const getNativeEvent = ({path, composedPath, key, code, which}) =>
 
 export function WindowListeners() {
     const {EDIT, VIEW} = MAP_RIGHTS
-    const {DEMO, WS} = PAGE_STATES
 
     const mapId = useSelector((state: RootStateOrAny) => state.mapId)
     const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
@@ -142,9 +141,9 @@ export function WindowListeners() {
                 clearInterval(namedInterval)
                 isIntervalRunning = false
                 if (Math.sign(e.deltaY) === 1) {
-                    dispatch({type: 'PLAY_LANDING_NEXT'})
+                    actions.playLandingNext()
                 } else {
-                    dispatch({type: 'PLAY_LANDING_PREV'})
+                    actions.playLandingPrev()
                 }
             }, 100)
         }
@@ -162,7 +161,6 @@ export function WindowListeners() {
     }
 
     const popstate = colorMode => e => {
-        dispatch({type: 'OPEN_MAP', payload: {source: 'HISTORY', event: e}})
     }
 
     const mousedown = colorMode => e => {
@@ -198,7 +196,7 @@ export function WindowListeners() {
                         redraw(colorMode)
                     } else {
                         if (lm.linkType === 'internal') {
-                            dispatch({ type: 'OPEN_MAP_FROM_MAP' })
+                            dispatch(sagaActions.openMapFromMap())
                         } else if (lm.linkType === 'external') {
                             whichDown = 0
                             window.open(lm.link, '_blank')
@@ -395,13 +393,13 @@ export function WindowListeners() {
             [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S']                          ],
             [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_R']                               ],
             [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ],
-            [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['CREATE_MAP_IN_MAP']                      ],
+            [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ],
             [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
             [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
-            [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['SAVE_MAP']                               ],
-            [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'SAVE_MAP']                 ],
-            [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['REDO']                                   ],
-            [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['UNDO']                                   ],
+            [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['saveMap']                                ],
+            [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ],
+            [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
+            [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                   ],
             [ 1,  0,  0,  code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose']                              ],
             [ 0,  1,  0,  [37,39].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CR']                              ],
             [ 0,  1,  0,  [38,40].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CC']                              ],
@@ -442,12 +440,15 @@ export function WindowListeners() {
                 for (let j = 0; j < keyStateMachine.executionList.length; j++) {
                     let currExecution = keyStateMachine.executionList[j]
                     if ([
-                        'CREATE_MAP_IN_MAP',
-                        'SAVE_MAP',
-                        'UNDO',
-                        'REDO',
+                        'createMapInMap',
+                        'saveMap',
+                        'undo',
+                        'redo',
                     ].includes(currExecution)) {
-                        dispatch({type: currExecution})
+                        if (currExecution === 'createMapInMap') dispatch(sagaActions.createMapInMap())
+                        if (currExecution === 'saveMap') dispatch(sagaActions.saveMap())
+                        if (currExecution === 'undo') dispatch(sagaActions.undo())
+                        if (currExecution === 'redo') dispatch(sagaActions.redo())
                     } else if (currExecution === 'startEdit') {
                         startEdit()
                     } else if (currExecution === 'finishEdit') {
@@ -523,18 +524,18 @@ export function WindowListeners() {
         if (mapId !== '' && mapSource !== '') {
             mapStackDispatch('initMapState', { mapData })
             redraw(colorMode)
-            dispatch({ type: 'MAP_STACK_CHANGED' })
+            dispatch(sagaActions.mapStackChanged())
         }
     }, [mapId, mapSource, frameLen, frameSelected])
 
     useEffect(() => {
-        if (pageState === WS) {
+        if (pageState === PageState.WS) {
             if (mapRight === EDIT) {
                 addMapListeners(colorMode)
             } else if (mapRight === VIEW) {
                 // TODO figure out view listeners
             }
-        } else if (pageState === DEMO) {
+        } else if (pageState === PageState.DEMO) {
             addLandingListeners()
         }
         return () => {

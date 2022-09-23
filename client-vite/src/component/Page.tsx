@@ -1,26 +1,26 @@
 import {useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import { getEquationDim, getTextDim, isChrome } from '../core/Utils'
+import {getEquationDim, getTextDim, isChrome} from '../core/Utils'
 import Auth from "./Auth"
 import Logo from "./Logo"
 import TabMaps from "./TabMaps"
 import Breadcrumbs from "./BreadcrumbMaps"
-import { Formatter } from "./Formatter"
-import { FrameCarousel } from "./FrameCarousel"
-import { ShareThisMap } from "./ShareThisMap"
-import { Shares } from "./Shares"
-import { WindowListeners } from "./WindowListeners"
-import { ControlsRight } from './ControlsRight'
+import {Formatter} from "./Formatter"
+import {FrameCarousel} from "./FrameCarousel"
+import {ShareThisMap} from "./ShareThisMap"
+import {Shares} from "./Shares"
+import {WindowListeners} from "./WindowListeners"
+import {ControlsRight} from './ControlsRight'
 import {createTheme, PaletteMode, ThemeProvider} from '@mui/material'
-import { UndoRedo } from './UndoRedo'
-import { ProfileButton } from './ProfileButton'
-import { ControlsLeft } from './ControlsLeft'
-import { ShouldCreateMapInMap } from './ShouldCreateMapInMap'
-import { CreateTable } from './CreateTable'
-import {PAGE_STATES} from "../core/EditorFlow"
-import { ShouldUpdateTask } from './ShouldUpdateTask'
-import { Settings } from './Settings'
-import { Profile } from './Profile'
+import {UndoRedo} from './UndoRedo'
+import {ProfileButton} from './ProfileButton'
+import {ControlsLeft} from './ControlsLeft'
+import {ShouldCreateMapInMap} from './ShouldCreateMapInMap'
+import {CreateTable} from './CreateTable'
+import {PageState, sagaActions} from "../core/EditorFlow"
+import {ShouldUpdateTask} from './ShouldUpdateTask'
+import {Settings} from './Settings'
+import {Profile} from './Profile'
 
 const getMuiTheme = (colorMode: string)  => createTheme({
     palette: {
@@ -74,30 +74,35 @@ export function Page() {
     const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
     const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
     const dispatch = useDispatch()
-    const {AUTH, EMPTY, DEMO} = PAGE_STATES;
 
     useEffect(()=> {
         getTextDim('Test', 12)
         getEquationDim('\\[Test\\]')
         const cred = JSON.parse(localStorage.getItem('cred') as string)
         if (cred !== null) {
-            // TODO type check
-            dispatch({type: 'SIGN_IN', payload: { cred }})
+            dispatch(sagaActions.signIn(cred.email, cred.password))
         }
     }, [])
 
     return (
         <div id="page">
             <ThemeProvider theme={getMuiTheme(colorMode)}>
-                {pageState === AUTH && <Auth/>}
+                {pageState === PageState.AUTH && <Auth/>}
                 {
-                    ![AUTH, EMPTY].includes(pageState) &&
+                    ![
+                        PageState.AUTH,
+                        PageState.EMPTY
+                    ].includes(pageState) &&
                     <>
                         <Map/>
                         <Logo/>
                         <ProfileButton/>
                         {
-                            ![AUTH, EMPTY, DEMO].includes(pageState) &&
+                            ![
+                                PageState.AUTH,
+                                PageState.EMPTY,
+                                PageState.DEMO,
+                            ].includes(pageState) &&
                             <>
                                 <UndoRedo/>
                                 <Breadcrumbs/>
@@ -110,13 +115,13 @@ export function Page() {
                         {frameEditorVisible && <FrameCarousel/>}
                     </>
                 }
-                {pageState === PAGE_STATES.WS_PROFILE && <Profile/>}
-                {pageState === PAGE_STATES.WS_SETTINGS && <Settings/>}
-                {pageState === PAGE_STATES.WS_SHARES && <Shares/>}
-                {pageState === PAGE_STATES.WS_CREATE_MAP_IN_MAP && <ShouldCreateMapInMap/>}
-                {pageState === PAGE_STATES.WS_CREATE_TABLE && <CreateTable/>}
-                {pageState === PAGE_STATES.WS_CREATE_TASK && <ShouldUpdateTask/>}
-                {pageState === PAGE_STATES.WS_SHARE_THIS_MAP && <ShareThisMap/>}
+                {pageState === PageState.WS_PROFILE && <Profile/>}
+                {pageState === PageState.WS_SETTINGS && <Settings/>}
+                {pageState === PageState.WS_SHARES && <Shares/>}
+                {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ShouldCreateMapInMap/>}
+                {pageState === PageState.WS_CREATE_TABLE && <CreateTable/>}
+                {pageState === PageState.WS_CREATE_TASK && <ShouldUpdateTask/>}
+                {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMap/>}
 
                 <WindowListeners/>
             </ThemeProvider>

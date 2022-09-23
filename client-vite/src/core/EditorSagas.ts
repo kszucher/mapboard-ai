@@ -1,11 +1,12 @@
 // @ts-nocheck
 
-import { all, call, put, select, take, race, delay } from 'redux-saga/effects'
-import { initDomData } from './DomFlow'
-import { mapref, mapStack, mapStackDispatch, push, saveMap } from './MapStackFlow'
-import { selectionState } from './SelectionFlow'
-import { mapDispatch, redraw } from './MapFlow'
-import { mapGetProp } from '../map/MapGetProp'
+import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
+import {initDomData} from './DomFlow'
+import {mapref, mapStack, mapStackDispatch, push, saveMap} from './MapStackFlow'
+import {selectionState} from './SelectionFlow'
+import {mapDispatch, redraw} from './MapFlow'
+import {mapGetProp} from '../map/MapGetProp'
+import {actions, PageState, sagaActions} from "./EditorFlow";
 
 const SAVE_INCLUDED = [
     'OPEN_MAP_FROM_TAB',
@@ -54,29 +55,22 @@ const fetchPost = (req) => {
 }
 
 function* serverCallSaga({ type, payload }) {
-    yield put({type: 'INTERACTION_DISABLED'})
+    yield put(actions.interactionDisabled())
     const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-    yield put({type: 'INTERACTION_ENABLED'})
-    switch (error) {
-        case 'authFailWrongCred':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, wrong credentials' })
-            localStorage.clear()
-            break
-        case 'authFailIncompleteRegistration':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Authentication failed, incomplete registration' })
-            break
-        case 'signUpStep1FailAlreadyAwaitingConfirmation':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already awaiting confirmation' })
-            break
-        case 'signUpStep1FailAlreadyConfirmed':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already confirmed' })
-            break
-        case 'signUpStep2FailWrongEmailOrConfirmationCode':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Wrong email or code' })
-            break
-        case 'signUpStep2FailAlreadyActivated':
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Already activated' })
-            break
+    yield put(actions.interactionEnabled())
+    if (error === 'authFailWrongCred') {
+        yield put(actions.setAuthFeedbackMessage('Authentication failed, wrong credentials'))
+        localStorage.clear()
+    } else if (error === 'authFailIncompleteRegistration') {
+        yield put(actions.setAuthFeedbackMessage('Authentication failed, incomplete registration'))
+    } else if (error === 'signUpStep1FailAlreadyAwaitingConfirmation') {
+        yield put(actions.setAuthFeedbackMessage('Already awaiting confirmation'))
+    } else if (error === 'signUpStep1FailAlreadyConfirmed') {
+        yield put(actions.setAuthFeedbackMessage('Already confirmed'))
+    } else if (error === 'signUpStep2FailWrongEmailOrConfirmationCode') {
+        yield put(actions.setAuthFeedbackMessage('Wrong email or confirmation code'))
+    } else if (error === 'signUpStep2FailAlreadyActivated') {
+        yield put(actions.setAuthFeedbackMessage('Already activated'))
     }
     // cant put parse here, but can put all error here
     return { error, data }
@@ -92,58 +86,53 @@ function* authSaga () {
             'CHECK_SET_CONFIRMATION_CODE',
         ])
         if (type === 'SIGN_IN' && (payload.cred.email === '' || payload.cred.password === '')) {
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Missing information' })
+            yield put(actions.setAuthFeedbackMessage('Missing information'))
         } else if (type === 'SIGN_IN' && payload.cred.password.length < 5) {
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Too short password' })
+            yield put(actions.setAuthFeedbackMessage('Too short password'))
         } else if (type === 'SIGN_UP_STEP_1' && payload.cred.password.length < 5 ) {
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Your password must be at least 5 characters' })
+            yield put(actions.setAuthFeedbackMessage('Your password must be at least 5 characters'))
         } else if (type === 'CHECK_SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
-            yield put({ type: 'SET_CONFIRMATION_CODE', payload })
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: '' })
+            yield put(actions.setConfirmationCode(payload))
+            yield put(actions.setAuthFeedbackMessage(''))
         } else if (type === 'CHECK_SET_CONFIRMATION_CODE') {
-            yield put({ type: 'SET_AUTH_FEEDBACK_MESSAGE', payload: 'Invalid character' })
+            yield put(actions.setAuthFeedbackMessage('Invalid character'))
         } else {
             const { error, data } = yield call(serverCallSaga, { type, payload })
             if (error === '') {
-                switch (type) {
-                    case 'LIVE_DEMO':
-                        initDomData()
-                        yield put({ type: 'SHOW_DEMO' })
-                        break
-                    case 'SIGN_UP_STEP_1':
-                        yield put({ type: 'SIGN_UP_STEP_2_PANEL' })
-                        break
-                    case 'SIGN_UP_STEP_2':
-                        yield put({ type: 'SIGN_IN_PANEL' })
-                        break
-                    case 'SIGN_IN':
-                        const { cred } = data
-                        localStorage.setItem('cred', JSON.stringify(cred))
-                        initDomData()
-                        yield put({ type: 'SHOW_WS' })
-                        break
+                if (type === 'LIVE_DEMO') {
+                    initDomData()
+                    yield put(actions.setPageState(PageState.DEMO))
+                } else if (type === 'SIGN_UP_STEP_1') {
+                    yield put(actions.signUpStep2Panel())
+                } else if (type === 'SIGN_UP_STEP_2') {
+                    yield put(actions.signInPanel())
+                } else if (type === 'SIGN_IN') {
+                    const {cred} = data
+                    localStorage.setItem('cred', JSON.stringify(cred))
+                    initDomData()
+                    yield put(actions.setPageState(PageState.WS))
                 }
-                yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
+                yield put({type: 'PARSE_RESP_PAYLOAD', payload: data})
             }
         }
     }
 }
 
-function* colorSaga () {
-    while (true) {
-        yield take('CHANGE_COLOR_MODE')
-        const colorMode = (yield select(state => state.colorMode)) === 'light' ? 'dark' : 'light'
-        yield put({ type: 'SET_COLOR_MODE', payload: colorMode})
-        yield call(fetchPost, { type: 'CHANGE_COLOR_MODE', payload: {colorMode} })
-    }
-}
+// function* colorSaga () {
+//     while (true) {
+//         yield take('CHANGE_COLOR_MODE')
+//         const colorMode = (yield select(state => state.colorMode)) === 'light' ? 'dark' : 'light'
+//         yield put({ type: 'SET_COLOR_MODE', payload: colorMode})
+//         yield call(fetchPost, { type: 'CHANGE_COLOR_MODE', payload: {colorMode} })
+//     }
+// }
 
 const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
     while (true) {
         const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
-            autoSaveNow: take(['SHOW_WS_CREATE_MAP_IN_MAP', ...SAVE_INCLUDED]),
+            autoSaveNow: take(['SHOW_WS_CREATE_MAP_IN_MAP', ...SAVE_INCLUDED]), // TODO not good! must listen to setPageState
             autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED',]),
             autoSaveNowByTimeout: delay(1000)
         })
@@ -174,9 +163,9 @@ function* autoSaveSaga() {
 function* saveSaga() {
     while (true) {
         yield take([
-            'SHOW_WS_CREATE_MAP_IN_MAP'
+            'SHOW_WS_CREATE_MAP_IN_MAP' // TODO not good! must listen to setPageState
         ])
-        yield put({ type: 'SAVE_MAP' })
+        yield put(sagaActions.saveMap())
     }
 }
 
@@ -213,12 +202,12 @@ function* mapSaga () {
             const mapId = yield select(state => state.mapId)
             payload = { ...payload, mapId }
         }
-        yield put({type: 'INTERACTION_DISABLED'})
+        yield put(actions.interactionDisabled())
         const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-        yield put({type: 'INTERACTION_ENABLED'})
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
+        yield put(actions.interactionEnabled())
+        yield put({type: 'PARSE_RESP_PAYLOAD', payload: data})
         if (type === 'CREATE_MAP_IN_MAP') {
-            yield put({type: 'SHOW_WS'})
+            yield put(actions.setPageState(PageState.WS))
         }
     }
 }
@@ -232,10 +221,10 @@ function* mapStackEventSaga() {
         } else if (type === 'TOGGLE_TASK') {
             mapDispatch('toggleTask')
         }
-        yield put({ type: 'MAP_STACK_CHANGED' })
+        yield put(sagaActions.mapStackChanged())
         const colorMode = yield select(state => state.colorMode)
         redraw(colorMode)
-        yield put({ type: 'SHOW_WS'})
+        yield put(actions.setPageState(PageState.WS))
     }
 }
 
@@ -293,12 +282,12 @@ function* mapStackSaga () {
             }
         }
         yield put({ type: 'SET_NODE_PARAMS', payload: {node: assignment, nodeTriggersMap: false } })
-        yield put({ type: 'SET_UNDO_DISABLED', payload: mapStack.dataIndex === 0})
-        yield put({ type: 'SET_REDO_DISABLED', payload: mapStack.dataIndex === mapStack.data.length - 1})
+        yield put(sagaActions.setUndoDisabled(mapStack.dataIndex === 0))
+        yield put(sagaActions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
     }
 }
 
-function* frameSaga () {
+function* frameSaga () { // TODO remove
     while (true) {
         const { type } = yield take([
             'OPEN_FRAME_EDITOR',
@@ -306,13 +295,13 @@ function* frameSaga () {
         ])
         switch (type) {
             case 'OPEN_FRAME_EDITOR':
-                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: true})
-                yield put({type: 'OPEN_FRAME'})
+                yield put(actions.setFrameEditorVisible(true))
+                yield put(sagaActions.openFrame())
                 break
             case 'CLOSE_FRAME_EDITOR':
-                yield put({type: 'SET_FRAME_EDITOR_VISIBLE', payload: false})
+                yield put(actions.setFrameEditorVisible(false))
                 const breadcrumbMapNameList = yield select(state => state.breadcrumbMapNameList)
-                yield put({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: breadcrumbMapNameList.length - 1}})
+                yield put(sagaActions.openMapFromBreadcrumbs(breadcrumbMapNameList.length - 1))
                 break
         }
     }
@@ -330,23 +319,23 @@ function* shareSaga () {
             const mapId = yield select(state => state.mapId)
             payload = {...payload, mapId }
         }
-        yield put({type: 'INTERACTION_DISABLED'})
+        yield put(actions.interactionDisabled())
         const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-        yield put({type: 'INTERACTION_ENABLED'})
+        yield put(actions.interactionEnabled())
         switch (type) {
             case 'CREATE_SHARE':
                 if (error === 'createShareFailNotAValidUser') {
-                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'There is no user associated with this address' })
+                    yield put(actions.setShareFeedbackMessage('There is no user associated with this address'))
                 } else if (error === 'createShareFailCantShareWithYourself') {
-                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Please choose a different address than yours' })
+                    yield put(actions.setShareFeedbackMessage('Please choose a different address than yours'))
                 } else if (error === 'createShareFailAlreadyShared') {
-                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'The map has already been shared' })
+                    yield put(actions.setShareFeedbackMessage('The map has already been shared'))
                 } else {
-                    yield put({ type: 'SET_SHARE_FEEDBACK_MESSAGE', payload: 'Share settings saved' })
+                    yield put(actions.setShareFeedbackMessage('Share settings saved'))
                 }
                 break
         }
-        yield put({ type: 'PARSE_RESP_PAYLOAD', payload: data })
+        yield put({type: 'PARSE_RESP_PAYLOAD', payload: data})
     }
 }
 
@@ -354,7 +343,7 @@ function* signOutSaga () {
     while (true) {
         yield take ('SIGN_OUT')
         localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
-        yield put({type: 'RESET_STATE'})
+        yield put(actions.resetState())
     }
 }
 
@@ -362,14 +351,14 @@ function* deleteAccountSaga () {
     while (true) {
         const { type } = yield take('DELETE_ACCOUNT')
         yield call(fetchPost, { type })
-        yield put({type: 'SIGN_OUT'})
+        yield put(sagaActions.signOut())
     }
 }
 
 export default function* rootSaga () {
     yield all([
         authSaga(),
-        colorSaga(),
+        // colorSaga(),
         autoSaveSaga(),
         saveSaga(),
         mapSaga(),

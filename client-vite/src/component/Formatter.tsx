@@ -1,8 +1,7 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import {Button, ButtonGroup, IconButton} from '@mui/material'
 import {colorList} from '../core/Colors'
-import {setClear} from '../core/Utils'
-import {FormatMode, MAP_RIGHTS} from '../core/EditorFlow'
+import {actions, FormatMode, MAP_RIGHTS} from '../core/EditorFlow'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {LineTypes, TextTypes, WidthTypes} from "../core/DefaultProps";
 
@@ -42,19 +41,16 @@ export function Formatter () {
     const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
 
     const dispatch = useDispatch()
-    const setNodeParam = (obj: object) => dispatch({type: 'SET_NODE_PARAMS', payload: {node: obj, nodeTriggersMap: true}})
-
-    const setFormatModeText = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.text})
-    const setFormatModeFill = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.fill})
-    const setFormatModeBorder = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.border})
-    const setFormatModeLine = () => dispatch({type: 'SET_FORMAT_MODE', payload: FormatMode.line})
-    const closeFormatter = () => dispatch({type: 'SET_FORMATTER_VISIBLE', payload: false})
 
     const setNodeColor = (value: string) => {
-        if (formatMode === FormatMode.text) setNodeParam({textColor: value})
-        if (formatMode === FormatMode.border) setNodeParam({borderColor: value})
-        if (formatMode === FormatMode.fill) setNodeParam({fillColor: value})
-        if (formatMode === FormatMode.line) setNodeParam({lineColor: value})
+        if (formatMode === FormatMode.text)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {textColor: value}}, nodeTriggersMap: true})
+        else if (formatMode === FormatMode.border)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {borderColor: value}}, nodeTriggersMap: true})
+        else if (formatMode === FormatMode.fill)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {fillColor: value}}, nodeTriggersMap: true})
+        else if (formatMode === FormatMode.line)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineColor: value}}, nodeTriggersMap: true})
     }
 
     const resolveFormatColor = () => {
@@ -65,25 +61,29 @@ export function Formatter () {
     }
 
     const resolveFormatClear = () => {
-        if (formatMode === FormatMode.text) setNodeParam(setClear(['textColor', 'textFontSize']))
-        if (formatMode === FormatMode.border) setNodeParam(setClear(['borderWidth', 'borderColor']))
-        if (formatMode === FormatMode.fill) setNodeParam(setClear(['fillColor']))
-        if (formatMode === FormatMode.line) setNodeParam(setClear(['lineType', 'lineWidth', 'lineColor']))
+        if (formatMode === FormatMode.text)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {textColor: null, textFontSize: null}, nodeTriggersMap: true}})
+        else if (formatMode === FormatMode.border)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {borderWidth: null, borderColor: null}, nodeTriggersMap: true}})
+        else if (formatMode === FormatMode.fill)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {fillColor: null}, nodeTriggersMap: true}})
+        else if (formatMode === FormatMode.line)
+            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineType: null, lineWidth: null, lineColor: null}, nodeTriggersMap: true}})
     }
 
     return (
         <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-2xl p-3">
             <div className="flex justify-center">
-                <IconButton color='secondary' onClick={setFormatModeText}>
+                <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.text))}>
                     <TextIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={setFormatModeBorder}>
+                <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.border))}>
                     <BorderIcon selection={selection}/>
                 </IconButton>
-                <IconButton color='secondary' onClick={setFormatModeFill}>
+                <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.fill))}>
                     <FillIcon selection={selection}/>
                 </IconButton>
-                <IconButton color='secondary' onClick={setFormatModeLine}>
+                <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.line))}>
                     <LineIcon/>
                 </IconButton>
                 <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
@@ -117,7 +117,8 @@ export function Formatter () {
                     <TargetedButtonGroup
                         KEYS={Object.keys(TextTypes).filter(x => !(parseInt(x) >= 0))}
                         value={TextTypes[textFontSize]}
-                        setValue={(value: number) => setNodeParam({textFontSize: TextTypes[value]})}
+                        setValue={(value: number) =>
+                            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {textFontSize: TextTypes[value]}, nodeTriggersMap: true}})}
                     />
                 }
                 {
@@ -125,7 +126,8 @@ export function Formatter () {
                     <TargetedButtonGroup
                         KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
                         value={WidthTypes[borderWidth]}
-                        setValue={(value: number) => setNodeParam({borderWidth: WidthTypes[value]})}
+                        setValue={(value: number) =>
+                            dispatch({type: 'SET_NODE_PARAMS', payload: {node: {borderWidth: WidthTypes[value]}, nodeTriggersMap: true}})}
                     />
                 }
                 {
@@ -134,12 +136,14 @@ export function Formatter () {
                         <TargetedButtonGroup
                             KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
                             value={WidthTypes[lineWidth]}
-                            setValue={(value: number) => setNodeParam({lineWidth: WidthTypes[value]})}
+                            setValue={(value: number) =>
+                                dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineWidth: WidthTypes[value]}, nodeTriggersMap: true}})}
                         />
                         <TargetedButtonGroup
                             KEYS={Object.keys(LineTypes).filter(x => !(parseInt(x) >= 0))}
                             value={LineTypes[lineType]}
-                            setValue={(value: number) => setNodeParam({lineType: LineTypes[value]})}
+                            setValue={(value: number) =>
+                                dispatch({type: 'SET_NODE_PARAMS', payload: {node: {lineType: LineTypes[value]}, nodeTriggersMap: true}})}
                         />
                     </>
                 }
@@ -150,7 +154,7 @@ export function Formatter () {
                 </Button>
             </div>
             <div className="flex flex-row justify-center">
-                <Button color="primary" variant='outlined' onClick={closeFormatter}>
+                <Button color="primary" variant='outlined' onClick={_=>dispatch(actions.toggleFormatterVisible())}>
                     {'CLOSE'}
                 </Button>
             </div>

@@ -1,10 +1,8 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
-import { AUTH_PAGE_STATES } from '../core/EditorFlow'
 import { Button, Link, TextField, Typography } from '@mui/material'
+import {actions, AuthPageState, sagaActions} from "../core/EditorFlow";
 
 export default function Auth() {
-    const {SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2} = AUTH_PAGE_STATES
-
     const authPageState = useSelector((state: RootStateOrAny) => state.authPageState)
     const name = useSelector((state: RootStateOrAny) => state.name)
     const email = useSelector((state: RootStateOrAny) => state.email)
@@ -12,22 +10,7 @@ export default function Auth() {
     const passwordAgain = useSelector((state: RootStateOrAny) => state.passwordAgain)
     const confirmationCode = useSelector((state: RootStateOrAny) => state.confirmationCode)
     const authFeedbackMessage = useSelector((state: RootStateOrAny) => state.authFeedbackMessage)
-
     const dispatch = useDispatch()
-    const setName = (value: string) => dispatch({type: 'SET_NAME', payload: value})
-    const setEmail = (value: string) => dispatch({type: 'SET_EMAIL', payload: value})
-    const setPassword = (value: string) => dispatch({type: 'SET_PASSWORD', payload: value})
-    const setPasswordAgain = (value: string) => dispatch({type: 'SET_PASSWORD_AGAIN', payload: value})
-    const checkSetConfirmationCode = (value: string) => dispatch({type: 'CHECK_SET_CONFIRMATION_CODE', payload: value})
-    const signInPanel = () => dispatch({type: 'SIGN_IN_PANEL'})
-    const signUpPanel = () => dispatch({type: 'SIGN_UP_PANEL'})
-    const signUpStep1Panel = () => dispatch({type: 'SIGN_UP_STEP_1_PANEL'})
-    const signUpStep2Panel = () => dispatch({type: 'SIGN_UP_STEP_2_PANEL'})
-    const signIn = () => dispatch({type: 'SIGN_IN', payload: { cred: { email, password } }})
-    const signUpStep1 = () => dispatch({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } })
-    const signUpStep2 = () => dispatch({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode: parseInt(confirmationCode) } } })
-    const liveDemo = () => dispatch({type: 'LIVE_DEMO'})
-
     return (
         <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-2xl">
             <Typography color="primary" component="h1" variant="h5">
@@ -37,169 +20,109 @@ export default function Auth() {
                 {'Private Beta'}
             </Typography>
             {
-                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                [AuthPageState.SIGN_UP_STEP_1, AuthPageState.SIGN_UP_STEP_2].includes(authPageState) &&
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
                     <Button
-                        id="step-1"
-                        color="primary"
-                        onClick={signUpStep1Panel}
-                        variant={authPageState === SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
-                    >
+                        id="step-1" color="primary"
+                        variant={authPageState === AuthPageState.SIGN_UP_STEP_1 ? 'contained' : 'outlined'}
+                        onClick={_=>dispatch(actions.signUpStep1Panel())}>
                         {'STEP 1'}
                     </Button>
                     <Button
-                        id="step2"
-                        color="primary"
-                        onClick={signUpStep2Panel}
-                        variant={authPageState === SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
-                    >
+                        id="step2" color="primary"
+                        variant={authPageState === AuthPageState.SIGN_UP_STEP_2 ? 'contained' : 'outlined'}
+                        onClick={_=>dispatch(actions.signUpStep2Panel())}>
                         {'STEP 2'}
                     </Button>
                 </div>
             }
             {
-                authPageState === SIGN_UP_STEP_1 &&
+                authPageState === AuthPageState.SIGN_UP_STEP_1 &&
                 <TextField
-                    id="your-first-name"
-                    variant="outlined"
-                    fullWidth
-                    label="Your First Name"
+                    id="your-first-name" variant="outlined" fullWidth label="Your First Name" autoFocus
                     value={name}
-                    onChange={({target: {value}}) => setName(value)}
-                    autoFocus
-                />
+                    onChange={({target: {value}}) => dispatch(actions.setName(value))}/>
             }
             {
-                [SIGN_IN, SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                [AuthPageState.SIGN_IN, AuthPageState.SIGN_UP_STEP_1, AuthPageState.SIGN_UP_STEP_2].includes(authPageState) &&
                 <TextField
-                    id="email"
-                    variant="outlined"
-                    fullWidth
-                    label="Email"
+                    id="email" variant="outlined" fullWidth label="Email"
                     value={email}
-                    onChange={({target: {value}}) => setEmail(value)}
-                />
+                    onChange={({target: {value}}) => dispatch(actions.setEmail(value))}/>
             }
             {
-                [SIGN_IN, SIGN_UP_STEP_1].includes(authPageState) &&
+                [AuthPageState.SIGN_IN, AuthPageState.SIGN_UP_STEP_1].includes(authPageState) &&
                 <TextField
-                    id="password"
-                    variant="outlined"
-                    fullWidth
-                    label="Password"
+                    id="password" variant="outlined" fullWidth label="Password" type="password"
                     value={password}
-                    onChange={({target: {value}}) => setPassword(value)}
-                    type="password"
-                />
+                    onChange={({target: {value}}) => dispatch(actions.setPassword(value))}/>
             }
             {
-                authPageState === SIGN_UP_STEP_1 &&
+                authPageState === AuthPageState.SIGN_UP_STEP_1 &&
                 <TextField
-                    id="password-again"
-                    variant="outlined"
-                    fullWidth
-                    label="Password Again"
+                    id="password-again" variant="outlined" fullWidth label="Password Again" type="password"
                     value={passwordAgain}
-                    onChange={({target: {value}}) => setPasswordAgain(value)}
-                    type="password"
-                />
+                    onChange={({target: {value}}) => dispatch(actions.setPasswordAgain(value))}/>
             }
             {
-                authPageState === SIGN_UP_STEP_2 &&
+                authPageState === AuthPageState.SIGN_UP_STEP_2 &&
                 <TextField
-                    id="confirmation-code"
-                    variant="outlined"
-                    fullWidth
-                    label="Confirmation Code"
+                    id="confirmation-code" variant="outlined" fullWidth label="Confirmation Code" autoFocus
                     value={confirmationCode}
-                    onChange={({target: {value}}) => checkSetConfirmationCode(value)}
-                    autoFocus
-                />
+                    onChange={({target: {value}}) => dispatch(sagaActions.checkSetConfirmationCode(value))}/>
             }
             {
-                authPageState === SIGN_UP_STEP_1 &&
+                authPageState === AuthPageState.SIGN_UP_STEP_1 &&
                 <Button
-                    id="get-confirmation-code"
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={signUpStep1}
-                    disabled={
-                        name === '' ||
-                        email === '' ||
-                        password === '' ||
-                        passwordAgain === '' ||
-                        password !== passwordAgain
-                    }
-                >
+                    id="get-confirmation-code" color="primary" variant='contained' fullWidth
+                    disabled={name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain}
+                    onClick={_=>dispatch(sagaActions.signUpStep1(name, email, password))}>
                     {'Get Confirmation Code'}
                 </Button>
             }
             {
-                authPageState === SIGN_UP_STEP_2 &&
+                authPageState === AuthPageState.SIGN_UP_STEP_2 &&
                 <Button
-                    id="enter-confirmation-code"
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={signUpStep2}
-                    disabled={
-                        email === '' ||
-                        confirmationCode === '' ||
-                        confirmationCode.length !== 4}
-                >
+                    id="enter-confirmation-code" color="primary" variant='contained' fullWidth
+                    disabled={email === '' || confirmationCode === '' || confirmationCode.length !== 4}
+                    onClick={_=>dispatch(sagaActions.signUpStep2(email, confirmationCode))}>
                     {'Enter Confirmation Code'}
                 </Button>
             }
             {
-                authPageState === SIGN_IN &&
+                authPageState === AuthPageState.SIGN_IN &&
                 <Button
-                    id="sign-in"
-                    color="primary"
-                    variant='contained'
-                    fullWidth
-                    onClick={signIn}
+                    id="sign-in" color="primary" variant='contained' fullWidth
                     disabled={false}
-                >
+                    onClick={_=>dispatch(sagaActions.signIn(email, password))}>
                     {'SIGN IN'}
                 </Button>
             }
             {
                 authFeedbackMessage !== '' &&
                 <Typography
-                    id="auth-feedback-message"
-                    variant="body2"
-                    color="textSecondary"
-                    align="center"
-                >
+                    id="auth-feedback-message" variant="body2" color="textSecondary" align="center">
                     {authFeedbackMessage}
                 </Typography>
             }
             {
-                [SIGN_UP_STEP_1, SIGN_UP_STEP_2].includes(authPageState) &&
+                [AuthPageState.SIGN_UP_STEP_1, AuthPageState.SIGN_UP_STEP_2].includes(authPageState) &&
                 <Button
-                    id="sign-in-instead"
-                    fullWidth
-                    color="primary"
-                    onClick={signInPanel}
-                    variant="outlined"
-                >
+                    id="sign-in-instead" fullWidth color="primary" variant="outlined"
+                    onClick={_=>dispatch(actions.signInPanel())}>
                     {'SIGN IN INSTEAD'}
                 </Button>
             }
             {
-                authPageState === SIGN_IN &&
+                authPageState === AuthPageState.SIGN_IN &&
                 <Button
-                    id="sign-up-instead"
-                    fullWidth
-                    color="primary"
-                    onClick={signUpPanel}
-                    variant="outlined"
-                >
+                    id="sign-up-instead" fullWidth color="primary" variant="outlined"
+                    onClick={_=>dispatch(actions.signUpPanel())}>
                     {'SIGN UP INSTEAD'}
-                </Button>
-            }
-            <Button id="live-demo" color="primary" variant='contained' fullWidth onClick={liveDemo}>
+                </Button>}
+            <Button
+                id="live-demo" color="primary" variant='contained' fullWidth
+                onClick={_=>dispatch(sagaActions.liveDemo())}>
                 {'LIVE DEMO'}
             </Button>
             <Typography variant="body2" color="textSecondary" align="center">

@@ -2,7 +2,7 @@ import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import { MAP_RIGHTS } from '../core/EditorFlow'
+import {MAP_RIGHTS, sagaActions} from '../core/EditorFlow'
 
 export function UndoRedo () {
     const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
@@ -10,15 +10,19 @@ export function UndoRedo () {
     const undoDisabled = useSelector((state: RootStateOrAny) => state.undoDisabled)
     const redoDisabled = useSelector((state: RootStateOrAny) => state.redoDisabled)
     const dispatch = useDispatch()
-    const undo = () => dispatch({ type: 'UNDO'})
-    const redo = () => dispatch({ type: 'REDO'})
     return (
         <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">
             <div style={{ display: 'flex',  }}>
-                <IconButton color='secondary' onClick={undo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}>
+                <IconButton
+                    color='secondary' disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}
+                    onClick={_=>dispatch(sagaActions.undo())}
+                >
                     <UndoIcon/>
                 </IconButton>
-                <IconButton color='secondary' onClick={redo} disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}>
+                <IconButton
+                    color='secondary'  disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}
+                    onClick={_=>dispatch(sagaActions.redo())}
+                >
                     <RedoIcon/>
                 </IconButton>
             </div>

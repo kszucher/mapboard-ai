@@ -5,16 +5,12 @@ import {DataGrid} from "@mui/x-data-grid"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
+import {actions, PageState, sagaActions} from "../core/EditorFlow";
 
 export function Shares() {
     const shareDataExport = useSelector((state: RootStateOrAny) => state.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))
     const shareDataImport = useSelector((state: RootStateOrAny) => state.shareDataImport).map((el: any, idx: any) => ({...el, id: idx}))
     const dispatch = useDispatch()
-    const getShares = () => dispatch({type: 'GET_SHARES'})
-    const showWs = () => dispatch({type: 'SHOW_WS'})
-    const acceptShare = (params: any) => dispatch({type: 'ACCEPT_SHARE', payload: {shareId: params.row._id}})
-    const deleteShare = (params: any) => dispatch({type: 'DELETE_SHARE', payload: {shareId: params.row._id}})
-
     const columnsExport = [
         {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
         {field: 'shareUserEmail', headerName: 'Shared With', width: 250, sortable: false, editable: false},
@@ -25,7 +21,7 @@ export function Shares() {
                     <IconButton
                         aria-label="xxx"
                         size="small"
-                        onClick={_=>deleteShare(params)}
+                        onClick={_=>dispatch(sagaActions.deleteShare(params.row._id))}
                         disabled={false}>
                         <CancelOutlinedIcon/>
                     </IconButton>
@@ -44,7 +40,7 @@ export function Shares() {
                     <IconButton
                         aria-label="xxx"
                         size="small"
-                        onClick={_=>acceptShare(params)}
+                        onClick={_=>dispatch(sagaActions.acceptShare(params.row._id))}
                         disabled={params.row.status === 'accepted'}>
                         {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}
                         {params.row.status === 'accepted' && <CheckCircleIcon/>}
@@ -55,7 +51,7 @@ export function Shares() {
     ];
 
     useEffect(() => {
-        getShares()
+        dispatch(sagaActions.getShares())
     }, []);
 
     return (
@@ -83,8 +79,13 @@ export function Shares() {
                         disableSelectionOnClick
                         autoHeight={true}/>}
                 </div>
-                <Button color="primary" variant='outlined' onClick={getShares}>{'REFRESH'}</Button>
-                <Button color="primary" variant='outlined' onClick={showWs}>{'CLOSE'}</Button>
+                <Button color="primary" variant='outlined' onClick={_=>dispatch(sagaActions.getShares())}>
+                    {'REFRESH'}
+                </Button>
+                <Button color="primary" variant='outlined'
+                        onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
+                    {'CLOSE'}
+                </Button>
             </div>}
         </Modal>
     )

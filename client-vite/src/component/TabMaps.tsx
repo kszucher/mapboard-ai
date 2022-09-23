@@ -1,5 +1,6 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import {Tab, Tabs} from "@mui/material";
+import {sagaActions} from "../core/EditorFlow";
 
 export default function TabMaps() {
     const tabShrink = useSelector((state: RootStateOrAny) => state.tabShrink)
@@ -9,7 +10,6 @@ export default function TabMaps() {
     const breadcrumbMapIdList = useSelector((state: RootStateOrAny) => state.breadcrumbMapIdList)
     const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
     const dispatch = useDispatch()
-    const openMapFromTab = (value: number) =>  dispatch({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}})
     return (
         <div
             className="_bg fixed top-[96px] border-l-0"
@@ -26,9 +26,9 @@ export default function TabMaps() {
                 orientation={'vertical'}
                 variant="scrollable"
                 aria-label="Vertical tabs example"
-                value={tabMapSelected}
-                onChange={(e, value) => openMapFromTab(value)}
                 indicatorColor="primary"
+                value={tabMapSelected}
+                onChange={(e, value) => dispatch(sagaActions.openMapFromTab(value))}
             >
                 {
                     tabMapNameList.map((name: string, index: number) => (

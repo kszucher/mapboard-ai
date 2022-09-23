@@ -1,21 +1,12 @@
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
-import { PAGE_STATES } from '../core/EditorFlow'
+import {actions, PageState, sagaActions} from '../core/EditorFlow'
 
 export default function ProfileMenu () {
     const moreMenu = useSelector((state: RootStateOrAny) => state.moreMenu)
     const booleanMoreMenu = Boolean(moreMenu)
     const pageState = useSelector((state: RootStateOrAny) => state.pageState)
     const dispatch = useDispatch()
-    const {DEMO, WS} = PAGE_STATES;
-
-    const closeMoreMenu = () => dispatch({type: 'CLOSE_MORE_MENU'})
-    const showProfile = () => dispatch({type: 'SHOW_WS_PROFILE'})
-    const showSettings = () => dispatch({type: 'SHOW_WS_SETTINGS'})
-    const showShares = () => dispatch({type: 'SHOW_WS_SHARES'})
-    const showAuth = () => dispatch({type: 'SHOW_AUTH'})
-    const signOut = () => dispatch({type: 'SIGN_OUT'})
-
     return (
         <Menu
             anchorEl={moreMenu}
@@ -23,29 +14,55 @@ export default function ProfileMenu () {
             keepMounted
             transformOrigin={{vertical: 'top', horizontal: 'right'}}
             open={booleanMoreMenu}
-            onClose={closeMoreMenu}
-        >
+            onClose={_=>dispatch(actions.closeMoreMenu())}>
             {
-                pageState === WS && [
-                    <MenuItem key={0} onClick={() => {closeMoreMenu(); showProfile()}}>
+                pageState === PageState.WS && [
+                    <MenuItem
+                        key={0}
+                        onClick={() => {
+                            dispatch(actions.closeMoreMenu())
+                            dispatch(actions.setPageState(PageState.WS_PROFILE))}
+                        }
+                    >
                         {'Profile'}
                     </MenuItem>,
-                    <MenuItem key={1} onClick={() => {closeMoreMenu(); showSettings()}}>
+                    <MenuItem
+                        key={1}
+                        onClick={() => {
+                            dispatch(actions.closeMoreMenu())
+                            dispatch(actions.setPageState(PageState.WS_SETTINGS))}
+                        }
+                    >
                         {'Settings'}
                     </MenuItem>,
                     // <Divider key={2}/>,
-                    <MenuItem key={3} onClick={() => {closeMoreMenu(); showShares()}}>
+                    <MenuItem
+                        key={3}
+                        onClick={() => {
+                            dispatch(actions.closeMoreMenu())
+                            dispatch(actions.setPageState(PageState.WS_SHARES))}
+                        }
+                    >
                         {'Shares'}
                     </MenuItem>,
                     // <Divider key={4} />,
-                    <MenuItem key={5} onClick={signOut}>
+                    <MenuItem
+                        key={5}
+                        onClick={() => {dispatch(sagaActions.signOut)}}
+                    >
                         {'Sign Out'}
                     </MenuItem>
                 ]
             }
             {
-                pageState === DEMO && [
-                    <MenuItem key={0} onClick={() => {closeMoreMenu(); showAuth()}}>
+                pageState === PageState.DEMO && [
+                    <MenuItem
+                        key={0}
+                        onClick={() => {
+                            dispatch(actions.closeMoreMenu())
+                            dispatch(actions.setPageState(PageState.AUTH))}
+                        }
+                    >
                         Sign In / Sign Up
                     </MenuItem>
                 ]

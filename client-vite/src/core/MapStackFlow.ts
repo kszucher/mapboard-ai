@@ -5,6 +5,7 @@ import { copy, subsref } from './Utils'
 import { mapDeinit } from '../map/MapDeinit'
 import { mapDisassembly } from '../map/MapDisassembly'
 import { recalc } from './MapFlow'
+import {sagaActions} from "./EditorFlow";
 
 export let mapStack = {
     data: [],
@@ -59,7 +60,7 @@ export function checkPop(dispatch) {
     } else {
         // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex]))
         // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
-        dispatch({ type: 'MAP_STACK_CHANGED' })
+        dispatch(sagaActions.mapStackChanged())
     }
 }
 
