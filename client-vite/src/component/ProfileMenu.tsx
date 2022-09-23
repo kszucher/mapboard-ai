@@ -4,16 +4,15 @@ import {actions, PageState, sagaActions} from '../core/EditorFlow'
 
 export default function ProfileMenu () {
     const moreMenu = useSelector((state: RootStateOrAny) => state.moreMenu)
-    const booleanMoreMenu = Boolean(moreMenu)
     const pageState = useSelector((state: RootStateOrAny) => state.pageState)
     const dispatch = useDispatch()
     return (
         <Menu
-            anchorEl={moreMenu}
+            anchorEl={document.getElementById('profile-button')}
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             keepMounted
             transformOrigin={{vertical: 'top', horizontal: 'right'}}
-            open={booleanMoreMenu}
+            open={moreMenu}
             onClose={_=>dispatch(actions.closeMoreMenu())}>
             {
                 pageState === PageState.WS && [

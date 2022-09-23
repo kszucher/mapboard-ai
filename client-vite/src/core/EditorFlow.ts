@@ -96,7 +96,7 @@ const editorState = {
     shareDataExport: [],
     shareDataImport: [],
 
-    moreMenu: null,
+    moreMenu: false,
 
     interactionDisabled: false
 }
@@ -157,8 +157,8 @@ const allSlice = createSlice({
         setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
         setShareFeedbackMessage(state, action: PayloadAction<string>) { state.shareFeedbackMessage = action.payload },
 
-        openMoreMenu(state, action: PayloadAction<any>) { state.moreMenu = action.payload },
-        closeMoreMenu(state) { state.moreMenu = null },
+        openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
+        closeMoreMenu(state) { state.moreMenu = false },
 
         parseRespPayload(state, action: PayloadAction<any>) {
             return { ...state, ...action.payload }
