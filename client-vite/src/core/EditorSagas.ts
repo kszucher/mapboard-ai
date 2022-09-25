@@ -276,8 +276,8 @@ function* mapStackSaga () {
             }
         }
         yield put(actions.setNodeParams({ node: assignment, nodeTriggersMap: false }))
-        yield put(sagaActions.setUndoDisabled(mapStack.dataIndex === 0))
-        yield put(sagaActions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
+        yield put(actions.setUndoDisabled(mapStack.dataIndex === 0))
+        yield put(actions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
     }
 }
 
