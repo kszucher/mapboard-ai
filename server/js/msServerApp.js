@@ -186,7 +186,7 @@ async function resolveType(req, userId) {
         }
         case 'CREATE_MAP_IN_TAB': { // MUTATION
             const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
-            await MongoQueries.appendTabReplaceBreadcrumbs(users, userId, mapId)
+            await MongoQueries.appendTabsReplaceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             return { error: '', data: { ...userInfo, ...mapInfo } }
@@ -302,7 +302,7 @@ async function resolveType(req, userId) {
                 { returnDocument: 'after' }
             )).value
             const mapId = share.sharedMap
-            await MongoQueries.appendTabReplaceBreadcrumbs(users, userId, mapId)
+            await MongoQueries.appendTabsReplaceBreadcrumbs(users, userId, mapId)
             const userInfo = await getUserInfo(userId)
             const mapInfo = await getMapInfo(userId, mapId, 'data')
             const shareInfo = await getShareInfo(userId)
