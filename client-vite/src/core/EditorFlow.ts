@@ -206,8 +206,6 @@ export const sagaActions = {
     // SIDE EFFECT RELATED
     undo: () => ({type: 'UNDO'}),
     redo: () => ({type: 'REDO'}),
-    setUndoDisabled: () => ({type: 'SET_UNDO_DISABLED'}),
-    setRedoDisabled: () => ({type: 'SET_REDO_DISABLED'}),
     mapStackChanged: () => ({type: 'MAP_STACK_CHANGED'}),
     toggleTask: () => ({type: 'TOGGLE_TASK'}),
     insertTable: (row: number, col: number) => ({type: 'INSERT_TABLE', payload: {rowLen: row, colLen: col}}),
