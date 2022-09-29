@@ -1,10 +1,10 @@
-import {useEffect} from 'react'
+import {FC, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getEquationDim, getTextDim, isChrome} from '../core/Utils'
-import Auth from "./Auth"
-import Logo from "./Logo"
-import TabMaps from "./TabMaps"
-import Breadcrumbs from "./BreadcrumbMaps"
+import {Auth} from "./Auth"
+import {Logo} from "./Logo"
+import {TabMaps} from "./TabMaps"
+import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {ShareThisMap} from "./ShareThisMap"
@@ -23,108 +23,101 @@ import {Settings} from './Settings'
 import {Profile} from './Profile'
 
 const getMuiTheme = (colorMode: string)  => createTheme({
-    palette: {
-        mode: colorMode as PaletteMode,
-        primary: {
-            main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
-        },
-        secondary: {
-            main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
-        },
+  palette: {
+    mode: colorMode as PaletteMode,
+    primary: {
+      main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
     },
-    spacing: 2,
-    typography: {
-        fontFamily: 'Comfortaa',
+    secondary: {
+      main: colorMode === 'light' ? '#5f0a87' : '#dddddd',
     },
+  },
+  spacing: 2,
+  typography: {
+    fontFamily: 'Comfortaa',
+  },
 })
 
-const Layers = () => {
-    return (
-        <>
-            <g id="layer0"/>
-            <g id="layer1"/>
-            <g id="layer2"/>
-            <g id="layer3"/>
-            <g id="layer4"/>
-            <g id="layer5"/>
-        </>
-    )
+const Layers: FC = () => {
+  return (
+    <>
+      <g id="layer0"/>
+      <g id="layer1"/>
+      <g id="layer2"/>
+      <g id="layer3"/>
+      <g id="layer4"/>
+      <g id="layer5"/>
+    </>
+  )
 }
 
-const Map = () => {
-    return (
-        <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
-            <div
-                style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
-                <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
-                    {isChrome
-                        ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
-                        : <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>
-                    }
-                </svg>
-                <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
-            </div>
-        </div>
-    )
+const Map: FC = () => {
+  return (
+    <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
+      <div
+        style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+        <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
+          {isChrome
+            ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
+            : <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>
+          }
+        </svg>
+        <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
+      </div>
+    </div>
+  )
 }
 
-export function Page() {
-    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-    const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-    const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
-    const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
-    const dispatch = useDispatch()
+export const Page: FC = () => {
+  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+  const pageState = useSelector((state: RootStateOrAny) => state.pageState)
+  const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
+  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
+  const dispatch = useDispatch()
 
-    useEffect(()=> {
-        getTextDim('Test', 12)
-        getEquationDim('\\[Test\\]')
-        const cred = JSON.parse(localStorage.getItem('cred') as string)
-        if (cred !== null) {
-            dispatch(sagaActions.signIn(cred.email, cred.password))
+  useEffect(()=> {
+    getTextDim('Test', 12)
+    getEquationDim('\\[Test\\]')
+    const cred = JSON.parse(localStorage.getItem('cred') as string)
+    if (cred !== null) {
+      dispatch(sagaActions.signIn(cred.email, cred.password))
+    }
+  }, [])
+
+  return (
+    <div id="page">
+      <ThemeProvider theme={getMuiTheme(colorMode)}>
+        {pageState === PageState.AUTH && <Auth/>}
+        {
+          ![PageState.AUTH, PageState.EMPTY].includes(pageState) &&
+          <>
+            <Map/>
+            <Logo/>
+            <ProfileButton/>
+            {
+              ![PageState.AUTH, PageState.EMPTY, PageState.DEMO,].includes(pageState) &&
+              <>
+                <UndoRedo/>
+                <BreadcrumbMaps/>
+                <TabMaps/>
+                <ControlsLeft/>
+                <ControlsRight/>
+              </>
+            }
+            {formatterVisible && <Formatter/>}
+            {frameEditorVisible && <FrameCarousel/>}
+          </>
         }
-    }, [])
+        {pageState === PageState.WS_PROFILE && <Profile/>}
+        {pageState === PageState.WS_SETTINGS && <Settings/>}
+        {pageState === PageState.WS_SHARES && <Shares/>}
+        {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ShouldCreateMapInMap/>}
+        {pageState === PageState.WS_CREATE_TABLE && <CreateTable/>}
+        {pageState === PageState.WS_CREATE_TASK && <ShouldUpdateTask/>}
+        {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMap/>}
 
-    return (
-        <div id="page">
-            <ThemeProvider theme={getMuiTheme(colorMode)}>
-                {pageState === PageState.AUTH && <Auth/>}
-                {
-                    ![
-                        PageState.AUTH,
-                        PageState.EMPTY
-                    ].includes(pageState) &&
-                    <>
-                        <Map/>
-                        <Logo/>
-                        <ProfileButton/>
-                        {
-                            ![
-                                PageState.AUTH,
-                                PageState.EMPTY,
-                                PageState.DEMO,
-                            ].includes(pageState) &&
-                            <>
-                                <UndoRedo/>
-                                <Breadcrumbs/>
-                                <TabMaps/>
-                                <ControlsLeft/>
-                                <ControlsRight/>
-                            </>
-                        }
-                        {formatterVisible && <Formatter/>}
-                        {frameEditorVisible && <FrameCarousel/>}
-                    </>
-                }
-                {pageState === PageState.WS_PROFILE && <Profile/>}
-                {pageState === PageState.WS_SETTINGS && <Settings/>}
-                {pageState === PageState.WS_SHARES && <Shares/>}
-                {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ShouldCreateMapInMap/>}
-                {pageState === PageState.WS_CREATE_TABLE && <CreateTable/>}
-                {pageState === PageState.WS_CREATE_TASK && <ShouldUpdateTask/>}
-                {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMap/>}
-
-                <WindowListeners/>
-            </ThemeProvider>
-        </div>
-    )
+        <WindowListeners/>
+      </ThemeProvider>
+    </div>
+  )
 }

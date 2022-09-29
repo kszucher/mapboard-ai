@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import {useEffect} from "react"
+import {FC, useEffect} from "react"
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { mapDispatch, recalc, redraw } from '../core/MapFlow'
 import { arraysSame, copy, setEndOfContenteditable } from '../core/Utils'
@@ -24,553 +24,553 @@ let mapAreaListener
 let landingAreaListener
 
 const getCoords = (e) => {
-    let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-    let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-    let mapHolderDiv = document.getElementById('mapHolderDiv')
-    let x = e.pageX - winWidth + mapHolderDiv.scrollLeft
-    let y = e.pageY - winHeight + mapHolderDiv.scrollTop
-    return [x, y]
+  let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+  let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+  let mapHolderDiv = document.getElementById('mapHolderDiv')
+  let x = e.pageX - winWidth + mapHolderDiv.scrollLeft
+  let y = e.pageY - winHeight + mapHolderDiv.scrollTop
+  return [x, y]
 }
 
 const getNativeEvent = ({path, composedPath, key, code, which}) =>
-    ({ path: path || (composedPath && composedPath()), key, code, which })
+  ({ path: path || (composedPath && composedPath()), key, code, which })
 
-export function WindowListeners() {
-    const {EDIT, VIEW} = MAP_RIGHTS
+export const WindowListeners: FC = () => {
+  const {EDIT, VIEW} = MAP_RIGHTS
 
-    const mapId = useSelector((state: RootStateOrAny) => state.mapId)
-    const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
-    const mapData = useSelector((state: RootStateOrAny) => state.mapData)
-    const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
-    const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
-    const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
-    const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-    const landingData = useSelector((state: RootStateOrAny) => state.landingData)
-    const landingDataIndex = useSelector((state: RootStateOrAny) => state.landingDataIndex)
-    const node = useSelector((state: RootStateOrAny) => state.node)
-    const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
-    const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-    const dispatch = useDispatch()
+  const mapId = useSelector((state: RootStateOrAny) => state.mapId)
+  const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
+  const mapData = useSelector((state: RootStateOrAny) => state.mapData)
+  const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
+  const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
+  const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
+  const pageState = useSelector((state: RootStateOrAny) => state.pageState)
+  const landingData = useSelector((state: RootStateOrAny) => state.landingData)
+  const landingDataIndex = useSelector((state: RootStateOrAny) => state.landingDataIndex)
+  const node = useSelector((state: RootStateOrAny) => state.node)
+  const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
+  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+  const dispatch = useDispatch()
 
-    const mutationFun = (lm, mutationsList) => {
-        for (let mutation of mutationsList) {
-            if (mutation.type === 'characterData') {
-                let holderElement = document.getElementById(`${lm.nodeId}_div`)
-                lm.content = holderElement.innerHTML
-                lm.isDimAssigned = 0
-                recalc()
-                redraw(colorMode)
-            }
-        }
-    }
-
-    const startEdit = () => {
-        let lm = mapref(selectionState.lastPath)
-        if (!lm.hasCell) {
-            if (lm.contentType === 'equation') {
-                lm.contentType = 'text'
-                lm.isDimAssigned = 0
-                redraw(colorMode)
-            }
-            let holderElement = document.getElementById(`${lm.nodeId}_div`)
-            holderElement.contentEditable = 'true'
-            setEndOfContenteditable(holderElement)
-            isEditing = 1
-            lm.isEditing = 1
-            mutationObserver = new MutationObserver(mutationsList => mutationFun(lm, mutationsList))
-            mutationObserver.observe(holderElement, {
-                attributes: false,
-                childList: false,
-                subtree: true,
-                characterData: true
-            })
-        }
-    }
-
-    const finishEdit = () => {
-        let lm = mapref(selectionState.lastPath)
-        mutationObserver.disconnect()
+  const mutationFun = (lm, mutationsList) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'characterData') {
         let holderElement = document.getElementById(`${lm.nodeId}_div`)
-        holderElement.contentEditable = 'false'
-        lm.isEditing = 0
-        isEditing = 0
-        if (lm.content.substring(0, 2) === '\\[') {
-            lm.contentType = 'equation'
-            lm.isDimAssigned = 0
-        } else if (lm.content.substring(0, 1) === '=') {
-            lm.contentCalc = lm.content
-            lm.isDimAssigned = 0
-        }
-    }
-
-    const checkNodeClicked = (e) => {
-        let isNodeClicked = false;
-        [fromX, fromY] = getCoords(e)
-        let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY) // TODO multi r rethink
-        if (lastOverPath.length) {
-            isNodeClicked = true
-            let m = mapref(['m'])
-            m.deepestSelectablePath = copy(lastOverPath)
-            if (m.deepestSelectablePath.length === 4) {
-                m.deepestSelectablePath = ['r', 0] // TODO multi r rethink
-            }
-        }
-        return isNodeClicked
-    }
-
-    const checkTaskClicked = (path) => {
-        let isTaskClicked = false
-        if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
-            for (const pathItem of path) {
-                if (pathItem.id) {
-                    if (pathItem.id.substring(17, 27) === 'taskCircle') {
-                        isTaskClicked = true
-                        break
-                    }
-                }
-            }
-        }
-        return isTaskClicked
-    }
-
-    // LANDING LISTENERS
-    const wheel = (e) => {
-        e.preventDefault()
-        if (!isIntervalRunning) {
-            namedInterval = setInterval(function () {
-                clearInterval(namedInterval)
-                isIntervalRunning = false
-                if (Math.sign(e.deltaY) === 1) {
-                    dispatch(actions.playLandingNext())
-                } else {
-                    dispatch(actions.playLandingPrev())
-                }
-            }, 100)
-        }
-        isIntervalRunning = true
-    }
-
-    // MAP LISTENERS
-    const contextmenu = colorMode => e => {
-        e.preventDefault()
-    }
-
-    const resize = colorMode => e => {
-        mapDispatch('setIsResizing')
+        lm.content = holderElement.innerHTML
+        lm.isDimAssigned = 0
+        recalc()
         redraw(colorMode)
+      }
     }
+  }
 
-    const popstate = colorMode => e => {
+  const startEdit = () => {
+    let lm = mapref(selectionState.lastPath)
+    if (!lm.hasCell) {
+      if (lm.contentType === 'equation') {
+        lm.contentType = 'text'
+        lm.isDimAssigned = 0
+        redraw(colorMode)
+      }
+      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      holderElement.contentEditable = 'true'
+      setEndOfContenteditable(holderElement)
+      isEditing = 1
+      lm.isEditing = 1
+      mutationObserver = new MutationObserver(mutationsList => mutationFun(lm, mutationsList))
+      mutationObserver.observe(holderElement, {
+        attributes: false,
+        childList: false,
+        subtree: true,
+        characterData: true
+      })
     }
+  }
 
-    const mousedown = colorMode => e => {
-        e.preventDefault()
-        const {path, which} = getNativeEvent(e)
-        if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-            return
-        }
-        if (whichDown === 0) {
-            whichDown = which
-            if (isEditing === 1) {
-                finishEdit()
-                redraw(colorMode)
-            }
-            (window.getSelection
-                    ? window.getSelection()
-                    : document.selection
-            ).empty()
-            elapsed = 0
-            push()
-            if (which === 1) {
-                isNodeClicked = checkNodeClicked(e)
-                isTaskClicked = checkTaskClicked(path)
-                if (isNodeClicked) {
-                    let m = mapref(['m'])
-                    let lm = mapref(m.deepestSelectablePath)
-                    if (lm.linkType === '') {
-                        if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                            mapDispatch('selectStruct')
-                        } else {
-                            mapDispatch('selectStructToo')
-                        }
-                        redraw(colorMode)
-                    } else {
-                        if (lm.linkType === 'internal') {
-                            dispatch(sagaActions.openMapFromMap())
-                        } else if (lm.linkType === 'external') {
-                            whichDown = 0
-                            window.open(lm.link, '_blank')
-                            window.focus()
-                        }
-                    }
-                } else if (isTaskClicked) {
-                    mapDispatch('setTaskStatus', {
-                        taskStatus: parseInt(path[0].id.charAt(27), 10),
-                        nodeId: path[0].id.substring(0, 12)
-                    })
-                    redraw(colorMode)
-                } else {
-                    mapDispatch('clearSelection')
-                }
-            } else if (which === 2) {
-                let el = document.getElementById('mapHolderDiv')
-                scrollLeft = el.scrollLeft
-                scrollTop = el.scrollTop
-                pageX = e.pageX
-                pageY = e.pageY
-            } else if (which === 3) {
-                const isNodeClicked = checkNodeClicked(e)
-                if (isNodeClicked) {
-                    if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-                        mapDispatch('selectStructFamily')
-                    } else {
-                        mapDispatch('selectStructToo')
-                    }
-                    redraw(colorMode)
-                }
-            }
-        }
+  const finishEdit = () => {
+    let lm = mapref(selectionState.lastPath)
+    mutationObserver.disconnect()
+    let holderElement = document.getElementById(`${lm.nodeId}_div`)
+    holderElement.contentEditable = 'false'
+    lm.isEditing = 0
+    isEditing = 0
+    if (lm.content.substring(0, 2) === '\\[') {
+      lm.contentType = 'equation'
+      lm.isDimAssigned = 0
+    } else if (lm.content.substring(0, 1) === '=') {
+      lm.contentCalc = lm.content
+      lm.isDimAssigned = 0
     }
+  }
 
-    const mousemove = colorMode => e => {
-        e.preventDefault()
-        const {which} = getNativeEvent(e)
-        if (whichDown === which) {
-            elapsed++
-            if (which === 1) {
-                let m = mapref(['m'])
-                if (isNodeClicked) {
-                    let m = mapref(['m'])
-                    let [toX, toY] = getCoords(e)
-                    m.moveTargetPath = []
-                    m.moveData = []
-                    let lastSelectedPath = selectionState.structSelectedPathList[0]
-                    let lastSelected = mapref(lastSelectedPath)
-                    if (!(lastSelected.nodeStartX < toX &&
-                        toX < lastSelected.nodeEndX &&
-                        lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
-                        toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-                        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY) // TODO multi r rethink
-                        if (lastNearestPath.length > 2) {
-                            m.moveTargetPath = copy(lastNearestPath)
-                            let lastFound = mapref(lastNearestPath)
-                            fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
-                            fromY = lastFound.nodeY
-                            m.moveData = [fromX, fromY, toX, toY]
-                            if (lastFound.s.length === 0) {
-                                m.moveTargetIndex = 0
-                            } else {
-                                let insertIndex = 0
-                                for (let i = 0; i < lastFound.s.length - 1; i++) {
-                                    if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
-                                        insertIndex = i + 1
-                                    }
-                                }
-                                if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-                                    insertIndex = lastFound.s.length
-                                }
-                                let lastSelectedParentPath = lastSelected.parentPath
-                                if (arraysSame(lastFound.path, lastSelectedParentPath)) {
-                                    if (lastSelected.index < insertIndex) {
-                                        insertIndex -= 1
-                                    }
-                                }
-                                m.moveTargetIndex = insertIndex
-                            }
-                        }
-                    }
-                    redraw(colorMode)
-                } else if (isTaskClicked) {
-                } else {
-                    let m = mapref(['m'])
-                    let [toX, toY] = getCoords(e)
-                    let startX = fromX < toX ? fromX : toX
-                    let startY = fromY < toY ? fromY : toY
-                    let width = Math.abs(toX - fromX)
-                    let height = Math.abs(toY - fromY)
-                    m.selectionRect = [startX, startY, width, height]
-                    mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
-                    recalc()
-                    redraw(colorMode)
-                    m.selectionRect = []
-                }
-            } else if (which === 2) {
-                let el = document.getElementById('mapHolderDiv')
-                el.scrollLeft = scrollLeft - e.pageX  + pageX
-                el.scrollTop = scrollTop -  e.pageY  + pageY
-            } else if (which === 3) {
-            }
-        }
+  const checkNodeClicked = (e) => {
+    let isNodeClicked = false;
+    [fromX, fromY] = getCoords(e)
+    let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY) // TODO multi r rethink
+    if (lastOverPath.length) {
+      isNodeClicked = true
+      let m = mapref(['m'])
+      m.deepestSelectablePath = copy(lastOverPath)
+      if (m.deepestSelectablePath.length === 4) {
+        m.deepestSelectablePath = ['r', 0] // TODO multi r rethink
+      }
     }
+    return isNodeClicked
+  }
 
-    const mouseup = colorMode => e => {
-        e.preventDefault()
-        const {which} = getNativeEvent(e)
-        if (whichDown === which) {
-            whichDown = 0
-            if (elapsed) {
-                if (which === 1) {
-                    if (isNodeClicked) {
-                        let m = mapref(['m'])
-                        if (m.moveTargetPath.length) {
-                            m.moveData = []
-                            m.shouldCenter = true // outside push - checkPop?
-                            mapDispatch('moveSelection')
-                            redraw(colorMode)
-                        }
-                    } else if (isTaskClicked) {
-                    } else {
-                        if (selectionState.structSelectedPathList.length === 0 &&
-                            selectionState.cellSelectedPathList.length === 0) {
-                            mapDispatch('select_R')
-                        }
-                        redraw(colorMode)
-                    }
-                } else if (which === 2) {
-                } else if (which === 3) {
-                }
-            } else {
-                if (which === 1) {
-                    if (isNodeClicked) {
-                    } else if (isTaskClicked) {
-                    } else {
-                        mapDispatch('select_R')
-                        redraw(colorMode)
-                    }
-                } else if (which === 2) {
-                } else if (which === 3) {
-                }
-            }
-            checkPop(dispatch)
+  const checkTaskClicked = (path) => {
+    let isTaskClicked = false
+    if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
+      for (const pathItem of path) {
+        if (pathItem.id) {
+          if (pathItem.id.substring(17, 27) === 'taskCircle') {
+            isTaskClicked = true
+            break
+          }
         }
+      }
     }
+    return isTaskClicked
+  }
 
-    const dblclick = colorMode => e => {
-        const {path} = getNativeEvent(e)
-        e.preventDefault()
-        if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-            return
-        }
-        if (isNodeClicked) {
-            startEdit()
+  // LANDING LISTENERS
+  const wheel = (e) => {
+    e.preventDefault()
+    if (!isIntervalRunning) {
+      namedInterval = setInterval(function () {
+        clearInterval(namedInterval)
+        isIntervalRunning = false
+        if (Math.sign(e.deltaY) === 1) {
+          dispatch(actions.playLandingNext())
         } else {
+          dispatch(actions.playLandingPrev())
+        }
+      }, 100)
+    }
+    isIntervalRunning = true
+  }
+
+  // MAP LISTENERS
+  const contextmenu = colorMode => e => {
+    e.preventDefault()
+  }
+
+  const resize = colorMode => e => {
+    mapDispatch('setIsResizing')
+    redraw(colorMode)
+  }
+
+  const popstate = colorMode => e => {
+  }
+
+  const mousedown = colorMode => e => {
+    e.preventDefault()
+    const {path, which} = getNativeEvent(e)
+    if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
+      return
+    }
+    if (whichDown === 0) {
+      whichDown = which
+      if (isEditing === 1) {
+        finishEdit()
+        redraw(colorMode)
+      }
+      (window.getSelection
+          ? window.getSelection()
+          : document.selection
+      ).empty()
+      elapsed = 0
+      push()
+      if (which === 1) {
+        isNodeClicked = checkNodeClicked(e)
+        isTaskClicked = checkTaskClicked(path)
+        if (isNodeClicked) {
+          let m = mapref(['m'])
+          let lm = mapref(m.deepestSelectablePath)
+          if (lm.linkType === '') {
+            if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+              mapDispatch('selectStruct')
+            } else {
+              mapDispatch('selectStructToo')
+            }
+            redraw(colorMode)
+          } else {
+            if (lm.linkType === 'internal') {
+              dispatch(sagaActions.openMapFromMap())
+            } else if (lm.linkType === 'external') {
+              whichDown = 0
+              window.open(lm.link, '_blank')
+              window.focus()
+            }
+          }
+        } else if (isTaskClicked) {
+          mapDispatch('setTaskStatus', {
+            taskStatus: parseInt(path[0].id.charAt(27), 10),
+            nodeId: path[0].id.substring(0, 12)
+          })
+          redraw(colorMode)
+        } else {
+          mapDispatch('clearSelection')
+        }
+      } else if (which === 2) {
+        let el = document.getElementById('mapHolderDiv')
+        scrollLeft = el.scrollLeft
+        scrollTop = el.scrollTop
+        pageX = e.pageX
+        pageY = e.pageY
+      } else if (which === 3) {
+        const isNodeClicked = checkNodeClicked(e)
+        if (isNodeClicked) {
+          if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+            mapDispatch('selectStructFamily')
+          } else {
+            mapDispatch('selectStructToo')
+          }
+          redraw(colorMode)
+        }
+      }
+    }
+  }
+
+  const mousemove = colorMode => e => {
+    e.preventDefault()
+    const {which} = getNativeEvent(e)
+    if (whichDown === which) {
+      elapsed++
+      if (which === 1) {
+        let m = mapref(['m'])
+        if (isNodeClicked) {
+          let m = mapref(['m'])
+          let [toX, toY] = getCoords(e)
+          m.moveTargetPath = []
+          m.moveData = []
+          let lastSelectedPath = selectionState.structSelectedPathList[0]
+          let lastSelected = mapref(lastSelectedPath)
+          if (!(lastSelected.nodeStartX < toX &&
+            toX < lastSelected.nodeEndX &&
+            lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
+            toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
+            let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY) // TODO multi r rethink
+            if (lastNearestPath.length > 2) {
+              m.moveTargetPath = copy(lastNearestPath)
+              let lastFound = mapref(lastNearestPath)
+              fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
+              fromY = lastFound.nodeY
+              m.moveData = [fromX, fromY, toX, toY]
+              if (lastFound.s.length === 0) {
+                m.moveTargetIndex = 0
+              } else {
+                let insertIndex = 0
+                for (let i = 0; i < lastFound.s.length - 1; i++) {
+                  if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
+                    insertIndex = i + 1
+                  }
+                }
+                if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
+                  insertIndex = lastFound.s.length
+                }
+                let lastSelectedParentPath = lastSelected.parentPath
+                if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+                  if (lastSelected.index < insertIndex) {
+                    insertIndex -= 1
+                  }
+                }
+                m.moveTargetIndex = insertIndex
+              }
+            }
+          }
+          redraw(colorMode)
+        } else if (isTaskClicked) {
+        } else {
+          let m = mapref(['m'])
+          let [toX, toY] = getCoords(e)
+          let startX = fromX < toX ? fromX : toX
+          let startY = fromY < toY ? fromY : toY
+          let width = Math.abs(toX - fromX)
+          let height = Math.abs(toY - fromY)
+          m.selectionRect = [startX, startY, width, height]
+          mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
+          recalc()
+          redraw(colorMode)
+          m.selectionRect = []
+        }
+      } else if (which === 2) {
+        let el = document.getElementById('mapHolderDiv')
+        el.scrollLeft = scrollLeft - e.pageX  + pageX
+        el.scrollTop = scrollTop -  e.pageY  + pageY
+      } else if (which === 3) {
+      }
+    }
+  }
+
+  const mouseup = colorMode => e => {
+    e.preventDefault()
+    const {which} = getNativeEvent(e)
+    if (whichDown === which) {
+      whichDown = 0
+      if (elapsed) {
+        if (which === 1) {
+          if (isNodeClicked) {
             let m = mapref(['m'])
-            m.shouldCenter = true // outside push - checkPop?
+            if (m.moveTargetPath.length) {
+              m.moveData = []
+              m.shouldCenter = true // outside push - checkPop?
+              mapDispatch('moveSelection')
+              redraw(colorMode)
+            }
+          } else if (isTaskClicked) {
+          } else {
+            if (selectionState.structSelectedPathList.length === 0 &&
+              selectionState.cellSelectedPathList.length === 0) {
+              mapDispatch('select_R')
+            }
+            redraw(colorMode)
+          }
+        } else if (which === 2) {
+        } else if (which === 3) {
+        }
+      } else {
+        if (which === 1) {
+          if (isNodeClicked) {
+          } else if (isTaskClicked) {
+          } else {
+            mapDispatch('select_R')
+            redraw(colorMode)
+          }
+        } else if (which === 2) {
+        } else if (which === 3) {
+        }
+      }
+      checkPop(dispatch)
+    }
+  }
+
+  const dblclick = colorMode => e => {
+    const {path} = getNativeEvent(e)
+    e.preventDefault()
+    if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
+      return
+    }
+    if (isNodeClicked) {
+      startEdit()
+    } else {
+      let m = mapref(['m'])
+      m.shouldCenter = true // outside push - checkPop?
+    }
+    redraw(colorMode)
+  }
+
+  const keydown = colorMode => e => {
+    let {scope, lastPath} = selectionState
+    let lm = mapref(selectionState.lastPath)
+    let {key, code, which} = getNativeEvent(e)
+    // [37,38,39,40] = [left,up,right,down]
+    let keyStateMachineDb = [
+      ['c','s','a', 'keyMatch',                     'scope',                     'e','p','m', 'executionList',                          ],
+      [ 0,  0,  0,  key === 'F1',                  ['s', 'c', 'm'],               0,  1,  0, []                                         ],
+      [ 0,  0,  0,  key === 'F2',                  ['s', 'm'],                    0,  1,  0, ['startEdit']                              ],
+      [ 0,  0,  0,  key === 'F3',                  ['s', 'c', 'm'],               0,  1,  0, []                                         ],
+      [ 0,  0,  0,  key === 'F5',                  ['s', 'c', 'm'],               0,  0,  0, []                                         ],
+      [ 0,  0,  0,  key === 'Enter',               ['s', 'm'],                    1,  1,  0, ['finishEdit']                             ],
+      [ 0,  0,  0,  key === 'Enter',               ['s'],                         0,  1,  1, ['insert_D_S', 'startEdit']                ],
+      [ 0,  0,  0,  key === 'Enter',               ['m'],                         0,  1,  1, ['select_D_M']                             ],
+      [ 0,  1,  0,  key === 'Enter',               ['s', 'm'],                    0,  1,  1, ['insert_U_S', 'startEdit']                ],
+      [ 0,  0,  1,  key === 'Enter',               ['s'],                         0,  1,  1, ['cellifyMulti', 'select_first_M']         ],
+      [ 0,  0,  0,  key === 'Insert',              ['s'],                         1,  1,  1, ['finishEdit', 'insert_O_S', 'startEdit']  ],
+      [ 0,  0,  0,  key === 'Insert',              ['s'],                         0,  1,  1, ['insert_O_S', 'startEdit']                ],
+      [ 0,  0,  0,  key === 'Insert',              ['m'],                         0,  1,  1, ['select_O_M']                             ],
+      [ 0,  0,  0,  key === 'Tab',                 ['s'],                         1,  1,  1, ['finishEdit', 'insert_O_S', 'startEdit']  ],
+      [ 0,  0,  0,  key === 'Tab',                 ['s'],                         0,  1,  1, ['insert_O_S', 'startEdit']                ],
+      [ 0,  0,  0,  key === 'Tab',                 ['m'],                         0,  1,  1, ['select_O_M']                             ],
+      [ 0,  0,  0,  key === 'Delete',              ['s'],                         0,  1,  1, ['delete_S']                               ],
+      [ 0,  0,  0,  key === 'Delete',              ['cr', 'cc'],                  0,  1,  1, ['delete_CRCC']                            ],
+      [ 0,  0,  0,  code === 'Space',              ['s'],                         0,  1,  1, ['select_S_F_M']                           ],
+      [ 0,  0,  0,  code === 'Space',              ['m'],                         0,  1,  1, ['select_M_F_S']                           ],
+      [ 0,  0,  0,  code === 'Space',              ['c'],                         0,  1,  1, []                                         ],
+      [ 0,  0,  0,  code === 'Space',              ['cr', 'cc'],                  0,  1,  1, ['select_CRCC_F_M']                        ],
+      [ 0,  0,  0,  code === 'Backspace',          ['s'],                         0,  1,  1, ['select_S_B_M']                           ],
+      [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['select_CCRCC_B_S']                       ],
+      [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S']                          ],
+      [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_R']                               ],
+      [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ],
+      [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ],
+      [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
+      [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
+      [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['saveMap']                                ],
+      [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ],
+      [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
+      [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                   ],
+      [ 1,  0,  0,  code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose']                              ],
+      [ 0,  1,  0,  [37,39].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CR']                              ],
+      [ 0,  1,  0,  [38,40].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CC']                              ],
+      [ 0,  0,  0,  [37,38,39,40].includes(which), ['s'],                         0,  1,  1, ['selectNeighborStruct']                   ],
+      [ 0,  1,  0,  [38,40].includes(which),       ['s'],                         0,  1,  1, ['selectNeighborStructToo']                ],
+      [ 0,  1,  0,  [37,39].includes(which),       ['s'],                         0,  1,  1, ['selectDescendantsOut']                   ],
+      [ 0,  0,  0,  [37,38,39,40].includes(which), ['m'],                         0,  1,  1, ['selectNeighborMixed']                    ],
+      [ 0,  0,  0,  [37,38,39,40].includes(which), ['cr', 'cc'],                  0,  1,  1, ['select_CRCC']                            ],
+      [ 1,  0,  0,  [37,38,39,40].includes(which), ['s'],                         0,  1,  1, ['move_S']                                 ],
+      [ 1,  0,  0,  [37,38,39,40].includes(which), ['cr', 'cc'],                  0,  1,  1, ['move_CRCC']                              ],
+      [ 0,  0,  1,  [37,38,39,40].includes(which), ['m'],                         0,  1,  1, ['insert_M_CRCC']                          ],
+      [ 0,  0,  1,  [37,38,39,40].includes(which), ['c',],                        0,  1,  1, ['insert_CX_CRCC']                         ],
+      [ 0,  0,  1,  [37,39].includes(which),       ['cc',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
+      [ 0,  0,  1,  [38,40].includes(which),       ['cr',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
+      [ 0,  0,  1,  [37,38,39,40].includes(which), ['s', 'c', 'cr', 'cc'],        0,  1,  0, []                                         ],
+      [ 1,  0,  0,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyColorFromKey']                      ],
+      [ 0,  0,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
+      [ 0,  1,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
+    ]
+
+    let keyStateMachine = {}
+    for (let i = 0; i < keyStateMachineDb.length; i++) {
+      for (let h = 0; h < keyStateMachineDb[0].length; h++) {
+        keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h]
+      }
+      if (keyStateMachine.scope.includes(scope) &&
+        keyStateMachine.e === isEditing &&
+        keyStateMachine.c === +e.ctrlKey &&
+        keyStateMachine.s === +e.shiftKey &&
+        keyStateMachine.a === +e.altKey &&
+        keyStateMachine.keyMatch === true) {
+        if (keyStateMachine.p) {
+          e.preventDefault()
+        }
+        if (keyStateMachine.m) {
+          push()
+        }
+        for (let j = 0; j < keyStateMachine.executionList.length; j++) {
+          let currExecution = keyStateMachine.executionList[j]
+          if ([
+            'createMapInMap',
+            'saveMap',
+            'undo',
+            'redo',
+          ].includes(currExecution)) {
+            if (currExecution === 'createMapInMap') dispatch(sagaActions.createMapInMap())
+            if (currExecution === 'saveMap') dispatch(sagaActions.saveMap())
+            if (currExecution === 'undo') dispatch(sagaActions.undo())
+            if (currExecution === 'redo') dispatch(sagaActions.redo())
+          } else if (currExecution === 'startEdit') {
+            startEdit()
+          } else if (currExecution === 'finishEdit') {
+            finishEdit()
+          } else if (currExecution === 'applyColorFromKey') {
+            mapDispatch(currExecution, {currColor: which - 96})
+          } else {
+            mapDispatch(currExecution, {keyCode: e.code})
+            if (['insert_O_S',
+              'insert_U_S',
+              'insert_D_S'
+            ].includes(currExecution)) {
+              redraw(colorMode)
+              recalc()
+            }
+          }
         }
         redraw(colorMode)
+        if (keyStateMachine.m) {
+          checkPop(dispatch)
+        }
+        break
+      }
     }
+  }
 
-    const keydown = colorMode => e => {
-        let {scope, lastPath} = selectionState
-        let lm = mapref(selectionState.lastPath)
-        let {key, code, which} = getNativeEvent(e)
-        // [37,38,39,40] = [left,up,right,down]
-        let keyStateMachineDb = [
-            ['c','s','a', 'keyMatch',                     'scope',                     'e','p','m', 'executionList',                          ],
-            [ 0,  0,  0,  key === 'F1',                  ['s', 'c', 'm'],               0,  1,  0, []                                         ],
-            [ 0,  0,  0,  key === 'F2',                  ['s', 'm'],                    0,  1,  0, ['startEdit']                              ],
-            [ 0,  0,  0,  key === 'F3',                  ['s', 'c', 'm'],               0,  1,  0, []                                         ],
-            [ 0,  0,  0,  key === 'F5',                  ['s', 'c', 'm'],               0,  0,  0, []                                         ],
-            [ 0,  0,  0,  key === 'Enter',               ['s', 'm'],                    1,  1,  0, ['finishEdit']                             ],
-            [ 0,  0,  0,  key === 'Enter',               ['s'],                         0,  1,  1, ['insert_D_S', 'startEdit']                ],
-            [ 0,  0,  0,  key === 'Enter',               ['m'],                         0,  1,  1, ['select_D_M']                             ],
-            [ 0,  1,  0,  key === 'Enter',               ['s', 'm'],                    0,  1,  1, ['insert_U_S', 'startEdit']                ],
-            [ 0,  0,  1,  key === 'Enter',               ['s'],                         0,  1,  1, ['cellifyMulti', 'select_first_M']         ],
-            [ 0,  0,  0,  key === 'Insert',              ['s'],                         1,  1,  1, ['finishEdit', 'insert_O_S', 'startEdit']  ],
-            [ 0,  0,  0,  key === 'Insert',              ['s'],                         0,  1,  1, ['insert_O_S', 'startEdit']                ],
-            [ 0,  0,  0,  key === 'Insert',              ['m'],                         0,  1,  1, ['select_O_M']                             ],
-            [ 0,  0,  0,  key === 'Tab',                 ['s'],                         1,  1,  1, ['finishEdit', 'insert_O_S', 'startEdit']  ],
-            [ 0,  0,  0,  key === 'Tab',                 ['s'],                         0,  1,  1, ['insert_O_S', 'startEdit']                ],
-            [ 0,  0,  0,  key === 'Tab',                 ['m'],                         0,  1,  1, ['select_O_M']                             ],
-            [ 0,  0,  0,  key === 'Delete',              ['s'],                         0,  1,  1, ['delete_S']                               ],
-            [ 0,  0,  0,  key === 'Delete',              ['cr', 'cc'],                  0,  1,  1, ['delete_CRCC']                            ],
-            [ 0,  0,  0,  code === 'Space',              ['s'],                         0,  1,  1, ['select_S_F_M']                           ],
-            [ 0,  0,  0,  code === 'Space',              ['m'],                         0,  1,  1, ['select_M_F_S']                           ],
-            [ 0,  0,  0,  code === 'Space',              ['c'],                         0,  1,  1, []                                         ],
-            [ 0,  0,  0,  code === 'Space',              ['cr', 'cc'],                  0,  1,  1, ['select_CRCC_F_M']                        ],
-            [ 0,  0,  0,  code === 'Backspace',          ['s'],                         0,  1,  1, ['select_S_B_M']                           ],
-            [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['select_CCRCC_B_S']                       ],
-            [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S']                          ],
-            [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_R']                               ],
-            [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ],
-            [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ],
-            [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
-            [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
-            [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['saveMap']                                ],
-            [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ],
-            [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
-            [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                   ],
-            [ 1,  0,  0,  code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose']                              ],
-            [ 0,  1,  0,  [37,39].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CR']                              ],
-            [ 0,  1,  0,  [38,40].includes(which),       ['c', 'm'],                    0,  1,  1, ['select_CC']                              ],
-            [ 0,  0,  0,  [37,38,39,40].includes(which), ['s'],                         0,  1,  1, ['selectNeighborStruct']                   ],
-            [ 0,  1,  0,  [38,40].includes(which),       ['s'],                         0,  1,  1, ['selectNeighborStructToo']                ],
-            [ 0,  1,  0,  [37,39].includes(which),       ['s'],                         0,  1,  1, ['selectDescendantsOut']                   ],
-            [ 0,  0,  0,  [37,38,39,40].includes(which), ['m'],                         0,  1,  1, ['selectNeighborMixed']                    ],
-            [ 0,  0,  0,  [37,38,39,40].includes(which), ['cr', 'cc'],                  0,  1,  1, ['select_CRCC']                            ],
-            [ 1,  0,  0,  [37,38,39,40].includes(which), ['s'],                         0,  1,  1, ['move_S']                                 ],
-            [ 1,  0,  0,  [37,38,39,40].includes(which), ['cr', 'cc'],                  0,  1,  1, ['move_CRCC']                              ],
-            [ 0,  0,  1,  [37,38,39,40].includes(which), ['m'],                         0,  1,  1, ['insert_M_CRCC']                          ],
-            [ 0,  0,  1,  [37,38,39,40].includes(which), ['c',],                        0,  1,  1, ['insert_CX_CRCC']                         ],
-            [ 0,  0,  1,  [37,39].includes(which),       ['cc',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
-            [ 0,  0,  1,  [38,40].includes(which),       ['cr',],                       0,  1,  1, ['insert_CX_CRCC']                         ],
-            [ 0,  0,  1,  [37,38,39,40].includes(which), ['s', 'c', 'cr', 'cc'],        0,  1,  0, []                                         ],
-            [ 1,  0,  0,  which >= 96 && which <= 105,   ['s', 'm'],                    0,  1,  1, ['applyColorFromKey']                      ],
-            [ 0,  0,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
-            [ 0,  1,  0,  which >= 48,                   ['s', 'm'],                    0,  0,  0, ['eraseContent', 'startEdit']              ],
-        ]
+  const paste = colorMode => e => {
+    e.preventDefault()
+    pasteDispatch(isEditing, colorMode, dispatch)
+  }
 
-        let keyStateMachine = {}
-        for (let i = 0; i < keyStateMachineDb.length; i++) {
-            for (let h = 0; h < keyStateMachineDb[0].length; h++) {
-                keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h]
-            }
-            if (keyStateMachine.scope.includes(scope) &&
-                keyStateMachine.e === isEditing &&
-                keyStateMachine.c === +e.ctrlKey &&
-                keyStateMachine.s === +e.shiftKey &&
-                keyStateMachine.a === +e.altKey &&
-                keyStateMachine.keyMatch === true) {
-                if (keyStateMachine.p) {
-                    e.preventDefault()
-                }
-                if (keyStateMachine.m) {
-                    push()
-                }
-                for (let j = 0; j < keyStateMachine.executionList.length; j++) {
-                    let currExecution = keyStateMachine.executionList[j]
-                    if ([
-                        'createMapInMap',
-                        'saveMap',
-                        'undo',
-                        'redo',
-                    ].includes(currExecution)) {
-                        if (currExecution === 'createMapInMap') dispatch(sagaActions.createMapInMap())
-                        if (currExecution === 'saveMap') dispatch(sagaActions.saveMap())
-                        if (currExecution === 'undo') dispatch(sagaActions.undo())
-                        if (currExecution === 'redo') dispatch(sagaActions.redo())
-                    } else if (currExecution === 'startEdit') {
-                        startEdit()
-                    } else if (currExecution === 'finishEdit') {
-                        finishEdit()
-                    } else if (currExecution === 'applyColorFromKey') {
-                        mapDispatch(currExecution, {currColor: which - 96})
-                    } else {
-                        mapDispatch(currExecution, {keyCode: e.code})
-                        if (['insert_O_S',
-                            'insert_U_S',
-                            'insert_D_S'
-                        ].includes(currExecution)) {
-                            redraw(colorMode)
-                            recalc()
-                        }
-                    }
-                }
-                redraw(colorMode)
-                if (keyStateMachine.m) {
-                    checkPop(dispatch)
-                }
-                break
-            }
-        }
+  const addLandingListeners = () => {
+    landingAreaListener = new AbortController()
+    const {signal} = landingAreaListener
+    window.addEventListener("wheel", wheel, { signal, passive: false })
+  }
+
+  const removeLandingListeners = () => {
+    if (landingAreaListener !== undefined) {
+      landingAreaListener.abort()
     }
+  }
 
-    const paste = colorMode => e => {
-        e.preventDefault()
-        pasteDispatch(isEditing, colorMode, dispatch)
+  const addMapListeners = (colorMode) => {
+    mapAreaListener = new AbortController()
+    const {signal} = mapAreaListener
+    window.addEventListener("contextmenu", contextmenu(colorMode), { signal })
+    window.addEventListener('resize', resize(colorMode), { signal })
+    window.addEventListener('popstate', popstate(colorMode), { signal })
+    window.addEventListener('dblclick', dblclick(colorMode), { signal })
+    window.addEventListener('mousedown', mousedown(colorMode), { signal })
+    window.addEventListener('mousemove', mousemove(colorMode), { signal })
+    window.addEventListener('mouseup', mouseup(colorMode), { signal })
+    window.addEventListener("keydown", keydown(colorMode), { signal })
+    window.addEventListener("paste", paste(colorMode), { signal })
+  }
+
+  const removeMapListeners = () => {
+    if (mapAreaListener !== undefined) {
+      mapAreaListener.abort()
     }
+  }
 
-    const addLandingListeners = () => {
-        landingAreaListener = new AbortController()
-        const {signal} = landingAreaListener
-        window.addEventListener("wheel", wheel, { signal, passive: false })
+  useEffect(() => {
+    if (landingData.length) {
+      const mapData = landingData[landingDataIndex]
+      mapStackDispatch('initMapState', { mapData })
+      redraw(colorMode)
     }
+  }, [landingData, landingDataIndex])
 
-    const removeLandingListeners = () => {
-        if (landingAreaListener !== undefined) {
-            landingAreaListener.abort()
-        }
+  useEffect(() => {
+    if (mapId !== '' && mapSource !== '') {
+      mapStackDispatch('initMapState', { mapData })
+      redraw(colorMode)
+      dispatch(sagaActions.mapStackChanged())
     }
+  }, [mapId, mapSource, frameLen, frameSelected])
 
-    const addMapListeners = (colorMode) => {
-        mapAreaListener = new AbortController()
-        const {signal} = mapAreaListener
-        window.addEventListener("contextmenu", contextmenu(colorMode), { signal })
-        window.addEventListener('resize', resize(colorMode), { signal })
-        window.addEventListener('popstate', popstate(colorMode), { signal })
-        window.addEventListener('dblclick', dblclick(colorMode), { signal })
-        window.addEventListener('mousedown', mousedown(colorMode), { signal })
-        window.addEventListener('mousemove', mousemove(colorMode), { signal })
-        window.addEventListener('mouseup', mouseup(colorMode), { signal })
-        window.addEventListener("keydown", keydown(colorMode), { signal })
-        window.addEventListener("paste", paste(colorMode), { signal })
+  useEffect(() => {
+    if (pageState === PageState.WS) {
+      if (mapRight === EDIT) {
+        addMapListeners(colorMode)
+      } else if (mapRight === VIEW) {
+        // TODO figure out view listeners
+      }
+    } else if (pageState === PageState.DEMO) {
+      addLandingListeners()
     }
-
-    const removeMapListeners = () => {
-        if (mapAreaListener !== undefined) {
-            mapAreaListener.abort()
-        }
+    return () => {
+      removeMapListeners()
+      removeLandingListeners()
     }
+  }, [pageState, mapRight])
 
-    useEffect(() => {
-        if (landingData.length) {
-            const mapData = landingData[landingDataIndex]
-            mapStackDispatch('initMapState', { mapData })
-            redraw(colorMode)
-        }
-    }, [landingData, landingDataIndex])
+  useEffect(() => {
+    if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
+      push()
+      mapDispatch('applyMapParams', node)
+      redraw(colorMode)
+      checkPop(dispatch)
+    }
+  }, [node])
 
-    useEffect(() => {
-        if (mapId !== '' && mapSource !== '') {
-            mapStackDispatch('initMapState', { mapData })
-            redraw(colorMode)
-            dispatch(sagaActions.mapStackChanged())
-        }
-    }, [mapId, mapSource, frameLen, frameSelected])
+  useEffect(() => {
+    if (mapId !== '' && mapSource !== '') {
+      redraw(colorMode)
+      removeMapListeners()
+      if (mapRight === EDIT) {
+        addMapListeners(colorMode)
+      } else if (mapRight === VIEW) {
+        // TODO figure out view listeners
+      }
+    }
+    const root = document.querySelector(':root')
+    root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
+    root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
+    root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
+    root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
+  }, [colorMode])
 
-    useEffect(() => {
-        if (pageState === PageState.WS) {
-            if (mapRight === EDIT) {
-                addMapListeners(colorMode)
-            } else if (mapRight === VIEW) {
-                // TODO figure out view listeners
-            }
-        } else if (pageState === PageState.DEMO) {
-            addLandingListeners()
-        }
-        return () => {
-            removeMapListeners()
-            removeLandingListeners()
-        }
-    }, [pageState, mapRight])
-
-    useEffect(() => {
-        if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
-            push()
-            mapDispatch('applyMapParams', node)
-            redraw(colorMode)
-            checkPop(dispatch)
-        }
-    }, [node])
-
-    useEffect(() => {
-        if (mapId !== '' && mapSource !== '') {
-            redraw(colorMode)
-            removeMapListeners()
-            if (mapRight === EDIT) {
-                addMapListeners(colorMode)
-            } else if (mapRight === VIEW) {
-                // TODO figure out view listeners
-            }
-        }
-        const root = document.querySelector(':root')
-        root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
-        root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
-        root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
-        root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
-    }, [colorMode])
-
-    return (
-        <></>
-    )
+  return (
+    <></>
+  )
 }

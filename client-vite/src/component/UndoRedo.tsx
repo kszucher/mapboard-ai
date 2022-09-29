@@ -1,31 +1,32 @@
+import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
 import {MAP_RIGHTS, sagaActions} from '../core/EditorFlow'
 
-export function UndoRedo () {
-    const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
-    const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
-    const undoDisabled = useSelector((state: RootStateOrAny) => state.undoDisabled)
-    const redoDisabled = useSelector((state: RootStateOrAny) => state.redoDisabled)
-    const dispatch = useDispatch()
-    return (
-        <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">
-            <div style={{ display: 'flex',  }}>
-                <IconButton
-                    color='secondary' disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}
-                    onClick={_=>dispatch(sagaActions.undo())}
-                >
-                    <UndoIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary'  disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}
-                    onClick={_=>dispatch(sagaActions.redo())}
-                >
-                    <RedoIcon/>
-                </IconButton>
-            </div>
-        </div>
-    )
+export const UndoRedo: FC = () => {
+  const {UNAUTHORIZED, VIEW} = MAP_RIGHTS
+  const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
+  const undoDisabled = useSelector((state: RootStateOrAny) => state.undoDisabled)
+  const redoDisabled = useSelector((state: RootStateOrAny) => state.redoDisabled)
+  const dispatch = useDispatch()
+  return (
+    <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">
+      <div style={{ display: 'flex',  }}>
+        <IconButton
+          color='secondary' disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || undoDisabled}
+          onClick={_=>dispatch(sagaActions.undo())}
+        >
+          <UndoIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary'  disabled={[VIEW, UNAUTHORIZED].includes(mapRight) || redoDisabled}
+          onClick={_=>dispatch(sagaActions.redo())}
+        >
+          <RedoIcon/>
+        </IconButton>
+      </div>
+    </div>
+  )
 }

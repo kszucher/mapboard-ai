@@ -1,3 +1,4 @@
+import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
@@ -24,84 +25,84 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
-export function ControlsRight () {
-    const density = useSelector((state: RootStateOrAny) => state.node.density)
-    const alignment = useSelector((state: RootStateOrAny) => state.node.alignment)
-    const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
-    const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
-    const dispatch = useDispatch()
-    return (
-        <>
-            <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
-                <IconButton color='secondary' onClick={_=>dispatch(actions.toggleFormatterVisible())}>
-                    <PaletteIcon/>
-                </IconButton>
-            </div>
-            <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
-                <IconButton
-                    color='secondary'
-                    onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
-                    <CalendarViewMonthIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary'
-                    onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
-                    <TaskIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary'
-                    onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
-                    <CreateMapInMapIcon/>
-                </IconButton>
-            </div>
-            <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
-                <IconButton
-                    color='secondary'
-                    onClick={_=>dispatch(actions.setNodeParams({ node: { density: density === 'small' ? 'large' : 'small' }, nodeTriggersMap: true }))}>
-                    {density === 'small' && <DensitySmallIcon/>}
-                    {density === 'large' && <DensityMediumIcon/>}
-                </IconButton>
-                <IconButton
-                    color='secondary'
-                    onClick={_=>dispatch(actions.setNodeParams({ node: { alignment: alignment === 'centered' ? 'adaptive' : 'centered' }, nodeTriggersMap: true }))}>
-                    {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
-                    {alignment === 'centered' && <CenterFocusStrongIcon/>}
-                </IconButton>
-            </div>
-            <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
-                <IconButton
-                    color='secondary' disabled={frameEditorVisible}
-                    onClick={_=>dispatch(sagaActions.openFrame())}>
-                    <DynamicFeedIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary' disabled={!frameEditorVisible}
-                    onClick={_=>dispatch(sagaActions.importFrame())}>
-                    <InputIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary' disabled={!frameEditorVisible || frameLen === 0}
-                    onClick={_=>dispatch(sagaActions.duplicateFrame())}>
-                    <ContentCopyIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary' disabled={!frameEditorVisible || frameLen === 0}
-                    onClick={_=>dispatch(sagaActions.deleteFrame())}>
-                    <DeleteIcon/>
-                </IconButton>
-                <IconButton
-                    color='secondary' disabled={!frameEditorVisible}
-                    onClick={_=>dispatch(sagaActions.closeFrame())}>
-                    <CloseIcon/>
-                </IconButton>
-            </div>
-            <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
-                <IconButton
-                    color='secondary' disabled={frameEditorVisible}
-                    onClick={_=>dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>
-                    <ShareIcon/>
-                </IconButton>
-            </div>
-        </>
-    )
+export const ControlsRight: FC = () => {
+  const density = useSelector((state: RootStateOrAny) => state.node.density)
+  const alignment = useSelector((state: RootStateOrAny) => state.node.alignment)
+  const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
+  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
+  const dispatch = useDispatch()
+  return (
+    <>
+      <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
+        <IconButton color='secondary' onClick={_=>dispatch(actions.toggleFormatterVisible())}>
+          <PaletteIcon/>
+        </IconButton>
+      </div>
+      <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
+        <IconButton
+          color='secondary'
+          onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
+          <CalendarViewMonthIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary'
+          onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
+          <TaskIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary'
+          onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
+          <CreateMapInMapIcon/>
+        </IconButton>
+      </div>
+      <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
+        <IconButton
+          color='secondary'
+          onClick={_=>dispatch(actions.setNodeParams({ node: { density: density === 'small' ? 'large' : 'small' }, nodeTriggersMap: true }))}>
+          {density === 'small' && <DensitySmallIcon/>}
+          {density === 'large' && <DensityMediumIcon/>}
+        </IconButton>
+        <IconButton
+          color='secondary'
+          onClick={_=>dispatch(actions.setNodeParams({ node: { alignment: alignment === 'centered' ? 'adaptive' : 'centered' }, nodeTriggersMap: true }))}>
+          {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
+          {alignment === 'centered' && <CenterFocusStrongIcon/>}
+        </IconButton>
+      </div>
+      <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
+        <IconButton
+          color='secondary' disabled={frameEditorVisible}
+          onClick={_=>dispatch(sagaActions.openFrame())}>
+          <DynamicFeedIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary' disabled={!frameEditorVisible}
+          onClick={_=>dispatch(sagaActions.importFrame())}>
+          <InputIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary' disabled={!frameEditorVisible || frameLen === 0}
+          onClick={_=>dispatch(sagaActions.duplicateFrame())}>
+          <ContentCopyIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary' disabled={!frameEditorVisible || frameLen === 0}
+          onClick={_=>dispatch(sagaActions.deleteFrame())}>
+          <DeleteIcon/>
+        </IconButton>
+        <IconButton
+          color='secondary' disabled={!frameEditorVisible}
+          onClick={_=>dispatch(sagaActions.closeFrame())}>
+          <CloseIcon/>
+        </IconButton>
+      </div>
+      <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
+        <IconButton
+          color='secondary' disabled={frameEditorVisible}
+          onClick={_=>dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>
+          <ShareIcon/>
+        </IconButton>
+      </div>
+    </>
+  )
 }
