@@ -4,8 +4,8 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typograp
 import {actions, PageState, sagaActions} from "../core/EditorFlow";
 
 export const CreateTable: FC = () => {
-  const [row, setRow] = useState('1')
-  const [col, setCol] = useState('1')
+  const [row, setRow] = useState<string>('1')
+  const [col, setCol] = useState<string>('1')
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
   const dispatch = useDispatch()
   return (
