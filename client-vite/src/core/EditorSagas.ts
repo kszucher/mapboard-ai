@@ -9,336 +9,352 @@ import {mapGetProp} from '../map/MapGetProp'
 import {actions, PageState, sagaActions} from "./EditorFlow";
 
 const SAVE_INCLUDED = [
-    'OPEN_MAP_FROM_TAB',
-    'OPEN_MAP_FROM_BREADCRUMBS',
-    'OPEN_MAP_FROM_MAP',
-    'CREATE_MAP_IN_MAP',
-    'CREATE_MAP_IN_TAB',
-    'OPEN_FRAME',
-    'CLOSE_FRAME',
-    'IMPORT_FRAME',
-    'DUPLICATE_FRAME',
-    'OPEN_PREV_FRAME',
-    'OPEN_NEXT_FRAME'
+  'OPEN_MAP_FROM_TAB',
+  'OPEN_MAP_FROM_BREADCRUMBS',
+  'OPEN_MAP_FROM_MAP',
+  'CREATE_MAP_IN_MAP',
+  'CREATE_MAP_IN_TAB',
+  'OPEN_FRAME',
+  'CLOSE_FRAME',
+  'IMPORT_FRAME',
+  'DUPLICATE_FRAME',
+  'OPEN_PREV_FRAME',
+  'OPEN_NEXT_FRAME'
 ]
 
 const SAVE_NOT_INCLUDED = [
-    'REMOVE_MAP_IN_TAB',
-    'MOVE_UP_MAP_IN_TAB',
-    'MOVE_DOWN_MAP_IN_TAB',
-    'DELETE_FRAME',
+  'REMOVE_MAP_IN_TAB',
+  'MOVE_UP_MAP_IN_TAB',
+  'MOVE_DOWN_MAP_IN_TAB',
+  'DELETE_FRAME',
 ]
 
 const backendUrl = process.env.NODE_ENV === 'development'
-    ? 'http://127.0.0.1:8082/beta'
-    : 'https://mapboard-server.herokuapp.com/beta';
+  ? 'http://127.0.0.1:8082/beta'
+  : 'https://mapboard-server.herokuapp.com/beta';
 
 const fetchPost = (req) => {
-    if ([
-        'SIGN_IN',
-        'SIGN_UP_STEP_1',
-        'SIGN_UP_STEP_2',
-        'LIVE_DEMO'
-    ].includes(req.type)) {
-        // auto sign-in gets cred from localStorage, manual sign-in gets cred from state
-    } else {
-        req = {...req, payload: {...req.payload, cred: JSON.parse(localStorage.getItem('cred')) }}
-    }
-    console.log('SERVER_MESSAGE: ' + req.type)
-    return fetch(backendUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify(req),
-    }).then(resp => resp.json())
+  if ([
+    'SIGN_IN',
+    'SIGN_UP_STEP_1',
+    'SIGN_UP_STEP_2',
+    'LIVE_DEMO'
+  ].includes(req.type)) {
+    // auto sign-in gets cred from localStorage, manual sign-in gets cred from state
+  } else {
+    req = {...req, payload: {...req.payload, cred: JSON.parse(localStorage.getItem('cred')) }}
+  }
+  console.log('SERVER_MESSAGE: ' + req.type)
+  return fetch(backendUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify(req),
+  }).then(resp => resp.json())
 }
 
 function* serverCallSaga({ type, payload }) {
-    yield put(actions.interactionDisabled())
-    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-    yield put(actions.interactionEnabled())
-    if (error === 'authFailWrongCred') {
-        yield put(actions.setAuthFeedbackMessage('Authentication failed, wrong credentials'))
-        localStorage.clear()
-    } else if (error === 'authFailIncompleteRegistration') {
-        yield put(actions.setAuthFeedbackMessage('Authentication failed, incomplete registration'))
-    } else if (error === 'signUpStep1FailAlreadyAwaitingConfirmation') {
-        yield put(actions.setAuthFeedbackMessage('Already awaiting confirmation'))
-    } else if (error === 'signUpStep1FailAlreadyConfirmed') {
-        yield put(actions.setAuthFeedbackMessage('Already confirmed'))
-    } else if (error === 'signUpStep2FailWrongEmailOrConfirmationCode') {
-        yield put(actions.setAuthFeedbackMessage('Wrong email or confirmation code'))
-    } else if (error === 'signUpStep2FailAlreadyActivated') {
-        yield put(actions.setAuthFeedbackMessage('Already activated'))
-    }
-    // cant put parse here, but can put all error here
-    return { error, data }
+  yield put(actions.interactionDisabled())
+  const { resp: { error, data } } = yield call(fetchPost, { type, payload })
+  yield put(actions.interactionEnabled())
+  if (error === 'authFailWrongCred') {
+    yield put(actions.setAuthFeedbackMessage('Authentication failed, wrong credentials'))
+    localStorage.clear()
+  } else if (error === 'authFailIncompleteRegistration') {
+    yield put(actions.setAuthFeedbackMessage('Authentication failed, incomplete registration'))
+  } else if (error === 'signUpStep1FailAlreadyAwaitingConfirmation') {
+    yield put(actions.setAuthFeedbackMessage('Already awaiting confirmation'))
+  } else if (error === 'signUpStep1FailAlreadyConfirmed') {
+    yield put(actions.setAuthFeedbackMessage('Already confirmed'))
+  } else if (error === 'signUpStep2FailWrongEmailOrConfirmationCode') {
+    yield put(actions.setAuthFeedbackMessage('Wrong email or confirmation code'))
+  } else if (error === 'signUpStep2FailAlreadyActivated') {
+    yield put(actions.setAuthFeedbackMessage('Already activated'))
+  }
+  // cant put parse here, but can put all error here
+  return { error, data }
 }
 
 function* authSaga () {
-    while (true) {
-        const { type, payload } = yield take([
-            'LIVE_DEMO',
-            'SIGN_UP_STEP_1',
-            'SIGN_UP_STEP_2',
-            'SIGN_IN',
-            'CHECK_SET_CONFIRMATION_CODE',
-        ])
-        if (type === 'SIGN_IN' && (payload.cred.email === '' || payload.cred.password === '')) {
-            yield put(actions.setAuthFeedbackMessage('Missing information'))
-        } else if (type === 'SIGN_IN' && payload.cred.password.length < 5) {
-            yield put(actions.setAuthFeedbackMessage('Too short password'))
-        } else if (type === 'SIGN_UP_STEP_1' && payload.cred.password.length < 5 ) {
-            yield put(actions.setAuthFeedbackMessage('Your password must be at least 5 characters'))
-        } else if (type === 'CHECK_SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
-            yield put(actions.setConfirmationCode(payload))
-            yield put(actions.setAuthFeedbackMessage(''))
-        } else if (type === 'CHECK_SET_CONFIRMATION_CODE') {
-            yield put(actions.setAuthFeedbackMessage('Invalid character'))
-        } else {
-            const { error, data } = yield call(serverCallSaga, { type, payload })
-            if (error === '') {
-                if (type === 'LIVE_DEMO') {
-                    initDomData()
-                    yield put(actions.setPageState(PageState.DEMO))
-                } else if (type === 'SIGN_UP_STEP_1') {
-                    yield put(actions.signUpStep2Panel())
-                } else if (type === 'SIGN_UP_STEP_2') {
-                    yield put(actions.signInPanel())
-                } else if (type === 'SIGN_IN') {
-                    const {cred} = data
-                    localStorage.setItem('cred', JSON.stringify(cred))
-                    initDomData()
-                    yield put(actions.setPageState(PageState.WS))
-                }
-                yield put(actions.parseRespPayload(data))
-            }
+  while (true) {
+    const { type, payload } = yield take([
+      'LIVE_DEMO',
+      'SIGN_UP_STEP_1',
+      'SIGN_UP_STEP_2',
+      'SIGN_IN',
+      'CHECK_SET_CONFIRMATION_CODE',
+    ])
+    if (type === 'SIGN_IN' && (payload.cred.email === '' || payload.cred.password === '')) {
+      yield put(actions.setAuthFeedbackMessage('Missing information'))
+    } else if (type === 'SIGN_IN' && payload.cred.password.length < 5) {
+      yield put(actions.setAuthFeedbackMessage('Too short password'))
+    } else if (type === 'SIGN_UP_STEP_1' && payload.cred.password.length < 5 ) {
+      yield put(actions.setAuthFeedbackMessage('Your password must be at least 5 characters'))
+    } else if (type === 'CHECK_SET_CONFIRMATION_CODE' && !isNaN(payload) && payload.length <= 4) {
+      yield put(actions.setConfirmationCode(payload))
+      yield put(actions.setAuthFeedbackMessage(''))
+    } else if (type === 'CHECK_SET_CONFIRMATION_CODE') {
+      yield put(actions.setAuthFeedbackMessage('Invalid character'))
+    } else {
+      const { error, data } = yield call(serverCallSaga, { type, payload })
+      if (error === '') {
+        if (type === 'LIVE_DEMO') {
+          initDomData()
+          yield put(actions.setPageState(PageState.DEMO))
+        } else if (type === 'SIGN_UP_STEP_1') {
+          yield put(actions.signUpStep2Panel())
+        } else if (type === 'SIGN_UP_STEP_2') {
+          yield put(actions.signInPanel())
+        } else if (type === 'SIGN_IN') {
+          const {cred} = data
+          localStorage.setItem('cred', JSON.stringify(cred))
+          initDomData()
+          yield put(actions.setPageState(PageState.WS))
         }
+        yield put(actions.parseRespPayload(data))
+      }
     }
+  }
 }
 
 function* colorSaga () {
-    while (true) {
-        yield take('TOGGLE_COLOR_MODE')
-        const colorMode = (yield select(state => state.colorMode))
-        const { error, data } = yield call(serverCallSaga, { type: 'TOGGLE_COLOR_MODE', payload: { colorMode } })
-        yield put(actions.parseRespPayload(data))
-    }
+  while (true) {
+    yield take('TOGGLE_COLOR_MODE')
+    const colorMode = (yield select(state => state.colorMode))
+    const { error, data } = yield call(serverCallSaga, { type: 'TOGGLE_COLOR_MODE', payload: { colorMode } })
+    yield put(actions.parseRespPayload(data))
+  }
 }
 
 const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
-    while (true) {
-        const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
-            autoSaveNow: take(SAVE_INCLUDED),
-            autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']),
-            autoSaveNowByTimeout: delay(1000)
-        })
-        if (autoSaveNow) {
-            autoSaveState = AUTO_SAVE_STATES.IDLE
-        } else if (autoSaveLater) {
-            autoSaveState = AUTO_SAVE_STATES.WAIT
-        } else if (autoSaveNowByTimeout) {
-            if (autoSaveState === AUTO_SAVE_STATES.WAIT) {
-                autoSaveState = AUTO_SAVE_STATES.IDLE
-                if (mapStack.data.length === 1 && mapStack.dataIndex === 0 ||
-                    mapStack.data.length === 0) {
-                    console.log('skip save')
-                } else {
-                    console.log('apply save')
-                    const mapId = yield select(state => state.mapId)
-                    const mapSource = yield select(state => state.mapSource)
-                    const mapData = saveMap()
-                    const type = 'SAVE_MAP'
-                    const payload = { save: { mapId, mapSource, mapData } }
-                    yield put(actions.interactionDisabled())
-                    yield call(fetchPost, { type, payload })
-                    yield put(actions.interactionEnabled())
-                }
-            }
+  while (true) {
+    const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
+      autoSaveNow: take(SAVE_INCLUDED),
+      autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']),
+      autoSaveNowByTimeout: delay(1000)
+    })
+    if (autoSaveNow) {
+      autoSaveState = AUTO_SAVE_STATES.IDLE
+    } else if (autoSaveLater) {
+      autoSaveState = AUTO_SAVE_STATES.WAIT
+    } else if (autoSaveNowByTimeout) {
+      if (autoSaveState === AUTO_SAVE_STATES.WAIT) {
+        autoSaveState = AUTO_SAVE_STATES.IDLE
+        if (mapStack.data.length === 1 && mapStack.dataIndex === 0 ||
+          mapStack.data.length === 0) {
+          console.log('skip save')
+        } else {
+          console.log('apply save')
+          const mapId = yield select(state => state.mapId)
+          const mapSource = yield select(state => state.mapSource)
+          const mapData = saveMap()
+          const type = 'SAVE_MAP'
+          const payload = { save: { mapId, mapSource, mapData } }
+          yield put(actions.interactionDisabled())
+          yield call(fetchPost, { type, payload })
+          yield put(actions.interactionEnabled())
         }
+      }
     }
+  }
 }
 
 function* mapSaga () {
-    while (true) {
-        let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
-        if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
-            const mapId = yield select(state => state.mapId)
-            const mapSource = yield select(state => state.mapSource)
-            const mapData = saveMap()
-            payload = { ...payload, save: { mapId, mapSource, mapData } }
-            if (type === 'OPEN_MAP_FROM_TAB') {
-                const { tabMapSelected } = payload
-                const tabMapIdList = yield select(state => state.tabMapIdList)
-                const mapId = tabMapIdList[tabMapSelected]
-                payload = { ...payload, mapId }
-            } else if (type === 'OPEN_MAP_FROM_BREADCRUMBS') {
-                const { breadcrumbMapSelected } = payload
-                const breadcrumbMapIdList = yield select(state => state.breadcrumbMapIdList)
-                const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
-                payload = { ...payload, mapId }
-            } else if (type === 'OPEN_MAP_FROM_MAP') {
-                const m = mapref(['m'])
-                const lm = mapref(m.deepestSelectablePath)
-                const mapId = lm.link
-                payload = { ...payload, mapId }
-            } else if (type === 'CREATE_MAP_IN_MAP') {
-                const { lastPath } = selectionState
-                payload = { ...payload, lastPath, newMapName: mapref(lastPath).content }
-            } else if (type === 'DUPLICATE_FRAME') {
-                payload = { ...payload, mapData: saveMap() }
-            }
-        } else if ([...SAVE_NOT_INCLUDED].includes(type)) {
-            const mapId = yield select(state => state.mapId)
-            payload = { ...payload, mapId }
+  while (true) {
+    let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
+    if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
+      const mapId = yield select(state => state.mapId)
+      const mapSource = yield select(state => state.mapSource)
+      const mapData = saveMap()
+      payload = { ...payload, save: { mapId, mapSource, mapData } }
+      switch (type) {
+        case 'OPEN_MAP_FROM_TAB': {
+          const {tabMapSelected} = payload
+          const tabMapIdList = yield select(state => state.tabMapIdList)
+          const mapId = tabMapIdList[tabMapSelected]
+          payload = {...payload, mapId}
+          break
         }
-        yield put(actions.interactionDisabled())
-        const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-        yield put(actions.interactionEnabled())
-        yield put(actions.parseRespPayload(data))
-        if (type === 'CREATE_MAP_IN_MAP') {
-            yield put(actions.setPageState(PageState.WS))
+        case 'OPEN_MAP_FROM_BREADCRUMBS': {
+          const {breadcrumbMapSelected} = payload
+          const breadcrumbMapIdList = yield select(state => state.breadcrumbMapIdList)
+          const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
+          payload = {...payload, mapId}
+          break
         }
+        case 'OPEN_MAP_FROM_MAP': {
+          const m = mapref(['m'])
+          const lm = mapref(m.deepestSelectablePath)
+          const mapId = lm.link
+          payload = {...payload, mapId}
+          break
+        }
+        case 'CREATE_MAP_IN_MAP': {
+          const {lastPath} = selectionState
+          payload = {...payload, lastPath, newMapName: mapref(lastPath).content}
+          break
+        }
+        case 'DUPLICATE_FRAME': {
+          payload = {...payload, mapData: saveMap()}
+          break
+        }
+      }
+    } else if ([...SAVE_NOT_INCLUDED].includes(type)) {
+      const mapId = yield select(state => state.mapId)
+      payload = { ...payload, mapId }
     }
+    yield put(actions.interactionDisabled())
+    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
+    yield put(actions.interactionEnabled())
+    yield put(actions.parseRespPayload(data))
+    if (type === 'CREATE_MAP_IN_MAP') {
+      yield put(actions.setPageState(PageState.WS))
+    }
+  }
 }
 
 function* mapStackEventSaga() {
-    while (true) {
-        const { type, payload } = yield take(['INSERT_TABLE', 'TOGGLE_TASK'])
-        push()
-        if (type === 'INSERT_TABLE') {
-            mapDispatch('insertTable', payload)
-        } else if (type === 'TOGGLE_TASK') {
-            mapDispatch('toggleTask')
-        }
-        yield put(sagaActions.mapStackChanged())
-        const colorMode = yield select(state => state.colorMode)
-        redraw(colorMode)
-        yield put(actions.setPageState(PageState.WS))
+  while (true) {
+    const { type, payload } = yield take(['INSERT_TABLE', 'TOGGLE_TASK'])
+    push()
+    if (type === 'INSERT_TABLE') {
+      mapDispatch('insertTable', payload)
+    } else if (type === 'TOGGLE_TASK') {
+      mapDispatch('toggleTask')
     }
+    yield put(sagaActions.mapStackChanged())
+    const colorMode = yield select(state => state.colorMode)
+    redraw(colorMode)
+    yield put(actions.setPageState(PageState.WS))
+  }
 }
 
 function* mapStackSaga () {
-    while (true) {
-        const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
-        const colorMode = yield select(state => state.colorMode)
-        switch (type) {
-            case 'UNDO': {
-                mapStackDispatch('undo')
-                redraw(colorMode)
-                break
-            }
-            case 'REDO': {
-                mapStackDispatch('redo')
-                redraw(colorMode)
-                break
-            }
-        }
-        let m = mapref(['m'])
-        const lm = mapref(selectionState.lastPath)
-        const { density, alignment } = m
-        const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
-        const assignment = { density, alignment }
-        for (const prop of propList) {
-            const realProp = {
-                selection: 'selection',
-                lineWidth: 'lineWidth',
-                lineType: 'lineType',
-                lineColor: 'lineColor',
-                borderWidth: lm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth',
-                borderColor: lm.selection === 's' ? 'sBorderColor' : 'fBorderColor',
-                fillColor: lm.selection === 's' ? 'sFillColor' : 'fFillColor',
-                textFontSize: 'textFontSize',
-                textColor: 'textColor',
-                taskStatus: 'taskStatus'
-            }[prop]
-            if (selectionState.structSelectedPathList.map(el => (mapref(el))[realProp]).every((el, i, arr) => el  === arr[0])) {
-                let propAssignment
-                switch (prop) {
-                    case 'selection': propAssignment = lm.selection; break
-                    case 'lineWidth': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-                    case 'lineType': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-                    case 'lineColor': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-                    case 'borderWidth': propAssignment = lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth; break
-                    case 'borderColor': propAssignment = lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor; break
-                    case 'fillColor': propAssignment = lm.selection === 's' ? lm.sFillColor : lm.fFillColor; break
-                    case 'textFontSize': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-                    case 'textColor': propAssignment = lm.selection === 's'? lm[prop] : mapGetProp.start(m, lm, prop); break
-                    case 'taskStatus': propAssignment = lm.selection === 's'? lm[prop]: undefined; break
-                }
-                Object.assign(assignment, {[prop]: propAssignment})
-            } else {
-                Object.assign(assignment, {[prop]: undefined})
-            }
-        }
-        yield put(actions.setNodeParams({ node: assignment, nodeTriggersMap: false }))
-        yield put(actions.setUndoDisabled(mapStack.dataIndex === 0))
-        yield put(actions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
+  while (true) {
+    const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
+    const colorMode = yield select(state => state.colorMode)
+    switch (type) {
+      case 'UNDO': {
+        mapStackDispatch('undo')
+        redraw(colorMode)
+        break
+      }
+      case 'REDO': {
+        mapStackDispatch('redo')
+        redraw(colorMode)
+        break
+      }
     }
+    let m = mapref(['m'])
+    const lm = mapref(selectionState.lastPath)
+    const { density, alignment } = m
+    const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
+    const assignment = { density, alignment }
+    for (const prop of propList) {
+      const realProp = {
+        selection: 'selection',
+        lineWidth: 'lineWidth',
+        lineType: 'lineType',
+        lineColor: 'lineColor',
+        borderWidth: lm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth',
+        borderColor: lm.selection === 's' ? 'sBorderColor' : 'fBorderColor',
+        fillColor: lm.selection === 's' ? 'sFillColor' : 'fFillColor',
+        textFontSize: 'textFontSize',
+        textColor: 'textColor',
+        taskStatus: 'taskStatus'
+      }[prop]
+      if (selectionState.structSelectedPathList.map(el => (mapref(el))[realProp]).every((el, i, arr) => el  === arr[0])) {
+        let propAssignment
+        switch (prop) {
+          case 'selection': propAssignment = lm.selection; break
+          case 'lineWidth': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+          case 'lineType': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+          case 'lineColor': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+          case 'borderWidth': propAssignment = lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth; break
+          case 'borderColor': propAssignment = lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor; break
+          case 'fillColor': propAssignment = lm.selection === 's' ? lm.sFillColor : lm.fFillColor; break
+          case 'textFontSize': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
+          case 'textColor': propAssignment = lm.selection === 's'? lm[prop] : mapGetProp.start(m, lm, prop); break
+          case 'taskStatus': propAssignment = lm.selection === 's'? lm[prop]: undefined; break
+        }
+        Object.assign(assignment, {[prop]: propAssignment})
+      } else {
+        Object.assign(assignment, {[prop]: undefined})
+      }
+    }
+    yield put(actions.setNodeParams({ node: assignment, nodeTriggersMap: false }))
+    yield put(actions.setUndoDisabled(mapStack.dataIndex === 0))
+    yield put(actions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
+  }
 }
 
 function* shareSaga () {
-    while (true) {
-        let { type, payload } = yield take([
-            'GET_SHARES',
-            'CREATE_SHARE',
-            'ACCEPT_SHARE',
-            'DELETE_SHARE',
-        ])
-        if (type === 'CREATE_SHARE') {
-            const mapId = yield select(state => state.mapId)
-            payload = {...payload, mapId }
-        }
-        yield put(actions.interactionDisabled())
-        const { resp: { error, data } } = yield call(fetchPost, { type, payload })
-        yield put(actions.interactionEnabled())
-        switch (type) {
-            case 'CREATE_SHARE':
-                if (error === 'createShareFailNotAValidUser') {
-                    yield put(actions.setShareFeedbackMessage('There is no user associated with this address'))
-                } else if (error === 'createShareFailCantShareWithYourself') {
-                    yield put(actions.setShareFeedbackMessage('Please choose a different address than yours'))
-                } else if (error === 'createShareFailAlreadyShared') {
-                    yield put(actions.setShareFeedbackMessage('The map has already been shared'))
-                } else {
-                    yield put(actions.setShareFeedbackMessage('Share settings saved'))
-                }
-                break
-        }
-        yield put(actions.parseRespPayload(data))
+  while (true) {
+    let { type, payload } = yield take([
+      'GET_SHARES',
+      'CREATE_SHARE',
+      'ACCEPT_SHARE',
+      'DELETE_SHARE',
+    ])
+    if (type === 'CREATE_SHARE') {
+      const mapId = yield select(state => state.mapId)
+      payload = {...payload, mapId }
     }
+    yield put(actions.interactionDisabled())
+    const { resp: { error, data } } = yield call(fetchPost, { type, payload })
+    yield put(actions.interactionEnabled())
+    switch (type) {
+      case 'CREATE_SHARE':
+        switch (error) {
+          case 'createShareFailNotAValidUser':
+            yield put(actions.setShareFeedbackMessage('There is no user associated with this address'))
+            break
+          case 'createShareFailCantShareWithYourself':
+            yield put(actions.setShareFeedbackMessage('Please choose a different address than yours'))
+            break
+          case 'createShareFailAlreadyShared':
+            yield put(actions.setShareFeedbackMessage('The map has already been shared'))
+            break
+          default:
+            yield put(actions.setShareFeedbackMessage('Share settings saved'))
+            break
+        }
+        break
+    }
+    yield put(actions.parseRespPayload(data))
+  }
 }
 
 function* signOutSaga () {
-    while (true) {
-        yield take('SIGN_OUT')
-        localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
-        yield put(actions.resetState())
-    }
+  while (true) {
+    yield take('SIGN_OUT')
+    localStorage.setItem('cred', JSON.stringify({email: '', password: ''}))
+    yield put(actions.resetState())
+  }
 }
 
 function* deleteAccountSaga () {
-    while (true) {
-        const { type } = yield take('DELETE_ACCOUNT')
-        yield call(fetchPost, { type })
-        yield put(sagaActions.signOut())
-    }
+  while (true) {
+    const { type } = yield take('DELETE_ACCOUNT')
+    yield call(fetchPost, { type })
+    yield put(sagaActions.signOut())
+  }
 }
 
 export default function* rootSaga () {
-    yield all([
-        authSaga(),
-        colorSaga(),
-        autoSaveSaga(),
-        mapSaga(),
-        mapStackEventSaga(),
-        mapStackSaga(),
-        shareSaga(),
-        signOutSaga(),
-        deleteAccountSaga(),
-    ])
+  yield all([
+    authSaga(),
+    colorSaga(),
+    autoSaveSaga(),
+    mapSaga(),
+    mapStackEventSaga(),
+    mapStackSaga(),
+    shareSaga(),
+    signOutSaga(),
+    deleteAccountSaga(),
+  ])
 }

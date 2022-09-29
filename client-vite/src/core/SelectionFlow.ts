@@ -4,101 +4,101 @@ import {arrayValuesSame} from "./Utils";
 import {mapref} from "./MapStackFlow";
 
 export let selectionState = {
-    structSelectedPathList: [],
-    cellSelectedPathList: [],
-    maxSel: 0,
-    maxSelIndex: 0,
-    scope: '',
-    lastPath: [],
-    geomHighPath: [],
-    geomLowPath: [],
-    cellRowSelected: 0,
-    cellRow: 0,
-    cellColSelected: 0,
-    cellCol: 0,
-    haveSameParent: 0,
-    sameParentPath: [],
+  structSelectedPathList: [],
+  cellSelectedPathList: [],
+  maxSel: 0,
+  maxSelIndex: 0,
+  scope: '',
+  lastPath: [],
+  geomHighPath: [],
+  geomLowPath: [],
+  cellRowSelected: 0,
+  cellRow: 0,
+  cellColSelected: 0,
+  cellCol: 0,
+  haveSameParent: 0,
+  sameParentPath: [],
 }
 
 const InitSelectionState = JSON.stringify(selectionState);
 
 export function initSelectionState() {
-    selectionState = JSON.parse(InitSelectionState);
+  selectionState = JSON.parse(InitSelectionState);
 }
 
 export function updateSelectionState() {
-    let {
-        structSelectedPathList, cellSelectedPathList,
-        maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
-        haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
-    } = selectionState;
+  let {
+    structSelectedPathList, cellSelectedPathList,
+    maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
+    haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
+  } = selectionState;
 
-    // INDICATORS
-    if (structSelectedPathList.length && cellSelectedPathList.length) {
-        lastPath = structSelectedPathList[0];
-        geomHighPath = lastPath;
-        geomLowPath = lastPath;
-    } else if (structSelectedPathList.length) {
-        for (let i = 0; i < structSelectedPathList.length; i++) {
-            let currSelectedNumber = mapref(structSelectedPathList[i]).selected;
-            if (currSelectedNumber > maxSel) {
-                maxSel = currSelectedNumber;
-                maxSelIndex = i;
-            }
-        }
-        lastPath = structSelectedPathList[maxSelIndex];
-        geomHighPath = structSelectedPathList[0];
-        geomLowPath = structSelectedPathList[structSelectedPathList.length - 1];
-    } else if (cellSelectedPathList.length) {
-        for (let i = 0; i < cellSelectedPathList.length; i++) {
-            let currSelectedNumber = mapref(cellSelectedPathList[i]).selected;
-            if (currSelectedNumber > maxSel) {
-                maxSel = currSelectedNumber;
-                maxSelIndex = i;
-            }
-        }
-        lastPath = cellSelectedPathList[maxSelIndex];
-    } else {
-        console.log('no selection');
-        return;
+  // INDICATORS
+  if (structSelectedPathList.length && cellSelectedPathList.length) {
+    lastPath = structSelectedPathList[0];
+    geomHighPath = lastPath;
+    geomLowPath = lastPath;
+  } else if (structSelectedPathList.length) {
+    for (let i = 0; i < structSelectedPathList.length; i++) {
+      let currSelectedNumber = mapref(structSelectedPathList[i]).selected;
+      if (currSelectedNumber > maxSel) {
+        maxSel = currSelectedNumber;
+        maxSelIndex = i;
+      }
     }
-
-    // INTERRELATIONS
-    if (structSelectedPathList.length && !cellSelectedPathList.length) {
-        [haveSameParent, sameParentPath] = arrayValuesSame(structSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
-    } else if (!structSelectedPathList.length && cellSelectedPathList.length) {
-        [haveSameParent, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
-        if (haveSameParent) {
-            let [haveSameRow, sameRow] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 2]));
-            let [haveSameCol, sameCol] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 1]));
-            let sameParent = mapref(sameParentPath);
-            if (haveSameRow && cellSelectedPathList.length === sameParent.c[0].length) {
-                cellRowSelected = 1;
-                cellRow = sameRow;
-            }
-            if (haveSameCol && cellSelectedPathList.length === sameParent.c.length) {
-                cellColSelected = 1;
-                cellCol = sameCol;
-            }
-        }
+    lastPath = structSelectedPathList[maxSelIndex];
+    geomHighPath = structSelectedPathList[0];
+    geomLowPath = structSelectedPathList[structSelectedPathList.length - 1];
+  } else if (cellSelectedPathList.length) {
+    for (let i = 0; i < cellSelectedPathList.length; i++) {
+      let currSelectedNumber = mapref(cellSelectedPathList[i]).selected;
+      if (currSelectedNumber > maxSel) {
+        maxSel = currSelectedNumber;
+        maxSelIndex = i;
+      }
     }
+    lastPath = cellSelectedPathList[maxSelIndex];
+  } else {
+    console.log('no selection');
+    return;
+  }
 
-    // SCOPE
-    if (structSelectedPathList.length && cellSelectedPathList.length) {
-        scope = 'm';
-    } else if (structSelectedPathList.length) {
-        scope = 's';
-    } else if (cellSelectedPathList.length) {
-        scope = 'c';
-        if (cellRowSelected) scope = 'cr';
-        if (cellColSelected) scope = 'cc';
+  // INTERRELATIONS
+  if (structSelectedPathList.length && !cellSelectedPathList.length) {
+    [haveSameParent, sameParentPath] = arrayValuesSame(structSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
+  } else if (!structSelectedPathList.length && cellSelectedPathList.length) {
+    [haveSameParent, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
+    if (haveSameParent) {
+      let [haveSameRow, sameRow] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 2]));
+      let [haveSameCol, sameCol] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 1]));
+      let sameParent = mapref(sameParentPath);
+      if (haveSameRow && cellSelectedPathList.length === sameParent.c[0].length) {
+        cellRowSelected = 1;
+        cellRow = sameRow;
+      }
+      if (haveSameCol && cellSelectedPathList.length === sameParent.c.length) {
+        cellColSelected = 1;
+        cellCol = sameCol;
+      }
     }
+  }
 
-    selectionState = {...selectionState, ...{
-            structSelectedPathList, cellSelectedPathList,
-            maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
-            haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
-        }}
+  // SCOPE
+  if (structSelectedPathList.length && cellSelectedPathList.length) {
+    scope = 'm';
+  } else if (structSelectedPathList.length) {
+    scope = 's';
+  } else if (cellSelectedPathList.length) {
+    scope = 'c';
+    if (cellRowSelected) scope = 'cr';
+    if (cellColSelected) scope = 'cc';
+  }
 
-    return selectionState;
+  selectionState = {...selectionState, ...{
+      structSelectedPathList, cellSelectedPathList,
+      maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
+      haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol
+    }}
+
+  return selectionState;
 }

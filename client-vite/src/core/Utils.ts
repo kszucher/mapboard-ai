@@ -3,159 +3,159 @@
 import katex from 'katex/dist/katex.mjs'
 
 export function arrayValuesSame(array) {
-    let first = JSON.stringify(array[0]);
-    for (let i = 1; i < array.length; i++) {
-        if (JSON.stringify(array[i]) !== first) {
-            return [false, null];
-        }
+  let first = JSON.stringify(array[0]);
+  for (let i = 1; i < array.length; i++) {
+    if (JSON.stringify(array[i]) !== first) {
+      return [false, null];
     }
-    return [true, JSON.parse(array[0])];
+  }
+  return [true, JSON.parse(array[0])];
 }
 
 export function arrayValuesSameSimple(array) {
-    let first = JSON.stringify(array[0]);
-    for (let i = 1; i < array.length; i++) {
-        if (JSON.stringify(array[i]) !== first) {
-            return false;
-        }
+  let first = JSON.stringify(array[0]);
+  for (let i = 1; i < array.length; i++) {
+    if (JSON.stringify(array[i]) !== first) {
+      return false;
     }
-    return true;
+  }
+  return true;
 }
 
 export function arraysSame(array1, array2) {
-    return JSON.stringify(array1) === JSON.stringify(array2);
+  return JSON.stringify(array1) === JSON.stringify(array2);
 }
 
 // https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
 export function createArray(length) {
-    let arr = new Array(length || 0),
-        i = length;
+  let arr = new Array(length || 0),
+    i = length;
 
-    if (arguments.length > 1) {
-        let args = Array.prototype.slice.call(arguments, 1);
-        while(i--) arr[length-1 - i] = createArray.apply(this, args);
-    }
-    return arr;
+  if (arguments.length > 1) {
+    let args = Array.prototype.slice.call(arguments, 1);
+    while(i--) arr[length-1 - i] = createArray.apply(this, args);
+  }
+  return arr;
 }
 
 // https://stackoverflow.com/questions/17428587/transposing-a-2d-array-in-javascript
 export function transposeArray(array) {
-    let newArray = [];
-    let origArrayLength = array.length;
-    let arrayLength = array[0].length;
+  let newArray = [];
+  let origArrayLength = array.length;
+  let arrayLength = array[0].length;
 
-    for(let i = 0; i < arrayLength; i++){
-        newArray.push([]);
-    }
+  for(let i = 0; i < arrayLength; i++){
+    newArray.push([]);
+  }
 
-    for(let i = 0; i < origArrayLength; i++){
-        for(var j = 0; j < arrayLength; j++){
-            newArray[j].push(array[i][j]);
-        }
+  for(let i = 0; i < origArrayLength; i++){
+    for(var j = 0; j < arrayLength; j++){
+      newArray[j].push(array[i][j]);
     }
-    return newArray;
+  }
+  return newArray;
 }
 
 // https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
 export function setEndOfContenteditable(contentEditableElement) {
-    let range,selection;
-    range = document.createRange();//Create a range (a range is a like the selection but invisible)
-    range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
-    range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-    selection = window.getSelection();//get the selection object (allows you to change selection)
-    selection.removeAllRanges();//remove any selections already made
-    selection.addRange(range);//make the range you have just created the visible selection
+  let range,selection;
+  range = document.createRange();//Create a range (a range is a like the selection but invisible)
+  range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
+  range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+  selection = window.getSelection();//get the selection object (allows you to change selection)
+  selection.removeAllRanges();//remove any selections already made
+  selection.addRange(range);//make the range you have just created the visible selection
 }
 
 export function copy(thing) {
-    return JSON.parse(JSON.stringify(thing))
+  return JSON.parse(JSON.stringify(thing))
 }
 
 export function shallowCopy(thing) {
-    if (typeof thing === 'number' && isFinite(thing)) {
-        return thing;
-    } else {
-        return thing.slice();
-    }
+  if (typeof thing === 'number' && isFinite(thing)) {
+    return thing;
+  } else {
+    return thing.slice();
+  }
 }
 
 export function isUrl (string) {
-    try { return Boolean(new URL(string)); }
-    catch(e){ return false; }
+  try { return Boolean(new URL(string)); }
+  catch(e){ return false; }
 }
 
 // https://stackoverflow.com/questions/17428587/transposing-a-2d-array-in-javascript
 export function transpose(array2d) {
-    return array2d[0].map((col, i) => array2d.map(row => row[i]));
+  return array2d[0].map((col, i) => array2d.map(row => row[i]));
 }
 
 export function getTextDim(innerHTML, fontSize) {
-    let tmpDiv = document.createElement('div');
-    tmpDiv.id = "Test";
-    tmpDiv.innerHTML = innerHTML;
-    page.appendChild(tmpDiv);
-    var test = document.getElementById("Test");
-    test.style.fontFamily = 'Roboto';
-    test.style.fontSize = fontSize + 'px';
-    var height = test.clientHeight;
-    var width = test.clientWidth;
-    var element = document.getElementById("Test");
-    element.parentNode.removeChild(element);
-    if (width === 0) width = 14;
-    return [width, height];
+  let tmpDiv = document.createElement('div');
+  tmpDiv.id = "Test";
+  tmpDiv.innerHTML = innerHTML;
+  page.appendChild(tmpDiv);
+  var test = document.getElementById("Test");
+  test.style.fontFamily = 'Roboto';
+  test.style.fontSize = fontSize + 'px';
+  var height = test.clientHeight;
+  var width = test.clientWidth;
+  var element = document.getElementById("Test");
+  element.parentNode.removeChild(element);
+  if (width === 0) width = 14;
+  return [width, height];
 }
 
 export function getEquationDim (content) {
-    let str = katex.renderToString(getLatexString(content), {throwOnError: false});
-    let tmpDiv = document.createElement('TTT');
-    tmpDiv.id = "Test";
-    tmpDiv.style.fontFamily = 'Roboto';
-    tmpDiv.style.fontSize = 14 + 'px';
-    tmpDiv.innerHTML = str;
-    page.appendChild(tmpDiv);
-    let dim = {
-        w: tmpDiv.childNodes[0].offsetWidth,
-        h: tmpDiv.childNodes[0].offsetHeight,
-    };
-    var element = document.getElementById("Test");
-    element.parentNode.removeChild(element);
-    return dim;
+  let str = katex.renderToString(getLatexString(content), {throwOnError: false});
+  let tmpDiv = document.createElement('TTT');
+  tmpDiv.id = "Test";
+  tmpDiv.style.fontFamily = 'Roboto';
+  tmpDiv.style.fontSize = 14 + 'px';
+  tmpDiv.innerHTML = str;
+  page.appendChild(tmpDiv);
+  let dim = {
+    w: tmpDiv.childNodes[0].offsetWidth,
+    h: tmpDiv.childNodes[0].offsetHeight,
+  };
+  var element = document.getElementById("Test");
+  element.parentNode.removeChild(element);
+  return dim;
 }
 
 // dec2hex :: Integer -> String
 export function dec2hex (dec) {
-    return ('0' + dec.toString(16)).substr(-2)
+  return ('0' + dec.toString(16)).substr(-2)
 }
 
 // generateId :: Integer -> String
 export  function genHash (len) {
-    var arr = new Uint8Array((len || 40) / 2);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join('')
+  var arr = new Uint8Array((len || 40) / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join('')
 }
 
 export function isOdd(num) { return num % 2;}
 
 export function getLatexString(rawString) {
-    return '\\Large ' + rawString.substring(2, rawString.length - 2).replace(/\s/g, '')
+  return '\\Large ' + rawString.substring(2, rawString.length - 2).replace(/\s/g, '')
 }
 
 // https://stackoverflow.com/questions/6393943/convert-javascript-string-in-dot-notation-into-an-object-reference
 export function subsref(obj, path) {  // obj,['1','2','3'] -> ((obj['1'])['2'])['3']
-    return path.length ? subsref(obj[path[0]], path.slice(1)) : obj
+  return path.length ? subsref(obj[path[0]], path.slice(1)) : obj
 }
 // https://stackoverflow.com/questions/5484673/javascript-how-to-dynamically-create-nested-objects-using-object-names-given-by
 export function subsasgn(obj, path, value) {
-    let pathEnd = path.pop();
-    for(let i = 0; i < path.length; i++) {
-        obj = obj[path[i]] = obj[path[i]] || []; // I am a genius
-    }
-    obj[ pathEnd ] = value;
+  let pathEnd = path.pop();
+  for(let i = 0; i < path.length; i++) {
+    obj = obj[path[i]] = obj[path[i]] || []; // I am a genius
+  }
+  obj[ pathEnd ] = value;
 }
 
 // https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
 export function filteredObj (originalObj, filterKeys) {
-    return filterKeys.reduce((obj, key) => ({ ...obj, [key]: originalObj[key] }), {});
+  return filterKeys.reduce((obj, key) => ({ ...obj, [key]: originalObj[key] }), {});
 }
 
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
@@ -163,5 +163,5 @@ export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(
 export const setClear = arr => arr.reduce((o, key) => ({ ...o, [key]: 'clear'}), {})
 
 export const isEqual = (obj1, obj2) => {
-    return JSON.stringify(obj1)===JSON.stringify(obj2)
+  return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
