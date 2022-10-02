@@ -7,7 +7,6 @@ import { arraysSame, copy, setEndOfContenteditable } from '../core/Utils'
 import {mapFindNearest} from "../map/MapFindNearest"
 import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../core/MapStackFlow'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
-import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {selectionState} from "../core/SelectionFlow"
 import {pasteDispatch} from "../core/PasteFlow"
 import {MAP_RIGHTS, actions, PageState, sagaActions} from "../core/EditorFlow"
@@ -281,15 +280,8 @@ export const WindowListeners: FC = () => {
           redraw(colorMode)
         } else if (isTaskClicked) {
         } else {
-          let m = mapref(['m'])
           let [toX, toY] = getCoords(e)
-          let startX = fromX < toX ? fromX : toX
-          let startY = fromY < toY ? fromY : toY
-          let width = Math.abs(toX - fromX)
-          let height = Math.abs(toY - fromY)
-          mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
-          recalc()
-          m.selectionRect = [startX, startY, width, height]
+          mapDispatch('applySelection', {fromX, fromY, toX, toY})
           redraw(colorMode)
         }
       } else if (which === 2) {

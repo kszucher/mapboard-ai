@@ -14,11 +14,12 @@ import { mapFindById } from '../map/MapFindById'
 import { mapAlgo } from '../map/MapAlgo'
 import { mapInit } from '../map/MapInit'
 import { mapChain } from '../map/MapChain'
-import { mapTaskCheck } from '../map/MapTaskCheck'
+import { mapCollect } from '../map/MapCollect'
+import { mapFindOverRectangle } from "../map/MapFindOverRectangle"
 import { mapMeasure } from '../map/MapMeasure'
 import { mapPlace } from '../map/MapPlace'
 import { mapTaskCalc } from '../map/MapTaskCalc'
-import { mapCollect } from '../map/MapCollect'
+import { mapTaskCheck } from '../map/MapTaskCheck'
 import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
 import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
 
@@ -40,10 +41,21 @@ const mapReducer = (action, payload) => {
   let sc = selectionState
   let lm = mapref(sc.lastPath)
   switch (action) {
-    // MAP ---------------------------------------------------------------------------------------------------------
+    // MISC ---------------------------------------------------------------------------------------------------------
     case 'setIsResizing': {
       let m = mapref(['m'])
       m.isResizing = true
+      break
+    }
+    case 'applySelection': {
+      const {fromX, fromY, toX, toY} = payload
+      let startX = fromX < toX ? fromX : toX
+      let startY = fromY < toY ? fromY : toY
+      let width = Math.abs(toX - fromX)
+      let height = Math.abs(toY - fromY)
+      let m = mapref(['m'])
+      m.selectionRect = [startX, startY, width, height]
+      mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
       break
     }
     // NODE SELECT -------------------------------------------------------------------------------------------------
