@@ -123,7 +123,9 @@ function* colorSaga () {
   while (true) {
     yield take('TOGGLE_COLOR_MODE')
     const colorMode = (yield select(state => state.colorMode))
-    const { error, data } = yield call(serverCallSaga, { type: 'TOGGLE_COLOR_MODE', payload: { colorMode } })
+    yield put(actions.interactionDisabled())
+    const { resp: { error, data } } = yield call(fetchPost, { type: 'TOGGLE_COLOR_MODE', payload: { colorMode } })
+    yield put(actions.interactionEnabled())
     yield put(actions.parseRespPayload(data))
   }
 }
