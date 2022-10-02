@@ -238,7 +238,6 @@ export const WindowListeners: FC = () => {
     if (whichDown === which) {
       elapsed++
       if (which === 1) {
-        let m = mapref(['m'])
         if (isNodeClicked) {
           let m = mapref(['m'])
           let [toX, toY] = getCoords(e)
@@ -288,11 +287,10 @@ export const WindowListeners: FC = () => {
           let startY = fromY < toY ? fromY : toY
           let width = Math.abs(toX - fromX)
           let height = Math.abs(toY - fromY)
-          m.selectionRect = [startX, startY, width, height]
           mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
           recalc()
+          m.selectionRect = [startX, startY, width, height]
           redraw(colorMode)
-          m.selectionRect = []
         }
       } else if (which === 2) {
         let el = document.getElementById('mapHolderDiv')
@@ -324,6 +322,8 @@ export const WindowListeners: FC = () => {
               selectionState.cellSelectedPathList.length === 0) {
               mapDispatch('select_R')
             }
+            let m = mapref(['m'])
+            m.selectionRect = []
             redraw(colorMode)
           }
         } else if (which === 2) {
