@@ -454,7 +454,6 @@ export const WindowListeners: FC = () => {
               'insert_D_S'
             ].includes(currExecution)) {
               redraw(colorMode)
-              recalc()
             }
           }
         }
