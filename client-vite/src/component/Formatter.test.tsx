@@ -21,6 +21,15 @@ describe("Formatter test", () => {
 
     await user.click(screen.getByRole('button', {name: /h2/i}))
     expect(store.getState().node.textFontSize).toEqual(TextTypes.h2)
+
+    await user.click(screen.getByRole('button', {name: /h3/i}))
+    expect(store.getState().node.textFontSize).toEqual(TextTypes.h3)
+
+    await user.click(screen.getByRole('button', {name: /h4/i}))
+    expect(store.getState().node.textFontSize).toEqual(TextTypes.h4)
+
+    await user.click(screen.getByRole('button', {name: 't'}))
+    expect(store.getState().node.textFontSize).toEqual(TextTypes.t)
   })})
 
 // https://stackoverflow.com/questions/68731656/how-to-test-a-redux-action-that-dispatch-other-action
