@@ -5,7 +5,7 @@ import {Formatter} from "./Formatter"
 import { describe, it } from 'vitest'
 import {actions, MapRight, store} from "../core/EditorFlow";
 import React from "react";
-import {TextTypes} from "../core/DefaultProps";
+import {TextTypes, WidthTypes} from "../core/DefaultProps";
 
 describe("Formatter test", () => {
 
@@ -18,7 +18,9 @@ describe("Formatter test", () => {
     )
   })
 
-  test('textFontSize', async () => {
+  test('text', async () => {
+    await user.click(screen.getByRole('button', {name: 'text'}))
+
     await user.click(screen.getByRole('button', {name: /h1/i}))
     expect(store.getState().node.textFontSize).toEqual(TextTypes.h1)
 
@@ -35,8 +37,18 @@ describe("Formatter test", () => {
     expect(store.getState().node.textFontSize).toEqual(TextTypes.t)
   })
 
-  test("should work", async () => {
+  test('border', async () => {
 
+    await user.click(screen.getByRole('button', {name: 'border'}))
+
+    await user.click(screen.getByRole('button', {name: 'w1'}))
+    expect(store.getState().node.borderWidth).toEqual(WidthTypes.w1)
+
+    await user.click(screen.getByRole('button', {name: 'w2'}))
+    expect(store.getState().node.borderWidth).toEqual(WidthTypes.w2)
+
+    await user.click(screen.getByRole('button', {name: 'w3'}))
+    expect(store.getState().node.borderWidth).toEqual(WidthTypes.w3)
 
   })
 

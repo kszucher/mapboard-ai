@@ -58,16 +58,16 @@ export const Formatter: FC = () => {
   return (
     <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-2xl p-3">
       <div className="flex justify-center">
-        <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.text))}>
+        <IconButton color='secondary' aria-label="text" onClick={_=>dispatch(actions.setFormatMode(FormatMode.text))}>
           <TextIcon/>
         </IconButton>
-        <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.border))}>
+        <IconButton color='secondary' aria-label="border" onClick={_=>dispatch(actions.setFormatMode(FormatMode.border))}>
           <BorderIcon selection={selection}/>
         </IconButton>
-        <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.fill))}>
+        <IconButton color='secondary' aria-label="fill" onClick={_=>dispatch(actions.setFormatMode(FormatMode.fill))}>
           <FillIcon selection={selection}/>
         </IconButton>
-        <IconButton color='secondary' onClick={_=>dispatch(actions.setFormatMode(FormatMode.line))}>
+        <IconButton color='secondary' aria-label="line" onClick={_=>dispatch(actions.setFormatMode(FormatMode.line))}>
           <LineIcon/>
         </IconButton>
         <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
