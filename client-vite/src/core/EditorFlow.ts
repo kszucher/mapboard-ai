@@ -55,7 +55,10 @@ const editorState = {
   },
   nodeTriggersMap: false,
 
+  isEditing: false,
+
   formatterVisible: false,
+
   frameEditorVisible: false,
 
   shareEmail: '',
@@ -120,6 +123,9 @@ const allSlice = createSlice({
     setNodeParams(state, action: PayloadAction<any>) {
       return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
       }},
+
+    startEdit(state) { state.isEditing = true },
+    finishEdit(state) { state.isEditing = false },
 
     setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
     setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
