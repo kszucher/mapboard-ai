@@ -1,6 +1,6 @@
+import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
-import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export enum FormatMode {
   text,

@@ -8,14 +8,17 @@ import React from "react";
 import {TextTypes} from "../core/DefaultProps";
 
 describe("Formatter test", () => {
-  test("should work", async () => {
+
+  beforeEach(() => {
     store.dispatch(actions.parseRespPayload({mapRight: MapRight.EDIT})) // allow buttons to be pressed
     const {} = render(
       <Provider store={store}>
         <Formatter/>
       </Provider>,
     )
+  })
 
+  test('textFontSize', async () => {
     await user.click(screen.getByRole('button', {name: /h1/i}))
     expect(store.getState().node.textFontSize).toEqual(TextTypes.h1)
 
@@ -30,6 +33,13 @@ describe("Formatter test", () => {
 
     await user.click(screen.getByRole('button', {name: 't'}))
     expect(store.getState().node.textFontSize).toEqual(TextTypes.t)
-  })})
+  })
+
+  test("should work", async () => {
+
+
+  })
+
+})
 
 // https://stackoverflow.com/questions/68731656/how-to-test-a-redux-action-that-dispatch-other-action
