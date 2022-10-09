@@ -9,7 +9,7 @@ import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../core/MapS
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
 import {pasteDispatch} from "../core/PasteFlow"
-import {MAP_RIGHTS, actions, PageState, sagaActions} from "../core/EditorFlow"
+import {actions, PageState, sagaActions, MapRight} from "../core/EditorFlow"
 import { getColors } from '../core/Colors'
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, whichDown = 0, elapsed = 0
@@ -35,7 +35,6 @@ const getNativeEvent = ({path, composedPath, key, code, which}) =>
   ({ path: path || (composedPath && composedPath()), key, code, which })
 
 export const WindowListeners: FC = () => {
-  const {EDIT, VIEW} = MAP_RIGHTS
 
   const mapId = useSelector((state: RootStateOrAny) => state.mapId)
   const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
@@ -521,9 +520,9 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (pageState === PageState.WS) {
-      if (mapRight === EDIT) {
+      if (mapRight === MapRight.EDIT) {
         addMapListeners(colorMode)
-      } else if (mapRight === VIEW) {
+      } else if (mapRight === MapRight.VIEW) {
         // TODO figure out view listeners
       }
     } else if (pageState === PageState.DEMO) {
@@ -548,9 +547,9 @@ export const WindowListeners: FC = () => {
     if (mapId !== '' && mapSource !== '') {
       redraw(colorMode)
       removeMapListeners()
-      if (mapRight === EDIT) {
+      if (mapRight === MapRight.EDIT) {
         addMapListeners(colorMode)
-      } else if (mapRight === VIEW) {
+      } else if (mapRight === MapRight.VIEW) {
         // TODO figure out view listeners
       }
     }

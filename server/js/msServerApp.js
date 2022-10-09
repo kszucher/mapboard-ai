@@ -24,9 +24,9 @@ const ACTIVATION_STATUS = {
 }
 
 const MAP_RIGHTS = {
-    UNAUTHORIZED: 'unauthorized',
-    VIEW: 'view',
-    EDIT: 'edit'
+    UNAUTHORIZED: 0,
+    VIEW: 1,
+    EDIT: 2,
 }
 
 const SHARE_STATUS = {

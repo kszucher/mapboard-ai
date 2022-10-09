@@ -29,10 +29,10 @@ export enum PageState {
   WS_SHARE_THIS_MAP,
 }
 
-export const MAP_RIGHTS = {
-  UNAUTHORIZED: 'unauthorized',
-  VIEW: 'view',
-  EDIT: 'edit',
+export enum MapRight {
+  UNAUTHORIZED,
+  VIEW,
+  EDIT
 }
 
 const editorState = {
@@ -69,7 +69,7 @@ const editorState = {
   mapData: {},
   frameLen: 0,
   frameSelected: 0,
-  mapRight: MAP_RIGHTS.UNAUTHORIZED,
+  mapRight: MapRight.UNAUTHORIZED,
 
   node: {
     density: undefined,
