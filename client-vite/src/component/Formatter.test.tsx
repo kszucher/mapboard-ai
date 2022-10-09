@@ -48,7 +48,6 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'RESET'}))
     expect(store.getState().node.textColor).toEqual('clear')
     expect(store.getState().node.textFontSize).toEqual('clear')
-    // TODO may figure out how to select ALL to see NONE has the stroke attribute
   })
   test('border', async () => {
     await user.click(screen.getByRole('button', {name: 'border'}))
