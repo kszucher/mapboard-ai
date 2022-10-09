@@ -78,6 +78,7 @@ export const Formatter: FC = () => {
             colorList.map((iEl, i) => (
                 iEl.map((jEl, j) => (
                     <circle
+                      aria-label={colorList[i][j]}
                       cx={o/2 + j*o}
                       cy={o/2 + i*o}
                       r={r}

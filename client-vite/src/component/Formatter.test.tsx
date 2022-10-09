@@ -6,6 +6,7 @@ import { describe, it } from 'vitest'
 import {actions, MapRight, store} from "../core/EditorFlow";
 import React from "react";
 import {TextTypes, WidthTypes} from "../core/DefaultProps";
+import {colorList} from "../core/Colors";
 
 describe("Formatter test", () => {
 
@@ -21,6 +22,7 @@ describe("Formatter test", () => {
   test('text', async () => {
     await user.click(screen.getByRole('button', {name: 'text'}))
 
+    // textFontSize
     await user.click(screen.getByRole('button', {name: /h1/i}))
     expect(store.getState().node.textFontSize).toEqual(TextTypes.h1)
 
@@ -35,6 +37,15 @@ describe("Formatter test", () => {
 
     await user.click(screen.getByRole('button', {name: 't'}))
     expect(store.getState().node.textFontSize).toEqual(TextTypes.t)
+
+    // textColor
+    await user.click(screen.getByLabelText(colorList[1][1]))
+    expect(store.getState().node.textColor).toEqual(colorList[1][1])
+
+    await user.click(screen.getByRole('button', {name: 'RESET'}))
+    expect(store.getState().node.textColor).toEqual('clear')
+    expect(store.getState().node.textFontSize).toEqual('clear')
+
   })
 
   test('border', async () => {
