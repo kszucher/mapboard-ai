@@ -1,7 +1,8 @@
 import {FC, useState} from 'react'
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
-import {actions, PageState, sagaActions} from "../core/EditorFlow";
+import {actions, sagaActions} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 export const CreateTable: FC = () => {
   const [row, setRow] = useState<string>('1')

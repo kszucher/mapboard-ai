@@ -5,7 +5,8 @@ import { Button, IconButton, Modal, Typography } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import {actions, sagaActions, PageState} from "../core/EditorFlow";
+import {actions, sagaActions} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 export const Shares: FC = () => {
   const shareDataExport = useSelector((state: RootStateOrAny) => state.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))

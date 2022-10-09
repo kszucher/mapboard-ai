@@ -17,10 +17,11 @@ import {ProfileButton} from './ProfileButton'
 import {ControlsLeft} from './ControlsLeft'
 import {ShouldCreateMapInMap} from './ShouldCreateMapInMap'
 import {CreateTable} from './CreateTable'
-import {PageState, sagaActions} from "../core/EditorFlow"
+import {sagaActions} from "../core/EditorFlow"
 import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'
+import {PageState} from "../core/Types";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {

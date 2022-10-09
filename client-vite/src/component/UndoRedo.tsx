@@ -3,7 +3,8 @@ import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import {MapRight, sagaActions} from '../core/EditorFlow'
+import {sagaActions} from '../core/EditorFlow'
+import {MapRight} from "../core/Types";
 
 export const UndoRedo: FC = () => {
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)

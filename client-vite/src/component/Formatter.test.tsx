@@ -3,10 +3,10 @@ import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
 import {Formatter} from "./Formatter"
 import { describe, it } from 'vitest'
-import {actions, MapRight, store} from "../core/EditorFlow";
+import {actions, store} from "../core/EditorFlow";
 import React from "react";
-import {LineTypes, TextTypes, WidthTypes} from "../core/DefaultProps";
 import {colorList} from "../core/Colors";
+import {LineTypes, MapRight, TextTypes, WidthTypes} from "../core/Types";
 
 describe("Formatter test", () => {
   beforeEach(() => {

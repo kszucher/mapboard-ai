@@ -1,6 +1,6 @@
-import {MapRight} from "../core/EditorFlow";
 import {RootStateOrAny, useSelector} from "react-redux";
 import {Button, ButtonGroup} from "@mui/material";
+import {MapRight} from "../core/Types";
 
 export const TargetedButtonGroup = ({KEYS, value, setValue}: { KEYS: string[], value: string, setValue: Function }) => {
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)

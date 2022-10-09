@@ -1,7 +1,8 @@
 import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
-import {actions, PageState, sagaActions} from '../core/EditorFlow'
+import {actions, sagaActions} from '../core/EditorFlow'
+import {PageState} from "../core/Types";
 
 export const ProfileMenu: FC = () => {
   const moreMenu = useSelector((state: RootStateOrAny) => state.moreMenu)

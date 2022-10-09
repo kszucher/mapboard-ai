@@ -1,39 +1,7 @@
 import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
-
-export enum FormatMode {
-  text,
-  border,
-  fill,
-  line
-}
-
-export enum AuthPageState {
-  SIGN_IN,
-  SIGN_UP_STEP_1,
-  SIGN_UP_STEP_2
-}
-
-export enum PageState {
-  EMPTY,
-  DEMO,
-  AUTH,
-  WS,
-  WS_PROFILE,
-  WS_SETTINGS,
-  WS_SHARES,
-  WS_CREATE_TABLE,
-  WS_CREATE_TASK,
-  WS_CREATE_MAP_IN_MAP,
-  WS_SHARE_THIS_MAP,
-}
-
-export enum MapRight {
-  UNAUTHORIZED,
-  VIEW,
-  EDIT
-}
+import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
 
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,

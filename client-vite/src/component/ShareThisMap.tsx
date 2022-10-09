@@ -1,7 +1,8 @@
 import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
-import {actions, MapRight, PageState, sagaActions} from '../core/EditorFlow'
+import {actions, sagaActions} from '../core/EditorFlow'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
+import {MapRight, PageState} from "../core/Types";
 
 export const ShareThisMap: FC = () => {
   const shareEmail = useSelector((state: RootStateOrAny) => state.shareEmail)

@@ -9,8 +9,9 @@ import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../core/MapS
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
 import {pasteDispatch} from "../core/PasteFlow"
-import {actions, PageState, sagaActions, MapRight} from "../core/EditorFlow"
+import {actions, sagaActions} from "../core/EditorFlow"
 import { getColors } from '../core/Colors'
+import {MapRight, PageState} from "../core/Types";
 
 let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, whichDown = 0, elapsed = 0
 let namedInterval

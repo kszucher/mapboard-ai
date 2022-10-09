@@ -2,10 +2,10 @@ import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {Button, IconButton} from '@mui/material'
 import {colorList} from '../core/Colors'
-import {actions, FormatMode} from '../core/EditorFlow'
+import {actions} from '../core/EditorFlow'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
-import {LineTypes, TextTypes, WidthTypes} from "../core/DefaultProps";
 import {TargetedButtonGroup} from "./TargetedButtonGroup";
+import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Types";
 
 export const Formatter: FC = () => {
   const o = 32

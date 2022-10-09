@@ -3,7 +3,8 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { Button, IconButton, Modal } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import {actions, PageState, sagaActions} from "../core/EditorFlow"
+import {actions, sagaActions} from "../core/EditorFlow"
+import {PageState} from "../core/Types";
 
 export const Settings: FC = () => {
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)

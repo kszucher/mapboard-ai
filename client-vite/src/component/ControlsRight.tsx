@@ -14,7 +14,8 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, PageState, sagaActions} from "../core/EditorFlow";
+import {actions, sagaActions} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 const iconSize = 40
 const topOffs1 = 48*2

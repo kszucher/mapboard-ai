@@ -1,6 +1,4 @@
-export enum TextTypes { h1 = 36, h2 = 24, h3 = 18, h4 = 16, t = 14 }
-export enum WidthTypes { w1 = 1, w2, w3}
-export enum LineTypes { bezier, edge }
+import {LineTypes} from "./Types";
 
 export let mapProps = {
   saveAlways: {

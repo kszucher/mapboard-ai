@@ -1,7 +1,8 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Link, TextField, Typography } from '@mui/material'
-import {actions, AuthPageState, sagaActions} from "../core/EditorFlow";
+import {actions, sagaActions} from "../core/EditorFlow";
 import {FC} from "react";
+import {AuthPageState} from "../core/Types";
 
 export const Auth: FC = () => {
   const authPageState = useSelector((state: RootStateOrAny) => state.authPageState)

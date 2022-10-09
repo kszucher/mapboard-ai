@@ -6,7 +6,8 @@ import {mapref, mapStack, mapStackDispatch, push, saveMap} from './MapStackFlow'
 import {selectionState} from './SelectionFlow'
 import {mapDispatch, redraw} from './MapFlow'
 import {mapGetProp} from '../map/MapGetProp'
-import {actions, PageState, sagaActions} from "./EditorFlow";
+import {actions, sagaActions} from "./EditorFlow";
+import {PageState} from "./Types";
 
 const SAVE_INCLUDED = [
   'OPEN_MAP_FROM_TAB',
