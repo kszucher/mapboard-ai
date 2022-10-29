@@ -1,27 +1,28 @@
 // @ts-nocheck
 
-import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelete'
-import { cellInsert, structInsert } from '../node/NodeInsert'
-import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
-import { nodeNavigate } from '../node/NodeNavigate'
-import { transposeArray } from './Utils'
-import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
+import { nodeProps } from './DefaultProps'
 import { flagDomData, updateDomData } from './DomFlow'
 import { mapref } from './MapStackFlow'
-import { nodeProps } from './DefaultProps'
-import { mapSetProp } from '../map/MapSetProp'
+import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
+import { arraysSame, copy, transposeArray } from './Utils'
 import { mapFindById } from '../map/MapFindById'
 import { mapAlgo } from '../map/MapAlgo'
 import { mapInit } from '../map/MapInit'
 import { mapChain } from '../map/MapChain'
 import { mapCollect } from '../map/MapCollect'
+import { mapFindNearest } from "../map/MapFindNearest"
 import { mapFindOverRectangle } from "../map/MapFindOverRectangle"
 import { mapMeasure } from '../map/MapMeasure'
 import { mapPlace } from '../map/MapPlace'
+import { mapSetProp } from '../map/MapSetProp'
 import { mapTaskCalc } from '../map/MapTaskCalc'
 import { mapTaskCheck } from '../map/MapTaskCheck'
-import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
 import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
+import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
+import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelete'
+import { cellInsert, structInsert } from '../node/NodeInsert'
+import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
+import { nodeNavigate } from '../node/NodeNavigate'
 
 const clearSelection = _ => {
   for (let i = 0; i < mapref(['r']).length; i++) {
@@ -41,13 +42,26 @@ const mapReducer = (action, payload) => {
   let sc = selectionState
   let lm = mapref(sc.lastPath)
   switch (action) {
-    // MISC ---------------------------------------------------------------------------------------------------------
-    case 'setIsResizing': {
+    // VIEW
+    case 'setShouldResize': {
       let m = mapref(['m'])
-      m.isResizing = true
+      m.shouldResize = true
       break
     }
-    case 'applySelection': {
+    case 'setShouldCenter': {
+      let m = mapref(['m'])
+      m.shouldCenter = true // outside push - checkPop?
+      break
+    }
+    case 'setShouldScroll': {
+      const {x, y} = payload
+      let m = mapref(['m'])
+      m.shouldScroll = true
+      m.scrollX = x
+      m.scrollY = y
+      break
+    }
+    case 'highlightSelection': {
       const {fromX, fromY, toX, toY} = payload
       let startX = fromX < toX ? fromX : toX
       let startY = fromY < toY ? fromY : toY
@@ -58,29 +72,30 @@ const mapReducer = (action, payload) => {
       mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
       break
     }
-    // NODE SELECT -------------------------------------------------------------------------------------------------
+    // SELECT
     case 'clearSelection': {
       clearSelection()
       break
     }
     case 'selectStruct': {
-      let m = mapref(['m'])
-      lm = mapref(m.deepestSelectablePath)
       clearSelection()
+      const {lastOverPath} = payload
+      const lm = mapref(lastOverPath)
       lm.selected = 1
       lm.selection = 's'
       updateParentLastSelectedChild(lm)
       break
     }
     case 'selectStructToo': {
-      let m = mapref(['m'])
-      mapref(m.deepestSelectablePath).selected = sc.maxSel + 1
+      const {lastOverPath} = payload
+      const lm = mapref(lastOverPath)
+      lm.selected = sc.maxSel + 1
       updateParentLastSelectedChild(lm)
       break
     }
     case 'selectStructFamily': {
-      let m = mapref(['m'])
-      lm = mapref(m.deepestSelectablePath)
+      const {lastOverPath} = payload
+      const lm = mapref(lastOverPath)
       if (lm.path.length === 2) {
         lm.selected = 0
         if (lm.d[0].selected === 1) {
@@ -260,7 +275,7 @@ const mapReducer = (action, payload) => {
       cr.selected = 1
       break
     }
-    // NODE INSERT -------------------------------------------------------------------------------------------------
+    // INSERT
     case 'insert_U_S': {
       if (!lm.isRoot) {
         clearSelection()
@@ -288,7 +303,7 @@ const mapReducer = (action, payload) => {
       cellInsert(sc.lastPath, payload.keyCode)
       break
     }
-    // NODE DELETE -------------------------------------------------------------------------------------------------
+    // DELETE
     case 'delete_S': {
       structDeleteReselect(sc)
       break
@@ -297,7 +312,7 @@ const mapReducer = (action, payload) => {
       cellBlockDeleteReselect(sc)
       break
     }
-    // NODE MOVE ---------------------------------------------------------------------------------------------------
+    // MOVE
     case 'move_S': {
       nodeMove(sc, 'struct2struct', payload.keyCode)
       break
@@ -321,7 +336,52 @@ const mapReducer = (action, payload) => {
       structDeleteReselect(sc)
       break
     }
+    case 'moveSelectionPreview': {
+      // TODO prevent move if multiple nodes are selected
+      const { toX, toY } = payload
+      let m = mapref(['m'])
+      m.moveTargetPath = []
+      m.moveData = []
+      let lastSelectedPath = selectionState.structSelectedPathList[0]
+      let lastSelected = mapref(lastSelectedPath)
+      if (!(lastSelected.nodeStartX < toX &&
+        toX < lastSelected.nodeEndX &&
+        lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
+        toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
+        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY) // TODO multi r rethink
+        if (lastNearestPath.length > 2) {
+          m.moveTargetPath = copy(lastNearestPath)
+          let lastFound = mapref(lastNearestPath)
+          let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
+          let fromY = lastFound.nodeY
+          m.moveData = [fromX, fromY, toX, toY]
+          if (lastFound.s.length === 0) {
+            m.moveTargetIndex = 0
+          } else {
+            let insertIndex = 0
+            for (let i = 0; i < lastFound.s.length - 1; i++) {
+              if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
+                insertIndex = i + 1
+              }
+            }
+            if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
+              insertIndex = lastFound.s.length
+            }
+            let lastSelectedParentPath = lastSelected.parentPath
+            if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+              if (lastSelected.index < insertIndex) {
+                insertIndex -= 1
+              }
+            }
+            m.moveTargetIndex = insertIndex
+          }
+        }
+      }
+      break
+    }
     case 'moveSelection': {
+      m.moveData = []
+      m.shouldCenter = true // outside push - checkPop?
       nodeMoveMouse(sc)
       break
     }
@@ -361,7 +421,7 @@ const mapReducer = (action, payload) => {
       structInsert(lm, 'childTable', payload)
       break
     }
-    // NODE FORMAT -------------------------------------------------------------------------------------------------
+    // FORMAT
     case 'applyMapParams': {
       const {
         density, alignment,
@@ -432,7 +492,7 @@ const mapReducer = (action, payload) => {
       cm.taskStatus = payload.taskStatus
       break
     }
-    // NODE EDIT ---------------------------------------------------------------------------------------------------
+    // EDIT
     case 'eraseContent': {
       if (!lm.hasCell) {
         lm.content = ''
@@ -477,5 +537,5 @@ export const mapDispatch = (action, payload) => {
   console.log('NODE_DISPATCH: ' + action)
   mapReducer(action, payload)
   recalc()
-  document.getElementById("mapHolderDiv").focus()
+  document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
 }

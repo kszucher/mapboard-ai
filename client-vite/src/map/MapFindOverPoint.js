@@ -9,6 +9,9 @@ export const mapFindOverPoint = {
         currY = y
         lastOverPath = []
         mapFindOverPoint.iterate(cr)
+        if (lastOverPath.length === 4) {
+            lastOverPath = ['r', 0] // TODO multi r rethink
+        }
         return lastOverPath
     },
 

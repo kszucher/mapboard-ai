@@ -3,9 +3,8 @@
 import {FC, useEffect} from "react"
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { mapDispatch, recalc, redraw } from '../core/MapFlow'
-import { arraysSame, copy, setEndOfContenteditable } from '../core/Utils'
-import {mapFindNearest} from "../map/MapFindNearest"
-import { checkPop, mapStackDispatch, mapref, push, mapStack } from '../core/MapStackFlow'
+import { setEndOfContenteditable } from '../core/Utils'
+import { checkPop, mapStackDispatch, mapref, push } from '../core/MapStackFlow'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
 import {pasteDispatch} from "../core/PasteFlow"
@@ -13,7 +12,7 @@ import {actions, sagaActions} from "../core/EditorFlow"
 import { getColors } from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
 
-let pageX, pageY, scrollLeft, scrollTop, fromX, fromY, whichDown = 0, elapsed = 0
+let fromX, fromY, whichDown = 0, elapsed = 0
 let namedInterval
 let isIntervalRunning = false
 let isNodeClicked = false
@@ -35,6 +34,24 @@ const getCoords = (e) => {
 const getNativeEvent = ({path, composedPath, key, code, which}) =>
   ({ path: path || (composedPath && composedPath()), key, code, which })
 
+// TODO
+// step 1 move paste back to windowListeners
+// step 2 kill getMapStackData
+// step 3 move push, checkPop (inside WL, outside FC), mapDispatch (inside WL)
+// step 4 reorganize windowListeners, so there is no other use of push, checkPop, redraw then inside mapDispatch
+// step 5 kill mapStackDispatch by
+// - moving dataIndex under store
+// - move push, checkPop from outside to inside WL FC
+// - dissolve mapStackReducer into normal reducers
+// - have mapref use store.getState() to get current index (push and checkpop can use it with useSelector
+// step 6 kill mapStackSaga
+// - introduce loadData after changing dataIndex in the state
+// - have undo/redo buttons react to it directly
+
+// remove redraw - 20 lines
+// add paste + 60 lines
+// sum 560 lines
+
 export const WindowListeners: FC = () => {
 
   const mapId = useSelector((state: RootStateOrAny) => state.mapId)
@@ -49,7 +66,19 @@ export const WindowListeners: FC = () => {
   const node = useSelector((state: RootStateOrAny) => state.node)
   const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+
   const dispatch = useDispatch()
+
+// mapDispatch
+//   push()
+//   mapReducer(action, payload)
+//   recalc()
+//   checkPop()
+//      if change
+//        redraw
+//        dispatch(mapStackChanged)
+//      else
+//        index--
 
   const mutationFun = (lm, mutationsList) => {
     for (let mutation of mutationsList) {
@@ -102,36 +131,6 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const checkNodeClicked = (e) => {
-    let isNodeClicked = false;
-    [fromX, fromY] = getCoords(e)
-    let lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY) // TODO multi r rethink
-    if (lastOverPath.length) {
-      isNodeClicked = true
-      let m = mapref(['m'])
-      m.deepestSelectablePath = copy(lastOverPath)
-      if (m.deepestSelectablePath.length === 4) {
-        m.deepestSelectablePath = ['r', 0] // TODO multi r rethink
-      }
-    }
-    return isNodeClicked
-  }
-
-  const checkTaskClicked = (path) => {
-    let isTaskClicked = false
-    if (path.map(i => i.id === 'mapSvgInner').reduce((acc, item) => {return acc || item})) {
-      for (const pathItem of path) {
-        if (pathItem.id) {
-          if (pathItem.id.substring(17, 27) === 'taskCircle') {
-            isTaskClicked = true
-            break
-          }
-        }
-      }
-    }
-    return isTaskClicked
-  }
-
   // LANDING LISTENERS
   const wheel = (e) => {
     e.preventDefault()
@@ -155,7 +154,7 @@ export const WindowListeners: FC = () => {
   }
 
   const resize = colorMode => e => {
-    mapDispatch('setIsResizing')
+    mapDispatch('setShouldResize')
     redraw(colorMode)
   }
 
@@ -165,67 +164,66 @@ export const WindowListeners: FC = () => {
   const mousedown = colorMode => e => {
     e.preventDefault()
     const {path, which} = getNativeEvent(e)
-    if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-      return
-    }
-    if (whichDown === 0) {
-      whichDown = which
-      if (isEditing === 1) {
-        finishEdit()
-        redraw(colorMode)
-      }
-      (window.getSelection
-          ? window.getSelection()
-          : document.selection
-      ).empty()
-      elapsed = 0
-      push()
-      if (which === 1) {
-        isNodeClicked = checkNodeClicked(e)
-        isTaskClicked = checkTaskClicked(path)
-        if (isNodeClicked) {
-          let m = mapref(['m'])
-          let lm = mapref(m.deepestSelectablePath)
-          if (lm.linkType === '') {
-            if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-              mapDispatch('selectStruct')
+    if (path.find(el => el.id === 'mapSvgOuter')) {
+      if (whichDown === 0) {
+        whichDown = which
+        if (isEditing === 1) {
+          finishEdit()
+          redraw(colorMode)
+        }
+        (window.getSelection
+            ? window.getSelection()
+            : document.selection
+        ).empty()
+        elapsed = 0
+        push()
+        let lastOverPath = []
+        if (which === 1 || which === 3) {
+          [fromX, fromY] = getCoords(e)
+          isTaskClicked = path.find(el => el.id?.substring(17, 27) === 'taskCircle')
+          lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY)
+          isNodeClicked = lastOverPath.length
+        }
+        if (which === 1) {
+          if (isTaskClicked) {
+            mapDispatch(
+              'setTaskStatus', {
+                taskStatus: parseInt(path[0].id.charAt(27), 10),
+                nodeId: path[0].id.substring(0, 12)
+              })
+            redraw(colorMode)
+          } else if (isNodeClicked) {
+            let lm = mapref(lastOverPath)
+            if (lm.linkType === '') {
+              if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+                mapDispatch('selectStruct', {lastOverPath})
+              } else {
+                mapDispatch('selectStructToo', {lastOverPath})
+              }
+              redraw(colorMode)
             } else {
-              mapDispatch('selectStructToo')
+              whichDown = 0
+              if (lm.linkType === 'internal') {
+                dispatch(sagaActions.openMapFromMap(lastOverPath))
+              } else if (lm.linkType === 'external') {
+                // TODO make it as a saga action as this is a side effect
+                window.open(lm.link, '_blank')
+                window.focus()
+              }
+            }
+          } else {
+            mapDispatch('clearSelection')
+          }
+        } else if (which === 2) {
+        } else if (which === 3) {
+          if (isNodeClicked) {
+            if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
+              mapDispatch('selectStructFamily', {lastOverPath})
+            } else {
+              mapDispatch('selectStructToo', {lastOverPath}) // TODO: selectStructFamily too
             }
             redraw(colorMode)
-          } else {
-            if (lm.linkType === 'internal') {
-              dispatch(sagaActions.openMapFromMap())
-            } else if (lm.linkType === 'external') {
-              whichDown = 0
-              window.open(lm.link, '_blank')
-              window.focus()
-            }
           }
-        } else if (isTaskClicked) {
-          mapDispatch('setTaskStatus', {
-            taskStatus: parseInt(path[0].id.charAt(27), 10),
-            nodeId: path[0].id.substring(0, 12)
-          })
-          redraw(colorMode)
-        } else {
-          mapDispatch('clearSelection')
-        }
-      } else if (which === 2) {
-        let el = document.getElementById('mapHolderDiv')
-        scrollLeft = el.scrollLeft
-        scrollTop = el.scrollTop
-        pageX = e.pageX
-        pageY = e.pageY
-      } else if (which === 3) {
-        const isNodeClicked = checkNodeClicked(e)
-        if (isNodeClicked) {
-          if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-            mapDispatch('selectStructFamily')
-          } else {
-            mapDispatch('selectStructToo')
-          }
-          redraw(colorMode)
         }
       }
     }
@@ -237,58 +235,19 @@ export const WindowListeners: FC = () => {
     if (whichDown === which) {
       elapsed++
       if (which === 1) {
-        if (isNodeClicked) {
-          let m = mapref(['m'])
-          let [toX, toY] = getCoords(e)
-          m.moveTargetPath = []
-          m.moveData = []
-          let lastSelectedPath = selectionState.structSelectedPathList[0]
-          let lastSelected = mapref(lastSelectedPath)
-          if (!(lastSelected.nodeStartX < toX &&
-            toX < lastSelected.nodeEndX &&
-            lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
-            toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-            let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY) // TODO multi r rethink
-            if (lastNearestPath.length > 2) {
-              m.moveTargetPath = copy(lastNearestPath)
-              let lastFound = mapref(lastNearestPath)
-              fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
-              fromY = lastFound.nodeY
-              m.moveData = [fromX, fromY, toX, toY]
-              if (lastFound.s.length === 0) {
-                m.moveTargetIndex = 0
-              } else {
-                let insertIndex = 0
-                for (let i = 0; i < lastFound.s.length - 1; i++) {
-                  if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
-                    insertIndex = i + 1
-                  }
-                }
-                if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-                  insertIndex = lastFound.s.length
-                }
-                let lastSelectedParentPath = lastSelected.parentPath
-                if (arraysSame(lastFound.path, lastSelectedParentPath)) {
-                  if (lastSelected.index < insertIndex) {
-                    insertIndex -= 1
-                  }
-                }
-                m.moveTargetIndex = insertIndex
-              }
-            }
-          }
+        if (isTaskClicked) {
+        } else if (isNodeClicked) {
+          const [toX, toY] = getCoords(e)
+          mapDispatch('moveSelectionPreview', {toX, toY})
           redraw(colorMode)
-        } else if (isTaskClicked) {
         } else {
-          let [toX, toY] = getCoords(e)
-          mapDispatch('applySelection', {fromX, fromY, toX, toY})
+          const [toX, toY] = getCoords(e)
+          mapDispatch('highlightSelection', {fromX, fromY, toX, toY})
           redraw(colorMode)
         }
       } else if (which === 2) {
-        let el = document.getElementById('mapHolderDiv')
-        el.scrollLeft = scrollLeft - e.pageX  + pageX
-        el.scrollTop = scrollTop -  e.pageY  + pageY
-      } else if (which === 3) {
+        mapDispatch('setShouldScroll', {x: e.movementX, y: e.movementY})
+        redraw(colorMode)
       }
     }
   }
@@ -300,16 +259,15 @@ export const WindowListeners: FC = () => {
       whichDown = 0
       if (elapsed) {
         if (which === 1) {
-          if (isNodeClicked) {
+          if (isTaskClicked) {
+          } else if (isNodeClicked) {
             let m = mapref(['m'])
             if (m.moveTargetPath.length) {
-              m.moveData = []
-              m.shouldCenter = true // outside push - checkPop?
               mapDispatch('moveSelection')
               redraw(colorMode)
             }
-          } else if (isTaskClicked) {
           } else {
+            // TODO remove this as this is not necessary BUT can be kept for prudence
             if (selectionState.structSelectedPathList.length === 0 &&
               selectionState.cellSelectedPathList.length === 0) {
               mapDispatch('select_R')
@@ -318,8 +276,6 @@ export const WindowListeners: FC = () => {
             m.selectionRect = []
             redraw(colorMode)
           }
-        } else if (which === 2) {
-        } else if (which === 3) {
         }
       } else {
         if (which === 1) {
@@ -329,8 +285,6 @@ export const WindowListeners: FC = () => {
             mapDispatch('select_R')
             redraw(colorMode)
           }
-        } else if (which === 2) {
-        } else if (which === 3) {
         }
       }
       checkPop(dispatch)
@@ -338,23 +292,20 @@ export const WindowListeners: FC = () => {
   }
 
   const dblclick = colorMode => e => {
-    const {path} = getNativeEvent(e)
     e.preventDefault()
-    if (!path.map(i => i.id === 'mapSvgOuter').reduce((acc, item) => {return acc || item})) {
-      return
+    const {path} = getNativeEvent(e)
+    if (path.find(el => el.id === 'mapSvgOuter')) {
+      if (isNodeClicked) {
+        startEdit()
+      } else {
+        mapDispatch('setShouldCenter')
+      }
+      redraw(colorMode)
     }
-    if (isNodeClicked) {
-      startEdit()
-    } else {
-      let m = mapref(['m'])
-      m.shouldCenter = true // outside push - checkPop?
-    }
-    redraw(colorMode)
   }
 
   const keydown = colorMode => e => {
-    let {scope, lastPath} = selectionState
-    let lm = mapref(selectionState.lastPath)
+    let {scope} = selectionState
     let {key, code, which} = getNativeEvent(e)
     // [37,38,39,40] = [left,up,right,down]
     let keyStateMachineDb = [
@@ -384,12 +335,12 @@ export const WindowListeners: FC = () => {
       [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['select_CCRCC_B_S']                       ],
       [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S']                          ],
       [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_R']                               ],
-      [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ],
-      [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ],
+      [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ], // m can be 1
+      [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ], // m doesnt matter as this is a saga dispatch, so we are fine
       [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
       [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
       [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['saveMap']                                ],
-      [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ],
+      [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ], // m can possibly be 1, as we just finish the edit, it will not break
       [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
       [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                   ],
       [ 1,  0,  0,  code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose']                              ],
@@ -544,9 +495,15 @@ export const WindowListeners: FC = () => {
     }
   }, [node])
 
+  // useEffect that reacts to button-like commands
+
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
       redraw(colorMode)
+      // mapDispatch('noOp')
+      // this is possibly the only case, when we update map but do not require push-checkPop
+      // OR we could have a smart one that knows that certain variables should not be watched for comparison
+      // OR!!! actually, I might be a genius, as this is passed only, but is ONLY present in the assigned styleData, so we can change data even without having to worry about state change!!!
       removeMapListeners()
       if (mapRight === MapRight.EDIT) {
         addMapListeners(colorMode)

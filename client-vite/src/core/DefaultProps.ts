@@ -23,10 +23,13 @@ export let mapProps = {
     taskConfigD: 0,
     taskConfigWidth: 0,
     // indicators
-    isLoading: true,
-    isResizing: false,
-    // navigators
-    deepestSelectablePath: ['r', 0],
+    shouldLoad: true,
+    shouldResize: false,
+    shouldCenter: false,
+    shouldScroll: false,
+    //
+    scrollX: 0,
+    scrollY: 0,
     //
     selectionRect: [],
     moveTargetPath: [],

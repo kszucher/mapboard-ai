@@ -190,8 +190,8 @@ function* mapSaga () {
           break
         }
         case 'OPEN_MAP_FROM_MAP': {
-          const m = mapref(['m'])
-          const lm = mapref(m.deepestSelectablePath)
+          const {lastOverPath} = payload
+          const lm = mapref(lastOverPath)
           const mapId = lm.link
           payload = {...payload, mapId}
           break

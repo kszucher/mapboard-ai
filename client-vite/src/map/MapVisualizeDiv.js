@@ -3,34 +3,34 @@ import { getColors } from '../core/Colors'
 
 const scrollTo = function(to, duration) {
     const
-        element = document.getElementById('mapHolderDiv'),
-        start = element.scrollLeft,
-        change = to - start,
-        startDate = +new Date(),
-        // t = current time
-        // b = start value
-        // c = change in value
-        // d = duration
-        easeOut = function(t, b, c, d) {
-            //https://www.gizma.com/easing/
-            // https://easings.net/
-            // https://css-tricks.com/ease-out-in-ease-in-out/
-            // TODO: trying to set if for everything
-            t /= d
-            t--
-            return c*(t*t*t + 1) + b
-        },
-        animateScroll = function() {
-            const currentDate = +new Date()
-            const currentTime = currentDate - startDate
-            element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration))
-            if(currentTime < duration) {
-                requestAnimationFrame(animateScroll)
-            }
-            else {
-                element.scrollLeft = to
-            }
-        }
+      element = document.getElementById('mapHolderDiv'),
+      start = element.scrollLeft,
+      change = to - start,
+      startDate = +new Date(),
+      // t = current time
+      // b = start value
+      // c = change in value
+      // d = duration
+      easeOut = function(t, b, c, d) {
+          //https://www.gizma.com/easing/
+          // https://easings.net/
+          // https://css-tricks.com/ease-out-in-ease-in-out/
+          // TODO: trying to set if for everything
+          t /= d
+          t--
+          return c*(t*t*t + 1) + b
+      },
+      animateScroll = function() {
+          const currentDate = +new Date()
+          const currentTime = currentDate - startDate
+          element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration))
+          if(currentTime < duration) {
+              requestAnimationFrame(animateScroll)
+          }
+          else {
+              element.scrollLeft = to
+          }
+      }
     animateScroll()
 }
 
@@ -41,18 +41,23 @@ export const mapVisualizeDiv = {
         mapDiv.style.height = "" + m.mapHeight + "px"
         let mapHolderDiv = document.getElementById('mapHolderDiv')
         let currScrollLeft = (window.innerWidth + m.mapWidth) / 2
-        if (m.isLoading) {
-            m.isLoading = false
+        if (m.shouldLoad) { // shouldLoad
+            m.shouldLoad = false
             mapHolderDiv.scrollLeft = currScrollLeft
             mapHolderDiv.scrollTop = window.innerHeight - 48 * 2
         }
-        if (m.isResizing) {
-            m.isResizing = false
+        if (m.shouldResize) { // shouldResize
+            m.shouldResize = false
             mapHolderDiv.scrollLeft = currScrollLeft
         }
         if (m.shouldCenter) {
             m.shouldCenter = false
             scrollTo(currScrollLeft, 500)
+        }
+        if (m.shouldScroll) {
+            m.shouldScroll = false
+            mapHolderDiv.scrollLeft -= m.scrollX
+            mapHolderDiv.scrollTop -= m.scrollY
         }
         mapVisualizeDiv.iterate(m, cr, colorMode)
     },

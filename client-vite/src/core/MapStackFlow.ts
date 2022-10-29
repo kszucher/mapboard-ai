@@ -22,7 +22,7 @@ function mapStackReducer(action, payload) {
   switch (action) {
     case 'initMapState': {
       mapStack.data = [mapAssembly(payload.mapData)]
-      mapStack.dataIndex = 0
+      mapStack.dataIndex = 0 // this can be easily done by requesting the backend to send a 0 value
       break
     }
     case 'undo': {
@@ -68,6 +68,7 @@ export function mapref(path) {
   return subsref(getMapStackData(), path)
 }
 
+// this is a getter, same as when we loadNode, so should be placed accordingly
 export function saveMap() {
   let cm = copy(getMapStackData())
   mapDeinit.start(cm)
