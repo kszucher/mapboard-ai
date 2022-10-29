@@ -191,13 +191,6 @@ export const mapReducer = (action, payload) => {
       }
       break
     }
-    case 'select_first_M': {
-      clearSelection()
-      let toPath = mapref(mapref(sc.geomHighPath).parentPath).path
-      mapref(toPath).selected = 1
-      mapref(toPath).s[0].selected = 1
-      break
-    }
     case 'select_D_M': {
       clearSelection()
       let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', 'ArrowDown')
@@ -388,6 +381,10 @@ export const mapReducer = (action, payload) => {
     }
     case 'cellifyMulti': {
       nodeMove(sc, 'struct2cell', '', 'multiRow')
+      clearSelection()
+      let toPath = mapref(mapref(sc.geomHighPath).parentPath).path
+      mapref(toPath).selected = 1
+      mapref(toPath).s[0].selected = 1
       break
     }
     case 'insertTextFromClipboardAsText': {
