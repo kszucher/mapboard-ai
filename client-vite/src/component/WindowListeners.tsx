@@ -117,13 +117,6 @@ export function checkPop(dispatch) {
   }
 }
 
-export const mapDispatch = (action, payload) => {
-  console.log('NODE_DISPATCH: ' + action)
-  mapReducer(action, payload)
-  recalc()
-  document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
-}
-
 export const WindowListeners: FC = () => {
 
   const mapId = useSelector((state: RootStateOrAny) => state.mapId)
@@ -140,6 +133,13 @@ export const WindowListeners: FC = () => {
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
 
   const dispatch = useDispatch()
+
+  const mapDispatch = (action, payload) => {
+    console.log('NODE_DISPATCH: ' + action)
+    mapReducer(action, payload)
+    recalc()
+    document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
+  }
 
 // mapDispatch
 //   push()
