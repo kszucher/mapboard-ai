@@ -40,15 +40,11 @@ function mapStackReducer(action, payload) {
   }
 }
 
-const getMapStackData = () => {
-  return mapStack.data[mapStack.dataIndex]
-}
-
 export function push() {
   if (mapStack.data.length > mapStack.dataIndex + 1) {
     mapStack.data.length = mapStack.dataIndex + 1
   }
-  mapStack.data.push(JSON.parse(JSON.stringify(getMapStackData())))
+  mapStack.data.push(JSON.parse(JSON.stringify(mapStack.data[mapStack.dataIndex])))
   mapStack.dataIndex++
 }
 
@@ -65,12 +61,12 @@ export function checkPop(dispatch) {
 }
 
 export function mapref(path) {
-  return subsref(getMapStackData(), path)
+  return subsref(mapStack.data[mapStack.dataIndex], path)
 }
 
 // this is a getter, same as when we loadNode, so should be placed accordingly
 export function saveMap() {
-  let cm = copy(getMapStackData())
+  let cm = copy(mapStack.data[mapStack.dataIndex])
   mapDeinit.start(cm)
   return mapDisassembly.start(cm)
 }

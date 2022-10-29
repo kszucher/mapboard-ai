@@ -34,8 +34,8 @@ const getNativeEvent = ({path, composedPath, key, code, which}) =>
   ({ path: path || (composedPath && composedPath()), key, code, which })
 
 // TODO
-// step 1 move paste back to windowListeners
-// step 2 kill getMapStackData
+// step 1 move paste back to windowListeners OK
+// step 2 kill getMapStackData OK
 // step 3 move push, checkPop (inside WL, outside FC), mapDispatch (inside WL)
 // step 4 reorganize windowListeners, so there is no other use of push, checkPop, redraw then inside mapDispatch
 // step 5 kill mapStackDispatch by
