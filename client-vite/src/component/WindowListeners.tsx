@@ -204,18 +204,18 @@ export const WindowListeners: FC = () => {
   }
 
   // MAP LISTENERS
-  const contextmenu = colorMode => e => {
+  const contextmenu = (e) => {
     e.preventDefault()
   }
 
-  const resize = colorMode => e => {
+  const resize = (e) => {
     mapDispatch('setShouldResize')
   }
 
-  const popstate = colorMode => e => {
+  const popstate = (e) => {
   }
 
-  const mousedown = colorMode => e => {
+  const mousedown = (e) => {
     e.preventDefault()
     const {path, which} = getNativeEvent(e)
     if (path.find(el => el.id === 'mapSvgOuter')) {
@@ -279,7 +279,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const mousemove = colorMode => e => {
+  const mousemove = (e) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
     if (whichDown === which) {
@@ -299,7 +299,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const mouseup = colorMode => e => {
+  const mouseup = (e) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
     if (whichDown === which) {
@@ -334,7 +334,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const dblclick = colorMode => e => {
+  const dblclick = (e) => {
     e.preventDefault()
     const {path} = getNativeEvent(e)
     if (path.find(el => el.id === 'mapSvgOuter')) {
@@ -346,7 +346,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const keydown = colorMode => e => {
+  const keydown = (e) => {
     let {scope} = selectionState
     let {key, code, which} = getNativeEvent(e)
     // [37,38,39,40] = [left,up,right,down]
@@ -446,7 +446,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const paste = colorMode => e => {
+  const paste = (e) => {
     e.preventDefault()
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
@@ -509,18 +509,18 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const addMapListeners = (colorMode) => {
+  const addMapListeners = () => {
     mapAreaListener = new AbortController()
     const {signal} = mapAreaListener
-    window.addEventListener("contextmenu", contextmenu(colorMode), { signal })
-    window.addEventListener('resize', resize(colorMode), { signal })
-    window.addEventListener('popstate', popstate(colorMode), { signal })
-    window.addEventListener('dblclick', dblclick(colorMode), { signal })
-    window.addEventListener('mousedown', mousedown(colorMode), { signal })
-    window.addEventListener('mousemove', mousemove(colorMode), { signal })
-    window.addEventListener('mouseup', mouseup(colorMode), { signal })
-    window.addEventListener("keydown", keydown(colorMode), { signal })
-    window.addEventListener("paste", paste(colorMode), { signal })
+    window.addEventListener("contextmenu", contextmenu, { signal })
+    window.addEventListener('resize', resize, { signal })
+    window.addEventListener('popstate', popstate, { signal })
+    window.addEventListener('dblclick', dblclick, { signal })
+    window.addEventListener('mousedown', mousedown, { signal })
+    window.addEventListener('mousemove', mousemove, { signal })
+    window.addEventListener('mouseup', mouseup, { signal })
+    window.addEventListener("keydown", keydown, { signal })
+    window.addEventListener("paste", paste, { signal })
   }
 
   const removeMapListeners = () => {
@@ -546,7 +546,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (pageState === PageState.WS) {
       if (mapRight === MapRight.EDIT) {
-        addMapListeners(colorMode)
+        addMapListeners()
       } else if (mapRight === MapRight.VIEW) {
         // TODO figure out view listeners
       }
@@ -569,10 +569,10 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      mapDispatch('')
+      redraw(colorMode) // mapDispatch is futile here, as this does not change state
       removeMapListeners()
       if (mapRight === MapRight.EDIT) {
-        addMapListeners(colorMode)
+        addMapListeners()
       } else if (mapRight === MapRight.VIEW) {
         // TODO figure out view listeners
       }
