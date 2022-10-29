@@ -2,16 +2,16 @@
 
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {mapDispatch, recalc, redraw} from '../core/MapFlow'
+import {mapReducer, recalc, redraw} from '../core/MapFlow'
 import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
 import {actions, sagaActions} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
-import { mapAssembly } from '../map/MapAssembly'
-import { mapDisassembly } from '../map/MapDisassembly'
-import { mapDeinit } from '../map/MapDeinit'
+import {mapAssembly} from '../map/MapAssembly'
+import {mapDisassembly} from '../map/MapDisassembly'
+import {mapDeinit} from '../map/MapDeinit'
 
 let fromX, fromY, whichDown = 0, elapsed = 0
 let namedInterval
@@ -115,6 +115,13 @@ export function checkPop(dispatch) {
     // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
     dispatch(sagaActions.mapStackChanged())
   }
+}
+
+export const mapDispatch = (action, payload) => {
+  console.log('NODE_DISPATCH: ' + action)
+  mapReducer(action, payload)
+  recalc()
+  document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
 }
 
 export const WindowListeners: FC = () => {

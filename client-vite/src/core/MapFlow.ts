@@ -1,27 +1,27 @@
 // @ts-nocheck
 
-import { nodeProps } from './DefaultProps'
-import { flagDomData, updateDomData } from './DomFlow'
-import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
-import { arraysSame, copy, transposeArray } from './Utils'
-import { mapFindById } from '../map/MapFindById'
-import { mapAlgo } from '../map/MapAlgo'
-import { mapInit } from '../map/MapInit'
-import { mapChain } from '../map/MapChain'
-import { mapCollect } from '../map/MapCollect'
-import { mapFindNearest } from "../map/MapFindNearest"
-import { mapFindOverRectangle } from "../map/MapFindOverRectangle"
-import { mapMeasure } from '../map/MapMeasure'
-import { mapPlace } from '../map/MapPlace'
-import { mapSetProp } from '../map/MapSetProp'
-import { mapTaskCalc } from '../map/MapTaskCalc'
-import { mapTaskCheck } from '../map/MapTaskCheck'
-import { mapVisualizeDiv } from '../map/MapVisualizeDiv'
-import { mapVisualizeSvg } from '../map/MapVisualizeSvg'
-import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelete'
-import { cellInsert, structInsert } from '../node/NodeInsert'
-import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
-import { nodeNavigate } from '../node/NodeNavigate'
+import {nodeProps} from './DefaultProps'
+import {flagDomData, updateDomData} from './DomFlow'
+import {initSelectionState, selectionState, updateSelectionState} from './SelectionFlow'
+import {arraysSame, copy, transposeArray} from './Utils'
+import {mapFindById} from '../map/MapFindById'
+import {mapAlgo} from '../map/MapAlgo'
+import {mapInit} from '../map/MapInit'
+import {mapChain} from '../map/MapChain'
+import {mapCollect} from '../map/MapCollect'
+import {mapFindNearest} from "../map/MapFindNearest"
+import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
+import {mapMeasure} from '../map/MapMeasure'
+import {mapPlace} from '../map/MapPlace'
+import {mapSetProp} from '../map/MapSetProp'
+import {mapTaskCalc} from '../map/MapTaskCalc'
+import {mapTaskCheck} from '../map/MapTaskCheck'
+import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
+import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
+import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
+import {cellInsert, structInsert} from '../node/NodeInsert'
+import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
+import {nodeNavigate} from '../node/NodeNavigate'
 import {mapref} from "../component/WindowListeners";
 
 const clearSelection = _ => {
@@ -38,7 +38,7 @@ const updateParentLastSelectedChild = lm => {
   }
 }
 
-const mapReducer = (action, payload) => {
+export const mapReducer = (action, payload) => {
   let sc = selectionState
   let lm = mapref(sc.lastPath)
   switch (action) {
@@ -531,11 +531,4 @@ export const redraw = (colorMode) => {
     mapVisualizeDiv.start(m, cr, colorMode)
   }
   updateDomData()
-}
-
-export const mapDispatch = (action, payload) => {
-  console.log('NODE_DISPATCH: ' + action)
-  mapReducer(action, payload)
-  recalc()
-  document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
 }
