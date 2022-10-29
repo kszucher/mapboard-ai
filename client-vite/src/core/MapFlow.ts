@@ -492,16 +492,12 @@ export const mapReducer = (action, payload) => {
     }
     // EDIT
     case 'typeText': {
-      let holderElement = document.getElementById(`${lm.nodeId}_div`)
-      lm.contentEdit = holderElement.innerHTML
+      lm.contentEdit = payload
       lm.isEditing = 1
       lm.isDimAssigned = 0
       break
     }
     case'startEdit': {
-      let holderElement = document.getElementById(`${lm.nodeId}_div`)
-      holderElement.contentEditable = 'true'
-      setEndOfContenteditable(holderElement)
       lm.isEditing = 1
       if (lm.contentType === 'equation') {
         lm.contentType = 'text'
@@ -510,9 +506,7 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'finishEdit': {
-      let holderElement = document.getElementById(`${lm.nodeId}_div`)
-      holderElement.contentEditable = 'false'
-      lm.content = holderElement.innerHTML
+      lm.content = payload
       lm.isEditing = 0
       lm.isDimAssigned = 0
       if (lm.content.substring(0, 2) === '\\[') {
@@ -525,11 +519,7 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'eraseContent': {
-      if (!lm.hasCell) {
-        lm.content = ''
-        let holderElement = document.getElementById(`${lm.nodeId}_div`)
-        holderElement.innerHTML = ''
-      }
+      lm.content = ''
       break
     }
   }
