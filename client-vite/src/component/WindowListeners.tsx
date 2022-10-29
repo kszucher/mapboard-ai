@@ -105,26 +105,28 @@ export const WindowListeners: FC = () => {
     mapStack.dataIndex++
     mapReducer(action, payload)
     recalc()
-    if (JSON.stringify(mapStack.data[mapStack.dataIndex]) !==
-      JSON.stringify(mapStack.data[mapStack.dataIndex - 1])
-    ) {
-      redraw(colorMode)
-      dispatch(sagaActions.mapStackChanged())
-    } else {
-      // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex]))
-      // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
+    const curr = mapStack.data[mapStack.dataIndex]
+    const prev = mapStack.data[mapStack.dataIndex - 1]
+    if (JSON.stringify(curr) === JSON.stringify(prev)) {
       mapStack.data.length--
       mapStack.dataIndex--
+    } else {
+      redraw(colorMode)
+      const currSimplified = mapDeinit.start(copy(curr))
+      const prevSimplified = mapDeinit.start(copy(prev))
+      if (JSON.stringify(currSimplified) === JSON.stringify(prevSimplified)) {
+        mapStack.data.length--
+        mapStack.dataIndex--
+      } else {
+        dispatch(sagaActions.mapStackChanged())
+      }
     }
   }
 
-  const mutationFun = (lm, mutationsList) => {
+  const mutationFun = (mutationsList) => {
     for (let mutation of mutationsList) {
       if (mutation.type === 'characterData') {
-        let holderElement = document.getElementById(`${lm.nodeId}_div`)
-        lm.content = holderElement.innerHTML
-        lm.isDimAssigned = 0
-        recalc()
+        mapDispatch('typeText')
       }
     }
   }
@@ -132,16 +134,10 @@ export const WindowListeners: FC = () => {
   const startEdit = () => {
     let lm = mapref(selectionState.lastPath)
     if (!lm.hasCell) {
-      if (lm.contentType === 'equation') {
-        lm.contentType = 'text'
-        lm.isDimAssigned = 0
-      }
-      let holderElement = document.getElementById(`${lm.nodeId}_div`)
-      holderElement.contentEditable = 'true'
-      setEndOfContenteditable(holderElement)
+      mapDispatch('startEdit')
       isEditing = 1
-      lm.isEditing = 1
-      mutationObserver = new MutationObserver(mutationsList => mutationFun(lm, mutationsList))
+      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      mutationObserver = new MutationObserver(mutationsList => mutationFun(mutationsList))
       mutationObserver.observe(holderElement, {
         attributes: false,
         childList: false,
@@ -152,19 +148,9 @@ export const WindowListeners: FC = () => {
   }
 
   const finishEdit = () => {
-    let lm = mapref(selectionState.lastPath)
     mutationObserver.disconnect()
-    let holderElement = document.getElementById(`${lm.nodeId}_div`)
-    holderElement.contentEditable = 'false'
-    lm.isEditing = 0
     isEditing = 0
-    if (lm.content.substring(0, 2) === '\\[') {
-      lm.contentType = 'equation'
-      lm.isDimAssigned = 0
-    } else if (lm.content.substring(0, 1) === '=') {
-      lm.contentCalc = lm.content
-      lm.isDimAssigned = 0
-    }
+    mapDispatch('finishEdit')
   }
 
   // LANDING LISTENERS
@@ -411,7 +397,7 @@ export const WindowListeners: FC = () => {
           if (action === 'saveMap') dispatch(sagaActions.saveMap())
           if (action === 'undo') dispatch(sagaActions.undo())
           if (action === 'redo') dispatch(sagaActions.redo())
-        }else if (action === 'applyColorFromKey') {
+        } else if (action === 'applyColorFromKey') {
           mapDispatch(action, {currColor: which - 96})
         } else {
           mapDispatch(action, {keyCode: e.code})

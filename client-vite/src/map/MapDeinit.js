@@ -15,6 +15,7 @@ export const mapDeinit = {
         }
         // TODO loop
         mapDeinit.iterate(cm.r[0])
+        return cm
     },
 
     iterate: (cm) => {

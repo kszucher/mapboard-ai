@@ -3,7 +3,7 @@
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
 import {initSelectionState, selectionState, updateSelectionState} from './SelectionFlow'
-import {arraysSame, copy, transposeArray} from './Utils'
+import {arraysSame, copy, setEndOfContenteditable, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
@@ -491,6 +491,37 @@ export const mapReducer = (action, payload) => {
       break
     }
     // EDIT
+    case 'typeText': {
+      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      lm.contentEdit = holderElement.innerHTML
+      lm.isDimAssigned = 0
+      break
+    }
+    case'startEdit': {
+      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      holderElement.contentEditable = 'true'
+      setEndOfContenteditable(holderElement)
+      lm.isEditing = 1
+      if (lm.contentType === 'equation') {
+        lm.contentType = 'text'
+        lm.isDimAssigned = 0
+      }
+      break
+    }
+    case 'finishEdit': {
+      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      holderElement.contentEditable = 'false'
+      lm.content = holderElement.innerHTML
+      lm.isEditing = 0
+      if (lm.content.substring(0, 2) === '\\[') {
+        lm.contentType = 'equation'
+        lm.isDimAssigned = 0
+      } else if (lm.content.substring(0, 1) === '=') {
+        lm.contentCalc = lm.content
+        lm.isDimAssigned = 0
+      }
+      break
+    }
     case 'eraseContent': {
       if (!lm.hasCell) {
         lm.content = ''

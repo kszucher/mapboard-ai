@@ -83,6 +83,7 @@ export let nodeProps = {
     lineAnimationRequested: 0,
     // mapAlgo
     contentCalc: '',
+    contentEdit: '',
     // mapMeasure
     isDimAssigned: 0,
     contentW: 0,
