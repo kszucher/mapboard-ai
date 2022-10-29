@@ -530,6 +530,23 @@ export const WindowListeners: FC = () => {
   }
 
   useEffect(() => {
+    if (mapId !== '' && mapSource !== '') {
+      redraw(colorMode) // mapDispatch is futile here, as this does not change state
+      removeMapListeners()
+      if (mapRight === MapRight.EDIT) {
+        addMapListeners()
+      } else if (mapRight === MapRight.VIEW) {
+        // TODO figure out view listeners
+      }
+    }
+    const root = document.querySelector(':root')
+    root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
+    root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
+    root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
+    root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
+  }, [colorMode])
+
+  useEffect(() => {
     if (landingData.length) {
       const mapData = landingData[landingDataIndex]
       mapStackDispatch('initMapState', { mapData }, colorMode)
@@ -566,23 +583,6 @@ export const WindowListeners: FC = () => {
   }, [node])
 
   // useEffect that reacts to button-like commands
-
-  useEffect(() => {
-    if (mapId !== '' && mapSource !== '') {
-      redraw(colorMode) // mapDispatch is futile here, as this does not change state
-      removeMapListeners()
-      if (mapRight === MapRight.EDIT) {
-        addMapListeners()
-      } else if (mapRight === MapRight.VIEW) {
-        // TODO figure out view listeners
-      }
-    }
-    const root = document.querySelector(':root')
-    root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
-    root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
-    root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
-    root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
-  }, [colorMode])
 
   return (
     <></>
