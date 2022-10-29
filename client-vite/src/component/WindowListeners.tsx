@@ -13,7 +13,7 @@ import {mapAssembly} from '../map/MapAssembly'
 import {mapDisassembly} from '../map/MapDisassembly'
 import {mapDeinit} from '../map/MapDeinit'
 
-let fromX, fromY, whichDown = 0, elapsed = 0
+let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
 let isIntervalRunning = false
 let isNodeClicked = false
@@ -34,20 +34,6 @@ const getCoords = (e) => {
 
 const getNativeEvent = ({path, composedPath, key, code, which}) =>
   ({ path: path || (composedPath && composedPath()), key, code, which })
-
-// TODO
-// step 1 kill mapStackDispatch by
-// - moving dataIndex under store
-// - move push, checkPop from outside to inside WL FC
-// - dissolve mapStackReducer into normal reducers
-// - have mapref use store.getState() to get current index (push and checkpop can use it with useSelector
-// step 2 kill mapStackSaga
-// - introduce loadData after changing dataIndex in the state
-// - have undo/redo buttons react to it directly
-
-// remove redraw - 20 lines
-// add paste + 60 lines
-// sum 560 lines
 
 export let mapStack = {
   data: [],
@@ -109,32 +95,24 @@ export const WindowListeners: FC = () => {
 
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
-    // PUSH
     if (mapStack.data.length > mapStack.dataIndex + 1) {
       mapStack.data.length = mapStack.dataIndex + 1
     }
     mapStack.data.push(JSON.parse(JSON.stringify(mapStack.data[mapStack.dataIndex])))
     mapStack.dataIndex++
-
-    // APPLY
     mapReducer(action, payload)
     recalc()
-
-    // CHECK
     if (JSON.stringify(mapStack.data[mapStack.dataIndex]) !==
       JSON.stringify(mapStack.data[mapStack.dataIndex - 1])
     ) {
       redraw(colorMode)
       dispatch(sagaActions.mapStackChanged())
     } else {
-      // POP
       // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex]))
       // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
       mapStack.data.length--
       mapStack.dataIndex--
     }
-
-    document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
   }
 
   const mutationFun = (lm, mutationsList) => {
@@ -229,7 +207,6 @@ export const WindowListeners: FC = () => {
             : document.selection
         ).empty()
         elapsed = 0
-        // push()
         let lastOverPath = []
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
@@ -239,11 +216,7 @@ export const WindowListeners: FC = () => {
         }
         if (which === 1) {
           if (isTaskClicked) {
-            mapDispatch(
-              'setTaskStatus', {
-                taskStatus: parseInt(path[0].id.charAt(27), 10),
-                nodeId: path[0].id.substring(0, 12)
-              })
+            mapDispatch('setTaskStatus', {taskStatus: parseInt(path[0].id.charAt(27), 10), nodeId: path[0].id.substring(0, 12)})
           } else if (isNodeClicked) {
             let lm = mapref(lastOverPath)
             if (lm.linkType === '') {

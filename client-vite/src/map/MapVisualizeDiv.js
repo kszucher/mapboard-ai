@@ -40,6 +40,7 @@ export const mapVisualizeDiv = {
         mapDiv.style.width = "" + m.mapWidth + "px"
         mapDiv.style.height = "" + m.mapHeight + "px"
         let mapHolderDiv = document.getElementById('mapHolderDiv')
+        mapHolderDiv.focus()
         let currScrollLeft = (window.innerWidth + m.mapWidth) / 2
         if (m.shouldLoad) { // shouldLoad
             m.shouldLoad = false
