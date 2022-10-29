@@ -3,11 +3,10 @@
 import {FC, useEffect} from "react"
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { mapDispatch, recalc, redraw } from '../core/MapFlow'
-import { setEndOfContenteditable } from '../core/Utils'
+import {isUrl, setEndOfContenteditable} from '../core/Utils'
 import { checkPop, mapStackDispatch, mapref, push } from '../core/MapStackFlow'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
-import {pasteDispatch} from "../core/PasteFlow"
 import {actions, sagaActions} from "../core/EditorFlow"
 import { getColors } from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
@@ -419,7 +418,60 @@ export const WindowListeners: FC = () => {
 
   const paste = colorMode => e => {
     e.preventDefault()
-    pasteDispatch(isEditing, colorMode, dispatch)
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+      if (result.state === "granted" || result.state === "prompt") {
+        navigator.clipboard.read().then(item => {
+          let type = item[0].types[0]
+          if (type === 'text/plain') {
+            navigator.clipboard.readText().then(text => {
+              if (isEditing) {
+                mapDispatch('insertTextFromClipboardAsText', text)
+              } else {
+                push()
+                if (text.substring(0, 1) === '[') {
+                  mapDispatch('insertMapFromClipboard', text)
+                } else {
+                  mapDispatch('insert_O_S')
+                  redraw(colorMode)
+                  if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
+                    mapDispatch('insertEquationFromClipboardAsNode', text)
+                  } else if (isUrl(text)) {
+                    mapDispatch('insertElinkFromClipboardAsNode', text)
+                  } else {
+                    mapDispatch('insertTextFromClipboardAsNode', text)
+                  }
+                }
+                redraw(colorMode)
+                checkPop(dispatch)
+              }
+            })
+          }
+          if (type === 'image/png') {
+            if (isEditing) {
+
+            } else {
+              item[0].getType('image/png').then(image => {
+                var formData = new FormData()
+                formData.append('upl', image, 'image.png')
+                let address = process.env.NODE_ENV === 'development' ?
+                  'http://127.0.0.1:8082/feta' :
+                  'https://mapboard-server.herokuapp.com/feta'
+                fetch(address, {method: 'post', body: formData}).then(response =>
+                  response.json().then(response => {
+                      push()
+                      mapDispatch('insert_O_S')
+                      mapDispatch('insertImageFromLinkAsNode', response)
+                      redraw(colorMode)
+                      checkPop(dispatch)
+                    }
+                  )
+                )
+              })
+            }
+          }
+        })
+      }
+    })
   }
 
   const addLandingListeners = () => {
