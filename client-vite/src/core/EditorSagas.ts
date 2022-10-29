@@ -2,12 +2,12 @@
 
 import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
-import {mapref, mapStack, mapStackDispatch, push, saveMap} from './MapStackFlow'
 import {selectionState} from './SelectionFlow'
 import {mapDispatch, redraw} from './MapFlow'
 import {mapGetProp} from '../map/MapGetProp'
 import {actions, sagaActions} from "./EditorFlow";
 import {PageState} from "./Types";
+import {mapref, mapStack, mapStackDispatch, push, saveMap} from "../component/WindowListeners";
 
 const SAVE_INCLUDED = [
   'OPEN_MAP_FROM_TAB',

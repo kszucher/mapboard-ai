@@ -2,7 +2,6 @@
 
 import { nodeProps } from './DefaultProps'
 import { flagDomData, updateDomData } from './DomFlow'
-import { mapref } from './MapStackFlow'
 import { initSelectionState, selectionState, updateSelectionState } from './SelectionFlow'
 import { arraysSame, copy, transposeArray } from './Utils'
 import { mapFindById } from '../map/MapFindById'
@@ -23,6 +22,7 @@ import { cellBlockDeleteReselect, structDeleteReselect } from '../node/NodeDelet
 import { cellInsert, structInsert } from '../node/NodeInsert'
 import { nodeMove, nodeMoveMouse, setClipboard } from '../node/NodeMove'
 import { nodeNavigate } from '../node/NodeNavigate'
+import {mapref} from "../component/WindowListeners";
 
 const clearSelection = _ => {
   for (let i = 0; i < mapref(['r']).length; i++) {

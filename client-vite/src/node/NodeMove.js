@@ -1,7 +1,7 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { copy, genHash, transpose } from '../core/Utils'
-import {mapref} from "../core/MapStackFlow";
 import { mapSetProp } from '../map/MapSetProp'
+import { mapref } from '../component/WindowListeners'
 
 let clipboard = [];
 

@@ -1,4 +1,4 @@
-import {mapref} from "../core/MapStackFlow";
+import { mapref } from '../component/WindowListeners'
 
 export function nodeNavigate (lastPath, target, key) {
     let direction = '';

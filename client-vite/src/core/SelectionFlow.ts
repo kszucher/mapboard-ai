@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import {arrayValuesSame} from "./Utils";
-import {mapref} from "./MapStackFlow";
+import {mapref} from "../component/WindowListeners";
 
 export let selectionState = {
   structSelectedPathList: [],

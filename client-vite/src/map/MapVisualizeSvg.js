@@ -2,9 +2,9 @@ import { updateMapSvgData } from '../core/DomFlow'
 import { arraysSame, isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { selectionState } from '../core/SelectionFlow'
-import { mapref } from '../core/MapStackFlow'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
+import { mapref } from '../component/WindowListeners'
 
 export const mapVisualizeSvg = {
     start: (m, cr, colorMode) => {
