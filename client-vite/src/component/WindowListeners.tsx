@@ -3,7 +3,7 @@
 import {FC, useEffect, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {mapReducer, recalc, redraw} from '../core/MapFlow'
-import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
+import {copy, isUrl, subsref} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
 import {actions, sagaActions} from "../core/EditorFlow"

@@ -494,6 +494,7 @@ export const mapReducer = (action, payload) => {
     case 'typeText': {
       let holderElement = document.getElementById(`${lm.nodeId}_div`)
       lm.contentEdit = holderElement.innerHTML
+      lm.isEditing = 1
       lm.isDimAssigned = 0
       break
     }
@@ -513,6 +514,7 @@ export const mapReducer = (action, payload) => {
       holderElement.contentEditable = 'false'
       lm.content = holderElement.innerHTML
       lm.isEditing = 0
+      lm.isDimAssigned = 0
       if (lm.content.substring(0, 2) === '\\[') {
         lm.contentType = 'equation'
         lm.isDimAssigned = 0
