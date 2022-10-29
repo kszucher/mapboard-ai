@@ -65,6 +65,7 @@ export function mapStackDispatch(action, payload, colorMode) {
   redraw(colorMode)
 }
 
+// MAP SELECTORS
 export const mapref = (path) => {
   return subsref(mapStack.data[mapStack.dataIndex], path)
 }

@@ -380,6 +380,7 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'moveSelection': {
+      let m = mapref(['m'])
       m.moveData = []
       m.shouldCenter = true // outside push - checkPop?
       nodeMoveMouse(sc)
