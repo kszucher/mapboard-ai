@@ -36,16 +36,12 @@ const getNativeEvent = ({path, composedPath, key, code, which}) =>
   ({ path: path || (composedPath && composedPath()), key, code, which })
 
 // TODO
-// step 1 move paste back to windowListeners OK
-// step 2 kill getMapStackData OK
-// step 3 move push, checkPop (inside WL, outside FC), mapDispatch (inside WL)
-// step 4 reorganize windowListeners, so there is no other use of push, checkPop, redraw then inside mapDispatch
-// step 5 kill mapStackDispatch by
+// step 1 kill mapStackDispatch by
 // - moving dataIndex under store
 // - move push, checkPop from outside to inside WL FC
 // - dissolve mapStackReducer into normal reducers
 // - have mapref use store.getState() to get current index (push and checkpop can use it with useSelector
-// step 6 kill mapStackSaga
+// step 2 kill mapStackSaga
 // - introduce loadData after changing dataIndex in the state
 // - have undo/redo buttons react to it directly
 
@@ -58,13 +54,8 @@ export let mapStack = {
   dataIndex: 0,
 }
 
-export function mapStackDispatch(action, payload) {
-  console.log('MAPDISPATCH: ' + action)
-  mapStackReducer(action, payload)
-  recalc()
-}
-
-function mapStackReducer(action, payload) {
+export function mapStackDispatch(action, payload, colorMode) {
+  console.log('MAP_STACK_DISPATCH: ' + action)
   switch (action) {
     case 'initMapState': {
       mapStack.data = [mapAssembly(payload.mapData)]
@@ -84,37 +75,19 @@ function mapStackReducer(action, payload) {
       break
     }
   }
+  recalc()
+  redraw(colorMode)
 }
 
-export function mapref(path) {
+export const mapref = (path) => {
   return subsref(mapStack.data[mapStack.dataIndex], path)
 }
 
 // this is a getter, same as when we loadNode, so should be placed accordingly
-export function saveMap() {
+export const saveMap = () => {
   let cm = copy(mapStack.data[mapStack.dataIndex])
   mapDeinit.start(cm)
   return mapDisassembly.start(cm)
-}
-
-export function push() {
-  if (mapStack.data.length > mapStack.dataIndex + 1) {
-    mapStack.data.length = mapStack.dataIndex + 1
-  }
-  mapStack.data.push(JSON.parse(JSON.stringify(mapStack.data[mapStack.dataIndex])))
-  mapStack.dataIndex++
-}
-
-export function checkPop(dispatch) {
-  if (JSON.stringify(mapStack.data[mapStack.dataIndex]) ===
-    JSON.stringify(mapStack.data[mapStack.dataIndex - 1])) {
-    mapStack.data.length--
-    mapStack.dataIndex--
-  } else {
-    // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex]))
-    // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
-    dispatch(sagaActions.mapStackChanged())
-  }
 }
 
 export const WindowListeners: FC = () => {
@@ -135,22 +108,34 @@ export const WindowListeners: FC = () => {
   const dispatch = useDispatch()
 
   const mapDispatch = (action, payload) => {
-    console.log('NODE_DISPATCH: ' + action)
+    console.log('MAP_DISPATCH: ' + action)
+    // PUSH
+    if (mapStack.data.length > mapStack.dataIndex + 1) {
+      mapStack.data.length = mapStack.dataIndex + 1
+    }
+    mapStack.data.push(JSON.parse(JSON.stringify(mapStack.data[mapStack.dataIndex])))
+    mapStack.dataIndex++
+
+    // APPLY
     mapReducer(action, payload)
     recalc()
+
+    // CHECK
+    if (JSON.stringify(mapStack.data[mapStack.dataIndex]) !==
+      JSON.stringify(mapStack.data[mapStack.dataIndex - 1])
+    ) {
+      redraw(colorMode)
+      dispatch(sagaActions.mapStackChanged())
+    } else {
+      // POP
+      // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex]))
+      // console.log(JSON.stringify(mapStack.data[mapStack.dataIndex - 1]))
+      mapStack.data.length--
+      mapStack.dataIndex--
+    }
+
     document.getElementById("mapHolderDiv").focus() // move to mapVisualizeDiv..
   }
-
-// mapDispatch
-//   push()
-//   mapReducer(action, payload)
-//   recalc()
-//   checkPop()
-//      if change
-//        redraw
-//        dispatch(mapStackChanged)
-//      else
-//        index--
 
   const mutationFun = (lm, mutationsList) => {
     for (let mutation of mutationsList) {
@@ -159,7 +144,6 @@ export const WindowListeners: FC = () => {
         lm.content = holderElement.innerHTML
         lm.isDimAssigned = 0
         recalc()
-        redraw(colorMode)
       }
     }
   }
@@ -170,7 +154,6 @@ export const WindowListeners: FC = () => {
       if (lm.contentType === 'equation') {
         lm.contentType = 'text'
         lm.isDimAssigned = 0
-        redraw(colorMode)
       }
       let holderElement = document.getElementById(`${lm.nodeId}_div`)
       holderElement.contentEditable = 'true'
@@ -227,7 +210,6 @@ export const WindowListeners: FC = () => {
 
   const resize = colorMode => e => {
     mapDispatch('setShouldResize')
-    redraw(colorMode)
   }
 
   const popstate = colorMode => e => {
@@ -241,14 +223,13 @@ export const WindowListeners: FC = () => {
         whichDown = which
         if (isEditing === 1) {
           finishEdit()
-          redraw(colorMode)
         }
         (window.getSelection
             ? window.getSelection()
             : document.selection
         ).empty()
         elapsed = 0
-        push()
+        // push()
         let lastOverPath = []
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
@@ -263,7 +244,6 @@ export const WindowListeners: FC = () => {
                 taskStatus: parseInt(path[0].id.charAt(27), 10),
                 nodeId: path[0].id.substring(0, 12)
               })
-            redraw(colorMode)
           } else if (isNodeClicked) {
             let lm = mapref(lastOverPath)
             if (lm.linkType === '') {
@@ -272,7 +252,6 @@ export const WindowListeners: FC = () => {
               } else {
                 mapDispatch('selectStructToo', {lastOverPath})
               }
-              redraw(colorMode)
             } else {
               whichDown = 0
               if (lm.linkType === 'internal') {
@@ -294,7 +273,6 @@ export const WindowListeners: FC = () => {
             } else {
               mapDispatch('selectStructToo', {lastOverPath}) // TODO: selectStructFamily too
             }
-            redraw(colorMode)
           }
         }
       }
@@ -311,15 +289,12 @@ export const WindowListeners: FC = () => {
         } else if (isNodeClicked) {
           const [toX, toY] = getCoords(e)
           mapDispatch('moveSelectionPreview', {toX, toY})
-          redraw(colorMode)
         } else {
           const [toX, toY] = getCoords(e)
           mapDispatch('highlightSelection', {fromX, fromY, toX, toY})
-          redraw(colorMode)
         }
       } else if (which === 2) {
         mapDispatch('setShouldScroll', {x: e.movementX, y: e.movementY})
-        redraw(colorMode)
       }
     }
   }
@@ -336,7 +311,6 @@ export const WindowListeners: FC = () => {
             let m = mapref(['m'])
             if (m.moveTargetPath.length) {
               mapDispatch('moveSelection')
-              redraw(colorMode)
             }
           } else {
             // TODO remove this as this is not necessary BUT can be kept for prudence
@@ -346,7 +320,6 @@ export const WindowListeners: FC = () => {
             }
             let m = mapref(['m'])
             m.selectionRect = []
-            redraw(colorMode)
           }
         }
       } else {
@@ -355,11 +328,9 @@ export const WindowListeners: FC = () => {
           } else if (isTaskClicked) {
           } else {
             mapDispatch('select_R')
-            redraw(colorMode)
           }
         }
       }
-      checkPop(dispatch)
     }
   }
 
@@ -372,7 +343,6 @@ export const WindowListeners: FC = () => {
       } else {
         mapDispatch('setShouldCenter')
       }
-      redraw(colorMode)
     }
   }
 
@@ -407,12 +377,12 @@ export const WindowListeners: FC = () => {
       [ 0,  0,  0,  code === 'Backspace',          ['c', 'cr', 'cc'],             0,  1,  1, ['select_CCRCC_B_S']                       ],
       [ 0,  0,  0,  code === 'Backspace',          ['m'],                         0,  1,  1, ['select_M_BB_S']                          ],
       [ 0,  0,  0,  code === 'Escape',             ['s', 'c', 'm'],               0,  1,  1, ['select_R']                               ],
-      [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ], // m can be 1
-      [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ], // m doesnt matter as this is a saga dispatch, so we are fine
+      [ 1,  0,  0,  code === 'KeyA',               ['s', 'c', 'm'],               0,  1,  0, ['select_all']                             ],
+      [ 1,  0,  0,  code === 'KeyM',               ['s', 'c', 'm'],               0,  1,  0, ['createMapInMap']                         ],
       [ 1,  0,  0,  code === 'KeyC',               ['s', 'c', 'm'],               0,  1,  1, ['copySelection']                          ],
       [ 1,  0,  0,  code === 'KeyX',               ['s', 'c', 'm'],               0,  1,  1, ['cutSelection']                           ],
       [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               0,  1,  0, ['saveMap']                                ],
-      [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ], // m can possibly be 1, as we just finish the edit, it will not break
+      [ 1,  0,  0,  code === 'KeyS',               ['s', 'c', 'm'],               1,  1,  0, ['finishEdit', 'saveMap']                  ],
       [ 1,  0,  0,  code === 'KeyZ',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['redo']                                   ],
       [ 1,  0,  0,  code === 'KeyY',               ['s', 'c', 'm', 'cr', 'cc'],   0,  1,  0, ['undo']                                   ],
       [ 1,  0,  0,  code === 'KeyE',               ['s'],                         0,  1,  1, ['transpose']                              ],
@@ -449,9 +419,6 @@ export const WindowListeners: FC = () => {
         if (keyStateMachine.p) {
           e.preventDefault()
         }
-        if (keyStateMachine.m) {
-          push()
-        }
         for (let j = 0; j < keyStateMachine.executionList.length; j++) {
           let currExecution = keyStateMachine.executionList[j]
           if ([
@@ -472,17 +439,7 @@ export const WindowListeners: FC = () => {
             mapDispatch(currExecution, {currColor: which - 96})
           } else {
             mapDispatch(currExecution, {keyCode: e.code})
-            if (['insert_O_S',
-              'insert_U_S',
-              'insert_D_S'
-            ].includes(currExecution)) {
-              redraw(colorMode)
-            }
           }
-        }
-        redraw(colorMode)
-        if (keyStateMachine.m) {
-          checkPop(dispatch)
         }
         break
       }
@@ -500,12 +457,10 @@ export const WindowListeners: FC = () => {
               if (isEditing) {
                 mapDispatch('insertTextFromClipboardAsText', text)
               } else {
-                push()
                 if (text.substring(0, 1) === '[') {
                   mapDispatch('insertMapFromClipboard', text)
                 } else {
                   mapDispatch('insert_O_S')
-                  redraw(colorMode)
                   if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                     mapDispatch('insertEquationFromClipboardAsNode', text)
                   } else if (isUrl(text)) {
@@ -514,8 +469,6 @@ export const WindowListeners: FC = () => {
                     mapDispatch('insertTextFromClipboardAsNode', text)
                   }
                 }
-                redraw(colorMode)
-                checkPop(dispatch)
               }
             })
           }
@@ -531,11 +484,8 @@ export const WindowListeners: FC = () => {
                   'https://mapboard-server.herokuapp.com/feta'
                 fetch(address, {method: 'post', body: formData}).then(response =>
                   response.json().then(response => {
-                      push()
                       mapDispatch('insert_O_S')
                       mapDispatch('insertImageFromLinkAsNode', response)
-                      redraw(colorMode)
-                      checkPop(dispatch)
                     }
                   )
                 )
@@ -582,15 +532,13 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (landingData.length) {
       const mapData = landingData[landingDataIndex]
-      mapStackDispatch('initMapState', { mapData })
-      redraw(colorMode)
+      mapStackDispatch('initMapState', { mapData }, colorMode)
     }
   }, [landingData, landingDataIndex])
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      mapStackDispatch('initMapState', { mapData })
-      redraw(colorMode)
+      mapStackDispatch('initMapState', { mapData }, colorMode)
       dispatch(sagaActions.mapStackChanged())
     }
   }, [mapId, mapSource, frameLen, frameSelected])
@@ -613,10 +561,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
-      push()
       mapDispatch('applyMapParams', node)
-      redraw(colorMode)
-      checkPop(dispatch)
     }
   }, [node])
 
@@ -624,11 +569,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      redraw(colorMode)
-      // mapDispatch('noOp')
-      // this is possibly the only case, when we update map but do not require push-checkPop
-      // OR we could have a smart one that knows that certain variables should not be watched for comparison
-      // OR!!! actually, I might be a genius, as this is passed only, but is ONLY present in the assigned styleData, so we can change data even without having to worry about state change!!!
+      mapDispatch('')
       removeMapListeners()
       if (mapRight === MapRight.EDIT) {
         addMapListeners(colorMode)

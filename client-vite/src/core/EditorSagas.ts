@@ -3,7 +3,6 @@
 import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
 import {selectionState} from './SelectionFlow'
-import {redraw} from './MapFlow'
 import {mapGetProp} from '../map/MapGetProp'
 import {actions, sagaActions} from "./EditorFlow";
 import {PageState} from "./Types";
@@ -242,13 +241,11 @@ function* mapStackSaga () {
     const colorMode = yield select(state => state.colorMode)
     switch (type) {
       case 'UNDO': {
-        mapStackDispatch('undo')
-        redraw(colorMode)
+        mapStackDispatch('undo', {}, colorMode)
         break
       }
       case 'REDO': {
-        mapStackDispatch('redo')
-        redraw(colorMode)
+        mapStackDispatch('redo', {}, colorMode)
         break
       }
     }
