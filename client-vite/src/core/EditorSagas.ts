@@ -240,22 +240,23 @@ function* mapSaga () {
 
 function* mapStackSaga () {
   while (true) {
-    const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
-    const colorMode = yield select(state => state.colorMode)
-    const mapStackData = yield select(state => state.mapStackData)
-    const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
-    let m = mapStackData[mapStackDataIndex]
-    switch (type) {
-      case 'UNDO': {
-        mapStackDispatch('undo', {}, colorMode)
-        break
-      }
-      case 'REDO': {
-        mapStackDispatch('redo', {}, colorMode)
-        break
-      }
-    }
+    // const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
+    // const colorMode = yield select(state => state.colorMode)
+    // const mapStackData = yield select(state => state.mapStackData)
+    // const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+    // let m = mapStackData[mapStackDataIndex]
+    // switch (type) {
+    //   case 'UNDO': {
+    //     mapStackDispatch('undo', {}, colorMode)
+    //     break
+    //   }
+    //   case 'REDO': {
+    //     mapStackDispatch('redo', {}, colorMode)
+    //     break
+    //   }
+    // }
 
+    // TODO: using a useEffect, if there is a change, we should do this too
     const lm = mapref(m, selectionState.lastPath)
     const { density, alignment } = m
     const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
@@ -293,8 +294,6 @@ function* mapStackSaga () {
       }
     }
     yield put(actions.setNodeParams({ node: assignment, nodeTriggersMap: false }))
-    yield put(actions.setUndoDisabled(mapStack.dataIndex === 0))
-    yield put(actions.setRedoDisabled(mapStack.dataIndex === mapStack.data.length - 1))
   }
 }
 
@@ -358,7 +357,7 @@ export default function* rootSaga () {
     autoSaveSaga(),
     mapSaga(),
     // mapStackEventSaga(),
-    mapStackSaga(),
+    // mapStackSaga(),
     shareSaga(),
     signOutSaga(),
     deleteAccountSaga(),

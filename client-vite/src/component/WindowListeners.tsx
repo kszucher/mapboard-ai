@@ -39,26 +39,6 @@ export let mapStack = {
   dataIndex: 0,
 }
 
-export function mapStackDispatch(action, payload, colorMode) {
-  console.log('MAP_STACK_DISPATCH: ' + action)
-  switch (action) {
-    case 'undo': {
-      if (mapStack.dataIndex > 0) {
-        mapStack.dataIndex--
-      }
-      break
-    }
-    case 'redo': {
-      if (mapStack.dataIndex < mapStack.data.length - 1) {
-        mapStack.dataIndex++
-      }
-      break
-    }
-  }
-  recalc()
-  redraw(m, colorMode)
-}
-
 // MAP SELECTORS
 export const mapref = (m, path) => {
   return subsref(m, path)
@@ -93,7 +73,6 @@ export const WindowListeners: FC = () => {
 
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
-
   const m = mapStackData[mapStackDataIndex]
 
   const [selectionRect, setSelectionRect] = useState([])
@@ -410,8 +389,8 @@ export const WindowListeners: FC = () => {
         ].includes(action)) {
           if (action === 'createMapInMap') dispatch(sagaActions.createMapInMap())
           if (action === 'saveMap') dispatch(sagaActions.saveMap())
-          if (action === 'undo') dispatch(sagaActions.undo())
-          if (action === 'redo') dispatch(sagaActions.redo())
+          if (action === 'undo') dispatch(actions.undo())
+          if (action === 'redo') dispatch(actions.redo())
         } else if (action === 'applyColorFromKey') {
           mapDispatch(action, {currColor: which - 96})
         } else {

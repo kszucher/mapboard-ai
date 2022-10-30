@@ -24,9 +24,6 @@ const editorState = {
 
   formatMode: FormatMode.text,
 
-  undoDisabled: true,
-  redoDisabled: true,
-
   tabMapIdList: [],
   tabMapNameList: [],
   breadcrumbMapIdList: [],
@@ -120,9 +117,6 @@ const allSlice = createSlice({
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     toggleFormatterVisible(state) { state.formatterVisible = !state.formatterVisible },
 
-    setUndoDisabled(state, action: PayloadAction<boolean>) { state.undoDisabled = action.payload },
-    setRedoDisabled(state, action: PayloadAction<boolean>) { state.redoDisabled = action.payload },
-
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
 
     setNodeParams(state, action: PayloadAction<any>) {
@@ -160,7 +154,15 @@ const allSlice = createSlice({
         }
       }},
 
+    undo(state) {
+      state.mapStackDataIndex = state.mapStackDataIndex > 0 ? state.mapStackDataIndex - 1 : state.mapStackDataIndex
+    },
+
+    redo(state) {
+      state.mapStackDataIndex = state.mapStackDataIndex < state.mapStackData.length - 1 ? state.mapStackDataIndex + 1 : state.mapStackDataIndex
     }
+
+  }
 })
 
 export const { actions, reducer } = allSlice
@@ -198,9 +200,6 @@ export const sagaActions = {
   signOut: () => ({type: 'SIGN_OUT'}),
 
   // SIDE EFFECT RELATED
-  undo: () => ({type: 'UNDO'}),
-  redo: () => ({type: 'REDO'}),
-  mapStackChanged: () => ({type: 'MAP_STACK_CHANGED'}),
   toggleTask: () => ({type: 'TOGGLE_TASK'}),
   insertTable: (row: number, col: number) => ({type: 'INSERT_TABLE', payload: {rowLen: row, colLen: col}}),
 }
