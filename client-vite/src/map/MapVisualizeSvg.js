@@ -270,7 +270,7 @@ export const mapVisualizeSvg = {
             if (cm.path.includes('c')) {
                 let coverCellPath = cm.path.slice(0, cm.path.lastIndexOf('c'))
                 let currCol = cm.path[cm.path.lastIndexOf('c') + 2]
-                let coverCellRef = mapref(coverCellPath)
+                let coverCellRef = mapref(m, coverCellPath)
                 let smcv = coverCellRef.sumMaxColWidth[currCol]
                 let mcv = coverCellRef.maxColWidth[currCol]
                 startX = dir === - 1

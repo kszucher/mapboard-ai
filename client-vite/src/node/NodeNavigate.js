@@ -1,6 +1,6 @@
 import { mapref } from '../component/WindowListeners'
 
-export function nodeNavigate (lastPath, target, key) {
+export function nodeNavigate (m, lastPath, target, key) {
     let direction = '';
     let currPath = [];
     let truePath = lastPath;
@@ -24,7 +24,7 @@ export function nodeNavigate (lastPath, target, key) {
     } else if (key === 'ArrowDown') {
         direction = 'down';
     }
-    if (direction === 'out' && truePath.length === 4 && mapref(truePath).s.length === 0) {
+    if (direction === 'out' && truePath.length === 4 && mapref(m, truePath).s.length === 0) {
         return ['r', crIndex];
     }
     if (target === 'struct2struct') {
@@ -63,9 +63,9 @@ export function nodeNavigate (lastPath, target, key) {
                 currPath = truePath.slice();
                 for (let i = 0; i < sequence.length; i++) {
                     let currDirection = sequence[i];
-                    let currRef = mapref(currPath);
+                    let currRef = mapref(m, currPath);
                     let currChildCount = currRef.s.length;
-                    let parentRef = mapref(currRef.parentPath);
+                    let parentRef = mapref(m, currRef.parentPath);
                     if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
                         parentRef.type === 'cell' && ['i'].includes(currDirection) ||
                         currDirection === 'om' && currChildCount === 0) {
@@ -107,8 +107,8 @@ export function nodeNavigate (lastPath, target, key) {
         }
     } else if (target === 'cell2cell') {
         currPath = truePath;
-        let currRef = mapref(truePath);
-        let parentRef = mapref(currRef.parentPath);
+        let currRef = mapref(m, truePath);
+        let parentRef = mapref(m, currRef.parentPath);
         let rowLen = parentRef.c.length;
         let colLen = parentRef.c[0].length;
         let currRow = currRef.index[0];

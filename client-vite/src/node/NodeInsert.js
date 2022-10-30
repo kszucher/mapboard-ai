@@ -1,10 +1,10 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { mapref } from '../component/WindowListeners'
 
-export function structInsert(lm, mode, payload ) {
+export function structInsert(m, lm, mode, payload ) {
     let parentRef;
     if (mode === 'siblingUp') {
-        parentRef = mapref(lm.parentPath);
+        parentRef = mapref(m, lm.parentPath);
         parentRef.s.splice(lm.index, 0, getDefaultNode({
             selected: 1,
             taskStatus: parentRef.taskStatus > - 1 ?  0 : -1,
@@ -14,7 +14,7 @@ export function structInsert(lm, mode, payload ) {
             lineAnimationRequested: 1,
         }))
     } else if (mode === 'siblingDown') {
-        parentRef = mapref(lm.parentPath);
+        parentRef = mapref(m, lm.parentPath);
         parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
             selected: 1,
             taskStatus: parentRef.taskStatus > - 1 ? 0 : -1,
@@ -56,9 +56,9 @@ export function structInsert(lm, mode, payload ) {
     }
 }
 
-export function cellInsert (lastPath, key) {
-    let lm = mapref(lastPath);
-    let parentRef = mapref(lm.parentPath);
+export function cellInsert (m, lastPath, key) {
+    let lm = mapref(m, lastPath);
+    let parentRef = mapref(m, lm.parentPath);
     let currRow = lm.index[0];
     let currCol = lm.index[1];
     let rowLen = parentRef.c.length;

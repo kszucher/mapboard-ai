@@ -24,38 +24,35 @@ import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 import {mapref} from "../component/WindowListeners";
 
-const clearSelection = _ => {
-  for (let i = 0; i < mapref(['r']).length; i++) {
-    let cr = mapref(['r', i])
+const clearSelection = (m) => {
+  for (let i = 0; i < mapref(m, ['r']).length; i++) {
+    let cr = mapref(m, ['r', i])
     mapSetProp.start(cr, {selected: 0, selection: 's'}, '')
   }
 }
 
-const updateParentLastSelectedChild = lm => {
+const updateParentLastSelectedChild = (m, lm) => {
   if (!lm.isRoot) {
-    let parentRef = mapref(lm.parentPath)
+    let parentRef = mapref(m, lm.parentPath)
     parentRef.lastSelectedChild = lm.index
   }
 }
 
-export const mapReducer = (action, payload) => {
+export const mapReducer = (m, action, payload) => {
   let sc = selectionState
-  let lm = mapref(sc.lastPath)
+  let lm = mapref(m, sc.lastPath)
   switch (action) {
     // VIEW
     case 'setShouldResize': {
-      let m = mapref(['m'])
       m.shouldResize = true
       break
     }
     case 'setShouldCenter': {
-      let m = mapref(['m'])
       m.shouldCenter = true // outside push - checkPop?
       break
     }
     case 'setShouldScroll': {
       const {x, y} = payload
-      let m = mapref(['m'])
       m.shouldScroll = true
       m.scrollX = x
       m.scrollY = y
@@ -67,35 +64,34 @@ export const mapReducer = (action, payload) => {
       let startY = fromY < toY ? fromY : toY
       let width = Math.abs(toX - fromX)
       let height = Math.abs(toY - fromY)
-      let m = mapref(['m'])
       m.selectionRect = [startX, startY, width, height]
-      mapFindOverRectangle.start(mapref(['r', 0]), startX, startY, width, height) // TODO multi r rethink
+      mapFindOverRectangle.start(mapref(m, ['r', 0]), startX, startY, width, height) // TODO multi r rethink
       break
     }
     // SELECT
     case 'clearSelection': {
-      clearSelection()
+      clearSelection(m)
       break
     }
     case 'selectStruct': {
-      clearSelection()
+      clearSelection(m)
       const {lastOverPath} = payload
-      const lm = mapref(lastOverPath)
+      const lm = mapref(m, lastOverPath)
       lm.selected = 1
       lm.selection = 's'
-      updateParentLastSelectedChild(lm)
+      updateParentLastSelectedChild(m, lm)
       break
     }
     case 'selectStructToo': {
       const {lastOverPath} = payload
-      const lm = mapref(lastOverPath)
+      const lm = mapref(m, lastOverPath)
       lm.selected = sc.maxSel + 1
-      updateParentLastSelectedChild(lm)
+      updateParentLastSelectedChild(m, lm)
       break
     }
     case 'selectStructFamily': {
       const {lastOverPath} = payload
-      const lm = mapref(lastOverPath)
+      const lm = mapref(m, lastOverPath)
       if (lm.path.length === 2) {
         lm.selected = 0
         if (lm.d[0].selected === 1) {
@@ -103,24 +99,24 @@ export const mapReducer = (action, payload) => {
           lm.d[1].selected = 1
           lm.d[1].selection = 'f'
         } else {
-          clearSelection()
+          clearSelection(m)
           lm.d[0].selected = 1
           lm.d[1].selected = 0
           lm.d[0].selection = 'f'
         }
       } else {
         if (lm.s.length > 0) {
-          clearSelection()
+          clearSelection(m)
           lm.selected = 1
           lm.selection = 'f'
         }
       }
-      updateParentLastSelectedChild(lm)
+      updateParentLastSelectedChild(m, lm)
       break
     }
     case 'select_all': {
-      for (let i = 0; i < mapref(['r']).length; i++) {
-        let cr = mapref(['r', i])
+      for (let i = 0; i < mapref(m, ['r']).length; i++) {
+        let cr = mapref(m, ['r', i])
         mapSetProp.start(cr, {selected: 1}, 'struct')
       }
       break
@@ -150,30 +146,30 @@ export const mapReducer = (action, payload) => {
     }
     case 'select_S_F_M': {
       if (lm.hasCell) {
-        clearSelection()
+        clearSelection(m)
         let toPath = [...sc.lastPath, 'c', 0, 0]
-        mapref(toPath).selected = 1
-        mapref(toPath).s[0].selected = 1
+        mapref(m, toPath).selected = 1
+        mapref(m, toPath).s[0].selected = 1
       }
       break
     }
     case 'select_CCRCC_B_S': {
-      clearSelection()
-      mapref(mapref(lm.parentPath).path).selected = 1
+      clearSelection(m)
+      mapref(m, mapref(m, lm.parentPath).path).selected = 1
       break
     }
     case 'select_M_BB_S': {
-      clearSelection()
-      mapref(mapref(mapref(lm.parentPath).parentPath).path).selected = 1
+      clearSelection(m)
+      mapref(m, mapref(m, mapref(m, lm.parentPath).parentPath).path).selected = 1
       break
     }
     case 'select_M_F_S': {
-      clearSelection()
+      clearSelection(m)
       lm.selected = 1
       break
     }
     case 'select_CRCC_F_M': {
-      clearSelection()
+      clearSelection(m)
       lm.selected = 1
       lm.s[0].selected = 1
       break
@@ -182,54 +178,54 @@ export const mapReducer = (action, payload) => {
       for (let i = lm.path.length - 2; i > 0; i--) {
         if (Number.isInteger(lm.path[i]) &&
           Number.isInteger(lm.path[i + 1])) {
-          clearSelection()
+          clearSelection(m)
           let toPath = lm.path.slice(0, i + 2)
-          mapref(toPath).selected = 1
-          mapref(toPath).s[0].selected = 1
+          mapref(m, toPath).selected = 1
+          mapref(m, toPath).s[0].selected = 1
           break
         }
       }
       break
     }
     case 'select_D_M': {
-      clearSelection()
-      let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', 'ArrowDown')
-      mapref(toPath).selected = 1
-      mapref(toPath).s[0].selected = 1
+      clearSelection(m)
+      let toPath = nodeNavigate(m, sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', 'ArrowDown')
+      mapref(m, toPath).selected = 1
+      mapref(m, toPath).s[0].selected = 1
       break
     }
     case 'select_O_M': {
-      clearSelection()
-      let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[3] ? 'ArrowLeft' : 'ArrowRight')
-      mapref(toPath).selected = 1
-      mapref(toPath).s[0].selected = 1
+      clearSelection(m)
+      let toPath = nodeNavigate(m, sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[3] ? 'ArrowLeft' : 'ArrowRight')
+      mapref(m, toPath).selected = 1
+      mapref(m, toPath).s[0].selected = 1
       break
     }
     case 'selectNeighborStruct': {
-      clearSelection()
+      clearSelection(m)
       let fromPath = sc.lastPath
       if (payload.keyCode === 'ArrowUp') fromPath = sc.geomHighPath
       if (payload.keyCode === 'ArrowDown') fromPath = sc.geomLowPath
-      let toPath = nodeNavigate(fromPath, 'struct2struct', payload.keyCode)
-      mapref(toPath).selected = 1
+      let toPath = nodeNavigate(m, fromPath, 'struct2struct', payload.keyCode)
+      mapref(m, toPath).selected = 1
       break
     }
     case 'selectNeighborStructToo': {
-      let toPath = nodeNavigate(sc.lastPath, 'struct2struct', payload.keyCode)
+      let toPath = nodeNavigate(m, sc.lastPath, 'struct2struct', payload.keyCode)
       mapref(toPath).selected = sc.maxSel + 1
       break
     }
     case 'selectNeighborMixed': {
-      clearSelection()
-      let toPath = nodeNavigate(sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', payload.keyCode)
-      mapref(toPath).selected = 1
-      mapref(toPath).s[0].selected = 1
+      clearSelection(m)
+      let toPath = nodeNavigate(m, sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', payload.keyCode)
+      mapref(m, toPath).selected = 1
+      mapref(m, toPath).s[0].selected = 1
       break
     }
     case 'select_CR': {
-      clearSelection()
-      let parentRef = mapref(lm.parentPath)
-      let parentParentRef = mapref(parentRef.parentPath)
+      clearSelection(m)
+      let parentRef = mapref(m, lm.parentPath)
+      let parentParentRef = mapref(m, parentRef.parentPath)
       let currRow = parentRef.index[0]
       let colLen = parentParentRef.c[0].length
       for (let i = 0; i < colLen; i++) {
@@ -238,9 +234,9 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'select_CC': {
-      clearSelection()
-      let parentRef = mapref(lm.parentPath)
-      let parentParentRef = mapref(parentRef.parentPath)
+      clearSelection(m)
+      let parentRef = mapref(m, lm.parentPath)
+      let parentParentRef = mapref(m, parentRef.parentPath)
       let currCol = parentRef.index[1]
       let rowLen = parentParentRef.c.length
       for (let i = 0; i < rowLen; i++) {
@@ -253,65 +249,65 @@ export const mapReducer = (action, payload) => {
         payload.keyCode === 'ArrowRight' && sc.cellColSelected ||
         payload.keyCode === 'ArrowUp' && sc.cellRowSelected ||
         payload.keyCode === 'ArrowDown' && sc.cellRowSelected) {
-        clearSelection()
+        clearSelection(m)
         for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
           let currPath = sc.cellSelectedPathList[i]
-          let toPath = nodeNavigate(currPath, 'cell2cell', payload.keyCode)
-          mapref(toPath).selected = 1
+          let toPath = nodeNavigate(m, currPath, 'cell2cell', payload.keyCode)
+          mapref(m, toPath).selected = 1
         }
       }
       break
     }
     case 'select_R': {
-      clearSelection()
-      let cr = mapref(['r', 0]) // TODO multi r rethink
+      clearSelection(m)
+      let cr = mapref(m, ['r', 0]) // TODO multi r rethink
       cr.selected = 1
       break
     }
     // INSERT
     case 'insert_U_S': {
       if (!lm.isRoot) {
-        clearSelection()
-        structInsert(lm, 'siblingUp')
+        clearSelection(m)
+        structInsert(m, lm, 'siblingUp')
       }
       break
     }
     case 'insert_D_S': {
       if (!lm.isRoot) {
-        clearSelection()
-        structInsert(lm, 'siblingDown')
+        clearSelection(m)
+        structInsert(m, lm, 'siblingDown')
       }
       break
     }
     case 'insert_O_S': {
-      clearSelection()
-      structInsert(lm, 'child')
+      clearSelection(m)
+      structInsert(m, lm, 'child')
       break
     }
     case 'insert_M_CRCC': {
-      cellInsert(sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode)
+      cellInsert(m, sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode)
       break
     }
     case 'insert_CX_CRCC': {
-      cellInsert(sc.lastPath, payload.keyCode)
+      cellInsert(m, sc.lastPath, payload.keyCode)
       break
     }
     // DELETE
     case 'delete_S': {
-      structDeleteReselect(sc)
+      structDeleteReselect(m, sc)
       break
     }
     case 'delete_CRCC': {
-      cellBlockDeleteReselect(sc)
+      cellBlockDeleteReselect(m, sc)
       break
     }
     // MOVE
     case 'move_S': {
-      nodeMove(sc, 'struct2struct', payload.keyCode)
+      nodeMove(m, sc, 'struct2struct', payload.keyCode)
       break
     }
     case 'move_CRCC': {
-      nodeMove(sc, 'cellBlock2CellBlock', payload.keyCode)
+      nodeMove(m, sc, 'cellBlock2CellBlock', payload.keyCode)
       break
     }
     case 'transpose': {
@@ -321,27 +317,26 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'copySelection': {
-      nodeMove(sc, 'struct2clipboard', '', 'COPY')
+      nodeMove(m, sc, 'struct2clipboard', '', 'COPY')
       break
     }
     case 'cutSelection': {
-      nodeMove(sc, 'struct2clipboard', '', 'CUT')
-      structDeleteReselect(sc)
+      nodeMove(m, sc, 'struct2clipboard', '', 'CUT')
+      structDeleteReselect(m, sc)
       break
     }
     case 'moveSelectionPreview': {
       // TODO prevent move if multiple nodes are selected
       const { toX, toY } = payload
-      let m = mapref(['m'])
       m.moveTargetPath = []
       m.moveData = []
       let lastSelectedPath = selectionState.structSelectedPathList[0]
-      let lastSelected = mapref(lastSelectedPath)
+      let lastSelected = mapref(m, lastSelectedPath)
       if (!(lastSelected.nodeStartX < toX &&
         toX < lastSelected.nodeEndX &&
         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-        let lastNearestPath = mapFindNearest.start(mapref(['r', 0]), toX, toY) // TODO multi r rethink
+        let lastNearestPath = mapFindNearest.start(mapref(m, ['r', 0]), toX, toY) // TODO multi r rethink
         if (lastNearestPath.length > 2) {
           m.moveTargetPath = copy(lastNearestPath)
           let lastFound = mapref(lastNearestPath)
@@ -373,15 +368,14 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'moveSelection': {
-      let m = mapref(['m'])
       m.moveData = []
       m.shouldCenter = true // outside push - checkPop?
-      nodeMoveMouse(sc)
+      nodeMoveMouse(m, sc)
       break
     }
     case 'cellifyMulti': {
-      nodeMove(sc, 'struct2cell', '', 'multiRow')
-      clearSelection()
+      nodeMove(m, sc, 'struct2cell', '', 'multiRow')
+      clearSelection(m)
       let toPath = mapref(mapref(sc.geomHighPath).parentPath).path
       mapref(toPath).selected = 1
       mapref(toPath).s[0].selected = 1
@@ -409,14 +403,14 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'insertMapFromClipboard': {
-      clearSelection()
+      clearSelection(m)
       setClipboard(JSON.parse(payload))
-      nodeMove(sc, 'clipboard2struct', '', 'PASTE')
+      nodeMove(m, sc, 'clipboard2struct', '', 'PASTE')
       break
     }
     case 'insertTable': {
-      clearSelection()
-      structInsert(lm, 'childTable', payload)
+      clearSelection(m)
+      structInsert(m, lm, 'childTable', payload)
       break
     }
     // FORMAT
@@ -425,7 +419,6 @@ export const mapReducer = (action, payload) => {
         density, alignment,
         lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor, taskStatus
       } = payload
-      let m = mapref(['m'])
       if (m.density !== density) {
         m.density = density
         m.shouldCenter = true
@@ -485,7 +478,6 @@ export const mapReducer = (action, payload) => {
       break
     }
     case 'setTaskStatus': {
-      let m = mapref(['m'])
       let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId)) // TODO multi r rethink
       cm.taskStatus = payload.taskStatus
       break
@@ -525,11 +517,10 @@ export const mapReducer = (action, payload) => {
   }
 }
 
-export const recalc = () => {
+export const recalc = (m) => {
   initSelectionState()
-  let m = mapref(['m'])
-  for (let i = 0; i < mapref(['r']).length; i++) {
-    let cr = mapref(['r', i])
+  for (let i = 0; i < mapref(m, ['r']).length; i++) {
+    let cr = mapref(m, ['r', i])
     mapAlgo.start(m, cr)
     mapInit.start(m, cr)
     mapChain.start(m, cr, i)
@@ -540,14 +531,14 @@ export const recalc = () => {
     mapCollect.start(m, cr)
     // mapPrint.start(m, cr)
   }
-  updateSelectionState()
+  updateSelectionState(m)
+  return m
 }
 
-export const redraw = (colorMode) => {
+export const redraw = (m, colorMode) => {
   flagDomData()
-  let m = mapref(['m'])
-  for (let i = 0; i < mapref(['r']).length; i++) {
-    let cr = mapref(['r', i])
+  for (let i = 0; i < mapref(m, ['r']).length; i++) {
+    let cr = mapref(m, ['r', i])
     mapVisualizeSvg.start(m, cr, colorMode)
     mapVisualizeDiv.start(m, cr, colorMode)
   }

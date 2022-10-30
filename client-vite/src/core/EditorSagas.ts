@@ -171,7 +171,10 @@ function* mapSaga () {
     if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
       const mapId = yield select(state => state.mapId)
       const mapSource = yield select(state => state.mapSource)
-      const mapData = saveMap()
+      const mapData = saveMap(m)
+      const mapStackData = yield select(state => state.mapStackData)
+      const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+      let m = mapStackData[mapStackDataIndex]
       payload = { ...payload, save: { mapId, mapSource, mapData } }
       switch (type) {
         case 'OPEN_MAP_FROM_TAB': {
@@ -190,14 +193,14 @@ function* mapSaga () {
         }
         case 'OPEN_MAP_FROM_MAP': {
           const {lastOverPath} = payload
-          const lm = mapref(lastOverPath)
+          const lm = mapref(m, lastOverPath)
           const mapId = lm.link
           payload = {...payload, mapId}
           break
         }
         case 'CREATE_MAP_IN_MAP': {
           const {lastPath} = selectionState
-          payload = {...payload, lastPath, newMapName: mapref(lastPath).content}
+          payload = {...payload, lastPath, newMapName: mapref(m, lastPath).content}
           break
         }
         case 'DUPLICATE_FRAME': {
@@ -239,6 +242,9 @@ function* mapStackSaga () {
   while (true) {
     const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
     const colorMode = yield select(state => state.colorMode)
+    const mapStackData = yield select(state => state.mapStackData)
+    const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+    let m = mapStackData[mapStackDataIndex]
     switch (type) {
       case 'UNDO': {
         mapStackDispatch('undo', {}, colorMode)
@@ -249,8 +255,8 @@ function* mapStackSaga () {
         break
       }
     }
-    let m = mapref(['m'])
-    const lm = mapref(selectionState.lastPath)
+
+    const lm = mapref(m, selectionState.lastPath)
     const { density, alignment } = m
     const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
     const assignment = { density, alignment }
@@ -267,7 +273,7 @@ function* mapStackSaga () {
         textColor: 'textColor',
         taskStatus: 'taskStatus'
       }[prop]
-      if (selectionState.structSelectedPathList.map(el => (mapref(el))[realProp]).every((el, i, arr) => el  === arr[0])) {
+      if (selectionState.structSelectedPathList.map(el => (mapref(m, el))[realProp]).every((el, i, arr) => el  === arr[0])) {
         let propAssignment
         switch (prop) {
           case 'selection': propAssignment = lm.selection; break

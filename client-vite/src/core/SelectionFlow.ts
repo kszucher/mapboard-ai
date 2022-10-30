@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import {arrayValuesSame} from "./Utils";
 import {mapref} from "../component/WindowListeners";
@@ -26,7 +25,7 @@ export function initSelectionState() {
   selectionState = JSON.parse(InitSelectionState);
 }
 
-export function updateSelectionState() {
+export function updateSelectionState(m) {
   let {
     structSelectedPathList, cellSelectedPathList,
     maxSel, maxSelIndex, scope, lastPath, geomHighPath, geomLowPath,
@@ -40,7 +39,7 @@ export function updateSelectionState() {
     geomLowPath = lastPath;
   } else if (structSelectedPathList.length) {
     for (let i = 0; i < structSelectedPathList.length; i++) {
-      let currSelectedNumber = mapref(structSelectedPathList[i]).selected;
+      let currSelectedNumber = mapref(m, structSelectedPathList[i]).selected;
       if (currSelectedNumber > maxSel) {
         maxSel = currSelectedNumber;
         maxSelIndex = i;
@@ -51,7 +50,7 @@ export function updateSelectionState() {
     geomLowPath = structSelectedPathList[structSelectedPathList.length - 1];
   } else if (cellSelectedPathList.length) {
     for (let i = 0; i < cellSelectedPathList.length; i++) {
-      let currSelectedNumber = mapref(cellSelectedPathList[i]).selected;
+      let currSelectedNumber = mapref(m, cellSelectedPathList[i]).selected;
       if (currSelectedNumber > maxSel) {
         maxSel = currSelectedNumber;
         maxSelIndex = i;
@@ -65,13 +64,13 @@ export function updateSelectionState() {
 
   // INTERRELATIONS
   if (structSelectedPathList.length && !cellSelectedPathList.length) {
-    [haveSameParent, sameParentPath] = arrayValuesSame(structSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
+    [haveSameParent, sameParentPath] = arrayValuesSame(structSelectedPathList.map(path => JSON.stringify(mapref(m, path).parentPath)));
   } else if (!structSelectedPathList.length && cellSelectedPathList.length) {
-    [haveSameParent, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(path).parentPath)));
+    [haveSameParent, sameParentPath] = arrayValuesSame(cellSelectedPathList.map(path => JSON.stringify(mapref(m, path).parentPath)));
     if (haveSameParent) {
       let [haveSameRow, sameRow] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 2]));
       let [haveSameCol, sameCol] = arrayValuesSame(cellSelectedPathList.map(path => path[path.length - 1]));
-      let sameParent = mapref(sameParentPath);
+      let sameParent = mapref(m, sameParentPath);
       if (haveSameRow && cellSelectedPathList.length === sameParent.c[0].length) {
         cellRowSelected = 1;
         cellRow = sameRow;

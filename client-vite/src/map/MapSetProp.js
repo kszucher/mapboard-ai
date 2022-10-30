@@ -2,9 +2,9 @@ import {resolveScope} from "../core/DefaultProps"
 import { mapref } from '../component/WindowListeners'
 
 export const mapSetProp = {
-    start: (cm, assignment, scope) => {
+    start: (m, cm, assignment, scope) => {
         if (cm.path.length === 4) {
-            Object.assign(mapref(['r', 0]), typeof assignment === 'function' ? assignment() : assignment)
+            Object.assign(mapref(m, ['r', 0]), typeof assignment === 'function' ? assignment() : assignment)
         }
         mapSetProp.iterate(cm, assignment, scope)
     },

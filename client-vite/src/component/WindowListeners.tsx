@@ -64,13 +64,12 @@ export function mapStackDispatch(action, payload, colorMode) {
     }
   }
   recalc()
-  redraw(colorMode)
+  redraw(m, colorMode)
 }
 
 // MAP SELECTORS
-export const mapref = (path) => {
-  const source = Object.keys(mapNext).length ? mapNext : mapStack.data[mapStack.dataIndex]
-  return subsref(source, path)
+export const mapref = (m, path) => {
+  return subsref(m, path)
 }
 
 // this is a getter, same as when we loadNode, so should be placed accordingly
@@ -95,6 +94,11 @@ export const WindowListeners: FC = () => {
   const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
 
+  const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
+  const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
+
+  const m = mapStackData[mapStackDataIndex]
+
   const [selectionRect, setSelectionRect] = useState([])
 
   const dispatch = useDispatch()
@@ -103,10 +107,10 @@ export const WindowListeners: FC = () => {
     console.log('MAP_DISPATCH: ' + action)
     const mapCurr = mapStack.data[mapStack.dataIndex]
     mapNext = copy(mapCurr)
-    mapReducer(action, payload)
+    mapReducer(m, action, payload)
     recalc()
     if (JSON.stringify(mapCurr) !== JSON.stringify(mapNext)) {
-      redraw(colorMode)
+      redraw(m, colorMode)
       const currSimplified = mapDeinit.start(copy(mapCurr))
       const prevSimplified = mapDeinit.start(copy(mapNext))
       if (JSON.stringify(currSimplified) !== JSON.stringify(prevSimplified)) {
@@ -124,7 +128,7 @@ export const WindowListeners: FC = () => {
   const mutationFun = (mutationsList) => {
     for (let mutation of mutationsList) {
       if (mutation.type === 'characterData') {
-        let lm = mapref(selectionState.lastPath)
+        let lm = mapref(m, selectionState.lastPath)
         let holderElement = document.getElementById(`${lm.nodeId}_div`)
         mapDispatch('typeText', holderElement.innerHTML)
       }
@@ -132,7 +136,7 @@ export const WindowListeners: FC = () => {
   }
 
   const startEdit = () => {
-    let lm = mapref(selectionState.lastPath)
+    let lm = mapref(m, selectionState.lastPath)
     if (!lm.hasCell) {
       mapDispatch('startEdit')
       isEditing = 1
@@ -152,14 +156,14 @@ export const WindowListeners: FC = () => {
   const finishEdit = () => {
     mutationObserver.disconnect()
     isEditing = 0
-    let lm = mapref(selectionState.lastPath)
+    let lm = mapref(m, selectionState.lastPath)
     let holderElement = document.getElementById(`${lm.nodeId}_div`)
     holderElement.contentEditable = 'false'
     mapDispatch('finishEdit', holderElement.innerHTML)
   }
 
   const eraseContent = () => {
-    let lm = mapref(selectionState.lastPath)
+    let lm = mapref(m, selectionState.lastPath)
     if (!lm.hasCell) {
       mapDispatch('eraseContent')
       let holderElement = document.getElementById(`${lm.nodeId}_div`)
@@ -214,14 +218,14 @@ export const WindowListeners: FC = () => {
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
           isTaskClicked = path.find(el => el.id?.substring(17, 27) === 'taskCircle')
-          lastOverPath = mapFindOverPoint.start(mapref(['r', 0]), fromX, fromY)
+          lastOverPath = mapFindOverPoint.start(mapref(m, ['r', 0]), fromX, fromY)
           isNodeClicked = lastOverPath.length
         }
         if (which === 1) {
           if (isTaskClicked) {
             mapDispatch('setTaskStatus', {taskStatus: parseInt(path[0].id.charAt(27), 10), nodeId: path[0].id.substring(0, 12)})
           } else if (isNodeClicked) {
-            let lm = mapref(lastOverPath)
+            let lm = mapref(m, lastOverPath)
             if (lm.linkType === '') {
               if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                 mapDispatch('selectStruct', {lastOverPath})
@@ -285,7 +289,6 @@ export const WindowListeners: FC = () => {
         if (which === 1) {
           if (isTaskClicked) {
           } else if (isNodeClicked) {
-            let m = mapref(['m'])
             if (m.moveTargetPath.length) {
               mapDispatch('moveSelection')
             }
@@ -295,8 +298,8 @@ export const WindowListeners: FC = () => {
               selectionState.cellSelectedPathList.length === 0) {
               mapDispatch('select_R')
             }
-            let m = mapref(['m'])
-            m.selectionRect = []
+            // should NOT mutate this!!!!!!
+            // m.selectionRect = []
           }
         }
       } else {
@@ -512,7 +515,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      redraw(colorMode) // mapDispatch is futile here, as this does not change state
+      redraw(m, colorMode) // mapDispatch is futile here, as this does not change state
       removeMapListeners()
       if (mapRight === MapRight.EDIT) {
         addMapListeners()
