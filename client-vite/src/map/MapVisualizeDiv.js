@@ -43,20 +43,20 @@ export const mapVisualizeDiv = {
         mapHolderDiv.focus()
         let currScrollLeft = (window.innerWidth + m.mapWidth) / 2
         if (m.shouldLoad) { // shouldLoad
-            m.shouldLoad = false
+            // m.shouldLoad = false
             mapHolderDiv.scrollLeft = currScrollLeft
             mapHolderDiv.scrollTop = window.innerHeight - 48 * 2
         }
         if (m.shouldResize) { // shouldResize
-            m.shouldResize = false
+            // m.shouldResize = false
             mapHolderDiv.scrollLeft = currScrollLeft
         }
         if (m.shouldCenter) {
-            m.shouldCenter = false
+            // m.shouldCenter = false
             scrollTo(currScrollLeft, 500)
         }
         if (m.shouldScroll) {
-            m.shouldScroll = false
+            // m.shouldScroll = false
             mapHolderDiv.scrollLeft -= m.scrollX
             mapHolderDiv.scrollTop -= m.scrollY
         }

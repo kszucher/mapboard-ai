@@ -546,10 +546,18 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      mapStackDispatch('initMapState', { mapData }, colorMode)
-      dispatch(sagaActions.mapStackChanged())
+      // mapStackDispatch('initMapState', { mapData }, colorMode)
+      // dispatch(sagaActions.mapStackChanged())
+
+      dispatch(actions.initMapStack())
     }
   }, [mapId, mapSource, frameLen, frameSelected])
+
+  useEffect(() => {
+    if (mapStackData.length) {
+      redraw(m, colorMode)
+    }
+  }, [mapStackData, mapStackDataIndex])
 
   useEffect(() => {
     if (pageState === PageState.WS) {

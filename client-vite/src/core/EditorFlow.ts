@@ -148,7 +148,7 @@ const allSlice = createSlice({
 
     initMapStack(state) {
       return {...state, ...{
-          mapStackData : [recalc(mapAssembly(state.mapData))], // use recalc here
+          mapStackData : [recalc(mapAssembly(state.mapData))],
           mapStackDataIndex: 0
         }
       }},
