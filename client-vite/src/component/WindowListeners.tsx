@@ -91,7 +91,7 @@ export const WindowListeners: FC = () => {
       if (JSON.stringify(currM) === JSON.stringify(nextM)) {
         // do nothing
       } else {
-        redraw(m, colorMode)
+        redraw(nextM, colorMode)
       }
     } else {
       dispatch(actions.mutateMapStack(nextM))
@@ -526,7 +526,10 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapStackData.length) {
-      redraw(m, colorMode)
+      // not sure why this is needed
+      const copyStuff = copy(m)
+      recalc(copyStuff)
+      redraw(copyStuff, colorMode)
     }
   }, [mapStackData, mapStackDataIndex])
 
