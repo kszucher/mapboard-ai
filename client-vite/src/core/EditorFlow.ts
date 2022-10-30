@@ -2,6 +2,7 @@ import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
+import {mapAssembly} from "../map/MapAssembly.js";
 
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
@@ -38,6 +39,9 @@ const editorState = {
   frameLen: 0,
   frameSelected: 0,
   mapRight: MapRight.UNAUTHORIZED,
+
+  mapStackData: [],
+  mapStackDataIndex: 0,
 
   node: {
     density: undefined,
@@ -140,7 +144,22 @@ const allSlice = createSlice({
 
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
-  }
+
+    initMapStack(state) {
+      return {...state, ...{
+          mapStackData : [mapAssembly(state.mapData)], // use recalc here
+          mapStackDataIndex: 0
+        }
+      }},
+    },
+
+    mutateMapStack(state, action: PayloadAction<any>) {
+      return {...state, ...{
+          mapStackData: [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.mapNext],
+          mapStackDataIndex: state.mapStackDataIndex + 1
+        }
+      }},
+
 })
 
 export const { actions, reducer } = allSlice
