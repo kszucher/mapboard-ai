@@ -6,10 +6,9 @@ import {mapReducer, recalc, redraw} from '../core/MapFlow'
 import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {selectionState} from "../core/SelectionFlow"
-import {actions, sagaActions} from "../core/EditorFlow"
+import {actions, sagaActions, store} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
-import {mapAssembly} from '../map/MapAssembly'
 import {mapDisassembly} from '../map/MapDisassembly'
 import {mapDeinit} from '../map/MapDeinit'
 
@@ -40,16 +39,9 @@ export let mapStack = {
   dataIndex: 0,
 }
 
-let mapNext = {}
-
 export function mapStackDispatch(action, payload, colorMode) {
   console.log('MAP_STACK_DISPATCH: ' + action)
   switch (action) {
-    case 'initMapState': {
-      mapStack.data = [mapAssembly(payload.mapData)]
-      mapStack.dataIndex = 0 // this can be easily done by requesting the backend to send a 0 value
-      break
-    }
     case 'undo': {
       if (mapStack.dataIndex > 0) {
         mapStack.dataIndex--
@@ -79,11 +71,16 @@ export const saveMap = () => {
   return mapDisassembly.start(cm)
 }
 
+const getM = () => {
+  const mapStackData = store.getState().mapStackData
+  const mapStackDataIndex = store.getState().mapStackDataIndex
+  return mapStackData[mapStackDataIndex]
+}
+
 export const WindowListeners: FC = () => {
 
   const mapId = useSelector((state: RootStateOrAny) => state.mapId)
   const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
-  const mapData = useSelector((state: RootStateOrAny) => state.mapData)
   const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
   const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
@@ -105,23 +102,20 @@ export const WindowListeners: FC = () => {
 
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
-    const mapCurr = mapStack.data[mapStack.dataIndex]
-    mapNext = copy(mapCurr)
-    mapReducer(m, action, payload)
-    recalc()
-    if (JSON.stringify(mapCurr) !== JSON.stringify(mapNext)) {
-      redraw(m, colorMode)
-      const currSimplified = mapDeinit.start(copy(mapCurr))
-      const prevSimplified = mapDeinit.start(copy(mapNext))
-      if (JSON.stringify(currSimplified) !== JSON.stringify(prevSimplified)) {
-        if (mapStack.data.length > mapStack.dataIndex + 1) {
-          mapStack.data.length = mapStack.dataIndex + 1
-        }
-        mapStack.data.push(copy(mapNext))
-        mapNext = {}
-        mapStack.dataIndex++
-        dispatch(sagaActions.mapStackChanged())
+    const currM = getM()
+    const nextM = copy(currM)
+    mapReducer(nextM, action, payload)
+    recalc(nextM)
+    const currMSimplified = mapDeinit.start(copy(currM))
+    const nextMSimplified = mapDeinit.start(copy(nextM))
+    if (JSON.stringify(currMSimplified) === JSON.stringify(nextMSimplified)) {
+      if (JSON.stringify(currM) === JSON.stringify(nextM)) {
+        // do nothing
+      } else {
+        redraw(m, colorMode)
       }
+    } else {
+      dispatch(actions.mutateMapStack(nextM))
     }
   }
 
@@ -215,6 +209,7 @@ export const WindowListeners: FC = () => {
         ).empty()
         elapsed = 0
         let lastOverPath = []
+        const m = getM()
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
           isTaskClicked = path.find(el => el.id?.substring(17, 27) === 'taskCircle')
@@ -546,9 +541,6 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      // mapStackDispatch('initMapState', { mapData }, colorMode)
-      // dispatch(sagaActions.mapStackChanged())
-
       dispatch(actions.initMapStack())
     }
   }, [mapId, mapSource, frameLen, frameSelected])

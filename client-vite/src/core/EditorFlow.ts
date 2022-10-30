@@ -152,15 +152,15 @@ const allSlice = createSlice({
           mapStackDataIndex: 0
         }
       }},
-    },
 
     mutateMapStack(state, action: PayloadAction<any>) {
       return {...state, ...{
-          mapStackData: [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.mapNext],
+          mapStackData: [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload],
           mapStackDataIndex: state.mapStackDataIndex + 1
         }
       }},
 
+    }
 })
 
 export const { actions, reducer } = allSlice

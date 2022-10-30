@@ -27,7 +27,7 @@ import {mapref} from "../component/WindowListeners";
 const clearSelection = (m) => {
   for (let i = 0; i < mapref(m, ['r']).length; i++) {
     let cr = mapref(m, ['r', i])
-    mapSetProp.start(cr, {selected: 0, selection: 's'}, '')
+    mapSetProp.start(m, cr, {selected: 0, selection: 's'}, '')
   }
 }
 
@@ -117,7 +117,7 @@ export const mapReducer = (m, action, payload) => {
     case 'select_all': {
       for (let i = 0; i < mapref(m, ['r']).length; i++) {
         let cr = mapref(m, ['r', i])
-        mapSetProp.start(cr, {selected: 1}, 'struct')
+        mapSetProp.start(m, cr, {selected: 1}, 'struct')
       }
       break
     }
@@ -424,7 +424,7 @@ export const mapReducer = (m, action, payload) => {
         m.shouldCenter = true
         for (let i = 0; i < mapref(['r']).length; i++) {
           let cr = mapref(['r', i])
-          mapSetProp.start(cr, { isDimAssigned: 0 }, '')
+          mapSetProp.start(m, cr, { isDimAssigned: 0 }, '')
         }
       }
       if (m.alignment !== alignment) {
@@ -450,7 +450,7 @@ export const mapReducer = (m, action, payload) => {
               if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
                 Object.assign(cm, assignment)
               } else {
-                mapSetProp.start(cm, assignment, '')
+                mapSetProp.start(m, cm, assignment, '')
               }
             }
           }
@@ -471,9 +471,9 @@ export const mapReducer = (m, action, payload) => {
     }
     case 'toggleTask': {
       if (lm.taskStatus === -1) {
-        mapSetProp.start(lm, {taskStatus: 0}, '')
+        mapSetProp.start(m, lm, {taskStatus: 0}, '')
       } else {
-        mapSetProp.start(lm, {taskStatus: -1}, '')
+        mapSetProp.start(m, lm, {taskStatus: -1}, '')
       }
       break
     }
