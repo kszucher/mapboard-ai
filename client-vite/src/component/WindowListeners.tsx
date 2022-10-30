@@ -74,7 +74,6 @@ export const WindowListeners: FC = () => {
 
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
-  const m = mapStackData[mapStackDataIndex]
 
   const [selectionRect, setSelectionRect] = useState([])
 
@@ -531,6 +530,8 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapStackData.length) {
+      const m = getM()
+
       // selection state is not up to date...
       initSelectionState()
       let cr = mapref(m, ['r', 0])
