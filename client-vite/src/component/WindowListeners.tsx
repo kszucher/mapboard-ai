@@ -5,12 +5,13 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {mapReducer, recalc, redraw} from '../core/MapFlow'
 import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
-import {selectionState} from "../core/SelectionFlow"
+import {initSelectionState, selectionState, updateSelectionState} from "../core/SelectionFlow"
 import {actions, sagaActions, store} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
 import {mapDisassembly} from '../map/MapDisassembly'
 import {mapDeinit} from '../map/MapDeinit'
+import {mapCollect} from '../map/mapCollect'
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -526,10 +527,13 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapStackData.length) {
-      // not sure why this is needed
-      const copyStuff = copy(m)
-      recalc(copyStuff)
-      redraw(copyStuff, colorMode)
+      // selection state is not up to date...
+      initSelectionState()
+      let cr = mapref(m, ['r', 0])
+      mapCollect.start(m, cr)
+      updateSelectionState(m)
+
+      redraw(m, colorMode)
     }
   }, [mapStackData, mapStackDataIndex])
 

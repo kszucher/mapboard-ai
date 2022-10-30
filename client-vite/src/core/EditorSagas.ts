@@ -136,7 +136,7 @@ function* autoSaveSaga() {
   while (true) {
     const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
       autoSaveNow: take(SAVE_INCLUDED),
-      autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']),
+      autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']), // maybe I could just listen to non-saga actions, why not...
       autoSaveNowByTimeout: delay(1000)
     })
     if (autoSaveNow) {

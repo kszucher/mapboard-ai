@@ -65,7 +65,7 @@ export const mapReducer = (m, action, payload) => {
       let width = Math.abs(toX - fromX)
       let height = Math.abs(toY - fromY)
       m.selectionRect = [startX, startY, width, height]
-      mapFindOverRectangle.start(mapref(m, ['r', 0]), startX, startY, width, height) // TODO multi r rethink
+      mapFindOverRectangle.start(mapref(m, ['r', 0]), startX, startY, width, height)
       break
     }
     // SELECT
@@ -260,7 +260,7 @@ export const mapReducer = (m, action, payload) => {
     }
     case 'select_R': {
       clearSelection(m)
-      let cr = mapref(m, ['r', 0]) // TODO multi r rethink
+      let cr = mapref(m, ['r', 0])
       cr.selected = 1
       break
     }
@@ -336,7 +336,7 @@ export const mapReducer = (m, action, payload) => {
         toX < lastSelected.nodeEndX &&
         lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
         toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-        let lastNearestPath = mapFindNearest.start(mapref(m, ['r', 0]), toX, toY) // TODO multi r rethink
+        let lastNearestPath = mapFindNearest.start(mapref(m, ['r', 0]), toX, toY)
         if (lastNearestPath.length > 2) {
           m.moveTargetPath = copy(lastNearestPath)
           let lastFound = mapref(lastNearestPath)
@@ -478,7 +478,7 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     case 'setTaskStatus': {
-      let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId)) // TODO multi r rethink
+      let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId))
       cm.taskStatus = payload.taskStatus
       break
     }
@@ -519,28 +519,23 @@ export const mapReducer = (m, action, payload) => {
 
 export const recalc = (m) => {
   initSelectionState()
-  for (let i = 0; i < mapref(m, ['r']).length; i++) {
-    let cr = mapref(m, ['r', i])
-    mapAlgo.start(m, cr)
-    mapInit.start(m, cr)
-    mapChain.start(m, cr, i)
-    mapTaskCheck.start(m, cr)
-    mapMeasure.start(m, cr)
-    mapPlace.start(m, cr)
-    mapTaskCalc.start(m, cr)
-    mapCollect.start(m, cr)
-    // mapPrint.start(m, cr)
-  }
+  let cr = mapref(m, ['r', 0])
+  mapAlgo.start(m, cr)
+  mapInit.start(m, cr)
+  mapChain.start(m, cr, 0)
+  mapTaskCheck.start(m, cr)
+  mapMeasure.start(m, cr)
+  mapPlace.start(m, cr)
+  mapTaskCalc.start(m, cr)
+  mapCollect.start(m, cr)
   updateSelectionState(m)
   return m
 }
 
 export const redraw = (m, colorMode) => {
   flagDomData()
-  for (let i = 0; i < mapref(m, ['r']).length; i++) {
-    let cr = mapref(m, ['r', i])
-    mapVisualizeSvg.start(m, cr, colorMode)
-    mapVisualizeDiv.start(m, cr, colorMode)
-  }
+  let cr = mapref(m, ['r', 0])
+  mapVisualizeSvg.start(m, cr, colorMode)
+  mapVisualizeDiv.start(m, cr, colorMode)
   updateDomData()
 }
