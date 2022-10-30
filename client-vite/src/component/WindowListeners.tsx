@@ -399,6 +399,9 @@ export const WindowListeners: FC = () => {
           mapDispatch(action, {currColor: which - 96})
         } else {
           mapDispatch(action, {keyCode: e.code})
+          // if we have insert_D_S, insert_U_S, insert_O_S, we need to mapDispatch twice!!!
+          // once: set an m prop "animationPath" which will trigger a redraw but not a save
+          // twice: reset an m prop "animationPath" which will again trigger a redraw but not a save
         }
         if (keyStateMachine.se) {
           startEdit()

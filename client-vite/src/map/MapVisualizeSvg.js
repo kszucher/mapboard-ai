@@ -93,7 +93,7 @@ export const mapVisualizeSvg = {
         const r = 8
         let animationInit = ''
         if (cm.lineAnimationRequested) {
-            cm.lineAnimationRequested = 0
+            // cm.lineAnimationRequested = 0
             animationInit = 'l'
         }
         if (conditions.branchFill ||
