@@ -141,19 +141,13 @@ const allSlice = createSlice({
     interactionDisabled(state) { state.interactionDisabled = true },
 
     initMapStack(state) {
-      return {...state, ...{
-          mapStackData: [recalc(mapAssembly(state.mapData))],
-          mapStackDataIndex: 0
-        }
-      }
+      state.mapStackData = [recalc(mapAssembly(state.mapData))]
+      state.mapStackDataIndex = 0
     },
 
     mutateMapStack(state, action: PayloadAction<any>) {
-      return {...state, ...{
-          mapStackData: [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload],
-          mapStackDataIndex: state.mapStackDataIndex + 1
-        }
-      }
+      state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload]
+      state.mapStackDataIndex = state.mapStackDataIndex + 1
     },
 
     undo(state) {
