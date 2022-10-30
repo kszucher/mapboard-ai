@@ -102,6 +102,7 @@ export const WindowListeners: FC = () => {
   const mutationFun = (mutationsList) => {
     for (let mutation of mutationsList) {
       if (mutation.type === 'characterData') {
+        const m = getM()
         let lm = mapref(m, selectionState.lastPath)
         let holderElement = document.getElementById(`${lm.nodeId}_div`)
         mapDispatch('typeText', holderElement.innerHTML)
@@ -110,6 +111,7 @@ export const WindowListeners: FC = () => {
   }
 
   const startEdit = () => {
+    const m = getM()
     let lm = mapref(m, selectionState.lastPath)
     if (!lm.hasCell) {
       mapDispatch('startEdit')
@@ -130,6 +132,7 @@ export const WindowListeners: FC = () => {
   const finishEdit = () => {
     mutationObserver.disconnect()
     isEditing = 0
+    const m = getM()
     let lm = mapref(m, selectionState.lastPath)
     let holderElement = document.getElementById(`${lm.nodeId}_div`)
     holderElement.contentEditable = 'false'
@@ -137,6 +140,7 @@ export const WindowListeners: FC = () => {
   }
 
   const eraseContent = () => {
+    const m = getM()
     let lm = mapref(m, selectionState.lastPath)
     if (!lm.hasCell) {
       mapDispatch('eraseContent')

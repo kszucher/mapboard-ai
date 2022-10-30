@@ -142,17 +142,19 @@ const allSlice = createSlice({
 
     initMapStack(state) {
       return {...state, ...{
-          mapStackData : [recalc(mapAssembly(state.mapData))],
+          mapStackData: [recalc(mapAssembly(state.mapData))],
           mapStackDataIndex: 0
         }
-      }},
+      }
+    },
 
     mutateMapStack(state, action: PayloadAction<any>) {
       return {...state, ...{
           mapStackData: [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload],
           mapStackDataIndex: state.mapStackDataIndex + 1
         }
-      }},
+      }
+    },
 
     undo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex > 0 ? state.mapStackDataIndex - 1 : state.mapStackDataIndex
