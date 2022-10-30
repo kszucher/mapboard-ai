@@ -40,6 +40,8 @@ export let mapStack = {
   dataIndex: 0,
 }
 
+let mapNext = {}
+
 export function mapStackDispatch(action, payload, colorMode) {
   console.log('MAP_STACK_DISPATCH: ' + action)
   switch (action) {
@@ -67,7 +69,8 @@ export function mapStackDispatch(action, payload, colorMode) {
 
 // MAP SELECTORS
 export const mapref = (path) => {
-  return subsref(mapStack.data[mapStack.dataIndex], path)
+  const source = Object.keys(mapNext).length ? mapNext : mapStack.data[mapStack.dataIndex]
+  return subsref(source, path)
 }
 
 // this is a getter, same as when we loadNode, so should be placed accordingly
@@ -98,26 +101,21 @@ export const WindowListeners: FC = () => {
 
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
-    if (mapStack.data.length > mapStack.dataIndex + 1) {
-      mapStack.data.length = mapStack.dataIndex + 1
-    }
-    mapStack.data.push(JSON.parse(JSON.stringify(mapStack.data[mapStack.dataIndex])))
-    mapStack.dataIndex++
+    const mapCurr = mapStack.data[mapStack.dataIndex]
+    mapNext = copy(mapCurr)
     mapReducer(action, payload)
     recalc()
-    const curr = mapStack.data[mapStack.dataIndex]
-    const prev = mapStack.data[mapStack.dataIndex - 1]
-    if (JSON.stringify(curr) === JSON.stringify(prev)) {
-      mapStack.data.length--
-      mapStack.dataIndex--
-    } else {
+    if (JSON.stringify(mapCurr) !== JSON.stringify(mapNext)) {
       redraw(colorMode)
-      const currSimplified = mapDeinit.start(copy(curr))
-      const prevSimplified = mapDeinit.start(copy(prev))
-      if (JSON.stringify(currSimplified) === JSON.stringify(prevSimplified)) {
-        mapStack.data.length--
-        mapStack.dataIndex--
-      } else {
+      const currSimplified = mapDeinit.start(copy(mapCurr))
+      const prevSimplified = mapDeinit.start(copy(mapNext))
+      if (JSON.stringify(currSimplified) !== JSON.stringify(prevSimplified)) {
+        if (mapStack.data.length > mapStack.dataIndex + 1) {
+          mapStack.data.length = mapStack.dataIndex + 1
+        }
+        mapStack.data.push(copy(mapNext))
+        mapNext = {}
+        mapStack.dataIndex++
         dispatch(sagaActions.mapStackChanged())
       }
     }
