@@ -2,7 +2,7 @@
 
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {arraysSame, copy, setEndOfContenteditable, transposeArray} from './Utils'
+import {arraysSame, copy, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
@@ -514,6 +514,7 @@ export const mapReducer = (m, action, payload) => {
       break
     }
   }
+  return m
 }
 
 export const recalc = (m) => {
@@ -526,9 +527,6 @@ export const recalc = (m) => {
   mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
   mapCollect.start(m, cr)
-
-  console.log(m.sc)
-
   return m
 }
 

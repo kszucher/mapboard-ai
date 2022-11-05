@@ -77,20 +77,13 @@ export const WindowListeners: FC = () => {
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
     const currM = getM()
-    const nextM = copy(currM) // make it a oneliner
-    mapReducer(nextM, action, payload)
-    recalc(nextM)
+    const nextM = recalc(mapReducer(copy(currM), action, payload))
     const currMSimplified = mapDeinit.start(copy(currM))
     const nextMSimplified = mapDeinit.start(copy(nextM))
-    // flip flip
-    if (JSON.stringify(currMSimplified) === JSON.stringify(nextMSimplified)) {
-      if (JSON.stringify(currM) === JSON.stringify(nextM)) {
-        // do nothing
-      } else {
-        redraw(nextM, colorMode)
-      }
-    } else {
+    if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
       dispatch(actions.mutateMapStack(nextM))
+    } else if (JSON.stringify(currM) !== JSON.stringify(nextM)) {
+      redraw(nextM, colorMode)
     }
   }
 
@@ -307,7 +300,7 @@ export const WindowListeners: FC = () => {
     const m = getM()
     // [37,38,39,40] = [left,up,right,down]
     const keyStateMachineDb = [
-      [ 'c','s','a', 'keyMatch',                    'e','scope',                     'p','m','fe','ec', 'action',                 'se'],
+      [ 'c','s','a', 'keyMatch',                    'e','scope',                     'p','m','fe','ec', 'action',               'se'],
       [  0,  0,  0,  key === 'F1',                   0, ['s', 'c', 'm'],              1,  0,  0,   0, '',                        0  ],
       [  0,  0,  0,  key === 'F2',                   0, ['s', 'm'],                   1,  0,  0,   0, '',                        1  ],
       [  0,  0,  0,  key === 'F3',                   0, ['s', 'c', 'm'],              1,  0,  0,   0, '',                        0  ],
