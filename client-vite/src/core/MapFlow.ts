@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
 import {arraysSame, copy, subsref, transposeArray} from './Utils'

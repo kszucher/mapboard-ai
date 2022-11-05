@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {getDefaultNode} from "../core/DefaultProps"
 import { copy, genHash, transpose } from '../core/Utils'
 import { mapSetProp } from '../map/MapSetProp'
