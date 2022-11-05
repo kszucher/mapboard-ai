@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
 import {arraysSame, copy, transposeArray} from './Utils'
@@ -211,7 +209,7 @@ export const mapReducer = (m, action, payload) => {
     }
     case 'selectNeighborStructToo': {
       let toPath = nodeNavigate(m, sc.lastPath, 'struct2struct', payload.keyCode)
-      mapref(toPath).selected = sc.maxSel + 1
+      mapref(m, toPath).selected = sc.maxSel + 1
       break
     }
     case 'selectNeighborMixed': {
@@ -338,7 +336,7 @@ export const mapReducer = (m, action, payload) => {
         let lastNearestPath = mapFindNearest.start(mapref(m, ['r', 0]), toX, toY)
         if (lastNearestPath.length > 2) {
           m.moveTargetPath = copy(lastNearestPath)
-          let lastFound = mapref(lastNearestPath)
+          let lastFound = mapref(m, lastNearestPath)
           let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
           let fromY = lastFound.nodeY
           m.moveData = [fromX, fromY, toX, toY]
@@ -375,9 +373,9 @@ export const mapReducer = (m, action, payload) => {
     case 'cellifyMulti': {
       nodeMove(m, sc, 'struct2cell', '', 'multiRow')
       clearSelection(m)
-      let toPath = mapref(mapref(sc.geomHighPath).parentPath).path
-      mapref(toPath).selected = 1
-      mapref(toPath).s[0].selected = 1
+      let toPath = mapref(m, mapref(m, sc.geomHighPath).parentPath).path
+      mapref(m, toPath).selected = 1
+      mapref(m, toPath).s[0].selected = 1
       break
     }
     case 'insertTextFromClipboardAsText': {
@@ -421,8 +419,8 @@ export const mapReducer = (m, action, payload) => {
       if (m.density !== density) {
         m.density = density
         m.shouldCenter = true
-        for (let i = 0; i < mapref(['r']).length; i++) {
-          let cr = mapref(['r', i])
+        for (let i = 0; i < mapref(m, ['r']).length; i++) {
+          let cr = mapref(m, ['r', i])
           mapSetProp.start(m, cr, { isDimAssigned: 0 }, '')
         }
       }
@@ -431,7 +429,7 @@ export const mapReducer = (m, action, payload) => {
         m.shouldCenter = true
       }
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        const cm = mapref(sc.structSelectedPathList[i])
+        const cm = mapref(m, sc.structSelectedPathList[i])
         const props = {
           lineWidth, lineType, lineColor,
           [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
@@ -459,7 +457,7 @@ export const mapReducer = (m, action, payload) => {
     }
     case 'applyColorFromKey': {
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        let cm = mapref(sc.structSelectedPathList[i])
+        let cm = mapref(m, sc.structSelectedPathList[i])
         cm.textColor = [
           '#222222',
           '#999999', '#bbbbbb', '#dddddd',
@@ -477,7 +475,7 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     case 'setTaskStatus': {
-      let cm = mapref(mapFindById.start(m, mapref(['r', 0]), payload.nodeId))
+      let cm = mapref(m, mapFindById.start(m, mapref(m, ['r', 0]), payload.nodeId))
       cm.taskStatus = payload.taskStatus
       break
     }
@@ -517,7 +515,7 @@ export const mapReducer = (m, action, payload) => {
   return m
 }
 
-export const recalc = (m) => {
+export const reCalc = (m: any) => {
   let cr = mapref(m, ['r', 0])
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
@@ -530,7 +528,7 @@ export const recalc = (m) => {
   return m
 }
 
-const redrawStep = (m, colorMode, shouldAnimationInit) => {
+const redrawStep = (m: any, colorMode: any, shouldAnimationInit: boolean) => {
   flagDomData()
   let cr = mapref(m, ['r', 0])
   mapVisualizeSvg.start(m, cr, colorMode, shouldAnimationInit)
@@ -538,7 +536,7 @@ const redrawStep = (m, colorMode, shouldAnimationInit) => {
   updateDomData()
 }
 
-export const redraw = (m, colorMode) => {
+export const reDraw = (m: never, colorMode: any) => {
   if (m.animationRequested) {
     redrawStep(m, colorMode, true)
   }

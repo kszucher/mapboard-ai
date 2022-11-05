@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly.js";
-import {recalc} from "./MapFlow";
+import {reCalc} from "./MapFlow";
 
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
@@ -141,7 +141,7 @@ const allSlice = createSlice({
     interactionDisabled(state) { state.interactionDisabled = true },
 
     initMapStack(state) {
-      state.mapStackData = [recalc(mapAssembly(state.mapData))]
+      state.mapStackData = [reCalc(mapAssembly(state.mapData))]
       state.mapStackDataIndex = 0
     },
 

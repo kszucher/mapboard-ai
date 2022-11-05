@@ -170,10 +170,10 @@ function* mapSaga () {
     if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
       const mapId = yield select(state => state.mapId)
       const mapSource = yield select(state => state.mapSource)
-      const mapData = saveMap(m)
       const mapStackData = yield select(state => state.mapStackData)
       const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
       const m = mapStackData[mapStackDataIndex]
+      const mapData = saveMap(m)
       payload = { ...payload, save: { mapId, mapSource, mapData } }
       switch (type) {
         case 'OPEN_MAP_FROM_TAB': {

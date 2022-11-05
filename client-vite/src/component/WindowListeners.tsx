@@ -2,7 +2,7 @@
 
 import {FC, useEffect, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {mapReducer, recalc, redraw} from '../core/MapFlow'
+import {mapReducer, reCalc, reDraw} from '../core/MapFlow'
 import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {actions, sagaActions, store} from "../core/EditorFlow"
@@ -77,13 +77,13 @@ export const WindowListeners: FC = () => {
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
     const currM = getM()
-    const nextM = recalc(mapReducer(copy(currM), action, payload))
+    const nextM = reCalc(mapReducer(copy(currM), action, payload))
     const currMSimplified = mapDeinit.start(copy(currM))
     const nextMSimplified = mapDeinit.start(copy(nextM))
     if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
       dispatch(actions.mutateMapStack(nextM))
     } else if (JSON.stringify(currM) !== JSON.stringify(nextM)) {
-      redraw(nextM, colorMode)
+      reDraw(nextM, colorMode)
     }
   }
 
@@ -486,7 +486,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
-      redraw(m, colorMode) // mapDispatch is futile here, as this does not change state
+      reDraw(m, colorMode) // mapDispatch is futile here, as this does not change state
       removeMapListeners()
       if (mapRight === MapRight.EDIT) {
         addMapListeners()
@@ -517,7 +517,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapStackData.length) {
       const m = getM()
-      redraw(m, colorMode)
+      reDraw(m, colorMode)
     }
   }, [mapStackData, mapStackDataIndex])
 
