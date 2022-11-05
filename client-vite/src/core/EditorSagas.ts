@@ -5,7 +5,7 @@ import {initDomData} from './DomFlow'
 import {mapGetProp} from '../map/MapGetProp'
 import {actions, sagaActions} from "./EditorFlow";
 import {PageState} from "./Types";
-import {mapref, mapStack, mapStackDispatch, saveMap} from "../component/WindowListeners";
+import {mapref, saveMap} from "./MapFlow";
 
 const SAVE_INCLUDED = [
   'OPEN_MAP_FROM_TAB',
@@ -145,8 +145,9 @@ function* autoSaveSaga() {
     } else if (autoSaveNowByTimeout) {
       if (autoSaveState === AUTO_SAVE_STATES.WAIT) {
         autoSaveState = AUTO_SAVE_STATES.IDLE
-        if (mapStack.data.length === 1 && mapStack.dataIndex === 0 ||
-          mapStack.data.length === 0) {
+        const mapStackData = yield select(state => state.mapStackData)
+        const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+        if (mapStackData.length === 1 && mapStackDataIndex === 0 || mapStackData.length === 0) {
           console.log('skip save')
         } else {
           console.log('apply save')

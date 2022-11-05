@@ -1,5 +1,5 @@
-import { mapref } from '../component/WindowListeners'
 import { arrayValuesSame } from '../core/Utils'
+import { mapref } from '../core/MapFlow'
 
 export const mapCollect = {
   start: (m, cr) => {

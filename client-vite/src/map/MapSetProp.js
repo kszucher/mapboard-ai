@@ -1,5 +1,5 @@
 import {resolveScope} from "../core/DefaultProps"
-import { mapref } from '../component/WindowListeners'
+import { mapref } from '../core/MapFlow'
 
 export const mapSetProp = {
     start: (m, cm, assignment, scope) => {

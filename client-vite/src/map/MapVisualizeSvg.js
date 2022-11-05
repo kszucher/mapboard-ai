@@ -3,7 +3,7 @@ import { arraysSame, isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
-import { mapref } from '../component/WindowListeners'
+import { mapref } from '../core/MapFlow'
 
 export const mapVisualizeSvg = {
   start: (m, cr, colorMode, shouldAnimationInit) => {

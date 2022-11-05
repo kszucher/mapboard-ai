@@ -1,14 +1,13 @@
 // @ts-nocheck
 
-import {FC, useEffect, useState} from "react"
+import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {mapReducer, reCalc, reDraw} from '../core/MapFlow'
-import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
+import {mapReducer, mapref, reCalc, reDraw} from '../core/MapFlow'
+import {copy, isUrl, setEndOfContenteditable} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {actions, sagaActions, store} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
-import {mapDisassembly} from '../map/MapDisassembly'
 import {mapDeinit} from '../map/MapDeinit'
 
 let whichDown = 0, fromX, fromY, elapsed = 0
@@ -32,23 +31,6 @@ const getCoords = (e) => {
 
 const getNativeEvent = ({path, composedPath, key, code, which}) =>
   ({ path: path || (composedPath && composedPath()), key, code, which })
-
-export let mapStack = {
-  data: [],
-  dataIndex: 0,
-}
-
-// MAP SELECTORS
-export const mapref = (m, path) => {
-  return subsref(m, path)
-}
-
-// this is a getter, same as when we loadNode, so should be placed accordingly
-export const saveMap = () => {
-  let cm = copy(mapStack.data[mapStack.dataIndex])
-  mapDeinit.start(cm)
-  return mapDisassembly.start(cm)
-}
 
 const getM = () => {
   const mapStackData = store.getState().mapStackData
@@ -504,7 +486,9 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (landingData.length) {
       const mapData = landingData[landingDataIndex]
-      mapStackDispatch('initMapState', { mapData }, colorMode)
+      // TODO fix this! this is not good! server should send data as a normal map BUT also with "undoredohistory"
+      // this useEffect hence will not be needed
+      dispatch(actions.initMapStack())
     }
   }, [landingData, landingDataIndex])
 

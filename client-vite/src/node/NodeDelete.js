@@ -1,5 +1,5 @@
 import {arrayValuesSameSimple} from "../core/Utils";
-import { mapref } from '../component/WindowListeners'
+import { mapref } from '../core/MapFlow'
 
 export function structDeleteReselect(m, sc) {
     let lm = mapref(m, sc.lastPath);

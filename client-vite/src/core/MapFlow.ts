@@ -1,11 +1,13 @@
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {arraysSame, copy, transposeArray} from './Utils'
+import {arraysSame, copy, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
 import {mapChain} from '../map/MapChain'
 import {mapCollect} from '../map/MapCollect'
+import {mapDeinit} from '../map/mapDeinit'
+import {mapDisassembly} from '../map/mapDisassembly'
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {mapMeasure} from '../map/MapMeasure'
@@ -19,7 +21,17 @@ import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellInsert, structInsert} from '../node/NodeInsert'
 import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
-import {mapref} from "../component/WindowListeners";
+
+export const mapref = (m: any, path: any) => {
+  return subsref(m, path)
+}
+
+export const saveMap = (m: any) => {
+  const mCopy = copy(m)
+  mapDeinit.start(mCopy)
+  return mapDisassembly.start(mCopy)
+}
+
 
 const clearSelection = (m) => {
   for (let i = 0; i < mapref(m, ['r']).length; i++) {
@@ -536,7 +548,7 @@ const redrawStep = (m: any, colorMode: any, shouldAnimationInit: boolean) => {
   updateDomData()
 }
 
-export const reDraw = (m: never, colorMode: any) => {
+export const reDraw = (m: any, colorMode: any) => {
   if (m.animationRequested) {
     redrawStep(m, colorMode, true)
   }
