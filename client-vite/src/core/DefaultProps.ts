@@ -35,9 +35,27 @@ export let mapProps = {
     moveTargetPath: [],
     moveData: [],
     moveTargetIndex: 0,
+    // animation
+    animationRequested: 0,
   },
   saveNeverInitAlways: {
-
+    // selection
+    sc: {
+      structSelectedPathList: [],
+      cellSelectedPathList: [],
+      maxSel: 0,
+      maxSelIndex: 0,
+      scope: '',
+      lastPath: [],
+      geomHighPath: [],
+      geomLowPath: [],
+      cellRowSelected: 0,
+      cellRow: 0,
+      cellColSelected: 0,
+      cellCol: 0,
+      haveSameParent: 0,
+      sameParentPath: [],
+    },
   }
 }
 
@@ -80,7 +98,6 @@ export let nodeProps = {
     parentNodeEndXFrom: 0,
     parentNodeStartXFrom: 0,
     parentNodeYFrom: 0,
-    lineAnimationRequested: 0,
     // mapAlgo
     contentCalc: '',
     contentEdit: '',
@@ -90,6 +107,8 @@ export let nodeProps = {
     contentH: 0,
     // subMapWidth: 0, // only applies for root <-- channel mapWidth here
     // subMapHeight: 0, // only applies for root <-- channel mapHeight here
+    // animation
+    animationRequested: 0,
   },
   saveNeverInitAlways: {
     // mapChain

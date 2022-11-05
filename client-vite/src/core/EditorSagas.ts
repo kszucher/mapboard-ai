@@ -2,7 +2,6 @@
 
 import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
-import {selectionState} from './SelectionFlow'
 import {mapGetProp} from '../map/MapGetProp'
 import {actions, sagaActions} from "./EditorFlow";
 import {PageState} from "./Types";
@@ -174,7 +173,7 @@ function* mapSaga () {
       const mapData = saveMap(m)
       const mapStackData = yield select(state => state.mapStackData)
       const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
-      let m = mapStackData[mapStackDataIndex]
+      const m = mapStackData[mapStackDataIndex]
       payload = { ...payload, save: { mapId, mapSource, mapData } }
       switch (type) {
         case 'OPEN_MAP_FROM_TAB': {
@@ -199,7 +198,7 @@ function* mapSaga () {
           break
         }
         case 'CREATE_MAP_IN_MAP': {
-          const {lastPath} = selectionState
+          const {lastPath} = m.sc
           payload = {...payload, lastPath, newMapName: mapref(m, lastPath).content}
           break
         }
@@ -256,8 +255,8 @@ function* mapStackSaga () {
     //   }
     // }
 
-    // TODO: using a useEffect, if there is a change, we should do this too
-    const lm = mapref(m, selectionState.lastPath)
+    // TODO: mapCollect could just collect all these data under m. so we can just copy it
+    const lm = mapref(m, m.sc.lastPath)
     const { density, alignment } = m
     const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
     const assignment = { density, alignment }
@@ -274,7 +273,7 @@ function* mapStackSaga () {
         textColor: 'textColor',
         taskStatus: 'taskStatus'
       }[prop]
-      if (selectionState.structSelectedPathList.map(el => (mapref(m, el))[realProp]).every((el, i, arr) => el  === arr[0])) {
+      if (m.sc.structSelectedPathList.map(el => (mapref(m, el))[realProp]).every((el, i, arr) => el  === arr[0])) {
         let propAssignment
         switch (prop) {
           case 'selection': propAssignment = lm.selection; break

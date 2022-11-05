@@ -5,13 +5,11 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {mapReducer, recalc, redraw} from '../core/MapFlow'
 import {copy, isUrl, setEndOfContenteditable, subsref} from '../core/Utils'
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
-import {initSelectionState, selectionState, updateSelectionState} from "../core/SelectionFlow"
 import {actions, sagaActions, store} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
 import {mapDisassembly} from '../map/MapDisassembly'
 import {mapDeinit} from '../map/MapDeinit'
-import {mapCollect} from '../map/mapCollect'
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -60,6 +58,7 @@ const getM = () => {
 
 export const WindowListeners: FC = () => {
 
+  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const mapId = useSelector((state: RootStateOrAny) => state.mapId)
   const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
   const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
@@ -70,23 +69,20 @@ export const WindowListeners: FC = () => {
   const landingDataIndex = useSelector((state: RootStateOrAny) => state.landingDataIndex)
   const node = useSelector((state: RootStateOrAny) => state.node)
   const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
-
-  const [selectionRect, setSelectionRect] = useState([])
 
   const dispatch = useDispatch()
 
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
     const currM = getM()
-    const nextM = copy(currM)
+    const nextM = copy(currM) // make it a oneliner
     mapReducer(nextM, action, payload)
     recalc(nextM)
     const currMSimplified = mapDeinit.start(copy(currM))
     const nextMSimplified = mapDeinit.start(copy(nextM))
+    // flip flip
     if (JSON.stringify(currMSimplified) === JSON.stringify(nextMSimplified)) {
       if (JSON.stringify(currM) === JSON.stringify(nextM)) {
         // do nothing
@@ -98,12 +94,13 @@ export const WindowListeners: FC = () => {
     }
   }
 
+  // EDIT
   const mutationFun = (mutationsList) => {
     for (let mutation of mutationsList) {
       if (mutation.type === 'characterData') {
         const m = getM()
-        let lm = mapref(m, selectionState.lastPath)
-        let holderElement = document.getElementById(`${lm.nodeId}_div`)
+        const lm = mapref(m, m.sc.lastPath)
+        const holderElement = document.getElementById(`${lm.nodeId}_div`)
         mapDispatch('typeText', holderElement.innerHTML)
       }
     }
@@ -111,11 +108,11 @@ export const WindowListeners: FC = () => {
 
   const startEdit = () => {
     const m = getM()
-    let lm = mapref(m, selectionState.lastPath)
+    const lm = mapref(m, m.sc.lastPath)
     if (!lm.hasCell) {
       mapDispatch('startEdit')
       isEditing = 1
-      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      const holderElement = document.getElementById(`${lm.nodeId}_div`)
       holderElement.contentEditable = 'true'
       setEndOfContenteditable(holderElement)
       mutationObserver = new MutationObserver(mutationsList => mutationFun(mutationsList))
@@ -132,18 +129,18 @@ export const WindowListeners: FC = () => {
     mutationObserver.disconnect()
     isEditing = 0
     const m = getM()
-    let lm = mapref(m, selectionState.lastPath)
-    let holderElement = document.getElementById(`${lm.nodeId}_div`)
+    const lm = mapref(m, m.sc.lastPath)
+    const holderElement = document.getElementById(`${lm.nodeId}_div`)
     holderElement.contentEditable = 'false'
     mapDispatch('finishEdit', holderElement.innerHTML)
   }
 
   const eraseContent = () => {
     const m = getM()
-    let lm = mapref(m, selectionState.lastPath)
+    const lm = mapref(m, m.sc.lastPath)
     if (!lm.hasCell) {
       mapDispatch('eraseContent')
-      let holderElement = document.getElementById(`${lm.nodeId}_div`)
+      const holderElement = document.getElementById(`${lm.nodeId}_div`)
       holderElement.innerHTML = ''
     }
   }
@@ -261,6 +258,7 @@ export const WindowListeners: FC = () => {
   const mouseup = (e) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
+    const m = getM()
     if (whichDown === which) {
       whichDown = 0
       if (elapsed) {
@@ -272,8 +270,8 @@ export const WindowListeners: FC = () => {
             }
           } else {
             // TODO remove this as this is not necessary BUT can be kept for prudence
-            if (selectionState.structSelectedPathList.length === 0 &&
-              selectionState.cellSelectedPathList.length === 0) {
+            if (m.sc.structSelectedPathList.length === 0 &&
+              m.sc.cellSelectedPathList.length === 0) {
               mapDispatch('select_R')
             }
             // should NOT mutate this!!!!!!
@@ -305,10 +303,10 @@ export const WindowListeners: FC = () => {
   }
 
   const keydown = (e) => {
-    let {scope} = selectionState
-    let {key, code, which} = getNativeEvent(e)
+    const {key, code, which} = getNativeEvent(e)
+    const m = getM()
     // [37,38,39,40] = [left,up,right,down]
-    let keyStateMachineDb = [
+    const keyStateMachineDb = [
       [ 'c','s','a', 'keyMatch',                    'e','scope',                     'p','m','fe','ec', 'action',                 'se'],
       [  0,  0,  0,  key === 'F1',                   0, ['s', 'c', 'm'],              1,  0,  0,   0, '',                        0  ],
       [  0,  0,  0,  key === 'F2',                   0, ['s', 'm'],                   1,  0,  0,   0, '',                        1  ],
@@ -372,7 +370,7 @@ export const WindowListeners: FC = () => {
         keyStateMachine.s === +e.shiftKey &&
         keyStateMachine.a === +e.altKey &&
         keyStateMachine.keyMatch === true &&
-        keyStateMachine.scope.includes(scope) &&
+        keyStateMachine.scope.includes(m.sc.scope) &&
         keyStateMachine.e === isEditing
       ) {
         if (keyStateMachine.p) {
@@ -399,9 +397,6 @@ export const WindowListeners: FC = () => {
           mapDispatch(action, {currColor: which - 96})
         } else {
           mapDispatch(action, {keyCode: e.code})
-          // if we have insert_D_S, insert_U_S, insert_O_S, we need to mapDispatch twice!!!
-          // once: set an m prop "animationPath" which will trigger a redraw but not a save
-          // twice: reset an m prop "animationPath" which will again trigger a redraw but not a save
         }
         if (keyStateMachine.se) {
           startEdit()
@@ -422,10 +417,12 @@ export const WindowListeners: FC = () => {
               if (isEditing) {
                 mapDispatch('insertTextFromClipboardAsText', text)
               } else {
+                // set up parentNodeEndXYFrom for all the following to have nice anims
                 if (text.substring(0, 1) === '[') {
                   mapDispatch('insertMapFromClipboard', text)
                 } else {
                   mapDispatch('insert_O_S')
+                  // include this in the below queries instead
                   if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
                     mapDispatch('insertEquationFromClipboardAsNode', text)
                   } else if (isUrl(text)) {
@@ -512,13 +509,6 @@ export const WindowListeners: FC = () => {
   }, [colorMode])
 
   useEffect(() => {
-    if (selectionRect.length) {
-      // redraw
-      // but how to erase? need a third stage, simple as that
-    }
-  }, [selectionRect])
-
-  useEffect(() => {
     if (landingData.length) {
       const mapData = landingData[landingDataIndex]
       mapStackDispatch('initMapState', { mapData }, colorMode)
@@ -534,13 +524,6 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapStackData.length) {
       const m = getM()
-
-      // selection state is not up to date...
-      initSelectionState()
-      let cr = mapref(m, ['r', 0])
-      mapCollect.start(m, cr)
-      updateSelectionState(m)
-
       redraw(m, colorMode)
     }
   }, [mapStackData, mapStackDataIndex])

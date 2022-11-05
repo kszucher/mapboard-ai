@@ -2,7 +2,6 @@
 
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {initSelectionState, selectionState, updateSelectionState} from './SelectionFlow'
 import {arraysSame, copy, setEndOfContenteditable, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
@@ -39,7 +38,7 @@ const updateParentLastSelectedChild = (m, lm) => {
 }
 
 export const mapReducer = (m, action, payload) => {
-  let sc = selectionState
+  const { sc } = m
   let lm = mapref(m, sc.lastPath)
   switch (action) {
     // VIEW
@@ -330,7 +329,7 @@ export const mapReducer = (m, action, payload) => {
       const { toX, toY } = payload
       m.moveTargetPath = []
       m.moveData = []
-      let lastSelectedPath = selectionState.structSelectedPathList[0]
+      let lastSelectedPath = sc.structSelectedPathList[0]
       let lastSelected = mapref(m, lastSelectedPath)
       if (!(lastSelected.nodeStartX < toX &&
         toX < lastSelected.nodeEndX &&
@@ -518,7 +517,6 @@ export const mapReducer = (m, action, payload) => {
 }
 
 export const recalc = (m) => {
-  initSelectionState()
   let cr = mapref(m, ['r', 0])
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
@@ -528,14 +526,23 @@ export const recalc = (m) => {
   mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
   mapCollect.start(m, cr)
-  updateSelectionState(m)
+
+  console.log(m.sc)
+
   return m
 }
 
-export const redraw = (m, colorMode) => {
+const redrawStep = (m, colorMode, shouldAnimationInit) => {
   flagDomData()
   let cr = mapref(m, ['r', 0])
-  mapVisualizeSvg.start(m, cr, colorMode)
+  mapVisualizeSvg.start(m, cr, colorMode, shouldAnimationInit)
   mapVisualizeDiv.start(m, cr, colorMode)
   updateDomData()
+}
+
+export const redraw = (m, colorMode) => {
+  if (m.animationRequested) {
+    redrawStep(m, colorMode, true)
+  }
+  redrawStep(m, colorMode, false)
 }
