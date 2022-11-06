@@ -63,6 +63,12 @@ export const WindowListeners: FC = () => {
       action === 'moveSelectionPreview' ||
       action === 'setShouldScroll'
     ) {
+      // TODO
+      //  apply redraw parameters based on actions
+      //  - setShouldLoad --> shouldLoad
+      //  - setShouldResize --> shouldResize
+      //  - setShouldCenter, moveSelection, applyParams --> shouldCenter
+      //  - setShouldScroll --> shouldScroll
       reDraw(nextM, colorMode)
     } else {
       const currMSimplified = mapDeinit.start(copy(currM))
@@ -528,7 +534,8 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
-// - fix finish node move via mouse, rect via mouse
+// - finish during move stuff ("should" setters)
+// - fix post move stuff
 // - saga: gather stuff for formatter
 // - saga: fix save
 // - wl: bring back creator buttons
