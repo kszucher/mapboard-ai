@@ -495,7 +495,7 @@ export const mapReducer = (m, action, payload) => {
     }
     // EDIT
     case 'typeText': {
-      lm.contentEdit = payload
+      lm.content = payload
       lm.isEditing = 1
       lm.isDimAssigned = 0
       break

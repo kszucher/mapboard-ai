@@ -56,12 +56,14 @@ export const WindowListeners: FC = () => {
     console.log('MAP_DISPATCH: ' + action)
     const currM = getM()
     const nextM = reCalc(mapReducer(copy(currM), action, payload))
-    const currMSimplified = mapDeinit.start(copy(currM))
-    const nextMSimplified = mapDeinit.start(copy(nextM))
-    if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
-      dispatch(actions.mutateMapStack(nextM))
-    } else if (JSON.stringify(currM) !== JSON.stringify(nextM)) {
+    if (action === 'typeText' || action === 'startEdit') {
       reDraw(nextM, colorMode)
+    } else {
+      const currMSimplified = mapDeinit.start(copy(currM))
+      const nextMSimplified = mapDeinit.start(copy(nextM))
+      if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
+        dispatch(actions.mutateMapStack(nextM))
+      }
     }
   }
 
