@@ -22,10 +22,6 @@ export function arrayValuesSameSimple(array) {
   return true;
 }
 
-export function arraysSame(array1, array2) {
-  return JSON.stringify(array1) === JSON.stringify(array2);
-}
-
 // https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
 export function createArray(length) {
   let arr = new Array(length || 0),

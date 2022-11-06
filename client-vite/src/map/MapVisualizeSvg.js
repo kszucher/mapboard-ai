@@ -1,25 +1,81 @@
 import { updateMapSvgData } from '../core/DomFlow'
-import { arraysSame, isOdd } from '../core/Utils'
+import { isEqual, isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
 import { mapref } from '../core/MapFlow'
 
+const getAdjustedParams = (cm) => {
+  const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
+  const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
+  const dir = cm.path[3] ? -1 : 1
+  return {
+    dir,
+    nsx: dir === -1 ? cm.nodeEndX : cm.nodeStartX,
+    nex: dir === -1 ? cm.nodeStartX : cm.nodeEndX,
+    nsy: cm.nodeY - selfHadj / 2,
+    ney: cm.nodeY + selfHadj / 2,
+    nsym: cm.nodeY - maxHadj / 2,
+    neym: cm.nodeY + maxHadj / 2,
+    totalw: cm.familyW + cm.selfW,
+    deltax: cm.lineDeltaX,
+    margin: (
+      (cm.selection === 's' && cm.sBorderColor !== '') ||
+      (cm.selection === 's' && cm.sFillColor !== '') ||
+      (cm.selection === 'f') ||
+      (cm.taskStatus > 0) ||
+      (cm.hasCell)
+    ) ? 4 : -2,
+    r: 8
+  }
+}
+
+const getNodeVisParams = (selection, adjustedParams) => {
+  const { dir, nsx, nex, nsy, ney, nsym, neym, totalw, deltax, r } = adjustedParams
+  if (selection === 's') {
+    return {
+      ax: dir ===  - 1 ? nex : nsx,
+      bx: nex - dir * r,
+      cx: dir === - 1 ? nsx : nex,
+      ayu: nsy,
+      ayd: ney,
+      byu: nsy,
+      byd: ney,
+      cyu: nsy,
+      cyd: ney
+    }
+  } else if (selection === 'f') {
+    return {
+      ax: dir === -1 ? nsx + dir * totalw : nsx,
+      bx: nex + dir * deltax,
+      cx: dir === -1 ? nsx : nsx + dir * totalw,
+      ayu: dir === -1 ? nsym : nsy,
+      ayd: dir === -1 ? neym : ney,
+      byu: nsym,
+      byd: neym,
+      cyu: dir === -1 ? nsy : nsym,
+      cyd: dir === -1 ? ney : neym,
+    }
+  }
+}
+
 export const mapVisualizeSvg = {
   start: (m, cr, colorMode, shouldAnimationInit) => {
-    let mapSvgOuter = document.getElementById('mapSvgOuter')
+    const mapSvgOuter = document.getElementById('mapSvgOuter')
     mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
     mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
-    const {MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
-    updateMapSvgData(m.nodeId, 'backgroundRect', {
-      x: 0,
-      y: 0,
-      width: m.mapWidth,
-      height: m.mapHeight,
-      rx: 32,
-      ry: 32,
-      fill: MAP_BACKGROUND,
-    })
+    const {SELECTION_COLOR, MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
+    if (true) {
+      updateMapSvgData('m', 'backgroundRect', {
+        x: 0,
+        y: 0,
+        width: m.mapWidth,
+        height: m.mapHeight,
+        rx: 32,
+        ry: 32,
+        fill: MAP_BACKGROUND,
+      })
+    }
     if (m.moveData?.length) {
       // TODO use parent bezier style
       const deltaX = m.moveData[2] - m.moveData[0]
@@ -32,13 +88,13 @@ export const mapVisualizeSvg = {
       const c2y = m.moveData[1] + deltaY
       const x2 = m.moveData[2]
       const y2 = m.moveData[3]
-      updateMapSvgData(m.nodeId, 'moveLine', {
+      updateMapSvgData('m', 'moveLine', {
         path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
         stroke: MOVE_LINE_COLOR,
         strokeWidth: 1,
         preventTransition: 1,
       })
-      updateMapSvgData(m.nodeId, 'moveRect', {
+      updateMapSvgData('m', 'moveRect', {
         x: x2 - 10,
         y: y2 - 10,
         width: 20,
@@ -53,7 +109,7 @@ export const mapVisualizeSvg = {
       })
     }
     if (m.selectionRect?.length) {
-      updateMapSvgData(m.nodeId, 'selectionRect', {
+      updateMapSvgData('m', 'selectionRect', {
         x: m.selectionRect[0],
         y: m.selectionRect[1],
         width: m.selectionRect[2],
@@ -66,9 +122,18 @@ export const mapVisualizeSvg = {
         preventTransition: 1,
       })
     }
+    if (m.sc.structSelectedPathList.length && !mapref(m, m.sc.lastPath).isEditing) { // maybe use m.isEditing instead
+      const cm = mapref(m, m.sc.lastPath)
+      const adjustedParams = getAdjustedParams(cm)
+      const { dir, margin } = adjustedParams
+      updateMapSvgData('m', 'selectionBorderMain', {
+        path: getPolygonPath(getNodeVisParams(cm.selection, adjustedParams), cm.selection, dir, margin),
+        stroke: SELECTION_COLOR,
+        strokeWidth: 1,
+      })
+    }
     mapVisualizeSvg.iterate(m, cr, colorMode, shouldAnimationInit)
   },
-
   iterate: (m, cm, colorMode, shouldAnimationInit) => {
     const conditions = resolveScope(cm)
     const {
@@ -81,88 +146,44 @@ export const mapVisualizeSvg = {
       TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
       TASK_LINE
     } = getColors(colorMode)
-
-    const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
-    const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
-    const dir = cm.path[3] ? - 1 : 1
-    const nsx = dir === - 1 ? cm.nodeEndX : cm.nodeStartX
-    const nex = dir === - 1 ? cm.nodeStartX : cm.nodeEndX
-    const nsy = cm.nodeY - selfHadj/2
-    const ney = cm.nodeY + selfHadj/2
-    const r = 8
-    if (conditions.branchFill ||
-      conditions.nodeFill ||
-      conditions.branchBorder ||
-      conditions.nodeBorder ||
-      conditions.selectionBorder
-    ) {
-      let sParams = {
-        ax: dir ===  - 1 ? nex : nsx,
-        bx: nex - dir * r,
-        cx: dir === - 1 ? nsx : nex,
-        ayu: nsy,
-        ayd: ney,
-        byu: nsy,
-        byd: ney,
-        cyu: nsy,
-        cyd: ney
+    const adjustedParams = getAdjustedParams(cm)
+    const { dir, nsx, nex, nsy, ney, margin, r } = adjustedParams
+    if (conditions.branchFill) {
+      updateMapSvgData(cm.nodeId, 'branchFill', {
+        path: getPolygonPath(getNodeVisParams('f', adjustedParams), 'f', dir, 0),
+        fill: cm.fFillColor,
+      })
+    }
+    if (conditions.nodeFill) {
+      let sFillColorOverride = ''
+      if (cm.taskStatus > 0) {
+        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
       }
-      let fParams = {
-        ax: dir === - 1 ? nsx + dir * (cm.familyW + cm.selfW) : nsx,
-        bx: nex + dir * cm.lineDeltaX,
-        cx: dir === - 1 ? nsx : nsx + dir * (cm.familyW + cm.selfW),
-        ayu: dir === - 1 ? cm.nodeY - maxHadj / 2 : nsy,
-        ayd: dir === - 1 ? cm.nodeY + maxHadj / 2 : ney,
-        byu: cm.nodeY - maxHadj / 2,
-        byd: cm.nodeY + maxHadj / 2,
-        cyu: dir === - 1 ? nsy : cm.nodeY - maxHadj / 2,
-        cyd: dir === - 1 ? ney : cm.nodeY + maxHadj / 2,
-      }
-      if (conditions.branchFill) {
-        updateMapSvgData(cm.nodeId, 'branchFill', {
-          path: getPolygonPath(fParams, 'f', dir, 0),
-          fill: cm.fFillColor,
-        })
-      }
-      if (conditions.nodeFill) {
-        let sFillColorOverride = ''
-        if (cm.taskStatus > 0) {
-          sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
-        }
-        updateMapSvgData(cm.nodeId, 'nodeFill', {
-          path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
-          fill: sFillColorOverride === '' ? cm.sFillColor : sFillColorOverride
-        })
-      }
-      if (conditions.branchBorder) {
-        updateMapSvgData(cm.nodeId, 'branchBorder', {
-          path: getPolygonPath(fParams, 'f', dir, 0),
-          stroke: cm.fBorderColor,
-          strokeWidth: cm.fBorderWidth,
-        })
-      }
-      if (conditions.nodeBorder) {
-        updateMapSvgData(cm.nodeId, 'nodeBorder', {
-          path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
-          stroke: cm.sBorderColor,
-          strokeWidth: cm.sBorderWidth,
-        })
-      }
-      if (conditions.selectionBorder) {
-        let margin = (
-          (cm.selection === 's' && cm.sBorderColor !== '') ||
-          (cm.selection === 's' && cm.sFillColor !== '') ||
-          (cm.selection === 'f') ||
-          (cm.taskStatus > 0) ||
-          (cm.hasCell)
-        ) ? 4 : -2
-        let isLast = arraysSame(m.sc.lastPath, cm.path)
-        updateMapSvgData(isLast ? m.nodeId : cm.nodeId, 'selectionBorder', {
-          path: getPolygonPath({s: sParams, f: fParams}[cm.selection], cm.selection, dir, margin),
-          stroke: SELECTION_COLOR,
-          strokeWidth: 1,
-        })
-      }
+      updateMapSvgData(cm.nodeId, 'nodeFill', {
+        path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
+        fill: sFillColorOverride === '' ? cm.sFillColor : sFillColorOverride
+      })
+    }
+    if (conditions.branchBorder) {
+      updateMapSvgData(cm.nodeId, 'branchBorder', {
+        path: getPolygonPath(getNodeVisParams('f', adjustedParams), 'f', dir, 0),
+        stroke: cm.fBorderColor,
+        strokeWidth: cm.fBorderWidth,
+      })
+    }
+    if (conditions.nodeBorder) {
+      updateMapSvgData(cm.nodeId, 'nodeBorder', {
+        path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
+        stroke: cm.sBorderColor,
+        strokeWidth: cm.sBorderWidth,
+      })
+    }
+    if (conditions.selectionBorder && !isEqual(cm.path, m.sc.lastPath)) {
+      updateMapSvgData(cm.nodeId, 'selectionBorder', {
+        path: getPolygonPath(getNodeVisParams(cm.selection, adjustedParams), cm.selection, dir, margin),
+        stroke: SELECTION_COLOR,
+        strokeWidth: 1,
+      })
     }
     if (conditions.line) {
       let x1, y1, x2, y2
@@ -236,7 +257,7 @@ export const mapVisualizeSvg = {
                 w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
                 h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
               }
-              let sParams = {
+              const tableVisParams = {
                 ax: dir === - 1 ? sx + dir * w : sx,
                 bx: sx + dir*w,
                 cx: dir === - 1 ? sx : sx + dir * w,
@@ -248,7 +269,7 @@ export const mapVisualizeSvg = {
                 cyd: sy + h,
               }
               updateMapSvgData(cm.nodeId, 'selectionBorder', {
-                path: getPolygonPath(sParams, 's', dir, 4),
+                path: getPolygonPath(tableVisParams, 's', dir, 4),
                 stroke: SELECTION_COLOR,
                 strokeWidth: 1,
               })

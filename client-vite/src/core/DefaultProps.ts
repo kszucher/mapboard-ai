@@ -3,7 +3,6 @@ import {LineTypes} from "./Types";
 export let mapProps = {
   saveAlways: {
     path: [],
-    nodeId: undefined
   },
   saveOptional: {
     alignment: 'adaptive',

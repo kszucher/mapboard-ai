@@ -2,7 +2,7 @@
 
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {arraysSame, copy, subsref, transposeArray} from './Utils'
+import {copy, isEqual, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
@@ -367,7 +367,7 @@ export const mapReducer = (m, action, payload) => {
               insertIndex = lastFound.s.length
             }
             let lastSelectedParentPath = lastSelected.parentPath
-            if (arraysSame(lastFound.path, lastSelectedParentPath)) {
+            if (isEqual(lastFound.path, lastSelectedParentPath)) {
               if (lastSelected.index < insertIndex) {
                 insertIndex -= 1
               }

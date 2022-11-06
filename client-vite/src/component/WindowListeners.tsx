@@ -43,12 +43,8 @@ export const WindowListeners: FC = () => {
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const mapId = useSelector((state: RootStateOrAny) => state.mapId)
   const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
-  const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
-  const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-  const landingData = useSelector((state: RootStateOrAny) => state.landingData)
-  const landingDataIndex = useSelector((state: RootStateOrAny) => state.landingDataIndex)
   const node = useSelector((state: RootStateOrAny) => state.node)
   const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
@@ -128,9 +124,9 @@ export const WindowListeners: FC = () => {
         clearInterval(namedInterval)
         isIntervalRunning = false
         if (Math.sign(e.deltaY) === 1) {
-          dispatch(actions.playLandingNext())
+          dispatch(actions.redo())
         } else {
-          dispatch(actions.playLandingPrev())
+          dispatch(actions.undo())
         }
       }, 100)
     }
@@ -484,15 +480,6 @@ export const WindowListeners: FC = () => {
   }, [colorMode])
 
   useEffect(() => {
-    if (landingData.length) {
-      const mapData = landingData[landingDataIndex]
-      // TODO fix this! this is not good! server should send data as a normal map BUT also with "undoredohistory"
-      // this useEffect hence will not be needed
-      dispatch(actions.initMapStack())
-    }
-  }, [landingData, landingDataIndex])
-
-  useEffect(() => {
     if (mapStackData.length) {
       const m = getM()
       reDraw(m, colorMode)
@@ -527,3 +514,11 @@ export const WindowListeners: FC = () => {
     <></>
   )
 }
+
+// TODO next
+// - fix mapSvg: node move via mouse, rect via mouse
+// - fix mapDiv: density, alignment
+// - saga: gather stuff for formatter
+// - saga: fix save
+// - wl: bring back creator buttons
+// - fix paste: merge what needs merge

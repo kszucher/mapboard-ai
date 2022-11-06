@@ -19,9 +19,6 @@ const editorState = {
 
   pageState: PageState.AUTH,
 
-  landingData: [],
-  landingDataIndex: 0,
-
   colorMode: 'dark',
 
   formatMode: FormatMode.text,
@@ -35,7 +32,6 @@ const editorState = {
 
   mapId: '',
   mapSource: '',
-  mapData: {},
   frameLen: 0,
   frameSelected: 0,
   mapRight: MapRight.UNAUTHORIZED,
@@ -109,13 +105,6 @@ const allSlice = createSlice({
 
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
 
-    playLandingNext(state) {
-      state.landingDataIndex =  state.landingDataIndex < state.landingData.length - 1 ? state.landingDataIndex + 1 : 0
-    },
-    playLandingPrev(state) {
-      state.landingDataIndex = state.landingDataIndex > 1 ? state.landingDataIndex - 1 : state.landingData.length - 1
-    },
-
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     toggleFormatterVisible(state) { state.formatterVisible = !state.formatterVisible },
 
@@ -158,6 +147,12 @@ const allSlice = createSlice({
             mapStackData: [reCalc(mapAssembly(action.payload.mapData))],
             mapStackDataIndex: 0
           }
+      }
+      if (action.payload.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
+        parsed = {
+          mapStackData: action.payload.landingData.map(el => reCalc(mapAssembly(el))),
+          mapStackDataIndex: 0
+        }
       }
       return { ...state, ...action.payload, ...parsed }
     },
