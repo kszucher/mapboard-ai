@@ -54,6 +54,10 @@ export const mapReducer = (m, action, payload) => {
   let lm = mapref(m, sc.lastPath)
   switch (action) {
     // VIEW
+    case 'setShouldLoad': {
+      m.shouldLoad = true
+      break
+    }
     case 'setShouldResize': {
       m.shouldResize = true
       break

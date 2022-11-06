@@ -22,7 +22,7 @@ export let mapProps = {
     taskConfigD: 0,
     taskConfigWidth: 0,
     // indicators
-    shouldLoad: true,
+    shouldLoad: false,
     shouldResize: false,
     shouldCenter: false,
     shouldScroll: false,
@@ -55,6 +55,10 @@ export let mapProps = {
       haveSameParent: 0,
       sameParentPath: [],
     },
+  },
+  saveNeverResetAlways: {
+    // indicators
+    shouldLoad: false,
   }
 }
 

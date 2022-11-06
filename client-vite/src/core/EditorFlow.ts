@@ -69,7 +69,9 @@ const editorState = {
 
   moreMenu: false,
 
-  interactionDisabled: false
+  interactionDisabled: false,
+
+  cmdList: [],
 }
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -145,13 +147,15 @@ const allSlice = createSlice({
       if (action.payload.hasOwnProperty('mapData')) {
           parsed = {
             mapStackData: [reCalc(mapAssembly(action.payload.mapData))],
-            mapStackDataIndex: 0
+            mapStackDataIndex: 0,
+            cmdList: ['setShouldLoad']
           }
       }
       if (action.payload.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
         parsed = {
           mapStackData: action.payload.landingData.map(el => reCalc(mapAssembly(el))),
-          mapStackDataIndex: 0
+          mapStackDataIndex: 0,
+          cmdList: ['setShouldLoad']
         }
       }
       return { ...state, ...action.payload, ...parsed }

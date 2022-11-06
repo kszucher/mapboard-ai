@@ -49,6 +49,7 @@ export const WindowListeners: FC = () => {
   const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
+  const cmdList = useSelector((state: RootStateOrAny) => state.cmdList)
 
   const dispatch = useDispatch()
 
@@ -56,7 +57,12 @@ export const WindowListeners: FC = () => {
     console.log('MAP_DISPATCH: ' + action)
     const currM = getM()
     const nextM = reCalc(mapReducer(copy(currM), action, payload))
-    if (action === 'typeText' || action === 'startEdit') {
+    if (action === 'typeText' ||
+      action === 'startEdit' ||
+      action === 'highlightSelection' ||
+      action === 'moveSelectionPreview' ||
+      action === 'setShouldScroll'
+    ) {
       reDraw(nextM, colorMode)
     } else {
       const currMSimplified = mapDeinit.start(copy(currM))
@@ -510,7 +516,11 @@ export const WindowListeners: FC = () => {
     }
   }, [node])
 
-  // useEffect that reacts to button-like commands
+  useEffect(() => {
+    if (cmdList.length) {
+      mapDispatch(cmdList.at(-1))
+    }
+  }, [cmdList])
 
   return (
     <></>
@@ -518,8 +528,7 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
-// - fix mapSvg: node move via mouse, rect via mouse
-// - fix mapDiv: density, alignment
+// - fix finish node move via mouse, rect via mouse
 // - saga: gather stuff for formatter
 // - saga: fix save
 // - wl: bring back creator buttons
