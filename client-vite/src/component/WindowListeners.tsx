@@ -493,12 +493,6 @@ export const WindowListeners: FC = () => {
   }, [landingData, landingDataIndex])
 
   useEffect(() => {
-    if (mapId !== '' && mapSource !== '') {
-      dispatch(actions.initMapStack())
-    }
-  }, [mapId, mapSource, frameLen, frameSelected])
-
-  useEffect(() => {
     if (mapStackData.length) {
       const m = getM()
       reDraw(m, colorMode)

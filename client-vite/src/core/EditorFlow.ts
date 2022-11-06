@@ -135,17 +135,8 @@ const allSlice = createSlice({
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
 
-    parseRespPayload(state, action: PayloadAction<any>) {
-      return { ...state, ...action.payload }
-    },
-
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
-
-    initMapStack(state) {
-      state.mapStackData = [reCalc(mapAssembly(state.mapData))]
-      state.mapStackDataIndex = 0
-    },
 
     mutateMapStack(state, action: PayloadAction<any>) {
       state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload]
@@ -158,8 +149,18 @@ const allSlice = createSlice({
 
     redo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex < state.mapStackData.length - 1 ? state.mapStackDataIndex + 1 : state.mapStackDataIndex
-    }
+    },
 
+    parseRespPayload(state, action: PayloadAction<any>) {
+      let parsed = {}
+      if (action.payload.hasOwnProperty('mapData')) {
+          parsed = {
+            mapStackData: [reCalc(mapAssembly(action.payload.mapData))],
+            mapStackDataIndex: 0
+          }
+      }
+      return { ...state, ...action.payload, ...parsed }
+    },
   }
 })
 
