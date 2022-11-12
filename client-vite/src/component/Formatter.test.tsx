@@ -6,28 +6,27 @@ import { describe, it } from 'vitest'
 import {actions, store} from "../core/EditorFlow";
 import React from "react";
 import {colorList} from "../core/Colors";
-import {LineTypes, TextTypes, WidthTypes} from "../core/Types";
+import {FormatMode, LineTypes, MapRight, TextTypes, WidthTypes} from "../core/Types";
+import {getMap, reCalc} from "../core/MapFlow";
+import {mapAssembly} from "../map/MapAssembly";
+import {nodeProps} from "../core/DefaultProps";
 
 describe("Formatter test", () => {
   beforeEach(() => {
     store.dispatch(actions.parseRespPayload({
-      mapStackData: {
-        m: {
-          nc: {
-            selection: undefined,
-            lineWidth: WidthTypes.w1,
-            lineType: LineTypes.bezier,
-            lineColor: colorList[0][0],
-            borderWidth: WidthTypes.w1,
-            borderColor: colorList[0][0],
-            fillColor: colorList[0][0],
-            textFontSize: TextTypes.h1,
-            textColor: colorList[0][0],
-            taskStatus: undefined,
-          },
+      formatMode: FormatMode.text,
+      mapRight: MapRight.EDIT,
+      mapStackDataIndex: 0,
+      mapStackData: [reCalc(mapAssembly([
+        {path: ['m'], density: 'small'},
+        {path: ['r', 0], content: 'Features'},
+        {path: ['r', 0, 'd', 0]},
+        {path: ['r', 0, 'd', 0, 's', 0],
+          content: 'Texts',
+          selected: 1,
         },
-        mapStackDataIndex: 0
-      }
+        {path: ['r', 0, 'd', 1]},
+      ]))],
     }))
     const {} = render(
       <Provider store={store}>
@@ -49,8 +48,10 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'w2'}))
     await user.click(screen.getByRole('button', {name: 'edge'}))
 
-    expect(store.getState().mapStackData[store.getState().mapStackDataIndex]).m.nc.toEqual({
-      selection: undefined,
+    const m = getMap()
+    const { nc } = m
+    expect(nc).toEqual({
+      selection: nodeProps.saveOptional['selection'],
       lineWidth: WidthTypes.w2,
       lineType: LineTypes.edge,
       lineColor: colorList[0][1],
@@ -59,7 +60,7 @@ describe("Formatter test", () => {
       fillColor: colorList[0][1],
       textFontSize: TextTypes.h2,
       textColor: colorList[0][1],
-      taskStatus: undefined,
+      taskStatus: nodeProps.saveOptional['taskStatus'],
     })
   })
   test('reset', async () => {
@@ -73,19 +74,19 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'edge'}))
     await user.click(screen.getByRole('button', {name: 'RESET'}))
 
-    expect(store.getState().mapStackData[store.getState().mapStackDataIndex]).m.nc.toEqual({
-      density: undefined,
-      alignment: undefined,
-      selection: undefined,
-      lineWidth: 'clear',
-      lineType: 'clear',
-      lineColor: 'clear',
-      borderWidth: 'clear',
-      borderColor: 'clear',
-      fillColor: 'clear',
-      textFontSize: 'clear',
-      textColor: 'clear',
-      taskStatus: undefined,
+    const m = getMap()
+    const { nc } = m
+    expect(nc).toEqual({
+      selection: nodeProps.saveOptional['selection'],
+      lineWidth: nodeProps.saveOptional['lineWidth'],
+      lineType: nodeProps.saveOptional['lineType'],
+      lineColor: nodeProps.saveOptional['lineColor'],
+      borderWidth: nodeProps.saveOptional['sBorderWidth'],
+      borderColor: nodeProps.saveOptional['sBorderColor'],
+      fillColor: nodeProps.saveOptional['sFillColor'],
+      textFontSize: nodeProps.saveOptional['textFontSize'],
+      textColor: nodeProps.saveOptional['textColor'],
+      taskStatus: nodeProps.saveOptional['taskStatus'],
     })
   })
 

@@ -62,7 +62,7 @@ export const getTextDim = (innerHTML, fontSize) => {
   const tmpDiv = document.createElement('div')
   tmpDiv.id = "Test"
   tmpDiv.innerHTML = innerHTML
-  page.appendChild(tmpDiv)
+  window.document.body.appendChild(tmpDiv)
   const test = document.getElementById("Test")
   test.style.fontFamily = 'Roboto'
   test.style.fontSize = fontSize + 'px'
@@ -82,7 +82,7 @@ export const getEquationDim = (content) => {
   tmpDiv.style.fontFamily = 'Roboto'
   tmpDiv.style.fontSize = 14 + 'px'
   tmpDiv.innerHTML = str
-  page.appendChild(tmpDiv)
+  window.document.body.appendChild(tmpDiv)
   let dim = {
     w: tmpDiv.childNodes[0].offsetWidth,
     h: tmpDiv.childNodes[0].offsetHeight,
