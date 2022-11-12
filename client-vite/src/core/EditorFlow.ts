@@ -39,22 +39,6 @@ const editorState = {
   mapStackData: [],
   mapStackDataIndex: 0,
 
-  node: {
-    density: undefined,
-    alignment: undefined,
-    selection: undefined,
-    lineWidth: undefined,
-    lineType: undefined,
-    lineColor: undefined,
-    borderWidth: undefined,
-    borderColor: undefined,
-    fillColor: undefined,
-    textFontSize: undefined,
-    textColor: undefined,
-    taskStatus: undefined,
-  },
-  nodeTriggersMap: false,
-
   isEditing: false,
 
   formatterVisible: false,
@@ -112,6 +96,7 @@ const allSlice = createSlice({
 
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
 
+    // TODO remove this
     setNodeParams(state, action: PayloadAction<any>) {
       return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
       }},

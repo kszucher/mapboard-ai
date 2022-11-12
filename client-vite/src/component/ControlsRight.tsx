@@ -27,11 +27,13 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
-  const density = useSelector((state: RootStateOrAny) => state.node.density)
-  const alignment = useSelector((state: RootStateOrAny) => state.node.alignment)
   const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
+  const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
+  const { density, alignment } = m
+  
   const dispatch = useDispatch()
+  // TODO use mapDispatch to change DENSITY and ALIGNMENT
   return (
     <>
       <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>

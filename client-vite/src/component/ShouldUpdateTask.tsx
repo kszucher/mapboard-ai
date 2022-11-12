@@ -7,6 +7,7 @@ import {PageState} from "../core/Types";
 export const ShouldUpdateTask: FC = () => {
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
   const dispatch = useDispatch()
+  // TODO use mapDispatch and dispatch toggleTask from here directly
   return (
     <Modal
       open={true}

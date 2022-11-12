@@ -379,6 +379,8 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     // FORMAT
+
+    // TODO dissect this into command-based, and this will allow to have SSOT finally
     case 'applyMapParams': {
       const {
         density, alignment,

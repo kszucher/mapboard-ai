@@ -222,22 +222,6 @@ function* mapSaga () {
   }
 }
 
-// function* mapStackEventSaga() {
-//   while (true) {
-//     const { type, payload } = yield take(['INSERT_TABLE', 'TOGGLE_TASK'])
-//     push()
-//     if (type === 'INSERT_TABLE') {
-//       mapDispatch('insertTable', payload)
-//     } else if (type === 'TOGGLE_TASK') {
-//       mapDispatch('toggleTask')
-//     }
-//     yield put(sagaActions.mapStackChanged())
-//     const colorMode = yield select(state => state.colorMode)
-//     redraw(colorMode)
-//     yield put(actions.setPageState(PageState.WS))
-//   }
-// }
-
 function* shareSaga () {
   while (true) {
     let { type, payload } = yield take([
@@ -297,7 +281,6 @@ export default function* rootSaga () {
     colorSaga(),
     autoSaveSaga(),
     mapSaga(),
-    // mapStackEventSaga(),
     shareSaga(),
     signOutSaga(),
     deleteAccountSaga(),

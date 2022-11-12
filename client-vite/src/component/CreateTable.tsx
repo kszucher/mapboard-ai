@@ -9,6 +9,7 @@ export const CreateTable: FC = () => {
   const [col, setCol] = useState<string>('1')
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
   const dispatch = useDispatch()
+  // TODO use mapDispatch and dispatch command from here directly
   return (
     <Modal open={true} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
       <div className="_bg fixed top-[calc(48*2px)] right-[64px] w-[calc(6*32px)] flex flex-col gap-3 p-3 rounded-2xl">

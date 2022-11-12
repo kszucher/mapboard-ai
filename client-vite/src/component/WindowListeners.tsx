@@ -484,6 +484,7 @@ export const WindowListeners: FC = () => {
     }
   }, [pageState, mapRight])
 
+  // TODO remove this altogether
   useEffect(() => {
     if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
       const m = getMap()
@@ -506,8 +507,6 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
-// - bring back buttons that will do stuff (insert_table, toggle_task) using cmdList
-// - saga: gather stuff for formatter
-// - saga: fix save
+// - complete useMapDispatch everywhere
 // - fix paste: merge what needs merge
-// - eventually do the tests for all parts
+// - eventually do the tests for all reducers

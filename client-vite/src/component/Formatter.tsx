@@ -41,7 +41,7 @@ export const Formatter: FC = () => {
     if (formatMode === FormatMode.line) return lineColor
   }
 
-  // TODO replace "setNodeParam" to calling mapDispatch
+  // TODO replace "setNodeParam" to calling mapDispatch actions
   const resolveFormatClear = () => {
     if (formatMode === FormatMode.text)
       dispatch(actions.setNodeParams({node: {textColor: 'clear', textFontSize: 'clear'}, nodeTriggersMap: true}))
