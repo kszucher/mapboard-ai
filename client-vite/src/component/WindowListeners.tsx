@@ -493,6 +493,8 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
-// - complete useMapDispatch everywhere
-// - fix paste: merge what needs merge
+// - complete useMapDispatch everywhere (only the toggle_task and insert_table left)
+// - fix isDimAssigned and introduce mapDiff
+// - fix save
+// - fix paste - merge what needs merge
 // - eventually do the tests for all reducers
