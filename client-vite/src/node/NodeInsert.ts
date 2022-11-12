@@ -3,7 +3,7 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { mapref } from '../core/MapFlow'
 
-export function structInsert(m, lm, mode, payload ) {
+export const structInsert = (m, lm, mode, payload ) => {
   let parentRef;
   if (mode === 'siblingUp') {
     parentRef = mapref(m, lm.parentPath);
@@ -58,7 +58,7 @@ export function structInsert(m, lm, mode, payload ) {
   }
 }
 
-export function cellInsert (m, lastPath, key) {
+export const cellInsert = (m, lastPath, key) => {
   let lm = mapref(m, lastPath);
   let parentRef = mapref(m, lm.parentPath);
   let currRow = lm.index[0];

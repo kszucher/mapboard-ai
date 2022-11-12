@@ -7,11 +7,11 @@ import { mapref } from '../core/MapFlow'
 
 let clipboard: any[] = []
 
-export function setClipboard(clipboardIn: any) {
+export const setClipboard = (clipboardIn: any) => {
   clipboard = clipboardIn
 }
 
-export function nodeMoveMouse (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) {
+export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {
   let {structSelectedPathList, sameParentPath} = sc
   let sameParent = mapref(m, sameParentPath)
   let moveSource = mapref(m, structSelectedPathList[0])
@@ -21,7 +21,7 @@ export function nodeMoveMouse (m: any, sc: any, moveTargetPath: any, moveTargetI
   moveTarget.s.splice(moveTargetIndex, 0, tempClipboard)
 }
 
-export function nodeMove(m: any, sc: any, target: any, key: any, mode: any) {
+export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
   let {structSelectedPathList, lastPath, haveSameParent, sameParentPath,
     cellRowSelected, cellRow, cellColSelected, cellCol} = sc
   let lm = mapref(m, lastPath)

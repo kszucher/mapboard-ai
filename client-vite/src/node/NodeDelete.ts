@@ -3,7 +3,7 @@
 import {arrayValuesSameSimple} from "../core/Utils";
 import { mapref } from '../core/MapFlow'
 
-export function structDeleteReselect(m, sc) {
+export const structDeleteReselect = (m, sc) => {
   let lm = mapref(m, sc.lastPath);
   let crIndex = lm.path[1];
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
@@ -63,7 +63,7 @@ export function structDeleteReselect(m, sc) {
   }
 }
 
-export function cellBlockDeleteReselect(m, sc) {
+export const cellBlockDeleteReselect = (m, sc) => {
   const {lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath} = sc;
   let sameParent = mapref(m, sameParentPath);
   let lm = mapref(m, lastPath);

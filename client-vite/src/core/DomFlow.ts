@@ -104,7 +104,7 @@ export const updateMapSvgData = ( nodeId, name, params ) => {
   }
 }
 
-export function updateDomData() {
+export const updateDomData = () => {
   for (let i = mapDivData.length - 1; i >=0; i--) {
     const currDivData = mapDivData[i]
     const { op, divId, params } = currDivData

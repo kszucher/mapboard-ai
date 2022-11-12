@@ -2,7 +2,7 @@
 
 import { mapref } from '../core/MapFlow'
 
-export function nodeNavigate (m, lastPath, target, key) {
+export const nodeNavigate = (m, lastPath, target, key) => {
   let direction = '';
   let currPath = [];
   let truePath = lastPath;

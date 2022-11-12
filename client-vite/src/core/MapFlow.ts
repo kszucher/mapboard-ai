@@ -2,7 +2,7 @@
 
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {copy, isEqual, subsref, transposeArray} from './Utils'
+import {copy, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
