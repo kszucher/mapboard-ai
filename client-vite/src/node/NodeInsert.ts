@@ -1,12 +1,12 @@
 // @ts-nocheck
 
 import {getDefaultNode} from "../core/DefaultProps";
-import { mapref } from '../core/MapFlow'
+import { getMapData } from '../core/MapFlow'
 
 export const structInsert = (m, lm, mode, payload ) => {
   let parentRef;
   if (mode === 'siblingUp') {
-    parentRef = mapref(m, lm.parentPath);
+    parentRef = getMapData(m, lm.parentPath);
     parentRef.s.splice(lm.index, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ?  0 : -1,
@@ -16,7 +16,7 @@ export const structInsert = (m, lm, mode, payload ) => {
       animationRequested: 1,
     }))
   } else if (mode === 'siblingDown') {
-    parentRef = mapref(m, lm.parentPath);
+    parentRef = getMapData(m, lm.parentPath);
     parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ? 0 : -1,
@@ -59,8 +59,8 @@ export const structInsert = (m, lm, mode, payload ) => {
 }
 
 export const cellInsert = (m, lastPath, key) => {
-  let lm = mapref(m, lastPath);
-  let parentRef = mapref(m, lm.parentPath);
+  let lm = getMapData(m, lastPath);
+  let parentRef = getMapData(m, lm.parentPath);
   let currRow = lm.index[0];
   let currCol = lm.index[1];
   let rowLen = parentRef.c.length;

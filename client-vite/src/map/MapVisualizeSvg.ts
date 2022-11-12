@@ -5,7 +5,7 @@ import { isEqual, isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
-import { mapref } from '../core/MapFlow'
+import { getMapData } from '../core/MapFlow'
 
 const getAdjustedParams = (cm) => {
   const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
@@ -124,8 +124,8 @@ export const mapVisualizeSvg = {
         preventTransition: 1,
       })
     }
-    if (m.sc.structSelectedPathList.length && !mapref(m, m.sc.lastPath).isEditing) { // maybe use m.isEditing instead
-      const cm = mapref(m, m.sc.lastPath)
+    if (m.sc.structSelectedPathList.length && !getMapData(m, m.sc.lastPath).isEditing) { // maybe use m.isEditing instead
+      const cm = getMapData(m, m.sc.lastPath)
       const adjustedParams = getAdjustedParams(cm)
       const { dir, margin } = adjustedParams
       updateMapSvgData('m', 'selectionBorderMain', {
@@ -286,7 +286,7 @@ export const mapVisualizeSvg = {
       if (cm.path.includes('c')) {
         let coverCellPath = cm.path.slice(0, cm.path.lastIndexOf('c'))
         let currCol = cm.path[cm.path.lastIndexOf('c') + 2]
-        let coverCellRef = mapref(m, coverCellPath)
+        let coverCellRef = getMapData(m, coverCellPath)
         let smcv = coverCellRef.sumMaxColWidth[currCol]
         let mcv = coverCellRef.maxColWidth[currCol]
         startX = dir === - 1

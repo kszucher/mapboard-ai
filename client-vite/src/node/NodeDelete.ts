@@ -1,24 +1,24 @@
 // @ts-nocheck
 
 import {arrayValuesSameSimple} from "../core/Utils";
-import { mapref } from '../core/MapFlow'
+import { getMapData } from '../core/MapFlow'
 
 export const structDeleteReselect = (m, sc) => {
-  let lm = mapref(m, sc.lastPath);
+  let lm = getMapData(m, sc.lastPath);
   let crIndex = lm.path[1];
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-    let cm = mapref(m, sc.structSelectedPathList[i]);
+    let cm = getMapData(m, sc.structSelectedPathList[i]);
     if (cm.isRoot) return;
   }
   // calculate jumpback
   let im = lm;
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-    let cm = mapref(m, sc.structSelectedPathList[i]);
+    let cm = getMapData(m, sc.structSelectedPathList[i]);
     if (cm.path.length < lm.path.length && arrayValuesSameSimple(cm.path.slice(0, lm.path.length), lm.path)) {
       im = cm;
     }
   }
-  let imParent = mapref(m, im.parentPath);
+  let imParent = getMapData(m, im.parentPath);
   let imParentChildLen = imParent.s.length;
   let imParentChildDelLen = 0;
   for (let i = im.index; i > -1; i--) {
@@ -28,15 +28,15 @@ export const structDeleteReselect = (m, sc) => {
   }
   // delete
   for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-    let cm = mapref(m, sc.structSelectedPathList[i]);
-    let cmParent = mapref(m, cm.parentPath);
+    let cm = getMapData(m, sc.structSelectedPathList[i]);
+    let cmParent = getMapData(m, cm.parentPath);
     cmParent.taskStatus = cm.taskStatus;
     cmParent.s.splice(cm.index, 1);
   }
   // reselect on jumpback
   if (imParentChildLen === imParentChildDelLen) {
     if (imParent.isRootChild) {
-      let cr = mapref(m, ['r', crIndex]);
+      let cr = getMapData(m, ['r', crIndex]);
       cr.selected = 1;
     } else {
       imParent.selected = 1;
@@ -47,7 +47,7 @@ export const structDeleteReselect = (m, sc) => {
         imParent.s[0].selected = 1;
       } else {
         if (imParent.isRootChild) {
-          let cr = mapref(m, ['r', crIndex]);
+          let cr = getMapData(m, ['r', crIndex]);
           cr.selected = 1;
         } else {
           imParent.selected = 1;
@@ -65,11 +65,11 @@ export const structDeleteReselect = (m, sc) => {
 
 export const cellBlockDeleteReselect = (m, sc) => {
   const {lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath} = sc;
-  let sameParent = mapref(m, sameParentPath);
-  let lm = mapref(m, lastPath);
-  if (cellRowSelected && mapref(m, lm.parentPath).c.length === 1 ||
-    cellColSelected && mapref(m, lm.parentPath).c[0].length === 1) {
-    let sameParentParent = mapref(m, sameParent.parentPath);
+  let sameParent = getMapData(m, sameParentPath);
+  let lm = getMapData(m, lastPath);
+  if (cellRowSelected && getMapData(m, lm.parentPath).c.length === 1 ||
+    cellColSelected && getMapData(m, lm.parentPath).c[0].length === 1) {
+    let sameParentParent = getMapData(m, sameParent.parentPath);
     sameParentParent.s.splice(sameParent.index, 1);
     sameParentParent.selected = 1;
     return;

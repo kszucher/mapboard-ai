@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { arrayValuesSame } from '../core/Utils'
-import { mapref } from '../core/MapFlow'
+import { getMapData } from '../core/MapFlow'
 
 export const mapExtractSelection = {
   start: (m, cr) => {
@@ -14,7 +14,7 @@ export const mapExtractSelection = {
       sc.geomLowPath = sc.lastPath;
     } else if (sc.structSelectedPathList.length) {
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        let currSelectedNumber = mapref(m, sc.structSelectedPathList[i]).selected;
+        let currSelectedNumber = getMapData(m, sc.structSelectedPathList[i]).selected;
         if (currSelectedNumber > sc.maxSel) {
           sc.maxSel = currSelectedNumber;
           sc.maxSelIndex = i;
@@ -25,7 +25,7 @@ export const mapExtractSelection = {
       sc.geomLowPath = sc.structSelectedPathList[sc.structSelectedPathList.length - 1];
     } else if (sc.cellSelectedPathList.length) {
       for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
-        let currSelectedNumber = mapref(m, sc.cellSelectedPathList[i]).selected;
+        let currSelectedNumber = getMapData(m, sc.cellSelectedPathList[i]).selected;
         if (currSelectedNumber > sc.maxSel) {
           sc.maxSel = currSelectedNumber;
           sc.maxSelIndex = i;
@@ -38,13 +38,13 @@ export const mapExtractSelection = {
     }
     // interrelations
     if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map(path => JSON.stringify(mapref(m, path).parentPath)));
+      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map(path => JSON.stringify(getMapData(m, path).parentPath)));
     } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map(path => JSON.stringify(mapref(m, path).parentPath)));
+      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map(path => JSON.stringify(getMapData(m, path).parentPath)));
       if (sc.haveSameParent) {
         let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map(path => path[path.length - 2]));
         let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map(path => path[path.length - 1]));
-        let sameParent = mapref(m, sc.sameParentPath);
+        let sameParent = getMapData(m, sc.sameParentPath);
         if (haveSameRow && sc.cellSelectedPathList.length === sameParent.c[0].length) {
           sc.cellRowSelected = 1;
           sc.cellRow = sameRow;

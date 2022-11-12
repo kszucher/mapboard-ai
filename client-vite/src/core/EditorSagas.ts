@@ -4,7 +4,7 @@ import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
 import {actions, sagaActions} from "./EditorFlow";
 import {PageState} from "./Types";
-import {mapref, saveMap} from "./MapFlow";
+import {getMapData, getSavedMapData} from "./MapFlow";
 
 const SAVE_INCLUDED = [
   'OPEN_MAP_FROM_TAB',
@@ -153,7 +153,7 @@ function* autoSaveSaga() {
           console.log('apply save')
           const mapId = yield select(state => state.mapId)
           const mapSource = yield select(state => state.mapSource)
-          const mapData = saveMap()
+          const mapData = getSavedMapData()
           const type = 'SAVE_MAP'
           const payload = { save: { mapId, mapSource, mapData } }
           yield put(actions.interactionDisabled())
@@ -174,7 +174,7 @@ function* mapSaga () {
       const mapStackData = yield select(state => state.mapStackData)
       const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
       const m = mapStackData[mapStackDataIndex]
-      const mapData = saveMap(m)
+      const mapData = getSavedMapData(m)
       payload = { ...payload, save: { mapId, mapSource, mapData } }
       switch (type) {
         case 'OPEN_MAP_FROM_TAB': {
@@ -193,18 +193,18 @@ function* mapSaga () {
         }
         case 'OPEN_MAP_FROM_MAP': {
           const {lastOverPath} = payload
-          const lm = mapref(m, lastOverPath)
+          const lm = getMapData(m, lastOverPath)
           const mapId = lm.link
           payload = {...payload, mapId}
           break
         }
         case 'CREATE_MAP_IN_MAP': {
           const {lastPath} = m.sc
-          payload = {...payload, lastPath, newMapName: mapref(m, lastPath).content}
+          payload = {...payload, lastPath, newMapName: getMapData(m, lastPath).content}
           break
         }
         case 'DUPLICATE_FRAME': {
-          payload = {...payload, mapData: saveMap()}
+          payload = {...payload, mapData: getSavedMapData()}
           break
         }
       }

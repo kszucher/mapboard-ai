@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import {copy, isEqual} from "../core/Utils"
-import {mapref} from "../core/MapFlow";
+import {getMapData} from "../core/MapFlow";
 
 let currX, currY = 0
 let aboveRoot, belowRoot = 0
@@ -13,15 +13,15 @@ export const mapFindNearest = {
     let moveTargetIndex = 0
     let moveData = []
     let lastSelectedPath = m.sc.structSelectedPathList[0]
-    let lastSelected = mapref(m, lastSelectedPath)
+    let lastSelected = getMapData(m, lastSelectedPath)
     if (!(lastSelected.nodeStartX < toX &&
       toX < lastSelected.nodeEndX &&
       lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
       toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-      let lastNearestPath = mapFindNearest.start(mapref(m, ['r', 0]), toX, toY)
+      let lastNearestPath = mapFindNearest.start(getMapData(m, ['r', 0]), toX, toY)
       if (lastNearestPath.length > 2) {
         moveTargetPath = copy(lastNearestPath)
-        let lastFound = mapref(m, lastNearestPath)
+        let lastFound = getMapData(m, lastNearestPath)
         let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
         let fromY = lastFound.nodeY
         moveData = [fromX, fromY, toX, toY]

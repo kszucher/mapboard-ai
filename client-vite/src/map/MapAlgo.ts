@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import {getDefaultNode} from "../core/DefaultProps"
-import { mapref } from '../core/MapFlow'
+import { getMapData } from '../core/MapFlow'
 
 let selectionFound = 0
 
@@ -23,7 +23,7 @@ export const mapAlgo = {
     }
     if (cm.contentCalc && cm.contentCalc !== '') {
       if (cm.parentType === 'cell') {
-        let parentStruct = mapref(m, mapref(m, cm.parentPath).parentPath)
+        let parentStruct = getMapData(m, getMapData(m, cm.parentPath).parentPath)
         let result = 0
         for (let i = 0; i < parentStruct.c.length - 1; i++) {
           let currRowCell = parentStruct.c[0][i].s[0].content

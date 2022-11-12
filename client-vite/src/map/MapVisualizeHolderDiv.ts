@@ -1,10 +1,10 @@
 // @ts-nocheck
 
-import {getM} from "../core/MapFlow";
+import {getMap} from "../core/MapFlow";
 import {scrollTo} from "../core/DomUtils";
 
 export const orient = (action, payload) => {
-  const m = getM()
+  const m = getMap()
   const mapHolderDiv = document.getElementById('mapHolderDiv')
   const currScrollLeft = (window.innerWidth + m.mapWidth) / 2
   if (action === 'shouldLoad') {

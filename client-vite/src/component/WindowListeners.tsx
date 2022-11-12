@@ -4,7 +4,7 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getM, mapref, reDraw} from '../core/MapFlow'
+import {getMap, getMapData, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
 import {isUrl} from '../core/Utils'
 import {useMapDispatch} from "../hooks/UseMapDispatch";
@@ -43,8 +43,8 @@ export const WindowListeners: FC = () => {
   const mutationFun = (mutationsList) => {
     for (let mutation of mutationsList) {
       if (mutation.type === 'characterData') {
-        const m = getM()
-        const lm = mapref(m, m.sc.lastPath)
+        const m = getMap()
+        const lm = getMapData(m, m.sc.lastPath)
         const holderElement = document.getElementById(`${lm.nodeId}_div`)
         mapDispatch('typeText', holderElement.innerHTML)
       }
@@ -52,8 +52,8 @@ export const WindowListeners: FC = () => {
   }
 
   const startEdit = () => {
-    const m = getM()
-    const lm = mapref(m, m.sc.lastPath)
+    const m = getMap()
+    const lm = getMapData(m, m.sc.lastPath)
     if (!lm.hasCell) {
       mapDispatch('startEdit')
       isEditing = 1
@@ -73,16 +73,16 @@ export const WindowListeners: FC = () => {
   const finishEdit = () => {
     mutationObserver.disconnect()
     isEditing = 0
-    const m = getM()
-    const lm = mapref(m, m.sc.lastPath)
+    const m = getMap()
+    const lm = getMapData(m, m.sc.lastPath)
     const holderElement = document.getElementById(`${lm.nodeId}_div`)
     holderElement.contentEditable = 'false'
     mapDispatch('finishEdit', holderElement.innerHTML)
   }
 
   const eraseContent = () => {
-    const m = getM()
-    const lm = mapref(m, m.sc.lastPath)
+    const m = getMap()
+    const lm = getMapData(m, m.sc.lastPath)
     if (!lm.hasCell) {
       mapDispatch('eraseContent')
       // why doesn't the innerHTML reset from mapVisualizeSvg in this case?
@@ -135,18 +135,18 @@ export const WindowListeners: FC = () => {
         ).empty()
         elapsed = 0
         let lastOverPath = []
-        const m = getM()
+        const m = getMap()
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
           isTaskClicked = path.find(el => el.id?.substring(17, 27) === 'taskCircle')
-          lastOverPath = mapFindOverPoint.start(mapref(m, ['r', 0]), fromX, fromY)
+          lastOverPath = mapFindOverPoint.start(getMapData(m, ['r', 0]), fromX, fromY)
           isNodeClicked = lastOverPath.length
         }
         if (which === 1) {
           if (isTaskClicked) {
             mapDispatch('setTaskStatus', {taskStatus: parseInt(path[0].id.charAt(27), 10), nodeId: path[0].id.substring(0, 12)})
           } else if (isNodeClicked) {
-            let lm = mapref(m, lastOverPath)
+            let lm = getMapData(m, lastOverPath)
             if (lm.linkType === '') {
               if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                 mapDispatch('selectStruct', {lastOverPath})
@@ -184,7 +184,7 @@ export const WindowListeners: FC = () => {
   const mousemove = (e) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
-    const m = getM()
+    const m = getMap()
     if (whichDown === which) {
       elapsed++
       if (which === 1) {
@@ -208,7 +208,7 @@ export const WindowListeners: FC = () => {
   const mouseup = (e) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
-    const m = getM()
+    const m = getMap()
     if (whichDown === which) {
       whichDown = 0
       if (elapsed) {
@@ -257,7 +257,7 @@ export const WindowListeners: FC = () => {
 
   const keydown = (e) => {
     const {key, code, which} = getNativeEvent(e)
-    const m = getM()
+    const m = getMap()
     // [37,38,39,40] = [left,up,right,down]
     const keyStateMachineDb = [
       [ 'c','s','a', 'keyMatch',                    'e','scope',                     'p','m','fe','ec', 'action',               'se'],
@@ -463,7 +463,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapStackData.length) {
-      const m = getM()
+      const m = getMap()
       reDraw(m, colorMode)
     }
   }, [mapStackData, mapStackDataIndex])
@@ -486,7 +486,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
-      const m = getM()
+      const m = getMap()
       if (m.density !== node.density || m.alignment !== node.alignment) {
         mapDispatch('shouldCenter')
       }

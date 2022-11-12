@@ -1,11 +1,11 @@
 // @ts-nocheck
 
-import {mapref} from "../core/MapFlow";
+import {getMapData} from "../core/MapFlow";
 import {mapGetProp} from "./MapGetProp";
 
 export const mapExtractFormatting = {
   start: (m) => {
-    const lm = mapref(m, m.sc.lastPath)
+    const lm = getMapData(m, m.sc.lastPath)
     for (const prop of Object.keys(m.nc)) {
       const sourceProp = {
         selection: 'selection',
@@ -19,7 +19,7 @@ export const mapExtractFormatting = {
         textColor: 'textColor',
         taskStatus: 'taskStatus'
       }[prop]
-      if (m.sc.structSelectedPathList.map(el => (mapref(m, el))[sourceProp]).every((el, i, arr) => el  === arr[0])) {
+      if (m.sc.structSelectedPathList.map(el => (getMapData(m, el))[sourceProp]).every((el, i, arr) => el  === arr[0])) {
         let propAssignment = {}
         switch (prop) {
           case 'selection': propAssignment = lm.selection; break

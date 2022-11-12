@@ -1,12 +1,12 @@
 // @ts-nocheck
 
 import {resolveScope} from "../core/DefaultProps"
-import { mapref } from '../core/MapFlow'
+import { getMapData } from '../core/MapFlow'
 
 export const mapSetProp = {
   start: (m, cm, assignment, scope) => {
     if (cm.path.length === 4) {
-      Object.assign(mapref(m, ['r', 0]), typeof assignment === 'function' ? assignment() : assignment)
+      Object.assign(getMapData(m, ['r', 0]), typeof assignment === 'function' ? assignment() : assignment)
     }
     mapSetProp.iterate(cm, assignment, scope)
   },
