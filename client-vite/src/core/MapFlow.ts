@@ -8,8 +8,8 @@ import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
 import {mapChain} from '../map/MapChain'
 import {mapCollect} from '../map/MapCollect'
-import {mapDeinit} from '../map/mapDeinit'
-import {mapDisassembly} from '../map/mapDisassembly'
+import {mapDeInit} from '../map/MapDeInit'
+import {mapDisassembly} from '../map/MapDisassembly'
 import {mapMeasure} from '../map/MapMeasure'
 import {mapPlace} from '../map/MapPlace'
 import {mapSetProp} from '../map/MapSetProp'
@@ -28,7 +28,7 @@ export const mapref = (m: any, path: any) => {
 
 export const saveMap = (m: any) => {
   const mCopy = copy(m)
-  mapDeinit.start(mCopy)
+  mapDeInit.start(mCopy)
   return mapDisassembly.start(mCopy)
 }
 

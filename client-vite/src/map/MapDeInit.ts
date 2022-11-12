@@ -2,7 +2,7 @@
 
 import {mapProps, nodeProps} from "../core/DefaultProps";
 
-export const mapDeinit = {
+export const mapDeInit = {
   start: (cm) => {
     for (const prop in cm.m) {
       if (mapProps.saveAlways.hasOwnProperty(prop)) {
@@ -16,14 +16,14 @@ export const mapDeinit = {
       }
     }
     // TODO loop
-    mapDeinit.iterate(cm.r[0])
+    mapDeInit.iterate(cm.r[0])
     return cm
   },
 
   iterate: (cm) => {
-    cm.d.map(i => mapDeinit.iterate(i))
-    cm.s.map(i => mapDeinit.iterate(i))
-    cm.c.map(i => i.map(j => mapDeinit.iterate(j)))
+    cm.d.map(i => mapDeInit.iterate(i))
+    cm.s.map(i => mapDeInit.iterate(i))
+    cm.c.map(i => i.map(j => mapDeInit.iterate(j)))
     for (const prop in cm) {
       if (nodeProps.saveAlways.hasOwnProperty(prop)) {
 

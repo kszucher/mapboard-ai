@@ -1,10 +1,21 @@
 // @ts-nocheck
 
 import { copy } from '../core/Utils'
+import {mapref} from "../core/MapFlow";
 
 let startX, startY, width, height = 0
 
 export const mapFindOverRectangle = {
+  find: (m, fromX, fromY, toX, toY) => {
+    let startX = fromX < toX ? fromX : toX
+    let startY = fromY < toY ? fromY : toY
+    let width = Math.abs(toX - fromX)
+    let height = Math.abs(toY - fromY)
+    let selectionRect = [startX, startY, width, height]
+    const highlightTargetPathList = mapFindOverRectangle.start(mapref(m, ['r', 0]), startX, startY, width, height)
+    return { highlightTargetPathList, selectionRect }
+  },
+
   start: (cr, x, y, w, h) => {
     startX = x
     startY = y

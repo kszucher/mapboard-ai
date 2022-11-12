@@ -2,14 +2,15 @@
 
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {mapReducer, mapref, reCalc, reDraw} from '../core/MapFlow'
-import {copy, isUrl, setEndOfContenteditable} from '../core/Utils'
-import {mapFindOverPoint} from "../map/MapFindOverPoint"
-import {actions, sagaActions, store} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
-import {MapRight, PageState} from "../core/Types";
-import {mapDeinit} from '../map/MapDeinit'
-import {findMoveTarget, findSelectTarget} from "../map/MapUtils"
+import {mapReducer, mapref, reCalc, reDraw} from '../core/MapFlow'
+import {MapRight, PageState} from "../core/Types"
+import {copy, isUrl, setEndOfContenteditable} from '../core/Utils'
+import {mapDeInit} from "../map/MapDeInit"
+import {mapFindNearest} from "../map/MapFindNearest"
+import {mapFindOverPoint} from "../map/MapFindOverPoint"
+import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
+import {actions, sagaActions, store} from "../core/EditorFlow"
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -98,8 +99,8 @@ export const WindowListeners: FC = () => {
       if (['typeText', 'startEdit', 'moveTargetPreview', 'selectTargetPreview'].includes(action)) {
         reDraw(nextM, colorMode)
       } else {
-        const currMSimplified = mapDeinit.start(copy(currM))
-        const nextMSimplified = mapDeinit.start(copy(nextM))
+        const currMSimplified = mapDeInit.start(copy(currM))
+        const nextMSimplified = mapDeInit.start(copy(nextM))
         if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
           dispatch(actions.mutateMapStack(nextM))
         }
@@ -277,11 +278,11 @@ export const WindowListeners: FC = () => {
         if (isTaskClicked) {
         } else if (isNodeClicked) {
           const [toX, toY] = getCoords(e)
-          const { moveData } = findMoveTarget(m, toX, toY)
+          const { moveData } = mapFindNearest.find(m, toX, toY)
           mapDispatch('moveTargetPreview', { moveData })
         } else {
           const [toX, toY] = getCoords(e)
-          const { highlightTargetPathList, selectionRect } = findSelectTarget(m, fromX, fromY, toX, toY)
+          const { highlightTargetPathList, selectionRect } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
           mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect })
         }
       } else if (which === 2) {
@@ -302,14 +303,14 @@ export const WindowListeners: FC = () => {
           if (isTaskClicked) {
           } else if (isNodeClicked) {
             const [toX, toY] = getCoords(e)
-            const { moveTargetPath, moveTargetIndex } = findMoveTarget(m, toX, toY)
+            const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, toX, toY)
             if (moveTargetPath.length) {
               mapDispatch('shouldCenter')
               mapDispatch('moveTarget', { moveTargetPath, moveTargetIndex })
             }
           } else {
             const [toX, toY] = getCoords(e)
-            const { highlightTargetPathList } = findSelectTarget(m, fromX, fromY, toX, toY)
+            const { highlightTargetPathList } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
             mapDispatch('selectTarget', { highlightTargetPathList })
             // if (m.sc.structSelectedPathList.length === 0 &&
             //   m.sc.cellSelectedPathList.length === 0) {
