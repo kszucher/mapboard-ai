@@ -1,0 +1,21 @@
+// @ts-nocheck
+
+import {getM} from "../core/MapFlow";
+import {scrollTo} from "../core/DomUtils";
+
+export const orient = (action, payload) => {
+  const m = getM()
+  const mapHolderDiv = document.getElementById('mapHolderDiv')
+  const currScrollLeft = (window.innerWidth + m.mapWidth) / 2
+  if (action === 'shouldLoad') {
+    mapHolderDiv.scrollLeft = currScrollLeft
+    mapHolderDiv.scrollTop = window.innerHeight - 48 * 2
+  } else if (action === 'shouldResize') {
+    mapHolderDiv.scrollLeft = currScrollLeft
+  } else if (action === 'shouldCenter') {
+    scrollTo(currScrollLeft, 500)
+  } else if (action === 'shouldScroll') {
+    mapHolderDiv.scrollLeft -= payload.movementX
+    mapHolderDiv.scrollTop -= payload.movementY
+  }
+}

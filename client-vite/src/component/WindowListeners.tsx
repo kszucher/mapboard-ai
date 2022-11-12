@@ -3,15 +3,15 @@
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
-import {getCoords, getNativeEvent, scrollTo, setEndOfContentEditable} from "../core/DomUtils"
-import {mapReducer, mapref, reCalc, reDraw} from '../core/MapFlow'
+import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
+import {getM, mapref, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
-import {copy, isUrl} from '../core/Utils'
-import {mapDeInit} from "../map/MapDeInit"
+import {isUrl} from '../core/Utils'
+import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, sagaActions, store} from "../core/EditorFlow"
+import {actions, sagaActions} from "../core/EditorFlow"
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -22,12 +22,6 @@ let mutationObserver
 let isEditing = 0
 let mapAreaListener
 let landingAreaListener
-
-const getM = () => {
-  const mapStackData = store.getState().mapStackData
-  const mapStackDataIndex = store.getState().mapStackDataIndex
-  return mapStackData[mapStackDataIndex]
-}
 
 export const WindowListeners: FC = () => {
 
@@ -43,43 +37,7 @@ export const WindowListeners: FC = () => {
   const cmdList = useSelector((state: RootStateOrAny) => state.cmdList)
 
   const dispatch = useDispatch()
-
-  const mapDispatch = (action, payload) => {
-    console.log('MAP_DISPATCH: ' + action)
-    if (['shouldLoad', 'shouldResize', 'shouldCenter', 'shouldScroll'].includes(action)) {
-      orient(action, payload)
-    } else {
-      const currM = getM()
-      const nextM = reCalc(mapReducer(copy(currM), action, payload))
-      if (['typeText', 'startEdit', 'moveTargetPreview', 'selectTargetPreview'].includes(action)) {
-        reDraw(nextM, colorMode)
-      } else {
-        const currMSimplified = mapDeInit.start(copy(currM))
-        const nextMSimplified = mapDeInit.start(copy(nextM))
-        if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
-          dispatch(actions.mutateMapStack(nextM))
-        }
-      }
-    }
-  }
-
-  // ORIENT
-  const orient = (action, payload) => {
-    const m = getM()
-    const mapHolderDiv = document.getElementById('mapHolderDiv')
-    const currScrollLeft = (window.innerWidth + m.mapWidth) / 2
-    if (action === 'shouldLoad') {
-      mapHolderDiv.scrollLeft = currScrollLeft
-      mapHolderDiv.scrollTop = window.innerHeight - 48 * 2
-    } else if (action === 'shouldResize') {
-      mapHolderDiv.scrollLeft = currScrollLeft
-    } else if (action === 'shouldCenter') {
-      scrollTo(currScrollLeft, 500)
-    } else if (action === 'shouldScroll') {
-      mapHolderDiv.scrollLeft -= payload.movementX
-      mapHolderDiv.scrollTop -= payload.movementY
-    }
-  }
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
 
   // EDIT
   const mutationFun = (mutationsList) => {

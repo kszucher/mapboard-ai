@@ -7,9 +7,10 @@ import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
 import {mapChain} from '../map/MapChain'
-import {mapExtractSelection} from '../map/MapExtractSelection'
 import {mapDeInit} from '../map/MapDeInit'
 import {mapDisassembly} from '../map/MapDisassembly'
+import {mapExtractFormatting} from "../map/MapExtractFormatting"
+import {mapExtractSelection} from '../map/MapExtractSelection'
 import {mapMeasure} from '../map/MapMeasure'
 import {mapPlace} from '../map/MapPlace'
 import {mapSetProp} from '../map/MapSetProp'
@@ -21,13 +22,20 @@ import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellInsert, structInsert} from '../node/NodeInsert'
 import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
-import {mapExtractFormatting} from "../map/MapExtractFormatting";
+import {store} from "./EditorFlow";
 
-export const mapref = (m: any, path: any) => {
+export const getM = () => { // getMap
+  const mapStackData = store.getState().mapStackData
+  const mapStackDataIndex = store.getState().mapStackDataIndex
+  return mapStackData[mapStackDataIndex]
+}
+
+export const mapref = (m: any, path: any) => { // getMapData
+  // note: don't use getM directly, as there are volatile mutations that don't get to the store
   return subsref(m, path)
 }
 
-export const saveMap = (m: any) => {
+export const saveMap = (m: any) => { // getSavedMapData
   const mCopy = copy(m)
   mapDeInit.start(mCopy)
   return mapDisassembly.start(mCopy)
