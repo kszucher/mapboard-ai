@@ -257,7 +257,7 @@ function* mapStackSaga () {
     //   }
     // }
 
-    // TODO: mapCollect could just collect all these data under m. so we can just copy it
+    // TODO: mapExtractSelection could just collect all these data under m. so we can just copy it
     const lm = mapref(m, m.sc.lastPath)
     const { density, alignment } = m
     const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']

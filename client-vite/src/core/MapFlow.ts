@@ -7,7 +7,7 @@ import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
 import {mapChain} from '../map/MapChain'
-import {mapCollect} from '../map/MapCollect'
+import {mapExtractSelection} from '../map/MapExtractSelection'
 import {mapDeInit} from '../map/MapDeInit'
 import {mapDisassembly} from '../map/MapDisassembly'
 import {mapMeasure} from '../map/MapMeasure'
@@ -490,7 +490,7 @@ export const reCalc = (m: any) => {
   mapMeasure.start(m, cr)
   mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
-  mapCollect.start(m, cr)
+  mapExtractSelection.start(m, cr)
   return m
 }
 

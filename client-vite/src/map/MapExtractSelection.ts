@@ -3,9 +3,9 @@
 import { arrayValuesSame } from '../core/Utils'
 import { mapref } from '../core/MapFlow'
 
-export const mapCollect = {
+export const mapExtractSelection = {
   start: (m, cr) => {
-    mapCollect.iterate(m, cr)
+    mapExtractSelection.iterate(m, cr)
     const { sc } = m
     // indicators
     if (sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
@@ -78,8 +78,8 @@ export const mapCollect = {
         m.sc.structSelectedPathList.push(cm.path.slice(0))
       }
     }
-    cm.d.map(i => mapCollect.iterate(m, i))
-    cm.s.map(i => mapCollect.iterate(m, i))
-    cm.c.map(i => i.map(j => mapCollect.iterate(m, j)))
+    cm.d.map(i => mapExtractSelection.iterate(m, i))
+    cm.s.map(i => mapExtractSelection.iterate(m, i))
+    cm.c.map(i => i.map(j => mapExtractSelection.iterate(m, j)))
   }
 }
