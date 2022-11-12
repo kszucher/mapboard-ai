@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {resolveScope} from "../core/DefaultProps"
 import { mapref } from '../core/MapFlow'
 

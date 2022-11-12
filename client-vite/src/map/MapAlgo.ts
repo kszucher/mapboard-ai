@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {getDefaultNode} from "../core/DefaultProps"
 import { mapref } from '../core/MapFlow'
 
@@ -17,7 +19,7 @@ export const mapAlgo = {
       selectionFound = 1
     }
     if (cm.type === 'cell' && !cm.s.length) {
-      cm.s.push(getDefaultNode())
+      cm.s.push(getDefaultNode({}))
     }
     if (cm.contentCalc && cm.contentCalc !== '') {
       if (cm.parentType === 'cell') {

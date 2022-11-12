@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { nodeProps, mapProps } from '../core/DefaultProps'
 import { copy, genHash, shallowCopy } from '../core/Utils'
 

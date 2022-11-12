@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const mapTemplate = {
   start: (m, cr) => {
     mapTemplate.iterate(m, cr)

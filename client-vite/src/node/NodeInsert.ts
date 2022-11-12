@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {getDefaultNode} from "../core/DefaultProps";
 import { mapref } from '../core/MapFlow'
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const mapPlace = {
   start: (m, cr) => {
     let {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m

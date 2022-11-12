@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {createArray, getEquationDim, getTextDim} from "../core/Utils"
 
 export const mapMeasure = {

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { updateMapDivData } from '../core/DomFlow'
 import { getColors } from '../core/Colors'
 

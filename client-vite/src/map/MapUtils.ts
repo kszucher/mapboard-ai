@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { mapref } from '../core/MapFlow'
 import { copy, isEqual } from '../core/Utils'
 import { mapFindOverRectangle } from './MapFindOverRectangle'

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {mapProps, nodeProps} from "../core/DefaultProps";
 
 export const mapDeinit = {

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { copy } from '../core/Utils'
 
 let startX, startY, width, height = 0

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { arrayValuesSame } from '../core/Utils'
 import { mapref } from '../core/MapFlow'
 

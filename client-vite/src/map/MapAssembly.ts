@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {copy, subsasgn} from "../core/Utils"
 
 export function mapAssembly(dataLinear) {

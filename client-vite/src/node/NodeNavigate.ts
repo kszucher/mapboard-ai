@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { mapref } from '../core/MapFlow'
 
 export function nodeNavigate (m, lastPath, target, key) {

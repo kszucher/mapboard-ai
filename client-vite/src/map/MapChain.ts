@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const mapChain = {
   start: (m, cr, crIndex) => {
     Object.assign(cr, {

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const mapTaskCheck = {
   start: (m, cr) => {
     m.taskLeft = 0

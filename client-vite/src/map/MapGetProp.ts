@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const mapGetProp = {
   start: (m, cm, prop) => {
     let firstProp = {[prop]: cm[prop]}

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { updateMapSvgData } from '../core/DomFlow'
 import { isEqual, isOdd } from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 export const mapPrint = {
   start: (m, cr) => {
     mapPrint.str = ''
