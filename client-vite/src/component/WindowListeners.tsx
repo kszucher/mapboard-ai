@@ -444,12 +444,6 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
       reDraw(m, colorMode) // mapDispatch is futile here, as this does not change state
-      removeMapListeners()
-      if (mapRight === MapRight.EDIT) {
-        addMapListeners()
-      } else if (mapRight === MapRight.VIEW) {
-        // TODO figure out view listeners
-      }
     }
     const root = document.querySelector(':root')
     root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
