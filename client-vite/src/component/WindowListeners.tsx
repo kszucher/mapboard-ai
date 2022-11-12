@@ -9,6 +9,7 @@ import {actions, sagaActions, store} from "../core/EditorFlow"
 import {getColors} from '../core/Colors'
 import {MapRight, PageState} from "../core/Types";
 import {mapDeinit} from '../map/MapDeinit'
+import {findMoveTarget, findSelectTarget} from "../map/MapUtils"
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -19,6 +20,40 @@ let mutationObserver
 let isEditing = 0
 let mapAreaListener
 let landingAreaListener
+
+// move these 3 two under "DomUtils"
+const scrollTo = (to, duration) => {
+  const
+    element = document.getElementById('mapHolderDiv'),
+    start = element.scrollLeft,
+    change = to - start,
+    startDate = +new Date(),
+    // t = current time
+    // b = start value
+    // c = change in value
+    // d = duration
+    easeOut = function(t, b, c, d) {
+      //https://www.gizma.com/easing/
+      // https://easings.net/
+      // https://css-tricks.com/ease-out-in-ease-in-out/
+      // TODO: trying to set if for everything
+      t /= d
+      t--
+      return c*(t*t*t + 1) + b
+    },
+    animateScroll = function() {
+      const currentDate = +new Date()
+      const currentTime = currentDate - startDate
+      element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration))
+      if(currentTime < duration) {
+        requestAnimationFrame(animateScroll)
+      }
+      else {
+        element.scrollLeft = to
+      }
+    }
+  animateScroll()
+}
 
 const getCoords = (e) => {
   let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
@@ -55,27 +90,38 @@ export const WindowListeners: FC = () => {
 
   const mapDispatch = (action, payload) => {
     console.log('MAP_DISPATCH: ' + action)
-    const currM = getM()
-    const nextM = reCalc(mapReducer(copy(currM), action, payload))
-    if (action === 'typeText' ||
-      action === 'startEdit' ||
-      action === 'highlightSelection' ||
-      action === 'moveSelectionPreview' ||
-      action === 'setShouldScroll'
-    ) {
-      // TODO
-      //  apply redraw parameters based on actions
-      //  - setShouldLoad --> shouldLoad
-      //  - setShouldResize --> shouldResize
-      //  - setShouldCenter, moveSelection, applyParams --> shouldCenter
-      //  - setShouldScroll --> shouldScroll
-      reDraw(nextM, colorMode)
+    if (['shouldLoad', 'shouldResize', 'shouldCenter', 'shouldScroll'].includes(action)) {
+      orient(action, payload)
     } else {
-      const currMSimplified = mapDeinit.start(copy(currM))
-      const nextMSimplified = mapDeinit.start(copy(nextM))
-      if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
-        dispatch(actions.mutateMapStack(nextM))
+      const currM = getM()
+      const nextM = reCalc(mapReducer(copy(currM), action, payload))
+      if (['typeText', 'startEdit', 'moveTargetPreview', 'selectTargetPreview'].includes(action)) {
+        reDraw(nextM, colorMode)
+      } else {
+        const currMSimplified = mapDeinit.start(copy(currM))
+        const nextMSimplified = mapDeinit.start(copy(nextM))
+        if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
+          dispatch(actions.mutateMapStack(nextM))
+        }
       }
+    }
+  }
+
+  // ORIENT
+  const orient = (action, payload) => {
+    const m = getM()
+    const mapHolderDiv = document.getElementById('mapHolderDiv')
+    const currScrollLeft = (window.innerWidth + m.mapWidth) / 2
+    if (action === 'shouldLoad') {
+      mapHolderDiv.scrollLeft = currScrollLeft
+      mapHolderDiv.scrollTop = window.innerHeight - 48 * 2
+    } else if (action === 'shouldResize') {
+      mapHolderDiv.scrollLeft = currScrollLeft
+    } else if (action === 'shouldCenter') {
+      scrollTo(currScrollLeft, 500)
+    } else if (action === 'shouldScroll') {
+      mapHolderDiv.scrollLeft -= payload.movementX
+      mapHolderDiv.scrollTop -= payload.movementY
     }
   }
 
@@ -125,6 +171,7 @@ export const WindowListeners: FC = () => {
     const lm = mapref(m, m.sc.lastPath)
     if (!lm.hasCell) {
       mapDispatch('eraseContent')
+      // why doesn't the innerHTML reset from mapVisualizeSvg in this case?
       const holderElement = document.getElementById(`${lm.nodeId}_div`)
       holderElement.innerHTML = ''
     }
@@ -153,7 +200,7 @@ export const WindowListeners: FC = () => {
   }
 
   const resize = (e) => {
-    mapDispatch('setShouldResize')
+    mapDispatch('shouldResize')
   }
 
   const popstate = (e) => {
@@ -197,12 +244,13 @@ export const WindowListeners: FC = () => {
               if (lm.linkType === 'internal') {
                 dispatch(sagaActions.openMapFromMap(lastOverPath))
               } else if (lm.linkType === 'external') {
-                // TODO make it as a saga action as this is a side effect
                 window.open(lm.link, '_blank')
                 window.focus()
               }
             }
           } else {
+            // TODO investigate why this causes a false item in state
+            console.log('now...')
             mapDispatch('clearSelection')
           }
         } else if (which === 2) {
@@ -222,20 +270,23 @@ export const WindowListeners: FC = () => {
   const mousemove = (e) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
+    const m = getM()
     if (whichDown === which) {
       elapsed++
       if (which === 1) {
         if (isTaskClicked) {
         } else if (isNodeClicked) {
           const [toX, toY] = getCoords(e)
-          mapDispatch('moveSelectionPreview', {toX, toY})
+          const { moveData } = findMoveTarget(m, toX, toY)
+          mapDispatch('moveTargetPreview', { moveData })
         } else {
           const [toX, toY] = getCoords(e)
-          mapDispatch('highlightSelection', {fromX, fromY, toX, toY})
-          // introduce a local reactive state instead of messing with a reducer
+          const { highlightTargetPathList, selectionRect } = findSelectTarget(m, fromX, fromY, toX, toY)
+          mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect })
         }
       } else if (which === 2) {
-        mapDispatch('setShouldScroll', {x: e.movementX, y: e.movementY})
+        const { movementX, movementY } = e
+        mapDispatch('shouldScroll', { movementX, movementY })
       }
     }
   }
@@ -250,17 +301,20 @@ export const WindowListeners: FC = () => {
         if (which === 1) {
           if (isTaskClicked) {
           } else if (isNodeClicked) {
-            if (m.moveTargetPath.length) {
-              mapDispatch('moveSelection')
+            const [toX, toY] = getCoords(e)
+            const { moveTargetPath, moveTargetIndex } = findMoveTarget(m, toX, toY)
+            if (moveTargetPath.length) {
+              mapDispatch('shouldCenter')
+              mapDispatch('moveTarget', { moveTargetPath, moveTargetIndex })
             }
           } else {
-            // TODO remove this as this is not necessary BUT can be kept for prudence
-            if (m.sc.structSelectedPathList.length === 0 &&
-              m.sc.cellSelectedPathList.length === 0) {
-              mapDispatch('select_R')
-            }
-            // should NOT mutate this!!!!!!
-            // m.selectionRect = []
+            const [toX, toY] = getCoords(e)
+            const { highlightTargetPathList } = findSelectTarget(m, fromX, fromY, toX, toY)
+            mapDispatch('selectTarget', { highlightTargetPathList })
+            // if (m.sc.structSelectedPathList.length === 0 &&
+            //   m.sc.cellSelectedPathList.length === 0) {
+            //   mapDispatch('select_R')
+            // }
           }
         }
       } else {
@@ -282,7 +336,7 @@ export const WindowListeners: FC = () => {
       if (isNodeClicked) {
         startEdit()
       } else {
-        mapDispatch('setShouldCenter')
+        mapDispatch('shouldCenter')
       }
     }
   }
@@ -518,6 +572,10 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
+      const m = getM()
+      if (m.density !== node.density || m.alignment !== node.alignment) {
+        mapDispatch('shouldCenter')
+      }
       mapDispatch('applyMapParams', node)
     }
   }, [node])
@@ -534,9 +592,8 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
-// - finish during move stuff ("should" setters)
-// - fix post move stuff
+// - bring back buttons that will do stuff (insert_table, toggle_task) using cmdList
 // - saga: gather stuff for formatter
 // - saga: fix save
-// - wl: bring back creator buttons
 // - fix paste: merge what needs merge
+// - eventually do the tests for all parts

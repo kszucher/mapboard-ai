@@ -11,15 +11,14 @@ export function setClipboard(clipboardIn: any) {
   clipboard = clipboardIn
 }
 
-export function nodeMoveMouse (m: any, sc: any) {
+export function nodeMoveMouse (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) {
   let {structSelectedPathList, sameParentPath} = sc
   let sameParent = mapref(m, sameParentPath)
   let moveSource = mapref(m, structSelectedPathList[0])
-  let moveTarget = mapref(m, m.moveTargetPath)
-  m.moveTargetPath = []
+  let moveTarget = mapref(m, moveTargetPath)
   let tempClipboard = copy(moveSource)
   sameParent.s.splice(moveSource.index, 1)
-  moveTarget.s.splice(m.moveTargetIndex, 0, tempClipboard)
+  moveTarget.s.splice(moveTargetIndex, 0, tempClipboard)
 }
 
 export function nodeMove(m: any, sc: any, target: any, key: any, mode: any) {

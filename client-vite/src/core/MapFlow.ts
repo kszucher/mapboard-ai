@@ -10,8 +10,6 @@ import {mapChain} from '../map/MapChain'
 import {mapCollect} from '../map/MapCollect'
 import {mapDeinit} from '../map/mapDeinit'
 import {mapDisassembly} from '../map/mapDisassembly'
-import {mapFindNearest} from "../map/MapFindNearest"
-import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {mapMeasure} from '../map/MapMeasure'
 import {mapPlace} from '../map/MapPlace'
 import {mapSetProp} from '../map/MapSetProp'
@@ -54,33 +52,15 @@ export const mapReducer = (m, action, payload) => {
   let lm = mapref(m, sc.lastPath)
   switch (action) {
     // VIEW
-    case 'setShouldLoad': {
-      m.shouldLoad = true
+    case 'moveTargetPreview': {
+      m.moveData = payload.moveData
       break
     }
-    case 'setShouldResize': {
-      m.shouldResize = true
-      break
-    }
-    case 'setShouldCenter': {
-      m.shouldCenter = true // outside push - checkPop?
-      break
-    }
-    case 'setShouldScroll': {
-      const {x, y} = payload
-      m.shouldScroll = true
-      m.scrollX = x
-      m.scrollY = y
-      break
-    }
-    case 'highlightSelection': {
-      const {fromX, fromY, toX, toY} = payload
-      let startX = fromX < toX ? fromX : toX
-      let startY = fromY < toY ? fromY : toY
-      let width = Math.abs(toX - fromX)
-      let height = Math.abs(toY - fromY)
-      m.selectionRect = [startX, startY, width, height]
-      mapFindOverRectangle.start(mapref(m, ['r', 0]), startX, startY, width, height)
+    case 'selectTargetPreview': {
+      for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
+        mapref(m, payload.highlightTargetPathList[i]).selected = 1
+      }
+      m.selectionRect = payload.selectionRect
       break
     }
     // SELECT
@@ -127,6 +107,12 @@ export const mapReducer = (m, action, payload) => {
         }
       }
       updateParentLastSelectedChild(m, lm)
+      break
+    }
+    case 'selectTarget': {
+      for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
+        mapref(m, payload.highlightTargetPathList[i]).selected = 1
+      }
       break
     }
     case 'select_all': {
@@ -340,52 +326,8 @@ export const mapReducer = (m, action, payload) => {
       structDeleteReselect(m, sc)
       break
     }
-    case 'moveSelectionPreview': {
-      // TODO prevent move if multiple nodes are selected
-      const { toX, toY } = payload
-      m.moveTargetPath = []
-      m.moveData = []
-      let lastSelectedPath = sc.structSelectedPathList[0]
-      let lastSelected = mapref(m, lastSelectedPath)
-      if (!(lastSelected.nodeStartX < toX &&
-        toX < lastSelected.nodeEndX &&
-        lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
-        toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-        let lastNearestPath = mapFindNearest.start(mapref(m, ['r', 0]), toX, toY)
-        if (lastNearestPath.length > 2) {
-          m.moveTargetPath = copy(lastNearestPath)
-          let lastFound = mapref(m, lastNearestPath)
-          let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
-          let fromY = lastFound.nodeY
-          m.moveData = [fromX, fromY, toX, toY]
-          if (lastFound.s.length === 0) {
-            m.moveTargetIndex = 0
-          } else {
-            let insertIndex = 0
-            for (let i = 0; i < lastFound.s.length - 1; i++) {
-              if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
-                insertIndex = i + 1
-              }
-            }
-            if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-              insertIndex = lastFound.s.length
-            }
-            let lastSelectedParentPath = lastSelected.parentPath
-            if (isEqual(lastFound.path, lastSelectedParentPath)) {
-              if (lastSelected.index < insertIndex) {
-                insertIndex -= 1
-              }
-            }
-            m.moveTargetIndex = insertIndex
-          }
-        }
-      }
-      break
-    }
-    case 'moveSelection': {
-      m.moveData = []
-      m.shouldCenter = true // outside push - checkPop?
-      nodeMoveMouse(m, sc)
+    case 'moveTarget': {
+      nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
       break
     }
     case 'cellifyMulti': {
@@ -436,7 +378,7 @@ export const mapReducer = (m, action, payload) => {
       } = payload
       if (m.density !== density) {
         m.density = density
-        m.shouldCenter = true
+        // this will not be needed at all after we save dimVec
         for (let i = 0; i < mapref(m, ['r']).length; i++) {
           let cr = mapref(m, ['r', i])
           mapSetProp.start(m, cr, { isDimAssigned: 0 }, '')
@@ -444,7 +386,6 @@ export const mapReducer = (m, action, payload) => {
       }
       if (m.alignment !== alignment) {
         m.alignment = alignment
-        m.shouldCenter = true
       }
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         const cm = mapref(m, sc.structSelectedPathList[i])
@@ -539,6 +480,13 @@ export const reCalc = (m: any) => {
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
   mapTaskCheck.start(m, cr)
+  // mapDiff
+  // DIFF FOR PARENT_XYZ
+  // - diffing is not about seeing new ones added, but seeing a node having a child it did not have before
+  // DIFF FOR DIM
+  // const diff: [{path, content, contentType, textFontSize}] = MapDiff.start(currM, nextM, ['content', 'contentType', 'textFontSize])
+  // const newDimList:  [{path, dimVec}] = diff.map (el => [getTextDim, getEquationDim, getImageDim] [contentType] => )
+  // it can feed a shouldDimUpdate variable consumed by the next stage of MapMeas
   mapMeasure.start(m, cr)
   mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
@@ -555,7 +503,7 @@ const redrawStep = (m: any, colorMode: any, shouldAnimationInit: boolean) => {
 }
 
 export const reDraw = (m: any, colorMode: any) => {
-  if (m.animationRequested) {
+  if (m.animationRequested) { // if we don't want to store this, we may just use mapGetProp...
     redrawStep(m, colorMode, true)
   }
   redrawStep(m, colorMode, false)

@@ -11,7 +11,12 @@ export let mapProps = {
     taskConfigGap: 4,
     margin: 32,
   },
-  saveNeverInitOnce: {
+  saveNeverInitOnce: { // this means reCalc does not change this, but the issue is that it is not reset
+    selectionRect: [],
+    moveData: [],
+    animationRequested: 0, // will be a mapGetProp of parentNodeXYZ (enough to have that as single source of truth)
+  },
+  saveNeverInitAlways: {
     mapWidth: 0,
     mapHeight: 0,
     taskLeft: 0,
@@ -21,24 +26,6 @@ export let mapProps = {
     defaultH: 0,
     taskConfigD: 0,
     taskConfigWidth: 0,
-    // indicators
-    shouldLoad: false,
-    shouldResize: false,
-    shouldCenter: false,
-    shouldScroll: false,
-    //
-    scrollX: 0,
-    scrollY: 0,
-    //
-    selectionRect: [],
-    moveTargetPath: [],
-    moveData: [],
-    moveTargetIndex: 0,
-    // animation
-    animationRequested: 0,
-  },
-  saveNeverInitAlways: {
-    // selection
     sc: {
       structSelectedPathList: [],
       cellSelectedPathList: [],
@@ -54,11 +41,7 @@ export let mapProps = {
       cellCol: 0,
       haveSameParent: 0,
       sameParentPath: [],
-    },
-  },
-  saveNeverResetAlways: {
-    // indicators
-    shouldLoad: false,
+    }
   }
 }
 
@@ -92,25 +75,21 @@ export let nodeProps = {
     textFontSize: 14,
     textColor: 'default',
     taskStatus: -1,
-    // subMapStartX: 0, // only applies for root <-- calculate (how?)
-    // subMapStartY: 0,  // only applies for root <-- calculate (how?)
   },
-  saveNeverInitOnce: {
+  saveNeverInitOnce: { // this means reCalc does not change this, but the issue is that it is not reset
     // UNSORTED
     isEditing: 0,
-    parentNodeEndXFrom: 0,
-    parentNodeStartXFrom: 0,
-    parentNodeYFrom: 0,
+    parentNodeEndXFrom: 0, // mapDiff updates this
+    parentNodeStartXFrom: 0, // mapDiff updates this
+    parentNodeYFrom: 0, // mapDiff updates this
     // mapAlgo
     contentCalc: '',
     // mapMeasure
-    isDimAssigned: 0,
-    contentW: 0,
-    contentH: 0,
-    // subMapWidth: 0, // only applies for root <-- channel mapWidth here
-    // subMapHeight: 0, // only applies for root <-- channel mapHeight here
+    isDimAssigned: 0, // mapDiff updates this, rename to shouldMeasure
+    contentW: 0, // move to be local
+    contentH: 0, // move to be local
     // animation
-    animationRequested: 0,
+    animationRequested: 0, // once only m will know about this by MapGetProp of parent_XYZ this becomes obsolete
   },
   saveNeverInitAlways: {
     // mapChain
