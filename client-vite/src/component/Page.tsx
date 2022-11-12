@@ -75,6 +75,8 @@ export const Page: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
+  const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
+
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -106,7 +108,7 @@ export const Page: FC = () => {
                 <ControlsRight/>
               </>
             }
-            {formatterVisible && <Formatter/>}
+            {formatterVisible && mapStackData.length && <Formatter/>}
             {frameEditorVisible && <FrameCarousel/>}
           </>
         }

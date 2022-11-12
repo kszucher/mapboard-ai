@@ -2,7 +2,6 @@
 
 import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
-import {mapGetProp} from '../map/MapGetProp'
 import {actions, sagaActions} from "./EditorFlow";
 import {PageState} from "./Types";
 import {mapref, saveMap} from "./MapFlow";
@@ -239,65 +238,6 @@ function* mapSaga () {
 //   }
 // }
 
-function* mapStackSaga () {
-  while (true) {
-    // const { type } = yield take(['UNDO', 'REDO', 'MAP_STACK_CHANGED'])
-    // const colorMode = yield select(state => state.colorMode)
-    // const mapStackData = yield select(state => state.mapStackData)
-    // const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
-    // let m = mapStackData[mapStackDataIndex]
-    // switch (type) {
-    //   case 'UNDO': {
-    //     mapStackDispatch('undo', {}, colorMode)
-    //     break
-    //   }
-    //   case 'REDO': {
-    //     mapStackDispatch('redo', {}, colorMode)
-    //     break
-    //   }
-    // }
-
-    // TODO: mapExtractSelection could just collect all these data under m. so we can just copy it
-    const lm = mapref(m, m.sc.lastPath)
-    const { density, alignment } = m
-    const propList = ['selection', 'lineWidth', 'lineType', 'lineColor', 'borderWidth', 'borderColor', 'fillColor', 'textFontSize', 'textColor']
-    const assignment = { density, alignment }
-    for (const prop of propList) {
-      const realProp = {
-        selection: 'selection',
-        lineWidth: 'lineWidth',
-        lineType: 'lineType',
-        lineColor: 'lineColor',
-        borderWidth: lm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth',
-        borderColor: lm.selection === 's' ? 'sBorderColor' : 'fBorderColor',
-        fillColor: lm.selection === 's' ? 'sFillColor' : 'fFillColor',
-        textFontSize: 'textFontSize',
-        textColor: 'textColor',
-        taskStatus: 'taskStatus'
-      }[prop]
-      if (m.sc.structSelectedPathList.map(el => (mapref(m, el))[realProp]).every((el, i, arr) => el  === arr[0])) {
-        let propAssignment
-        switch (prop) {
-          case 'selection': propAssignment = lm.selection; break
-          case 'lineWidth': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-          case 'lineType': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-          case 'lineColor': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-          case 'borderWidth': propAssignment = lm.selection === 's' ? lm.sBorderWidth : lm.fBorderWidth; break
-          case 'borderColor': propAssignment = lm.selection === 's' ? lm.sBorderColor : lm.fBorderColor; break
-          case 'fillColor': propAssignment = lm.selection === 's' ? lm.sFillColor : lm.fFillColor; break
-          case 'textFontSize': propAssignment = lm.selection === 's' ? lm[prop] : mapGetProp.start(m, lm, prop); break
-          case 'textColor': propAssignment = lm.selection === 's'? lm[prop] : mapGetProp.start(m, lm, prop); break
-          case 'taskStatus': propAssignment = lm.selection === 's'? lm[prop]: undefined; break
-        }
-        Object.assign(assignment, {[prop]: propAssignment})
-      } else {
-        Object.assign(assignment, {[prop]: undefined})
-      }
-    }
-    yield put(actions.setNodeParams({ node: assignment, nodeTriggersMap: false }))
-  }
-}
-
 function* shareSaga () {
   while (true) {
     let { type, payload } = yield take([
@@ -358,7 +298,6 @@ export default function* rootSaga () {
     autoSaveSaga(),
     mapSaga(),
     // mapStackEventSaga(),
-    // mapStackSaga(),
     shareSaga(),
     signOutSaga(),
     deleteAccountSaga(),

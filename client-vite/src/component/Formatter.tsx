@@ -14,15 +14,9 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
 
   const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
-  const selection = useSelector((state: RootStateOrAny) => state.node.selection)
-  const textColor = useSelector((state: RootStateOrAny) => state.node.textColor)
-  const textFontSize = useSelector((state: RootStateOrAny) => state.node.textFontSize)
-  const borderColor = useSelector((state: RootStateOrAny) => state.node.borderColor)
-  const borderWidth = useSelector((state: RootStateOrAny) => state.node.borderWidth)
-  const fillColor = useSelector((state: RootStateOrAny) => state.node.fillColor)
-  const lineColor = useSelector((state: RootStateOrAny) => state.node.lineColor)
-  const lineWidth = useSelector((state: RootStateOrAny) => state.node.lineWidth)
-  const lineType = useSelector((state: RootStateOrAny) => state.node.lineType)
+
+  const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
+  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.nc
 
   const dispatch = useDispatch()
 

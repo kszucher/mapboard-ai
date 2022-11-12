@@ -41,6 +41,18 @@ export let mapProps = {
       cellCol: 0,
       haveSameParent: 0,
       sameParentPath: [],
+    },
+    nc: {
+      selection: null,
+      lineWidth: null,
+      lineType: null,
+      lineColor: null,
+      borderWidth: null,
+      borderColor: null,
+      fillColor: null,
+      textFontSize: null,
+      textColor: null,
+      taskStatus: null,
     }
   }
 }

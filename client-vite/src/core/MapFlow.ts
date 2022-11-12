@@ -21,6 +21,7 @@ import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellInsert, structInsert} from '../node/NodeInsert'
 import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
+import {mapExtractFormatting} from "../map/MapExtractFormatting";
 
 export const mapref = (m: any, path: any) => {
   return subsref(m, path)
@@ -491,6 +492,7 @@ export const reCalc = (m: any) => {
   mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
   mapExtractSelection.start(m, cr)
+  mapExtractFormatting.start(m)
   return m
 }
 
