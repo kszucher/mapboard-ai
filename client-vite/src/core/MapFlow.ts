@@ -60,6 +60,14 @@ export const mapReducer = (m, action, payload) => {
   let lm = getMapData(m, sc.lastPath)
   switch (action) {
     // VIEW
+    case 'changeDensity': {
+      m.density = m.density === 'small' ? 'large' : 'small'
+      break
+    }
+    case 'changeAlignment': {
+      m.alignment = m.alignment === 'centered' ? 'adaptive' : 'centered'
+      break
+    }
     case 'moveTargetPreview': {
       m.moveData = payload.moveData
       break
@@ -382,21 +390,7 @@ export const mapReducer = (m, action, payload) => {
 
     // TODO dissect this into command-based, and this will allow to have SSOT finally
     case 'applyMapParams': {
-      const {
-        density, alignment,
-        lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor, taskStatus
-      } = payload
-      if (m.density !== density) {
-        m.density = density
-        // this will not be needed at all after we save dimVec
-        for (let i = 0; i < getMapData(m, ['r']).length; i++) {
-          let cr = getMapData(m, ['r', i])
-          mapSetProp.start(m, cr, { isDimAssigned: 0 }, '')
-        }
-      }
-      if (m.alignment !== alignment) {
-        m.alignment = alignment
-      }
+      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor, taskStatus} = payload
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         const cm = getMapData(m, sc.structSelectedPathList[i])
         const props = {

@@ -218,7 +218,6 @@ export const WindowListeners: FC = () => {
             const [toX, toY] = getCoords(e)
             const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, toX, toY)
             if (moveTargetPath.length) {
-              mapDispatch('shouldCenter')
               mapDispatch('moveTarget', { moveTargetPath, moveTargetIndex })
             }
           } else {
@@ -485,15 +484,15 @@ export const WindowListeners: FC = () => {
   }, [pageState, mapRight])
 
   // TODO remove this altogether
-  useEffect(() => {
-    if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
-      const m = getMap()
-      if (m.density !== node.density || m.alignment !== node.alignment) {
-        mapDispatch('shouldCenter')
-      }
-      mapDispatch('applyMapParams', node)
-    }
-  }, [node])
+  // useEffect(() => {
+  //   if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
+  //     const m = getMap()
+  //     if (m.density !== node.density || m.alignment !== node.alignment) {
+  //       mapDispatch('shouldCenter')
+  //     }
+  //     mapDispatch('applyMapParams', node)
+  //   }
+  // }, [node])
 
   useEffect(() => {
     if (cmdList.length) {

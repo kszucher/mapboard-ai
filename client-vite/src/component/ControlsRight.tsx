@@ -16,6 +16,7 @@ import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, sagaActions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
+import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 const iconSize = 40
 const topOffs1 = 48*2
@@ -28,12 +29,14 @@ const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 bor
 
 export const ControlsRight: FC = () => {
   const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
+  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
   const { density, alignment } = m
-  
+
   const dispatch = useDispatch()
-  // TODO use mapDispatch to change DENSITY and ALIGNMENT
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
+
   return (
     <>
       <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
@@ -61,13 +64,13 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(actions.setNodeParams({ node: { density: density === 'small' ? 'large' : 'small' }, nodeTriggersMap: true }))}>
+          onClick={()=>mapDispatch('changeDensity', {})}>
           {density === 'small' && <DensitySmallIcon/>}
           {density === 'large' && <DensityMediumIcon/>}
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(actions.setNodeParams({ node: { alignment: alignment === 'centered' ? 'adaptive' : 'centered' }, nodeTriggersMap: true }))}>
+          onClick={()=>mapDispatch('changeAlignment', {})}>
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
           {alignment === 'centered' && <CenterFocusStrongIcon/>}
         </IconButton>
