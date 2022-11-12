@@ -387,31 +387,28 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     // FORMAT
-
-    // TODO dissect this into command-based, and this will allow to have SSOT finally
-    case 'applyMapParams': {
-      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor, taskStatus} = payload
+    case 'setFormatParams': {
+      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} = {...m.nc, ...payload}
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         const cm = getMapData(m, sc.structSelectedPathList[i])
         const props = {
-          lineWidth, lineType, lineColor,
+          lineWidth,
+          lineType,
+          lineColor,
           [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
           [cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
           [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
-          textFontSize, textColor,
-          taskStatus
+          textFontSize,
+          textColor,
         }
         for (const prop in props) {
           if (props[prop] !== undefined) {
             const assignment = {}
             assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
-            if (prop === 'textFontSize') {assignment.isDimAssigned =  0}
-            if (prop !== 'taskStatus') {
-              if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
-                Object.assign(cm, assignment)
-              } else {
-                mapSetProp.start(m, cm, assignment, '')
-              }
+            if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
+              Object.assign(cm, assignment)
+            } else {
+              mapSetProp.start(m, cm, assignment, '')
             }
           }
         }

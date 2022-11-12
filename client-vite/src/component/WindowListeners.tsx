@@ -30,8 +30,6 @@ export const WindowListeners: FC = () => {
   const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-  const node = useSelector((state: RootStateOrAny) => state.node)
-  const nodeTriggersMap = useSelector((state: RootStateOrAny) => state.nodeTriggersMap)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
   const cmdList = useSelector((state: RootStateOrAny) => state.cmdList)
@@ -482,17 +480,6 @@ export const WindowListeners: FC = () => {
       removeLandingListeners()
     }
   }, [pageState, mapRight])
-
-  // TODO remove this altogether
-  // useEffect(() => {
-  //   if (mapId !== '' && mapSource !== '' && nodeTriggersMap) {
-  //     const m = getMap()
-  //     if (m.density !== node.density || m.alignment !== node.alignment) {
-  //       mapDispatch('shouldCenter')
-  //     }
-  //     mapDispatch('applyMapParams', node)
-  //   }
-  // }, [node])
 
   useEffect(() => {
     if (cmdList.length) {

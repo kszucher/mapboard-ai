@@ -6,25 +6,27 @@ import { describe, it } from 'vitest'
 import {actions, store} from "../core/EditorFlow";
 import React from "react";
 import {colorList} from "../core/Colors";
-import {LineTypes, MapRight, TextTypes, WidthTypes} from "../core/Types";
+import {LineTypes, TextTypes, WidthTypes} from "../core/Types";
 
 describe("Formatter test", () => {
   beforeEach(() => {
     store.dispatch(actions.parseRespPayload({
-      mapRight: MapRight.EDIT,
-      node: {
-        density: undefined,
-        alignment: undefined,
-        selection: undefined,
-        lineWidth: WidthTypes.w1,
-        lineType: LineTypes.bezier,
-        lineColor: colorList[0][0],
-        borderWidth: WidthTypes.w1,
-        borderColor: colorList[0][0],
-        fillColor: colorList[0][0],
-        textFontSize: TextTypes.h1,
-        textColor: colorList[0][0],
-        taskStatus: undefined,
+      mapStackData: {
+        m: {
+          nc: {
+            selection: undefined,
+            lineWidth: WidthTypes.w1,
+            lineType: LineTypes.bezier,
+            lineColor: colorList[0][0],
+            borderWidth: WidthTypes.w1,
+            borderColor: colorList[0][0],
+            fillColor: colorList[0][0],
+            textFontSize: TextTypes.h1,
+            textColor: colorList[0][0],
+            taskStatus: undefined,
+          },
+        },
+        mapStackDataIndex: 0
       }
     }))
     const {} = render(
@@ -47,9 +49,7 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'w2'}))
     await user.click(screen.getByRole('button', {name: 'edge'}))
 
-    expect(store.getState().node).toEqual({
-      density: undefined,
-      alignment: undefined,
+    expect(store.getState().mapStackData[store.getState().mapStackDataIndex]).m.nc.toEqual({
       selection: undefined,
       lineWidth: WidthTypes.w2,
       lineType: LineTypes.edge,
@@ -73,7 +73,7 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'edge'}))
     await user.click(screen.getByRole('button', {name: 'RESET'}))
 
-    expect(store.getState().node).toEqual({
+    expect(store.getState().mapStackData[store.getState().mapStackDataIndex]).m.nc.toEqual({
       density: undefined,
       alignment: undefined,
       selection: undefined,

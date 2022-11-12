@@ -96,11 +96,6 @@ const allSlice = createSlice({
 
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
 
-    // TODO remove this
-    setNodeParams(state, action: PayloadAction<any>) {
-      return {...state, ...{ node: {...state.node, ...action.payload.node }, nodeTriggersMap: action.payload.nodeTriggersMap }
-      }},
-
     startEdit(state) { state.isEditing = true },
     finishEdit(state) { state.isEditing = false },
 
