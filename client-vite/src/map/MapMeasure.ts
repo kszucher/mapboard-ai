@@ -1,6 +1,7 @@
 // @ts-nocheck
 
-import {createArray, getEquationDim, getTextDim} from "../core/Utils"
+import {createArray} from "../core/Utils"
+import {getEquationDim, getTextDim} from "../core/DomUtils";
 
 export const mapMeasure = {
   start: (m, cr) => {

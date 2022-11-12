@@ -1,6 +1,6 @@
 import {FC, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {getEquationDim, getTextDim, isChrome} from '../core/Utils'
+import {isChrome} from '../core/Utils'
 import {Auth} from "./Auth"
 import {Logo} from "./Logo"
 import {TabMaps} from "./TabMaps"
@@ -22,6 +22,7 @@ import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'
 import {PageState} from "../core/Types";
+import {getEquationDim, getTextDim} from "../core/DomUtils";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {

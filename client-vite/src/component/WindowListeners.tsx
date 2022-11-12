@@ -3,9 +3,10 @@
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
+import {getCoords, getNativeEvent, scrollTo, setEndOfContentEditable} from "../core/DomUtils"
 import {mapReducer, mapref, reCalc, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
-import {copy, isUrl, setEndOfContenteditable} from '../core/Utils'
+import {copy, isUrl} from '../core/Utils'
 import {mapDeInit} from "../map/MapDeInit"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
@@ -21,52 +22,6 @@ let mutationObserver
 let isEditing = 0
 let mapAreaListener
 let landingAreaListener
-
-// move these 3 two under "DomUtils"
-const scrollTo = (to, duration) => {
-  const
-    element = document.getElementById('mapHolderDiv'),
-    start = element.scrollLeft,
-    change = to - start,
-    startDate = +new Date(),
-    // t = current time
-    // b = start value
-    // c = change in value
-    // d = duration
-    easeOut = function(t, b, c, d) {
-      //https://www.gizma.com/easing/
-      // https://easings.net/
-      // https://css-tricks.com/ease-out-in-ease-in-out/
-      // TODO: trying to set if for everything
-      t /= d
-      t--
-      return c*(t*t*t + 1) + b
-    },
-    animateScroll = function() {
-      const currentDate = +new Date()
-      const currentTime = currentDate - startDate
-      element.scrollLeft = parseInt(easeOut(currentTime, start, change, duration))
-      if(currentTime < duration) {
-        requestAnimationFrame(animateScroll)
-      }
-      else {
-        element.scrollLeft = to
-      }
-    }
-  animateScroll()
-}
-
-const getCoords = (e) => {
-  let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-  let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-  let mapHolderDiv = document.getElementById('mapHolderDiv')
-  let x = e.pageX - winWidth + mapHolderDiv.scrollLeft
-  let y = e.pageY - winHeight + mapHolderDiv.scrollTop
-  return [x, y]
-}
-
-const getNativeEvent = ({path, composedPath, key, code, which}) =>
-  ({ path: path || (composedPath && composedPath()), key, code, which })
 
 const getM = () => {
   const mapStackData = store.getState().mapStackData
@@ -146,7 +101,7 @@ export const WindowListeners: FC = () => {
       isEditing = 1
       const holderElement = document.getElementById(`${lm.nodeId}_div`)
       holderElement.contentEditable = 'true'
-      setEndOfContenteditable(holderElement)
+      setEndOfContentEditable(holderElement)
       mutationObserver = new MutationObserver(mutationsList => mutationFun(mutationsList))
       mutationObserver.observe(holderElement, {
         attributes: false,

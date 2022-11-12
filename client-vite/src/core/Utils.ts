@@ -1,7 +1,5 @@
 // @ts-nocheck
 
-import katex from 'katex/dist/katex.mjs'
-
 export function arrayValuesSame(array) {
   let first = JSON.stringify(array[0]);
   for (let i = 1; i < array.length; i++) {
@@ -52,17 +50,6 @@ export function transposeArray(array) {
   return newArray;
 }
 
-// https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
-export function setEndOfContenteditable(contentEditableElement) {
-  let range,selection;
-  range = document.createRange();//Create a range (a range is a like the selection but invisible)
-  range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
-  range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-  selection = window.getSelection();//get the selection object (allows you to change selection)
-  selection.removeAllRanges();//remove any selections already made
-  selection.addRange(range);//make the range you have just created the visible selection
-}
-
 export function copy(thing) {
   return JSON.parse(JSON.stringify(thing))
 }
@@ -83,39 +70,6 @@ export function isUrl (string) {
 // https://stackoverflow.com/questions/17428587/transposing-a-2d-array-in-javascript
 export function transpose(array2d) {
   return array2d[0].map((col, i) => array2d.map(row => row[i]));
-}
-
-export function getTextDim(innerHTML, fontSize) {
-  let tmpDiv = document.createElement('div');
-  tmpDiv.id = "Test";
-  tmpDiv.innerHTML = innerHTML;
-  page.appendChild(tmpDiv);
-  var test = document.getElementById("Test");
-  test.style.fontFamily = 'Roboto';
-  test.style.fontSize = fontSize + 'px';
-  var height = test.clientHeight;
-  var width = test.clientWidth;
-  var element = document.getElementById("Test");
-  element.parentNode.removeChild(element);
-  if (width === 0) width = 14;
-  return [width, height];
-}
-
-export function getEquationDim (content) {
-  let str = katex.renderToString(getLatexString(content), {throwOnError: false});
-  let tmpDiv = document.createElement('TTT');
-  tmpDiv.id = "Test";
-  tmpDiv.style.fontFamily = 'Roboto';
-  tmpDiv.style.fontSize = 14 + 'px';
-  tmpDiv.innerHTML = str;
-  page.appendChild(tmpDiv);
-  let dim = {
-    w: tmpDiv.childNodes[0].offsetWidth,
-    h: tmpDiv.childNodes[0].offsetHeight,
-  };
-  var element = document.getElementById("Test");
-  element.parentNode.removeChild(element);
-  return dim;
 }
 
 // dec2hex :: Integer -> String
@@ -149,14 +103,7 @@ export function subsasgn(obj, path, value) {
   obj[ pathEnd ] = value;
 }
 
-// https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
-export function filteredObj (originalObj, filterKeys) {
-  return filterKeys.reduce((obj, key) => ({ ...obj, [key]: originalObj[key] }), {});
-}
-
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
-export const setClear = arr => arr.reduce((o, key) => ({ ...o, [key]: 'clear'}), {})
 
 export const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1)===JSON.stringify(obj2)
