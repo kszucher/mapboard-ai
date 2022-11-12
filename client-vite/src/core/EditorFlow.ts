@@ -4,7 +4,7 @@ import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
-import {mapAssembly} from "../map/MapAssembly.js";
+import {mapAssembly} from "../map/MapAssembly";
 import {reCalc} from "./MapFlow";
 
 const editorState = {
