@@ -443,6 +443,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '' && mapSource !== '') {
+      const m = getMap()
       reDraw(m, colorMode) // mapDispatch is futile here, as this does not change state
     }
     const root = document.querySelector(':root')
