@@ -146,7 +146,6 @@ const allSlice = createSlice({
 export const { actions, reducer } = allSlice
 
 export const sagaActions = {
-  // SERVER RELATED
   liveDemo: () => ({type: 'LIVE_DEMO'}),
   signIn: (email: string, password: string) => ({type: 'SIGN_IN', payload: { cred: { email, password } }}),
   signUpStep1: (name: string, email: string, password: string) => ({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } }),
@@ -176,10 +175,6 @@ export const sagaActions = {
   changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
   deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
   signOut: () => ({type: 'SIGN_OUT'}),
-
-  // SIDE EFFECT RELATED
-  toggleTask: () => ({type: 'TOGGLE_TASK'}),
-  insertTable: (row: number, col: number) => ({type: 'INSERT_TABLE', payload: {rowLen: row, colLen: col}}),
 }
 
 const sagaMiddleware = createSagaMiddleware()

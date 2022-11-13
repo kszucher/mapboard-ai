@@ -1,13 +1,15 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, sagaActions} from "../core/EditorFlow";
+import {actions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
+import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 export const ShouldUpdateTask: FC = () => {
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
+  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const dispatch = useDispatch()
-  // TODO use mapDispatch and dispatch toggleTask from here directly
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
   return (
     <Modal
       open={true}
@@ -23,7 +25,10 @@ export const ShouldUpdateTask: FC = () => {
         </div>
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button color="primary" variant='outlined' disabled={interactionDisabled}
-                  onClick={_=>dispatch(sagaActions.toggleTask())}>
+                  onClick={()=>{
+                    mapDispatch('toggleTask', {})
+                    dispatch(actions.setPageState(PageState.WS))
+                  }}>
             {'OK'}
           </Button>
           <Button color="primary" variant='outlined' disabled={interactionDisabled}
