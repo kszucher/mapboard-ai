@@ -26,11 +26,13 @@ let landingAreaListener
 export const WindowListeners: FC = () => {
 
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+  const mapId = useSelector((state: RootStateOrAny) => state.mapId)
+  const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
+  const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
-  const cmdList = useSelector((state: RootStateOrAny) => state.cmdList)
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
@@ -474,10 +476,10 @@ export const WindowListeners: FC = () => {
   }, [pageState, mapRight])
 
   useEffect(() => {
-    if (cmdList.length) {
-      mapDispatch(cmdList.at(-1))
+    if (mapId !== '') {
+      mapDispatch('shouldLoad')
     }
-  }, [cmdList])
+  }, [mapId, mapSource, frameSelected])
 
   return (
     <></>
