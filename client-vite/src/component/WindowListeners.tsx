@@ -487,8 +487,8 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
-// - figure out how to react to initial density and alignment - same problem as with shouldLoad
-// - fix isDimAssigned and introduce mapDiff
+// - fix isDimAssigned, once done loading density will work again
+// - make mapDiff
 // - fix save
 // - fix paste - merge what needs merge
 // - eventually do the tests for all reducers
