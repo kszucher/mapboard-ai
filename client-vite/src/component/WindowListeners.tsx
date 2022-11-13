@@ -26,8 +26,6 @@ let landingAreaListener
 export const WindowListeners: FC = () => {
 
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-  const mapId = useSelector((state: RootStateOrAny) => state.mapId)
-  const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
@@ -367,7 +365,6 @@ export const WindowListeners: FC = () => {
               if (isEditing) {
                 mapDispatch('insertTextFromClipboardAsText', text)
               } else {
-                // set up parentNodeEndXYFrom for all the following to have nice anims
                 if (text.substring(0, 1) === '[') {
                   mapDispatch('insertMapFromClipboard', text)
                 } else {
@@ -442,9 +439,9 @@ export const WindowListeners: FC = () => {
   }
 
   useEffect(() => {
-    if (mapId !== '' && mapSource !== '') {
+    if (mapStackData.length) {
       const m = getMap()
-      reDraw(m, colorMode) // mapDispatch is futile here, as this does not change state
+      reDraw(m, colorMode)
     }
     const root = document.querySelector(':root')
     root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
@@ -488,6 +485,7 @@ export const WindowListeners: FC = () => {
 }
 
 // TODO next
+// - figure out how to react to initial density and alignment - same problem as with shouldLoad
 // - fix isDimAssigned and introduce mapDiff
 // - fix save
 // - fix paste - merge what needs merge
