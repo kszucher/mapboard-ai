@@ -123,10 +123,10 @@ const allSlice = createSlice({
     parseRespPayload(state, action: PayloadAction<any>) {
       let parsed = {}
       if (action.payload.hasOwnProperty('mapData')) {
-          parsed = {
-            mapStackData: [reCalc(mapAssembly(action.payload.mapData))],
-            mapStackDataIndex: 0,
-          }
+        parsed = {
+          mapStackData: [reCalc(mapAssembly(action.payload.mapData))],
+          mapStackDataIndex: 0,
+        }
       }
       if (action.payload.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
         parsed = {
