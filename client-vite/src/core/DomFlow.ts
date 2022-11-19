@@ -3,6 +3,7 @@
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
 import {setEndOfContentEditable} from "./DomUtils";
+import {getEditedPath} from "./MapFlow";
 
 let mapDivData = [];
 let mapSvgData = [[],[],[],[],[],[]];
@@ -47,7 +48,12 @@ export const updateMapDivData = ( nodeId, contentType, content, path, styleData 
   let shouldInnerHTMLUpdate = false
   let shouldStyleUpdate = {}
   if (el) {
-    shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
+    const isEditing = getEditedPath().length
+    if (isEditing) {
+      shouldInnerHTMLUpdate = el.params.contentType !== contentType
+    } else {
+      shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
+    }
     for (const style in styleData) {
       shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
     }
