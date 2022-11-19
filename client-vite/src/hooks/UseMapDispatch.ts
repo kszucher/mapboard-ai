@@ -26,7 +26,8 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_O_S'
     ].includes(action)) {
       const tempMap = getTempMap()
-      Object.assign(payload, {contentToSave: getMapData(tempMap, editedPath).content})
+      const contentToSave = getMapData(tempMap, editedPath).content
+      Object.assign(payload, {contentToSave})
     }
     // enough to define currM here!!!
     let editedPathNext = []
@@ -63,10 +64,14 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       const nextMSimplified = mapDeInit.start(copy(nextM))
       if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
         dispatch(actions.mutateMapStack({data: nextM, editedPath: editedPathNext}))
+        if (['insert_O_S', 'insert_U_S', 'insert_D_S'].includes(action)) {
+          dispatch(actions.mutateTempMap({data: nextM, editedPath: editedPathNext}))
+          // this needs so a tempMap creates which is able to actually listen to editingPath changing to []
+        }
       }
     }
   }
 }
 
-// TODO move orient OUT
-// TODO figure out metamorphosis
+// bug: equation after edit but no change does not finish edit
+// bug: finish edit on empty node copies the wrong stuff
