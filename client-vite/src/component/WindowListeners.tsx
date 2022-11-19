@@ -451,9 +451,8 @@ export const WindowListeners: FC = () => {
         })
       }
     } else {
-      console.log('EDITING HAS FINISHED...')
       if (Object.keys(tempMap).length) {
-        mutationObserver.disconnect()
+        mutationObserver?.disconnect()
         const m = getTempMap()
         const lm = getMapData(m, m.sc.lastPath)
         const holderElement = document.getElementById(`${lm.nodeId}_div`)
