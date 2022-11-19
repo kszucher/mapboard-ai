@@ -29,13 +29,12 @@ const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 bor
 
 export const ControlsRight: FC = () => {
   const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
   const { density, alignment } = m
 
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 
   return (
     <>

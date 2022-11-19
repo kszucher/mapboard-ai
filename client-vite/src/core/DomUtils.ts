@@ -83,10 +83,10 @@ export const getEquationDim = (content) => {
   tmpDiv.style.fontSize = 14 + 'px'
   tmpDiv.innerHTML = str
   window.document.body.appendChild(tmpDiv)
-  let dim = {
-    w: tmpDiv.childNodes[0].offsetWidth,
-    h: tmpDiv.childNodes[0].offsetHeight,
-  }
+  let dim = [
+    tmpDiv.childNodes[0].offsetWidth,
+    tmpDiv.childNodes[0].offsetHeight
+  ]
   const element = document.getElementById("Test")
   element.parentNode.removeChild(element)
   return dim

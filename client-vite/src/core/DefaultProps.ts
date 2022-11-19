@@ -11,10 +11,10 @@ export let mapProps = {
     taskConfigGap: 4,
     margin: 32,
   },
-  saveNeverInitOnce: { // this means reCalc does not change this, but the issue is that it is not reset
+  saveNeverInitOnce: {
     selectionRect: [],
     moveData: [],
-    animationRequested: 0, // will be a mapGetProp of parentNodeXYZ (enough to have that as single source of truth)
+    animationRequested: 0, // will be a mapGetProp of animation on the node level
   },
   saveNeverInitAlways: {
     mapWidth: 0,
@@ -72,6 +72,8 @@ export let nodeProps = {
     link: '',
     imageW: 0,
     imageH: 0,
+    dimW: 0,
+    dimH: 0,
     selected: 0,
     selection: 's',
     lastSelectedChild: -1, // -1 means not selected ever
@@ -88,20 +90,12 @@ export let nodeProps = {
     textColor: 'default',
     taskStatus: -1,
   },
-  saveNeverInitOnce: { // this means reCalc does not change this, but the issue is that it is not reset
+  saveNeverInitOnce: {
     // UNSORTED
-    isEditing: 0,
-    parentNodeEndXFrom: 0, // mapDiff updates this
-    parentNodeStartXFrom: 0, // mapDiff updates this
-    parentNodeYFrom: 0, // mapDiff updates this
+    isEditing: 0, // use it from the store instead
     // mapAlgo
     contentCalc: '',
-    // mapMeasure
-    isDimAssigned: 0, // mapDiff updates this, rename to shouldMeasure
-    contentW: 0, // move to be local
-    contentH: 0, // move to be local
     // animation
-    animationRequested: 0, // once only m will know about this by MapGetProp of parent_XYZ this becomes obsolete
   },
   saveNeverInitAlways: {
     // mapChain
@@ -115,6 +109,12 @@ export let nodeProps = {
     hasStruct: 0,
     hasCell: 0,
     index: [],
+    // mapDiff
+    dimChange: 0,
+    parentNodeEndXFrom: 0,
+    parentNodeStartXFrom: 0,
+    parentNodeYFrom: 0,
+    animationRequested: 0, // we can just use parentNodeXY instead so this is redundant
     // mapMeasure
     selfW: 0,
     selfH: 0,

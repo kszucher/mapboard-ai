@@ -4,7 +4,7 @@ import { updateMapDivData } from '../core/DomFlow'
 import { getColors } from '../core/Colors'
 
 export const mapVisualizeDiv = {
-  start: (m, cr, colorMode) => {
+  start: (m, cr, colorMode, isEditing) => {
     const mapDiv = document.getElementById('mapDiv')
     mapDiv.style.width = "" + m.mapWidth + "px"
     mapDiv.style.height = "" + m.mapHeight + "px"

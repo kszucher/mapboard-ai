@@ -7,9 +7,8 @@ import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 export const ShouldUpdateTask: FC = () => {
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   return (
     <Modal
       open={true}

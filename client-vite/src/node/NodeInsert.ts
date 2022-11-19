@@ -10,30 +10,18 @@ export const structInsert = (m, lm, mode, payload ) => {
     parentRef.s.splice(lm.index, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ?  0 : -1,
-      parentNodeEndXFrom: parentRef.nodeEndX,
-      parentNodeStartXFrom: parentRef.nodeStartX,
-      parentNodeYFrom: parentRef.nodeY,
-      animationRequested: 1,
     }))
   } else if (mode === 'siblingDown') {
     parentRef = getMapData(m, lm.parentPath);
     parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ? 0 : -1,
-      parentNodeEndXFrom: parentRef.nodeEndX,
-      parentNodeStartXFrom: parentRef.nodeStartX,
-      parentNodeYFrom: parentRef.nodeY,
-      animationRequested: 1,
     }));
   } else if (mode === 'child') {
     parentRef = lm.isRoot? lm.d[0] : lm;
     parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus,
-      parentNodeEndXFrom: parentRef.nodeEndX,
-      parentNodeStartXFrom: parentRef.nodeStartX,
-      parentNodeYFrom: parentRef.nodeY,
-      animationRequested: 1,
     }));
   } else if (mode === 'childTable') {
     parentRef = lm.isRoot? lm.d[0] : lm;
@@ -49,10 +37,6 @@ export const structInsert = (m, lm, mode, payload ) => {
     parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
       selected: 1,
       taskStatus: -1,
-      parentNodeEndXFrom: parentRef.nodeEndX,
-      parentNodeStartXFrom: parentRef.nodeStartX,
-      parentNodeYFrom: parentRef.nodeY,
-      animationRequested: 1,
       c: tableGen
     }));
   }

@@ -15,13 +15,12 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
 
   const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
 
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
   const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.nc
 
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 
   const setNodeColor = (value: string) => {
     if (formatMode === FormatMode.text) mapDispatch('setFormatParams', {textColor: value})

@@ -101,35 +101,34 @@ export const mapMeasure = {
           params.hasMultipleContentRow = 1
         }
       } else {
-        // TODO contentW and contentH are local parameters
-        // TODO always read the dimVec that is already saved, and density may have an effect on that but not a trigger!!!
-        // unity: the same way image w h is stored, other w h will be stored
-        if (cm.contentType === 'text') {
-          if (cm.isDimAssigned === 0) {
-            cm.isDimAssigned = 1
-            let dimVec = getTextDim(cm.content, cm.textFontSize)
-            let x = dimVec[0]
-            let y = dimVec[1]
-            let lineCount = y/17
-            let realY = lineCount <= 1 ? m.defaultH : y + m.padding*2
-            cm.contentW = m.density === 'large' ? x : x + 8
-            let yc = m.density === 'large' ? 1 : 2
-            cm.contentH = realY - m.padding*2 + yc
+        // dependent on change
+        if (cm.content !== '' && (cm.dimW === 0 || cm.dimH === 0 || cm.dimChange)) {
+          // TODO check if we don't rerender in case of equations once they can save
+          if (cm.contentType === 'text') {
+            const dim = getTextDim(cm.content, cm.textFontSize)
+            cm.dimW = dim[0]
+            cm.dimH = dim[1]
+          } else if (cm.contentType === 'equation') {
+            const dim = getEquationDim(cm.content)
+            cm.dimW = dim[0]
+            cm.dimH = dim[1]
+          } else if (cm.contentType === 'image') {
+            // TODO rename imageW, and imageH to dimW, and dimH in mongo, and the REMOVE these lines
+            cm.dimW = cm.imageW
+            cm.dimH = cm.imageH
           }
-        } else if (cm.contentType === 'equation') {
-          if (cm.isDimAssigned === 0) {
-            cm.isDimAssigned = 1
-            let dim = getEquationDim(cm.content)
-            cm.contentW = dim.w
-            cm.contentH = dim.h
-          }
-        } else if (cm.contentType === 'image') {
-          cm.contentW = cm.imageW
-          cm.contentH = cm.imageH
         }
-        else {console.log('unknown contentType')}
-        cm.selfW = cm.contentW + m.padding*2
-        cm.selfH = cm.contentH + m.padding*2
+        // not dependent on change
+        let paddingW = m.padding*2
+        let paddingH = m.padding*2
+        let densityW = 0
+        let densityH = 0
+        if (cm.contentType === 'text') {
+          densityW = m.density === 'large' ? 0 : 8
+          densityH = m.density === 'large' ? 1 : 2
+        }
+        cm.selfW = (cm.dimW > 20 ? cm.dimW : 20) + paddingW + densityW
+        cm.selfH = cm.dimH/17 <= 1 ? m.defaultH + densityH : cm.dimH + paddingH + densityH
       }
     }
     cm.maxW = cm.selfW + cm.familyW

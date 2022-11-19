@@ -13,20 +13,18 @@ import {nodeProps} from "../core/DefaultProps";
 
 describe("Formatter test", () => {
   beforeEach(() => {
+    const testMap = mapAssembly([
+      {path: ['m'], density: 'small'},
+      {path: ['r', 0], content: 'Features'},
+      {path: ['r', 0, 'd', 0]},
+      {path: ['r', 0, 'd', 0, 's', 0], content: 'Texts', selected: 1},
+      {path: ['r', 0, 'd', 1]},
+    ])
     store.dispatch(actions.parseRespPayload({
       formatMode: FormatMode.text,
       mapRight: MapRight.EDIT,
       mapStackDataIndex: 0,
-      mapStackData: [reCalc(mapAssembly([
-        {path: ['m'], density: 'small'},
-        {path: ['r', 0], content: 'Features'},
-        {path: ['r', 0, 'd', 0]},
-        {path: ['r', 0, 'd', 0, 's', 0],
-          content: 'Texts',
-          selected: 1,
-        },
-        {path: ['r', 0, 'd', 1]},
-      ]))],
+      mapStackData: [reCalc(testMap, testMap)],
     }))
     const {} = render(
       <Provider store={store}>

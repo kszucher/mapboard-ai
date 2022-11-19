@@ -62,7 +62,7 @@ const getNodeVisParams = (selection, adjustedParams) => {
 }
 
 export const mapVisualizeSvg = {
-  start: (m, cr, colorMode, shouldAnimationInit) => {
+  start: (m, cr, colorMode, isEditing, shouldAnimationInit) => {
     const mapSvgOuter = document.getElementById('mapSvgOuter')
     mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
     mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'

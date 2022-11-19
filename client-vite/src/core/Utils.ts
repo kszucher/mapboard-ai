@@ -86,7 +86,11 @@ export const getLatexString = (rawString) => {
 export const subsref = (obj, path) => {
   // https://stackoverflow.com/questions/6393943/convert-javascript-string-in-dot-notation-into-an-object-reference
   // obj,['1','2','3'] -> ((obj['1'])['2'])['3']
-  return path.length ? subsref(obj[path[0]], path.slice(1)) : obj
+  try {
+    return path.length ? subsref(obj[path[0]], path.slice(1)) : obj
+  } catch {
+    return undefined
+  }
 }
 
 export const subsasgn = (obj, path, value) => {

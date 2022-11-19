@@ -36,10 +36,12 @@ const editorState = {
   frameSelected: 0,
   mapRight: MapRight.UNAUTHORIZED,
 
+  tempMap: {},
+
   mapStackData: [],
   mapStackDataIndex: 0,
 
-  isEditing: false,
+  isEditing: null,
 
   formatterVisible: false,
 
@@ -94,9 +96,6 @@ const allSlice = createSlice({
 
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
 
-    startEdit(state) { state.isEditing = true },
-    finishEdit(state) { state.isEditing = false },
-
     setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
     setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
     setShareFeedbackMessage(state, action: PayloadAction<string>) { state.shareFeedbackMessage = action.payload },
@@ -107,9 +106,15 @@ const allSlice = createSlice({
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
 
+    mutateTempMap(state, action: PayloadAction<any>) {
+      state.tempMap = action.payload.data
+      state.isEditing = action.payload.isEditing
+    },
+
     mutateMapStack(state, action: PayloadAction<any>) {
-      state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload]
+      state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
       state.mapStackDataIndex = state.mapStackDataIndex + 1
+      state.isEditing = action.payload.isEditing
     },
 
     undo(state) {
@@ -124,13 +129,13 @@ const allSlice = createSlice({
       let parsed = {}
       if (action.payload.hasOwnProperty('mapData')) {
         parsed = {
-          mapStackData: [reCalc(mapAssembly(action.payload.mapData))],
+          mapStackData: [reCalc(mapAssembly(action.payload.mapData), mapAssembly(action.payload.mapData))],
           mapStackDataIndex: 0,
         }
       }
       if (action.payload.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
         parsed = {
-          mapStackData: action.payload.landingData.map(el => reCalc(mapAssembly(el))),
+          mapStackData: action.payload.landingData.map(el => reCalc(mapAssembly(el), mapAssembly(el))),
           mapStackDataIndex: 0,
         }
       }

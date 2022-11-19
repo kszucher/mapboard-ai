@@ -9,6 +9,7 @@ import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
 import {mapChain} from '../map/MapChain'
 import {mapDeInit} from '../map/MapDeInit'
+import {mapDiff} from "../map/MapDiff"
 import {mapDisassembly} from '../map/MapDisassembly'
 import {mapExtractFormatting} from "../map/MapExtractFormatting"
 import {mapExtractSelection} from '../map/MapExtractSelection'
@@ -23,6 +24,14 @@ import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellInsert, structInsert} from '../node/NodeInsert'
 import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
+
+export const getIsEditing = () => {
+  return store.getState().isEditing
+}
+
+export const getTempMap = () => {
+  return store.getState().tempMap
+}
 
 export const getMap = () => {
   const mapStackData = store.getState().mapStackData
@@ -58,6 +67,15 @@ const updateParentLastSelectedChild = (m, lm) => {
 export const mapReducer = (m, action, payload) => {
   const { sc } = m
   let lm = getMapData(m, sc.lastPath)
+  if (payload.hasOwnProperty('contentToSave')) {
+    lm.content = payload.contentToSave
+    lm.isEditing = 0
+    if (lm.content.substring(0, 2) === '\\[') {
+      lm.contentType = 'equation'
+    } else if (lm.content.substring(0, 1) === '=') {
+      lm.contentCalc = lm.content
+    }
+  }
   switch (action) {
     // VIEW
     case 'changeDensity': {
@@ -359,15 +377,16 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     case 'insertTextFromClipboardAsNode': {
-      Object.assign(lm, {contentType: 'text', content: payload, isDimAssigned: 0})
+      // we can structInsert here AND pass this assignment as an argument so it is set WHEN created
+      Object.assign(lm, {contentType: 'text', content: payload})
       break
     }
     case 'insertElinkFromClipboardAsNode': {
-      Object.assign(lm, {contentType: 'text', content: payload, linkType: 'external', link: payload, isDimAssigned: 0})
+      Object.assign(lm, {contentType: 'text', content: payload, linkType: 'external', link: payload})
       break
     }
     case 'insertEquationFromClipboardAsNode': {
-      Object.assign(lm, {contentType: 'equation', content: payload, isDimAssigned: 0})
+      Object.assign(lm, {contentType: 'equation', content: payload})
       break
     }
     case 'insertImageFromLinkAsNode': {
@@ -440,73 +459,55 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     // EDIT
-    case 'typeText': {
-      lm.content = payload
-      lm.isEditing = 1
-      lm.isDimAssigned = 0
-      break
-    }
-    case'startEdit': {
+    case'contentTypeToText': {
       lm.isEditing = 1
       if (lm.contentType === 'equation') {
         lm.contentType = 'text'
-        lm.isDimAssigned = 0
       }
       break
     }
-    case 'finishEdit': {
+    case 'deleteContent': {
+      if (!lm.hasCell) {
+        lm.content = ''
+      }
+      break
+    }
+    case 'typeText': {
       lm.content = payload
-      lm.isEditing = 0
-      lm.isDimAssigned = 0
-      if (lm.content.substring(0, 2) === '\\[') {
-        lm.contentType = 'equation'
-        lm.isDimAssigned = 0
-      } else if (lm.content.substring(0, 1) === '=') {
-        lm.contentCalc = lm.content
-        lm.isDimAssigned = 0
-      }
-      break
-    }
-    case 'eraseContent': {
-      lm.content = ''
+      lm.isEditing = 1
       break
     }
   }
   return m
 }
 
-export const reCalc = (m: any) => {
+export const reCalc = (pm: any, m: any) => {
   let cr = getMapData(m, ['r', 0])
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
   mapTaskCheck.start(m, cr)
-  // mapDiff
-  // DIFF FOR PARENT_XYZ
-  // - diffing is not about seeing new ones added, but seeing a node having a child it did not have before
-  // DIFF FOR DIM
-  // const diff: [{path, content, contentType, textFontSize}] = MapDiff.start(currM, nextM, ['content', 'contentType', 'textFontSize])
-  // const newDimList:  [{path, dimVec}] = diff.map (el => [getTextDim, getEquationDim, getImageDim] [contentType] => )
-  // it can feed a shouldDimUpdate variable consumed by the next stage of MapMeas
+  mapDiff.start(pm, m, cr)
   mapMeasure.start(m, cr)
   mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
   mapExtractSelection.start(m, cr)
   mapExtractFormatting.start(m)
+  // init, chain, mapDiff, mapCalcTask, mapExtractTask, mapExtractSelection, mapExtractFormatting, mapMeasure, mapPlace
   return m
 }
 
-const redrawStep = (m: any, colorMode: any, shouldAnimationInit: boolean) => {
+const redrawStep = (m: any, colorMode: any, isEditing, shouldAnimationInit: boolean) => {
   flagDomData()
   let cr = getMapData(m, ['r', 0])
-  mapVisualizeSvg.start(m, cr, colorMode, shouldAnimationInit)
-  mapVisualizeDiv.start(m, cr, colorMode)
+  mapVisualizeSvg.start(m, cr, colorMode, isEditing, shouldAnimationInit)
+  mapVisualizeDiv.start(m, cr, colorMode, isEditing)
   updateDomData()
 }
 
-export const reDraw = (m: any, colorMode: any) => {
+export const reDraw = (m: any, colorMode: any, isEditing: boolean) => {
   if (m.animationRequested) { // if we don't want to store this, we may just use mapGetProp...
-    redrawStep(m, colorMode, true)
+    redrawStep(m, colorMode, isEditing, true)
   }
-  redrawStep(m, colorMode, false)
+  redrawStep(m, colorMode, isEditing, false)
 }

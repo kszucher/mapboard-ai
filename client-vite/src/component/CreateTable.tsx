@@ -9,9 +9,8 @@ export const CreateTable: FC = () => {
   const [row, setRow] = useState<string>('1')
   const [col, setCol] = useState<string>('1')
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, colorMode, action, payload)
+  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 
   return (
     <Modal open={true} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
