@@ -436,6 +436,7 @@ export const WindowListeners: FC = () => {
           for (let mutation of mutationsList) {
             if (mutation.type === 'characterData') {
               // "deleteContextTypeText" would require changing editedPath to an editInfo
+              // or a better solution: pass previous isEditing to reCalc, and with a diff, it will know it needs to change content
               mapDispatch('typeText', holderElement.innerHTML)
             }
           }

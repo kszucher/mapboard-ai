@@ -15,7 +15,7 @@ export const mapVisualizeDiv = {
 
   iterate: (m, cm, colorMode) => {
     if (cm.type === 'struct' && !cm.hasCell) {
-      const { nodeId, contentType, content, path, isEditing } = cm
+      const { nodeId, contentType, content, path } = cm
       const {TEXT_COLOR} = getColors(colorMode)
       let styleData = {
         left:                       1 + cm.nodeStartX + 'px',
@@ -34,7 +34,7 @@ export const mapVisualizeDiv = {
         transitionTimingFunction:   'cubic-bezier(0.0,0.0,0.58,1.0)',
         // transitionProperty:         'left, top, background-color',
       }
-      updateMapDivData(nodeId, contentType, content, path, isEditing, styleData)
+      updateMapDivData(nodeId, contentType, content, path, styleData)
     }
     cm.d.map(i => mapVisualizeDiv.iterate(m, i, colorMode))
     cm.s.map(i => mapVisualizeDiv.iterate(m, i, colorMode))

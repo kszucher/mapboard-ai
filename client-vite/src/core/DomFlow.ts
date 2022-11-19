@@ -2,6 +2,7 @@
 
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
+import {setEndOfContentEditable} from "./DomUtils";
 
 let mapDivData = [];
 let mapSvgData = [[],[],[],[],[],[]];
@@ -40,15 +41,13 @@ export const flagDomData = () => {
   }
 }
 
-export const updateMapDivData = ( nodeId, contentType, content, path, isEditing, styleData ) => {
+export const updateMapDivData = ( nodeId, contentType, content, path, styleData ) => {
   const divId = `${nodeId}_div`
   let el = mapDivData.find(el => el.divId === divId)
   let shouldInnerHTMLUpdate = false
   let shouldStyleUpdate = {}
   if (el) {
-    if (!isEditing) {
-      shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
-    }
+    shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
     for (const style in styleData) {
       shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
     }
@@ -128,6 +127,7 @@ export const updateDomData = () => {
         if (div) {
           if (shouldInnerHTMLUpdate) {
             div.innerHTML = renderContent(contentType, content);
+            setEndOfContentEditable(div)
           }
           for (const style in styleData) {
             if (shouldStyleUpdate[style]) {
