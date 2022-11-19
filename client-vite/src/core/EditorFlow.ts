@@ -115,7 +115,6 @@ const allSlice = createSlice({
       state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
       state.mapStackDataIndex = state.mapStackDataIndex + 1
       state.editedPath = action.payload.editedPath
-      state.mapTemp = []
     },
 
     undo(state) {
