@@ -41,7 +41,7 @@ const editorState = {
   mapStackData: [],
   mapStackDataIndex: 0,
 
-  isEditing: null,
+  editedPath: [],
 
   formatterVisible: false,
 
@@ -108,13 +108,13 @@ const allSlice = createSlice({
 
     mutateTempMap(state, action: PayloadAction<any>) {
       state.tempMap = action.payload.data
-      state.isEditing = action.payload.isEditing
+      state.editedPath = action.payload.editedPath
     },
 
     mutateMapStack(state, action: PayloadAction<any>) {
       state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
       state.mapStackDataIndex = state.mapStackDataIndex + 1
-      state.isEditing = action.payload.isEditing
+      state.editedPath = action.payload.editedPath
     },
 
     undo(state) {

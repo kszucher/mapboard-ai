@@ -4,7 +4,7 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getIsEditing, getMap, getMapData, getTempMap, reDraw} from '../core/MapFlow'
+import {getEditedPath, getMap, getMapData, getTempMap, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
 import {isUrl} from '../core/Utils'
 import {useMapDispatch} from "../hooks/UseMapDispatch";
@@ -33,7 +33,7 @@ export const WindowListeners: FC = () => {
   const tempMap = useSelector((state: RootStateOrAny) => state.tempMap)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
-  const isEditing = useSelector((state: RootStateOrAny) => state.isEditing)
+  const editedPath = useSelector((state: RootStateOrAny) => state.editedPath)
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
@@ -201,11 +201,14 @@ export const WindowListeners: FC = () => {
   const keydown = (e) => {
     const {key, code, which} = getNativeEvent(e)
     const m = getMap()
-    const isEditing = getIsEditing()
-    if (isEditing) {
+    const editedPath = getEditedPath()
+    if (editedPath.length) {
       if (key === 'Enter' && !+e.ctrlKey && !+e.shiftKey && !+e.altKey) {
         e.preventDefault()
         mapDispatch('finishEdit')
+      } else if (['Insert', 'Tab'].includes(key) && !+e.ctrlKey && !+e.shiftKey && !+e.altKey) {
+        e.preventDefault()
+        mapDispatch('insert_O_S')
       }
     } else {
       // [37,38,39,40] = [left,up,right,down]
@@ -269,8 +272,9 @@ export const WindowListeners: FC = () => {
           keyStateMachine.s === +e.shiftKey &&
           keyStateMachine.a === +e.altKey &&
           keyStateMachine.keyMatch === true &&
-          keyStateMachine.scope.includes(m.sc.scope) &&
-          isEditing === false
+          keyStateMachine.scope.includes(m.sc.scope)
+          // &&
+          // isEditing === false
         ) {
           if (keyStateMachine.p) {
             e.preventDefault()
@@ -408,52 +412,52 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapStackData.length) {
       const m = getMap()
-      reDraw(m, colorMode, isEditing)
+      reDraw(m, colorMode, editedPath)
     }
   }, [mapStackData, mapStackDataIndex, colorMode])
 
   useEffect(() => {
     if (Object.keys(tempMap).length) {
       const m = getTempMap()
-      reDraw(m, colorMode, isEditing)
+      reDraw(m, colorMode, editedPath)
     }
   }, [tempMap])
 
   useEffect(() => {
-    if (isEditing !== null)
-      if (isEditing) {
-        console.log('EDITING HAS STARTED...')
-        const m = getMap()
-        const lm = getMapData(m, m.sc.lastPath)
-        if (!lm.hasCell) {
-          const holderElement = document.getElementById(`${lm.nodeId}_div`)
-          holderElement.contentEditable = 'true'
-          setEndOfContentEditable(holderElement)
-          mutationObserver = new MutationObserver(mutationsList => {
-            for (let mutation of mutationsList) {
-              if (mutation.type === 'characterData') {
-                mapDispatch('typeText', holderElement.innerHTML)
-              }
+    if (editedPath.length) {
+      console.log('EDITING HAS STARTED...')
+      const m = getMap()
+      const lm = getMapData(m, m.sc.lastPath)
+      if (!lm.hasCell) {
+        const holderElement = document.getElementById(`${lm.nodeId}_div`)
+        holderElement.contentEditable = 'true'
+        setEndOfContentEditable(holderElement)
+        mutationObserver = new MutationObserver(mutationsList => {
+          for (let mutation of mutationsList) {
+            if (mutation.type === 'characterData') {
+              // "deleteContextTypeText" would require changing editedPath to an editInfo
+              mapDispatch('typeText', holderElement.innerHTML)
             }
-          })
-          mutationObserver.observe(holderElement, {
-            attributes: false,
-            childList: false,
-            subtree: true,
-            characterData: true
-          })
-        }
-      } else {
-        console.log('EDITING HAS FINISHED...')
-        if (Object.keys(tempMap).length) {
-          mutationObserver.disconnect()
-          const m = getTempMap()
-          const lm = getMapData(m, m.sc.lastPath)
-          const holderElement = document.getElementById(`${lm.nodeId}_div`)
-          holderElement.contentEditable = 'false'
-        }
+          }
+        })
+        mutationObserver.observe(holderElement, {
+          attributes: false,
+          childList: false,
+          subtree: true,
+          characterData: true
+        })
       }
-  }, [isEditing])
+    } else {
+      console.log('EDITING HAS FINISHED...')
+      if (Object.keys(tempMap).length) {
+        mutationObserver.disconnect()
+        const m = getTempMap()
+        const lm = getMapData(m, m.sc.lastPath)
+        const holderElement = document.getElementById(`${lm.nodeId}_div`)
+        holderElement.contentEditable = 'false'
+      }
+    }
+  }, [editedPath])
 
   useEffect(() => {
     if (mapId !== '') {
