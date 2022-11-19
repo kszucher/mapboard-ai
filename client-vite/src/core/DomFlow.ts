@@ -127,7 +127,6 @@ export const updateDomData = () => {
         if (div) {
           if (shouldInnerHTMLUpdate) {
             div.innerHTML = renderContent(contentType, content);
-            setEndOfContentEditable(div)
           }
           for (const style in styleData) {
             if (shouldStyleUpdate[style]) {

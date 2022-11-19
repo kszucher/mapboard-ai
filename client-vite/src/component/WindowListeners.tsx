@@ -412,6 +412,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapStackData.length) {
       const m = getMap()
+      console.log('RENDER MAP')
       reDraw(m, colorMode, editedPath)
     }
   }, [mapStackData, mapStackDataIndex, colorMode])
@@ -419,6 +420,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (Object.keys(tempMap).length) {
       const m = getTempMap()
+      console.log('RENDER TEMPMAP')
       reDraw(m, colorMode, editedPath)
     }
   }, [tempMap])

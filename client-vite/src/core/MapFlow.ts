@@ -69,7 +69,6 @@ export const mapReducer = (m, action, payload) => {
   let lm = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
     lm.content = payload.contentToSave
-    lm.isEditing = 0
     if (lm.content.substring(0, 2) === '\\[') {
       lm.contentType = 'equation'
     } else if (lm.content.substring(0, 1) === '=') {
@@ -460,7 +459,6 @@ export const mapReducer = (m, action, payload) => {
     }
     // EDIT
     case'contentTypeToText': {
-      lm.isEditing = 1
       if (lm.contentType === 'equation') {
         lm.contentType = 'text'
       }
@@ -473,8 +471,8 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     case 'typeText': {
+      lm.contentType = 'text'
       lm.content = payload
-      lm.isEditing = 1
       break
     }
   }
