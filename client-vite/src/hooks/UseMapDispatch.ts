@@ -30,13 +30,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       contentToSave = getMapData(tempMap, editedPath).content
       Object.assign(payload, {contentToSave})
     }
-
-    // if (!editedPathString.length && action === 'typeText') {
-    //   // too late... so how do we detect that the previous was different???
-    //   console.log('should save...')
-    //   Object.assign(payload, {contentToSave: 'cica'})mmmjj
-    // }
-
     // reducer
     const nextM = reCalc(currM, mapReducer(copy(currM), action, payload))
     if (['changeDensity', 'changeAlignment', 'moveTarget'].includes(action)) {
@@ -46,7 +39,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       // what I use is somewhat a centered but left aligned, and we are now touching user requirements
       // make it reactive and uniform and later think about the users
     }
-
     // map
     if (![
       'typeText',
@@ -61,7 +53,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
         dispatch(actions.mutateMapStack({data: nextM}))
       }
     }
-
     // temp map
     if ([
       'contentTypeToText',
@@ -76,9 +67,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       console.log('mutate temp map')
       dispatch(actions.mutateTempMap({data: nextM}))
     }
-
     // start edit
-    // let nextEditedPathString =
     const nextEditedPathString = ([
       'contentTypeToText',
       'typeText',
