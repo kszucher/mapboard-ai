@@ -436,17 +436,14 @@ export const WindowListeners: FC = () => {
         if (!lm.hasCell) {
           const holderElement = document.getElementById(`${lm.nodeId}_div`)
           holderElement.contentEditable = 'true'
+          if (!Object.keys(tempMap).length) {
+            holderElement.innerHTML = ''
+          }
           setEndOfContentEditable(holderElement)
-
           mutationObserver = new MutationObserver(mutationsList => {
             for (let mutation of mutationsList) {
               if (mutation.type === 'characterData') {
-                if (Object.keys(tempMap).length) {
-                  mapDispatch('typeText', holderElement.innerHTML)
-                } else {
-                  // TODO figure this one out
-                  mapDispatch('deleteTypeText')
-                }
+                mapDispatch('typeText', holderElement.innerHTML)
               }
             }
           })

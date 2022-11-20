@@ -42,7 +42,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     // map
     if (![
       'typeText',
-      'deleteTypeText',
       'moveTargetPreview',
       'selectTargetPreview',
     ].includes(action)) {
@@ -57,7 +56,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     if ([
       'contentTypeToText',
       'typeText',
-      'deleteTypeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S',
@@ -71,7 +69,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     const nextEditedPathString = ([
       'contentTypeToText',
       'typeText',
-      'deleteTypeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S'
