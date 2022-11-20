@@ -72,7 +72,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
         'startEdit',
         'typeText',
       ].includes(action) &&
-      getMapData(nextM, nextM.sc.lastPath).contentType !== 'image')
+      getMapData(nextM, nextM.sc.lastPath).contentType !== 'image' &&
+      getMapData(nextM, nextM.sc.lastPath).hasCell === 0
+    )
       ? toPathString(nextM.sc.lastPath)
       : ''
     dispatch(actions.setEditedPathString(nextEditedPathString))

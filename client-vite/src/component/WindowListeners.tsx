@@ -433,27 +433,25 @@ export const WindowListeners: FC = () => {
         // console.log('EDITING HAS STARTED')
         const m = getMap()
         const lm = getMapData(m, m.sc.lastPath)
-        if (!lm.hasCell) {
-          const holderElement = document.getElementById(`${lm.nodeId}_div`)
-          holderElement.contentEditable = 'true'
-          if (!Object.keys(tempMap).length) {
-            holderElement.innerHTML = ''
-          }
-          setEndOfContentEditable(holderElement)
-          mutationObserver = new MutationObserver(mutationsList => {
-            for (let mutation of mutationsList) {
-              if (mutation.type === 'characterData') {
-                mapDispatch('typeText', holderElement.innerHTML)
-              }
-            }
-          })
-          mutationObserver.observe(holderElement, {
-            attributes: false,
-            childList: false,
-            subtree: true,
-            characterData: true
-          })
+        const holderElement = document.getElementById(`${lm.nodeId}_div`)
+        holderElement.contentEditable = 'true'
+        if (!Object.keys(tempMap).length) {
+          holderElement.innerHTML = ''
         }
+        setEndOfContentEditable(holderElement)
+        mutationObserver = new MutationObserver(mutationsList => {
+          for (let mutation of mutationsList) {
+            if (mutation.type === 'characterData') {
+              mapDispatch('typeText', holderElement.innerHTML)
+            }
+          }
+        })
+        mutationObserver.observe(holderElement, {
+          attributes: false,
+          childList: false,
+          subtree: true,
+          characterData: true
+        })
       }
     } else {
       if (mapStackData.length) {
