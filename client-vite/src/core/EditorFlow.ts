@@ -122,6 +122,7 @@ const allSlice = createSlice({
 
     undo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex > 0 ? state.mapStackDataIndex - 1 : state.mapStackDataIndex
+      state.editedPathString = ''
     },
 
     redo(state) {
