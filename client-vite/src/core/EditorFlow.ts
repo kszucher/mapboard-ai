@@ -129,7 +129,7 @@ const allSlice = createSlice({
     },
 
     setEditedPathString(state, action: PayloadAction<any>) {
-      state.editedPathString = action.payload.editedPathString
+      state.editedPathString = action.payload
     },
 
     undo(state) {

@@ -449,12 +449,6 @@ export const mapReducer = (m, action, payload) => {
       }
       break
     }
-    case 'deleteContent': {
-      if (!lm.hasCell) {
-        lm.content = ''
-      }
-      break
-    }
     case 'typeText': {
       lm.contentType = 'text'
       lm.content = payload

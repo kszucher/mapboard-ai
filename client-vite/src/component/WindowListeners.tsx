@@ -6,7 +6,7 @@ import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
 import {getMapData, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
-import {isUrl} from '../core/Utils'
+import {isUrl, toPathString} from '../core/Utils'
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
@@ -292,6 +292,8 @@ export const WindowListeners: FC = () => {
             if (action === 'redo') dispatch(actions.redo())
           } else if (action === 'applyColorFromKey') {
             mapDispatch(action, {currColor: which - 96})
+          } else if (action === 'deleteContent') {
+            dispatch(actions.setEditedPathString(toPathString(m.sc.lastPath)))
           } else {
             mapDispatch(action, {keyCode: e.code})
           }
@@ -438,8 +440,6 @@ export const WindowListeners: FC = () => {
           mutationObserver = new MutationObserver(mutationsList => {
             for (let mutation of mutationsList) {
               if (mutation.type === 'characterData') {
-                // "deleteContextTypeText" would require changing editedPathString to an editInfo
-                // or a better solution: pass previous isEditing to reCalc, and with a diff, it will know it needs to change content
                 mapDispatch('typeText', holderElement.innerHTML)
               }
             }

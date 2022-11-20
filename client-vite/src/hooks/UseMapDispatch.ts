@@ -1,14 +1,11 @@
 // @ts-nocheck
 
-import { Dispatch } from "redux"
+import {Dispatch} from "redux"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {getMapData, mapReducer, reCalc} from "../core/MapFlow"
-import {copy} from "../core/Utils"
+import {copy, toPath, toPathString} from "../core/Utils"
 import {mapDeInit} from "../map/MapDeInit"
 import {actions, getEditedPathString, getMap, getTempMap} from "../core/EditorFlow"
-
-const toPath = (pathString) => ([...pathString].map(el => isNaN(el) ? el : parseInt(el)))
-const toPathString = (path) => ([...path].map(el => el.toString()).join(''))
 
 // this will eventually become a pure reducer...
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
@@ -27,6 +24,8 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'setTaskStatus',
       'insert_O_S'
     ].includes(action)) {
+      // another condition: NOT length but IS typeText --> content then will be nullified
+
       const tempMap = getTempMap()
       const editedPath = toPath(editedPathString)
       const contentToSave = getMapData(tempMap, editedPath).content
@@ -59,7 +58,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     // temp map
     if ([
       'contentTypeToText',
-      'deleteContent',
       'typeText',
       'insert_O_S',
       'insert_U_S',
@@ -72,17 +70,20 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     }
 
     // start edit
+    // let nextEditedPathString =
     const nextEditedPathString = ([
       'contentTypeToText',
-      'deleteContent',
       'typeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S'
     ].includes(action)) ? toPathString(nextM.sc.lastPath) : ''
-    dispatch(actions.setEditedPathString({editedPathString: nextEditedPathString}))
+    dispatch(actions.setEditedPathString(nextEditedPathString))
   }
 }
 
 // TODO merge deleteContent with typeText!!!
 // once done, can figure out a BETTER condition for finishEdit (e.g. "not isediting" or something)
+
+// ok, so there is no such thing is "deleteContent", only there is "typeText", which might DELETE content, if...
+// so if typeText is called when !isEditing

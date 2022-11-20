@@ -106,4 +106,7 @@ export const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
 
-export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
+
+export const toPath = (pathString) => ([...pathString].map(el => isNaN(el) ? el : parseInt(el)))
+export const toPathString = (path) => ([...path].map(el => el.toString()).join(''))
