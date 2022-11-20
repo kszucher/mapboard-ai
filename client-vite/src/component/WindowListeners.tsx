@@ -444,6 +444,7 @@ export const WindowListeners: FC = () => {
                 if (Object.keys(tempMap).length) {
                   mapDispatch('typeText', holderElement.innerHTML)
                 } else {
+                  holderElement.innerHTML = 'x'
                   mapDispatch('deleteTypeText')
                 }
               }

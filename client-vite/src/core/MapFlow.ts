@@ -451,7 +451,7 @@ export const mapReducer = (m, action, payload) => {
     }
     case 'deleteTypeText': {
       lm.contentType = 'text'
-      lm.content = 'cica'
+      // lm.content = 'cica'
       break
     }
     case 'typeText': {
