@@ -427,34 +427,36 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (editedPath.length) {
-      // console.log('EDITING HAS STARTED...')
-      const m = getMap()
-      const lm = getMapData(m, m.sc.lastPath)
-      if (!lm.hasCell) {
-        const holderElement = document.getElementById(`${lm.nodeId}_div`)
-        holderElement.contentEditable = 'true'
-        setEndOfContentEditable(holderElement)
-        mutationObserver = new MutationObserver(mutationsList => {
-          for (let mutation of mutationsList) {
-            if (mutation.type === 'characterData') {
-              // "deleteContextTypeText" would require changing editedPath to an editInfo
-              // or a better solution: pass previous isEditing to reCalc, and with a diff, it will know it needs to change content
-              mapDispatch('typeText', holderElement.innerHTML)
+      if (mapStackData.length) {
+        console.log('EDITING HAS STARTED...')
+        const m = getMap()
+        const lm = getMapData(m, m.sc.lastPath)
+        if (!lm.hasCell) {
+          const holderElement = document.getElementById(`${lm.nodeId}_div`)
+          holderElement.contentEditable = 'true'
+          setEndOfContentEditable(holderElement)
+          mutationObserver = new MutationObserver(mutationsList => {
+            for (let mutation of mutationsList) {
+              if (mutation.type === 'characterData') {
+                // "deleteContextTypeText" would require changing editedPath to an editInfo
+                // or a better solution: pass previous isEditing to reCalc, and with a diff, it will know it needs to change content
+                mapDispatch('typeText', holderElement.innerHTML)
+              }
             }
-          }
-        })
-        mutationObserver.observe(holderElement, {
-          attributes: false,
-          childList: false,
-          subtree: true,
-          characterData: true
-        })
+          })
+          mutationObserver.observe(holderElement, {
+            attributes: false,
+            childList: false,
+            subtree: true,
+            characterData: true
+          })
+        }
       }
     } else {
-      if (Object.keys(tempMap).length) {
+      if (mapStackData.length) {
         console.log('EDITING HAS FINISHED')
         mutationObserver?.disconnect()
-        const m = getTempMap()
+        const m = getMap()
         const lm = getMapData(m, m.sc.lastPath)
         const holderElement = document.getElementById(`${lm.nodeId}_div`)
         holderElement.contentEditable = 'false'

@@ -70,10 +70,10 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_O_S',
       'insert_U_S',
       'insert_D_S',
-      'finishEdit',
       'moveTargetPreview',
       'selectTargetPreview',
     ].includes(action)) {
+      console.log('mutate temp map')
       dispatch(actions.mutateTempMap({data: nextM, editedPath: editedPathNext}))
     }
   }
