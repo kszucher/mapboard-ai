@@ -414,7 +414,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapStackData.length) {
       const m = getMap()
-      console.log('RENDER MAP')
+      // console.log('RENDER MAP')
       reDraw(m, colorMode, editedPathString)
     }
   }, [mapStackData, mapStackDataIndex, colorMode])
@@ -422,7 +422,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (Object.keys(tempMap).length) {
       const m = getTempMap()
-      console.log('RENDER TEMP MAP')
+      // console.log('RENDER TEMP MAP')
       reDraw(m, colorMode, editedPathString)
     }
   }, [tempMap])
@@ -430,7 +430,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (editedPathString.length) {
       if (mapStackData.length) {
-        console.log('EDITING HAS STARTED')
+        // console.log('EDITING HAS STARTED')
         const m = getMap()
         const lm = getMapData(m, m.sc.lastPath)
         if (!lm.hasCell) {
@@ -457,7 +457,7 @@ export const WindowListeners: FC = () => {
       }
     } else {
       if (mapStackData.length) {
-        console.log('EDITING HAS FINISHED')
+        // console.log('EDITING HAS FINISHED')
         mutationObserver?.disconnect()
         const m = getMap()
         const lm = getMapData(m, m.sc.lastPath)

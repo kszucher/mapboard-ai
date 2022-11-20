@@ -48,7 +48,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       const currMSimplified = mapDeInit.start(copy(currM))
       const nextMSimplified = mapDeInit.start(copy(nextM))
       if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
-        console.log('mutate map')
+        // console.log('mutate map')
         dispatch(actions.mutateMapStack({data: nextM}))
       }
     }
@@ -62,7 +62,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'moveTargetPreview',
       'selectTargetPreview',
     ].includes(action)) {
-      console.log('mutate temp map')
+      // console.log('mutate temp map')
       dispatch(actions.mutateTempMap({data: nextM}))
     }
     // start edit
