@@ -54,11 +54,11 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     }
     // temp map
     if ([
-      'contentTypeToText',
-      'typeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S',
+      'contentTypeToText',
+      'typeText',
       'moveTargetPreview',
       'selectTargetPreview',
     ].includes(action)) {
@@ -67,12 +67,12 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     }
     // start edit
     const nextEditedPathString = ([
-      'contentTypeToText',
-      'typeText',
-      'insert_O_S',
-      'insert_U_S',
-      'insert_D_S'
-    ].includes(action) &&
+        'insert_O_S',
+        'insert_U_S',
+        'insert_D_S',
+        'contentTypeToText',
+        'typeText',
+      ].includes(action) &&
       getMapData(nextM, nextM.sc.lastPath).contentType !== 'image')
       ? toPathString(nextM.sc.lastPath)
       : ''
