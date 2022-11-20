@@ -2,21 +2,24 @@
 
 import { Dispatch } from "redux"
 import {orient} from "../map/MapVisualizeHolderDiv"
-import {getEditedPath, getMap, getMapData, getTempMap, mapReducer, reCalc} from "../core/MapFlow"
+import {getEditedPathString, getMap, getMapData, getTempMap, mapReducer, reCalc} from "../core/MapFlow"
 import {copy} from "../core/Utils"
 import {mapDeInit} from "../map/MapDeInit"
 import {actions} from "../core/EditorFlow"
 
+const toPath = (pathString) => ([...pathString].map(el => isNaN(el) ? el : parseInt(el)))
+const toPathString = (path) => ([...path].map(el => el.toString()).join(''))
+
 // this will eventually become a pure reducer...
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
   console.log('MAP_DISPATCH: ' + action)
-  const editedPath = getEditedPath()
+  const editedPathString = getEditedPathString()
   const currM = getMap()
   if (['shouldLoad', 'shouldResize', 'shouldCenter', 'shouldScroll'].includes(action)) {
     orient(currM, action, payload)
   } else {
     // finish edit
-    if (editedPath.length && [
+    if (editedPathString.length && [
       'finishEdit',
       'selectStruct',
       'selectStructToo',
@@ -27,6 +30,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_O_S'
     ].includes(action)) {
       const tempMap = getTempMap()
+      const editedPath = toPath(editedPathString)
       const contentToSave = getMapData(tempMap, editedPath).content
       Object.assign(payload, {contentToSave})
     }
@@ -40,7 +44,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       // make it reactive and uniform and later think about the users
     }
 
-    // console.log('editedPathNext', editedPathNext)
+    // console.log('editedPathStringNext', editedPathStringNext)
     // dispatch
     if (!['typeText'].includes(action)) {
       const currMSimplified = mapDeInit.start(copy(currM))
@@ -66,15 +70,15 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     }
 
     // start edit
-    const editedPathNext = ([
+    const editedPathStringNext = ([
       'contentTypeToText',
       'deleteContent',
       'typeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S'
-    ].includes(action)) ? nextM.sc.lastPath : []
-    dispatch(actions.setEditedPath({editedPath: editedPathNext}))
+    ].includes(action)) ? toPathString(nextM.sc.lastPath) : ''
+    dispatch(actions.setEditedPathString({editedPathString: editedPathStringNext}))
   }
 }
 

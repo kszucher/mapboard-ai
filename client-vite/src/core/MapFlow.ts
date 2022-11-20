@@ -25,8 +25,8 @@ import {cellInsert, structInsert} from '../node/NodeInsert'
 import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 
-export const getEditedPath = () => {
-  return store.getState().editedPath
+export const getEditedPathString = () => {
+  return store.getState().editedPathString
 }
 
 export const getTempMap = () => {

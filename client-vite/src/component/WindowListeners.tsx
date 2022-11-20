@@ -4,7 +4,7 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getEditedPath, getMap, getMapData, getTempMap, reDraw} from '../core/MapFlow'
+import {getEditedPathString, getMap, getMapData, getTempMap, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
 import {isUrl} from '../core/Utils'
 import {useMapDispatch} from "../hooks/UseMapDispatch";
@@ -33,7 +33,7 @@ export const WindowListeners: FC = () => {
   const tempMap = useSelector((state: RootStateOrAny) => state.tempMap)
   const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
-  const editedPath = useSelector((state: RootStateOrAny) => state.editedPath)
+  const editedPathString = useSelector((state: RootStateOrAny) => state.editedPathString)
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
@@ -201,8 +201,8 @@ export const WindowListeners: FC = () => {
   const keydown = (e) => {
     const {key, code, which} = getNativeEvent(e)
     const m = getMap()
-    const editedPath = getEditedPath()
-    if (editedPath.length) {
+    const editedPathString = getEditedPathString()
+    if (editedPathString.length) {
       if (key === 'Enter' && !+e.ctrlKey && !+e.shiftKey && !+e.altKey) {
         e.preventDefault()
         mapDispatch('finishEdit')
@@ -413,7 +413,7 @@ export const WindowListeners: FC = () => {
     if (mapStackData.length) {
       const m = getMap()
       console.log('RENDER MAP')
-      reDraw(m, colorMode, editedPath)
+      reDraw(m, colorMode, editedPathString)
     }
   }, [mapStackData, mapStackDataIndex, colorMode])
 
@@ -421,12 +421,15 @@ export const WindowListeners: FC = () => {
     if (Object.keys(tempMap).length) {
       const m = getTempMap()
       console.log('RENDER TEMP MAP')
-      reDraw(m, colorMode, editedPath)
+      reDraw(m, colorMode, editedPathString)
     }
   }, [tempMap])
 
   useEffect(() => {
-    if (editedPath.length) {
+    console.log('editedPathStringChange', editedPathString)
+    // ok so there is a problem with the equality check...
+    // it should NOT trigger, so I should stringify, and then decode...
+    if (editedPathString.length) {
       if (mapStackData.length) {
         console.log('EDITING HAS STARTED...')
         const m = getMap()
@@ -438,7 +441,7 @@ export const WindowListeners: FC = () => {
           mutationObserver = new MutationObserver(mutationsList => {
             for (let mutation of mutationsList) {
               if (mutation.type === 'characterData') {
-                // "deleteContextTypeText" would require changing editedPath to an editInfo
+                // "deleteContextTypeText" would require changing editedPathString to an editInfo
                 // or a better solution: pass previous isEditing to reCalc, and with a diff, it will know it needs to change content
                 mapDispatch('typeText', holderElement.innerHTML)
               }
@@ -462,7 +465,7 @@ export const WindowListeners: FC = () => {
         holderElement.contentEditable = 'false'
       }
     }
-  }, [editedPath])
+  }, [editedPathString])
 
   useEffect(() => {
     if (mapId !== '') {
