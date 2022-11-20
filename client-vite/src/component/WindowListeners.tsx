@@ -461,8 +461,10 @@ export const WindowListeners: FC = () => {
         mutationObserver?.disconnect()
         const m = getMap()
         const lm = getMapData(m, m.sc.lastPath)
-        const holderElement = document.getElementById(`${lm.nodeId}_div`)
-        holderElement.contentEditable = 'false'
+        if (!lm.hasCell) {
+          const holderElement = document.getElementById(`${lm.nodeId}_div`)
+          holderElement.contentEditable = 'false'
+        }
       }
     }
   }, [editedPathString])
