@@ -49,11 +49,11 @@ export const updateMapDivData = ( nodeId, contentType, content, path, styleData 
   let shouldStyleUpdate = {}
   if (el) {
     const isEditing = getEditedPathString().length
-    if (isEditing) {
-      shouldInnerHTMLUpdate = el.params.contentType !== contentType
-    } else {
+    // if (isEditing) {
+    //   shouldInnerHTMLUpdate = el.params.contentType !== contentType
+    // } else {
       shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
-    }
+    // }
     for (const style in styleData) {
       shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
     }

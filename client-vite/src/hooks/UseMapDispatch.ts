@@ -87,8 +87,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_U_S',
       'insert_D_S'
     ].includes(action)) ? toPathString(nextM.sc.lastPath) : ''
-
-    console.log("BASZKI", nextEditedPathString)
     dispatch(actions.setEditedPathString(nextEditedPathString))
   }
 }
