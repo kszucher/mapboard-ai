@@ -444,7 +444,7 @@ export const WindowListeners: FC = () => {
                 if (Object.keys(tempMap).length) {
                   mapDispatch('typeText', holderElement.innerHTML)
                 } else {
-                  // TODO let mapDivVisualize REACT to everything... it blocks now
+                  // TODO figure this one out
                   mapDispatch('deleteTypeText')
                 }
               }
