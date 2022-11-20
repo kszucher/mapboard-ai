@@ -106,16 +106,20 @@ const allSlice = createSlice({
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
 
-    mutateTempMap(state, action: PayloadAction<any>) {
-      state.tempMap = action.payload.data
-      state.editedPath = action.payload.editedPath
-    },
-
     mutateMapStack(state, action: PayloadAction<any>) {
       state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
       state.mapStackDataIndex = state.mapStackDataIndex + 1
       state.editedPath = action.payload.editedPath
       state.mapTemp = {}
+    },
+
+    mutateTempMap(state, action: PayloadAction<any>) {
+      state.tempMap = action.payload.data
+      state.editedPath = action.payload.editedPath
+    },
+
+    setEditedPath(state, action: PayloadAction<any>) {
+      state.editedPath = action.payload.editedPath
     },
 
     undo(state) {

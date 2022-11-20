@@ -39,27 +39,15 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       // what I use is somewhat a centered but left aligned, and we are now touching user requirements
       // make it reactive and uniform and later think about the users
     }
-    // start edit
-    let editedPathNext = []
-    if (editedPath.length && ['insert_O_S'].includes(action)) {
-      editedPathNext = nextM.sc.lastPath //[...editedPath, 's', 0]
-    } else if ([
-      'contentTypeToText',
-      'deleteContent',
-      'typeText',
-      'insert_O_S',
-      'insert_U_S',
-      'insert_D_S'
-    ].includes(action)) {
-      editedPathNext = nextM.sc.lastPath // TODO fix this so bug#2 is fixed --> maybe this is AFTER reCalc???
-    }
+
     // console.log('editedPathNext', editedPathNext)
     // dispatch
     if (!['typeText'].includes(action)) {
       const currMSimplified = mapDeInit.start(copy(currM))
       const nextMSimplified = mapDeInit.start(copy(nextM))
       if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
-        dispatch(actions.mutateMapStack({data: nextM, editedPath: editedPathNext}))
+        dispatch(actions.mutateMapStack({data: nextM}))
+        // tehát az van, hogy NEM változik a map és ezért az edited se kommittolódik...
       }
     }
 
@@ -74,8 +62,19 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'selectTargetPreview',
     ].includes(action)) {
       console.log('mutate temp map')
-      dispatch(actions.mutateTempMap({data: nextM, editedPath: editedPathNext}))
+      dispatch(actions.mutateTempMap({data: nextM}))
     }
+
+    // start edit
+    const editedPathNext = ([
+      'contentTypeToText',
+      'deleteContent',
+      'typeText',
+      'insert_O_S',
+      'insert_U_S',
+      'insert_D_S'
+    ].includes(action)) ? nextM.sc.lastPath : []
+    dispatch(actions.setEditedPath({editedPath: editedPathNext}))
   }
 }
 
