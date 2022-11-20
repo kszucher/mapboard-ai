@@ -466,14 +466,13 @@ export const reCalc = (pm: any, m: any) => {
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
-  mapTaskCheck.start(m, cr)
   mapDiff.start(pm, m, cr)
-  mapMeasure.start(m, cr)
-  mapPlace.start(m, cr)
   mapTaskCalc.start(m, cr)
+  mapTaskCheck.start(m, cr) // mapExtractTask
   mapExtractSelection.start(m, cr)
   mapExtractFormatting.start(m)
-  // init, chain, mapDiff, mapCalcTask, mapExtractTask, mapExtractSelection, mapExtractFormatting, mapMeasure, mapPlace
+  mapMeasure.start(m, cr)
+  mapPlace.start(m, cr)
   return m
 }
 
