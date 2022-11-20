@@ -72,7 +72,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     }
 
     // start edit
-    const editedPathStringNext = ([
+    const nextEditedPathString = ([
       'contentTypeToText',
       'deleteContent',
       'typeText',
@@ -80,7 +80,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_U_S',
       'insert_D_S'
     ].includes(action)) ? toPathString(nextM.sc.lastPath) : ''
-    dispatch(actions.setEditedPathString({editedPathString: editedPathStringNext}))
+    dispatch(actions.setEditedPathString({editedPathString: nextEditedPathString}))
   }
 }
 
