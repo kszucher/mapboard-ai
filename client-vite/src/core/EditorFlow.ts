@@ -60,6 +60,18 @@ const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState)
 
+export const getEditedPathString = () => {
+  return store.getState().editedPathString
+}
+export const getTempMap = () => {
+  return store.getState().tempMap
+}
+export const getMap = () => {
+  const mapStackData = store.getState().mapStackData
+  const mapStackDataIndex = store.getState().mapStackDataIndex
+  return mapStackData[mapStackDataIndex]
+}
+
 const allSlice = createSlice({
   name: 'whatever',
   initialState: editorState,

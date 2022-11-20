@@ -2,7 +2,6 @@
 
 import {nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {store} from "./EditorFlow"
 import {copy, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
@@ -24,20 +23,6 @@ import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellInsert, structInsert} from '../node/NodeInsert'
 import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
-
-export const getEditedPathString = () => {
-  return store.getState().editedPathString
-}
-
-export const getTempMap = () => {
-  return store.getState().tempMap
-}
-
-export const getMap = () => {
-  const mapStackData = store.getState().mapStackData
-  const mapStackDataIndex = store.getState().mapStackDataIndex
-  return mapStackData[mapStackDataIndex]
-}
 
 export const getMapData = (m: any, path: any) => {
   // note: can not use getMap as the source of truth is not always the store

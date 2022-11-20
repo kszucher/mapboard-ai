@@ -3,11 +3,11 @@ import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
 import {Formatter} from "./Formatter"
 import { describe, it } from 'vitest'
-import {actions, store} from "../core/EditorFlow";
+import {actions, getMap, store} from "../core/EditorFlow";
 import React from "react";
 import {colorList} from "../core/Colors";
 import {FormatMode, LineTypes, MapRight, TextTypes, WidthTypes} from "../core/Types";
-import {getMap, reCalc} from "../core/MapFlow";
+import {reCalc} from "../core/MapFlow";
 import {mapAssembly} from "../map/MapAssembly";
 import {nodeProps} from "../core/DefaultProps";
 

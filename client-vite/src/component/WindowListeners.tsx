@@ -4,14 +4,14 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getEditedPathString, getMap, getMapData, getTempMap, reDraw} from '../core/MapFlow'
+import {getMapData, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
 import {isUrl} from '../core/Utils'
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, sagaActions} from "../core/EditorFlow"
+import {actions, getEditedPathString, getMap, getTempMap, sagaActions} from "../core/EditorFlow"
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval

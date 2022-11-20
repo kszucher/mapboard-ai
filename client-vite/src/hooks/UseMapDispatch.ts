@@ -2,10 +2,10 @@
 
 import { Dispatch } from "redux"
 import {orient} from "../map/MapVisualizeHolderDiv"
-import {getEditedPathString, getMap, getMapData, getTempMap, mapReducer, reCalc} from "../core/MapFlow"
+import {getMapData, mapReducer, reCalc} from "../core/MapFlow"
 import {copy} from "../core/Utils"
 import {mapDeInit} from "../map/MapDeInit"
-import {actions} from "../core/EditorFlow"
+import {actions, getEditedPathString, getMap, getTempMap} from "../core/EditorFlow"
 
 const toPath = (pathString) => ([...pathString].map(el => isNaN(el) ? el : parseInt(el)))
 const toPathString = (path) => ([...path].map(el => el.toString()).join(''))
@@ -85,3 +85,4 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
 }
 
 // TODO merge deleteContent with typeText!!!
+// once done, can figure out a BETTER condition for finishEdit (e.g. "not isediting" or something)

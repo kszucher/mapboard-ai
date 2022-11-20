@@ -3,7 +3,7 @@
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
 import {setEndOfContentEditable} from "./DomUtils";
-import {getEditedPathString} from "./MapFlow";
+import {getEditedPathString} from "./EditorFlow";
 
 let mapDivData = [];
 let mapSvgData = [[],[],[],[],[],[]];
