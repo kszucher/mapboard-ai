@@ -15,6 +15,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
   if (['shouldLoad', 'shouldResize', 'shouldCenter', 'shouldScroll'].includes(action)) {
     orient(currM, action, payload)
   } else {
+    // finish edit
     if (editedPath.length && [
       'finishEdit',
       'selectStruct',
@@ -29,20 +30,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       const contentToSave = getMapData(tempMap, editedPath).content
       Object.assign(payload, {contentToSave})
     }
-    // enough to define currM here!!!
-    let editedPathNext = []
-    if (editedPath.length && ['insert_O_S'].includes(action)) {
-      editedPathNext = [...editedPath, 's', 0]
-    } else if ([
-      'contentTypeToText',
-      'deleteContent',
-      'typeText',
-      'insert_O_S',
-      'insert_U_S',
-      'insert_D_S'
-    ].includes(action)) {
-      editedPathNext = currM.sc.lastPath
-    }
+    // reducer
     const nextM = reCalc(currM, mapReducer(copy(currM), action, payload))
     if (['changeDensity', 'changeAlignment', 'moveTarget'].includes(action)) {
       orient(nextM, 'shouldCenter', {}) // react to density and alignment directly, but as a call for moveTarget
@@ -51,27 +39,50 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       // what I use is somewhat a centered but left aligned, and we are now touching user requirements
       // make it reactive and uniform and later think about the users
     }
-    if ([
+    // start edit
+    let editedPathNext = []
+    if (editedPath.length && ['insert_O_S'].includes(action)) {
+      editedPathNext = nextM.sc.lastPath //[...editedPath, 's', 0]
+    } else if ([
       'contentTypeToText',
       'deleteContent',
       'typeText',
-      'moveTargetPreview',
-      'selectTargetPreview'
+      'insert_O_S',
+      'insert_U_S',
+      'insert_D_S'
     ].includes(action)) {
-      dispatch(actions.mutateTempMap({data: nextM, editedPath: editedPathNext}))
-    } else {
+      editedPathNext = nextM.sc.lastPath // TODO fix this so bug#2 is fixed --> maybe this is AFTER reCalc???
+    }
+    // console.log('editedPathNext', editedPathNext)
+    // dispatch
+    if (!['typeText'].includes(action)) {
       const currMSimplified = mapDeInit.start(copy(currM))
       const nextMSimplified = mapDeInit.start(copy(nextM))
       if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
         dispatch(actions.mutateMapStack({data: nextM, editedPath: editedPathNext}))
-        if (['insert_O_S', 'insert_U_S', 'insert_D_S'].includes(action)) {
-          dispatch(actions.mutateTempMap({data: nextM, editedPath: editedPathNext}))
-          // this needs so a tempMap creates which is able to actually listen to editingPath changing to []
-        }
       }
+    }
+
+    if ([
+      'contentTypeToText',
+      'deleteContent',
+      'typeText',
+      'insert_O_S',
+      'insert_U_S',
+      'insert_D_S',
+      'finishEdit',
+      'moveTargetPreview',
+      'selectTargetPreview',
+    ].includes(action)) {
+      dispatch(actions.mutateTempMap({data: nextM, editedPath: editedPathNext}))
     }
   }
 }
 
 // bug: equation after edit but no change does not finish edit
 // bug: finish edit on empty node copies the wrong stuff
+
+// final notes: there are scenarios where we only use tempMap, and there is where we add a real AND a temp map too in case of finish edit
+// philosophy: only tempMap will actually be able to be edited!!! so if we put the listener up, it already needs to be tempMap!!!
+// this way we will have a super clear separation
+// we are close, we just need to figure out what reacts to what

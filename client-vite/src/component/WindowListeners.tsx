@@ -412,7 +412,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mapStackData.length) {
       const m = getMap()
-      // console.log('RENDER MAP')
+      console.log('RENDER MAP')
       reDraw(m, colorMode, editedPath)
     }
   }, [mapStackData, mapStackDataIndex, colorMode])
@@ -420,7 +420,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (Object.keys(tempMap).length) {
       const m = getTempMap()
-      // console.log('RENDER TEMPMAP')
+      console.log('RENDER TEMP MAP')
       reDraw(m, colorMode, editedPath)
     }
   }, [tempMap])
@@ -452,7 +452,7 @@ export const WindowListeners: FC = () => {
       }
     } else {
       if (Object.keys(tempMap).length) {
-        // console.log('EDITING HAS FINISHED')
+        console.log('EDITING HAS FINISHED')
         mutationObserver?.disconnect()
         const m = getTempMap()
         const lm = getMapData(m, m.sc.lastPath)
