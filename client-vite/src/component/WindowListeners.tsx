@@ -191,7 +191,7 @@ export const WindowListeners: FC = () => {
     const {path} = getNativeEvent(e)
     if (path.find(el => el.id === 'mapSvgOuter')) {
       if (isNodeClicked) {
-        mapDispatch('contentTypeToText')
+        mapDispatch('startEdit')
       } else {
         mapDispatch('shouldCenter')
       }
@@ -215,7 +215,7 @@ export const WindowListeners: FC = () => {
       const keyStateMachineDb = [
         [ 'c','s','a', 'keyMatch',                    'e','scope',                     'p','m','action',                  ],
         [  0,  0,  0,  key === 'F1',                   0, ['s', 'c', 'm'],              1,  0, '',                        ],
-        [  0,  0,  0,  key === 'F2',                   0, ['s', 'm'],                   1,  0, 'contentTypeToText',       ],
+        [  0,  0,  0,  key === 'F2',                   0, ['s', 'm'],                   1,  0, 'startEdit',               ],
         [  0,  0,  0,  key === 'F3',                   0, ['s', 'c', 'm'],              1,  0, '',                        ],
         [  0,  0,  0,  key === 'F5',                   0, ['s', 'c', 'm'],              0,  0, '',                        ],
         [  0,  0,  0,  key === 'Enter',                0, ['s'],                        1,  1, 'insert_D_S',              ],

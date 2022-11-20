@@ -57,7 +57,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_O_S',
       'insert_U_S',
       'insert_D_S',
-      'contentTypeToText',
+      'startEdit',
       'typeText',
       'moveTargetPreview',
       'selectTargetPreview',
@@ -70,7 +70,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
         'insert_O_S',
         'insert_U_S',
         'insert_D_S',
-        'contentTypeToText',
+        'startEdit',
         'typeText',
       ].includes(action) &&
       getMapData(nextM, nextM.sc.lastPath).contentType !== 'image')

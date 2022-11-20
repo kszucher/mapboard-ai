@@ -443,7 +443,7 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     // EDIT
-    case'contentTypeToText': {
+    case'startEdit': {
       if (lm.contentType === 'equation') {
         lm.contentType = 'text'
       }
@@ -452,6 +452,9 @@ export const mapReducer = (m, action, payload) => {
     case 'typeText': {
       lm.contentType = 'text'
       lm.content = payload
+      break
+    }
+    case 'finishEdit': {
       break
     }
   }
