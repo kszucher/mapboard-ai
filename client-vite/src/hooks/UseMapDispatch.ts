@@ -16,7 +16,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     orient(currM, action, payload)
   } else {
     // finish edit
-    let contentToSave = ''
     if (editedPathString.length && [
       'finishEdit',
       'selectStruct',
@@ -27,7 +26,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     ].includes(action)) {
       const tempMap = getTempMap()
       const editedPath = toPath(editedPathString)
-      contentToSave = getMapData(tempMap, editedPath).content
+      const contentToSave = getMapData(tempMap, editedPath).content
       Object.assign(payload, {contentToSave})
     }
     // reducer
