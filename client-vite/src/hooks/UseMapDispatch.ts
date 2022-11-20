@@ -25,8 +25,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'selectStructToo',
       'selectStructFamily',
       'setTaskStatus',
-      'insert_U_S',
-      'insert_D_S',
       'insert_O_S'
     ].includes(action)) {
       const tempMap = getTempMap()
@@ -44,17 +42,21 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       // make it reactive and uniform and later think about the users
     }
 
-    // console.log('editedPathStringNext', editedPathStringNext)
-    // dispatch
-    if (!['typeText'].includes(action)) {
+    // map
+    if (![
+      'typeText',
+      'moveTargetPreview',
+      'selectTargetPreview',
+    ].includes(action)) {
       const currMSimplified = mapDeInit.start(copy(currM))
       const nextMSimplified = mapDeInit.start(copy(nextM))
       if (JSON.stringify(currMSimplified) !== JSON.stringify(nextMSimplified)) {
+        console.log('mutate map')
         dispatch(actions.mutateMapStack({data: nextM}))
-        // tehát az van, hogy NEM változik a map és ezért az edited se kommittolódik...
       }
     }
 
+    // temp map
     if ([
       'contentTypeToText',
       'deleteContent',
@@ -82,10 +84,4 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
   }
 }
 
-// bug: equation after edit but no change does not finish edit
-// bug: finish edit on empty node copies the wrong stuff
-
-// final notes: there are scenarios where we only use tempMap, and there is where we add a real AND a temp map too in case of finish edit
-// philosophy: only tempMap will actually be able to be edited!!! so if we put the listener up, it already needs to be tempMap!!!
-// this way we will have a super clear separation
-// we are close, we just need to figure out what reacts to what
+// TODO merge deleteContent with typeText!!!

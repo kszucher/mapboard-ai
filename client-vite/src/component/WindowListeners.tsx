@@ -426,12 +426,9 @@ export const WindowListeners: FC = () => {
   }, [tempMap])
 
   useEffect(() => {
-    console.log('editedPathStringChange', editedPathString)
-    // ok so there is a problem with the equality check...
-    // it should NOT trigger, so I should stringify, and then decode...
     if (editedPathString.length) {
       if (mapStackData.length) {
-        console.log('EDITING HAS STARTED...')
+        console.log('EDITING HAS STARTED')
         const m = getMap()
         const lm = getMapData(m, m.sc.lastPath)
         if (!lm.hasCell) {
