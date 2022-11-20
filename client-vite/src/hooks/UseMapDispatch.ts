@@ -72,8 +72,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
         'startEdit',
         'typeText',
       ].includes(action) &&
-      getMapData(nextM, nextM.sc.lastPath).contentType !== 'image' &&
-      getMapData(nextM, nextM.sc.lastPath).hasCell === 0
+      getMapData(nextM, nextM.sc.lastPath).contentType !== 'image'
     )
       ? toPathString(nextM.sc.lastPath)
       : ''
