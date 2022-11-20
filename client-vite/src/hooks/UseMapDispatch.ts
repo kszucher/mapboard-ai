@@ -16,6 +16,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     orient(currM, action, payload)
   } else {
     // finish edit
+    let contentToSave = ''
     if (editedPathString.length && [
       'finishEdit',
       'selectStruct',
@@ -24,13 +25,18 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'setTaskStatus',
       'insert_O_S'
     ].includes(action)) {
-      // another condition: NOT length but IS typeText --> content then will be nullified
-
       const tempMap = getTempMap()
       const editedPath = toPath(editedPathString)
-      const contentToSave = getMapData(tempMap, editedPath).content
+      contentToSave = getMapData(tempMap, editedPath).content
       Object.assign(payload, {contentToSave})
     }
+
+    // if (!editedPathString.length && action === 'typeText') {
+    //   // too late... so how do we detect that the previous was different???
+    //   console.log('should save...')
+    //   Object.assign(payload, {contentToSave: 'cica'})mmmjj
+    // }
+
     // reducer
     const nextM = reCalc(currM, mapReducer(copy(currM), action, payload))
     if (['changeDensity', 'changeAlignment', 'moveTarget'].includes(action)) {
@@ -44,6 +50,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     // map
     if (![
       'typeText',
+      'deleteTypeText',
       'moveTargetPreview',
       'selectTargetPreview',
     ].includes(action)) {
@@ -59,6 +66,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     if ([
       'contentTypeToText',
       'typeText',
+      'deleteTypeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S',
@@ -74,6 +82,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     const nextEditedPathString = ([
       'contentTypeToText',
       'typeText',
+      'deleteTypeText',
       'insert_O_S',
       'insert_U_S',
       'insert_D_S'
@@ -81,9 +90,3 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     dispatch(actions.setEditedPathString(nextEditedPathString))
   }
 }
-
-// TODO merge deleteContent with typeText!!!
-// once done, can figure out a BETTER condition for finishEdit (e.g. "not isediting" or something)
-
-// ok, so there is no such thing is "deleteContent", only there is "typeText", which might DELETE content, if...
-// so if typeText is called when !isEditing
