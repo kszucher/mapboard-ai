@@ -211,11 +211,11 @@ export const WindowListeners: FC = () => {
         mapDispatch('insert_O_S')
       }
     } else {
-      // [37,38,39,40] = [left,up,right,down]
-      // const L = 37
-      // const U = 38
-      // const R = 39
-      // const D = 40
+      // [L,U,R,D] = [left,up,right,down]
+      const L = 37
+      const U = 38
+      const R = 39
+      const D = 40
       // move e to the first column, and merge the lines above
       // remove m
       // add at = action type, d = dispatch, md = mapDispatch, sd = sagaDispatch
@@ -273,20 +273,20 @@ export const WindowListeners: FC = () => {
         [  1,  0,  0,  code === 'KeyZ',                0, ['s', 'c', 'm', 'cr', 'cc'],  1,  0, 'redo',                    ],
         [  1,  0,  0,  code === 'KeyY',                0, ['s', 'c', 'm', 'cr', 'cc'],  1,  0, 'undo',                    ],
         [  1,  0,  0,  code === 'KeyE',                0, ['s'],                        1,  1, 'transpose',               ],
-        [  0,  1,  0,  [37,39].includes(which),        0, ['c', 'm'],                   1,  1, 'select_CR',               ],
-        [  0,  1,  0,  [38,40].includes(which),        0, ['c', 'm'],                   1,  1, 'select_CC',               ],
-        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['s'],                        1,  1, 'selectNeighborStruct',    ], // K
-        [  0,  1,  0,  [38,40].includes(which),        0, ['s'],                        1,  1, 'selectNeighborStructToo', ], // K
-        [  0,  1,  0,  [37,39].includes(which),        0, ['s'],                        1,  1, 'selectDescendantsOut',    ], // K
-        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['m'],                        1,  1, 'selectNeighborMixed',     ], // K
-        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['cr', 'cc'],                 1,  1, 'select_CRCC',             ], // K
-        [  1,  0,  0,  [37,38,39,40].includes(which),  0, ['s'],                        1,  1, 'move_S',                  ], // K
-        [  1,  0,  0,  [37,38,39,40].includes(which),  0, ['cr', 'cc'],                 1,  1, 'move_CRCC',               ], // K
-        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['m'],                        1,  1, 'insert_M_CRCC',           ], // K
-        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['c',],                       1,  1, 'insert_CX_CRCC',          ], // K
-        [  0,  0,  1,  [37,39].includes(which),        0, ['cc',],                      1,  1, 'insert_CX_CRCC',          ], // K
-        [  0,  0,  1,  [38,40].includes(which),        0, ['cr',],                      1,  1, 'insert_CX_CRCC',          ], // K
-        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['s', 'c', 'cr', 'cc'],       1,  0, '',                        ],
+        [  0,  1,  0,  [L,R].includes(which),          0, ['c', 'm'],                   1,  1, 'select_CR',               ],
+        [  0,  1,  0,  [U,D].includes(which),          0, ['c', 'm'],                   1,  1, 'select_CC',               ],
+        [  0,  0,  0,  [L,U,R,D].includes(which),      0, ['s'],                        1,  1, 'selectNeighborStruct',    ], // K
+        [  0,  1,  0,  [U,D].includes(which),          0, ['s'],                        1,  1, 'selectNeighborStructToo', ], // K
+        [  0,  1,  0,  [L,R].includes(which),          0, ['s'],                        1,  1, 'selectDescendantsOut',    ], // K
+        [  0,  0,  0,  [L,U,R,D].includes(which),      0, ['m'],                        1,  1, 'selectNeighborMixed',     ], // K
+        [  0,  0,  0,  [L,U,R,D].includes(which),      0, ['cr', 'cc'],                 1,  1, 'select_CRCC',             ], // K
+        [  1,  0,  0,  [L,U,R,D].includes(which),      0, ['s'],                        1,  1, 'move_S',                  ], // K
+        [  1,  0,  0,  [L,U,R,D].includes(which),      0, ['cr', 'cc'],                 1,  1, 'move_CRCC',               ], // K
+        [  0,  0,  1,  [L,U,R,D].includes(which),      0, ['m'],                        1,  1, 'insert_M_CRCC',           ], // K
+        [  0,  0,  1,  [L,U,R,D].includes(which),      0, ['c',],                       1,  1, 'insert_CX_CRCC',          ], // K
+        [  0,  0,  1,  [L,R].includes(which),          0, ['cc',],                      1,  1, 'insert_CX_CRCC',          ], // K
+        [  0,  0,  1,  [U,D].includes(which),          0, ['cr',],                      1,  1, 'insert_CX_CRCC',          ], // K
+        [  0,  0,  1,  [L,U,R,D].includes(which),      0, ['s', 'c', 'cr', 'cc'],       1,  0, '',                        ],
         [  1,  0,  0,  which >= 96 && which <= 105,    0, ['s', 'm'],                   1,  1, 'applyColorFromKey',       ],
         [  0,  0,  0,  which >= 48,                    0, ['s', 'm'],                   0,  0, 'deleteContent',           ],
         [  0,  1,  0,  which >= 48,                    0, ['s', 'm'],                   0,  0, 'deleteContent',           ],
