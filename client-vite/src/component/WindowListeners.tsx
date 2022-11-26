@@ -222,23 +222,14 @@ export const WindowListeners: FC = () => {
       const R = 39
       const D = 40
 
-      // possibly include conditions such as hasCell, or contentType
-
       // avoid duplication of insert_CX_CRCC, instead introduce the following:
       // insert_UD_CR, which is triggered either by a c OR a cr selection
       // insert_LR_CC, which is triggered either by a c or a cc selection
-      // rename keyStateMachindDb to e2a, as this is an 1:1 event to action mapper
-      // ONCE DONE, EVENT - ACTION SEPARATION (so NOT just mouseDown events will be checked - very important)
-      // key event passes all its data to mapReducer, and the event resolution happens there
-      // but this way this becomes an "eventAction" instead of a "realAction"
-      // also we could string event to state and let state react, but that is an avoidable step
-      // and we can just "dispatch(keydown) --> and the action resolution happens INSIDE"
-      // advantage: we can have scope (and other) checks in ONE place
-      // so this is a NEW join-type middle layer for ALL map action, which actually makes a lot of sense...
-      // so what we need? eventType and eventData... that is all I guess
-      // event --> eventToMapActionWithChecks(eventType, eventData) --> mapDispatch(action, payload)
-      // THIS IS THE WAY
-      // const
+
+      // possibly include conditions such as hasCell, or contentType
+
+      // move to MapFlow as checkMapDispatch(eventType, eventData) --> mapDispatch(action, payload)
+
       const keyStateMachineDb = [
         ['isEditing', 'match', 'scope', 'preventDefault', 'actionType', 'action', 'payload'],
         [ 0, ckm(e, '000') && key === 'F1',                   ['s', 'c', 'm'],              1, 'm',  '',                        {}                          ],
