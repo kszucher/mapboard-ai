@@ -226,6 +226,8 @@ export const WindowListeners: FC = () => {
       // insert_UD_CR, which is triggered either by a c OR a cr selection
       // insert_LR_CC, which is triggered either by a c or a cc selection
 
+      // merge isEditing
+
       // possibly include conditions such as hasCell, or contentType
 
       // move to MapFlow as checkMapDispatch(eventType, eventData) --> mapDispatch(action, payload)
