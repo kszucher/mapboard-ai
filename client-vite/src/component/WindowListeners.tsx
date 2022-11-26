@@ -22,6 +22,12 @@ let mutationObserver
 let mapAreaListener
 let landingAreaListener
 
+const ckm = (e, condition) => (
+  ['-', (+e.ctrlKey ? '1' : '0')].includes(condition[0]) &&
+  ['-', (+e.shiftKey ? '1' : '0')].includes(condition[1]) &&
+  ['-', (+e.altKey) ? '1' : '0'].includes(condition[2])
+)
+
 export const WindowListeners: FC = () => {
 
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
@@ -217,14 +223,7 @@ export const WindowListeners: FC = () => {
       const D = 40
 
       // possibly include conditions such as hasCell, or contentType
-      // create a MONAD for csa
-      // -> c === 't' if SHOULD BE true
-      // -> c === 'f' if SHOULD BE false,
-      // -> c === 'a' if ANY
-      // make monad from csa
-      // 'fff'
-      // 'ftf'
-      // 'faf'
+
       // avoid duplication of insert_CX_CRCC, instead introduce the following:
       // insert_UD_CR, which is triggered either by a c OR a cr selection
       // insert_LR_CC, which is triggered either by a c or a cc selection
@@ -239,73 +238,65 @@ export const WindowListeners: FC = () => {
       // so what we need? eventType and eventData... that is all I guess
       // event --> eventToMapActionWithChecks(eventType, eventData) --> mapDispatch(action, payload)
       // THIS IS THE WAY
+      // const
       const keyStateMachineDb = [
-        [ 'e','c','s','a', 'keyMatch',                     'scope',                     'p', 'at',  'action',                  'payload'                   ],
-        [  0,  0,  0,  0,  key === 'F1',                   ['s', 'c', 'm'],              1,  'm',   '',                                                    ],
-        [  0,  0,  0,  0,  key === 'F2',                   ['s', 'm'],                   1,  'm',   'startEdit',                                           ],
-        [  0,  0,  0,  0,  key === 'F3',                   ['s', 'c', 'm'],              1,  'm',   '',                                                    ],
-        [  0,  0,  0,  0,  key === 'F5',                   ['s', 'c', 'm'],              0,  'm',   '',                                                    ],
-        [  0,  0,  0,  0,  key === 'Enter',                ['s'],                        1,  'm',   'insert_D_S',                                          ],
-        [  0,  0,  0,  0,  key === 'Enter',                ['m'],                        1,  'm',   'select_D_M',                                          ],
-        [  0,  0,  1,  0,  key === 'Enter',                ['s', 'm'],                   1,  'm',   'insert_U_S',                                          ],
-        [  0,  0,  0,  1,  key === 'Enter',                ['s'],                        1,  'm',   'cellifyMulti',                                        ],
-        [  0,  0,  0,  0,  ['Insert','Tab'].includes(key), ['s'],                        1,  'm',   'insert_O_S',                                          ],
-        [  0,  0,  0,  0,  ['Insert','Tab'].includes(key), ['m'],                        1,  'm',   'select_O_M',                                          ],
-        [  0,  0,  0,  0,  key === 'Delete',               ['s'],                        1,  'm',   'delete_S',                                            ],
-        [  0,  0,  0,  0,  key === 'Delete',               ['cr', 'cc'],                 1,  'm',   'delete_CRCC',                                         ],
-        [  0,  0,  0,  0,  code === 'Space',               ['s'],                        1,  'm',   'select_S_F_M',                                        ],
-        [  0,  0,  0,  0,  code === 'Space',               ['m'],                        1,  'm',   'select_M_F_S',                                        ],
-        [  0,  0,  0,  0,  code === 'Space',               ['c'],                        1,  'm',   '',                                                    ],
-        [  0,  0,  0,  0,  code === 'Space',               ['cr', 'cc'],                 1,  'm',   'select_CRCC_F_M',                                     ],
-        [  0,  0,  0,  0,  code === 'Backspace',           ['s'],                        1,  'm',   'select_S_B_M',                                        ],
-        [  0,  0,  0,  0,  code === 'Backspace',           ['c', 'cr', 'cc'],            1,  'm',   'select_CCRCC_B_S',                                    ],
-        [  0,  0,  0,  0,  code === 'Backspace',           ['m'],                        1,  'm',   'select_M_BB_S',                                       ],
-        [  0,  0,  0,  0,  code === 'Escape',              ['s', 'c', 'm'],              1,  'm',   'select_R',                                            ],
-        [  0,  1,  0,  0,  code === 'KeyA',                ['s', 'c', 'm'],              1,  'm',   'select_all',                                          ],
-        [  0,  1,  0,  0,  code === 'KeyM',                ['s', 'c', 'm'],              1,  'sa',  'createMapInMap',                                      ],
-        [  0,  1,  0,  0,  code === 'KeyC',                ['s', 'c', 'm'],              1,  'm',   'copySelection',                                       ],
-        [  0,  1,  0,  0,  code === 'KeyX',                ['s', 'c', 'm'],              1,  'm',   'cutSelection',                                        ],
-        [  0,  1,  0,  0,  code === 'KeyS',                ['s', 'c', 'm'],              1,  'sa',  'saveMap',                                             ],
-        [  0,  1,  0,  0,  code === 'KeyZ',                ['s', 'c', 'm', 'cr', 'cc'],  1,  'a',   'redo',                                                ],
-        [  0,  1,  0,  0,  code === 'KeyY',                ['s', 'c', 'm', 'cr', 'cc'],  1,  'a',   'undo',                                                ],
-        [  0,  1,  0,  0,  code === 'KeyE',                ['s'],                        1,  'm',   'transpose',                                           ],
-        [  0,  0,  1,  0,  [L,R].includes(which),          ['c', 'm'],                   1,  'm',   'select_CR',                                           ],
-        [  0,  0,  1,  0,  [U,D].includes(which),          ['c', 'm'],                   1,  'm',   'select_CC',                                           ],
-        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['s'],                        1,  'm',   'selectNeighborStruct',    {keyCode: e.code}           ],
-        [  0,  0,  1,  0,  [U,D].includes(which),          ['s'],                        1,  'm',   'selectNeighborStructToo', {keyCode: e.code}           ],
-        [  0,  0,  1,  0,  [L,R].includes(which),          ['s'],                        1,  'm',   'selectDescendantsOut',    {keyCode: e.code}           ],
-        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['m'],                        1,  'm',   'selectNeighborMixed',     {keyCode: e.code}           ],
-        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['cr', 'cc'],                 1,  'm',   'select_CRCC',             {keyCode: e.code}           ],
-        [  0,  1,  0,  0,  [L,U,R,D].includes(which),      ['s'],                        1,  'm',   'move_S',                  {keyCode: e.code}           ],
-        [  0,  1,  0,  0,  [L,U,R,D].includes(which),      ['cr', 'cc'],                 1,  'm',   'move_CRCC',               {keyCode: e.code}           ],
-        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['m'],                        1,  'm',   'insert_M_CRCC',           {keyCode: e.code}           ],
-        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['c',],                       1,  'm',   'insert_CX_CRCC',          {keyCode: e.code}           ],
-        [  0,  0,  0,  1,  [L,R].includes(which),          ['cc',],                      1,  'm',   'insert_CX_CRCC',          {keyCode: e.code}           ],
-        [  0,  0,  0,  1,  [U,D].includes(which),          ['cr',],                      1,  'm',   'insert_CX_CRCC',          {keyCode: e.code}           ],
-        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['s', 'c', 'cr', 'cc'],       1,  'm',   '',                                                    ],
-        [  0,  1,  0,  0,  which >= 96 && which <= 105,    ['s', 'm'],                   1,  'm',   'applyColorFromKey',       {currColor: which - 96}     ],
-        [  0,  0,  0,  0,  which >= 48,                    ['s', 'm'],                   0,  'a',   'setEditedPathString',     toPathString(m.sc.lastPath) ],
-        [  0,  0,  1,  0,  which >= 48,                    ['s', 'm'],                   0,  'a',   'setEditedPathString',     toPathString(m.sc.lastPath) ],
+        ['isEditing', 'match', 'scope', 'preventDefault', 'actionType', 'action', 'payload'],
+        [ 0, ckm(e, '000') && key === 'F1',                   ['s', 'c', 'm'],              1, 'm',  '',                        {}                          ],
+        [ 0, ckm(e, '000') && key === 'F2',                   ['s', 'm'],                   1, 'm',  'startEdit',               {}                          ],
+        [ 0, ckm(e, '000') && key === 'F3',                   ['s', 'c', 'm'],              1, 'm',  '',                        {}                          ],
+        [ 0, ckm(e, '000') && key === 'F5',                   ['s', 'c', 'm'],              0, 'm',  '',                        {}                          ],
+        [ 0, ckm(e, '000') && key === 'Enter',                ['s'],                        1, 'm',  'insert_D_S',              {}                          ],
+        [ 0, ckm(e, '000') && key === 'Enter',                ['m'],                        1, 'm',  'select_D_M',              {}                          ],
+        [ 0, ckm(e, '010') && key === 'Enter',                ['s', 'm'],                   1, 'm',  'insert_U_S',              {}                          ],
+        [ 0, ckm(e, '001') && key === 'Enter',                ['s'],                        1, 'm',  'cellifyMulti',            {}                          ],
+        [ 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s'],                        1, 'm',  'insert_O_S',              {}                          ],
+        [ 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['m'],                        1, 'm',  'select_O_M',              {}                          ],
+        [ 0, ckm(e, '000') && key === 'Delete',               ['s'],                        1, 'm',  'delete_S',                {}                          ],
+        [ 0, ckm(e, '000') && key === 'Delete',               ['cr', 'cc'],                 1, 'm',  'delete_CRCC',             {}                          ],
+        [ 0, ckm(e, '000') && code === 'Space',               ['s'],                        1, 'm',  'select_S_F_M',            {}                          ],
+        [ 0, ckm(e, '000') && code === 'Space',               ['m'],                        1, 'm',  'select_M_F_S',            {}                          ],
+        [ 0, ckm(e, '000') && code === 'Space',               ['c'],                        1, 'm',  '',                        {}                          ],
+        [ 0, ckm(e, '000') && code === 'Space',               ['cr', 'cc'],                 1, 'm',  'select_CRCC_F_M',         {}                          ],
+        [ 0, ckm(e, '000') && code === 'Backspace',           ['s'],                        1, 'm',  'select_S_B_M',            {}                          ],
+        [ 0, ckm(e, '000') && code === 'Backspace',           ['c', 'cr', 'cc'],            1, 'm',  'select_CCRCC_B_S',        {}                          ],
+        [ 0, ckm(e, '000') && code === 'Backspace',           ['m'],                        1, 'm',  'select_M_BB_S',           {}                          ],
+        [ 0, ckm(e, '000') && code === 'Escape',              ['s', 'c', 'm'],              1, 'm',  'select_R',                {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyA',                ['s', 'c', 'm'],              1, 'm',  'select_all',              {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],              1, 'sa', 'createMapInMap',          {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyC',                ['s', 'c', 'm'],              1, 'm',  'copySelection',           {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyX',                ['s', 'c', 'm'],              1, 'm',  'cutSelection',            {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyS',                ['s', 'c', 'm'],              1, 'sa', 'saveMap',                 {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyZ',                ['s', 'c', 'm', 'cr', 'cc'],  1, 'a',  'redo',                    {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyY',                ['s', 'c', 'm', 'cr', 'cc'],  1, 'a',  'undo',                    {}                          ],
+        [ 0, ckm(e, '100') && code === 'KeyE',                ['s'],                        1, 'm',  'transpose',               {}                          ],
+        [ 0, ckm(e, '010') && [L,R].includes(which),          ['c', 'm'],                   1, 'm',  'select_CR',               {}                          ],
+        [ 0, ckm(e, '010') && [U,D].includes(which),          ['c', 'm'],                   1, 'm',  'select_CC',               {}                          ],
+        [ 0, ckm(e, '000') && [L,U,R,D].includes(which),      ['s'],                        1, 'm',  'selectNeighborStruct',    {keyCode: code}             ],
+        [ 0, ckm(e, '010') && [U,D].includes(which),          ['s'],                        1, 'm',  'selectNeighborStructToo', {keyCode: code}             ],
+        [ 0, ckm(e, '010') && [L,R].includes(which),          ['s'],                        1, 'm',  'selectDescendantsOut',    {keyCode: code}             ],
+        [ 0, ckm(e, '000') && [L,U,R,D].includes(which),      ['m'],                        1, 'm',  'selectNeighborMixed',     {keyCode: code}             ],
+        [ 0, ckm(e, '000') && [L,U,R,D].includes(which),      ['cr', 'cc'],                 1, 'm',  'select_CRCC',             {keyCode: code}             ],
+        [ 0, ckm(e, '100') && [L,U,R,D].includes(which),      ['s'],                        1, 'm',  'move_S',                  {keyCode: code}             ],
+        [ 0, ckm(e, '100') && [L,U,R,D].includes(which),      ['cr', 'cc'],                 1, 'm',  'move_CRCC',               {keyCode: code}             ],
+        [ 0, ckm(e, '001') && [L,U,R,D].includes(which),      ['m'],                        1, 'm',  'insert_M_CRCC',           {keyCode: code}             ],
+        [ 0, ckm(e, '001') && [L,U,R,D].includes(which),      ['c',],                       1, 'm',  'insert_CX_CRCC',          {keyCode: code}             ],
+        [ 0, ckm(e, '001') && [L,R].includes(which),          ['cc',],                      1, 'm',  'insert_CX_CRCC',          {keyCode: code}             ],
+        [ 0, ckm(e, '001') && [U,D].includes(which),          ['cr',],                      1, 'm',  'insert_CX_CRCC',          {keyCode: code}             ],
+        [ 0, ckm(e, '001') && [L,U,R,D].includes(which),      ['s', 'c', 'cr', 'cc'],       1, 'm',  '',                        {}                          ],
+        [ 0, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'm'],                   1, 'm',  'applyColorFromKey',       {currColor: which - 96}     ],
+        [ 0, ckm(e, '0-0') && which >= 48,                    ['s', 'm'],                   0, 'a',  'setEditedPathString',     toPathString(m.sc.lastPath) ],
       ]
       let keyStateMachine = {}
       for (let i = 0; i < keyStateMachineDb.length; i++) {
         for (let h = 0; h < keyStateMachineDb[0].length; h++) {
           keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h]
         }
-        if (
-          keyStateMachine.c === +e.ctrlKey &&
-          keyStateMachine.s === +e.shiftKey &&
-          keyStateMachine.a === +e.altKey &&
-          keyStateMachine.keyMatch === true &&
-          keyStateMachine.scope.includes(m.sc.scope)
-          // &&
-          // isEditing === false
-        ) {
-          if (keyStateMachine.p) {
+        const { isEditing, match, scope, preventDefault, actionType, action, payload } = keyStateMachine
+        if (/*isEditing*/ match === true && scope.includes(m.sc.scope)) {
+          if (preventDefault) {
             e.preventDefault()
           }
-          const { at, action, payload } = keyStateMachine
-          switch (at) {
+          switch (actionType) {
             case 'a': dispatch(actions[action](payload)); console.log(action, payload); break
             case 'sa': dispatch(sagaActions[action](payload)); break
             case 'm': mapDispatch(action, payload); break
