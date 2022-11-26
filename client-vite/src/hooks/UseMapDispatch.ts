@@ -40,6 +40,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     }
     // map
     if (![
+      'startEdit',
       'typeText',
       'moveTargetPreview',
       'selectTargetPreview',
@@ -77,5 +78,6 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       ? toPathString(nextM.sc.lastPath)
       : ''
     dispatch(actions.setEditedPathString(nextEditedPathString))
+    // two more dispatches for moveTarget and selectTarget in this order
   }
 }

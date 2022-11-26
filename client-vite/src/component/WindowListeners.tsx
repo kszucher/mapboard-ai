@@ -212,6 +212,37 @@ export const WindowListeners: FC = () => {
       }
     } else {
       // [37,38,39,40] = [left,up,right,down]
+      // const L = 37
+      // const U = 38
+      // const R = 39
+      // const D = 40
+      // move e to the first column, and merge the lines above
+      // remove m
+      // add at = action type, d = dispatch, md = mapDispatch, sd = sagaDispatch
+      // add payload! the REASON why I could not do this before, as I had event stacks which I don't have now --> also grants type safety (payload always)
+      // possibly include conditions such as hasCell, or contentType
+      // create a MONAD for csa
+      // -> c === 't' if SHOULD BE true
+      // -> c === 'f' if SHOULD BE false,
+      // -> c === 'a' if ANY
+      // make monad from csa
+      // 'fff'
+      // 'ftf'
+      // 'faf'
+      // avoid duplication of insert_CX_CRCC, instead introduce the following:
+      // insert_UD_CR, which is triggered either by a c OR a cr selection
+      // insert_LR_CC, which is triggered either by a c or a cc selection
+      // rename keyStateMachindDb to e2a, as this is an 1:1 event to action mapper
+      // ONCE DONE, EVENT - ACTION SEPARATION (so NOT just mouseDown events will be checked - very important)
+      // key event passes all its data to mapReducer, and the event resolution happens there
+      // but this way this becomes an "eventAction" instead of a "realAction"
+      // also we could string event to state and let state react, but that is an avoidable step
+      // and we can just "dispatch(keydown) --> and the action resolution happens INSIDE"
+      // advantage: we can have scope (and other) checks in ONE place
+      // so this is a NEW join-type middle layer for ALL map action, which actually makes a lot of sense...
+      // so what we need? eventType and eventData... that is all I guess
+      // event --> eventToMapActionWithChecks(eventType, eventData) --> mapDispatch(action, payload)
+      // THIS IS THE WAY
       const keyStateMachineDb = [
         [ 'c','s','a', 'keyMatch',                    'e','scope',                     'p','m','action',                  ],
         [  0,  0,  0,  key === 'F1',                   0, ['s', 'c', 'm'],              1,  0, '',                        ],
@@ -244,17 +275,17 @@ export const WindowListeners: FC = () => {
         [  1,  0,  0,  code === 'KeyE',                0, ['s'],                        1,  1, 'transpose',               ],
         [  0,  1,  0,  [37,39].includes(which),        0, ['c', 'm'],                   1,  1, 'select_CR',               ],
         [  0,  1,  0,  [38,40].includes(which),        0, ['c', 'm'],                   1,  1, 'select_CC',               ],
-        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['s'],                        1,  1, 'selectNeighborStruct',    ],
-        [  0,  1,  0,  [38,40].includes(which),        0, ['s'],                        1,  1, 'selectNeighborStructToo', ],
-        [  0,  1,  0,  [37,39].includes(which),        0, ['s'],                        1,  1, 'selectDescendantsOut',    ],
-        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['m'],                        1,  1, 'selectNeighborMixed',     ],
-        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['cr', 'cc'],                 1,  1, 'select_CRCC',             ],
-        [  1,  0,  0,  [37,38,39,40].includes(which),  0, ['s'],                        1,  1, 'move_S',                  ],
-        [  1,  0,  0,  [37,38,39,40].includes(which),  0, ['cr', 'cc'],                 1,  1, 'move_CRCC',               ],
-        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['m'],                        1,  1, 'insert_M_CRCC',           ],
-        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['c',],                       1,  1, 'insert_CX_CRCC',          ],
-        [  0,  0,  1,  [37,39].includes(which),        0, ['cc',],                      1,  1, 'insert_CX_CRCC',          ],
-        [  0,  0,  1,  [38,40].includes(which),        0, ['cr',],                      1,  1, 'insert_CX_CRCC',          ],
+        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['s'],                        1,  1, 'selectNeighborStruct',    ], // K
+        [  0,  1,  0,  [38,40].includes(which),        0, ['s'],                        1,  1, 'selectNeighborStructToo', ], // K
+        [  0,  1,  0,  [37,39].includes(which),        0, ['s'],                        1,  1, 'selectDescendantsOut',    ], // K
+        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['m'],                        1,  1, 'selectNeighborMixed',     ], // K
+        [  0,  0,  0,  [37,38,39,40].includes(which),  0, ['cr', 'cc'],                 1,  1, 'select_CRCC',             ], // K
+        [  1,  0,  0,  [37,38,39,40].includes(which),  0, ['s'],                        1,  1, 'move_S',                  ], // K
+        [  1,  0,  0,  [37,38,39,40].includes(which),  0, ['cr', 'cc'],                 1,  1, 'move_CRCC',               ], // K
+        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['m'],                        1,  1, 'insert_M_CRCC',           ], // K
+        [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['c',],                       1,  1, 'insert_CX_CRCC',          ], // K
+        [  0,  0,  1,  [37,39].includes(which),        0, ['cc',],                      1,  1, 'insert_CX_CRCC',          ], // K
+        [  0,  0,  1,  [38,40].includes(which),        0, ['cr',],                      1,  1, 'insert_CX_CRCC',          ], // K
         [  0,  0,  1,  [37,38,39,40].includes(which),  0, ['s', 'c', 'cr', 'cc'],       1,  0, '',                        ],
         [  1,  0,  0,  which >= 96 && which <= 105,    0, ['s', 'm'],                   1,  1, 'applyColorFromKey',       ],
         [  0,  0,  0,  which >= 48,                    0, ['s', 'm'],                   0,  0, 'deleteContent',           ],
