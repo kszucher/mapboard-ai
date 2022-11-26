@@ -211,15 +211,11 @@ export const WindowListeners: FC = () => {
         mapDispatch('insert_O_S')
       }
     } else {
-      // [L,U,R,D] = [left,up,right,down]
       const L = 37
       const U = 38
       const R = 39
       const D = 40
-      // move e to the first column, and merge the lines above
-      // remove m
-      // add at = action type, d = dispatch, md = mapDispatch, sd = sagaDispatch
-      // add payload! the REASON why I could not do this before, as I had event stacks which I don't have now --> also grants type safety (payload always)
+
       // possibly include conditions such as hasCell, or contentType
       // create a MONAD for csa
       // -> c === 't' if SHOULD BE true
@@ -244,52 +240,52 @@ export const WindowListeners: FC = () => {
       // event --> eventToMapActionWithChecks(eventType, eventData) --> mapDispatch(action, payload)
       // THIS IS THE WAY
       const keyStateMachineDb = [
-        [ 'e','c','s','a', 'keyMatch',                     'scope',                     'p', 'action',                  ],
-        [  0,  0,  0,  0,  key === 'F1',                   ['s', 'c', 'm'],              1,  '',                        ],
-        [  0,  0,  0,  0,  key === 'F2',                   ['s', 'm'],                   1,  'startEdit',               ],
-        [  0,  0,  0,  0,  key === 'F3',                   ['s', 'c', 'm'],              1,  '',                        ],
-        [  0,  0,  0,  0,  key === 'F5',                   ['s', 'c', 'm'],              0,  '',                        ],
-        [  0,  0,  0,  0,  key === 'Enter',                ['s'],                        1,  'insert_D_S',              ],
-        [  0,  0,  0,  0,  key === 'Enter',                ['m'],                        1,  'select_D_M',              ],
-        [  0,  0,  1,  0,  key === 'Enter',                ['s', 'm'],                   1,  'insert_U_S',              ],
-        [  0,  0,  0,  1,  key === 'Enter',                ['s'],                        1,  'cellifyMulti',            ],
-        [  0,  0,  0,  0,  ['Insert','Tab'].includes(key), ['s'],                        1,  'insert_O_S',              ],
-        [  0,  0,  0,  0,  ['Insert','Tab'].includes(key), ['m'],                        1,  'select_O_M',              ],
-        [  0,  0,  0,  0,  key === 'Delete',               ['s'],                        1,  'delete_S',                ],
-        [  0,  0,  0,  0,  key === 'Delete',               ['cr', 'cc'],                 1,  'delete_CRCC',             ],
-        [  0,  0,  0,  0,  code === 'Space',               ['s'],                        1,  'select_S_F_M',            ],
-        [  0,  0,  0,  0,  code === 'Space',               ['m'],                        1,  'select_M_F_S',            ],
-        [  0,  0,  0,  0,  code === 'Space',               ['c'],                        1,  '',                        ],
-        [  0,  0,  0,  0,  code === 'Space',               ['cr', 'cc'],                 1,  'select_CRCC_F_M',         ],
-        [  0,  0,  0,  0,  code === 'Backspace',           ['s'],                        1,  'select_S_B_M',            ],
-        [  0,  0,  0,  0,  code === 'Backspace',           ['c', 'cr', 'cc'],            1,  'select_CCRCC_B_S',        ],
-        [  0,  0,  0,  0,  code === 'Backspace',           ['m'],                        1,  'select_M_BB_S',           ],
-        [  0,  0,  0,  0,  code === 'Escape',              ['s', 'c', 'm'],              1,  'select_R',                ],
-        [  0,  1,  0,  0,  code === 'KeyA',                ['s', 'c', 'm'],              1,  'select_all',              ],
-        [  0,  1,  0,  0,  code === 'KeyM',                ['s', 'c', 'm'],              1,  'createMapInMap',          ],
-        [  0,  1,  0,  0,  code === 'KeyC',                ['s', 'c', 'm'],              1,  'copySelection',           ],
-        [  0,  1,  0,  0,  code === 'KeyX',                ['s', 'c', 'm'],              1,  'cutSelection',            ],
-        [  0,  1,  0,  0,  code === 'KeyS',                ['s', 'c', 'm'],              1,  'saveMap',                 ],
-        [  0,  1,  0,  0,  code === 'KeyZ',                ['s', 'c', 'm', 'cr', 'cc'],  1,  'redo',                    ],
-        [  0,  1,  0,  0,  code === 'KeyY',                ['s', 'c', 'm', 'cr', 'cc'],  1,  'undo',                    ],
-        [  0,  1,  0,  0,  code === 'KeyE',                ['s'],                        1,  'transpose',               ],
-        [  0,  0,  1,  0,  [L,R].includes(which),          ['c', 'm'],                   1,  'select_CR',               ],
-        [  0,  0,  1,  0,  [U,D].includes(which),          ['c', 'm'],                   1,  'select_CC',               ],
-        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['s'],                        1,  'selectNeighborStruct',    ], // K
-        [  0,  0,  1,  0,  [U,D].includes(which),          ['s'],                        1,  'selectNeighborStructToo', ], // K
-        [  0,  0,  1,  0,  [L,R].includes(which),          ['s'],                        1,  'selectDescendantsOut',    ], // K
-        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['m'],                        1,  'selectNeighborMixed',     ], // K
-        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['cr', 'cc'],                 1,  'select_CRCC',             ], // K
-        [  0,  1,  0,  0,  [L,U,R,D].includes(which),      ['s'],                        1,  'move_S',                  ], // K
-        [  0,  1,  0,  0,  [L,U,R,D].includes(which),      ['cr', 'cc'],                 1,  'move_CRCC',               ], // K
-        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['m'],                        1,  'insert_M_CRCC',           ], // K
-        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['c',],                       1,  'insert_CX_CRCC',          ], // K
-        [  0,  0,  0,  1,  [L,R].includes(which),          ['cc',],                      1,  'insert_CX_CRCC',          ], // K
-        [  0,  0,  0,  1,  [U,D].includes(which),          ['cr',],                      1,  'insert_CX_CRCC',          ], // K
-        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['s', 'c', 'cr', 'cc'],       1,  '',                        ],
-        [  0,  1,  0,  0,  which >= 96 && which <= 105,    ['s', 'm'],                   1,  'applyColorFromKey',       ],
-        [  0,  0,  0,  0,  which >= 48,                    ['s', 'm'],                   0,  'deleteContent',           ],
-        [  0,  0,  1,  0,  which >= 48,                    ['s', 'm'],                   0,  'deleteContent',           ],
+        [ 'e','c','s','a', 'keyMatch',                     'scope',                     'p', 'at',  'action',                  'payload'                   ],
+        [  0,  0,  0,  0,  key === 'F1',                   ['s', 'c', 'm'],              1,  'm',   '',                                                    ],
+        [  0,  0,  0,  0,  key === 'F2',                   ['s', 'm'],                   1,  'm',   'startEdit',                                           ],
+        [  0,  0,  0,  0,  key === 'F3',                   ['s', 'c', 'm'],              1,  'm',   '',                                                    ],
+        [  0,  0,  0,  0,  key === 'F5',                   ['s', 'c', 'm'],              0,  'm',   '',                                                    ],
+        [  0,  0,  0,  0,  key === 'Enter',                ['s'],                        1,  'm',   'insert_D_S',                                          ],
+        [  0,  0,  0,  0,  key === 'Enter',                ['m'],                        1,  'm',   'select_D_M',                                          ],
+        [  0,  0,  1,  0,  key === 'Enter',                ['s', 'm'],                   1,  'm',   'insert_U_S',                                          ],
+        [  0,  0,  0,  1,  key === 'Enter',                ['s'],                        1,  'm',   'cellifyMulti',                                        ],
+        [  0,  0,  0,  0,  ['Insert','Tab'].includes(key), ['s'],                        1,  'm',   'insert_O_S',                                          ],
+        [  0,  0,  0,  0,  ['Insert','Tab'].includes(key), ['m'],                        1,  'm',   'select_O_M',                                          ],
+        [  0,  0,  0,  0,  key === 'Delete',               ['s'],                        1,  'm',   'delete_S',                                            ],
+        [  0,  0,  0,  0,  key === 'Delete',               ['cr', 'cc'],                 1,  'm',   'delete_CRCC',                                         ],
+        [  0,  0,  0,  0,  code === 'Space',               ['s'],                        1,  'm',   'select_S_F_M',                                        ],
+        [  0,  0,  0,  0,  code === 'Space',               ['m'],                        1,  'm',   'select_M_F_S',                                        ],
+        [  0,  0,  0,  0,  code === 'Space',               ['c'],                        1,  'm',   '',                                                    ],
+        [  0,  0,  0,  0,  code === 'Space',               ['cr', 'cc'],                 1,  'm',   'select_CRCC_F_M',                                     ],
+        [  0,  0,  0,  0,  code === 'Backspace',           ['s'],                        1,  'm',   'select_S_B_M',                                        ],
+        [  0,  0,  0,  0,  code === 'Backspace',           ['c', 'cr', 'cc'],            1,  'm',   'select_CCRCC_B_S',                                    ],
+        [  0,  0,  0,  0,  code === 'Backspace',           ['m'],                        1,  'm',   'select_M_BB_S',                                       ],
+        [  0,  0,  0,  0,  code === 'Escape',              ['s', 'c', 'm'],              1,  'm',   'select_R',                                            ],
+        [  0,  1,  0,  0,  code === 'KeyA',                ['s', 'c', 'm'],              1,  'm',   'select_all',                                          ],
+        [  0,  1,  0,  0,  code === 'KeyM',                ['s', 'c', 'm'],              1,  'sa',  'createMapInMap',                                      ],
+        [  0,  1,  0,  0,  code === 'KeyC',                ['s', 'c', 'm'],              1,  'm',   'copySelection',                                       ],
+        [  0,  1,  0,  0,  code === 'KeyX',                ['s', 'c', 'm'],              1,  'm',   'cutSelection',                                        ],
+        [  0,  1,  0,  0,  code === 'KeyS',                ['s', 'c', 'm'],              1,  'sa',  'saveMap',                                             ],
+        [  0,  1,  0,  0,  code === 'KeyZ',                ['s', 'c', 'm', 'cr', 'cc'],  1,  'a',   'redo',                                                ],
+        [  0,  1,  0,  0,  code === 'KeyY',                ['s', 'c', 'm', 'cr', 'cc'],  1,  'a',   'undo',                                                ],
+        [  0,  1,  0,  0,  code === 'KeyE',                ['s'],                        1,  'm',   'transpose',                                           ],
+        [  0,  0,  1,  0,  [L,R].includes(which),          ['c', 'm'],                   1,  'm',   'select_CR',                                           ],
+        [  0,  0,  1,  0,  [U,D].includes(which),          ['c', 'm'],                   1,  'm',   'select_CC',                                           ],
+        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['s'],                        1,  'm',   'selectNeighborStruct',    {keyCode: e.code}           ],
+        [  0,  0,  1,  0,  [U,D].includes(which),          ['s'],                        1,  'm',   'selectNeighborStructToo', {keyCode: e.code}           ],
+        [  0,  0,  1,  0,  [L,R].includes(which),          ['s'],                        1,  'm',   'selectDescendantsOut',    {keyCode: e.code}           ],
+        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['m'],                        1,  'm',   'selectNeighborMixed',     {keyCode: e.code}           ],
+        [  0,  0,  0,  0,  [L,U,R,D].includes(which),      ['cr', 'cc'],                 1,  'm',   'select_CRCC',             {keyCode: e.code}           ],
+        [  0,  1,  0,  0,  [L,U,R,D].includes(which),      ['s'],                        1,  'm',   'move_S',                  {keyCode: e.code}           ],
+        [  0,  1,  0,  0,  [L,U,R,D].includes(which),      ['cr', 'cc'],                 1,  'm',   'move_CRCC',               {keyCode: e.code}           ],
+        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['m'],                        1,  'm',   'insert_M_CRCC',           {keyCode: e.code}           ],
+        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['c',],                       1,  'm',   'insert_CX_CRCC',          {keyCode: e.code}           ],
+        [  0,  0,  0,  1,  [L,R].includes(which),          ['cc',],                      1,  'm',   'insert_CX_CRCC',          {keyCode: e.code}           ],
+        [  0,  0,  0,  1,  [U,D].includes(which),          ['cr',],                      1,  'm',   'insert_CX_CRCC',          {keyCode: e.code}           ],
+        [  0,  0,  0,  1,  [L,U,R,D].includes(which),      ['s', 'c', 'cr', 'cc'],       1,  'm',   '',                                                    ],
+        [  0,  1,  0,  0,  which >= 96 && which <= 105,    ['s', 'm'],                   1,  'm',   'applyColorFromKey',       {currColor: which - 96}     ],
+        [  0,  0,  0,  0,  which >= 48,                    ['s', 'm'],                   0,  'a',   'setEditedPathString',     toPathString(m.sc.lastPath) ],
+        [  0,  0,  1,  0,  which >= 48,                    ['s', 'm'],                   0,  'a',   'setEditedPathString',     toPathString(m.sc.lastPath) ],
       ]
       let keyStateMachine = {}
       for (let i = 0; i < keyStateMachineDb.length; i++) {
@@ -308,23 +304,11 @@ export const WindowListeners: FC = () => {
           if (keyStateMachine.p) {
             e.preventDefault()
           }
-          const { action } = keyStateMachine
-          if ([
-            'createMapInMap',
-            'saveMap',
-            'undo',
-            'redo',
-          ].includes(action)) {
-            if (action === 'createMapInMap') dispatch(sagaActions.createMapInMap())
-            if (action === 'saveMap') dispatch(sagaActions.saveMap())
-            if (action === 'undo') dispatch(actions.undo())
-            if (action === 'redo') dispatch(actions.redo())
-          } else if (action === 'applyColorFromKey') {
-            mapDispatch(action, {currColor: which - 96})
-          } else if (action === 'deleteContent') {
-            dispatch(actions.setEditedPathString(toPathString(m.sc.lastPath)))
-          } else {
-            mapDispatch(action, {keyCode: e.code})
+          const { at, action, payload } = keyStateMachine
+          switch (at) {
+            case 'a': dispatch(actions[action](payload)); console.log(action, payload); break
+            case 'sa': dispatch(sagaActions[action](payload)); break
+            case 'm': mapDispatch(action, payload); break
           }
           break
         }
