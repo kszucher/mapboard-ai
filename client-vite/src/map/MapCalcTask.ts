@@ -1,8 +1,8 @@
 // @ts-nocheck
 
-export const mapTaskCalc = {
+export const mapCalcTask = {
   start: (m, cr) => {
-    mapTaskCalc.iterate(m, cr)
+    mapCalcTask.iterate(m, cr)
   },
 
   iterate: (m, cm) => {
@@ -10,7 +10,7 @@ export const mapTaskCalc = {
     if (dCount) {
       cm.taskStatus = -1
       for (let i = 0; i < dCount; i++) {
-        mapTaskCalc.iterate(m, cm.d[i])
+        mapCalcTask.iterate(m, cm.d[i])
       }
       const taskStatusRight = cm.d[0].taskStatus
       const taskStatusLeft = cm.d[1].taskStatus
@@ -27,7 +27,7 @@ export const mapTaskCalc = {
       cm.taskStatus = -1
       let minTaskStatus = 3
       for (let i = 0; i < sCount; i++) {
-        mapTaskCalc.iterate(m, cm.s[i])
+        mapCalcTask.iterate(m, cm.s[i])
         let currTaskStatus = cm.s[i].taskStatus
         if (currTaskStatus < minTaskStatus) {
           minTaskStatus = currTaskStatus
@@ -35,6 +35,6 @@ export const mapTaskCalc = {
       }
       cm.taskStatus = minTaskStatus
     }
-    cm.c.map(i => i.map(j => mapTaskCalc.iterate(m, j)))
+    cm.c.map(i => i.map(j => mapCalcTask.iterate(m, j)))
   }
 }

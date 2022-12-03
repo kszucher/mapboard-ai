@@ -13,8 +13,8 @@ import {mapExtractSelection} from '../map/MapExtractSelection'
 import {mapMeasure} from '../map/MapMeasure'
 import {mapPlace} from '../map/MapPlace'
 import {mapSetProp} from '../map/MapSetProp'
-import {mapTaskCalc} from '../map/MapTaskCalc'
-import {mapTaskCheck} from '../map/MapTaskCheck'
+import {mapCalcTask} from '../map/MapCalcTask'
+import {mapCheckTask} from '../map/MapCheckTask'
 import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
@@ -481,8 +481,8 @@ export const reCalc = (pm: any, m: any) => {
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
   mapDiff.start(pm, m, cr)
-  mapTaskCalc.start(m, cr) // mapCalcTask
-  mapTaskCheck.start(m, cr) // mapExtractTask
+  mapCalcTask.start(m, cr)
+  mapCheckTask.start(m, cr)
   mapExtractSelection.start(m, cr)
   mapExtractFormatting.start(m)
   mapMeasure.start(m, cr)

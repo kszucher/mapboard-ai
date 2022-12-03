@@ -1,10 +1,10 @@
 // @ts-nocheck
 
-export const mapTaskCheck = {
+export const mapCheckTask = {
   start: (m, cr) => {
     m.taskLeft = 0
     m.taskRight = 0
-    mapTaskCheck.iterate(m, cr)
+    mapCheckTask.iterate(m, cr)
   },
 
   iterate: (m, cm) => {
@@ -19,8 +19,8 @@ export const mapTaskCheck = {
         console.log(cm.path)
       }
     }
-    cm.d.map(i => mapTaskCheck.iterate(m, i))
-    cm.s.map(i => mapTaskCheck.iterate(m, i))
-    cm.c.map(i => i.map(j => mapTaskCheck.iterate(m, j)))
+    cm.d.map(i => mapCheckTask.iterate(m, i))
+    cm.s.map(i => mapCheckTask.iterate(m, i))
+    cm.c.map(i => i.map(j => mapCheckTask.iterate(m, j)))
   }
 }
