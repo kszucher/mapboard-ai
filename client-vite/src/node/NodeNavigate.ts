@@ -34,6 +34,8 @@ export const nodeNavigate = (m:any, truePath: any[], target: string, direction: 
             .concat(Array(outDepth).fill('od'));
             break;
           case 'I': sequence = ['i']; break;
+          case 'IR': sequence = ['i']; break;
+          case 'IL': sequence = ['i']; break;
           case 'O': sequence = ['om']; break;
           case 'OR': sequence = ['om']; break;
           case 'OL': sequence = ['om']; break;

@@ -16,9 +16,11 @@ const c2dt = (m, which) => {
   let direction = ''
   if (which === R) {
     if (lastPath.length === 2) {direction = 'OR'}
+    else if (lastPath.length === 6) {direction = lastPath[3] ? 'IR' : 'O'}
     else {direction = lastPath[3] ? 'I' : 'O'}
   } else if (which === L) {
     if (lastPath.length === 2) {direction = 'OL'}
+    else if (lastPath.length === 6) {direction = lastPath[3] ? 'O' : 'IL'}
     else {direction = lastPath[3] ? 'O' : 'I'}
   } else if (which === U) {direction = 'U'
   } else if (which === D) {direction = 'D'
