@@ -161,24 +161,16 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'select_S_IOUD': {
-      clearSelection(m)
+      if (!payload.add) {
+        clearSelection(m)
+      }
       let newTruePath = payload.truePath
       if (payload.direction === 'U') {
         newTruePath = m.sc.geomHighPath
       } else if (payload.direction === 'D') {
         newTruePath = m.sc.geomLowPath
       }
-      getMapData(m, nodeNavigate(m, newTruePath, 'struct2struct', payload.direction)).selected = 1
-      break
-    }
-    case 'select_S_IOUD+': {
-      let newTruePath = payload.truePath
-      if (payload.direction === 'U') {
-        newTruePath = m.sc.geomHighPath
-      } else if (payload.direction === 'D') {
-        newTruePath = m.sc.geomLowPath
-      }
-      getMapData(m, nodeNavigate(m, newTruePath, 'struct2struct', payload.direction)).selected = sc.maxSel + 1
+      getMapData(m, nodeNavigate(m, newTruePath, 'struct2struct', payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
       break
     }
     case 'select_S_F': {
