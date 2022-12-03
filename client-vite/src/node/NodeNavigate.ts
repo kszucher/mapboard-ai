@@ -90,10 +90,22 @@ export const nodeNavigate = (m:any, truePath: any[], target: string, direction: 
     let nextRow = 0
     let nextCol = 0
     switch (direction) {
-      case 'D': nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow;     nextCol = currCol; break
-      case 'U':   nextRow = currRow - 1 < 0 ?      0           : currRow - 1; nextCol = currCol; break
-      case 'O':  nextCol = currCol + 1 < colLen ? currCol + 1 : currCol;     nextRow = currRow; break
-      case 'I':   nextCol = currCol - 1 < 0 ?      0           : currCol - 1; nextRow = currRow; break
+      case 'D':
+        nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow
+        nextCol = currCol
+        break
+      case 'U':
+        nextRow = currRow - 1 < 0 ? 0 : currRow - 1
+        nextCol = currCol
+        break
+      case 'O':
+        nextCol = currCol + 1 < colLen ? currCol + 1 : currCol
+        nextRow = currRow
+        break
+      case 'I':
+        nextCol = currCol - 1 < 0 ? 0 : currCol - 1
+        nextRow = currRow
+        break
     }
     newPath[newPath.length - 2] = nextRow
     newPath[newPath.length - 1] = nextCol
