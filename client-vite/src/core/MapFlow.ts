@@ -21,6 +21,7 @@ import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellCreate, structCreate} from '../node/NodeCreate'
 import {nodeMove, nodeMoveMouse} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
+import {Dir} from "./Types";
 
 export const getMapData = (m: any, path: any) => {
   return subsref(m, path)
@@ -165,10 +166,10 @@ export const mapReducer = (m: any, action: any, payload: any) => {
         clearSelection(m)
       }
       let toPath = [...sc.lastPath]
-      if (payload.direction === 'U') {toPath = m.sc.geomHighPath}
-      else if (payload.direction === 'D') {toPath = m.sc.geomLowPath}
-      else if (payload.direction === 'OR') {toPath = ['r', 0, 'd', 0]}
-      else if (payload.direction === 'OL') {toPath = ['r', 0, 'd', 1]}
+      if (payload.direction === Dir.U) {toPath = m.sc.geomHighPath}
+      else if (payload.direction === Dir.D) {toPath = m.sc.geomLowPath}
+      else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
+      else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
       getMapData(m, nodeNavigate(m, toPath, 'struct2struct', payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
       break
     }
@@ -265,20 +266,20 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     case 'insert_S_U': {
       if (!ln.isRoot) {
         clearSelection(m)
-        structCreate(m, ln, 'U', {})
+        structCreate(m, ln, Dir.U, {})
       }
       break
     }
     case 'insert_S_D': {
       if (!ln.isRoot) {
         clearSelection(m)
-        structCreate(m, ln, 'D', {})
+        structCreate(m, ln, Dir.D, {})
       }
       break
     }
     case 'insert_S_O': {
       clearSelection(m)
-      structCreate(m, ln, 'O', {})
+      structCreate(m, ln, Dir.O, {})
       break
     }
     case 'insert_CC_IO': {
@@ -308,15 +309,15 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // MOVE
     case 'move_S_IOUD': {
-      nodeMove(m, sc, 'struct2struct', payload.code, '')
+      nodeMove(m, 'struct2struct', payload.direction)
       break
     }
     case 'move_CR_UD': {
-      nodeMove(m, sc, 'cellBlock2CellBlock', payload.code, '') // TODO separate CR
+      nodeMove(m, 'cellBlock2CellBlock', payload.direction) // TODO separate CR
       break
     }
     case 'move_CC_IO': {
-      nodeMove(m, sc, 'cellBlock2CellBlock', payload.code, '') // TODO separate CC
+      nodeMove(m, 'cellBlock2CellBlock', payload.direction) // TODO separate CC
       break
     }
     case 'transpose': {
@@ -326,11 +327,11 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'copySelection': {
-      nodeMove(m, sc, 'struct2clipboard', '', 'COPY')
+      nodeMove(m, 'struct2clipboard')
       break
     }
     case 'cutSelection': {
-      nodeMove(m, sc, 'struct2clipboard', '', 'CUT')
+      nodeMove(m, 'struct2clipboard')
       structDeleteReselect(m, sc)
       break
     }
@@ -339,7 +340,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'cellifyMulti': { // TODO rename to something move_
-      nodeMove(m, sc, 'struct2cell', '', 'multiRow')
+      nodeMove(m, 'struct2cell')
       clearSelection(m)
       let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice
       getMapData(m, toPath).selected = 1
@@ -352,24 +353,24 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'insertTextFromClipboardAsNode': {
       clearSelection(m)
-      structCreate(m, ln, 'O', { contentType: 'text', content: payload.text })
+      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
       break
     }
     case 'insertElinkFromClipboardAsNode': {
       clearSelection(m)
-      structCreate(m, ln, 'O', { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
+      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
       break
     }
     case 'insertEquationFromClipboardAsNode': {
       clearSelection(m)
-      structCreate(m, ln, 'O', { contentType: 'equation', content: payload.text })
+      structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
       break
     }
     case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
       const { imageId, imageSize } = payload
       const { width, height } = imageSize
       clearSelection(m)
-      structCreate(m, ln, 'O', { contentType: 'image', content: imageId, imageW: width, imageH: height })
+      structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
       break
     }
     case 'insertMapFromClipboard': {
@@ -377,7 +378,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       const nodeList = JSON.parse(payload.text)
       for (let i = 0; i < nodeList.length; i++) {
         mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
-        structCreate(m, ln, 'O', { ...nodeList[i] })
+        structCreate(m, ln, Dir.O, { ...nodeList[i] })
       }
       break
     }
@@ -394,7 +395,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
           tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
         }
       }
-      structCreate(m, ln, 'O', { taskStatus: -1, c: tableGen })
+      structCreate(m, ln, Dir.O, { taskStatus: -1, c: tableGen })
       break
     }
     // FORMAT

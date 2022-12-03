@@ -50,3 +50,14 @@ export enum LineTypes {
   bezier,
   edge
 }
+
+export enum Dir {
+  I,
+  IR,
+  IL,
+  O,
+  OR,
+  OL,
+  U,
+  D,
+}

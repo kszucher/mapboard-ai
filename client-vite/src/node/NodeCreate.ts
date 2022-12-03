@@ -2,22 +2,23 @@
 
 import {getDefaultNode} from "../core/DefaultProps";
 import { getMapData } from '../core/MapFlow'
+import {Dir} from "../core/Types";
 
 export const structCreate = (m, ln, direction, payload ) => {
   let parentRef;
-  if (direction === 'U') {
+  if (direction === Dir.U) {
     parentRef = getMapData(m, ln.parentPath);
     parentRef.s.splice(ln.index, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ?  0 : -1,
     }))
-  } else if (direction === 'D') {
+  } else if (direction === Dir.D) {
     parentRef = getMapData(m, ln.parentPath);
     parentRef.s.splice(ln.index + 1, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ? 0 : -1,
     }));
-  } else if (direction === 'O') {
+  } else if (direction === Dir.O) {
     parentRef = ln.isRoot? ln.d[0] : ln;
     parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
       selected: 1,

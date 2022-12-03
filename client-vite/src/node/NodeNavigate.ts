@@ -1,6 +1,7 @@
 import { getMapData } from '../core/MapFlow'
+import {Dir} from "../core/Types";
 
-export const nodeNavigate = (m:any, truePath: any[], target: string, direction: string) => {
+export const nodeNavigate = (m:any, truePath: any[], target: string, direction: Dir) => {
   let newPath = [];
   if (target === 'struct2struct') {
     let inDepth = - 1;
@@ -23,14 +24,14 @@ export const nodeNavigate = (m:any, truePath: any[], target: string, direction: 
       for (let outDepth = inDepth; outDepth > - 1; outDepth--) {
         let sequence = []
         switch (direction) {
-          case 'I': sequence = ['i']; break
-          case 'IR': sequence = ['i']; break
-          case 'IL': sequence = ['i']; break
-          case 'O': sequence = ['om']; break
-          case 'OR': sequence = ['om']; break
-          case 'OL': sequence = ['om']; break
-          case 'U': sequence = Array(inDepth).fill('i').concat('u').concat(Array(outDepth).fill('od')); break
-          case 'D': sequence = Array(inDepth).fill('i').concat('d').concat(Array(outDepth).fill('ou')); break
+          case Dir.I: sequence = ['i']; break
+          case Dir.IR: sequence = ['i']; break
+          case Dir.IL: sequence = ['i']; break
+          case Dir.O: sequence = ['om']; break
+          case Dir.OR: sequence = ['om']; break
+          case Dir.OL: sequence = ['om']; break
+          case Dir.U: sequence = Array(inDepth).fill('i').concat('u').concat(Array(outDepth).fill('od')); break
+          case Dir.D: sequence = Array(inDepth).fill('i').concat('d').concat(Array(outDepth).fill('ou')); break
           default: console.log('sequence error')
         }
         let sequenceOk = Array(sequence.length).fill(false)
@@ -90,19 +91,19 @@ export const nodeNavigate = (m:any, truePath: any[], target: string, direction: 
     let nextRow = 0
     let nextCol = 0
     switch (direction) {
-      case 'D':
+      case Dir.D:
         nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow
         nextCol = currCol
         break
-      case 'U':
+      case Dir.U:
         nextRow = currRow - 1 < 0 ? 0 : currRow - 1
         nextCol = currCol
         break
-      case 'O':
+      case Dir.O:
         nextCol = currCol + 1 < colLen ? currCol + 1 : currCol
         nextRow = currRow
         break
-      case 'I':
+      case Dir.I:
         nextCol = currCol - 1 < 0 ? 0 : currCol - 1
         nextRow = currRow
         break
