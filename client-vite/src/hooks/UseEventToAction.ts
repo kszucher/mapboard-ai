@@ -13,28 +13,17 @@ const ckm = (e, condition) => (
 
 const c2dt = (m, which) => {
   const {lastPath} = m.sc
-  let truePath = [...lastPath]
   let direction = ''
   if (which === R) {
-    if (lastPath.length === 2) {
-      truePath = ['r', 0, 'd', 0]
-      direction = 'O'
-    } else {
-      direction = lastPath[3] ? 'I' : 'O';
-    }
+    if (lastPath.length === 2) {direction = 'OR'}
+    else {direction = lastPath[3] ? 'I' : 'O'}
   } else if (which === L) {
-    if (lastPath.length === 2) {
-      truePath = ['r', 0, 'd', 1]
-      direction = 'O'
-    } else {
-      direction = lastPath[3] ? 'O' : 'I';
-    }
-  } else if (which === U) {
-    direction = 'U'
-  } else if (which === D) {
-    direction = 'D'
+    if (lastPath.length === 2) {direction = 'OL'}
+    else {direction = lastPath[3] ? 'O' : 'I'}
+  } else if (which === U) {direction = 'U'
+  } else if (which === D) {direction = 'D'
   }
-  return { direction, truePath }
+  return { direction }
 }
 
 export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDispatch) => {

@@ -35,6 +35,8 @@ export const nodeNavigate = (m:any, truePath: any[], target: string, direction: 
             break;
           case 'I': sequence = ['i']; break;
           case 'O': sequence = ['om']; break;
+          case 'OR': sequence = ['om']; break;
+          case 'OL': sequence = ['om']; break;
           default: console.log('sequence error');
         }
         let sequenceOk = Array(sequence.length).fill(false);
