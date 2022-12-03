@@ -3,7 +3,7 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { getMapData } from '../core/MapFlow'
 
-export const structInsert = (m, ln, direction, payload ) => {
+export const structCreate = (m, ln, direction, payload ) => {
   let parentRef;
   if (direction === 'U') {
     parentRef = getMapData(m, ln.parentPath);
@@ -27,7 +27,7 @@ export const structInsert = (m, ln, direction, payload ) => {
   }
 }
 
-export const cellInsert = (m, lastPath, key) => {
+export const cellCreate = (m, lastPath, key) => {
   let ln = getMapData(m, lastPath);
   let parentRef = getMapData(m, ln.parentPath);
   let currRow = ln.index[0];

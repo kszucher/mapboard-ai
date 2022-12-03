@@ -18,7 +18,7 @@ import {mapCheckTask} from '../map/MapCheckTask'
 import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
-import {cellInsert, structInsert} from '../node/NodeInsert'
+import {cellCreate, structCreate} from '../node/NodeCreate'
 import {nodeMove, nodeMoveMouse} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 
@@ -268,36 +268,36 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     case 'insert_S_U': {
       if (!ln.isRoot) {
         clearSelection(m)
-        structInsert(m, ln, 'U', {})
+        structCreate(m, ln, 'U', {})
       }
       break
     }
     case 'insert_S_D': {
       if (!ln.isRoot) {
         clearSelection(m)
-        structInsert(m, ln, 'D', {})
+        structCreate(m, ln, 'D', {})
       }
       break
     }
     case 'insert_S_O': {
       clearSelection(m)
-      structInsert(m, ln, 'O', {})
+      structCreate(m, ln, 'O', {})
       break
     }
     case 'insert_CC_IO': {
-      cellInsert(m, sc.lastPath, payload.code) // TODO cellColInsert
+      cellCreate(m, sc.lastPath, payload.code) // TODO cellColInsert
       break
     }
     case 'insert_CC_B_IO': {
-      cellInsert(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellColInsert
+      cellCreate(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellColInsert
       break
     }
     case 'insert_CR_UD': {
-      cellInsert(m, sc.lastPath, payload.code) // TODO cellRowInsert
+      cellCreate(m, sc.lastPath, payload.code) // TODO cellRowInsert
       break
     }
     case 'insert_CR_B_UD': {
-      cellInsert(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellRowInsert
+      cellCreate(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellRowInsert
       break
     }
     // DELETE
@@ -355,24 +355,24 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'insertTextFromClipboardAsNode': {
       clearSelection(m)
-      structInsert(m, ln, 'O', { contentType: 'text', content: payload.text })
+      structCreate(m, ln, 'O', { contentType: 'text', content: payload.text })
       break
     }
     case 'insertElinkFromClipboardAsNode': {
       clearSelection(m)
-      structInsert(m, ln, 'O', { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
+      structCreate(m, ln, 'O', { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
       break
     }
     case 'insertEquationFromClipboardAsNode': {
       clearSelection(m)
-      structInsert(m, ln, 'O', { contentType: 'equation', content: payload.text })
+      structCreate(m, ln, 'O', { contentType: 'equation', content: payload.text })
       break
     }
     case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
       const { imageId, imageSize } = payload
       const { width, height } = imageSize
       clearSelection(m)
-      structInsert(m, ln, 'O', { contentType: 'image', content: imageId, imageW: width, imageH: height })
+      structCreate(m, ln, 'O', { contentType: 'image', content: imageId, imageW: width, imageH: height })
       break
     }
     case 'insertMapFromClipboard': {
@@ -380,7 +380,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       const nodeList = JSON.parse(payload.text)
       for (let i = 0; i < nodeList.length; i++) {
         mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
-        structInsert(m, ln, 'O', { ...nodeList[i] })
+        structCreate(m, ln, 'O', { ...nodeList[i] })
       }
       break
     }
@@ -397,7 +397,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
           tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
         }
       }
-      structInsert(m, ln, 'O', { taskStatus: -1, c: tableGen })
+      structCreate(m, ln, 'O', { taskStatus: -1, c: tableGen })
       break
     }
     // FORMAT
