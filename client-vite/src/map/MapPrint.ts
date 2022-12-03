@@ -8,14 +8,14 @@ export const mapPrint = {
     console.log(mapPrint.str)
   },
 
-  iterate: (m, cm) => {
-    let indentationCount = cm.path.length - mapPrint.entryLength
+  iterate: (m, cn) => {
+    let indentationCount = cn.path.length - mapPrint.entryLength
     mapPrint.str += ('  '.repeat(indentationCount))
-    mapPrint.str += cm.content.replace(/<br\s*[\/]?>/gi, '\n' + '  '.repeat(indentationCount))
+    mapPrint.str += cn.content.replace(/<br\s*[\/]?>/gi, '\n' + '  '.repeat(indentationCount))
     mapPrint.str += '\n'
 
-    cm.d.map(i => mapPrint.iterate(m, i))
-    cm.s.map(i => mapPrint.iterate(m, i))
-    cm.c.map(i => i.map(j => mapPrint.iterate(m, j)))
+    cn.d.map(i => mapPrint.iterate(m, i))
+    cn.s.map(i => mapPrint.iterate(m, i))
+    cn.c.map(i => i.map(j => mapPrint.iterate(m, j)))
   }
 }

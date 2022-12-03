@@ -405,14 +405,14 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       // @ts-ignore
       const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} = {...m.nc, ...payload}
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        const cm = getMapData(m, sc.structSelectedPathList[i])
+        const cn = getMapData(m, sc.structSelectedPathList[i])
         const props = {
           lineWidth,
           lineType,
           lineColor,
-          [cm.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
-          [cm.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
-          [cm.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
+          [cn.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
+          [cn.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
+          [cn.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
           textFontSize,
           textColor,
         }
@@ -421,10 +421,10 @@ export const mapReducer = (m: any, action: any, payload: any) => {
             const assignment = {}
             // @ts-ignore
             assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
-            if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
-              Object.assign(cm, assignment)
+            if ((cn.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
+              Object.assign(cn, assignment)
             } else {
-              mapSetProp.start(m, cm, assignment, '')
+              mapSetProp.start(m, cn, assignment, '')
             }
           }
         }
@@ -433,8 +433,8 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'applyColorFromKey': {
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        let cm = getMapData(m, sc.structSelectedPathList[i])
-        cm.textColor = [
+        let cn = getMapData(m, sc.structSelectedPathList[i])
+        cn.textColor = [
           '#222222',
           '#999999', '#bbbbbb', '#dddddd',
           '#d5802a', '#1c8e1c', '#8e1c8e',
@@ -451,8 +451,8 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'setTaskStatus': {
-      let cm = getMapData(m, mapFindById.start(m, getMapData(m, ['r', 0]), payload.nodeId))
-      cm.taskStatus = payload.taskStatus
+      let cn = getMapData(m, mapFindById.start(m, getMapData(m, ['r', 0]), payload.nodeId))
+      cn.taskStatus = payload.taskStatus
       break
     }
     // EDIT
@@ -476,7 +476,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
 
 export const reCalc = (pm: any, m: any) => {
   let cr = getMapData(m, ['r', 0])
-  // use cn instead of cm inside these
+  // use cn instead of cn inside these
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)

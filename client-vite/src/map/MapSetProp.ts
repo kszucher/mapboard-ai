@@ -4,19 +4,19 @@ import {resolveScope} from "../core/DefaultProps"
 import { getMapData } from '../core/MapFlow'
 
 export const mapSetProp = {
-  start: (m, cm, assignment, scope) => {
-    if (cm.path.length === 4) {
+  start: (m, cn, assignment, scope) => {
+    if (cn.path.length === 4) {
       Object.assign(getMapData(m, ['r', 0]), typeof assignment === 'function' ? assignment() : assignment)
     }
-    mapSetProp.iterate(cm, assignment, scope)
+    mapSetProp.iterate(cn, assignment, scope)
   },
 
-  iterate: (cm, assignment, scope) => {
-    if (scope === '' || resolveScope(cm)[scope]) {
-      Object.assign(cm, typeof assignment === 'function' ? assignment() : assignment)
+  iterate: (cn, assignment, scope) => {
+    if (scope === '' || resolveScope(cn)[scope]) {
+      Object.assign(cn, typeof assignment === 'function' ? assignment() : assignment)
     }
-    cm.d.map(i => mapSetProp.iterate(i, assignment, scope))
-    cm.s.map(i => mapSetProp.iterate(i, assignment, scope))
-    cm.c.map(i => i.map(j => mapSetProp.iterate(j, assignment, scope)))
+    cn.d.map(i => mapSetProp.iterate(i, assignment, scope))
+    cn.s.map(i => mapSetProp.iterate(i, assignment, scope))
+    cn.c.map(i => i.map(j => mapSetProp.iterate(j, assignment, scope)))
   }
 }

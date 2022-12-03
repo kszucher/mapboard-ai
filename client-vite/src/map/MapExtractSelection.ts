@@ -67,19 +67,19 @@ export const mapExtractSelection = {
     }
   },
 
-  iterate: (m, cm) => {
-    if (cm.animationRequested) {
+  iterate: (m, cn) => {
+    if (cn.animationRequested) {
       m.animationRequested = 1
     }
-    if (cm.selected) {
-      if (Number.isInteger(cm.path[cm.path.length - 2])) {
-        m.sc.cellSelectedPathList.push(cm.path.slice(0)) // naturally ascending
+    if (cn.selected) {
+      if (Number.isInteger(cn.path[cn.path.length - 2])) {
+        m.sc.cellSelectedPathList.push(cn.path.slice(0)) // naturally ascending
       } else {
-        m.sc.structSelectedPathList.push(cm.path.slice(0))
+        m.sc.structSelectedPathList.push(cn.path.slice(0))
       }
     }
-    cm.d.map(i => mapExtractSelection.iterate(m, i))
-    cm.s.map(i => mapExtractSelection.iterate(m, i))
-    cm.c.map(i => i.map(j => mapExtractSelection.iterate(m, j)))
+    cn.d.map(i => mapExtractSelection.iterate(m, i))
+    cn.s.map(i => mapExtractSelection.iterate(m, i))
+    cn.c.map(i => i.map(j => mapExtractSelection.iterate(m, j)))
   }
 }

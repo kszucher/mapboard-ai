@@ -53,93 +53,93 @@ export const mapPlace = {
     mapPlace.iterate(m, cr)
   },
 
-  iterate: (m, cm) => {
-    if (cm.isRoot || cm.type === 'dir') {
-      cm.nodeStartX = cm.parentNodeStartX
-      cm.nodeEndX = cm.parentNodeEndX
+  iterate: (m, cn) => {
+    if (cn.isRoot || cn.type === 'dir') {
+      cn.nodeStartX = cn.parentNodeStartX
+      cn.nodeEndX = cn.parentNodeEndX
     } else {
-      if (cm.type === 'cell' && cm.parentParentType === 'cell' || cm.parentType === 'cell') {
-        if (cm.path[3] === 0) {
-          cm.nodeStartX = cm.parentNodeStartX + 2
-          cm.nodeEndX = cm.nodeStartX + cm.selfW
+      if (cn.type === 'cell' && cn.parentParentType === 'cell' || cn.parentType === 'cell') {
+        if (cn.path[3] === 0) {
+          cn.nodeStartX = cn.parentNodeStartX + 2
+          cn.nodeEndX = cn.nodeStartX + cn.selfW
         } else {
-          cm.nodeEndX = cm.parentNodeEndX
-          cm.nodeStartX = cm.nodeEndX - cm.selfW
+          cn.nodeEndX = cn.parentNodeEndX
+          cn.nodeStartX = cn.nodeEndX - cn.selfW
         }
       }
-      if (cm.parentType === 'struct' || cm.parentType === 'dir') {
-        if (cm.type === 'struct') {
-          if (cm.path[3] === 0) {
-            cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX
-            cm.nodeEndX = cm.nodeStartX + cm.selfW
+      if (cn.parentType === 'struct' || cn.parentType === 'dir') {
+        if (cn.type === 'struct') {
+          if (cn.path[3] === 0) {
+            cn.nodeStartX = cn.parentNodeEndX + cn.lineDeltaX
+            cn.nodeEndX = cn.nodeStartX + cn.selfW
           } else {
-            cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX
-            cm.nodeStartX = cm.nodeEndX - cm.selfW
+            cn.nodeEndX = cn.parentNodeStartX - cn.lineDeltaX
+            cn.nodeStartX = cn.nodeEndX - cn.selfW
           }
-        } else if (cm.type === 'cell') {
-          if (cm.parentParentType === 'struct' || cm.parentParentType === 'dir') {
+        } else if (cn.type === 'cell') {
+          if (cn.parentParentType === 'struct' || cn.parentParentType === 'dir') {
             let diff = m.sLineDeltaXDefault - 20
-            if (cm.path[3] === 0) {
-              cm.nodeStartX = cm.parentNodeEndX + cm.lineDeltaX + diff
-              cm.nodeEndX = cm.nodeStartX + cm.selfW
+            if (cn.path[3] === 0) {
+              cn.nodeStartX = cn.parentNodeEndX + cn.lineDeltaX + diff
+              cn.nodeEndX = cn.nodeStartX + cn.selfW
             } else {
-              cm.nodeEndX = cm.parentNodeStartX - cm.lineDeltaX - diff
-              cm.nodeStartX = cm.nodeEndX - cm.selfW
+              cn.nodeEndX = cn.parentNodeStartX - cn.lineDeltaX - diff
+              cn.nodeStartX = cn.nodeEndX - cn.selfW
             }
           }
         }
       }
     }
-    cm.nodeY = cm.parentNodeY + cm.lineDeltaY
-    if (Number.isInteger(cm.nodeY)) {
-      cm.nodeY += 0.5
+    cn.nodeY = cn.parentNodeY + cn.lineDeltaY
+    if (Number.isInteger(cn.nodeY)) {
+      cn.nodeY += 0.5
     }
-    if (Number.isInteger(cm.nodeStartX)) {
-      if (cm.path[3] === 0) {
-        cm.nodeStartX += 0.5
-        cm.nodeEndX += 0.5
+    if (Number.isInteger(cn.nodeStartX)) {
+      if (cn.path[3] === 0) {
+        cn.nodeStartX += 0.5
+        cn.nodeEndX += 0.5
       } else {
-        cm.nodeStartX -= 0.5
-        cm.nodeEndX -= 0.5
+        cn.nodeStartX -= 0.5
+        cn.nodeEndX -= 0.5
       }
     }
-    let dCount = Object.keys(cm.d).length
+    let dCount = Object.keys(cn.d).length
     for (let i = 0; i < dCount; i++) {
-      cm.d[i].parentNodeStartX = cm.nodeStartX
-      cm.d[i].parentNodeEndX = cm.nodeEndX
-      cm.d[i].parentNodeY = cm.nodeY
-      cm.d[i].lineDeltaX = 0
-      cm.d[i].lineDeltaY = 0
-      cm.d[i].selfW = cm.selfW
-      cm.d[i].selfH = cm.selfH
-      cm.d[i].isTop = 1
-      cm.d[i].isBottom = 1
-      mapPlace.iterate(m, cm.d[i])
+      cn.d[i].parentNodeStartX = cn.nodeStartX
+      cn.d[i].parentNodeEndX = cn.nodeEndX
+      cn.d[i].parentNodeY = cn.nodeY
+      cn.d[i].lineDeltaX = 0
+      cn.d[i].lineDeltaY = 0
+      cn.d[i].selfW = cn.selfW
+      cn.d[i].selfH = cn.selfH
+      cn.d[i].isTop = 1
+      cn.d[i].isBottom = 1
+      mapPlace.iterate(m, cn.d[i])
     }
-    let rowCount = Object.keys(cm.c).length
-    let colCount = Object.keys(cm.c[0]).length
+    let rowCount = Object.keys(cn.c).length
+    let colCount = Object.keys(cn.c[0]).length
     for (let i = 0; i < rowCount; i++) {
       for (let j = 0; j < colCount; j++) {
-        cm.c[i][j].parentNodeStartX = cm.parentNodeStartX
-        cm.c[i][j].parentNodeEndX = cm.parentNodeEndX
-        cm.c[i][j].parentNodeY = cm.parentNodeY
-        cm.c[i][j].lineDeltaX = cm.sumMaxColWidth[j] + 20
-        cm.c[i][j].lineDeltaY = cm.nodeY + cm.sumMaxRowHeight[i] + cm.maxRowHeight[i]/2 - cm.selfH/2 - cm.parentNodeY
-        mapPlace.iterate(m, cm.c[i][j])
+        cn.c[i][j].parentNodeStartX = cn.parentNodeStartX
+        cn.c[i][j].parentNodeEndX = cn.parentNodeEndX
+        cn.c[i][j].parentNodeY = cn.parentNodeY
+        cn.c[i][j].lineDeltaX = cn.sumMaxColWidth[j] + 20
+        cn.c[i][j].lineDeltaY = cn.nodeY + cn.sumMaxRowHeight[i] + cn.maxRowHeight[i]/2 - cn.selfH/2 - cn.parentNodeY
+        mapPlace.iterate(m, cn.c[i][j])
       }
     }
     let elapsedY = 0
-    let sCount = Object.keys(cm.s).length
+    let sCount = Object.keys(cn.s).length
     for (let i = 0; i < sCount; i++) {
-      cm.s[i].parentNodeStartX = cm.nodeStartX
-      cm.s[i].parentNodeEndX = cm.nodeEndX
-      cm.s[i].parentNodeY = cm.nodeY
-      cm.s[i].lineDeltaX = m.sLineDeltaXDefault
-      cm.s[i].lineDeltaY = elapsedY + cm.s[i].maxH / 2 - cm.familyH / 2
-      if (i === 0 && cm.isTop) cm.s[i].isTop = 1
-      if (i === sCount - 1 && cm.isBottom === 1) cm.s[i].isBottom = 1
-      mapPlace.iterate(m, cm.s[i])
-      elapsedY += cm.s[i].maxH + cm.spacingActivated*cm.spacing
+      cn.s[i].parentNodeStartX = cn.nodeStartX
+      cn.s[i].parentNodeEndX = cn.nodeEndX
+      cn.s[i].parentNodeY = cn.nodeY
+      cn.s[i].lineDeltaX = m.sLineDeltaXDefault
+      cn.s[i].lineDeltaY = elapsedY + cn.s[i].maxH / 2 - cn.familyH / 2
+      if (i === 0 && cn.isTop) cn.s[i].isTop = 1
+      if (i === sCount - 1 && cn.isBottom === 1) cn.s[i].isBottom = 1
+      mapPlace.iterate(m, cn.s[i])
+      elapsedY += cn.s[i].maxH + cn.spacingActivated*cn.spacing
     }
   }
 }

@@ -14,32 +14,32 @@ export const mapAlgo = {
     }
   },
 
-  iterate: (m, cm) => {
-    if (cm.selected) {
+  iterate: (m, cn) => {
+    if (cn.selected) {
       selectionFound = 1
     }
-    if (cm.type === 'cell' && !cm.s.length) {
-      cm.s.push(getDefaultNode({}))
+    if (cn.type === 'cell' && !cn.s.length) {
+      cn.s.push(getDefaultNode({}))
     }
-    if (cm.contentCalc && cm.contentCalc !== '') {
-      if (cm.parentType === 'cell') {
-        let parentStruct = getMapData(m, getMapData(m, cm.parentPath).parentPath)
+    if (cn.contentCalc && cn.contentCalc !== '') {
+      if (cn.parentType === 'cell') {
+        let parentStruct = getMapData(m, getMapData(m, cn.parentPath).parentPath)
         let result = 0
         for (let i = 0; i < parentStruct.c.length - 1; i++) {
           let currRowCell = parentStruct.c[0][i].s[0].content
           let currColCell = parentStruct.c[i][0].s[0].content
-          if (cm.contentCalc === '=SUM') {
+          if (cn.contentCalc === '=SUM') {
             result += parseInt(currColCell)
           }
         }
-        cm.content = result
+        cn.content = result
 
       } else {
-        cm.content = 'not a last row of a table!'
+        cn.content = 'not a last row of a table!'
       }
     }
-    if (cm.d) cm.d.map(i => mapAlgo.iterate(m, i))
-    if (cm.s) cm.s.map(i => mapAlgo.iterate(m, i))
-    if (cm.c) cm.c.map(i => i.map(j => mapAlgo.iterate(m, j)))
+    if (cn.d) cn.d.map(i => mapAlgo.iterate(m, i))
+    if (cn.s) cn.s.map(i => mapAlgo.iterate(m, i))
+    if (cn.c) cn.c.map(i => i.map(j => mapAlgo.iterate(m, j)))
   }
 }

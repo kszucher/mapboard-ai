@@ -139,36 +139,36 @@ export let nodeProps = {
   }
 }
 
-export const resolveScope = (cm: any) => {
+export const resolveScope = (cn: any) => {
   return {
     struct:
-      cm.type === 'struct' &&
-      !cm.hasCell,
+      cn.type === 'struct' &&
+      !cn.hasCell,
     text:
-      cm.contentType === 'text',
-    branchFill: cm.fFillColor !== '' && cm.s.length,
-    nodeFill: cm.sFillColor !== '' || cm.taskStatus !== -1,
-    branchBorder: cm.fBorderColor !== '' && cm.s.length,
-    nodeBorder: cm.sBorderColor !== '' && !cm.hasCell,
-    selectionBorder: cm.selected && cm.type !== 'cell' && !cm.isEditing,
+      cn.contentType === 'text',
+    branchFill: cn.fFillColor !== '' && cn.s.length,
+    nodeFill: cn.sFillColor !== '' || cn.taskStatus !== -1,
+    branchBorder: cn.fBorderColor !== '' && cn.s.length,
+    nodeBorder: cn.sBorderColor !== '' && !cn.hasCell,
+    selectionBorder: cn.selected && cn.type !== 'cell' && !cn.isEditing,
     line:
-      !cm.isRoot &&
-      !cm.isRootChild &&
-      cm.parentType !== 'cell' &&
-      (cm.type === 'struct' && !cm.hasCell || cm.type === 'cell' && cm.parentParentType !== 'cell' && cm.index[0] > - 1 && cm.index[1] === 0),
+      !cn.isRoot &&
+      !cn.isRootChild &&
+      cn.parentType !== 'cell' &&
+      (cn.type === 'struct' && !cn.hasCell || cn.type === 'cell' && cn.parentParentType !== 'cell' && cn.index[0] > - 1 && cn.index[1] === 0),
     table:
-      cm.type === "struct" &&
-      cm.hasCell,
+      cn.type === "struct" &&
+      cn.hasCell,
     task:
-      cm.taskStatus !== -1 &&
-      // !cm.path.includes('c') &&
-      !cm.hasDir &&
-      !cm.hasStruct &&
-      !cm.hasCell &&
-      // cm.parentType !== 'cell' &&
-      cm.contentType !== 'image' &&
-      !cm.isRoot &&
-      !cm.isRootChild
+      cn.taskStatus !== -1 &&
+      // !cn.path.includes('c') &&
+      !cn.hasDir &&
+      !cn.hasStruct &&
+      !cn.hasCell &&
+      // cn.parentType !== 'cell' &&
+      cn.contentType !== 'image' &&
+      !cn.isRoot &&
+      !cn.isRootChild
   }
 }
 

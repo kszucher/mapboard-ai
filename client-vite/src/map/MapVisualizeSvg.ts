@@ -7,26 +7,26 @@ import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
 import { getMapData } from '../core/MapFlow'
 
-const getAdjustedParams = (cm) => {
-  const selfHadj = isOdd(cm.selfH) ? cm.selfH + 1 : cm.selfH
-  const maxHadj = isOdd(cm.maxH) ? cm.maxH + 1 : cm.maxH
-  const dir = cm.path[3] ? -1 : 1
+const getAdjustedParams = (cn) => {
+  const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
+  const maxHadj = isOdd(cn.maxH) ? cn.maxH + 1 : cn.maxH
+  const dir = cn.path[3] ? -1 : 1
   return {
     dir,
-    nsx: dir === -1 ? cm.nodeEndX : cm.nodeStartX,
-    nex: dir === -1 ? cm.nodeStartX : cm.nodeEndX,
-    nsy: cm.nodeY - selfHadj / 2,
-    ney: cm.nodeY + selfHadj / 2,
-    nsym: cm.nodeY - maxHadj / 2,
-    neym: cm.nodeY + maxHadj / 2,
-    totalw: cm.familyW + cm.selfW,
-    deltax: cm.lineDeltaX,
+    nsx: dir === -1 ? cn.nodeEndX : cn.nodeStartX,
+    nex: dir === -1 ? cn.nodeStartX : cn.nodeEndX,
+    nsy: cn.nodeY - selfHadj / 2,
+    ney: cn.nodeY + selfHadj / 2,
+    nsym: cn.nodeY - maxHadj / 2,
+    neym: cn.nodeY + maxHadj / 2,
+    totalw: cn.familyW + cn.selfW,
+    deltax: cn.lineDeltaX,
     margin: (
-      (cm.selection === 's' && cm.sBorderColor !== '') ||
-      (cm.selection === 's' && cm.sFillColor !== '') ||
-      (cm.selection === 'f') ||
-      (cm.taskStatus > 0) ||
-      (cm.hasCell)
+      (cn.selection === 's' && cn.sBorderColor !== '') ||
+      (cn.selection === 's' && cn.sFillColor !== '') ||
+      (cn.selection === 'f') ||
+      (cn.taskStatus > 0) ||
+      (cn.hasCell)
     ) ? 4 : -2,
     r: 8
   }
@@ -125,19 +125,19 @@ export const mapVisualizeSvg = {
       })
     }
     if (m.sc.structSelectedPathList.length && !getMapData(m, m.sc.lastPath).isEditing) { // maybe use m.isEditing instead
-      const cm = getMapData(m, m.sc.lastPath)
-      const adjustedParams = getAdjustedParams(cm)
+      const cn = getMapData(m, m.sc.lastPath)
+      const adjustedParams = getAdjustedParams(cn)
       const { dir, margin } = adjustedParams
       updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(getNodeVisParams(cm.selection, adjustedParams), cm.selection, dir, margin),
+        path: getPolygonPath(getNodeVisParams(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
     }
     mapVisualizeSvg.iterate(m, cr, colorMode, shouldAnimationInit)
   },
-  iterate: (m, cm, colorMode, shouldAnimationInit) => {
-    const conditions = resolveScope(cm)
+  iterate: (m, cn, colorMode, shouldAnimationInit) => {
+    const conditions = resolveScope(cn)
     const {
       SELECTION_COLOR,
       TABLE_FRAME_COLOR,
@@ -148,91 +148,91 @@ export const mapVisualizeSvg = {
       TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
       TASK_LINE
     } = getColors(colorMode)
-    const adjustedParams = getAdjustedParams(cm)
+    const adjustedParams = getAdjustedParams(cn)
     const { dir, nsx, nex, nsy, ney, margin, r } = adjustedParams
     if (conditions.branchFill) {
-      updateMapSvgData(cm.nodeId, 'branchFill', {
+      updateMapSvgData(cn.nodeId, 'branchFill', {
         path: getPolygonPath(getNodeVisParams('f', adjustedParams), 'f', dir, 0),
-        fill: cm.fFillColor,
+        fill: cn.fFillColor,
       })
     }
     if (conditions.nodeFill) {
       let sFillColorOverride = ''
-      if (cm.taskStatus > 0) {
-        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cm.taskStatus - 1)
+      if (cn.taskStatus > 0) {
+        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cn.taskStatus - 1)
       }
-      updateMapSvgData(cm.nodeId, 'nodeFill', {
-        path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
-        fill: sFillColorOverride === '' ? cm.sFillColor : sFillColorOverride
+      updateMapSvgData(cn.nodeId, 'nodeFill', {
+        path: getArcPath(nsx, nsy , cn.selfW, cn.selfH, r, dir, -2, true),
+        fill: sFillColorOverride === '' ? cn.sFillColor : sFillColorOverride
       })
     }
     if (conditions.branchBorder) {
-      updateMapSvgData(cm.nodeId, 'branchBorder', {
+      updateMapSvgData(cn.nodeId, 'branchBorder', {
         path: getPolygonPath(getNodeVisParams('f', adjustedParams), 'f', dir, 0),
-        stroke: cm.fBorderColor,
-        strokeWidth: cm.fBorderWidth,
+        stroke: cn.fBorderColor,
+        strokeWidth: cn.fBorderWidth,
       })
     }
     if (conditions.nodeBorder) {
-      updateMapSvgData(cm.nodeId, 'nodeBorder', {
-        path: getArcPath(nsx, nsy , cm.selfW, cm.selfH, r, dir, -2, true),
-        stroke: cm.sBorderColor,
-        strokeWidth: cm.sBorderWidth,
+      updateMapSvgData(cn.nodeId, 'nodeBorder', {
+        path: getArcPath(nsx, nsy , cn.selfW, cn.selfH, r, dir, -2, true),
+        stroke: cn.sBorderColor,
+        strokeWidth: cn.sBorderWidth,
       })
     }
-    if (conditions.selectionBorder && !isEqual(cm.path, m.sc.lastPath)) {
-      updateMapSvgData(cm.nodeId, 'selectionBorder', {
-        path: getPolygonPath(getNodeVisParams(cm.selection, adjustedParams), cm.selection, dir, margin),
+    if (conditions.selectionBorder && !isEqual(cn.path, m.sc.lastPath)) {
+      updateMapSvgData(cn.nodeId, 'selectionBorder', {
+        path: getPolygonPath(getNodeVisParams(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
     }
     if (conditions.line) {
       let x1, y1, x2, y2
-      if (shouldAnimationInit && cm.animationRequested) {
-        x1 = dir === - 1 ? cm.parentNodeStartXFrom : cm.parentNodeEndXFrom
-        y1 = cm.parentNodeYFrom
+      if (shouldAnimationInit && cn.animationRequested) {
+        x1 = dir === - 1 ? cn.parentNodeStartXFrom : cn.parentNodeEndXFrom
+        y1 = cn.parentNodeYFrom
       } else {
-        x1 = dir === - 1 ? cm.parentNodeStartX : cm.parentNodeEndX
-        y1 = cm.parentNodeY
+        x1 = dir === - 1 ? cn.parentNodeStartX : cn.parentNodeEndX
+        y1 = cn.parentNodeY
       }
       x1 = isOdd(x1)?x1-0.5:x1
       x2 = nsx
-      y2 = cm.nodeY
+      y2 = cn.nodeY
       let lineColorOverride = ''
-      if (cm.taskStatus > 0) {
-        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cm.taskStatus - 1)
+      if (cn.taskStatus > 0) {
+        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cn.taskStatus - 1)
       }
-      updateMapSvgData(cm.nodeId, 'line', {
-        path: getLinePath(cm.lineType, x1, y1, cm.lineDeltaX, cm.lineDeltaY, x2, y2, dir),
-        strokeWidth: cm.lineWidth,
+      updateMapSvgData(cn.nodeId, 'line', {
+        path: getLinePath(cn.lineType, x1, y1, cn.lineDeltaX, cn.lineDeltaY, x2, y2, dir),
+        strokeWidth: cn.lineWidth,
         stroke: lineColorOverride === ''
-          ? cm.lineColor
+          ? cn.lineColor
           : lineColorOverride
       })
     }
     if (conditions.table) {
       // frame
-      updateMapSvgData(cm.nodeId, 'tableFrame', {
-        path: getArcPath(nsx, nsy, cm.selfW, cm.selfH, r, dir, 0),
-        stroke: cm.sBorderColor === '' ? TABLE_FRAME_COLOR : cm.sBorderColor,
-        strokeWidth: cm.sBorderWidth,
+      updateMapSvgData(cn.nodeId, 'tableFrame', {
+        path: getArcPath(nsx, nsy, cn.selfW, cn.selfH, r, dir, 0),
+        stroke: cn.sBorderColor === '' ? TABLE_FRAME_COLOR : cn.sBorderColor,
+        strokeWidth: cn.sBorderWidth,
       })
       // grid
       let path = ''
-      let rowCount = Object.keys(cm.c).length
+      let rowCount = Object.keys(cn.c).length
       for (let i = 1; i < rowCount; i++) {
-        let x1 = cm.nodeStartX
-        let x2 = cm.nodeEndX
-        let y = nsy + cm.sumMaxRowHeight[i]
+        let x1 = cn.nodeStartX
+        let x2 = cn.nodeEndX
+        let y = nsy + cn.sumMaxRowHeight[i]
         path += `M${x1},${y} L${x2},${y}`
       }
-      let colCount = Object.keys(cm.c[0]).length
+      let colCount = Object.keys(cn.c[0]).length
       for (let j = 1; j < colCount; j++) {
-        let x = nsx + dir*cm.sumMaxColWidth[j]
+        let x = nsx + dir*cn.sumMaxColWidth[j]
         path += `M${x},${nsy} L${x},${ney}`
       }
-      updateMapSvgData(cm.nodeId, 'tableGrid', {
+      updateMapSvgData(cn.nodeId, 'tableGrid', {
         path: path,
         stroke: TABLE_GRID,
         strokeWidth: 1,
@@ -241,23 +241,23 @@ export const mapVisualizeSvg = {
       tableLoops:
         for (let i = 0; i < rowCount; i++) {
           for (let j = 0; j < colCount; j++) {
-            if (cm.c[i][j].selected) {
+            if (cn.c[i][j].selected) {
               let sx, sy, w, h
               if (m.sc.cellRowSelected) {
                 sx = nsx
-                sy = nsy + cm.sumMaxRowHeight[i]
-                w = cm.selfW
-                h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
+                sy = nsy + cn.sumMaxRowHeight[i]
+                w = cn.selfW
+                h = cn.sumMaxRowHeight[i+1] - cn.sumMaxRowHeight[i]
               } else if (m.sc.cellColSelected) {
-                sx = nsx + dir*cm.sumMaxColWidth[j]
+                sx = nsx + dir*cn.sumMaxColWidth[j]
                 sy = nsy
-                w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
-                h = cm.selfH
+                w = cn.sumMaxColWidth[j+1] - cn.sumMaxColWidth[j]
+                h = cn.selfH
               } else {
-                sx = nsx + dir*cm.sumMaxColWidth[j]
-                sy = nsy + cm.sumMaxRowHeight[i]
-                w = cm.sumMaxColWidth[j+1] - cm.sumMaxColWidth[j]
-                h = cm.sumMaxRowHeight[i+1] - cm.sumMaxRowHeight[i]
+                sx = nsx + dir*cn.sumMaxColWidth[j]
+                sy = nsy + cn.sumMaxRowHeight[i]
+                w = cn.sumMaxColWidth[j+1] - cn.sumMaxColWidth[j]
+                h = cn.sumMaxRowHeight[i+1] - cn.sumMaxRowHeight[i]
               }
               const tableVisParams = {
                 ax: dir === - 1 ? sx + dir * w : sx,
@@ -270,7 +270,7 @@ export const mapVisualizeSvg = {
                 cyu: sy,
                 cyd: sy + h,
               }
-              updateMapSvgData(cm.nodeId, 'selectionBorder', {
+              updateMapSvgData(cn.nodeId, 'selectionBorder', {
                 path: getPolygonPath(tableVisParams, 's', dir, 4),
                 stroke: SELECTION_COLOR,
                 strokeWidth: 1,
@@ -283,9 +283,9 @@ export const mapVisualizeSvg = {
     if (conditions.task) {
       const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m
       let startX
-      if (cm.path.includes('c')) {
-        let coverCellPath = cm.path.slice(0, cm.path.lastIndexOf('c'))
-        let currCol = cm.path[cm.path.lastIndexOf('c') + 2]
+      if (cn.path.includes('c')) {
+        let coverCellPath = cn.path.slice(0, cn.path.lastIndexOf('c'))
+        let currCol = cn.path[cn.path.lastIndexOf('c') + 2]
         let coverCellRef = getMapData(m, coverCellPath)
         let smcv = coverCellRef.sumMaxColWidth[currCol]
         let mcv = coverCellRef.maxColWidth[currCol]
@@ -299,9 +299,9 @@ export const mapVisualizeSvg = {
       }
       let x1 = nex
       let x2 = startX
-      let y = cm.nodeY
-      if (!cm.isEditing) {
-        updateMapSvgData(cm.nodeId, 'taskLine', {
+      let y = cn.nodeY
+      if (!cn.isEditing) {
+        updateMapSvgData(cn.nodeId, 'taskLine', {
           path: `M${x1},${y} L${x2},${y}`,
           stroke: TASK_LINE,
           strokeWidth: 1,
@@ -311,16 +311,16 @@ export const mapVisualizeSvg = {
         const cx = dir === - 1
           ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
           : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
-        const cy = cm.nodeY
+        const cy = cn.nodeY
         const r = taskConfigD / 2
-        const fill = cm.taskStatus === i
+        const fill = cn.taskStatus === i
           ? [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
           : [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
-        updateMapSvgData(cm.nodeId, `taskCircle${i}`, { cx, cy, r, fill })
+        updateMapSvgData(cn.nodeId, `taskCircle${i}`, { cx, cy, r, fill })
       }
     }
-    cm.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit))
-    cm.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit))
-    cm.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode, shouldAnimationInit)))
+    cn.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit))
+    cn.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit))
+    cn.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode, shouldAnimationInit)))
   }
 }

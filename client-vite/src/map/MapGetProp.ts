@@ -1,22 +1,22 @@
 // @ts-nocheck
 
 export const mapGetProp = {
-  start: (m, cm, prop) => {
-    let firstProp = {[prop]: cm[prop]}
-    mapGetProp.iterate(m, cm, prop, firstProp)
+  start: (m, cn, prop) => {
+    let firstProp = {[prop]: cn[prop]}
+    mapGetProp.iterate(m, cn, prop, firstProp)
     return firstProp[prop]
   },
 
-  iterate: (m, cm, prop, firstProp) => {
-    let sCount = Object.keys(cm.s).length
+  iterate: (m, cn, prop, firstProp) => {
+    let sCount = Object.keys(cn.s).length
     if (sCount) {
       for (let i = 0; i < sCount; i++) {
-        mapGetProp.iterate(m, cm.s[i], prop, firstProp)
-        if (cm.s[i][prop] !== firstProp[prop]) {
+        mapGetProp.iterate(m, cn.s[i], prop, firstProp)
+        if (cn.s[i][prop] !== firstProp[prop]) {
           firstProp[prop] = undefined
         }
       }
     }
-    cm.c.map(i => i.map(j => mapGetProp.iterate(m, j, prop, firstProp)))
+    cn.c.map(i => i.map(j => mapGetProp.iterate(m, j, prop, firstProp)))
   }
 }

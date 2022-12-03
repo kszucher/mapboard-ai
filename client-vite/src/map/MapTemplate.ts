@@ -5,9 +5,9 @@ export const mapTemplate = {
     mapTemplate.iterate(m, cr)
   },
 
-  iterate: (m, cm) => {
-    cm.d.map(i => mapTemplate.iterate(m, i))
-    cm.s.map(i => mapTemplate.iterate(m, i))
-    cm.c.map(i => i.map(j => mapTemplate.iterate(m, j)))
+  iterate: (m, cn) => {
+    cn.d.map(i => mapTemplate.iterate(m, i))
+    cn.s.map(i => mapTemplate.iterate(m, i))
+    cn.c.map(i => i.map(j => mapTemplate.iterate(m, j)))
   }
 }

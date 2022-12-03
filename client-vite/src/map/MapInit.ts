@@ -26,31 +26,31 @@ export const mapInit = {
     mapInit.iterate(m, cr)
   },
 
-  iterate: (m, cm) => {
+  iterate: (m, cn) => {
     for (const prop in nodeProps.saveAlways) {
-      if (!cm.hasOwnProperty(prop)) {
+      if (!cn.hasOwnProperty(prop)) {
         if (prop === 'nodeId') {
-          cm[prop] = 'node' + genHash(8)
+          cn[prop] = 'node' + genHash(8)
         } else {
-          cm[prop] = copy(nodeProps.saveAlways[prop])
+          cn[prop] = copy(nodeProps.saveAlways[prop])
         }
       }
     }
     for (const prop in nodeProps.saveOptional) {
-      if (!cm.hasOwnProperty(prop)) {
-        cm[prop] = shallowCopy(nodeProps.saveOptional[prop])
+      if (!cn.hasOwnProperty(prop)) {
+        cn[prop] = shallowCopy(nodeProps.saveOptional[prop])
       }
     }
     for (const prop in nodeProps.saveNeverInitOnce) {
-      if (!cm.hasOwnProperty(prop)) {
-        cm[prop] = shallowCopy(nodeProps.saveNeverInitOnce[prop])
+      if (!cn.hasOwnProperty(prop)) {
+        cn[prop] = shallowCopy(nodeProps.saveNeverInitOnce[prop])
       }
     }
     for (const prop in nodeProps.saveNeverInitAlways) {
-      cm[prop] = shallowCopy(nodeProps.saveNeverInitAlways[prop])
+      cn[prop] = shallowCopy(nodeProps.saveNeverInitAlways[prop])
     }
-    cm.d.map(i => mapInit.iterate(m, i))
-    cm.s.map(i => mapInit.iterate(m, i))
-    cm.c.map(i => i.map(j => mapInit.iterate(m, j)))
+    cn.d.map(i => mapInit.iterate(m, i))
+    cn.s.map(i => mapInit.iterate(m, i))
+    cn.c.map(i => i.map(j => mapInit.iterate(m, j)))
   }
 }

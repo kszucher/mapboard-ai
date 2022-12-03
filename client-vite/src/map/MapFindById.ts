@@ -11,12 +11,12 @@ export const mapFindById = {
     return resultPath
   },
 
-  iterate: (m, cm) => {
-    if (cm.nodeId === nodeId) {
-      resultPath = cm.path
+  iterate: (m, cn) => {
+    if (cn.nodeId === nodeId) {
+      resultPath = cn.path
     }
-    cm.d.map(i => mapFindById.iterate(m, i))
-    cm.s.map(i => mapFindById.iterate(m, i))
-    cm.c.map(i => i.map(j => mapFindById.iterate(m, j)))
+    cn.d.map(i => mapFindById.iterate(m, i))
+    cn.s.map(i => mapFindById.iterate(m, i))
+    cn.c.map(i => i.map(j => mapFindById.iterate(m, j)))
   }
 }

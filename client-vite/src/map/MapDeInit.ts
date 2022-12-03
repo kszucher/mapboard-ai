@@ -3,36 +3,36 @@
 import {mapProps, nodeProps} from "../core/DefaultProps";
 
 export const mapDeInit = {
-  start: (cm) => {
-    for (const prop in cm) {
+  start: (cn) => {
+    for (const prop in cn) {
       if (prop !== 'r') {
         if (mapProps.saveOptional.hasOwnProperty(prop)) {
-          if (cm[prop] === mapProps.saveOptional[prop]) {
-            delete cm[prop]
+          if (cn[prop] === mapProps.saveOptional[prop]) {
+            delete cn[prop]
           }
         } else {
-          delete cm[prop]
+          delete cn[prop]
         }
       }
     }
     // TODO loop
-    mapDeInit.iterate(cm.r[0])
-    return cm
+    mapDeInit.iterate(cn.r[0])
+    return cn
   },
 
-  iterate: (cm) => {
-    cm.d.map(i => mapDeInit.iterate(i))
-    cm.s.map(i => mapDeInit.iterate(i))
-    cm.c.map(i => i.map(j => mapDeInit.iterate(j)))
-    for (const prop in cm) {
+  iterate: (cn) => {
+    cn.d.map(i => mapDeInit.iterate(i))
+    cn.s.map(i => mapDeInit.iterate(i))
+    cn.c.map(i => i.map(j => mapDeInit.iterate(j)))
+    for (const prop in cn) {
       if (nodeProps.saveAlways.hasOwnProperty(prop)) {
 
       } else if (nodeProps.saveOptional.hasOwnProperty(prop)) {
-        if (cm[prop] === nodeProps.saveOptional[prop]) {
-          delete cm[prop]
+        if (cn[prop] === nodeProps.saveOptional[prop]) {
+          delete cn[prop]
         }
       } else {
-        delete cm[prop]
+        delete cn[prop]
       }
     }
   }
