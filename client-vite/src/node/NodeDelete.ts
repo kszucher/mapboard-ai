@@ -31,7 +31,7 @@ export const structDeleteReselect = (m: any, sc: any) => {
     cmParent.taskStatus = cn.taskStatus;
     cmParent.s.splice(cn.index, 1);
   }
-  // reselect on jumpback
+  // reselect on jump back
   if (imParentChildLen === imParentChildDelLen) {
     if (imParent.isRootChild) {
       let cr = getMapData(m, ['r', crIndex]);

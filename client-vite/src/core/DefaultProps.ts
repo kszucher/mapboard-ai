@@ -172,4 +172,4 @@ export const resolveScope = (cn: any) => {
   }
 }
 
-export const getDefaultNode = (attributes: any) => ({d: [], s: [], c: [[]], content: '', ...attributes})
+export const getDefaultNode = (attributes?: any) => ({d: [], s: [], c: [[]], content: '', ...attributes})

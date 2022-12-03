@@ -1,10 +1,8 @@
-// @ts-nocheck
-
 import {getDefaultNode} from "../core/DefaultProps";
 import { getMapData } from '../core/MapFlow'
 import {Dir} from "../core/Types";
 
-export const structCreate = (m, ln, direction, payload ) => {
+export const structCreate = (m: any, ln: any, direction: Dir, payload: object ) => {
   let parentRef;
   if (direction === Dir.U) {
     parentRef = getMapData(m, ln.parentPath);
@@ -28,7 +26,7 @@ export const structCreate = (m, ln, direction, payload ) => {
   }
 }
 
-export const cellCreate = (m, lastPath, key) => {
+export const cellCreate = (m: any, lastPath: any, key: any) => {
   let ln = getMapData(m, lastPath);
   let parentRef = getMapData(m, ln.parentPath);
   let currRow = ln.index[0];
