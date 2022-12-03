@@ -3,42 +3,27 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { getMapData } from '../core/MapFlow'
 
-export const structInsert = (m, lm, mode, payload ) => {
+export const structInsert = (m, lm, direction, payload ) => {
   let parentRef;
-  if (mode === 'siblingUp') {
+  if (direction === 'U') {
     parentRef = getMapData(m, lm.parentPath);
     parentRef.s.splice(lm.index, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ?  0 : -1,
     }))
-  } else if (mode === 'siblingDown') {
+  } else if (direction === 'D') {
     parentRef = getMapData(m, lm.parentPath);
     parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ? 0 : -1,
     }));
-  } else if (mode === 'child') {
+  } else if (direction === 'O') {
     parentRef = lm.isRoot? lm.d[0] : lm;
     parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus,
-    }));
-  } else if (mode === 'childTable') {
-    parentRef = lm.isRoot? lm.d[0] : lm;
-    const tableGen = []
-    const {rowLen, colLen} = payload
-    for (let i = 0; i < rowLen; i++) {
-      tableGen.push([])
-      for (let j = 0; j < colLen; j++) {
-        tableGen[i].push([])
-        tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
-      }
-    }
-    parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
-      selected: 1,
-      taskStatus: -1,
-      c: tableGen
-    }));
+      ...payload
+    }))
   }
 }
 

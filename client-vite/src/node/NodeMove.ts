@@ -1,15 +1,8 @@
-// @ts-nocheck
-
 import {getDefaultNode} from "../core/DefaultProps"
-import { copy, genHash, transpose } from '../core/Utils'
-import { mapSetProp } from '../map/MapSetProp'
+import { copy, transpose } from '../core/Utils'
 import { getMapData } from '../core/MapFlow'
 
 let clipboard: any[] = []
-
-export const setClipboard = (clipboardIn: any) => {
-  clipboard = clipboardIn
-}
 
 export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {
   let {structSelectedPathList, sameParentPath} = sc
@@ -148,7 +141,7 @@ export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
         let currRefCopy = copy(currRef)
         clipboard.splice(0, 0, currRefCopy)
       }
-      navigator.permissions.query({name: "clipboard-write"}).then(result => {
+      navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
         if (result.state === "granted" || result.state === "prompt") {
           navigator.clipboard.writeText(JSON.stringify(clipboard, undefined, 4))
             .then(() => {
@@ -159,13 +152,6 @@ export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
             })
         }
       })
-    }
-  } else if (target === 'clipboard2struct') {
-    let moveTarget = lm.isRoot? lm.d[0] : lm
-    for (let i = 0; i < clipboard.length; i++) {
-      let currPasteRefCopy = copy(clipboard[i])
-      mapSetProp.start(m, currPasteRefCopy, ()=>({nodeId: 'node' + genHash(8)}), '')
-      moveTarget.s.splice(moveTarget.s.length + i, 0, currPasteRefCopy)
     }
   }
 }

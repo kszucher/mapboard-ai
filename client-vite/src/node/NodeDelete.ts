@@ -1,20 +1,18 @@
-// @ts-nocheck
-
-import {arrayValuesSameSimple} from "../core/Utils";
+import {isEqual} from "../core/Utils";
 import { getMapData } from '../core/MapFlow'
 
-export const structDeleteReselect = (m, sc) => {
+export const structDeleteReselect = (m: any, sc: any) => {
   let lm = getMapData(m, sc.lastPath);
   let crIndex = lm.path[1];
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
     let cm = getMapData(m, sc.structSelectedPathList[i]);
     if (cm.isRoot) return;
   }
-  // calculate jumpback
+  // calculate jump back
   let im = lm;
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
     let cm = getMapData(m, sc.structSelectedPathList[i]);
-    if (cm.path.length < lm.path.length && arrayValuesSameSimple(cm.path.slice(0, lm.path.length), lm.path)) {
+    if (cm.path.length < lm.path.length && isEqual(cm.path.slice(0, lm.path.length), lm.path)) {
       im = cm;
     }
   }
@@ -63,7 +61,7 @@ export const structDeleteReselect = (m, sc) => {
   }
 }
 
-export const cellBlockDeleteReselect = (m, sc) => {
+export const cellBlockDeleteReselect = (m: any, sc: any) => {
   const {lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath} = sc;
   let sameParent = getMapData(m, sameParentPath);
   let lm = getMapData(m, lastPath);

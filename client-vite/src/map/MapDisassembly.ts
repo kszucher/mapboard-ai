@@ -6,8 +6,12 @@ let dcm = []
 
 export const mapDisassembly = {
   start: (cm) => {
-    dcm = []
-    dcm.push(copy(cm.m))
+    dcm = [{}]
+    for (const prop in cm) {
+      if (prop !== 'r') {
+        dcm[0][prop] = cm[prop]
+      }
+    }
     // TODO loop
     mapDisassembly.iterate(cm.r[0])
     return dcm

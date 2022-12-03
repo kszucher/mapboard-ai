@@ -118,7 +118,7 @@ const allSlice = createSlice({
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
 
-    mutateMapStack(state, action: PayloadAction<any>) {
+    mutateMapStackResetTempMap(state, action: PayloadAction<any>) {
       state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
       state.mapStackDataIndex = state.mapStackDataIndex + 1
       state.tempMap = {}

@@ -136,6 +136,9 @@ function* autoSaveSaga() {
     const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
       autoSaveNow: take(SAVE_INCLUDED),
       autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']), // maybe I could just listen to non-saga actions, why not...
+      // for now I could sagaDispatch a "mutateMapStack" saga command, which can be channeled here
+      // and let saga exist as a side effect handler until there is a better option
+      // which does not interfere with considering flux done
       autoSaveNowByTimeout: delay(1000)
     })
     if (autoSaveNow) {
@@ -165,7 +168,7 @@ function* autoSaveSaga() {
   }
 }
 
-function* mapSaga () {
+function* mapSaga () { // can use a mapServerDispatch hook instead
   while (true) {
     let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
     if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {

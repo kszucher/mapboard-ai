@@ -1,34 +1,7 @@
-// @ts-nocheck
-
 import { getMapData } from '../core/MapFlow'
 
-export const nodeNavigate = (m, lastPath, target, key) => {
-  let direction = '';
-  let currPath = [];
-  let truePath = lastPath;
-  let crIndex = lastPath[1];
-  if (key === 'ArrowRight') {
-    if (lastPath.length === 2) {
-      truePath = ['r', crIndex, 'd', 0];
-      direction = 'out';
-    } else {
-      direction = lastPath[3] ? 'in' : 'out';
-    }
-  } else if (key === 'ArrowLeft') {
-    if (lastPath.length === 2) {
-      truePath = ['r', crIndex, 'd', 1];
-      direction = 'out';
-    } else {
-      direction = lastPath[3] ? 'out' : 'in';
-    }
-  } else if (key === 'ArrowUp') {
-    direction = 'up';
-  } else if (key === 'ArrowDown') {
-    direction = 'down';
-  }
-  if (direction === 'out' && truePath.length === 4 && getMapData(m, truePath).s.length === 0) {
-    return ['r', crIndex];
-  }
+export const nodeNavigate = (m:any, truePath: any[], target: string, direction: string) => {
+  let newPath = [];
   if (target === 'struct2struct') {
     let inDepth = - 1;
     //       v
@@ -43,35 +16,38 @@ export const nodeNavigate = (m, lastPath, target, key) => {
     // l l l v
     sequenceGenerator: while (true) {
       inDepth++;
-      if (inDepth > 10) {console.log('recursion error'); break}
+      if (inDepth > 10) {
+        console.log('recursion error');
+        break
+      }
       for (let outDepth = inDepth; outDepth > - 1; outDepth--) {
         let sequence = [];
         switch (direction) {
-          case 'down': sequence = Array(inDepth)
+          case 'D': sequence = Array(inDepth)
             .fill('i')
             .concat('d')
             .concat(Array(outDepth).fill('ou'));
             break;
-          case 'up': sequence = Array(inDepth)
+          case 'U': sequence = Array(inDepth)
             .fill('i')
             .concat('u')
             .concat(Array(outDepth).fill('od'));
             break;
-          case 'in': sequence = ['i']; break;
-          case 'out': sequence = ['om']; break;
+          case 'I': sequence = ['i']; break;
+          case 'O': sequence = ['om']; break;
           default: console.log('sequence error');
         }
         let sequenceOk = Array(sequence.length).fill(false);
-        currPath = truePath.slice();
+        newPath = [...truePath]
         for (let i = 0; i < sequence.length; i++) {
           let currDirection = sequence[i];
-          let currRef = getMapData(m, currPath);
+          let currRef = getMapData(m, newPath);
           let currChildCount = currRef.s.length;
           let parentRef = getMapData(m, currRef.parentPath);
           if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
             parentRef.type === 'cell' && ['i'].includes(currDirection) ||
             currDirection === 'om' && currChildCount === 0) {
-            currPath = truePath.slice();
+            newPath = [...truePath]
             break sequenceGenerator;
           }
           if (currDirection === 'u' && currRef.index === 0 ||
@@ -81,24 +57,24 @@ export const nodeNavigate = (m, lastPath, target, key) => {
             break;
           }
           if (currDirection === 'i') {
-            if (currPath.length === 6) {
-              currPath = currPath.slice(0, currPath.length - 4);
+            if (newPath.length === 6) {
+              newPath = newPath.slice(0, -4);
             } else {
-              currPath = currPath.slice(0, currPath.length - 2);
+              newPath = newPath.slice(0, -2);
             }
             parentRef.lastSelectedChild = currRef.index;
           }
-          else if (currDirection === 'u') currPath[currPath.length - 1] -= 1;
-          else if (currDirection === 'd') currPath[currPath.length - 1] += 1;
-          else if (currDirection === 'ou') currPath.push('s', 0);
-          else if (currDirection === 'od') currPath.push('s', currChildCount - 1);
+          else if (currDirection === 'u') newPath[newPath.length - 1] -= 1;
+          else if (currDirection === 'd') newPath[newPath.length - 1] += 1;
+          else if (currDirection === 'ou') newPath.push('s', 0);
+          else if (currDirection === 'od') newPath.push('s', currChildCount - 1);
           else if (currDirection === 'om') {
             if (!(currRef.lastSelectedChild >= 0 && currRef.lastSelectedChild < currChildCount)) {
               currRef.lastSelectedChild = currChildCount % 2
                 ? Math.floor(currChildCount / 2)
                 : currChildCount / 2 - 1
             }
-            currPath.push('s', currRef.lastSelectedChild);
+            newPath.push('s', currRef.lastSelectedChild);
           }
           sequenceOk[i] = true;
         }
@@ -108,7 +84,7 @@ export const nodeNavigate = (m, lastPath, target, key) => {
       }
     }
   } else if (target === 'cell2cell') {
-    currPath = truePath;
+    newPath = truePath;
     let currRef = getMapData(m, truePath);
     let parentRef = getMapData(m, currRef.parentPath);
     let rowLen = parentRef.c.length;
@@ -118,13 +94,13 @@ export const nodeNavigate = (m, lastPath, target, key) => {
     let nextRow = 0;
     let nextCol = 0;
     switch (direction) {
-      case 'down': nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow;     nextCol = currCol; break;
-      case 'up':   nextRow = currRow - 1 < 0 ?      0           : currRow - 1; nextCol = currCol; break;
-      case 'out':  nextCol = currCol + 1 < colLen ? currCol + 1 : currCol;     nextRow = currRow; break;
-      case 'in':   nextCol = currCol - 1 < 0 ?      0           : currCol - 1; nextRow = currRow; break;
+      case 'D': nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow;     nextCol = currCol; break;
+      case 'U':   nextRow = currRow - 1 < 0 ?      0           : currRow - 1; nextCol = currCol; break;
+      case 'O':  nextCol = currCol + 1 < colLen ? currCol + 1 : currCol;     nextRow = currRow; break;
+      case 'I':   nextCol = currCol - 1 < 0 ?      0           : currCol - 1; nextRow = currRow; break;
     }
-    currPath[currPath.length - 2] = nextRow;
-    currPath[currPath.length - 1] = nextCol;
+    newPath[newPath.length - 2] = nextRow;
+    newPath[newPath.length - 1] = nextCol;
   }
-  return currPath;
+  return newPath;
 }

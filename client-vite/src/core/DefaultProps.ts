@@ -1,9 +1,6 @@
 import {LineTypes} from "./Types";
 
 export let mapProps = {
-  saveAlways: {
-    path: [],
-  },
   saveOptional: {
     alignment: 'adaptive',
     density: 'large',

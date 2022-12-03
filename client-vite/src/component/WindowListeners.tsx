@@ -6,12 +6,14 @@ import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
 import {getMapData, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
-import {isUrl, toPathString} from '../core/Utils'
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, getEditedPathString, getMap, getTempMap, sagaActions} from "../core/EditorFlow"
+import {actions, getMap, sagaActions} from "../core/EditorFlow"
+import {useEventToAction} from "../hooks/UseEventToAction";
+import {orient} from "../map/MapVisualizeHolderDiv";
+import {mapProps} from "../core/DefaultProps";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -22,12 +24,6 @@ let mutationObserver
 let mapAreaListener
 let landingAreaListener
 
-const ckm = (e, condition) => (
-  ['-', (+e.ctrlKey ? '1' : '0')].includes(condition[0]) &&
-  ['-', (+e.shiftKey ? '1' : '0')].includes(condition[1]) &&
-  ['-', (+e.altKey) ? '1' : '0'].includes(condition[2])
-)
-
 export const WindowListeners: FC = () => {
 
   const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
@@ -36,13 +32,17 @@ export const WindowListeners: FC = () => {
   const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-  const tempMap = useSelector((state: RootStateOrAny) => state.tempMap)
-  const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
-  const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
   const editedPathString = useSelector((state: RootStateOrAny) => state.editedPathString)
+  const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
+  const tm = useSelector((state: RootStateOrAny) => state.tempMap)
+  const { density, alignment } = m || {
+    density: mapProps.saveOptional.density,
+    alignment: mapProps.saveOptional.alignment,
+  }
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
+  const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
 
   // LANDING LISTENERS
   const wheel = (e) => {
@@ -67,7 +67,8 @@ export const WindowListeners: FC = () => {
   }
 
   const resize = (e) => {
-    mapDispatch('shouldResize')
+    const m = getMap()
+    orient(m, 'shouldResize', {})
   }
 
   const popstate = (e) => {
@@ -150,7 +151,8 @@ export const WindowListeners: FC = () => {
         }
       } else if (which === 2) {
         const { movementX, movementY } = e
-        mapDispatch('shouldScroll', { movementX, movementY })
+        const m = getMap()
+        orient(m, 'shouldScroll', { movementX, movementY })
       }
     }
   }
@@ -199,105 +201,14 @@ export const WindowListeners: FC = () => {
       if (isNodeClicked) {
         mapDispatch('startEdit')
       } else {
-        mapDispatch('shouldCenter')
+        const m = getMap()
+        orient(m, 'shouldCenter', {})
       }
     }
   }
 
   const keydown = (e) => {
-    const {key, code, which} = getNativeEvent(e)
-    const m = getMap()
-    const editedPathString = getEditedPathString()
-    if (editedPathString.length) {
-      if (key === 'Enter' && !+e.ctrlKey && !+e.shiftKey && !+e.altKey) {
-        e.preventDefault()
-        mapDispatch('finishEdit')
-      } else if (['Insert', 'Tab'].includes(key) && !+e.ctrlKey && !+e.shiftKey && !+e.altKey) {
-        e.preventDefault()
-        mapDispatch('insert_O_S')
-      }
-    } else {
-      const L = 37
-      const U = 38
-      const R = 39
-      const D = 40
-
-      // avoid duplication of insert_CX_CRCC, instead introduce the following:
-      // insert_UD_CR, which is triggered either by a c OR a cr selection
-      // insert_LR_CC, which is triggered either by a c or a cc selection
-
-      // merge isEditing
-
-      // possibly include conditions such as hasCell, or contentType
-
-      // move to MapFlow as checkMapDispatch(eventType, eventData) --> mapDispatch(action, payload)
-
-      const keyStateMachineDb = [
-        ['isEditing', 'match', 'scope', 'preventDefault', 'actionType', 'action', 'payload'],
-        [ 0, ckm(e, '000') && key === 'F1',                   ['s', 'c', 'm'],              1, 'm',  '',                        {}                          ],
-        [ 0, ckm(e, '000') && key === 'F2',                   ['s', 'm'],                   1, 'm',  'startEdit',               {}                          ],
-        [ 0, ckm(e, '000') && key === 'F3',                   ['s', 'c', 'm'],              1, 'm',  '',                        {}                          ],
-        [ 0, ckm(e, '000') && key === 'F5',                   ['s', 'c', 'm'],              0, 'm',  '',                        {}                          ],
-        [ 0, ckm(e, '000') && key === 'Enter',                ['s'],                        1, 'm',  'insert_D_S',              {}                          ],
-        [ 0, ckm(e, '000') && key === 'Enter',                ['m'],                        1, 'm',  'select_D_M',              {}                          ],
-        [ 0, ckm(e, '010') && key === 'Enter',                ['s', 'm'],                   1, 'm',  'insert_U_S',              {}                          ],
-        [ 0, ckm(e, '001') && key === 'Enter',                ['s'],                        1, 'm',  'cellifyMulti',            {}                          ],
-        [ 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s'],                        1, 'm',  'insert_O_S',              {}                          ],
-        [ 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['m'],                        1, 'm',  'select_O_M',              {}                          ],
-        [ 0, ckm(e, '000') && key === 'Delete',               ['s'],                        1, 'm',  'delete_S',                {}                          ],
-        [ 0, ckm(e, '000') && key === 'Delete',               ['cr', 'cc'],                 1, 'm',  'delete_CRCC',             {}                          ],
-        [ 0, ckm(e, '000') && code === 'Space',               ['s'],                        1, 'm',  'select_S_F_M',            {}                          ],
-        [ 0, ckm(e, '000') && code === 'Space',               ['m'],                        1, 'm',  'select_M_F_S',            {}                          ],
-        [ 0, ckm(e, '000') && code === 'Space',               ['c'],                        1, 'm',  '',                        {}                          ],
-        [ 0, ckm(e, '000') && code === 'Space',               ['cr', 'cc'],                 1, 'm',  'select_CRCC_F_M',         {}                          ],
-        [ 0, ckm(e, '000') && code === 'Backspace',           ['s'],                        1, 'm',  'select_S_B_M',            {}                          ],
-        [ 0, ckm(e, '000') && code === 'Backspace',           ['c', 'cr', 'cc'],            1, 'm',  'select_CCRCC_B_S',        {}                          ],
-        [ 0, ckm(e, '000') && code === 'Backspace',           ['m'],                        1, 'm',  'select_M_BB_S',           {}                          ],
-        [ 0, ckm(e, '000') && code === 'Escape',              ['s', 'c', 'm'],              1, 'm',  'select_R',                {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyA',                ['s', 'c', 'm'],              1, 'm',  'select_all',              {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],              1, 'sa', 'createMapInMap',          {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyC',                ['s', 'c', 'm'],              1, 'm',  'copySelection',           {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyX',                ['s', 'c', 'm'],              1, 'm',  'cutSelection',            {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyS',                ['s', 'c', 'm'],              1, 'sa', 'saveMap',                 {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyZ',                ['s', 'c', 'm', 'cr', 'cc'],  1, 'a',  'redo',                    {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyY',                ['s', 'c', 'm', 'cr', 'cc'],  1, 'a',  'undo',                    {}                          ],
-        [ 0, ckm(e, '100') && code === 'KeyE',                ['s'],                        1, 'm',  'transpose',               {}                          ],
-        [ 0, ckm(e, '010') && [L,R].includes(which),          ['c', 'm'],                   1, 'm',  'select_CR',               {}                          ],
-        [ 0, ckm(e, '010') && [U,D].includes(which),          ['c', 'm'],                   1, 'm',  'select_CC',               {}                          ],
-        [ 0, ckm(e, '000') && [L,U,R,D].includes(which),      ['s'],                        1, 'm',  'selectNeighborStruct',    {keyCode: code}             ],
-        [ 0, ckm(e, '010') && [U,D].includes(which),          ['s'],                        1, 'm',  'selectNeighborStructToo', {keyCode: code}             ],
-        [ 0, ckm(e, '010') && [L,R].includes(which),          ['s'],                        1, 'm',  'selectDescendantsOut',    {keyCode: code}             ],
-        [ 0, ckm(e, '000') && [L,U,R,D].includes(which),      ['m'],                        1, 'm',  'selectNeighborMixed',     {keyCode: code}             ],
-        [ 0, ckm(e, '000') && [L,U,R,D].includes(which),      ['cr', 'cc'],                 1, 'm',  'select_CRCC',             {keyCode: code}             ],
-        [ 0, ckm(e, '100') && [L,U,R,D].includes(which),      ['s'],                        1, 'm',  'move_S',                  {keyCode: code}             ],
-        [ 0, ckm(e, '100') && [L,U,R,D].includes(which),      ['cr', 'cc'],                 1, 'm',  'move_CRCC',               {keyCode: code}             ],
-        [ 0, ckm(e, '001') && [L,U,R,D].includes(which),      ['m'],                        1, 'm',  'insert_M_CRCC',           {keyCode: code}             ],
-        [ 0, ckm(e, '001') && [L,U,R,D].includes(which),      ['c',],                       1, 'm',  'insert_CX_CRCC',          {keyCode: code}             ],
-        [ 0, ckm(e, '001') && [L,R].includes(which),          ['cc',],                      1, 'm',  'insert_CX_CRCC',          {keyCode: code}             ],
-        [ 0, ckm(e, '001') && [U,D].includes(which),          ['cr',],                      1, 'm',  'insert_CX_CRCC',          {keyCode: code}             ],
-        [ 0, ckm(e, '001') && [L,U,R,D].includes(which),      ['s', 'c', 'cr', 'cc'],       1, 'm',  '',                        {}                          ],
-        [ 0, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'm'],                   1, 'm',  'applyColorFromKey',       {currColor: which - 96}     ],
-        [ 0, ckm(e, '0-0') && which >= 48,                    ['s', 'm'],                   0, 'a',  'setEditedPathString',     toPathString(m.sc.lastPath) ],
-      ]
-      let keyStateMachine = {}
-      for (let i = 0; i < keyStateMachineDb.length; i++) {
-        for (let h = 0; h < keyStateMachineDb[0].length; h++) {
-          keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h]
-        }
-        const { isEditing, match, scope, preventDefault, actionType, action, payload } = keyStateMachine
-        if (/*isEditing*/ match === true && scope.includes(m.sc.scope)) {
-          if (preventDefault) {
-            e.preventDefault()
-          }
-          switch (actionType) {
-            case 'a': dispatch(actions[action](payload)); console.log(action, payload); break
-            case 'sa': dispatch(sagaActions[action](payload)); break
-            case 'm': mapDispatch(action, payload); break
-          }
-          break
-        }
-      }
-    }
+    eventToAction(e, 'kd', getNativeEvent(e))
   }
 
   const paste = (e) => {
@@ -305,47 +216,20 @@ export const WindowListeners: FC = () => {
     navigator.permissions.query({name: "clipboard-write"}).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
         navigator.clipboard.read().then(item => {
-          let type = item[0].types[0]
+          const type = item[0].types[0]
           if (type === 'text/plain') {
-            navigator.clipboard.readText().then(text => {
-              if (isEditing) {
-                mapDispatch('insertTextFromClipboardAsText', text)
-              } else {
-                if (text.substring(0, 1) === '[') {
-                  mapDispatch('insertMapFromClipboard', text)
-                } else {
-                  mapDispatch('insert_O_S')
-                  // include this in the below queries instead
-                  if (text.substring(0, 2) === '\\[') { // double backslash counts as one character
-                    mapDispatch('insertEquationFromClipboardAsNode', text)
-                  } else if (isUrl(text)) {
-                    mapDispatch('insertElinkFromClipboardAsNode', text)
-                  } else {
-                    mapDispatch('insertTextFromClipboardAsNode', text)
-                  }
-                }
-              }
+            navigator.clipboard.readText().then(text => eventToAction(e, 'pt', { text }))
+          } else if (type === 'image/png') {
+            item[0].getType('image/png').then(image => {
+              const formData = new FormData()
+              formData.append('upl', image, 'image.png')
+              let address = process.env.NODE_ENV === 'development'
+                ? 'http://127.0.0.1:8082/feta'
+                : 'https://mapboard-server.herokuapp.com/feta'
+              fetch(address, { method: 'post', body: formData }).then(response =>
+                response.json().then(response => eventToAction(e, 'pi', response))
+              )
             })
-          }
-          if (type === 'image/png') {
-            if (isEditing) {
-
-            } else {
-              item[0].getType('image/png').then(image => {
-                let formData = new FormData()
-                formData.append('upl', image, 'image.png')
-                let address = process.env.NODE_ENV === 'development' ?
-                  'http://127.0.0.1:8082/feta' :
-                  'https://mapboard-server.herokuapp.com/feta'
-                fetch(address, {method: 'post', body: formData}).then(response =>
-                  response.json().then(response => {
-                      mapDispatch('insert_O_S')
-                      mapDispatch('insertImageFromLinkAsNode', response)
-                    }
-                  )
-                )
-              })
-            }
           }
         })
       }
@@ -409,31 +293,25 @@ export const WindowListeners: FC = () => {
   }, [colorMode])
 
   useEffect(() => {
-    if (mapStackData.length) {
-      const m = getMap()
-      // console.log('RENDER MAP')
+    if (m && Object.keys(m).length) {
       reDraw(m, colorMode, editedPathString)
     }
-  }, [mapStackData, mapStackDataIndex, colorMode])
+  }, [m, colorMode])
 
   useEffect(() => {
-    if (Object.keys(tempMap).length) {
-      const m = getTempMap()
-      // console.log('RENDER TEMP MAP')
-      reDraw(m, colorMode, editedPathString)
+    if (tm && Object.keys(tm).length) {
+      reDraw(tm, colorMode, editedPathString)
     }
-  }, [tempMap])
+  }, [tm])
 
   useEffect(() => {
-    if (editedPathString.length) {
-      if (mapStackData.length) {
-        // console.log('EDITING HAS STARTED')
-        const m = getMap()
+    if (m && Object.keys(m).length) {
+      if (editedPathString.length) {
         const lm = getMapData(m, m.sc.lastPath)
         if (!lm.hasCell) {
           const holderElement = document.getElementById(`${lm.nodeId}_div`)
           holderElement.contentEditable = 'true'
-          if (!Object.keys(tempMap).length) {
+          if (!Object.keys(tm).length) {
             holderElement.innerHTML = ''
           }
           setEndOfContentEditable(holderElement)
@@ -451,16 +329,14 @@ export const WindowListeners: FC = () => {
             characterData: true
           })
         }
-      }
-    } else {
-      if (mapStackData.length) {
-        // console.log('EDITING HAS FINISHED')
-        mutationObserver?.disconnect()
-        const m = getMap()
-        const lm = getMapData(m, m.sc.lastPath)
-        if (!lm.hasCell) {
-          const holderElement = document.getElementById(`${lm.nodeId}_div`)
-          holderElement.contentEditable = 'false'
+      } else {
+        if (mutationObserver !== undefined) {
+          mutationObserver.disconnect()
+          const lm = getMapData(m, m.sc.lastPath)
+          if (!lm.hasCell) {
+            const holderElement = document.getElementById(`${lm.nodeId}_div`)
+            holderElement.contentEditable = 'false'
+          }
         }
       }
     }
@@ -468,7 +344,13 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '') {
-      mapDispatch('shouldLoad')
+      orient(m, 'shouldCenter', {})
+    }
+  }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
+
+  useEffect(() => {
+    if (mapId !== '') {
+      orient(m, 'shouldLoad', {})
     }
   }, [mapId, mapSource, frameSelected])
 
@@ -476,19 +358,3 @@ export const WindowListeners: FC = () => {
     <></>
   )
 }
-
-// TODO next
-// - fix isDimAssigned, once done loading density will work again (done ONCE save is OK again)
-// - make mapDiff for all remaining prop in saveNeverInitOnce
-// - fix save
-// - fix paste - merge what needs merge
-// - eventually do the tests for all reducers
-
-// CHARACTERISTICS of the successful adoption of the FLUX pattern (which did not exist before)
-// - no DOM operations in reducers (killing things related to edit, exception: reading dom in meas) OK
-// - no bidirectional data flow (killing node in EditorState) OK
-// - no sagas used where we ONLY have local operations and no server calls OK
-// - everything is in the global state: ALL local variables in WL (including mapData and mapStackData and isEditing, except observers and listeners) IN PROGRESS
-// - reactive global state with no caching dependencies = no saveNeverInitOnce properties IN PROGRESS
-// - reDraw and orient can only exist in a useEffect, never action-based IN PROGRESS
-// - no stacking of dispatches IN PROGRESS

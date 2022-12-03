@@ -5,13 +5,6 @@ import { copy, genHash, shallowCopy } from '../core/Utils'
 
 export const mapInit = {
   start: (m, cr) => {
-    for (const prop in nodeProps.saveAlways) {
-      if (!m.hasOwnProperty(prop)) {
-        if (prop === 'nodeId') {
-          m[prop] = 'node' + genHash(8)
-        }
-      }
-    }
     for (const prop in mapProps.saveOptional) {
       if (!m.hasOwnProperty(prop)) {
         m[prop] = copy(mapProps.saveOptional[prop])

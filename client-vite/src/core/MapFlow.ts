@@ -1,8 +1,6 @@
-// @ts-nocheck
-
-import {nodeProps} from './DefaultProps'
+import {getDefaultNode, nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {copy, subsref, transposeArray} from './Utils'
+import {copy, genHash, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
@@ -21,11 +19,10 @@ import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellInsert, structInsert} from '../node/NodeInsert'
-import {nodeMove, nodeMoveMouse, setClipboard} from '../node/NodeMove'
+import {nodeMove, nodeMoveMouse} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 
 export const getMapData = (m: any, path: any) => {
-  // note: can not use getMap as the source of truth is not always the store
   return subsref(m, path)
 }
 
@@ -35,21 +32,21 @@ export const getSavedMapData = (m: any) => {
   return mapDisassembly.start(mCopy)
 }
 
-const clearSelection = (m) => {
+const clearSelection = (m: any) => {
   for (let i = 0; i < getMapData(m, ['r']).length; i++) {
     let cr = getMapData(m, ['r', i])
     mapSetProp.start(m, cr, {selected: 0, selection: 's'}, '')
   }
 }
 
-const updateParentLastSelectedChild = (m, lm) => {
+const updateParentLastSelectedChild = (m: any, lm: any) => {
   if (!lm.isRoot) {
     let parentRef = getMapData(m, lm.parentPath)
     parentRef.lastSelectedChild = lm.index
   }
 }
 
-export const mapReducer = (m, action, payload) => {
+export const mapReducer = (m: any, action: any, payload: any) => {
   const { sc } = m
   let lm = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
@@ -144,104 +141,87 @@ export const mapReducer = (m, action, payload) => {
       if (lm.s.length > 0) {
         if (lm.path.length === 2) {
           lm.selected = 0
-          if (payload.keyCode === 'ArrowRight') {
+          if (payload.code === 'ArrowRight') {
             lm.d[0].selected = 1
             lm.d[0].selection = 'f'
-          } else if (payload.keyCode === 'ArrowLeft') {
+          } else if (payload.code === 'ArrowLeft') {
             lm.d[1].selected = 1
             lm.d[1].selection = 'f'
           }
         } else if (
-          lm.path[3] === 0 && payload.keyCode === 'ArrowRight' ||
-          lm.path[3] === 1 && payload.keyCode === 'ArrowLeft') {
+          lm.path[3] === 0 && payload.code === 'ArrowRight' ||
+          lm.path[3] === 1 && payload.code === 'ArrowLeft') {
           lm.selection = 'f'
         } else if (
-          lm.path[3] === 0 && payload.keyCode === 'ArrowLeft' ||
-          lm.path[3] === 1 && payload.keyCode === 'ArrowRight') {
+          lm.path[3] === 0 && payload.code === 'ArrowLeft' ||
+          lm.path[3] === 1 && payload.code === 'ArrowRight') {
           lm.selection = 's'
         }
       }
       break
     }
-    case 'select_S_F_M': {
-      if (lm.hasCell) {
-        clearSelection(m)
-        let toPath = [...sc.lastPath, 'c', 0, 0]
-        getMapData(m, toPath).selected = 1
-        getMapData(m, toPath).s[0].selected = 1
+    case 'select_S_IOUD': {
+      clearSelection(m)
+      let newTruePath = payload.truePath
+      if (payload.direction === 'U') {
+        newTruePath = m.sc.geomHighPath
+      } else if (payload.direction === 'D') {
+        newTruePath = m.sc.geomLowPath
       }
+      getMapData(m, nodeNavigate(m, newTruePath, 'struct2struct', payload.direction)).selected = 1
       break
     }
-    case 'select_CCRCC_B_S': {
-      clearSelection(m)
-      getMapData(m, getMapData(m, lm.parentPath).path).selected = 1
+    case 'select_S_IOUD+': {
+      getMapData(m, nodeNavigate(m, payload.truePath, 'struct2struct', payload.direction)).selected = sc.maxSel + 1
       break
     }
-    case 'select_M_BB_S': {
-      clearSelection(m)
-      getMapData(m, getMapData(m, getMapData(m, lm.parentPath).parentPath).path).selected = 1
-      break
-    }
-    case 'select_M_F_S': {
+    case 'select_S_F': {
       clearSelection(m)
       lm.selected = 1
       break
     }
-    case 'select_CRCC_F_M': {
+    case 'select_S_B': {
+      clearSelection(m)
+      getMapData(m, lm.path.slice(0, -3)).selected = 1
+      break
+    }
+    case 'select_S_BB': {
+      clearSelection(m)
+      getMapData(m, lm.path.slice(0, -5)).selected = 1
+      break
+    }
+    case 'select_M_IOUD': {
+      clearSelection(m)
+      getMapData(m, nodeNavigate(m, lm.path.slice(0, -2), 'cell2cell', payload.direction)).selected = 1
+      getMapData(m, [...nodeNavigate(m, lm.path.slice(0, -2), 'cell2cell', payload.direction), 's', 0]).selected = 1
+      break
+    }
+    case 'select_M_F': {
       clearSelection(m)
       lm.selected = 1
       lm.s[0].selected = 1
       break
     }
-    case 'select_S_B_M': {
+    case 'select_M_FF': {
+      if (lm.hasCell) {
+        clearSelection(m)
+        getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
+        getMapData(m, [...sc.lastPath, 'c', 0, 0, 's', 0]).selected = 1
+      }
+      break
+    }
+    case 'select_M_B': {
       for (let i = lm.path.length - 2; i > 0; i--) {
-        if (Number.isInteger(lm.path[i]) &&
-          Number.isInteger(lm.path[i + 1])) {
+        if (Number.isInteger(lm.path[i]) && Number.isInteger(lm.path[i + 1])) {
           clearSelection(m)
-          let toPath = lm.path.slice(0, i + 2)
-          getMapData(m, toPath).selected = 1
-          getMapData(m, toPath).s[0].selected = 1
+          getMapData(m, lm.path.slice(0, i + 2)).selected = 1
+          getMapData(m, [...lm.path.slice(0, i + 2), 's', 0]).selected = 1
           break
         }
       }
       break
     }
-    case 'select_D_M': {
-      clearSelection(m)
-      let toPath = nodeNavigate(m, sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', 'ArrowDown')
-      getMapData(m, toPath).selected = 1
-      getMapData(m, toPath).s[0].selected = 1
-      break
-    }
-    case 'select_O_M': {
-      clearSelection(m)
-      let toPath = nodeNavigate(m, sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', lm.path[3] ? 'ArrowLeft' : 'ArrowRight')
-      getMapData(m, toPath).selected = 1
-      getMapData(m, toPath).s[0].selected = 1
-      break
-    }
-    case 'selectNeighborStruct': {
-      clearSelection(m)
-      let fromPath = sc.lastPath
-      if (payload.keyCode === 'ArrowUp') fromPath = sc.geomHighPath
-      if (payload.keyCode === 'ArrowDown') fromPath = sc.geomLowPath
-      let toPath = nodeNavigate(m, fromPath, 'struct2struct', payload.keyCode)
-      getMapData(m, toPath).selected = 1
-      break
-    }
-    case 'selectNeighborStructToo': {
-      let toPath = nodeNavigate(m, sc.lastPath, 'struct2struct', payload.keyCode)
-      getMapData(m, toPath).selected = sc.maxSel + 1
-      break
-    }
-    case 'selectNeighborMixed': {
-      clearSelection(m)
-      let toPath = nodeNavigate(m, sc.lastPath.slice(0, sc.lastPath.length - 2), 'cell2cell', payload.keyCode)
-      getMapData(m, toPath).selected = 1
-      getMapData(m, toPath).s[0].selected = 1
-      break
-    }
-    case 'select_CR': {
+    case 'select_CR_IO': {
       clearSelection(m)
       let parentRef = getMapData(m, lm.parentPath)
       let parentParentRef = getMapData(m, parentRef.parentPath)
@@ -252,7 +232,15 @@ export const mapReducer = (m, action, payload) => {
       }
       break
     }
-    case 'select_CC': {
+    case 'select_CR_UD': {
+      clearSelection(m)
+      for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
+        let currPath = sc.cellSelectedPathList[i]
+        getMapData(m, nodeNavigate(m, currPath, 'cell2cell', payload.direction)).selected = 1
+      }
+      break
+    }
+    case 'select_CC_IO': {
       clearSelection(m)
       let parentRef = getMapData(m, lm.parentPath)
       let parentParentRef = getMapData(m, parentRef.parentPath)
@@ -263,52 +251,53 @@ export const mapReducer = (m, action, payload) => {
       }
       break
     }
-    case 'select_CRCC': {
-      if (payload.keyCode === 'ArrowLeft' && sc.cellColSelected ||
-        payload.keyCode === 'ArrowRight' && sc.cellColSelected ||
-        payload.keyCode === 'ArrowUp' && sc.cellRowSelected ||
-        payload.keyCode === 'ArrowDown' && sc.cellRowSelected) {
-        clearSelection(m)
-        for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
-          let currPath = sc.cellSelectedPathList[i]
-          let toPath = nodeNavigate(m, currPath, 'cell2cell', payload.keyCode)
-          getMapData(m, toPath).selected = 1
-        }
+    case 'select_CC_UD': {
+      clearSelection(m)
+      for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
+        let currPath = sc.cellSelectedPathList[i]
+        getMapData(m, nodeNavigate(m, currPath, 'cell2cell', payload.direction)).selected = 1
       }
       break
     }
     case 'select_R': {
       clearSelection(m)
-      let cr = getMapData(m, ['r', 0])
-      cr.selected = 1
+      getMapData(m, ['r', 0]).selected = 1
       break
     }
     // INSERT
-    case 'insert_U_S': {
+    case 'insert_S_U': {
       if (!lm.isRoot) {
         clearSelection(m)
-        structInsert(m, lm, 'siblingUp')
+        structInsert(m, lm, 'U', {})
       }
       break
     }
-    case 'insert_D_S': {
+    case 'insert_S_D': {
       if (!lm.isRoot) {
         clearSelection(m)
-        structInsert(m, lm, 'siblingDown')
+        structInsert(m, lm, 'D', {})
       }
       break
     }
-    case 'insert_O_S': {
+    case 'insert_S_O': {
       clearSelection(m)
-      structInsert(m, lm, 'child')
+      structInsert(m, lm, 'O', {})
       break
     }
-    case 'insert_M_CRCC': {
-      cellInsert(m, sc.lastPath.slice(0, sc.lastPath.length - 2), payload.keyCode)
+    case 'insert_CC_IO': {
+      cellInsert(m, sc.lastPath, payload.code) // TODO cellColInsert
       break
     }
-    case 'insert_CX_CRCC': {
-      cellInsert(m, sc.lastPath, payload.keyCode)
+    case 'insert_CC_B_IO': {
+      cellInsert(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellColInsert
+      break
+    }
+    case 'insert_CR_UD': {
+      cellInsert(m, sc.lastPath, payload.code) // TODO cellRowInsert
+      break
+    }
+    case 'insert_CR_B_UD': {
+      cellInsert(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellRowInsert
       break
     }
     // DELETE
@@ -316,17 +305,21 @@ export const mapReducer = (m, action, payload) => {
       structDeleteReselect(m, sc)
       break
     }
-    case 'delete_CRCC': {
+    case 'delete_CRCC': { // TODO separate CRCC
       cellBlockDeleteReselect(m, sc)
       break
     }
     // MOVE
-    case 'move_S': {
-      nodeMove(m, sc, 'struct2struct', payload.keyCode)
+    case 'move_S_IOUD': {
+      nodeMove(m, sc, 'struct2struct', payload.code, '')
       break
     }
-    case 'move_CRCC': {
-      nodeMove(m, sc, 'cellBlock2CellBlock', payload.keyCode)
+    case 'move_CR_UD': {
+      nodeMove(m, sc, 'cellBlock2CellBlock', payload.code, '') // TODO separate CR
+      break
+    }
+    case 'move_CC_IO': {
+      nodeMove(m, sc, 'cellBlock2CellBlock', payload.code, '') // TODO separate CC
       break
     }
     case 'transpose': {
@@ -348,49 +341,68 @@ export const mapReducer = (m, action, payload) => {
       nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
       break
     }
-    case 'cellifyMulti': {
+    case 'cellifyMulti': { // TODO rename to something move_
       nodeMove(m, sc, 'struct2cell', '', 'multiRow')
       clearSelection(m)
-      let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path
+      let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice
       getMapData(m, toPath).selected = 1
       getMapData(m, toPath).s[0].selected = 1
       break
     }
     case 'insertTextFromClipboardAsText': {
-      document.execCommand("insertHTML", false, payload)
+      document.execCommand("insertHTML", false, payload.text)
       break
     }
     case 'insertTextFromClipboardAsNode': {
-      // we can structInsert here AND pass this assignment as an argument so it is set WHEN created
-      Object.assign(lm, {contentType: 'text', content: payload})
+      clearSelection(m)
+      structInsert(m, lm, 'O', { contentType: 'text', content: payload.text })
       break
     }
     case 'insertElinkFromClipboardAsNode': {
-      Object.assign(lm, {contentType: 'text', content: payload, linkType: 'external', link: payload})
+      clearSelection(m)
+      structInsert(m, lm, 'O', { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
       break
     }
     case 'insertEquationFromClipboardAsNode': {
-      Object.assign(lm, {contentType: 'equation', content: payload})
+      clearSelection(m)
+      structInsert(m, lm, 'O', { contentType: 'equation', content: payload.text })
       break
     }
-    case 'insertImageFromLinkAsNode': {
-      const {width, height} = payload.imageSize
-      Object.assign(lm, {contentType: 'image', content: payload.imageId, imageW: width, imageH: height})
+    case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
+      const { imageId, imageSize } = payload
+      const { width, height } = imageSize
+      clearSelection(m)
+      structInsert(m, lm, 'O', { contentType: 'image', content: imageId, imageW: width, imageH: height })
       break
     }
     case 'insertMapFromClipboard': {
       clearSelection(m)
-      setClipboard(JSON.parse(payload))
-      nodeMove(m, sc, 'clipboard2struct', '', 'PASTE')
+      const nodeList = JSON.parse(payload.text)
+      for (let i = 0; i < nodeList.length; i++) {
+        mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
+        structInsert(m, lm, 'O', { ...nodeList[i] })
+      }
       break
     }
     case 'insertTable': {
       clearSelection(m)
-      structInsert(m, lm, 'childTable', payload)
+      const tableGen = []
+      const {rowLen, colLen} = payload
+      for (let i = 0; i < rowLen; i++) {
+        tableGen.push([])
+        for (let j = 0; j < colLen; j++) {
+          // @ts-ignore
+          tableGen[i].push([])
+          // @ts-ignore
+          tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
+        }
+      }
+      structInsert(m, lm, 'O', { taskStatus: -1, c: tableGen })
       break
     }
     // FORMAT
     case 'setFormatParams': {
+      // @ts-ignore
       const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} = {...m.nc, ...payload}
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         const cm = getMapData(m, sc.structSelectedPathList[i])
@@ -407,6 +419,7 @@ export const mapReducer = (m, action, payload) => {
         for (const prop in props) {
           if (props[prop] !== undefined) {
             const assignment = {}
+            // @ts-ignore
             assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
             if ((cm.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
               Object.assign(cm, assignment)
@@ -430,7 +443,7 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     case 'toggleTask': {
-      if (lm.taskStatus === -1) {
+      if (lm.taskStatus === -1) { // one line
         mapSetProp.start(m, lm, {taskStatus: 0}, '')
       } else {
         mapSetProp.start(m, lm, {taskStatus: -1}, '')
@@ -450,7 +463,7 @@ export const mapReducer = (m, action, payload) => {
       break
     }
     case 'typeText': {
-      lm.contentType = 'text'
+      lm.contentType = 'text' // one line
       lm.content = payload
       break
     }
@@ -463,11 +476,12 @@ export const mapReducer = (m, action, payload) => {
 
 export const reCalc = (pm: any, m: any) => {
   let cr = getMapData(m, ['r', 0])
+  // use cn instead of cm inside these
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
   mapDiff.start(pm, m, cr)
-  mapTaskCalc.start(m, cr)
+  mapTaskCalc.start(m, cr) // mapCalcTask
   mapTaskCheck.start(m, cr) // mapExtractTask
   mapExtractSelection.start(m, cr)
   mapExtractFormatting.start(m)
@@ -476,7 +490,7 @@ export const reCalc = (pm: any, m: any) => {
   return m
 }
 
-const redrawStep = (m: any, colorMode: any, isEditing, shouldAnimationInit: boolean) => {
+const redrawStep = (m: any, colorMode: any, isEditing: boolean, shouldAnimationInit: boolean) => {
   flagDomData()
   let cr = getMapData(m, ['r', 0])
   mapVisualizeSvg.start(m, cr, colorMode, isEditing, shouldAnimationInit)
