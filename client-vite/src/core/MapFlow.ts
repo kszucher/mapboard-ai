@@ -443,11 +443,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'toggleTask': {
-      if (ln.taskStatus === -1) { // one line
-        mapSetProp.start(m, ln, {taskStatus: 0}, '')
-      } else {
-        mapSetProp.start(m, ln, {taskStatus: -1}, '')
-      }
+      mapSetProp.start(m, ln, {taskStatus: ln.taskStatus === -1 ? 0 : -1}, '')
       break
     }
     case 'setTaskStatus': {
@@ -463,8 +459,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'typeText': {
-      ln.contentType = 'text' // one line
-      ln.content = payload
+      Object.assign(ln, { contentType: 'text', content: payload })
       break
     }
     case 'finishEdit': {
@@ -476,7 +471,6 @@ export const mapReducer = (m: any, action: any, payload: any) => {
 
 export const reCalc = (pm: any, m: any) => {
   let cr = getMapData(m, ['r', 0])
-  // use cn instead of cn inside these
   mapAlgo.start(m, cr)
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
