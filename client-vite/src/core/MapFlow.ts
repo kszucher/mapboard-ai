@@ -39,22 +39,22 @@ const clearSelection = (m: any) => {
   }
 }
 
-const updateParentLastSelectedChild = (m: any, lm: any) => {
-  if (!lm.isRoot) {
-    let parentRef = getMapData(m, lm.parentPath)
-    parentRef.lastSelectedChild = lm.index
+const updateParentLastSelectedChild = (m: any, ln: any) => {
+  if (!ln.isRoot) {
+    let parentRef = getMapData(m, ln.parentPath)
+    parentRef.lastSelectedChild = ln.index
   }
 }
 
 export const mapReducer = (m: any, action: any, payload: any) => {
   const { sc } = m
-  let lm = getMapData(m, sc.lastPath)
+  let ln = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
-    lm.content = payload.contentToSave
-    if (lm.content.substring(0, 2) === '\\[') {
-      lm.contentType = 'equation'
-    } else if (lm.content.substring(0, 1) === '=') {
-      lm.contentCalc = lm.content
+    ln.content = payload.contentToSave
+    if (ln.content.substring(0, 2) === '\\[') {
+      ln.contentType = 'equation'
+    } else if (ln.content.substring(0, 1) === '=') {
+      ln.contentCalc = ln.content
     }
   }
   switch (action) {
@@ -86,42 +86,42 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     case 'selectStruct': {
       clearSelection(m)
       const {lastOverPath} = payload
-      const lm = getMapData(m, lastOverPath)
-      lm.selected = 1
-      lm.selection = 's'
-      updateParentLastSelectedChild(m, lm)
+      const ln = getMapData(m, lastOverPath)
+      ln.selected = 1
+      ln.selection = 's'
+      updateParentLastSelectedChild(m, ln)
       break
     }
     case 'selectStructToo': {
       const {lastOverPath} = payload
-      const lm = getMapData(m, lastOverPath)
-      lm.selected = sc.maxSel + 1
-      updateParentLastSelectedChild(m, lm)
+      const ln = getMapData(m, lastOverPath)
+      ln.selected = sc.maxSel + 1
+      updateParentLastSelectedChild(m, ln)
       break
     }
     case 'selectStructFamily': {
       const {lastOverPath} = payload
-      const lm = getMapData(m, lastOverPath)
-      if (lm.path.length === 2) {
-        lm.selected = 0
-        if (lm.d[0].selected === 1) {
-          lm.d[0].selected = 0
-          lm.d[1].selected = 1
-          lm.d[1].selection = 'f'
+      const ln = getMapData(m, lastOverPath)
+      if (ln.path.length === 2) {
+        ln.selected = 0
+        if (ln.d[0].selected === 1) {
+          ln.d[0].selected = 0
+          ln.d[1].selected = 1
+          ln.d[1].selection = 'f'
         } else {
           clearSelection(m)
-          lm.d[0].selected = 1
-          lm.d[1].selected = 0
-          lm.d[0].selection = 'f'
+          ln.d[0].selected = 1
+          ln.d[1].selected = 0
+          ln.d[0].selection = 'f'
         }
       } else {
-        if (lm.s.length > 0) {
+        if (ln.s.length > 0) {
           clearSelection(m)
-          lm.selected = 1
-          lm.selection = 'f'
+          ln.selected = 1
+          ln.selection = 'f'
         }
       }
-      updateParentLastSelectedChild(m, lm)
+      updateParentLastSelectedChild(m, ln)
       break
     }
     case 'selectTarget': {
@@ -138,24 +138,24 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'selectDescendantsOut': {
-      if (lm.s.length > 0) {
-        if (lm.path.length === 2) {
-          lm.selected = 0
+      if (ln.s.length > 0) {
+        if (ln.path.length === 2) {
+          ln.selected = 0
           if (payload.code === 'ArrowRight') {
-            lm.d[0].selected = 1
-            lm.d[0].selection = 'f'
+            ln.d[0].selected = 1
+            ln.d[0].selection = 'f'
           } else if (payload.code === 'ArrowLeft') {
-            lm.d[1].selected = 1
-            lm.d[1].selection = 'f'
+            ln.d[1].selected = 1
+            ln.d[1].selection = 'f'
           }
         } else if (
-          lm.path[3] === 0 && payload.code === 'ArrowRight' ||
-          lm.path[3] === 1 && payload.code === 'ArrowLeft') {
-          lm.selection = 'f'
+          ln.path[3] === 0 && payload.code === 'ArrowRight' ||
+          ln.path[3] === 1 && payload.code === 'ArrowLeft') {
+          ln.selection = 'f'
         } else if (
-          lm.path[3] === 0 && payload.code === 'ArrowLeft' ||
-          lm.path[3] === 1 && payload.code === 'ArrowRight') {
-          lm.selection = 's'
+          ln.path[3] === 0 && payload.code === 'ArrowLeft' ||
+          ln.path[3] === 1 && payload.code === 'ArrowRight') {
+          ln.selection = 's'
         }
       }
       break
@@ -177,33 +177,33 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'select_S_F': {
       clearSelection(m)
-      lm.selected = 1
+      ln.selected = 1
       break
     }
     case 'select_S_B': {
       clearSelection(m)
-      getMapData(m, lm.path.slice(0, -3)).selected = 1
+      getMapData(m, ln.path.slice(0, -3)).selected = 1
       break
     }
     case 'select_S_BB': {
       clearSelection(m)
-      getMapData(m, lm.path.slice(0, -5)).selected = 1
+      getMapData(m, ln.path.slice(0, -5)).selected = 1
       break
     }
     case 'select_M_IOUD': {
       clearSelection(m)
-      getMapData(m, nodeNavigate(m, lm.path.slice(0, -2), 'cell2cell', payload.direction)).selected = 1
-      getMapData(m, [...nodeNavigate(m, lm.path.slice(0, -2), 'cell2cell', payload.direction), 's', 0]).selected = 1
+      getMapData(m, nodeNavigate(m, ln.path.slice(0, -2), 'cell2cell', payload.direction)).selected = 1
+      getMapData(m, [...nodeNavigate(m, ln.path.slice(0, -2), 'cell2cell', payload.direction), 's', 0]).selected = 1
       break
     }
     case 'select_M_F': {
       clearSelection(m)
-      lm.selected = 1
-      lm.s[0].selected = 1
+      ln.selected = 1
+      ln.s[0].selected = 1
       break
     }
     case 'select_M_FF': {
-      if (lm.hasCell) {
+      if (ln.hasCell) {
         clearSelection(m)
         getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
         getMapData(m, [...sc.lastPath, 'c', 0, 0, 's', 0]).selected = 1
@@ -211,11 +211,11 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'select_M_B': {
-      for (let i = lm.path.length - 2; i > 0; i--) {
-        if (Number.isInteger(lm.path[i]) && Number.isInteger(lm.path[i + 1])) {
+      for (let i = ln.path.length - 2; i > 0; i--) {
+        if (Number.isInteger(ln.path[i]) && Number.isInteger(ln.path[i + 1])) {
           clearSelection(m)
-          getMapData(m, lm.path.slice(0, i + 2)).selected = 1
-          getMapData(m, [...lm.path.slice(0, i + 2), 's', 0]).selected = 1
+          getMapData(m, ln.path.slice(0, i + 2)).selected = 1
+          getMapData(m, [...ln.path.slice(0, i + 2), 's', 0]).selected = 1
           break
         }
       }
@@ -223,7 +223,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'select_CR_IO': {
       clearSelection(m)
-      let parentRef = getMapData(m, lm.parentPath)
+      let parentRef = getMapData(m, ln.parentPath)
       let parentParentRef = getMapData(m, parentRef.parentPath)
       let currRow = parentRef.index[0]
       let colLen = parentParentRef.c[0].length
@@ -242,7 +242,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'select_CC_IO': {
       clearSelection(m)
-      let parentRef = getMapData(m, lm.parentPath)
+      let parentRef = getMapData(m, ln.parentPath)
       let parentParentRef = getMapData(m, parentRef.parentPath)
       let currCol = parentRef.index[1]
       let rowLen = parentParentRef.c.length
@@ -266,22 +266,22 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // INSERT
     case 'insert_S_U': {
-      if (!lm.isRoot) {
+      if (!ln.isRoot) {
         clearSelection(m)
-        structInsert(m, lm, 'U', {})
+        structInsert(m, ln, 'U', {})
       }
       break
     }
     case 'insert_S_D': {
-      if (!lm.isRoot) {
+      if (!ln.isRoot) {
         clearSelection(m)
-        structInsert(m, lm, 'D', {})
+        structInsert(m, ln, 'D', {})
       }
       break
     }
     case 'insert_S_O': {
       clearSelection(m)
-      structInsert(m, lm, 'O', {})
+      structInsert(m, ln, 'O', {})
       break
     }
     case 'insert_CC_IO': {
@@ -323,8 +323,8 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'transpose': {
-      if (lm.hasCell) {
-        lm.c = transposeArray(lm.c)
+      if (ln.hasCell) {
+        ln.c = transposeArray(ln.c)
       }
       break
     }
@@ -355,24 +355,24 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'insertTextFromClipboardAsNode': {
       clearSelection(m)
-      structInsert(m, lm, 'O', { contentType: 'text', content: payload.text })
+      structInsert(m, ln, 'O', { contentType: 'text', content: payload.text })
       break
     }
     case 'insertElinkFromClipboardAsNode': {
       clearSelection(m)
-      structInsert(m, lm, 'O', { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
+      structInsert(m, ln, 'O', { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
       break
     }
     case 'insertEquationFromClipboardAsNode': {
       clearSelection(m)
-      structInsert(m, lm, 'O', { contentType: 'equation', content: payload.text })
+      structInsert(m, ln, 'O', { contentType: 'equation', content: payload.text })
       break
     }
     case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
       const { imageId, imageSize } = payload
       const { width, height } = imageSize
       clearSelection(m)
-      structInsert(m, lm, 'O', { contentType: 'image', content: imageId, imageW: width, imageH: height })
+      structInsert(m, ln, 'O', { contentType: 'image', content: imageId, imageW: width, imageH: height })
       break
     }
     case 'insertMapFromClipboard': {
@@ -380,7 +380,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       const nodeList = JSON.parse(payload.text)
       for (let i = 0; i < nodeList.length; i++) {
         mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
-        structInsert(m, lm, 'O', { ...nodeList[i] })
+        structInsert(m, ln, 'O', { ...nodeList[i] })
       }
       break
     }
@@ -397,7 +397,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
           tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
         }
       }
-      structInsert(m, lm, 'O', { taskStatus: -1, c: tableGen })
+      structInsert(m, ln, 'O', { taskStatus: -1, c: tableGen })
       break
     }
     // FORMAT
@@ -443,10 +443,10 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'toggleTask': {
-      if (lm.taskStatus === -1) { // one line
-        mapSetProp.start(m, lm, {taskStatus: 0}, '')
+      if (ln.taskStatus === -1) { // one line
+        mapSetProp.start(m, ln, {taskStatus: 0}, '')
       } else {
-        mapSetProp.start(m, lm, {taskStatus: -1}, '')
+        mapSetProp.start(m, ln, {taskStatus: -1}, '')
       }
       break
     }
@@ -457,14 +457,14 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // EDIT
     case'startEdit': {
-      if (lm.contentType === 'equation') {
-        lm.contentType = 'text'
+      if (ln.contentType === 'equation') {
+        ln.contentType = 'text'
       }
       break
     }
     case 'typeText': {
-      lm.contentType = 'text' // one line
-      lm.content = payload
+      ln.contentType = 'text' // one line
+      ln.content = payload
       break
     }
     case 'finishEdit': {

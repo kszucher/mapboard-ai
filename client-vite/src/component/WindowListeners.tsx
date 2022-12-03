@@ -97,8 +97,8 @@ export const WindowListeners: FC = () => {
           if (isTaskClicked) {
             mapDispatch('setTaskStatus', {taskStatus: parseInt(path[0].id.charAt(27), 10), nodeId: path[0].id.substring(0, 12)})
           } else if (isNodeClicked) {
-            let lm = getMapData(m, lastOverPath)
-            if (lm.linkType === '') {
+            let ln = getMapData(m, lastOverPath)
+            if (ln.linkType === '') {
               if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
                 mapDispatch('selectStruct', {lastOverPath})
               } else {
@@ -106,10 +106,10 @@ export const WindowListeners: FC = () => {
               }
             } else {
               whichDown = 0
-              if (lm.linkType === 'internal') {
+              if (ln.linkType === 'internal') {
                 dispatch(sagaActions.openMapFromMap(lastOverPath))
-              } else if (lm.linkType === 'external') {
-                window.open(lm.link, '_blank')
+              } else if (ln.linkType === 'external') {
+                window.open(ln.link, '_blank')
                 window.focus()
               }
             }
@@ -307,9 +307,9 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (m && Object.keys(m).length) {
       if (editedPathString.length) {
-        const lm = getMapData(m, m.sc.lastPath)
-        if (!lm.hasCell) {
-          const holderElement = document.getElementById(`${lm.nodeId}_div`)
+        const ln = getMapData(m, m.sc.lastPath)
+        if (!ln.hasCell) {
+          const holderElement = document.getElementById(`${ln.nodeId}_div`)
           holderElement.contentEditable = 'true'
           if (!Object.keys(tm).length) {
             holderElement.innerHTML = ''
@@ -332,9 +332,9 @@ export const WindowListeners: FC = () => {
       } else {
         if (mutationObserver !== undefined) {
           mutationObserver.disconnect()
-          const lm = getMapData(m, m.sc.lastPath)
-          if (!lm.hasCell) {
-            const holderElement = document.getElementById(`${lm.nodeId}_div`)
+          const ln = getMapData(m, m.sc.lastPath)
+          if (!ln.hasCell) {
+            const holderElement = document.getElementById(`${ln.nodeId}_div`)
             holderElement.contentEditable = 'false'
           }
         }

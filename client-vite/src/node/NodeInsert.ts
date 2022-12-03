@@ -3,22 +3,22 @@
 import {getDefaultNode} from "../core/DefaultProps";
 import { getMapData } from '../core/MapFlow'
 
-export const structInsert = (m, lm, direction, payload ) => {
+export const structInsert = (m, ln, direction, payload ) => {
   let parentRef;
   if (direction === 'U') {
-    parentRef = getMapData(m, lm.parentPath);
-    parentRef.s.splice(lm.index, 0, getDefaultNode({
+    parentRef = getMapData(m, ln.parentPath);
+    parentRef.s.splice(ln.index, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ?  0 : -1,
     }))
   } else if (direction === 'D') {
-    parentRef = getMapData(m, lm.parentPath);
-    parentRef.s.splice(lm.index + 1, 0, getDefaultNode({
+    parentRef = getMapData(m, ln.parentPath);
+    parentRef.s.splice(ln.index + 1, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus > - 1 ? 0 : -1,
     }));
   } else if (direction === 'O') {
-    parentRef = lm.isRoot? lm.d[0] : lm;
+    parentRef = ln.isRoot? ln.d[0] : ln;
     parentRef.s.splice(parentRef.s.length, 0, getDefaultNode({
       selected: 1,
       taskStatus: parentRef.taskStatus,
@@ -28,15 +28,15 @@ export const structInsert = (m, lm, direction, payload ) => {
 }
 
 export const cellInsert = (m, lastPath, key) => {
-  let lm = getMapData(m, lastPath);
-  let parentRef = getMapData(m, lm.parentPath);
-  let currRow = lm.index[0];
-  let currCol = lm.index[1];
+  let ln = getMapData(m, lastPath);
+  let parentRef = getMapData(m, ln.parentPath);
+  let currRow = ln.index[0];
+  let currCol = ln.index[1];
   let rowLen = parentRef.c.length;
   let colLen = parentRef.c[0].length;
   let direction;
-  if (        key === 'ArrowLeft' && lm.path[3] === 0 || key === 'ArrowRight' && lm.path[3] === 1) {  direction = 'in';
-  } else if ( key === 'ArrowLeft' && lm.path[3] === 1 || key === 'ArrowRight' && lm.path[3] === 0) {  direction = 'out';
+  if (        key === 'ArrowLeft' && ln.path[3] === 0 || key === 'ArrowRight' && ln.path[3] === 1) {  direction = 'in';
+  } else if ( key === 'ArrowLeft' && ln.path[3] === 1 || key === 'ArrowRight' && ln.path[3] === 0) {  direction = 'out';
   } else if ( key === 'ArrowUp') {                                                                    direction = 'up';
   } else if ( key === 'ArrowDown') {                                                                  direction = 'down';
   }

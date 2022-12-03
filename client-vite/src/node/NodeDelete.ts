@@ -2,17 +2,17 @@ import {isEqual} from "../core/Utils";
 import { getMapData } from '../core/MapFlow'
 
 export const structDeleteReselect = (m: any, sc: any) => {
-  let lm = getMapData(m, sc.lastPath);
-  let crIndex = lm.path[1];
+  let ln = getMapData(m, sc.lastPath);
+  let crIndex = ln.path[1];
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
     let cn = getMapData(m, sc.structSelectedPathList[i]);
     if (cn.isRoot) return;
   }
   // calculate jump back
-  let im = lm;
+  let im = ln;
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
     let cn = getMapData(m, sc.structSelectedPathList[i]);
-    if (cn.path.length < lm.path.length && isEqual(cn.path.slice(0, lm.path.length), lm.path)) {
+    if (cn.path.length < ln.path.length && isEqual(cn.path.slice(0, ln.path.length), ln.path)) {
       im = cn;
     }
   }
@@ -64,9 +64,9 @@ export const structDeleteReselect = (m: any, sc: any) => {
 export const cellBlockDeleteReselect = (m: any, sc: any) => {
   const {lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath} = sc;
   let sameParent = getMapData(m, sameParentPath);
-  let lm = getMapData(m, lastPath);
-  if (cellRowSelected && getMapData(m, lm.parentPath).c.length === 1 ||
-    cellColSelected && getMapData(m, lm.parentPath).c[0].length === 1) {
+  let ln = getMapData(m, lastPath);
+  if (cellRowSelected && getMapData(m, ln.parentPath).c.length === 1 ||
+    cellColSelected && getMapData(m, ln.parentPath).c[0].length === 1) {
     let sameParentParent = getMapData(m, sameParent.parentPath);
     sameParentParent.s.splice(sameParent.index, 1);
     sameParentParent.selected = 1;

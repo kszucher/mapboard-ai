@@ -17,14 +17,14 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
 export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
   let {structSelectedPathList, lastPath, haveSameParent, sameParentPath,
     cellRowSelected, cellRow, cellColSelected, cellCol} = sc
-  let lm = getMapData(m, lastPath)
+  let ln = getMapData(m, lastPath)
   let direction = ''
-  if (key === 'ArrowLeft' && lm.path[3] === 0 && haveSameParent && getMapData(m, sameParentPath).isRootChild ||
-    key === 'ArrowRight' && lm.path[3] === 1 && haveSameParent && getMapData(m, sameParentPath).isRootChild) {
+  if (key === 'ArrowLeft' && ln.path[3] === 0 && haveSameParent && getMapData(m, sameParentPath).isRootChild ||
+    key === 'ArrowRight' && ln.path[3] === 1 && haveSameParent && getMapData(m, sameParentPath).isRootChild) {
     direction = 'through'
-  } else if (key === 'ArrowLeft' && lm.path[3] === 0 || key === 'ArrowRight' && lm.path[3] === 1) {
+  } else if (key === 'ArrowLeft' && ln.path[3] === 0 || key === 'ArrowRight' && ln.path[3] === 1) {
     direction = 'in'
-  } else if (key === 'ArrowLeft' && lm.path[3] === 1 || key === 'ArrowRight' && lm.path[3] === 0) {
+  } else if (key === 'ArrowLeft' && ln.path[3] === 1 || key === 'ArrowRight' && ln.path[3] === 0) {
     direction = 'out'
   } else if (key === 'ArrowUp') {
     direction = 'up'
@@ -32,12 +32,12 @@ export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
     direction = 'down'
   }
   if (target === 'struct2struct') {
-    if (haveSameParent && !lm.isRoot) {
+    if (haveSameParent && !ln.isRoot) {
       let sameParent = getMapData(m, sameParentPath)
       if (direction === 'through') {
-        let crIndex = lm.path[1]
+        let crIndex = ln.path[1]
         let cr = getMapData(m, ['r', crIndex])
-        let dir = lm.path[3]
+        let dir = ln.path[3]
         let revDir = 1 - dir
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
@@ -94,7 +94,7 @@ export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
       }
     }
   } else if (target === 'struct2cell') {
-    if (haveSameParent && !lm.isRoot) {
+    if (haveSameParent && !ln.isRoot) {
       let sameParent = getMapData(m, sameParentPath)
       let geomLowRef = getMapData(m, sc.geomLowPath)
       sameParent.s.splice(geomLowRef.index + 1, 0, getDefaultNode({}))
@@ -134,7 +134,7 @@ export const nodeMove = (m: any, sc: any, target: any, key: any, mode: any) => {
       }
     }
   } else if (target === 'struct2clipboard') {
-    if (!lm.isRoot && (mode === 'CUT' || mode === 'COPY')) {
+    if (!ln.isRoot && (mode === 'CUT' || mode === 'COPY')) {
       clipboard = []
       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
         let currRef = getMapData(m, structSelectedPathList[i])

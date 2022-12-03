@@ -196,8 +196,8 @@ function* mapSaga () { // can use a mapServerDispatch hook instead
         }
         case 'OPEN_MAP_FROM_MAP': {
           const {lastOverPath} = payload
-          const lm = getMapData(m, lastOverPath)
-          const mapId = lm.link
+          const ln = getMapData(m, lastOverPath)
+          const mapId = ln.link
           payload = {...payload, mapId}
           break
         }
