@@ -13,9 +13,9 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
   moveTarget.s.splice(moveTargetIndex, 0, tempClipboard)
 }
 
-export const nodeMove = (m: any, target: any, direction?: Dir) => {
+export const structMove = (m: any, target: any, direction?: Dir) => {
   const { sc } = m
-  const  { structSelectedPathList, lastPath, haveSameParent, sameParentPath, cellRowSelected, cellRow, cellColSelected, cellCol } = sc
+  const  { structSelectedPathList, lastPath, haveSameParent, sameParentPath } = sc
   let ln = getMapData(m, lastPath)
   if (target === 'struct2struct') {
     if (haveSameParent && !ln.isRoot) {
@@ -92,30 +92,6 @@ export const nodeMove = (m: any, target: any, direction?: Dir) => {
       newCellRef.c = transpose([([].concat(...newCellRef.c))])
       newCellRef.c = newCellRef.c.reverse()
     }
-  } else if (target === 'cellBlock2CellBlock') {
-    if (haveSameParent) {
-      let sameParent = getMapData(m, sameParentPath)
-      if (direction === Dir.U && cellRowSelected && cellRow > 0) {
-        [sameParent.c[cellRow], sameParent.c[cellRow - 1]] =
-          [sameParent.c[cellRow - 1], sameParent.c[cellRow]]
-      }
-      if (direction === Dir.D && cellRowSelected && cellRow < sameParent.c.length - 1) {
-        [sameParent.c[cellRow], sameParent.c[cellRow + 1]] =
-          [sameParent.c[cellRow + 1], sameParent.c[cellRow]]
-      }
-      if (direction === Dir.I && cellColSelected && cellCol > 0) {
-        for (let i = 0; i < sameParent.c.length; i++) {
-          [sameParent.c[i][cellCol], sameParent.c[i][cellCol - 1]] =
-            [sameParent.c[i][cellCol - 1], sameParent.c[i][cellCol]]
-        }
-      }
-      if (direction === Dir.O && cellColSelected && cellCol < sameParent.c[0].length - 1) {
-        for (let i = 0; i < sameParent.c.length; i++) {
-          [sameParent.c[i][cellCol], sameParent.c[i][cellCol + 1]] =
-            [sameParent.c[i][cellCol + 1], sameParent.c[i][cellCol]]
-        }
-      }
-    }
   } else if (target === 'struct2clipboard') {
     if (!ln.isRoot) {
       let clipboard: any[] = []
@@ -135,6 +111,41 @@ export const nodeMove = (m: any, target: any, direction?: Dir) => {
             })
         }
       })
+    }
+  }
+}
+
+export const cellRowMove = (m: any, direction: Dir) => {
+  const { sc } = m
+  const  { haveSameParent, sameParentPath, cellRowSelected, cellRow } = sc
+  if (haveSameParent) {
+    let sameParent = getMapData(m, sameParentPath)
+    if (direction === Dir.U && cellRowSelected && cellRow > 0) {
+      [sameParent.c[cellRow], sameParent.c[cellRow - 1]] =
+        [sameParent.c[cellRow - 1], sameParent.c[cellRow]]
+    }
+    if (direction === Dir.D && cellRowSelected && cellRow < sameParent.c.length - 1) {
+      [sameParent.c[cellRow], sameParent.c[cellRow + 1]] =
+        [sameParent.c[cellRow + 1], sameParent.c[cellRow]]
+    }
+  }
+}
+
+export const cellColMove = (m: any, direction: Dir) => {
+  const { sc } = m
+  const  { haveSameParent, sameParentPath, cellColSelected, cellCol } = sc
+  if (haveSameParent) {
+    let sameParent = getMapData(m, sameParentPath)
+    if (direction === Dir.I && cellColSelected && cellCol > 0) {
+      for (let i = 0; i < sameParent.c.length; i++) {
+        [sameParent.c[i][cellCol], sameParent.c[i][cellCol - 1]] = [sameParent.c[i][cellCol - 1], sameParent.c[i][cellCol]]
+      }
+    }
+    if (direction === Dir.O && cellColSelected && cellCol < sameParent.c[0].length - 1) {
+      for (let i = 0; i < sameParent.c.length; i++) {
+        [sameParent.c[i][cellCol], sameParent.c[i][cellCol + 1]] =
+          [sameParent.c[i][cellCol + 1], sameParent.c[i][cellCol]]
+      }
     }
   }
 }

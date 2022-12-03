@@ -38,8 +38,6 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
   const { text } = eventType === 'pt' ? eventPayload : { text: '' }
   const { imageId, imageSize } = eventType === 'pi' ? eventPayload : { imageId: undefined, imageSize: undefined }
 
-  // TODO: I need to have a "dir" resolution here and pass that, not code
-
   const m = getMap()
   const editedPathString = getEditedPathString()
 

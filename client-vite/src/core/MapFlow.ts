@@ -19,7 +19,7 @@ import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellCreate, structCreate} from '../node/NodeCreate'
-import {nodeMove, nodeMoveMouse} from '../node/NodeMove'
+import {cellColMove, cellRowMove, structMove, nodeMoveMouse} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Types";
 
@@ -309,15 +309,15 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // MOVE
     case 'move_S_IOUD': {
-      nodeMove(m, 'struct2struct', payload.direction)
+      structMove(m, 'struct2struct', payload.direction)
       break
     }
     case 'move_CR_UD': {
-      nodeMove(m, 'cellBlock2CellBlock', payload.direction) // TODO separate CR
+      cellRowMove(m, payload.direction)
       break
     }
     case 'move_CC_IO': {
-      nodeMove(m, 'cellBlock2CellBlock', payload.direction) // TODO separate CC
+      cellColMove(m, payload.direction)
       break
     }
     case 'transpose': {
@@ -327,11 +327,11 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'copySelection': {
-      nodeMove(m, 'struct2clipboard')
+      structMove(m, 'struct2clipboard')
       break
     }
     case 'cutSelection': {
-      nodeMove(m, 'struct2clipboard')
+      structMove(m, 'struct2clipboard')
       structDeleteReselect(m, sc)
       break
     }
@@ -340,7 +340,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'cellifyMulti': { // TODO rename to something move_
-      nodeMove(m, 'struct2cell')
+      structMove(m, 'struct2cell')
       clearSelection(m)
       let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice
       getMapData(m, toPath).selected = 1
