@@ -1,6 +1,6 @@
 import {getDefaultNode, nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
-import {copy, genHash, subsref, transposeArray} from './Utils'
+import {copy, createArray, genHash, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapAlgo} from '../map/MapAlgo'
 import {mapInit} from '../map/MapInit'
@@ -306,18 +306,14 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'insert_S_O_table': {
       clearSelection(m)
-      const tableGen = []
-      const {rowLen, colLen} = payload
+      const { rowLen, colLen } = payload
+      const newTable = createArray(rowLen, colLen)
       for (let i = 0; i < rowLen; i++) {
-        tableGen.push([])
         for (let j = 0; j < colLen; j++) {
-          // @ts-ignore
-          tableGen[i].push([])
-          // @ts-ignore
-          tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
+          newTable[i][j] = getDefaultNode({s: [getDefaultNode()]})
         }
       }
-      structCreate(m, ln, Dir.O, { taskStatus: -1, c: tableGen })
+      structCreate(m, ln, Dir.O, { taskStatus: -1, c: newTable })
       break
     }
     case 'insert_CC_IO': {
