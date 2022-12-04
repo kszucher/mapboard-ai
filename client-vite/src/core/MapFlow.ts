@@ -282,38 +282,29 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       structCreate(m, ln, Dir.O, {})
       break
     }
-    case 'insertTextFromClipboardAsNode': {
+    case 'insert_S_O_text': {
       clearSelection(m)
       structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
       break
     }
-    case 'insertElinkFromClipboardAsNode': {
+    case 'insert_S_O_elink': {
       clearSelection(m)
       structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
       break
     }
-    case 'insertEquationFromClipboardAsNode': {
+    case 'insert_S_O_equation': {
       clearSelection(m)
       structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
       break
     }
-    case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
+    case 'insert_S_O_image': { // TODO check... after path is fixed
       const { imageId, imageSize } = payload
       const { width, height } = imageSize
       clearSelection(m)
       structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
       break
     }
-    case 'insertMapFromClipboard': {
-      clearSelection(m)
-      const nodeList = JSON.parse(payload.text)
-      for (let i = 0; i < nodeList.length; i++) {
-        mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
-        structCreate(m, ln, Dir.O, { ...nodeList[i] })
-      }
-      break
-    }
-    case 'insertTable': {
+    case 'insert_S_O_table': {
       clearSelection(m)
       const tableGen = []
       const {rowLen, colLen} = payload
@@ -362,6 +353,15 @@ export const mapReducer = (m: any, action: any, payload: any) => {
           newRow[i] = getDefaultNode({s: [getDefaultNode()]})
         }
         pn.c.splice(currRow + 1, 0, newRow)
+      }
+      break
+    }
+    case 'insertMapFromClipboard': {
+      clearSelection(m)
+      const nodeList = JSON.parse(payload.text)
+      for (let i = 0; i < nodeList.length; i++) {
+        mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
+        structCreate(m, ln, Dir.O, { ...nodeList[i] })
       }
       break
     }
@@ -414,7 +414,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       getMapData(m, toPath).s[0].selected = 1
       break
     }
-    case 'insertTextFromClipboardAsText': {
+    case 'append_text': {
       document.execCommand("insertHTML", false, payload.text)
       break
     }

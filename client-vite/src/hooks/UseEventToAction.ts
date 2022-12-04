@@ -92,11 +92,11 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'm'],         1, 'm',  'applyColorFromKey',                 {currColor: which - 96}         ],
     [ 'kd', 0, ckm(e, '0-0') && which >= 48,                    ['s', 'm'],         0, 'a',  'setEditedPathString',               toPathString(m.sc.lastPath)     ],
     [ 'pt', 0, text.substring(0, 1) === '[',                    ['s'],             -1, 'm',  'insertMapFromClipboard',            {text}                          ],
-    [ 'pt', 0, text.substring(0, 2) === '\\[',                  ['s'],             -1, 'm',  'insertEquationFromClipboardAsNode', {text}                          ],
-    [ 'pt', 0, isUrl(text),                                     ['s'],             -1, 'm',  'insertElinkFromClipboardAsNode',    {text}                          ],
-    [ 'pt', 0, true,                                            ['s'],             -1, 'm',  'insertTextFromClipboardAsNode',     {text}                          ],
-    [ 'pt', 1, true,                                            ['s'],             -1, 'm',  'insertTextFromClipboardAsText',     {text}                          ],
-    [ 'pi', 0, true,                                            ['s'],             -1, 'm',  'insertImageFromLinkAsNode',         {imageId, imageSize}            ],
+    [ 'pt', 0, text.substring(0, 2) === '\\[',                  ['s'],             -1, 'm',  'insert_S_O_equation',               {text}                          ],
+    [ 'pt', 0, isUrl(text),                                     ['s'],             -1, 'm',  'insert_S_O_elink',                  {text}                          ],
+    [ 'pt', 0, true,                                            ['s'],             -1, 'm',  'insert_S_O_text',                   {text}                          ],
+    [ 'pt', 1, true,                                            ['s'],             -1, 'm',  'append_text',                       {text}                          ],
+    [ 'pi', 0, true,                                            ['s'],             -1, 'm',  'insert_S_O_image',                  {imageId, imageSize}            ],
   ]
   let keyStateMachine = {}
   for (let i = 0; i < keyStateMachineDb.length; i++) {

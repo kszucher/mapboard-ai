@@ -49,7 +49,7 @@ export const CreateTable: FC = () => {
           </Box>
           <Button color="primary" variant='outlined' disabled={interactionDisabled}
                   onClick={()=>{
-                    mapDispatch('insertTable', {rowLen: parseInt(row), colLen: parseInt(col)})
+                    mapDispatch('insert_S_O_table', {rowLen: parseInt(row), colLen: parseInt(col)})
                     dispatch(actions.setPageState(PageState.WS))
                   }}>
             {'OK'}
