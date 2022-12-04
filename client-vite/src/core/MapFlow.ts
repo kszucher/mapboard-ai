@@ -324,7 +324,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction)
       break
     }
-    case 'insertMapFromClipboard': {
+    case 'insertNodesFromClipboard': {
       clearSelection(m)
       const nodeList = JSON.parse(payload.text)
       for (let i = 0; i < nodeList.length; i++) {
