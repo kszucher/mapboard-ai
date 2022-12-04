@@ -17,7 +17,7 @@ import {mapCalcTask} from '../map/MapCalcTask'
 import {mapCheckTask} from '../map/MapCheckTask'
 import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
-import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
+import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
@@ -339,7 +339,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'delete_CRCC': { // TODO separate CRCC
-      cellBlockDeleteReselect(m, sc)
+      cellDeleteReselect(m, sc)
       break
     }
     // MOVE

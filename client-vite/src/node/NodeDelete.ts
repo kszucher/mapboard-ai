@@ -60,7 +60,7 @@ export const structDeleteReselect = (m: any, sc: any) => {
   }
 }
 
-export const cellBlockDeleteReselect = (m: any, sc: any) => {
+export const cellDeleteReselect = (m: any, sc: any) => {
   const { lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath } = sc
   let sameParent = getMapData(m, sameParentPath)
   let ln = getMapData(m, lastPath)
