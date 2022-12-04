@@ -39,15 +39,15 @@ export const structNavigate = (m:any, truePath: any[], direction: Dir) => {
         let currDirection = sequence[i]
         let currRef = getMapData(m, newPath)
         let currChildCount = currRef.s.length
-        let parentRef = getMapData(m, currRef.parentPath)
+        let pn = getMapData(m, currRef.parentPath)
         if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
-          parentRef.type === 'cell' && ['i'].includes(currDirection) ||
+          pn.type === 'cell' && ['i'].includes(currDirection) ||
           currDirection === 'om' && currChildCount === 0) {
           newPath = [...truePath]
           break sequenceGenerator
         }
         if (currDirection === 'u' && currRef.index === 0 ||
-          currDirection === 'd' && parentRef.s.length === currRef.index + 1 ||
+          currDirection === 'd' && pn.s.length === currRef.index + 1 ||
           currDirection === 'ou' && currChildCount === 0 ||
           currDirection === 'od' && currChildCount === 0) {
           break
@@ -58,7 +58,7 @@ export const structNavigate = (m:any, truePath: any[], direction: Dir) => {
           } else {
             newPath = newPath.slice(0, -2)
           }
-          parentRef.lastSelectedChild = currRef.index
+          pn.lastSelectedChild = currRef.index
         }
         else if (currDirection === 'u') newPath[newPath.length - 1] -= 1
         else if (currDirection === 'd') newPath[newPath.length - 1] += 1
@@ -86,9 +86,9 @@ export const structNavigate = (m:any, truePath: any[], direction: Dir) => {
 export const cellNavigate = (m:any, truePath: any[], direction: Dir) => {
   let newPath = truePath
   let currRef = getMapData(m, truePath)
-  let parentRef = getMapData(m, currRef.parentPath)
-  let rowLen = parentRef.c.length
-  let colLen = parentRef.c[0].length
+  let pn = getMapData(m, currRef.parentPath)
+  let rowLen = pn.c.length
+  let colLen = pn.c[0].length
   let currRow = currRef.index[0]
   let currCol = currRef.index[1]
   let nextRow = 0
