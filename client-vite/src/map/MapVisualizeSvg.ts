@@ -1,11 +1,12 @@
 // @ts-nocheck
 
 import { updateMapSvgData } from '../core/DomFlow'
-import { isEqual, isOdd } from '../core/Utils'
+import {isEqual, isOdd, toPath} from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
 import { getMapData } from '../core/MapFlow'
+import {getEditedPathString} from "../core/EditorFlow";
 
 const getAdjustedParams = (cn) => {
   const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
@@ -62,7 +63,8 @@ const getNodeVisParams = (selection, adjustedParams) => {
 }
 
 export const mapVisualizeSvg = {
-  start: (m, cr, colorMode, isEditing, shouldAnimationInit) => {
+  start: (m, cr, colorMode, shouldAnimationInit) => {
+    const editedPath = toPath(getEditedPathString())
     const mapSvgOuter = document.getElementById('mapSvgOuter')
     mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
     mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
@@ -124,7 +126,7 @@ export const mapVisualizeSvg = {
         preventTransition: 1,
       })
     }
-    if (m.sc.structSelectedPathList.length && !getMapData(m, m.sc.lastPath).isEditing) { // maybe use m.isEditing instead
+    if (m.sc.structSelectedPathList.length && !editedPath.length) {
       const cn = getMapData(m, m.sc.lastPath)
       const adjustedParams = getAdjustedParams(cn)
       const { dir, margin } = adjustedParams
@@ -134,9 +136,9 @@ export const mapVisualizeSvg = {
         strokeWidth: 1,
       })
     }
-    mapVisualizeSvg.iterate(m, cr, colorMode, shouldAnimationInit)
+    mapVisualizeSvg.iterate(m, cr, colorMode, shouldAnimationInit, editedPath)
   },
-  iterate: (m, cn, colorMode, shouldAnimationInit) => {
+  iterate: (m, cn, colorMode, shouldAnimationInit, editedPath) => {
     const conditions = resolveScope(cn)
     const {
       SELECTION_COLOR,
@@ -300,7 +302,7 @@ export const mapVisualizeSvg = {
       let x1 = nex
       let x2 = startX
       let y = cn.nodeY
-      if (!cn.isEditing) {
+      if (!isEqual(cn.path, editedPath)) {
         updateMapSvgData(cn.nodeId, 'taskLine', {
           path: `M${x1},${y} L${x2},${y}`,
           stroke: TASK_LINE,
@@ -319,8 +321,8 @@ export const mapVisualizeSvg = {
         updateMapSvgData(cn.nodeId, `taskCircle${i}`, { cx, cy, r, fill })
       }
     }
-    cn.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit))
-    cn.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit))
-    cn.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode, shouldAnimationInit)))
+    cn.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
+    cn.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
+    cn.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode, shouldAnimationInit, editedPath)))
   }
 }

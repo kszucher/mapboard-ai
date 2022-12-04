@@ -88,13 +88,6 @@ export let nodeProps = {
     textColor: 'default',
     taskStatus: -1,
   },
-  saveNeverInitOnce: {
-    // UNSORTED
-    isEditing: 0, // use it from the store instead
-    // mapAlgo
-    contentCalc: '',
-    // animation
-  },
   saveNeverInitAlways: {
     // mapChain
     isRoot: 0,

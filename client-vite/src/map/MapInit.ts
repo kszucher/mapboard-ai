@@ -41,11 +41,6 @@ export const mapInit = {
         cn[prop] = shallowCopy(nodeProps.saveOptional[prop])
       }
     }
-    for (const prop in nodeProps.saveNeverInitOnce) {
-      if (!cn.hasOwnProperty(prop)) {
-        cn[prop] = shallowCopy(nodeProps.saveNeverInitOnce[prop])
-      }
-    }
     for (const prop in nodeProps.saveNeverInitAlways) {
       cn[prop] = shallowCopy(nodeProps.saveNeverInitAlways[prop])
     }

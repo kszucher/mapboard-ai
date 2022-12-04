@@ -54,8 +54,6 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     ln.content = payload.contentToSave
     if (ln.content.substring(0, 2) === '\\[') {
       ln.contentType = 'equation'
-    } else if (ln.content.substring(0, 1) === '=') {
-      ln.contentCalc = ln.content
     }
   }
   switch (action) {
@@ -483,8 +481,8 @@ export const reCalc = (pm: any, m: any) => {
 const redrawStep = (m: any, colorMode: any, isEditing: boolean, shouldAnimationInit: boolean) => {
   flagDomData()
   let cr = getMapData(m, ['r', 0])
-  mapVisualizeSvg.start(m, cr, colorMode, isEditing, shouldAnimationInit)
-  mapVisualizeDiv.start(m, cr, colorMode, isEditing)
+  mapVisualizeSvg.start(m, cr, colorMode, shouldAnimationInit)
+  mapVisualizeDiv.start(m, cr, colorMode)
   updateDomData()
 }
 
