@@ -25,3 +25,37 @@ export const structCreate = (m: any, n: any, direction: Dir, payload: object ) =
     }))
   }
 }
+
+export const cellColCreate = (m: any, n: any, direction: Dir) => {
+  const pn = getMapData(m, n.parentPath)
+  const currCol = n.index[1]
+  const rowLen = pn.c.length
+  if (direction === Dir.I) {
+    for (let i = 0; i < rowLen; i++) {
+      pn.c[i].splice(currCol, 0, getDefaultNode({s: [getDefaultNode()]}))
+    }
+  } else if (direction === Dir.O) {
+    for (let i = 0; i < rowLen; i++) {
+      pn.c[i].splice(currCol + 1, 0, getDefaultNode({s: [getDefaultNode()]}))
+    }
+  }
+}
+
+export const cellRowCreate = (m: any, n: any, direction: Dir) => {
+  const pn = getMapData(m, n.parentPath)
+  const currRow = n.index[0]
+  const colLen = pn.c[0].length
+  if (direction === Dir.U) {
+    let newRow = new Array(colLen)
+    for (let i = 0; i < colLen; i++) {
+      newRow[i] = getDefaultNode({s: [getDefaultNode()]})
+    }
+    pn.c.splice(currRow, 0, newRow)
+  } else if (direction === Dir.D) {
+    let newRow = new Array(colLen)
+    for (let i = 0; i < colLen; i++) {
+      newRow[i] = getDefaultNode({s: [getDefaultNode()]})
+    }
+    pn.c.splice(currRow + 1, 0, newRow)
+  }
+}

@@ -18,7 +18,7 @@ import {mapCheckTask} from '../map/MapCheckTask'
 import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
-import {structCreate} from '../node/NodeCreate'
+import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Types";
@@ -321,39 +321,11 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'insert_CC_IO': {
-      const n = payload.b ? getMapData(m, ln.parentPath) : ln
-      const pn = getMapData(m, n.parentPath)
-      const currCol = n.index[1]
-      const rowLen = pn.c.length
-      if (payload.direction === Dir.I) {
-        for (let i = 0; i < rowLen; i++) {
-          pn.c[i].splice(currCol, 0, getDefaultNode({s: [getDefaultNode()]}))
-        }
-      } else if (payload.direction === Dir.O) {
-        for (let i = 0; i < rowLen; i++) {
-          pn.c[i].splice(currCol + 1, 0, getDefaultNode({s: [getDefaultNode()]}))
-        }
-      }
+      cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction)
       break
     }
     case 'insert_CR_UD': {
-      const n = payload.b ? getMapData(m, ln.parentPath) : ln
-      const pn = getMapData(m, n.parentPath)
-      const currRow = n.index[0]
-      const colLen = pn.c[0].length
-      if (payload.direction === Dir.U) {
-        let newRow = new Array(colLen)
-        for (let i = 0; i < colLen; i++) {
-          newRow[i] = getDefaultNode({s: [getDefaultNode()]})
-        }
-        pn.c.splice(currRow, 0, newRow)
-      } else if (payload.direction === Dir.D) {
-        let newRow = new Array(colLen)
-        for (let i = 0; i < colLen; i++) {
-          newRow[i] = getDefaultNode({s: [getDefaultNode()]})
-        }
-        pn.c.splice(currRow + 1, 0, newRow)
-      }
+      cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction)
       break
     }
     case 'insertMapFromClipboard': {
