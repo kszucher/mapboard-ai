@@ -282,6 +282,53 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       structCreate(m, ln, Dir.O, {})
       break
     }
+    case 'insertTextFromClipboardAsNode': {
+      clearSelection(m)
+      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
+      break
+    }
+    case 'insertElinkFromClipboardAsNode': {
+      clearSelection(m)
+      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
+      break
+    }
+    case 'insertEquationFromClipboardAsNode': {
+      clearSelection(m)
+      structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
+      break
+    }
+    case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
+      const { imageId, imageSize } = payload
+      const { width, height } = imageSize
+      clearSelection(m)
+      structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
+      break
+    }
+    case 'insertMapFromClipboard': {
+      clearSelection(m)
+      const nodeList = JSON.parse(payload.text)
+      for (let i = 0; i < nodeList.length; i++) {
+        mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
+        structCreate(m, ln, Dir.O, { ...nodeList[i] })
+      }
+      break
+    }
+    case 'insertTable': {
+      clearSelection(m)
+      const tableGen = []
+      const {rowLen, colLen} = payload
+      for (let i = 0; i < rowLen; i++) {
+        tableGen.push([])
+        for (let j = 0; j < colLen; j++) {
+          // @ts-ignore
+          tableGen[i].push([])
+          // @ts-ignore
+          tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
+        }
+      }
+      structCreate(m, ln, Dir.O, { taskStatus: -1, c: tableGen })
+      break
+    }
     case 'insert_CC_IO': {
       const n = payload.b ? getMapData(m, ln.parentPath) : ln
       const pn = getMapData(m, n.parentPath)
@@ -369,53 +416,6 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'insertTextFromClipboardAsText': {
       document.execCommand("insertHTML", false, payload.text)
-      break
-    }
-    case 'insertTextFromClipboardAsNode': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
-      break
-    }
-    case 'insertElinkFromClipboardAsNode': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
-      break
-    }
-    case 'insertEquationFromClipboardAsNode': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
-      break
-    }
-    case 'insertImageFromLinkAsNode': { // TODO check... after path is fixed
-      const { imageId, imageSize } = payload
-      const { width, height } = imageSize
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
-      break
-    }
-    case 'insertMapFromClipboard': {
-      clearSelection(m)
-      const nodeList = JSON.parse(payload.text)
-      for (let i = 0; i < nodeList.length; i++) {
-        mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
-        structCreate(m, ln, Dir.O, { ...nodeList[i] })
-      }
-      break
-    }
-    case 'insertTable': {
-      clearSelection(m)
-      const tableGen = []
-      const {rowLen, colLen} = payload
-      for (let i = 0; i < rowLen; i++) {
-        tableGen.push([])
-        for (let j = 0; j < colLen; j++) {
-          // @ts-ignore
-          tableGen[i].push([])
-          // @ts-ignore
-          tableGen[i][j] = getDefaultNode({s: [getDefaultNode()]})
-        }
-      }
-      structCreate(m, ln, Dir.O, { taskStatus: -1, c: tableGen })
       break
     }
     // FORMAT
