@@ -20,7 +20,7 @@ import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
-import {nodeNavigate} from '../node/NodeNavigate'
+import {structNavigate, cellNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Types";
 
 export const getMapData = (m: any, path: any) => {
@@ -170,7 +170,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       else if (payload.direction === Dir.D) {toPath = m.sc.geomLowPath}
       else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
       else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
-      getMapData(m, nodeNavigate(m, toPath, 'struct2struct', payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
+      getMapData(m, structNavigate(m, toPath, payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
       break
     }
     case 'select_S_F': {
@@ -190,8 +190,8 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'select_M_IOUD': {
       clearSelection(m)
-      getMapData(m, nodeNavigate(m, ln.path.slice(0, -2), 'cell2cell', payload.direction)).selected = 1
-      getMapData(m, [...nodeNavigate(m, ln.path.slice(0, -2), 'cell2cell', payload.direction), 's', 0]).selected = 1
+      getMapData(m, cellNavigate(m, ln.path.slice(0, -2), payload.direction)).selected = 1
+      getMapData(m, [...cellNavigate(m, ln.path.slice(0, -2), payload.direction), 's', 0]).selected = 1
       break
     }
     case 'select_M_F': {
@@ -234,7 +234,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       clearSelection(m)
       for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
         let currPath = sc.cellSelectedPathList[i]
-        getMapData(m, nodeNavigate(m, currPath, 'cell2cell', payload.direction)).selected = 1
+        getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
       }
       break
     }
@@ -253,7 +253,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       clearSelection(m)
       for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
         let currPath = sc.cellSelectedPathList[i]
-        getMapData(m, nodeNavigate(m, currPath, 'cell2cell', payload.direction)).selected = 1
+        getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
       }
       break
     }
