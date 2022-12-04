@@ -18,8 +18,8 @@ import {mapCheckTask} from '../map/MapCheckTask'
 import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellBlockDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
-import {cellCreate, structCreate} from '../node/NodeCreate'
-import {cellColMove, cellRowMove, structMove, nodeMoveMouse} from '../node/NodeMove'
+import {structCreate} from '../node/NodeCreate'
+import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {nodeNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Types";
 
@@ -42,8 +42,8 @@ const clearSelection = (m: any) => {
 
 const updateParentLastSelectedChild = (m: any, ln: any) => {
   if (!ln.isRoot) {
-    let parentRef = getMapData(m, ln.parentPath)
-    parentRef.lastSelectedChild = ln.index
+    let pn = getMapData(m, ln.parentPath)
+    pn.lastSelectedChild = ln.index
   }
 }
 
@@ -221,9 +221,9 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'select_CR_IO': {
       clearSelection(m)
-      let parentRef = getMapData(m, ln.parentPath)
-      let parentParentRef = getMapData(m, parentRef.parentPath)
-      let currRow = parentRef.index[0]
+      let pn = getMapData(m, ln.parentPath)
+      let parentParentRef = getMapData(m, pn.parentPath)
+      let currRow = pn.index[0]
       let colLen = parentParentRef.c[0].length
       for (let i = 0; i < colLen; i++) {
         parentParentRef.c[currRow][i].selected = 1
@@ -240,9 +240,9 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     case 'select_CC_IO': {
       clearSelection(m)
-      let parentRef = getMapData(m, ln.parentPath)
-      let parentParentRef = getMapData(m, parentRef.parentPath)
-      let currCol = parentRef.index[1]
+      let pn = getMapData(m, ln.parentPath)
+      let parentParentRef = getMapData(m, pn.parentPath)
+      let currCol = pn.index[1]
       let rowLen = parentParentRef.c.length
       for (let i = 0; i < rowLen; i++) {
         parentParentRef.c[i][currCol].selected = 1
@@ -283,19 +283,39 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'insert_CC_IO': {
-      cellCreate(m, sc.lastPath, payload.code) // TODO cellColInsert
-      break
-    }
-    case 'insert_CC_B_IO': {
-      cellCreate(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellColInsert
+      const n = payload.b ? getMapData(m, ln.parentPath) : ln
+      const pn = getMapData(m, n.parentPath)
+      const currCol = n.index[1]
+      const rowLen = pn.c.length
+      if (payload.direction === Dir.I) {
+        for (let i = 0; i < rowLen; i++) {
+          pn.c[i].splice(currCol, 0, getDefaultNode({s: [getDefaultNode()]}))
+        }
+      } else if (payload.direction === Dir.O) {
+        for (let i = 0; i < rowLen; i++) {
+          pn.c[i].splice(currCol + 1, 0, getDefaultNode({s: [getDefaultNode()]}))
+        }
+      }
       break
     }
     case 'insert_CR_UD': {
-      cellCreate(m, sc.lastPath, payload.code) // TODO cellRowInsert
-      break
-    }
-    case 'insert_CR_B_UD': {
-      cellCreate(m, sc.lastPath.slice(0, -2), payload.code) // TODO cellRowInsert
+      const n = payload.b ? getMapData(m, ln.parentPath) : ln
+      const pn = getMapData(m, n.parentPath)
+      const currRow = n.index[0]
+      const colLen = pn.c[0].length
+      if (payload.direction === Dir.U) {
+        let newRow = new Array(colLen)
+        for (let i = 0; i < colLen; i++) {
+          newRow[i] = getDefaultNode({s: [getDefaultNode()]})
+        }
+        pn.c.splice(currRow, 0, newRow)
+      } else if (payload.direction === Dir.D) {
+        let newRow = new Array(colLen)
+        for (let i = 0; i < colLen; i++) {
+          newRow[i] = getDefaultNode({s: [getDefaultNode()]})
+        }
+        pn.c.splice(currRow + 1, 0, newRow)
+      }
       break
     }
     // DELETE
