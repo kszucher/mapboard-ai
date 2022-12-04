@@ -209,13 +209,10 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'select_M_B': {
-      for (let i = ln.path.length - 2; i > 0; i--) {
-        if (Number.isInteger(ln.path[i]) && Number.isInteger(ln.path[i + 1])) {
-          clearSelection(m)
-          getMapData(m, ln.path.slice(0, i + 2)).selected = 1
-          getMapData(m, [...ln.path.slice(0, i + 2), 's', 0]).selected = 1
-          break
-        }
+      if (ln.path.includes('c')) {
+        clearSelection(m)
+        getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)]).selected = 1
+        getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3), 's', 0]).selected = 1
       }
       break
     }
@@ -387,12 +384,11 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'cellify': {
-      if (sc.haveSameParent && !sc.isRootIncluded) {
+      if (!sc.isRootIncluded && sc.haveSameParent) {
         structMove(m, 'struct2cell')
         clearSelection(m)
-        let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice
-        getMapData(m, toPath).selected = 1
-        getMapData(m, toPath).s[0].selected = 1
+        getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
+        getMapData(m, [...sc.geomHighPath, 'c', 0, 0, 's', 0]).selected = 1
       }
       break
     }
