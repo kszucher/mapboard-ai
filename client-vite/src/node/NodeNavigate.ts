@@ -1,10 +1,10 @@
-import { getMapData } from '../core/MapFlow'
-import {Dir} from "../core/Types";
+import {getMapData} from '../core/MapFlow'
+import {Dir} from "../core/Types"
 
 export const nodeNavigate = (m:any, truePath: any[], target: string, direction: Dir) => {
-  let newPath = [];
+  let newPath = []
   if (target === 'struct2struct') {
-    let inDepth = - 1;
+    let inDepth = - 1
     //       v
     //     l v r
     //     l v

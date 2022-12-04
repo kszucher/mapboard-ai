@@ -1,7 +1,7 @@
 import {getDefaultNode} from "../core/DefaultProps"
-import { copy, transpose } from '../core/Utils'
-import { getMapData } from '../core/MapFlow'
-import {Dir} from "../core/Types";
+import {copy, transpose} from '../core/Utils'
+import {getMapData} from '../core/MapFlow'
+import {Dir} from "../core/Types"
 
 export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {
   let {structSelectedPathList, sameParentPath} = sc
