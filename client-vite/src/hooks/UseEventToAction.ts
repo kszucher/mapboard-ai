@@ -41,7 +41,6 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
   const m = getMap()
   const editedPathString = getEditedPathString()
 
-  // possibly include conditions such as hasCell, or contentType (not for now, as this is a very sparse matrix)
   const keyStateMachineDb = [
     [ 'eventTypeCondition', 'isEditing', 'match', 'scope', 'preventDefault', 'actionType', 'action', 'payload' ],
     [ 'kd', 0, ckm(e, '000') && key === 'F1',                   ['s', 'c', 'm'],    1, 'm',  '',                                  {}                              ],
