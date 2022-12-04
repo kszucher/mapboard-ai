@@ -52,7 +52,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '000') && key === 'Enter',                ['m'],              1, 'm',  'select_M_IOUD',                     {direction: Dir.D}              ],
     [ 'kd', 1, ckm(e, '000') && key === 'Enter',                ['s', 'm'],         1, 'm',  'finishEdit',                        {}                              ],
     [ 'kd', 0, ckm(e, '010') && key === 'Enter',                ['s', 'm'],         1, 'm',  'insert_S_U',                        {}                              ],
-    [ 'kd', 0, ckm(e, '001') && key === 'Enter',                ['s'],              1, 'm',  'cellifyMulti',                      {}                              ],
+    [ 'kd', 0, ckm(e, '001') && key === 'Enter',                ['s'],              1, 'm',  'cellify',                           {}                              ],
     [ 'kd', 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s'],              1, 'm',  'insert_S_O',                        {}                              ],
     [ 'kd', 1, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s', 'm'],         1, 'm',  'insert_S_O',                        {}                              ],
     [ 'kd', 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['m'],              1, 'm',  'select_M_IOUD',                     {direction: Dir.O}              ],

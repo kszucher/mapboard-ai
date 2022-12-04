@@ -338,21 +338,27 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       structDeleteReselect(m, sc)
       break
     }
-    case 'delete_CRCC': { // TODO separate CRCC
+    case 'delete_CRCC': {
       cellDeleteReselect(m, sc)
       break
     }
     // MOVE
     case 'move_S_IOUD': {
-      structMove(m, 'struct2struct', payload.direction)
+      if (sc.haveSameParent && !ln.isRoot) {
+        structMove(m, 'struct2struct', payload.direction)
+      }
       break
     }
     case 'move_CR_UD': {
-      cellRowMove(m, payload.direction)
+      if (sc.haveSameParent) {
+        cellRowMove(m, payload.direction)
+      }
       break
     }
     case 'move_CC_IO': {
-      cellColMove(m, payload.direction)
+      if (sc.haveSameParent) {
+        cellColMove(m, payload.direction)
+      }
       break
     }
     case 'transpose': {
@@ -362,24 +368,30 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'copySelection': {
-      structMove(m, 'struct2clipboard')
+      if (!ln.isRoot) {
+        structMove(m, 'struct2clipboard')
+      }
       break
     }
     case 'cutSelection': {
-      structMove(m, 'struct2clipboard')
-      structDeleteReselect(m, sc)
+      if (!ln.isRoot) {
+        structMove(m, 'struct2clipboard')
+        structDeleteReselect(m, sc)
+      }
       break
     }
     case 'moveTarget': {
       nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
       break
     }
-    case 'cellifyMulti': { // TODO rename to something move_
-      structMove(m, 'struct2cell')
-      clearSelection(m)
-      let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice
-      getMapData(m, toPath).selected = 1
-      getMapData(m, toPath).s[0].selected = 1
+    case 'cellify': {
+      if (sc.haveSameParent && !ln.isRoot) {
+        structMove(m, 'struct2cell')
+        clearSelection(m)
+        let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice
+        getMapData(m, toPath).selected = 1
+        getMapData(m, toPath).s[0].selected = 1
+      }
       break
     }
     case 'append_text': {
