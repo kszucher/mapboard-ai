@@ -26,6 +26,7 @@ export let mapProps = {
     sc: {
       structSelectedPathList: [],
       cellSelectedPathList: [],
+      isRootIncluded: false,
       maxSel: 0,
       maxSelIndex: 0,
       scope: '',

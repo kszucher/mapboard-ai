@@ -3,10 +3,6 @@ import {getMapData} from '../core/MapFlow'
 
 export const structDeleteReselect = (m: any, sc: any) => {
   let ln = getMapData(m, sc.lastPath)
-  for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-    let cn = getMapData(m, sc.structSelectedPathList[i])
-    if (cn.isRoot) return
-  }
   // calculate jump back
   let im = ln
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {

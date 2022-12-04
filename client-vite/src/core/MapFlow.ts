@@ -41,7 +41,7 @@ const clearSelection = (m: any) => {
 }
 
 const updateParentLastSelectedChild = (m: any, ln: any) => {
-  if (!ln.isRoot) {
+  if (!m.sc.isRootIncluded) {
     let pn = getMapData(m, ln.parentPath)
     pn.lastSelectedChild = ln.index
   }
@@ -264,14 +264,14 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // INSERT
     case 'insert_S_U': {
-      if (!ln.isRoot) {
+      if (!sc.isRootIncluded) {
         clearSelection(m)
         structCreate(m, ln, Dir.U, {})
       }
       break
     }
     case 'insert_S_D': {
-      if (!ln.isRoot) {
+      if (!sc.isRootIncluded) {
         clearSelection(m)
         structCreate(m, ln, Dir.D, {})
       }
@@ -335,7 +335,9 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // DELETE
     case 'delete_S': {
-      structDeleteReselect(m, sc)
+      if (!sc.isRootIncluded) {
+        structDeleteReselect(m, sc)
+      }
       break
     }
     case 'delete_CRCC': {
@@ -344,7 +346,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     }
     // MOVE
     case 'move_S_IOUD': {
-      if (sc.haveSameParent && !ln.isRoot) {
+      if (!sc.isRootIncluded && sc.haveSameParent) {
         structMove(m, 'struct2struct', payload.direction)
       }
       break
@@ -368,13 +370,13 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'copySelection': {
-      if (!ln.isRoot) {
+      if (!sc.isRootIncluded) {
         structMove(m, 'struct2clipboard')
       }
       break
     }
     case 'cutSelection': {
-      if (!ln.isRoot) {
+      if (!sc.isRootIncluded) {
         structMove(m, 'struct2clipboard')
         structDeleteReselect(m, sc)
       }
@@ -385,7 +387,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'cellify': {
-      if (sc.haveSameParent && !ln.isRoot) {
+      if (sc.haveSameParent && !sc.isRootIncluded) {
         structMove(m, 'struct2cell')
         clearSelection(m)
         let toPath = getMapData(m, getMapData(m, sc.geomHighPath).parentPath).path // TODO use slice

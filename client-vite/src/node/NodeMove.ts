@@ -15,7 +15,7 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
 
 export const structMove = (m: any, target: any, direction?: Dir) => {
   const { sc } = m
-  const  { structSelectedPathList, lastPath, haveSameParent, sameParentPath } = sc
+  const  { structSelectedPathList, lastPath, sameParentPath } = sc
   let ln = getMapData(m, lastPath)
   if (target === 'struct2struct') {
     let sameParent = getMapData(m, sameParentPath)

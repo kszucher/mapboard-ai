@@ -8,6 +8,13 @@ export const mapExtractSelection = {
     mapExtractSelection.iterate(m, cr)
     const { sc } = m
     // indicators
+    if (sc.structSelectedPathList.length) {
+      for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+        if (getMapData(m, sc.structSelectedPathList[i]).path.length === 2) {
+          sc.isRootIncluded = true
+        }
+      }
+    }
     if (sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
       sc.lastPath = sc.structSelectedPathList[0];
       sc.geomHighPath = sc.lastPath;
