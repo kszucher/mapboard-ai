@@ -14,6 +14,7 @@ import {actions, getMap, sagaActions} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
+import {flagDomData, updateDomData} from "../core/DomFlow";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -114,9 +115,6 @@ export const WindowListeners: FC = () => {
               }
             }
           } else {
-            // TODO investigate why this causes a false item in state
-            console.log('now...')
-            mapDispatch('clearSelection')
           }
         } else if (which === 2) {
         } else if (which === 3) {
@@ -143,11 +141,11 @@ export const WindowListeners: FC = () => {
         } else if (isNodeClicked) {
           const [toX, toY] = getCoords(e)
           const { moveData } = mapFindNearest.find(m, toX, toY)
-          mapDispatch('moveTargetPreview', { moveData }) // moveDimensions
+          mapDispatch('moveTargetPreview', { moveData })
         } else {
           const [toX, toY] = getCoords(e)
           const { highlightTargetPathList, selectionRect } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-          mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect }) // selectionDimensions
+          mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect })
         }
       } else if (which === 2) {
         const { movementX, movementY } = e
@@ -168,18 +166,16 @@ export const WindowListeners: FC = () => {
           if (isTaskClicked) {
           } else if (isNodeClicked) {
             const [toX, toY] = getCoords(e)
-            const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, toX, toY)
+            const { moveData, moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, toX, toY)
             if (moveTargetPath.length) {
+              mapDispatch('moveTargetPreview', { moveData })
               mapDispatch('moveTarget', { moveTargetPath, moveTargetIndex })
             }
           } else {
             const [toX, toY] = getCoords(e)
-            const { highlightTargetPathList } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
+            const { highlightTargetPathList, selectionRect } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
+            mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect })
             mapDispatch('selectTarget', { highlightTargetPathList })
-            // if (m.sc.structSelectedPathList.length === 0 &&
-            //   m.sc.cellSelectedPathList.length === 0) {
-            //   mapDispatch('select_R')
-            // }
           }
         }
       } else {
@@ -293,8 +289,16 @@ export const WindowListeners: FC = () => {
   }, [colorMode])
 
   useEffect(() => {
+    if (mapId !== '') {
+      flagDomData()
+      updateDomData()
+    }
+  }, [mapId])
+
+  useEffect(() => {
     if (m && Object.keys(m).length) {
       reDraw(m, colorMode, editedPathString)
+      dispatch(sagaActions.mapChanged())
     }
   }, [m, colorMode])
 
@@ -344,15 +348,15 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '') {
-      orient(m, 'shouldCenter', {})
-    }
-  }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
-
-  useEffect(() => {
-    if (mapId !== '') {
       orient(m, 'shouldLoad', {})
     }
   }, [mapId, mapSource, frameSelected])
+
+  useEffect(() => {
+    if (mapId !== '') {
+      orient(m, 'shouldCenter', {})
+    }
+  }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
 
   return (
     <></>

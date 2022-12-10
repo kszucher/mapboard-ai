@@ -6,7 +6,7 @@ import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
 import { getMapData } from '../core/MapFlow'
-import {getEditedPathString} from "../core/EditorFlow";
+import {getEditedPathString, getMoveTarget, getSelectTarget} from "../core/EditorFlow";
 
 const getAdjustedParams = (cn) => {
   const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
@@ -65,6 +65,8 @@ const getNodeVisParams = (selection, adjustedParams) => {
 export const mapVisualizeSvg = {
   start: (m, cr, colorMode, shouldAnimationInit) => {
     const editedPath = toPath(getEditedPathString())
+    const moveTarget = getMoveTarget()
+    const selectTarget = getSelectTarget()
     const mapSvgOuter = document.getElementById('mapSvgOuter')
     mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
     mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
@@ -80,18 +82,18 @@ export const mapVisualizeSvg = {
         fill: MAP_BACKGROUND,
       })
     }
-    if (m.moveData?.length) {
+    if (moveTarget.moveData?.length) {
       // TODO use parent bezier style
-      const deltaX = m.moveData[2] - m.moveData[0]
-      const deltaY = m.moveData[3] - m.moveData[1]
-      const x1 = m.moveData[0]
-      const y1 = m.moveData[1]
-      const c1x = m.moveData[0] + deltaX / 4
-      const c1y = m.moveData[1]
-      const c2x = m.moveData[0] + deltaX / 4
-      const c2y = m.moveData[1] + deltaY
-      const x2 = m.moveData[2]
-      const y2 = m.moveData[3]
+      const deltaX = moveTarget.moveData[2] - moveTarget.moveData[0]
+      const deltaY = moveTarget.moveData[3] - moveTarget.moveData[1]
+      const x1 = moveTarget.moveData[0]
+      const y1 = moveTarget.moveData[1]
+      const c1x = moveTarget.moveData[0] + deltaX / 4
+      const c1y = moveTarget.moveData[1]
+      const c2x = moveTarget.moveData[0] + deltaX / 4
+      const c2y = moveTarget.moveData[1] + deltaY
+      const x2 = moveTarget.moveData[2]
+      const y2 = moveTarget.moveData[3]
       updateMapSvgData('m', 'moveLine', {
         path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
         stroke: MOVE_LINE_COLOR,
@@ -112,12 +114,12 @@ export const mapVisualizeSvg = {
         preventTransition: 1,
       })
     }
-    if (m.selectionRect?.length) {
+    if (Object.keys(selectTarget).length && selectTarget.selectionRect.length) {
       updateMapSvgData('m', 'selectionRect', {
-        x: m.selectionRect[0],
-        y: m.selectionRect[1],
-        width: m.selectionRect[2],
-        height: m.selectionRect[3],
+        x: selectTarget.selectionRect[0],
+        y: selectTarget.selectionRect[1],
+        width: selectTarget.selectionRect[2],
+        height: selectTarget.selectionRect[3],
         rx: 8,
         ry: 8,
         fill: SELECTION_RECT_COLOR,

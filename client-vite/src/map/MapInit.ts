@@ -10,11 +10,6 @@ export const mapInit = {
         m[prop] = copy(mapProps.saveOptional[prop])
       }
     }
-    for (const prop in mapProps.saveNeverInitOnce) {
-      if (!m.hasOwnProperty(prop)) {
-        m[prop] = copy(mapProps.saveNeverInitOnce[prop])
-      }
-    }
     for (const prop in mapProps.saveNeverInitAlways) {
       m[prop] = copy(mapProps.saveNeverInitAlways[prop])
     }

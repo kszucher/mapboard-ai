@@ -75,9 +75,6 @@ export const mapExtractSelection = {
   },
 
   iterate: (m, cn) => {
-    if (cn.animationRequested) {
-      m.animationRequested = 1
-    }
     if (cn.selected) {
       if (Number.isInteger(cn.path[cn.path.length - 2])) {
         m.sc.cellSelectedPathList.push(cn.path.slice(0)) // naturally ascending

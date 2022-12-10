@@ -342,7 +342,7 @@ async function processReq(req) {
             const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
             const landingData = (await maps.findOne({_id: mapId})).dataFrames
             const mapRight = MAP_RIGHTS.VIEW
-            return { error: '', data: { landingData, mapRight } }
+            return { error: '', data: { mapId, landingData, mapRight } }
         } else {
             const currUser = await users.findOne({ ...req.payload.cred })
             if (currUser === null) {

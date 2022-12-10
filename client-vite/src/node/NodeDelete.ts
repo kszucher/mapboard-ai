@@ -4,19 +4,19 @@ import {getMapData} from '../core/MapFlow'
 export const structDeleteReselect = (m: any, sc: any) => {
   let ln = getMapData(m, sc.lastPath)
   // calculate jump back
-  let im = ln
+  let closestNode = ln
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
     let cn = getMapData(m, sc.structSelectedPathList[i])
     if (cn.path.length < ln.path.length && isEqual(cn.path.slice(0, ln.path.length), ln.path)) {
-      im = cn
+      closestNode = cn
     }
   }
-  let imParent = getMapData(m, im.parentPath)
-  let imParentChildLen = imParent.s.length
-  let imParentChildDelLen = 0
-  for (let i = im.index; i > -1; i--) {
-    if (imParent.s[i].selected > 0) {
-      imParentChildDelLen++
+  let closestNodeParent = getMapData(m, closestNode.parentPath)
+  let closestNodeParentChildLen = closestNodeParent.s.length
+  let closestNodeParentChildDelLen = 0
+  for (let i = closestNode.index; i > -1; i--) {
+    if (closestNodeParent.s[i].selected > 0) {
+      closestNodeParentChildDelLen++
     }
   }
   // delete
@@ -27,30 +27,30 @@ export const structDeleteReselect = (m: any, sc: any) => {
     cmParent.s.splice(cn.index, 1)
   }
   // reselect on jump back
-  if (imParentChildLen === imParentChildDelLen) {
-    if (imParent.isRootChild) {
+  if (closestNodeParentChildLen === closestNodeParentChildDelLen) {
+    if (closestNodeParent.isRootChild) {
       let cr = getMapData(m, ['r', 0])
       cr.selected = 1
     } else {
-      imParent.selected = 1
+      closestNodeParent.selected = 1
     }
   } else {
-    if (im.index === 0) {
-      if (imParent.s.length > 0) {
-        imParent.s[0].selected = 1
+    if (closestNode.index === 0) {
+      if (closestNodeParent.s.length > 0) {
+        closestNodeParent.s[0].selected = 1
       } else {
-        if (imParent.isRootChild) {
+        if (closestNodeParent.isRootChild) {
           let cr = getMapData(m, ['r', 0])
           cr.selected = 1
         } else {
-          imParent.selected = 1
+          closestNodeParent.selected = 1
         }
       }
     } else {
-      if (im.index - imParentChildDelLen >= 0) {
-        imParent.s[im.index - imParentChildDelLen].selected = 1
+      if (closestNode.index - closestNodeParentChildDelLen >= 0) {
+        closestNodeParent.s[closestNode.index - closestNodeParentChildDelLen].selected = 1
       } else {
-        imParent.s[0].selected = 1
+        closestNodeParent.s[0].selected = 1
       }
     }
   }

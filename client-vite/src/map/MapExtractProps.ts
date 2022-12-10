@@ -3,8 +3,8 @@
 import {getMapData} from "../core/MapFlow";
 import {mapGetProp} from "./MapGetProp";
 
-export const mapExtractFormatting = {
-  start: (m) => {
+export const mapExtractProps = {
+  start: (m, cr) => {
     if (m.sc.lastPath.length) {
       const ln = getMapData(m, m.sc.lastPath)
       for (const prop of Object.keys(m.nc)) {
@@ -38,5 +38,28 @@ export const mapExtractFormatting = {
         }
       }
     }
+    m.taskLeft = 0
+    m.taskRight = 0
+    mapExtractProps.iterate(m, cr)
+  },
+
+  iterate: (m, cn) => {
+    if (cn.animationRequested) {
+      m.animationRequested = 1
+    }
+    if (cn.taskStatus !== -1 && !cn.path.includes('c') && cn.path.length > 4) {
+      try {
+        if (cn.path[3] === 0) {
+          m.taskRight = 1
+        } else {
+          m.taskLeft = 1
+        }
+      } catch {
+        console.log(cn.path)
+      }
+    }
+    cn.d.map(i => mapExtractProps.iterate(m, i))
+    cn.s.map(i => mapExtractProps.iterate(m, i))
+    cn.c.map(i => i.map(j => mapExtractProps.iterate(m, j)))
   }
 }

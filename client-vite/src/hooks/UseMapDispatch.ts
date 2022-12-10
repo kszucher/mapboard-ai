@@ -57,5 +57,16 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     ? toPathString(nextM.sc.lastPath)
     : ''
   dispatch(actions.setEditedPathString(nextEditedPathString))
-  // two more dispatches for moveTarget and selectTarget in this order - simply set it and get in mapSvgVisualize
+  if (action === 'moveTargetPreview') {
+    dispatch(actions.setMoveTarget(payload))
+  }
+  if (action === 'moveTarget') {
+    dispatch(actions.setMoveTarget([]))
+  }
+  if (action === 'selectTargetPreview') {
+    dispatch(actions.setSelectTarget(payload))
+  }
+  if (action === 'selectTarget') {
+    dispatch(actions.setSelectTarget([]))
+  }
 }

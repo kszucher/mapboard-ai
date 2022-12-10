@@ -43,6 +43,9 @@ const editorState = {
 
   editedPathString: '',
 
+  moveTarget: [],
+  selectTarget: [],
+
   formatterVisible: false,
 
   frameEditorVisible: false,
@@ -62,6 +65,12 @@ const editorStateDefault = JSON.stringify(editorState)
 
 export const getEditedPathString = () => {
   return store.getState().editedPathString
+}
+export const getMoveTarget = () => {
+  return store.getState().moveTarget
+}
+export const getSelectTarget = () => {
+  return store.getState().selectTarget
 }
 export const getTempMap = () => {
   return store.getState().tempMap
@@ -132,6 +141,14 @@ const allSlice = createSlice({
       state.editedPathString = action.payload
     },
 
+    setMoveTarget(state, action: PayloadAction<any>) {
+      state.moveTarget = action.payload
+    },
+
+    setSelectTarget(state, action: PayloadAction<any>) {
+      state.selectTarget = action.payload
+    },
+
     undo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex > 0 ? state.mapStackDataIndex - 1 : state.mapStackDataIndex
       state.editedPathString = ''
@@ -143,13 +160,13 @@ const allSlice = createSlice({
 
     parseRespPayload(state, action: PayloadAction<any>) {
       let parsed = {}
-      if (action.payload.hasOwnProperty('mapData')) {
+      if (action.payload?.hasOwnProperty('mapData')) {
         parsed = {
           mapStackData: [reCalc(mapAssembly(action.payload.mapData), mapAssembly(action.payload.mapData))],
           mapStackDataIndex: 0,
         }
       }
-      if (action.payload.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
+      if (action.payload?.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
         parsed = {
           mapStackData: action.payload.landingData.map(el => reCalc(mapAssembly(el), mapAssembly(el))),
           mapStackDataIndex: 0,
@@ -192,6 +209,7 @@ export const sagaActions = {
   changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
   deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
   signOut: () => ({type: 'SIGN_OUT'}),
+  mapChanged: () => ({type: 'MAP_CHANGED'}),
 }
 
 const sagaMiddleware = createSagaMiddleware()

@@ -2,19 +2,18 @@ import {getDefaultNode, nodeProps} from './DefaultProps'
 import {flagDomData, updateDomData} from './DomFlow'
 import {copy, createArray, genHash, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
-import {mapAlgo} from '../map/MapAlgo'
+import {mapFix} from '../map/MapFix'
 import {mapInit} from '../map/MapInit'
 import {mapChain} from '../map/MapChain'
 import {mapDeInit} from '../map/MapDeInit'
 import {mapDiff} from "../map/MapDiff"
 import {mapDisassembly} from '../map/MapDisassembly'
-import {mapExtractFormatting} from "../map/MapExtractFormatting"
+import {mapExtractProps} from "../map/MapExtractProps"
 import {mapExtractSelection} from '../map/MapExtractSelection'
 import {mapMeasure} from '../map/MapMeasure'
 import {mapPlace} from '../map/MapPlace'
 import {mapSetProp} from '../map/MapSetProp'
 import {mapCalcTask} from '../map/MapCalcTask'
-import {mapCheckTask} from '../map/MapCheckTask'
 import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {mapVisualizeSvg} from '../map/MapVisualizeSvg'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
@@ -67,21 +66,16 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'moveTargetPreview': {
-      m.moveData = payload.moveData
       break
     }
     case 'selectTargetPreview': {
+      clearSelection(m)
       for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
         getMapData(m, payload.highlightTargetPathList[i]).selected = 1
       }
-      m.selectionRect = payload.selectionRect
       break
     }
     // SELECT
-    case 'clearSelection': {
-      clearSelection(m)
-      break
-    }
     case 'selectStruct': {
       clearSelection(m)
       const {lastOverPath} = payload
@@ -124,8 +118,13 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'selectTarget': {
-      for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
-        getMapData(m, payload.highlightTargetPathList[i]).selected = 1
+      clearSelection(m)
+      if (payload.highlightTargetPathList.length) {
+        for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
+          getMapData(m, payload.highlightTargetPathList[i]).selected = 1
+        }
+      } else {
+        getMapData(m, ['r', 0]).selected = 1
       }
       break
     }
@@ -465,14 +464,13 @@ export const mapReducer = (m: any, action: any, payload: any) => {
 
 export const reCalc = (pm: any, m: any) => {
   let cr = getMapData(m, ['r', 0])
-  mapAlgo.start(m, cr)
+  mapFix.start(m, cr)
   mapInit.start(m, cr)
   mapChain.start(m, cr, 0)
   mapDiff.start(pm, m, cr)
   mapCalcTask.start(m, cr)
-  mapCheckTask.start(m, cr)
   mapExtractSelection.start(m, cr)
-  mapExtractFormatting.start(m)
+  mapExtractProps.start(m, cr)
   mapMeasure.start(m, cr)
   mapPlace.start(m, cr)
   return m

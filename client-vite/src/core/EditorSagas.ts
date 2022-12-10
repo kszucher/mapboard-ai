@@ -135,10 +135,7 @@ function* autoSaveSaga() {
     // TODO: only do ANYTHING if mapRight === EDIT
     const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
       autoSaveNow: take(SAVE_INCLUDED),
-      autoSaveLater: take(['UNDO', 'REDO', 'MAP_STACK_CHANGED']), // maybe I could just listen to non-saga actions, why not...
-      // for now I could sagaDispatch a "mutateMapStack" saga command, which can be channeled here
-      // and let saga exist as a side effect handler until there is a better option
-      // which does not interfere with considering flux done
+      autoSaveLater: take(['MAP_CHANGED']),
       autoSaveNowByTimeout: delay(1000)
     })
     if (autoSaveNow) {
@@ -150,13 +147,14 @@ function* autoSaveSaga() {
         autoSaveState = AUTO_SAVE_STATES.IDLE
         const mapStackData = yield select(state => state.mapStackData)
         const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+        const m = mapStackData[mapStackDataIndex]
         if (mapStackData.length === 1 && mapStackDataIndex === 0 || mapStackData.length === 0) {
           console.log('skip save')
         } else {
           console.log('apply save')
           const mapId = yield select(state => state.mapId)
           const mapSource = yield select(state => state.mapSource)
-          const mapData = getSavedMapData()
+          const mapData = getSavedMapData(m)
           const type = 'SAVE_MAP'
           const payload = { save: { mapId, mapSource, mapData } }
           yield put(actions.interactionDisabled())
@@ -168,6 +166,9 @@ function* autoSaveSaga() {
   }
 }
 
+// TODO figure out the RTK query way... once done, the reducers CAN set shouldTimeout to false, and dataIndexChange set to true
+// but this is a next refactor
+// for now, just restore mapSaveSaga
 function* mapSaga () { // can use a mapServerDispatch hook instead
   while (true) {
     let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])

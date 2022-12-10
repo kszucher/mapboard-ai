@@ -8,16 +8,9 @@ export let mapProps = {
     taskConfigGap: 4,
     margin: 32,
   },
-  saveNeverInitOnce: {
-    selectionRect: [],
-    moveData: [],
-    animationRequested: 0, // will be a mapGetProp of animation on the node level
-  },
   saveNeverInitAlways: {
     mapWidth: 0,
     mapHeight: 0,
-    taskLeft: 0,
-    taskRight: 0,
     sLineDeltaXDefault: 0,
     padding: 0,
     defaultH: 0,
@@ -51,7 +44,10 @@ export let mapProps = {
       textFontSize: null,
       textColor: null,
       taskStatus: null,
-    }
+    },
+    animationRequested: 0,
+    taskLeft: 0,
+    taskRight: 0,
   }
 }
 
