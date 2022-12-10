@@ -96,7 +96,8 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
     }
     navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
-        navigator.clipboard.writeText(JSON.stringify(clipboard, undefined, 4))
+        navigator.clipboard
+          .writeText(JSON.stringify(clipboard, undefined, 4))
           .then(() => {
             console.log('map copied to clipboard')
           })

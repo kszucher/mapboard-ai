@@ -15,7 +15,6 @@ export const mapDeInit = {
         }
       }
     }
-    // TODO loop
     mapDeInit.iterate(cn.r[0])
     return cn
   },

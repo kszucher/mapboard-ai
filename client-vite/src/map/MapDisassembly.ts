@@ -11,7 +11,6 @@ export const mapDisassembly = {
         dcm[0][prop] = cn[prop]
       }
     }
-    // TODO loop
     mapDisassembly.iterate(cn.r[0])
     return dcm
   },

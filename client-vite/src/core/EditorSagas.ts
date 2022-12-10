@@ -166,10 +166,7 @@ function* autoSaveSaga() {
   }
 }
 
-// TODO figure out the RTK query way... once done, the reducers CAN set shouldTimeout to false, and dataIndexChange set to true
-// but this is a next refactor
-// for now, just restore mapSaveSaga
-function* mapSaga () { // can use a mapServerDispatch hook instead
+function* mapSaga () {
   while (true) {
     let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
     if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
