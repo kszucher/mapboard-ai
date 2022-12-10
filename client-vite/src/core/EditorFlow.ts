@@ -166,9 +166,9 @@ const allSlice = createSlice({
           mapStackDataIndex: 0,
         }
       }
-      if (action.payload?.hasOwnProperty('landingData')) { // TODO rename this to mapDataFrames, both FE and BE
+      if (action.payload?.hasOwnProperty('mapDataFrames')) {
         parsed = {
-          mapStackData: action.payload.landingData.map(el => reCalc(mapAssembly(el), mapAssembly(el))),
+          mapStackData: action.payload.mapDataFrames.map(el => reCalc(mapAssembly(el), mapAssembly(el))),
           mapStackDataIndex: 0,
         }
       }

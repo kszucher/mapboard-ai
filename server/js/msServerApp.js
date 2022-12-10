@@ -340,9 +340,9 @@ async function processReq(req) {
         if (req.type === 'LIVE_DEMO') {
             // this could depend on queryString
             const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
-            const landingData = (await maps.findOne({_id: mapId})).dataFrames
+            const mapDataFrames = (await maps.findOne({_id: mapId})).dataFrames
             const mapRight = MAP_RIGHTS.VIEW
-            return { error: '', data: { mapId, landingData, mapRight } }
+            return { error: '', data: { mapId, mapDataFrames, mapRight } }
         } else {
             const currUser = await users.findOne({ ...req.payload.cred })
             if (currUser === null) {
