@@ -4,7 +4,7 @@ import {getMapData} from "../core/MapFlow";
 import {mapGetProp} from "./MapGetProp";
 
 export const mapExtractProps = {
-  start: (m, cr) => {
+  start: (m) => {
     if (m.sc.lastPath.length) {
       const ln = getMapData(m, m.sc.lastPath)
       for (const prop of Object.keys(m.nc)) {
@@ -40,7 +40,7 @@ export const mapExtractProps = {
     }
     m.taskLeft = 0
     m.taskRight = 0
-    mapExtractProps.iterate(m, cr)
+    mapExtractProps.iterate(m, m.r[0])
   },
 
   iterate: (m, cn) => {

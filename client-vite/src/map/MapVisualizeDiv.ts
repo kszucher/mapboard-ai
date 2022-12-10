@@ -1,19 +1,20 @@
-// @ts-nocheck
-
 import { updateMapDivData } from '../core/DomFlow'
 import { getColors } from '../core/Colors'
 
 export const mapVisualizeDiv = {
-  start: (m, cr, colorMode) => {
-    const mapDiv = document.getElementById('mapDiv')
+  start: (m: any, colorMode: string) => {
+    const mapDiv: HTMLElement | null = document.getElementById('mapDiv')
+    // @ts-ignore
     mapDiv.style.width = "" + m.mapWidth + "px"
+    // @ts-ignore
     mapDiv.style.height = "" + m.mapHeight + "px"
-    const mapHolderDiv = document.getElementById('mapHolderDiv')
+    const mapHolderDiv : HTMLElement | null = document.getElementById('mapHolderDiv')
+    // @ts-ignore
     mapHolderDiv.focus()
-    mapVisualizeDiv.iterate(m, cr, colorMode)
+    mapVisualizeDiv.iterate(m, m.r[0], colorMode)
   },
 
-  iterate: (m, cn, colorMode) => {
+  iterate: (m: any, cn: any, colorMode: string) => {
     if (cn.type === 'struct' && !cn.hasCell) {
       const { nodeId, contentType, content, path } = cn
       const {TEXT_COLOR} = getColors(colorMode)
@@ -36,8 +37,8 @@ export const mapVisualizeDiv = {
       }
       updateMapDivData(nodeId, contentType, content, path, styleData)
     }
-    cn.d.map(i => mapVisualizeDiv.iterate(m, i, colorMode))
-    cn.s.map(i => mapVisualizeDiv.iterate(m, i, colorMode))
-    cn.c.map(i => i.map(j => mapVisualizeDiv.iterate(m, j, colorMode)))
+    cn.d.map((i: any) => mapVisualizeDiv.iterate(m, i, colorMode))
+    cn.s.map((i: any) => mapVisualizeDiv.iterate(m, i, colorMode))
+    cn.c.map((i: any[]) => i.map(j => mapVisualizeDiv.iterate(m, j, colorMode)))
   }
 }

@@ -1,8 +1,8 @@
 import {getMapData} from "../core/MapFlow";
 
 export const mapDiff = {
-  start: (pm: any, m: any, cr: any) => {
-    mapDiff.iterate(pm, m, cr)
+  start: (pm: any, m: any) => {
+    mapDiff.iterate(pm, m, m.r[0])
   },
 
   iterate: (pm: any, m: any, cn:any) => {

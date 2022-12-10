@@ -91,7 +91,7 @@ export const WindowListeners: FC = () => {
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
           isTaskClicked = path.find(el => el.id?.substring(17, 27) === 'taskCircle')
-          lastOverPath = mapFindOverPoint.start(getMapData(m, ['r', 0]), fromX, fromY)
+          lastOverPath = mapFindOverPoint.start(m, fromX, fromY)
           isNodeClicked = lastOverPath.length
         }
         if (which === 1) {

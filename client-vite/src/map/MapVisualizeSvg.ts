@@ -63,7 +63,7 @@ const getNodeVisParams = (selection, adjustedParams) => {
 }
 
 export const mapVisualizeSvg = {
-  start: (m, cr, colorMode, shouldAnimationInit) => {
+  start: (m, colorMode, shouldAnimationInit) => {
     const editedPath = toPath(getEditedPathString())
     const moveTarget = getMoveTarget()
     const selectTarget = getSelectTarget()
@@ -138,7 +138,7 @@ export const mapVisualizeSvg = {
         strokeWidth: 1,
       })
     }
-    mapVisualizeSvg.iterate(m, cr, colorMode, shouldAnimationInit, editedPath)
+    mapVisualizeSvg.iterate(m, m.r[0], colorMode, shouldAnimationInit, editedPath)
   },
   iterate: (m, cn, colorMode, shouldAnimationInit, editedPath) => {
     const conditions = resolveScope(cn)

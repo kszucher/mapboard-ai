@@ -20,13 +20,12 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   if (target === 'struct2struct') {
     let sameParent = getMapData(m, sameParentPath)
     if (direction === Dir.IR || direction === Dir.IL) {
-      let cr = getMapData(m, ['r', 0])
       let dir = ln.path[3]
       let revDir = 1 - dir
       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
         let currRef = getMapData(m, structSelectedPathList[i])
         sameParent.s.splice(currRef.index, 1)
-        cr.d[revDir].s.splice(cr.d[revDir].s.length, 0, copy(currRef))
+        m.r[0].d[revDir].s.splice(m.r[0].d[revDir].s.length, 0, copy(currRef))
       }
     } else if (direction === Dir.I) {
       let sameParentParent = getMapData(m, sameParent.parentPath)

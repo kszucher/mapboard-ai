@@ -1,14 +1,13 @@
-// @ts-nocheck
-
 import {copy} from "../core/Utils"
 
 let dcm = []
 
 export const mapDisassembly = {
-  start: (cn) => {
+  start: (cn: any) => {
     dcm = [{}]
     for (const prop in cn) {
       if (prop !== 'r') {
+        // @ts-ignore
         dcm[0][prop] = cn[prop]
       }
     }
@@ -17,14 +16,14 @@ export const mapDisassembly = {
     return dcm
   },
 
-  iterate: (cn) => {
+  iterate: (cn: any) => {
     let nodeCopy = copy(cn)
     delete nodeCopy['d']
     delete nodeCopy['s']
     delete nodeCopy['c']
     dcm.push(nodeCopy)
-    cn.d.map(i => mapDisassembly.iterate(i))
-    cn.s.map(i => mapDisassembly.iterate(i))
-    cn.c.map(i => i.map(j => mapDisassembly.iterate(j)))
+    cn.d.map((i: any) => mapDisassembly.iterate(i))
+    cn.s.map((i: any) => mapDisassembly.iterate(i))
+    cn.c.map((i: any[]) => i.map(j => mapDisassembly.iterate(j)))
   }
 }

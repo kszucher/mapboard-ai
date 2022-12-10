@@ -4,10 +4,10 @@ let resultPath
 let nodeId = ''
 
 export const mapFindById = {
-  start: (m, cr, id) => {
+  start: (m, id) => {
     resultPath = []
     nodeId = id
-    mapFindById.iterate(m, cr)
+    mapFindById.iterate(m, m.r[0])
     return resultPath
   },
 

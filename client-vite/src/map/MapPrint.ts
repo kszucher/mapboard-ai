@@ -1,10 +1,10 @@
 // @ts-nocheck
 
 export const mapPrint = {
-  start: (m, cr) => {
+  start: (m, cn) => {
     mapPrint.str = ''
-    mapPrint.entryLength = cr.path.length
-    mapPrint.iterate(m, cr)
+    mapPrint.entryLength = cn.path.length
+    mapPrint.iterate(m, cn)
     console.log(mapPrint.str)
   },
 

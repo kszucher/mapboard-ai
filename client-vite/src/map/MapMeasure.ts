@@ -4,8 +4,8 @@ import {createArray} from "../core/Utils"
 import {getEquationDim, getTextDim} from "../core/DomUtils";
 
 export const mapMeasure = {
-  start: (m, cr) => {
-    mapMeasure.iterate(m, cr, {
+  start: (m) => {
+    mapMeasure.iterate(m, m.r[0], {
       hasMultipleChild: 0,
       hasMultipleContentRow: 0,
     })

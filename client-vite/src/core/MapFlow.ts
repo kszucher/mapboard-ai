@@ -33,10 +33,7 @@ export const getSavedMapData = (m: any) => {
 }
 
 const clearSelection = (m: any) => {
-  for (let i = 0; i < getMapData(m, ['r']).length; i++) {
-    let cr = getMapData(m, ['r', i])
-    mapSetProp.start(m, cr, {selected: 0, selection: 's'}, '')
-  }
+  mapSetProp.start(m, m.r[0], { selected: 0, selection: 's' }, '')
 }
 
 const updateParentLastSelectedChild = (m: any, ln: any) => {
@@ -129,10 +126,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'select_all': {
-      for (let i = 0; i < getMapData(m, ['r']).length; i++) {
-        let cr = getMapData(m, ['r', i])
-        mapSetProp.start(m, cr, {selected: 1}, 'struct')
-      }
+      mapSetProp.start(m, m.r[0], { selected: 1, selection: 's' }, 'struct')
       break
     }
     case 'selectDescendantsOut': {
@@ -440,7 +434,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'setTaskStatus': {
-      let cn = getMapData(m, mapFindById.start(m, getMapData(m, ['r', 0]), payload.nodeId))
+      let cn = getMapData(m, mapFindById.start(m, payload.nodeId))
       cn.taskStatus = payload.taskStatus
       break
     }
@@ -463,29 +457,27 @@ export const mapReducer = (m: any, action: any, payload: any) => {
 }
 
 export const reCalc = (pm: any, m: any) => {
-  let cr = getMapData(m, ['r', 0])
-  mapFix.start(m, cr)
-  mapInit.start(m, cr)
-  mapChain.start(m, cr, 0)
-  mapDiff.start(pm, m, cr)
-  mapCalcTask.start(m, cr)
-  mapExtractSelection.start(m, cr)
-  mapExtractProps.start(m, cr)
-  mapMeasure.start(m, cr)
-  mapPlace.start(m, cr)
+  mapFix.start(m)
+  mapInit.start(m)
+  mapChain.start(m)
+  mapDiff.start(pm, m)
+  mapCalcTask.start(m)
+  mapExtractSelection.start(m)
+  mapExtractProps.start(m)
+  mapMeasure.start(m)
+  mapPlace.start(m)
   return m
 }
 
 const redrawStep = (m: any, colorMode: any, isEditing: boolean, shouldAnimationInit: boolean) => {
   flagDomData()
-  let cr = getMapData(m, ['r', 0])
-  mapVisualizeSvg.start(m, cr, colorMode, shouldAnimationInit)
-  mapVisualizeDiv.start(m, cr, colorMode)
+  mapVisualizeSvg.start(m, colorMode, shouldAnimationInit)
+  mapVisualizeDiv.start(m, colorMode)
   updateDomData()
 }
 
 export const reDraw = (m: any, colorMode: any, isEditing: boolean) => {
-  if (m.animationRequested) { // if we don't want to store this, we may just use mapGetProp...
+  if (m.animationRequested) {
     redrawStep(m, colorMode, isEditing, true)
   }
   redrawStep(m, colorMode, isEditing, false)

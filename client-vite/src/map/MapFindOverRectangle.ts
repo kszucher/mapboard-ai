@@ -1,7 +1,6 @@
 // @ts-nocheck
 
 import { copy } from '../core/Utils'
-import {getMapData} from "../core/MapFlow";
 
 let startX, startY, width, height = 0
 
@@ -12,17 +11,17 @@ export const mapFindOverRectangle = {
     let width = Math.abs(toX - fromX)
     let height = Math.abs(toY - fromY)
     let selectionRect = [startX, startY, width, height]
-    const highlightTargetPathList = mapFindOverRectangle.start(getMapData(m, ['r', 0]), startX, startY, width, height)
+    const highlightTargetPathList = mapFindOverRectangle.start(m, startX, startY, width, height)
     return { highlightTargetPathList, selectionRect }
   },
 
-  start: (cr, x, y, w, h) => {
+  start: (m, x, y, w, h) => {
     startX = x
     startY = y
     width = w
     height = h
     let collection = []
-    mapFindOverRectangle.iterate(cr, collection)
+    mapFindOverRectangle.iterate(m.r[0], collection)
     return collection
   },
 

@@ -6,11 +6,11 @@ let currX, currY = 0
 let lastOverPath = []
 
 export const mapFindOverPoint = {
-  start: (cr, x, y) => {
+  start: (m, x, y) => {
     currX = x
     currY = y
     lastOverPath = []
-    mapFindOverPoint.iterate(cr)
+    mapFindOverPoint.iterate(m.r[0])
     if (lastOverPath.length === 4) {
       lastOverPath = ['r', 0]
     }

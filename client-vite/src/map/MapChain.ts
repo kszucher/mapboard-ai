@@ -1,17 +1,15 @@
-// @ts-nocheck
-
 export const mapChain = {
-  start: (m, cr, crIndex) => {
-    Object.assign(cr, {
+  start: (m: any) => {
+    Object.assign(m.r[0], {
       parentPath: [],
-      path: ['r', crIndex],
+      path: ['r', 0],
       isRoot: 1,
       type: 'struct',
     })
-    mapChain.iterate(m, cr, crIndex)
+    mapChain.iterate(m, m.r[0])
   },
 
-  iterate: (m, cn, crIndex) => {
+  iterate: (m: any, cn: any) => {
     if (!cn.isRoot) {
       if (cn.type === 'dir') {
         cn.path = cn.parentPath.concat(["d", cn.index])
@@ -24,13 +22,13 @@ export const mapChain = {
     let dCount = Object.keys(cn.d).length
     for (let i = 0; i < dCount; i++) {
       Object.assign(cn.d[i], {
-        parentPath: ['r', crIndex],
+        parentPath: ['r', 0],
         parentType: cn.type,
         isRootChild: 1,
         type: 'dir',
         index: i,
       })
-      mapChain.iterate(m, cn.d[i], crIndex)
+      mapChain.iterate(m, cn.d[i])
     }
     let sCount = Object.keys(cn.s).length
     for (let i = 0; i < sCount; i++) {
@@ -41,7 +39,7 @@ export const mapChain = {
         type: 'struct',
         index: i,
       })
-      mapChain.iterate(m, cn.s[i], crIndex)
+      mapChain.iterate(m, cn.s[i])
     }
     let rowCount = Object.keys(cn.c).length
     let colCount = Object.keys(cn.c[0]).length
@@ -54,7 +52,7 @@ export const mapChain = {
           type: 'cell',
           index: [i, j],
         })
-        mapChain.iterate(m, cn.c[i][j], crIndex)
+        mapChain.iterate(m, cn.c[i][j])
       }
     }
     cn.hasDir = dCount > 0 ? 1 : 0

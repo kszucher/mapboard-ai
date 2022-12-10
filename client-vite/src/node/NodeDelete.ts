@@ -29,8 +29,7 @@ export const structDeleteReselect = (m: any, sc: any) => {
   // reselect on jump back
   if (closestNodeParentChildLen === closestNodeParentChildDelLen) {
     if (closestNodeParent.isRootChild) {
-      let cr = getMapData(m, ['r', 0])
-      cr.selected = 1
+      m.r[0].selected = 1
     } else {
       closestNodeParent.selected = 1
     }
@@ -40,8 +39,7 @@ export const structDeleteReselect = (m: any, sc: any) => {
         closestNodeParent.s[0].selected = 1
       } else {
         if (closestNodeParent.isRootChild) {
-          let cr = getMapData(m, ['r', 0])
-          cr.selected = 1
+          m.r[0].selected = 1
         } else {
           closestNodeParent.selected = 1
         }

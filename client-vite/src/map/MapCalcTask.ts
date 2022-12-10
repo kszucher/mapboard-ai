@@ -1,11 +1,9 @@
-// @ts-nocheck
-
 export const mapCalcTask = {
-  start: (m, cr) => {
-    mapCalcTask.iterate(m, cr)
+  start: (m: any) => {
+    mapCalcTask.iterate(m, m.r[0])
   },
 
-  iterate: (m, cn) => {
+  iterate: (m: any, cn: any) => {
     let dCount = Object.keys(cn.d).length
     if (dCount) {
       cn.taskStatus = -1
@@ -35,6 +33,6 @@ export const mapCalcTask = {
       }
       cn.taskStatus = minTaskStatus
     }
-    cn.c.map(i => i.map(j => mapCalcTask.iterate(m, j)))
+    cn.c.map((i: any[]) => i.map(j => mapCalcTask.iterate(m, j)))
   }
 }
