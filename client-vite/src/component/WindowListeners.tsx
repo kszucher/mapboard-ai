@@ -14,7 +14,7 @@ import {actions, getMap, sagaActions} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
-import {flagDomData, updateDomData} from "../core/DomFlow";
+import {flagDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -33,7 +33,7 @@ export const WindowListeners: FC = () => {
   const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
   const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
   const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-  const editedPathString = useSelector((state: RootStateOrAny) => state.editedPathString)
+  const editedNodeId = useSelector((state: RootStateOrAny) => state.editedNodeId)
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
   const tm = useSelector((state: RootStateOrAny) => state.tempMap)
   const { density, alignment } = m || {
@@ -297,54 +297,47 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (m && Object.keys(m).length) {
-      reDraw(m, colorMode, editedPathString)
+      reDraw(m, colorMode, editedNodeId)
       dispatch(sagaActions.mapChanged())
     }
   }, [m, colorMode])
 
   useEffect(() => {
     if (tm && Object.keys(tm).length) {
-      reDraw(tm, colorMode, editedPathString)
+      reDraw(tm, colorMode, editedNodeId)
     }
   }, [tm])
 
   useEffect(() => {
     if (m && Object.keys(m).length) {
-      if (editedPathString.length) {
-        const ln = getMapData(m, m.sc.lastPath)
-        if (!ln.hasCell) {
-          const holderElement = document.getElementById(`${ln.nodeId}_div`)
-          holderElement.contentEditable = 'true'
-          if (!Object.keys(tm).length) {
-            holderElement.innerHTML = ''
-          }
-          setEndOfContentEditable(holderElement)
-          mutationObserver = new MutationObserver(mutationsList => {
-            for (let mutation of mutationsList) {
-              if (mutation.type === 'characterData') {
-                mapDispatch('typeText', holderElement.innerHTML)
-              }
-            }
-          })
-          mutationObserver.observe(holderElement, {
-            attributes: false,
-            childList: false,
-            subtree: true,
-            characterData: true
-          })
+      if (editedNodeId.length) {
+        const holderElement = document.getElementById(`${editedNodeId}_div`)
+        holderElement.contentEditable = 'true'
+        if (!Object.keys(tm).length) {
+          holderElement.innerHTML = ''
         }
+        setEndOfContentEditable(holderElement)
+        mutationObserver = new MutationObserver(mutationsList => {
+          for (let mutation of mutationsList) {
+            if (mutation.type === 'characterData') {
+              mapDispatch('typeText', holderElement.innerHTML)
+            }
+          }
+        })
+        mutationObserver.observe(holderElement, {
+          attributes: false,
+          childList: false,
+          subtree: true,
+          characterData: true
+        })
       } else {
         if (mutationObserver !== undefined) {
           mutationObserver.disconnect()
-          const ln = getMapData(m, m.sc.lastPath)
-          if (!ln.hasCell) {
-            const holderElement = document.getElementById(`${ln.nodeId}_div`)
-            holderElement.contentEditable = 'false'
-          }
+          updateDomDataContentEditableFalse()
         }
       }
     }
-  }, [editedPathString])
+  }, [editedNodeId])
 
   useEffect(() => {
     if (mapId !== '') {

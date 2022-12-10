@@ -2,8 +2,7 @@
 
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
-import {setEndOfContentEditable} from "./DomUtils";
-import {getEditedPathString} from "./EditorFlow";
+import {getEditedNodeId} from "./EditorFlow";
 
 let mapDivData = [];
 let mapSvgData = [[],[],[],[],[],[]];
@@ -48,7 +47,7 @@ export const updateMapDivData = ( nodeId, contentType, content, path, styleData 
   let shouldInnerHTMLUpdate = false
   let shouldStyleUpdate = {}
   if (el) {
-    const isEditing = getEditedPathString().length
+    const isEditing = getEditedNodeId().length
     if (isEditing) {
       shouldInnerHTMLUpdate = el.params.contentType !== contentType
     } else {
@@ -258,5 +257,13 @@ export const updateDomData = () => {
         }
       }
     }
+  }
+}
+
+export const updateDomDataContentEditableFalse = () => {
+  for (let i = 0; i < mapDivData.length; i++) {
+    let currDivData = mapDivData[i]
+    const holderElement = document.getElementById(currDivData.divId)
+    holderElement.contentEditable = 'false'
   }
 }

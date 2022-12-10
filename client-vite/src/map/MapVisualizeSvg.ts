@@ -1,12 +1,13 @@
 // @ts-nocheck
 
 import { updateMapSvgData } from '../core/DomFlow'
-import {isEqual, isOdd, toPath} from '../core/Utils'
+import {isEqual, isOdd, nodeIdToPath} from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
 import { getMapData } from '../core/MapFlow'
-import {getEditedPathString, getMoveTarget, getSelectTarget} from "../core/EditorFlow";
+import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow";
+import {mapFindById} from "./MapFindById";
 
 const getAdjustedParams = (cn) => {
   const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
@@ -64,7 +65,8 @@ const getNodeVisParams = (selection, adjustedParams) => {
 
 export const mapVisualizeSvg = {
   start: (m, colorMode, shouldAnimationInit) => {
-    const editedPath = toPath(getEditedPathString())
+    const editedNodeId = getEditedNodeId()
+    const editedPath = editedNodeId.length ? getMapData(m, mapFindById.start(m, editedNodeId))?.path : []
     const moveTarget = getMoveTarget()
     const selectTarget = getSelectTarget()
     const mapSvgOuter = document.getElementById('mapSvgOuter')

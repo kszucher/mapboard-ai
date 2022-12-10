@@ -39,7 +39,7 @@ const editorState = {
   mapStackData: [],
   mapStackDataIndex: 0,
 
-  editedPathString: '',
+  editedNodeId: '',
 
   moveTarget: [],
   selectTarget: [],
@@ -61,8 +61,8 @@ const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState)
 
-export const getEditedPathString = () => {
-  return store.getState().editedPathString
+export const getEditedNodeId = () => {
+  return store.getState().editedNodeId
 }
 export const getMoveTarget = () => {
   return store.getState().moveTarget
@@ -136,8 +136,8 @@ const allSlice = createSlice({
       state.tempMap = action.payload.data
     },
 
-    setEditedPathString(state, action: PayloadAction<any>) {
-      state.editedPathString = action.payload
+    setEditedNodeId(state, action: PayloadAction<any>) {
+      state.editedNodeId = action.payload
     },
 
     setMoveTarget(state, action: PayloadAction<any>) {
@@ -150,7 +150,7 @@ const allSlice = createSlice({
 
     undo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex > 0 ? state.mapStackDataIndex - 1 : state.mapStackDataIndex
-      state.editedPathString = ''
+      state.editedNodeId = ''
     },
 
     redo(state) {

@@ -1,8 +1,9 @@
 // @ts-nocheck
 
-import {actions, getEditedPathString, getMap, sagaActions} from "../core/EditorFlow";
-import {isUrl, toPathString} from "../core/Utils";
+import {actions, getEditedNodeId, getMap, sagaActions} from "../core/EditorFlow";
+import {isUrl} from "../core/Utils";
 import {Dir} from "../core/Types";
+import {getMapData} from "../core/MapFlow";
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -39,7 +40,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
   const { imageId, imageSize } = eventType === 'pi' ? eventPayload : { imageId: undefined, imageSize: undefined }
 
   const m = getMap()
-  const editedPathString = getEditedPathString()
+  const editedNodeId = getEditedNodeId()
 
   const keyStateMachineDb = [
     [ 'eventTypeCondition', 'isEditing', 'match', 'scope', 'preventDefault', 'actionType', 'action', 'payload' ],
@@ -89,7 +90,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '001') && [U,D].includes(which),          ['m'],              1, 'm',  'insert_CR_UD',                      {...c2dt(m, which), b: true}    ],
     [ 'kd', 0, ckm(e, '100') && [U,D].includes(which),          ['cr'],             1, 'm',  'move_CR_UD',                        {...c2dt(m, which)}             ],
     [ 'kd', 0, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'm'],         1, 'm',  'applyColorFromKey',                 {currColor: which - 96}         ],
-    [ 'kd', 0, ckm(e, '0-0') && which >= 48,                    ['s', 'm'],         0, 'a',  'setEditedPathString',               toPathString(m.sc.lastPath)     ],
+    [ 'kd', 0, ckm(e, '0-0') && which >= 48,                    ['s', 'm'],         0, 'a',  'setEditedNodeId',                   getMapData(m, m.sc.lastPath).nodeId     ],
     [ 'pt', 0, text.substring(0, 1) === '[',                    ['s'],             -1, 'm',  'insertNodesFromClipboard',          {text}                          ],
     [ 'pt', 0, text.substring(0, 2) === '\\[',                  ['s'],             -1, 'm',  'insert_S_O_equation',               {text}                          ],
     [ 'pt', 0, isUrl(text),                                     ['s'],             -1, 'm',  'insert_S_O_elink',                  {text}                          ],
@@ -105,7 +106,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     const { eventTypeCondition, isEditing, match, scope, preventDefault, actionType, action, payload } = keyStateMachine
     if (
       eventTypeCondition === eventType &&
-      !!isEditing === editedPathString.length > 0 &&
+      !!isEditing === editedNodeId.length > 0 &&
       match === true
       && (scope[0] === 'any' || scope.includes(m.sc.scope))
     ) {

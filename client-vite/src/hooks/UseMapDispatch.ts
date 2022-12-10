@@ -1,14 +1,15 @@
 import {Dispatch} from "redux"
 import {getMapData, mapReducer, reCalc} from "../core/MapFlow"
-import {copy, toPath, toPathString} from "../core/Utils"
+import {copy} from "../core/Utils"
 import {mapDeInit} from "../map/MapDeInit"
-import {actions, getEditedPathString, getMap, getTempMap} from "../core/EditorFlow"
+import {actions, getEditedNodeId, getMap, getTempMap} from "../core/EditorFlow"
+import {mapFindById} from "../map/MapFindById";
 
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
   console.log('MAP_DISPATCH: ' + action)
-  const editedPathString = getEditedPathString()
+  const editedNodeId = getEditedNodeId()
   const currM = getMap()
-  if (editedPathString.length && [
+  if (editedNodeId.length && [
     'finishEdit',
     'selectStruct',
     'selectStructToo',
@@ -17,7 +18,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     'insert_S_O'
   ].includes(action)) {
     const tempMap = getTempMap()
-    const editedPath = toPath(editedPathString)
+    const editedPath = getMapData(currM, mapFindById.start(currM, editedNodeId)).path
     const contentToSave = getMapData(tempMap, editedPath).content
     Object.assign(payload, {contentToSave})
   }
@@ -51,12 +52,13 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'insert_S_D',
       'startEdit',
       'typeText',
-    ].includes(action) &&
-    getMapData(nextM, nextM.sc.lastPath).contentType !== 'image'
+    ].includes(action)
+    && getMapData(nextM, nextM.sc.lastPath).contentType !== 'image'
+    && getMapData(nextM, nextM.sc.lastPath).hasCell == false
   )
-    ? toPathString(nextM.sc.lastPath)
+    ? getMapData(nextM, nextM.sc.lastPath).nodeId
     : ''
-  dispatch(actions.setEditedPathString(nextEditedPathString))
+  dispatch(actions.setEditedNodeId(nextEditedPathString))
   if (action === 'moveTargetPreview') {
     dispatch(actions.setMoveTarget(payload))
   }
