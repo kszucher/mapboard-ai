@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
@@ -128,6 +126,7 @@ const allSlice = createSlice({
     interactionDisabled(state) { state.interactionDisabled = true },
 
     mutateMapStackResetTempMap(state, action: PayloadAction<any>) {
+      // @ts-ignore
       state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
       state.mapStackDataIndex = state.mapStackDataIndex + 1
       state.tempMap = {}
@@ -168,7 +167,7 @@ const allSlice = createSlice({
       }
       if (action.payload?.hasOwnProperty('mapDataFrames')) {
         parsed = {
-          mapStackData: action.payload.mapDataFrames.map(el => reCalc(mapAssembly(el), mapAssembly(el))),
+          mapStackData: action.payload.mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))),
           mapStackDataIndex: 0,
         }
       }
