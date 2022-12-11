@@ -259,11 +259,3 @@ export const updateDomData = () => {
     }
   }
 }
-
-export const updateDomDataContentEditableFalse = () => {
-  for (let i = 0; i < mapDivData.length; i++) {
-    let currDivData = mapDivData[i]
-    const holderElement = document.getElementById(currDivData.divId)
-    holderElement.contentEditable = 'false'
-  }
-}

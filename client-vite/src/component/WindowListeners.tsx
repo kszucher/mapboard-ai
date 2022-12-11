@@ -333,7 +333,8 @@ export const WindowListeners: FC = () => {
       } else {
         if (mutationObserver !== undefined) {
           mutationObserver.disconnect()
-          updateDomDataContentEditableFalse()
+          window.contentEditable = 'true'
+          window.contentEditable = 'false'
         }
       }
     }
