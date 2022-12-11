@@ -8,7 +8,6 @@ import {mapFindById} from "../map/MapFindById";
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
   console.log('MAP_DISPATCH: ' + action)
   const editedNodeId = getEditedNodeId()
-  const currM = getMap()
   if (editedNodeId.length && [
     'finishEdit',
     'selectStruct',
@@ -17,22 +16,23 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     'setTaskStatus',
     'insert_S_O'
   ].includes(action)) {
-    const tempMap = getTempMap()
-    const editedPath = getMapData(currM, mapFindById.start(currM, editedNodeId)).path
-    const contentToSave = getMapData(tempMap, editedPath).content
+    const tm = getTempMap()
+    const editedPath = getMapData(tm, mapFindById.start(tm, editedNodeId)).path
+    const contentToSave = getMapData(tm, editedPath).content
     Object.assign(payload, {contentToSave})
   }
-  const nextM = reCalc(currM, mapReducer(copy(currM), action, payload))
+  const m = getMap()
+  const nm = reCalc(m, mapReducer(copy(m), action, payload))
   if (![
     'typeText',
     'moveTargetPreview',
     'selectTargetPreview',
   ].includes(action)) {
     if (
-      JSON.stringify(mapDeInit.start(copy(currM))) !==
-      JSON.stringify(mapDeInit.start(copy(nextM)))
+      JSON.stringify(mapDeInit.start(copy(m))) !==
+      JSON.stringify(mapDeInit.start(copy(nm)))
     ) {
-      dispatch(actions.mutateMapStackResetTempMap({data: nextM}))
+      dispatch(actions.mutateMapStackResetTempMap({data: nm}))
     }
   }
   if ([
@@ -44,7 +44,7 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     'moveTargetPreview',
     'selectTargetPreview',
   ].includes(action)) {
-    dispatch(actions.mutateTempMap({data: nextM}))
+    dispatch(actions.mutateTempMap({data: nm}))
   }
   const nextEditedPathString = ([
       'insert_S_O',
@@ -53,10 +53,10 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'startEdit',
       'typeText',
     ].includes(action)
-    && getMapData(nextM, nextM.sc.lastPath).contentType !== 'image'
-    && getMapData(nextM, nextM.sc.lastPath).hasCell == false
+    && getMapData(nm, nm.sc.lastPath).contentType !== 'image'
+    && getMapData(nm, nm.sc.lastPath).hasCell == false
   )
-    ? getMapData(nextM, nextM.sc.lastPath).nodeId
+    ? getMapData(nm, nm.sc.lastPath).nodeId
     : ''
   dispatch(actions.setEditedNodeId(nextEditedPathString))
   if (action === 'moveTargetPreview') {
