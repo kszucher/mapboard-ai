@@ -168,24 +168,25 @@ async function resolveType(req, userId) {
       return { error: '', data: { ...userInfo, ...mapInfo } }
     }
     case 'CREATE_MAP_IN_MAP': { // MUTATION
-      // LOAD OLD
-      const mapId = ObjectId(req.payload.save.mapId)
-      const map = await maps.findOne({_id: mapId})
-      const { path } = map
-      // CREATE NEW
-      const { lastPath, newMapName } = req.payload
-      const newMapId = (await maps.insertOne(getDefaultMap(newMapName, userId, [ ...path, mapId ] ))).insertedId
-      await MongoQueries.appendBreadcrumbs(users, userId, newMapId)
-      const userInfo = await getUserInfo(userId)
-      // UPDATE OLD
-      await maps.updateOne( // this SHOULD be a testable query and not an in-line stuff
-        { _id: mapId },
-        { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
-        { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
-      )
-      // RETURN NEW
-      const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
-      return { error: '', data: { ...userInfo, ...newMapInfo } }
+      // // LOAD OLD
+      // const mapId = ObjectId(req.payload.save.mapId)
+      // const map = await maps.findOne({_id: mapId})
+      // const { path } = map
+      // // CREATE NEW
+      // const { lastPath, newMapName } = req.payload
+      // const newMapId = (await maps.insertOne(getDefaultMap(newMapName, userId, [ ...path, mapId ] ))).insertedId
+      // await MongoQueries.appendBreadcrumbs(users, userId, newMapId)
+      // const userInfo = await getUserInfo(userId)
+      // // UPDATE OLD
+      // await maps.updateOne( // this SHOULD be a testable query and not an in-line stuff
+      //   { _id: mapId },
+      //   { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
+      //   { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
+      // )
+      // // RETURN NEW
+      // const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
+      // return { error: '', data: { ...userInfo, ...newMapInfo } }
+      return { error: 'NOT_YET_IMPLEMENTED', data: {} }
     }
     case 'CREATE_MAP_IN_TAB': { // MUTATION
       const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
