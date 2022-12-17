@@ -55,7 +55,7 @@ const mongoBackup = async (mode) => {
       break;
     }
     case 'file2prod': {
-      date = '1636920486636'
+      date = '' // 13 digit id
       await mongoProcess('mongorestore', {source:'app_prod', target:'app_prod'}, date);
       break;
     }
