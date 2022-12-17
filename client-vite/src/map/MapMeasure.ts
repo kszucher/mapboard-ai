@@ -112,10 +112,6 @@ export const mapMeasure = {
             const dim = getEquationDim(cn.content)
             cn.dimW = dim[0]
             cn.dimH = dim[1]
-          } else if (cn.contentType === 'image') {
-            // TODO rename imageW, and imageH to dimW, and dimH in mongo, and the REMOVE these lines
-            cn.dimW = cn.imageW
-            cn.dimH = cn.imageH
           }
         }
         // not dependent on change
