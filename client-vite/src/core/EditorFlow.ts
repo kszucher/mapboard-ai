@@ -4,6 +4,8 @@ import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly";
 import {reCalc} from "./MapFlow";
+import {mapDeInit} from "../map/MapDeInit";
+import {copy} from "./Utils";
 
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
@@ -125,15 +127,20 @@ const allSlice = createSlice({
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
 
-    mutateMapStackResetTempMap(state, action: PayloadAction<any>) {
-      // @ts-ignore
-      state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload.data]
-      state.mapStackDataIndex = state.mapStackDataIndex + 1
-      state.tempMap = {}
+    mutateMapStack(state, action: PayloadAction<any>) {
+      const m = state.mapStackData[state.mapStackDataIndex]
+      if (
+        JSON.stringify(mapDeInit.start(copy(m))) !==
+        JSON.stringify(mapDeInit.start(copy(action.payload)))
+      ) {
+        // @ts-ignore
+        state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload]
+        state.mapStackDataIndex = state.mapStackDataIndex + 1
+      }
     },
 
     mutateTempMap(state, action: PayloadAction<any>) {
-      state.tempMap = action.payload.data
+      state.tempMap = action.payload
     },
 
     setEditedNodeId(state, action: PayloadAction<any>) {

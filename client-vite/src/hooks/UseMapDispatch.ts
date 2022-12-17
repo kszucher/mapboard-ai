@@ -1,7 +1,6 @@
 import {Dispatch} from "redux"
 import {getMapData, mapReducer, reCalc} from "../core/MapFlow"
 import {copy} from "../core/Utils"
-import {mapDeInit} from "../map/MapDeInit"
 import {actions, getEditedNodeId, getMap, getTempMap} from "../core/EditorFlow"
 import {mapFindById} from "../map/MapFindById";
 
@@ -23,42 +22,38 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
   }
   const m = getMap()
   const nm = reCalc(m, mapReducer(copy(m), action, payload))
-  if (![
-    'typeText',
-    'moveTargetPreview',
-    'selectTargetPreview',
-  ].includes(action)) {
-    if (
-      JSON.stringify(mapDeInit.start(copy(m))) !==
-      JSON.stringify(mapDeInit.start(copy(nm)))
-    ) {
-      dispatch(actions.mutateMapStackResetTempMap({data: nm}))
-    }
-  }
   if ([
     'insert_S_O',
     'insert_S_U',
     'insert_S_D',
-    'startEdit',
+    'startEdit'
+  ].includes(action)
+  ) {
+    dispatch(actions.mutateMapStack(nm))
+    dispatch(actions.mutateTempMap(nm))
+  } else if ([
     'typeText',
     'moveTargetPreview',
     'selectTargetPreview',
   ].includes(action)) {
-    dispatch(actions.mutateTempMap({data: nm}))
+    dispatch(actions.mutateTempMap(nm))
+  } else {
+    dispatch(actions.mutateMapStack(nm))
+    dispatch(actions.mutateTempMap({}))
   }
-  const nextEditedPathString = ([
+  if ([
       'insert_S_O',
       'insert_S_U',
       'insert_S_D',
       'startEdit',
-      'typeText',
-    ].includes(action)
-    && getMapData(nm, nm.sc.lastPath).contentType !== 'image'
-    && getMapData(nm, nm.sc.lastPath).hasCell == false
-  )
-    ? getMapData(nm, nm.sc.lastPath).nodeId
-    : ''
-  dispatch(actions.setEditedNodeId(nextEditedPathString))
+      'typeText'
+    ].includes(action) &&
+    getMapData(nm, nm.sc.lastPath).contentType !== 'image' &&
+    getMapData(nm, nm.sc.lastPath).hasCell == false ) {
+    dispatch(actions.setEditedNodeId(getMapData(nm, nm.sc.lastPath).nodeId))
+  } else {
+    dispatch(actions.setEditedNodeId(''))
+  }
   if (action === 'moveTargetPreview') {
     dispatch(actions.setMoveTarget(payload))
   }
