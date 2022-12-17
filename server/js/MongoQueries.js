@@ -300,22 +300,24 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
                 dataFrames: {
                     $map: {
                         input: "$dataFrames",
-                        as: "dataFramesElem",
+                        as: "dataFrame",
                         in: {
                             $map: {
-                                input: "$$dataFramesElem",
-                                as: "dataFramesElem",
+                                input: "$$dataFrame",
+                                as: "node",
                                 in: {
                                     $cond: {
-                                        if: { $eq: [`$$dataFramesElem.${nodeProp}`, nodePropValFrom] },
+                                        if: {
+                                          $eq: [`$$node.${nodeProp}`, nodePropValFrom]
+                                        },
                                         then: {
                                             $setField: {
                                                 field: nodeProp,
-                                                input: '$$dataFramesElem',
+                                                input: '$$node',
                                                 value: nodePropValTo
                                             }
                                         },
-                                        else: "$$dataFramesElem"
+                                        else: "$$node"
                                     }
                                 }
                             }
