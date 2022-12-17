@@ -103,7 +103,6 @@ export const mapMeasure = {
       } else {
         // dependent on change
         if (cn.content !== '' && (cn.dimW === 0 || cn.dimH === 0 || cn.dimChange)) {
-          // TODO check if we don't rerender in case of equations once they can save
           if (cn.contentType === 'text') {
             const dim = getTextDim(cn.content, cn.textFontSize)
             cn.dimW = dim[0]
