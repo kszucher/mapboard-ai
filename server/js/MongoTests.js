@@ -22,30 +22,30 @@ async function mongoTests(cmd) {
     let dbOriginal
     let dbExpected
     switch (cmd) {
-      case 'nameLookupTest': {
+      case 'nameLookupTest': { // WARNING: depends on the structure of map: {m: {}, r:{}}
         dbOriginal = {
           users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
           maps:  [
-            { _id: 'map1', data: [ { }, { content: 'mapName1' } ] },
-            { _id: 'map2', data: [ { }, { content: 'mapName2' } ] },
-            { _id: 'map3', data: [ { }, { content: 'mapName3' } ] },
-            { _id: 'map4', data: [ { }, { content: 'mapName4' } ] },
+            { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1' } ] ] },
+            { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2' } ] ] },
+            { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3' } ] ] },
+            { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4' } ] ] },
           ]
         }
         dbExpected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
         break
       }
-      case 'getUserSharesTest': {
+      case 'getUserSharesTest': { // WARNING: depends on the structure of map: {m: {}, r:{}}
         dbOriginal = {
           users: [
             { _id: 'user1', email: 'user1@mail.com' },
             { _id: 'user2', email: 'user2@mail.com' },
           ],
           maps: [
-            { _id: 'map1', data: [ { }, { content: 'mapName1' } ] },
-            { _id: 'map2', data: [ { }, { content: 'mapName2' } ] },
-            { _id: 'map3', data: [ { }, { content: 'mapName3' } ] },
-            { _id: 'map4', data: [ { }, { content: 'mapName4' } ] },
+            { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1' } ] ] },
+            { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2' } ] ] },
+            { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3' } ] ] },
+            { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4' } ] ] },
           ],
           shares: [
             { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map1' },
@@ -139,8 +139,8 @@ async function mongoTests(cmd) {
         break
       }
       case 'importFrameTest': {
-        dbOriginal = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataFrames: [['f1', 'f2']], frameSelected: 0 } ] }
-        dbExpected = { maps: [ { _id: 'map1', data: ['o1', 'o2'], dataFrames: [['f1', 'f2'], ['o1', 'o2']], frameSelected: 1 } ] }
+        dbOriginal = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2']], frameSelected: 0 } ] }
+        dbExpected = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2'], ['o1', 'o2']], frameSelected: 1 } ] }
         break
       }
       case 'duplicateFrameTest': {
@@ -168,17 +168,16 @@ async function mongoTests(cmd) {
         dbOriginal = {
           maps: [{
             _id: 'map1',
-            data: [ {np: 'a'}, {np: 's'}],
             dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 's'} ] ]
           }]
         }
         dbExpected = {
           maps: [{
             _id: 'map1',
-            data: [ {np: 'a'}, {np: 't'} ],
             dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 't'} ] ]
           }]
         }
+        break
       }
     }
     if(dbOriginal.hasOwnProperty('users')) {await users.insertMany(dbOriginal.users)}
@@ -233,27 +232,27 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-  // await mongoTests('nameLookupTest')
-  // await mongoTests('getUserSharesTest')
-  // await mongoTests('replaceBreadcrumbsTest')
-  // await mongoTests('appendBreadcrumbsTest')
-  // await mongoTests('sliceBreadcrumbsTest')
-  // await mongoTests('deleteMapFromUsersTest')
-  // await mongoTests('deleteMapFromSharesTest')
-  // await mongoTests('moveUpMapInTabTest1')
-  // await mongoTests('moveUpMapInTabTest2')
-  // await mongoTests('moveDownMapInTabTest1')
-  // await mongoTests('moveDownMapInTabTest2')
-  // await mongoTests('openPrevFrameTest1')
-  // await mongoTests('openPrevFrameTest2')
-  // await mongoTests('openNextFrameTest1')
-  // await mongoTests('openNextFrameTest2')
-  // await mongoTests('importFrameTest')
-  // await mongoTests('duplicateFrameTest')
-  // await mongoTests('deleteFrameTest1')
-  // await mongoTests('deleteFrameTest2')
-  // await mongoTests('deleteFrameTest3')
-  // await mongoTests('deleteFrameTest4')
+  await mongoTests('nameLookupTest')
+  await mongoTests('getUserSharesTest')
+  await mongoTests('replaceBreadcrumbsTest')
+  await mongoTests('appendBreadcrumbsTest')
+  await mongoTests('sliceBreadcrumbsTest')
+  await mongoTests('deleteMapFromUsersTest')
+  await mongoTests('deleteMapFromSharesTest')
+  await mongoTests('moveUpMapInTabTest1')
+  await mongoTests('moveUpMapInTabTest2')
+  await mongoTests('moveDownMapInTabTest1')
+  await mongoTests('moveDownMapInTabTest2')
+  await mongoTests('openPrevFrameTest1')
+  await mongoTests('openPrevFrameTest2')
+  await mongoTests('openNextFrameTest1')
+  await mongoTests('openNextFrameTest2')
+  await mongoTests('importFrameTest')
+  await mongoTests('duplicateFrameTest')
+  await mongoTests('deleteFrameTest1')
+  await mongoTests('deleteFrameTest2')
+  await mongoTests('deleteFrameTest3')
+  await mongoTests('deleteFrameTest4')
   await mongoTests('changeNodePropTest')
 }
 

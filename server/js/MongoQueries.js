@@ -27,7 +27,7 @@ async function nameLookup(users, userId, mapIdList) {
               $getField: {
                 field: 'content',
                 input: {
-                  $arrayElemAt: [ '$fromMaps.data', 1 ]
+                  $arrayElemAt: [ { $last: '$fromMaps.dataHistory' }, 1 ]
                 }
               }
             }
@@ -47,7 +47,7 @@ async function getUserShares(shares, userId) {
       { $set: { shareUserEmail: "$user.email" } },
       { $lookup: { from: "maps", localField: "sharedMap", foreignField: "_id", as: 'map' } },
       { $unwind: "$map" },
-      { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ "$map.data", 1 ] } } } } },
+      { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ { $last: "$map.dataHistory" }, 1 ] } } } } },
       { $unset: [ "sharedMap", "map", "ownerUser", "shareUser", "user" ] },
     ]
   ).toArray()
@@ -59,7 +59,7 @@ async function getUserShares(shares, userId) {
       { $set: { ownerUserEmail: "$user.email" } },
       { $lookup: { from: "maps", localField: "sharedMap", foreignField: "_id", as: 'map' } },
       { $unwind: "$map" },
-      { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ "$map.data", 1 ] } } } } },
+      { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ { $last: "$map.dataHistory" }, 1 ] } } } } },
       { $unset: [ "sharedMap", "map", "ownerUser", "shareUser", "user" ] },
     ]
   ).toArray()
@@ -76,7 +76,10 @@ async function replaceBreadcrumbs(users, userId, mapId) {
 async function appendBreadcrumbs(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [ { $set: { breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] } } } ],
+    [{
+      $set: {
+        breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] } }
+    }],
   )
 }
 
@@ -85,9 +88,8 @@ async function sliceBreadcrumbs(users, userId, mapId) {
     { _id: userId },
     [{
       $set: {
-        breadcrumbMapIdList: { $slice: [
-            "$breadcrumbMapIdList", { $add: [{ $indexOfArray: ["$breadcrumbMapIdList", mapId] }, 1] }
-          ]
+        breadcrumbMapIdList: {
+          $slice: [ "$breadcrumbMapIdList", { $add: [ { $indexOfArray: ["$breadcrumbMapIdList", mapId ] }, 1 ] } ]
         }
       }
     }]
@@ -97,7 +99,15 @@ async function sliceBreadcrumbs(users, userId, mapId) {
 async function appendTabsReplaceBreadcrumbs(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [ { $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] }, breadcrumbMapIdList: [ mapId ] } } ],
+    [{
+      $set: {
+        tabMapIdList: {
+          $concatArrays: [ "$tabMapIdList", [ mapId ] ]
+        },
+        breadcrumbMapIdList:
+          [ mapId ]
+      }
+    }]
   )
 }
 
@@ -220,7 +230,7 @@ async function importFrame (maps, mapId) {
   await maps.findOneAndUpdate(
     { _id: mapId },
     [
-      { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ "$data" ] ] } } },
+      { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ { $last: "$dataHistory" } ] ] } } },
       { $set: { frameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
     ],
   )
@@ -278,25 +288,6 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
     { _id: mapId },
     [{
       $set: {
-        data: {
-          $map: {
-            input: "$data",
-            as: "dataElem",
-            in: {
-              $cond: {
-                if: { $eq: [`$$dataElem.${nodeProp}`, nodePropValFrom] },
-                then: {
-                  $setField: {
-                    field: nodeProp,
-                    input: '$$dataElem',
-                    value: nodePropValTo
-                  }
-                },
-                else: "$$dataElem"
-              }
-            }
-          }
-        },
         dataFrames: {
           $map: {
             input: "$dataFrames",
