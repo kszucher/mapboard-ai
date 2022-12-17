@@ -155,6 +155,7 @@ const allSlice = createSlice({
 
     redo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex < state.mapStackData.length - 1 ? state.mapStackDataIndex + 1 : state.mapStackDataIndex
+      state.editedNodeId = ''
     },
 
     parseRespPayload(state, action: PayloadAction<any>) {
@@ -215,7 +216,8 @@ const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sagaMiddleware])
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sagaMiddleware])
+  middleware: [sagaMiddleware]
 })
 
 sagaMiddleware.run(rootSaga)
