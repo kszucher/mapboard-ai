@@ -34,7 +34,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
   } else if ([
     'typeText',
     'moveTargetPreview',
+    'moveTarget',
     'selectTargetPreview',
+    'selectTarget'
   ].includes(action)) {
     dispatch(actions.mutateTempMap(nm))
   } else {
