@@ -69,18 +69,21 @@ module.exports = {
   mergeResult,
 }
 
-// helperStructure format:
-// nId: [
+// helperArray: [
 //   {
-//     npId: {
-//       opA
-//       opB
-//       valA
-//       valB
-//      }
-//    }
-//  }
+//     nId: [
+//       {
+//         npId: {
+//           opA
+//           opB
+//           valA
+//           valB
+//         }
+//       }
+//     ]
+//   }
 // ]
 // pipeline stage 1: iterate on mutationA to fill this structure (opA, valA)
 // pipeline stage 2: iterate on mutationB to fill this structure (opB, valB)
 // pipeline stage 3: iterate through helperStructure to gain results
+// pipeline stage 4: cleanup

@@ -357,12 +357,12 @@ async function mergeMap (maps, mapId, mapData) {
     [
       // {
       //   $set: {
-      //     // helperStructure based on
+      //     // helperArray based on
       //   }
       // },
       {
         $set: {
-          helperStructure: {
+          helperArray: {
             $map: {
               input: mapData,
               as: "node",
@@ -401,12 +401,12 @@ async function mergeMap (maps, mapId, mapData) {
       },
       // {
       //   $set: {
-      //     // concat to dataHistory the gained from helperStructure
+      //     // concat to dataHistory the gained from helperArray
       //   }
       // },
       // {
       //   $unset: {
-      //     // remove helperStructure
+      //     // remove helperArray
       //   }
       // },
     ]
