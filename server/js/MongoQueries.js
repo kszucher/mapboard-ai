@@ -375,22 +375,18 @@ async function mergeMap (maps, mapId, mapData) {
                   in: {
                     $cond: {
                       if: {
-                        $eq: [ "$$nodeProp.k", 'a' ]
+                        $ne: [ "$$nodeProp.k", 'n' ]
                       },
                       then: {
-                        $setField: {
-                          field: "new",
-                          input: {},
-                          value: {
-                            $setField: {
-                              field: 'cica',
-                              input: '$$nodeProp',
-                              value: 5
-                            }
-                          },
-                        }
+                        // NO dynamic field resolution in mongo, confirmed
+                        'uniqueId': { $concat: ["$$node.n", "$$nodeProp.k"]},
+                        'nodeId': '$$node.n',
+                        'nodePropId': "$$nodeProp.k",
+                        'valueA': "$$nodeProp.v",
+                        // 'valueB': "$$nodeProp.v"
+                        // TODO: figure out how to change this doc in the next iteration caring about uniqueId OR not and merge
                       },
-                      else: "$$nodeProp"
+                      else: "$$REMOVE"
                     }
                   }
                 }
