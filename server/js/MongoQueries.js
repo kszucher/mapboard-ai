@@ -291,12 +291,13 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
         dataFrames: {
           $map: {
             input: "$dataFrames",
-            as: "dataFrame",
+            as: "map",
             in: {
               $map: {
-                input: "$$dataFrame",
+                input: "$$map",
                 as: "node",
                 in: {
+                  // LIMITATION: can not set KEY, only VALUE, but can set OTHER prop too
                   $cond: {
                     if: {
                       $eq: [`$$node.${nodeProp}`, nodePropValFrom]
@@ -310,6 +311,36 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
                     },
                     else: "$$node"
                   }
+                  // LIMITATION: can not set OTHER prop, only ME, but KEY too
+                  // $arrayToObject: {
+                  //   $filter: {
+                  //     input: {
+                  //       $map: {
+                  //         input: {
+                  //           $objectToArray: "$$node"
+                  //         },
+                  //         as: "nodeProp",
+                  //         in: {
+                  //           $cond: {
+                  //             if: {
+                  //               $eq: [ "$$nodeProp.v", nodePropValFrom ]
+                  //             },
+                  //             then: {
+                  //               $setField: {
+                  //                 field: "v", // improvement: this can change 'k' as key
+                  //                 input: '$$nodeProp',
+                  //                 value: nodePropValTo, // can be REMOVE that is filtered out
+                  //               }
+                  //             },
+                  //             else: "$$nodeProp"
+                  //           }
+                  //         }
+                  //       }
+                  //     },
+                  //     as: "nodeProp",
+                  //     cond: { $ne: [ "$$nodeProp.v", 'REMOVE' ] }
+                  //   }
+                  // }
                 }
               }
             }
@@ -317,6 +348,58 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
         }
       }
     }]
+  )
+}
+
+async function mergeMap (maps, mapId, mapData) {
+  await maps.updateOne(
+    { _id: mapId },
+    [
+      {
+        $set: {
+          helperStructure: {
+            $map: {
+              input: mapData,
+              as: "node",
+              in: {
+                $map: {
+                  input: {
+                    $objectToArray: "$$node"
+                  },
+                  as: "nodeProp",
+                  in: {
+                    $cond: {
+                      if: {
+                        $eq: [ "$$nodeProp.k", 'a' ]
+                      },
+                      then: {
+                        $setField: {
+                          field: "new",
+                          input: {},
+                          value: {
+                            $setField: {
+                              field: 'cica',
+                              input: '$$nodeProp',
+                              value: 5
+                            }
+                          },
+                        }
+                      },
+                      else: "$$nodeProp"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        $set: {
+          whatever: null
+        }
+      }
+    ]
   )
 }
 
@@ -337,4 +420,5 @@ module.exports = {
   duplicateFrame,
   deleteFrame,
   changeNodeProp,
+  mergeMap,
 }

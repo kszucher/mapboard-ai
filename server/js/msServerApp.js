@@ -60,6 +60,9 @@ function getDefaultMap (mapName, ownerUser, path) {
   return {
     dataHistory: [
       [
+        // TODO:
+        //  path = [] node SHOULD have a nodeId for change tracking
+        //  [R?D?], [?C??] nodes should probably NOT be saved (so there is always a nodeId for change tracking)
         {path: ['m']},
         {path: ['r', 0], content: mapName, selected: 1},
         {path: ['r', 0, 'd', 0]},

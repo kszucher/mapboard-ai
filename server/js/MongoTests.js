@@ -1,4 +1,5 @@
 const MongoQueries = require("./MongoQueries");
+const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsMerge')
 
 const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1)===JSON.stringify(obj2)
@@ -20,6 +21,7 @@ async function mongoTests(cmd) {
     await maps.deleteMany({})
     await shares.deleteMany({})
     let dbOriginal
+    let argument
     let dbExpected
     switch (cmd) {
       case 'nameLookupTest': { // WARNING: depends on the structure of map: {m: {}, r:{}}
@@ -165,18 +167,14 @@ async function mongoTests(cmd) {
         dbExpected = { maps: [ {_id: 'map1', dataFrames: [], frameSelected: null } ] }
         break
       case 'changeNodePropTest': {
-        dbOriginal = {
-          maps: [{
-            _id: 'map1',
-            dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 's'} ] ]
-          }]
-        }
-        dbExpected = {
-          maps: [{
-            _id: 'map1',
-            dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 't'} ] ]
-          }]
-        }
+        dbOriginal = { maps: [{ _id: 'map1', dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 's'} ] ] }] }
+        dbExpected = { maps: [{ _id: 'map1', dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 't'} ] ] }] }
+        break
+      }
+      case 'mapMergeTest': {
+        dbOriginal = { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA ] }] }
+        argument = mergeMutationB
+        dbExpected= { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA, mergeResult ] }] }
         break
       }
     }
@@ -207,6 +205,7 @@ async function mongoTests(cmd) {
       case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
       case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 's', 't' ); break
+      case 'mapMergeTest': await MongoQueries.mergeMap(maps, 'map1', argument ); break
     }
     if ([
       'nameLookupTest',
@@ -232,28 +231,29 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-  await mongoTests('nameLookupTest')
-  await mongoTests('getUserSharesTest')
-  await mongoTests('replaceBreadcrumbsTest')
-  await mongoTests('appendBreadcrumbsTest')
-  await mongoTests('sliceBreadcrumbsTest')
-  await mongoTests('deleteMapFromUsersTest')
-  await mongoTests('deleteMapFromSharesTest')
-  await mongoTests('moveUpMapInTabTest1')
-  await mongoTests('moveUpMapInTabTest2')
-  await mongoTests('moveDownMapInTabTest1')
-  await mongoTests('moveDownMapInTabTest2')
-  await mongoTests('openPrevFrameTest1')
-  await mongoTests('openPrevFrameTest2')
-  await mongoTests('openNextFrameTest1')
-  await mongoTests('openNextFrameTest2')
-  await mongoTests('importFrameTest')
-  await mongoTests('duplicateFrameTest')
-  await mongoTests('deleteFrameTest1')
-  await mongoTests('deleteFrameTest2')
-  await mongoTests('deleteFrameTest3')
-  await mongoTests('deleteFrameTest4')
-  await mongoTests('changeNodePropTest')
+  // await mongoTests('nameLookupTest')
+  // await mongoTests('getUserSharesTest')
+  // await mongoTests('replaceBreadcrumbsTest')
+  // await mongoTests('appendBreadcrumbsTest')
+  // await mongoTests('sliceBreadcrumbsTest')
+  // await mongoTests('deleteMapFromUsersTest')
+  // await mongoTests('deleteMapFromSharesTest')
+  // await mongoTests('moveUpMapInTabTest1')
+  // await mongoTests('moveUpMapInTabTest2')
+  // await mongoTests('moveDownMapInTabTest1')
+  // await mongoTests('moveDownMapInTabTest2')
+  // await mongoTests('openPrevFrameTest1')
+  // await mongoTests('openPrevFrameTest2')
+  // await mongoTests('openNextFrameTest1')
+  // await mongoTests('openNextFrameTest2')
+  // await mongoTests('importFrameTest')
+  // await mongoTests('duplicateFrameTest')
+  // await mongoTests('deleteFrameTest1')
+  // await mongoTests('deleteFrameTest2')
+  // await mongoTests('deleteFrameTest3')
+  // await mongoTests('deleteFrameTest4')
+  // await mongoTests('changeNodePropTest')
+  await mongoTests('mapMergeTest')
 }
 
 allTest()
