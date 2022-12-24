@@ -355,6 +355,11 @@ async function mergeMap (maps, mapId, mapData) {
   await maps.updateOne(
     { _id: mapId },
     [
+      // {
+      //   $set: {
+      //     // helperStructure based on
+      //   }
+      // },
       {
         $set: {
           helperStructure: {
@@ -394,11 +399,16 @@ async function mergeMap (maps, mapId, mapData) {
           }
         }
       },
-      {
-        $set: {
-          whatever: null
-        }
-      }
+      // {
+      //   $set: {
+      //     // concat to dataHistory the gained from helperStructure
+      //   }
+      // },
+      // {
+      //   $unset: {
+      //     // remove helperStructure
+      //   }
+      // },
     ]
   )
 }
