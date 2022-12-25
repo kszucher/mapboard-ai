@@ -352,61 +352,100 @@ async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropV
 }
 
 async function mergeMap (maps, mapId, mapData) {
-  await maps.updateOne(
-    { _id: mapId },
+  let x = await maps.aggregate(
     [
-      // {
-      //   $set: {
-      //     // helperArray based on
-      //   }
-      // },
+      {
+        $match: { _id: mapId }
+      },
       {
         $set: {
           helperArray: {
-            $map: {
-              input: mapData,
-              as: "node",
-              in: {
+            $objectToArray: {
+              $mergeObjects: {
                 $map: {
-                  input: {
-                    $objectToArray: "$$node"
-                  },
-                  as: "nodeProp",
+                  input: mapData,
+                  as: "node",
                   in: {
-                    $cond: {
-                      if: {
-                        $ne: [ "$$nodeProp.k", 'n' ]
-                      },
-                      then: {
-                        // NO dynamic field resolution in mongo, confirmed
-                        'uniqueId': { $concat: ["$$node.n", "$$nodeProp.k"]},
-                        'nodeId': '$$node.n',
-                        'nodePropId': "$$nodeProp.k",
-                        'valueA': "$$nodeProp.v",
-                        // 'valueB': "$$nodeProp.v"
-                        // TODO: figure out how to change this doc in the next iteration caring about uniqueId OR not and merge
-                      },
-                      else: "$$REMOVE"
+                    $arrayToObject: {
+                      $map: {
+                        input: {
+                          $objectToArray: {
+                            $setField: {
+                              field: "n",
+                              input: '$$node',
+                              value: '$$REMOVE',
+                            }
+                          }
+                        },
+                        as: "nodeProp",
+                        in: {
+                          k: {
+                            $concat: ['$$node.n', '$$nodeProp.k']
+                          },
+                          v: {
+                            nodeId: '$$node.n',
+                            nodePropId: "$$nodeProp.k",
+                            valueA: "$$nodeProp.v",
+                            // exists on base
+                            // is the same compared to base
+                          }
+                        }
+                      }
                     }
                   }
                 }
               }
-            }
+            },
           }
         }
       },
+      {
+        $set: {
+          helperArray: {
+            $concatArrays: ['$helperArray',
+              [
+                {
+                  k: 'sa',
+                  v: {x: 0, y: 1}
+                }
+              ],
+            ]
+          }
+        }
+      },
+      {
+        $group: { // this will solve everything with the accumulator function eventually...
+          // _id: {
+            _id: "$helperArray.k",
+            x: {$first: "$helperArray.k"}
+
+          // },
+          // inside: {'bbe': 4}
+          // x: {$mergeObjects: ["$helperArray.valueA", "$helperArray.valueA"]}
+          // valami: 4
+        }
+      },
+
       // {
-      //   $set: {
-      //     // concat to dataHistory the gained from helperArray
-      //   }
+      //   // $set: {
+      //   //   x: {
+      //       $group: {
+      //         "_id": {
+      //           "_id": "$_id",
+      //           // "arrId": "$arr._id"
+      //         }
+      //       }
+      //     // }
+      //   // }
       // },
+
+
       // {
-      //   $unset: {
-      //     // remove helperArray
-      //   }
+      //   $merge : { into: "maps", on: "_id",  whenMatched: "replace", whenNotMatched: "insert" }
       // },
     ]
-  )
+  ).toArray() // not sure why but it only merges with this
+  console.log(JSON.stringify(x, null,4))
 }
 
 module.exports = {

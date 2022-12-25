@@ -1,5 +1,9 @@
 const mergeBase = [
   {
+    n: 's',
+    a: 'v1',
+  },
+  {
     n: 't',
     a: 'v1',
     b: 'v1',
@@ -14,6 +18,10 @@ const mergeBase = [
 ]
 
 const mergeMutationA = [
+  {
+    n: 's',
+    a: 'v1',
+  },
   {
     n: 't',
     a: 'v1', // opA: keep
@@ -31,6 +39,10 @@ const mergeMutationA = [
 
 const mergeMutationB = [
   {
+    n: 's',
+    a: 'v1',
+  },
+  {
     n: 't',
     a: 'v1', // opB: keep
     b: 'v3', // opB: change
@@ -46,6 +58,10 @@ const mergeMutationB = [
 ]
 
 const mergeResult = [
+  {
+    n: 's',
+    a: 'v1',
+  },
   {
     n: 't',
     a: 'v1', // opA: keep       opB: keep     use B
@@ -68,22 +84,3 @@ module.exports = {
   mergeMutationB,
   mergeResult,
 }
-
-// helperArray: [
-//   {
-//     nId: [
-//       {
-//         npId: {
-//           opA
-//           opB
-//           valA
-//           valB
-//         }
-//       }
-//     ]
-//   }
-// ]
-// pipeline stage 1: iterate on mutationA to fill this structure (opA, valA)
-// pipeline stage 2: iterate on mutationB to fill this structure (opB, valB)
-// pipeline stage 3: iterate through helperStructure to gain results
-// pipeline stage 4: cleanup
