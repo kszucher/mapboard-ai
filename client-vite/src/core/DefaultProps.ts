@@ -1,6 +1,7 @@
 import {LineTypes} from "./Types";
 
 export let mapProps = {
+  // TODO add saveAlways including nodeId
   saveOptional: {
     alignment: 'adaptive',
     density: 'large',

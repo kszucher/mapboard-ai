@@ -3,6 +3,7 @@ import { copy, genHash, shallowCopy } from '../core/Utils'
 
 export const mapInit = {
   start: (m: any) => {
+    // note: no need for saveAlways, as these values should always be pre-made by the server
     for (const prop in mapProps.saveOptional) {
       if (!m.hasOwnProperty(prop)) {
         // @ts-ignore

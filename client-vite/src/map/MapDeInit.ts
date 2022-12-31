@@ -6,6 +6,7 @@ export const mapDeInit = {
   start: (cn) => {
     for (const prop in cn) {
       if (prop !== 'r') {
+        // TODO add a case for saveAlways, so we do NOT delete nodeId...
         if (mapProps.saveOptional.hasOwnProperty(prop)) {
           if (cn[prop] === mapProps.saveOptional[prop]) {
             delete cn[prop]

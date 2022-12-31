@@ -8,7 +8,7 @@ export const mapDisassembly = {
     for (const prop in cn) {
       if (prop !== 'r') {
         // @ts-ignore
-        dcm[0][prop] = cn[prop]
+        dcm[0][prop] = cn[prop] // TODO change this so this is under 'g' LATER
       }
     }
     mapDisassembly.iterate(cn.r[0])
