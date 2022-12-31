@@ -204,7 +204,20 @@ async function mongoTests(cmd) {
         break
       }
       case 'countNodesBasedOnNodePropExistenceTest': {
-        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
+        dbOriginal = getMultiMapMultiSource( [
+          [ {a: 'o'} ],
+          [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
+          [ {b: 'o'} ]
+        ] )
+        dbExpected = [{ _id: null, countPerAllMap: 12 }]
+        break
+      }
+      case 'countNodesBasedOnNodePropValueTest': {
+        dbOriginal = getMultiMapMultiSource( [
+          [ {a: 'o'} ],
+          [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
+          [ {b: 'o'} ]
+        ] )
         dbExpected = [{ _id: null, countPerAllMap: 8 }]
         break
       }
@@ -273,14 +286,17 @@ async function mongoTests(cmd) {
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'removeNodePropTest':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
       case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
-      case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'c' ); break
+      case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
+      case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
+
       case 'deleteUnusedMapsTest': await MongoMutations.deleteUnusedMaps(users, maps); break
     }
     if ([
       'nameLookupTest',
       'getUserSharesTest',
       'countNodesTest',
-      'countNodesBasedOnNodePropExistenceTest'
+      'countNodesBasedOnNodePropExistenceTest',
+      'countNodesBasedOnNodePropValueTest',
     ].includes(cmd)) {
     } else {
       if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
@@ -330,7 +346,8 @@ async function allTest () {
   // await mongoTests('createNodePropTest')
   // await mongoTests('removeNodePropTest')
   // await mongoTests('countNodesTest')
-  // await mongoTests('countNodesBasedOnNodePropExistenceTest')
+  await mongoTests('countNodesBasedOnNodePropExistenceTest')
+  await mongoTests('countNodesBasedOnNodePropValueTest')
   // await mongoTests('deleteUnusedMapsTest')
 }
 
