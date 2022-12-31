@@ -426,7 +426,7 @@ async function changeNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
   ).toArray()
 }
 
-async function changeNodePropValueConditionally (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
+async function setNodePropValueConditionally (maps, condition, nodePropKey, nodePropValueTo) {
   const setDataSource = (dataSource) => (
     {
       $set: {
@@ -440,9 +440,7 @@ async function changeNodePropValueConditionally (maps, nodePropKey, nodePropValu
                 as: "node",
                 in: {
                   $cond: {
-                    if: {
-                      $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ]
-                    },
+                    if: condition,
                     then: {
                       $setField: {
                         field: nodePropKey,
@@ -467,6 +465,14 @@ async function changeNodePropValueConditionally (maps, nodePropKey, nodePropValu
       { $merge: 'maps' }
     ]
   ).toArray()
+}
+
+async function setNodePropValueIfMissing (maps, nodePropKey, nodePropValueTo) {
+  return await setNodePropValueConditionally(maps, { $eq: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] }, nodePropKey, nodePropValueTo)
+}
+
+async function setNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
+  return await setNodePropValueConditionally(maps, { $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ] }, nodePropKey, nodePropValueTo)
 }
 
 async function createNodeProp (maps, nodePropKey, nodePropValue) {
@@ -550,7 +556,8 @@ module.exports = {
   deleteFrame,
   mergeMap,
   changeNodePropKey,
-  changeNodePropValueConditionally,
+  setNodePropValueIfMissing,
+  setNodePropValueBasedOnPreviousValue,
   createNodeProp,
   removeNodeProp,
   deleteUnusedMaps

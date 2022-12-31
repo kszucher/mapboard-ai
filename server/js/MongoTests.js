@@ -183,9 +183,14 @@ async function mongoTests(cmd) {
         dbExpected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
         break
       }
-      case 'changeNodePropValueTest': {
+      case 'setNodePropValueIfMissingTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {} ], [ {}, {a: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {b: 'x'} ], [ {b: 'x'}, {a: 'o', b: 'x'} ] ] )
+        break
+      }
+      case 'setNodePropValueBasedOnPreviousValueTest': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-        dbExpected = getMultiMapMultiSource( [ [ {a: 'm'} ], [ {a: 'm'}, {b: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
         break
       }
       case 'createNodePropTest': {
@@ -282,13 +287,13 @@ async function mongoTests(cmd) {
       case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'mapMergeTest': await MongoMutations.mergeMap(maps, 'map1', 'map', argument ); break
       case 'changeNodePropKeyTest':  await MongoMutations.changeNodePropKey(maps, 'a', 'aNew' ); break
-      case 'changeNodePropValueTest':  await MongoMutations.changeNodePropValueConditionally(maps, 'a', 'o', 'm' ); break
+      case 'setNodePropValueIfMissingTest':  await MongoMutations.setNodePropValueIfMissing(maps, 'b', 'x' ); break
+      case 'setNodePropValueBasedOnPreviousValueTest':  await MongoMutations.setNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'removeNodePropTest':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
       case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
       case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
       case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
-
       case 'deleteUnusedMapsTest': await MongoMutations.deleteUnusedMaps(users, maps); break
     }
     if ([
@@ -342,12 +347,13 @@ async function allTest () {
   // await mongoTests('deleteFrameTest4')
   // await mongoTests('mapMergeTest')
   // await mongoTests('changeNodePropKeyTest')
-  // await mongoTests('changeNodePropValueTest')
+  await mongoTests('setNodePropValueIfMissingTest')
+  await mongoTests('setNodePropValueBasedOnPreviousValueTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('removeNodePropTest')
-  await mongoTests('countNodesTest')
-  await mongoTests('countNodesBasedOnNodePropExistenceTest')
-  await mongoTests('countNodesBasedOnNodePropValueTest')
+  // await mongoTests('countNodesTest')
+  // await mongoTests('countNodesBasedOnNodePropExistenceTest')
+  // await mongoTests('countNodesBasedOnNodePropValueTest')
   // await mongoTests('deleteUnusedMapsTest')
 }
 

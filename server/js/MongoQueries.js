@@ -75,7 +75,12 @@ async function countNodesBasedOnNodePropCondition (maps, condition) {
             $reduce: {
               input: {
                 $map: {
-                  input: { $concatArrays: [ '$dataHistory', '$dataFrames' ] },
+                  input: {
+                    $concatArrays: [
+                      '$dataHistory',
+                      '$dataFrames'
+                    ]
+                  },
                   as: "map",
                   in: {
                     $reduce: {
