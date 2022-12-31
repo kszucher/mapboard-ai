@@ -2,18 +2,22 @@ const { baseUri } = require('./MongoSecret')
 const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
 const { countNodes, countNodesBasedOnNodePropExistence, countNodesBasedOnNodePropValue } = require('./MongoQueries')
-const { setNodePropValueIfMissing, setNodePropValueBasedOnPreviousValue } = require('./MongoMutations')
+const { setNodePropValueIfMissing, setNodePropValueBasedOnPreviousValue, removeNodeProp } = require('./MongoMutations')
 const MongoClient = require('mongodb').MongoClient
 
 async function mongoStagingCommands (users, maps, shares) {
-  const count = await countNodes(maps)
-  console.log(count)
-  const countWithPath = await countNodesBasedOnNodePropExistence(maps, 'path')
-  console.log(countWithPath)
-  const countWithPathValue = await countNodesBasedOnNodePropValue(maps, 'path', ['g'])
-  console.log(countWithPathValue)
+  console.log(await countNodes(maps))
+  console.log(await countNodesBasedOnNodePropExistence(maps, 'svgId'))
+  console.log(await countNodesBasedOnNodePropExistence(maps, 'divId'))
+  console.log(await countNodesBasedOnNodePropExistence(maps, 'nodeId'))
 
-  // await setNodePropValueIfMissing(maps, 'path', ['m'])
+  // const countWithPathValue = await countNodesBasedOnNodePropValue(maps, 'path', ['g'])
+  // console.log(countWithPathValue)
+
+
+  // await removeNodeProp(maps, 'divId')
+  // await removeNodeProp(maps, 'svgId')
+
   // await setNodePropValueBasedOnPreviousValue(maps, 'path', ['m'], ['g'])
 }
 

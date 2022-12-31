@@ -64,7 +64,7 @@ function getDefaultMap (mapName, ownerUser, path) {
       [
         // TODO: we need to create nodeId for ALL of these things
         // note: adding nodeId is required here as mongo operations depend on their existence
-        {path: ['m']}, // TODO change this to 'g'
+        {path: ['g']},
         {path: ['r', 0], content: mapName, selected: 1},
         {path: ['r', 0, 'd', 0]},
         {path: ['r', 0, 'd', 1]},
