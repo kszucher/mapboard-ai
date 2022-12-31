@@ -1,12 +1,12 @@
 const MongoQueries = require("./MongoQueries");
 const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsMerge')
+const { baseUri } = require('./MongoSecret')
 
 const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
 
 const MongoClient = require('mongodb').MongoClient;
-const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`;
 
 const getMultiMapMultiSource = (mapArray) => {
   const multiSource = { dataFrames: mapArray, dataHistory: mapArray }
@@ -15,7 +15,7 @@ const getMultiMapMultiSource = (mapArray) => {
 
 let db, users, maps, shares
 async function mongoTests(cmd) {
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
+  const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true, });
   try {
     await client.connect();
     db = client.db("app_dev_mongo")

@@ -4,9 +4,9 @@ const cors = require('cors')
 const app = express()
 const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
-const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries");
+const { baseUri } = require('./MongoSecret')
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -60,10 +60,7 @@ function getDefaultMap (mapName, ownerUser, path) {
   return {
     dataHistory: [
       [
-        // TODO:
-        //  path = [] node SHOULD have a nodeId for change tracking
-        //  [R?D?], [?C??] nodes should probably NOT be saved (so there is always a nodeId for change tracking)
-        {path: ['m']},
+        {path: ['m']}, // TODO change this to 'g'
         {path: ['r', 0], content: mapName, selected: 1},
         {path: ['r', 0, 'd', 0]},
         {path: ['r', 0, 'd', 1]},
@@ -438,7 +435,7 @@ app.post('/beta', function (req, res) {
   })
 })
 
-MongoClient.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
+MongoClient.connect(baseUri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
   if (err) {
     console.log(err)
   } else {

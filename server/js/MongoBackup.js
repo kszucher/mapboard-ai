@@ -1,4 +1,5 @@
 const spawn = require('await-spawn')
+const { baseUri } = require('./MongoSecret')
 
 const spawnProcess = async (mongoCmd, mongoParams) => {
   console.log(`process ${mongoCmd} started`);
@@ -12,7 +13,6 @@ const spawnProcess = async (mongoCmd, mongoParams) => {
 }
 
 const mongoProcess = async (mongoCmd, endPoints, date) => {
-  let baseUri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`
   let basePath = 'C:/Users/Kryss/Dropbox/mapboard/mongobackup';
   const mongoParams = [
     `--uri=${baseUri}/${mongoCmd === 'mongodump' ? endPoints.source : endPoints.target}`,
