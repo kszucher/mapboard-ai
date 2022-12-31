@@ -14,7 +14,7 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
 }
 
 export const structMove = (m: any, target: any, direction?: Dir) => {
-  const { sc } = m
+  const { sc } = m.g
   const  { structSelectedPathList, lastPath, sameParentPath } = sc
   let ln = getMapData(m, lastPath)
   if (target === 'struct2struct') {
@@ -110,7 +110,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
 }
 
 export const cellRowMove = (m: any, direction: Dir) => {
-  const { sc } = m
+  const { sc } = m.g
   const  { sameParentPath, cellRowSelected, cellRow } = sc
   let sameParent = getMapData(m, sameParentPath)
   if (direction === Dir.U && cellRowSelected && cellRow > 0) {
@@ -124,7 +124,7 @@ export const cellRowMove = (m: any, direction: Dir) => {
 }
 
 export const cellColMove = (m: any, direction: Dir) => {
-  const { sc } = m
+  const { sc } = m.g
   const  { sameParentPath, cellColSelected, cellCol } = sc
   let sameParent = getMapData(m, sameParentPath)
   if (direction === Dir.I && cellColSelected && cellCol > 0) {

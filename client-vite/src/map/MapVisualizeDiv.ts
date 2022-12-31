@@ -5,9 +5,9 @@ export const mapVisualizeDiv = {
   start: (m: any, colorMode: string) => {
     const mapDiv: HTMLElement | null = document.getElementById('mapDiv')
     // @ts-ignore
-    mapDiv.style.width = "" + m.mapWidth + "px"
+    mapDiv.style.width = "" + m.g.mapWidth + "px"
     // @ts-ignore
-    mapDiv.style.height = "" + m.mapHeight + "px"
+    mapDiv.style.height = "" + m.g.mapHeight + "px"
     const mapHolderDiv : HTMLElement | null = document.getElementById('mapHolderDiv')
     // @ts-ignore
     mapHolderDiv.focus()
@@ -21,10 +21,10 @@ export const mapVisualizeDiv = {
       let styleData = {
         left:                       1 + cn.nodeStartX + 'px',
         top:                        1 + cn.nodeY - cn.selfH / 2 + 'px',
-        minWidth:                   (m.density === 'large'?  0 : -3) + cn.selfW - m.padding - 2  + 'px',
-        minHeight:                  (m.density === 'large'? -2 : -1) + cn.selfH - m.padding      + 'px',
-        paddingLeft:                (m.density === 'large'?  0 :  3) +            m.padding - 2  + 'px',
-        paddingTop:                 (m.density === 'large'?  0 :  0) +            m.padding - 2  + 'px',
+        minWidth:                   (m.g.density === 'large'?  0 : -3) + cn.selfW - m.g.padding - 2  + 'px',
+        minHeight:                  (m.g.density === 'large'? -2 : -1) + cn.selfH - m.g.padding      + 'px',
+        paddingLeft:                (m.g.density === 'large'?  0 :  3) +            m.g.padding - 2  + 'px',
+        paddingTop:                 (m.g.density === 'large'?  0 :  0) +            m.g.padding - 2  + 'px',
         position:                   'absolute',
         fontSize:                   cn.textFontSize + 'px',
         fontFamily:                 'Roboto',

@@ -36,7 +36,7 @@ export const WindowListeners: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editedNodeId)
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
   const tm = useSelector((state: RootStateOrAny) => state.tempMap)
-  const { density, alignment } = m || {
+  const { density, alignment } = m?.g || {
     density: mapProps.saveOptional.density,
     alignment: mapProps.saveOptional.alignment,
   }

@@ -4,13 +4,8 @@ let dcm = []
 
 export const mapDisassembly = {
   start: (cn: any) => {
-    dcm = [{}]
-    for (const prop in cn) {
-      if (prop !== 'r') {
-        // @ts-ignore
-        dcm[0][prop] = cn[prop] // TODO change this so this is under 'g' LATER
-      }
-    }
+    dcm = []
+    dcm.push(copy(cn.g))
     mapDisassembly.iterate(cn.r[0])
     return dcm
   },

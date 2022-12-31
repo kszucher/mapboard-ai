@@ -50,9 +50,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
       'startEdit',
       'typeText'
     ].includes(action) &&
-    getMapData(nm, nm.sc.lastPath).contentType !== 'image' &&
-    getMapData(nm, nm.sc.lastPath).hasCell == false ) {
-    dispatch(actions.setEditedNodeId(getMapData(nm, nm.sc.lastPath).nodeId))
+    getMapData(nm, nm.g.sc.lastPath).contentType !== 'image' &&
+    getMapData(nm, nm.g.sc.lastPath).hasCell == false ) {
+    dispatch(actions.setEditedNodeId(getMapData(nm, nm.g.sc.lastPath).nodeId))
   } else {
     dispatch(actions.setEditedNodeId(''))
   }

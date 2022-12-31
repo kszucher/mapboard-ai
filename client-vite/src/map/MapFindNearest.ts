@@ -12,7 +12,7 @@ export const mapFindNearest = {
     let moveTargetPath = []
     let moveTargetIndex = 0
     let moveData = []
-    let lastSelectedPath = m.sc.structSelectedPathList[0]
+    let lastSelectedPath = m.g.sc.structSelectedPathList[0]
     let lastSelected = getMapData(m, lastSelectedPath)
     if (!(lastSelected.nodeStartX < toX &&
       toX < lastSelected.nodeEndX &&

@@ -35,7 +35,7 @@ export const mapMeasure = {
       if (cn.spacingActivated) {
         cn.familyH += (sCount - 1)*cn.spacing
       }
-      cn.familyW = sMaxW + m.sLineDeltaXDefault
+      cn.familyW = sMaxW + m.g.sLineDeltaXDefault
     }
     if (sCount > 1) {
       params.hasMultipleChild = 1
@@ -52,7 +52,7 @@ export const mapMeasure = {
             mapMeasure.iterate(m, cn.c[i][j], params)
             maxCellHeightMat[i][j] = cn.c[i][j].maxH
             maxCellWidthMat[i][j] = cn.c[i][j].maxW
-            if (cn.c[i][j].maxH > m.defaultH) {
+            if (cn.c[i][j].maxH > m.g.defaultH) {
               isCellSpacingActivated = 1
             }
           }
@@ -114,16 +114,16 @@ export const mapMeasure = {
           }
         }
         // not dependent on change
-        let paddingW = m.padding*2
-        let paddingH = m.padding*2
+        let paddingW = m.g.padding*2
+        let paddingH = m.g.padding*2
         let densityW = 0
         let densityH = 0
         if (cn.contentType === 'text') {
-          densityW = m.density === 'large' ? 0 : 8
-          densityH = m.density === 'large' ? 1 : 2
+          densityW = m.g.density === 'large' ? 0 : 8
+          densityH = m.g.density === 'large' ? 1 : 2
         }
         cn.selfW = (cn.dimW > 20 ? cn.dimW : 20) + paddingW + densityW
-        cn.selfH = cn.dimH/17 <= 1 ? m.defaultH + densityH : cn.dimH + paddingH + densityH
+        cn.selfH = cn.dimH/17 <= 1 ? m.g.defaultH + densityH : cn.dimH + paddingH + densityH
       }
     }
     cn.maxW = cn.selfW + cn.familyW

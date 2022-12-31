@@ -4,7 +4,7 @@ import { getMapData } from '../core/MapFlow'
 export const mapExtractSelection = {
   start: (m: any) => {
     mapExtractSelection.iterate(m, m.r[0])
-    const { sc } = m
+    const { sc } = m.g
     // indicators
     if (sc.structSelectedPathList.length) {
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
@@ -75,9 +75,9 @@ export const mapExtractSelection = {
   iterate: (m: any, cn: any) => {
     if (cn.selected) {
       if (Number.isInteger(cn.path[cn.path.length - 2])) {
-        m.sc.cellSelectedPathList.push(cn.path.slice(0)) // naturally ascending
+        m.g.sc.cellSelectedPathList.push(cn.path.slice(0)) // naturally ascending
       } else {
-        m.sc.structSelectedPathList.push(cn.path.slice(0))
+        m.g.sc.structSelectedPathList.push(cn.path.slice(0))
       }
     }
     cn.d.map((i: any) => mapExtractSelection.iterate(m, i))

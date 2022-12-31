@@ -62,4 +62,4 @@ const mongoBackup = async (mode) => {
   }
 }
 
-mongoBackup('prod2file2dev');
+mongoBackup('dev2file');

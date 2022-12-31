@@ -200,7 +200,7 @@ function* mapSaga () {
           break
         }
         case 'CREATE_MAP_IN_MAP': {
-          const {lastPath} = m.sc
+          const {lastPath} = m.g.sc
           payload = {...payload, lastPath, newMapName: getMapData(m, lastPath).content}
           break
         }

@@ -37,14 +37,14 @@ const clearSelection = (m: any) => {
 }
 
 const updateParentLastSelectedChild = (m: any, ln: any) => {
-  if (!m.sc.isRootIncluded) {
+  if (!m.g.sc.isRootIncluded) {
     let pn = getMapData(m, ln.parentPath)
     pn.lastSelectedChild = ln.index
   }
 }
 
 export const mapReducer = (m: any, action: any, payload: any) => {
-  const { sc } = m
+  const { sc } = m.g
   let ln = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
     ln.content = payload.contentToSave
@@ -55,11 +55,11 @@ export const mapReducer = (m: any, action: any, payload: any) => {
   switch (action) {
     // VIEW
     case 'changeDensity': {
-      m.density = m.density === 'small' ? 'large' : 'small'
+      m.g.density = m.g.density === 'small' ? 'large' : 'small'
       break
     }
     case 'changeAlignment': {
-      m.alignment = m.alignment === 'centered' ? 'adaptive' : 'centered'
+      m.g.alignment = m.g.alignment === 'centered' ? 'adaptive' : 'centered'
       break
     }
     case 'moveTargetPreview': {
@@ -157,8 +157,8 @@ export const mapReducer = (m: any, action: any, payload: any) => {
         clearSelection(m)
       }
       let toPath = [...sc.lastPath]
-      if (payload.direction === Dir.U) {toPath = m.sc.geomHighPath}
-      else if (payload.direction === Dir.D) {toPath = m.sc.geomLowPath}
+      if (payload.direction === Dir.U) {toPath = sc.geomHighPath}
+      else if (payload.direction === Dir.D) {toPath = sc.geomLowPath}
       else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
       else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
       getMapData(m, structNavigate(m, toPath, payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
@@ -390,7 +390,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
     // FORMAT
     case 'setFormatParams': {
       // @ts-ignore
-      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} = {...m.nc, ...payload}
+      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} = {...m.g.nc, ...payload}
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         const cn = getMapData(m, sc.structSelectedPathList[i])
         const props = {
@@ -477,7 +477,7 @@ const redrawStep = (m: any, colorMode: any, isEditing: boolean, shouldAnimationI
 }
 
 export const reDraw = (m: any, colorMode: any, isEditing: boolean) => {
-  if (m.animationRequested) {
+  if (m.g.animationRequested) {
     redrawStep(m, colorMode, isEditing, true)
   }
   redrawStep(m, colorMode, isEditing, false)

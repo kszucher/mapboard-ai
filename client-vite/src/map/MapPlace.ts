@@ -1,7 +1,7 @@
 export const mapPlace = {
   start: (m: any) => {
     const cn = m.r[0]
-    const {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m
+    const {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m.g
     const leftTaskWidth = cn.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0
     const leftMapWidth = cn.d[1].s.length > 0 ? sLineDeltaXDefault + cn.d[1].familyW : 0
     const rightMapWidth = cn.d[0].s.length > 0 ? sLineDeltaXDefault + cn.d[0].familyW : 0
@@ -42,8 +42,8 @@ export const mapPlace = {
     const leftMapHeight =  cn.d.length > 1? cn.d[1].familyH : 0
     const minHeight = Math.max(...[rightMapHeight, leftMapHeight])
     const mapHeight = minHeight + 60
-    m.mapWidth = mapWidth
-    m.mapHeight = mapHeight
+    m.g.mapWidth = mapWidth
+    m.g.mapHeight = mapHeight
     cn.parentNodeStartX = mapStartCenterX - cn.selfW / 2 + 1
     cn.parentNodeEndX = mapStartCenterX + cn.selfW / 2 + 1
     cn.parentNodeY = 0
@@ -77,7 +77,7 @@ export const mapPlace = {
           }
         } else if (cn.type === 'cell') {
           if (cn.parentParentType === 'struct' || cn.parentParentType === 'dir') {
-            let diff = m.sLineDeltaXDefault - 20
+            let diff = m.g.sLineDeltaXDefault - 20
             if (cn.path[3] === 0) {
               cn.nodeStartX = cn.parentNodeEndX + cn.lineDeltaX + diff
               cn.nodeEndX = cn.nodeStartX + cn.selfW
@@ -133,7 +133,7 @@ export const mapPlace = {
       cn.s[i].parentNodeStartX = cn.nodeStartX
       cn.s[i].parentNodeEndX = cn.nodeEndX
       cn.s[i].parentNodeY = cn.nodeY
-      cn.s[i].lineDeltaX = m.sLineDeltaXDefault
+      cn.s[i].lineDeltaX = m.g.sLineDeltaXDefault
       cn.s[i].lineDeltaY = elapsedY + cn.s[i].maxH / 2 - cn.familyH / 2
       if (i === 0 && cn.isTop) cn.s[i].isTop = 1
       if (i === sCount - 1 && cn.isBottom === 1) cn.s[i].isBottom = 1

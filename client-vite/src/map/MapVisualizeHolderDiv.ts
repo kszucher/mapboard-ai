@@ -4,7 +4,7 @@ import {scrollTo} from "../core/DomUtils";
 
 export const orient = (m, action, payload) => {
   const mapHolderDiv = document.getElementById('mapHolderDiv')
-  const currScrollLeft = (window.innerWidth + m.mapWidth) / 2
+  const currScrollLeft = (window.innerWidth + m.g.mapWidth) / 2
   if (action === 'shouldLoad') {
     mapHolderDiv.scrollLeft = currScrollLeft
     mapHolderDiv.scrollTop = window.innerHeight - 48 * 2

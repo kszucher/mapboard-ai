@@ -5,20 +5,20 @@ export const mapInit = {
   start: (m: any) => {
     // note: no need for saveAlways, as these values should always be pre-made by the server
     for (const prop in mapProps.saveOptional) {
-      if (!m.hasOwnProperty(prop)) {
+      if (!m.g.hasOwnProperty(prop)) {
         // @ts-ignore
-        m[prop] = copy(mapProps.saveOptional[prop])
+        m.g[prop] = copy(mapProps.saveOptional[prop])
       }
     }
     for (const prop in mapProps.saveNeverInitAlways) {
       // @ts-ignore
-      m[prop] = copy(mapProps.saveNeverInitAlways[prop])
+      m.g[prop] = copy(mapProps.saveNeverInitAlways[prop])
     }
-    m.sLineDeltaXDefault = m.density === 'large' ? 30 : 20
-    m.padding = m.density === 'large' ? 8 : 3
-    m.defaultH = m.density === 'large' ? 30 : 20 // 30 = 14 + 2*8, 20 = 14 + 2*3
-    m.taskConfigD = m.density === 'large' ? 24 : 20
-    m.taskConfigWidth = m.taskConfigN * m.taskConfigD + (m.taskConfigN - 1) * m.taskConfigGap
+    m.g.sLineDeltaXDefault = m.g.density === 'large' ? 30 : 20
+    m.g.padding = m.g.density === 'large' ? 8 : 3
+    m.g.defaultH = m.g.density === 'large' ? 30 : 20 // 30 = 14 + 2*8, 20 = 14 + 2*3
+    m.g.taskConfigD = m.g.density === 'large' ? 24 : 20
+    m.g.taskConfigWidth = m.g.taskConfigN * m.g.taskConfigD + (m.g.taskConfigN - 1) * m.g.taskConfigGap
     mapInit.iterate(m, m.r[0])
   },
 

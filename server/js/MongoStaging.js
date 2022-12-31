@@ -2,15 +2,19 @@ const { baseUri } = require('./MongoSecret')
 const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
 const { countNodes, countNodesBasedOnNodePropExistence, countNodesBasedOnNodePropValue } = require('./MongoQueries')
+const { setNodePropValueIfMissing, setNodePropValueBasedOnPreviousValue } = require('./MongoMutations')
 const MongoClient = require('mongodb').MongoClient
 
 async function mongoStagingCommands (users, maps, shares) {
-  const count = await countNodes(maps) // 25983
+  const count = await countNodes(maps)
   console.log(count)
-  const countWithPath = await countNodesBasedOnNodePropExistence(maps, 'path') // 25919
+  const countWithPath = await countNodesBasedOnNodePropExistence(maps, 'path')
   console.log(countWithPath)
-  const countWithPathValue = await countNodesBasedOnNodePropValue(maps, 'path', ['m']) // 25919
+  const countWithPathValue = await countNodesBasedOnNodePropValue(maps, 'path', ['g'])
   console.log(countWithPathValue)
+
+  // await setNodePropValueIfMissing(maps, 'path', ['m'])
+  // await setNodePropValueBasedOnPreviousValue(maps, 'path', ['m'], ['g'])
 }
 
 async function mongoStaging() {

@@ -4,16 +4,15 @@ import {mapProps, nodeProps} from "../core/DefaultProps";
 
 export const mapDeInit = {
   start: (cn) => {
-    for (const prop in cn) {
-      if (prop !== 'r') {
-        // TODO add a case for saveAlways, so we do NOT delete nodeId...
-        if (mapProps.saveOptional.hasOwnProperty(prop)) {
-          if (cn[prop] === mapProps.saveOptional[prop]) {
-            delete cn[prop]
-          }
-        } else {
-          delete cn[prop]
+    for (const prop in cn.g) {
+      if (mapProps.saveAlways.hasOwnProperty(prop)) {
+
+      } else if (mapProps.saveOptional.hasOwnProperty(prop)) {
+        if (cn.g[prop] === mapProps.saveOptional[prop]) {
+          delete cn.g[prop]
         }
+      } else {
+        delete cn.g[prop]
       }
     }
     mapDeInit.iterate(cn.r[0])

@@ -31,7 +31,7 @@ export const ControlsRight: FC = () => {
   const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
-  const { density, alignment } = m
+  const { density, alignment } = m.g
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

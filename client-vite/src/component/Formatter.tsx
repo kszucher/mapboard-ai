@@ -17,7 +17,7 @@ export const Formatter: FC = () => {
   const formatMode = useSelector((state: RootStateOrAny) => state.formatMode)
 
   const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
-  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.nc
+  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.g.nc
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

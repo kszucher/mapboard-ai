@@ -70,15 +70,15 @@ export const mapVisualizeSvg = {
     const moveTarget = getMoveTarget()
     const selectTarget = getSelectTarget()
     const mapSvgOuter = document.getElementById('mapSvgOuter')
-    mapSvgOuter.style.width = 'calc(200vw + ' + m.mapWidth + 'px)'
-    mapSvgOuter.style.height = 'calc(200vh + ' + m.mapHeight + 'px)'
+    mapSvgOuter.style.width = 'calc(200vw + ' + m.g.mapWidth + 'px)'
+    mapSvgOuter.style.height = 'calc(200vh + ' + m.g.mapHeight + 'px)'
     const {SELECTION_COLOR, MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
     if (true) {
       updateMapSvgData('m', 'backgroundRect', {
         x: 0,
         y: 0,
-        width: m.mapWidth,
-        height: m.mapHeight,
+        width: m.g.mapWidth,
+        height: m.g.mapHeight,
         rx: 32,
         ry: 32,
         fill: MAP_BACKGROUND,
@@ -130,8 +130,8 @@ export const mapVisualizeSvg = {
         preventTransition: 1,
       })
     }
-    if (m.sc.structSelectedPathList.length && !editedPath.length) {
-      const cn = getMapData(m, m.sc.lastPath)
+    if (m.g.sc.structSelectedPathList.length && !editedPath.length) {
+      const cn = getMapData(m, m.g.sc.lastPath)
       const adjustedParams = getAdjustedParams(cn)
       const { dir, margin } = adjustedParams
       updateMapSvgData('m', 'selectionBorderMain', {
@@ -186,7 +186,7 @@ export const mapVisualizeSvg = {
         strokeWidth: cn.sBorderWidth,
       })
     }
-    if (conditions.selectionBorder && !isEqual(cn.path, m.sc.lastPath)) {
+    if (conditions.selectionBorder && !isEqual(cn.path, m.g.sc.lastPath)) {
       updateMapSvgData(cn.nodeId, 'selectionBorder', {
         path: getPolygonPath(getNodeVisParams(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
@@ -249,12 +249,12 @@ export const mapVisualizeSvg = {
           for (let j = 0; j < colCount; j++) {
             if (cn.c[i][j].selected) {
               let sx, sy, w, h
-              if (m.sc.cellRowSelected) {
+              if (m.g.sc.cellRowSelected) {
                 sx = nsx
                 sy = nsy + cn.sumMaxRowHeight[i]
                 w = cn.selfW
                 h = cn.sumMaxRowHeight[i+1] - cn.sumMaxRowHeight[i]
-              } else if (m.sc.cellColSelected) {
+              } else if (m.g.sc.cellColSelected) {
                 sx = nsx + dir*cn.sumMaxColWidth[j]
                 sy = nsy
                 w = cn.sumMaxColWidth[j+1] - cn.sumMaxColWidth[j]
@@ -287,7 +287,7 @@ export const mapVisualizeSvg = {
         }
     }
     if (conditions.task) {
-      const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m
+      const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m.g
       let startX
       if (cn.path.includes('c')) {
         let coverCellPath = cn.path.slice(0, cn.path.lastIndexOf('c'))

@@ -13,7 +13,7 @@ import {nodeProps} from "../src/core/DefaultProps";
 describe("Formatter test", () => {
   beforeEach(() => {
     const testMap = mapAssembly([
-      {path: ['m'], density: 'small'},
+      {path: ['g'], density: 'small'},
       {path: ['r', 0], content: 'Features'},
       {path: ['r', 0, 'd', 0]},
       {path: ['r', 0, 'd', 0, 's', 0], content: 'Texts', selected: 1},
@@ -46,7 +46,7 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'edge'}))
 
     const m = getMap()
-    const { nc } = m
+    const { nc } = m.g
     expect(nc).toEqual({
       selection: nodeProps.saveOptional['selection'],
       lineWidth: WidthTypes.w2,
@@ -72,7 +72,7 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'RESET'}))
 
     const m = getMap()
-    const { nc } = m
+    const { nc } = m.g
     expect(nc).toEqual({
       selection: nodeProps.saveOptional['selection'],
       lineWidth: nodeProps.saveOptional['lineWidth'],
