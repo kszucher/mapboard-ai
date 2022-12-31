@@ -8,6 +8,11 @@ const isEqual = (obj1, obj2) => {
 const MongoClient = require('mongodb').MongoClient;
 const uri = `mongodb+srv://admin:${encodeURIComponent('TNszfBws4@JQ8!t')}@cluster0.wbdxy.mongodb.net`;
 
+const getMultiMapMultiSource = (mapArray) => {
+  const multiSource = { dataFrames: mapArray, dataHistory: mapArray }
+  return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
+}
+
 let db, users, maps, shares
 async function mongoTests(cmd) {
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
@@ -166,15 +171,72 @@ async function mongoTests(cmd) {
         dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], frameSelected: 0 } ] }
         dbExpected = { maps: [ {_id: 'map1', dataFrames: [], frameSelected: null } ] }
         break
-      case 'changeNodePropTest': {
-        dbOriginal = { maps: [{ _id: 'map1', dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 's'} ] ] }] }
-        dbExpected = { maps: [{ _id: 'map1', dataFrames: [ [ {np: 'a'} ], [ {np: 'b'} ], [ {np: 'c'} ], [ {np: 't'} ] ] }] }
-        break
-      }
       case 'mapMergeTest': {
         dbOriginal = { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA ] }] }
         argument = mergeMutationB
         dbExpected= { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA, mergeResult ] }] }
+        break
+      }
+      case 'changeNodePropKeyTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
+        break
+      }
+      case 'changeNodePropValueTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {a: 'm'} ], [ {a: 'm'}, {b: 'o'} ] ] )
+        break
+      }
+      case 'createNodePropTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
+        break
+      }
+      case 'removeNodePropTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', npr: 'nvr'} ], [ {a: 'o', npr: 'nvr'}, {b: 'o', npr: 'nvr'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+        break
+      }
+      case 'countNodesTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
+        dbExpected = [{ _id: null, countPerAllMap: 16 }]
+        break
+      }
+      case 'countNodesBasedOnNodePropExistenceTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
+        dbExpected = [{ _id: null, countPerAllMap: 8 }]
+        break
+      }
+      case 'deleteUnusedMapsTest': {
+        dbOriginal = {
+          users: [
+            {_id: 'user1', tabMapIdList: ['map10', 'map20'] },
+            {_id: 'user2', tabMapIdList: ['map30'] }
+          ],
+          maps:  [
+            { _id: 'map10', path: ['map10'] },
+            { _id: 'map11', path: ['map10', 'map11'] },
+            { _id: 'map12', path: ['map10', 'map11', 'map12'] },
+            { _id: 'map20', path: ['map20'] },
+            { _id: 'map22', path: ['map20', 'map21', 'map22'] },
+            { _id: 'map30', path: ['map30'] },
+            { _id: 'map40', path: ['map40'] },
+            { _id: 'map41', path: ['map40', 'map41'] },
+          ]
+        }
+        dbExpected = {
+          users: [
+            {_id: 'user1', tabMapIdList: ['map10', 'map20'] } ,
+            {_id: 'user2', tabMapIdList: ['map30'] }
+          ],
+          maps:  [
+            { _id: 'map10', path: ['map10'] },
+            { _id: 'map11', path: ['map10', 'map11'] },
+            { _id: 'map12', path: ['map10', 'map11', 'map12'] },
+            { _id: 'map20', path: ['map20'] },
+            { _id: 'map30', path: ['map30'] },
+          ]
+        }
         break
       }
     }
@@ -204,12 +266,20 @@ async function mongoTests(cmd) {
       case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
-      case 'changeNodePropTest':  await MongoQueries.changeNodeProp(maps, 'map1', 'np', 's', 't' ); break
-      case 'mapMergeTest': await MongoQueries.mergeMap(maps, 'map1', argument ); break
+      case 'mapMergeTest': await MongoQueries.mergeMap(maps, 'map1', 'map', argument ); break
+      case 'changeNodePropKeyTest':  await MongoQueries.changeNodePropKey(maps, 'a', 'aNew' ); break
+      case 'changeNodePropValueTest':  await MongoQueries.changeNodePropValueConditionally(maps, 'a', 'o', 'm' ); break
+      case 'createNodePropTest':  await MongoQueries.createNodeProp(maps, 'npc', 'nvc' ); break
+      case 'removeNodePropTest':  await MongoQueries.removeNodeProp(maps, 'npr' ); break
+      case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
+      case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'c' ); break
+      case 'deleteUnusedMapsTest': await MongoQueries.deleteUnusedMaps(users, maps); break
     }
     if ([
       'nameLookupTest',
       'getUserSharesTest',
+      'countNodesTest',
+      'countNodesBasedOnNodePropExistenceTest'
     ].includes(cmd)) {
     } else {
       if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
@@ -252,8 +322,14 @@ async function allTest () {
   // await mongoTests('deleteFrameTest2')
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
-  // await mongoTests('changeNodePropTest')
-  await mongoTests('mapMergeTest')
+  // await mongoTests('mapMergeTest')
+  // await mongoTests('changeNodePropKeyTest')
+  // await mongoTests('changeNodePropValueTest')
+  // await mongoTests('createNodePropTest')
+  // await mongoTests('removeNodePropTest')
+  // await mongoTests('countNodesTest')
+  // await mongoTests('countNodesBasedOnNodePropExistenceTest')
+  // await mongoTests('deleteUnusedMapsTest')
 }
 
 allTest()

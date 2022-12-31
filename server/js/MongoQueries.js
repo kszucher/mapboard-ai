@@ -283,169 +283,389 @@ async function deleteFrame (maps, mapId) {
   )
 }
 
-async function changeNodeProp (maps, mapId, nodeProp, nodePropValFrom, nodePropValTo) {
-  await maps.updateOne(
-    { _id: mapId },
-    [{
-      $set: {
-        dataFrames: {
+async function mergeMap (
+  maps,
+  mapId,
+  mergeType, /* 'map' or 'node' */
+  mergeData /* map = array of nodes or node: { nodeId: 'string', linkType: 'string', link: 'string' } */
+) {
+  const newMap = mergeType === 'map'
+    ?  mergeData
+    : { $concatArrays: [ { $last: '$dataHistory' }, [ mergeData ] ] }
+  const getValuesByNodeIdAndNodePropId = (input, mutationId) => (
+    {
+      $objectToArray: {
+        $mergeObjects: {
           $map: {
-            input: "$dataFrames",
-            as: "map",
+            input: input,
+            as: "node",
             in: {
-              $map: {
-                input: "$$map",
-                as: "node",
-                in: {
-                  // LIMITATION: can not set KEY, only VALUE, but can set OTHER prop too
-                  $cond: {
-                    if: {
-                      $eq: [`$$node.${nodeProp}`, nodePropValFrom]
-                    },
-                    then: {
-                      $setField: {
-                        field: nodeProp,
-                        input: '$$node',
-                        value: nodePropValTo
-                      }
-                    },
-                    else: "$$node"
+              $arrayToObject: {
+                $map: {
+                  input: { $objectToArray: '$$node' },
+                  as: "nodeProp",
+                  in: {
+                    k: { $concat: ['$$node.n', '$$nodeProp.k'] },
+                    v: {
+                      nodeId: '$$node.n',
+                      nodePropId: "$$nodeProp.k",
+                      ['value' + mutationId]: "$$nodeProp.v",
+                    }
                   }
-                  // LIMITATION: can not set OTHER prop, only ME, but KEY too
-                  // $arrayToObject: {
-                  //   $filter: {
-                  //     input: {
-                  //       $map: {
-                  //         input: {
-                  //           $objectToArray: "$$node"
-                  //         },
-                  //         as: "nodeProp",
-                  //         in: {
-                  //           $cond: {
-                  //             if: {
-                  //               $eq: [ "$$nodeProp.v", nodePropValFrom ]
-                  //             },
-                  //             then: {
-                  //               $setField: {
-                  //                 field: "v", // improvement: this can change 'k' as key
-                  //                 input: '$$nodeProp',
-                  //                 value: nodePropValTo, // can be REMOVE that is filtered out
-                  //               }
-                  //             },
-                  //             else: "$$nodeProp"
-                  //           }
-                  //         }
-                  //       }
-                  //     },
-                  //     as: "nodeProp",
-                  //     cond: { $ne: [ "$$nodeProp.v", 'REMOVE' ] }
-                  //   }
-                  // }
                 }
               }
             }
           }
         }
       }
-    }]
+    }
   )
-}
-
-async function mergeMap (maps, mapId, mapData) {
-  let x = await maps.aggregate(
+  await maps.aggregate(
     [
+      { $match: { _id: mapId } },
       {
-        $match: { _id: mapId }
+        $facet: {
+          data: [],
+          groupResult: [
+            {
+              $set: { newMap }
+            },
+            {
+              $set: {
+                helperArray: {
+                  $concatArrays: [
+                    getValuesByNodeIdAndNodePropId(
+                      {
+                        $cond: {
+                          if: { $eq: [ { $size: "$dataHistory" }, 1 ] },
+                          then: { $last: "$dataHistory" },
+                          else: { $arrayElemAt: [ "$dataHistory", -2 ] }
+                        }
+                      }, 'O'),
+                    getValuesByNodeIdAndNodePropId({ $last: "$dataHistory" }, 'A'),
+                    getValuesByNodeIdAndNodePropId('$newMap', 'B')
+                  ]
+                }
+              }
+            },
+            { $unwind: '$helperArray' },
+            { $group: { _id: "$helperArray.k", nodePropInfo: { $mergeObjects: "$helperArray.v" } } },
+            { $sort: { '_id' : 1 } },
+            { $unwind: '$nodePropInfo' },
+            { $group: { _id: "$nodePropInfo.nodeId", nodePropInfoArray: { $push: "$nodePropInfo" } } },
+            { $sort: { '_id' : 1 } },
+          ]
+        }
       },
+      { $unwind: "$data", },
       {
         $set: {
-          helperArray: {
-            $objectToArray: {
-              $mergeObjects: {
+          "data.dataHistory": {
+            $concatArrays: [
+              "$data.dataHistory",
+              [{
                 $map: {
-                  input: mapData,
+                  input: '$groupResult',
                   as: "node",
                   in: {
                     $arrayToObject: {
-                      $map: {
+                      $filter: {
                         input: {
-                          $objectToArray: {
-                            $setField: {
-                              field: "n",
-                              input: '$$node',
-                              value: '$$REMOVE',
+                          $map: {
+                            input: '$$node.nodePropInfoArray',
+                            as: "npi",
+                            in: {
+                              $switch: {
+                                branches: [
+                                  {
+                                    case: {
+                                      $and: [
+                                        { $and: [ "$$npi.valueO", "$$npi.valueA", "$$npi.valueB" ] },
+                                        { $and: { $eq: [ "$$npi.valueO", "$$npi.valueA" ] } },
+                                        { $and: { $eq: [ "$$npi.valueO", "$$npi.valueB" ] } }
+                                      ]
+                                    },
+                                    then: { k: '$$npi.nodePropId', v: '$$npi.valueO' }
+                                  },
+                                  {
+                                    case: {
+                                      $and: [
+                                        { $and: [ "$$npi.valueO", "$$npi.valueA", "$$npi.valueB" ] },
+                                        { $and: { $eq: [ "$$npi.valueO", "$$npi.valueA" ] } },
+                                        { $and: { $not: { $eq: [ "$$npi.valueO", "$$npi.valueB" ] } } }
+                                      ]
+                                    },
+                                    then: { k: '$$npi.nodePropId', v: '$$npi.valueB' }
+                                  },
+                                  {
+                                    case: {
+                                      $and: [
+                                        { $and: [ "$$npi.valueO", "$$npi.valueA", "$$npi.valueB" ] },
+                                        { $and: { $not: { $eq: [ "$$npi.valueO", "$$npi.valueA" ] } } },
+                                      ]
+                                    },
+                                    then: { k: '$$npi.nodePropId', v: '$$npi.valueA' }
+                                  },
+                                  {
+                                    case: {
+                                      $and: [ { $not: "$$npi.valueO" }, "$$npi.valueA", { $not: "$$npi.valueB" } ]
+                                    },
+                                    then: { k: '$$npi.nodePropId', v: '$$npi.valueA' }
+                                  },
+                                  {
+                                    case: {
+                                      $and: [ { $not: '$$npi.valueO' }, { $not: "$$npi.valueA" }, "$$npi.valueB" ]
+                                    },
+                                    then: { k: '$$npi.nodePropId', v: '$$npi.valueB' }
+                                  }
+                                ],
+                                default: '$$REMOVE'
+                              }
                             }
                           }
                         },
-                        as: "nodeProp",
-                        in: {
-                          k: {
-                            $concat: ['$$node.n', '$$nodeProp.k']
+                        as: "elem",
+                        cond: { $ne: [ "$$elem", null ] }
+                      }
+                    }
+                  }
+                }
+              }]
+            ]
+          }
+        }
+      },
+      { $replaceRoot: { newRoot: "$data" }, },
+      { $merge: { into: "maps", on: "_id",  whenMatched: "replace", whenNotMatched: "insert" } }
+    ]
+  ).toArray()
+}
+
+async function changeNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
+  const setDataSource = (dataSource) => (
+    {
+      $set: {
+        [dataSource]: {
+          $map: {
+            input: `$${dataSource}`,
+            as: "map",
+            in: {
+              $map: {
+                input: "$$map",
+                as: "node",
+                in: {
+                  $arrayToObject: {
+                    $map: {
+                      input: {
+                        $objectToArray: "$$node"
+                      },
+                      as: "nodeProp",
+                      in: {
+                        $cond: {
+                          if: {
+                            $eq: [ "$$nodeProp.k", nodePropKeyFrom ]
                           },
-                          v: {
-                            nodeId: '$$node.n',
-                            nodePropId: "$$nodeProp.k",
-                            valueA: "$$nodeProp.v",
-                            // exists on base
-                            // is the same compared to base
-                          }
+                          then: {
+                            $setField: {
+                              field: "k",
+                              input: '$$nodeProp',
+                              value: nodePropKeyTo,
+                            }
+                          },
+                          else: "$$nodeProp"
                         }
                       }
                     }
                   }
                 }
               }
-            },
+            }
+          }
+        }
+      }
+    }
+  )
+  await maps.aggregate(
+    [
+      { ...setDataSource('dataFrames') },
+      { ...setDataSource('dataHistory') },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
+}
+
+async function changeNodePropValueConditionally (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
+  const setDataSource = (dataSource) => (
+    {
+      $set: {
+        [dataSource]: {
+          $map: {
+            input: `$${dataSource}`,
+            as: "map",
+            in: {
+              $map: {
+                input: "$$map",
+                as: "node",
+                in: {
+                  $cond: {
+                    if: {
+                      $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ]
+                    },
+                    then: {
+                      $setField: {
+                        field: nodePropKey,
+                        input: '$$node',
+                        value: nodePropValueTo
+                      }
+                    },
+                    else: "$$node"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  )
+  await maps.aggregate(
+    [
+      { ...setDataSource('dataFrames') },
+      { ...setDataSource('dataHistory') },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
+}
+
+async function createNodeProp (maps, nodePropKey, nodePropValue) {
+  const setDataSource = (dataSource) => (
+    {
+      $set: {
+        [dataSource]: {
+          $map: {
+            input: `$${dataSource}`,
+            as: "map",
+            in: {
+              $map: {
+                input: "$$map",
+                as: "node",
+                in: {
+                  $setField: {
+                    field: nodePropKey,
+                    input: '$$node',
+                    value: nodePropValue
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  )
+  await maps.aggregate(
+    [
+      { ...setDataSource('dataFrames') },
+      { ...setDataSource('dataHistory') },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
+}
+
+async function removeNodeProp (maps, nodePropKey) {
+  await createNodeProp(maps, nodePropKey, '$$REMOVE')
+}
+
+async function countNodes (maps) {
+  return await maps.aggregate(
+    [
+      {
+        $project: {
+          countPerMap: {
+            $reduce: {
+              input: {
+                $map: {
+                  input:  { $concatArrays: ['$dataHistory', '$dataFrames'] },
+                  as: "map",
+                  in: { $size: "$$map" }
+                }
+              },
+              initialValue: 0,
+              in: { $add : [ "$$value", { $toInt: "$$this" } ] }
+            }
           }
         }
       },
       {
-        $set: {
-          helperArray: {
-            $concatArrays: ['$helperArray',
-              [
-                {
-                  k: 'sa',
-                  v: {x: 0, y: 1}
+        $group: {
+          _id: null,
+          countPerAllMap: { $sum: "$countPerMap" } },
+      },
+    ]
+  ).toArray()
+}
+
+async function countNodesBasedOnNodePropExistence (maps, nodePropKey) {
+  return await maps.aggregate(
+    [
+      {
+        $project: {
+          countPerMap: {
+            $reduce: {
+              input: {
+                $map: {
+                  input: { $concatArrays: [ '$dataHistory', '$dataFrames' ] },
+                  as: "map",
+                  in: {
+                    $anyElementTrue: {
+                      $map: {
+                        input: "$$map",
+                        as: "node",
+                        in: { $ne: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] }
+                      }
+                    }
+                  }
                 }
-              ],
+              },
+              initialValue: 0,
+              in: { $add : [ "$$value", { $toInt: "$$this" } ] }
+            }
+          }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          countPerAllMap: { $sum: "$countPerMap" } },
+      },
+    ]
+  ).toArray()
+}
+
+async function deleteUnusedMaps(users, maps) {
+  const allTabMap = await users.distinct('tabMapIdList')
+  await maps.aggregate(
+    [
+      {
+        $match: {
+          $expr: {
+            $or: [
+              { $and: [ { $eq: [ { $size: '$path' }, 1 ] }, { $setIsSubset: [ '$path', allTabMap ] } ] },
+              { $gt: [ { $size: '$path' }, 1 ] }
             ]
           }
         }
       },
-      {
-        $group: { // this will solve everything with the accumulator function eventually...
-          // _id: {
-            _id: "$helperArray.k",
-            x: {$first: "$helperArray.k"}
-
-          // },
-          // inside: {'bbe': 4}
-          // x: {$mergeObjects: ["$helperArray.valueA", "$helperArray.valueA"]}
-          // valami: 4
-        }
-      },
-
-      // {
-      //   // $set: {
-      //   //   x: {
-      //       $group: {
-      //         "_id": {
-      //           "_id": "$_id",
-      //           // "arrId": "$arr._id"
-      //         }
-      //       }
-      //     // }
-      //   // }
-      // },
-
-
-      // {
-      //   $merge : { into: "maps", on: "_id",  whenMatched: "replace", whenNotMatched: "insert" }
-      // },
+      { $out: 'maps' }
     ]
-  ).toArray() // not sure why but it only merges with this
-  console.log(JSON.stringify(x, null,4))
+  ).toArray()
+  const allMapWithoutTabOrphans = await maps.distinct('_id')
+  await maps.aggregate(
+    [
+      { $match: { $expr: { $setIsSubset: [ '$path', allMapWithoutTabOrphans ] } } },
+      { $out: 'maps' }
+    ]
+  ).toArray()
 }
 
 module.exports = {
@@ -464,6 +684,12 @@ module.exports = {
   importFrame,
   duplicateFrame,
   deleteFrame,
-  changeNodeProp,
   mergeMap,
+  changeNodePropKey,
+  changeNodePropValueConditionally,
+  createNodeProp,
+  removeNodeProp,
+  countNodes,
+  countNodesBasedOnNodePropExistence,
+  deleteUnusedMaps
 }

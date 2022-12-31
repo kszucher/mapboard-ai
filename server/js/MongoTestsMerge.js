@@ -1,80 +1,80 @@
 const mergeBase = [
   {
+    a: 'vo',
     n: 's',
-    a: 'v1',
   },
   {
+    a: 'vo',
+    b: 'vo',
+    c: 'vo',
+    d: 'vo',
+    e: 'vo',
+    f: 'vo',
+    g: 'vo',
+    h: 'vo',
+    i: 'vo',
     n: 't',
-    a: 'v1',
-    b: 'v1',
-    c: 'v1',
-    d: 'v1',
-    e: 'v1',
-    f: 'v1',
-    g: 'v1',
-    h: 'v1',
-    i: 'v1'
   },
 ]
 
 const mergeMutationA = [
   {
+    a: 'vo',
     n: 's',
-    a: 'v1',
   },
   {
-    n: 't',
-    a: 'v1', // opA: keep
-    b: 'v1', // opA: keep
-    c: 'v1', // opA: keep
-    d: 'v2', // opA: change
-    e: 'v2', // opA: change
-    f: 'v2', // opA: change
+    a: 'vo', // opA: keep
+    b: 'vo', // opA: keep
+    c: 'vo', // opA: keep
+    d: 'va', // opA: change
+    e: 'va', // opA: change
+    f: 'va', // opA: change
     // g     // opA: remove
     // h     // opA: remove
     // i     // opA: remove
-    j: 'v1', // opA: add
+    j: 'va', // opA: add
+    n: 't',
   }
 ]
 
 const mergeMutationB = [
   {
+    a: 'vo',
     n: 's',
-    a: 'v1',
   },
   {
-    n: 't',
-    a: 'v1', // opB: keep
-    b: 'v3', // opB: change
+    a: 'vo', // opB: keep
+    b: 'vb', // opB: change
     // c     // opB: remove
-    d: 'v1', // opB: keep
-    e: 'v3', // opB: change
+    d: 'vo', // opB: keep
+    e: 'vb', // opB: change
     // f     // opB: remove
-    g: 'v1', // opB: keep
-    h: 'v3', // opB: change
+    g: 'vo', // opB: keep
+    h: 'vb', // opB: change
     // i     // opB: remove
-    k: 'v1', // opB: add
+    k: 'vb', // opB: add
+    n: 't',
   }
 ]
 
 const mergeResult = [
   {
+    a: 'vo',
     n: 's',
-    a: 'v1',
   },
   {
-    n: 't',
-    a: 'v1', // opA: keep       opB: keep     use B
-    b: 'v3', // opA: keep       opB: change   use B
+    a: 'vo', // opA: keep       opB: keep     use B
+    b: 'vb', // opA: keep       opB: change   use B
     // c     // opA: keep       opB: remove   rem
-    d: 'v2', // opA: change     opB: keep     use A
-    e: 'v2', // opA: change     opB: change   use A
+    d: 'va', // opA: change     opB: keep     use A
+    e: 'va', // opA: change     opB: change   use A
     // f     // opA: change     opB: remove   rem
     // g     // opA: remove     opB: keep     rem
     // h     // opA: remove     opB: change   rem
     // i     // opA: remove     opB: remove   rem
-    j: 'v1', // opA: add        opB: ''       use A
-    k: 'v1', // opA: ''         opB: add      use B
+    j: 'va', // opA: add        opB: ''       use A
+    k: 'vb', // opA: ''         opB: add      use B
+    n: 't',
   }
 ]
 
