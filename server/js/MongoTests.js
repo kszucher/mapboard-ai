@@ -345,7 +345,7 @@ async function allTest () {
   // await mongoTests('changeNodePropValueTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('removeNodePropTest')
-  // await mongoTests('countNodesTest')
+  await mongoTests('countNodesTest')
   await mongoTests('countNodesBasedOnNodePropExistenceTest')
   await mongoTests('countNodesBasedOnNodePropValueTest')
   // await mongoTests('deleteUnusedMapsTest')

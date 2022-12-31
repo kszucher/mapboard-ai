@@ -66,36 +66,7 @@ async function getUserShares(shares, userId) {
   return { shareDataExport, shareDataImport }
 }
 
-async function countNodes (maps) {
-  return await maps.aggregate(
-    [
-      {
-        $project: {
-          countPerMap: {
-            $reduce: {
-              input: {
-                $map: {
-                  input:  { $concatArrays: ['$dataHistory', '$dataFrames'] },
-                  as: "map",
-                  in: { $size: "$$map" }
-                }
-              },
-              initialValue: 0,
-              in: { $add : [ "$$value", { $toInt: "$$this" } ] }
-            }
-          }
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          countPerAllMap: { $sum: "$countPerMap" } },
-      },
-    ]
-  ).toArray()
-}
-
-async function countNodesBasedOnNodePropCondition (maps, nodePropKey, condition) {
+async function countNodesBasedOnNodePropCondition (maps, condition) {
   return await maps.aggregate(
     [
       {
@@ -136,12 +107,16 @@ async function countNodesBasedOnNodePropCondition (maps, nodePropKey, condition)
   ).toArray()
 }
 
+async function countNodes (maps) {
+  return await countNodesBasedOnNodePropCondition(maps, true)
+}
+
 async function countNodesBasedOnNodePropExistence (maps, nodePropKey) {
-  return await countNodesBasedOnNodePropCondition(maps, nodePropKey, { $ne: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] })
+  return await countNodesBasedOnNodePropCondition(maps, { $ne: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] })
 }
 
 async function countNodesBasedOnNodePropValue (maps, nodePropKey, nodePropValue) {
-  return await countNodesBasedOnNodePropCondition(maps, nodePropKey, { $eq: [ `$$node.${nodePropKey}`, nodePropValue ] })
+  return await countNodesBasedOnNodePropCondition(maps, { $eq: [ `$$node.${nodePropKey}`, nodePropValue ] })
 }
 
 module.exports = {
