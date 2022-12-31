@@ -1,10 +1,54 @@
 const { baseUri } = require('./MongoSecret')
 const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
+const { deleteUnusedMaps } = require('./MongoMutations')
 const MongoClient = require('mongodb').MongoClient
 
 async function mongoStagingCommands (users, maps, shares) {
-  
+
+
+
+  // adding path where missing
+  // await maps.aggregate(
+  //   [
+  //     {
+  //       $match: {
+  //         $expr: {
+  //           $eq: [{ $type: '$path' }, 'missing']
+  //         }
+  //       },
+  //     },
+  //     {
+  //       $set: {
+  //         path: ['$_id']
+  //       }
+  //     },
+  //     { $merge: 'maps' }
+  //   ]
+  // ).toArray()
+
+  // filling path where empty
+  // await maps.aggregate(
+  //   [
+  //     {
+  //       $match: {
+  //         $expr: {
+  //           $eq: [{ $size: '$path' }, 0]
+  //         }
+  //       },
+  //     },
+  //     {
+  //       $set: {
+  //         path: ['$_id']
+  //       }
+  //     },
+  //     { $merge: 'maps' }
+  //   ]
+  // ).toArray()
+
+
+  await deleteUnusedMaps(users, maps)
+
 }
 
 async function mongoStaging() {
