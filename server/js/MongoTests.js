@@ -1,12 +1,13 @@
 const MongoQueries = require("./MongoQueries");
+const MongoMutations = require("./MongoMutations");
+
 const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsMerge')
 const { baseUri } = require('./MongoSecret')
+const MongoClient = require('mongodb').MongoClient;
 
 const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
-
-const MongoClient = require('mongodb').MongoClient;
 
 const getMultiMapMultiSource = (mapArray) => {
   const multiSource = { dataFrames: mapArray, dataHistory: mapArray }
@@ -247,33 +248,33 @@ async function mongoTests(cmd) {
     switch(cmd) {
       case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList'); break
       case 'getUserSharesTest': result = await MongoQueries.getUserShares(shares, 'user1'); break
-      case 'replaceBreadcrumbsTest': await MongoQueries.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
-      case 'appendBreadcrumbsTest': await MongoQueries.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
-      case 'sliceBreadcrumbsTest': await MongoQueries.sliceBreadcrumbs(users, 'user1', 'map2' ); break
-      case 'deleteMapFromUsersTest': await MongoQueries.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
-      case 'deleteMapFromSharesTest': await MongoQueries.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
-      case 'moveUpMapInTabTest1': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
-      case 'moveUpMapInTabTest2': await MongoQueries.moveUpMapInTab(users, 'user1', 'mapMove'); break
-      case 'moveDownMapInTabTest1': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
-      case 'moveDownMapInTabTest2': await MongoQueries.moveDownMapInTab(users, 'user1', 'mapMove'); break
-      case 'openPrevFrameTest1': await MongoQueries.openPrevFrame(maps, 'map1'); break
-      case 'openPrevFrameTest2': await MongoQueries.openPrevFrame(maps, 'map1'); break
-      case 'openNextFrameTest1': await MongoQueries.openNextFrame(maps, 'map1'); break
-      case 'openNextFrameTest2': await MongoQueries.openNextFrame(maps, 'map1'); break
-      case 'importFrameTest': await MongoQueries.importFrame(maps, 'map1'); break
-      case 'duplicateFrameTest': await MongoQueries.duplicateFrame(maps, 'map1'); break
-      case 'deleteFrameTest1':  await MongoQueries.deleteFrame(maps, 'map1'); break
-      case 'deleteFrameTest2':  await MongoQueries.deleteFrame(maps, 'map1'); break
-      case 'deleteFrameTest3':  await MongoQueries.deleteFrame(maps, 'map1'); break
-      case 'deleteFrameTest4':  await MongoQueries.deleteFrame(maps, 'map1'); break
-      case 'mapMergeTest': await MongoQueries.mergeMap(maps, 'map1', 'map', argument ); break
-      case 'changeNodePropKeyTest':  await MongoQueries.changeNodePropKey(maps, 'a', 'aNew' ); break
-      case 'changeNodePropValueTest':  await MongoQueries.changeNodePropValueConditionally(maps, 'a', 'o', 'm' ); break
-      case 'createNodePropTest':  await MongoQueries.createNodeProp(maps, 'npc', 'nvc' ); break
-      case 'removeNodePropTest':  await MongoQueries.removeNodeProp(maps, 'npr' ); break
+      case 'replaceBreadcrumbsTest': await MongoMutations.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
+      case 'appendBreadcrumbsTest': await MongoMutations.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
+      case 'sliceBreadcrumbsTest': await MongoMutations.sliceBreadcrumbs(users, 'user1', 'map2' ); break
+      case 'deleteMapFromUsersTest': await MongoMutations.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
+      case 'deleteMapFromSharesTest': await MongoMutations.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
+      case 'moveUpMapInTabTest1': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
+      case 'moveUpMapInTabTest2': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
+      case 'moveDownMapInTabTest1': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
+      case 'moveDownMapInTabTest2': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
+      case 'openPrevFrameTest1': await MongoMutations.openPrevFrame(maps, 'map1'); break
+      case 'openPrevFrameTest2': await MongoMutations.openPrevFrame(maps, 'map1'); break
+      case 'openNextFrameTest1': await MongoMutations.openNextFrame(maps, 'map1'); break
+      case 'openNextFrameTest2': await MongoMutations.openNextFrame(maps, 'map1'); break
+      case 'importFrameTest': await MongoMutations.importFrame(maps, 'map1'); break
+      case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'map1'); break
+      case 'deleteFrameTest1':  await MongoMutations.deleteFrame(maps, 'map1'); break
+      case 'deleteFrameTest2':  await MongoMutations.deleteFrame(maps, 'map1'); break
+      case 'deleteFrameTest3':  await MongoMutations.deleteFrame(maps, 'map1'); break
+      case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
+      case 'mapMergeTest': await MongoMutations.mergeMap(maps, 'map1', 'map', argument ); break
+      case 'changeNodePropKeyTest':  await MongoMutations.changeNodePropKey(maps, 'a', 'aNew' ); break
+      case 'changeNodePropValueTest':  await MongoMutations.changeNodePropValueConditionally(maps, 'a', 'o', 'm' ); break
+      case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
+      case 'removeNodePropTest':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
       case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
       case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'c' ); break
-      case 'deleteUnusedMapsTest': await MongoQueries.deleteUnusedMaps(users, maps); break
+      case 'deleteUnusedMapsTest': await MongoMutations.deleteUnusedMaps(users, maps); break
     }
     if ([
       'nameLookupTest',
@@ -306,6 +307,7 @@ async function allTest () {
   // await mongoTests('replaceBreadcrumbsTest')
   // await mongoTests('appendBreadcrumbsTest')
   // await mongoTests('sliceBreadcrumbsTest')
+  // TODO: appendTabsReplaceBreadcrumbsTest
   // await mongoTests('deleteMapFromUsersTest')
   // await mongoTests('deleteMapFromSharesTest')
   // await mongoTests('moveUpMapInTabTest1')

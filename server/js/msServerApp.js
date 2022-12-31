@@ -6,6 +6,8 @@ const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries");
+const MongoMutations = require("./MongoMutations");
+
 const { baseUri } = require('./MongoSecret')
 
 const transporter = nodemailer.createTransport({
@@ -60,6 +62,8 @@ function getDefaultMap (mapName, ownerUser, path) {
   return {
     dataHistory: [
       [
+        // TODO: we need to create nodeId for ALL of these things
+        // note: adding nodeId is required here as mongo operations depend on their existence
         {path: ['m']}, // TODO change this to 'g'
         {path: ['r', 0], content: mapName, selected: 1},
         {path: ['r', 0, 'd', 0]},
@@ -148,21 +152,21 @@ async function resolveType(req, userId) {
     }
     case 'OPEN_MAP_FROM_TAB': { // MUTATION
       const mapId = ObjectId(req.payload.mapId)
-      await MongoQueries.replaceBreadcrumbs(users, userId, mapId)
+      await MongoMutations.replaceBreadcrumbs(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
       return { error: '', data: { ...userInfo, ...mapInfo } }
     }
     case 'OPEN_MAP_FROM_BREADCRUMBS': { // MUTATION
       const mapId = ObjectId(req.payload.mapId)
-      await MongoQueries.sliceBreadcrumbs(users, userId, mapId)
+      await MongoMutations.sliceBreadcrumbs(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
       return { error: '', data: { ...userInfo, ...mapInfo } }
     }
     case 'OPEN_MAP_FROM_MAP': { // MUTATION
       const mapId = ObjectId(req.payload.mapId)
-      await MongoQueries.appendBreadcrumbs(users, userId, mapId)
+      await MongoMutations.appendBreadcrumbs(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
       return { error: '', data: { ...userInfo, ...mapInfo } }
@@ -190,7 +194,7 @@ async function resolveType(req, userId) {
     }
     case 'CREATE_MAP_IN_TAB': { // MUTATION
       const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
-      await MongoQueries.appendTabsReplaceBreadcrumbs(users, userId, mapId)
+      await MongoMutations.appendTabsReplaceBreadcrumbs(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
       return { error: '', data: { ...userInfo, ...mapInfo } }
@@ -202,21 +206,21 @@ async function resolveType(req, userId) {
       const iAmTheOwner = isEqual(ownerUser, userId)
       const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
       const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
-      await MongoQueries.deleteMapFromUsers(users, userFilter)
-      await MongoQueries.deleteMapFromShares(shares, shareFilter)
+      await MongoMutations.deleteMapFromUsers(users, userFilter)
+      await MongoMutations.deleteMapFromShares(shares, shareFilter)
       const userInfo = await getUserInfo(userId)
       const newMapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList[0], 'dataHistory')
       return { error: '', data: { ...userInfo, ...newMapInfo} }
     }
     case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
       const mapId = ObjectId(req.payload.mapId)
-      await MongoQueries.moveUpMapInTab(users, userId, mapId)
+      await MongoMutations.moveUpMapInTab(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       return { error: '', data: { ...userInfo } }
     }
     case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
       const mapId = ObjectId(req.payload.mapId)
-      await MongoQueries.moveDownMapInTab(users, userId, mapId)
+      await MongoMutations.moveDownMapInTab(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       return { error: '', data: { ...userInfo } }
     }
@@ -232,31 +236,31 @@ async function resolveType(req, userId) {
     }
     case 'OPEN_PREV_FRAME': { // MUTATION
       const mapId = ObjectId(req.payload.save.mapId)
-      await MongoQueries.openPrevFrame(maps, mapId)
+      await MongoMutations.openPrevFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'OPEN_NEXT_FRAME': { // MUTATION
       const mapId = ObjectId(req.payload.save.mapId)
-      await MongoQueries.openNextFrame(maps, mapId)
+      await MongoMutations.openNextFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'IMPORT_FRAME': { // MUTATION
       const mapId = ObjectId(req.payload.save.mapId)
-      await MongoQueries.importFrame(maps, mapId)
+      await MongoMutations.importFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'DUPLICATE_FRAME': { // MUTATION
       const mapId = ObjectId(req.payload.save.mapId)
-      await MongoQueries.duplicateFrame(maps, mapId)
+      await MongoMutations.duplicateFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'DELETE_FRAME': { // MUTATION
       const mapId = ObjectId(req.payload.mapId)
-      await MongoQueries.deleteFrame(maps, mapId)
+      await MongoMutations.deleteFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
@@ -306,7 +310,7 @@ async function resolveType(req, userId) {
         { returnDocument: 'after' }
       )).value
       const mapId = share.sharedMap
-      await MongoQueries.appendTabsReplaceBreadcrumbs(users, userId, mapId)
+      await MongoMutations.appendTabsReplaceBreadcrumbs(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
       const shareInfo = await getShareInfo(userId)
@@ -317,8 +321,8 @@ async function resolveType(req, userId) {
       const { shareUser, sharedMap } = await shares.findOne({ _id: shareId })
       const userFilter = { _id: shareUser, tabMapIdList: sharedMap }
       const shareFilter = { shareUser, sharedMap }
-      await MongoQueries.deleteMapFromUsers(users, userFilter)
-      await MongoQueries.deleteMapFromShares(shares, shareFilter)
+      await MongoMutations.deleteMapFromUsers(users, userFilter)
+      await MongoMutations.deleteMapFromShares(shares, shareFilter)
       const shareInfo = await getShareInfo(userId)
       return { error: '', data: { ...shareInfo } }
     }
