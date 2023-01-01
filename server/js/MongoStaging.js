@@ -9,6 +9,9 @@ async function mongoStagingCommands (users, maps, shares) {
   console.log(await MongoQueries.countNodesBasedOnNodePropExistence(maps, 'divId'))
   console.log(await MongoQueries.countNodesBasedOnNodePropExistence(maps, 'nodeId'))
 
+  console.log(JSON.stringify(await MongoQueries.findDeadLinks(maps), null, 4))
+
+
   // const countWithPathValue = await countNodesBasedOnNodePropValue(maps, 'path', ['g'])
   // console.log(countWithPathValue)
 

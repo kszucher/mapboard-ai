@@ -76,7 +76,7 @@ async function mongoTests(cmd) {
       }
       case 'countNodesTest': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
-        dbExpected = [{ _id: null, countPerAllMap: 16 }]
+        dbExpected = [{ _id: null, result: 16 }]
         break
       }
       case 'countNodesBasedOnNodePropExistenceTest': {
@@ -85,7 +85,7 @@ async function mongoTests(cmd) {
           [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
           [ {b: 'o'} ]
         ] )
-        dbExpected = [{ _id: null, countPerAllMap: 12 }]
+        dbExpected = [{ _id: null, result: 12 }]
         break
       }
       case 'countNodesBasedOnNodePropValueTest': {
@@ -94,7 +94,54 @@ async function mongoTests(cmd) {
           [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
           [ {b: 'o'} ]
         ] )
-        dbExpected = [{ _id: null, countPerAllMap: 8 }]
+        dbExpected = [{ _id: null, result: 8 }]
+        break
+      }
+      case 'findDeadLinksTest': {
+        dbOriginal = {
+          maps:  [
+            { _id: 'map10', dataHistory: [
+                [
+                  {},
+                  {content: 'map10name'},
+                  {linkType: 'internal', link: 'map11', content: 'map11link'},
+                  {linkType: 'internal', link: 'map12', content: 'map12link'},
+                  {linkType: 'internal', link: 'map12', content: 'map13link'}
+                ],
+                [
+                  {},
+                  {content: 'map10name'},
+                  {linkType: 'internal', link: 'map11', content: 'map11link'},
+                  {linkType: 'internal', link: 'map12', content: 'map12link'},
+                  {linkType: 'internal', link: 'map12', content: 'map13link'}
+                ],
+              ], dataFrames: [[]]
+            },
+            { _id: 'map11', dataHistory: [
+                [
+                  {},
+                  {content: 'map11name'},
+                  {linkType: 'internal', link: 'map111', content: 'map111link'}
+                ]
+              ], dataFrames: [[]]
+            }
+          ]
+        }
+        dbExpected = [
+          {
+            mapId: "map10",
+            info: [
+              { mapContent: "map10name", nodeContent: "map12link" },
+              { mapContent: "map10name", nodeContent: "map13link" }
+            ]
+          },
+          {
+            mapId: "map11",
+            info: [
+              { mapContent: "map11name", nodeContent: "map111link" }
+            ]
+          }
+        ]
         break
       }
       case 'replaceBreadcrumbsTest': {
@@ -269,6 +316,7 @@ async function mongoTests(cmd) {
       case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
       case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
       case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
+      case 'findDeadLinksTest': result = await MongoQueries.findDeadLinks(maps); break
       case 'replaceBreadcrumbsTest': await MongoMutations.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
       case 'appendBreadcrumbsTest': await MongoMutations.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
       case 'sliceBreadcrumbsTest': await MongoMutations.sliceBreadcrumbs(users, 'user1', 'map2' ); break
@@ -302,6 +350,7 @@ async function mongoTests(cmd) {
       'countNodesTest',
       'countNodesBasedOnNodePropExistenceTest',
       'countNodesBasedOnNodePropValueTest',
+      'findDeadLinksTest'
     ].includes(cmd)) {
     } else {
       if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
@@ -328,6 +377,7 @@ async function allTest () {
   // await mongoTests('countNodesTest')
   // await mongoTests('countNodesBasedOnNodePropExistenceTest')
   // await mongoTests('countNodesBasedOnNodePropValueTest')
+  await mongoTests('findDeadLinksTest')
   // await mongoTests('replaceBreadcrumbsTest')
   // await mongoTests('appendBreadcrumbsTest')
   // await mongoTests('sliceBreadcrumbsTest')
@@ -349,11 +399,11 @@ async function allTest () {
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
   // await mongoTests('mapMergeTest')
-  await mongoTests('createNodePropTest')
-  await mongoTests('createNodePropIfMissingTest')
-  await mongoTests('updateNodePropKeyTest')
-  await mongoTests('updateNodePropValueBasedOnPreviousValueTest')
-  await mongoTests('removeNodePropTest')
+  // await mongoTests('createNodePropTest')
+  // await mongoTests('createNodePropIfMissingTest')
+  // await mongoTests('updateNodePropKeyTest')
+  // await mongoTests('updateNodePropValueBasedOnPreviousValueTest')
+  // await mongoTests('removeNodePropTest')
   // await mongoTests('deleteUnusedMapsTest')
 }
 

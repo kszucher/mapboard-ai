@@ -373,7 +373,7 @@ async function mergeMap (
   ).toArray()
 }
 
-async function nodeFun (maps, fun) {
+async function nodeMapFun (maps, fun) {
   await maps.aggregate(
     [
       { $set: { dataFrames: { $map: { input: '$dataFrames', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
@@ -384,7 +384,7 @@ async function nodeFun (maps, fun) {
 }
 
 async function createNodeProp (maps, nodePropKey, nodePropValue) {
-  return await nodeFun(maps,
+  return await nodeMapFun(maps,
     {
       $setField: {
         field: nodePropKey,
@@ -396,7 +396,7 @@ async function createNodeProp (maps, nodePropKey, nodePropValue) {
 }
 
 async function createNodePropIfMissing (maps, nodePropKey, nodePropValue) {
-  return await nodeFun(maps,
+  return await nodeMapFun(maps,
     {
       $cond: {
         if: { $eq: [{ $type: `$$node.${nodePropKey}` }, 'missing'] },
@@ -414,7 +414,7 @@ async function createNodePropIfMissing (maps, nodePropKey, nodePropValue) {
 }
 
 async function updateNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
-  return await nodeFun(maps,
+  return await nodeMapFun(maps,
     {
       $arrayToObject: {
         $map: {
@@ -444,7 +444,7 @@ async function updateNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
 }
 
 async function updateNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
-  return await nodeFun(maps,
+  return await nodeMapFun(maps,
     {
       $cond: {
         if: { $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ] },
@@ -462,7 +462,7 @@ async function updateNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodeP
 }
 
 async function removeNodeProp (maps, nodePropKey) {
-  return await nodeFun(maps,
+  return await nodeMapFun(maps,
     {
       $setField: {
         field: nodePropKey,
