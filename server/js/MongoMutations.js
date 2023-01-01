@@ -373,7 +373,56 @@ async function mergeMap (
   ).toArray()
 }
 
-async function changeNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
+async function setNodePropValueConditionally (maps, condition, nodePropKey, nodePropValueTo) {
+  const setDataSource = (dataSource) => (
+    {
+      $set: {
+        [dataSource]: {
+          $map: {
+            input: `$${dataSource}`,
+            as: "map",
+            in: {
+              $map: {
+                input: "$$map",
+                as: "node",
+                in: {
+                  $cond: {
+                    if: condition,
+                    then: {
+                      $setField: {
+                        field: nodePropKey,
+                        input: '$$node',
+                        value: nodePropValueTo
+                      }
+                    },
+                    else: "$$node"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  )
+  await maps.aggregate(
+    [
+      { ...setDataSource('dataFrames') },
+      { ...setDataSource('dataHistory') },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
+}
+
+async function createNodeProp (maps, nodePropKey, nodePropValue) {
+  return await setNodePropValueConditionally(maps, true, nodePropKey, nodePropValue)
+}
+
+async function createNodePropIfMissing (maps, nodePropKey, nodePropValue) {
+  return await setNodePropValueConditionally(maps, { $eq: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] }, nodePropKey, nodePropValue)
+}
+
+async function updateNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
   const setDataSource = (dataSource) => (
     {
       $set: {
@@ -426,92 +475,12 @@ async function changeNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
   ).toArray()
 }
 
-async function setNodePropValueConditionally (maps, condition, nodePropKey, nodePropValueTo) {
-  const setDataSource = (dataSource) => (
-    {
-      $set: {
-        [dataSource]: {
-          $map: {
-            input: `$${dataSource}`,
-            as: "map",
-            in: {
-              $map: {
-                input: "$$map",
-                as: "node",
-                in: {
-                  $cond: {
-                    if: condition,
-                    then: {
-                      $setField: {
-                        field: nodePropKey,
-                        input: '$$node',
-                        value: nodePropValueTo
-                      }
-                    },
-                    else: "$$node"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  )
-  await maps.aggregate(
-    [
-      { ...setDataSource('dataFrames') },
-      { ...setDataSource('dataHistory') },
-      { $merge: 'maps' }
-    ]
-  ).toArray()
-}
-
-async function setNodePropValueIfMissing (maps, nodePropKey, nodePropValueTo) { // rename: createNodePropIfMissing
-  return await setNodePropValueConditionally(maps, { $eq: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] }, nodePropKey, nodePropValueTo)
-}
-
-async function setNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) { // rename: changeNodePropValueBasedOnPreviousValue
+async function updateNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
   return await setNodePropValueConditionally(maps, { $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ] }, nodePropKey, nodePropValueTo)
 }
 
-async function createNodeProp (maps, nodePropKey, nodePropValue) { // use the setNodePropValue query conditionally, where condition is simply TRUE
-  const setDataSource = (dataSource) => (
-    {
-      $set: {
-        [dataSource]: {
-          $map: {
-            input: `$${dataSource}`,
-            as: "map",
-            in: {
-              $map: {
-                input: "$$map",
-                as: "node",
-                in: {
-                  $setField: {
-                    field: nodePropKey,
-                    input: '$$node',
-                    value: nodePropValue
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  )
-  await maps.aggregate(
-    [
-      { ...setDataSource('dataFrames') },
-      { ...setDataSource('dataHistory') },
-      { $merge: 'maps' }
-    ]
-  ).toArray()
-}
-
 async function removeNodeProp (maps, nodePropKey) {
-  await createNodeProp(maps, nodePropKey, '$$REMOVE')
+  return await setNodePropValueConditionally(maps, true, nodePropKey, '$$REMOVE')
 }
 
 async function deleteUnusedMaps(users, maps) {
@@ -555,10 +524,10 @@ module.exports = {
   duplicateFrame,
   deleteFrame,
   mergeMap,
-  changeNodePropKey,
-  setNodePropValueIfMissing,
-  setNodePropValueBasedOnPreviousValue,
   createNodeProp,
+  createNodePropIfMissing,
+  updateNodePropValueBasedOnPreviousValue,
+  updateNodePropKey,
   removeNodeProp,
   deleteUnusedMaps
 }

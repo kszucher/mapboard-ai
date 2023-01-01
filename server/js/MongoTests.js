@@ -201,24 +201,24 @@ async function mongoTests(cmd) {
         dbExpected= { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA, mergeResult ] }] }
         break
       }
-      case 'changeNodePropKeyTest': {
+      case 'createNodePropTest': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-        dbExpected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
         break
       }
-      case 'setNodePropValueIfMissingTest': {
+      case 'createNodePropIfMissingTest': {
         dbOriginal = getMultiMapMultiSource( [ [ {} ], [ {}, {a: 'o'} ] ] )
         dbExpected = getMultiMapMultiSource( [ [ {b: 'x'} ], [ {b: 'x'}, {a: 'o', b: 'x'} ] ] )
         break
       }
-      case 'setNodePropValueBasedOnPreviousValueTest': {
+      case 'updateNodePropKeyTest': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-        dbExpected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
         break
       }
-      case 'createNodePropTest': {
+      case 'updateNodePropValueBasedOnPreviousValueTest': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-        dbExpected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
+        dbExpected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
         break
       }
       case 'removeNodePropTest': {
@@ -289,10 +289,10 @@ async function mongoTests(cmd) {
       case 'deleteFrameTest3':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'mapMergeTest': await MongoMutations.mergeMap(maps, 'map1', 'map', argument ); break
-      case 'changeNodePropKeyTest':  await MongoMutations.changeNodePropKey(maps, 'a', 'aNew' ); break
-      case 'setNodePropValueIfMissingTest':  await MongoMutations.setNodePropValueIfMissing(maps, 'b', 'x' ); break
-      case 'setNodePropValueBasedOnPreviousValueTest':  await MongoMutations.setNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
+      case 'createNodePropIfMissingTest':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break
+      case 'updateNodePropKeyTest':  await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' ); break
+      case 'updateNodePropValueBasedOnPreviousValueTest':  await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' ); break
       case 'removeNodePropTest':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
       case 'deleteUnusedMapsTest': await MongoMutations.deleteUnusedMaps(users, maps); break
     }
@@ -349,10 +349,10 @@ async function allTest () {
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
   // await mongoTests('mapMergeTest')
-  // await mongoTests('changeNodePropKeyTest')
-  await mongoTests('setNodePropValueIfMissingTest')
-  await mongoTests('setNodePropValueBasedOnPreviousValueTest')
   await mongoTests('createNodePropTest')
+  await mongoTests('createNodePropIfMissingTest')
+  await mongoTests('updateNodePropKeyTest')
+  await mongoTests('updateNodePropValueBasedOnPreviousValueTest')
   await mongoTests('removeNodePropTest')
   // await mongoTests('deleteUnusedMapsTest')
 }
