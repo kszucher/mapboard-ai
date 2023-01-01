@@ -467,15 +467,15 @@ async function setNodePropValueConditionally (maps, condition, nodePropKey, node
   ).toArray()
 }
 
-async function setNodePropValueIfMissing (maps, nodePropKey, nodePropValueTo) {
+async function setNodePropValueIfMissing (maps, nodePropKey, nodePropValueTo) { // rename: createNodePropIfMissing
   return await setNodePropValueConditionally(maps, { $eq: [ { $type: `$$node.${nodePropKey}` }, 'missing' ] }, nodePropKey, nodePropValueTo)
 }
 
-async function setNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
+async function setNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) { // rename: changeNodePropValueBasedOnPreviousValue
   return await setNodePropValueConditionally(maps, { $eq: [ `$$node.${nodePropKey}`, nodePropValueFrom ] }, nodePropKey, nodePropValueTo)
 }
 
-async function createNodeProp (maps, nodePropKey, nodePropValue) {
+async function createNodeProp (maps, nodePropKey, nodePropValue) { // use the setNodePropValue query conditionally, where condition is simply TRUE
   const setDataSource = (dataSource) => (
     {
       $set: {

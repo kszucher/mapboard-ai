@@ -74,6 +74,29 @@ async function mongoTests(cmd) {
         }
         break
       }
+      case 'countNodesTest': {
+        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
+        dbExpected = [{ _id: null, countPerAllMap: 16 }]
+        break
+      }
+      case 'countNodesBasedOnNodePropExistenceTest': {
+        dbOriginal = getMultiMapMultiSource( [
+          [ {a: 'o'} ],
+          [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
+          [ {b: 'o'} ]
+        ] )
+        dbExpected = [{ _id: null, countPerAllMap: 12 }]
+        break
+      }
+      case 'countNodesBasedOnNodePropValueTest': {
+        dbOriginal = getMultiMapMultiSource( [
+          [ {a: 'o'} ],
+          [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
+          [ {b: 'o'} ]
+        ] )
+        dbExpected = [{ _id: null, countPerAllMap: 8 }]
+        break
+      }
       case 'replaceBreadcrumbsTest': {
         dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
         dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['mapNew'] } ] }
@@ -203,29 +226,6 @@ async function mongoTests(cmd) {
         dbExpected = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
         break
       }
-      case 'countNodesTest': {
-        dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
-        dbExpected = [{ _id: null, countPerAllMap: 16 }]
-        break
-      }
-      case 'countNodesBasedOnNodePropExistenceTest': {
-        dbOriginal = getMultiMapMultiSource( [
-          [ {a: 'o'} ],
-          [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
-          [ {b: 'o'} ]
-        ] )
-        dbExpected = [{ _id: null, countPerAllMap: 12 }]
-        break
-      }
-      case 'countNodesBasedOnNodePropValueTest': {
-        dbOriginal = getMultiMapMultiSource( [
-          [ {a: 'o'} ],
-          [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
-          [ {b: 'o'} ]
-        ] )
-        dbExpected = [{ _id: null, countPerAllMap: 8 }]
-        break
-      }
       case 'deleteUnusedMapsTest': {
         dbOriginal = {
           users: [
@@ -266,6 +266,9 @@ async function mongoTests(cmd) {
     switch(cmd) {
       case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList'); break
       case 'getUserSharesTest': result = await MongoQueries.getUserShares(shares, 'user1'); break
+      case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
+      case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
+      case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
       case 'replaceBreadcrumbsTest': await MongoMutations.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
       case 'appendBreadcrumbsTest': await MongoMutations.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
       case 'sliceBreadcrumbsTest': await MongoMutations.sliceBreadcrumbs(users, 'user1', 'map2' ); break
@@ -291,9 +294,6 @@ async function mongoTests(cmd) {
       case 'setNodePropValueBasedOnPreviousValueTest':  await MongoMutations.setNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'removeNodePropTest':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
-      case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
-      case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
-      case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
       case 'deleteUnusedMapsTest': await MongoMutations.deleteUnusedMaps(users, maps); break
     }
     if ([
@@ -325,6 +325,9 @@ async function mongoTests(cmd) {
 async function allTest () {
   // await mongoTests('nameLookupTest')
   // await mongoTests('getUserSharesTest')
+  // await mongoTests('countNodesTest')
+  // await mongoTests('countNodesBasedOnNodePropExistenceTest')
+  // await mongoTests('countNodesBasedOnNodePropValueTest')
   // await mongoTests('replaceBreadcrumbsTest')
   // await mongoTests('appendBreadcrumbsTest')
   // await mongoTests('sliceBreadcrumbsTest')
@@ -349,11 +352,8 @@ async function allTest () {
   // await mongoTests('changeNodePropKeyTest')
   await mongoTests('setNodePropValueIfMissingTest')
   await mongoTests('setNodePropValueBasedOnPreviousValueTest')
-  // await mongoTests('createNodePropTest')
-  // await mongoTests('removeNodePropTest')
-  // await mongoTests('countNodesTest')
-  // await mongoTests('countNodesBasedOnNodePropExistenceTest')
-  // await mongoTests('countNodesBasedOnNodePropValueTest')
+  await mongoTests('createNodePropTest')
+  await mongoTests('removeNodePropTest')
   // await mongoTests('deleteUnusedMapsTest')
 }
 
