@@ -14,7 +14,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node js/msServerApp.js",
+    "start": "node js/ServerApp.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publishToHeroku": "cd ../ && git subtree push --prefix server https://git.heroku.com/mapboard-server.git master || (exit 0)"
   },
