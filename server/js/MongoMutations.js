@@ -414,56 +414,33 @@ async function createNodePropIfMissing (maps, nodePropKey, nodePropValue) {
 }
 
 async function updateNodePropKey (maps, nodePropKeyFrom, nodePropKeyTo) {
-  const setDataSource = (dataSource) => (
+  return await nodeFun(maps,
     {
-      $set: {
-        [dataSource]: {
-          $map: {
-            input: `$${dataSource}`,
-            as: "map",
-            in: {
-              $map: {
-                input: "$$map",
-                as: "node",
-                in: {
-                  $arrayToObject: {
-                    $map: {
-                      input: {
-                        $objectToArray: "$$node"
-                      },
-                      as: "nodeProp",
-                      in: {
-                        $cond: {
-                          if: {
-                            $eq: [ "$$nodeProp.k", nodePropKeyFrom ]
-                          },
-                          then: {
-                            $setField: {
-                              field: "k",
-                              input: '$$nodeProp',
-                              value: nodePropKeyTo,
-                            }
-                          },
-                          else: "$$nodeProp"
-                        }
-                      }
-                    }
-                  }
+      $arrayToObject: {
+        $map: {
+          input: {
+            $objectToArray: "$$node"
+          },
+          as: "nodeProp",
+          in: {
+            $cond: {
+              if: {
+                $eq: [ "$$nodeProp.k", nodePropKeyFrom ]
+              },
+              then: {
+                $setField: {
+                  field: "k",
+                  input: '$$nodeProp',
+                  value: nodePropKeyTo,
                 }
-              }
+              },
+              else: "$$nodeProp"
             }
           }
         }
       }
     }
   )
-  await maps.aggregate(
-    [
-      { ...setDataSource('dataFrames') },
-      { ...setDataSource('dataHistory') },
-      { $merge: 'maps' }
-    ]
-  ).toArray()
 }
 
 async function updateNodePropValueBasedOnPreviousValue (maps, nodePropKey, nodePropValueFrom, nodePropValueTo) {
