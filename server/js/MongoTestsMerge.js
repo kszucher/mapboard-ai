@@ -1,7 +1,7 @@
 const mergeBase = [
   {
     a: 'vo',
-    n: 's',
+    nodeId: 's',
   },
   {
     a: 'vo',
@@ -13,14 +13,14 @@ const mergeBase = [
     g: 'vo',
     h: 'vo',
     i: 'vo',
-    n: 't',
+    nodeId: 't',
   },
 ]
 
 const mergeMutationA = [
   {
     a: 'vo',
-    n: 's',
+    nodeId: 's',
   },
   {
     a: 'vo', // opA: keep
@@ -33,14 +33,14 @@ const mergeMutationA = [
     // h     // opA: remove
     // i     // opA: remove
     j: 'va', // opA: add
-    n: 't',
+    nodeId: 't',
   }
 ]
 
 const mergeMutationB = [
   {
     a: 'vo',
-    n: 's',
+    nodeId: 's',
   },
   {
     a: 'vo', // opB: keep
@@ -53,14 +53,14 @@ const mergeMutationB = [
     h: 'vb', // opB: change
     // i     // opB: remove
     k: 'vb', // opB: add
-    n: 't',
+    nodeId: 't',
   }
 ]
 
 const mergeResult = [
   {
     a: 'vo',
-    n: 's',
+    nodeId: 's',
   },
   {
     a: 'vo', // opA: keep       opB: keep     use B
@@ -74,7 +74,7 @@ const mergeResult = [
     // i     // opA: remove     opB: remove   rem
     j: 'va', // opA: add        opB: ''       use A
     k: 'vb', // opA: ''         opB: add      use B
-    n: 't',
+    nodeId: 't',
   }
 ]
 

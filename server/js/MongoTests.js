@@ -30,7 +30,7 @@ async function mongoTests(cmd) {
     let argument
     let dbExpected
     switch (cmd) {
-      case 'nameLookupTest': { // WARNING: depends on the structure of map: {m: {}, r:{}}
+      case 'nameLookupTest': {
         dbOriginal = {
           users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
           maps:  [
@@ -43,7 +43,7 @@ async function mongoTests(cmd) {
         dbExpected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
         break
       }
-      case 'getUserSharesTest': { // WARNING: depends on the structure of map: {m: {}, r:{}}
+      case 'getUserSharesTest': {
         dbOriginal = {
           users: [
             { _id: 'user1', email: 'user1@mail.com' },
@@ -398,7 +398,7 @@ async function allTest () {
   // await mongoTests('deleteFrameTest2')
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
-  // await mongoTests('mapMergeTest')
+  await mongoTests('mapMergeTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('createNodePropIfMissingTest')
   // await mongoTests('updateNodePropKeyTest')

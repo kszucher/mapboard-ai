@@ -1,7 +1,8 @@
 const { baseUri } = require('./MongoSecret')
 const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
-const { genNodeId } = require('./MongoMutations')
+const { genNodeId, mergeMap } = require('./MongoMutations')
+const { ObjectId } = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
 
 async function mongoStagingCommands (users, maps, shares) {
@@ -21,6 +22,21 @@ async function mongoStagingCommands (users, maps, shares) {
   // await MongoMutations.createNodeProp(maps, 'nodeId', genNodeId())
 
   // await MongoMutations.setNodePropValueBasedOnPreviousValue(maps, 'path', ['m'], ['g'])
+
+  // await maps.updateMany({}, [{
+  //   $set: {
+  //     'dataHistoryModifiers': [
+  //       {
+  //         modifierType: 'server',
+  //         userId: '$ownerUser',
+  //         sessionId: 0,
+  //       }
+  //     ]
+  //   }
+  // }])
+
+  await mergeMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
+
 }
 
 async function mongoStaging() {

@@ -244,9 +244,9 @@ async function mergeMap (
                   input: { $objectToArray: '$$node' },
                   as: "nodeProp",
                   in: {
-                    k: { $concat: ['$$node.n', '$$nodeProp.k'] },
+                    k: { $concat: ['$$node.nodeId', '$$nodeProp.k'] },
                     v: {
-                      nodeId: '$$node.n',
+                      nodeId: '$$node.nodeId',
                       nodePropId: "$$nodeProp.k",
                       ['value' + mutationId]: "$$nodeProp.v",
                     }
@@ -276,7 +276,17 @@ async function mergeMap (
                     getValuesByNodeIdAndNodePropId(
                       {
                         $cond: {
-                          if: { $eq: [ { $size: "$dataHistory" }, 1 ] }, // if size === 1 OR last saver === (modifierType==user, userId==me, sessionId==mySession)
+                          if: {
+                            $or: [
+                              { $eq: [ { $size: "$dataHistory" }, 1 ] },
+                              { $and: [
+                                  { $eq: [ '$dataHistoryModifiers.modifierType', 'server' ] },
+                                  { $eq: [ '$dataHistoryModifiers.userId', '$ownerUser' ] },
+                                  { $eq: [ '$dataHistoryModifiers.sessionId', 0] }
+                                ]
+                              }
+                            ]
+                          },
                           then: { $last: "$dataHistory" },
                           else: { $arrayElemAt: [ "$dataHistory", -2 ] }
                         }

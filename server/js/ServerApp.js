@@ -9,6 +9,7 @@ const MongoQueries = require("./MongoQueries");
 const MongoMutations = require("./MongoMutations");
 
 const { baseUri } = require('./MongoSecret')
+const { mergeMap } = require('./MongoMutations')
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -90,7 +91,13 @@ async function checkSave (req, userId) {
     const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
     if (isEqual(userId, ownerUser) || shareToEdit !== null) {
       if (mapSource === 'dataHistory') {
-        await maps.updateOne({ _id: mapId }, { $set: { [`dataHistory.${DATA_HISTORY_SELECTED}`]: mapData } })
+
+
+
+        // await maps.updateOne({ _id: mapId }, { $set: { [`dataHistory.${DATA_HISTORY_SELECTED}`]: mapData } })
+        await mergeMap(maps, mapId, 'map', mapData)
+
+
       } else if (mapSource === 'dataFrames') {
         await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } })
       }
