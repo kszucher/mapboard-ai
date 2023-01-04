@@ -377,7 +377,7 @@ async function allTest () {
   // await mongoTests('countNodesTest')
   // await mongoTests('countNodesBasedOnNodePropExistenceTest')
   // await mongoTests('countNodesBasedOnNodePropValueTest')
-  await mongoTests('findDeadLinksTest')
+  // await mongoTests('findDeadLinksTest')
   // await mongoTests('replaceBreadcrumbsTest')
   // await mongoTests('appendBreadcrumbsTest')
   // await mongoTests('sliceBreadcrumbsTest')

@@ -1,3 +1,10 @@
+const genNodeId = () => {
+  const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
+  const randomAlphanumeric = { $substr: [ alphanumeric, { $multiply: [ { $rand: {} }, alphanumeric.length -  1 ] }, 1 ] }
+  const randomAlphanumeric8digit = new Array(8).fill(randomAlphanumeric)
+  return { $concat: ['node', ...randomAlphanumeric8digit] }
+}
+
 async function replaceBreadcrumbs(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
@@ -269,7 +276,7 @@ async function mergeMap (
                     getValuesByNodeIdAndNodePropId(
                       {
                         $cond: {
-                          if: { $eq: [ { $size: "$dataHistory" }, 1 ] },
+                          if: { $eq: [ { $size: "$dataHistory" }, 1 ] }, // if size === 1 OR last saver === (modifierType==user, userId==me, sessionId==mySession)
                           then: { $last: "$dataHistory" },
                           else: { $arrayElemAt: [ "$dataHistory", -2 ] }
                         }
@@ -500,6 +507,7 @@ async function deleteUnusedMaps(users, maps) {
 }
 
 module.exports = {
+  genNodeId,
   replaceBreadcrumbs,
   appendBreadcrumbs,
   sliceBreadcrumbs,
