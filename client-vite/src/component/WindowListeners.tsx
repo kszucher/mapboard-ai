@@ -167,10 +167,8 @@ export const WindowListeners: FC = () => {
           } else if (isNodeClicked) {
             const [toX, toY] = getCoords(e)
             const { moveData, moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, toX, toY)
-            if (moveTargetPath.length) {
-              mapDispatch('moveTargetPreview', { moveData })
-              mapDispatch('moveTarget', { moveTargetPath, moveTargetIndex })
-            }
+            mapDispatch('moveTargetPreview', { moveData })
+            mapDispatch('moveTarget', { moveTargetPath, moveTargetIndex })
           } else {
             const [toX, toY] = getCoords(e)
             const { highlightTargetPathList, selectionRect } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)

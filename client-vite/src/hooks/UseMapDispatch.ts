@@ -5,7 +5,7 @@ import {actions, getEditedNodeId, getMap, getTempMap} from "../core/EditorFlow"
 import {mapFindById} from "../map/MapFindById";
 
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
-  console.log('MAP_DISPATCH: ' + action)
+  console.log('MAP_DISPATCH: ' + action, payload)
   const editedNodeId = getEditedNodeId()
   if (editedNodeId.length && [
     'finishEdit',
@@ -34,10 +34,11 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
   } else if ([
     'typeText',
     'moveTargetPreview',
-    'moveTarget',
     'selectTargetPreview',
-    'selectTarget'
-  ].includes(action)) {
+  ].includes(action)
+    || action === 'moveTarget' && !payload.moveTargetPath.length
+    || action === 'selectTarget' && !payload.highlightTargetPathList.length
+  ) {
     dispatch(actions.mutateTempMap(nm))
   } else {
     dispatch(actions.mutateMapStack(nm))

@@ -205,7 +205,7 @@ function* mapSaga () {
           break
         }
         case 'DUPLICATE_FRAME': {
-          payload = {...payload, mapData: getSavedMapData()}
+          payload = {...payload, mapData: getSavedMapData(m)}
           break
         }
       }

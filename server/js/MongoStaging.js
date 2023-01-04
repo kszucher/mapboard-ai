@@ -1,6 +1,7 @@
 const { baseUri } = require('./MongoSecret')
 const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
+const { genNodeId } = require('./MongoMutations')
 const MongoClient = require('mongodb').MongoClient
 
 async function mongoStagingCommands (users, maps, shares) {
@@ -16,8 +17,8 @@ async function mongoStagingCommands (users, maps, shares) {
   // console.log(countWithPathValue)
 
 
-  // await MongoMutations.removeNodeProp(maps, 'divId')
-  // await MongoMutations.removeNodeProp(maps, 'svgId')
+  // await MongoMutations.removeNodeProp(maps, 'nodeId')
+  // await MongoMutations.createNodeProp(maps, 'nodeId', genNodeId())
 
   // await MongoMutations.setNodePropValueBasedOnPreviousValue(maps, 'path', ['m'], ['g'])
 }

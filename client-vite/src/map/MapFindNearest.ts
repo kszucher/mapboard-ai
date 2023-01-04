@@ -19,7 +19,10 @@ export const mapFindNearest = {
       lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
       toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
       let lastNearestPath = mapFindNearest.start(m, toX, toY)
-      if (lastNearestPath.length > 2) {
+      if (
+        !isEqual(lastSelected.parentPath, lastNearestPath) &&
+        lastNearestPath.length > 2
+      ) {
         moveTargetPath = copy(lastNearestPath)
         let lastFound = getMapData(m, lastNearestPath)
         let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
@@ -78,7 +81,7 @@ export const mapFindNearest = {
         let hCondition =
           (cn.path[3] === 0 && currX > cn.nodeEndX) ||
           (cn.path[3] === 1 && currX < cn.nodeStartX)
-        if (vCondition && hCondition) {
+        if (vCondition && hCondition ) {
           lastNearestPath = copy(cn.path)
           cn.s.map(i => mapFindNearest.iterate(i))
         }

@@ -58,16 +58,26 @@ function getConfirmationCode() {
   return Math.round(Math.random() * (max - min) + min)
 }
 
+const dec2hex = (dec) => {
+  return ('0' + dec.toString(16)).substr(-2)
+}
+
+const genHash = (len) => {
+  var arr = new Uint8Array((len || 40) / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join('')
+}
+
 function getDefaultMap (mapName, ownerUser, path) {
   return {
     dataHistory: [
       [
         // TODO: we need to create nodeId for ALL of these things
         // note: adding nodeId is required here as mongo operations depend on their existence
-        {path: ['g']},
-        {path: ['r', 0], content: mapName, selected: 1},
-        {path: ['r', 0, 'd', 0]},
-        {path: ['r', 0, 'd', 1]},
+        {nodeId: 'node' + genHash(8), path: ['g']},
+        {nodeId: 'node' + genHash(8), path: ['r', 0], content: mapName, selected: 1},
+        {nodeId: 'node' + genHash(8), path: ['r', 0, 'd', 0]},
+        {nodeId: 'node' + genHash(8), path: ['r', 0, 'd', 1]},
       ]
     ],
     dataFrames: [],
