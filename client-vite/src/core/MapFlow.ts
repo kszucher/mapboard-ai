@@ -371,7 +371,9 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'moveTarget': {
-      nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
+      if (payload.moveTargetPath.length) {
+        nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
+      }
       break
     }
     case 'cellify': {
