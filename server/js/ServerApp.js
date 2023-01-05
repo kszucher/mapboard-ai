@@ -191,7 +191,6 @@ async function resolveType(req, userId) {
       const userInfo = await getUserInfo(userId)
       const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
       return { error: '', data: { ...userInfo, ...newMapInfo } }
-      return { error: 'NOT_YET_IMPLEMENTED', data: {} }
     }
     case 'CREATE_MAP_IN_TAB': { // MUTATION
       const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
