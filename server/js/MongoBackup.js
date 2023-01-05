@@ -50,7 +50,7 @@ const mongoBackup = async (mode) => {
       break;
     }
     case 'file2dev': {
-      date = ''
+      date = '' // 13 digit id
       await mongoProcess('mongorestore', {source:'app_dev', target:'app_dev'}, date);
       break;
     }
