@@ -49,17 +49,18 @@ const mongoBackup = async (mode) => {
       await mongoProcess('mongodump', {source: 'app_dev'}, date);
       break;
     }
-    case 'file2dev': {
-      date = '' // 13 digit id
-      await mongoProcess('mongorestore', {source:'app_dev', target:'app_dev'}, date);
+    case 'prodFile2dev': {
+      date = '1672951309237' // 13 digit id
+      await mongoProcess('mongorestore', {source:'app_prod', target:'app_dev'}, date);
       break;
     }
-    case 'file2prod': {
-      date = '' // 13 digit id
+    case 'prodFile2prod': {
+      date = '1672951309237' // 13 digit id
       await mongoProcess('mongorestore', {source:'app_prod', target:'app_prod'}, date);
       break;
     }
   }
 }
 
-mongoBackup('prod2file2dev');
+// mongoBackup('prodFile2dev');
+// mongoBackup('prodFile2prod');
