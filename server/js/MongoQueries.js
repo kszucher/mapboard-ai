@@ -27,7 +27,13 @@ async function nameLookup(users, userId, mapIdList) {
               $getField: {
                 field: 'content',
                 input: {
-                  $arrayElemAt: [ { $last: '$fromMaps.dataHistory' }, 1 ]
+                  $arrayElemAt: [{
+                    $filter: {
+                      input: { $last: "$fromMaps.dataHistory" },
+                      as: 'elem',
+                      cond: { $eq: ["$$elem.path", ['r', 0]] },
+                    }
+                  }, 0 ]
                 }
               }
             }
@@ -39,30 +45,47 @@ async function nameLookup(users, userId, mapIdList) {
 }
 
 async function getUserShares(shares, userId) {
-  const shareDataExport = await shares.aggregate(
+  const getShareData = (shareType) => (
     [
-      { $match: { ownerUser: userId } },
-      { $lookup: { from: "users", localField: "shareUser", foreignField: "_id", as: 'user' } },
+      { $match: { [ { export: 'ownerUser', import: 'shareUser' }[shareType] ]: userId } },
+      { $lookup: {
+          from: "users",
+          localField: { export: 'shareUser', import: 'ownerUser' }[shareType],
+          foreignField: "_id",
+          as: 'user'
+        }
+      },
       { $unwind: "$user" },
-      { $set: { shareUserEmail: "$user.email" } },
-      { $lookup: { from: "maps", localField: "sharedMap", foreignField: "_id", as: 'map' } },
+      { $set: { [ { export: 'shareUserEmail', import: 'ownerUserEmail' }[shareType] ]: "$user.email" } },
+      { $lookup: {
+          from: "maps",
+          localField: "sharedMap",
+          foreignField: "_id",
+          as: 'map'
+        }
+      },
       { $unwind: "$map" },
-      { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ { $last: "$map.dataHistory" }, 1 ] } } } } },
+      { $set: {
+          sharedMapName: {
+            $getField: {
+              field: 'content',
+              input: {
+                $arrayElemAt: [{
+                  $filter: {
+                    input: { $last: "$map.dataHistory" },
+                    as: 'elem',
+                    cond: { $eq: [ "$$elem.path", [ 'r', 0 ] ] },
+                  }}, 0 ]
+              }
+            }
+          }
+        }
+      },
       { $unset: [ "sharedMap", "map", "ownerUser", "shareUser", "user" ] },
     ]
-  ).toArray()
-  const shareDataImport = await shares.aggregate(
-    [
-      { $match: { shareUser: userId } },
-      { $lookup: { from: "users", localField: "ownerUser", foreignField: "_id", as: 'user' } },
-      { $unwind: "$user" },
-      { $set: { ownerUserEmail: "$user.email" } },
-      { $lookup: { from: "maps", localField: "sharedMap", foreignField: "_id", as: 'map' } },
-      { $unwind: "$map" },
-      { $set: { sharedMapName: { $getField: { field: 'content', input: { $arrayElemAt: [ { $last: "$map.dataHistory" }, 1 ] } } } } },
-      { $unset: [ "sharedMap", "map", "ownerUser", "shareUser", "user" ] },
-    ]
-  ).toArray()
+  )
+  const shareDataExport = await shares.aggregate(getShareData('export')).toArray()
+  const shareDataImport = await shares.aggregate(getShareData('import')).toArray()
   return { shareDataExport, shareDataImport }
 }
 

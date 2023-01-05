@@ -34,10 +34,10 @@ async function mongoTests(cmd) {
         dbOriginal = {
           users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
           maps:  [
-            { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1' } ] ] },
-            { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2' } ] ] },
-            { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3' } ] ] },
-            { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4' } ] ] },
+            { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1', path: ['r', 0] } ] ] },
+            { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2', path: ['r', 0] } ] ] },
+            { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3', path: ['r', 0] } ] ] },
+            { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4', path: ['r', 0] } ] ] },
           ]
         }
         dbExpected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
@@ -50,10 +50,10 @@ async function mongoTests(cmd) {
             { _id: 'user2', email: 'user2@mail.com' },
           ],
           maps: [
-            { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1' } ] ] },
-            { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2' } ] ] },
-            { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3' } ] ] },
-            { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4' } ] ] },
+            { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1', path: ['r', 0] } ] ] },
+            { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2', path: ['r', 0] } ] ] },
+            { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3', path: ['r', 0] } ] ] },
+            { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4', path: ['r', 0] } ] ] },
           ],
           shares: [
             { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map1' },
