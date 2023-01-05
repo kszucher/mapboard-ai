@@ -27,7 +27,7 @@ async function mongoStagingCommands (users, maps, shares) {
   //   $set: {
   //     'dataHistoryModifiers': [
   //       {
-  //         modifierType: 'server',
+  //         modifierType: 'user',
   //         userId: '$ownerUser',
   //         sessionId: 0,
   //       }
@@ -35,7 +35,7 @@ async function mongoStagingCommands (users, maps, shares) {
   //   }
   // }])
 
-  await mergeMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
+  // await mergeMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
 
 }
 

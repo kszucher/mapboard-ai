@@ -33,6 +33,7 @@ const mergeMutationA = [
     // h     // opA: remove
     // i     // opA: remove
     j: 'va', // opA: add
+    l: 'vab',// opA: add
     nodeId: 't',
   }
 ]
@@ -53,6 +54,7 @@ const mergeMutationB = [
     h: 'vb', // opB: change
     // i     // opB: remove
     k: 'vb', // opB: add
+    l: 'vab',// opB: add
     nodeId: 't',
   }
 ]
@@ -74,6 +76,7 @@ const mergeResult = [
     // i     // opA: remove     opB: remove   rem
     j: 'va', // opA: add        opB: ''       use A
     k: 'vb', // opA: ''         opB: add      use B
+    l: 'vab',// opA: add        opB: add      use B
     nodeId: 't',
   }
 ]

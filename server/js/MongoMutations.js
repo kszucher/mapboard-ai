@@ -280,7 +280,7 @@ async function mergeMap (
                             $or: [
                               { $eq: [ { $size: "$dataHistory" }, 1 ] },
                               { $and: [
-                                  { $eq: [ '$dataHistoryModifiers.modifierType', 'server' ] },
+                                  { $eq: [ '$dataHistoryModifiers.modifierType', 'user' ] },
                                   { $eq: [ '$dataHistoryModifiers.userId', '$ownerUser' ] },
                                   { $eq: [ '$dataHistoryModifiers.sessionId', 0] }
                                 ]
@@ -291,7 +291,24 @@ async function mergeMap (
                           else: { $arrayElemAt: [ "$dataHistory", -2 ] }
                         }
                       }, 'O'),
-                    getValuesByNodeIdAndNodePropId({ $last: "$dataHistory" }, 'A'),
+                    getValuesByNodeIdAndNodePropId(
+                      {
+                        $cond: {
+                          if: {
+                            $or: [
+                              { $eq: [ { $size: "$dataHistory" }, 1 ] },
+                              { $and: [
+                                  { $eq: [ '$dataHistoryModifiers.modifierType', 'user' ] },
+                                  { $eq: [ '$dataHistoryModifiers.userId', '$ownerUser' ] },
+                                  { $eq: [ '$dataHistoryModifiers.sessionId', 0] }
+                                ]
+                              }
+                            ]
+                          },
+                          then: '$newMap',
+                          else: { $last: "$dataHistory" }
+                        }
+                      }, 'A'),
                     getValuesByNodeIdAndNodePropId('$newMap', 'B')
                   ]
                 }
@@ -366,7 +383,13 @@ async function mergeMap (
                                       $and: [ { $not: '$$npi.valueO' }, { $not: "$$npi.valueA" }, "$$npi.valueB" ]
                                     },
                                     then: { k: '$$npi.nodePropId', v: '$$npi.valueB' }
-                                  }
+                                  },
+                                  {
+                                    case: {
+                                      $and: [ { $not: '$$npi.valueO' }, "$$npi.valueA", "$$npi.valueB" ]
+                                    },
+                                    then: { k: '$$npi.nodePropId', v: '$$npi.valueB' }
+                                  },
                                 ],
                                 default: '$$REMOVE'
                               }
@@ -379,6 +402,16 @@ async function mergeMap (
                     }
                   }
                 }
+              }]
+            ]
+          },
+          "data.dataHistoryModifiers": {
+            $concatArrays: [
+              "$data.dataHistoryModifiers",
+              [{
+                modifierType: { map: 'user', node: 'server' }[mergeType],
+                userId: '$data.ownerUser',
+                sessionId: 0,
               }]
             ]
           }

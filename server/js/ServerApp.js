@@ -50,8 +50,6 @@ const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1)===JSON.stringify(obj2)
 }
 
-const DATA_HISTORY_SELECTED = 0
-
 let users, maps, shares, db
 
 function getConfirmationCode() {
@@ -120,7 +118,8 @@ async function getMapInfo (userId, mapId, mapSource) {
   if (frameLen === 0 && mapSource === 'dataFrames') {
     mapSource = 'dataHistory'
   }
-  const mapData = mapSource === 'dataHistory' ? dataHistory[DATA_HISTORY_SELECTED]: dataFrames[frameSelected]
+  let mapData = mapSource === 'dataHistory' ? dataHistory[dataHistory.length - 1]: dataFrames[frameSelected]
+  mapData = mapData.sort((a, b) => (a.path > b.path) ? 1 : -1)
   let mapRight = MAP_RIGHTS.UNAUTHORIZED
   if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
     mapRight = isEqual(userId, adminUser)
