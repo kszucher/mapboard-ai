@@ -301,7 +301,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
           newTable[i][j] = getDefaultNode({s: [getDefaultNode()]})
         }
       }
-      structCreate(m, ln, Dir.O, { taskStatus: -1, c: newTable })
+      structCreate(m, ln, Dir.O, { taskStatus: 0, c: newTable })
       break
     }
     case 'insert_CC_IO': {
@@ -432,7 +432,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       break
     }
     case 'toggleTask': {
-      mapSetProp.start(m, ln, {taskStatus: ln.taskStatus === -1 ? 0 : -1}, '')
+      mapSetProp.start(m, ln, {taskStatus: ln.taskStatus === 0 ? 1 : 0}, '')
       break
     }
     case 'setTaskStatus': {

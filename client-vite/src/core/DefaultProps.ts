@@ -86,7 +86,7 @@ export let nodeProps = {
     fFillColor: '',
     textFontSize: 14,
     textColor: 'default',
-    taskStatus: -1,
+    taskStatus: 0,
   },
   saveNeverInitAlways: {
     // mapChain
@@ -141,7 +141,7 @@ export const resolveScope = (cn: any) => {
     text:
       cn.contentType === 'text',
     branchFill: cn.fFillColor !== '' && cn.s.length,
-    nodeFill: cn.sFillColor !== '' || cn.taskStatus !== -1,
+    nodeFill: cn.sFillColor !== '' || cn.taskStatus !== 0,
     branchBorder: cn.fBorderColor !== '' && cn.s.length,
     nodeBorder: cn.sBorderColor !== '' && !cn.hasCell,
     selectionBorder: cn.selected && cn.type !== 'cell' && !cn.isEditing,
@@ -154,7 +154,7 @@ export const resolveScope = (cn: any) => {
       cn.type === "struct" &&
       cn.hasCell,
     task:
-      cn.taskStatus !== -1 &&
+      cn.taskStatus !== 0 &&
       // !cn.path.includes('c') &&
       !cn.hasDir &&
       !cn.hasStruct &&

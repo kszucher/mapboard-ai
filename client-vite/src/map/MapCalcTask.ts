@@ -6,7 +6,7 @@ export const mapCalcTask = {
   iterate: (m: any, cn: any) => {
     let dCount = Object.keys(cn.d).length
     if (dCount) {
-      cn.taskStatus = -1
+      cn.taskStatus = 0
       for (let i = 0; i < dCount; i++) {
         mapCalcTask.iterate(m, cn.d[i])
       }
@@ -22,8 +22,8 @@ export const mapCalcTask = {
     }
     let sCount = Object.keys(cn.s).length
     if (sCount) {
-      cn.taskStatus = -1
-      let minTaskStatus = 3
+      cn.taskStatus = 0
+      let minTaskStatus = 4
       for (let i = 0; i < sCount; i++) {
         mapCalcTask.iterate(m, cn.s[i])
         let currTaskStatus = cn.s[i].taskStatus

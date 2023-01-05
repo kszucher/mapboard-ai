@@ -7,13 +7,13 @@ export const structCreate = (m: any, n: any, direction: Dir, payload: object) =>
     const pn = getMapData(m, n.parentPath)
     pn.s.splice(n.index, 0, getDefaultNode({
       selected: 1,
-      taskStatus: pn.taskStatus > - 1 ?  0 : -1,
+      taskStatus: pn.taskStatus > 0 ?  1 : 0,
     }))
   } else if (direction === Dir.D) {
     const pn = getMapData(m, n.parentPath)
     pn.s.splice(n.index + 1, 0, getDefaultNode({
       selected: 1,
-      taskStatus: pn.taskStatus > - 1 ? 0 : -1,
+      taskStatus: pn.taskStatus > 0 ? 1 : 0,
     }));
   } else if (direction === Dir.O) {
     const pn = n.isRoot? n.d[0] : n

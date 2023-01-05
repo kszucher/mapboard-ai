@@ -3,6 +3,7 @@ const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
 const { genNodeId, mergeMap } = require('./MongoMutations')
 const { ObjectId } = require('mongodb')
+const { countNodesBasedOnNodePropValue } = require('./MongoQueries')
 const MongoClient = require('mongodb').MongoClient
 
 async function mongoStagingCommands (users, maps, shares) {
@@ -14,14 +15,13 @@ async function mongoStagingCommands (users, maps, shares) {
   console.log(JSON.stringify(await MongoQueries.findDeadLinks(maps), null, 4))
 
 
-  // const countWithPathValue = await countNodesBasedOnNodePropValue(maps, 'path', ['g'])
-  // console.log(countWithPathValue)
+  // console.log(await countNodesBasedOnNodePropValue(maps, 'taskStatus', 0))
 
 
   // await MongoMutations.removeNodeProp(maps, 'nodeId')
   // await MongoMutations.createNodeProp(maps, 'nodeId', genNodeId())
 
-  // await MongoMutations.setNodePropValueBasedOnPreviousValue(maps, 'path', ['m'], ['g'])
+  // await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'taskStatus', -1, 0)
 
   // await maps.updateMany({}, [{
   //   $set: {

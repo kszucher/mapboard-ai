@@ -27,7 +27,7 @@ const getAdjustedParams = (cn) => {
       (cn.selection === 's' && cn.sBorderColor !== '') ||
       (cn.selection === 's' && cn.sFillColor !== '') ||
       (cn.selection === 'f') ||
-      (cn.taskStatus > 0) ||
+      (cn.taskStatus > 1) ||
       (cn.hasCell)
     ) ? 4 : -2,
     r: 8
@@ -164,8 +164,8 @@ export const mapVisualizeSvg = {
     }
     if (conditions.nodeFill) {
       let sFillColorOverride = ''
-      if (cn.taskStatus > 0) {
-        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cn.taskStatus - 1)
+      if (cn.taskStatus > 1) {
+        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cn.taskStatus - 2)
       }
       updateMapSvgData(cn.nodeId, 'nodeFill', {
         path: getArcPath(nsx, nsy , cn.selfW, cn.selfH, r, dir, -2, true),
@@ -206,8 +206,8 @@ export const mapVisualizeSvg = {
       x2 = nsx
       y2 = cn.nodeY
       let lineColorOverride = ''
-      if (cn.taskStatus > 0) {
-        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cn.taskStatus - 1)
+      if (cn.taskStatus > 1) {
+        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cn.taskStatus - 2)
       }
       updateMapSvgData(cn.nodeId, 'line', {
         path: getLinePath(cn.lineType, x1, y1, cn.lineDeltaX, cn.lineDeltaY, x2, y2, dir),
@@ -319,10 +319,10 @@ export const mapVisualizeSvg = {
           : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
         const cy = cn.nodeY
         const r = taskConfigD / 2
-        const fill = cn.taskStatus === i
+        const fill = cn.taskStatus === i + 1
           ? [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
           : [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
-        updateMapSvgData(cn.nodeId, `taskCircle${i}`, { cx, cy, r, fill })
+        updateMapSvgData(cn.nodeId, `taskCircle${i + 1}`, { cx, cy, r, fill })
       }
     }
     cn.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))

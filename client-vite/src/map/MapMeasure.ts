@@ -83,7 +83,7 @@ export const mapMeasure = {
             if (cellWidth >= maxColWidth) {
               maxColWidth = cellWidth
             }
-            if (cn.c[i][j].s[0].taskStatus !== -1) {
+            if (cn.c[i][j].s[0].taskStatus !== 0) {
               maxColWidth += 120
             }
           }

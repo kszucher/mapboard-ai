@@ -47,7 +47,7 @@ export const mapExtractProps = {
     if (cn.animationRequested) {
       m.g.animationRequested = 1
     }
-    if (cn.taskStatus !== -1 && !cn.path.includes('c') && cn.path.length > 4) {
+    if (cn.taskStatus !== 0 && !cn.path.includes('c') && cn.path.length > 4) {
       try {
         if (cn.path[3] === 0) {
           m.g.taskRight = 1
