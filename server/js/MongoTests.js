@@ -243,9 +243,19 @@ async function mongoTests(cmd) {
         dbExpected = { maps: [ {_id: 'map1', dataFrames: [], frameSelected: null } ] }
         break
       case 'mapMergeTest': {
-        dbOriginal = { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA ] }] }
+        dbOriginal = { maps: [{
+            _id: 'map1',
+            ownerUser:'user1',
+            dataHistoryModifiers: [],
+            dataHistory: [ mergeBase, mergeMutationA ]
+          }] }
         argument = mergeMutationB
-        dbExpected= { maps: [{ _id: 'map1', dataHistory: [ mergeBase, mergeMutationA, mergeResult ] }] }
+        dbExpected= { maps: [{
+            _id: 'map1',
+            ownerUser:'user1',
+            dataHistoryModifiers: [{ modifierType: "user", userId: "user1", sessionId: 0 }],
+            dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
+          }] }
         break
       }
       case 'createNodePropTest': {
