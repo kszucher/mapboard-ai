@@ -171,12 +171,14 @@ const allSlice = createSlice({
         parsed = {
           mapStackData: [reCalc(mapAssembly(action.payload.mapData), mapAssembly(action.payload.mapData))],
           mapStackDataIndex: 0,
+          editedNodeId: ''
         }
       }
       if (action.payload?.hasOwnProperty('mapDataFrames')) {
         parsed = {
           mapStackData: action.payload.mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))),
           mapStackDataIndex: 0,
+          editedNodeId: ''
         }
       }
       return { ...state, ...action.payload, ...parsed }
