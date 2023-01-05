@@ -280,9 +280,9 @@ async function mergeMap (
                             $or: [
                               { $eq: [ { $size: "$dataHistory" }, 1 ] },
                               { $and: [
-                                  { $eq: [ '$dataHistoryModifiers.modifierType', 'user' ] },
-                                  { $eq: [ '$dataHistoryModifiers.userId', '$ownerUser' ] },
-                                  { $eq: [ '$dataHistoryModifiers.sessionId', 0] }
+                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$dataHistoryModifiers' } } }, 'user' ] },
+                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$dataHistoryModifiers' } } }, '$ownerUser' ] },
+                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, 0] }
                                 ]
                               }
                             ]
@@ -298,9 +298,9 @@ async function mergeMap (
                             $or: [
                               { $eq: [ { $size: "$dataHistory" }, 1 ] },
                               { $and: [
-                                  { $eq: [ '$dataHistoryModifiers.modifierType', 'user' ] },
-                                  { $eq: [ '$dataHistoryModifiers.userId', '$ownerUser' ] },
-                                  { $eq: [ '$dataHistoryModifiers.sessionId', 0] }
+                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$dataHistoryModifiers' } } }, 'user' ] },
+                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$dataHistoryModifiers' } } }, '$ownerUser' ] },
+                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, 0] }
                                 ]
                               }
                             ]
