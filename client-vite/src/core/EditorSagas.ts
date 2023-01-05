@@ -201,7 +201,8 @@ function* mapSaga () {
         }
         case 'CREATE_MAP_IN_MAP': {
           const {lastPath} = m.g.sc
-          payload = {...payload, lastPath, newMapName: getMapData(m, lastPath).content}
+          const last = getMapData(m, lastPath)
+          payload = {...payload, content: last.content, nodeId: last.nodeId}
           break
         }
         case 'DUPLICATE_FRAME': {

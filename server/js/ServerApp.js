@@ -89,13 +89,7 @@ async function checkSave (req, userId) {
     const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
     if (isEqual(userId, ownerUser) || shareToEdit !== null) {
       if (mapSource === 'dataHistory') {
-
-
-
-        // await maps.updateOne({ _id: mapId }, { $set: { [`dataHistory.${DATA_HISTORY_SELECTED}`]: mapData } })
         await mergeMap(maps, mapId, 'map', mapData)
-
-
       } else if (mapSource === 'dataFrames') {
         await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } })
       }
@@ -184,23 +178,19 @@ async function resolveType(req, userId) {
     }
     case 'CREATE_MAP_IN_MAP': { // MUTATION
       // // LOAD OLD
-      // const mapId = ObjectId(req.payload.save.mapId)
-      // const map = await maps.findOne({_id: mapId})
-      // const { path } = map
+      const mapId = ObjectId(req.payload.save.mapId)
+      const map = await maps.findOne({_id: mapId})
+      const { path } = map
       // // CREATE NEW
-      // const { lastPath, newMapName } = req.payload
-      // const newMapId = (await maps.insertOne(getDefaultMap(newMapName, userId, [ ...path, mapId ] ))).insertedId
-      // await MongoQueries.appendBreadcrumbs(users, userId, newMapId)
-      // const userInfo = await getUserInfo(userId)
+      const { content, nodeId } = req.payload
+      const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ] ))).insertedId
+      await MongoMutations.appendBreadcrumbs(users, userId, newMapId)
       // // UPDATE OLD
-      // await maps.updateOne( // this SHOULD be a testable query and not an in-line stuff
-      //   { _id: mapId },
-      //   { $set: { 'data.$[elem].linkType': 'internal', 'data.$[elem].link': newMapId.toString() } },
-      //   { "arrayFilters": [{ "elem.path": lastPath }], "multi": true }
-      // )
+      await mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() } )
       // // RETURN NEW
-      // const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
-      // return { error: '', data: { ...userInfo, ...newMapInfo } }
+      const userInfo = await getUserInfo(userId)
+      const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
+      return { error: '', data: { ...userInfo, ...newMapInfo } }
       return { error: 'NOT_YET_IMPLEMENTED', data: {} }
     }
     case 'CREATE_MAP_IN_TAB': { // MUTATION
