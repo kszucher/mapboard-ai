@@ -74,6 +74,11 @@ function getDefaultMap (mapName, ownerUser, path) {
         {nodeId: genNodeIdJs(), path: ['r', 0, 'd', 1]},
       ]
     ],
+    dataHistoryModifiers: [{
+      modifierType: 'user',
+      userId: ownerUser,
+      sessionId: 0,
+    }],
     dataFrames: [],
     ownerUser,
     path
