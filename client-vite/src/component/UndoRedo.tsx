@@ -7,9 +7,9 @@ import {MapRight} from "../core/Types";
 import {actions} from "../core/EditorFlow";
 
 export const UndoRedo: FC = () => {
-  const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
-  const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
-  const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.mapStackDataIndex)
+  const mapRight = useSelector((state: RootStateOrAny) => state.editor.mapRight)
+  const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
+  const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
   const undoDisabled = mapStackDataIndex === 0
   const redoDisabled = mapStackDataIndex === mapStackData.length - 1
   const dispatch = useDispatch()

@@ -71,11 +71,11 @@ const Map: FC = () => {
 }
 
 export const Page: FC = () => {
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-  const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-  const formatterVisible = useSelector((state: RootStateOrAny) => state.formatterVisible)
-  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
-  const mapStackData = useSelector((state: RootStateOrAny) => state.mapStackData)
+  const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
+  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
+  const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
 
   const dispatch = useDispatch()
 

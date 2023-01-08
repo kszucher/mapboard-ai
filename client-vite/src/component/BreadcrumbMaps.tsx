@@ -5,8 +5,8 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {sagaActions} from "../core/EditorFlow";
 
 export const BreadcrumbMaps: FC = () => {
-  const breadcrumbMapNameList = useSelector((state: RootStateOrAny) => state.breadcrumbMapNameList)
-  const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
+  const breadcrumbMapNameList = useSelector((state: RootStateOrAny) => state.editor.breadcrumbMapNameList)
+  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-2xl py-1 px-4 border-2 border-mb-pink border-t-0">

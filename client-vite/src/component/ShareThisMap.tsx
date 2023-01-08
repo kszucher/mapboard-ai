@@ -5,9 +5,9 @@ import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField
 import {MapRight, PageState} from "../core/Types";
 
 export const ShareThisMap: FC = () => {
-  const shareEmail = useSelector((state: RootStateOrAny) => state.shareEmail)
-  const shareAccess = useSelector((state: RootStateOrAny) => state.shareAccess)
-  const shareFeedbackMessage = useSelector((state: RootStateOrAny) => state.shareFeedbackMessage)
+  const shareEmail = useSelector((state: RootStateOrAny) => state.editor.shareEmail)
+  const shareAccess = useSelector((state: RootStateOrAny) => state.editor.shareAccess)
+  const shareFeedbackMessage = useSelector((state: RootStateOrAny) => state.editor.shareFeedbackMessage)
   const dispatch = useDispatch()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

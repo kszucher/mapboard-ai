@@ -15,6 +15,7 @@ import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
 import {flagDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
+import {useLiveDemoQuery} from "../core/Api";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -27,19 +28,32 @@ let landingAreaListener
 
 export const WindowListeners: FC = () => {
 
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
-  const mapId = useSelector((state: RootStateOrAny) => state.mapId)
-  const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
-  const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
-  const mapRight = useSelector((state: RootStateOrAny) => state.mapRight)
-  const pageState = useSelector((state: RootStateOrAny) => state.pageState)
-  const editedNodeId = useSelector((state: RootStateOrAny) => state.editedNodeId)
-  const m = useSelector((state: RootStateOrAny) => state.mapStackData[state.mapStackDataIndex])
-  const tm = useSelector((state: RootStateOrAny) => state.tempMap)
+  const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
+  const mapId = useSelector((state: RootStateOrAny) => state.editor.mapId)
+  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
+  const frameSelected = useSelector((state: RootStateOrAny) => state.editor.frameSelected)
+  const mapRight = useSelector((state: RootStateOrAny) => state.editor.mapRight)
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const { density, alignment } = m?.g || {
     density: mapProps.saveOptional.density,
     alignment: mapProps.saveOptional.alignment,
   }
+
+  // const {
+  //   data,
+  //   isFetching,
+  //   isLoading,
+  // } = useLiveDemoQuery({
+  //   // pollingInterval: 3000,
+  //   // refetchOnMountOrArgChange: true,
+  //   skip: pageState !== PageState.DEMO,
+  // })
+
+  console.log('WL loading..')
+  // console.log(data)
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

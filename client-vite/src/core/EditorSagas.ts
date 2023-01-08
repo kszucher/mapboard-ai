@@ -7,6 +7,8 @@ import {PageState} from "./Types";
 import {getMapData, getSavedMapData} from "./MapFlow";
 
 const SAVE_INCLUDED = [
+  // useServerMapDispatch --> there I could dispatch multiple things based on this 'action' easily...
+  // if action includes, then inject a primary action of SAVE_MAP or SAVE_MAP_FRAME
   'OPEN_MAP_FROM_TAB',
   'OPEN_MAP_FROM_BREADCRUMBS',
   'OPEN_MAP_FROM_MAP',
@@ -120,7 +122,7 @@ function* authSaga () {
 function* colorSaga () {
   while (true) {
     yield take('TOGGLE_COLOR_MODE')
-    const colorMode = (yield select(state => state.colorMode))
+    const colorMode = (yield select(state => state.editor.colorMode))
     yield put(actions.interactionDisabled())
     const { resp: { error, data } } = yield call(fetchPost, { type: 'TOGGLE_COLOR_MODE', payload: { colorMode } })
     yield put(actions.interactionEnabled())
@@ -134,9 +136,9 @@ function* autoSaveSaga() {
   while (true) {
     // TODO: only do ANYTHING if mapRight === EDIT
     const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
-      autoSaveNow: take(SAVE_INCLUDED),
-      autoSaveLater: take(['MAP_CHANGED']),
-      autoSaveNowByTimeout: delay(1000)
+      autoSaveNow: take(SAVE_INCLUDED), // undo, redo, parseRespPayload --> timeout = 0 --> timer is not set (save is called alongside with the action creator)
+      autoSaveLater: take(['MAP_CHANGED']), // mutateMapStack --> timeout++ --> resets timer (if expires, save is called from the timer callback function)
+      autoSaveNowByTimeout: delay(1000) // not needed, a regular timer set reset will be implemented instead
     })
     if (autoSaveNow) {
       autoSaveState = AUTO_SAVE_STATES.IDLE
@@ -145,15 +147,15 @@ function* autoSaveSaga() {
     } else if (autoSaveNowByTimeout) {
       if (autoSaveState === AUTO_SAVE_STATES.WAIT) {
         autoSaveState = AUTO_SAVE_STATES.IDLE
-        const mapStackData = yield select(state => state.mapStackData)
-        const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+        const mapStackData = yield select(state => state.editor.mapStackData)
+        const mapStackDataIndex = yield select(state => state.editor.mapStackDataIndex)
         const m = mapStackData[mapStackDataIndex]
         if (mapStackData.length === 1 && mapStackDataIndex === 0 || mapStackData.length === 0) {
           console.log('skip save')
         } else {
           console.log('apply save')
-          const mapId = yield select(state => state.mapId)
-          const mapSource = yield select(state => state.mapSource)
+          const mapId = yield select(state => state.editor.mapId)
+          const mapSource = yield select(state => state.editor.mapSource)
           const mapData = getSavedMapData(m)
           const type = 'SAVE_MAP'
           const payload = { save: { mapId, mapSource, mapData } }
@@ -170,24 +172,24 @@ function* mapSaga () {
   while (true) {
     let { type, payload } = yield take(['SAVE_MAP', ...SAVE_INCLUDED, ...SAVE_NOT_INCLUDED])
     if (['SAVE_MAP', ...SAVE_INCLUDED].includes(type)) {
-      const mapId = yield select(state => state.mapId)
-      const mapSource = yield select(state => state.mapSource)
-      const mapStackData = yield select(state => state.mapStackData)
-      const mapStackDataIndex = yield select(state => state.mapStackDataIndex)
+      const mapId = yield select(state => state.editor.mapId)
+      const mapSource = yield select(state => state.editor.mapSource)
+      const mapStackData = yield select(state => state.editor.mapStackData)
+      const mapStackDataIndex = yield select(state => state.editor.mapStackDataIndex)
       const m = mapStackData[mapStackDataIndex]
       const mapData = getSavedMapData(m)
       payload = { ...payload, save: { mapId, mapSource, mapData } }
       switch (type) {
         case 'OPEN_MAP_FROM_TAB': {
           const {tabMapSelected} = payload
-          const tabMapIdList = yield select(state => state.tabMapIdList)
+          const tabMapIdList = yield select(state => state.editor.tabMapIdList)
           const mapId = tabMapIdList[tabMapSelected]
           payload = {...payload, mapId}
           break
         }
         case 'OPEN_MAP_FROM_BREADCRUMBS': {
           const {breadcrumbMapSelected} = payload
-          const breadcrumbMapIdList = yield select(state => state.breadcrumbMapIdList)
+          const breadcrumbMapIdList = yield select(state => state.editor.breadcrumbMapIdList)
           const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
           payload = {...payload, mapId}
           break
@@ -211,7 +213,7 @@ function* mapSaga () {
         }
       }
     } else if ([...SAVE_NOT_INCLUDED].includes(type)) {
-      const mapId = yield select(state => state.mapId)
+      const mapId = yield select(state => state.editor.mapId)
       payload = { ...payload, mapId }
     }
     yield put(actions.interactionDisabled())
@@ -233,7 +235,7 @@ function* shareSaga () {
       'DELETE_SHARE',
     ])
     if (type === 'CREATE_SHARE') {
-      const mapId = yield select(state => state.mapId)
+      const mapId = yield select(state => state.editor.mapId)
       payload = {...payload, mapId }
     }
     yield put(actions.interactionDisabled())

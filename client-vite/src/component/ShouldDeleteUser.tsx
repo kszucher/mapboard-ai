@@ -5,7 +5,7 @@ import {actions, sagaActions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const ShouldDeleteUser:FC = () => {
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
+  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
   const dispatch = useDispatch()
   return(
     <Modal

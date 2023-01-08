@@ -5,7 +5,7 @@ import {actions, sagaActions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const ShouldCreateMapInMap: FC = () => {
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
+  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
   const dispatch = useDispatch()
   return(
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

@@ -9,8 +9,8 @@ import {actions, sagaActions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const Shares: FC = () => {
-  const shareDataExport = useSelector((state: RootStateOrAny) => state.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))
-  const shareDataImport = useSelector((state: RootStateOrAny) => state.shareDataImport).map((el: any, idx: any) => ({...el, id: idx}))
+  const shareDataExport = useSelector((state: RootStateOrAny) => state.editor.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))
+  const shareDataImport = useSelector((state: RootStateOrAny) => state.editor.shareDataImport).map((el: any, idx: any) => ({...el, id: idx}))
   const dispatch = useDispatch()
   const columnsExport = [
     {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},

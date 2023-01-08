@@ -6,9 +6,9 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {sagaActions} from "../core/EditorFlow";
 
 export const FrameCarousel: FC = () => {
-  const frameLen = useSelector((state: RootStateOrAny) => state.frameLen)
-  const frameSelected = useSelector((state: RootStateOrAny) => state.frameSelected)
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.interactionDisabled)
+  const frameLen = useSelector((state: RootStateOrAny) => state.editor.frameLen)
+  const frameSelected = useSelector((state: RootStateOrAny) => state.editor.frameSelected)
+  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">

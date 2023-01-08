@@ -5,13 +5,24 @@ import {FC} from "react";
 import {AuthPageState} from "../core/Types";
 
 export const Auth: FC = () => {
-  const authPageState = useSelector((state: RootStateOrAny) => state.authPageState)
-  const name = useSelector((state: RootStateOrAny) => state.name)
-  const email = useSelector((state: RootStateOrAny) => state.email)
-  const password = useSelector((state: RootStateOrAny) => state.password)
-  const passwordAgain = useSelector((state: RootStateOrAny) => state.passwordAgain)
-  const confirmationCode = useSelector((state: RootStateOrAny) => state.confirmationCode)
-  const authFeedbackMessage = useSelector((state: RootStateOrAny) => state.authFeedbackMessage)
+  const authPageState = useSelector((state: RootStateOrAny) => state.editor.authPageState)
+  const name = useSelector((state: RootStateOrAny) => state.editor.name)
+  const email = useSelector((state: RootStateOrAny) => state.editor.email)
+  const password = useSelector((state: RootStateOrAny) => state.editor.password)
+  const passwordAgain = useSelector((state: RootStateOrAny) => state.editor.passwordAgain)
+  const confirmationCode = useSelector((state: RootStateOrAny) => state.editor.confirmationCode)
+  const authFeedbackMessage = useSelector((state: RootStateOrAny) => state.editor.authFeedbackMessage)
+
+  // TODO: replace calling liveDemo saga action
+  //  which
+  //  - calls server
+  //  - initDomData()
+  //  - yield put(actions.setPageState(PageState.DEMO))
+  // ONLY set pageState here
+  // - there will be a useEffect in WL that call initDomData (that should belong there anyway)
+  // - and also this will act as a conditional fetching [skip] condition in the query called in WL
+  // the good news: slowly we will get rid of REDUX-SAGA completely and will have a very conventional code written
+
   const dispatch = useDispatch()
   return (
     <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-2xl">

@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import {sagaActions} from "../core/EditorFlow";
 
 export const ControlsLeft: FC = () => {
-  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.frameEditorVisible)
+  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-0 width-[40px] py-1 px-3 flex items-center border-l-0 bottom-[48px] rounded-r-2xl">

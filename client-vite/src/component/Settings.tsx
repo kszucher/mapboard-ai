@@ -7,7 +7,7 @@ import {actions, sagaActions} from "../core/EditorFlow"
 import {PageState} from "../core/Types";
 
 export const Settings: FC = () => {
-  const colorMode = useSelector((state: RootStateOrAny) => state.colorMode)
+  const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
   const dispatch = useDispatch()
   return (
     <Modal

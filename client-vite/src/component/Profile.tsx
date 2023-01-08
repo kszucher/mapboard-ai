@@ -7,7 +7,7 @@ import {PageState} from "../core/Types";
 
 export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)
-  const name = useSelector((state: RootStateOrAny) => state.name)
+  const name = useSelector((state: RootStateOrAny) => state.editor.name)
   const dispatch = useDispatch()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

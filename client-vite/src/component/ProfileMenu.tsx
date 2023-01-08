@@ -5,8 +5,8 @@ import {actions, sagaActions} from '../core/EditorFlow'
 import {PageState} from "../core/Types";
 
 export const ProfileMenu: FC = () => {
-  const moreMenu = useSelector((state: RootStateOrAny) => state.moreMenu)
-  const pageState = useSelector((state: RootStateOrAny) => state.pageState)
+  const moreMenu = useSelector((state: RootStateOrAny) => state.editor.moreMenu)
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const dispatch = useDispatch()
   return (
     <Menu

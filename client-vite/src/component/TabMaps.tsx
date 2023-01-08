@@ -4,11 +4,11 @@ import {Tab, Tabs} from "@mui/material";
 import {sagaActions} from "../core/EditorFlow";
 
 export const TabMaps: FC = () => {
-  const tabShrink = useSelector((state: RootStateOrAny) => state.tabShrink)
-  const mapSource = useSelector((state: RootStateOrAny) => state.mapSource)
-  const tabMapIdList = useSelector((state: RootStateOrAny) => state.tabMapIdList)
-  const tabMapNameList = useSelector((state: RootStateOrAny) => state.tabMapNameList)
-  const breadcrumbMapIdList = useSelector((state: RootStateOrAny) => state.breadcrumbMapIdList)
+  const tabShrink = useSelector((state: RootStateOrAny) => state.editor.tabShrink)
+  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
+  const tabMapIdList = useSelector((state: RootStateOrAny) => state.editor.tabMapIdList)
+  const tabMapNameList = useSelector((state: RootStateOrAny) => state.editor.tabMapNameList)
+  const breadcrumbMapIdList = useSelector((state: RootStateOrAny) => state.editor.breadcrumbMapIdList)
   const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
   const dispatch = useDispatch()
   return (

@@ -1,4 +1,4 @@
-import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
@@ -6,6 +6,7 @@ import {mapAssembly} from "../map/MapAssembly";
 import {reCalc} from "./MapFlow";
 import {mapDeInit} from "../map/MapDeInit";
 import {copy} from "./Utils";
+import {api} from "./Api";
 
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
@@ -63,26 +64,28 @@ const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState)
 
+// I can use useSelector instead everywhere...
+// https://stackoverflow.com/questions/61757815/access-redux-state-in-custom-hook
 export const getEditedNodeId = () => {
-  return store.getState().editedNodeId
+  return store.getState().editor.editedNodeId
 }
 export const getMoveTarget = () => {
-  return store.getState().moveTarget
+  return store.getState().editor.moveTarget
 }
 export const getSelectTarget = () => {
-  return store.getState().selectTarget
+  return store.getState().editor.selectTarget
 }
 export const getTempMap = () => {
-  return store.getState().tempMap
+  return store.getState().editor.tempMap
 }
 export const getMap = () => {
-  const mapStackData = store.getState().mapStackData
-  const mapStackDataIndex = store.getState().mapStackDataIndex
+  const mapStackData = store.getState().editor.mapStackData
+  const mapStackDataIndex = store.getState().editor.mapStackDataIndex
   return mapStackData[mapStackDataIndex]
 }
 
-const allSlice = createSlice({
-  name: 'whatever',
+export const editor = createSlice({
+  name: 'editor',
   initialState: editorState,
   reducers: {
     resetState(state) {
@@ -133,8 +136,7 @@ const allSlice = createSlice({
         JSON.stringify(mapDeInit.start(copy(m))) !==
         JSON.stringify(mapDeInit.start(copy(action.payload)))
       ) {
-        // @ts-ignore
-        state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload]
+        state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload] as any
         state.mapStackDataIndex = state.mapStackDataIndex + 1
       }
     },
@@ -183,10 +185,14 @@ const allSlice = createSlice({
       }
       return { ...state, ...action.payload, ...parsed }
     },
+  },
+  extraReducers: {
+    // note: this is the place where I will react to the "getMap" query being filled
+    // also, getting map will be a result of an invalidated cache recall!!!
   }
 })
 
-export const { actions, reducer } = allSlice
+export const { actions, reducer } = editor
 
 export const sagaActions = {
   liveDemo: () => ({type: 'LIVE_DEMO'}),
@@ -224,9 +230,13 @@ export const sagaActions = {
 const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
-  reducer,
+  reducer: combineReducers({api: api.reducer, editor: editor.reducer}),
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sagaMiddleware])
-  middleware: [sagaMiddleware]
+  // middleware: [sagaMiddleware]
+  // @ts-ignore
+  middleware: [api.middleware, sagaMiddleware]
 })
+
+export type RootState = ReturnType<typeof store.getState>
 
 sagaMiddleware.run(rootSaga)
