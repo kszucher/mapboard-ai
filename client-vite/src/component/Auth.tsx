@@ -2,7 +2,8 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Link, TextField, Typography } from '@mui/material'
 import {actions, sagaActions} from "../core/EditorFlow";
 import {FC} from "react";
-import {AuthPageState} from "../core/Types";
+import {AuthPageState, PageState} from "../core/Types";
+import {initDomData} from "../core/DomFlow";
 
 export const Auth: FC = () => {
   const authPageState = useSelector((state: RootStateOrAny) => state.editor.authPageState)
@@ -12,16 +13,6 @@ export const Auth: FC = () => {
   const passwordAgain = useSelector((state: RootStateOrAny) => state.editor.passwordAgain)
   const confirmationCode = useSelector((state: RootStateOrAny) => state.editor.confirmationCode)
   const authFeedbackMessage = useSelector((state: RootStateOrAny) => state.editor.authFeedbackMessage)
-
-  // TODO: replace calling liveDemo saga action
-  //  which
-  //  - calls server
-  //  - initDomData()
-  //  - yield put(actions.setPageState(PageState.DEMO))
-  // ONLY set pageState here
-  // - there will be a useEffect in WL that call initDomData (that should belong there anyway)
-  // - and also this will act as a conditional fetching [skip] condition in the query called in WL
-  // the good news: slowly we will get rid of REDUX-SAGA completely and will have a very conventional code written
 
   const dispatch = useDispatch()
   return (
@@ -135,7 +126,12 @@ export const Auth: FC = () => {
         </Button>}
       <Button
         id="live-demo" color="primary" variant='contained' fullWidth
-        onClick={_=>dispatch(sagaActions.liveDemo())}>
+        onClick={
+          ()=> {
+            initDomData()
+            dispatch(actions.setPageState(PageState.DEMO))
+          }
+        }>
         {'LIVE DEMO'}
       </Button>
       <Typography variant="body2" color="textSecondary" align="center">

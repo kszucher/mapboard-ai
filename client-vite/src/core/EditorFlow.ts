@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {combineReducers, configureStore, createSlice, getDefaultMiddleware, PayloadAction} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
@@ -177,19 +177,28 @@ export const editor = createSlice({
         }
       }
       if (action.payload?.hasOwnProperty('mapDataFrames')) {
-        parsed = {
-          mapStackData: action.payload.mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))),
-          mapStackDataIndex: 0,
-          editedNodeId: ''
-        }
+        // parsed = {
+        //   mapStackData: action.payload.mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))),
+        //   mapStackDataIndex: 0,
+        //   editedNodeId: ''
+        // }
       }
       return { ...state, ...action.payload, ...parsed }
     },
   },
-  extraReducers: {
-    // note: this is the place where I will react to the "getMap" query being filled
-    // also, getting map will be a result of an invalidated cache recall!!!
-  }
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      api.endpoints.liveDemo.matchFulfilled,
+      (state, { payload }) => {
+        const { mapId, mapDataFrames, mapRight } = payload.resp.data
+        state.mapId = mapId
+        state.mapStackData = mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
+        state.mapStackDataIndex = 0
+        state.mapRight = mapRight
+        state.editedNodeId = ''
+      }
+    )
+  },
 })
 
 export const { actions, reducer } = editor
@@ -234,7 +243,7 @@ export const store = configureStore({
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sagaMiddleware])
   // middleware: [sagaMiddleware]
   // @ts-ignore
-  middleware: [api.middleware, sagaMiddleware]
+  middleware: [api.middleware, sagaMiddleware, ...getDefaultMiddleware({ serializableCheck: false })]
 })
 
 export type RootState = ReturnType<typeof store.getState>

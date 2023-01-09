@@ -42,18 +42,18 @@ export const WindowListeners: FC = () => {
     alignment: mapProps.saveOptional.alignment,
   }
 
-  // const {
-  //   data,
-  //   isFetching,
-  //   isLoading,
-  // } = useLiveDemoQuery({
-  //   // pollingInterval: 3000,
-  //   // refetchOnMountOrArgChange: true,
-  //   skip: pageState !== PageState.DEMO,
-  // })
+  useLiveDemoQuery(null, {skip: pageState !== PageState.DEMO})
+  // const mapDataFrames = data?.resp.data.mapDataFrames
+  // this flow will be good for the OTHER state objects, and BY THE WAY
+  //
 
-  console.log('WL loading..')
-  // console.log(data)
+
+  // useEffect(() => {
+  //   if (mapDataFrames) {
+  //     console.log(mapDataFrames)
+  //     console.log('most betoototott')
+  //   }
+  // }, [mapDataFrames])
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

@@ -34,7 +34,7 @@ export const api = createApi({
   }),
   endpoints: (builder) => ({
     liveDemo: builder.query({
-      query: (name: string) => ({url: ``, method: 'POST', body: {
+      query: () => ({url: ``, method: 'POST', body: {
           // @ts-ignore
           cred: JSON.parse(localStorage.getItem('cred')),
           type: 'LIVE_DEMO'
