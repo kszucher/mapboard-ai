@@ -85,6 +85,17 @@ function getDefaultMap (mapName, ownerUser, path) {
   }
 }
 
+async function getAuthorizedUserId(req) {
+  const cred = JSON.parse(req.header('authorization'))
+  const authorizedUser = await users.findOne( cred )
+  return authorizedUser ? authorizedUser._id : null
+}
+
+// const userId = getAuthorizedUserId(req)
+// if (!userId) { return }
+
+
+
 async function checkSave (req, userId) {
   if (req.hasOwnProperty('payload') &&
     req.payload.hasOwnProperty('save')) {
@@ -148,18 +159,14 @@ async function getShareInfo (userId) {
   return await MongoQueries.getUserShares(shares, userId)
 }
 
-async function resolveType(cred, req, REQ, userId) {
+async function resolveType(req, REQ, userId) {
   switch (REQ.type) {
     case 'SIGN_IN': { // QUERY
-      // const { cred } = REQ.payload
-      // const userInfo = await getUserInfo(userId)
-      // const mapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList.at(-1), 'dataHistory') // invalidated OPEN_MAP will do the trick
-
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
       // TODO: create session entry
-
-      console.log(cred)
-
-      return { error: '', data: { cred, /*...userInfo, ...mapInfo*/ } }
+      const cred = JSON.parse(req.header('authorization'))
+      return { error: '', data: { cred } }
     }
     case 'SAVE_MAP': { // MUTATION
       // await new Promise(resolve => setTimeout(resolve, 5000))
@@ -208,16 +215,11 @@ async function resolveType(cred, req, REQ, userId) {
 
 
     case 'OPEN_MAP': {
-
+      const userId = await getAuthorizedUserId(req) // this will come from Auth later so it won't be a duplicate
       const user = await users.findOne({_id: userId})
       const { breadcrumbMapIdList, tabMapIdList } = user
-
       const mapId = breadcrumbMapIdList.at(-1)
-
-      console.log(REQ)
-
       const mapSource = REQ.payload.mapSource
-
       const map = await maps.findOne({_id: mapId})
       const { path, ownerUser, dataHistory, dataFrames, frameSelected } = map
       const frameLen = dataFrames.length
@@ -528,7 +530,7 @@ async function processReq(req, REQ) {
           return { error: 'authFailIncompleteRegistration' }
         } else {
           await checkSave(REQ, currUser?._id)
-          return await resolveType(cred, req, REQ, currUser?._id)
+          return await resolveType(req, REQ)
         }
       }
     }

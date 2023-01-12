@@ -36,6 +36,11 @@ export const api = createApi({
       invalidatesTags: ['MapInfo']
     }),
 
+    selectMapFromBreadcrumbs: builder.mutation<void, { mapId: string }>({
+      query: ( { mapId } ) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_BREADCRUMBS', payload: { mapId } } }),
+      invalidatesTags: ['MapInfo']
+    }),
+
     openUser: builder.query({
       query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_USER' } } ),
       providesTags: ['UserInfo']
