@@ -17,6 +17,8 @@ import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, sagaActions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
+import {mapProps} from "../core/DefaultProps";
+import {useOpenMapQuery} from "../core/Api";
 
 const iconSize = 40
 const topOffs1 = 48*2
@@ -28,10 +30,11 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
-  const frameLen = useSelector((state: RootStateOrAny) => state.editor.frameLen)
+  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
+  const { frameLen } = data?.resp?.data || { frameLen: 0 }
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-  const { density, alignment } = m.g
+  const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

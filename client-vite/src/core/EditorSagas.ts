@@ -33,6 +33,9 @@ const backendUrl = process.env.NODE_ENV === 'development'
   ? 'http://127.0.0.1:8082/beta'
   : 'https://mapboard-server.herokuapp.com/beta';
 
+
+const myHeaders = new Headers()
+
 const fetchPost = (req) => {
   if ([
     'SIGN_IN',
@@ -47,10 +50,11 @@ const fetchPost = (req) => {
   console.log('SERVER_MESSAGE: ' + req.type)
   return fetch(backendUrl, {
     method: 'POST',
-    headers: {
+    headers: new Headers({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
+      'Access-Control-Allow-Origin': '*',
+      'authorization': localStorage.getItem('cred')
+    }),
     body: JSON.stringify(req),
   }).then(resp => resp.json())
 }
@@ -130,6 +134,7 @@ function* colorSaga () {
   }
 }
 
+// vagy... ha m változik DE mapStackData.length !== 1
 const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
@@ -187,7 +192,7 @@ function* mapSaga () {
           payload = {...payload, mapId}
           break
         }
-        case 'OPEN_MAP_FROM_BREADCRUMBS': {
+        case 'OPEN_MAP_FROM_BREADCRUMBS': { // is this an anti-pattern? probably we should NOT need to access the local state...
           const {breadcrumbMapSelected} = payload
           const breadcrumbMapIdList = yield select(state => state.editor.breadcrumbMapIdList)
           const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
@@ -216,12 +221,12 @@ function* mapSaga () {
       const mapId = yield select(state => state.editor.mapId)
       payload = { ...payload, mapId }
     }
-    yield put(actions.interactionDisabled())
+    yield put(actions.interactionDisabled()) // instead, we could use the SHARED isFetching of the ... what? the mutation or the invalidation-resulted queries???
     const { resp: { error, data } } = yield call(fetchPost, { type, payload })
     yield put(actions.interactionEnabled())
     yield put(actions.parseRespPayload(data))
     if (type === 'CREATE_MAP_IN_MAP') {
-      yield put(actions.setPageState(PageState.WS))
+      yield put(actions.setPageState(PageState.WS)) // TODO: instead of this solution, we will just close it immediately but will load a spinner, this is better UX
     }
   }
 }

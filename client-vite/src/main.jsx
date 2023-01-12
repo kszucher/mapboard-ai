@@ -12,8 +12,8 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 
 root.render(
     <Provider store={store}>
-      <React.StrictMode>
+      {/*<React.StrictMode>*/}
         <Page />
-      </React.StrictMode>,
+      {/*</React.StrictMode>,*/}
     </Provider>
 )

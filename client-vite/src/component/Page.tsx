@@ -23,6 +23,7 @@ import {Settings} from './Settings'
 import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
+import {api} from "../core/Api";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -79,12 +80,14 @@ export const Page: FC = () => {
 
   const dispatch = useDispatch()
 
+  console.log('renders...')
+
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
     const cred = JSON.parse(localStorage.getItem('cred') as string)
     if (cred !== null) {
-      dispatch(sagaActions.signIn(cred.email, cred.password))
+      dispatch(api.endpoints.signIn.initiate({ email: cred.email, password: cred.password }))
     }
   }, [])
 

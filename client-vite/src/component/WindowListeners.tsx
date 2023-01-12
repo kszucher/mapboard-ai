@@ -2,6 +2,7 @@
 
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
+import {addListener, isAnyOf} from "@reduxjs/toolkit";
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
 import {getMapData, reDraw} from '../core/MapFlow'
@@ -14,8 +15,8 @@ import {actions, getMap, sagaActions} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
-import {flagDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
-import {useLiveDemoQuery} from "../core/Api";
+import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
+import {api, useLiveDemoQuery, useOpenMapQuery} from "../core/Api";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -28,32 +29,20 @@ let landingAreaListener
 
 export const WindowListeners: FC = () => {
 
+  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
+  const { mapId, mapSource, frameSelected, mapRight } = data?.resp?.data
+  || { mapId: '', mapSource: '', frameSelected: 0, mapRight: MapRight.UNAUTHORIZED }
+
   const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
-  const mapId = useSelector((state: RootStateOrAny) => state.editor.mapId)
-  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
-  const frameSelected = useSelector((state: RootStateOrAny) => state.editor.frameSelected)
-  const mapRight = useSelector((state: RootStateOrAny) => state.editor.mapRight)
+
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
+  const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const { density, alignment } = m?.g || {
-    density: mapProps.saveOptional.density,
-    alignment: mapProps.saveOptional.alignment,
-  }
+  const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
 
-  useLiveDemoQuery(null, {skip: pageState !== PageState.DEMO})
-  // const mapDataFrames = data?.resp.data.mapDataFrames
-  // this flow will be good for the OTHER state objects, and BY THE WAY
-  //
-
-
-  // useEffect(() => {
-  //   if (mapDataFrames) {
-  //     console.log(mapDataFrames)
-  //     console.log('most betoototott')
-  //   }
-  // }, [mapDataFrames])
+  // useLiveDemoQuery(null, {skip: pageState !== PageState.DEMO})
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
@@ -122,7 +111,10 @@ export const WindowListeners: FC = () => {
             } else {
               whichDown = 0
               if (ln.linkType === 'internal') {
-                dispatch(sagaActions.openMapFromMap(lastOverPath))
+                const ln = getMapData(m, lastOverPath)
+                // const mapId = ln.link
+                // dispatch(sagaActions.openMapFromMap(lastOverPath))
+                dispatch(api.endpoints.openMap.initiate({mapId: ln.link}))
               } else if (ln.linkType === 'external') {
                 window.open(ln.link, '_blank')
                 window.focus()
@@ -309,8 +301,16 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (m && Object.keys(m).length) {
+      if (mapStackData.length > 1) {
+        // TODO start OR restart timeout here
+        dispatch(api.endpoints.saveMap.initiate())
+      }
+    }
+  }, [m])
+
+  useEffect(() => {
+    if (m && Object.keys(m).length) {
       reDraw(m, colorMode, editedNodeId)
-      dispatch(sagaActions.mapChanged())
     }
   }, [m, colorMode])
 
@@ -362,6 +362,65 @@ export const WindowListeners: FC = () => {
       orient(m, 'shouldCenter', {})
     }
   }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
+
+
+  useEffect(() => {
+    return dispatch(
+      addListener({
+        matcher: isAnyOf(
+          api.endpoints.signIn.matchFulfilled,
+        ),
+        effect: () => {
+
+          console.log('signed in...')
+
+          console.log(api.endpoints.signIn)
+
+          // const {cred} = data
+          // localStorage.setItem('cred', JSON.stringify(cred))
+          initDomData()
+          // yield put(actions.setPageState(PageState.WS))
+
+
+          // TODO flow: we set to WS, then UR detects it needs something, and refetch HAPPENZ
+
+          // dispatch(api.endpoints.saveMap.initiate({mapId, mapSource, mapData: 'ss'})) // getMapData here...
+        },
+      })
+    )
+  }, [])
+
+
+  useEffect(() => {
+    return dispatch(
+      addListener({
+        matcher: isAnyOf(
+          // 'OPEN_MAP_FROM_TAB',
+          // 'OPEN_MAP_FROM_BREADCRUMBS',
+          // 'OPEN_MAP_FROM_MAP',
+          // 'CREATE_MAP_IN_MAP',
+          // 'CREATE_MAP_IN_TAB',
+          // 'OPEN_FRAME',
+          // 'CLOSE_FRAME',
+          // 'IMPORT_FRAME',
+          // 'DUPLICATE_FRAME',
+          // 'OPEN_PREV_FRAME',
+          // 'OPEN_NEXT_FRAME'
+          api.endpoints.selectMapFromTab.matchPending,
+        ),
+        effect: () => {
+          // TODO kill timer here
+
+          console.log('SAVE HERE!!!')
+
+          // dispatch(api.endpoints.saveMap.initiate({mapId, mapSource, mapData: 'ss'})) // getMapData here...
+        },
+      })
+    )
+  }, [])
+
+
+
 
   return (
     <></>

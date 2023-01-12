@@ -1,4 +1,11 @@
-import {combineReducers, configureStore, createSlice, getDefaultMiddleware, PayloadAction} from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  createListenerMiddleware,
+  createSlice,
+  getDefaultMiddleware,
+  PayloadAction
+} from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
@@ -10,6 +17,7 @@ import {api} from "./Api";
 
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
+
 
   name: '',
   email: '',
@@ -24,18 +32,18 @@ const editorState = {
 
   formatMode: FormatMode.text,
 
-  tabMapIdList: [],
-  tabMapNameList: [],
-  breadcrumbMapIdList: [],
-  breadcrumbMapNameList: [''],
+  // tabMapIdList: [],
+  // tabMapNameList: [],
+  // breadcrumbMapIdList: [],
+  // breadcrumbMapNameList: [''],
 
   tabShrink: false,
 
-  mapId: '',
-  mapSource: '',
-  frameLen: 0,
-  frameSelected: 0,
-  mapRight: MapRight.UNAUTHORIZED,
+  // mapId: '',
+  // mapSource: '',
+  // frameLen: 0,
+  // frameSelected: 0,
+  // mapRight: MapRight.UNAUTHORIZED,
 
   tempMap: {},
 
@@ -166,84 +174,84 @@ export const editor = createSlice({
       state.mapStackDataIndex = state.mapStackDataIndex < state.mapStackData.length - 1 ? state.mapStackDataIndex + 1 : state.mapStackDataIndex
       state.editedNodeId = ''
     },
-
-    parseRespPayload(state, action: PayloadAction<any>) {
-      let parsed = {}
-      if (action.payload?.hasOwnProperty('mapData')) {
-        parsed = {
-          mapStackData: [reCalc(mapAssembly(action.payload.mapData), mapAssembly(action.payload.mapData))],
-          mapStackDataIndex: 0,
-          editedNodeId: ''
-        }
-      }
-      if (action.payload?.hasOwnProperty('mapDataFrames')) {
-        // parsed = {
-        //   mapStackData: action.payload.mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))),
-        //   mapStackDataIndex: 0,
-        //   editedNodeId: ''
-        // }
-      }
-      return { ...state, ...action.payload, ...parsed }
-    },
   },
   extraReducers: (builder) => {
+    // builder.addMatcher(
+    //   api.endpoints.liveDemo.matchFulfilled, // TODO make this using openMap... so there is no confusion where the data is coming from
+    //   (state, { payload }) => {
+    //     const { mapId, mapDataFrames, mapRight } = payload.resp.data
+    //     state.mapId = mapId
+    //     state.mapRight = mapRight
+    //
+    //     state.mapStackData = mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
+    //     state.mapStackDataIndex = 0
+    //     state.editedNodeId = ''
+    //   }
+    // )
     builder.addMatcher(
-      api.endpoints.liveDemo.matchFulfilled,
+      api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, mapDataFrames, mapRight } = payload.resp.data
-        state.mapId = mapId
-        state.mapStackData = mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
+        const { cred } = payload.resp.data
+        localStorage.setItem('cred', JSON.stringify(cred))
+        state.pageState = PageState.WS
+      }
+    )
+    builder.addMatcher(
+      api.endpoints.openMap.matchFulfilled,
+      (state, { payload }) => {
+        const { mapDataList } = payload.resp.data
+        state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
-        state.mapRight = mapRight
         state.editedNodeId = ''
       }
     )
-  },
+  }
 })
 
 export const { actions, reducer } = editor
 
 export const sagaActions = {
-  liveDemo: () => ({type: 'LIVE_DEMO'}),
-  signIn: (email: string, password: string) => ({type: 'SIGN_IN', payload: { cred: { email, password } }}),
-  signUpStep1: (name: string, email: string, password: string) => ({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } }),
-  signUpStep2: (email: string, confirmationCode: string) => ({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode: parseInt(confirmationCode) } } }),
-  checkSetConfirmationCode: (value: string) => ({type: 'CHECK_SET_CONFIRMATION_CODE', payload: value}),
-  saveMap: () => ({type: 'SAVE_MAP'}),
-  openMapFromTab: (value: number) => ({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}}),
-  openMapFromBreadcrumbs: (index: number) => ({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}}),
-  openMapFromMap: (lastOverPath: []) => ({type: 'OPEN_MAP_FROM_MAP', payload: {lastOverPath}}),
-  createMapInMap: () => ({type: 'CREATE_MAP_IN_MAP'}),
-  createMapInTab: () => ({type: 'CREATE_MAP_IN_TAB'}),
-  removeMapInTab: () => ({type: 'REMOVE_MAP_IN_TAB'}),
-  moveUpMapInTab: () => ({type: 'MOVE_UP_MAP_IN_TAB'}),
-  moveDownMapInTab: () => ({type: 'MOVE_DOWN_MAP_IN_TAB'}),
-  openFrame: () => ({type: 'OPEN_FRAME'}),
-  closeFrame: () => ({type: 'CLOSE_FRAME'}),
-  openPrevFrame: () => ({type: 'OPEN_PREV_FRAME'}),
-  openNextFrame: () => ({type: 'OPEN_NEXT_FRAME'}),
-  importFrame: () => ({type: 'IMPORT_FRAME'}),
-  duplicateFrame: () => ({type: 'DUPLICATE_FRAME'}),
-  deleteFrame: () => ({type: 'DELETE_FRAME'}),
-  getShares: () => ({type: 'GET_SHARES'}),
-  createShare: (shareEmail: string, shareAccess: any) => ({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}}),
-  acceptShare: (_id: number) => ({type: 'ACCEPT_SHARE', payload: {shareId: _id}}),
-  deleteShare: (_id: number) => ({type: 'DELETE_SHARE', payload: {shareId: _id}}),
-  toggleColorMode: () => ({type: 'TOGGLE_COLOR_MODE'}),
-  changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
-  deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
-  signOut: () => ({type: 'SIGN_OUT'}),
-  mapChanged: () => ({type: 'MAP_CHANGED'}),
+  // liveDemo: () => ({type: 'LIVE_DEMO'}),
+  // signIn: (email: string, password: string) => ({type: 'SIGN_IN', payload: { cred: { email, password } }}),
+  // signUpStep1: (name: string, email: string, password: string) => ({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } }),
+  // signUpStep2: (email: string, confirmationCode: string) => ({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode: parseInt(confirmationCode) } } }),
+  // checkSetConfirmationCode: (value: string) => ({type: 'CHECK_SET_CONFIRMATION_CODE', payload: value}),
+  // saveMap: () => ({type: 'SAVE_MAP'}),
+  // openMapFromTab: (value: number) => ({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}}),
+  // openMapFromBreadcrumbs: (index: number) => ({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}}),
+  // openMapFromMap: (lastOverPath: []) => ({type: 'OPEN_MAP_FROM_MAP', payload: {lastOverPath}}),
+  // createMapInMap: () => ({type: 'CREATE_MAP_IN_MAP'}),
+  // createMapInTab: () => ({type: 'CREATE_MAP_IN_TAB'}),
+  // removeMapInTab: () => ({type: 'REMOVE_MAP_IN_TAB'}),
+  // moveUpMapInTab: () => ({type: 'MOVE_UP_MAP_IN_TAB'}),
+  // moveDownMapInTab: () => ({type: 'MOVE_DOWN_MAP_IN_TAB'}),
+  // openFrame: () => ({type: 'OPEN_FRAME'}),
+  // closeFrame: () => ({type: 'CLOSE_FRAME'}),
+  // openPrevFrame: () => ({type: 'OPEN_PREV_FRAME'}),
+  // openNextFrame: () => ({type: 'OPEN_NEXT_FRAME'}),
+  // importFrame: () => ({type: 'IMPORT_FRAME'}),
+  // duplicateFrame: () => ({type: 'DUPLICATE_FRAME'}),
+  // deleteFrame: () => ({type: 'DELETE_FRAME'}),
+  // getShares: () => ({type: 'GET_SHARES'}),
+  // createShare: (shareEmail: string, shareAccess: any) => ({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}}),
+  // acceptShare: (_id: number) => ({type: 'ACCEPT_SHARE', payload: {shareId: _id}}),
+  // deleteShare: (_id: number) => ({type: 'DELETE_SHARE', payload: {shareId: _id}}),
+  // toggleColorMode: () => ({type: 'TOGGLE_COLOR_MODE'}),
+  // changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
+  // deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
+  // signOut: () => ({type: 'SIGN_OUT'}),
+  // mapChanged: () => ({type: 'MAP_CHANGED'}),
 }
 
 const sagaMiddleware = createSagaMiddleware()
+const listenerMiddleware = createListenerMiddleware()
 
 export const store = configureStore({
   reducer: combineReducers({api: api.reducer, editor: editor.reducer}),
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([sagaMiddleware])
-  // middleware: [sagaMiddleware]
-  // @ts-ignore
-  middleware: [api.middleware, sagaMiddleware, ...getDefaultMiddleware({ serializableCheck: false })]
+  middleware: getDefaultMiddleware({ serializableCheck: false })
+    .prepend(listenerMiddleware.middleware)
+    .concat(api.middleware)
+    .concat(sagaMiddleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>

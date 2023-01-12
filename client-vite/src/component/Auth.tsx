@@ -4,6 +4,7 @@ import {actions, sagaActions} from "../core/EditorFlow";
 import {FC} from "react";
 import {AuthPageState, PageState} from "../core/Types";
 import {initDomData} from "../core/DomFlow";
+import {api} from "../core/Api";
 
 export const Auth: FC = () => {
   const authPageState = useSelector((state: RootStateOrAny) => state.editor.authPageState)
@@ -98,7 +99,7 @@ export const Auth: FC = () => {
         <Button
           id="sign-in" color="primary" variant='contained' fullWidth
           disabled={false}
-          onClick={_=>dispatch(sagaActions.signIn(email, password))}>
+          onClick={ () => {console.log('RUNZ'); dispatch(api.endpoints.signIn.initiate({ email, password })) } }>
           {'SIGN IN'}
         </Button>
       }
