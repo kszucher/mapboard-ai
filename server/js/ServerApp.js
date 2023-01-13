@@ -162,7 +162,9 @@ async function resolveType(req, REQ, userId) {
     case 'OPEN_MAP_FRAME': { // QUERY
       const userId = await getAuthorizedUserId(req)
       if (!userId) { return }
-      const mapId = ObjectId(REQ.payload.mapId)
+      const user = await users.findOne({_id: userId})
+      const { breadcrumbMapIdList } = user
+      const mapId = breadcrumbMapIdList.at(-1)
       const map = await maps.findOne({_id: mapId})
       const { dataFrames, frameSelected } = map
       const mapSource = 'dataFrames'

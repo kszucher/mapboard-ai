@@ -31,13 +31,14 @@ const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 bor
 
 export const ControlsRight: FC = () => {
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
-  const mapId = useSelector((state: RootStateOrAny) => state.editor.mapId)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
   const { data, isFetching } = useOpenMapQuery(null, {skip: false})
   const { frameLen } = data?.resp?.data || { frameLen: 0 }
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
+
+  // TODO try a getter for mapId so maybe we won't have the error, because useSelector wants to render but I DONT WANT THAT
 
   return (
     <>
@@ -81,7 +82,7 @@ export const ControlsRight: FC = () => {
         <IconButton
           color='secondary'
           disabled={frameEditorVisible && frameLen > 0}
-          onClick={() => dispatch(api.endpoints.openMapFrame.initiate({ mapId }))}>
+          onClick={() => dispatch(api.endpoints.openMapFrame.initiate())}>
           <DynamicFeedIcon/>
         </IconButton>
         <IconButton

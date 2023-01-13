@@ -39,8 +39,8 @@ export const api = createApi({
       providesTags: ['MapInfo']
     }),
 
-    openMapFrame: builder.query<{ resp: any }, { mapId: string }>({
-      query: ({ mapId }) => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP_FRAME', payload: { mapId } } }),
+    openMapFrame: builder.query<{ resp: any }, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP_FRAME' } }),
       providesTags: ['MapFrameInfo']
     }),
 
