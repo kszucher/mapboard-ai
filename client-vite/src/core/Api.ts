@@ -56,7 +56,11 @@ export const api = createApi({
       invalidatesTags: ['MapInfo']
     }),
 
-    // TODO start here selectMapFromMap
+    selectMapFromMap: builder.mutation<void, { mapId: string }>({
+      query: ( { mapId } ) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_MAP', payload: { mapId } } }),
+      invalidatesTags: ['MapInfo']
+    }),
+
 
     saveMap: builder.mutation<void, { mapId: string, mapSource: string, mapData: any }>({
       query: ({mapId, mapSource, mapData}) => ({url: '', method: 'POST', body: {

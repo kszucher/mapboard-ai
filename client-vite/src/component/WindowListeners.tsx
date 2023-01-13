@@ -112,9 +112,7 @@ export const WindowListeners: FC = () => {
               whichDown = 0
               if (ln.linkType === 'internal') {
                 const ln = getMapData(m, lastOverPath)
-                // const mapId = ln.link
-                // dispatch(sagaActions.openMapFromMap(lastOverPath))
-                dispatch(api.endpoints.openMap.initiate({mapId: ln.link}))
+                dispatch(api.endpoints.selectMapFromMap.initiate({mapId: ln.link}))
               } else if (ln.linkType === 'external') {
                 window.open(ln.link, '_blank')
                 window.focus()
@@ -381,9 +379,10 @@ export const WindowListeners: FC = () => {
     return dispatch(
       addListener({
         matcher: isAnyOf(
-          // 'OPEN_MAP_FROM_TAB',
-          // 'OPEN_MAP_FROM_BREADCRUMBS',
-          // 'OPEN_MAP_FROM_MAP',
+          api.endpoints.selectMapFromTab.matchPending,
+          api.endpoints.selectMapFromBreadcrumbs.matchPending,
+          api.endpoints.selectMapFromMap.matchPending,
+
           // 'CREATE_MAP_IN_MAP',
           // 'CREATE_MAP_IN_TAB',
           // 'OPEN_FRAME',
@@ -392,7 +391,6 @@ export const WindowListeners: FC = () => {
           // 'DUPLICATE_FRAME',
           // 'OPEN_PREV_FRAME',
           // 'OPEN_NEXT_FRAME'
-          api.endpoints.selectMapFromTab.matchPending,
         ),
         effect: () => {
           // TODO kill timer here
