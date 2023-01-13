@@ -110,40 +110,23 @@ async function resolveType(req, REQ, userId) {
       const cred = JSON.parse(req.header('authorization'))
       return { error: '', data: { cred } }
     }
-
     case 'OPEN_USER': {
       const userId = await getAuthorizedUserId(req)
       const user = await users.findOne({_id: userId})
       const { name, colorMode } = user
       return { name, colorMode  }
     }
-
     case 'OPEN_MAP': {
       const userId = await getAuthorizedUserId(req)
-
-      if (!userId) { return } // return LIVE DEMO?
-
+      if (!userId) { return }
       const user = await users.findOne({_id: userId})
       const { breadcrumbMapIdList, tabMapIdList } = user
       const mapId = breadcrumbMapIdList.at(-1)
-
-
-      const mapSource = REQ.payload.mapSource
       const map = await maps.findOne({_id: mapId})
       const { path, ownerUser, dataHistory, dataFrames, frameSelected } = map
+      const mapSource = 'dataHistory'
+      const mapDataList = [dataHistory[dataHistory.length - 1].sort((a, b) => (a.path > b.path) ? 1 : -1)]
       const frameLen = dataFrames.length
-
-      // TODO when we try to open a frame when there are no frames, then we will NOT return the map but an error or sthg
-      // if (frameLen === 0 && mapSource === 'dataFrames') { // INSTEAD we will have an OPEN_MAP_FRAME command
-      //   mapSource = 'dataHistory'
-      // }
-
-      let mapData = mapSource === 'dataHistory'
-        ? dataHistory[dataHistory.length - 1]
-        : dataFrames[frameSelected]
-
-      mapData = mapData.sort((a, b) => (a.path > b.path) ? 1 : -1)
-
       let mapRight = MAP_RIGHTS.UNAUTHORIZED
       if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
         mapRight = isEqual(userId, adminUser)
@@ -166,29 +149,30 @@ async function resolveType(req, REQ, userId) {
           }
         }
       }
-
       const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
       const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-
       return {
         error: '',
         data: {
-          mapId, mapSource, mapDataList: [mapData], frameLen, frameSelected, mapRight,
+          mapId, mapSource, mapDataList, frameLen, frameSelected, mapRight,
           breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList
         }
       }
     }
-
-    case 'OPEN_FRAME': { // QUERY
+    case 'OPEN_MAP_FRAME': { // QUERY
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
       const mapId = ObjectId(REQ.payload.mapId)
-      const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
-      return { error: '', data: { ...mapInfo, frameEditorVisible: true } }
+      const map = await maps.findOne({_id: mapId})
+      const { dataFrames, frameSelected } = map
+      const mapSource = 'dataFrames'
+      const mapDataList = [dataFrames[frameSelected].sort((a, b) => (a.path > b.path) ? 1 : -1)]
+      return { error: '', data: { mapSource, mapDataList, frameSelected } }
     }
-
-    case 'SELECT_MAP': {
-      break
+    case 'OPEN_MAP_FRAMES': {
+      // for live demo and for preview of frames
+      return
     }
-
     case 'SELECT_MAP_FROM_TAB': {
       const userId = await getAuthorizedUserId(req)
       if (!userId) { return }
@@ -210,40 +194,39 @@ async function resolveType(req, REQ, userId) {
       await MongoMutations.appendBreadcrumbs(users, userId, mapId)
       return { error: '' }
     }
-
     case 'SAVE_MAP': { // MUTATION
       // await new Promise(resolve => setTimeout(resolve, 5000))
       const userId = await getAuthorizedUserId(req)
       if (!userId) { return }
       const mapId = ObjectId(REQ.payload.mapId)
-      const { mapSource, mapData } = REQ.payload
-      const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
+      const { mapData } = REQ.payload
+      const { ownerUser } = await maps.findOne({_id: mapId})
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-      if (isEqual(userId, ownerUser) || shareToEdit !== null) { // can be done within one query using LOOKUP
-        if (mapSource === 'dataHistory') {
+      if (isEqual(userId, ownerUser) || shareToEdit !== null) {
           await mergeMap(maps, mapId, 'map', mapData)
-        } else if (mapSource === 'dataFrames') {
-          await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } }) // SAVE_MAP and SAVE_MAP_FRAME
-        }
       }
       return { error: '' }
     }
-
-    case 'CREATE_MAP_IN_MAP': { // MUTATION
-      // // LOAD OLD
+    case 'SAVE_MAP_FRAME': {
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
       const mapId = ObjectId(REQ.payload.mapId)
+      const { mapData } = REQ.payload
+      const { frameSelected } = await maps.findOne({_id: mapId})
+      await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } })
+      return { error: '' }
+    }
+    case 'CREATE_MAP_IN_MAP': { // MUTATION
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
+      const mapId = ObjectId(REQ.payload.mapId)
+      const { content, nodeId } = REQ.payload
       const map = await maps.findOne({_id: mapId})
       const { path } = map
-      // // CREATE NEW
-      const { content, nodeId } = REQ.payload
       const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ] ))).insertedId
       await MongoMutations.appendBreadcrumbs(users, userId, newMapId)
-      // // UPDATE OLD
       await mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() } )
-      // // RETURN NEW
-      // const userInfo = await getUserInfo(userId)
-      // const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
-      return { error: '', data: { ...userInfo, ...newMapInfo } }
+      return { error: '' }
     }
     case 'CREATE_MAP_IN_TAB': { // MUTATION
       const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId

@@ -26,7 +26,7 @@ export const api = createApi({
 
     signIn: builder.mutation<{ resp: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'SIGN_IN' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['UserInfo', 'MapInfo']
     }),
 
     openUser: builder.query({
@@ -35,12 +35,12 @@ export const api = createApi({
     }),
 
     openMap: builder.query({
-      query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP', payload: { mapSource: 'dataHistory' } } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP' } }),
       providesTags: ['MapInfo']
     }),
 
-    openMapFrame: builder.query({
-      query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP', payload: { mapSource: 'dataFrames' } } }),
+    openMapFrame: builder.query<{ resp: any }, { mapId: string }>({
+      query: ({ mapId }) => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP_FRAME', payload: { mapId } } }),
       providesTags: ['MapFrameInfo']
     }),
 
@@ -68,7 +68,10 @@ export const api = createApi({
       query: ({ mapCreationProps }) => ( {url: '', method: 'POST', body: { type: 'CREATE_MAP_IN_MAP', payload: { mapCreationProps} }}),
       invalidatesTags: ['MapInfo']
     }),
+
+
+
   }),
 })
 
-export const { useOpenMapQuery, useSaveMapMutation } = api
+export const { useOpenMapQuery, useOpenMapFrameQuery, useSaveMapMutation } = api

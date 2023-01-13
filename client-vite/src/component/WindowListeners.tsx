@@ -16,7 +16,7 @@ import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
 import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
-import {api, useOpenMapQuery} from "../core/Api";
+import {api, useOpenMapFrameQuery, useOpenMapQuery} from "../core/Api";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -29,21 +29,24 @@ let landingAreaListener
 let timeoutId
 
 export const WindowListeners: FC = () => {
-
-  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
-  const { mapId, mapSource, frameSelected, mapRight } = data?.resp?.data
-  || { mapId: '', mapSource: '', frameSelected: 0, mapRight: MapRight.UNAUTHORIZED }
-
   const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
-
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
+  const mapId = useSelector((state: RootStateOrAny) => state.editor.mapId)
+  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
+
+  const mExists = m && Object.keys(m).length
+  const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
 
-  // useLiveDemoQuery(null, {skip: pageState !== PageState.DEMO})
+  const { data: mapData, isSuccess: isDataSuccess } = useOpenMapQuery(null, {skip: mapSource === 'dataFrames' })
+  const { data: mapFrameData, isSuccess: isDataFrameSuccess } = useOpenMapFrameQuery(null, {skip: mapSource === 'dataHistory'})
+
+  const { mapRight } = mapData?.resp?.data || { mapRight: MapRight.UNAUTHORIZED }
+  const { frameSelected } = mapFrameData?.resp?.data || { frameLen: 0 }
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
@@ -305,7 +308,7 @@ export const WindowListeners: FC = () => {
   }, [mapId])
 
   useEffect(() => {
-    if (m && Object.keys(m).length) {
+    if (mExists) {
       if (mapStackData.length > 1) {
         clearTimeout(timeoutId)
         timeoutId = setTimeout(timeoutFun, 1000)
@@ -314,19 +317,19 @@ export const WindowListeners: FC = () => {
   }, [m])
 
   useEffect(() => {
-    if (m && Object.keys(m).length) {
+    if (mExists) {
       reDraw(m, colorMode, editedNodeId)
     }
   }, [m, colorMode])
 
   useEffect(() => {
-    if (tm && Object.keys(tm).length) {
+    if (tmExists) {
       reDraw(tm, colorMode, editedNodeId)
     }
   }, [tm])
 
   useEffect(() => {
-    if (m && Object.keys(m).length) {
+    if (mExists) {
       if (editedNodeId.length) {
         const holderElement = document.getElementById(`${editedNodeId}_div`)
         holderElement.contentEditable = 'true'
@@ -367,7 +370,6 @@ export const WindowListeners: FC = () => {
       orient(m, 'shouldCenter', {})
     }
   }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
-
 
   useEffect(() => {
     return dispatch(

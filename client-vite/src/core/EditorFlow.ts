@@ -30,6 +30,7 @@ interface EditorState {
   tempMap: object,
   mapId: string,
   mapSource: string,
+  frameSelected: number,
   mapStackData: [],
   mapStackDataIndex: number,
   editedNodeId: string,
@@ -61,6 +62,7 @@ const editorState = {
   tempMap: {},
   mapId: '',
   mapSource: 'dataHistory',
+  frameSelected: 0,
   mapStackData: [],
   mapStackDataIndex: 0,
   editedNodeId: '',
@@ -181,9 +183,20 @@ export const editor = createSlice({
     builder.addMatcher(
       api.endpoints.openMap.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, mapSource, mapDataList } = payload.resp.data
+        const { mapId, mapDataList } = payload.resp.data
         state.mapId = mapId
-        state.mapSource = mapSource
+        state.mapSource = 'dataHistory'
+        state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
+        state.mapStackDataIndex = 0
+        state.editedNodeId = ''
+      }
+    )
+    builder.addMatcher(
+      api.endpoints.openMapFrame.matchFulfilled,
+      (state, { payload }) => {
+        const { frameSelected, mapDataList } = payload.resp.data
+        state.mapSource = 'dataFrames'
+        state.frameSelected = frameSelected
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''

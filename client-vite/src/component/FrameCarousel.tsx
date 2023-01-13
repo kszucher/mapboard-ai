@@ -4,10 +4,10 @@ import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {sagaActions} from "../core/EditorFlow";
-import {useOpenMapQuery} from "../core/Api";
+import {useOpenMapFrameQuery, useOpenMapQuery} from "../core/Api";
 
 export const FrameCarousel: FC = () => {
-  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
+  const { data, isFetching } = useOpenMapFrameQuery(null, {skip: false})
   const { frameLen, frameSelected } = data?.resp?.data || { frameLen: 0, frameSelected: 0 }
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
   const dispatch = useDispatch()

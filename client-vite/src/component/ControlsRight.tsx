@@ -18,7 +18,7 @@ import {actions, sagaActions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapProps} from "../core/DefaultProps";
-import {useOpenMapQuery} from "../core/Api";
+import {api, useOpenMapQuery} from "../core/Api";
 
 const iconSize = 40
 const topOffs1 = 48*2
@@ -30,36 +30,36 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
-  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
-  const { frameLen } = data?.resp?.data || { frameLen: 0 }
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
+  const mapId = useSelector((state: RootStateOrAny) => state.editor.mapId)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
-
+  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
+  const { frameLen } = data?.resp?.data || { frameLen: 0 }
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 
   return (
     <>
       <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
-        <IconButton color='secondary' onClick={_=>dispatch(actions.toggleFormatterVisible())}>
+        <IconButton color='secondary' onClick={ () => dispatch(actions.toggleFormatterVisible())}>
           <PaletteIcon/>
         </IconButton>
       </div>
       <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
+          onClick={ () => dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
           <CalendarViewMonthIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
+          onClick={ () => dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
           <TaskIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
+          onClick={ () => dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
           <CreateMapInMapIcon/>
         </IconButton>
       </div>
@@ -79,35 +79,41 @@ export const ControlsRight: FC = () => {
       </div>
       <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
         <IconButton
-          color='secondary' disabled={frameEditorVisible}
-          onClick={_=>dispatch(sagaActions.openFrame())}>
+          color='secondary'
+          disabled={frameEditorVisible && frameLen > 0}
+          onClick={() => dispatch(api.endpoints.openMapFrame.initiate({ mapId }))}>
           <DynamicFeedIcon/>
         </IconButton>
         <IconButton
-          color='secondary' disabled={!frameEditorVisible}
-          onClick={_=>dispatch(sagaActions.importFrame())}>
+          color='secondary'
+          disabled={!frameEditorVisible}
+          onClick={() => dispatch(api.endpoints.importMapFrame.initiate())}>
           <InputIcon/>
         </IconButton>
         <IconButton
-          color='secondary' disabled={!frameEditorVisible || frameLen === 0}
-          onClick={_=>dispatch(sagaActions.duplicateFrame())}>
+          color='secondary'
+          disabled={!frameEditorVisible || frameLen === 0}
+          onClick={() => dispatch(api.endpoints.duplicateMapFrame.initiate())}>
           <ContentCopyIcon/>
         </IconButton>
         <IconButton
-          color='secondary' disabled={!frameEditorVisible || frameLen === 0}
-          onClick={_=>dispatch(sagaActions.deleteFrame())}>
+          color='secondary'
+          disabled={!frameEditorVisible || frameLen === 0}
+          onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate())}>
           <DeleteIcon/>
         </IconButton>
         <IconButton
-          color='secondary' disabled={!frameEditorVisible}
-          onClick={_=>dispatch(sagaActions.closeFrame())}>
+          color='secondary'
+          disabled={!frameEditorVisible}
+          onClick={() => dispatch(api.endpoints.openMap.initiate())}>
           <CloseIcon/>
         </IconButton>
       </div>
       <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
         <IconButton
-          color='secondary' disabled={frameEditorVisible}
-          onClick={_=>dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>
+          color='secondary'
+          disabled={frameEditorVisible}
+          onClick={ () => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>
           <ShareIcon/>
         </IconButton>
       </div>
