@@ -5,7 +5,7 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {addListener, isAnyOf} from "@reduxjs/toolkit";
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getMapData, reDraw} from '../core/MapFlow'
+import {getMapData, getSavedMapData, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
@@ -26,6 +26,7 @@ let isTaskClicked = false
 let mutationObserver
 let mapAreaListener
 let landingAreaListener
+let timeoutId
 
 export const WindowListeners: FC = () => {
 
@@ -47,6 +48,12 @@ export const WindowListeners: FC = () => {
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
+
+  // TIMEOUT
+  const timeoutFun = () => {
+    const mapData = getSavedMapData(m)
+    dispatch(api.endpoints.saveMap.initiate({ mapId, mapSource, mapData }))
+  }
 
   // LANDING LISTENERS
   const wheel = (e) => {
@@ -300,8 +307,8 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (m && Object.keys(m).length) {
       if (mapStackData.length > 1) {
-        // TODO start OR restart timeout here
-        dispatch(api.endpoints.saveMap.initiate())
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(timeoutFun, 1000)
       }
     }
   }, [m])
@@ -392,12 +399,13 @@ export const WindowListeners: FC = () => {
           // 'OPEN_PREV_FRAME',
           // 'OPEN_NEXT_FRAME'
         ),
-        effect: () => {
-          // TODO kill timer here
-
-          console.log('SAVE HERE!!!')
-
-          // dispatch(api.endpoints.saveMap.initiate({mapId, mapSource, mapData: 'ss'})) // getMapData here...
+        effect: (action, listenerApi) => {
+          clearTimeout(timeoutId)
+          const state = listenerApi.getState()
+          const { mapId, mapSource } = state.api.queries['openMap(null)'].data.resp.data
+          const m = state.editor.mapStackData[state.editor.mapStackDataIndex]
+          const mapData = getSavedMapData(m)
+          dispatch(api.endpoints.saveMap.initiate({ mapId, mapSource, mapData }))
         },
       })
     )

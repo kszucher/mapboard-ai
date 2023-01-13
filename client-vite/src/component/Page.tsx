@@ -80,8 +80,6 @@ export const Page: FC = () => {
 
   const dispatch = useDispatch()
 
-  console.log('renders...')
-
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')

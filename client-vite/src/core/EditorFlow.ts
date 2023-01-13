@@ -18,7 +18,6 @@ import {api} from "./Api";
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
 
-
   name: '',
   email: '',
   password: '',
@@ -32,18 +31,7 @@ const editorState = {
 
   formatMode: FormatMode.text,
 
-  // tabMapIdList: [],
-  // tabMapNameList: [],
-  // breadcrumbMapIdList: [],
-  // breadcrumbMapNameList: [''],
-
   tabShrink: false,
-
-  // mapId: '',
-  // mapSource: '',
-  // frameLen: 0,
-  // frameSelected: 0,
-  // mapRight: MapRight.UNAUTHORIZED,
 
   tempMap: {},
 
@@ -72,7 +60,6 @@ const editorState = {
 
 const editorStateDefault = JSON.stringify(editorState)
 
-// I can use useSelector instead everywhere...
 // https://stackoverflow.com/questions/61757815/access-redux-state-in-custom-hook
 export const getEditedNodeId = () => {
   return store.getState().editor.editedNodeId

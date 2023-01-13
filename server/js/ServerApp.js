@@ -169,7 +169,7 @@ async function resolveType(req, REQ, userId) {
 
       const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
       const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-
+      
       return {
         error: '',
         data: {
@@ -180,7 +180,7 @@ async function resolveType(req, REQ, userId) {
     }
 
     case 'OPEN_FRAME': { // QUERY
-      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapId = ObjectId(REQ.payload.mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo, frameEditorVisible: true } }
     }
@@ -211,16 +211,11 @@ async function resolveType(req, REQ, userId) {
       return { error: '' }
     }
 
-    // TODO continue
-
     case 'SAVE_MAP': { // MUTATION
       // await new Promise(resolve => setTimeout(resolve, 5000))
       const userId = await getAuthorizedUserId(req)
-
-      console.log('save map request')
-
-      const mapId = ObjectId(REQ.payload.save.mapId)
-      const { mapSource, mapData } = REQ.payload.save
+      const mapId = ObjectId(REQ.payload.mapId)
+      const { mapSource, mapData } = REQ.payload
       const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
       if (isEqual(userId, ownerUser) || shareToEdit !== null) { // can be done within one query using LOOKUP
@@ -230,13 +225,12 @@ async function resolveType(req, REQ, userId) {
           await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } }) // SAVE_MAP and SAVE_MAP_FRAME
         }
       }
-
       return { error: '' }
     }
 
     case 'CREATE_MAP_IN_MAP': { // MUTATION
       // // LOAD OLD
-      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapId = ObjectId(REQ.payload.mapId)
       const map = await maps.findOne({_id: mapId})
       const { path } = map
       // // CREATE NEW
@@ -246,8 +240,8 @@ async function resolveType(req, REQ, userId) {
       // // UPDATE OLD
       await mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() } )
       // // RETURN NEW
-      const userInfo = await getUserInfo(userId)
-      const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
+      // const userInfo = await getUserInfo(userId)
+      // const newMapInfo = await getMapInfo(userId, newMapId, 'dataHistory')
       return { error: '', data: { ...userInfo, ...newMapInfo } }
     }
     case 'CREATE_MAP_IN_TAB': { // MUTATION
@@ -289,25 +283,25 @@ async function resolveType(req, REQ, userId) {
       return { error: '', data: { ...mapInfo, frameEditorVisible: false } }
     }
     case 'OPEN_PREV_FRAME': { // MUTATION
-      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.openPrevFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'OPEN_NEXT_FRAME': { // MUTATION
-      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.openNextFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'IMPORT_FRAME': { // MUTATION
-      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.importFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
     }
     case 'DUPLICATE_FRAME': { // MUTATION
-      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.duplicateFrame(maps, mapId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
       return { error: '', data: { ...mapInfo } }
