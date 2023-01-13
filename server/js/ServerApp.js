@@ -169,7 +169,7 @@ async function resolveType(req, REQ, userId) {
 
       const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
       const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-      
+
       return {
         error: '',
         data: {
@@ -214,6 +214,7 @@ async function resolveType(req, REQ, userId) {
     case 'SAVE_MAP': { // MUTATION
       // await new Promise(resolve => setTimeout(resolve, 5000))
       const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
       const mapId = ObjectId(REQ.payload.mapId)
       const { mapSource, mapData } = REQ.payload
       const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})

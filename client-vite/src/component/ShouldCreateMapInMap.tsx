@@ -1,8 +1,9 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, sagaActions} from "../core/EditorFlow";
+import {actions, getMapCreationProps} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
+import {api} from "../core/Api";
 
 export const ShouldCreateMapInMap: FC = () => {
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
@@ -18,7 +19,7 @@ export const ShouldCreateMapInMap: FC = () => {
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button
             color="primary" variant='outlined' disabled={interactionDisabled}
-            onClick={_=>dispatch(sagaActions.createMapInMap())}>
+            onClick={() => dispatch(api.endpoints.createMapInMap.initiate(getMapCreationProps()))}>
             {'OK'}
           </Button>
           <Button

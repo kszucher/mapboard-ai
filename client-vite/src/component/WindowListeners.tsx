@@ -5,13 +5,13 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {addListener, isAnyOf} from "@reduxjs/toolkit";
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getMapData, getSavedMapData, reDraw} from '../core/MapFlow'
+import {getMapData, reDraw} from '../core/MapFlow'
 import {MapRight, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, getMap, sagaActions} from "../core/EditorFlow"
+import {actions, getMap, getMapSaveProps} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
@@ -51,8 +51,8 @@ export const WindowListeners: FC = () => {
 
   // TIMEOUT
   const timeoutFun = () => {
-    const mapData = getSavedMapData(m)
-    dispatch(api.endpoints.saveMap.initiate({ mapId, mapSource, mapData }))
+    dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
+    console.log('saved by timeout')
   }
 
   // LANDING LISTENERS
@@ -401,11 +401,8 @@ export const WindowListeners: FC = () => {
         ),
         effect: (action, listenerApi) => {
           clearTimeout(timeoutId)
-          const state = listenerApi.getState()
-          const { mapId, mapSource } = state.api.queries['openMap(null)'].data.resp.data
-          const m = state.editor.mapStackData[state.editor.mapStackDataIndex]
-          const mapData = getSavedMapData(m)
-          dispatch(api.endpoints.saveMap.initiate({ mapId, mapSource, mapData }))
+          dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
+          console.log('saved by listener')
         },
       })
     )

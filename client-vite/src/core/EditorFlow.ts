@@ -10,83 +10,99 @@ import createSagaMiddleware from 'redux-saga'
 import rootSaga from "./EditorSagas";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly";
-import {reCalc} from "./MapFlow";
+import {getMapData, getSavedMapData, reCalc} from "./MapFlow";
 import {mapDeInit} from "../map/MapDeInit";
 import {copy} from "./Utils";
 import {api} from "./Api";
 
+interface EditorState {
+  authPageState: AuthPageState,
+  name: string,
+  email: string,
+  password: string,
+  passwordAgain: string,
+  confirmationCode: string,
+  authFeedbackMessage: string,
+  pageState: PageState,
+  colorMode: string,
+  formatMode: FormatMode,
+  tabShrink: boolean,
+  tempMap: object,
+  mapId: string,
+  mapSource: string,
+  mapStackData: [],
+  mapStackDataIndex: number,
+  editedNodeId: string,
+  moveTarget: [],
+  selectTarget: [],
+  formatterVisible: boolean,
+  frameEditorVisible: boolean,
+  shareEmail: string,
+  shareAccess: string,
+  shareFeedbackMessage: string,
+  shareDataExport: [],
+  shareDataImport: [],
+  moreMenu: boolean,
+  interactionDisabled: boolean,
+}
+
 const editorState = {
   authPageState: AuthPageState.SIGN_IN,
-
   name: '',
   email: '',
   password: '',
   passwordAgain: '',
   confirmationCode: '',
   authFeedbackMessage: '',
-
   pageState: PageState.AUTH,
-
   colorMode: 'dark',
-
   formatMode: FormatMode.text,
-
   tabShrink: false,
-
   tempMap: {},
-
+  mapId: '',
+  mapSource: 'dataHistory',
   mapStackData: [],
   mapStackDataIndex: 0,
-
   editedNodeId: '',
-
   moveTarget: [],
   selectTarget: [],
-
   formatterVisible: false,
-
   frameEditorVisible: false,
-
   shareEmail: '',
   shareAccess: 'view',
   shareFeedbackMessage: '',
   shareDataExport: [],
   shareDataImport: [],
-
   moreMenu: false,
-
   interactionDisabled: false,
-}
+} as EditorState
 
 const editorStateDefault = JSON.stringify(editorState)
 
 // https://stackoverflow.com/questions/61757815/access-redux-state-in-custom-hook
-export const getEditedNodeId = () => {
-  return store.getState().editor.editedNodeId
+export const getEditedNodeId = () => (store.getState().editor.editedNodeId)
+export const getMoveTarget = () => (store.getState().editor.moveTarget)
+export const getSelectTarget = () => (store.getState().editor.selectTarget)
+export const getTempMap = () => (store.getState().editor.tempMap)
+export const getMap = () : { g: any, r: any } => (store.getState().editor.mapStackData[store.getState().editor.mapStackDataIndex])
+export const getMapSaveProps = () => {
+  const { mapId, mapSource } = store.getState().editor
+  const m = getMap()
+  const mapData = getSavedMapData(m)
+  return { mapId, mapSource, mapData }
 }
-export const getMoveTarget = () => {
-  return store.getState().editor.moveTarget
-}
-export const getSelectTarget = () => {
-  return store.getState().editor.selectTarget
-}
-export const getTempMap = () => {
-  return store.getState().editor.tempMap
-}
-export const getMap = () => {
-  const mapStackData = store.getState().editor.mapStackData
-  const mapStackDataIndex = store.getState().editor.mapStackDataIndex
-  return mapStackData[mapStackDataIndex]
+export const getMapCreationProps = () : { mapCreationProps: { content: string, nodeId: string } }  => {
+  const m = getMap()
+  const { lastPath } = m.g.sc
+  const last = getMapData(m, lastPath)
+  return { mapCreationProps: { content: last.content, nodeId: last.nodeId } }
 }
 
 export const editor = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
-    resetState(state) {
-      return JSON.parse(editorStateDefault)
-    },
-
+    resetState(state) {return JSON.parse(editorStateDefault)},
     signInPanel(state) {
       state.authPageState = AuthPageState.SIGN_IN
       state.authFeedbackMessage = ''
@@ -107,24 +123,17 @@ export const editor = createSlice({
     setPasswordAgain(state, action: PayloadAction<string>) { state.passwordAgain = action.payload },
     setConfirmationCode(state, action: PayloadAction<string>) { state.confirmationCode = action.payload },
     setAuthFeedbackMessage(state, action: PayloadAction<string>) { state.authFeedbackMessage = action.payload },
-
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
-
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     toggleFormatterVisible(state) { state.formatterVisible = !state.formatterVisible },
-
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
-
     setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
     setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
     setShareFeedbackMessage(state, action: PayloadAction<string>) { state.shareFeedbackMessage = action.payload },
-
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
-
     interactionEnabled(state) { state.interactionDisabled =  false },
     interactionDisabled(state) { state.interactionDisabled = true },
-
     mutateMapStack(state, action: PayloadAction<any>) {
       const m = state.mapStackData[state.mapStackDataIndex]
       if (
@@ -135,28 +144,14 @@ export const editor = createSlice({
         state.mapStackDataIndex = state.mapStackDataIndex + 1
       }
     },
-
-    mutateTempMap(state, action: PayloadAction<any>) {
-      state.tempMap = action.payload
-    },
-
-    setEditedNodeId(state, action: PayloadAction<any>) {
-      state.editedNodeId = action.payload
-    },
-
-    setMoveTarget(state, action: PayloadAction<any>) {
-      state.moveTarget = action.payload
-    },
-
-    setSelectTarget(state, action: PayloadAction<any>) {
-      state.selectTarget = action.payload
-    },
-
+    mutateTempMap(state, action: PayloadAction<any>) {state.tempMap = action.payload},
+    setEditedNodeId(state, action: PayloadAction<any>) {state.editedNodeId = action.payload},
+    setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
+    setSelectTarget(state, action: PayloadAction<any>) {state.selectTarget = action.payload},
     undo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex > 0 ? state.mapStackDataIndex - 1 : state.mapStackDataIndex
       state.editedNodeId = ''
     },
-
     redo(state) {
       state.mapStackDataIndex = state.mapStackDataIndex < state.mapStackData.length - 1 ? state.mapStackDataIndex + 1 : state.mapStackDataIndex
       state.editedNodeId = ''
@@ -186,7 +181,9 @@ export const editor = createSlice({
     builder.addMatcher(
       api.endpoints.openMap.matchFulfilled,
       (state, { payload }) => {
-        const { mapDataList } = payload.resp.data
+        const { mapId, mapSource, mapDataList } = payload.resp.data
+        state.mapId = mapId
+        state.mapSource = mapSource
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''

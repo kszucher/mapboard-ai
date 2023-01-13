@@ -1,18 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {getMapData} from "./MapFlow";
 import {RootState, store} from "./EditorFlow";
-import {select} from "redux-saga/effects";
 
 const backendUrl = process.env.NODE_ENV === 'development'
   ? 'http://127.0.0.1:8082/beta'
   : 'https://mapboard-server.herokuapp.com/beta';
 
-// TODO plan: this week will be about finishing migrating to using RTK with a hook to move forward with sessions, auth, etc.
-
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth.token
+      // const token = (getState() as RootState).editor.colorMode
       // if (token) {
       //   headers.set('authorization', `Bearer ${token}`)
       // }
@@ -66,9 +64,9 @@ export const api = createApi({
       invalidatesTags: []
     }),
 
-    createMapInMap: builder.mutation<{ message: string }, void>({
-      query: () => 'protected',
-      invalidatesTags: []
+    createMapInMap: builder.mutation<void, { mapCreationProps: { content: string, nodeId: string } }>({
+      query: ({ mapCreationProps }) => ( {url: '', method: 'POST', body: { type: 'CREATE_MAP_IN_MAP', payload: { mapCreationProps} }}),
+      invalidatesTags: ['MapInfo']
     }),
   }),
 })

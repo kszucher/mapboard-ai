@@ -85,7 +85,7 @@ export const Page: FC = () => {
     getEquationDim('\\[Test\\]')
     const cred = JSON.parse(localStorage.getItem('cred') as string)
     if (cred !== null) {
-      dispatch(api.endpoints.signIn.initiate({ email: cred.email, password: cred.password }))
+      dispatch(api.endpoints.signIn.initiate(cred))
     }
   }, [])
 

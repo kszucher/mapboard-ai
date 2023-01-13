@@ -1,9 +1,10 @@
 // @ts-nocheck
 
-import {actions, getEditedNodeId, getMap, sagaActions} from "../core/EditorFlow";
+import {actions, getEditedNodeId, getMap, getMapCreationProps, getMapSaveProps} from "../core/EditorFlow";
 import {isUrl} from "../core/Utils";
 import {Dir} from "../core/Types";
 import {getMapData} from "../core/MapFlow";
+import {api} from "../core/Api";
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -67,10 +68,10 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '000') && code === 'Backspace',           ['m'],              1, 'm',  'select_S_BB',                       {}                              ],
     [ 'kd', 0, ckm(e, '000') && code === 'Escape',              ['s', 'c', 'm'],    1, 'm',  'select_R',                          {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyA',                ['s', 'c', 'm'],    1, 'm',  'select_all',                        {}                              ],
-    [ 'kd', 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],    1, 'sa', 'createMapInMap',                    {}                              ],
+    [ 'kd', 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],    1, 'rtk','createMapInMap',                    getMapCreationProps()           ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyC',                ['s', 'c', 'm'],    1, 'm',  'copySelection',                     {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyX',                ['s', 'c', 'm'],    1, 'm',  'cutSelection',                      {}                              ],
-    [ 'kd', 0, ckm(e, '100') && code === 'KeyS',                ['s', 'c', 'm'],    1, 'sa', 'saveMap',                           {}                              ],
+    [ 'kd', 0, ckm(e, '100') && code === 'KeyS',                ['s', 'c', 'm'],    1, 'rtk','saveMap',                           getMapSaveProps()               ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyZ',                ['any'],            1, 'a',  'redo',                              {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyY',                ['any'],            1, 'a',  'undo',                              {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyE',                ['s'],              1, 'm',  'transpose',                         {}                              ],
@@ -115,7 +116,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
       }
       switch (actionType) {
         case 'a': dispatch(actions[action](payload)); break
-        case 'sa': dispatch(sagaActions[action](payload)); break
+        case 'rtk': dispatch(api.endpoints[action].initiate(payload)); break
         case 'm': mapDispatch(action, payload); break
       }
       break
