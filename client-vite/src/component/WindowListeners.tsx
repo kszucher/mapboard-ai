@@ -42,8 +42,8 @@ export const WindowListeners: FC = () => {
   const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
 
-  const { data: mapData, isSuccess: isDataSuccess } = useOpenMapQuery(null, {skip: mapSource === 'dataFrames' })
-  const { data: mapFrameData, isSuccess: isDataFrameSuccess } = useOpenMapFrameQuery(null, {skip: mapSource === 'dataHistory'})
+  const { data: mapData, isSuccess: isDataSuccess } = useOpenMapQuery(null, {skip: false })
+  const { data: mapFrameData, isSuccess: isDataFrameSuccess } = useOpenMapFrameQuery(null, {skip: false})
 
   const { mapRight } = mapData?.resp?.data || { mapRight: MapRight.UNAUTHORIZED }
   const { frameSelected } = mapFrameData?.resp?.data || { frameLen: 0 }
