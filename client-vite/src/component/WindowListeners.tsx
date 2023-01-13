@@ -16,7 +16,7 @@ import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
 import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
-import {api, useLiveDemoQuery, useOpenMapQuery} from "../core/Api";
+import {api, useOpenMapQuery} from "../core/Api";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -371,25 +371,11 @@ export const WindowListeners: FC = () => {
           api.endpoints.signIn.matchFulfilled,
         ),
         effect: () => {
-
-          console.log('signed in...')
-
-          console.log(api.endpoints.signIn)
-
-          // const {cred} = data
-          // localStorage.setItem('cred', JSON.stringify(cred))
           initDomData()
-          // yield put(actions.setPageState(PageState.WS))
-
-
-          // TODO flow: we set to WS, then UR detects it needs something, and refetch HAPPENZ
-
-          // dispatch(api.endpoints.saveMap.initiate({mapId, mapSource, mapData: 'ss'})) // getMapData here...
         },
       })
     )
   }, [])
-
 
   useEffect(() => {
     return dispatch(
@@ -418,9 +404,6 @@ export const WindowListeners: FC = () => {
       })
     )
   }, [])
-
-
-
 
   return (
     <></>

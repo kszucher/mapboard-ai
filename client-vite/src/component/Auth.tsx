@@ -99,7 +99,12 @@ export const Auth: FC = () => {
         <Button
           id="sign-in" color="primary" variant='contained' fullWidth
           disabled={false}
-          onClick={ () => {console.log('RUNZ'); dispatch(api.endpoints.signIn.initiate({ email, password })) } }>
+          onClick={
+            () => {
+              localStorage.setItem('cred', JSON.stringify({email, password}))
+              dispatch(api.endpoints.signIn.initiate())
+            }
+          }>
           {'SIGN IN'}
         </Button>
       }

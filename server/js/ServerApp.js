@@ -87,77 +87,19 @@ function getDefaultMap (mapName, ownerUser, path) {
 
 async function getAuthorizedUserId(req) {
   const cred = JSON.parse(req.header('authorization'))
-  const authorizedUser = await users.findOne( cred )
-  return authorizedUser ? authorizedUser._id : null
-}
-
-// const userId = getAuthorizedUserId(req)
-// if (!userId) { return }
-
-
-
-async function checkSave (req, userId) {
-  if (req.hasOwnProperty('payload') &&
-    req.payload.hasOwnProperty('save')) {
-    const mapId = ObjectId(req.payload.save.mapId)
-    const { mapSource, mapData } = req.payload.save
-    const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
-    const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-    if (isEqual(userId, ownerUser) || shareToEdit !== null) { // can be done within one query using LOOKUP
-      if (mapSource === 'dataHistory') {
-        await mergeMap(maps, mapId, 'map', mapData)
-      } else if (mapSource === 'dataFrames') {
-        await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } }) // SAVE_MAP and SAVE_MAP_FRAME
-      }
+  if (cred !== null) {
+    // TODO: joi validation
+    const authorizedUser = await users.findOne( cred )
+    if (authorizedUser !== null) {
+      return authorizedUser._id
     }
   }
+  return null
 }
 
-async function getUserInfo (userId) {
-  const user = await users.findOne({_id: userId})
-  const { name, colorMode, breadcrumbMapIdList, tabMapIdList } = user
-  const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
-  const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-  return { name, colorMode, breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList }
-}
-
-async function getMapInfo (userId, mapId, mapSource) {
-  const map = await maps.findOne({_id: mapId})
-  const { path, ownerUser, dataHistory, dataFrames, frameSelected } = map
-  const frameLen = dataFrames.length
-  if (frameLen === 0 && mapSource === 'dataFrames') {
-    mapSource = 'dataHistory'
-  }
-  let mapData = mapSource === 'dataHistory' ? dataHistory[dataHistory.length - 1]: dataFrames[frameSelected]
-  mapData = mapData.sort((a, b) => (a.path > b.path) ? 1 : -1)
-  let mapRight = MAP_RIGHTS.UNAUTHORIZED
-  if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
-    mapRight = isEqual(userId, adminUser)
-      ? MAP_RIGHTS.EDIT
-      : MAP_RIGHTS.VIEW
-  } else {
-    if (isEqual(userId, ownerUser)) {
-      mapRight = MAP_RIGHTS.EDIT
-    } else {
-      const fullPath = [...path, mapId]
-      for (let i = fullPath.length - 1; i > -1; i--) {
-        const currMapId = fullPath[i]
-        const shareData = await shares.findOne({
-          shareUser: userId,
-          sharedMap: currMapId
-        })
-        if (shareData !== null) {
-          mapRight = shareData.access
-        }
-      }
-    }
-  }
-  return { mapId, mapSource, mapData, frameLen, frameSelected, mapRight }
-}
-
-async function getShareInfo (userId) {
-  return await MongoQueries.getUserShares(shares, userId)
-}
+// async function getShareInfo (userId) {
+//   return await MongoQueries.getUserShares(shares, userId)
+// }
 
 async function resolveType(req, REQ, userId) {
   switch (REQ.type) {
@@ -168,57 +110,24 @@ async function resolveType(req, REQ, userId) {
       const cred = JSON.parse(req.header('authorization'))
       return { error: '', data: { cred } }
     }
-    case 'SAVE_MAP': { // MUTATION
-      // await new Promise(resolve => setTimeout(resolve, 5000))
-
-      console.log('save map request')
-
-
-      // const mapId = ObjectId(REQ.payload.save.mapId)
-      // const { mapSource, mapData } = REQ.payload.save
-      // const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
-      // const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-      // if (isEqual(userId, ownerUser) || shareToEdit !== null) { // can be done within one query using LOOKUP
-      //   if (mapSource === 'dataHistory') {
-      //     await mergeMap(maps, mapId, 'map', mapData)
-      //   } else if (mapSource === 'dataFrames') {
-      //     await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } }) // SAVE_MAP and SAVE_MAP_FRAME
-      //   }
-      // }
-
-      return { error: '' }
-    }
-    // OPEN MAP = one query? how? we will only send the mapId, and we will figure out what to do
-      // we can check containment for breadcrumbs and tabs, and can mutate breadcrumbs accordingly in ONE MUTATION...
-      // MUTATE_BREADCRUMBS
-      // but how do I send data to be saved???
-      // I can still keep
-
-      // TODO: the very first iteration:
-      // rename OPEN_MAP_XXX to SELECT_MAP_XXX
-      // have OPEN_MAP as follows and OPEN USER as follows
-      // implement everything and invalidate these 2 always just to see if the concept works
-      // later we can
-      // - granularize invalidated stuff deeper
-      // - recreate logic using mongo snakes
-      // THE POINT IS: remove saga, and remove the functions above!!!!!!
-
-    case 'SELECT_MAP': {
-      break;
-    }
 
     case 'OPEN_USER': {
-      // TODO: return name and colorMode
-      break;
+      const userId = await getAuthorizedUserId(req)
+      const user = await users.findOne({_id: userId})
+      const { name, colorMode } = user
+      return { name, colorMode  }
     }
 
-
-
     case 'OPEN_MAP': {
-      const userId = await getAuthorizedUserId(req) // this will come from Auth later so it won't be a duplicate
+      const userId = await getAuthorizedUserId(req)
+
+      if (!userId) { return } // return LIVE DEMO?
+
       const user = await users.findOne({_id: userId})
       const { breadcrumbMapIdList, tabMapIdList } = user
       const mapId = breadcrumbMapIdList.at(-1)
+
+
       const mapSource = REQ.payload.mapSource
       const map = await maps.findOne({_id: mapId})
       const { path, ownerUser, dataHistory, dataFrames, frameSelected } = map
@@ -270,27 +179,61 @@ async function resolveType(req, REQ, userId) {
       }
     }
 
-    case 'SELECT_MAP_FROM_TAB': { // MUTATION --> SELECT_MAP_FROM_TAB --> SELECT_MAP
+    case 'OPEN_FRAME': { // QUERY
+      const mapId = ObjectId(REQ.payload.save.mapId)
+      const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
+      return { error: '', data: { ...mapInfo, frameEditorVisible: true } }
+    }
+
+    case 'SELECT_MAP': {
+      break
+    }
+
+    case 'SELECT_MAP_FROM_TAB': {
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
       const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.replaceBreadcrumbs(users, userId, mapId)
-      const userInfo = await getUserInfo(userId)
-      const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
-      return { error: '', data: { ...userInfo, ...mapInfo } }
+      return { error: '' }
     }
-    case 'SELECT_MAP_FROM_BREADCRUMBS': { // MUTATION --> SELECT_MAP_FROM_BREADCRUMBS --> SELECT_MAP
+    case 'SELECT_MAP_FROM_BREADCRUMBS': {
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
       const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.sliceBreadcrumbs(users, userId, mapId)
-      const userInfo = await getUserInfo(userId)
-      const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
-      return { error: '', data: { ...userInfo, ...mapInfo } }
+      return { error: '' }
     }
-    case 'SELECT_MAP_FROM_MAP': { // MUTATION --> SELECT_MAP_FROM_MAP --> SELECT_MAP
-      // const mapId = ObjectId(REQ.payload.mapId)
-      await MongoMutations.appendBreadcrumbs(users, userId, ObjectId(REQ.payload.mapId))
-      // const userInfo = await getUserInfo(userId)
-      // const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
-      return { error: '', /*data: { ...userInfo, ...mapInfo }*/ }
+    case 'SELECT_MAP_FROM_MAP': {
+      const userId = await getAuthorizedUserId(req)
+      if (!userId) { return }
+      const mapId = ObjectId(REQ.payload.mapId)
+      await MongoMutations.appendBreadcrumbs(users, userId, mapId)
+      return { error: '' }
     }
+
+    // TODO continue
+
+    case 'SAVE_MAP': { // MUTATION
+      // await new Promise(resolve => setTimeout(resolve, 5000))
+      const userId = await getAuthorizedUserId(req)
+
+      console.log('save map request')
+
+      const mapId = ObjectId(REQ.payload.save.mapId)
+      const { mapSource, mapData } = REQ.payload.save
+      const { ownerUser, frameSelected } = await maps.findOne({_id: mapId})
+      const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
+      if (isEqual(userId, ownerUser) || shareToEdit !== null) { // can be done within one query using LOOKUP
+        if (mapSource === 'dataHistory') {
+          await mergeMap(maps, mapId, 'map', mapData)
+        } else if (mapSource === 'dataFrames') {
+          await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } }) // SAVE_MAP and SAVE_MAP_FRAME
+        }
+      }
+
+      return { error: '' }
+    }
+
     case 'CREATE_MAP_IN_MAP': { // MUTATION
       // // LOAD OLD
       const mapId = ObjectId(REQ.payload.save.mapId)
@@ -339,11 +282,7 @@ async function resolveType(req, REQ, userId) {
       const userInfo = await getUserInfo(userId)
       return { error: '', data: { ...userInfo } }
     }
-    case 'OPEN_FRAME': { // QUERY
-      const mapId = ObjectId(REQ.payload.save.mapId)
-      const mapInfo = await getMapInfo(userId, mapId, 'dataFrames')
-      return { error: '', data: { ...mapInfo, frameEditorVisible: true } }
-    }
+
     case 'CLOSE_FRAME': { // ---------------------> this is VERY bad, this should be an OPEN_MAP query, and frameEditorVisible should be closed-loop set ON FE
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList.at(-1), 'dataHistory')
@@ -526,10 +465,10 @@ async function processReq(req, REQ) {
               })
             return { error: '' }
           }
-        } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) {
+        } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) { // BUT WHAT IS THE TYPE???
           return { error: 'authFailIncompleteRegistration' }
         } else {
-          await checkSave(REQ, currUser?._id)
+          // await checkSave(REQ, currUser?._id)
           return await resolveType(req, REQ)
         }
       }

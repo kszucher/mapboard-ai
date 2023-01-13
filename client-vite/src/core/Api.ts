@@ -22,22 +22,12 @@ export const api = createApi({
   }),
   tagTypes: ['UserInfo', 'MapInfo', 'MapFrameInfo'],
   endpoints: (builder) => ({
-    liveDemo: builder.query({
-      query: () => ({url: '', method: 'POST', body: { type: 'LIVE_DEMO' } }),
-    }),
+    // liveDemo: builder.query({
+    //   query: () => ({url: '', method: 'POST', body: { type: 'LIVE_DEMO' } }),
+    // }),
 
-    signIn: builder.mutation<{ resp: any }, { email: string, password: string }>({
-      query: ({ email, password }) => ({ url: '', method: 'POST', body: { type: 'SIGN_IN', payload: { email, password } } }),
-      invalidatesTags: ['MapInfo']
-    }),
-
-    selectMapFromTab: builder.mutation<void, { mapId: string }>({
-      query: ( { mapId } ) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_TAB', payload: { mapId } } }),
-      invalidatesTags: ['MapInfo']
-    }),
-
-    selectMapFromBreadcrumbs: builder.mutation<void, { mapId: string }>({
-      query: ( { mapId } ) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_BREADCRUMBS', payload: { mapId } } }),
+    signIn: builder.mutation<{ resp: any }, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'SIGN_IN' } }),
       invalidatesTags: ['MapInfo']
     }),
 
@@ -55,6 +45,18 @@ export const api = createApi({
       query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP', payload: { mapSource: 'dataFrames' } } }),
       providesTags: ['MapFrameInfo']
     }),
+
+    selectMapFromTab: builder.mutation<void, { mapId: string }>({
+      query: ( { mapId } ) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_TAB', payload: { mapId } } }),
+      invalidatesTags: ['MapInfo']
+    }),
+
+    selectMapFromBreadcrumbs: builder.mutation<void, { mapId: string }>({
+      query: ( { mapId } ) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_BREADCRUMBS', payload: { mapId } } }),
+      invalidatesTags: ['MapInfo']
+    }),
+
+    // TODO start here selectMapFromMap
 
     saveMap: builder.mutation<void, { mapId: string, mapSource: string, mapData: any }>({
       query: ({mapId, mapSource, mapData}) => ({url: '', method: 'POST', body: {
@@ -76,4 +78,4 @@ export const api = createApi({
   }),
 })
 
-export const { useLiveDemoQuery, useOpenMapQuery, useSaveMapMutation } = api
+export const { useOpenMapQuery, useSaveMapMutation } = api
