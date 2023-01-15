@@ -5,50 +5,25 @@ const genNodeId = () => {
   return { $concat: ['node', ...randomAlphanumeric8digit] }
 }
 
-async function replaceBreadcrumbs(users, userId, mapId) {
+async function selectMap(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
     [{
       $set: {
-        breadcrumbMapIdList: [ mapId ],
-        frameSelected: -1
+        mapSelected: mapId,
+        dataFrameSelected: -1
       }
     }]
   )
 }
 
-async function appendBreadcrumbs(users, userId, mapId) {
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{
-      $set: {
-        breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] },
-        frameSelected: -1
-      }
-    }]
-  )
-}
-
-async function sliceBreadcrumbs(users, userId, mapId) {
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{
-      $set: {
-        breadcrumbMapIdList: { $slice: [ "$breadcrumbMapIdList", { $add: [ { $indexOfArray: [ "$breadcrumbMapIdList", mapId ] }, 1 ] } ] },
-        frameSelected: -1
-      }
-    }]
-  )
-}
-
-async function appendTabsReplaceBreadcrumbs(users, userId, mapId) {
+async function createMapInTab(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
     [{
       $set: {
         tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] },
-        breadcrumbMapIdList: [ mapId ],
-        frameSelected: -1
+        mapSelected: mapId,
       }
     }]
   )
@@ -60,26 +35,13 @@ async function deleteMapFromUsers (users, filter) {
     filter,
     [{
       $set: {
-        breadcrumbMapIdList: {
-          $cond: {
-            if: { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] },
-            then: {
-              $cond: {
-                if: { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
-                then: [ { $arrayElemAt: [ "$tabMapIdList", 1 ] } ],
-                else: []
-              }
-            },
-            else: [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] } ]
-          }
-        },
         tabMapIdList : {
           $filter : {
             input: "$tabMapIdList",
             as: "tabMapId",
             cond: { $ne: [ "$$tabMapId", mapId ] } }
         },
-        frameSelected: -1
+        mapSelected: { $first: '$tabMapIdList' } // TODO handle the case when ALL tab maps are deleted...
       }
     }]
   )
@@ -139,99 +101,117 @@ async function moveDownMapInTab (users, userId, mapId) {
   )
 }
 
-async function openFrame (maps, mapId) {
-  await maps.findOneAndUpdate(
-    { _id: mapId },
-    [{
-      $set: {
-        frameSelected: {
-          $cond: {
-            if: { $gt: [ { $size: "$dataFrames" }, 0 ] },
-            then: 0,
-            else: "$frameSelected"
+async function selectFirstMapFrame (users, userId) {
+  await users.aggregate(
+    [
+      { $match: { _id: userId } },
+      { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
+      { $unwind: "$map" },
+      { $set: {
+          dataFrameSelected: {
+            $cond: {
+              if: { $gt: [ { $size: "$map.dataFrames" }, 0 ] },
+              then: 0,
+              else: -1 }
           }
         }
-      }
-    }]
-  )
+      },
+      { $unset: 'map' },
+      { $merge: 'users' }
+    ]
+  ).toArray()
 }
 
-async function openPrevFrame (maps, mapId) {
-  await maps.findOneAndUpdate(
-    { _id: mapId },
-    [{
-      $set: {
-        frameSelected: {
-          $cond: {
-            if: { $gt: [ "$frameSelected", 0 ] },
-            then: { $subtract: [ "$frameSelected", 1 ] },
-            else: "$frameSelected"
+async function selectPrevMapFrame (users, userId) {
+  await users.aggregate(
+    [
+      { $match: { _id: userId } },
+      { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
+      { $unwind: "$map" },
+      { $set: {
+          dataFrameSelected: {
+            $cond: {
+              if: { $gt: [ "$dataFrameSelected", 0 ] },
+              then: { $subtract: [ "$dataFrameSelected", 1 ] },
+              else: "$dataFrameSelected"
+            }
           }
         }
-      }
-    }]
-  )
+      },
+      { $unset: 'map' },
+      { $merge: 'users' }
+    ]
+  ).toArray()
 }
 
-async function openNextFrame (maps, mapId) {
-  await maps.findOneAndUpdate(
-    { _id: mapId },
-    [{
-      $set: {
-        frameSelected: {
-          $cond: {
-            if: { $lt: [ "$frameSelected", { $subtract: [ { $size: "$dataFrames" }, 1 ] } ] },
-            then: { $add: [ "$frameSelected", 1 ] },
-            else: "$frameSelected"
+async function selectNextMapFrame (users, userId) {
+
+  await users.aggregate(
+    [
+      { $match: { _id: userId } },
+      { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
+      { $unwind: "$map" },
+      { $set: {
+          dataFrameSelected: {
+            $cond: {
+              if: { $lt: ["$dataFrameSelected", { $subtract: [{ $size: "$map.dataFrames" }, 1] }] },
+              then: { $add: ["$dataFrameSelected", 1] },
+              else: "$dataFrameSelected"
+            }
           }
         }
-      }
-    }]
-  )
+      },
+      { $unset: 'map' },
+      { $merge: 'users' }
+    ]
+  ).toArray()
 }
 
-async function importFrame (maps, mapId) {
+async function importFrame (maps) {
+  // TODO lookup current frame first
   await maps.findOneAndUpdate(
     { _id: mapId },
     [
       { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ { $last: "$dataHistory" } ] ] } } },
-      { $set: { frameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
+      { $set: { dataFrameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
     ],
   )
 }
 
-async function duplicateFrame (maps, mapId) {
+async function duplicateFrame (maps) {
+  // TODO lookup current frame first
   await maps.findOneAndUpdate(
     { _id: mapId },
     [{
       $set: {
         dataFrames: {
           $concatArrays: [
-            { $slice: [ "$dataFrames", { $add: [ "$frameSelected", 1 ] } ] },
-            [ { $arrayElemAt: [ "$dataFrames", "$frameSelected" ] } ],
-            { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
+            { $slice: [ "$dataFrames", { $add: [ "$dataFrameSelected", 1 ] } ] },
+            [ { $arrayElemAt: [ "$dataFrames", "$dataFrameSelected" ] } ],
+            { $slice: [ "$dataFrames", { $add: [ 1, "$dataFrameSelected" ] }, { $size: "$dataFrames" } ] }
           ]
         },
-        frameSelected: { $add : [ "$frameSelected", 1 ] }
+        dataFrameSelected: { $add : [ "$dataFrameSelected", 1 ] }
       }
     }]
   )
 }
 
-async function deleteFrame (maps, mapId) {
+async function deleteFrame (maps) {
+  // TODO lookup current frame first
   await maps.findOneAndUpdate(
     { _id: mapId },
     [{
       $set: {
         dataFrames: {
           $concatArrays: [
-            { $slice: [ "$dataFrames", "$frameSelected" ] },
-            { $slice: [ "$dataFrames", { $add: [ 1, "$frameSelected" ] }, { $size: "$dataFrames" } ] }
+            { $slice: [ "$dataFrames", "$dataFrameSelected" ] },
+            { $slice: [ "$dataFrames", { $add: [ 1, "$dataFrameSelected" ] }, { $size: "$dataFrames" } ] }
           ]
         },
-        frameSelected: {
+        dataFrameSelected: {
           $cond: {
-            if: { $eq: [ "$frameSelected", 0 ] },
+            if: { $eq: [ "$dataFrameSelected", 0 ] },
             then: {
               $cond: {
                 if: { $eq: [ { $size: "$dataFrames" }, 1 ] },
@@ -239,7 +219,7 @@ async function deleteFrame (maps, mapId) {
                 else: 0
               }
             },
-            else: { $subtract: [ "$frameSelected", 1 ] }
+            else: { $subtract: [ "$dataFrameSelected", 1 ] }
           }
         }
       }
@@ -576,17 +556,15 @@ async function deleteUnusedMaps(users, maps) {
 
 module.exports = {
   genNodeId,
-  replaceBreadcrumbs,
-  appendBreadcrumbs,
-  sliceBreadcrumbs,
-  appendTabsReplaceBreadcrumbs,
+  selectMap,
+  createMapInTab,
   deleteMapFromUsers,
   deleteMapFromShares,
   moveUpMapInTab,
   moveDownMapInTab,
-  openFrame,
-  openPrevFrame,
-  openNextFrame,
+  selectFirstMapFrame,
+  selectPrevMapFrame,
+  selectNextMapFrame,
   importFrame,
   duplicateFrame,
   deleteFrame,

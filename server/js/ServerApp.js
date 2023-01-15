@@ -9,7 +9,6 @@ const MongoQueries = require("./MongoQueries");
 const MongoMutations = require("./MongoMutations");
 
 const { baseUri } = require('./MongoSecret')
-const { mergeMap } = require('./MongoMutations')
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -103,36 +102,31 @@ async function getAuthorizedUserId(req) {
 
 async function resolveType(req, REQ, userId) {
   switch (REQ.type) {
-    case 'SIGN_IN': { // QUERY
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
+    case 'signIn': {
       // TODO: create session entry
       const cred = JSON.parse(req.header('authorization'))
       return { error: '', data: { cred } }
     }
-    case 'OPEN_USER': {
+    case 'openUser': {
       const userId = await getAuthorizedUserId(req)
       const user = await users.findOne({_id: userId})
       const { name, colorMode } = user
       return { name, colorMode  }
     }
-    case 'OPEN_MAP': {
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
+    case 'openMap': {
       const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList, tabMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      const map = await maps.findOne({_id: mapId})
-      const { path, ownerUser, dataHistory, dataFrames, frameSelected } = map
-      const mapSource = frameSelected === -1
-        ? 'dataHistory'
-        : 'dataFrames'
-      const mapDataList = mapSource === 'dataHistory'
+      const { tabMapIdList, mapSelected, dataFrameSelected } = user
+      const map = await maps.findOne({_id: mapSelected})
+      const { path, ownerUser, dataHistory, dataFrames } = map
+      const breadcrumbMapIdList = path
+      const mapSource = dataFrameSelected === -1 ? 'dataHistory' : 'dataFrames'
+      const mapDataList = dataFrameSelected === -1
         ? [dataHistory[dataHistory.length - 1].sort((a, b) => (a.path > b.path) ? 1 : -1)]
-        : [dataFrames[frameSelected].sort((a, b) => (a.path > b.path) ? 1 : -1)]
+        : [dataFrames[dataFrameSelected].sort((a, b) => (a.path > b.path) ? 1 : -1)]
       const frameLen = dataFrames.length
+
       let mapRight = MAP_RIGHTS.UNAUTHORIZED
-      if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapId)))) {
+      if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapSelected)))) {
         mapRight = isEqual(userId, adminUser)
           ? MAP_RIGHTS.EDIT
           : MAP_RIGHTS.VIEW
@@ -140,7 +134,7 @@ async function resolveType(req, REQ, userId) {
         if (isEqual(userId, ownerUser)) {
           mapRight = MAP_RIGHTS.EDIT
         } else {
-          const fullPath = [...path, mapId]
+          const fullPath = [...path, mapSelected]
           for (let i = fullPath.length - 1; i > -1; i--) {
             const currMapId = fullPath[i]
             const shareData = await shares.findOne({ shareUser: userId, sharedMap: currMapId })
@@ -153,78 +147,51 @@ async function resolveType(req, REQ, userId) {
       const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
       const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
       return {
-        error: '',
         data: {
-          mapId, mapSource, mapDataList, frameLen, frameSelected, mapRight,
+          mapId: mapSelected, mapSource, mapDataList, frameLen, dataFrameSelected, mapRight,
           breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList
         }
       }
     }
-    case 'SELECT_MAP_FROM_TAB': {
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
+    case 'selectMap': {
       const mapId = ObjectId(REQ.payload.mapId)
-      await MongoMutations.replaceBreadcrumbs(users, userId, mapId)
-      return { error: '' }
+      await MongoMutations.selectMap(users, userId, mapId)
+      return
     }
-    case 'SELECT_MAP_FROM_BREADCRUMBS': {
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const mapId = ObjectId(REQ.payload.mapId)
-      await MongoMutations.sliceBreadcrumbs(users, userId, mapId)
-      return { error: '' }
-    }
-    case 'SELECT_MAP_FROM_MAP': {
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const mapId = ObjectId(REQ.payload.mapId)
-      await MongoMutations.appendBreadcrumbs(users, userId, mapId)
-      return { error: '' }
-    }
-    case 'SAVE_MAP': { // MUTATION
+    case 'saveMap': {
       // await new Promise(resolve => setTimeout(resolve, 5000))
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
+      const user = await users.findOne({_id: userId})
+      const { dataFrameSelected } = user
       const mapId = ObjectId(REQ.payload.mapId)
       const { mapData } = REQ.payload
       const map = await maps.findOne({_id: mapId})
       const { ownerUser } = map
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
       if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-          await mergeMap(maps, mapId, 'map', mapData)
+        if (dataFrameSelected === -1) {
+          await MongoMutations.mergeMap(maps, mapId, 'map', mapData)
+        } else {
+          await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${dataFrameSelected}`]: mapData } })
+        }
       }
-      return { error: '' }
+      return
     }
-    case 'SAVE_MAP_FRAME': {
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const mapId = ObjectId(REQ.payload.mapId)
-      const { mapData } = REQ.payload
-      const map = await maps.findOne({_id: mapId})
-      const { frameSelected } = map
-      await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${frameSelected}`]: mapData } })
-      return { error: '' }
-    }
-    case 'CREATE_MAP_IN_MAP': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
+    case 'createMapInMap': {
       const mapId = ObjectId(REQ.payload.mapId)
       const { content, nodeId } = REQ.payload
       const map = await maps.findOne({_id: mapId})
       const { path } = map
       const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ] ))).insertedId
-      await MongoMutations.appendBreadcrumbs(users, userId, newMapId)
-      await mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() } )
-      return { error: '' }
+      await MongoMutations.selectMap(users, userId, newMapId)
+      await MongoMutations.mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() } )
+      return
     }
-    case 'CREATE_MAP_IN_TAB': { // MUTATION
+    case 'createMapInTab': {
       const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
-      await MongoMutations.appendTabsReplaceBreadcrumbs(users, userId, mapId)
-      const userInfo = await getUserInfo(userId)
-      const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
-      return { error: '', data: { ...userInfo, ...mapInfo } }
+      await MongoMutations.createMapInTab(users, userId, mapId)
+      return
     }
-    case 'REMOVE_MAP_IN_TAB': { // MUTATION
+    case 'removeMapInTab': {
       const mapId = ObjectId(REQ.payload.mapId)
       const map = await maps.findOne({_id: mapId})
       const { ownerUser } = map
@@ -233,81 +200,50 @@ async function resolveType(req, REQ, userId) {
       const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
       await MongoMutations.deleteMapFromUsers(users, userFilter)
       await MongoMutations.deleteMapFromShares(shares, shareFilter)
-      const userInfo = await getUserInfo(userId)
-      const newMapInfo = await getMapInfo(userId, userInfo.breadcrumbMapIdList[0], 'dataHistory') // [0] = at(-1) because this is 1 long, so an OPEN_MAP re-fetch will work
-      return { error: '', data: { ...userInfo, ...newMapInfo} }
+      return
     }
-    case 'MOVE_UP_MAP_IN_TAB': { // MUTATION
+    case 'moveUpMapInTab': {
       const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.moveUpMapInTab(users, userId, mapId)
-      const userInfo = await getUserInfo(userId)
-      return { error: '', data: { ...userInfo } }
+      return
     }
-    case 'MOVE_DOWN_MAP_IN_TAB': { // MUTATION
+    case 'moveDownMapInTab': {
       const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.moveDownMapInTab(users, userId, mapId)
-      const userInfo = await getUserInfo(userId)
-      return { error: '', data: { ...userInfo } }
+      return
     }
-    case 'SELECT_MAP_FRAME': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      await MongoMutations.openFrame(maps, mapId)
-      return { error: '' }
+    case 'selectFirstMapFrame': {
+      await MongoMutations.selectFirstMapFrame(users, userId)
+      return
     }
-    case 'SELECT_PREV_MAP_FRAME': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      await MongoMutations.openPrevFrame(maps, mapId)
-      return { error: '' }
+    case 'selectPrevMapFrame': {
+      await MongoMutations.selectPrevMapFrame(users, userId)
+      return
     }
-    case 'SELECT_NEXT_MAP_FRAME': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      await MongoMutations.openNextFrame(maps, mapId)
-      return { error: '' }
+    case 'selectNextMapFrame': {
+      await MongoMutations.selectNextMapFrame(users, userId)
+      return
     }
-    case 'CREATE_MAP_FRAME_BY_IMPORT': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      await MongoMutations.importFrame(maps, mapId)
-      return { error: '' }
+    case 'importMapFrame': {
+      await MongoMutations.importFrame(maps)
+      await MongoMutations.selectNextMapFrame(users, userId)
+      return
     }
-    case 'CREATE_MAP_FRAME_BY_DUPLICATION': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      await MongoMutations.duplicateFrame(maps, mapId)
-      return { error: '' }
+    case 'duplicateMapFrame': {
+      await MongoMutations.duplicateFrame(maps)
+      await MongoMutations.selectNextMapFrame(users, userId)
+      return
     }
-    case 'DELETE_MAP_FRAME': { // MUTATION
-      const userId = await getAuthorizedUserId(req)
-      if (!userId) { return }
-      const user = await users.findOne({_id: userId})
-      const { breadcrumbMapIdList } = user
-      const mapId = breadcrumbMapIdList.at(-1)
-      await MongoMutations.deleteFrame(maps, mapId)
-      return { error: '' }
+    case 'deleteMapFrame': {
+      await MongoMutations.deleteFrame(maps)
+      await MongoMutations.selectPrevMapFrame(users, userId)
+      return
     }
-    case 'GET_SHARES': { // QUERY
+    case 'getShares': {
       const shareInfo = await getShareInfo(userId)
-      return { error: '', data: { ...shareInfo } }
+      return
     }
-    case 'CREATE_SHARE': { // MUTATION
+    case 'createShare': {
       const mapId = ObjectId(REQ.payload.mapId)
       const { shareEmail, shareAccess } = REQ.payload
       const shareUser = await users.findOne({ email: shareEmail })
@@ -330,18 +266,18 @@ async function resolveType(req, REQ, userId) {
             status: SHARE_STATUS.WAITING
           }
           await shares.insertOne(newShare)
-          return { error: '' }
+          return
         } else {
           if (currShare.access === shareAccess) {
             return { error: 'createShareFailAlreadyShared' }
           } else {
             await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
-            return { error: '' }
+            return
           }
         }
       }
     }
-    case 'ACCEPT_SHARE': { // MUTATION
+    case 'acceptShare': {
       const shareId = ObjectId(REQ.payload.shareId)
       const share = (await shares.findOneAndUpdate(
         { _id: shareId },
@@ -349,13 +285,13 @@ async function resolveType(req, REQ, userId) {
         { returnDocument: 'after' }
       )).value
       const mapId = share.sharedMap
-      await MongoMutations.appendTabsReplaceBreadcrumbs(users, userId, mapId)
+      await MongoMutations.createMapInTab(users, userId, mapId)
       const userInfo = await getUserInfo(userId)
       const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
       const shareInfo = await getShareInfo(userId)
       return { error: '', data: { ...userInfo, ...mapInfo, ...shareInfo } }
     }
-    case 'DELETE_SHARE': { // MUTATION
+    case 'deleteShare': {
       const shareId = ObjectId(REQ.payload.shareId)
       const { shareUser, sharedMap } = await shares.findOne({ _id: shareId })
       const userFilter = { _id: shareUser, tabMapIdList: sharedMap }
@@ -365,17 +301,17 @@ async function resolveType(req, REQ, userId) {
       const shareInfo = await getShareInfo(userId)
       return { error: '', data: { ...shareInfo } }
     }
-    case 'TOGGLE_COLOR_MODE': { // MUTATION
+    case 'toggleColorMode': {
       const { colorMode } = REQ.payload
       const newColorMode = colorMode === 'light' ? 'dark' : 'light'
       await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
       return { error: '', data:  { colorMode: newColorMode } }
     }
-    case 'CHANGE_TAB_WIDTH': { // MUTATION
+    case 'changeTabWidth': {
       // TODO
-      return { error: '' }
+      return
     }
-    case 'DELETE_ACCOUNT': {
+    case 'deleteAccount': {
       await users.deleteOne({_id: userId})
       return { error: ''}
     }
@@ -422,7 +358,7 @@ async function processReq(req, REQ) {
             activationStatus: ACTIVATION_STATUS.AWAITING_CONFIRMATION,
             confirmationCode
           })
-          return { error: '' }
+          return
         } else if (REQ.type === 'SIGN_UP_STEP_2') {
           return { error: 'signUpStep2FailWrongEmailOrConfirmationCode' }
         }
@@ -448,13 +384,17 @@ async function processReq(req, REQ) {
                   breadcrumbMapIdList: [mapId]
                 }
               })
-            return { error: '' }
+
           }
         } else if (currUser.activationStatus === ACTIVATION_STATUS.AWAITING_CONFIRMATION) { // BUT WHAT IS THE TYPE???
           return { error: 'authFailIncompleteRegistration' }
         } else {
           // await checkSave(REQ, currUser?._id)
-          return await resolveType(req, REQ)
+
+          const userId = await getAuthorizedUserId(req)
+          if (!userId) { return { error: 'UNAUTH'} }
+
+          return await resolveType(req, REQ, userId)
         }
       }
     }
@@ -480,7 +420,7 @@ app.post('/beta', function (req, res) {
     inputStream = []
     processReq(req, REQ).then(resp => {
       res.json({resp})
-      console.log('response sent')
+      console.log(REQ.type, 'response sent', resp)
     })
   })
 })

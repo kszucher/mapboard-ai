@@ -28,8 +28,9 @@ interface EditorState {
   tabShrink: boolean,
   mapId: string,
   mapSource: string,
+  breadcrumbMapIdList: [],
   tempMap: object,
-  frameSelected: number,
+  dataFrameSelected: number,
   mapStackData: [],
   mapStackDataIndex: number,
   editedNodeId: string,
@@ -59,8 +60,9 @@ const editorState = {
   tabShrink: false,
   mapId: '',
   mapSource: '',
+  breadcrumbMapIdList: [],
   tempMap: {},
-  frameSelected: 0,
+  dataFrameSelected: 0,
   mapStackData: [],
   mapStackDataIndex: 0,
   editedNodeId: '',
@@ -85,7 +87,7 @@ export const defaultUseOpenMapQueryState = {
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
   frameLen: 0,
-  frameSelected: -1
+  dataFrameSelected: -1
 }
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -107,6 +109,9 @@ export const getMapCreationProps = () : { mapCreationProps: { content: string, n
   const { lastPath } = m.g.sc
   const last = getMapData(m, lastPath)
   return { mapCreationProps: { content: last.content, nodeId: last.nodeId } }
+}
+export const getMapSelectProps = () => {
+  return { mapId: store.getState().editor.breadcrumbMapIdList.at(-1) }
 }
 
 export const editor = createSlice({
@@ -192,9 +197,10 @@ export const editor = createSlice({
     builder.addMatcher(
       api.endpoints.openMap.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, mapSource, mapDataList } = payload.resp.data
-        state.mapId = mapId // needed for save safety
-        state.mapSource = mapSource // needed for save safety
+        const { mapId, mapSource, breadcrumbMapIdList, mapDataList } = payload.resp.data
+        state.mapId = mapId // needed for api call argument
+        state.mapSource = mapSource // needed for api call argument
+        state.breadcrumbMapIdList = breadcrumbMapIdList // needed for api call argument
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''

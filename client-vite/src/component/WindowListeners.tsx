@@ -39,7 +39,7 @@ export const WindowListeners: FC = () => {
   const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || mapProps.saveOptional
   const { data } = useOpenMapQuery()
-  const { mapId, mapRight, mapSource, frameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { mapId, mapRight, mapSource, dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
@@ -114,7 +114,7 @@ export const WindowListeners: FC = () => {
               whichDown = 0
               if (ln.linkType === 'internal') {
                 const ln = getMapData(m, lastOverPath)
-                dispatch(api.endpoints.selectMapFromMap.initiate({mapId: ln.link}))
+                dispatch(api.endpoints.selectMap.initiate({mapId: ln.link}))
               } else if (ln.linkType === 'external') {
                 window.open(ln.link, '_blank')
                 window.focus()
@@ -355,7 +355,7 @@ export const WindowListeners: FC = () => {
     if (mapId !== '') {
       orient(m, 'shouldLoad', {})
     }
-  }, [mapId, mapSource, frameSelected])
+  }, [mapId, mapSource, dataFrameSelected])
 
   useEffect(() => {
     if (mapId !== '') {

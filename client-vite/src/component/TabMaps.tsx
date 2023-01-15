@@ -28,8 +28,7 @@ export const TabMaps: FC = () => {
         aria-label="Vertical tabs example"
         indicatorColor="primary"
         value={tabMapSelected}
-        onChange={(e, value) => dispatch(api.endpoints.selectMapFromTab.initiate({mapId: tabMapIdList[value]})) }
-        // onChange={(e, value) => dispatch(sagaActions.openMapFromTab(value))}
+        onChange={(e, value) => dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[value]})) }
       >
         {
           tabMapNameList.map((name: string, index: number) => (

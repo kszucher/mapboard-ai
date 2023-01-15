@@ -15,7 +15,6 @@ async function mongoStagingCommands (users, maps, shares) {
   console.log(JSON.stringify(await MongoQueries.findDeadLinks(maps), null, 4))
 
 
-  // TODO: set frameSelected to -1 for every map!!!
 
   // console.log(await countNodesBasedOnNodePropValue(maps, 'taskStatus', 0))
 
@@ -25,10 +24,15 @@ async function mongoStagingCommands (users, maps, shares) {
 
   // await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'taskStatus', -1, 0)
 
-  await maps.updateMany({}, [{
-    $set: {
-      'frameSelected': -1
-    }
+  await users.updateMany({}, [{
+    // $set: {
+    //   'mapSelected': { $last:  "$breadcrumbMapIdList" }
+    // },
+    // $set: {
+    //   'mapDataFrameSelected': -1
+    // },
+    // $unset: "dataFrameSelected"
+
   }])
 
   // await mergeMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
@@ -39,7 +43,7 @@ async function mongoStaging() {
   const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true })
   try {
     await client.connect()
-    const db = client.db("app_prod")
+    const db = client.db("app_dev")
     const users = db.collection("users")
     const maps = db.collection("maps")
     const shares = db.collection("shares")

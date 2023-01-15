@@ -21,7 +21,7 @@ export const BreadcrumbMaps: FC = () => {
                   e.preventDefault()
                   mapSource === 'dataFrames'
                     ? console.log('prevent')
-                    : dispatch(api.endpoints.selectMapFromBreadcrumbs.initiate({mapId: breadcrumbMapIdList[index]}))
+                    : dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index]}))
                 }
               }
               key={index}>

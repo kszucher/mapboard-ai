@@ -23,59 +23,52 @@ export const api = createApi({
     // }),
 
     signIn: builder.mutation<{ resp: any }, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'SIGN_IN' } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'signIn' } }),
       invalidatesTags: ['UserInfo', 'MapInfo']
     }),
     openUser: builder.query({
-      query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_USER' } } ),
+      query: () => ({ url: '', method: 'POST', body: { type: 'openUser' } } ),
       providesTags: ['UserInfo']
     }),
     openMap: builder.query<{ resp: { data: any } }, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'OPEN_MAP' } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'openMap' } }),
       providesTags: ['MapInfo']
     }),
-    selectMapFromTab: builder.mutation<void, { mapId: string }>({
-      query: ({ mapId }) => ( {url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_TAB', payload: { mapId } } }),
+    selectMap: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ( {url: '', method: 'POST', body: { type: 'selectMap', payload: { mapId } } }),
       invalidatesTags: ['MapInfo']
     }),
-    selectMapFromBreadcrumbs: builder.mutation<void, { mapId: string }>({
-      query: ({ mapId }) => ( { url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_BREADCRUMBS', payload: { mapId } } }),
-      invalidatesTags: ['MapInfo']
-    }),
-    selectMapFromMap: builder.mutation<void, { mapId: string }>({
-      query: ({ mapId }) => ( { url: '', method: 'POST', body: { type: 'SELECT_MAP_FROM_MAP', payload: { mapId } } }),
-      invalidatesTags: ['MapInfo']
-    }),
-    selectMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'SELECT_MAP_FRAME' } }),
+    selectFirstMapFrame: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'selectFirstMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
     selectPrevMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'SELECT_PREV_MAP_FRAME' } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'selectPrevMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
     selectNextMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'SELECT_NEXT_MAP_FRAME' } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'selectNextMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
     createMapInMap: builder.mutation<void, { mapCreationProps: { content: string, nodeId: string } }>({
-      query: ({ mapCreationProps }) => ( {url: '', method: 'POST', body: { type: 'CREATE_MAP_IN_MAP', payload: { mapCreationProps} }}),
+      query: ({ mapCreationProps }) => ( {url: '', method: 'POST', body: { type: 'createMapInMap', payload: { mapCreationProps} }}),
       invalidatesTags: ['MapInfo']
     }),
-    createMapFrameByImport: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'CREATE_MAP_FRAME_BY_IMPORT' } }),
+    // TODO IN TAB
+    importMapFrame: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'importMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
-    createMapFrameByDuplication: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'CREATE_MAP_FRAME_BY_DUPLICATION' } }),
+    duplicateMapFrame: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'duplicateMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
     deleteMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'DELETE_MAP_FRAME' } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'deleteMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
     saveMap: builder.mutation<void, { mapId: string, mapSource: string, mapData: any }>({
-      query: ({mapId, mapSource, mapData}) => ({ url: '', method: 'POST', body: { type: 'SAVE_MAP', payload: { mapId, mapSource, mapData } } }),
+      query: ({mapId, mapSource, mapData}) => ({ url: '', method: 'POST', body: { type: 'saveMap', payload: { mapId, mapSource, mapData } } }),
       invalidatesTags: []
     }),
   }),

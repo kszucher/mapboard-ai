@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, defaultUseOpenMapQueryState} from "../core/EditorFlow";
+import {actions, defaultUseOpenMapQueryState, getMapSelectProps} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapProps} from "../core/DefaultProps";
@@ -78,20 +78,20 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          disabled={mapSource === 'dataFrames' || frameLen > 0}
-          onClick={() => dispatch(api.endpoints.selectMapFrame.initiate())}>
+          disabled={mapSource === 'dataFrames' && frameLen > 0}
+          onClick={() => dispatch(api.endpoints.selectFirstMapFrame.initiate())}>
           <DynamicFeedIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={mapSource === 'dataHistory'}
-          onClick={() => dispatch(api.endpoints.createMapFrameByImport.initiate())}>
+          onClick={() => dispatch(api.endpoints.importMapFrame.initiate())}>
           <InputIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={mapSource === 'dataHistory' || frameLen === 0}
-          onClick={() => dispatch(api.endpoints.createMapFrameByDuplication.initiate())}>
+          onClick={() => dispatch(api.endpoints.duplicateMapFrame.initiate())}>
           <ContentCopyIcon/>
         </IconButton>
         <IconButton
@@ -103,7 +103,7 @@ export const ControlsRight: FC = () => {
         <IconButton
           color='secondary'
           disabled={mapSource === 'dataHistory'}
-          onClick={() => dispatch(api.endpoints.openMap.initiate())}>
+          onClick={() => dispatch(api.endpoints.selectMap.initiate(getMapSelectProps()))}>
           <CloseIcon/>
         </IconButton>
       </div>

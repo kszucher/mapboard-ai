@@ -144,21 +144,9 @@ async function mongoTests(cmd) {
         ]
         break
       }
-      case 'replaceBreadcrumbsTest': {
-        dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
-        dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['mapNew'] } ] }
-        break
-      }
-      case 'appendBreadcrumbsTest': {
-        dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3'] } ] }
-        dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3', 'mapNew'] } ] }
-        break
-      }
-      case 'sliceBreadcrumbsTest': {
-        dbOriginal = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2', 'map3', 'map4'] } ] }
-        dbExpected = { users: [ {_id: 'user1', breadcrumbMapIdList: ['map1', 'map2'] } ] }
-        break
-      }
+
+      // TODO
+
       case 'deleteMapFromUsersTest':
         dbOriginal = {
           users: [
@@ -196,51 +184,59 @@ async function mongoTests(cmd) {
         dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         break
-      case 'openPrevFrameTest1': {
-        dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
+
+      case 'selectFirstMapFrameTest': {
+        dbOriginal = { users: [ {_id: 'user1', mapSelected: 'map1', dataFrameSelected: -1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
+        dbExpected = { users: [ {_id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'openPrevFrameTest2': {
-        dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
+      case 'selectPrevMapFrameTest1': {
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'openNextFrameTest1': {
-        dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 0 } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
+      case 'selectPrevMapFrameTest2': {
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'openNextFrameTest2': {
-        dbOriginal = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'], frameSelected: 1 } ] }
+      case 'selectNextMapFrameTest1': {
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
+      case 'selectNextMapFrameTest2': {
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
+        break
+      }
+
+      // TODO move dataFrameSelected...
       case 'importFrameTest': {
-        dbOriginal = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2']], frameSelected: 0 } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2'], ['o1', 'o2']], frameSelected: 1 } ] }
+        dbOriginal = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2']], dataFrameSelected: 0 } ] }
+        dbExpected = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2'], ['o1', 'o2']], dataFrameSelected: 1 } ] }
         break
       }
       case 'duplicateFrameTest': {
-        dbOriginal = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 1 } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fb', 'fb'], ['fc', 'fc']], frameSelected: 2 } ] }
+        dbOriginal = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fc', 'fc']], dataFrameSelected: 1 } ] }
+        dbExpected = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fb', 'fb'], ['fc', 'fc']], dataFrameSelected: 2 } ] }
         break
       }
       case 'deleteFrameTest1':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], frameSelected: 0 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame2', 'frame3'], frameSelected: 0 } ] }
+        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], dataFrameSelected: 0 } ] }
+        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame2', 'frame3'], dataFrameSelected: 0 } ] }
         break
       case 'deleteFrameTest2':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], frameSelected: 1 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame3'], frameSelected: 0 } ] }
+        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], dataFrameSelected: 1 } ] }
+        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame3'], dataFrameSelected: 0 } ] }
         break
       case 'deleteFrameTest3':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], frameSelected: 2 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2'], frameSelected: 1 } ] }
+        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], dataFrameSelected: 2 } ] }
+        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2'], dataFrameSelected: 1 } ] }
         break
       case 'deleteFrameTest4':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], frameSelected: 0 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: [], frameSelected: null } ] }
+        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], dataFrameSelected: 0 } ] }
+        dbExpected = { maps: [ {_id: 'map1', dataFrames: [], dataFrameSelected: -1 } ] }
         break
       case 'mapMergeTest': {
         dbOriginal = { maps: [{
@@ -327,19 +323,17 @@ async function mongoTests(cmd) {
       case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
       case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
       case 'findDeadLinksTest': result = await MongoQueries.findDeadLinks(maps); break
-      case 'replaceBreadcrumbsTest': await MongoMutations.replaceBreadcrumbs(users, 'user1', 'mapNew' ); break
-      case 'appendBreadcrumbsTest': await MongoMutations.appendBreadcrumbs(users, 'user1', 'mapNew' ); break
-      case 'sliceBreadcrumbsTest': await MongoMutations.sliceBreadcrumbs(users, 'user1', 'map2' ); break
       case 'deleteMapFromUsersTest': await MongoMutations.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
       case 'deleteMapFromSharesTest': await MongoMutations.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
       case 'moveUpMapInTabTest1': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
       case 'moveUpMapInTabTest2': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
       case 'moveDownMapInTabTest1': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
       case 'moveDownMapInTabTest2': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
-      case 'openPrevFrameTest1': await MongoMutations.openPrevFrame(maps, 'map1'); break
-      case 'openPrevFrameTest2': await MongoMutations.openPrevFrame(maps, 'map1'); break
-      case 'openNextFrameTest1': await MongoMutations.openNextFrame(maps, 'map1'); break
-      case 'openNextFrameTest2': await MongoMutations.openNextFrame(maps, 'map1'); break
+      case 'selectFirstMapFrameTest': await MongoMutations.selectFirstMapFrame(users, 'user1'); break
+      case 'selectPrevMapFrameTest1': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
+      case 'selectPrevMapFrameTest2': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
+      case 'selectNextMapFrameTest1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
+      case 'selectNextMapFrameTest2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
       case 'importFrameTest': await MongoMutations.importFrame(maps, 'map1'); break
       case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'map1'); break
       case 'deleteFrameTest1':  await MongoMutations.deleteFrame(maps, 'map1'); break
@@ -388,27 +382,24 @@ async function allTest () {
   // await mongoTests('countNodesBasedOnNodePropExistenceTest')
   // await mongoTests('countNodesBasedOnNodePropValueTest')
   // await mongoTests('findDeadLinksTest')
-  // await mongoTests('replaceBreadcrumbsTest')
-  // await mongoTests('appendBreadcrumbsTest')
-  // await mongoTests('sliceBreadcrumbsTest')
-  // TODO: appendTabsReplaceBreadcrumbsTest
-  // await mongoTests('deleteMapFromUsersTest')
+  // await mongoTests('deleteMapFromUsersTest') // TODO fix
   // await mongoTests('deleteMapFromSharesTest')
   // await mongoTests('moveUpMapInTabTest1')
   // await mongoTests('moveUpMapInTabTest2')
   // await mongoTests('moveDownMapInTabTest1')
   // await mongoTests('moveDownMapInTabTest2')
-  // await mongoTests('openPrevFrameTest1')
-  // await mongoTests('openPrevFrameTest2')
-  // await mongoTests('openNextFrameTest1')
-  // await mongoTests('openNextFrameTest2')
+  // await mongoTests('selectFirstMapFrameTest')
+  await mongoTests('selectPrevMapFrameTest1')
+  await mongoTests('selectPrevMapFrameTest2')
+  await mongoTests('selectNextMapFrameTest1')
+  await mongoTests('selectNextMapFrameTest2')
   // await mongoTests('importFrameTest')
   // await mongoTests('duplicateFrameTest')
   // await mongoTests('deleteFrameTest1')
   // await mongoTests('deleteFrameTest2')
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
-  await mongoTests('mapMergeTest')
+  // await mongoTests('mapMergeTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('createNodePropIfMissingTest')
   // await mongoTests('updateNodePropKeyTest')
