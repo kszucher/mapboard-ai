@@ -11,12 +11,12 @@ import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, getMap, getMapSaveProps} from "../core/EditorFlow"
+import {actions, defaultUseOpenMapQueryState, getMap, getMapSaveProps} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
 import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
-import {api, useOpenMapFrameQuery, useOpenMapQuery} from "../core/Api";
+import {api, useOpenMapQuery} from "../core/Api";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -33,21 +33,13 @@ export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-  const mapId = useSelector((state: RootStateOrAny) => state.editor.mapId)
-  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-
   const mExists = m && Object.keys(m).length
   const tmExists = tm && Object.keys(tm).length
-  const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
-
-  const { data: mapData, isSuccess: isDataSuccess } = useOpenMapQuery(null, {skip: false })
-  const { data: mapFrameData, isSuccess: isDataFrameSuccess } = useOpenMapFrameQuery(null, {skip: false})
-
-  const { mapRight } = mapData?.resp?.data || { mapRight: MapRight.UNAUTHORIZED }
-  const { frameSelected } = mapFrameData?.resp?.data || { frameLen: 0 }
-
+  const { density, alignment } = m?.g || mapProps.saveOptional
+  const { data } = useOpenMapQuery()
+  const { mapId, mapRight, mapSource, frameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
@@ -388,18 +380,7 @@ export const WindowListeners: FC = () => {
     return dispatch(
       addListener({
         matcher: isAnyOf(
-          api.endpoints.selectMapFromTab.matchPending,
-          api.endpoints.selectMapFromBreadcrumbs.matchPending,
-          api.endpoints.selectMapFromMap.matchPending,
-
-          // 'CREATE_MAP_IN_MAP',
-          // 'CREATE_MAP_IN_TAB',
-          // 'OPEN_FRAME',
-          // 'CLOSE_FRAME',
-          // 'IMPORT_FRAME',
-          // 'DUPLICATE_FRAME',
-          // 'OPEN_PREV_FRAME',
-          // 'OPEN_NEXT_FRAME'
+          api.endpoints.openMap.matchPending
         ),
         effect: (action, listenerApi) => {
           clearTimeout(timeoutId)

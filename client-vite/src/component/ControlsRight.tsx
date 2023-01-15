@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, sagaActions} from "../core/EditorFlow";
+import {actions, defaultUseOpenMapQueryState} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapProps} from "../core/DefaultProps";
@@ -30,50 +30,47 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
-  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-  const { density, alignment } = m?.g || {density: mapProps.saveOptional.density, alignment: mapProps.saveOptional.alignment}
-  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
-  const { frameLen } = data?.resp?.data || { frameLen: 0 }
+  const { density, alignment } = m?.g || mapProps.saveOptional
+  const { data } = useOpenMapQuery()
+  const { mapSource, frameLen } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
-
-  // TODO try a getter for mapId so maybe we won't have the error, because useSelector wants to render but I DONT WANT THAT
 
   return (
     <>
       <div className={crd} style={{top: topOffs1, borderRadius: '16px 0 0 0' }}>
-        <IconButton color='secondary' onClick={ () => dispatch(actions.toggleFormatterVisible())}>
+        <IconButton color='secondary' onClick={() => dispatch(actions.toggleFormatterVisible())}>
           <PaletteIcon/>
         </IconButton>
       </div>
       <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={ () => dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
           <CalendarViewMonthIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={ () => dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
           <TaskIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={ () => dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
           <CreateMapInMapIcon/>
         </IconButton>
       </div>
       <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={()=>mapDispatch('changeDensity', {})}>
+          onClick={() => mapDispatch('changeDensity', {})}>
           {density === 'small' && <DensitySmallIcon/>}
           {density === 'large' && <DensityMediumIcon/>}
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={()=>mapDispatch('changeAlignment', {})}>
+          onClick={() => mapDispatch('changeAlignment', {})}>
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
           {alignment === 'centered' && <CenterFocusStrongIcon/>}
         </IconButton>
@@ -81,31 +78,31 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          disabled={frameEditorVisible && frameLen > 0}
-          onClick={() => dispatch(api.endpoints.openMapFrame.initiate())}>
+          disabled={mapSource === 'dataFrames' || frameLen > 0}
+          onClick={() => dispatch(api.endpoints.selectMapFrame.initiate())}>
           <DynamicFeedIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={!frameEditorVisible}
-          onClick={() => dispatch(api.endpoints.importMapFrame.initiate())}>
+          disabled={mapSource === 'dataHistory'}
+          onClick={() => dispatch(api.endpoints.createMapFrameByImport.initiate())}>
           <InputIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={!frameEditorVisible || frameLen === 0}
-          onClick={() => dispatch(api.endpoints.duplicateMapFrame.initiate())}>
+          disabled={mapSource === 'dataHistory' || frameLen === 0}
+          onClick={() => dispatch(api.endpoints.createMapFrameByDuplication.initiate())}>
           <ContentCopyIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={!frameEditorVisible || frameLen === 0}
+          disabled={mapSource === 'dataHistory' || frameLen === 0}
           onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate())}>
           <DeleteIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={!frameEditorVisible}
+          disabled={mapSource === 'dataHistory'}
           onClick={() => dispatch(api.endpoints.openMap.initiate())}>
           <CloseIcon/>
         </IconButton>
@@ -113,7 +110,7 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
         <IconButton
           color='secondary'
-          disabled={frameEditorVisible}
+          disabled={mapSource === 'dataFrames'}
           onClick={ () => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>
           <ShareIcon/>
         </IconButton>

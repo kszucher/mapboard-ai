@@ -1,13 +1,13 @@
 import {FC} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {api, useOpenMapQuery} from "../core/Api";
+import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
 
 export const BreadcrumbMaps: FC = () => {
-  const mapSource = useSelector((state: RootStateOrAny) => state.editor.mapSource)
-  const { data, isFetching } = useOpenMapQuery(null, {skip: false})
-  const { breadcrumbMapIdList, breadcrumbMapNameList } = data?.resp?.data || { breadcrumbMapIdList: [], breadcrumbMapNameList: []}
+  const { data, isFetching } = useOpenMapQuery()
+  const { mapSource, breadcrumbMapIdList, breadcrumbMapNameList } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-2xl py-1 px-4 border-2 border-mb-pink border-t-0">

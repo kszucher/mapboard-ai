@@ -1,15 +1,14 @@
 import {FC} from "react";
-import {useSelector, useDispatch, RootStateOrAny} from 'react-redux'
+import {useDispatch} from 'react-redux'
+import {api, useOpenMapQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import {sagaActions} from "../core/EditorFlow";
-import {useOpenMapFrameQuery, useOpenMapQuery} from "../core/Api";
+import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
 
 export const FrameCarousel: FC = () => {
-  const { data, isFetching } = useOpenMapFrameQuery(null, {skip: false})
-  const { frameLen, frameSelected } = data?.resp?.data || { frameLen: 0, frameSelected: 0 }
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
+  const { data, isFetching } = useOpenMapQuery()
+  const { frameLen, frameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
@@ -23,14 +22,22 @@ export const FrameCarousel: FC = () => {
           position="static"
           activeStep={frameSelected}
           backButton={
-            <Button style={{paddingLeft:12}} size="large" onClick={_=>dispatch(sagaActions.openPrevFrame())}
-                    disabled={frameSelected === 0 || interactionDisabled}>
+            <Button
+              style={{paddingLeft:12}}
+              size="large"
+              disabled={frameSelected === 0 || isFetching}
+              onClick={() => dispatch(api.endpoints.selectPrevMapFrame.initiate())}
+            >
               <KeyboardArrowLeftIcon />
             </Button>
           }
           nextButton={
-            <Button style={{paddingRight:12}} size="large" onClick={_=>dispatch(sagaActions.openNextFrame())}
-                    disabled={frameSelected === frameLen - 1 || interactionDisabled}>
+            <Button
+              style={{paddingRight:12}}
+              size="large"
+              disabled={frameSelected === frameLen - 1 || isFetching}
+              onClick={() => dispatch(api.endpoints.selectNextMapFrame.initiate())}
+            >
               <KeyboardArrowRightIcon />
             </Button>
           }

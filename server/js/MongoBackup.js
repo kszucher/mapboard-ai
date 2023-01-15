@@ -50,17 +50,16 @@ const mongoBackup = async (mode) => {
       break;
     }
     case 'prodFile2dev': {
-      date = '1672951309237' // 13 digit id
+      date = '1673795723191' // 13 digit id
       await mongoProcess('mongorestore', {source:'app_prod', target:'app_dev'}, date);
       break;
     }
     case 'prodFile2prod': {
-      date = '1672951309237' // 13 digit id
+      date = '1673795723191' // 13 digit id
       await mongoProcess('mongorestore', {source:'app_prod', target:'app_prod'}, date);
       break;
     }
   }
 }
 
-mongoBackup('prodFile2dev');
-mongoBackup('prodFile2prod');
+mongoBackup('prod2file2dev');

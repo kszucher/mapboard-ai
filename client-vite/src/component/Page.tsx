@@ -17,13 +17,13 @@ import {ProfileButton} from './ProfileButton'
 import {ControlsLeft} from './ControlsLeft'
 import {ShouldCreateMapInMap} from './ShouldCreateMapInMap'
 import {CreateTable} from './CreateTable'
-import {sagaActions} from "../core/EditorFlow"
+import {defaultUseOpenMapQueryState, sagaActions} from "../core/EditorFlow"
 import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
-import {api} from "../core/Api";
+import {api, useOpenMapQuery} from "../core/Api";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -75,9 +75,9 @@ export const Page: FC = () => {
   const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
-  const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-
+  const { data } = useOpenMapQuery()
+  const { mapSource } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -110,7 +110,7 @@ export const Page: FC = () => {
               </>
             }
             {formatterVisible && mapStackData.length && <Formatter/>}
-            {frameEditorVisible && <FrameCarousel/>}
+            {mapSource === 'dataFrames' && <FrameCarousel/>}
           </>
         }
         {pageState === PageState.WS_PROFILE && <Profile/>}

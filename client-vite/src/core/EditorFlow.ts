@@ -3,7 +3,6 @@ import {
   configureStore,
   createListenerMiddleware,
   createSlice,
-  getDefaultMiddleware,
   PayloadAction
 } from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
@@ -27,9 +26,9 @@ interface EditorState {
   colorMode: string,
   formatMode: FormatMode,
   tabShrink: boolean,
-  tempMap: object,
   mapId: string,
   mapSource: string,
+  tempMap: object,
   frameSelected: number,
   mapStackData: [],
   mapStackDataIndex: number,
@@ -37,7 +36,6 @@ interface EditorState {
   moveTarget: [],
   selectTarget: [],
   formatterVisible: boolean,
-  frameEditorVisible: boolean,
   shareEmail: string,
   shareAccess: string,
   shareFeedbackMessage: string,
@@ -59,9 +57,9 @@ const editorState = {
   colorMode: 'dark',
   formatMode: FormatMode.text,
   tabShrink: false,
-  tempMap: {},
   mapId: '',
-  mapSource: 'dataHistory',
+  mapSource: '',
+  tempMap: {},
   frameSelected: 0,
   mapStackData: [],
   mapStackDataIndex: 0,
@@ -69,7 +67,6 @@ const editorState = {
   moveTarget: [],
   selectTarget: [],
   formatterVisible: false,
-  frameEditorVisible: false,
   shareEmail: '',
   shareAccess: 'view',
   shareFeedbackMessage: '',
@@ -78,6 +75,18 @@ const editorState = {
   moreMenu: false,
   interactionDisabled: false,
 } as EditorState
+
+export const defaultUseOpenMapQueryState = {
+  mapId: '',
+  mapSource: '',
+  mapRight: MapRight.UNAUTHORIZED,
+  tabMapIdList: [],
+  tabMapNameList: [],
+  breadcrumbMapIdList: [],
+  breadcrumbMapNameList: [],
+  frameLen: 0,
+  frameSelected: -1
+}
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -183,20 +192,9 @@ export const editor = createSlice({
     builder.addMatcher(
       api.endpoints.openMap.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, mapDataList } = payload.resp.data
-        state.mapId = mapId
-        state.mapSource = 'dataHistory'
-        state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
-        state.mapStackDataIndex = 0
-        state.editedNodeId = ''
-      }
-    )
-    builder.addMatcher(
-      api.endpoints.openMapFrame.matchFulfilled,
-      (state, { payload }) => {
-        const { frameSelected, mapDataList } = payload.resp.data
-        state.mapSource = 'dataFrames'
-        state.frameSelected = frameSelected
+        const { mapId, mapSource, mapDataList } = payload.resp.data
+        state.mapId = mapId // needed for save safety
+        state.mapSource = mapSource // needed for save safety
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''
@@ -245,7 +243,7 @@ const listenerMiddleware = createListenerMiddleware()
 
 export const store = configureStore({
   reducer: combineReducers({api: api.reducer, editor: editor.reducer}),
-  middleware: getDefaultMiddleware({ serializableCheck: false })
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
     .prepend(listenerMiddleware.middleware)
     .concat(api.middleware)
     .concat(sagaMiddleware)

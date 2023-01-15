@@ -8,7 +8,12 @@ const genNodeId = () => {
 async function replaceBreadcrumbs(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [ { $set: { breadcrumbMapIdList: [ mapId ] } } ],
+    [{
+      $set: {
+        breadcrumbMapIdList: [ mapId ],
+        frameSelected: -1
+      }
+    }]
   )
 }
 
@@ -17,8 +22,10 @@ async function appendBreadcrumbs(users, userId, mapId) {
     { _id: userId },
     [{
       $set: {
-        breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] } }
-    }],
+        breadcrumbMapIdList: { $concatArrays: [ "$breadcrumbMapIdList", [ mapId ] ] },
+        frameSelected: -1
+      }
+    }]
   )
 }
 
@@ -27,9 +34,8 @@ async function sliceBreadcrumbs(users, userId, mapId) {
     { _id: userId },
     [{
       $set: {
-        breadcrumbMapIdList: {
-          $slice: [ "$breadcrumbMapIdList", { $add: [ { $indexOfArray: ["$breadcrumbMapIdList", mapId ] }, 1 ] } ]
-        }
+        breadcrumbMapIdList: { $slice: [ "$breadcrumbMapIdList", { $add: [ { $indexOfArray: [ "$breadcrumbMapIdList", mapId ] }, 1 ] } ] },
+        frameSelected: -1
       }
     }]
   )
@@ -40,11 +46,9 @@ async function appendTabsReplaceBreadcrumbs(users, userId, mapId) {
     { _id: userId },
     [{
       $set: {
-        tabMapIdList: {
-          $concatArrays: [ "$tabMapIdList", [ mapId ] ]
-        },
-        breadcrumbMapIdList:
-          [ mapId ]
+        tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] },
+        breadcrumbMapIdList: [ mapId ],
+        frameSelected: -1
       }
     }]
   )
@@ -58,20 +62,24 @@ async function deleteMapFromUsers (users, filter) {
       $set: {
         breadcrumbMapIdList: {
           $cond: {
-            if: {$eq: [{$indexOfArray: ["$tabMapIdList", mapId]}, 0]},
+            if: { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] },
             then: {
               $cond: {
-                if: { $gt: [{ $size: "$tabMapIdList" }, 1] },
-                then: [{ $arrayElemAt: ["$tabMapIdList", 1] }],
+                if: { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
+                then: [ { $arrayElemAt: [ "$tabMapIdList", 1 ] } ],
                 else: []
               }
             },
-            else: [{$arrayElemAt: ["$tabMapIdList", {$subtract: [{$indexOfArray: ["$tabMapIdList", mapId]}, 1]}]}]
+            else: [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] } ]
           }
         },
         tabMapIdList : {
-          $filter : {input: "$tabMapIdList", as:"tabMapId", cond: {$ne: ["$$tabMapId", mapId]}}
-        }
+          $filter : {
+            input: "$tabMapIdList",
+            as: "tabMapId",
+            cond: { $ne: [ "$$tabMapId", mapId ] } }
+        },
+        frameSelected: -1
       }
     }]
   )
@@ -124,6 +132,23 @@ async function moveDownMapInTab (users, userId, mapId) {
                 { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
               ]
             }
+          }
+        }
+      }
+    }]
+  )
+}
+
+async function openFrame (maps, mapId) {
+  await maps.findOneAndUpdate(
+    { _id: mapId },
+    [{
+      $set: {
+        frameSelected: {
+          $cond: {
+            if: { $gt: [ { $size: "$dataFrames" }, 0 ] },
+            then: 0,
+            else: "$frameSelected"
           }
         }
       }
@@ -210,7 +235,7 @@ async function deleteFrame (maps, mapId) {
             then: {
               $cond: {
                 if: { $eq: [ { $size: "$dataFrames" }, 1 ] },
-                then: null,
+                then: -1,
                 else: 0
               }
             },
@@ -248,7 +273,7 @@ async function mergeMap (
                     v: {
                       nodeId: '$$node.nodeId',
                       nodePropId: "$$nodeProp.k",
-                      ['value' + mutationId]: "$$nodeProp.v",
+                      [ 'value' + mutationId ]: "$$nodeProp.v",
                     }
                   }
                 }
@@ -559,6 +584,7 @@ module.exports = {
   deleteMapFromShares,
   moveUpMapInTab,
   moveDownMapInTab,
+  openFrame,
   openPrevFrame,
   openNextFrame,
   importFrame,
