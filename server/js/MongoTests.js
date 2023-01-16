@@ -211,8 +211,8 @@ async function mongoTests(cmd) {
         break
       }
       case 'importFrameTest': {
-        dbOriginal = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2']]} ] }
-        dbExpected = { maps: [ { _id: 'map1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2'], ['o1', 'o2']] } ] }
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2']]} ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2'], ['o1', 'o2']] } ] }
         break
       }
       case 'duplicateFrameTest': {
@@ -237,19 +237,24 @@ async function mongoTests(cmd) {
         dbExpected = { maps: [ {_id: 'map1', dataFrames: [], dataFrameSelected: -1 } ] }
         break
       case 'mapMergeTest': {
-        dbOriginal = { maps: [{
+        dbOriginal = {
+          users: [{_id: 'user1', mapSelected: 'map1'}],
+          maps: [{
             _id: 'map1',
             ownerUser:'user1',
             dataHistoryModifiers: [],
             dataHistory: [ mergeBase, mergeMutationA ]
-          }] }
-        argument = mergeMutationB
-        dbExpected= { maps: [{
+          }]
+        }
+        dbExpected= {
+          users: [{_id: 'user1', mapSelected: 'map1'}],
+          maps: [{
             _id: 'map1',
             ownerUser:'user1',
             dataHistoryModifiers: [{ modifierType: "user", userId: "user1", sessionId: 0 }],
             dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
-          }] }
+          }]
+        }
         break
       }
       case 'createNodePropTest': {
@@ -332,13 +337,13 @@ async function mongoTests(cmd) {
       case 'selectPrevMapFrameTest2': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
-      case 'importFrameTest': await MongoMutations.importFrame(maps, 'map1', 0); break
+      case 'importFrameTest': await MongoMutations.importFrame(maps); break
       case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'map1', 1); break
       case 'deleteFrameTest1':  await MongoMutations.deleteFrame(maps, 'map1', 0); break
       case 'deleteFrameTest2':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest3':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
-      case 'mapMergeTest': await MongoMutations.mergeMap(maps, 'map1', 'map', argument ); break
+      case 'mapMergeTest': await MongoMutations.mergeMap(maps, 'map1', 'map', mergeMutationB ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'createNodePropIfMissingTest':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break
       case 'updateNodePropKeyTest':  await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' ); break
@@ -388,16 +393,16 @@ async function allTest () {
   // await mongoTests('moveDownMapInTabTest2')
   // await mongoTests('selectFirstMapFrameTest')
   // await mongoTests('selectPrevMapFrameTest1')
-  await mongoTests('selectPrevMapFrameTest2')
-  await mongoTests('selectNextMapFrameTest1')
-  await mongoTests('selectNextMapFrameTest2')
+  // await mongoTests('selectPrevMapFrameTest2')
+  // await mongoTests('selectNextMapFrameTest1')
+  // await mongoTests('selectNextMapFrameTest2')
   await mongoTests('importFrameTest')
-  await mongoTests('duplicateFrameTest')
-  await mongoTests('deleteFrameTest1')
+  // await mongoTests('duplicateFrameTest')
+  // await mongoTests('deleteFrameTest1')
   // await mongoTests('deleteFrameTest2')
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
-  // await mongoTests('mapMergeTest')
+  await mongoTests('mapMergeTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('createNodePropIfMissingTest')
   // await mongoTests('updateNodePropKeyTest')

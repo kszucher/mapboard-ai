@@ -166,21 +166,27 @@ async function selectNextMapFrame (users, userId) {
   ).toArray()
 }
 
-async function importFrame (maps, mapId, dataFrameSelected) {
-  await maps.findOneAndUpdate(
-    { _id: mapId }, // we would need an entry that
-    [{
-      $set: {
-        dataFrames: {
-          $concatArrays: [
-            { $slice: [ "$dataFrames", { $add: [ dataFrameSelected, 1 ] } ] },
-            [ { $last: '$dataHistory' } ],
-            { $slice: [ "$dataFrames", { $add: [ 1, dataFrameSelected ] }, { $size: "$dataFrames" } ] }
-          ]
+async function importFrame (maps) {
+  const x = (await maps.aggregate(
+    [
+      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
+      { $unwind: '$user' },
+      { $match: { $expr: { $eq: [ '$_id', '$user.mapSelected' ] } } },
+      {
+        $set: {
+          dataFrames: {
+            $concatArrays: [
+              { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
+              [ { $last: '$dataHistory' } ],
+              { $slice: [ "$dataFrames", { $add: [ 1, '$user.dataFrameSelected' ] }, { $size: "$dataFrames" } ] }
+            ]
+          }
         }
-      }
-    }]
-  )
+      },
+      { $unset: 'user'},
+      { $merge: 'maps' }
+    ]
+  ).toArray()).insertedId
 }
 
 async function duplicateFrame (maps, mapId, dataFrameSelected) {
@@ -216,15 +222,8 @@ async function deleteFrame (maps, mapId, dataFrameSelected) {
   )
 }
 
-async function mergeMap (
-  maps,
-  mapId,
-  mergeType, /* 'map' or 'node' */
-  mergeData /* map = array of nodes or node: { nodeId: 'string', linkType: 'string', link: 'string' } */
-) {
-  const newMap = mergeType === 'map'
-    ?  mergeData
-    : { $concatArrays: [ { $last: '$dataHistory' }, [ mergeData ] ] }
+async function mergeMap (maps, mapId, mergeType, mergeData) {
+  const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$dataHistory' }, [ mergeData ] ] }
   const getValuesByNodeIdAndNodePropId = (input, mutationId) => (
     {
       $objectToArray: {
@@ -255,7 +254,10 @@ async function mergeMap (
   )
   await maps.aggregate(
     [
-      { $match: { _id: mapId } },
+      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
+      { $unwind: '$user' },
+      { $match: { $expr: { $and: [ { $eq: [ '$_id', '$user.mapSelected' ] }, { $eq: [ '$_id', mapId ] } ] } } },
+      { $unset: 'user' },
       {
         $facet: {
           data: [],

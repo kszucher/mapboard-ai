@@ -181,9 +181,9 @@ async function resolveType(req, REQ, userId) {
       const { content, nodeId } = REQ.payload
       const map = await maps.findOne({_id: mapId})
       const { path } = map
-      const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ] ))).insertedId
+      const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ]))).insertedId
       await MongoMutations.selectMap(users, userId, newMapId)
-      await MongoMutations.mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() } )
+      await MongoMutations.mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
       return
     }
     case 'createMapInTab': {
@@ -203,12 +203,10 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'moveUpMapInTab': {
-      const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.moveUpMapInTab(users, userId, mapId)
       return
     }
     case 'moveDownMapInTab': {
-      const mapId = ObjectId(REQ.payload.mapId)
       await MongoMutations.moveDownMapInTab(users, userId, mapId)
       return
     }
@@ -225,23 +223,17 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'importMapFrame': {
-      const user = await users.findOne({_id: userId})
-      const { mapSelected, dataFrameSelected } = user
-      await MongoMutations.importFrame(maps, mapSelected, dataFrameSelected)
+      await MongoMutations.importFrame(maps)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'duplicateMapFrame': {
-      const user = await users.findOne({_id: userId})
-      const { mapSelected, dataFrameSelected } = user
-      await MongoMutations.duplicateFrame(maps, mapSelected, dataFrameSelected)
+      await MongoMutations.duplicateFrame(maps)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'deleteMapFrame': {
-      const user = await users.findOne({_id: userId})
-      const { mapSelected, dataFrameSelected } = user
-      await MongoMutations.deleteFrame(maps, mapSelected, dataFrameSelected)
+      await MongoMutations.deleteFrame(maps)
       await MongoMutations.selectPrevMapFrame(users, userId)
       return
     }
