@@ -171,8 +171,7 @@ async function resolveType(req, REQ, userId) {
         if (dataFrameSelected === -1) {
           await MongoMutations.saveMap(maps, mapId, 'map', mapData)
         } else {
-          // TODO this should take double map check into account
-          await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${dataFrameSelected}`]: mapData } })
+          await MongoMutations.saveMapFrame(maps, mapId, mapData)
         }
       }
       return

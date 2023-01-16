@@ -52,7 +52,7 @@ async function deleteMapFromShares (shares, filter) {
 }
 
 async function moveUpMapInTab (users, userId, mapId) {
-  const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   await users.findOneAndUpdate(
     { _id: userId },
     [{
@@ -77,7 +77,7 @@ async function moveUpMapInTab (users, userId, mapId) {
 }
 
 async function moveDownMapInTab (users, userId, mapId) {
-  const tabIndex = { $indexOfArray: ["$tabMapIdList", mapId] }
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   await users.findOneAndUpdate(
     { _id: userId },
     [{
@@ -419,6 +419,29 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
   ).toArray()
 }
 
+async function saveMapFrame (maps, mapId, mapData) {
+  await maps.aggregate(
+    [
+      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
+      { $unwind: '$user' },
+      { $match: { $expr: { $and: [ { $eq: [ '$_id', '$user.mapSelected' ] }, { $eq: [ '$_id', mapId ] } ] } } },
+      {
+        $set: {
+          dataFrames: {
+            $concatArrays: [
+              { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
+              [ mapData ],
+              { $slice: [ "$dataFrames", { $add: [ 1, '$user.dataFrameSelected' ] }, { $size: "$dataFrames" } ] }
+            ]
+          }
+        }
+      },
+      { $unset: 'user' },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
+}
+
 async function nodeMapFun (maps, fun) {
   await maps.aggregate(
     [
@@ -560,6 +583,7 @@ module.exports = {
   duplicateFrame,
   deleteFrame,
   saveMap,
+  saveMapFrame,
   createNodeProp,
   createNodePropIfMissing,
   updateNodePropValueBasedOnPreviousValue,

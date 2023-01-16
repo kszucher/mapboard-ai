@@ -236,7 +236,7 @@ async function mongoTests(cmd) {
         dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], dataFrameSelected: 0 } ] }
         dbExpected = { maps: [ {_id: 'map1', dataFrames: [], dataFrameSelected: -1 } ] }
         break
-      case 'mapMergeTest': {
+      case 'saveMapTest': {
         dbOriginal = {
           users: [{_id: 'user1', mapSelected: 'map1'}],
           maps: [{
@@ -254,6 +254,17 @@ async function mongoTests(cmd) {
             dataHistoryModifiers: [{ modifierType: "user", userId: "user1", sessionId: 0 }],
             dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
           }]
+        }
+        break
+      }
+      case 'saveMapFrameTest': {
+        dbOriginal = {
+          users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
+          maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'mf2', 'mf3' ] }]
+        }
+        dbExpected= {
+          users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
+          maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'mf2', 'nmf', 'mf3' ] }]
         }
         break
       }
@@ -343,7 +354,8 @@ async function mongoTests(cmd) {
       case 'deleteFrameTest2':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest3':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
-      case 'mapMergeTest': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
+      case 'saveMapTest': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
+      case 'saveMapFrameTest': await MongoMutations.saveMapFrame(maps, 'map1', 'nmf' ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'createNodePropIfMissingTest':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break
       case 'updateNodePropKeyTest':  await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' ); break
@@ -396,13 +408,14 @@ async function allTest () {
   // await mongoTests('selectPrevMapFrameTest2')
   // await mongoTests('selectNextMapFrameTest1')
   // await mongoTests('selectNextMapFrameTest2')
-  await mongoTests('importFrameTest')
+  // await mongoTests('importFrameTest')
   // await mongoTests('duplicateFrameTest')
   // await mongoTests('deleteFrameTest1')
   // await mongoTests('deleteFrameTest2')
   // await mongoTests('deleteFrameTest3')
   // await mongoTests('deleteFrameTest4')
-  await mongoTests('mapMergeTest')
+  // await mongoTests('saveMapTest')
+  await mongoTests('saveMapFrameTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('createNodePropIfMissingTest')
   // await mongoTests('updateNodePropKeyTest')
