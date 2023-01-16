@@ -1,7 +1,7 @@
 const { baseUri } = require('./MongoSecret')
 const MongoQueries = require('./MongoQueries')
 const MongoMutations = require('./MongoMutations')
-const { genNodeId, mergeMap } = require('./MongoMutations')
+const { genNodeId, saveMap } = require('./MongoMutations')
 const { ObjectId } = require('mongodb')
 const { countNodesBasedOnNodePropValue } = require('./MongoQueries')
 const MongoClient = require('mongodb').MongoClient
@@ -35,7 +35,7 @@ async function mongoStagingCommands (users, maps, shares) {
 
   }])
 
-  // await mergeMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
+  // await saveMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
 
 }
 

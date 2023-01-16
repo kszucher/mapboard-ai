@@ -222,7 +222,7 @@ async function deleteFrame (maps, mapId, dataFrameSelected) {
   )
 }
 
-async function mergeMap (maps, mapId, mergeType, mergeData) {
+async function saveMap (maps, mapId, mergeType, mergeData) {
   const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$dataHistory' }, [ mergeData ] ] }
   const getValuesByNodeIdAndNodePropId = (input, mutationId) => (
     {
@@ -559,7 +559,7 @@ module.exports = {
   importFrame,
   duplicateFrame,
   deleteFrame,
-  mergeMap,
+  saveMap,
   createNodeProp,
   createNodePropIfMissing,
   updateNodePropValueBasedOnPreviousValue,

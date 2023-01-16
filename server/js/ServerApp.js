@@ -169,8 +169,9 @@ async function resolveType(req, REQ, userId) {
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
       if (isEqual(userId, ownerUser) || shareToEdit !== null) {
         if (dataFrameSelected === -1) {
-          await MongoMutations.mergeMap(maps, mapId, 'map', mapData)
+          await MongoMutations.saveMap(maps, mapId, 'map', mapData)
         } else {
+          // TODO this should take double map check into account
           await maps.updateOne({ _id: mapId }, { $set: { [`dataFrames.${dataFrameSelected}`]: mapData } })
         }
       }
@@ -182,13 +183,14 @@ async function resolveType(req, REQ, userId) {
       const map = await maps.findOne({_id: mapId})
       const { path } = map
       const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ]))).insertedId
+      await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
       await MongoMutations.selectMap(users, userId, newMapId)
-      await MongoMutations.mergeMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
       return
     }
     case 'createMapInTab': {
-      const mapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
-      await MongoMutations.createMapInTab(users, userId, mapId)
+      const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
+      await MongoMutations.createMapInTab(users, userId, newMapId)
+      await MongoMutations.selectMap(users, userId, newMapId)
       return
     }
     case 'removeMapInTab': {
@@ -203,11 +205,11 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'moveUpMapInTab': {
-      await MongoMutations.moveUpMapInTab(users, userId, mapId)
+      await MongoMutations.moveUpMapInTab(users, userId)
       return
     }
     case 'moveDownMapInTab': {
-      await MongoMutations.moveDownMapInTab(users, userId, mapId)
+      await MongoMutations.moveDownMapInTab(users, userId)
       return
     }
     case 'selectFirstMapFrame': {
