@@ -5,7 +5,7 @@ import { Button, IconButton, Modal, Typography } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import {actions, sagaActions} from "../core/EditorFlow";
+import {actions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const Shares: FC = () => {
@@ -22,7 +22,7 @@ export const Shares: FC = () => {
           <IconButton
             aria-label="xxx"
             size="small"
-            onClick={_=>dispatch(sagaActions.deleteShare(params.row._id))}
+            // onClick={_=>dispatch(sagaActions.deleteShare(params.row._id))}
             disabled={false}>
             <CancelOutlinedIcon/>
           </IconButton>
@@ -41,7 +41,7 @@ export const Shares: FC = () => {
           <IconButton
             aria-label="xxx"
             size="small"
-            onClick={_=>dispatch(sagaActions.acceptShare(params.row._id))}
+            // onClick={_=>dispatch(sagaActions.acceptShare(params.row._id))}
             disabled={params.row.status === 'accepted'}>
             {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}
             {params.row.status === 'accepted' && <CheckCircleIcon/>}
@@ -52,7 +52,7 @@ export const Shares: FC = () => {
   ];
 
   useEffect(() => {
-    dispatch(sagaActions.getShares())
+    // dispatch(sagaActions.getShares())
   }, []);
 
   return (
@@ -80,7 +80,10 @@ export const Shares: FC = () => {
             disableSelectionOnClick
             autoHeight={true}/>}
         </div>
-        <Button color="primary" variant='outlined' onClick={_=>dispatch(sagaActions.getShares())}>
+        <Button
+          color="primary"
+          variant='outlined'
+          // onClick={_=>dispatch(sagaActions.getShares())}>
           {'REFRESH'}
         </Button>
         <Button color="primary" variant='outlined'

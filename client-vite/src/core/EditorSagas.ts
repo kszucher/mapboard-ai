@@ -33,7 +33,7 @@
 
 import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
-import {actions, sagaActions} from "./EditorFlow";
+import {actions} from "./EditorFlow";
 import {PageState} from "./Types";
 import {getMapData, getSavedMapData} from "./MapFlow";
 

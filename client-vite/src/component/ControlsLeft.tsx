@@ -5,7 +5,6 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {sagaActions} from "../core/EditorFlow";
 
 export const ControlsLeft: FC = () => {
   const frameEditorVisible = useSelector((state: RootStateOrAny) => state.editor.frameEditorVisible)
@@ -15,28 +14,28 @@ export const ControlsLeft: FC = () => {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(sagaActions.createMapInTab())}
+          // onClick={_=>dispatch(sagaActions.createMapInTab())}
           disabled={frameEditorVisible}
         >
           <AddCircleOutlineIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(sagaActions.moveUpMapInTab())}
+          // onClick={_=>dispatch(sagaActions.moveUpMapInTab())}
           disabled={frameEditorVisible}
         >
           <MoveUpIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(sagaActions.moveDownMapInTab())}
+          // onClick={_=>dispatch(sagaActions.moveDownMapInTab())}
           disabled={frameEditorVisible}
         >
           <MoveDownIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={_=>dispatch(sagaActions.removeMapInTab())}
+          // onClick={_=>dispatch(sagaActions.removeMapInTab())}
           disabled={frameEditorVisible}
         >
           <DeleteIcon/>

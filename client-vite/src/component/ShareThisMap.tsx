@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
-import {actions, sagaActions} from '../core/EditorFlow'
+import {actions} from '../core/EditorFlow'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {MapRight, PageState} from "../core/Types";
 
@@ -38,7 +38,7 @@ export const ShareThisMap: FC = () => {
         </Typography>}
         <Button
           color="primary" variant="outlined"
-          onClick={_=>dispatch(sagaActions.createShare(shareEmail, shareAccess))}
+          // onClick={_=>dispatch(sagaActions.createShare(shareEmail, shareAccess))}
         >
           {'SHARE'}
         </Button>

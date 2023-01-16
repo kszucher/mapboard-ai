@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
-import {actions, sagaActions} from '../core/EditorFlow'
+import {actions} from '../core/EditorFlow'
 import {PageState} from "../core/Types";
 
 export const ProfileMenu: FC = () => {
@@ -49,7 +49,7 @@ export const ProfileMenu: FC = () => {
           // <Divider key={4} />,
           <MenuItem
             key={5}
-            onClick={_=>dispatch(sagaActions.signOut())}
+            // onClick={_=>dispatch(sagaActions.signOut())}
           >
             {'Sign Out'}
           </MenuItem>

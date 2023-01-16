@@ -1,6 +1,6 @@
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Link, TextField, Typography } from '@mui/material'
-import {actions, sagaActions} from "../core/EditorFlow";
+import {actions} from "../core/EditorFlow";
 import {FC} from "react";
 import {AuthPageState, PageState} from "../core/Types";
 import {initDomData} from "../core/DomFlow";
@@ -74,14 +74,14 @@ export const Auth: FC = () => {
         <TextField
           id="confirmation-code" variant="outlined" fullWidth label="Confirmation Code" autoFocus
           value={confirmationCode}
-          onChange={({target: {value}}) => dispatch(sagaActions.checkSetConfirmationCode(value))}/>
+          // onChange={({target: {value}}) => dispatch(sagaActions.checkSetConfirmationCode(value))}/>
       }
       {
         authPageState === AuthPageState.SIGN_UP_STEP_1 &&
         <Button
           id="get-confirmation-code" color="primary" variant='contained' fullWidth
           disabled={name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain}
-          onClick={_=>dispatch(sagaActions.signUpStep1(name, email, password))}>
+          // onClick={_=>dispatch(sagaActions.signUpStep1(name, email, password))}>
           {'Get Confirmation Code'}
         </Button>
       }
@@ -90,7 +90,7 @@ export const Auth: FC = () => {
         <Button
           id="enter-confirmation-code" color="primary" variant='contained' fullWidth
           disabled={email === '' || confirmationCode === '' || confirmationCode.length !== 4}
-          onClick={_=>dispatch(sagaActions.signUpStep2(email, confirmationCode))}>
+          // onClick={_=>dispatch(sagaActions.signUpStep2(email, confirmationCode))}>
           {'Enter Confirmation Code'}
         </Button>
       }

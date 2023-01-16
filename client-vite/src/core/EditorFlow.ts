@@ -38,7 +38,7 @@ interface EditorState {
   interactionDisabled: boolean,
 }
 
-const editorState = {
+const editorState : EditorState = {
   authPageState: AuthPageState.SIGN_IN,
   name: '',
   email: '',
@@ -67,7 +67,7 @@ const editorState = {
   shareDataImport: [],
   moreMenu: false,
   interactionDisabled: false,
-} as EditorState
+}
 
 export const defaultUseOpenMapQueryState = {
   mapId: '',

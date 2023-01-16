@@ -17,7 +17,7 @@ import {ProfileButton} from './ProfileButton'
 import {ControlsLeft} from './ControlsLeft'
 import {ShouldCreateMapInMap} from './ShouldCreateMapInMap'
 import {CreateTable} from './CreateTable'
-import {defaultUseOpenMapQueryState, sagaActions} from "../core/EditorFlow"
+import {defaultUseOpenMapQueryState} from "../core/EditorFlow"
 import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'

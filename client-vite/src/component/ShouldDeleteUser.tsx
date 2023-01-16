@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, sagaActions} from "../core/EditorFlow";
+import {actions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const ShouldDeleteUser:FC = () => {
@@ -21,12 +21,20 @@ export const ShouldDeleteUser:FC = () => {
           </Typography>
         </div>
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <Button color="primary" variant='outlined' disabled={interactionDisabled}
-                  onClick={_=>dispatch(sagaActions.deleteAccount())}>
+          <Button
+            color="primary"
+            variant='outlined'
+            disabled={interactionDisabled}
+            // onClick={_=>dispatch(sagaActions.deleteAccount())}
+          >
             {'OK'}
           </Button>
-          <Button color="primary" variant='outlined' disabled={interactionDisabled}
-                  onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
+          <Button
+            color="primary"
+            variant='outlined'
+            disabled={interactionDisabled}
+            // onClick={_=>dispatch(actions.setPageState(PageState.WS))}
+          >
             {'CANCEL'}
           </Button>
         </div>
