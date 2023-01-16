@@ -417,7 +417,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
   ).toArray()
 }
 
-async function saveMapFrame (maps, mapId, mapData) {
+async function saveMapFrame (maps, mapId, dataFrameSelected, mapData) {
   await maps.aggregate(
     [
       { $match: { _id: mapId } },
@@ -425,9 +425,9 @@ async function saveMapFrame (maps, mapId, mapData) {
         $set: {
           dataFrames: {
             $concatArrays: [
-              { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
+              { $slice: [ "$dataFrames", dataFrameSelected ] },
               [ mapData ],
-              { $slice: [ "$dataFrames", { $add: [ 1, '$user.dataFrameSelected' ] }, { $size: "$dataFrames" } ] }
+              { $slice: [ "$dataFrames", { $add: [ 1, dataFrameSelected ] }, { $size: "$dataFrames" } ] }
             ]
           }
         }

@@ -168,7 +168,7 @@ async function resolveType(req, REQ, userId) {
         if (dataFrameSelected === -1) {
           await MongoMutations.saveMap(maps, mapId, 'map', mapData)
         } else {
-          await MongoMutations.saveMapFrame(maps, mapId, mapData)
+          await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
         }
       }
       return

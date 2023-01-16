@@ -260,11 +260,11 @@ async function mongoTests(cmd) {
       case 'saveMapFrameTest': {
         dbOriginal = {
           users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
-          maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'mf2', 'mf3' ] }]
+          maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
         }
         dbExpected= {
           users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
-          maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'mf2', 'nmf', 'mf3' ] }]
+          maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'nmf', 'mf2' ] }]
         }
         break
       }
@@ -355,7 +355,7 @@ async function mongoTests(cmd) {
       case 'deleteFrameTest3':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
       case 'saveMapTest': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
-      case 'saveMapFrameTest': await MongoMutations.saveMapFrame(maps, 'map1', 'nmf' ); break
+      case 'saveMapFrameTest': await MongoMutations.saveMapFrame(maps, 'map1', 1, 'nmf' ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'createNodePropIfMissingTest':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break
       case 'updateNodePropKeyTest':  await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' ); break
