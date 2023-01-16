@@ -112,7 +112,7 @@ export const getMapSelectProps = () => {
   return { mapId: store.getState().editor.breadcrumbMapIdList.at(-1) }
 }
 
-export const editor = createSlice({
+export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
@@ -208,7 +208,7 @@ export const editor = createSlice({
   }
 })
 
-export const { actions, reducer } = editor
+export const { actions, reducer } = editorSlice
 
 export const sagaActions = {
   // liveDemo: () => ({type: 'LIVE_DEMO'}),
@@ -243,15 +243,9 @@ export const sagaActions = {
   // mapChanged: () => ({type: 'MAP_CHANGED'}),
 }
 
-const sagaMiddleware = createSagaMiddleware()
-
 export const store = configureStore({
-  reducer: combineReducers({api: api.reducer, editor: editor.reducer}),
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
-    .concat(api.middleware)
-    .concat(sagaMiddleware)
+  reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(api.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>
-
-sagaMiddleware.run(rootSaga)
