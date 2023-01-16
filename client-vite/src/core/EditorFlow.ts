@@ -13,6 +13,7 @@ import {getMapData, getSavedMapData, reCalc} from "./MapFlow";
 import {mapDeInit} from "../map/MapDeInit";
 import {copy} from "./Utils";
 import {api} from "./Api";
+import {initDomData} from "./DomFlow";
 
 interface EditorState {
   authPageState: AuthPageState,
@@ -188,6 +189,7 @@ export const editor = createSlice({
       (state, { payload }) => {
         const { cred } = payload.resp.data
         localStorage.setItem('cred', JSON.stringify(cred))
+        initDomData()
         state.pageState = PageState.WS
       }
     )
@@ -242,12 +244,10 @@ export const sagaActions = {
 }
 
 const sagaMiddleware = createSagaMiddleware()
-const listenerMiddleware = createListenerMiddleware()
 
 export const store = configureStore({
   reducer: combineReducers({api: api.reducer, editor: editor.reducer}),
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
-    .prepend(listenerMiddleware.middleware)
     .concat(api.middleware)
     .concat(sagaMiddleware)
 })

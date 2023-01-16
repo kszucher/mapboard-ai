@@ -26,7 +26,7 @@ let isTaskClicked = false
 let mutationObserver
 let mapAreaListener
 let landingAreaListener
-let timeoutId
+export let timeoutId
 
 export const WindowListeners: FC = () => {
   const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
@@ -362,34 +362,6 @@ export const WindowListeners: FC = () => {
       orient(m, 'shouldCenter', {})
     }
   }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
-
-  useEffect(() => {
-    return dispatch(
-      addListener({
-        matcher: isAnyOf(
-          api.endpoints.signIn.matchFulfilled,
-        ),
-        effect: () => {
-          initDomData()
-        },
-      })
-    )
-  }, [])
-
-  useEffect(() => {
-    return dispatch(
-      addListener({
-        matcher: isAnyOf(
-          api.endpoints.openMap.matchPending
-        ),
-        effect: (action, listenerApi) => {
-          clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
-          console.log('saved by listener')
-        },
-      })
-    )
-  }, [])
 
   return (
     <></>

@@ -1,4 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {getMapSaveProps, RootState} from "./EditorFlow";
+import {timeoutId} from "../component/WindowListeners";
 
 const backendUrl = process.env.NODE_ENV === 'development'
   ? 'http://127.0.0.1:8082/beta'
@@ -32,6 +34,13 @@ export const api = createApi({
     }),
     openMap: builder.query<{ resp: { data: any } }, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'openMap' } }),
+      async onQueryStarted(arg, { dispatch, getState }) {
+        if ((getState() as RootState).editor.mapId !== '') {
+          console.log('saved by listener')
+          clearTimeout(timeoutId)
+          dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
+        }
+      },
       providesTags: ['MapInfo']
     }),
     selectMap: builder.mutation<void, { mapId: string }>({
