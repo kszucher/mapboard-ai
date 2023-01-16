@@ -226,12 +226,12 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'duplicateMapFrame': {
-      await MongoMutations.duplicateFrame(maps) // TODO
+      await MongoMutations.duplicateFrame(maps, userId)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'deleteMapFrame': {
-      await MongoMutations.deleteFrame(maps) // TODO
+      await MongoMutations.deleteFrame(maps, userId)
       await MongoMutations.selectPrevMapFrame(users, userId)
       return
     }
@@ -414,6 +414,7 @@ app.post('/beta', function (req, res) {
 
     let REQ = JSON.parse(inputStream) // it must be a parameter to prevent async issues
     inputStream = []
+    console.log(REQ.type)
     processReq(req, REQ).then(resp => {
       res.json({resp})
       console.log(REQ.type, 'response sent')

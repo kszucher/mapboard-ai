@@ -14,6 +14,8 @@ const getMultiMapMultiSource = (mapArray) => {
   return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
 }
 
+const getUserWithSelection = () => ({ users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ] })
+
 let db, users, maps, shares
 async function mongoTests(cmd) {
   const client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true, });
@@ -216,25 +218,13 @@ async function mongoTests(cmd) {
         break
       }
       case 'duplicateFrameTest': {
-        dbOriginal = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fc', 'fc']] } ] }
-        dbExpected = { maps: [ { _id: 'map1', dataFrames: [['fa', 'fa'], ['fb', 'fb'], ['fb', 'fb'], ['fc', 'fc']] } ] }
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fc'] } ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fb', 'fc'] } ] }
         break
       }
-      case 'deleteFrameTest1':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'] } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame2', 'frame3'] } ] }
-        break
-      case 'deleteFrameTest2':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], dataFrameSelected: 1 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame3'], dataFrameSelected: 0 } ] }
-        break
-      case 'deleteFrameTest3':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2', 'frame3'], dataFrameSelected: 2 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: ['frame1', 'frame2'], dataFrameSelected: 1 } ] }
-        break
-      case 'deleteFrameTest4':
-        dbOriginal = { maps: [ {_id: 'map1', dataFrames: ['frame1'], dataFrameSelected: 0 } ] }
-        dbExpected = { maps: [ {_id: 'map1', dataFrames: [], dataFrameSelected: -1 } ] }
+      case 'deleteFrameTest':
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ {_id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fc'] } ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ {_id: 'map1', ownerUser: 'user1', dataFrames: ['fb', 'fc'] } ] }
         break
       case 'saveMapTest': {
         dbOriginal = {
@@ -349,11 +339,8 @@ async function mongoTests(cmd) {
       case 'selectNextMapFrameTest1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
       case 'importFrameTest': await MongoMutations.importFrame(maps, 'user1'); break
-      case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'map1', 1); break
-      case 'deleteFrameTest1':  await MongoMutations.deleteFrame(maps, 'map1', 0); break
-      case 'deleteFrameTest2':  await MongoMutations.deleteFrame(maps, 'map1'); break
-      case 'deleteFrameTest3':  await MongoMutations.deleteFrame(maps, 'map1'); break
-      case 'deleteFrameTest4':  await MongoMutations.deleteFrame(maps, 'map1'); break
+      case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'user1'); break
+      case 'deleteFrameTest':  await MongoMutations.deleteFrame(maps, 'user1'); break
       case 'saveMapTest': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
       case 'saveMapFrameTest': await MongoMutations.saveMapFrame(maps, 'map1', 1, 'nmf' ); break
       case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
@@ -408,14 +395,11 @@ async function allTest () {
   // await mongoTests('selectPrevMapFrameTest2')
   // await mongoTests('selectNextMapFrameTest1')
   // await mongoTests('selectNextMapFrameTest2')
-  await mongoTests('importFrameTest')
+  // await mongoTests('importFrameTest')
   // await mongoTests('duplicateFrameTest')
-  // await mongoTests('deleteFrameTest1')
-  // await mongoTests('deleteFrameTest2')
-  // await mongoTests('deleteFrameTest3')
-  // await mongoTests('deleteFrameTest4')
+  // await mongoTests('deleteFrameTest')
   // await mongoTests('saveMapTest')
-  await mongoTests('saveMapFrameTest')
+  // await mongoTests('saveMapFrameTest')
   // await mongoTests('createNodePropTest')
   // await mongoTests('createNodePropIfMissingTest')
   // await mongoTests('updateNodePropKeyTest')
