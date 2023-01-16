@@ -168,7 +168,7 @@ async function selectNextMapFrame (users, userId) {
 }
 
 async function importFrame (maps) {
-  const x = (await maps.aggregate(
+  await maps.aggregate(
     [
       { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
       { $unwind: '$user' },
@@ -187,7 +187,7 @@ async function importFrame (maps) {
       { $unset: 'user'},
       { $merge: 'maps' }
     ]
-  ).toArray()).insertedId
+  ).toArray()
 }
 
 async function duplicateFrame (maps, mapId, dataFrameSelected) {

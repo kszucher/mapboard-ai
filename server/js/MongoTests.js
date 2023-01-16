@@ -211,8 +211,8 @@ async function mongoTests(cmd) {
         break
       }
       case 'importFrameTest': {
-        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2']]} ] }
-        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: [ ['o1', 'o2'] ], dataFrames: [['f1', 'f2'], ['o1', 'o2']] } ] }
+        dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2']} ] }
+        dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'h1', 'f2'] } ] }
         break
       }
       case 'duplicateFrameTest': {
@@ -408,7 +408,7 @@ async function allTest () {
   // await mongoTests('selectPrevMapFrameTest2')
   // await mongoTests('selectNextMapFrameTest1')
   // await mongoTests('selectNextMapFrameTest2')
-  // await mongoTests('importFrameTest')
+  await mongoTests('importFrameTest')
   // await mongoTests('duplicateFrameTest')
   // await mongoTests('deleteFrameTest1')
   // await mongoTests('deleteFrameTest2')
