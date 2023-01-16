@@ -119,7 +119,6 @@ async function resolveType(req, REQ, userId) {
       const map = await maps.findOne({_id: mapSelected})
       const { path, ownerUser, dataHistory, dataFrames } = map
       const breadcrumbMapIdList = path
-      const mapSource = dataFrameSelected === -1 ? 'dataHistory' : 'dataFrames'
       const mapDataList = dataFrameSelected === -1
         ? [dataHistory[dataHistory.length - 1].sort((a, b) => (a.path > b.path) ? 1 : -1)]
         : [dataFrames[dataFrameSelected].sort((a, b) => (a.path > b.path) ? 1 : -1)]
@@ -148,7 +147,7 @@ async function resolveType(req, REQ, userId) {
       const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
       return {
         data: {
-          mapId: mapSelected, mapSource, mapDataList, frameLen, dataFrameSelected, mapRight,
+          mapId: mapSelected, mapDataList, frameLen, dataFrameSelected, mapRight,
           breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList
         }
       }
@@ -160,10 +159,8 @@ async function resolveType(req, REQ, userId) {
     }
     case 'saveMap': {
       // await new Promise(resolve => setTimeout(resolve, 5000))
-      const user = await users.findOne({_id: userId})
-      const { dataFrameSelected } = user
       const mapId = ObjectId(REQ.payload.mapId)
-      const { mapData } = REQ.payload
+      const { mapData, dataFrameSelected } = REQ.payload
       const map = await maps.findOne({_id: mapId})
       const { ownerUser } = map
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
@@ -229,12 +226,12 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'duplicateMapFrame': {
-      await MongoMutations.duplicateFrame(maps)
+      await MongoMutations.duplicateFrame(maps) // TODO
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'deleteMapFrame': {
-      await MongoMutations.deleteFrame(maps)
+      await MongoMutations.deleteFrame(maps) // TODO
       await MongoMutations.selectPrevMapFrame(users, userId)
       return
     }
@@ -419,7 +416,7 @@ app.post('/beta', function (req, res) {
     inputStream = []
     processReq(req, REQ).then(resp => {
       res.json({resp})
-      console.log(REQ.type, 'response sent', resp)
+      console.log(REQ.type, 'response sent')
     })
   })
 })

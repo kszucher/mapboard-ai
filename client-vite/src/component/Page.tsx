@@ -77,7 +77,7 @@ export const Page: FC = () => {
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const { data } = useOpenMapQuery()
-  const { mapSource } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -110,7 +110,7 @@ export const Page: FC = () => {
               </>
             }
             {formatterVisible && mapStackData.length && <Formatter/>}
-            {mapSource === 'dataFrames' && <FrameCarousel/>}
+            {dataFrameSelected > -1 && <FrameCarousel/>}
           </>
         }
         {pageState === PageState.WS_PROFILE && <Profile/>}

@@ -28,10 +28,10 @@ async function mongoStagingCommands (users, maps, shares) {
     // $set: {
     //   'mapSelected': { $last:  "$breadcrumbMapIdList" }
     // },
-    // $set: {
-    //   'mapDataFrameSelected': -1
-    // },
-    // $unset: "dataFrameSelected"
+    $set: {
+      'dataFrameSelected': -1
+    },
+    // $unset: "mapDataFrameSelected"
 
   }])
 

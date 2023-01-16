@@ -67,8 +67,8 @@ export const api = createApi({
       query: () => ({ url: '', method: 'POST', body: { type: 'deleteMapFrame' } }),
       invalidatesTags: ['MapInfo']
     }),
-    saveMap: builder.mutation<void, { mapId: string, mapSource: string, mapData: any }>({
-      query: ({mapId, mapSource, mapData}) => ({ url: '', method: 'POST', body: { type: 'saveMap', payload: { mapId, mapSource, mapData } } }),
+    saveMap: builder.mutation<void, { mapId: string, dataFrameSelected: number, mapData: any }>({
+      query: ({mapId, dataFrameSelected, mapData}) => ({ url: '', method: 'POST', body: { type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
       invalidatesTags: []
     }),
   }),

@@ -112,7 +112,8 @@ async function selectFirstMapFrame (users, userId) {
             $cond: {
               if: { $gt: [ { $size: "$map.dataFrames" }, 0 ] },
               then: 0,
-              else: -1 }
+              else: -1
+            }
           }
         }
       },
@@ -254,10 +255,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
   )
   await maps.aggregate(
     [
-      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
-      { $unwind: '$user' },
-      { $match: { $expr: { $and: [ { $eq: [ '$_id', '$user.mapSelected' ] }, { $eq: [ '$_id', mapId ] } ] } } },
-      { $unset: 'user' },
+      { $match: { _id: mapId } },
       {
         $facet: {
           data: [],
@@ -422,9 +420,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
 async function saveMapFrame (maps, mapId, mapData) {
   await maps.aggregate(
     [
-      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
-      { $unwind: '$user' },
-      { $match: { $expr: { $and: [ { $eq: [ '$_id', '$user.mapSelected' ] }, { $eq: [ '$_id', mapId ] } ] } } },
+      { $match: { _id: mapId } },
       {
         $set: {
           dataFrames: {

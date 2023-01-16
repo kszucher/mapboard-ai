@@ -7,7 +7,7 @@ import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
 export const TabMaps: FC = () => {
   const tabShrink = useSelector((state: RootStateOrAny) => state.editor.tabShrink)
   const { data, isFetching } = useOpenMapQuery()
-  const { mapSource, tabMapIdList, tabMapNameList, breadcrumbMapIdList } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { dataFrameSelected, tabMapIdList, tabMapNameList, breadcrumbMapIdList } = data?.resp?.data || defaultUseOpenMapQueryState
   const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
   const dispatch = useDispatch()
   return (
@@ -33,7 +33,7 @@ export const TabMaps: FC = () => {
         {
           tabMapNameList.map((name: string, index: number) => (
             <Tab
-              disabled={mapSource==='dataFrames'}
+              disabled={dataFrameSelected > -1}
               label={tabShrink ? name.at(0) : name}
               key={index}
             />

@@ -39,7 +39,7 @@ export const WindowListeners: FC = () => {
   const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || mapProps.saveOptional
   const { data } = useOpenMapQuery()
-  const { mapId, mapRight, mapSource, dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { mapId, dataFrameSelected, mapRight } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
@@ -355,7 +355,7 @@ export const WindowListeners: FC = () => {
     if (mapId !== '') {
       orient(m, 'shouldLoad', {})
     }
-  }, [mapId, mapSource, dataFrameSelected])
+  }, [mapId, dataFrameSelected])
 
   useEffect(() => {
     if (mapId !== '') {

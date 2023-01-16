@@ -27,7 +27,6 @@ interface EditorState {
   formatMode: FormatMode,
   tabShrink: boolean,
   mapId: string,
-  mapSource: string,
   breadcrumbMapIdList: [],
   tempMap: object,
   dataFrameSelected: number,
@@ -59,7 +58,6 @@ const editorState = {
   formatMode: FormatMode.text,
   tabShrink: false,
   mapId: '',
-  mapSource: '',
   breadcrumbMapIdList: [],
   tempMap: {},
   dataFrameSelected: 0,
@@ -80,14 +78,13 @@ const editorState = {
 
 export const defaultUseOpenMapQueryState = {
   mapId: '',
-  mapSource: '',
+  dataFrameSelected: -1,
   mapRight: MapRight.UNAUTHORIZED,
   tabMapIdList: [],
   tabMapNameList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
   frameLen: 0,
-  dataFrameSelected: -1
 }
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -99,10 +96,10 @@ export const getSelectTarget = () => (store.getState().editor.selectTarget)
 export const getTempMap = () => (store.getState().editor.tempMap)
 export const getMap = () : { g: any, r: any } => (store.getState().editor.mapStackData[store.getState().editor.mapStackDataIndex])
 export const getMapSaveProps = () => {
-  const { mapId, mapSource } = store.getState().editor
+  const { mapId, dataFrameSelected } = store.getState().editor
   const m = getMap()
   const mapData = getSavedMapData(m)
-  return { mapId, mapSource, mapData }
+  return { mapId, dataFrameSelected, mapData }
 }
 export const getMapCreationProps = () : { mapCreationProps: { content: string, nodeId: string } }  => {
   const m = getMap()
@@ -197,9 +194,9 @@ export const editor = createSlice({
     builder.addMatcher(
       api.endpoints.openMap.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, mapSource, breadcrumbMapIdList, mapDataList } = payload.resp.data
+        const { mapId, dataFrameSelected, breadcrumbMapIdList, mapDataList } = payload.resp.data
         state.mapId = mapId // needed for api call argument
-        state.mapSource = mapSource // needed for api call argument
+        state.dataFrameSelected = dataFrameSelected // needed for api call argument
         state.breadcrumbMapIdList = breadcrumbMapIdList // needed for api call argument
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
