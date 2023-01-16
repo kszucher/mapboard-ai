@@ -221,7 +221,7 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'importMapFrame': {
-      await MongoMutations.importFrame(maps)
+      await MongoMutations.importFrame(maps, userId)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }

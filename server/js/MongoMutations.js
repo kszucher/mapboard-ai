@@ -167,12 +167,12 @@ async function selectNextMapFrame (users, userId) {
   ).toArray()
 }
 
-async function importFrame (maps) {
+async function importFrame (maps, userId) {
   await maps.aggregate(
     [
       { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
       { $unwind: '$user' },
-      { $match: { $expr: { $eq: [ '$_id', '$user.mapSelected' ] } } },
+      { $match: { $expr: { $and: [ { $eq: [ '$_id', '$user.mapSelected' ] }, { $eq: [ '$user._id', userId ] } ] } } },
       {
         $set: {
           dataFrames: {

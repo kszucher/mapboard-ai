@@ -348,7 +348,7 @@ async function mongoTests(cmd) {
       case 'selectPrevMapFrameTest2': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
-      case 'importFrameTest': await MongoMutations.importFrame(maps); break
+      case 'importFrameTest': await MongoMutations.importFrame(maps, 'user1'); break
       case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'map1', 1); break
       case 'deleteFrameTest1':  await MongoMutations.deleteFrame(maps, 'map1', 0); break
       case 'deleteFrameTest2':  await MongoMutations.deleteFrame(maps, 'map1'); break
