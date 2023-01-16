@@ -1,5 +1,36 @@
 // @ts-nocheck
 
+// liveDemo: () => ({type: 'LIVE_DEMO'}),
+// signIn: (email: string, password: string) => ({type: 'SIGN_IN', payload: { cred: { email, password } }}),
+// signUpStep1: (name: string, email: string, password: string) => ({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } }),
+// signUpStep2: (email: string, confirmationCode: string) => ({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode: parseInt(confirmationCode) } } }),
+// checkSetConfirmationCode: (value: string) => ({type: 'CHECK_SET_CONFIRMATION_CODE', payload: value}),
+// saveMap: () => ({type: 'SAVE_MAP'}),
+// openMapFromTab: (value: number) => ({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}}),
+// openMapFromBreadcrumbs: (index: number) => ({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}}),
+// openMapFromMap: (lastOverPath: []) => ({type: 'OPEN_MAP_FROM_MAP', payload: {lastOverPath}}),
+// createMapInMap: () => ({type: 'CREATE_MAP_IN_MAP'}),
+// createMapInTab: () => ({type: 'CREATE_MAP_IN_TAB'}),
+// removeMapInTab: () => ({type: 'REMOVE_MAP_IN_TAB'}),
+// moveUpMapInTab: () => ({type: 'MOVE_UP_MAP_IN_TAB'}),
+// moveDownMapInTab: () => ({type: 'MOVE_DOWN_MAP_IN_TAB'}),
+// openFrame: () => ({type: 'OPEN_FRAME'}),
+// closeFrame: () => ({type: 'CLOSE_FRAME'}),
+// openPrevFrame: () => ({type: 'OPEN_PREV_FRAME'}),
+// openNextFrame: () => ({type: 'OPEN_NEXT_FRAME'}),
+// importFrame: () => ({type: 'IMPORT_FRAME'}),
+// duplicateFrame: () => ({type: 'DUPLICATE_FRAME'}),
+// deleteFrame: () => ({type: 'DELETE_FRAME'}),
+// getShares: () => ({type: 'GET_SHARES'}),
+// createShare: (shareEmail: string, shareAccess: any) => ({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}}),
+// acceptShare: (_id: number) => ({type: 'ACCEPT_SHARE', payload: {shareId: _id}}),
+// deleteShare: (_id: number) => ({type: 'DELETE_SHARE', payload: {shareId: _id}}),
+// toggleColorMode: () => ({type: 'TOGGLE_COLOR_MODE'}),
+// changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
+// deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
+// signOut: () => ({type: 'SIGN_OUT'}),
+// mapChanged: () => ({type: 'MAP_CHANGED'}),
+
 import {all, call, delay, put, race, select, take} from 'redux-saga/effects'
 import {initDomData} from './DomFlow'
 import {actions, sagaActions} from "./EditorFlow";
@@ -134,16 +165,15 @@ function* colorSaga () {
   }
 }
 
-// vagy... ha m változik DE mapStackData.length !== 1
 const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
   while (true) {
     // TODO: only do ANYTHING if mapRight === EDIT
     const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
-      autoSaveNow: take(SAVE_INCLUDED), // undo, redo, parseRespPayload --> timeout = 0 --> timer is not set (save is called alongside with the action creator)
-      autoSaveLater: take(['MAP_CHANGED']), // mutateMapStack --> timeout++ --> resets timer (if expires, save is called from the timer callback function)
-      autoSaveNowByTimeout: delay(1000) // not needed, a regular timer set reset will be implemented instead
+      autoSaveNow: take(SAVE_INCLUDED),
+      autoSaveLater: take(['MAP_CHANGED']),
+      autoSaveNowByTimeout: delay(1000)
     })
     if (autoSaveNow) {
       autoSaveState = AUTO_SAVE_STATES.IDLE
@@ -192,7 +222,7 @@ function* mapSaga () {
           payload = {...payload, mapId}
           break
         }
-        case 'OPEN_MAP_FROM_BREADCRUMBS': { // is this an anti-pattern? probably we should NOT need to access the local state...
+        case 'OPEN_MAP_FROM_BREADCRUMBS': {
           const {breadcrumbMapSelected} = payload
           const breadcrumbMapIdList = yield select(state => state.editor.breadcrumbMapIdList)
           const mapId = breadcrumbMapIdList[breadcrumbMapSelected]
@@ -221,12 +251,12 @@ function* mapSaga () {
       const mapId = yield select(state => state.editor.mapId)
       payload = { ...payload, mapId }
     }
-    yield put(actions.interactionDisabled()) // instead, we could use the SHARED isFetching of the ... what? the mutation or the invalidation-resulted queries???
+    yield put(actions.interactionDisabled())
     const { resp: { error, data } } = yield call(fetchPost, { type, payload })
     yield put(actions.interactionEnabled())
     yield put(actions.parseRespPayload(data))
     if (type === 'CREATE_MAP_IN_MAP') {
-      yield put(actions.setPageState(PageState.WS)) // TODO: instead of this solution, we will just close it immediately but will load a spinner, this is better UX
+      yield put(actions.setPageState(PageState.WS))
     }
   }
 }

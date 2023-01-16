@@ -1,12 +1,4 @@
-import {
-  combineReducers,
-  configureStore,
-  createListenerMiddleware,
-  createSlice,
-  PayloadAction
-} from "@reduxjs/toolkit";
-import createSagaMiddleware from 'redux-saga'
-import rootSaga from "./EditorSagas";
+import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly";
 import {getMapData, getSavedMapData, reCalc} from "./MapFlow";
@@ -28,9 +20,9 @@ interface EditorState {
   formatMode: FormatMode,
   tabShrink: boolean,
   mapId: string,
+  dataFrameSelected: number,
   breadcrumbMapIdList: [],
   tempMap: object,
-  dataFrameSelected: number,
   mapStackData: [],
   mapStackDataIndex: number,
   editedNodeId: string,
@@ -59,9 +51,9 @@ const editorState = {
   formatMode: FormatMode.text,
   tabShrink: false,
   mapId: '',
+  dataFrameSelected: 0,
   breadcrumbMapIdList: [],
   tempMap: {},
-  dataFrameSelected: 0,
   mapStackData: [],
   mapStackDataIndex: 0,
   editedNodeId: '',
@@ -172,18 +164,6 @@ export const editorSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder.addMatcher(
-    //   api.endpoints.liveDemo.matchFulfilled, // TODO make this using openMap... so there is no confusion where the data is coming from
-    //   (state, { payload }) => {
-    //     const { mapId, mapDataFrames, mapRight } = payload.resp.data
-    //     state.mapId = mapId
-    //     state.mapRight = mapRight
-    //
-    //     state.mapStackData = mapDataFrames.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
-    //     state.mapStackDataIndex = 0
-    //     state.editedNodeId = ''
-    //   }
-    // )
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
@@ -209,39 +189,6 @@ export const editorSlice = createSlice({
 })
 
 export const { actions, reducer } = editorSlice
-
-export const sagaActions = {
-  // liveDemo: () => ({type: 'LIVE_DEMO'}),
-  // signIn: (email: string, password: string) => ({type: 'SIGN_IN', payload: { cred: { email, password } }}),
-  // signUpStep1: (name: string, email: string, password: string) => ({type: 'SIGN_UP_STEP_1', payload: { cred: { name, email, password } } }),
-  // signUpStep2: (email: string, confirmationCode: string) => ({type: 'SIGN_UP_STEP_2', payload: { cred: { email, confirmationCode: parseInt(confirmationCode) } } }),
-  // checkSetConfirmationCode: (value: string) => ({type: 'CHECK_SET_CONFIRMATION_CODE', payload: value}),
-  // saveMap: () => ({type: 'SAVE_MAP'}),
-  // openMapFromTab: (value: number) => ({type: 'OPEN_MAP_FROM_TAB', payload: {tabMapSelected: value}}),
-  // openMapFromBreadcrumbs: (index: number) => ({type: 'OPEN_MAP_FROM_BREADCRUMBS', payload: {breadcrumbMapSelected: index}}),
-  // openMapFromMap: (lastOverPath: []) => ({type: 'OPEN_MAP_FROM_MAP', payload: {lastOverPath}}),
-  // createMapInMap: () => ({type: 'CREATE_MAP_IN_MAP'}),
-  // createMapInTab: () => ({type: 'CREATE_MAP_IN_TAB'}),
-  // removeMapInTab: () => ({type: 'REMOVE_MAP_IN_TAB'}),
-  // moveUpMapInTab: () => ({type: 'MOVE_UP_MAP_IN_TAB'}),
-  // moveDownMapInTab: () => ({type: 'MOVE_DOWN_MAP_IN_TAB'}),
-  // openFrame: () => ({type: 'OPEN_FRAME'}),
-  // closeFrame: () => ({type: 'CLOSE_FRAME'}),
-  // openPrevFrame: () => ({type: 'OPEN_PREV_FRAME'}),
-  // openNextFrame: () => ({type: 'OPEN_NEXT_FRAME'}),
-  // importFrame: () => ({type: 'IMPORT_FRAME'}),
-  // duplicateFrame: () => ({type: 'DUPLICATE_FRAME'}),
-  // deleteFrame: () => ({type: 'DELETE_FRAME'}),
-  // getShares: () => ({type: 'GET_SHARES'}),
-  // createShare: (shareEmail: string, shareAccess: any) => ({type: 'CREATE_SHARE', payload: {shareEmail, shareAccess}}),
-  // acceptShare: (_id: number) => ({type: 'ACCEPT_SHARE', payload: {shareId: _id}}),
-  // deleteShare: (_id: number) => ({type: 'DELETE_SHARE', payload: {shareId: _id}}),
-  // toggleColorMode: () => ({type: 'TOGGLE_COLOR_MODE'}),
-  // changeTabWidth: () => ({type: 'CHANGE_TAB_WIDTH'}), // TODO
-  // deleteAccount: () => ({type: 'DELETE_ACCOUNT'}),
-  // signOut: () => ({type: 'SIGN_OUT'}),
-  // mapChanged: () => ({type: 'MAP_CHANGED'}),
-}
 
 export const store = configureStore({
   reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
