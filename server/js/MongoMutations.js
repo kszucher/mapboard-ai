@@ -145,7 +145,6 @@ async function selectPrevMapFrame (users, userId) {
 }
 
 async function selectNextMapFrame (users, userId) {
-
   await users.aggregate(
     [
       { $match: { _id: userId } },
@@ -167,60 +166,50 @@ async function selectNextMapFrame (users, userId) {
   ).toArray()
 }
 
-async function importFrame (maps) {
-  // TODO lookup current frame first
+async function importFrame (maps, mapId, dataFrameSelected) {
   await maps.findOneAndUpdate(
-    { _id: mapId },
-    [
-      { $set: { dataFrames: { $concatArrays: [ "$dataFrames", [ { $last: "$dataHistory" } ] ] } } },
-      { $set: { dataFrameSelected: { $subtract : [ { $size: "$dataFrames" }, 1 ] } } }
-    ],
-  )
-}
-
-async function duplicateFrame (maps) {
-  // TODO lookup current frame first
-  await maps.findOneAndUpdate(
-    { _id: mapId },
+    { _id: mapId }, // we would need an entry that
     [{
       $set: {
         dataFrames: {
           $concatArrays: [
-            { $slice: [ "$dataFrames", { $add: [ "$dataFrameSelected", 1 ] } ] },
-            [ { $arrayElemAt: [ "$dataFrames", "$dataFrameSelected" ] } ],
-            { $slice: [ "$dataFrames", { $add: [ 1, "$dataFrameSelected" ] }, { $size: "$dataFrames" } ] }
+            { $slice: [ "$dataFrames", { $add: [ dataFrameSelected, 1 ] } ] },
+            [ { $last: '$dataHistory' } ],
+            { $slice: [ "$dataFrames", { $add: [ 1, dataFrameSelected ] }, { $size: "$dataFrames" } ] }
           ]
-        },
-        dataFrameSelected: { $add : [ "$dataFrameSelected", 1 ] }
+        }
       }
     }]
   )
 }
 
-async function deleteFrame (maps) {
-  // TODO lookup current frame first
+async function duplicateFrame (maps, mapId, dataFrameSelected) {
   await maps.findOneAndUpdate(
     { _id: mapId },
     [{
       $set: {
         dataFrames: {
           $concatArrays: [
-            { $slice: [ "$dataFrames", "$dataFrameSelected" ] },
-            { $slice: [ "$dataFrames", { $add: [ 1, "$dataFrameSelected" ] }, { $size: "$dataFrames" } ] }
+            { $slice: [ "$dataFrames", { $add: [ dataFrameSelected, 1 ] } ] },
+            [ { $arrayElemAt: [ "$dataFrames", dataFrameSelected ] } ],
+            { $slice: [ "$dataFrames", { $add: [ 1, dataFrameSelected ] }, { $size: "$dataFrames" } ] }
           ]
-        },
-        dataFrameSelected: {
-          $cond: {
-            if: { $eq: [ "$dataFrameSelected", 0 ] },
-            then: {
-              $cond: {
-                if: { $eq: [ { $size: "$dataFrames" }, 1 ] },
-                then: -1,
-                else: 0
-              }
-            },
-            else: { $subtract: [ "$dataFrameSelected", 1 ] }
-          }
+        }
+      }
+    }]
+  )
+}
+
+async function deleteFrame (maps, mapId, dataFrameSelected) {
+  await maps.findOneAndUpdate(
+    { _id: mapId },
+    [{
+      $set: {
+        dataFrames: {
+          $concatArrays: [
+            { $slice: [ "$dataFrames", dataFrameSelected ] },
+            { $slice: [ "$dataFrames", { $add: [ 1, dataFrameSelected ] }, { $size: "$dataFrames" } ] }
+          ]
         }
       }
     }]

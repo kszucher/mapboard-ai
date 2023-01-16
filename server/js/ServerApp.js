@@ -225,17 +225,23 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'importMapFrame': {
-      await MongoMutations.importFrame(maps)
+      const user = await users.findOne({_id: userId})
+      const { mapSelected, dataFrameSelected } = user
+      await MongoMutations.importFrame(maps, mapSelected, dataFrameSelected)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'duplicateMapFrame': {
-      await MongoMutations.duplicateFrame(maps)
+      const user = await users.findOne({_id: userId})
+      const { mapSelected, dataFrameSelected } = user
+      await MongoMutations.duplicateFrame(maps, mapSelected, dataFrameSelected)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'deleteMapFrame': {
-      await MongoMutations.deleteFrame(maps)
+      const user = await users.findOne({_id: userId})
+      const { mapSelected, dataFrameSelected } = user
+      await MongoMutations.deleteFrame(maps, mapSelected, dataFrameSelected)
       await MongoMutations.selectPrevMapFrame(users, userId)
       return
     }
