@@ -79,12 +79,12 @@ const editorState = {
 export const defaultUseOpenMapQueryState = {
   mapId: '',
   dataFrameSelected: -1,
+  dataFramesLen: 0,
   mapRight: MapRight.UNAUTHORIZED,
   tabMapIdList: [],
   tabMapNameList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
-  frameLen: 0,
 }
 
 const editorStateDefault = JSON.stringify(editorState)

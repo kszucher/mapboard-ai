@@ -8,17 +8,17 @@ import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
 
 export const FrameCarousel: FC = () => {
   const { data, isFetching } = useOpenMapQuery()
-  const { frameLen, dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { dataFramesLen, dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
       {
-        frameLen > 0 &&
+        dataFramesLen > 0 &&
         <MobileStepper
           className="gap-3 rounded-t-2xl bg-mb-pink"
           sx={{background: 'var(--map-background-color)'}}
           variant="dots"
-          steps={frameLen}
+          steps={dataFramesLen}
           position="static"
           activeStep={dataFrameSelected}
           backButton={
@@ -35,7 +35,7 @@ export const FrameCarousel: FC = () => {
             <Button
               style={{paddingRight:12}}
               size="large"
-              disabled={dataFrameSelected === frameLen - 1 || isFetching}
+              disabled={dataFrameSelected === dataFramesLen - 1 || isFetching}
               onClick={() => dispatch(api.endpoints.selectNextMapFrame.initiate())}
             >
               <KeyboardArrowRightIcon />

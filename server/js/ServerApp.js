@@ -122,7 +122,7 @@ async function resolveType(req, REQ, userId) {
       const mapDataList = dataFrameSelected === -1
         ? [dataHistory[dataHistory.length - 1].sort((a, b) => (a.path > b.path) ? 1 : -1)]
         : [dataFrames[dataFrameSelected].sort((a, b) => (a.path > b.path) ? 1 : -1)]
-      const frameLen = dataFrames.length
+      const dataFramesLen = dataFrames.length
 
       let mapRight = MAP_RIGHTS.UNAUTHORIZED
       if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapSelected)))) {
@@ -147,7 +147,7 @@ async function resolveType(req, REQ, userId) {
       const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
       return {
         data: {
-          mapId: mapSelected, mapDataList, frameLen, dataFrameSelected, mapRight,
+          mapId: mapSelected, mapDataList, dataFramesLen, dataFrameSelected, mapRight,
           breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList
         }
       }
