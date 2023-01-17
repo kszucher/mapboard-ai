@@ -100,15 +100,14 @@ async function getAuthorizedUserId(req) {
 //   return await MongoQueries.getUserShares(shares, userId)
 // }
 
-async function resolveType(req, REQ, userId) {
-  switch (REQ.type) {
+async function resolveType(req, type, payload, userId) {
+  switch (type) {
     case 'signIn': {
       // TODO: create session entry
       const cred = JSON.parse(req.header('authorization'))
       return { error: '', data: { cred } }
     }
     case 'openUser': {
-      const userId = await getAuthorizedUserId(req)
       const user = await users.findOne({_id: userId})
       const { name, colorMode } = user
       return { name, colorMode  }
@@ -153,7 +152,7 @@ async function resolveType(req, REQ, userId) {
       }
     }
     case 'selectMap': {
-      const mapId = ObjectId(REQ.payload.mapId)
+      const mapId = ObjectId(payload.mapId)
       await MongoMutations.selectMap(users, userId, mapId)
       return
     }
@@ -170,8 +169,8 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'createMapInMap': {
-      const mapId = ObjectId(REQ.payload.mapId)
-      const { content, nodeId } = REQ.payload
+      const mapId = ObjectId(payload.mapId)
+      const { content, nodeId } = payload
       const map = await maps.findOne({_id: mapId})
       const { path } = map
       const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ]))).insertedId
@@ -204,7 +203,7 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'deleteMapInTab': {
-      const mapId = ObjectId(REQ.payload.mapId)
+      const mapId = ObjectId(payload.mapId)
       const map = await maps.findOne({_id: mapId})
       const { ownerUser } = map
       const iAmTheOwner = isEqual(ownerUser, userId)
@@ -221,8 +220,8 @@ async function resolveType(req, REQ, userId) {
     }
     case 'saveMap': {
       // await new Promise(resolve => setTimeout(resolve, 5000))
-      const mapId = ObjectId(REQ.payload.mapId)
-      const { mapData, dataFrameSelected } = REQ.payload
+      const mapId = ObjectId(payload.mapId)
+      const { mapData, dataFrameSelected } = payload
       const map = await maps.findOne({_id: mapId})
       const { ownerUser } = map
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
@@ -240,8 +239,8 @@ async function resolveType(req, REQ, userId) {
       return
     }
     case 'createShare': {
-      const mapId = ObjectId(REQ.payload.mapId)
-      const { shareEmail, shareAccess } = REQ.payload
+      const mapId = ObjectId(payload.mapId)
+      const { shareEmail, shareAccess } = payload
       const shareUser = await users.findOne({ email: shareEmail })
       if (shareUser === null) {
         return { error: 'createShareFailNotAValidUser' }
@@ -274,7 +273,7 @@ async function resolveType(req, REQ, userId) {
       }
     }
     case 'acceptShare': {
-      const shareId = ObjectId(REQ.payload.shareId)
+      const shareId = ObjectId(payload.shareId)
       const share = (await shares.findOneAndUpdate(
         { _id: shareId },
         { $set: { status: SHARE_STATUS.ACCEPTED }},
@@ -288,7 +287,7 @@ async function resolveType(req, REQ, userId) {
       return { error: '', data: { ...userInfo, ...mapInfo, ...shareInfo } }
     }
     case 'deleteShare': {
-      const shareId = ObjectId(REQ.payload.shareId)
+      const shareId = ObjectId(payload.shareId)
       const { shareUser, sharedMap } = await shares.findOne({ _id: shareId })
       const userFilter = { _id: shareUser, tabMapIdList: sharedMap }
       const shareFilter = { shareUser, sharedMap }
@@ -298,7 +297,7 @@ async function resolveType(req, REQ, userId) {
       return { error: '', data: { ...shareInfo } }
     }
     case 'toggleColorMode': {
-      const { colorMode } = REQ.payload
+      const { colorMode } = payload
       const newColorMode = colorMode === 'light' ? 'dark' : 'light'
       await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
       return { error: '', data:  { colorMode: newColorMode } }
@@ -329,7 +328,7 @@ async function processReq(req, REQ) {
       const currUser = await users.findOne( cred )
       if (currUser === null) {
         if (REQ.type === 'SIGN_UP_STEP_1') {
-          const { name, email, password } = REQ.payload.cred
+          const { name, email, password } = payload.cred
           let confirmationCode = (name === 'Cypress Test')
             ? 1234
             : getConfirmationCode()
@@ -390,7 +389,7 @@ async function processReq(req, REQ) {
           const userId = await getAuthorizedUserId(req)
           if (!userId) { return { error: 'UNAUTH'} }
 
-          return await resolveType(req, REQ, userId)
+          return await resolveType(req, REQ.type, payload, userId)
         }
       }
     }
