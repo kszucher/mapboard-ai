@@ -76,13 +76,14 @@ export const Page: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-  const { data } = useOpenMapQuery()
+  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
 
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
+    // localStorage.clear()
     const cred = JSON.parse(localStorage.getItem('cred') as string)
     if (cred !== null) {
       dispatch(api.endpoints.signIn.initiate(cred))

@@ -30,9 +30,10 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const { density, alignment } = m?.g || mapProps.saveOptional
-  const { data } = useOpenMapQuery()
+  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { dataFrameSelected, dataFramesLen } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

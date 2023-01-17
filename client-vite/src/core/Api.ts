@@ -14,7 +14,8 @@ export const api = createApi({
       // if (token) {
       //   headers.set('authorization', `Bearer ${token}`)
       // }
-      headers.set('authorization', localStorage.getItem('cred') as string)
+      const credString = localStorage.getItem('cred')
+      headers.set('authorization', credString ? credString : "{ email: '', user: ''}")
       return headers
     },
   }),

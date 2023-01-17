@@ -1,12 +1,14 @@
 import {FC} from "react";
-import {useDispatch} from "react-redux";
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
 import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {api, useOpenMapQuery} from "../core/Api";
 import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 export const BreadcrumbMaps: FC = () => {
-  const { data, isFetching } = useOpenMapQuery()
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const { data, isFetching } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { dataFrameSelected, breadcrumbMapIdList, breadcrumbMapNameList } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   return (

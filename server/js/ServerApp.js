@@ -389,7 +389,7 @@ async function processReq(req, REQ) {
           const userId = await getAuthorizedUserId(req)
           if (!userId) { return { error: 'UNAUTH'} }
 
-          return await resolveType(req, REQ.type, payload, userId)
+          return await resolveType(req, REQ.type, REQ.payload, userId)
         }
       }
     }

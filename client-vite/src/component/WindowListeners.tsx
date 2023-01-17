@@ -38,7 +38,7 @@ export const WindowListeners: FC = () => {
   const mExists = m && Object.keys(m).length
   const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || mapProps.saveOptional
-  const { data } = useOpenMapQuery()
+  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { mapId, dataFrameSelected, mapRight } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

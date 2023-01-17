@@ -1,13 +1,15 @@
 import {FC} from "react";
-import {useDispatch} from 'react-redux'
+import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import {api, useOpenMapQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 export const FrameCarousel: FC = () => {
-  const { data, isFetching } = useOpenMapQuery()
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const { data, isFetching } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { dataFramesLen, dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   return (

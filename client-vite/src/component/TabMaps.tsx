@@ -3,10 +3,12 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import {Tab, Tabs} from "@mui/material";
 import {api, useOpenMapQuery} from "../core/Api";
 import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 export const TabMaps: FC = () => {
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const tabShrink = useSelector((state: RootStateOrAny) => state.editor.tabShrink)
-  const { data, isFetching } = useOpenMapQuery()
+  const { data, isFetching } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { dataFrameSelected, tabMapIdList, tabMapNameList, breadcrumbMapIdList } = data?.resp?.data || defaultUseOpenMapQueryState
   const tabMapSelected = tabMapIdList.indexOf(breadcrumbMapIdList[0])
   const dispatch = useDispatch()

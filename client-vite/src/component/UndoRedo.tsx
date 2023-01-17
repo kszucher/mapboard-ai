@@ -3,16 +3,17 @@ import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import {MapRight} from "../core/Types";
+import {MapRight, PageState} from "../core/Types";
 import {actions, defaultUseOpenMapQueryState} from "../core/EditorFlow";
 import {useOpenMapQuery} from "../core/Api";
 
 export const UndoRedo: FC = () => {
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const mapStackDataIndex = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
   const undoDisabled = mapStackDataIndex === 0
   const redoDisabled = mapStackDataIndex === mapStackData.length - 1
-  const { data } = useOpenMapQuery()
+  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { mapRight } = data?.resp?.data || defaultUseOpenMapQueryState
   const dispatch = useDispatch()
   return (
