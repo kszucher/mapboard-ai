@@ -185,12 +185,12 @@ async function resolveType(req, type, payload, userId) {
       return
     }
     case 'createMapFrameImport': {
-      await MongoMutations.importFrame(maps, userId)
+      await MongoMutations.createMapFrameImport(maps, userId)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'createMapFrameDuplicate': {
-      await MongoMutations.duplicateFrame(maps, userId)
+      await MongoMutations.createMapFrameDuplicate(maps, userId)
       await MongoMutations.selectNextMapFrame(users, userId)
       return
     }

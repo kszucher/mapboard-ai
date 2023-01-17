@@ -114,7 +114,7 @@ async function mutateFrame (maps, userId, mutation) {
   ).toArray()
 }
 
-async function importFrame (maps, userId) {
+async function createMapFrameImport (maps, userId) {
   await mutateFrame(maps, userId, {
     $concatArrays: [
       { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
@@ -124,7 +124,7 @@ async function importFrame (maps, userId) {
   })
 }
 
-async function duplicateFrame (maps, userId) {
+async function createMapFrameDuplicate (maps, userId) {
   await mutateFrame(maps, userId, {
     $concatArrays: [
       { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
@@ -190,13 +190,25 @@ async function deleteMapFromUsers (users, filter) {
     filter,
     [{
       $set: {
+        mapSelected: {
+          $cond: {
+            if: { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] },
+            then: {
+              $cond: {
+                if: { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
+                then: { $arrayElemAt: [ "$tabMapIdList", 1 ] },
+                else: null
+              }
+            },
+            else: { $arrayElemAt: [ "$tabMapIdList", { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] }
+          }
+        },
         tabMapIdList : {
           $filter : {
             input: "$tabMapIdList",
             as: "tabMapId",
             cond: { $ne: [ "$$tabMapId", mapId ] } }
         },
-        mapSelected: { $first: '$tabMapIdList' } // TODO handle the case when ALL tab maps are deleted...
       }
     }]
   )
@@ -571,8 +583,8 @@ module.exports = {
   selectPrevMapFrame,
   selectNextMapFrame,
   createMapInTab,
-  importFrame,
-  duplicateFrame,
+  createMapFrameImport,
+  createMapFrameDuplicate,
   moveUpMapInTab,
   moveDownMapInTab,
   deleteMapFromUsers,

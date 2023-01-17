@@ -29,7 +29,6 @@ async function mongoTests(cmd) {
     await maps.deleteMany({})
     await shares.deleteMany({})
     let dbOriginal
-    let argument
     let dbExpected
     switch (cmd) {
       case 'nameLookupTest': {
@@ -172,18 +171,16 @@ async function mongoTests(cmd) {
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-
-      case 'importFrameTest': {
+      case 'createMapFrameImportTest': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2']} ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'h1', 'f2'] } ] }
         break
       }
-      case 'duplicateFrameTest': {
+      case 'createMapFrameDuplicateTest': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fc'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fb', 'fc'] } ] }
         break
       }
-
       case 'moveUpMapInTabTest1':
         dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
         dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
@@ -200,21 +197,19 @@ async function mongoTests(cmd) {
         dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         break
-
-
       case 'deleteMapFromUsersTest':
         dbOriginal = {
           users: [
-            {_id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1', 'mapShared']},
-            {_id: 'user2', breadcrumbMapIdList: ['mapShared'], tabMapIdList: ['map1', 'mapShared']},
-            {_id: 'user3', breadcrumbMapIdList: ['mapShared'], tabMapIdList: ['mapShared']},
+            {_id: 'user1', mapSelected: 'map1', tabMapIdList: ['map1', 'mapShared']},
+            {_id: 'user2', mapSelected: 'mapShared', tabMapIdList: ['map1', 'mapShared']},
+            {_id: 'user3', mapSelected: 'mapShared', tabMapIdList: ['mapShared']},
           ],
         }
         dbExpected = {
           users: [
-            { _id: 'user1', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1'] },
-            { _id: 'user2', breadcrumbMapIdList: ['map1'], tabMapIdList: ['map1'] },
-            { _id: 'user3', breadcrumbMapIdList: [], tabMapIdList: [] },
+            { _id: 'user1', mapSelected: 'map1', tabMapIdList: ['map1'] },
+            { _id: 'user2', mapSelected: 'map1', tabMapIdList: ['map1'] },
+            { _id: 'user3', mapSelected: null, tabMapIdList: [] },
           ],
         }
         break
@@ -223,9 +218,6 @@ async function mongoTests(cmd) {
         dbExpected = { shares: [] }
         break
       }
-
-
-
       case 'deleteMapFrameTest': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ {_id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fc'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ {_id: 'map1', ownerUser: 'user1', dataFrames: ['fb', 'fc'] } ] }
@@ -337,8 +329,8 @@ async function mongoTests(cmd) {
       case 'selectPrevMapFrameTest2': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
       case 'selectNextMapFrameTest2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
-      case 'importFrameTest': await MongoMutations.importFrame(maps, 'user1'); break
-      case 'duplicateFrameTest': await MongoMutations.duplicateFrame(maps, 'user1'); break
+      case 'createMapFrameImportTest': await MongoMutations.createMapFrameImport(maps, 'user1'); break
+      case 'createMapFrameDuplicateTest': await MongoMutations.createMapFrameDuplicate(maps, 'user1'); break
       case 'moveUpMapInTabTest1': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
       case 'moveUpMapInTabTest2': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
       case 'moveDownMapInTabTest1': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
@@ -394,8 +386,8 @@ async function allTest () {
   // await mongoTests('selectPrevMapFrameTest2')
   // await mongoTests('selectNextMapFrameTest1')
   // await mongoTests('selectNextMapFrameTest2')
-  // await mongoTests('importFrameTest')
-  // await mongoTests('duplicateFrameTest')
+  // await mongoTests('createMapFrameImportTest')
+  // await mongoTests('createMapFrameDuplicateTest')
   // await mongoTests('moveUpMapInTabTest1')
   // await mongoTests('moveUpMapInTabTest2')
   // await mongoTests('moveDownMapInTabTest1')
