@@ -60,16 +60,31 @@ export const api = createApi({
       invalidatesTags: ['MapInfo']
     }),
     createMapInMap: builder.mutation<void, { mapCreationProps: { content: string, nodeId: string } }>({
-      query: ({ mapCreationProps }) => ( {url: '', method: 'POST', body: { type: 'createMapInMap', payload: { mapCreationProps} }}),
+      query: ({ mapCreationProps }) => ({ url: '', method: 'POST', body: { type: 'createMapInMap', payload: { mapCreationProps} } }),
       invalidatesTags: ['MapInfo']
     }),
-    // TODO IN TAB
-    importMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'importMapFrame' } }),
+    createMapInTab: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'createMapInTab' } }),
       invalidatesTags: ['MapInfo']
     }),
-    duplicateMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'duplicateMapFrame' } }),
+    createMapFrameImport: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'createMapFrameImport' } }),
+      invalidatesTags: ['MapInfo']
+    }),
+    createMapFrameDuplicate: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'createMapFrameDuplicate' } }),
+      invalidatesTags: ['MapInfo']
+    }),
+    moveUpMapInTab: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'moveUpMapInTab' } }),
+      invalidatesTags: ['MapInfo']
+    }),
+    moveDownMapInTab: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'moveDownMapInTab' } }),
+      invalidatesTags: ['MapInfo']
+    }),
+    deleteMapInTab: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'deleteMapInTab' } }),
       invalidatesTags: ['MapInfo']
     }),
     deleteMapFrame: builder.mutation<void, void>({

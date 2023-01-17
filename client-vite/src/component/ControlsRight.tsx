@@ -47,17 +47,20 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs2, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TABLE))}
+        >
           <CalendarViewMonthIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_TASK))}
+        >
           <TaskIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS_CREATE_MAP_IN_MAP))}
+        >
           <CreateMapInMapIcon/>
         </IconButton>
       </div>
@@ -79,31 +82,36 @@ export const ControlsRight: FC = () => {
         <IconButton
           color='secondary'
           disabled={dataFrameSelected > -1 && dataFramesLen > 0}
-          onClick={() => dispatch(api.endpoints.selectFirstMapFrame.initiate())}>
+          onClick={() => dispatch(api.endpoints.selectFirstMapFrame.initiate())}
+        >
           <DynamicFeedIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={dataFrameSelected === -1}
-          onClick={() => dispatch(api.endpoints.importMapFrame.initiate())}>
+          onClick={() => dispatch(api.endpoints.createMapFrameImport.initiate())}
+        >
           <InputIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={dataFrameSelected === -1 || dataFramesLen === 0}
-          onClick={() => dispatch(api.endpoints.duplicateMapFrame.initiate())}>
+          onClick={() => dispatch(api.endpoints.createMapFrameDuplicate.initiate())}
+        >
           <ContentCopyIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={dataFrameSelected === -1 || dataFramesLen === 0}
-          onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate())}>
+          onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate())}
+        >
           <DeleteIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={dataFrameSelected === -1}
-          onClick={() => dispatch(api.endpoints.selectMap.initiate(getMapSelectProps()))}>
+          onClick={() => dispatch(api.endpoints.selectMap.initiate(getMapSelectProps()))}
+        >
           <CloseIcon/>
         </IconButton>
       </div>
@@ -111,7 +119,8 @@ export const ControlsRight: FC = () => {
         <IconButton
           color='secondary'
           disabled={dataFrameSelected > -1}
-          onClick={ () => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}>
+          onClick={ () => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}
+        >
           <ShareIcon/>
         </IconButton>
       </div>

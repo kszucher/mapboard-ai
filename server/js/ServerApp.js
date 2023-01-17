@@ -157,20 +157,16 @@ async function resolveType(req, REQ, userId) {
       await MongoMutations.selectMap(users, userId, mapId)
       return
     }
-    case 'saveMap': {
-      // await new Promise(resolve => setTimeout(resolve, 5000))
-      const mapId = ObjectId(REQ.payload.mapId)
-      const { mapData, dataFrameSelected } = REQ.payload
-      const map = await maps.findOne({_id: mapId})
-      const { ownerUser } = map
-      const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-      if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-        if (dataFrameSelected === -1) {
-          await MongoMutations.saveMap(maps, mapId, 'map', mapData)
-        } else {
-          await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
-        }
-      }
+    case 'selectFirstMapFrame': {
+      await MongoMutations.selectFirstMapFrame(users, userId)
+      return
+    }
+    case 'selectPrevMapFrame': {
+      await MongoMutations.selectPrevMapFrame(users, userId)
+      return
+    }
+    case 'selectNextMapFrame': {
+      await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'createMapInMap': {
@@ -189,15 +185,14 @@ async function resolveType(req, REQ, userId) {
       await MongoMutations.selectMap(users, userId, newMapId)
       return
     }
-    case 'removeMapInTab': {
-      const mapId = ObjectId(REQ.payload.mapId)
-      const map = await maps.findOne({_id: mapId})
-      const { ownerUser } = map
-      const iAmTheOwner = isEqual(ownerUser, userId)
-      const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
-      const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
-      await MongoMutations.deleteMapFromUsers(users, userFilter)
-      await MongoMutations.deleteMapFromShares(shares, shareFilter)
+    case 'createMapFrameImport': {
+      await MongoMutations.importFrame(maps, userId)
+      await MongoMutations.selectNextMapFrame(users, userId)
+      return
+    }
+    case 'createMapFrameDuplicate': {
+      await MongoMutations.duplicateFrame(maps, userId)
+      await MongoMutations.selectNextMapFrame(users, userId)
       return
     }
     case 'moveUpMapInTab': {
@@ -208,31 +203,36 @@ async function resolveType(req, REQ, userId) {
       await MongoMutations.moveDownMapInTab(users, userId)
       return
     }
-    case 'selectFirstMapFrame': {
-      await MongoMutations.selectFirstMapFrame(users, userId)
-      return
-    }
-    case 'selectPrevMapFrame': {
-      await MongoMutations.selectPrevMapFrame(users, userId)
-      return
-    }
-    case 'selectNextMapFrame': {
-      await MongoMutations.selectNextMapFrame(users, userId)
-      return
-    }
-    case 'importMapFrame': {
-      await MongoMutations.importFrame(maps, userId)
-      await MongoMutations.selectNextMapFrame(users, userId)
-      return
-    }
-    case 'duplicateMapFrame': {
-      await MongoMutations.duplicateFrame(maps, userId)
-      await MongoMutations.selectNextMapFrame(users, userId)
+    case 'deleteMapInTab': {
+      const mapId = ObjectId(REQ.payload.mapId)
+      const map = await maps.findOne({_id: mapId})
+      const { ownerUser } = map
+      const iAmTheOwner = isEqual(ownerUser, userId)
+      const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
+      const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
+      await MongoMutations.deleteMapFromUsers(users, userFilter)
+      await MongoMutations.deleteMapFromShares(shares, shareFilter)
       return
     }
     case 'deleteMapFrame': {
-      await MongoMutations.deleteFrame(maps, userId)
+      await MongoMutations.deleteMapFrame(maps, userId)
       await MongoMutations.selectPrevMapFrame(users, userId)
+      return
+    }
+    case 'saveMap': {
+      // await new Promise(resolve => setTimeout(resolve, 5000))
+      const mapId = ObjectId(REQ.payload.mapId)
+      const { mapData, dataFrameSelected } = REQ.payload
+      const map = await maps.findOne({_id: mapId})
+      const { ownerUser } = map
+      const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
+      if (isEqual(userId, ownerUser) || shareToEdit !== null) {
+        if (dataFrameSelected === -1) {
+          await MongoMutations.saveMap(maps, mapId, 'map', mapData)
+        } else {
+          await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
+        }
+      }
       return
     }
     case 'getShares': {
