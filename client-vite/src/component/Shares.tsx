@@ -67,7 +67,8 @@ export const Shares: FC = () => {
             rowsPerPageOptions={[5]}
             checkboxSelection
             disableSelectionOnClick
-            autoHeight={true}/>}
+            autoHeight={true}
+          />}
         </div>
         <Typography component="h1" variant="h5" color="primary">{'Maps Others Share With Me'}</Typography>
         <div style={{ width: '100%' }}>
@@ -78,12 +79,14 @@ export const Shares: FC = () => {
             rowsPerPageOptions={[5]}
             checkboxSelection
             disableSelectionOnClick
-            autoHeight={true}/>}
+            autoHeight={true}
+          />}
         </div>
         <Button
           color="primary"
           variant='outlined'
-          // onClick={_=>dispatch(sagaActions.getShares())}>
+          // onClick={_=>dispatch(sagaActions.getShares())}
+        >
           {'REFRESH'}
         </Button>
         <Button color="primary" variant='outlined'

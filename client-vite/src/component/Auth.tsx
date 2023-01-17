@@ -67,21 +67,23 @@ export const Auth: FC = () => {
         <TextField
           id="password-again" variant="outlined" fullWidth label="Password Again" type="password"
           value={passwordAgain}
-          onChange={({target: {value}}) => dispatch(actions.setPasswordAgain(value))}/>
+          onChange={({target: {value}}) => dispatch(actions.setPasswordAgain(value))}
+        />
       }
       {
         authPageState === AuthPageState.SIGN_UP_STEP_2 &&
         <TextField
           id="confirmation-code" variant="outlined" fullWidth label="Confirmation Code" autoFocus
           value={confirmationCode}
-          // onChange={({target: {value}}) => dispatch(sagaActions.checkSetConfirmationCode(value))}/>
-      }
+          // onChange={({target: {value}}) => dispatch(sagaActions.checkSetConfirmationCode(value))}
+        />}
       {
         authPageState === AuthPageState.SIGN_UP_STEP_1 &&
         <Button
           id="get-confirmation-code" color="primary" variant='contained' fullWidth
           disabled={name === '' || email === '' || password === '' || passwordAgain === '' || password !== passwordAgain}
-          // onClick={_=>dispatch(sagaActions.signUpStep1(name, email, password))}>
+          // onClick={_=>dispatch(sagaActions.signUpStep1(name, email, password))}
+        >
           {'Get Confirmation Code'}
         </Button>
       }
@@ -90,7 +92,8 @@ export const Auth: FC = () => {
         <Button
           id="enter-confirmation-code" color="primary" variant='contained' fullWidth
           disabled={email === '' || confirmationCode === '' || confirmationCode.length !== 4}
-          // onClick={_=>dispatch(sagaActions.signUpStep2(email, confirmationCode))}>
+          // onClick={_=>dispatch(sagaActions.signUpStep2(email, confirmationCode))}
+        >
           {'Enter Confirmation Code'}
         </Button>
       }
