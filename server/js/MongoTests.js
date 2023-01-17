@@ -31,7 +31,7 @@ async function mongoTests(cmd) {
     let dbOriginal
     let dbExpected
     switch (cmd) {
-      case 'nameLookupTest': {
+      case 'nameLookup.test': {
         dbOriginal = {
           users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
           maps:  [
@@ -44,7 +44,7 @@ async function mongoTests(cmd) {
         dbExpected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
         break
       }
-      case 'getUserSharesTest': {
+      case 'getUserShares.test': {
         dbOriginal = {
           users: [
             { _id: 'user1', email: 'user1@mail.com' },
@@ -75,12 +75,12 @@ async function mongoTests(cmd) {
         }
         break
       }
-      case 'countNodesTest': {
+      case 'countNodes.test': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ] ] )
         dbExpected = [{ _id: null, result: 16 }]
         break
       }
-      case 'countNodesBasedOnNodePropExistenceTest': {
+      case 'countNodesBasedOnNodePropExistence.test': {
         dbOriginal = getMultiMapMultiSource( [
           [ {a: 'o'} ],
           [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
@@ -89,7 +89,7 @@ async function mongoTests(cmd) {
         dbExpected = [{ _id: null, result: 12 }]
         break
       }
-      case 'countNodesBasedOnNodePropValueTest': {
+      case 'countNodesBasedOnNodePropValue.test': {
         dbOriginal = getMultiMapMultiSource( [
           [ {a: 'o'} ],
           [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
@@ -98,7 +98,7 @@ async function mongoTests(cmd) {
         dbExpected = [{ _id: null, result: 8 }]
         break
       }
-      case 'findDeadLinksTest': {
+      case 'findDeadLinks.test': {
         dbOriginal = {
           maps:  [
             { _id: 'map10', dataHistory: [
@@ -146,58 +146,58 @@ async function mongoTests(cmd) {
         break
       }
 
-      case 'selectFirstMapFrameTest': {
+      case 'selectFirstMapFrame.test': {
         dbOriginal = { users: [ {_id: 'user1', mapSelected: 'map1', dataFrameSelected: -1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         dbExpected = { users: [ {_id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'selectPrevMapFrameTest1': {
+      case 'selectPrevMapFrame.test1': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'selectPrevMapFrameTest2': {
+      case 'selectPrevMapFrame.test2': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'selectNextMapFrameTest1': {
+      case 'selectNextMapFrame.test1': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'selectNextMapFrameTest2': {
+      case 'selectNextMapFrame.test2': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1',  dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: ['f1', 'f2'] } ] }
         break
       }
-      case 'createMapFrameImportTest': {
+      case 'createMapFrameImport.test': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2']} ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'h1', 'f2'] } ] }
         break
       }
-      case 'createMapFrameDuplicateTest': {
+      case 'createMapFrameDuplicate.test': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fc'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fb', 'fc'] } ] }
         break
       }
-      case 'moveUpMapInTabTest1':
-        dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
-        dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+      case 'moveUpMapInTab.test1':
+        dbOriginal = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+        dbExpected = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
         break
-      case 'moveUpMapInTabTest2':
-        dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
-        dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+      case 'moveUpMapInTab.test2':
+        dbOriginal = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+        dbExpected = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
         break
-      case 'moveDownMapInTabTest1':
-        dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
-        dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+      case 'moveDownMapInTab.test1':
+        dbOriginal = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+        dbExpected = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         break
-      case 'moveDownMapInTabTest2':
-        dbOriginal = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
-        dbExpected = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+      case 'moveDownMapInTab.test2':
+        dbOriginal = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+        dbExpected = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         break
-      case 'deleteMapFromUsersTest':
+      case 'deleteMapFromUsers.test':
         dbOriginal = {
           users: [
             {_id: 'user1', mapSelected: 'map1', tabMapIdList: ['map1', 'mapShared']},
@@ -213,17 +213,17 @@ async function mongoTests(cmd) {
           ],
         }
         break
-      case 'deleteMapFromSharesTest': {
+      case 'deleteMapFromShares.test': {
         dbOriginal = { shares: [ {_id: 'shareOther', ownerUser: 'ownerUser', shareUser: 'userOther', sharedMap: 'mapShared'} ] }
         dbExpected = { shares: [] }
         break
       }
-      case 'deleteMapFrameTest': {
+      case 'deleteMapFrame.test': {
         dbOriginal = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ {_id: 'map1', ownerUser: 'user1', dataFrames: ['fa', 'fb', 'fc'] } ] }
         dbExpected = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ {_id: 'map1', ownerUser: 'user1', dataFrames: ['fb', 'fc'] } ] }
         break
       }
-      case 'saveMapTest': {
+      case 'saveMap.test': {
         dbOriginal = {
           users: [{_id: 'user1', mapSelected: 'map1'}],
           maps: [{
@@ -244,7 +244,7 @@ async function mongoTests(cmd) {
         }
         break
       }
-      case 'saveMapFrameTest': {
+      case 'saveMapFrame.test': {
         dbOriginal = {
           users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
           maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
@@ -255,32 +255,32 @@ async function mongoTests(cmd) {
         }
         break
       }
-      case 'createNodePropTest': {
+      case 'createNodeProp.test': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
         dbExpected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
         break
       }
-      case 'createNodePropIfMissingTest': {
+      case 'createNodePropIfMissing.test': {
         dbOriginal = getMultiMapMultiSource( [ [ {} ], [ {}, {a: 'o'} ] ] )
         dbExpected = getMultiMapMultiSource( [ [ {b: 'x'} ], [ {b: 'x'}, {a: 'o', b: 'x'} ] ] )
         break
       }
-      case 'updateNodePropKeyTest': {
+      case 'updateNodePropKey.test': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
         dbExpected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
         break
       }
-      case 'updateNodePropValueBasedOnPreviousValueTest': {
+      case 'updateNodePropValueBasedOnPreviousValue.test': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
         dbExpected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
         break
       }
-      case 'removeNodePropTest': {
+      case 'removeNodeProp.test': {
         dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', npr: 'nvr'} ], [ {a: 'o', npr: 'nvr'}, {b: 'o', npr: 'nvr'} ] ] )
         dbExpected = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
         break
       }
-      case 'deleteUnusedMapsTest': {
+      case 'deleteUnusedMaps.test': {
         dbOriginal = {
           users: [
             {_id: 'user1', tabMapIdList: ['map10', 'map20'] },
@@ -318,42 +318,42 @@ async function mongoTests(cmd) {
     if(dbOriginal.hasOwnProperty('shares')) {await shares.insertMany(dbOriginal.shares)}
     let result = {}
     switch(cmd) {
-      case 'nameLookupTest': result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList'); break
-      case 'getUserSharesTest': result = await MongoQueries.getUserShares(shares, 'user1'); break
-      case 'countNodesTest': result = await MongoQueries.countNodes(maps); break
-      case 'countNodesBasedOnNodePropExistenceTest': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
-      case 'countNodesBasedOnNodePropValueTest': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
-      case 'findDeadLinksTest': result = await MongoQueries.findDeadLinks(maps); break
-      case 'selectFirstMapFrameTest': await MongoMutations.selectFirstMapFrame(users, 'user1'); break
-      case 'selectPrevMapFrameTest1': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
-      case 'selectPrevMapFrameTest2': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
-      case 'selectNextMapFrameTest1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
-      case 'selectNextMapFrameTest2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
-      case 'createMapFrameImportTest': await MongoMutations.createMapFrameImport(maps, 'user1'); break
-      case 'createMapFrameDuplicateTest': await MongoMutations.createMapFrameDuplicate(maps, 'user1'); break
-      case 'moveUpMapInTabTest1': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
-      case 'moveUpMapInTabTest2': await MongoMutations.moveUpMapInTab(users, 'user1', 'mapMove'); break
-      case 'moveDownMapInTabTest1': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
-      case 'moveDownMapInTabTest2': await MongoMutations.moveDownMapInTab(users, 'user1', 'mapMove'); break
-      case 'deleteMapFromUsersTest': await MongoMutations.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
-      case 'deleteMapFromSharesTest': await MongoMutations.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
-      case 'deleteMapFrameTest':  await MongoMutations.deleteMapFrame(maps, 'user1'); break
-      case 'saveMapTest': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
-      case 'saveMapFrameTest': await MongoMutations.saveMapFrame(maps, 'map1', 1, 'nmf' ); break
-      case 'createNodePropTest':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
-      case 'createNodePropIfMissingTest':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break
-      case 'updateNodePropKeyTest':  await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' ); break
-      case 'updateNodePropValueBasedOnPreviousValueTest':  await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' ); break
-      case 'removeNodePropTest':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
-      case 'deleteUnusedMapsTest': await MongoMutations.deleteUnusedMaps(users, maps); break
+      case 'nameLookup.test': result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList'); break
+      case 'getUserShares.test': result = await MongoQueries.getUserShares(shares, 'user1'); break
+      case 'countNodes.test': result = await MongoQueries.countNodes(maps); break
+      case 'countNodesBasedOnNodePropExistence.test': result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' ); break
+      case 'countNodesBasedOnNodePropValue.test': result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' ); break
+      case 'findDeadLinks.test': result = await MongoQueries.findDeadLinks(maps); break
+      case 'selectFirstMapFrame.test': await MongoMutations.selectFirstMapFrame(users, 'user1'); break
+      case 'selectPrevMapFrame.test1': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
+      case 'selectPrevMapFrame.test2': await MongoMutations.selectPrevMapFrame(users, 'user1'); break
+      case 'selectNextMapFrame.test1': await MongoMutations.selectNextMapFrame(users, 'user1'); break
+      case 'selectNextMapFrame.test2': await MongoMutations.selectNextMapFrame(users, 'user1'); break
+      case 'createMapFrameImport.test': await MongoMutations.createMapFrameImport(maps, 'user1'); break
+      case 'createMapFrameDuplicate.test': await MongoMutations.createMapFrameDuplicate(maps, 'user1'); break
+      case 'moveUpMapInTab.test1': await MongoMutations.moveUpMapInTab(users, 'user1'); break
+      case 'moveUpMapInTab.test2': await MongoMutations.moveUpMapInTab(users, 'user1'); break
+      case 'moveDownMapInTab.test1': await MongoMutations.moveDownMapInTab(users, 'user1'); break
+      case 'moveDownMapInTab.test2': await MongoMutations.moveDownMapInTab(users, 'user1'); break
+      case 'deleteMapFromUsers.test': await MongoMutations.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
+      case 'deleteMapFromShares.test': await MongoMutations.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
+      case 'deleteMapFrame.test':  await MongoMutations.deleteMapFrame(maps, 'user1'); break
+      case 'saveMap.test': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
+      case 'saveMapFrame.test': await MongoMutations.saveMapFrame(maps, 'map1', 1, 'nmf' ); break
+      case 'createNodeProp.test':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
+      case 'createNodePropIfMissing.test':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break
+      case 'updateNodePropKey.test':  await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' ); break
+      case 'updateNodePropValueBasedOnPreviousValue.test':  await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' ); break
+      case 'removeNodeProp.test':  await MongoMutations.removeNodeProp(maps, 'npr' ); break
+      case 'deleteUnusedMaps.test': await MongoMutations.deleteUnusedMaps(users, maps); break
     }
     if ([
-      'nameLookupTest',
-      'getUserSharesTest',
-      'countNodesTest',
-      'countNodesBasedOnNodePropExistenceTest',
-      'countNodesBasedOnNodePropValueTest',
-      'findDeadLinksTest'
+      'nameLookup.test',
+      'getUserShares.test',
+      'countNodes.test',
+      'countNodesBasedOnNodePropExistence.test',
+      'countNodesBasedOnNodePropValue.test',
+      'findDeadLinks.test'
     ].includes(cmd)) {
     } else {
       if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
@@ -375,34 +375,34 @@ async function mongoTests(cmd) {
 }
 
 async function allTest () {
-  // await mongoTests('nameLookupTest')
-  // await mongoTests('getUserSharesTest')
-  // await mongoTests('countNodesTest')
-  // await mongoTests('countNodesBasedOnNodePropExistenceTest')
-  // await mongoTests('countNodesBasedOnNodePropValueTest')
-  // await mongoTests('findDeadLinksTest')
-  // await mongoTests('selectFirstMapFrameTest')
-  // await mongoTests('selectPrevMapFrameTest1')
-  // await mongoTests('selectPrevMapFrameTest2')
-  // await mongoTests('selectNextMapFrameTest1')
-  // await mongoTests('selectNextMapFrameTest2')
-  // await mongoTests('createMapFrameImportTest')
-  // await mongoTests('createMapFrameDuplicateTest')
-  // await mongoTests('moveUpMapInTabTest1')
-  // await mongoTests('moveUpMapInTabTest2')
-  // await mongoTests('moveDownMapInTabTest1')
-  // await mongoTests('moveDownMapInTabTest2')
-  await mongoTests('deleteMapFromUsersTest') // TODO fix
-  // await mongoTests('deleteMapFromSharesTest')
-  // await mongoTests('deleteMapFrameTest')
-  // await mongoTests('saveMapTest')
-  // await mongoTests('saveMapFrameTest')
-  // await mongoTests('createNodePropTest')
-  // await mongoTests('createNodePropIfMissingTest')
-  // await mongoTests('updateNodePropKeyTest')
-  // await mongoTests('updateNodePropValueBasedOnPreviousValueTest')
-  // await mongoTests('removeNodePropTest')
-  // await mongoTests('deleteUnusedMapsTest')
+  // await mongoTests('nameLookup.test')
+  // await mongoTests('getUserShares.test')
+  // await mongoTests('countNodes.test')
+  // await mongoTests('countNodesBasedOnNodePropExistence.test')
+  // await mongoTests('countNodesBasedOnNodePropValue.test')
+  // await mongoTests('findDeadLinks.test')
+  // await mongoTests('selectFirstMapFrame.test')
+  // await mongoTests('selectPrevMapFrame.test1')
+  // await mongoTests('selectPrevMapFrame.test2')
+  // await mongoTests('selectNextMapFrame.test1')
+  // await mongoTests('selectNextMapFrame.test2')
+  // await mongoTests('createMapFrameImport.test')
+  // await mongoTests('createMapFrameDuplicate.test')
+  // await mongoTests('moveUpMapInTab.test1')
+  // await mongoTests('moveUpMapInTab.test2')
+  // await mongoTests('moveDownMapInTab.test1')
+  // await mongoTests('moveDownMapInTab.test2')
+  // await mongoTests('deleteMapFromUsers.test')
+  // await mongoTests('deleteMapFromShares.test')
+  // await mongoTests('deleteMapFrame.test')
+  // await mongoTests('saveMap.test')
+  // await mongoTests('saveMapFrame.test')
+  // await mongoTests('createNodeProp.test')
+  // await mongoTests('createNodePropIfMissing.test')
+  // await mongoTests('updateNodePropKey.test')
+  // await mongoTests('updateNodePropValueBasedOnPreviousValue.test')
+  // await mongoTests('removeNodeProp.test')
+  // await mongoTests('deleteUnusedMaps.test')
 }
 
 allTest()

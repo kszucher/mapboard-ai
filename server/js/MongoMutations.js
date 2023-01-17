@@ -134,8 +134,8 @@ async function createMapFrameDuplicate (maps, userId) {
   })
 }
 
-async function moveUpMapInTab (users, userId, mapId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
+async function moveUpMapInTab (users, userId) {
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
   await users.findOneAndUpdate(
     { _id: userId },
     [{
@@ -159,8 +159,8 @@ async function moveUpMapInTab (users, userId, mapId) {
   )
 }
 
-async function moveDownMapInTab (users, userId, mapId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
+async function moveDownMapInTab (users, userId) {
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
   await users.findOneAndUpdate(
     { _id: userId },
     [{
