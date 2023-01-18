@@ -1,5 +1,7 @@
 const MongoQueries = require("./MongoQueries");
 const MongoMutations = require("./MongoMutations");
+const MongoMutationsSaveMap = require("./MongoMutationsSaveMap");
+
 
 const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsSave')
 const { baseUri } = require('./MongoSecret')
@@ -381,7 +383,7 @@ async function mongoTests(cmd) {
       case 'deleteMapFromUsers.test': await MongoMutations.deleteMapFromUsers(users, 'map_o_1_s_23456' ); break
       case 'deleteMapFromShares.test': await MongoMutations.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
       case 'deleteMapFrame.test':  await MongoMutations.deleteMapFrame(maps, 'user1'); break
-      case 'saveMap.test': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
+      case 'saveMap.test': await MongoMutationsSaveMap.saveMap(maps, 'map1', 'map', mergeMutationB ); break
       case 'saveMapFrame.test': await MongoMutations.saveMapFrame(maps, 'map1', 1, 'nmf' ); break
       case 'createNodeProp.test':  await MongoMutations.createNodeProp(maps, 'npc', 'nvc' ); break
       case 'createNodePropIfMissing.test':  await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' ); break

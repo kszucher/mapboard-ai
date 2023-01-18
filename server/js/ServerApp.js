@@ -9,6 +9,7 @@ const MongoQueries = require("./MongoQueries");
 const MongoMutations = require("./MongoMutations");
 
 const { baseUri } = require('./MongoSecret')
+const MongoMutationsSaveMap = require('./MongoMutationsSaveMap')
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -174,7 +175,7 @@ async function resolveType(req, type, payload, userId) {
       const map = await maps.findOne({_id: mapId})
       const { path } = map
       const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ]))).insertedId
-      await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
+      await MongoMutationsSaveMap.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
       await MongoMutations.selectMap(users, userId, newMapId)
       return
     }
@@ -227,7 +228,7 @@ async function resolveType(req, type, payload, userId) {
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
       if (isEqual(userId, ownerUser) || shareToEdit !== null) {
         if (dataFrameSelected === -1) {
-          await MongoMutations.saveMap(maps, mapId, 'map', mapData)
+          await MongoMutationsSaveMap.saveMap(maps, mapId, 'map', mapData)
         } else {
           await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
         }
