@@ -1,6 +1,5 @@
 const MongoQueries = require("./MongoQueries");
 const MongoMutations = require("./MongoMutations");
-const MongoMutationsSaveMap = require("./MongoMutationsSaveMap");
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest';
 
 const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsSave')
@@ -12,18 +11,29 @@ const getMultiMapMultiSource = (mapArray) => {
   return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
 }
 
-const mongoSet = async (dbOriginal) => {
-  if (dbOriginal.hasOwnProperty('users')) await users.insertMany(dbOriginal.users)
-  if (dbOriginal.hasOwnProperty('maps')) await maps.insertMany(dbOriginal.maps)
-  if (dbOriginal.hasOwnProperty('shares')) await shares.insertMany(dbOriginal.shares)
+const mongoSet = async (database) => {
+  if (database.hasOwnProperty('users')) await users.insertMany(database.users)
+  if (database.hasOwnProperty('maps')) await maps.insertMany(database.maps)
+  if (database.hasOwnProperty('shares')) await shares.insertMany(database.shares)
 }
 
-const mongoGet = async (dbOriginal) => {
+const mongoGet = async (database) => {
   let result = {}
-  if (dbOriginal.hasOwnProperty('users')) { result.users = await users.find().toArray() }
-  if (dbOriginal.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
-  if (dbOriginal.hasOwnProperty('shares')) { result.shares = await shares.find().toArray() }
+  if (database.hasOwnProperty('users')) { result.users = await users.find().toArray() }
+  if (database.hasOwnProperty('maps')) { result.maps = await maps.find().toArray() }
+  if (database.hasOwnProperty('shares')) { result.shares = await shares.find().toArray() }
   return result
+}
+
+const resolveQuery = async (database, queryName, queryParams) => {
+  await mongoSet(database)
+  return await MongoQueries[queryName](...queryParams)
+}
+
+const resolveMutation = async (database, mutationName, mutationParams) => {
+  await mongoSet(database)
+  await MongoMutations[mutationName](...mutationParams)
+  return await mongoGet(database)
 }
 
 const getElemById = (list, id) => (list.find(el => el._id === id))
@@ -47,7 +57,7 @@ describe("Mongo test", async() => {
     await client.close()
   })
   test('nameLookup', async() => {
-    const dbOriginal = {
+    const database = {
       users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
       maps:  [
         { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1', path: ['r', 0] } ] ] },
@@ -56,12 +66,12 @@ describe("Mongo test", async() => {
         { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4', path: ['r', 0] } ] ] },
       ]
     }
-    await mongoSet(dbOriginal)
-    const result = await MongoQueries.nameLookup(users, 'user1', 'anyMapIdList')
-    expect(result).toEqual(['mapName1', 'mapName2', 'mapName4', 'mapName3'])
+    const expected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
+    const modified = await resolveQuery(database, 'nameLookup', [users, 'user1', 'anyMapIdList'])
+    expect(expected).toEqual(modified)
   })
   test('getUserShares', async() => {
-    const dbOriginal = {
+    const database = {
       users: [
         { _id: 'user1', email: 'user1@mail.com' },
         { _id: 'user2', email: 'user2@mail.com' },
@@ -79,9 +89,7 @@ describe("Mongo test", async() => {
         { _id: 'share4', access: 'edit', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map4' }
       ]
     }
-    await mongoSet(dbOriginal)
-    const result = await MongoQueries.getUserShares(shares, 'user1')
-    expect(result).toEqual({
+    const expected = {
       shareDataExport: [
         { _id: 'share1', access: 'view', status: 'accepted', shareUserEmail: 'user2@mail.com', sharedMapName: 'mapName1' },
         { _id: 'share2', access: 'edit', status: 'accepted', shareUserEmail: 'user2@mail.com', sharedMapName: 'mapName2' }
@@ -90,41 +98,40 @@ describe("Mongo test", async() => {
         { _id: 'share3', access: 'view', status: 'accepted', ownerUserEmail: 'user2@mail.com', sharedMapName: 'mapName3' },
         { _id: 'share4', access: 'edit', status: 'accepted', ownerUserEmail: 'user2@mail.com', sharedMapName: 'mapName4' }
       ]
-    })
+    }
+    const modified = await resolveQuery(database, 'getUserShares', [shares, 'user1'])
+    expect(expected).toEqual(modified)
   })
   test('countNodes', async() => {
-    const dbOriginal = getMultiMapMultiSource( [
+    const database = getMultiMapMultiSource( [
       [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ]
     ] )
-    await mongoSet(dbOriginal)
-    const result = await MongoQueries.countNodes(maps)
-    expect(result).toEqual([{ _id: null, result: 16 }])
+    const expected = [{ _id: null, result: 16 }]
+    const modified = await resolveQuery(database, 'countNodes', [maps])
+    expect(expected).toEqual(modified)
   })
-
   test('countNodesBasedOnNodePropExistence', async() => {
-    const dbOriginal = getMultiMapMultiSource( [
+    const database = getMultiMapMultiSource( [
       [ {a: 'o'} ],
       [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
       [ {b: 'o'} ]
     ] )
-    await mongoSet(dbOriginal)
-    const result = await MongoQueries.countNodesBasedOnNodePropExistence( maps, 'b' )
-    expect(result).toEqual([{ _id: null, result: 12 }])
+    const expected = [{ _id: null, result: 12 }]
+    const modified = await resolveQuery(database, 'countNodesBasedOnNodePropExistence', [maps, 'b'])
+    expect(expected).toEqual(modified)
   })
-
   test('countNodesBasedOnNodePropValue', async() => {
-    const dbOriginal = getMultiMapMultiSource( [
+    const database = getMultiMapMultiSource( [
       [ {a: 'o'} ],
       [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
       [ {b: 'o'} ]
     ] )
-    await mongoSet(dbOriginal)
-    const result = await MongoQueries.countNodesBasedOnNodePropValue( maps, 'b', 'x' )
-    expect(result).toEqual([{ _id: null, result: 8 }])
+    const expected = [{ _id: null, result: 8 }]
+    const modified = await resolveQuery(database, 'countNodesBasedOnNodePropValue', [maps, 'b', 'x'])
+    expect(expected).toEqual(modified)
   })
-
   test('findDeadLinks', async() => {
-    const dbOriginal = {
+    const database = {
       maps:  [
         { _id: 'map10', dataHistory: [
             [
@@ -153,9 +160,7 @@ describe("Mongo test", async() => {
         }
       ]
     }
-    await mongoSet(dbOriginal)
-    const result = await MongoQueries.findDeadLinks(maps)
-    expect(result).toEqual([
+    const expected = [
       {
         mapId: "map10",
         info: [
@@ -169,78 +174,97 @@ describe("Mongo test", async() => {
           { mapContent: "map11name", nodeContent: "map111link" }
         ]
       }
-    ])
+    ]
+    const modified = await resolveQuery(database, 'findDeadLinks', [maps])
+    expect(expected).toEqual(modified)
   })
-  test('moveMap', async() => {
-    const dbOriginal = {
-      users: [
-        {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] },
-        {_id: 'user2', mapSelected: 'mapMove', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] },
-        {_id: 'user3', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] },
-        {_id: 'user4', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] },
-      ]
-    }
-    await mongoSet(dbOriginal)
-    await MongoMutations.moveUpMapInTab(users, 'user1')
-    await MongoMutations.moveUpMapInTab(users, 'user2')
-    await MongoMutations.moveDownMapInTab(users, 'user3')
-    await MongoMutations.moveDownMapInTab(users, 'user4')
-    const dbModified = await mongoGet(dbOriginal)
-    expect(getElemById(dbModified.users, 'user1').tabMapIdList).toEqual(['mapMove', 'mapKeep1', 'mapKeep2'])
-    expect(getElemById(dbModified.users, 'user2').tabMapIdList).toEqual(['mapMove', 'mapKeep1', 'mapKeep2'])
-    expect(getElemById(dbModified.users, 'user3').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
-    expect(getElemById(dbModified.users, 'user4').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
+  test('moveUpMapInTab.canMove', async() => {
+    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+    const expected = ['mapMove', 'mapKeep1', 'mapKeep2']
+    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').tabMapIdList)
+  })
+  test('moveUpMapInTab.cannotMove', async() => {
+    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+    const expected = ['mapMove', 'mapKeep1', 'mapKeep2']
+    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').tabMapIdList)
+  })
+  test('moveDownMapInTab.canMove', async() => {
+    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+    const expected = ['mapKeep1', 'mapKeep2', 'mapMove']
+    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').tabMapIdList)
+  })
+  test('moveDownMapInTab.cannotMove', async() => {
+    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+    const expected = ['mapKeep1', 'mapKeep2', 'mapMove']
+    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').tabMapIdList)
   })
 
-  test('selectMapFrame', async() => {
-    const dbOriginal = {
-      users: [
-        { _id: 'user1', mapSelected: 'map1', dataFrameSelected: -1 },
-        { _id: 'user2', mapSelected: 'map1', dataFrameSelected: 1 },
-        { _id: 'user3', mapSelected: 'map1', dataFrameSelected: 0 },
-        { _id: 'user4', mapSelected: 'map1', dataFrameSelected: 0 },
-        { _id: 'user5', mapSelected: 'map1', dataFrameSelected: 1 },
-      ],
-      maps: [
-        { _id: 'map1', dataFrames: [ 'f1', 'f2' ] }
-      ]
-    }
-    await mongoSet(dbOriginal)
-    await MongoMutations.selectFirstMapFrame(users, 'user1')
-    await MongoMutations.selectPrevMapFrame(users, 'user2')
-    await MongoMutations.selectPrevMapFrame(users, 'user3')
-    await MongoMutations.selectNextMapFrame(users, 'user4')
-    await MongoMutations.selectNextMapFrame(users, 'user5')
-    const dbModified = await mongoGet(dbOriginal)
-    expect(getElemById(dbModified.users, 'user1').dataFrameSelected).toEqual(0)
-    expect(getElemById(dbModified.users, 'user2').dataFrameSelected).toEqual(0)
-    expect(getElemById(dbModified.users, 'user3').dataFrameSelected).toEqual(0)
-    expect(getElemById(dbModified.users, 'user4').dataFrameSelected).toEqual(1)
-    expect(getElemById(dbModified.users, 'user5').dataFrameSelected).toEqual(1)
+
+
+  test('selectFirstMapFrame', async() => {
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: -1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const expected = 0
+    const modified = await resolveMutation(database, 'selectFirstMapFrame', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').dataFrameSelected)
   })
-  test('createMapFrame', async() => {
-    const dbOriginal = {
+
+  test('selectPrevMapFrame.can', async() => {
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const expected = 0
+    const modified = await resolveMutation(database, 'selectPrevMapFrame', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').dataFrameSelected)
+  })
+  test('selectPrevMapFrame.cannot', async() => {
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const expected = 0
+    const modified = await resolveMutation(database, 'selectPrevMapFrame', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').dataFrameSelected)
+  })
+  test('selectNextMapFrame.can', async() => {
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const expected = 1
+    const modified = await resolveMutation(database, 'selectNextMapFrame', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').dataFrameSelected)
+  })
+  test('selectNextMapFrame.cannot', async() => {
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const expected = 1
+    const modified = await resolveMutation(database, 'selectNextMapFrame', [users, 'user1'])
+    expect(expected).toEqual(getElemById(modified.users, 'user1').dataFrameSelected)
+  })
+  test('createMapFrameImport', async() => {
+    const database = {
       users: [{ _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
       maps: [{ _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
     }
-    await mongoSet(dbOriginal)
-    await MongoMutations.createMapFrameImport(maps, 'user1')
-    await MongoMutations.createMapFrameDuplicate(maps, 'user1')
-    const dbModified = await mongoGet(dbOriginal)
-    expect(getElemById(dbModified.maps, 'map1').dataFrames).toEqual(['f1', 'f1', 'h1', 'f2'])
+    const expected = ['f1', 'h1', 'f2']
+    const modified = await resolveMutation(database, 'createMapFrameImport', [maps, 'user1'])
+    expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
+  })
+  test('createMapFrameDuplicate', async() => {
+    const database = {
+      users: [{ _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      maps: [{ _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
+    }
+    const expected = ['f1', 'f1', 'f2']
+    const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
+    expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
   })
   test('deleteMapFrame', async() => {
-    const dbOriginal = {
+    const database = {
       users: [{ _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
       maps: [{ _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2', 'f3'] }]
     }
-    await mongoSet(dbOriginal)
-    await MongoMutations.deleteMapFrame(maps, 'user1')
-    const dbModified = await mongoGet(dbOriginal)
-    expect(getElemById(dbModified.maps, 'map1').dataFrames).toEqual(['f2', 'f3'])
+    const expected = ['f2', 'f3']
+    const modified = await resolveMutation(database, 'deleteMapFrame', [maps, 'user1'])
+    expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
   })
   test('deleteMapFromUsers', async() => {
-    const dbOriginal = {
+    const database = {
       users: [
         { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
         { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
@@ -268,95 +292,82 @@ describe("Mongo test", async() => {
         { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
       ],
     }
-    await mongoSet(dbOriginal)
-    await MongoMutations.deleteMapFromUsers(users, 'map_o_1_s_23456')
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified.users).toEqual(
-      [
-        { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
-        { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
-        { _id: 'user3', mapSelected: 'map_o_3', tabMapIdList: ['map_o_3'] },
-        { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
-        { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
-        { _id: 'user6', mapSelected: '', tabMapIdList: [] },
-      ]
-    )
+    const expected = [
+      { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
+      { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
+      { _id: 'user3', mapSelected: 'map_o_3', tabMapIdList: ['map_o_3'] },
+      { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
+      { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
+      { _id: 'user6', mapSelected: '', tabMapIdList: [] },
+    ]
+    const modified = await resolveMutation(database, 'deleteMapFromUsers', [users, 'map_o_1_s_23456'])
+    expect(expected).toEqual(modified.users)
   })
   test('saveMap', async() => {
-    const dbOriginal = {
-      users: [{_id: 'user1', mapSelected: 'map1'}],
-      maps: [{
-        _id: 'map1',
-        ownerUser:'user1',
-        dataHistoryModifiers: [],
-        dataHistory: [ mergeBase, mergeMutationA ]
-      }]
+    const database = {
+      users: [
+        { _id: 'user1', mapSelected: 'map1'}
+      ],
+      maps: [
+        { _id: 'map1',
+          ownerUser:'user1',
+          dataHistoryModifiers: [],
+          dataHistory: [ mergeBase, mergeMutationA ]
+        }
+      ]
     }
-    await mongoSet(dbOriginal)
-    await MongoMutationsSaveMap.saveMap(maps, 'map1', 'map', mergeMutationB )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified).toEqual({
-      users: [{_id: 'user1', mapSelected: 'map1'}],
-      maps: [{
+    const expected = [
+      {
         _id: 'map1',
         ownerUser:'user1',
         dataHistoryModifiers: [{ modifierType: "user", userId: "user1", sessionId: 0 }],
         dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
-      }]
-    })
+      }
+    ]
+    const modified = await resolveMutation(database, 'saveMap', [maps, 'map1', 'map', mergeMutationB])
+    expect(expected).toEqual(modified.maps)
   })
   test('saveMapFrame', async() => {
-    const dbOriginal = {
+    const database = {
       users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
       maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
     }
-    await mongoSet(dbOriginal)
-    await MongoMutations.saveMapFrame(maps, 'map1', 1, 'nmf' )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(getElemById(dbModified.maps, 'map1').dataFrames).toEqual([ 'mf1', 'nmf', 'mf2' ])
+    const expected = [ 'mf1', 'nmf', 'mf2' ]
+    const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 1, 'nmf'])
+    expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
   })
   test('createNodeProp', async() => {
-    const dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    const dbExpected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
-    await mongoSet(dbOriginal)
-    await MongoMutations.createNodeProp(maps, 'npc', 'nvc' )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified).toEqual(dbExpected)
+    const database = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+    const expected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
+    const modified = await resolveMutation(database, 'createNodeProp', [maps, 'npc', 'nvc'])
+    expect(expected).toEqual(modified)
   })
   test('createNodePropIfMissing', async() => {
-    const dbOriginal = getMultiMapMultiSource( [ [ {} ], [ {}, {a: 'o'} ] ] )
-    const dbExpected = getMultiMapMultiSource( [ [ {b: 'x'} ], [ {b: 'x'}, {a: 'o', b: 'x'} ] ] )
-    await mongoSet(dbOriginal)
-    await MongoMutations.createNodePropIfMissing(maps, 'b', 'x' )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified).toEqual(dbExpected)
+    const database = getMultiMapMultiSource( [ [ {} ], [ {}, {a: 'o'} ] ] )
+    const expected = getMultiMapMultiSource( [ [ {b: 'x'} ], [ {b: 'x'}, {a: 'o', b: 'x'} ] ] )
+    const modified = await resolveMutation(database, 'createNodePropIfMissing', [maps, 'b', 'x'])
+    expect(expected).toEqual(modified)
   })
   test('updateNodePropKey', async() => {
-    const dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    const dbExpected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
-    await mongoSet(dbOriginal)
-    await MongoMutations.updateNodePropKey(maps, 'a', 'aNew' )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified).toEqual(dbExpected)
+    const database = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+    const expected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
+    const modified = await resolveMutation(database, 'updateNodePropKey', [maps, 'a', 'aNew'])
+    expect(expected).toEqual(modified)
   })
   test('updateNodePropValueBasedOnPreviousValue', async() => {
-    const dbOriginal = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    const dbExpected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
-    await mongoSet(dbOriginal)
-    await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'a', 'o', 'x' )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified).toEqual(dbExpected)
+    const database = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+    const expected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
+    const modified = await resolveMutation(database, 'updateNodePropValueBasedOnPreviousValue', [maps, 'a', 'o', 'x'])
+    expect(expected).toEqual(modified)
   })
   test('removeNodeProp', async() => {
-    const dbOriginal = getMultiMapMultiSource( [ [ {a: 'o', npr: 'nvr'} ], [ {a: 'o', npr: 'nvr'}, {b: 'o', npr: 'nvr'} ] ] )
-    const dbExpected = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    await mongoSet(dbOriginal)
-    await MongoMutations.removeNodeProp(maps, 'npr' )
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified).toEqual(dbExpected)
+    const database = getMultiMapMultiSource( [ [ {a: 'o', npr: 'nvr'} ], [ {a: 'o', npr: 'nvr'}, {b: 'o', npr: 'nvr'} ] ] )
+    const expected = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+    const modified = await resolveMutation(database, 'removeNodeProp', [maps, 'npr'])
+    expect(expected).toEqual(modified)
   })
   test('deleteUnusedMaps', async() => {
-    const dbOriginal = {
+    const database = {
       users: [
         {_id: 'user1', tabMapIdList: ['map10', 'map20'] },
         {_id: 'user2', tabMapIdList: ['map30'] }
@@ -372,17 +383,14 @@ describe("Mongo test", async() => {
         { _id: 'map41', path: ['map40', 'map41'] },
       ]
     }
-    await mongoSet(dbOriginal)
-    await MongoMutations.deleteUnusedMaps(users, maps)
-    const dbModified = await mongoGet(dbOriginal)
-    expect(dbModified.maps).toEqual(
-      [
-        { _id: 'map10', path: ['map10'] },
-        { _id: 'map11', path: ['map10', 'map11'] },
-        { _id: 'map12', path: ['map10', 'map11', 'map12'] },
-        { _id: 'map20', path: ['map20'] },
-        { _id: 'map30', path: ['map30'] },
-      ]
-    )
+    const expected = [
+      { _id: 'map10', path: ['map10'] },
+      { _id: 'map11', path: ['map10', 'map11'] },
+      { _id: 'map12', path: ['map10', 'map11', 'map12'] },
+      { _id: 'map20', path: ['map20'] },
+      { _id: 'map30', path: ['map30'] },
+    ]
+    const modified = await resolveMutation(database, 'deleteUnusedMaps', [users, maps])
+    expect(expected).toEqual(modified.maps)
   })
 })
