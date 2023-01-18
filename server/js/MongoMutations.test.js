@@ -41,7 +41,7 @@ const getElemById = (list, id) => (list.find(el => el._id === id))
 let client
 let db, users, maps, shares
 
-describe("Mongo test", async() => {
+describe("MongoTests", async() => {
   beforeEach(async () => {
     client = new MongoClient(baseUri, { useNewUrlParser: true, useUnifiedTopology: true, })
     await client.connect()
@@ -103,30 +103,20 @@ describe("Mongo test", async() => {
     expect(expected).toEqual(modified)
   })
   test('countNodes', async() => {
-    const database = getMultiMapMultiSource( [
-      [ {a: 'o', b: '0'} ], [ {a: 'o'}, {a: 'o', b: 'o', c: 'o'} ], [ {c: 'o'} ]
-    ] )
-    const expected = [{ _id: null, result: 16 }]
+    const database = getMultiMapMultiSource([ [ { a: 'o', b: '0' } ], [ { a: 'o' }, { a: 'o', b: 'o', c: 'o' } ], [ { c: 'o' } ] ])
+    const expected = [ { _id: null, result: 16 }]
     const modified = await resolveQuery(database, 'countNodes', [maps])
     expect(expected).toEqual(modified)
   })
   test('countNodesBasedOnNodePropExistence', async() => {
-    const database = getMultiMapMultiSource( [
-      [ {a: 'o'} ],
-      [ {a: 'o'}, {b: 'o'}, {a: 'o', b: 'o'} ],
-      [ {b: 'o'} ]
-    ] )
-    const expected = [{ _id: null, result: 12 }]
+    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' }, { a: 'o', b: 'o' } ], [ { b: 'o' } ] ])
+    const expected = [ { _id: null, result: 12 }]
     const modified = await resolveQuery(database, 'countNodesBasedOnNodePropExistence', [maps, 'b'])
     expect(expected).toEqual(modified)
   })
   test('countNodesBasedOnNodePropValue', async() => {
-    const database = getMultiMapMultiSource( [
-      [ {a: 'o'} ],
-      [ {a: 'o'}, {b: 'x'}, {a: 'o', b: 'x'} ],
-      [ {b: 'o'} ]
-    ] )
-    const expected = [{ _id: null, result: 8 }]
+    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'x' }, { a: 'o', b: 'x' } ], [ { b: 'o' } ] ])
+    const expected = [ { _id: null, result: 8 }]
     const modified = await resolveQuery(database, 'countNodesBasedOnNodePropValue', [maps, 'b', 'x'])
     expect(expected).toEqual(modified)
   })
@@ -148,7 +138,7 @@ describe("Mongo test", async() => {
               {linkType: 'internal', link: 'map12', content: 'map12link'},
               {linkType: 'internal', link: 'map12', content: 'map13link'}
             ],
-          ], dataFrames: [[]]
+          ], dataFrames: [ [] ]
         },
         { _id: 'map11', dataHistory: [
             [
@@ -156,7 +146,7 @@ describe("Mongo test", async() => {
               {content: 'map11name'},
               {linkType: 'internal', link: 'map111', content: 'map111link'}
             ]
-          ], dataFrames: [[]]
+          ], dataFrames: [ [] ]
         }
       ]
     }
@@ -202,16 +192,12 @@ describe("Mongo test", async() => {
     const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1'])
     expect(expected).toEqual(getElemById(modified.users, 'user1').tabMapIdList)
   })
-
-
-
   test('selectFirstMapFrame', async() => {
     const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: -1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const expected = 0
     const modified = await resolveMutation(database, 'selectFirstMapFrame', [users, 'user1'])
     expect(expected).toEqual(getElemById(modified.users, 'user1').dataFrameSelected)
   })
-
   test('selectPrevMapFrame.can', async() => {
     const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const expected = 0
@@ -238,8 +224,8 @@ describe("Mongo test", async() => {
   })
   test('createMapFrameImport', async() => {
     const database = {
-      users: [{ _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
-      maps: [{ _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
+      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
     }
     const expected = ['f1', 'h1', 'f2']
     const modified = await resolveMutation(database, 'createMapFrameImport', [maps, 'user1'])
@@ -247,8 +233,8 @@ describe("Mongo test", async() => {
   })
   test('createMapFrameDuplicate', async() => {
     const database = {
-      users: [{ _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
-      maps: [{ _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
+      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
     }
     const expected = ['f1', 'f1', 'f2']
     const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
@@ -256,8 +242,8 @@ describe("Mongo test", async() => {
   })
   test('deleteMapFrame', async() => {
     const database = {
-      users: [{ _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
-      maps: [{ _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2', 'f3'] }]
+      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2', 'f3'] }]
     }
     const expected = ['f2', 'f3']
     const modified = await resolveMutation(database, 'deleteMapFrame', [maps, 'user1'])
@@ -320,7 +306,7 @@ describe("Mongo test", async() => {
       {
         _id: 'map1',
         ownerUser:'user1',
-        dataHistoryModifiers: [{ modifierType: "user", userId: "user1", sessionId: 0 }],
+        dataHistoryModifiers: [ { modifierType: "user", userId: "user1", sessionId: 0 } ],
         dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
       }
     ]
@@ -329,40 +315,40 @@ describe("Mongo test", async() => {
   })
   test('saveMapFrame', async() => {
     const database = {
-      users: [{_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
-      maps: [{ _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
+      users: [ {_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
+      maps: [ { _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
     }
     const expected = [ 'mf1', 'nmf', 'mf2' ]
     const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 1, 'nmf'])
     expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
   })
   test('createNodeProp', async() => {
-    const database = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    const expected = getMultiMapMultiSource( [ [ {a: 'o', npc: 'nvc'} ], [ {a: 'o', npc: 'nvc'}, {b: 'o', npc: 'nvc'} ] ] )
+    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
+    const expected = getMultiMapMultiSource([ [ { a: 'o', npc: 'nvc' } ], [ { a: 'o', npc: 'nvc' }, { b: 'o', npc: 'nvc' } ] ])
     const modified = await resolveMutation(database, 'createNodeProp', [maps, 'npc', 'nvc'])
     expect(expected).toEqual(modified)
   })
   test('createNodePropIfMissing', async() => {
-    const database = getMultiMapMultiSource( [ [ {} ], [ {}, {a: 'o'} ] ] )
-    const expected = getMultiMapMultiSource( [ [ {b: 'x'} ], [ {b: 'x'}, {a: 'o', b: 'x'} ] ] )
+    const database = getMultiMapMultiSource([ [ { } ], [ { }, { a: 'o' } ] ])
+    const expected = getMultiMapMultiSource([ [ { b: 'x' } ], [ { b: 'x' }, { a: 'o', b: 'x' } ] ])
     const modified = await resolveMutation(database, 'createNodePropIfMissing', [maps, 'b', 'x'])
     expect(expected).toEqual(modified)
   })
   test('updateNodePropKey', async() => {
-    const database = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    const expected = getMultiMapMultiSource( [ [ {aNew: 'o'} ], [ {aNew: 'o'}, {b: 'o'} ] ] )
+    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
+    const expected = getMultiMapMultiSource([ [ { aNew: 'o' } ], [ { aNew: 'o' }, { b: 'o' } ] ])
     const modified = await resolveMutation(database, 'updateNodePropKey', [maps, 'a', 'aNew'])
     expect(expected).toEqual(modified)
   })
   test('updateNodePropValueBasedOnPreviousValue', async() => {
-    const database = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
-    const expected = getMultiMapMultiSource( [ [ {a: 'x'} ], [ {a: 'x'}, {b: 'o'} ] ] )
+    const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
+    const expected = getMultiMapMultiSource([ [ { a: 'x' } ], [ { a: 'x' }, { b: 'o' } ] ])
     const modified = await resolveMutation(database, 'updateNodePropValueBasedOnPreviousValue', [maps, 'a', 'o', 'x'])
     expect(expected).toEqual(modified)
   })
   test('removeNodeProp', async() => {
-    const database = getMultiMapMultiSource( [ [ {a: 'o', npr: 'nvr'} ], [ {a: 'o', npr: 'nvr'}, {b: 'o', npr: 'nvr'} ] ] )
-    const expected = getMultiMapMultiSource( [ [ {a: 'o'} ], [ {a: 'o'}, {b: 'o'} ] ] )
+    const database = getMultiMapMultiSource([ [ { a: 'o', npr: 'nvr' } ], [ { a: 'o', npr: 'nvr' }, { b: 'o', npr: 'nvr' } ] ])
+    const expected = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])
     const modified = await resolveMutation(database, 'removeNodeProp', [maps, 'npr'])
     expect(expected).toEqual(modified)
   })
