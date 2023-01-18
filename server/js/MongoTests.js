@@ -197,22 +197,65 @@ async function mongoTests(cmd) {
         dbOriginal = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         dbExpected = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
         break
-      case 'deleteMapFromUsers.test':
+      case 'deleteMapFromUsers.test': {
         dbOriginal = {
           users: [
-            {_id: 'user1', mapSelected: 'map1', tabMapIdList: ['map1', 'mapShared']},
-            {_id: 'user2', mapSelected: 'mapShared', tabMapIdList: ['map1', 'mapShared']},
-            {_id: 'user3', mapSelected: 'mapShared', tabMapIdList: ['mapShared']},
+            { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
+            { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
+            { _id: 'user3', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
+            { _id: 'user4', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
+            { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
+            { _id: 'user6', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456'] },
+          ],
+          maps: [
+            { _id: 'map_o_1_s_23456', ownerUser: 'user1' },
+            { _id: 'map_o_1', ownerUser: 'user1' },
+            { _id: 'map_o_2_s_1', ownerUser: 'user2' },
+            { _id: 'map_o_2', ownerUser: 'user2' },
+            { _id: 'map_o_3', ownerUser: 'user3' },
+            { _id: 'map_o_4', ownerUser: 'user4' },
+            { _id: 'map_o_5', ownerUser: 'user5' },
+            { _id: 'map_o_6', ownerUser: 'user6' },
+          ],
+          shares: [
+            { _id: 'share_1_2', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_3', ownerUser: 'user1', shareUser: 'user3', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_4', ownerUser: 'user1', shareUser: 'user4', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_5', ownerUser: 'user1', shareUser: 'user5', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_6', ownerUser: 'user1', shareUser: 'user6', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
           ],
         }
         dbExpected = {
           users: [
-            { _id: 'user1', mapSelected: 'map1', tabMapIdList: ['map1'] },
-            { _id: 'user2', mapSelected: 'map1', tabMapIdList: ['map1'] },
-            { _id: 'user3', mapSelected: null, tabMapIdList: [] },
+            { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
+            { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
+            { _id: 'user3', mapSelected: 'map_o_3', tabMapIdList: ['map_o_3'] },
+            { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
+            { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
+            { _id: 'user6', mapSelected: '', tabMapIdList: [] },
+          ],
+          maps: [
+            { _id: 'map_o_1_s_23456', ownerUser: 'user1' },
+            { _id: 'map_o_1', ownerUser: 'user1' },
+            { _id: 'map_o_2_s_1', ownerUser: 'user2' },
+            { _id: 'map_o_2', ownerUser: 'user2' },
+            { _id: 'map_o_3', ownerUser: 'user3' },
+            { _id: 'map_o_4', ownerUser: 'user4' },
+            { _id: 'map_o_5', ownerUser: 'user5' },
+            { _id: 'map_o_6', ownerUser: 'user6' },
+          ],
+          shares: [
+            { _id: 'share_1_2', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_3', ownerUser: 'user1', shareUser: 'user3', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_4', ownerUser: 'user1', shareUser: 'user4', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_5', ownerUser: 'user1', shareUser: 'user5', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_6', ownerUser: 'user1', shareUser: 'user6', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
           ],
         }
         break
+      }
       case 'deleteMapFromShares.test': {
         dbOriginal = { shares: [ {_id: 'shareOther', ownerUser: 'ownerUser', shareUser: 'userOther', sharedMap: 'mapShared'} ] }
         dbExpected = { shares: [] }
@@ -335,7 +378,7 @@ async function mongoTests(cmd) {
       case 'moveUpMapInTab.test2': await MongoMutations.moveUpMapInTab(users, 'user1'); break
       case 'moveDownMapInTab.test1': await MongoMutations.moveDownMapInTab(users, 'user1'); break
       case 'moveDownMapInTab.test2': await MongoMutations.moveDownMapInTab(users, 'user1'); break
-      case 'deleteMapFromUsers.test': await MongoMutations.deleteMapFromUsers(users, { tabMapIdList: 'mapShared'} ); break
+      case 'deleteMapFromUsers.test': await MongoMutations.deleteMapFromUsers(users, 'map_o_1_s_23456' ); break
       case 'deleteMapFromShares.test': await MongoMutations.deleteMapFromShares(shares, { sharedMap: 'mapShared'} ); break
       case 'deleteMapFrame.test':  await MongoMutations.deleteMapFrame(maps, 'user1'); break
       case 'saveMap.test': await MongoMutations.saveMap(maps, 'map1', 'map', mergeMutationB ); break
@@ -392,7 +435,7 @@ async function allTest () {
   // await mongoTests('moveUpMapInTab.test2')
   // await mongoTests('moveDownMapInTab.test1')
   // await mongoTests('moveDownMapInTab.test2')
-  // await mongoTests('deleteMapFromUsers.test')
+  await mongoTests('deleteMapFromUsers.test')
   // await mongoTests('deleteMapFromShares.test')
   // await mongoTests('deleteMapFrame.test')
   // await mongoTests('saveMap.test')

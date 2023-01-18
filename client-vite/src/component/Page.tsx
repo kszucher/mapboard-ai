@@ -95,13 +95,13 @@ export const Page: FC = () => {
       <ThemeProvider theme={getMuiTheme(colorMode)}>
         {pageState === PageState.AUTH && <Auth/>}
         {
-          ![PageState.AUTH, PageState.EMPTY].includes(pageState) &&
+          ![PageState.AUTH].includes(pageState) &&
           <>
             <Map/>
             <Logo/>
             <ProfileButton/>
             {
-              ![PageState.AUTH, PageState.EMPTY, PageState.DEMO,].includes(pageState) &&
+              ![PageState.AUTH, PageState.DEMO,].includes(pageState) &&
               <>
                 <UndoRedo/>
                 <BreadcrumbMaps/>

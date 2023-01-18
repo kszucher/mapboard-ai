@@ -184,34 +184,58 @@ async function moveDownMapInTab (users, userId) {
   )
 }
 
-async function deleteMapFromUsers (users, filter) {
-  const mapId = filter.tabMapIdList
-  await users.updateMany(
-    filter,
-    [{
-      $set: {
-        mapSelected: {
-          $cond: {
-            if: { $eq: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 0 ] },
-            then: {
-              $cond: {
-                if: { $gt: [ { $size: "$tabMapIdList" }, 1 ] },
-                then: { $arrayElemAt: [ "$tabMapIdList", 1 ] },
-                else: null
-              }
-            },
-            else: { $arrayElemAt: [ "$tabMapIdList", { $subtract: [ { $indexOfArray: [ "$tabMapIdList", mapId ] }, 1 ] } ] }
+async function deleteMapFromUsers (users, mapId) {
+  const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
+  const mapInTab = { $ne: [ mapTabIndex, -1 ] }
+  const tabSize = { $size: "$tabMapIdList" }
+  await users.aggregate(
+    [
+      { $lookup: { from: "maps", localField: '_id', foreignField: "ownerUser", pipeline: [ { $match: { _id: mapId } } ], as: "map" } },
+      { $lookup: { from: "shares", localField: '_id', foreignField: "shareUser", pipeline: [ { $match: { sharedMap: mapId } } ], as: 'share' } },
+      { $match: {
+          $expr: {
+            $or: [
+
+              { $eq: [ '$_id', { $getField: { field: 'ownerUser', input: { $first: '$map' } } } ] },
+              { $eq: [ '$_id', { $getField: { field: 'shareUser', input: { $first: '$share' } } } ] },
+            ]
           }
-        },
-        tabMapIdList : {
-          $filter : {
-            input: "$tabMapIdList",
-            as: "tabMapId",
-            cond: { $ne: [ "$$tabMapId", mapId ] } }
-        },
-      }
-    }]
-  )
+        }
+      },
+      {
+        $set: {
+          mapSelected: {
+            $switch: {
+              branches: [
+                {
+                  case: { $and: [ mapInTab, { $eq: [ tabSize, 1 ] } ] },
+                  then: ''
+                },
+                {
+                  case: { $and: [ mapInTab, { $gt: [ tabSize, 1 ] }, { $eq: [ mapTabIndex, 0 ] } ] },
+                  then: { $arrayElemAt: [ '$tabMapIdList', 1 ] }
+                },
+                {
+                  case: { $and: [ mapInTab, { $gt: [ tabSize, 1 ] }, { $gt: [ mapTabIndex, 0 ] } ] },
+                  then: { $arrayElemAt: [ '$tabMapIdList', { $subtract: [ mapTabIndex, 1 ] } ] }
+                },
+              ],
+              default: '$mapSelected'
+            }
+          },
+          tabMapIdList : {
+            $filter : {
+              input: "$tabMapIdList",
+              as: "tabMapId",
+              cond: { $ne: [ "$$tabMapId", mapId ] } }
+          },
+        }
+      },
+      { $unset: 'map' },
+      { $unset: 'share' },
+      { $merge: 'users' }
+    ]
+  ).toArray()
 }
 
 async function deleteMapFromShares (shares, filter) {

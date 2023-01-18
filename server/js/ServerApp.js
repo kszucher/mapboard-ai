@@ -204,13 +204,13 @@ async function resolveType(req, type, payload, userId) {
     }
     case 'deleteMapInTab': {
       const mapId = ObjectId(payload.mapId)
-      const map = await maps.findOne({_id: mapId})
-      const { ownerUser } = map
-      const iAmTheOwner = isEqual(ownerUser, userId)
-      const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
-      const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
-      await MongoMutations.deleteMapFromUsers(users, userFilter)
-      await MongoMutations.deleteMapFromShares(shares, shareFilter)
+      // const map = await maps.findOne({_id: mapId})
+      // const { ownerUser } = map
+      // const iAmTheOwner = isEqual(ownerUser, userId)
+      // const userFilter = iAmTheOwner ? { tabMapIdList: mapId } : { _id: userId, tabMapIdList: mapId }
+      // const shareFilter = iAmTheOwner ? { sharedMap: mapId } : { shareUser: userId, sharedMap: mapId }
+      await MongoMutations.deleteMapFromUsers(users, mapId)
+      await MongoMutations.deleteMapFromShares(shares, mapId)
       return
     }
     case 'deleteMapFrame': {
@@ -291,6 +291,10 @@ async function resolveType(req, type, payload, userId) {
       const { shareUser, sharedMap } = await shares.findOne({ _id: shareId })
       const userFilter = { _id: shareUser, tabMapIdList: sharedMap }
       const shareFilter = { shareUser, sharedMap }
+      // fontos: ez csak 1 darab megosztott user cuccát távolítja el önhatalmúlag
+      // tehát mindenképp én vagyok az owneruser
+      // olyan feature még nincs, hogy én mint megosztott partner távolítom el magamnak, vagyis van, ami a delete?
+      // viszont törölni azt NINCS jogom
       await MongoMutations.deleteMapFromUsers(users, userFilter)
       await MongoMutations.deleteMapFromShares(shares, shareFilter)
       const shareInfo = await getShareInfo(userId)

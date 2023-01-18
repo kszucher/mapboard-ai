@@ -5,9 +5,8 @@ export enum AuthPageState {
 }
 
 export enum PageState {
-  EMPTY,
-  DEMO,
   AUTH,
+  DEMO,
   WS,
   WS_PROFILE,
   WS_SETTINGS,
