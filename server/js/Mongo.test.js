@@ -1,14 +1,22 @@
-const MongoQueries = require("./MongoQueries");
-const MongoMutations = require("./MongoMutations");
-import { describe, expect, test,  beforeEach, afterEach } from 'vitest';
-
-const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsSave')
+const MongoClient = require('mongodb').MongoClient
+import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
 const { baseUri } = require('./MongoSecret')
-const MongoClient = require('mongodb').MongoClient;
+const MongoQueries = require("./MongoQueries")
+const MongoMutations = require("./MongoMutations")
+const { mergeBase, mergeMutationA, mergeMutationB, mergeResult } = require('./MongoTestsSave')
+
+let client
+let db, users, maps, shares
 
 const getMultiMapMultiSource = (mapArray) => {
   const multiSource = { dataFrames: mapArray, dataHistory: mapArray }
   return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
+}
+
+const mongoClear = async () => {
+  await users.deleteMany({})
+  await maps.deleteMany({})
+  await shares.deleteMany({})
 }
 
 const mongoSet = async (database) => {
@@ -26,20 +34,19 @@ const mongoGet = async (database) => {
 }
 
 const resolveQuery = async (database, queryName, queryParams) => {
+  await mongoClear()
   await mongoSet(database)
   return await MongoQueries[queryName](...queryParams)
 }
 
 const resolveMutation = async (database, mutationName, mutationParams) => {
+  await mongoClear()
   await mongoSet(database)
   await MongoMutations[mutationName](...mutationParams)
   return await mongoGet(database)
 }
 
 const getElemById = (list, id) => (list.find(el => el._id === id))
-
-let client
-let db, users, maps, shares
 
 describe("MongoTests", async() => {
   beforeEach(async () => {
@@ -49,9 +56,6 @@ describe("MongoTests", async() => {
     users = db.collection("users")
     maps = db.collection("maps")
     shares = db.collection("shares")
-    await users.deleteMany({})
-    await maps.deleteMany({})
-    await shares.deleteMany({})
   })
   afterEach(async () => {
     await client.close()
@@ -123,30 +127,34 @@ describe("MongoTests", async() => {
   test('findDeadLinks', async() => {
     const database = {
       maps:  [
-        { _id: 'map10', dataHistory: [
+        { _id: 'map10',
+          dataHistory: [
             [
-              {},
-              {content: 'map10name'},
-              {linkType: 'internal', link: 'map11', content: 'map11link'},
-              {linkType: 'internal', link: 'map12', content: 'map12link'},
-              {linkType: 'internal', link: 'map12', content: 'map13link'}
+              { },
+              { content: 'map10name'},
+              { linkType: 'internal', link: 'map11', content: 'map11link' },
+              { linkType: 'internal', link: 'map12', content: 'map12link' },
+              { linkType: 'internal', link: 'map12', content: 'map13link' }
             ],
             [
-              {},
-              {content: 'map10name'},
-              {linkType: 'internal', link: 'map11', content: 'map11link'},
-              {linkType: 'internal', link: 'map12', content: 'map12link'},
-              {linkType: 'internal', link: 'map12', content: 'map13link'}
+              { },
+              { content: 'map10name'},
+              { linkType: 'internal', link: 'map11', content: 'map11link' },
+              { linkType: 'internal', link: 'map12', content: 'map12link' },
+              { linkType: 'internal', link: 'map12', content: 'map13link' }
             ],
-          ], dataFrames: [ [] ]
+          ],
+          dataFrames: [ [ ] ]
         },
-        { _id: 'map11', dataHistory: [
+        { _id: 'map11',
+          dataHistory: [
             [
-              {},
-              {content: 'map11name'},
-              {linkType: 'internal', link: 'map111', content: 'map111link'}
+              { },
+              { content: 'map11name' },
+              { linkType: 'internal', link: 'map111', content: 'map111link' }
             ]
-          ], dataFrames: [ [] ]
+          ],
+          dataFrames: [ [ ] ]
         }
       ]
     }
@@ -229,7 +237,7 @@ describe("MongoTests", async() => {
     const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
     expect(getElemById(modified.maps, 'map1').dataFrames).toEqual(['f1', 'f1', 'f2'])
   })
-  test('deleteMapFromUsers', async() => { // TODO tests based on OWNERSHIP
+  test('deleteMapFromUsers', async() => {
     const database = {
       users: [
         { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
@@ -258,16 +266,38 @@ describe("MongoTests", async() => {
         { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
       ],
     }
-    const modified = await resolveMutation(database, 'deleteMapFromUsers', [users, 'map_o_1_s_23456'])
-    const expected = [
-      { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
-      { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
-      { _id: 'user3', mapSelected: 'map_o_3', tabMapIdList: ['map_o_3'] },
-      { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
-      { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
-      { _id: 'user6', mapSelected: '', tabMapIdList: [] },
-    ]
-    expect(modified.users).toEqual(expected)
+    expect(
+      await resolveMutation(database, 'deleteMapFromUsers', [users, 'user1', 'map_o_1_s_23456'])
+    ).toEqual(
+      { ...database,
+        ...{
+          users: [
+            { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
+            { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
+            { _id: 'user3', mapSelected: 'map_o_3', tabMapIdList: ['map_o_3'] },
+            { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
+            { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
+            { _id: 'user6', mapSelected: '', tabMapIdList: [] },
+          ]
+        }
+      }
+    )
+    expect(
+      await resolveMutation(database, 'deleteMapFromUsers', [users, 'user2', 'map_o_1_s_23456'])
+    ).toEqual(
+      { ...database,
+        ...{
+          users: [
+            { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
+            { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
+            { _id: 'user3', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
+            { _id: 'user4', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
+            { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
+            { _id: 'user6', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456'] },
+          ]
+        }
+      }
+    )
   })
   test('deleteMapFrame', async() => {
     const database = {

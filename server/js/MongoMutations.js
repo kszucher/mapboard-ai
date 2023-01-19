@@ -184,7 +184,7 @@ async function createMapFrameDuplicate (maps, userId) {
   })
 }
 
-async function deleteMapFromUsers (users, mapId) {
+async function deleteMapFromUsers (users, userId, mapId) {
   const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   const mapInTab = { $ne: [ mapTabIndex, -1 ] }
   const tabSize = { $size: "$tabMapIdList" }
@@ -195,9 +195,24 @@ async function deleteMapFromUsers (users, mapId) {
       { $match: {
           $expr: {
             $or: [
-              // TODO passing userId, and based on ownership, delete EVERYTHING or just for that particular user
-              { $eq: [ '$_id', { $getField: { field: 'ownerUser', input: { $first: '$map' } } } ] },
-              { $eq: [ '$_id', { $getField: { field: 'shareUser', input: { $first: '$share' } } } ] },
+              {
+                $and: [
+                  { $eq: [ '$_id', userId ] },
+                  { $eq: [ '$_id', { $getField: { field: 'ownerUser', input: { $first: '$map' } } } ] },
+                ]
+              },
+              {
+                $and: [
+                  { $eq: [ '$_id', { $getField: { field: 'shareUser', input: { $first: '$share' } } } ] },
+                  { $eq: [ userId, { $getField: { field: 'ownerUser', input: { $first: '$share' } } } ] },
+                ]
+              },
+              {
+                $and: [
+                  { $eq: [ '$_id', userId ] },
+                  { $eq: [ '$_id', { $getField: { field: 'shareUser', input: { $first: '$share' } } } ] },
+                ]
+              }
             ]
           }
         }
