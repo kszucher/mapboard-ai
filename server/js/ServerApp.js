@@ -118,9 +118,9 @@ async function resolveType(req, type, payload, userId) {
       const map = await maps.findOne({_id: mapSelected})
       const { path, ownerUser, dataHistory, dataFrames } = map
       const breadcrumbMapIdList = path
-      const mapDataList = dataFrameSelected === -1
-        ? [dataHistory[dataHistory.length - 1].sort((a, b) => (a.path > b.path) ? 1 : -1)]
-        : [dataFrames[dataFrameSelected].sort((a, b) => (a.path > b.path) ? 1 : -1)]
+      const mapData = dataFrameSelected === -1 ? dataHistory[dataHistory.length - 1] : dataFrames[dataFrameSelected]
+      const mapDataSorted = mapData.sort((a, b) => (a.path > b.path) ? 1 : -1)
+      const mapDataList = [mapDataSorted]
       const dataFramesLen = dataFrames.length
 
       let mapRight = MAP_RIGHTS.UNAUTHORIZED
