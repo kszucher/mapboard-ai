@@ -44,8 +44,9 @@ export const getCoords = (e) => {
   return [x, y]
 }
 
-export const getNativeEvent = ({path, composedPath, key, code, which}) =>
-  ({path: path || (composedPath && composedPath()), key, code, which})
+export const getNativeEvent = (e) => {
+  return { path: e.composedPath(), key: e.key, code: e.code, which: e.which }
+}
 
 export const setEndOfContentEditable = (contentEditableElement) => {
   // https://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
