@@ -203,8 +203,8 @@ async function findDeadLinks (maps) {
 }
 
 module.exports = {
-  getUserShares,
   nameLookup,
+  getUserShares,
   countNodes,
   countNodesBasedOnNodePropExistence,
   countNodesBasedOnNodePropValue,

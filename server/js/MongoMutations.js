@@ -17,6 +17,68 @@ async function selectMap(users, userId, mapId) {
   )
 }
 
+async function moveUpMapInTab (users, userId) {
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
+  await users.findOneAndUpdate(
+    { _id: userId },
+    [{
+      $set: {
+        tabMapIdList: {
+          $cond: {
+            if: { $eq: [ tabIndex, 0 ] },
+            then: "$tabMapIdList",
+            else: {
+              $concatArrays: [
+                { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
+                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
+                [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
+                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
+              ]
+            }
+          }
+        }
+      }
+    }]
+  )
+}
+
+async function moveDownMapInTab (users, userId) {
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
+  await users.findOneAndUpdate(
+    { _id: userId },
+    [{
+      $set: {
+        tabMapIdList: {
+          $cond: {
+            if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
+            then: "$tabMapIdList",
+            else: {
+              $concatArrays: [
+                { $slice: [ "$tabMapIdList", tabIndex ] },
+                [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
+                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
+                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
+              ]
+            }
+          }
+        }
+      }
+    }]
+  )
+}
+
+async function createMapInTab(users, userId, mapId) {
+  await users.findOneAndUpdate(
+    { _id: userId },
+    [{
+      $set: {
+        tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] },
+        mapSelected: mapId,
+      }
+    }]
+  )
+}
+
 async function selectFirstMapFrame (users, userId) {
   await users.aggregate(
     [
@@ -89,18 +151,6 @@ async function selectNextMapFrame (users, userId) {
   ).toArray()
 }
 
-async function createMapInTab(users, userId, mapId) {
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{
-      $set: {
-        tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] },
-        mapSelected: mapId,
-      }
-    }]
-  )
-}
-
 async function mutateFrame (maps, userId, mutation) {
   await maps.aggregate(
     [
@@ -134,56 +184,6 @@ async function createMapFrameDuplicate (maps, userId) {
   })
 }
 
-async function moveUpMapInTab (users, userId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{
-      $set: {
-        tabMapIdList: {
-          $cond: {
-            if: { $eq: [ tabIndex, 0 ] },
-            then: "$tabMapIdList",
-            else: {
-              $concatArrays: [
-                { $slice: [ "$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] },
-                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                [ { $arrayElemAt: ["$tabMapIdList", { $subtract: [ tabIndex, 1 ] } ] } ],
-                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 1 ] }, { $size: "$tabMapIdList" } ] }
-              ]
-            }
-          }
-        }
-      }
-    }]
-  )
-}
-
-async function moveDownMapInTab (users, userId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{
-      $set: {
-        tabMapIdList: {
-          $cond: {
-            if: { $eq: [ tabIndex, { $subtract: [ { $size: "$tabMapIdList" }, 1 ] } ] },
-            then: "$tabMapIdList",
-            else: {
-              $concatArrays: [
-                { $slice: [ "$tabMapIdList", tabIndex ] },
-                [ { $arrayElemAt: ["$tabMapIdList", { $add: [ tabIndex, 1 ] } ] } ],
-                [ { $arrayElemAt: ["$tabMapIdList", tabIndex] } ],
-                { $slice: [ "$tabMapIdList", { $add: [ tabIndex, 2 ] }, { $size: "$tabMapIdList" } ] }
-              ]
-            }
-          }
-        }
-      }
-    }]
-  )
-}
-
 async function deleteMapFromUsers (users, mapId) {
   const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   const mapInTab = { $ne: [ mapTabIndex, -1 ] }
@@ -195,7 +195,7 @@ async function deleteMapFromUsers (users, mapId) {
       { $match: {
           $expr: {
             $or: [
-
+              // TODO passing userId, and based on ownership, delete EVERYTHING or just for that particular user
               { $eq: [ '$_id', { $getField: { field: 'ownerUser', input: { $first: '$map' } } } ] },
               { $eq: [ '$_id', { $getField: { field: 'shareUser', input: { $first: '$share' } } } ] },
             ]
@@ -604,23 +604,23 @@ async function deleteUnusedMaps(users, maps) {
 module.exports = {
   genNodeId,
   selectMap,
+  moveUpMapInTab,
+  moveDownMapInTab,
+  createMapInTab, // TODO test
   selectFirstMapFrame,
   selectPrevMapFrame,
   selectNextMapFrame,
-  createMapInTab,
   createMapFrameImport,
   createMapFrameDuplicate,
-  moveUpMapInTab,
-  moveDownMapInTab,
   deleteMapFromUsers,
-  deleteMapFromShares,
+  deleteMapFromShares, // TODO test
   deleteMapFrame,
   saveMap,
   saveMapFrame,
   createNodeProp,
   createNodePropIfMissing,
-  updateNodePropValueBasedOnPreviousValue,
   updateNodePropKey,
+  updateNodePropValueBasedOnPreviousValue,
   removeNodeProp,
   deleteUnusedMaps
 }

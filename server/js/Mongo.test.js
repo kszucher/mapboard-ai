@@ -240,16 +240,7 @@ describe("MongoTests", async() => {
     const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
     expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
   })
-  test('deleteMapFrame', async() => {
-    const database = {
-      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
-      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2', 'f3'] }]
-    }
-    const expected = ['f2', 'f3']
-    const modified = await resolveMutation(database, 'deleteMapFrame', [maps, 'user1'])
-    expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
-  })
-  test('deleteMapFromUsers', async() => {
+  test('deleteMapFromUsers', async() => { // TODO tests based on OWNERSHIP
     const database = {
       users: [
         { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
@@ -288,6 +279,15 @@ describe("MongoTests", async() => {
     ]
     const modified = await resolveMutation(database, 'deleteMapFromUsers', [users, 'map_o_1_s_23456'])
     expect(expected).toEqual(modified.users)
+  })
+  test('deleteMapFrame', async() => {
+    const database = {
+      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2', 'f3'] }]
+    }
+    const expected = ['f2', 'f3']
+    const modified = await resolveMutation(database, 'deleteMapFrame', [maps, 'user1'])
+    expect(expected).toEqual(getElemById(modified.maps, 'map1').dataFrames)
   })
   test('saveMap', async() => {
     const database = {
