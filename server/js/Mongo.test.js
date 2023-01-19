@@ -267,7 +267,7 @@ describe("MongoTests", async() => {
       ],
     }
     expect(
-      await resolveMutation(database, 'deleteMap', [users, 'user1', 'map_o_1_s_23456'])
+      await resolveMutation(database, 'deleteMap', [users, shares, 'user1', 'map_o_1_s_23456'])
     ).toEqual(
       { ...database,
         ...{
@@ -278,12 +278,15 @@ describe("MongoTests", async() => {
             { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
             { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
             { _id: 'user6', mapSelected: '', tabMapIdList: [] },
+          ],
+          shares: [
+            { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
           ]
         }
       }
     )
     expect(
-      await resolveMutation(database, 'deleteMap', [users, 'user2', 'map_o_1_s_23456'])
+      await resolveMutation(database, 'deleteMap', [users, shares, 'user2', 'map_o_1_s_23456'])
     ).toEqual(
       { ...database,
         ...{
@@ -294,15 +297,17 @@ describe("MongoTests", async() => {
             { _id: 'user4', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
             { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
             { _id: 'user6', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456'] },
-          ]
+          ],
+          shares: [
+            { _id: 'share_1_3', ownerUser: 'user1', shareUser: 'user3', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_4', ownerUser: 'user1', shareUser: 'user4', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_5', ownerUser: 'user1', shareUser: 'user5', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_1_6', ownerUser: 'user1', shareUser: 'user6', sharedMap: 'map_o_1_s_23456' },
+            { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
+          ],
         }
       }
     )
-
-
-
-
-
   })
   test('deleteMapFrame', async() => {
     const database = {

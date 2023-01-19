@@ -204,7 +204,7 @@ async function resolveType(req, type, payload, userId) {
     }
     case 'deleteMap': {
       const mapId = ObjectId(payload.mapId)
-      await MongoMutations.deleteMap(users, userId, mapId)
+      await MongoMutations.deleteMap(users, shares, userId, mapId)
       return
     }
     case 'deleteMapFrame': {
@@ -275,10 +275,7 @@ async function resolveType(req, type, payload, userId) {
       )).value
       const mapId = share.sharedMap
       await MongoMutations.createMapInTab(users, userId, mapId)
-      const userInfo = await getUserInfo(userId)
-      const mapInfo = await getMapInfo(userId, mapId, 'dataHistory')
-      const shareInfo = await getShareInfo(userId)
-      return { error: '', data: { ...userInfo, ...mapInfo, ...shareInfo } }
+      return { error: '' }
     }
     case 'toggleColorMode': {
       const { colorMode } = payload

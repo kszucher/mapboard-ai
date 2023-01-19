@@ -184,7 +184,7 @@ async function createMapFrameDuplicate (maps, userId) {
   })
 }
 
-async function deleteMap (users, userId, mapId) {
+async function deleteMap (users, shares, userId, mapId) {
   const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   const mapInTab = { $ne: [ mapTabIndex, -1 ] }
   const tabSize = { $size: "$tabMapIdList" }
@@ -251,10 +251,23 @@ async function deleteMap (users, userId, mapId) {
       { $merge: 'users' }
     ]
   ).toArray()
-}
-
-async function deleteMapFromShares (shares, filter) {
-  await shares.deleteMany(filter)
+  await shares.aggregate(
+    [
+      {
+        $match: {
+          $expr: {
+            $not: {
+              $and: [
+                { $eq: [ mapId, '$sharedMap' ] },
+                { $or: [ { $eq: [ userId, '$ownerUser' ] }, { $eq: [ userId, '$shareUser' ] } ] }
+              ]
+            }
+          }
+        }
+      },
+      { $out: 'shares' }
+    ]
+  ).toArray()
 }
 
 async function deleteMapFrame (maps, userId) {
