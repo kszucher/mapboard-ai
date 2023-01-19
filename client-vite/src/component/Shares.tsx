@@ -7,6 +7,7 @@ import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import {actions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
+import {api} from "../core/Api";
 
 export const Shares: FC = () => {
   const shareDataExport = useSelector((state: RootStateOrAny) => state.editor.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))
@@ -22,7 +23,7 @@ export const Shares: FC = () => {
           <IconButton
             aria-label="xxx"
             size="small"
-            // onClick={_=>dispatch(sagaActions.deleteShare(params.row._id))}
+            onClick={()=>dispatch(api.endpoints.deleteMap.initiate({mapId: params.row._id}))}
             disabled={false}>
             <CancelOutlinedIcon/>
           </IconButton>

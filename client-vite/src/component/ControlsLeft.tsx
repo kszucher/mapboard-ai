@@ -6,6 +6,7 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {api} from "../core/Api";
+import {getMapSelectProps} from "../core/EditorFlow";
 
 export const ControlsLeft: FC = () => {
   const dispatch = useDispatch()
@@ -14,28 +15,28 @@ export const ControlsLeft: FC = () => {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <IconButton
           color='secondary'
-          onClick={()=>dispatch(api.endpoints.createMapInTab.initiate())}
+          onClick={() => dispatch(api.endpoints.createMapInTab.initiate())}
           disabled={false}
         >
           <AddCircleOutlineIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={()=>dispatch(api.endpoints.moveUpMapInTab.initiate())}
+          onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate())}
           disabled={false}
         >
           <MoveUpIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={()=>dispatch(api.endpoints.moveDownMapInTab.initiate())}
+          onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate())}
           disabled={false}
         >
           <MoveDownIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={()=>dispatch(api.endpoints.deleteMapInTab.initiate())}
+          onClick={() => dispatch(api.endpoints.deleteMap.initiate(getMapSelectProps()))}
           disabled={false}
         >
           <DeleteIcon/>

@@ -84,8 +84,8 @@ export const api = createApi({
       query: () => ({ url: '', method: 'POST', body: { type: 'moveDownMapInTab' } }),
       invalidatesTags: ['MapInfo']
     }),
-    deleteMapInTab: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'deleteMapInTab' } }),
+    deleteMap: builder.mutation<void, { mapId: string }>({
+      query: ({ mapId }) => ({ url: '', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
       invalidatesTags: ['MapInfo']
     }),
     deleteMapFrame: builder.mutation<void, void>({
