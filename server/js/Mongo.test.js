@@ -237,7 +237,7 @@ describe("MongoTests", async() => {
     const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
     expect(getElemById(modified.maps, 'map1').dataFrames).toEqual(['f1', 'f1', 'f2'])
   })
-  test('deleteMapFromUsers', async() => {
+  test('deleteMap', async() => {
     const database = {
       users: [
         { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
@@ -267,7 +267,7 @@ describe("MongoTests", async() => {
       ],
     }
     expect(
-      await resolveMutation(database, 'deleteMapFromUsers', [users, 'user1', 'map_o_1_s_23456'])
+      await resolveMutation(database, 'deleteMap', [users, 'user1', 'map_o_1_s_23456'])
     ).toEqual(
       { ...database,
         ...{
@@ -283,7 +283,7 @@ describe("MongoTests", async() => {
       }
     )
     expect(
-      await resolveMutation(database, 'deleteMapFromUsers', [users, 'user2', 'map_o_1_s_23456'])
+      await resolveMutation(database, 'deleteMap', [users, 'user2', 'map_o_1_s_23456'])
     ).toEqual(
       { ...database,
         ...{
@@ -298,6 +298,11 @@ describe("MongoTests", async() => {
         }
       }
     )
+
+
+
+
+
   })
   test('deleteMapFrame', async() => {
     const database = {

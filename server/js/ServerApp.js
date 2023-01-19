@@ -204,8 +204,7 @@ async function resolveType(req, type, payload, userId) {
     }
     case 'deleteMap': {
       const mapId = ObjectId(payload.mapId)
-      await MongoMutations.deleteMapFromUsers(users, userId, mapId)
-      await MongoMutations.deleteMapFromShares(shares, userId, mapId)
+      await MongoMutations.deleteMap(users, userId, mapId)
       return
     }
     case 'deleteMapFrame': {

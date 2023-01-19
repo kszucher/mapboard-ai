@@ -184,7 +184,7 @@ async function createMapFrameDuplicate (maps, userId) {
   })
 }
 
-async function deleteMapFromUsers (users, userId, mapId) {
+async function deleteMap (users, userId, mapId) {
   const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   const mapInTab = { $ne: [ mapTabIndex, -1 ] }
   const tabSize = { $size: "$tabMapIdList" }
@@ -627,8 +627,7 @@ module.exports = {
   selectNextMapFrame,
   createMapFrameImport,
   createMapFrameDuplicate,
-  deleteMapFromUsers,
-  deleteMapFromShares, // TODO test
+  deleteMap,
   deleteMapFrame,
   saveMap,
   saveMapFrame,
