@@ -104,7 +104,7 @@ export const Auth: FC = () => {
           disabled={false}
           onClick={
             () => {
-              // localStorage.setItem('cred', JSON.stringify({email, password}))
+              localStorage.setItem('cred', JSON.stringify({email, password}))
               dispatch(api.endpoints.signIn.initiate())
             }
           }>
