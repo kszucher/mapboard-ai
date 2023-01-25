@@ -473,7 +473,6 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
   ).toArray()
 }
 
-
 async function saveMapFrame (maps, mapId, dataFrameSelected, mapData) {
   await maps.aggregate(
     [

@@ -24,19 +24,19 @@ async function mongoStagingCommands (users, maps, shares) {
 
   // await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'taskStatus', -1, 0)
 
-  await users.updateMany({}, [{
-    // $set: {
-    //   'mapSelected': { $last:  "$breadcrumbMapIdList" }
-    // },
-    $set: {
-      'dataFrameSelected': -1
-    },
-    // $unset: "mapDataFrameSelected"
-
-  }])
-
-  // await saveMap(maps, ObjectId('5f3fd7ba7a84a4205428c96a'), 'node', {nodeId: 'cica', newNode: 'newNodeValue'})
-
+  await maps.updateMany({}, [
+    {
+      $set: {
+        path: {
+          $cond: {
+            if: { $and: [{ $eq: [{ $size: '$path' }, 1] }, { $eq: [{ $first: '$path' }, '$_id'] }] },
+            then: [],
+            else: '$path'
+          }
+        }
+      }
+    }
+  ])
 }
 
 async function mongoStaging() {

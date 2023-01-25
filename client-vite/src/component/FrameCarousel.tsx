@@ -1,16 +1,16 @@
 import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
-import {api, useOpenMapQuery} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import {defaultUseOpenMapQueryState} from "../core/EditorFlow";
+import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const FrameCarousel: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const { data, isFetching } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFramesLen, dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { dataFramesLen, dataFrameSelected } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">

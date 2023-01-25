@@ -6,17 +6,17 @@ import {addListener, isAnyOf} from "@reduxjs/toolkit";
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
 import {getMapData, reDraw} from '../core/MapFlow'
-import {MapRight, PageState} from "../core/Types"
+import {AccessTypes, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, defaultUseOpenMapQueryState, getMap, getMapSaveProps} from "../core/EditorFlow"
+import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapSaveProps} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
 import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
-import {api, useOpenMapQuery} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
@@ -29,7 +29,6 @@ let landingAreaListener
 export let timeoutId
 
 export const WindowListeners: FC = () => {
-  const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
@@ -38,8 +37,8 @@ export const WindowListeners: FC = () => {
   const mExists = m && Object.keys(m).length
   const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || mapProps.saveOptional
-  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { mapId, dataFrameSelected, mapRight } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { colorMode, mapId, dataFrameSelected, access } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
@@ -270,9 +269,9 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (pageState === PageState.WS) {
-      if (mapRight === MapRight.EDIT) {
+      if (access === AccessTypes.EDIT) {
         addMapListeners()
-      } else if (mapRight === MapRight.VIEW) {
+      } else if (access === AccessTypes.VIEW) {
         // TODO figure out view listeners
       }
     } else if (pageState === PageState.DEMO) {
@@ -282,7 +281,7 @@ export const WindowListeners: FC = () => {
       removeMapListeners()
       removeLandingListeners()
     }
-  }, [pageState, mapRight])
+  }, [pageState, access])
 
   useEffect(() => {
     const root = document.querySelector(':root')

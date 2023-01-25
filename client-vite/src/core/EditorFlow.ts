@@ -1,5 +1,5 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AuthPageState, FormatMode, MapRight, PageState} from "./Types";
+import {AuthPageState, FormatMode, AccessTypes, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly";
 import {getMapData, getSavedMapData, reCalc} from "./MapFlow";
 import {mapDeInit} from "../map/MapDeInit";
@@ -16,12 +16,8 @@ interface EditorState {
   confirmationCode: string,
   authFeedbackMessage: string,
   pageState: PageState,
-  colorMode: string,
   formatMode: FormatMode,
   tabShrink: boolean,
-  mapId: string,
-  dataFrameSelected: number,
-  breadcrumbMapIdList: [],
   tempMap: object,
   mapStackData: [],
   mapStackDataIndex: number,
@@ -36,6 +32,11 @@ interface EditorState {
   shareDataImport: [],
   moreMenu: boolean,
   interactionDisabled: boolean,
+  // query
+  mapId: string,
+  dataFrameSelected: number,
+  breadcrumbMapIdList: [],
+  tabMapIdList: [],
 }
 
 const editorState : EditorState = {
@@ -47,12 +48,8 @@ const editorState : EditorState = {
   confirmationCode: '',
   authFeedbackMessage: '',
   pageState: PageState.AUTH,
-  colorMode: 'dark',
   formatMode: FormatMode.text,
   tabShrink: false,
-  mapId: '',
-  dataFrameSelected: 0,
-  breadcrumbMapIdList: [],
   tempMap: {},
   mapStackData: [],
   mapStackDataIndex: 0,
@@ -67,17 +64,26 @@ const editorState : EditorState = {
   shareDataImport: [],
   moreMenu: false,
   interactionDisabled: false,
+  // query
+  mapId: '',
+  dataFrameSelected: 0,
+  breadcrumbMapIdList: [],
+  tabMapIdList: [],
 }
 
-export const defaultUseOpenMapQueryState = {
+export const defaultUseOpenWorkspaceQueryState = {
+  name: '',
+  colorMode: 'dark',
   mapId: '',
-  dataFrameSelected: -1,
+  mapDataList: [],
   dataFramesLen: 0,
-  mapRight: MapRight.UNAUTHORIZED,
-  tabMapIdList: [],
-  tabMapNameList: [],
+  dataFrameSelected: -1,
+  access: AccessTypes.UNAUTHORIZED,
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
+  tabMapIdList: [],
+  tabMapNameList: [],
+  tabMapSelected: 0,
 }
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -174,15 +180,17 @@ export const editorSlice = createSlice({
       }
     )
     builder.addMatcher(
-      api.endpoints.openMap.matchFulfilled,
+      api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, dataFrameSelected, breadcrumbMapIdList, mapDataList } = payload.resp.data
-        state.mapId = mapId // needed for api call argument
-        state.dataFrameSelected = dataFrameSelected // needed for api call argument
-        state.breadcrumbMapIdList = breadcrumbMapIdList // needed for api call argument
+        const { mapId, dataFrameSelected, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload.resp.data
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''
+        // query
+        state.mapId = mapId
+        state.dataFrameSelected = dataFrameSelected
+        state.breadcrumbMapIdList = breadcrumbMapIdList
+        state.tabMapIdList = tabMapIdList
       }
     )
   }

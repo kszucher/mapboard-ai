@@ -154,7 +154,7 @@ const AUTO_SAVE_STATES = {WAIT: 'WAIT', IDLE: 'IDLE'}
 let autoSaveState = AUTO_SAVE_STATES.IDLE
 function* autoSaveSaga() {
   while (true) {
-    // TODO: only do ANYTHING if mapRight === EDIT
+    // TODO: only do ANYTHING if access === EDIT
     const { autoSaveNow, autoSaveLater, autoSaveNowByTimeout } = yield race({
       autoSaveNow: take(SAVE_INCLUDED),
       autoSaveLater: take(['MAP_CHANGED']),

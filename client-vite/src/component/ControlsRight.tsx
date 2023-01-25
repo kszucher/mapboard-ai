@@ -14,11 +14,11 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, defaultUseOpenMapQueryState, getMapSelectProps} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState, getMapSelectProps} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapProps} from "../core/DefaultProps";
-import {api, useOpenMapQuery} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 const iconSize = 40
 const topOffs1 = 48*2
@@ -33,8 +33,8 @@ export const ControlsRight: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const { density, alignment } = m?.g || mapProps.saveOptional
-  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFrameSelected, dataFramesLen } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { dataFrameSelected, dataFramesLen } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 

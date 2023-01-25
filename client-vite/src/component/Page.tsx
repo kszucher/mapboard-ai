@@ -17,13 +17,13 @@ import {ProfileButton} from './ProfileButton'
 import {ControlsLeft} from './ControlsLeft'
 import {ShouldCreateMapInMap} from './ShouldCreateMapInMap'
 import {CreateTable} from './CreateTable'
-import {defaultUseOpenMapQueryState} from "../core/EditorFlow"
+import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
-import {api, useOpenMapQuery} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -72,12 +72,11 @@ const Map: FC = () => {
 }
 
 export const Page: FC = () => {
-  const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-  const { data } = useOpenMapQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFrameSelected } = data?.resp?.data || defaultUseOpenMapQueryState
+  const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { colorMode, dataFrameSelected } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
 
   useEffect(()=> {

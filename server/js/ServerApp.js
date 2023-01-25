@@ -9,6 +9,7 @@ const MongoQueries = require("./MongoQueries");
 const MongoMutations = require("./MongoMutations");
 
 const { baseUri } = require('./MongoSecret')
+const { ACTIVATION_STATUS, ACCESS_TYPES, SHARE_STATUS } = require('./Types')
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -19,23 +20,6 @@ const transporter = nodemailer.createTransport({
     pass: 'r9yVsEzEf7y8KA*'
   }
 })
-
-const ACTIVATION_STATUS = {
-  COMPLETED: 'completed',
-  AWAITING_CONFIRMATION: 'awaitingConfirmation'
-}
-
-const MAP_RIGHTS = {
-  UNAUTHORIZED: 0,
-  VIEW: 1,
-  EDIT: 2,
-}
-
-const SHARE_STATUS = {
-  WAITING: 'waiting',
-  REJECTED: 'rejected',
-  ACCEPTED: 'accepted',
-}
 
 const systemMaps = [
   ObjectId('5f3fd7ba7a84a4205428c96a'), // features
@@ -107,49 +91,47 @@ async function resolveType(req, type, payload, userId) {
       const cred = JSON.parse(req.header('authorization'))
       return { error: '', data: { cred } }
     }
-    case 'openUser': {
-      const user = await users.findOne({_id: userId})
-      const { name, colorMode } = user
-      return { name, colorMode  }
-    }
-    case 'openMap': {
-      const user = await users.findOne({_id: userId})
-      const { tabMapIdList, mapSelected, dataFrameSelected } = user
-      const map = await maps.findOne({_id: mapSelected})
-      const { path, ownerUser, dataHistory, dataFrames } = map
-      const breadcrumbMapIdList = path
-      const mapData = dataFrameSelected === -1 ? dataHistory[dataHistory.length - 1] : dataFrames[dataFrameSelected]
-      const mapDataSorted = mapData.sort((a, b) => (a.path > b.path) ? 1 : -1)
-      const mapDataList = [mapDataSorted]
-      const dataFramesLen = dataFrames.length
-
-      let mapRight = MAP_RIGHTS.UNAUTHORIZED
-      if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapSelected)))) {
-        mapRight = isEqual(userId, adminUser)
-          ? MAP_RIGHTS.EDIT
-          : MAP_RIGHTS.VIEW
-      } else {
-        if (isEqual(userId, ownerUser)) {
-          mapRight = MAP_RIGHTS.EDIT
-        } else {
-          const fullPath = [...path, mapSelected]
-          for (let i = fullPath.length - 1; i > -1; i--) {
-            const currMapId = fullPath[i]
-            const shareData = await shares.findOne({ shareUser: userId, sharedMap: currMapId })
-            if (shareData !== null) {
-              mapRight = shareData.access
-            }
-          }
-        }
-      }
-      const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
-      const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
-      return {
-        data: {
-          mapId: mapSelected, mapDataList, dataFramesLen, dataFrameSelected, mapRight,
-          breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList
-        }
-      }
+    case 'openWorkspace': {
+      // const user = await users.findOne({_id: userId})
+      // const { tabMapIdList, mapSelected, dataFrameSelected } = user
+      // const map = await maps.findOne({_id: mapSelected})
+      // const { path, ownerUser, dataHistory, dataFrames } = map
+      // const breadcrumbMapIdList = path
+      // const mapData = dataFrameSelected === -1 ? dataHistory[dataHistory.length - 1] : dataFrames[dataFrameSelected]
+      // const mapDataSorted = mapData.sort((a, b) => (a.path > b.path) ? 1 : -1)
+      // const mapDataList = [mapDataSorted]
+      // const dataFramesLen = dataFrames.length
+      //
+      // let access = ACCESS_TYPES.UNAUTHORIZED
+      // if (systemMaps.map(x => JSON.stringify(x)).includes((JSON.stringify(mapSelected)))) {
+      //   access = isEqual(userId, adminUser)
+      //     ? ACCESS_TYPES.EDIT
+      //     : ACCESS_TYPES.VIEW
+      // } else {
+      //   if (isEqual(userId, ownerUser)) {
+      //     access = ACCESS_TYPES.EDIT
+      //   } else {
+      //     const fullPath = [...path, mapSelected]
+      //     for (let i = fullPath.length - 1; i > -1; i--) {
+      //       const currMapId = fullPath[i]
+      //       const shareData = await shares.findOne({ shareUser: userId, sharedMap: currMapId })
+      //       if (shareData !== null) {
+      //         access = shareData.access
+      //       }
+      //     }
+      //   }
+      // }
+      // const breadcrumbMapNameList = await MongoQueries.nameLookup(users, userId, 'breadcrumbMapIdList')
+      // const tabMapNameList = await MongoQueries.nameLookup(users, userId, 'tabMapIdList')
+      // return {
+      //   data: {
+      //     mapId: mapSelected, mapDataList, dataFramesLen, dataFrameSelected, access,
+      //     breadcrumbMapIdList, tabMapIdList, breadcrumbMapNameList, tabMapNameList
+      //   }
+      // }
+      const data = (await MongoQueries.openWorkspace(users, userId)).at(0)
+      console.log(data)
+      return { error: '', data }
     }
     case 'selectMap': {
       const mapId = ObjectId(payload.mapId)
@@ -300,8 +282,8 @@ async function processReq(req, REQ) {
       // this could depend on queryString
       const mapId = ObjectId('5f3fd7ba7a84a4205428c96a')
       const mapDataFrames = (await maps.findOne({_id: mapId})).dataFrames
-      const mapRight = MAP_RIGHTS.VIEW
-      return { error: '', data: { mapId, mapDataFrames, mapRight } }
+      const access = ACCESS_TYPES.VIEW
+      return { error: '', data: { mapId, mapDataFrames, access } }
     } else {
 
       const cred = JSON.parse(req.header('authorization'))

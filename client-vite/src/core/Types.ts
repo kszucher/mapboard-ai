@@ -17,10 +17,10 @@ export enum PageState {
   WS_SHARE_THIS_MAP,
 }
 
-export enum MapRight {
-  UNAUTHORIZED,
-  VIEW,
-  EDIT
+export enum AccessTypes {
+  UNAUTHORIZED = 'unauthorized',
+  VIEW = 'view',
+  EDIT = 'edit'
 }
 
 export enum FormatMode {
@@ -29,7 +29,6 @@ export enum FormatMode {
   fill,
   line
 }
-
 
 export enum TextTypes {
   h1 = 36,

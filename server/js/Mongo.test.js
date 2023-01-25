@@ -1,3 +1,5 @@
+import { ACCESS_TYPES } from './Types'
+
 const MongoClient = require('mongodb').MongoClient
 import { describe, expect, test,  beforeEach, afterEach } from 'vitest'
 const { baseUri } = require('./MongoSecret')
@@ -60,18 +62,53 @@ describe("MongoTests", async() => {
   afterEach(async () => {
     await client.close()
   })
-  test('nameLookup', async() => {
+  test('openWorkspace', async() => {
     const database = {
-      users: [ {_id: 'user1', anyMapIdList: ['map1', 'map2', 'map4', 'map3'] } ],
+      users: [
+        {
+          _id: 'user1',
+          tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'],
+          mapSelected: 'map2aaa',
+          dataFrameSelected: -1,
+          name: 'user1',
+          colorMode: 'dark',
+        },
+        { _id: 'user2', tabMapIdList: ['map2'], mapSelected: 'map2' }
+      ],
       maps:  [
-        { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1', path: ['r', 0] } ] ] },
-        { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2', path: ['r', 0] } ] ] },
-        { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3', path: ['r', 0] } ] ] },
-        { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4', path: ['r', 0] } ] ] },
+        { _id: 'map1', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName1', path: ['r', 0] } ] ] },
+        { _id: 'map2', ownerUser: 'user2', path: [], dataHistory: [ [ { content: 'mapName2', path: ['r', 0] } ] ] },
+        { _id: 'map2a', ownerUser: 'user2', path: ['map2'], dataHistory: [ [ { content: 'mapName2a', path: ['r', 0] } ] ] },
+        { _id: 'map2aa', ownerUser: 'user2', path: ['map2', 'map2a'], dataHistory: [ [ { content: 'mapName2aa', path: ['r', 0] } ] ] },
+        {
+          _id: 'map2aaa',
+          ownerUser: 'user2',
+          path: ['map2', 'map2a', 'map2aa'],
+          dataFrames: ['f1', 'f2'],
+          dataHistory: [ [], [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ]
+        },
+        { _id: 'map3', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName3', path: ['r', 0] } ] ] },
+        { _id: 'map4', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName4', path: ['r', 0] } ] ] },
+      ],
+      shares: [
+        { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map2aa' },
       ]
     }
-    const modified = await resolveQuery(database, 'nameLookup', [users, 'user1', 'anyMapIdList'])
-    const expected = ['mapName1', 'mapName2', 'mapName4', 'mapName3']
+    const modified = await resolveQuery(database, 'openWorkspace', [users, 'user1'])
+    const expected = [{
+      name: 'user1',
+      colorMode: 'dark',
+      mapId: 'map2aaa', // TODO use mapSelected
+      mapDataList: [ [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ],
+      dataFramesLen: 2,
+      dataFrameSelected: -1,
+      access: ACCESS_TYPES.VIEW,
+      breadcrumbMapIdList: ['map2aa', 'map2aaa'],
+      breadcrumbMapNameList: [ { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],
+      tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'],
+      tabMapNameList: [ { name: 'mapName1' }, { name:'mapName3' }, { name:'mapName2aa' }, { name:'mapName4' } ],
+      tabMapSelected: 2
+    }]
     expect(modified).toEqual(expected)
   })
   test('getUserShares', async() => {

@@ -1,47 +1,127 @@
-async function nameLookup(users, userId, mapIdList) {
-  return (
-    await users.aggregate(
-      [
-        {
-          $match: { _id: userId }
-        },
-        {
-          $lookup: {
-            from: "maps",
-            localField: mapIdList,
-            foreignField: "_id",
-            let: { originalArray: `$${mapIdList}` },
-            pipeline: [
-              { $set: { "order": { $indexOfArray: ['$$originalArray', '$_id'] } } },
-              { $sort: { "order": 1 } },
-            ],
-            as: "fromMaps"
-          },
-        },
-        {
-          $unwind: '$fromMaps'
-        },
-        {
-          $replaceWith: {
-            "mapName": {
-              $getField: {
-                field: 'content',
-                input: {
-                  $arrayElemAt: [{
-                    $filter: {
-                      input: { $last: "$fromMaps.dataHistory" },
-                      as: 'elem',
-                      cond: { $eq: ["$$elem.path", ['r', 0]] },
+const { ACCESS_TYPES } = require('./Types')
+
+async function openWorkspace(users, userId) {
+  const getMapNameList = (mapIdList, mapNameList) => (
+    {
+      $lookup: {
+        from: "maps",
+        localField: mapIdList,
+        foreignField: "_id",
+        let: { originalArray: `$${mapIdList}` },
+        pipeline: [
+          { $set: { "order": { $indexOfArray: [ '$$originalArray', '$_id' ] } } },
+          { $sort: { "order": 1 } },
+          { $replaceWith: {
+              name: {
+                $getField: {
+                  field: 'content',
+                  input: {
+                    $first: {
+                      $filter: {
+                        input: {
+                          $last: '$dataHistory'
+                        },
+                        as: 'elem',
+                        cond: { $eq: [ "$$elem.path", [ 'r', 0 ] ] },
+                      }
                     }
-                  }, 0 ]
+                  }
                 }
               }
             }
           }
+        ],
+        as: mapNameList
+      }
+    }
+  )
+  return (
+    await users.aggregate(
+      [
+        { $match: { _id: userId } },
+        { $lookup: { from: "maps", localField: "mapSelected", foreignField: "_id", as: "mapList" }, },
+        { $set: { 'map': { $first: "$mapList" } } },
+        { $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapSelected" ] ] } } },
+        { $lookup: { from: "shares", localField: "breadcrumbMapIdList", foreignField: "sharedMap", as: "shareList" } },
+        { $set: { 'share': { $first: "$shareList" } } },
+        { $set: { 'dataFramesLen': { $size: '$map.dataFrames' } } },
+        {
+          $set: {
+            mapDataList: [{
+              $cond: {
+                if: { $eq: [ '$dataFrameSelected', -1 ] },
+                then: { $last: '$map.dataHistory' },
+                else: { $arrayElemAt: ['$map.dataFrames', '$dataFrameSelected'] }
+              }
+            }]
+          }
+        },
+        {
+          $set: {
+            'access': {
+              $cond: {
+                if: { $eq: [ '$map.ownerUser', userId ] },
+                then: ACCESS_TYPES.EDIT,
+                else: {
+                  $cond: {
+                    if: { $ne: [ { $type: '$share' }, 'missing' ] },
+                    then: '$share.access',
+                    else: ACCESS_TYPES.UNAUTHORIZED
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          $set: {
+            'breadcrumbMapIdList': {
+              $cond: {
+                if: { $eq: [ '$map.ownerUser', userId ] },
+                then: '$breadcrumbMapIdList',
+                else: {
+                  $cond: {
+                    if: { $ne: [ { $type: '$share' }, 'missing' ] },
+                    then: {
+                      $slice: [
+                        '$breadcrumbMapIdList',
+                        {
+                          $subtract: [
+                            { $indexOfArray: [ '$breadcrumbMapIdList', '$share.sharedMap' ] },
+                            { $size: '$breadcrumbMapIdList' }
+                          ]
+                        }
+                      ]
+                    },
+                    else: []
+                  }
+                }
+              }
+            }
+          }
+        },
+        getMapNameList('breadcrumbMapIdList', 'breadcrumbMapNameList'),
+        getMapNameList('tabMapIdList', 'tabMapNameList'),
+        { $set: { tabMapSelected: { $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] } } },
+        {
+          $replaceWith: {
+            name: '$name',
+            colorMode: '$colorMode',
+            mapId: '$mapSelected', // TODO use mapSelected
+            dataFrameSelected: '$dataFrameSelected',
+            dataFramesLen: '$dataFramesLen',
+            mapDataList: '$mapDataList',
+            access: "$access",
+            breadcrumbMapIdList: "$breadcrumbMapIdList",
+            breadcrumbMapNameList: "$breadcrumbMapNameList",
+            tabMapIdList: "$tabMapIdList",
+            tabMapNameList: "$tabMapNameList",
+            tabMapSelected: '$tabMapSelected',
+          }
         }
       ]
     ).toArray()
-  ).map(el => el.mapName)
+  )
 }
 
 async function getUserShares(shares, userId) {
@@ -203,7 +283,7 @@ async function findDeadLinks (maps) {
 }
 
 module.exports = {
-  nameLookup,
+  openWorkspace,
   getUserShares,
   countNodes,
   countNodesBasedOnNodePropExistence,

@@ -2,7 +2,7 @@ import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
 import {actions} from '../core/EditorFlow'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
-import {MapRight, PageState} from "../core/Types";
+import {AccessTypes, PageState} from "../core/Types";
 
 export const ShareThisMap: FC = () => {
   const shareEmail = useSelector((state: RootStateOrAny) => state.editor.shareEmail)
@@ -27,7 +27,7 @@ export const ShareThisMap: FC = () => {
             aria-label="my-aria-label" name="my-name" row={true}
             value={shareAccess}
             onChange={(e) => dispatch(actions.setShareAccess(e.target.value))}>
-            {[MapRight.VIEW, MapRight.EDIT].map(
+            {[AccessTypes.VIEW, AccessTypes.EDIT].map(
               (name, index) => <FormControlLabel value={name} control={<Radio />} label={name} key={index}/>
             )}
           </RadioGroup>

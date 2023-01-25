@@ -19,7 +19,7 @@ export const api = createApi({
       return headers
     },
   }),
-  tagTypes: ['UserInfo', 'MapInfo'],
+  tagTypes: ['UserInfo', 'Workspace'],
   endpoints: (builder) => ({
     // liveDemo: builder.query({
     //   query: () => ({url: '', method: 'POST', body: { type: 'LIVE_DEMO' } }),
@@ -27,14 +27,10 @@ export const api = createApi({
 
     signIn: builder.mutation<{ resp: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'signIn' } }),
-      invalidatesTags: ['UserInfo', 'MapInfo']
+      invalidatesTags: ['Workspace']
     }),
-    openUser: builder.query({
-      query: () => ({ url: '', method: 'POST', body: { type: 'openUser' } } ),
-      providesTags: ['UserInfo']
-    }),
-    openMap: builder.query<{ resp: { data: any } }, void>({
-      query: () => ({ url: '', method: 'POST', body: { type: 'openMap' } }),
+    openWorkspace: builder.query<{ resp: { data: any } }, void>({
+      query: () => ({ url: '', method: 'POST', body: { type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState }) {
         if ((getState() as RootState).editor.mapId !== '') {
           console.log('saved by listener')
@@ -42,55 +38,55 @@ export const api = createApi({
           dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
         }
       },
-      providesTags: ['MapInfo']
+      providesTags: ['Workspace']
     }),
     selectMap: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ( {url: '', method: 'POST', body: { type: 'selectMap', payload: { mapId } } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     selectFirstMapFrame: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'selectFirstMapFrame' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     selectPrevMapFrame: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'selectPrevMapFrame' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     selectNextMapFrame: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'selectNextMapFrame' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     createMapInMap: builder.mutation<void, { mapCreationProps: { content: string, nodeId: string } }>({
       query: ({ mapCreationProps }) => ({ url: '', method: 'POST', body: { type: 'createMapInMap', payload: { mapCreationProps} } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     createMapInTab: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'createMapInTab' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     createMapFrameImport: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'createMapFrameImport' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     createMapFrameDuplicate: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'createMapFrameDuplicate' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     moveUpMapInTab: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'moveUpMapInTab' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     moveDownMapInTab: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'moveDownMapInTab' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     deleteMap: builder.mutation<void, { mapId: string }>({
       query: ({ mapId }) => ({ url: '', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     deleteMapFrame: builder.mutation<void, void>({
       query: () => ({ url: '', method: 'POST', body: { type: 'deleteMapFrame' } }),
-      invalidatesTags: ['MapInfo']
+      invalidatesTags: ['Workspace']
     }),
     saveMap: builder.mutation<void, { mapId: string, dataFrameSelected: number, mapData: any }>({
       query: ({mapId, dataFrameSelected, mapData}) => ({ url: '', method: 'POST', body: { type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
@@ -99,4 +95,4 @@ export const api = createApi({
   }),
 })
 
-export const { useOpenMapQuery } = api
+export const { useOpenWorkspaceQuery } = api

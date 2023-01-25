@@ -3,11 +3,14 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
 import { Button, IconButton, Modal } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import {actions} from "../core/EditorFlow"
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {PageState} from "../core/Types";
+import {useOpenWorkspaceQuery} from "../core/Api";
 
 export const Settings: FC = () => {
-  const colorMode = useSelector((state: RootStateOrAny) => state.editor.colorMode)
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { colorMode } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <Modal

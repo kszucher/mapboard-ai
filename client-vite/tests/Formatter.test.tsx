@@ -5,7 +5,7 @@ import {Formatter} from "../src/component/Formatter"
 import { describe, it } from 'vitest'
 import {actions, getMap, store} from "../src/core/EditorFlow";
 import {colorList} from "../src/core/Colors";
-import {FormatMode, LineTypes, MapRight, TextTypes, WidthTypes} from "../src/core/Types";
+import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../src/core/Types";
 import {reCalc} from "../src/core/MapFlow";
 import {mapAssembly} from "../src/map/MapAssembly";
 import {nodeProps} from "../src/core/DefaultProps";
@@ -21,7 +21,7 @@ describe("Formatter test", () => {
     ])
     store.dispatch(actions.parseRespPayload({
       formatMode: FormatMode.text,
-      mapRight: MapRight.EDIT,
+      access: AccessTypes.EDIT,
       mapStackDataIndex: 0,
       mapStackData: [reCalc(testMap, testMap)],
     }))
