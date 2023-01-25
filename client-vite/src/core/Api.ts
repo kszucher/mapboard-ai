@@ -15,9 +15,9 @@ const getCred = () => {
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
-    mode: 'cors',
+    mode: 'no-cors',
     // credentials: "same-origin",
-
+    // credentials: "same-origin",
     prepareHeaders: (headers, { getState }) => {
       // const token = (getState() as RootState).editor.colorMode
       // if (token) {
@@ -25,10 +25,10 @@ export const api = createApi({
       // }
 
       // headers.set('authorization', credString ? credString : "{ email: '', user: ''}")
-      headers.set('Access-Control-Allow-Origin', '*');
+      // headers.set('Access-Control-Allow-Origin', '*');
       // headers.set('Access-Control-Allow-Credentials', 'true');
 
-      headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT,PATCH, DELETE, OPTIONS');
+      // headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT,PATCH, DELETE, OPTIONS');
 
 
       // 'Content-Type': 'application/json',
@@ -44,11 +44,11 @@ export const api = createApi({
     // }),
 
     signIn: builder.mutation<{ resp: any }, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signIn' }, mode: 'cors' }),
+      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
     openWorkspace: builder.query<{ resp: { data: any } }, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'openWorkspace' }, mode: 'cors' }),
+      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState }) {
         if ((getState() as RootState).editor.mapId !== '') {
           console.log('saved by listener')

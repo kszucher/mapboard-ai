@@ -341,6 +341,11 @@ app.use(cors())
 
 // TODO try postman to soo if this is alive
 
+
+app.get('/geta', (req, res) => {
+  res.send('Hello World!')
+})
+
 // app.use(cors())
 app.post('/beta', function (req, res) {
   let inputStream = []
