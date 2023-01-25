@@ -68,8 +68,11 @@ function getDefaultMap (mapName, ownerUser, path) {
   }
 }
 
-async function getAuthorizedUserId(req) {
-  const cred = JSON.parse(req.header('authorization'))
+async function getAuthorizedUserId(req, REQ) {
+  // const cred = JSON.parse(req.header('authorization'))
+
+  const cred = REQ.cred
+
   if (cred !== null) {
     // TODO: joi validation
     const authorizedUser = await users.findOne( cred )
@@ -84,12 +87,11 @@ async function getAuthorizedUserId(req) {
 //   return await MongoQueries.getUserShares(shares, userId)
 // }
 
-async function resolveType(req, type, payload, userId) {
+async function resolveType(req, cred, type, payload, userId) {
   switch (type) {
     case 'signIn': {
       // TODO: create session entry
-      const cred = JSON.parse(req.header('authorization'))
-      return { error: 'xxx', data: { cred } }
+      return { error: '', data: { cred } }
     }
     case 'openWorkspace': {
       return { error: '', data: (await MongoQueries.openWorkspace(users, userId)).at(0) }
@@ -247,7 +249,9 @@ async function processReq(req, REQ) {
       return { error: '', data: { mapId, mapDataFrames, access } }
     } else {
 
-      const cred = JSON.parse(req.header('authorization'))
+      // const cred = JSON.parse(req.header('authorization'))
+
+      const cred = REQ.cred
 
       const currUser = await users.findOne( cred )
       if (currUser === null) {
@@ -310,10 +314,10 @@ async function processReq(req, REQ) {
         } else {
           // await checkSave(REQ, currUser?._id)
 
-          const userId = await getAuthorizedUserId(req)
+          const userId = await getAuthorizedUserId(req, REQ)
           if (!userId) { return { error: 'UNAUTH'} }
 
-          return await resolveType(req, REQ.type, REQ.payload, userId)
+          return await resolveType(req, REQ.cred, REQ.type, REQ.payload, userId)
         }
       }
     }
