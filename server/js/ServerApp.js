@@ -336,7 +336,7 @@ const corsOptions ={
   optionSuccessStatus:200,
 }
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 
 // TODO try postman to soo if this is alive
