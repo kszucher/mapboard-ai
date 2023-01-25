@@ -338,6 +338,9 @@ const corsOptions ={
 
 app.use(cors(corsOptions))
 
+
+// TODO try postman to soo if this is alive
+
 // app.use(cors())
 app.post('/beta', function (req, res) {
   let inputStream = []
@@ -353,10 +356,10 @@ app.post('/beta', function (req, res) {
 
     // console.log(req.headers)
 
-    if (req.method === "OPTIONS") {
-      res.writeHead(200, {"Content-Type": "application/json"});
-      res.end();
-    }
+    // if (req.method === "OPTIONS") {
+    //   res.writeHead(200, {"Content-Type": "application/json"});
+    //   res.end();
+    // }
 
 
 
