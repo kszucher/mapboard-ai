@@ -332,15 +332,18 @@ app.post('/beta', function (req, res) {
   })
 
 
-  if (req.method === "OPTIONS") {
-    res.writeHead(200, {"Content-Type": "application/json"});
-    res.end();
-  }
+
 
 
   req.on('end', function () {
 
     // console.log(req.headers)
+
+    if (req.method === "OPTIONS") {
+      res.writeHead(200, {"Content-Type": "application/json"});
+      res.end();
+    }
+
 
 
     let REQ = JSON.parse(inputStream) // it must be a parameter to prevent async issues
