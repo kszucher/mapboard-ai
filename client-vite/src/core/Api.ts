@@ -15,7 +15,7 @@ const getCred = () => {
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
-    mode: 'no-cors',
+    // mode: 'no-cors',
     // credentials: "same-origin",
     // credentials: "same-origin",
     prepareHeaders: (headers, { getState }) => {
