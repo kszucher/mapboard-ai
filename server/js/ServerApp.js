@@ -330,6 +330,14 @@ app.post('/beta', function (req, res) {
   req.on('data', function (data) {
     inputStream += data
   })
+
+
+  if (req.method === "OPTIONS") {
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.end();
+  }
+
+
   req.on('end', function () {
 
     // console.log(req.headers)
@@ -343,6 +351,9 @@ app.post('/beta', function (req, res) {
       console.log(REQ.type, 'response sent')
     })
   })
+
+
+
 })
 
 MongoClient.connect(baseUri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {

@@ -9,7 +9,7 @@ const backendUrl = process.env.NODE_ENV === 'development'
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
-    mode: 'cors',
+    // mode: 'cors',
     prepareHeaders: (headers, { getState }) => {
       // const token = (getState() as RootState).editor.colorMode
       // if (token) {
@@ -17,6 +17,9 @@ export const api = createApi({
       // }
       const credString = localStorage.getItem('cred')
       headers.set('authorization', credString ? credString : "{ email: '', user: ''}")
+      // headers.set('Access-Control-Allow-Origin', '*');
+      // headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT,PATCH, DELETE, OPTIONS');
+      headers.set('Content-Type', 'application/json')
       return headers
     },
   }),
