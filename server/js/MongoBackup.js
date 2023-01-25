@@ -3,7 +3,7 @@ const { baseUri } = require('./MongoSecret')
 
 const basePath = 'C:/Users/Kryss/Dropbox/mapboard/mongobackup'
 
-const decodeSourceFromFilename = (filename) => (filename.slice(26, 35) === 'app_dev' ? 'app_dev' : 'app_prod')
+const decodeSourceFromFilename = (filename) => (filename.slice(26, 33) === 'app_dev' ? 'app_dev' : 'app_prod')
 
 const spawnProcess = async (mongoCmd, mongoParams) => {
   console.log(`process ${mongoCmd} started`)
@@ -70,7 +70,7 @@ const mongoBackup = async (mode) => {
       break
     }
     case 'file2prod': {
-      const filename = ''
+      const filename = 'date_1674662607308_source_app_dev_comment_hasFrames'
       await mongoRestore({source: decodeSourceFromFilename(filename), target:'app_prod', filename})
       break
     }
@@ -83,4 +83,4 @@ const mongoBackup = async (mode) => {
   }
 }
 
-mongoBackup('file2dev')
+mongoBackup('file2prod')
