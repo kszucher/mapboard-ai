@@ -89,7 +89,7 @@ async function resolveType(req, type, payload, userId) {
     case 'signIn': {
       // TODO: create session entry
       const cred = JSON.parse(req.header('authorization'))
-      return { error: '', data: { cred } }
+      return { error: 'xxx', data: { cred } }
     }
     case 'openWorkspace': {
       return { error: '', data: (await MongoQueries.openWorkspace(users, userId)).at(0) }
