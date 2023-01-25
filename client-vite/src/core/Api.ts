@@ -9,6 +9,7 @@ const backendUrl = process.env.NODE_ENV === 'development'
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
+    mode: 'no-cors',
     prepareHeaders: (headers, { getState }) => {
       // const token = (getState() as RootState).editor.colorMode
       // if (token) {
