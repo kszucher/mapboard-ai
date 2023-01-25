@@ -113,7 +113,7 @@ async function resolveType(req, type, payload, userId) {
     }
     case 'createMapInMap': {
       const mapId = ObjectId(payload.mapId)
-      const { content, nodeId } = payload
+      const { nodeId, content } = payload
       const map = await maps.findOne({_id: mapId})
       const { path } = map
       const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ]))).insertedId
