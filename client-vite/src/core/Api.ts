@@ -8,6 +8,7 @@ const backendUrl = process.env.NODE_ENV === 'development'
 
 const getCred = () => {
   const credString = localStorage.getItem('cred')
+  // @ts-ignore
   return JSON.parse(credString.length ? credString : `{email: '', password: ''}`)
 }
 
