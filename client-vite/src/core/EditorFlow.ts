@@ -100,12 +100,12 @@ export const getMapSaveProps = () => {
   const mapData = getSavedMapData(m)
   return { mapId, dataFrameSelected, mapData }
 }
-export const getMapCreationProps = () : { mapId: string, nodeId: string, content: string, path: [] }  => {
+export const getMapCreationProps = () : { mapId: string, nodeId: string, content: string }  => {
   const { mapId } = store.getState().editor
   const m = getMap()
   const { lastPath } = m.g.sc
   const last = getMapData(m, lastPath)
-  return { mapId, nodeId: last.nodeId, content: last.content, path: '' }
+  return { mapId, nodeId: last.nodeId, content: last.content }
 }
 export const getMapSelectProps = () => {
   return { mapId: store.getState().editor.breadcrumbMapIdList.at(-1) }
@@ -187,6 +187,7 @@ export const editorSlice = createSlice({
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''
+        state.pageState = PageState.WS
         // query
         state.mapId = mapId
         state.dataFrameSelected = dataFrameSelected

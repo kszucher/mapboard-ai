@@ -56,8 +56,8 @@ export const api = createApi({
       query: () => ({ url: '', method: 'POST', body: { type: 'selectNextMapFrame' } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string, path: [] }>({
-      query: ({ mapId, nodeId, path, content }) => ({ url: '', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, path, content} } }),
+    createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({
+      query: ({ mapId, nodeId, content }) => ({ url: '', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
       invalidatesTags: ['Workspace']
     }),
     createMapInTab: builder.mutation<void, void>({

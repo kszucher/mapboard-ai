@@ -3,10 +3,11 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, getMapCreationProps} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
-import {api} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 export const ShouldCreateMapInMap: FC = () => {
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const { isFetching, isSuccess } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const dispatch = useDispatch()
   return(
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
@@ -18,12 +19,12 @@ export const ShouldCreateMapInMap: FC = () => {
         </div>
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button
-            color="primary" variant='outlined' disabled={interactionDisabled}
+            color="primary" variant='outlined' disabled={isFetching}
             onClick={() => dispatch(api.endpoints.createMapInMap.initiate(getMapCreationProps()))}>
             {'OK'}
           </Button>
           <Button
-            color="primary" variant='outlined' disabled={interactionDisabled}
+            color="primary" variant='outlined' disabled={isFetching}
             onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
             {'CANCEL'}
           </Button>
