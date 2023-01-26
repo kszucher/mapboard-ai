@@ -15,24 +15,11 @@ const getCred = () => {
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
-    // mode: 'no-cors',
-    // credentials: "same-origin",
-    // credentials: "same-origin",
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).editor.colorMode
+      // const token = (getState() as RootState).editor.token
       // if (token) {
       //   headers.set('authorization', `Bearer ${token}`)
       // }
-
-      // headers.set('authorization', credString ? credString : "{ email: '', user: ''}")
-      // headers.set('Access-Control-Allow-Origin', '*');
-      // headers.set('Access-Control-Allow-Credentials', 'true');
-
-      // headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT,PATCH, DELETE, OPTIONS');
-
-
-      // 'Content-Type': 'application/json',
-      //   'Access-Control-Allow-Origin': '*',
       headers.set('Content-Type', 'application/json')
       return headers
     },
@@ -58,59 +45,59 @@ export const api = createApi({
       },
       providesTags: ['Workspace']
     }),
-    selectMap: builder.mutation<void, { mapId: string }>({
-      query: ({ mapId }) => ( {url: '', method: 'POST', body: { cred: getCred(), type: 'selectMap', payload: { mapId } } }),
+    selectMap: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectMap', payload: { mapId } } }),
       invalidatesTags: ['Workspace']
     }),
-    selectFirstMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectFirstMapFrame' } }),
+    selectFirstMapFrame: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectFirstMapFrame' } }),
       invalidatesTags: ['Workspace']
     }),
-    selectPrevMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectPrevMapFrame' } }),
+    selectPrevMapFrame: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectPrevMapFrame' } }),
       invalidatesTags: ['Workspace']
     }),
-    selectNextMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectNextMapFrame' } }),
+    selectNextMapFrame: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'selectNextMapFrame' } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({
-      query: ({ mapId, nodeId, content }) => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
+    createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({query: ({ mapId, nodeId, content }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapInTab: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapInTab' } }),
+    createMapInTab: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapInTab' } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameImport: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapFrameImport' } }),
+    createMapFrameImport: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapFrameImport' } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameDuplicate: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapFrameDuplicate' } }),
+    createMapFrameDuplicate: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createMapFrameDuplicate' } }),
       invalidatesTags: ['Workspace']
     }),
-    moveUpMapInTab: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'moveUpMapInTab' } }),
+    moveUpMapInTab: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'moveUpMapInTab' } }),
       invalidatesTags: ['Workspace']
     }),
-    moveDownMapInTab: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'moveDownMapInTab' } }),
+    moveDownMapInTab: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'moveDownMapInTab' } }),
       invalidatesTags: ['Workspace']
     }),
-    deleteMap: builder.mutation<void, { mapId: string }>({
-      query: ({ mapId }) => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'deleteMap', payload: { mapId } } }),
+    deleteMap: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'deleteMap', payload: { mapId } } }),
       invalidatesTags: ['Workspace']
     }),
-    deleteMapFrame: builder.mutation<void, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'deleteMapFrame' } }),
+    deleteMapFrame: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'deleteMapFrame' } }),
       invalidatesTags: ['Workspace']
     }),
-    saveMap: builder.mutation<void, { mapId: string, dataFrameSelected: number, mapData: any }>({
-      query: ({mapId, dataFrameSelected, mapData}) => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
+    saveMap: builder.mutation<void, { mapId: string, dataFrameSelected: number, mapData: any }>({query: ({ mapId, dataFrameSelected, mapData }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
       invalidatesTags: []
-    }),
-  }),
+    })
+  })
 })
 
 export const { useOpenWorkspaceQuery } = api

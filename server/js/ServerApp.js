@@ -69,10 +69,7 @@ function getDefaultMap (mapName, ownerUser, path) {
 }
 
 async function getAuthorizedUserId(req, REQ) {
-  // const cred = JSON.parse(req.header('authorization'))
-
   const cred = REQ.cred
-
   if (cred !== null) {
     // TODO: joi validation
     const authorizedUser = await users.findOne( cred )
@@ -248,11 +245,7 @@ async function processReq(req, REQ) {
       const access = ACCESS_TYPES.VIEW
       return { error: '', data: { mapId, mapDataFrames, access } }
     } else {
-
-      // const cred = JSON.parse(req.header('authorization'))
-
       const cred = REQ.cred
-
       const currUser = await users.findOne( cred )
       if (currUser === null) {
         if (REQ.type === 'SIGN_UP_STEP_1') {
@@ -313,10 +306,8 @@ async function processReq(req, REQ) {
           return { error: 'authFailIncompleteRegistration' }
         } else {
           // await checkSave(REQ, currUser?._id)
-
           const userId = await getAuthorizedUserId(req, REQ)
           if (!userId) { return { error: 'UNAUTH'} }
-
           return await resolveType(req, REQ.cred, REQ.type, REQ.payload, userId)
         }
       }
@@ -328,46 +319,13 @@ async function processReq(req, REQ) {
   }
 }
 
-
-// const cors=require("cors");
-const corsOptions ={
-  origin:'*',
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200,
-}
-
 app.use(cors())
-
-
-// TODO try postman to soo if this is alive
-
-
-app.get('/geta', (req, res) => {
-  res.send('Hello World!')
-})
-
-// app.use(cors())
 app.post('/beta', function (req, res) {
   let inputStream = []
   req.on('data', function (data) {
     inputStream += data
   })
-
-
-
-
-
   req.on('end', function () {
-
-    // console.log(req.headers)
-
-    // if (req.method === "OPTIONS") {
-    //   res.writeHead(200, {"Content-Type": "application/json"});
-    //   res.end();
-    // }
-
-
-
     let REQ = JSON.parse(inputStream) // it must be a parameter to prevent async issues
     inputStream = []
     console.log(REQ.type)
@@ -376,9 +334,6 @@ app.post('/beta', function (req, res) {
       console.log(REQ.type, 'response sent')
     })
   })
-
-
-
 })
 
 MongoClient.connect(baseUri, {useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
