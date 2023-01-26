@@ -104,21 +104,6 @@ app.post('/beta', async (req, res) => {
       return res.json({ error: 'unauthorized or non-existing' })
     }
   }
-  if (req.body.hasOwnProperty('save')) {
-    // await new Promise(resolve => setTimeout(resolve, 5000))
-    const mapId = ObjectId(req.body.save.mapId)
-    const { mapData, dataFrameSelected } = req.body.save
-    const map = await maps.findOne({_id: mapId})
-    const { ownerUser } = map
-    const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-    if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-      if (dataFrameSelected === -1) {
-        await MongoMutations.saveMap(maps, mapId, 'map', mapData)
-      } else {
-        await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
-      }
-    }
-  }
   switch (req.body.type) {
     case 'signIn': {
       return res.json({ error: '', data: { cred: req.body.cred } }) // TODO create session entry
@@ -188,6 +173,19 @@ app.post('/beta', async (req, res) => {
       return res.json({})
     }
     case 'saveMap': {
+      // await new Promise(resolve => setTimeout(resolve, 5000))
+      const mapId = ObjectId(req.body.save.mapId)
+      const { mapData, dataFrameSelected } = req.body.save
+      const map = await maps.findOne({_id: mapId})
+      const { ownerUser } = map
+      const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
+      if (isEqual(userId, ownerUser) || shareToEdit !== null) {
+        if (dataFrameSelected === -1) {
+          await MongoMutations.saveMap(maps, mapId, 'map', mapData)
+        } else {
+          await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
+        }
+      }
       return res.json({})
     }
     case 'getShares': {
