@@ -1,13 +1,16 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
-import {actions} from '../core/EditorFlow'
+import {actions, defaultUseOpenWorkspaceQueryState} from '../core/EditorFlow'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {AccessTypes, PageState} from "../core/Types";
+import {api, useCreateShareMutation, useGetSharesQuery} from "../core/Api";
+import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 export const ShareThisMap: FC = () => {
-  const shareEmail = useSelector((state: RootStateOrAny) => state.editor.shareEmail)
-  const shareAccess = useSelector((state: RootStateOrAny) => state.editor.shareAccess)
-  const shareFeedbackMessage = useSelector((state: RootStateOrAny) => state.editor.shareFeedbackMessage)
+  const [ createShare,  response ] = useCreateShareMutation()
+  const errorMessage = (response.error as BaseQueryError<any>)?.data?.message
+  const [shareEmail, setShareEmail] = useState('')
+  const [shareAccess, setShareAccess] = useState('')
   const dispatch = useDispatch()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
@@ -18,7 +21,7 @@ export const ShareThisMap: FC = () => {
         <TextField
           variant="outlined" fullWidth label="Share email"
           value={shareEmail}
-          onChange={(e) => dispatch(actions.setShareEmail(e.target.value))}/>
+          onChange={(e) => setShareEmail(e.target.value)}/>
         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
           <FormLabel component="legend">
             {'Access'}
@@ -26,19 +29,20 @@ export const ShareThisMap: FC = () => {
           <RadioGroup
             aria-label="my-aria-label" name="my-name" row={true}
             value={shareAccess}
-            onChange={(e) => dispatch(actions.setShareAccess(e.target.value))}>
+            onChange={(e) => setShareAccess(e.target.value)}>
             {[AccessTypes.VIEW, AccessTypes.EDIT].map(
               (name, index) => <FormControlLabel value={name} control={<Radio />} label={name} key={index}/>
             )}
           </RadioGroup>
         </div>
-        {shareFeedbackMessage !== '' &&
-        <Typography variant="body2" color="textSecondary" align="center">
-          {shareFeedbackMessage}
-        </Typography>}
+        {errorMessage !== '' &&
+          <Typography variant="body2" color="textSecondary" align="center">
+            {errorMessage}
+          </Typography>
+        }
         <Button
           color="primary" variant="outlined"
-          // onClick={_=>dispatch(sagaActions.createShare(shareEmail, shareAccess))}
+          onClick={() => createShare({shareEmail, shareAccess})}
         >
           {'SHARE'}
         </Button>

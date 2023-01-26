@@ -25,9 +25,6 @@ interface EditorState {
   moveTarget: [],
   selectTarget: [],
   formatterVisible: boolean,
-  shareEmail: string,
-  shareAccess: string,
-  shareFeedbackMessage: string,
   moreMenu: boolean,
   interactionDisabled: boolean,
   // query
@@ -55,9 +52,6 @@ const editorState : EditorState = {
   moveTarget: [],
   selectTarget: [],
   formatterVisible: false,
-  shareEmail: '',
-  shareAccess: 'view',
-  shareFeedbackMessage: '',
   moreMenu: false,
   interactionDisabled: false,
   // query
@@ -67,7 +61,22 @@ const editorState : EditorState = {
   tabMapIdList: [],
 }
 
-export const defaultUseOpenWorkspaceQueryState = {
+export interface DefaultUseOpenWorkspaceQueryState {
+  name: string,
+  colorMode: string,
+  mapId: string,
+  mapDataList: [],
+  dataFramesLen: number,
+  dataFrameSelected: number,
+  access: AccessTypes,
+  breadcrumbMapIdList: [],
+  breadcrumbMapNameList: [],
+  tabMapIdList: [],
+  tabMapNameList: [],
+  tabMapSelected: number,
+}
+
+export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQueryState = {
   name: '',
   colorMode: 'dark',
   mapId: '',
@@ -136,9 +145,6 @@ export const editorSlice = createSlice({
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     toggleFormatterVisible(state) { state.formatterVisible = !state.formatterVisible },
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
-    setShareEmail(state, action: PayloadAction<string>) { state.shareEmail = action.payload },
-    setShareAccess(state, action: PayloadAction<string>) { state.shareAccess = action.payload },
-    setShareFeedbackMessage(state, action: PayloadAction<string>) { state.shareFeedbackMessage = action.payload },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     interactionEnabled(state) { state.interactionDisabled =  false },
@@ -170,7 +176,7 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
-        const { cred } = payload.data
+        const { cred } = payload
         localStorage.setItem('cred', JSON.stringify(cred))
         initDomData()
         state.pageState = PageState.WS
@@ -185,8 +191,8 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, dataFrameSelected, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload.data
-        state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
+        const { mapId, dataFrameSelected, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload
+        state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))) as []
         state.mapStackDataIndex = 0
         state.editedNodeId = ''
         state.pageState = PageState.WS

@@ -34,7 +34,7 @@ export const ControlsRight: FC = () => {
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const { density, alignment } = m?.g || mapProps.saveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFrameSelected, dataFramesLen } = data?.data || defaultUseOpenWorkspaceQueryState
+  const { dataFrameSelected, dataFramesLen } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 

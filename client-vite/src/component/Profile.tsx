@@ -10,7 +10,7 @@ export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { name } = data?.data || defaultUseOpenWorkspaceQueryState
+  const { name } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

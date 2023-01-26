@@ -81,7 +81,7 @@ app.post('/beta', async (req, res) => {
         const mapId = ObjectId('5f3fd7ba7a84a4205428c96a') // this could depend on queryString
         const mapDataFrames = (await maps.findOne({ _id: mapId })).dataFrames
         const access = ACCESS_TYPES.VIEW
-        return res.json({ error: '', data: { mapId, mapDataFrames, access } })
+        return res.json({ mapId, mapDataFrames, access })
       }
     }
     // PROTECTED
@@ -102,35 +102,35 @@ app.post('/beta', async (req, res) => {
     if (req.body.hasOwnProperty('cred')) {
       userId = (await users.findOne({ email: req.body.cred.email, password: req.body.cred.password }))._id
       if (!userId) {
-        return res.json({ error: 'unauthorized or non-existing' })
+        return res.status(400).send({message: 'Not A Valid User'})
       }
     }
     switch (req.body.type) {
       case 'signIn': {
-        return res.json({ error: '', data: { cred: req.body.cred } }) // TODO create session
+        return res.json({ cred: req.body.cred }) // TODO create session
       }
       case 'signOut': {
-        return res.json({ error: '' } ) // TODO delete session
+        return // TODO delete session
       }
       case 'openWorkspace': {
-        return res.json({ error: '', data: (await MongoQueries.openWorkspace(users, userId)).at(0) })
+        return res.json((await MongoQueries.openWorkspace(users, userId)).at(0))
       }
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.selectMap(users, userId, mapId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'selectFirstMapFrame': {
         await MongoMutations.selectFirstMapFrame(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'selectPrevMapFrame': {
         await MongoMutations.selectPrevMapFrame(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'selectNextMapFrame': {
         await MongoMutations.selectNextMapFrame(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'createMapInMap': {
         const mapId = ObjectId(req.body.payload.mapId)
@@ -140,41 +140,41 @@ app.post('/beta', async (req, res) => {
         const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
         await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
         await MongoMutations.selectMap(users, userId, newMapId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'createMapInTab': {
         const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
         await MongoMutations.createMapInTab(users, userId, newMapId)
         await MongoMutations.selectMap(users, userId, newMapId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'createMapFrameImport': {
         await MongoMutations.createMapFrameImport(maps, userId)
         await MongoMutations.selectNextMapFrame(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'createMapFrameDuplicate': {
         await MongoMutations.createMapFrameDuplicate(maps, userId)
         await MongoMutations.selectNextMapFrame(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'moveUpMapInTab': {
         await MongoMutations.moveUpMapInTab(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'moveDownMapInTab': {
         await MongoMutations.moveDownMapInTab(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'deleteMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.deleteMap(users, shares, userId, mapId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'deleteMapFrame': {
         await MongoMutations.deleteMapFrame(maps, userId)
         await MongoMutations.selectPrevMapFrame(users, userId)
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'saveMap': {
         // await new Promise(resolve => setTimeout(resolve, 5000))
@@ -190,19 +190,19 @@ app.post('/beta', async (req, res) => {
             await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
           }
         }
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'getShares': {
-        return res.json({data: await MongoQueries.getUserShares(shares, userId)})
+        return res.json(await MongoQueries.getUserShares(shares, userId))
       }
       case 'createShare': {
         const mapId = ObjectId(req.body.payload.mapId)
         const { shareEmail, shareAccess } = req.body.payload
         const shareUser = await users.findOne({ email: shareEmail })
         if (shareUser === null) {
-          return res.json({ error: 'createShareFailNotAValidUser' })
+          return res.status(400).send({message: 'Create Share Failed: Not A Valid User'})
         } else if (isEqual(shareUser._id, userId)) {
-          return res.json({ error: 'createShareFailCantShareWithYourself' })
+          return res.status(400).send({message: 'Create Share Failed: You Are The Owner'})
         } else {
           const currShare = await shares.findOne({
             sharedMap: mapId,
@@ -218,16 +218,15 @@ app.post('/beta', async (req, res) => {
               status: SHARE_STATUS.WAITING
             }
             await shares.insertOne(newShare)
-            return res.json({})
           } else {
             if (currShare.access === shareAccess) {
-              return res.json({ error: 'createShareFailAlreadyShared' })
+              return res.status(400).send({message: 'Create Share Failed: Already Shared'})
             } else {
               await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
-              return res.json({})
             }
           }
         }
+        return res.sendStatus(200)
       }
       case 'acceptShare': {
         const shareId = ObjectId(req.body.payload.shareId)
@@ -238,27 +237,26 @@ app.post('/beta', async (req, res) => {
         )).value
         const mapId = share.sharedMap
         await MongoMutations.createMapInTab(users, userId, mapId)
-        return res.json({ error: '' })
+        return res.sendStatus(200)
       }
       case 'toggleColorMode': {
         const { colorMode } = req.body.payload
         const newColorMode = colorMode === 'light' ? 'dark' : 'light'
         await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
-        return res.json({ error: '', data: { colorMode: newColorMode } })
+        return res.json({ colorMode: newColorMode })
       }
       case 'changeTabWidth': {
         // TODO
-        return res.json({})
+        return res.sendStatus(200)
       }
       case 'deleteAccount': {
         await users.deleteOne({ _id: userId })
-        return res.json({ error: '' })
+        return res.sendStatus(200)
       }
     }
   } catch (err) {
-    console.log('server error')
     console.log(err.stack)
-    return { error: err.stack }
+    return res.status(400).send({ message: err.stack })
   }
 })
 

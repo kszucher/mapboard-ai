@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, getMapSaveProps, RootState} from "./EditorFlow";
+import {actions, DefaultUseOpenWorkspaceQueryState, getMapSaveProps, RootState} from "./EditorFlow";
 import {timeoutId} from "../component/WindowListeners";
 
 const backendUrl = process.env.NODE_ENV === 'development'
@@ -23,12 +23,12 @@ export const api = createApi({
       return headers
     },
   }),
-  tagTypes: ['UserInfo', 'Workspace'],
+  tagTypes: ['Workspace', 'Shares'],
   endpoints: (builder) => ({
     // liveDemo: builder.query({
     //   query: () => ({url: '', method: 'POST', body: { cred: getCred(), type: 'LIVE_DEMO' } }),
     // }),
-    signIn: builder.mutation<{ data: any }, void>({
+    signIn: builder.mutation<{ cred: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
@@ -40,7 +40,7 @@ export const api = createApi({
       },
       invalidatesTags: []
     }),
-    openWorkspace: builder.query<{ data: any }, void>({
+    openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState }) {
         const editor = (getState() as RootState).editor
@@ -104,11 +104,19 @@ export const api = createApi({
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
       invalidatesTags: []
     }),
-    getShares: builder.query<{ data: any}, void>({query: () =>
+    getShares: builder.query<any, void>({query: () =>
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'getShares' } }),
-      providesTags: []
-    })
+      providesTags: ['Shares']
+    }),
+    createShare: builder.mutation<void, { shareEmail: string, shareAccess: string}>({query: ({ shareEmail, shareAccess }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createShare', payload: { shareEmail, shareAccess } } }),
+      invalidatesTags: ['Shares']
+    }),
+    acceptShare: builder.mutation<void, { shareId: string }>({query: ({ shareId }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'acceptShare', payload: { shareId } } }),
+      invalidatesTags: ['Shares']
+    }),
   })
 })
 
-export const { useOpenWorkspaceQuery, useGetSharesQuery } = api
+export const { useOpenWorkspaceQuery, useGetSharesQuery, useCreateShareMutation } = api

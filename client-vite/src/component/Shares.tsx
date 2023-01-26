@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react'
+import {FC} from 'react'
 import {useDispatch} from "react-redux"
 import {DataGrid} from "@mui/x-data-grid"
 import { Button, IconButton, Modal, Typography } from '@mui/material'
@@ -11,7 +11,7 @@ import {api, useGetSharesQuery} from "../core/Api";
 
 export const Shares: FC = () => {
   const { data, isFetching } = useGetSharesQuery()
-  let { shareDataExport, shareDataImport } = data?.data || { shareDataExport: [], shareDataImport: []}
+  let { shareDataExport, shareDataImport } = data || { shareDataExport: [], shareDataImport: []}
   shareDataExport = shareDataExport.map((el: any) => ({...el, id: el._id}))
   shareDataImport = shareDataImport.map((el: any) => ({...el, id: el._id}))
   const dispatch = useDispatch()
@@ -30,10 +30,9 @@ export const Shares: FC = () => {
             <CancelOutlinedIcon/>
           </IconButton>
         </strong>
-      ),
+      )
     }
   ]
-
   const columnsImport = [
     {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
     {field: 'ownerUserEmail', headerName: 'Shared By',   width: 250, sortable: false, editable: false},
@@ -44,55 +43,55 @@ export const Shares: FC = () => {
           <IconButton
             aria-label="xxx"
             size="small"
-            // onClick={_=>dispatch(sagaActions.acceptShare(params.row._id))}
+            onClick={()=>dispatch(api.endpoints.acceptShare.initiate({shareId: params.row._id}))}
             disabled={params.row.status === 'accepted'}>
             {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}
             {params.row.status === 'accepted' && <CheckCircleIcon/>}
           </IconButton>
         </strong>
-      ),
+      )
     }
   ]
-
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      {<div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[790px] flex flex-col items-center gap-4 p-5 rounded-2xl">
-        <Typography component="h1" variant="h5" color="primary">{'Maps I Share With Others'}</Typography>
+      <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[790px] flex flex-col items-center gap-4 p-5 rounded-2xl">
+        <Typography component="h1" variant="h5" color="primary">
+          {'Maps I Share With Others'}
+        </Typography>
         <div style={{ width: '100%' }}>
-          {shareDataExport.length > 0 && <DataGrid
-            rows={shareDataExport}
-            columns={columnsExport}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            disableSelectionOnClick
-            autoHeight={true}
-          />}
+          {shareDataExport.length > 0 &&
+            <DataGrid
+              rows={shareDataExport}
+              columns={columnsExport}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              checkboxSelection
+              disableSelectionOnClick
+              autoHeight={true}
+            />}
         </div>
-        <Typography component="h1" variant="h5" color="primary">{'Maps Others Share With Me'}</Typography>
+        <Typography component="h1" variant="h5" color="primary">
+          {'Maps Others Share With Me'}
+        </Typography>
         <div style={{ width: '100%' }}>
-          {shareDataImport.length > 0 && <DataGrid
-            rows={shareDataImport}
-            columns={columnsImport}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            checkboxSelection
-            disableSelectionOnClick
-            autoHeight={true}
-          />}
+          {shareDataImport.length > 0 &&
+            <DataGrid
+              rows={shareDataImport}
+              columns={columnsImport}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              checkboxSelection
+              disableSelectionOnClick
+              autoHeight={true}
+            />}
         </div>
         <Button
           color="primary"
           variant='outlined'
-          // onClick={_=>dispatch(sagaActions.getShares())}
-        >
-          {'REFRESH'}
-        </Button>
-        <Button color="primary" variant='outlined'
-                onClick={_=>dispatch(actions.setPageState(PageState.WS))}>
+          onClick={() => dispatch(actions.setPageState(PageState.WS))}>
           {'CLOSE'}
         </Button>
-      </div>}
+      </div>
     </Modal>
   )
 }

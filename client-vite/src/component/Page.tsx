@@ -76,7 +76,7 @@ export const Page: FC = () => {
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { colorMode, dataFrameSelected } = data?.data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, dataFrameSelected } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
 
   useEffect(()=> {

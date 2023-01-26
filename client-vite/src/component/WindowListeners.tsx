@@ -38,7 +38,7 @@ export const WindowListeners: FC = () => {
   const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || mapProps.saveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { colorMode, mapId, dataFrameSelected, access } = data?.data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, mapId, dataFrameSelected, access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
