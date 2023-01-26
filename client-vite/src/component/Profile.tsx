@@ -2,12 +2,15 @@ import {FC, useState} from 'react'
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { ShouldDeleteUser } from './ShouldDeleteUser'
-import {actions} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
+import {useOpenWorkspaceQuery} from "../core/Api";
 
 export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)
-  const name = useSelector((state: RootStateOrAny) => state.editor.name)
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { name } = data?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
