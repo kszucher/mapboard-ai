@@ -12,7 +12,7 @@ const getCred = () => {
   return JSON.parse(credString.length ? credString : `{email: '', password: ''}`)
 }
 
-export const api = createApi({
+export const api:any = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: backendUrl,
     prepareHeaders: (headers, { getState }) => {
