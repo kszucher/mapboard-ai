@@ -28,8 +28,6 @@ interface EditorState {
   shareEmail: string,
   shareAccess: string,
   shareFeedbackMessage: string,
-  shareDataExport: [],
-  shareDataImport: [],
   moreMenu: boolean,
   interactionDisabled: boolean,
   // query
@@ -60,8 +58,6 @@ const editorState : EditorState = {
   shareEmail: '',
   shareAccess: 'view',
   shareFeedbackMessage: '',
-  shareDataExport: [],
-  shareDataImport: [],
   moreMenu: false,
   interactionDisabled: false,
   // query

@@ -100,8 +100,11 @@ export const api = createApi({
     saveMap: builder.mutation<void, { mapId: string, dataFrameSelected: number, mapData: any }>({query: ({ mapId, dataFrameSelected, mapData }) =>
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
       invalidatesTags: []
+    }),
+    getShares: builder.query<{ data: any}, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'getShares' } }),
     })
   })
 })
 
-export const { useOpenWorkspaceQuery } = api
+export const { useOpenWorkspaceQuery, useGetSharesQuery } = api

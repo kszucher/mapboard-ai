@@ -164,8 +164,8 @@ async function getUserShares(shares, userId) {
       { $unset: [ "sharedMap", "map", "ownerUser", "shareUser", "user" ] },
     ]
   )
-  const shareDataExport = await shares.aggregate(getShareData('export')).toArray()
-  const shareDataImport = await shares.aggregate(getShareData('import')).toArray()
+  const shareDataExport = (await shares.aggregate(getShareData('export')).toArray())
+  const shareDataImport = (await shares.aggregate(getShareData('import')).toArray())
   return { shareDataExport, shareDataImport }
 }
 

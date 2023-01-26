@@ -1,5 +1,5 @@
 import {FC, useEffect} from 'react'
-import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
+import {useDispatch} from "react-redux"
 import {DataGrid} from "@mui/x-data-grid"
 import { Button, IconButton, Modal, Typography } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
@@ -7,11 +7,13 @@ import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
 import {actions} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
-import {api} from "../core/Api";
+import {api, useGetSharesQuery} from "../core/Api";
 
 export const Shares: FC = () => {
-  const shareDataExport = useSelector((state: RootStateOrAny) => state.editor.shareDataExport).map((el: any, idx: any) => ({...el, id: idx}))
-  const shareDataImport = useSelector((state: RootStateOrAny) => state.editor.shareDataImport).map((el: any, idx: any) => ({...el, id: idx}))
+  const { data, isFetching } = useGetSharesQuery()
+  let { shareDataExport, shareDataImport } = data?.data || { shareDataExport: [], shareDataImport: []}
+  shareDataExport = shareDataExport.map((el: any) => ({...el, id: el._id}))
+  shareDataImport = shareDataImport.map((el: any) => ({...el, id: el._id}))
   const dispatch = useDispatch()
   const columnsExport = [
     {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
@@ -30,7 +32,7 @@ export const Shares: FC = () => {
         </strong>
       ),
     }
-  ];
+  ]
 
   const columnsImport = [
     {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
@@ -50,11 +52,7 @@ export const Shares: FC = () => {
         </strong>
       ),
     }
-  ];
-
-  useEffect(() => {
-    // dispatch(sagaActions.getShares())
-  }, []);
+  ]
 
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

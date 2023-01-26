@@ -193,8 +193,7 @@ app.post('/beta', async (req, res) => {
         return res.json({})
       }
       case 'getShares': {
-        const shareInfo = await MongoQueries.getUserShares(shares, userId)
-        return res.json(shareInfo)
+        return res.json({data: await MongoQueries.getUserShares(shares, userId)})
       }
       case 'createShare': {
         const mapId = ObjectId(req.body.payload.mapId)
