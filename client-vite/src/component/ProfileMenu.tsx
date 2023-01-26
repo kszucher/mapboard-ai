@@ -3,6 +3,7 @@ import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions} from '../core/EditorFlow'
 import {PageState} from "../core/Types";
+import {api} from "../core/Api";
 
 export const ProfileMenu: FC = () => {
   const moreMenu = useSelector((state: RootStateOrAny) => state.editor.moreMenu)
@@ -49,7 +50,7 @@ export const ProfileMenu: FC = () => {
           // <Divider key={4} />,
           <MenuItem
             key={5}
-            // onClick={_=>dispatch(sagaActions.signOut())}
+            onClick={() => dispatch(api.endpoints.signOut.initiate())}
           >
             {'Sign Out'}
           </MenuItem>

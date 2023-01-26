@@ -107,7 +107,10 @@ app.post('/beta', async (req, res) => {
     }
     switch (req.body.type) {
       case 'signIn': {
-        return res.json({ error: '', data: { cred: req.body.cred } }) // TODO create session entry
+        return res.json({ error: '', data: { cred: req.body.cred } }) // TODO create session
+      }
+      case 'signOut': {
+        return res.json({ error: '' } ) // TODO delete session
       }
       case 'openWorkspace': {
         return res.json({ error: '', data: (await MongoQueries.openWorkspace(users, userId)).at(0) })
@@ -190,11 +193,8 @@ app.post('/beta', async (req, res) => {
         return res.json({})
       }
       case 'getShares': {
-        // async function getShareInfo (userId) {
-        //   res.json(await MongoQueries.getUserShares(shares, userId)
-        // }
-        const shareInfo = await getShareInfo(userId)
-        return res.json({})
+        const shareInfo = await MongoQueries.getUserShares(shares, userId)
+        return res.json(shareInfo)
       }
       case 'createShare': {
         const mapId = ObjectId(req.body.payload.mapId)

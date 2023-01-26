@@ -33,6 +33,10 @@ export const api = createApi({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
+    signOut: builder.mutation<{ data: any }, void>({
+      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signOut' } }),
+      invalidatesTags: []
+    }),
     openWorkspace: builder.query<{ data: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState }) {

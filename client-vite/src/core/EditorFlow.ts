@@ -115,7 +115,6 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
-    resetState(state) {return JSON.parse(editorStateDefault)},
     signInPanel(state) {
       state.authPageState = AuthPageState.SIGN_IN
       state.authFeedbackMessage = ''
@@ -178,6 +177,13 @@ export const editorSlice = createSlice({
         localStorage.setItem('cred', JSON.stringify(cred))
         initDomData()
         state.pageState = PageState.WS
+      }
+    )
+    builder.addMatcher(
+      api.endpoints.signOut.matchFulfilled,
+      (state) => {
+        localStorage.clear()
+        Object.assign(state, JSON.parse(editorStateDefault))
       }
     )
     builder.addMatcher(
