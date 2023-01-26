@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {getMapSaveProps, RootState} from "./EditorFlow";
+import {actions, getMapSaveProps, RootState} from "./EditorFlow";
 import {timeoutId} from "../component/WindowListeners";
 
 const backendUrl = process.env.NODE_ENV === 'development'
@@ -28,13 +28,16 @@ export const api = createApi({
     // liveDemo: builder.query({
     //   query: () => ({url: '', method: 'POST', body: { cred: getCred(), type: 'LIVE_DEMO' } }),
     // }),
-
     signIn: builder.mutation<{ data: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
     signOut: builder.mutation<{ data: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signOut' } }),
+      async onQueryStarted(arg, { dispatch }) {
+        dispatch(actions.resetState())
+        dispatch(api.util.resetApiState())
+      },
       invalidatesTags: []
     }),
     openWorkspace: builder.query<{ data: any }, void>({
@@ -103,6 +106,7 @@ export const api = createApi({
     }),
     getShares: builder.query<{ data: any}, void>({query: () =>
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'getShares' } }),
+      providesTags: []
     })
   })
 })
