@@ -174,8 +174,8 @@ app.post('/beta', async (req, res) => {
     }
     case 'saveMap': {
       // await new Promise(resolve => setTimeout(resolve, 5000))
-      const mapId = ObjectId(req.body.save.mapId)
-      const { mapData, dataFrameSelected } = req.body.save
+      const mapId = ObjectId(req.body.mapId)
+      const { mapData, dataFrameSelected } = req.body
       const map = await maps.findOne({_id: mapId})
       const { ownerUser } = map
       const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
