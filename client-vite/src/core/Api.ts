@@ -20,7 +20,6 @@ export const api = createApi({
       // if (token) {
       //   headers.set('authorization', `Bearer ${token}`)
       // }
-      headers.set('Content-Type', 'application/json')
       return headers
     },
   }),
