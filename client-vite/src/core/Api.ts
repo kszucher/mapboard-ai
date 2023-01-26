@@ -20,7 +20,6 @@ export const api = createApi({
       // if (token) {
       //   headers.set('authorization', `Bearer ${token}`)
       // }
-      // headers.set('Content-Type', 'application/json')
       return headers
     },
   }),
@@ -37,7 +36,8 @@ export const api = createApi({
     openWorkspace: builder.query<{ data: any }, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState }) {
-        if ((getState() as RootState).editor.mapId !== '') {
+        const editor = (getState() as RootState).editor
+        if (editor.mapStackData.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
           dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
