@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, DefaultUseOpenWorkspaceQueryState, getMapSaveProps, RootState} from "./EditorFlow";
+import {actions, DefaultUseOpenWorkspaceQueryState, getSaveMapProps, RootState} from "./EditorFlow";
 import {timeoutId} from "../component/WindowListeners";
 
 const backendUrl = process.env.NODE_ENV === 'development'
@@ -47,7 +47,7 @@ export const api = createApi({
         if (editor.mapStackData.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
+          dispatch(api.endpoints.saveMap.initiate(getSaveMapProps()))
         }
       },
       providesTags: ['Workspace']
@@ -108,13 +108,13 @@ export const api = createApi({
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'getShares' } }),
       providesTags: ['Shares']
     }),
-    createShare: builder.mutation<void, { shareEmail: string, shareAccess: string}>({query: ({ shareEmail, shareAccess }) =>
-        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createShare', payload: { shareEmail, shareAccess } } }),
+    createShare: builder.mutation<void, { mapId: string, shareEmail: string, shareAccess: string}>({query: ({ mapId, shareEmail, shareAccess }) =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'createShare', payload: { mapId, shareEmail, shareAccess } } }),
       invalidatesTags: ['Shares']
     }),
     acceptShare: builder.mutation<void, { shareId: string }>({query: ({ shareId }) =>
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'acceptShare', payload: { shareId } } }),
-      invalidatesTags: ['Shares']
+      invalidatesTags: ['Workspace', 'Shares']
     }),
   })
 })

@@ -6,7 +6,7 @@ import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 export const ShouldUpdateTask: FC = () => {
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
+  const interactionDisabled = false
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   return (

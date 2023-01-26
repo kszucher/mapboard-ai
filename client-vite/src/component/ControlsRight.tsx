@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, defaultUseOpenWorkspaceQueryState, getMapSelectProps} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState, getMapId} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapProps} from "../core/DefaultProps";
@@ -111,7 +111,7 @@ export const ControlsRight: FC = () => {
         <IconButton
           color='secondary'
           disabled={dataFrameSelected === -1}
-          onClick={() => dispatch(api.endpoints.selectMap.initiate(getMapSelectProps()))}
+          onClick={() => dispatch(api.endpoints.selectMap.initiate(getMapId()))}
         >
           <CloseIcon/>
         </IconButton>

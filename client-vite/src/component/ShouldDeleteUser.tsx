@@ -1,8 +1,6 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
 
 export const ShouldDeleteUser:FC = () => {
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)

@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, getMapCreationProps} from "../core/EditorFlow";
+import {actions, getCreateMapProps} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 
@@ -20,7 +20,7 @@ export const ShouldCreateMapInMap: FC = () => {
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button
             color="primary" variant='outlined' disabled={isFetching}
-            onClick={() => dispatch(api.endpoints.createMapInMap.initiate(getMapCreationProps()))}>
+            onClick={() => dispatch(api.endpoints.createMapInMap.initiate(getCreateMapProps()))}>
             {'OK'}
           </Button>
           <Button

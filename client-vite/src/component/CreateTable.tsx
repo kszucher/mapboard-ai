@@ -8,7 +8,7 @@ import {useMapDispatch} from "../hooks/UseMapDispatch";
 export const CreateTable: FC = () => {
   const [row, setRow] = useState<string>('1')
   const [col, setCol] = useState<string>('1')
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
+  const interactionDisabled = false
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 

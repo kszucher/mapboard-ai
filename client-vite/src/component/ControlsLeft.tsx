@@ -6,7 +6,7 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {api} from "../core/Api";
-import {getMapSelectProps} from "../core/EditorFlow";
+import {getMapId} from "../core/EditorFlow";
 
 export const ControlsLeft: FC = () => {
   const dispatch = useDispatch()
@@ -36,7 +36,7 @@ export const ControlsLeft: FC = () => {
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(api.endpoints.deleteMap.initiate(getMapSelectProps()))}
+          onClick={() => dispatch(api.endpoints.deleteMap.initiate(getMapId()))}
           disabled={false}
         >
           <DeleteIcon/>

@@ -11,7 +11,7 @@ import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapSaveProps} from "../core/EditorFlow"
+import {actions, defaultUseOpenWorkspaceQueryState, getMap, getSaveMapProps} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
@@ -45,7 +45,7 @@ export const WindowListeners: FC = () => {
 
   // TIMEOUT
   const timeoutFun = () => {
-    dispatch(api.endpoints.saveMap.initiate(getMapSaveProps()))
+    dispatch(api.endpoints.saveMap.initiate(getSaveMapProps()))
     console.log('saved by timeout')
   }
 

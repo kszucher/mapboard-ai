@@ -1,16 +1,16 @@
 import {FC, useState} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
-import {actions, defaultUseOpenWorkspaceQueryState} from '../core/EditorFlow'
+import {useDispatch} from "react-redux";
+import {actions, getMapId} from '../core/EditorFlow'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {AccessTypes, PageState} from "../core/Types";
-import {api, useCreateShareMutation, useGetSharesQuery} from "../core/Api";
+import { useCreateShareMutation} from "../core/Api";
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 export const ShareThisMap: FC = () => {
   const [ createShare,  response ] = useCreateShareMutation()
   const errorMessage = (response.error as BaseQueryError<any>)?.data?.message
   const [shareEmail, setShareEmail] = useState('')
-  const [shareAccess, setShareAccess] = useState('')
+  const [shareAccess, setShareAccess] = useState(AccessTypes.VIEW)
   const dispatch = useDispatch()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
@@ -29,7 +29,7 @@ export const ShareThisMap: FC = () => {
           <RadioGroup
             aria-label="my-aria-label" name="my-name" row={true}
             value={shareAccess}
-            onChange={(e) => setShareAccess(e.target.value)}>
+            onChange={(e) => setShareAccess(e.target.value as AccessTypes)}>
             {[AccessTypes.VIEW, AccessTypes.EDIT].map(
               (name, index) => <FormControlLabel value={name} control={<Radio />} label={name} key={index}/>
             )}
@@ -42,7 +42,7 @@ export const ShareThisMap: FC = () => {
         }
         <Button
           color="primary" variant="outlined"
-          onClick={() => createShare({shareEmail, shareAccess})}
+          onClick={() => createShare({mapId: getMapId().mapId, shareEmail, shareAccess})}
         >
           {'SHARE'}
         </Button>

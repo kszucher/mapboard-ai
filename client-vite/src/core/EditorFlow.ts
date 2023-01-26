@@ -26,7 +26,6 @@ interface EditorState {
   selectTarget: [],
   formatterVisible: boolean,
   moreMenu: boolean,
-  interactionDisabled: boolean,
   // query
   mapId: string,
   dataFrameSelected: number,
@@ -53,7 +52,6 @@ const editorState : EditorState = {
   selectTarget: [],
   formatterVisible: false,
   moreMenu: false,
-  interactionDisabled: false,
   // query
   mapId: '',
   dataFrameSelected: 0,
@@ -99,21 +97,22 @@ export const getMoveTarget = () => (store.getState().editor.moveTarget)
 export const getSelectTarget = () => (store.getState().editor.selectTarget)
 export const getTempMap = () => (store.getState().editor.tempMap)
 export const getMap = () : { g: any, r: any } => (store.getState().editor.mapStackData[store.getState().editor.mapStackDataIndex])
-export const getMapSaveProps = () => {
+export const getMapId = () => {
+  const { mapId } = store.getState().editor
+  return { mapId }
+}
+export const getSaveMapProps = () => {
   const { mapId, dataFrameSelected } = store.getState().editor
   const m = getMap()
   const mapData = getSavedMapData(m)
   return { mapId, dataFrameSelected, mapData }
 }
-export const getMapCreationProps = () : { mapId: string, nodeId: string, content: string }  => {
+export const getCreateMapProps = () : { mapId: string, nodeId: string, content: string }  => {
   const { mapId } = store.getState().editor
   const m = getMap()
   const { lastPath } = m.g.sc
   const last = getMapData(m, lastPath)
   return { mapId, nodeId: last.nodeId, content: last.content }
-}
-export const getMapSelectProps = () => {
-  return { mapId: store.getState().editor.breadcrumbMapIdList.at(-1) }
 }
 
 export const editorSlice = createSlice({
@@ -147,8 +146,6 @@ export const editorSlice = createSlice({
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
-    interactionEnabled(state) { state.interactionDisabled =  false },
-    interactionDisabled(state) { state.interactionDisabled = true },
     mutateMapStack(state, action: PayloadAction<any>) {
       const m = state.mapStackData[state.mapStackDataIndex]
       if (

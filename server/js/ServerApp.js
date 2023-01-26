@@ -5,8 +5,8 @@ const app = express()
 const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const nodemailer = require("nodemailer")
-const MongoQueries = require("./MongoQueries");
-const MongoMutations = require("./MongoMutations");
+const MongoQueries = require("./MongoQueries")
+const MongoMutations = require("./MongoMutations")
 
 const { baseUri } = require('./MongoSecret')
 const { ACTIVATION_STATUS, ACCESS_TYPES, SHARE_STATUS } = require('./Types')

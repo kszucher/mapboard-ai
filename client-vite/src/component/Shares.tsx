@@ -26,7 +26,8 @@ export const Shares: FC = () => {
             aria-label="xxx"
             size="small"
             onClick={()=>dispatch(api.endpoints.deleteMap.initiate({mapId: params.row._id}))}
-            disabled={false}>
+            disabled={false}
+          >
             <CancelOutlinedIcon/>
           </IconButton>
         </strong>
@@ -44,7 +45,8 @@ export const Shares: FC = () => {
             aria-label="xxx"
             size="small"
             onClick={()=>dispatch(api.endpoints.acceptShare.initiate({shareId: params.row._id}))}
-            disabled={params.row.status === 'accepted'}>
+            disabled={params.row.status === 'accepted'}
+          >
             {params.row.status === 'waiting' && <AddCircleOutlineIcon/>}
             {params.row.status === 'accepted' && <CheckCircleIcon/>}
           </IconButton>
@@ -54,7 +56,7 @@ export const Shares: FC = () => {
   ]
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
-      <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[790px] flex flex-col items-center gap-4 p-5 rounded-2xl">
+      <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[860px] flex flex-col items-center gap-4 p-5 rounded-2xl">
         <Typography component="h1" variant="h5" color="primary">
           {'Maps I Share With Others'}
         </Typography>
