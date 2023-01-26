@@ -74,186 +74,192 @@ app.use(cors())
 app.use(express.json())
 app.get('/test', (req, res) => { res.send('MapBoard Server is running!') })
 app.post('/beta', async (req, res) => {
-  // PUBLIC
-  switch (req.body.type) {
-    case 'liveDemo': {
-      const mapId = ObjectId('5f3fd7ba7a84a4205428c96a') // this could depend on queryString
-      const mapDataFrames = (await maps.findOne({ _id: mapId })).dataFrames
-      const access = ACCESS_TYPES.VIEW
-      return res.json({ error: '', data: { mapId, mapDataFrames, access } })
-    }
-  }
-  // PROTECTED
-  // TODO on new user created
-  // let newMap = getDefaultMap('My First Map', currUser._id, [])
-  // let mapId = (await maps.insertOne(newMap)).insertedId
-  // await users.updateOne(
-  //   { _id: currUser._id },
-  //   {
-  //     $set: {
-  //       activationStatus: ACTIVATION_STATUS.COMPLETED,
-  //       tabMapIdList: [...systemMaps, mapId],
-  //       breadcrumbMapIdList: [mapId]
-  //     }
-  //   }
-  // )
-  let userId
-  if (req.body.hasOwnProperty('cred')) {
-    userId = (await users.findOne( { email: req.body.cred.email, password: req.body.cred.password } ))._id
-    if (!userId) {
-      return res.json({ error: 'unauthorized or non-existing' })
-    }
-  }
-  switch (req.body.type) {
-    case 'signIn': {
-      return res.json({ error: '', data: { cred: req.body.cred } }) // TODO create session entry
-    }
-    case 'openWorkspace': {
-      return res.json({ error: '', data: (await MongoQueries.openWorkspace(users, userId)).at(0) })
-    }
-    case 'selectMap': {
-      const mapId = ObjectId(req.body.payload.mapId)
-      await MongoMutations.selectMap(users, userId, mapId)
-      return res.json({})
-    }
-    case 'selectFirstMapFrame': {
-      await MongoMutations.selectFirstMapFrame(users, userId)
-      return res.json({})
-    }
-    case 'selectPrevMapFrame': {
-      await MongoMutations.selectPrevMapFrame(users, userId)
-      return res.json({})
-    }
-    case 'selectNextMapFrame': {
-      await MongoMutations.selectNextMapFrame(users, userId)
-      return res.json({})
-    }
-    case 'createMapInMap': {
-      const mapId = ObjectId(req.body.payload.mapId)
-      const { nodeId, content } = req.body.payload
-      const map = await maps.findOne({_id: mapId})
-      const { path } = map
-      const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [ ...path, mapId ]))).insertedId
-      await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
-      await MongoMutations.selectMap(users, userId, newMapId)
-      return res.json({})
-    }
-    case 'createMapInTab': {
-      const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
-      await MongoMutations.createMapInTab(users, userId, newMapId)
-      await MongoMutations.selectMap(users, userId, newMapId)
-      return res.json({})
-    }
-    case 'createMapFrameImport': {
-      await MongoMutations.createMapFrameImport(maps, userId)
-      await MongoMutations.selectNextMapFrame(users, userId)
-      return res.json({})
-    }
-    case 'createMapFrameDuplicate': {
-      await MongoMutations.createMapFrameDuplicate(maps, userId)
-      await MongoMutations.selectNextMapFrame(users, userId)
-      return res.json({})
-    }
-    case 'moveUpMapInTab': {
-      await MongoMutations.moveUpMapInTab(users, userId)
-      return res.json({})
-    }
-    case 'moveDownMapInTab': {
-      await MongoMutations.moveDownMapInTab(users, userId)
-      return res.json({})
-    }
-    case 'deleteMap': {
-      const mapId = ObjectId(req.body.payload.mapId)
-      await MongoMutations.deleteMap(users, shares, userId, mapId)
-      return res.json({})
-    }
-    case 'deleteMapFrame': {
-      await MongoMutations.deleteMapFrame(maps, userId)
-      await MongoMutations.selectPrevMapFrame(users, userId)
-      return res.json({})
-    }
-    case 'saveMap': {
-      // await new Promise(resolve => setTimeout(resolve, 5000))
-      const mapId = ObjectId(req.body.mapId)
-      const { mapData, dataFrameSelected } = req.body
-      const map = await maps.findOne({_id: mapId})
-      const { ownerUser } = map
-      const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
-      if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-        if (dataFrameSelected === -1) {
-          await MongoMutations.saveMap(maps, mapId, 'map', mapData)
-        } else {
-          await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
-        }
+  try {
+    // PUBLIC
+    switch (req.body.type) {
+      case 'liveDemo': {
+        const mapId = ObjectId('5f3fd7ba7a84a4205428c96a') // this could depend on queryString
+        const mapDataFrames = (await maps.findOne({ _id: mapId })).dataFrames
+        const access = ACCESS_TYPES.VIEW
+        return res.json({ error: '', data: { mapId, mapDataFrames, access } })
       }
-      return res.json({})
     }
-    case 'getShares': {
-      // async function getShareInfo (userId) {
-      //   res.json(await MongoQueries.getUserShares(shares, userId)
-      // }
-      const shareInfo = await getShareInfo(userId)
-      return res.json({})
+    // PROTECTED
+    // TODO on new user created
+    // let newMap = getDefaultMap('My First Map', currUser._id, [])
+    // let mapId = (await maps.insertOne(newMap)).insertedId
+    // await users.updateOne(
+    //   { _id: currUser._id },
+    //   {
+    //     $set: {
+    //       activationStatus: ACTIVATION_STATUS.COMPLETED,
+    //       tabMapIdList: [...systemMaps, mapId],
+    //       breadcrumbMapIdList: [mapId]
+    //     }
+    //   }
+    // )
+    let userId
+    if (req.body.hasOwnProperty('cred')) {
+      userId = (await users.findOne({ email: req.body.cred.email, password: req.body.cred.password }))._id
+      if (!userId) {
+        return res.json({ error: 'unauthorized or non-existing' })
+      }
     }
-    case 'createShare': {
-      const mapId = ObjectId(req.body.payload.mapId)
-      const { shareEmail, shareAccess } = req.body.payload
-      const shareUser = await users.findOne({ email: shareEmail })
-      if (shareUser === null) {
-        return res.json({ error: 'createShareFailNotAValidUser' })
-      } else if (isEqual(shareUser._id, userId)) {
-        return res.json({ error: 'createShareFailCantShareWithYourself' })
-      } else {
-        const currShare = await shares.findOne({
-          sharedMap: mapId,
-          ownerUser: userId,
-          shareUser: shareUser._id
-        })
-        if (currShare === null) {
-          const newShare = {
+    switch (req.body.type) {
+      case 'signIn': {
+        return res.json({ error: '', data: { cred: req.body.cred } }) // TODO create session entry
+      }
+      case 'openWorkspace': {
+        return res.json({ error: '', data: (await MongoQueries.openWorkspace(users, userId)).at(0) })
+      }
+      case 'selectMap': {
+        const mapId = ObjectId(req.body.payload.mapId)
+        await MongoMutations.selectMap(users, userId, mapId)
+        return res.json({})
+      }
+      case 'selectFirstMapFrame': {
+        await MongoMutations.selectFirstMapFrame(users, userId)
+        return res.json({})
+      }
+      case 'selectPrevMapFrame': {
+        await MongoMutations.selectPrevMapFrame(users, userId)
+        return res.json({})
+      }
+      case 'selectNextMapFrame': {
+        await MongoMutations.selectNextMapFrame(users, userId)
+        return res.json({})
+      }
+      case 'createMapInMap': {
+        const mapId = ObjectId(req.body.payload.mapId)
+        const { nodeId, content } = req.body.payload
+        const map = await maps.findOne({ _id: mapId })
+        const { path } = map
+        const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
+        await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
+        await MongoMutations.selectMap(users, userId, newMapId)
+        return res.json({})
+      }
+      case 'createMapInTab': {
+        const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
+        await MongoMutations.createMapInTab(users, userId, newMapId)
+        await MongoMutations.selectMap(users, userId, newMapId)
+        return res.json({})
+      }
+      case 'createMapFrameImport': {
+        await MongoMutations.createMapFrameImport(maps, userId)
+        await MongoMutations.selectNextMapFrame(users, userId)
+        return res.json({})
+      }
+      case 'createMapFrameDuplicate': {
+        await MongoMutations.createMapFrameDuplicate(maps, userId)
+        await MongoMutations.selectNextMapFrame(users, userId)
+        return res.json({})
+      }
+      case 'moveUpMapInTab': {
+        await MongoMutations.moveUpMapInTab(users, userId)
+        return res.json({})
+      }
+      case 'moveDownMapInTab': {
+        await MongoMutations.moveDownMapInTab(users, userId)
+        return res.json({})
+      }
+      case 'deleteMap': {
+        const mapId = ObjectId(req.body.payload.mapId)
+        await MongoMutations.deleteMap(users, shares, userId, mapId)
+        return res.json({})
+      }
+      case 'deleteMapFrame': {
+        await MongoMutations.deleteMapFrame(maps, userId)
+        await MongoMutations.selectPrevMapFrame(users, userId)
+        return res.json({})
+      }
+      case 'saveMap': {
+        // await new Promise(resolve => setTimeout(resolve, 5000))
+        const mapId = ObjectId(req.body.payload.mapId)
+        const { mapData, dataFrameSelected } = req.body.payload
+        const map = await maps.findOne({ _id: mapId })
+        const { ownerUser } = map
+        const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
+        if (isEqual(userId, ownerUser) || shareToEdit !== null) {
+          if (dataFrameSelected === -1) {
+            await MongoMutations.saveMap(maps, mapId, 'map', mapData)
+          } else {
+            await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
+          }
+        }
+        return res.json({})
+      }
+      case 'getShares': {
+        // async function getShareInfo (userId) {
+        //   res.json(await MongoQueries.getUserShares(shares, userId)
+        // }
+        const shareInfo = await getShareInfo(userId)
+        return res.json({})
+      }
+      case 'createShare': {
+        const mapId = ObjectId(req.body.payload.mapId)
+        const { shareEmail, shareAccess } = req.body.payload
+        const shareUser = await users.findOne({ email: shareEmail })
+        if (shareUser === null) {
+          return res.json({ error: 'createShareFailNotAValidUser' })
+        } else if (isEqual(shareUser._id, userId)) {
+          return res.json({ error: 'createShareFailCantShareWithYourself' })
+        } else {
+          const currShare = await shares.findOne({
             sharedMap: mapId,
             ownerUser: userId,
-            shareUser: shareUser._id,
-            access: shareAccess,
-            status: SHARE_STATUS.WAITING
-          }
-          await shares.insertOne(newShare)
-          return res.json({})
-        } else {
-          if (currShare.access === shareAccess) {
-            return res.json({ error: 'createShareFailAlreadyShared' })
-          } else {
-            await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
+            shareUser: shareUser._id
+          })
+          if (currShare === null) {
+            const newShare = {
+              sharedMap: mapId,
+              ownerUser: userId,
+              shareUser: shareUser._id,
+              access: shareAccess,
+              status: SHARE_STATUS.WAITING
+            }
+            await shares.insertOne(newShare)
             return res.json({})
+          } else {
+            if (currShare.access === shareAccess) {
+              return res.json({ error: 'createShareFailAlreadyShared' })
+            } else {
+              await shares.updateOne({ _id: currShare._id }, { $set: { access: shareAccess } })
+              return res.json({})
+            }
           }
         }
       }
+      case 'acceptShare': {
+        const shareId = ObjectId(req.body.payload.shareId)
+        const share = (await shares.findOneAndUpdate(
+          { _id: shareId },
+          { $set: { status: SHARE_STATUS.ACCEPTED } },
+          { returnDocument: 'after' }
+        )).value
+        const mapId = share.sharedMap
+        await MongoMutations.createMapInTab(users, userId, mapId)
+        return res.json({ error: '' })
+      }
+      case 'toggleColorMode': {
+        const { colorMode } = req.body.payload
+        const newColorMode = colorMode === 'light' ? 'dark' : 'light'
+        await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
+        return res.json({ error: '', data: { colorMode: newColorMode } })
+      }
+      case 'changeTabWidth': {
+        // TODO
+        return res.json({})
+      }
+      case 'deleteAccount': {
+        await users.deleteOne({ _id: userId })
+        return res.json({ error: '' })
+      }
     }
-    case 'acceptShare': {
-      const shareId = ObjectId(req.body.payload.shareId)
-      const share = (await shares.findOneAndUpdate(
-        { _id: shareId },
-        { $set: { status: SHARE_STATUS.ACCEPTED }},
-        { returnDocument: 'after' }
-      )).value
-      const mapId = share.sharedMap
-      await MongoMutations.createMapInTab(users, userId, mapId)
-      return res.json({ error: '' })
-    }
-    case 'toggleColorMode': {
-      const { colorMode } = req.body.payload
-      const newColorMode = colorMode === 'light' ? 'dark' : 'light'
-      await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
-      return res.json({ error: '', data:  { colorMode: newColorMode } })
-    }
-    case 'changeTabWidth': {
-      // TODO
-      return res.json({})
-    }
-    case 'deleteAccount': {
-      await users.deleteOne({_id: userId})
-      return res.json({ error: ''})
-    }
+  } catch (err) {
+    console.log('server error')
+    console.log(err.stack)
+    return { error: err.stack }
   }
 })
 
