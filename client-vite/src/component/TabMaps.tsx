@@ -9,7 +9,7 @@ export const TabMaps: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const tabShrink = useSelector((state: RootStateOrAny) => state.editor.tabShrink)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFrameSelected, tabMapIdList, tabMapNameList, tabMapSelected } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
+  const { dataFrameSelected, tabMapIdList, tabMapNameList, tabMapSelected } = data?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div

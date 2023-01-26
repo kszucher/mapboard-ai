@@ -10,7 +10,7 @@ import {useOpenWorkspaceQuery} from "../core/Api";
 export const Settings: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { colorMode } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
+  const { colorMode } = data?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <Modal

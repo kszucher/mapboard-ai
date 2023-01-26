@@ -174,7 +174,7 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
-        const { cred } = payload.resp.data
+        const { cred } = payload.data
         localStorage.setItem('cred', JSON.stringify(cred))
         initDomData()
         state.pageState = PageState.WS
@@ -183,7 +183,7 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, dataFrameSelected, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload.resp.data
+        const { mapId, dataFrameSelected, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload.data
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el)))
         state.mapStackDataIndex = 0
         state.editedNodeId = ''

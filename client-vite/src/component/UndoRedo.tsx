@@ -14,7 +14,7 @@ export const UndoRedo: FC = () => {
   const undoDisabled = mapStackDataIndex === 0
   const redoDisabled = mapStackDataIndex === mapStackData.length - 1
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { access } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
+  const { access } = data?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">

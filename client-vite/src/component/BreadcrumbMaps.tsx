@@ -9,7 +9,7 @@ import {PageState} from "../core/Types";
 export const BreadcrumbMaps: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFrameSelected, breadcrumbMapIdList, breadcrumbMapNameList } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
+  const { dataFrameSelected, breadcrumbMapIdList, breadcrumbMapNameList } = data?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-2xl py-1 px-4 border-2 border-mb-pink border-t-0">

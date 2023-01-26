@@ -10,7 +10,7 @@ import {PageState} from "../core/Types";
 export const FrameCarousel: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFramesLen, dataFrameSelected } = data?.resp?.data || defaultUseOpenWorkspaceQueryState
+  const { dataFramesLen, dataFrameSelected } = data?.data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
