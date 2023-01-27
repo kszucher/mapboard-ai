@@ -240,10 +240,8 @@ app.post('/beta', async (req, res) => {
         return res.sendStatus(200)
       }
       case 'toggleColorMode': {
-        const { colorMode } = req.body.payload
-        const newColorMode = colorMode === 'light' ? 'dark' : 'light'
-        await users.updateOne({ _id: userId }, { $set: { colorMode: newColorMode } })
-        return res.json({ colorMode: newColorMode })
+        await MongoMutations.toggleColorMode(users, userId)
+        return res.sendStatus(200)
       }
       case 'changeTabWidth': {
         // TODO

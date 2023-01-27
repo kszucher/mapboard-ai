@@ -5,7 +5,7 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {PageState} from "../core/Types";
-import {useOpenWorkspaceQuery} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 export const Settings: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
@@ -21,7 +21,7 @@ export const Settings: FC = () => {
       <div className="_bg fixed left-1/2 -translate-x-1/2 top-[96px] width-[1000px] flex flex-col items-center gap-4 p-5 rounded-2xl">
         <IconButton
           color='secondary'
-          // onClick={_=>dispatch(sagaActions.toggleColorMode())}
+          onClick={() => dispatch(api.endpoints.toggleColorMode.initiate())}
         >
           {colorMode === 'light' && <LightModeIcon/>}
           {colorMode === 'dark' && <DarkModeIcon/>}
@@ -29,7 +29,7 @@ export const Settings: FC = () => {
         <Button
           color="primary"
           variant="outlined"
-          // onClick={_=>dispatch(actions.setPageState(PageState.WS))}
+          onClick={_=>dispatch(actions.setPageState(PageState.WS))}
         >
           {'CLOSE'}
         </Button>
