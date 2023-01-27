@@ -1,5 +1,5 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AuthPageState, FormatMode, AccessTypes, PageState} from "./Types";
+import {FormatMode, AccessTypes, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly";
 import {getMapData, getSavedMapData, reCalc} from "./MapFlow";
 import {mapDeInit} from "../map/MapDeInit";
@@ -8,13 +8,6 @@ import {api} from "./Api";
 import {initDomData} from "./DomFlow";
 
 interface EditorState {
-  authPageState: AuthPageState,
-  name: string,
-  email: string,
-  password: string,
-  passwordAgain: string,
-  confirmationCode: string,
-  authFeedbackMessage: string,
   pageState: PageState,
   formatMode: FormatMode,
   tabShrink: boolean,
@@ -34,13 +27,6 @@ interface EditorState {
 }
 
 const editorState : EditorState = {
-  authPageState: AuthPageState.SIGN_IN,
-  name: '',
-  email: '',
-  password: '',
-  passwordAgain: '',
-  confirmationCode: '',
-  authFeedbackMessage: '',
   pageState: PageState.AUTH,
   formatMode: FormatMode.text,
   tabShrink: false,
@@ -120,26 +106,6 @@ export const editorSlice = createSlice({
   initialState: editorState,
   reducers: {
     resetState() {return JSON.parse(editorStateDefault)},
-    signInPanel(state) {
-      state.authPageState = AuthPageState.SIGN_IN
-      state.authFeedbackMessage = ''
-    },
-    signUpPanel(state) {
-      state.authPageState = AuthPageState.SIGN_UP_STEP_1
-      state.name =''
-      state.email = ''
-      state.password = ''
-      state.passwordAgain = ''
-      state.authFeedbackMessage = ''
-    },
-    signUpStep1Panel(state) { state.authPageState = AuthPageState.SIGN_UP_STEP_1 },
-    signUpStep2Panel(state) { state.authPageState = AuthPageState.SIGN_UP_STEP_2 },
-    setName(state, action: PayloadAction<string>) { state.name = action.payload },
-    setEmail(state, action: PayloadAction<string>) { state.email = action.payload},
-    setPassword(state, action: PayloadAction<string>) { state.password = action.payload },
-    setPasswordAgain(state, action: PayloadAction<string>) { state.passwordAgain = action.payload },
-    setConfirmationCode(state, action: PayloadAction<string>) { state.confirmationCode = action.payload },
-    setAuthFeedbackMessage(state, action: PayloadAction<string>) { state.authFeedbackMessage = action.payload },
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
     toggleFormatterVisible(state) { state.formatterVisible = !state.formatterVisible },

@@ -1,9 +1,3 @@
-export enum AuthPageState {
-  SIGN_IN,
-  SIGN_UP_STEP_1,
-  SIGN_UP_STEP_2
-}
-
 export enum PageState {
   AUTH,
   DEMO,
