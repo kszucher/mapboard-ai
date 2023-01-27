@@ -5,6 +5,13 @@ const genNodeId = () => {
   return { $concat: ['node', ...randomAlphanumeric8digit] }
 }
 
+async function toggleColorMode(users, userId) {
+  await users.findOneAndUpdate(
+    { _id: userId },
+    [{ $set: { colorMode: { $cond: { if: { $eq: [ '$colorMode', 'dark' ] }, then: 'light', else: 'dark' } } } }]
+  )
+}
+
 async function selectMap(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
@@ -630,7 +637,8 @@ async function deleteUnusedMaps(users, maps) {
 
 module.exports = {
   genNodeId,
-  selectMap,
+  toggleColorMode, // TODO test
+  selectMap, // TODO test
   moveUpMapInTab,
   moveDownMapInTab,
   createMapInTab, // TODO test
