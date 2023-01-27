@@ -1,8 +1,12 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
+import {api} from "../core/Api";
+import {actions} from "../core/EditorFlow";
+import {PageState} from "../core/Types";
 
 export const ShouldDeleteUser:FC = () => {
+  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
   const dispatch = useDispatch()
   return(
@@ -23,7 +27,7 @@ export const ShouldDeleteUser:FC = () => {
             color="primary"
             variant='outlined'
             disabled={interactionDisabled}
-            // onClick={_=>dispatch(sagaActions.deleteAccount())}
+            onClick={() => dispatch(api.endpoints.deleteAccount.initiate())}
           >
             {'OK'}
           </Button>
@@ -31,7 +35,7 @@ export const ShouldDeleteUser:FC = () => {
             color="primary"
             variant='outlined'
             disabled={interactionDisabled}
-            // onClick={_=>dispatch(actions.setPageState(PageState.WS))}
+            onClick={_=>dispatch(actions.setPageState(PageState.WS))}
           >
             {'CANCEL'}
           </Button>

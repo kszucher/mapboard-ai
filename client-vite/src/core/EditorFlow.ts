@@ -181,9 +181,7 @@ export const editorSlice = createSlice({
     )
     builder.addMatcher(
       api.endpoints.signOut.matchFulfilled,
-      (state) => {
-        localStorage.clear()
-      }
+      () => { localStorage.clear() }
     )
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
@@ -199,6 +197,10 @@ export const editorSlice = createSlice({
         state.breadcrumbMapIdList = breadcrumbMapIdList
         state.tabMapIdList = tabMapIdList
       }
+    )
+    builder.addMatcher(
+      api.endpoints.deleteAccount.matchFulfilled,
+      () => { localStorage.clear() }
     )
   }
 })

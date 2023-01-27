@@ -120,6 +120,14 @@ export const api = createApi({
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'toggleColorMode' } }),
       invalidatesTags: ['Workspace']
     }),
+    deleteAccount: builder.mutation<void, void>({
+      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'deleteAccount' } }),
+      async onQueryStarted(arg, { dispatch }) {
+        dispatch(actions.resetState())
+        dispatch(api.util.resetApiState())
+      },
+      invalidatesTags: []
+    }),
   })
 })
 
