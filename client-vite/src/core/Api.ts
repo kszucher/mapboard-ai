@@ -116,6 +116,10 @@ export const api = createApi({
         ({ url: '', method: 'POST', body: { cred: getCred(), type: 'acceptShare', payload: { shareId } } }),
       invalidatesTags: ['Workspace', 'Shares']
     }),
+    toggleColorMode: builder.mutation<void, void>({query: () =>
+        ({ url: '', method: 'POST', body: { cred: getCred(), type: 'toggleColorMode' } }),
+      invalidatesTags: ['Workspace']
+    }),
   })
 })
 
