@@ -24,19 +24,23 @@ async function mongoStagingCommands (users, maps, shares) {
 
   // await MongoMutations.updateNodePropValueBasedOnPreviousValue(maps, 'taskStatus', -1, 0)
 
-  await maps.updateMany({}, [
-    {
-      $set: {
-        path: {
-          $cond: {
-            if: { $and: [{ $eq: [{ $size: '$path' }, 1] }, { $eq: [{ $first: '$path' }, '$_id'] }] },
-            then: [],
-            else: '$path'
-          }
-        }
-      }
-    }
-  ])
+  // await maps.updateMany({}, [
+  //   {
+  //     $set: {
+  //       path: {
+  //         $cond: {
+  //           if: { $and: [{ $eq: [{ $size: '$path' }, 1] }, { $eq: [{ $first: '$path' }, '$_id'] }] },
+  //           then: [],
+  //           else: '$path'
+  //         }
+  //       }
+  //     }
+  //   }
+  // ])
+
+  // TODO add staging which assigns a versionID to each map's each dataHistory item's "g" node,
+  // frames I can just re-create
+
 }
 
 async function mongoStaging() {
