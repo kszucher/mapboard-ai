@@ -115,9 +115,19 @@ app.post('/beta', async (req, res) => {
       case 'openWorkspace': {
         return res.json((await MongoQueries.openWorkspace(users, userId)).at(0))
       }
+      case 'refreshWorkspace': {
+        // TODO: use mapId and versionId
+        return res.sendStatus(200)
+      }
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.selectMap(users, userId, mapId)
+        return res.sendStatus(200)
+      }
+      case 'selectMapFrame': {
+        // TODO use mapId, frameId
+        // TODO delete firstMapFrame (have << and >> instead frameId based on FE)
+        // TODO delete prevMapFrame, nextMapFrame (use frameId based on FE)
         return res.sendStatus(200)
       }
       case 'selectFirstMapFrame': {
@@ -149,20 +159,26 @@ app.post('/beta', async (req, res) => {
         return res.sendStatus(200)
       }
       case 'createMapFrameImport': {
-        await MongoMutations.createMapFrameImport(maps, userId)
+        // TODO use frameId
+        await MongoMutations.createMapFrameImport(maps, userId, /*TODO: genNodeId*/) // genNodeId return a string, which is test-compatible
+        // TODO query inserted generated frameId as finding the frameId in the frame that comes AFTER the frameId received from FE
+        // TODO selectMapFrame based on the acquired frameId
         await MongoMutations.selectNextMapFrame(users, userId)
         return res.sendStatus(200)
       }
       case 'createMapFrameDuplicate': {
+        // TODO similar logic to mapFrameImport
         await MongoMutations.createMapFrameDuplicate(maps, userId)
         await MongoMutations.selectNextMapFrame(users, userId)
         return res.sendStatus(200)
       }
       case 'moveUpMapInTab': {
+        // TODO use mapId, with check of inclusion
         await MongoMutations.moveUpMapInTab(users, userId)
         return res.sendStatus(200)
       }
       case 'moveDownMapInTab': {
+        // TODO use mapId, with check of inclusion
         await MongoMutations.moveDownMapInTab(users, userId)
         return res.sendStatus(200)
       }
@@ -172,6 +188,7 @@ app.post('/beta', async (req, res) => {
         return res.sendStatus(200)
       }
       case 'deleteMapFrame': {
+        // TODO use frameId from client
         await MongoMutations.deleteMapFrame(maps, userId)
         await MongoMutations.selectPrevMapFrame(users, userId)
         return res.sendStatus(200)
@@ -185,6 +202,7 @@ app.post('/beta', async (req, res) => {
         const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
         if (isEqual(userId, ownerUser) || shareToEdit !== null) {
           if (dataFrameSelected === -1) {
+            // TODO: instead of dataHistoryModifiers, append this data into the item directly, under g
             await MongoMutations.saveMap(maps, mapId, 'map', mapData)
           } else {
             await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)

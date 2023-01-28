@@ -48,13 +48,13 @@ const editorState : EditorState = {
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string,
   colorMode: string,
-  mapId: string,
+  mapId: string, // should be removed from here, should not be using mapId as useEffect trigger
   mapDataList: [],
   dataFramesLen: number,
-  dataFrameSelected: number,
+  dataFrameSelected: number, // should be removed from here, should be using a dataFramePos in addition
   access: AccessTypes,
-  breadcrumbMapIdList: [],
-  breadcrumbMapNameList: [],
+  breadcrumbMapIdList: [], // should be removed, using a getBreadcrumbMapIdAt(pos) fun
+  breadcrumbMapNameList: [], // should be removed, using a getTabMapIdAt(pos) fun
   tabMapIdList: [],
   tabMapNameList: [],
   tabMapSelected: number,
