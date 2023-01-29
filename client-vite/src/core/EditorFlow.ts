@@ -19,7 +19,7 @@ interface EditorState {
   selectTarget: [],
   formatterVisible: boolean,
   moreMenu: boolean,
-  // query
+  // query // REMOVE for real, SSR wins
   mapId: string,
   dataFrameSelected: number,
   breadcrumbMapIdList: [],
@@ -38,7 +38,7 @@ const editorState : EditorState = {
   selectTarget: [],
   formatterVisible: false,
   moreMenu: false,
-  // query
+  // query // REMOVE for real, SSR wins
   mapId: '',
   dataFrameSelected: 0,
   breadcrumbMapIdList: [],
@@ -48,13 +48,13 @@ const editorState : EditorState = {
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string,
   colorMode: string,
-  mapId: string, // should be removed from here, should not be using mapId as useEffect trigger
+  mapId: string,
   mapDataList: [],
   dataFramesLen: number,
-  dataFrameSelected: number, // should be removed from here, should be using a dataFramePos in addition
+  dataFrameSelected: number,
   access: AccessTypes,
-  breadcrumbMapIdList: [], // should be removed, using a getBreadcrumbMapIdAt(pos) fun
-  breadcrumbMapNameList: [], // should be removed, using a getTabMapIdAt(pos) fun
+  breadcrumbMapIdList: [],
+  breadcrumbMapNameList: [],
   tabMapIdList: [],
   tabMapNameList: [],
   tabMapSelected: number,
@@ -77,7 +77,6 @@ export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQuerySta
 
 const editorStateDefault = JSON.stringify(editorState)
 
-// https://stackoverflow.com/questions/61757815/access-redux-state-in-custom-hook
 export const getEditedNodeId = () => (store.getState().editor.editedNodeId)
 export const getMoveTarget = () => (store.getState().editor.moveTarget)
 export const getSelectTarget = () => (store.getState().editor.selectTarget)

@@ -1,11 +1,59 @@
 import {useDispatch} from "react-redux";
 import { Button, Link,  Typography } from '@mui/material'
 import {actions} from "../core/EditorFlow";
-import {FC} from "react";
+import {FC, useEffect} from "react";
 import { PageState} from "../core/Types";
 import {initDomData} from "../core/DomFlow";
+import {useAuth0} from "@auth0/auth0-react";
+import {backendUrl} from "../core/Url";
 
 export const Auth: FC = () => {
+  const { loginWithRedirect, getAccessTokenSilently, isAuthenticated } = useAuth0()
+
+  useEffect(() => {
+    (async () => {
+      const domain = "dev-gvarh14b.us.auth0.com";
+
+      try {
+        const token = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: 'http://local.mapboard/',
+            scope: 'read:posts',
+          },
+        });
+        console.log(token)
+        // const response = await fetch('https://api.example.com/posts', {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // });
+        // setPosts(await response.json());
+      } catch (e) {
+        // Handle errors such as `login_required` and `consent_required` by re-prompting for a login
+        console.error(e);
+      }
+    })();
+  }, [getAccessTokenSilently]);
+
+
+  // useEffect(() => {
+  //   const getUserMetadata = async () => {
+  //     const domain = "dev-gvarh14b.us.auth0.com";
+  //
+  //     const accessToken = await getAccessTokenSilently({
+  //       authorizationParams: {
+  //         audience: backendUrl,
+  //         // scope: "read:current_user",
+  //         scope: 'read:posts',
+  //
+  //       },
+  //     })
+  //   }
+  //
+  //     console.log(accessToken)
+  //
+  //
+  //   }, [])
 
   const dispatch = useDispatch()
   return (
@@ -19,7 +67,7 @@ export const Auth: FC = () => {
       <Button
         id="sign-in" color="primary" variant='contained' fullWidth
         disabled={false}
-        onClick={() => {}}>
+        onClick={() => loginWithRedirect()}>
         {'SIGN IN / SIGN UP'}
       </Button>
       <Button

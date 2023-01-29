@@ -355,8 +355,6 @@ export const WindowListeners: FC = () => {
       orient(m, 'shouldLoad', {})
     }
   }, [mapId, dataFrameSelected])
-  // TODO this could be substituted!!! in extraReducers, use "matchPending" instead of "matchFulfilled
-  // this way we could achieve, that there is NO overlap in between variables that are copied into the state from payload
 
   useEffect(() => {
     if (mapId !== '') {

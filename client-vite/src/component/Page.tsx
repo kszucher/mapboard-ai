@@ -82,11 +82,6 @@ export const Page: FC = () => {
   useEffect(()=> {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
-    // localStorage.clear()
-    const cred = JSON.parse(localStorage.getItem('cred') as string)
-    if (cred !== null) {
-      dispatch(api.endpoints.signIn.initiate(cred))
-    }
   }, [])
 
   return (

@@ -1,10 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {actions, DefaultUseOpenWorkspaceQueryState, getSaveMapProps, RootState} from "./EditorFlow";
 import {timeoutId} from "../component/WindowListeners";
-
-const backendUrl = process.env.NODE_ENV === 'development'
-  ? 'http://127.0.0.1:8082/beta'
-  : 'https://mapboard-server.herokuapp.com/beta'
+import {backendUrl} from "./Url";
 
 const getCred = () => {
   const credString = localStorage.getItem('cred')
@@ -29,7 +26,7 @@ export const api = createApi({
     //   query: () => ({url: '', method: 'POST', body: { cred: getCred(), type: 'LIVE_DEMO' } }),
     // }),
     signIn: builder.mutation<{ cred: any }, void>({
-      query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'signIn' } }),
+      query: () => ({ url: '', method: 'POST', body: { type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
     signOut: builder.mutation<{ data: any }, void>({
@@ -42,11 +39,17 @@ export const api = createApi({
     }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: '', method: 'POST', body: { cred: getCred(), type: 'openWorkspace' } }),
-      async onQueryStarted(arg, { dispatch, getState }) {
+      async onQueryStarted(arg, { dispatch, getState, getCacheEntry }) {
         const editor = (getState() as RootState).editor
         if (editor.mapStackData.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
+
+          // TODO try to access mapId through this syntax
+          // if possible, we can get rid of copying data to local state
+          // https://redux-toolkit.js.org/rtk-query/usage/usage-without-react-hooks
+
+
           dispatch(api.endpoints.saveMap.initiate(getSaveMapProps()))
         }
       },
