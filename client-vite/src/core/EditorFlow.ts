@@ -8,6 +8,7 @@ import {api} from "./Api";
 import {initDomData} from "./DomFlow";
 
 interface EditorState {
+  token: string,
   pageState: PageState,
   formatMode: FormatMode,
   tabShrink: boolean,
@@ -27,6 +28,7 @@ interface EditorState {
 }
 
 const editorState : EditorState = {
+  token: '',
   pageState: PageState.AUTH,
   formatMode: FormatMode.text,
   tabShrink: false,
@@ -104,6 +106,7 @@ export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
   reducers: {
+    setToken(state, action: PayloadAction<string>) { state.token = action.payload },
     resetState() {return JSON.parse(editorStateDefault)},
     setPageState(state, action: PayloadAction<PageState>) { state.pageState = action.payload },
     setFormatMode(state, action: PayloadAction<FormatMode>) { state.formatMode = action.payload },
@@ -138,15 +141,9 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
-        const { cred } = payload
-        localStorage.setItem('cred', JSON.stringify(cred))
         initDomData()
         state.pageState = PageState.WS
       }
-    )
-    builder.addMatcher(
-      api.endpoints.signOut.matchFulfilled,
-      () => { localStorage.clear() }
     )
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
@@ -162,10 +159,6 @@ export const editorSlice = createSlice({
         state.breadcrumbMapIdList = breadcrumbMapIdList
         state.tabMapIdList = tabMapIdList
       }
-    )
-    builder.addMatcher(
-      api.endpoints.deleteAccount.matchFulfilled,
-      () => { localStorage.clear() }
     )
   }
 })

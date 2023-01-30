@@ -1,15 +1,20 @@
 "use strict"
 const express = require('express')
-const cors = require('cors')
 const app = express()
+const { auth } = require('express-oauth2-jwt-bearer')
+const cors = require('cors')
 const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries")
 const MongoMutations = require("./MongoMutations")
-
 const { baseUri } = require('./MongoSecret')
 const { ACTIVATION_STATUS, ACCESS_TYPES, SHARE_STATUS } = require('./Types')
+
+const checkJwt = auth({
+  audience: 'http://local.mapboard/', // TODO make process.ENV dependent so it runs on heroku
+  issuerBaseURL: `https://dev-gvarh14b.us.auth0.com/`,
+});
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -72,10 +77,11 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
 
 app.use(cors())
 app.use(express.json())
-app.get('/test', (req, res) => { res.send('MapBoard Server is running!') })
-app.post('/beta', async (req, res) => {
+app.get('/test', (req, res) => {
+  res.send('MapBoard Server is running!')
+})
+app.post('/beta-public', checkJwt, async (req, res) => {
   try {
-    // PUBLIC
     switch (req.body.type) {
       case 'liveDemo': {
         const mapId = ObjectId('5f3fd7ba7a84a4205428c96a') // this could depend on queryString
@@ -84,7 +90,13 @@ app.post('/beta', async (req, res) => {
         return res.json({ mapId, mapDataFrames, access })
       }
     }
-    // PROTECTED
+  } catch (err) {
+    console.log(err.stack)
+    return res.status(400).send({ message: err.stack })
+  }
+})
+app.post('/beta-private', checkJwt, async (req, res) => {
+  try {
     // TODO on new user created
     // let newMap = getDefaultMap('My First Map', currUser._id, [])
     // let mapId = (await maps.insertOne(newMap)).insertedId
@@ -98,26 +110,21 @@ app.post('/beta', async (req, res) => {
     //     }
     //   }
     // )
-    let userId
-    if (req.body.hasOwnProperty('cred')) {
-      userId = (await users.findOne({ email: req.body.cred.email, password: req.body.cred.password }))._id
-      if (!userId) {
-        return res.status(400).send({message: 'Not A Valid User'})
-      }
-    }
+
+    
+
+    // const userId = (await users.findOne({ email: '' }))._id
     switch (req.body.type) {
       case 'signIn': {
-        return res.json({ cred: req.body.cred }) // TODO create session
+        return res.sendStatus(200)
+        // TODO create session
       }
       case 'signOut': {
         return // TODO delete session
       }
       case 'openWorkspace': {
+        // TODO: if map from session is no longer existing, fall back to mapSelected (which is always set correctly)
         return res.json((await MongoQueries.openWorkspace(users, userId)).at(0))
-      }
-      case 'refreshWorkspace': {
-        // TODO: use mapId and versionId
-        return res.sendStatus(200)
       }
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
