@@ -19,6 +19,8 @@ export const Auth: FC = () => {
           authorizationParams: {
             audience: 'http://local.mapboard/',
             // scope: 'read:posts',
+            scope: 'openid profile email',
+
           },
         });
         dispatch(actions.setToken(token))

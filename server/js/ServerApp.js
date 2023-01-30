@@ -1,8 +1,9 @@
 "use strict"
 const express = require('express')
 const app = express()
-const { auth } = require('express-oauth2-jwt-bearer')
 const cors = require('cors')
+const { auth } = require('express-oauth2-jwt-bearer')
+const axios = require("axios").default
 const {MongoClient} = require('mongodb')
 const {ObjectId} = require('mongodb')
 const nodemailer = require("nodemailer")
@@ -14,7 +15,7 @@ const { ACTIVATION_STATUS, ACCESS_TYPES, SHARE_STATUS } = require('./Types')
 const checkJwt = auth({
   audience: 'http://local.mapboard/', // TODO make process.ENV dependent so it runs on heroku
   issuerBaseURL: `https://dev-gvarh14b.us.auth0.com/`,
-});
+})
 
 const transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -111,12 +112,17 @@ app.post('/beta-private', checkJwt, async (req, res) => {
     //   }
     // )
 
-    
-
-    // const userId = (await users.findOne({ email: '' }))._id
+    const authorization = req.header('authorization')
+    const userInfo = await axios.request({
+      method: 'GET',
+      url: 'https://dev-gvarh14b.us.auth0.com/userinfo',
+      // params: {email: '{userEmailAddress}'},
+      headers: {authorization}
+    })
+    const userId = (await users.findOne({ email: userInfo.data.email }))._id
     switch (req.body.type) {
       case 'signIn': {
-        return res.sendStatus(200)
+        return res.json({})
         // TODO create session
       }
       case 'signOut': {
