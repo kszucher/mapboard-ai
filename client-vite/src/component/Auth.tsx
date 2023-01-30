@@ -18,9 +18,7 @@ export const Auth: FC = () => {
         const token = await getAccessTokenSilently({
           authorizationParams: {
             audience: 'http://local.mapboard/',
-            // scope: 'read:posts',
             scope: 'openid profile email',
-
           },
         });
         dispatch(actions.setToken(token))
