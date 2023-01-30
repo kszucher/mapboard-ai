@@ -173,12 +173,12 @@ app.post('/beta', async (req, res) => {
         return res.sendStatus(200)
       }
       case 'moveUpMapInTab': {
-        // TODO use mapId, with check of inclusion
+        // TODO use mapId, with check of inclusion AND setting mapSelected
         await MongoMutations.moveUpMapInTab(users, userId)
         return res.sendStatus(200)
       }
       case 'moveDownMapInTab': {
-        // TODO use mapId, with check of inclusion
+        // TODO use mapId, with check of inclusion AND setting mapSelected
         await MongoMutations.moveDownMapInTab(users, userId)
         return res.sendStatus(200)
       }
