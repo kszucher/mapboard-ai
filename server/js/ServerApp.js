@@ -10,7 +10,7 @@ const nodemailer = require("nodemailer")
 const MongoQueries = require("./MongoQueries")
 const MongoMutations = require("./MongoMutations")
 const { baseUri } = require('./MongoSecret')
-const { ACTIVATION_STATUS, ACCESS_TYPES, SHARE_STATUS } = require('./Types')
+const { ACCESS_TYPES, SHARE_STATUS } = require('./Types')
 
 const checkJwt = auth({
   audience: 'http://local.mapboard/', // TODO make process.ENV dependent so it runs on heroku
@@ -35,6 +35,8 @@ const systemMaps = [
 
 const adminUser = ObjectId('5d88c99f1935c83e84ca263d')
 
+const capitalize = (str) => `${str[0].toUpperCase()}${str.slice(1)}`
+
 const isEqual = (obj1, obj2) => {
   return( JSON.stringify(obj1)===JSON.stringify(obj2))
 }
@@ -51,10 +53,10 @@ const genNodeIdJs = () => {
 const getDefaultMap = (mapName, ownerUser, path) => ({
   dataHistory: [
     [
-      {nodeId: genNodeIdJs(), path: ['g']},
-      {nodeId: genNodeIdJs(), path: ['r', 0], content: mapName, selected: 1},
-      {nodeId: genNodeIdJs(), path: ['r', 0, 'd', 0]},
-      {nodeId: genNodeIdJs(), path: ['r', 0, 'd', 1]},
+      { nodeId: genNodeIdJs(), path: ['g'], version: 1 },
+      { nodeId: genNodeIdJs(), path: ['r', 0], content: mapName, selected: 1 },
+      { nodeId: genNodeIdJs(), path: ['r', 0, 'd', 0] },
+      { nodeId: genNodeIdJs(), path: ['r', 0, 'd', 1] },
     ]
   ],
   dataHistoryModifiers: [{
@@ -98,32 +100,39 @@ app.post('/beta-public', checkJwt, async (req, res) => {
 })
 app.post('/beta-private', checkJwt, async (req, res) => {
   try {
-    // TODO on new user created
-    // let newMap = getDefaultMap('My First Map', currUser._id, [])
-    // let mapId = (await maps.insertOne(newMap)).insertedId
-    // await users.updateOne(
-    //   { _id: currUser._id },
-    //   {
-    //     $set: {
-    //       activationStatus: ACTIVATION_STATUS.COMPLETED,
-    //       tabMapIdList: [...systemMaps, mapId],
-    //       breadcrumbMapIdList: [mapId]
-    //     }
-    //   }
-    // )
+    const user = await users.findOne({ sub: req.auth.payload.sub })
+    const userId = user._id
+    const sessionId = req.auth.token.slice(-8)
 
-    const authorization = req.header('authorization')
-    const userInfo = await axios.request({
-      method: 'GET',
-      url: 'https://dev-gvarh14b.us.auth0.com/userinfo',
-      // params: {email: '{userEmailAddress}'},
-      headers: {authorization}
-    })
-    const userId = (await users.findOne({ email: userInfo.data.email }))._id
     switch (req.body.type) {
       case 'signIn': {
+        const { signInCount } = user
+        if (signInCount === 0) {
+          const userInfo = await axios.request({
+            method: 'GET',
+            url: 'https://dev-gvarh14b.us.auth0.com/userinfo',
+            headers: {authorization: req.header('authorization')}
+          })
+          const newMap = getDefaultMap('My First Map', userId, [])
+          const newMapId = (await maps.insertOne(newMap)).insertedId
+          await users.updateOne(
+            { _id: userId },
+            {
+              $set: {
+                signInCount: 1,
+                name: capitalize(userInfo.data.nickname),
+                email: userInfo.data.email,
+                tabMapIdList: [...systemMaps, newMapId],
+                sessions: [
+                  {
+                    sessionId, mapId: newMapId, versionId: 1, frameId: '',
+                  }
+                ]
+              }
+            }
+          )
+        }
         return res.json({})
-        // TODO create session
       }
       case 'signOut': {
         return // TODO delete session
@@ -135,25 +144,25 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.selectMap(users, userId, mapId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'selectMapFrame': {
         // TODO use mapId, frameId
         // TODO delete firstMapFrame (have << and >> instead frameId based on FE)
         // TODO delete prevMapFrame, nextMapFrame (use frameId based on FE)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'selectFirstMapFrame': {
         await MongoMutations.selectFirstMapFrame(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'selectPrevMapFrame': {
         await MongoMutations.selectPrevMapFrame(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'selectNextMapFrame': {
         await MongoMutations.selectNextMapFrame(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'createMapInMap': {
         const mapId = ObjectId(req.body.payload.mapId)
@@ -163,13 +172,13 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
         await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
         await MongoMutations.selectMap(users, userId, newMapId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'createMapInTab': {
         const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
         await MongoMutations.createMapInTab(users, userId, newMapId)
         await MongoMutations.selectMap(users, userId, newMapId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'createMapFrameImport': {
         // TODO use frameId
@@ -177,34 +186,34 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         // TODO query inserted generated frameId as finding the frameId in the frame that comes AFTER the frameId received from FE
         // TODO selectMapFrame based on the acquired frameId
         await MongoMutations.selectNextMapFrame(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'createMapFrameDuplicate': {
         // TODO similar logic to mapFrameImport
         await MongoMutations.createMapFrameDuplicate(maps, userId)
         await MongoMutations.selectNextMapFrame(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'moveUpMapInTab': {
         // TODO use mapId, with check of inclusion AND setting mapSelected
         await MongoMutations.moveUpMapInTab(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'moveDownMapInTab': {
         // TODO use mapId, with check of inclusion AND setting mapSelected
         await MongoMutations.moveDownMapInTab(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'deleteMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.deleteMap(users, shares, userId, mapId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'deleteMapFrame': {
         // TODO use frameId from client
         await MongoMutations.deleteMapFrame(maps, userId)
         await MongoMutations.selectPrevMapFrame(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'saveMap': {
         // await new Promise(resolve => setTimeout(resolve, 5000))
@@ -221,7 +230,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
             await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
           }
         }
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'getShares': {
         return res.json(await MongoQueries.getUserShares(shares, userId))
@@ -257,7 +266,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
             }
           }
         }
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'acceptShare': {
         const shareId = ObjectId(req.body.payload.shareId)
@@ -268,19 +277,19 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         )).value
         const mapId = share.sharedMap
         await MongoMutations.createMapInTab(users, userId, mapId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'toggleColorMode': {
         await MongoMutations.toggleColorMode(users, userId)
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'changeTabWidth': {
         // TODO
-        return res.sendStatus(200)
+        return res.json({})
       }
       case 'deleteAccount': {
         await users.deleteOne({ _id: userId })
-        return res.sendStatus(200)
+        return res.json({})
       }
     }
   } catch (err) {
@@ -305,3 +314,5 @@ MongoClient.connect(baseUri, {useNewUrlParser: true, useUnifiedTopology: true}, 
 })
 
 module.exports = app
+
+// ma befejezek MINDEN SZART IS

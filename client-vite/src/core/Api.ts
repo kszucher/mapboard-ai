@@ -19,7 +19,7 @@ export const api = createApi({
     // liveDemo: builder.query({
     //   query: () => ({url: 'beta-public', method: 'POST', body: { type: 'LIVE_DEMO' } }),
     // }),
-    signIn: builder.mutation<{ cred: any }, void>({
+    signIn: builder.mutation<void, void>({
       query: () => ({ url: '/beta-private', method: 'POST', body: { type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
@@ -41,6 +41,7 @@ export const api = createApi({
 
           // TODO try to access mapId through this syntax
           // if possible, we can get rid of copying data to local state
+          // so mapId may never need to be copied ???
           // https://redux-toolkit.js.org/rtk-query/usage/usage-without-react-hooks
 
           dispatch(api.endpoints.saveMap.initiate(getSaveMapProps()))

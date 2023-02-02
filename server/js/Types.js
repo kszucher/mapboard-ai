@@ -1,8 +1,3 @@
-const ACTIVATION_STATUS = {
-  COMPLETED: 'completed',
-  AWAITING_CONFIRMATION: 'awaitingConfirmation'
-}
-
 const ACCESS_TYPES = {
   UNAUTHORIZED: 'unauthorized',
   VIEW: 'view',
@@ -16,7 +11,6 @@ const SHARE_STATUS = {
 }
 
 module.exports= {
-  ACTIVATION_STATUS,
   ACCESS_TYPES,
   SHARE_STATUS
 }
