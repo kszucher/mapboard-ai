@@ -103,7 +103,6 @@ app.post('/beta-private', checkJwt, async (req, res) => {
     const user = await users.findOne({ sub: req.auth.payload.sub })
     const userId = user._id
     const sessionId = req.auth.token.slice(-8)
-
     switch (req.body.type) {
       case 'signIn': {
         const { signInCount } = user
@@ -133,9 +132,6 @@ app.post('/beta-private', checkJwt, async (req, res) => {
           )
         }
         return res.json({})
-      }
-      case 'signOut': {
-        return // TODO delete session
       }
       case 'openWorkspace': {
         // TODO: if map from session is no longer existing, fall back to mapSelected (which is always set correctly)
@@ -314,5 +310,3 @@ MongoClient.connect(baseUri, {useNewUrlParser: true, useUnifiedTopology: true}, 
 })
 
 module.exports = app
-
-// ma befejezek MINDEN SZART IS

@@ -50,7 +50,11 @@ export const ProfileMenu: FC = () => {
           // <Divider key={4} />,
           <MenuItem
             key={5}
-            onClick={() => dispatch(api.endpoints.signOut.initiate())}
+            onClick={() => {
+              // TODO call auth0 signOut function
+              dispatch(actions.resetState())
+              dispatch(api.util.resetApiState())
+            }}
           >
             {'Sign Out'}
           </MenuItem>

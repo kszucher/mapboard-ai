@@ -23,14 +23,6 @@ export const api = createApi({
       query: () => ({ url: '/beta-private', method: 'POST', body: { type: 'signIn' } }),
       invalidatesTags: ['Workspace']
     }),
-    signOut: builder.mutation<{ data: any }, void>({
-      query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'signOut' } }),
-      async onQueryStarted(arg, { dispatch }) {
-        dispatch(actions.resetState())
-        dispatch(api.util.resetApiState())
-      },
-      invalidatesTags: []
-    }),
     openWorkspace: builder.query<DefaultUseOpenWorkspaceQueryState, void>({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState, getCacheEntry }) {
