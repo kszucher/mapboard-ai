@@ -39,6 +39,11 @@ async function openWorkspace(users, userId) {
     await users.aggregate(
       [
         { $match: { _id: userId } },
+
+        // 3 eset van:
+        // a sessions lista üres --> a tabMapLista első elemét vesszük, az mindig van (meg kell gátolni, hogy lehessen törölni mindent)
+        //
+
         { $lookup: { from: "maps", localField: "mapSelected", foreignField: "_id", as: "mapList" }, },
         { $set: { 'map': { $first: "$mapList" } } },
         { $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapSelected" ] ] } } },
@@ -49,9 +54,9 @@ async function openWorkspace(users, userId) {
           $set: {
             mapDataList: [{
               $cond: {
-                if: { $eq: [ '$dataFrameSelected', -1 ] },
+                if: { $eq: [ '$frameId', -1 ] },
                 then: { $last: '$map.dataHistory' },
-                else: { $arrayElemAt: ['$map.dataFrames', '$dataFrameSelected'] }
+                else: { $arrayElemAt: ['$map.dataFrames', '$frameId'] }
               }
             }]
           }
@@ -108,7 +113,7 @@ async function openWorkspace(users, userId) {
             name: '$name',
             colorMode: '$colorMode',
             mapId: '$mapSelected', // TODO use mapSelected
-            dataFrameSelected: '$dataFrameSelected',
+            frameId: '$frameId',
             dataFramesLen: '$dataFramesLen',
             mapDataList: '$mapDataList',
             access: "$access",

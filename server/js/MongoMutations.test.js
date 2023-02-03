@@ -35,33 +35,33 @@ describe("MongoMutationsTests", async() => {
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
   })
   test('selectFirstMapFrame', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: -1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: -1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const modified = await resolveMutation(database, 'selectFirstMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').dataFrameSelected).toEqual(0)
+    expect(getElemById(modified.users, 'user1').frameId).toEqual(0)
   })
   test('selectPrevMapFrame.can', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const modified = await resolveMutation(database, 'selectPrevMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').dataFrameSelected).toEqual(0)
+    expect(getElemById(modified.users, 'user1').frameId).toEqual(0)
   })
   test('selectPrevMapFrame.cannot', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const modified = await resolveMutation(database, 'selectPrevMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').dataFrameSelected).toEqual(0)
+    expect(getElemById(modified.users, 'user1').frameId).toEqual(0)
   })
   test('selectNextMapFrame.can', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const modified = await resolveMutation(database, 'selectNextMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').dataFrameSelected).toEqual(1)
+    expect(getElemById(modified.users, 'user1').frameId).toEqual(1)
   })
   test('selectNextMapFrame.cannot', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
+    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
     const modified = await resolveMutation(database, 'selectNextMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').dataFrameSelected).toEqual(1)
+    expect(getElemById(modified.users, 'user1').frameId).toEqual(1)
   })
   test('createMapFrameImport', async() => {
     const database = {
-      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 }],
       maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
     }
     const modified = await resolveMutation(database, 'createMapFrameImport', [maps, 'user1'])
@@ -69,7 +69,7 @@ describe("MongoMutationsTests", async() => {
   })
   test('createMapFrameDuplicate', async() => {
     const database = {
-      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 }],
       maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
     }
     const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
@@ -149,7 +149,7 @@ describe("MongoMutationsTests", async() => {
   })
   test('deleteMapFrame', async() => {
     const database = {
-      users: [ { _id: 'user1', mapSelected: 'map1', dataFrameSelected: 0 }],
+      users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 }],
       maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2', 'f3'] }]
     }
     const modified = await resolveMutation(database, 'deleteMapFrame', [maps, 'user1'])
@@ -181,7 +181,7 @@ describe("MongoMutationsTests", async() => {
   })
   test('saveMapFrame', async() => {
     const database = {
-      users: [ {_id: 'user1', mapSelected: 'map1', dataFrameSelected: 1}],
+      users: [ {_id: 'user1', mapSelected: 'map1', frameId: 1}],
       maps: [ { _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
     }
     const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 1, 'nmf'])

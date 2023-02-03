@@ -89,8 +89,8 @@ export const api = createApi({
         ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame' } }),
       invalidatesTags: ['Workspace']
     }),
-    saveMap: builder.mutation<void, { mapId: string, dataFrameSelected: number, mapData: any }>({query: ({ mapId, dataFrameSelected, mapData }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'saveMap', payload: { mapId, dataFrameSelected, mapData } } }),
+    saveMap: builder.mutation<void, { mapId: string, frameId: number, mapData: any }>({query: ({ mapId, frameId, mapData }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'saveMap', payload: { mapId, frameId, mapData } } }),
       invalidatesTags: []
     }),
     getShares: builder.query<any, void>({query: () =>

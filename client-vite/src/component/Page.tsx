@@ -76,7 +76,7 @@ export const Page: FC = () => {
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { colorMode, dataFrameSelected } = data || defaultUseOpenWorkspaceQueryState
+  const { colorMode, frameId } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
 
   useEffect(()=> {
@@ -105,7 +105,7 @@ export const Page: FC = () => {
               </>
             }
             {formatterVisible && mapStackData.length && <Formatter/>}
-            {dataFrameSelected > -1 && <FrameCarousel/>}
+            {frameId > -1 && <FrameCarousel/>}
           </>
         }
         {pageState === PageState.WS_PROFILE && <Profile/>}

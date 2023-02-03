@@ -10,7 +10,7 @@ import {PageState} from "../core/Types";
 export const FrameCarousel: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFramesLen, dataFrameSelected } = data || defaultUseOpenWorkspaceQueryState
+  const { dataFramesLen, frameId } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
@@ -22,12 +22,12 @@ export const FrameCarousel: FC = () => {
           variant="dots"
           steps={dataFramesLen}
           position="static"
-          activeStep={dataFrameSelected}
+          activeStep={frameId}
           backButton={
             <Button
               style={{paddingLeft:12}}
               size="large"
-              disabled={dataFrameSelected === 0 || isFetching}
+              disabled={frameId === 0 || isFetching}
               onClick={() => dispatch(api.endpoints.selectPrevMapFrame.initiate())}
             >
               <KeyboardArrowLeftIcon />
@@ -37,7 +37,7 @@ export const FrameCarousel: FC = () => {
             <Button
               style={{paddingRight:12}}
               size="large"
-              disabled={dataFrameSelected === dataFramesLen - 1 || isFetching}
+              disabled={frameId === dataFramesLen - 1 || isFetching}
               onClick={() => dispatch(api.endpoints.selectNextMapFrame.initiate())}
             >
               <KeyboardArrowRightIcon />

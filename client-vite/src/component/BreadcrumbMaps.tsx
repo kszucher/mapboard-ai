@@ -9,7 +9,7 @@ import {PageState} from "../core/Types";
 export const BreadcrumbMaps: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { dataFrameSelected, breadcrumbMapIdList, breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
+  const { frameId, breadcrumbMapIdList, breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 h-[40px] flex items-center rounded-b-2xl py-1 px-4 border-2 border-mb-pink border-t-0">
@@ -17,11 +17,11 @@ export const BreadcrumbMaps: FC = () => {
         {
           breadcrumbMapNameList.map((el: { name: string }, index: number) => (
             <Link
-              underline={dataFrameSelected > -1 ? 'none': 'hover'} href="/"
+              underline={frameId > -1 ? 'none': 'hover'} href="/"
               onClick={
                 e => {
                   e.preventDefault()
-                  dataFrameSelected > -1
+                  frameId > -1
                     ? console.log('prevent')
                     : dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index]}))
                 }

@@ -22,7 +22,7 @@ interface EditorState {
   moreMenu: boolean,
   // query // REMOVE for real, SSR wins
   mapId: string,
-  dataFrameSelected: number,
+  frameId: number,
   breadcrumbMapIdList: [],
   tabMapIdList: [],
 }
@@ -42,7 +42,7 @@ const editorState : EditorState = {
   moreMenu: false,
   // query // REMOVE for real, SSR wins
   mapId: '',
-  dataFrameSelected: 0,
+  frameId: 0,
   breadcrumbMapIdList: [],
   tabMapIdList: [],
 }
@@ -53,7 +53,7 @@ export interface DefaultUseOpenWorkspaceQueryState {
   mapId: string,
   mapDataList: [],
   dataFramesLen: number,
-  dataFrameSelected: number,
+  frameId: number,
   access: AccessTypes,
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
@@ -68,7 +68,7 @@ export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQuerySta
   mapId: '',
   mapDataList: [],
   dataFramesLen: 0,
-  dataFrameSelected: -1,
+  frameId: -1,
   access: AccessTypes.UNAUTHORIZED,
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
@@ -89,10 +89,10 @@ export const getMapId = () => {
   return { mapId }
 }
 export const getSaveMapProps = () => {
-  const { mapId, dataFrameSelected } = store.getState().editor
+  const { mapId, frameId } = store.getState().editor
   const m = getMap()
   const mapData = getSavedMapData(m)
-  return { mapId, dataFrameSelected, mapData }
+  return { mapId, frameId, mapData }
 }
 export const getCreateMapProps = () : { mapId: string, nodeId: string, content: string }  => {
   const { mapId } = store.getState().editor
@@ -148,14 +148,14 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, dataFrameSelected, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload
+        const { mapId, frameId, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))) as []
         state.mapStackDataIndex = 0
         state.editedNodeId = ''
         state.pageState = PageState.WS
         // query
         state.mapId = mapId
-        state.dataFrameSelected = dataFrameSelected
+        state.frameId = frameId
         state.breadcrumbMapIdList = breadcrumbMapIdList
         state.tabMapIdList = tabMapIdList
       }

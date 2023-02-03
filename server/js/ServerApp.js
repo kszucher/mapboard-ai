@@ -122,11 +122,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
                 name: capitalize(userInfo.data.nickname),
                 email: userInfo.data.email,
                 tabMapIdList: [...systemMaps, newMapId],
-                sessions: [
-                  {
-                    sessionId, mapId: newMapId, versionId: 1, frameId: '',
-                  }
-                ]
+                sessions: [ { sessionId, mapId: newMapId, versionId: 1, frameId: '', } ]
               }
             }
           )
@@ -201,6 +197,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'deleteMap': {
+        // TODO prevent deleting the last map (in case of new users, the ONLY map)
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.deleteMap(users, shares, userId, mapId)
         return res.json({})
@@ -214,16 +211,16 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       case 'saveMap': {
         // await new Promise(resolve => setTimeout(resolve, 5000))
         const mapId = ObjectId(req.body.payload.mapId)
-        const { mapData, dataFrameSelected } = req.body.payload
+        const { mapData, frameId } = req.body.payload
         const map = await maps.findOne({ _id: mapId })
         const { ownerUser } = map
         const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
         if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-          if (dataFrameSelected === -1) {
+          if (frameId === -1) {
             // TODO: instead of dataHistoryModifiers, append this data into the item directly, under g
             await MongoMutations.saveMap(maps, mapId, 'map', mapData)
           } else {
-            await MongoMutations.saveMapFrame(maps, mapId, dataFrameSelected, mapData)
+            await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)
           }
         }
         return res.json({})

@@ -22,7 +22,7 @@ describe("MongoQueriesTests", async() => {
           _id: 'user1',
           tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'],
           mapSelected: 'map2aaa',
-          dataFrameSelected: -1,
+          frameId: -1,
           name: 'user1',
           colorMode: 'dark',
         },
@@ -54,7 +54,7 @@ describe("MongoQueriesTests", async() => {
       mapId: 'map2aaa', // TODO use mapSelected
       mapDataList: [ [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ],
       dataFramesLen: 2,
-      dataFrameSelected: -1,
+      frameId: -1,
       access: ACCESS_TYPES.VIEW,
       breadcrumbMapIdList: ['map2aa', 'map2aaa'],
       breadcrumbMapNameList: [ { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],

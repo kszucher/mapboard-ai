@@ -15,7 +15,7 @@ async function toggleColorMode(users, userId) {
 async function selectMap(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [{ $set: { mapSelected: mapId, dataFrameSelected: -1 } }]
+    [{ $set: { mapSelected: mapId, frameId: -1 } }]
   )
 }
 
@@ -88,7 +88,7 @@ async function selectFirstMapFrame (users, userId) {
       { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
       { $unwind: "$map" },
       { $set: {
-          dataFrameSelected: {
+          frameId: {
             $cond: {
               if: { $gt: [ { $size: "$map.dataFrames" }, 0 ] },
               then: 0,
@@ -110,15 +110,15 @@ async function selectPrevMapFrame (users, userId) {
       { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
       { $unwind: "$map" },
       { $set: {
-          dataFrameSelected: {
+          frameId: {
             $cond: {
-              if: { $and: [ { $eq: [ "$dataFrameSelected", 0 ] }, { $eq: [ { $size: "$map.dataFrames" }, 0 ] } ] },
+              if: { $and: [ { $eq: [ "$frameId", 0 ] }, { $eq: [ { $size: "$map.dataFrames" }, 0 ] } ] },
               then: -1,
               else: {
                 $cond: {
-                  if: { $gt: [ "$dataFrameSelected", 0 ] },
-                  then: { $subtract: [ "$dataFrameSelected", 1 ] },
-                  else: "$dataFrameSelected"
+                  if: { $gt: [ "$frameId", 0 ] },
+                  then: { $subtract: [ "$frameId", 1 ] },
+                  else: "$frameId"
                 }
               }
             }
@@ -138,11 +138,11 @@ async function selectNextMapFrame (users, userId) {
       { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
       { $unwind: "$map" },
       { $set: {
-          dataFrameSelected: {
+          frameId: {
             $cond: {
-              if: { $lt: ["$dataFrameSelected", { $subtract: [{ $size: "$map.dataFrames" }, 1] }] },
-              then: { $add: ["$dataFrameSelected", 1] },
-              else: "$dataFrameSelected"
+              if: { $lt: ["$frameId", { $subtract: [{ $size: "$map.dataFrames" }, 1] }] },
+              then: { $add: ["$frameId", 1] },
+              else: "$frameId"
             }
           }
         }
@@ -169,9 +169,9 @@ async function mutateFrame (maps, userId, mutation) {
 async function createMapFrameImport (maps, userId) {
   await mutateFrame(maps, userId, {
     $concatArrays: [
-      { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
+      { $slice: [ "$dataFrames", { $add: [ '$user.frameId', 1 ] } ] },
       [ { $last: '$dataHistory' } ],
-      { $slice: [ "$dataFrames", { $add: [ 1, '$user.dataFrameSelected' ] }, { $size: "$dataFrames" } ] }
+      { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
     ]
   })
 }
@@ -179,9 +179,9 @@ async function createMapFrameImport (maps, userId) {
 async function createMapFrameDuplicate (maps, userId) {
   await mutateFrame(maps, userId, {
     $concatArrays: [
-      { $slice: [ "$dataFrames", { $add: [ '$user.dataFrameSelected', 1 ] } ] },
-      [ { $arrayElemAt: [ "$dataFrames", '$user.dataFrameSelected' ] } ],
-      { $slice: [ "$dataFrames", { $add: [ 1, '$user.dataFrameSelected' ] }, { $size: "$dataFrames" } ] }
+      { $slice: [ "$dataFrames", { $add: [ '$user.frameId', 1 ] } ] },
+      [ { $arrayElemAt: [ "$dataFrames", '$user.frameId' ] } ],
+      { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
     ]
   })
 }
@@ -275,8 +275,8 @@ async function deleteMap (users, shares, userId, mapId) {
 async function deleteMapFrame (maps, userId) {
   await mutateFrame(maps, userId, {
     $concatArrays: [
-      { $slice: [ "$dataFrames", '$user.dataFrameSelected' ] },
-      { $slice: [ "$dataFrames", { $add: [ 1, '$user.dataFrameSelected' ] }, { $size: "$dataFrames" } ] }
+      { $slice: [ "$dataFrames", '$user.frameId' ] },
+      { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
     ]
   })
 }
@@ -475,7 +475,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
   ).toArray()
 }
 
-async function saveMapFrame (maps, mapId, dataFrameSelected, mapData) {
+async function saveMapFrame (maps, mapId, frameId, mapData) {
   await maps.aggregate(
     [
       { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
@@ -485,12 +485,12 @@ async function saveMapFrame (maps, mapId, dataFrameSelected, mapData) {
         $set: {
           dataFrames: {
             $cond: {
-              if: { $ne: [ "$user.dataFrameSelected", -1 ] },
+              if: { $ne: [ "$user.frameId", -1 ] },
               then: {
                 $concatArrays: [
-                  { $slice: [ "$dataFrames", dataFrameSelected ] },
+                  { $slice: [ "$dataFrames", frameId ] },
                   [ mapData ],
-                  { $slice: [ "$dataFrames", { $add: [ 1, dataFrameSelected ] }, { $size: "$dataFrames" } ] }
+                  { $slice: [ "$dataFrames", { $add: [ 1, frameId ] }, { $size: "$dataFrames" } ] }
                 ]
               },
               else: "$dataFrames"
