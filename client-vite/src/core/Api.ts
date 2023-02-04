@@ -45,18 +45,6 @@ export const api = createApi({
         ({ url: 'beta-private', method: 'POST', body: { type: 'selectMap', payload: { mapId } } }),
       invalidatesTags: ['Workspace']
     }),
-    selectFirstMapFrame: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'selectFirstMapFrame' } }),
-      invalidatesTags: ['Workspace']
-    }),
-    selectPrevMapFrame: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'selectPrevMapFrame' } }),
-      invalidatesTags: ['Workspace']
-    }),
-    selectNextMapFrame: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'selectNextMapFrame' } }),
-      invalidatesTags: ['Workspace']
-    }),
     createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({query: ({ mapId, nodeId, content }) =>
         ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInMap', payload: { mapId, nodeId, content} } }),
       invalidatesTags: ['Workspace']

@@ -9,15 +9,15 @@ export const TabMaps: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const tabShrink = useSelector((state: RootStateOrAny) => state.editor.tabShrink)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { frameId, tabMapIdList, tabMapNameList, tabMapSelected } = data || defaultUseOpenWorkspaceQueryState
+  const { frameId, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
     <div
       className="_bg fixed top-[96px] border-l-0"
       style={{
         width: tabShrink ? 64 : 224,
-        borderTopRightRadius: tabMapSelected === 0 ? 0 : 16,
-        borderBottomRightRadius: tabMapSelected === tabMapNameList.length - 1 ? 0 : 16,
+        borderTopRightRadius: tabId === 0 ? 0 : 16,
+        borderBottomRightRadius: tabId === tabMapNameList.length - 1 ? 0 : 16,
       }}>
       <Tabs
         sx={{
@@ -28,7 +28,7 @@ export const TabMaps: FC = () => {
         variant="scrollable"
         aria-label="Vertical tabs example"
         indicatorColor="primary"
-        value={tabMapSelected}
+        value={tabId}
         onChange={(e, value) => dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[value]})) }
       >
         {

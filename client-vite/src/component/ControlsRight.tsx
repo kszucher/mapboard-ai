@@ -34,7 +34,7 @@ export const ControlsRight: FC = () => {
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const { density, alignment } = m?.g || mapProps.saveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { frameId, dataFramesLen } = data || defaultUseOpenWorkspaceQueryState
+  const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 
@@ -82,7 +82,7 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          disabled={frameId > -1 && dataFramesLen > 0}
+          disabled={frameId > -1 && frameIdList.length > 0}
           onClick={() => dispatch(api.endpoints.selectFirstMapFrame.initiate())}
         >
           <DynamicFeedIcon/>
@@ -96,14 +96,14 @@ export const ControlsRight: FC = () => {
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === -1 || dataFramesLen === 0}
+          disabled={frameId === -1 || frameIdList.length === 0}
           onClick={() => dispatch(api.endpoints.createMapFrameDuplicate.initiate())}
         >
           <ContentCopyIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === -1 || dataFramesLen === 0}
+          disabled={frameId === -1 || frameIdList.length === 0}
           onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate())}
         >
           <DeleteIcon/>

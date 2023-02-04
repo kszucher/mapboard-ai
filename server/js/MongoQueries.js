@@ -1,6 +1,6 @@
 const { ACCESS_TYPES } = require('./Types')
 
-async function openWorkspace(users, userId) {
+async function openWorkspace(users, userId, sessionId) {
   const getMapNameList = (mapIdList, mapNameList) => (
     {
       $lookup: {
@@ -18,11 +18,9 @@ async function openWorkspace(users, userId) {
                   input: {
                     $first: {
                       $filter: {
-                        input: {
-                          $last: '$dataHistory'
-                        },
-                        as: 'elem',
-                        cond: { $eq: [ "$$elem.path", [ 'r', 0 ] ] },
+                        input: { $last: '$dataHistory' },
+                        as: 'node',
+                        cond: { $eq: [ "$$node.path", [ 'r', 0 ] ] },
                       }
                     }
                   }
@@ -39,32 +37,30 @@ async function openWorkspace(users, userId) {
     await users.aggregate(
       [
         { $match: { _id: userId } },
-
-        // 3 eset van:
-        // a sessions lista üres --> a tabMapLista első elemét vesszük, az mindig van (meg kell gátolni, hogy lehessen törölni mindent)
-        //
-
-        { $lookup: { from: "maps", localField: "mapSelected", foreignField: "_id", as: "mapList" }, },
-        { $set: { 'map': { $first: "$mapList" } } },
-        { $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapSelected" ] ] } } },
-        { $lookup: { from: "shares", localField: "breadcrumbMapIdList", foreignField: "sharedMap", as: "shareList" } },
-        { $set: { 'share': { $first: "$shareList" } } },
-        { $set: { 'dataFramesLen': { $size: '$map.dataFrames' } } },
         {
           $set: {
-            mapDataList: [{
-              $cond: {
-                if: { $eq: [ '$frameId', -1 ] },
-                then: { $last: '$map.dataHistory' },
-                else: { $arrayElemAt: ['$map.dataFrames', '$frameId'] }
+            session: {
+              $first: {
+                $filter: {
+                  input: '$sessions',
+                  as: 'session',
+                  cond: { $eq: [ "$$session.sessionId", sessionId ] }
+                }
               }
-            }]
+            }
           }
         },
+        { $set: { mapId: '$session.mapId' } },
+        { $set: { frameId: '$session.frameId' } },
+        { $lookup: { from: "maps", localField: "mapId", foreignField: "_id", as: "mapList" }, },
+        { $set: { 'map': { $first: "$mapList" } } },
+        { $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapId" ] ] } } },
+        { $lookup: { from: "shares", localField: "breadcrumbMapIdList", foreignField: "sharedMap", as: "shareList" } },
+        { $set: { 'share': { $first: "$shareList" } } },
         {
           $set: {
-            'access': {
-              $cond: {
+            access: {
+              $cond: { // TODO cond tests
                 if: { $eq: [ '$map.ownerUser', userId ] },
                 then: ACCESS_TYPES.EDIT,
                 else: {
@@ -80,8 +76,38 @@ async function openWorkspace(users, userId) {
         },
         {
           $set: {
-            'breadcrumbMapIdList': {
+            mapDataList: {
               $cond: {
+                if: { $eq: [ '$frameId', '' ] },
+                then: [{ $last: '$map.dataHistory' }],
+                else: {
+                  $filter: {
+                    input: '$map.dataFrames',
+                    as: 'map',
+                    cond: {
+                      $eq: [
+                        {
+                          $size: {
+                            $filter: {
+                              input: '$$map',
+                              as: 'node',
+                              cond: { $eq: [ "$$node.frameId", '$frameId' ] },
+                            }
+                          }
+                        },
+                        1
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          $set: {
+            breadcrumbMapIdList: {
+              $cond: { // TODO cond tests
                 if: { $eq: [ '$map.ownerUser', userId ] },
                 then: '$breadcrumbMapIdList',
                 else: {
@@ -105,23 +131,47 @@ async function openWorkspace(users, userId) {
             }
           }
         },
-        getMapNameList('breadcrumbMapIdList', 'breadcrumbMapNameList'),
+        {
+          $set: {
+            frameIdList: {
+              $map: {
+                input: "$map.dataFrames",
+                as: "map",
+                in: {
+                  $getField: {
+                    field: 'frameId',
+                    input: {
+                      $first: {
+                        $filter: {
+                          input: '$$map',
+                          as: 'node',
+                          cond: { $eq: [ "$$node.path", [ 'g' ] ] },
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         getMapNameList('tabMapIdList', 'tabMapNameList'),
-        { $set: { tabMapSelected: { $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] } } },
+        getMapNameList('breadcrumbMapIdList', 'breadcrumbMapNameList'),
+        { $set: { tabId: { $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] } } },
         {
           $replaceWith: {
             name: '$name',
             colorMode: '$colorMode',
-            mapId: '$mapSelected', // TODO use mapSelected
-            frameId: '$frameId',
-            dataFramesLen: '$dataFramesLen',
-            mapDataList: '$mapDataList',
             access: "$access",
-            breadcrumbMapIdList: "$breadcrumbMapIdList",
-            breadcrumbMapNameList: "$breadcrumbMapNameList",
+            tabId: '$tabId',
+            mapId: '$mapId',
+            frameId: '$frameId',
+            mapDataList: '$mapDataList',
             tabMapIdList: "$tabMapIdList",
             tabMapNameList: "$tabMapNameList",
-            tabMapSelected: '$tabMapSelected',
+            breadcrumbMapIdList: "$breadcrumbMapIdList",
+            breadcrumbMapNameList: "$breadcrumbMapNameList",
+            frameIdList: "$frameIdList",
           }
         }
       ]
@@ -158,8 +208,8 @@ async function getUserShares(shares, userId) {
                 $arrayElemAt: [{
                   $filter: {
                     input: { $last: "$map.dataHistory" },
-                    as: 'elem',
-                    cond: { $eq: [ "$$elem.path", [ 'r', 0 ] ] },
+                    as: 'node',
+                    cond: { $eq: [ "$$node.path", [ 'r', 0 ] ] },
                   }}, 0 ]
               }
             }

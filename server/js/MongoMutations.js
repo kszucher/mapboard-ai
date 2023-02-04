@@ -5,6 +5,59 @@ const genNodeId = () => {
   return { $concat: ['node', ...randomAlphanumeric8digit] }
 }
 
+const getLastElemField = ( field, array ) => ({ $getField: { field, input: { $last: array } } })
+
+async function updateWorkspace(users, userId, sessionId) {
+  await users.aggregate(
+    [
+      { $match: {_id: userId } },
+      {
+        $set: {
+          sessions: {
+            $switch: {
+              branches: [
+                {
+                  case: { $eq: [ { $size: '$sessions' }, 0 ] },
+                  then: [{
+                    sessionId,
+                    mapId: { $arrayElemAt: [ '$tabMapIdList', 0 ] },
+                    frameId: ''
+                  }],
+                },
+                {
+                  case: {
+                    $eq: [ {
+                      $size: {
+                        $filter: {
+                          input: '$sessions',
+                          as: 'session',
+                          cond: { $eq: [ "$$session.sessionId", sessionId ] }
+                        }
+                      }
+                    }, 0 ]
+                  },
+                  then: {
+                    $concatArrays: [
+                      '$sessions',
+                      [{
+                        sessionId,
+                        mapId: getLastElemField('mapId', '$sessions'),
+                        frameId: getLastElemField('frameId', '$sessions')
+                      }]
+                    ]
+                  }
+                }],
+              default: '$sessions'
+            }
+          }
+        }
+      },
+      { $set: { signInCount: { $add: [ '$signInCount', 1 ] } } },
+      { $out: 'users' }
+    ]
+  ).toArray()
+}
+
 async function toggleColorMode(users, userId) {
   await users.findOneAndUpdate(
     { _id: userId },
@@ -12,11 +65,29 @@ async function toggleColorMode(users, userId) {
   )
 }
 
-async function selectMap(users, userId, mapId) {
-  await users.findOneAndUpdate(
-    { _id: userId },
-    [{ $set: { mapSelected: mapId, frameId: -1 } }]
-  )
+async function selectMap(users, userId, sessionId, mapId, frameId) {
+  await users.aggregate([
+      { $match: {_id: userId } },
+      {
+        $set: {
+          sessions: {
+            $map: {
+              input: "$sessions",
+              as: "session",
+              in: {
+                $cond: {
+                  if: { $eq: [ '$$session.sessionId', sessionId ] },
+                  then: { sessionId, mapId, frameId },
+                  else: "$$session"
+                }
+              }
+            }
+          }
+        }
+      },
+      { $out: 'users' }
+    ]
+  ).toArray()
 }
 
 async function moveUpMapInTab (users, userId) {
@@ -79,78 +150,6 @@ async function createMapInTab(users, userId, mapId) {
       }
     }]
   )
-}
-
-async function selectFirstMapFrame (users, userId) {
-  await users.aggregate(
-    [
-      { $match: { _id: userId } },
-      { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
-      { $unwind: "$map" },
-      { $set: {
-          frameId: {
-            $cond: {
-              if: { $gt: [ { $size: "$map.dataFrames" }, 0 ] },
-              then: 0,
-              else: -1
-            }
-          }
-        }
-      },
-      { $unset: 'map' },
-      { $merge: 'users' }
-    ]
-  ).toArray()
-}
-
-async function selectPrevMapFrame (users, userId) {
-  await users.aggregate(
-    [
-      { $match: { _id: userId } },
-      { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
-      { $unwind: "$map" },
-      { $set: {
-          frameId: {
-            $cond: {
-              if: { $and: [ { $eq: [ "$frameId", 0 ] }, { $eq: [ { $size: "$map.dataFrames" }, 0 ] } ] },
-              then: -1,
-              else: {
-                $cond: {
-                  if: { $gt: [ "$frameId", 0 ] },
-                  then: { $subtract: [ "$frameId", 1 ] },
-                  else: "$frameId"
-                }
-              }
-            }
-          }
-        }
-      },
-      { $unset: 'map' },
-      { $merge: 'users' }
-    ]
-  ).toArray()
-}
-
-async function selectNextMapFrame (users, userId) {
-  await users.aggregate(
-    [
-      { $match: { _id: userId } },
-      { $lookup: { from: "maps", localField: 'mapSelected', foreignField: "_id", as: 'map' } },
-      { $unwind: "$map" },
-      { $set: {
-          frameId: {
-            $cond: {
-              if: { $lt: ["$frameId", { $subtract: [{ $size: "$map.dataFrames" }, 1] }] },
-              then: { $add: ["$frameId", 1] },
-              else: "$frameId"
-            }
-          }
-        }
-      },
-      { $unset: 'map' },
-      { $merge: 'users' }
-    ]
-  ).toArray()
 }
 
 async function mutateFrame (maps, userId, mutation) {
@@ -469,8 +468,8 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
           }
         }
       },
-      { $replaceRoot: { newRoot: "$data" }, },
-      { $merge: { into: "maps", on: "_id",  whenMatched: "replace", whenNotMatched: "insert" } }
+      { $replaceRoot: { newRoot: "$data" } },
+      { $merge: "maps" }
     ]
   ).toArray()
 }
@@ -632,14 +631,12 @@ async function deleteUnusedMaps(users, maps) {
 
 module.exports = {
   genNodeId,
-  toggleColorMode, // TODO test
-  selectMap, // TODO test
+  updateWorkspace,
+  toggleColorMode,
+  selectMap,
   moveUpMapInTab,
   moveDownMapInTab,
   createMapInTab, // TODO test
-  selectFirstMapFrame,
-  selectPrevMapFrame,
-  selectNextMapFrame,
   createMapFrameImport,
   createMapFrameDuplicate,
   deleteMap,

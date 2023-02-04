@@ -16,17 +16,20 @@ describe("MongoQueriesTests", async() => {
     await mongoDisconnect()
   })
   test('openWorkspace', async() => {
-    const database = {
+    const getDatabase = ({frameId}) => ({
       users: [
         {
           _id: 'user1',
           tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'],
-          mapSelected: 'map2aaa',
-          frameId: -1,
           name: 'user1',
           colorMode: 'dark',
+          sessions: [ { sessionId: 'session1', mapId: 'map2aaa', frameId } ]
         },
-        { _id: 'user2', tabMapIdList: ['map2'], mapSelected: 'map2' }
+        {
+          _id: 'user2',
+          tabMapIdList: ['map2'],
+          sessions: [ { sessionId: 'session1', mapId: 'map2' } ]
+        }
       ],
       maps:  [
         { _id: 'map1', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName1', path: ['r', 0] } ] ] },
@@ -37,8 +40,13 @@ describe("MongoQueriesTests", async() => {
           _id: 'map2aaa',
           ownerUser: 'user2',
           path: ['map2', 'map2a', 'map2aa'],
-          dataFrames: ['f1', 'f2'],
-          dataHistory: [ [], [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ]
+          dataFrames: [
+            [ { path: ['g'], frameId: 'f1' }, {} ],
+            [ { path: ['g'], frameId: 'f2' }, {} ]
+          ],
+          dataHistory: [
+            [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ]
+          ]
         },
         { _id: 'map3', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName3', path: ['r', 0] } ] ] },
         { _id: 'map4', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName4', path: ['r', 0] } ] ] },
@@ -46,23 +54,25 @@ describe("MongoQueriesTests", async() => {
       shares: [
         { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map2aa' },
       ]
-    }
-    const modified = await resolveQuery(database, 'openWorkspace', [users, 'user1'])
-    const expected = [{
+    })
+    const modifiedA = (await resolveQuery(getDatabase({frameId: ''}), 'openWorkspace', [users, 'user1', 'session1'])).at(0)
+    const modifiedB = (await resolveQuery(getDatabase({frameId: 'f2'}), 'openWorkspace', [users, 'user1', 'session1'])).at(0)
+    const getExpected = ({frameId, mapDataList}) => ({
       name: 'user1',
       colorMode: 'dark',
-      mapId: 'map2aaa', // TODO use mapSelected
-      mapDataList: [ [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ],
-      dataFramesLen: 2,
-      frameId: -1,
       access: ACCESS_TYPES.VIEW,
-      breadcrumbMapIdList: ['map2aa', 'map2aaa'],
-      breadcrumbMapNameList: [ { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],
+      tabId: 2,
+      mapId: 'map2aaa',
+      frameId,
+      mapDataList,
       tabMapIdList: ['map1', 'map3', 'map2aa', 'map4'],
       tabMapNameList: [ { name: 'mapName1' }, { name:'mapName3' }, { name:'mapName2aa' }, { name:'mapName4' } ],
-      tabMapSelected: 2
-    }]
-    expect(modified).toEqual(expected)
+      breadcrumbMapIdList: ['map2aa', 'map2aaa'],
+      breadcrumbMapNameList: [ { name: 'mapName2aa' }, { name: 'mapName2aaa' } ],
+      frameIdList: ['f1', 'f2']
+    })
+    expect(modifiedA).toEqual(getExpected({frameId: '', mapDataList: [ [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ]}))
+    expect(modifiedB).toEqual(getExpected({frameId: 'f2', mapDataList: [ [ { path: ['g'], frameId: 'f2' }, {} ] ] }))
   })
   test('getUserShares', async() => {
     const database = {

@@ -20,11 +20,6 @@ interface EditorState {
   selectTarget: [],
   formatterVisible: boolean,
   moreMenu: boolean,
-  // query // REMOVE for real, SSR wins
-  mapId: string,
-  frameId: number,
-  breadcrumbMapIdList: [],
-  tabMapIdList: [],
 }
 
 const editorState : EditorState = {
@@ -40,41 +35,36 @@ const editorState : EditorState = {
   selectTarget: [],
   formatterVisible: false,
   moreMenu: false,
-  // query // REMOVE for real, SSR wins
-  mapId: '',
-  frameId: 0,
-  breadcrumbMapIdList: [],
-  tabMapIdList: [],
 }
 
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string,
   colorMode: string,
-  mapId: string,
-  mapDataList: [],
-  dataFramesLen: number,
-  frameId: number,
   access: AccessTypes,
+  tabId: number,
+  mapId: string,
+  frameId: number,
+  mapDataList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
   tabMapIdList: [],
   tabMapNameList: [],
-  tabMapSelected: number,
+  frameIdList: [],
 }
 
 export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQueryState = {
   name: '',
   colorMode: 'dark',
-  mapId: '',
-  mapDataList: [],
-  dataFramesLen: 0,
-  frameId: -1,
   access: AccessTypes.UNAUTHORIZED,
-  breadcrumbMapIdList: [],
-  breadcrumbMapNameList: [],
+  tabId: 0,
+  mapId: '',
+  frameId: -1,
+  mapDataList: [],
   tabMapIdList: [],
   tabMapNameList: [],
-  tabMapSelected: 0,
+  breadcrumbMapIdList: [],
+  breadcrumbMapNameList: [],
+  frameIdList: []
 }
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -148,16 +138,11 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
       (state, { payload }) => {
-        const { mapId, frameId, breadcrumbMapIdList, tabMapIdList, mapDataList } = payload
+        const { mapDataList } = payload
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))) as []
         state.mapStackDataIndex = 0
         state.editedNodeId = ''
         state.pageState = PageState.WS
-        // query
-        state.mapId = mapId
-        state.frameId = frameId
-        state.breadcrumbMapIdList = breadcrumbMapIdList
-        state.tabMapIdList = tabMapIdList
       }
     )
   }

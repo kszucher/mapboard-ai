@@ -14,6 +14,40 @@ describe("MongoMutationsTests", async() => {
   afterEach(async () => {
     await mongoDisconnect()
   })
+  test('updateWorkspace.createUsingFirstTab', async() => {
+    const database = { users: [ {_id: 'user1', signInCount: 1, tabMapIdList: ['map1', 'map2'], sessions: [ ] } ] }
+    const modified = await resolveMutation(database, 'updateWorkspace', [users, 'user1', 'session1'])
+    const signInCountExpected = 2
+    const sessionsExpected = [ { sessionId: 'session1', mapId: 'map1', frameId: ''} ]
+    expect(getElemById(modified.users, 'user1').signInCount).toEqual(signInCountExpected)
+    expect(getElemById(modified.users, 'user1').sessions).toEqual(sessionsExpected)
+  })
+  test('updateWorkspace.createUsingLastSession', async() => {
+    const database = { users: [ {_id: 'user1', signInCount: 1, sessions: [ { sessionId: 'session1', mapId: 'map1', frameId: 'frame1' } ] } ] }
+    const modified = await resolveMutation(database, 'updateWorkspace', [users, 'user1', 'session2'])
+    const sessionsExpected = [
+      { sessionId: 'session1', mapId: 'map1', frameId: 'frame1'},
+      { sessionId: 'session2', mapId: 'map1', frameId: 'frame1'},
+    ]
+    expect(getElemById(modified.users, 'user1').sessions).toEqual(sessionsExpected)
+  })
+  test('updateWorkspace.keep', async() => {
+    const database = { users: [ {_id: 'user1', signInCount: 1, sessions: [ { sessionId: 'session1', mapId: 'map1', frameId: 'frame1' } ] } ] }
+    const modified = await resolveMutation(database, 'updateWorkspace', [users, 'user1', 'session1'])
+    const sessionsExpected = [ { sessionId: 'session1', mapId: 'map1', frameId: 'frame1'} ]
+    expect(getElemById(modified.users, 'user1').sessions).toEqual(sessionsExpected)
+  })
+  test('toggleColorMode', async() => {
+    const database = { users: [ {_id: 'user1', colorMode: 'light' } ] }
+    const modified = await resolveMutation(database, 'toggleColorMode', [users, 'user1'])
+    expect(getElemById(modified.users, 'user1').colorMode).toEqual('dark')
+  })
+  test('selectMap', async() => {
+    const database = { users: [ {_id: 'user1', sessions: [ { sessionId: 'session1' }, { sessionId: 'session2' } ] } ] }
+    const modified = await resolveMutation(database, 'selectMap', [users, 'user1', 'session2', 'map1', 'frame1'])
+    const expected = [ { sessionId: 'session1' }, { sessionId: 'session2', mapId: 'map1', frameId: 'frame1' } ]
+    expect(getElemById(modified.users, 'user1').sessions).toEqual(expected)
+  })
   test('moveUpMapInTab.canMove', async() => {
     const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
     const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1'])
@@ -33,31 +67,6 @@ describe("MongoMutationsTests", async() => {
     const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
     const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1'])
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
-  })
-  test('selectFirstMapFrame', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: -1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
-    const modified = await resolveMutation(database, 'selectFirstMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').frameId).toEqual(0)
-  })
-  test('selectPrevMapFrame.can', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
-    const modified = await resolveMutation(database, 'selectPrevMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').frameId).toEqual(0)
-  })
-  test('selectPrevMapFrame.cannot', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
-    const modified = await resolveMutation(database, 'selectPrevMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').frameId).toEqual(0)
-  })
-  test('selectNextMapFrame.can', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
-    const modified = await resolveMutation(database, 'selectNextMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').frameId).toEqual(1)
-  })
-  test('selectNextMapFrame.cannot', async() => {
-    const database = { users: [ { _id: 'user1', mapSelected: 'map1', frameId: 1 } ], maps: [ { _id: 'map1', dataFrames: [ 'f1', 'f2' ] } ] }
-    const modified = await resolveMutation(database, 'selectNextMapFrame', [users, 'user1'])
-    expect(getElemById(modified.users, 'user1').frameId).toEqual(1)
   })
   test('createMapFrameImport', async() => {
     const database = {

@@ -119,41 +119,26 @@ app.post('/beta-private', checkJwt, async (req, res) => {
             {
               $set: {
                 signInCount: 1,
-                name: capitalize(userInfo.data.nickname),
                 email: userInfo.data.email,
-                tabMapIdList: [...systemMaps, newMapId],
-                sessions: [ { sessionId, mapId: newMapId, versionId: 1, frameId: '', } ]
+                name: capitalize(userInfo.data.nickname),
+                colorMode: 'dark',
+                tabMapIdList: [newMapId],
+                sessions: []
               }
             }
           )
+        } else {
+          await MongoMutations.updateWorkspace(users, userId, sessionId)
         }
         return res.json({})
       }
       case 'openWorkspace': {
-        // TODO: if map from session is no longer existing, fall back to mapSelected (which is always set correctly)
-        return res.json((await MongoQueries.openWorkspace(users, userId)).at(0))
+        return res.json((await MongoQueries.openWorkspace(users, userId, sessionId)).at(0))
       }
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
-        await MongoMutations.selectMap(users, userId, mapId)
-        return res.json({})
-      }
-      case 'selectMapFrame': {
-        // TODO use mapId, frameId
-        // TODO delete firstMapFrame (have << and >> instead frameId based on FE)
-        // TODO delete prevMapFrame, nextMapFrame (use frameId based on FE)
-        return res.json({})
-      }
-      case 'selectFirstMapFrame': {
-        await MongoMutations.selectFirstMapFrame(users, userId)
-        return res.json({})
-      }
-      case 'selectPrevMapFrame': {
-        await MongoMutations.selectPrevMapFrame(users, userId)
-        return res.json({})
-      }
-      case 'selectNextMapFrame': {
-        await MongoMutations.selectNextMapFrame(users, userId)
+        const frameId = req.body.payload.frameId
+        await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId)
         return res.json({})
       }
       case 'createMapInMap': {
@@ -174,7 +159,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       }
       case 'createMapFrameImport': {
         // TODO use frameId
-        await MongoMutations.createMapFrameImport(maps, userId, /*TODO: genNodeId*/) // genNodeId return a string, which is test-compatible
+        await MongoMutations.createMapFrameImport(maps, userId, /*TODO: genNodeId*/) // genNodeId return a string, which is test-compatible AND select passable
         // TODO query inserted generated frameId as finding the frameId in the frame that comes AFTER the frameId received from FE
         // TODO selectMapFrame based on the acquired frameId
         await MongoMutations.selectNextMapFrame(users, userId)
