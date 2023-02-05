@@ -43,20 +43,20 @@ const isEqual = (obj1, obj2) => {
 
 let users, maps, shares, db
 
-const genNodeIdJs = () => {
+const genHash = () => {
   const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
   const randomAlphanumeric = () => ( alphanumeric[ Math.round( Math.random() * ( alphanumeric.length -  1 )) ] )
   const randomAlphanumeric8digit = new Array(8).fill('').map(el => randomAlphanumeric())
-  return( 'node' + randomAlphanumeric8digit.join(''))
+  return randomAlphanumeric8digit.join('')
 }
 
 const getDefaultMap = (mapName, ownerUser, path) => ({
   dataHistory: [
     [
-      { nodeId: genNodeIdJs(), path: ['g'], version: 1 },
-      { nodeId: genNodeIdJs(), path: ['r', 0], content: mapName, selected: 1 },
-      { nodeId: genNodeIdJs(), path: ['r', 0, 'd', 0] },
-      { nodeId: genNodeIdJs(), path: ['r', 0, 'd', 1] },
+      { nodeId: 'node' + genHash(), path: ['g'], version: 1 },
+      { nodeId: 'node' + genHash(), path: ['r', 0], content: mapName, selected: 1 },
+      { nodeId: 'node' + genHash(), path: ['r', 0, 'd', 0] },
+      { nodeId: 'node' + genHash(), path: ['r', 0, 'd', 1] },
     ]
   ],
   dataHistoryModifiers: [{
@@ -138,7 +138,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         const frameId = req.body.payload.frameId
-        await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId)
+        await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId, '')
         return res.json({})
       }
       case 'createMapInMap': {
@@ -148,27 +148,29 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const { path } = map
         const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
         await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
-        await MongoMutations.selectMap(users, userId, newMapId)
+        await MongoMutations.selectMap(users, userId,sessionId, newMapId, '')
         return res.json({})
       }
       case 'createMapInTab': {
         const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
         await MongoMutations.createMapInTab(users, userId, newMapId)
-        await MongoMutations.selectMap(users, userId, newMapId)
+        await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
         return res.json({})
       }
       case 'createMapFrameImport': {
-        // TODO use frameId
-        await MongoMutations.createMapFrameImport(maps, userId, /*TODO: genNodeId*/) // genNodeId return a string, which is test-compatible AND select passable
-        // TODO query inserted generated frameId as finding the frameId in the frame that comes AFTER the frameId received from FE
-        // TODO selectMapFrame based on the acquired frameId
-        await MongoMutations.selectNextMapFrame(users, userId)
+        const mapId = ObjectId(req.body.payload.mapId)
+        const frameId = req.body.payload.frameId
+        const newFrameId = genHash()
+        await MongoMutations.createMapFrameImport(maps, mapId, frameId, newFrameId)
+        await MongoMutations.selectMap(users, userId, sessionId, mapId, newFrameId)
         return res.json({})
       }
       case 'createMapFrameDuplicate': {
-        // TODO similar logic to mapFrameImport
-        await MongoMutations.createMapFrameDuplicate(maps, userId)
-        await MongoMutations.selectNextMapFrame(users, userId)
+        const mapId = ObjectId(req.body.payload.mapId)
+        const frameId = req.body.payload.frameId
+        const newFrameId = genHash()
+        await MongoMutations.createMapFrameDuplicate(maps, mapId, frameId, newFrameId)
+        await MongoMutations.selectMap(users, userId, sessionId, mapId, newFrameId)
         return res.json({})
       }
       case 'moveUpMapInTab': {

@@ -152,37 +152,77 @@ async function createMapInTab(users, userId, mapId) {
   )
 }
 
-async function mutateFrame (maps, userId, mutation) {
+async function createMapFrame (maps, mapId, frameId, newFrameId, mode) {
+  const indexOfFrame = {
+    $indexOfArray: [{
+      $map: {
+        input: '$dataFrames',
+        as: 'map',
+        in: {
+          $getField: {
+            field: 'frameId',
+            input: {
+              $first: {
+                $filter: {
+                  input: '$$map',
+                  as: 'node',
+                  cond: { $eq: [ '$$node.path', ['g'] ] }
+                }
+              }
+            }
+          }
+        }
+      }
+    }, frameId]
+  }
+  const source = {
+    import: { $last: '$dataHistory' },
+    duplicate: { $arrayElemAt: [ '$dataFrames', indexOfFrame ] },
+  }[mode]
+  const sourceUpdated = {
+    $map: {
+      input: source,
+      as: 'node',
+      in: {
+        $cond: {
+          if: { $eq: [ '$$node.path', ['g'] ] },
+          then: {
+            $setField: {
+              field: 'frameId',
+              input: '$$node',
+              value: newFrameId
+            }
+          },
+          else: '$$node'
+        }
+      }
+    }
+  }
   await maps.aggregate(
     [
-      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
-      { $unwind: '$user' },
-      { $match: { $expr: { $and: [ { $eq: [ '$_id', '$user.mapSelected' ] }, { $eq: [ '$user._id', userId ] } ] } } },
-      { $set: { dataFrames: mutation } },
-      { $unset: 'user'},
+      { $match: { _id: mapId } },
+      {
+        $set: {
+          dataFrames: {
+            $concatArrays: [
+              { $slice: [ "$dataFrames", { $sum: [ indexOfFrame, 1 ] } ] },
+              [ sourceUpdated ],
+              { $slice: [ "$dataFrames", { $sum: [ indexOfFrame, 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
+            ]
+          }
+        }
+      },
       { $merge: 'maps' }
     ]
   ).toArray()
 }
 
-async function createMapFrameImport (maps, userId) {
-  await mutateFrame(maps, userId, {
-    $concatArrays: [
-      { $slice: [ "$dataFrames", { $add: [ '$user.frameId', 1 ] } ] },
-      [ { $last: '$dataHistory' } ],
-      { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
-    ]
-  })
+async function createMapFrameImport (maps, mapId, frameId, newFrameId) {
+  await createMapFrame (maps, mapId, frameId, newFrameId, 'import')
 }
 
-async function createMapFrameDuplicate (maps, userId) {
-  await mutateFrame(maps, userId, {
-    $concatArrays: [
-      { $slice: [ "$dataFrames", { $add: [ '$user.frameId', 1 ] } ] },
-      [ { $arrayElemAt: [ "$dataFrames", '$user.frameId' ] } ],
-      { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
-    ]
-  })
+async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
+  await createMapFrame (maps, mapId, frameId, newFrameId, 'duplicate')
 }
 
 async function deleteMap (users, shares, userId, mapId) {
@@ -272,12 +312,13 @@ async function deleteMap (users, shares, userId, mapId) {
 }
 
 async function deleteMapFrame (maps, userId) {
-  await mutateFrame(maps, userId, {
-    $concatArrays: [
-      { $slice: [ "$dataFrames", '$user.frameId' ] },
-      { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
-    ]
-  })
+  // TODO remake
+  // await createMapFrame(maps, userId, {
+  //   $concatArrays: [
+  //     { $slice: [ "$dataFrames", '$user.frameId' ] },
+  //     { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
+  //   ]
+  // })
 }
 
 async function saveMap (maps, mapId, mergeType, mergeData) {

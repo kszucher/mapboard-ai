@@ -69,20 +69,75 @@ describe("MongoMutationsTests", async() => {
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
   })
   test('createMapFrameImport', async() => {
-    const database = {
-      users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 }],
-      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
-    }
-    const modified = await resolveMutation(database, 'createMapFrameImport', [maps, 'user1'])
-    expect(getElemById(modified.maps, 'map1').dataFrames).toEqual(['f1', 'h1', 'f2'])
+    const getDatabase = ({dataFrames}) => ({
+      users: [ { _id: 'user1'}],
+      maps: [ { _id: 'map1', dataHistory: [ [ { path: ['g'], frameId: '' }, {} ] ], dataFrames } ]
+    })
+    expect(await resolveMutation(
+      getDatabase(
+        {
+          dataFrames: [
+            [ { path: ['g'], frameId: 'f1' } ],
+            [ { path: ['g'], frameId: 'f2' } ],
+            [ { path: ['g'], frameId: 'f3' } ],
+          ]
+        }
+      ),
+      'createMapFrameImport', [maps, 'map1', 'f2', 'fn'])).toEqual(
+      getDatabase(
+        {
+          dataFrames: [
+            [ { path: ['g'], frameId: 'f1' } ],
+            [ { path: ['g'], frameId: 'f2' } ],
+            [ { path: ['g'], frameId: 'fn' }, {} ],
+            [ { path: ['g'], frameId: 'f3' } ],
+          ]
+        }
+      )
+    )
+    expect(await resolveMutation(
+      getDatabase(
+        {
+          dataFrames: []
+        }
+      ),
+      'createMapFrameImport', [maps, 'map1', '', 'fn'])).toEqual(
+      getDatabase(
+        {
+          dataFrames: [
+            [ { path: ['g'], frameId: 'fn'}, {} ]
+          ]
+        }
+      )
+    )
   })
   test('createMapFrameDuplicate', async() => {
-    const database = {
-      users: [ { _id: 'user1', mapSelected: 'map1', frameId: 0 }],
-      maps: [ { _id: 'map1', ownerUser: 'user1', dataHistory: ['h1'], dataFrames: ['f1', 'f2'] }]
-    }
-    const modified = await resolveMutation(database, 'createMapFrameDuplicate', [maps, 'user1'])
-    expect(getElemById(modified.maps, 'map1').dataFrames).toEqual(['f1', 'f1', 'f2'])
+    const getDatabase = ({dataFrames}) => ({
+      users: [ { _id: 'user1'}],
+      maps: [ { _id: 'map1', dataHistory: [ [ { path: ['g'], frameId: '' }, {} ] ], dataFrames } ]
+    })
+    expect(await resolveMutation(
+      getDatabase(
+        {
+          dataFrames: [
+            [ {path: ['g'], frameId: 'f1' } ],
+            [ {path: ['g'], frameId: 'f2'}, {} ],
+            [ {path: ['g'], frameId: 'f3' } ],
+          ]
+        }
+      ),
+      'createMapFrameDuplicate', [maps, 'map1', 'f2', 'fn'])).toEqual(
+      getDatabase(
+        {
+          dataFrames: [
+            [ { path: ['g'], frameId: 'f1' } ],
+            [ { path: ['g'], frameId: 'f2' }, {} ],
+            [ { path: ['g'], frameId: 'fn' }, {} ],
+            [ { path: ['g'], frameId: 'f3' } ],
+          ]
+        }
+      )
+    )
   })
   test('deleteMap', async() => {
     const database = {
