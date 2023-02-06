@@ -7,6 +7,62 @@ const genNodeId = () => {
 
 const getLastElemField = ( field, array ) => ({ $getField: { field, input: { $last: array } } })
 
+const getIndexOfFrameId = (frameId) => ({
+  $indexOfArray: [{
+    $map: {
+      input: '$dataFrames',
+      as: 'map',
+      in: {
+        $getField: {
+          field: 'frameId',
+          input: {
+            $first: {
+              $filter: {
+                input: '$$map',
+                as: 'node',
+                cond: { $eq: [ '$$node.path', ['g'] ] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, frameId]
+})
+
+const getFrameIdOfIndex = (index) => ({
+  $getField: {
+    field: 'frameId',
+    input: {
+      $first: {
+        $filter: {
+          input: { $arrayElemAt: ['$dataFrames', index] },
+          as: 'node',
+          cond: { $eq: [ '$$node.path', ['g'] ] }
+        }
+      }
+    }
+  }
+})
+
+const setSession = (sessionId, mapId, frameId) => ({
+  $set: {
+    sessions: {
+      $map: {
+        input: "$sessions",
+        as: "session",
+        in: {
+          $cond: {
+            if: { $eq: [ '$$session.sessionId', sessionId ] },
+            then: { sessionId, mapId, frameId },
+            else: "$$session"
+          }
+        }
+      }
+    }
+  }
+})
+
 async function updateWorkspace(users, userId, sessionId) {
   await users.aggregate(
     [
@@ -68,23 +124,7 @@ async function toggleColorMode(users, userId) {
 async function selectMap(users, userId, sessionId, mapId, frameId) {
   await users.aggregate([
       { $match: {_id: userId } },
-      {
-        $set: {
-          sessions: {
-            $map: {
-              input: "$sessions",
-              as: "session",
-              in: {
-                $cond: {
-                  if: { $eq: [ '$$session.sessionId', sessionId ] },
-                  then: { sessionId, mapId, frameId },
-                  else: "$$session"
-                }
-              }
-            }
-          }
-        }
-      },
+      {...setSession(sessionId, mapId, frameId)},
       { $out: 'users' }
     ]
   ).toArray()
@@ -140,44 +180,17 @@ async function moveDownMapInTab (users, userId) {
   )
 }
 
-async function createMapInTab(users, userId, mapId) {
+async function appendMapInTab(users, userId, mapId) {
   await users.findOneAndUpdate(
     { _id: userId },
-    [{
-      $set: {
-        tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] },
-        mapSelected: mapId,
-      }
-    }]
+    [{ $set: { tabMapIdList: { $concatArrays: [ "$tabMapIdList", [ mapId ] ] } } }]
   )
 }
 
 async function createMapFrame (maps, mapId, frameId, newFrameId, mode) {
-  const indexOfFrame = {
-    $indexOfArray: [{
-      $map: {
-        input: '$dataFrames',
-        as: 'map',
-        in: {
-          $getField: {
-            field: 'frameId',
-            input: {
-              $first: {
-                $filter: {
-                  input: '$$map',
-                  as: 'node',
-                  cond: { $eq: [ '$$node.path', ['g'] ] }
-                }
-              }
-            }
-          }
-        }
-      }
-    }, frameId]
-  }
   const source = {
     import: { $last: '$dataHistory' },
-    duplicate: { $arrayElemAt: [ '$dataFrames', indexOfFrame ] },
+    duplicate: { $arrayElemAt: [ '$dataFrames', getIndexOfFrameId(frameId) ] },
   }[mode]
   const sourceUpdated = {
     $map: {
@@ -205,9 +218,9 @@ async function createMapFrame (maps, mapId, frameId, newFrameId, mode) {
         $set: {
           dataFrames: {
             $concatArrays: [
-              { $slice: [ "$dataFrames", { $sum: [ indexOfFrame, 1 ] } ] },
+              { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
               [ sourceUpdated ],
-              { $slice: [ "$dataFrames", { $sum: [ indexOfFrame, 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
+              { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
             ]
           }
         }
@@ -311,14 +324,65 @@ async function deleteMap (users, shares, userId, mapId) {
   ).toArray()
 }
 
-async function deleteMapFrame (maps, userId) {
-  // TODO remake
-  // await createMapFrame(maps, userId, {
-  //   $concatArrays: [
-  //     { $slice: [ "$dataFrames", '$user.frameId' ] },
-  //     { $slice: [ "$dataFrames", { $add: [ 1, '$user.frameId' ] }, { $size: "$dataFrames" } ] }
-  //   ]
-  // })
+async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
+  await users.aggregate(
+    [
+      { $match: { _id: userId } },
+      { $set: { mapId } },
+      { $lookup: { from: "maps", localField: 'mapId', foreignField: "_id", as: "mapList" } },
+      { $set: { 'map': { $first: "$mapList" } } },
+      { $set: { dataFrames: '$map.dataFrames' } },
+      {...setSession(
+          sessionId,
+          mapId,
+          {
+            $cond: {
+              if: { $gt: [ getIndexOfFrameId(frameId), 0 ] },
+              then: getFrameIdOfIndex({ $subtract: [ getIndexOfFrameId(frameId), 1 ] }),
+              else: getFrameIdOfIndex(1)
+            }
+          }
+        )
+      },
+      { $unset: 'mapId' },
+      { $unset: 'mapList' },
+      { $unset: 'map' },
+      { $unset: 'dataFrames' },
+      { $out: 'users' }
+    ]
+  ).toArray()
+  await maps.aggregate(
+    [
+      { $match: { _id: mapId } },
+      {
+        $set: {
+          dataFrames: {
+            $filter: {
+              input: '$dataFrames',
+              as: 'map',
+              cond: {
+                $ne: [{
+                  $getField: {
+                    field: 'frameId',
+                    input: {
+                      $first: {
+                        $filter: {
+                          input: '$$map',
+                          as: 'node',
+                          cond: { $eq: [ '$$node.path', ['g'] ] }
+                        }
+                      }
+                    },
+                  }
+                }, frameId]
+              }
+            }
+          }
+        }
+      },
+      { $merge: 'maps' }
+    ]
+  ).toArray()
 }
 
 async function saveMap (maps, mapId, mergeType, mergeData) {
@@ -677,7 +741,7 @@ module.exports = {
   selectMap,
   moveUpMapInTab,
   moveDownMapInTab,
-  createMapInTab, // TODO test
+  appendMapInTab,
   createMapFrameImport,
   createMapFrameDuplicate,
   deleteMap,

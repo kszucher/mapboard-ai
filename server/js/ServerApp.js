@@ -147,14 +147,14 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const map = await maps.findOne({ _id: mapId })
         const { path } = map
         const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
-        await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
         await MongoMutations.selectMap(users, userId,sessionId, newMapId, '')
+        await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
         return res.json({})
       }
       case 'createMapInTab': {
         const newMapId = (await maps.insertOne(getDefaultMap('New Map', userId, []))).insertedId
-        await MongoMutations.createMapInTab(users, userId, newMapId)
         await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
+        await MongoMutations.appendMapInTab(users, userId, newMapId)
         return res.json({})
       }
       case 'createMapFrameImport': {
@@ -174,12 +174,12 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'moveUpMapInTab': {
-        // TODO use mapId, with check of inclusion AND setting mapSelected
+        // TODO check of inclusion AND using mapId
         await MongoMutations.moveUpMapInTab(users, userId)
         return res.json({})
       }
       case 'moveDownMapInTab': {
-        // TODO use mapId, with check of inclusion AND setting mapSelected
+        // TODO check of inclusion AND using mapId
         await MongoMutations.moveDownMapInTab(users, userId)
         return res.json({})
       }
@@ -190,9 +190,8 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'deleteMapFrame': {
-        // TODO use frameId from client
-        await MongoMutations.deleteMapFrame(maps, userId)
-        await MongoMutations.selectPrevMapFrame(users, userId)
+        const frameId = req.body.payload.frameId
+        await MongoMutations.deleteMapFrame(maps, userId) // from maps, and from users too --> but how to tell what to select next???
         return res.json({})
       }
       case 'saveMap': {
@@ -264,7 +263,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'changeTabWidth': {
-        // TODO
+        // TODO implement
         return res.json({})
       }
       case 'deleteAccount': {
