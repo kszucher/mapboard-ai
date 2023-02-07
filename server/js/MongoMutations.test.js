@@ -74,32 +74,30 @@ describe("MongoMutationsTests", async() => {
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['m1', 'm2', 'm3'])
   })
   test('createMapFrameImport', async() => {
-    const getDatabase = ({dataFrames}) => ({
+    const getDatabase = ({dataFrames, dataFramesInfo}) => ({
       users: [ { _id: 'user1'}],
-      maps: [ { _id: 'map1', dataHistory: [ [ { path: ['g'], frameId: '' }, {} ] ], dataFrames } ]
+      maps: [ { _id: 'map1', dataHistory: ['v1'], dataFrames, dataFramesInfo } ]
     })
-    const genG = (frameId) => ({ path: ['g'], frameId } )
     expect(await resolveMutation(
-      getDatabase({ dataFrames: [ [ genG('f1') ], [ genG('f2') ], [ genG('f3') ] ] }),
+      getDatabase({ dataFrames: [ 'f1', 'f2', 'f3' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
       'createMapFrameImport', [maps, 'map1', 'f2', 'fn'])).toEqual(
-      getDatabase({ dataFrames: [ [ genG('f1') ], [ genG('f2') ], [ genG('fn'), {} ], [ genG('f3') ] ] })
+      getDatabase({ dataFrames: [ 'f1', 'f2', 'v1', 'f3' ], dataFramesInfo: [ { frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'fn'}, {frameId: 'f3'} ] })
     )
     expect(await resolveMutation(
-      getDatabase({ dataFrames: [] }),
+      getDatabase({ dataFrames: [], dataFramesInfo: [] }),
       'createMapFrameImport', [maps, 'map1', '', 'fn'])).toEqual(
-      getDatabase({ dataFrames: [ [ genG('fn'), {} ] ] })
+      getDatabase({ dataFrames: [ 'v1' ], dataFramesInfo: [ {frameId: 'fn'} ] })
     )
   })
   test('createMapFrameDuplicate', async() => {
-    const getDatabase = ({dataFrames}) => ({
+    const getDatabase = ({dataFrames, dataFramesInfo}) => ({
       users: [ { _id: 'user1'}],
-      maps: [ { _id: 'map1', dataHistory: [ [ { path: ['g'], frameId: '' }, {} ] ], dataFrames } ]
+      maps: [ { _id: 'map1', dataFrames, dataFramesInfo } ]
     })
-    const genG = (frameId) => ({ path: ['g'], frameId } )
     expect(await resolveMutation(
-      getDatabase({ dataFrames: [ [ genG('f1') ], [ genG('f2'), {} ], [ genG('f3') ] ] }),
+      getDatabase({ dataFrames: [ 'f1', 'f2', 'f3' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
       'createMapFrameDuplicate', [maps, 'map1', 'f2', 'fn'])).toEqual(
-      getDatabase({ dataFrames: [ [ genG('f1') ], [ genG('f2'), {} ], [ genG('fn'), {} ], [ genG('f3') ] ] })
+      getDatabase({ dataFrames: [ 'f1', 'f2', 'f2', 'f3' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'},  {frameId: 'fn'}, {frameId: 'f3'} ] }),
     )
   })
   test('deleteMap', async() => {
@@ -176,20 +174,19 @@ describe("MongoMutationsTests", async() => {
     )
   })
   test('deleteMapFrame', async() => {
-    const getDatabase = ({frameId, dataFrames}) => ({
+    const getDatabase = ({frameId, dataFrames, dataFramesInfo}) => ({
       users: [ { _id: 'user1', sessions: [ { sessionId: 'session1', mapId: 'map1', frameId } ] } ],
-      maps: [ { _id: 'map1', dataFrames } ]
+      maps: [ { _id: 'map1', dataFrames, dataFramesInfo } ]
     })
-    const genG = (frameId) => ({ path: ['g'], frameId } )
     expect(await resolveMutation(
-      getDatabase({ frameId: 'f1', dataFrames: [ [ genG('f1') ], [ genG('f2'), {} ] ] }),
+      getDatabase({ frameId: 'f1', dataFrames: [ 'f1', 'f2' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] }),
       'deleteMapFrame', [users, maps, 'user1', 'session1', 'map1', 'f1'])).toEqual(
-      getDatabase({ frameId: 'f2', dataFrames: [ [ genG('f2'), {} ] ] })
+      getDatabase({ frameId: 'f2', dataFrames: [ 'f2' ], dataFramesInfo: [ {frameId: 'f2'} ] })
     )
     expect(await resolveMutation(
-      getDatabase({ frameId: 'f2', dataFrames: [ [ genG('f1') ], [ genG('f2'), {} ] ] }),
+      getDatabase({ frameId: 'f2', dataFrames: [ 'f1', 'f2' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] }),
       'deleteMapFrame', [users, maps, 'user1', 'session1', 'map1', 'f2'])).toEqual(
-      getDatabase({ frameId: 'f1', dataFrames: [ [ genG('f1') ] ] })
+      getDatabase({ frameId: 'f1', dataFrames: [ 'f1' ], dataFramesInfo: [ {frameId: 'f1'} ] })
     )
   })
   test('saveMap', async() => {

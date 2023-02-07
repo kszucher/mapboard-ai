@@ -5,44 +5,16 @@ const genNodeId = () => {
   return { $concat: ['node', ...randomAlphanumeric8digit] }
 }
 
-const getLastElemField = ( field, array ) => ({ $getField: { field, input: { $last: array } } })
+const getLastElemField = ( field, array ) => ({
+  $getField: { field, input: { $last: array } }
+})
 
 const getIndexOfFrameId = (frameId) => ({
-  $indexOfArray: [{
-    $map: {
-      input: '$dataFrames',
-      as: 'map',
-      in: {
-        $getField: {
-          field: 'frameId',
-          input: {
-            $first: {
-              $filter: {
-                input: '$$map',
-                as: 'node',
-                cond: { $eq: [ '$$node.path', ['g'] ] }
-              }
-            }
-          }
-        }
-      }
-    }
-  }, frameId]
+  $indexOfArray: [ { $map: { input: '$dataFramesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
 })
 
 const getFrameIdOfIndex = (index) => ({
-  $getField: {
-    field: 'frameId',
-    input: {
-      $first: {
-        $filter: {
-          input: { $arrayElemAt: ['$dataFrames', index] },
-          as: 'node',
-          cond: { $eq: [ '$$node.path', ['g'] ] }
-        }
-      }
-    }
-  }
+  $getField: { field: 'frameId', input: { $arrayElemAt: ['$dataFramesInfo', index] } }
 })
 
 const setSession = (sessionId, mapId, frameId) => ({
@@ -187,30 +159,7 @@ async function appendMapInTab(users, userId, mapId) {
   )
 }
 
-async function createMapFrame (maps, mapId, frameId, newFrameId, mode) {
-  const source = {
-    import: { $last: '$dataHistory' },
-    duplicate: { $arrayElemAt: [ '$dataFrames', getIndexOfFrameId(frameId) ] },
-  }[mode]
-  const sourceUpdated = {
-    $map: {
-      input: source,
-      as: 'node',
-      in: {
-        $cond: {
-          if: { $eq: [ '$$node.path', ['g'] ] },
-          then: {
-            $setField: {
-              field: 'frameId',
-              input: '$$node',
-              value: newFrameId
-            }
-          },
-          else: '$$node'
-        }
-      }
-    }
-  }
+async function createMapFrame (maps, mapId, frameId, newFrameId, source) {
   await maps.aggregate(
     [
       { $match: { _id: mapId } },
@@ -219,8 +168,15 @@ async function createMapFrame (maps, mapId, frameId, newFrameId, mode) {
           dataFrames: {
             $concatArrays: [
               { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
-              [ sourceUpdated ],
+              [ source ],
               { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
+            ]
+          },
+          dataFramesInfo: {
+            $concatArrays: [
+              { $slice: [ "$dataFramesInfo", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
+              [ { frameId: newFrameId } ],
+              { $slice: [ "$dataFramesInfo", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFramesInfo" } ] } ] } ] }
             ]
           }
         }
@@ -231,11 +187,11 @@ async function createMapFrame (maps, mapId, frameId, newFrameId, mode) {
 }
 
 async function createMapFrameImport (maps, mapId, frameId, newFrameId) {
-  await createMapFrame (maps, mapId, frameId, newFrameId, 'import')
+  await createMapFrame (maps, mapId, frameId, newFrameId, { $last: '$dataHistory' })
 }
 
 async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
-  await createMapFrame (maps, mapId, frameId, newFrameId, 'duplicate')
+  await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$dataFrames', getIndexOfFrameId(frameId) ] })
 }
 
 async function deleteMap (users, shares, userId, mapId) {
@@ -332,6 +288,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
       { $lookup: { from: "maps", localField: 'mapId', foreignField: "_id", as: "mapList" } },
       { $set: { 'map': { $first: "$mapList" } } },
       { $set: { dataFrames: '$map.dataFrames' } },
+      { $set: { dataFramesInfo: '$map.dataFramesInfo' } },
       {...setSession(
           sessionId,
           mapId,
@@ -348,6 +305,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
       { $unset: 'mapList' },
       { $unset: 'map' },
       { $unset: 'dataFrames' },
+      { $unset: 'dataFramesInfo' },
       { $out: 'users' }
     ]
   ).toArray()
@@ -357,26 +315,16 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
       {
         $set: {
           dataFrames: {
-            $filter: {
-              input: '$dataFrames',
-              as: 'map',
-              cond: {
-                $ne: [{
-                  $getField: {
-                    field: 'frameId',
-                    input: {
-                      $first: {
-                        $filter: {
-                          input: '$$map',
-                          as: 'node',
-                          cond: { $eq: [ '$$node.path', ['g'] ] }
-                        }
-                      }
-                    },
-                  }
-                }, frameId]
-              }
-            }
+            $concatArrays: [
+              { $slice: [ "$dataFrames", getIndexOfFrameId(frameId) ] },
+              { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
+            ]
+          },
+          dataFramesInfo: {
+            $concatArrays: [
+              { $slice: ["$dataFramesInfo", getIndexOfFrameId(frameId) ] },
+              { $slice: ["$dataFramesInfo", { $sum: [getIndexOfFrameId(frameId), 1, { $multiply: [-1, { $size: "$dataFramesInfo" }] }] }] }
+            ]
           }
         }
       },
