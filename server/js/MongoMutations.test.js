@@ -215,7 +215,7 @@ describe("MongoMutationsTests", async() => {
   })
   test('saveMapFrame', async() => {
     const database = {
-      users: [ {_id: 'user1', mapSelected: 'map1', frameId: 1}],
+      users: [ {_id: 'user1'} ],
       maps: [ { _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
     }
     const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 1, 'nmf'])

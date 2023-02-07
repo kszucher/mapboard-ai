@@ -530,14 +530,12 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
 async function saveMapFrame (maps, mapId, frameId, mapData) {
   await maps.aggregate(
     [
-      { $lookup: { from: "users", localField: 'ownerUser', foreignField: "_id", as: 'user' } },
-      { $unwind: '$user' },
       { $match: { _id: mapId } },
       {
         $set: {
           dataFrames: {
             $cond: {
-              if: { $ne: [ "$user.frameId", -1 ] },
+              if: { $ne: [ frameId, '' ] },
               then: {
                 $concatArrays: [
                   { $slice: [ "$dataFrames", frameId ] },
@@ -550,7 +548,6 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
           }
         }
       },
-      { $unset: 'user' },
       { $merge: 'maps' }
     ]
   ).toArray()
