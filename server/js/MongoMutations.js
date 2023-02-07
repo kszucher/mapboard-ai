@@ -301,11 +301,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
           }
         )
       },
-      { $unset: 'mapId' },
-      { $unset: 'mapList' },
-      { $unset: 'map' },
-      { $unset: 'dataFrames' },
-      { $unset: 'dataFramesInfo' },
+      { $unset: [ 'mapId', 'mapList', 'map', 'dataFrames', 'dataFramesInfo' ] },
       { $out: 'users' }
     ]
   ).toArray()
