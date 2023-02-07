@@ -191,9 +191,7 @@ describe("MongoMutationsTests", async() => {
   })
   test('saveMap', async() => {
     const database = {
-      users: [
-        { _id: 'user1', mapSelected: 'map1'}
-      ],
+      users: [{ _id: 'user1'}],
       maps: [
         { _id: 'map1',
           ownerUser:'user1',
