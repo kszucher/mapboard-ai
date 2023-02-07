@@ -322,8 +322,8 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
           },
           dataFramesInfo: {
             $concatArrays: [
-              { $slice: ["$dataFramesInfo", getIndexOfFrameId(frameId) ] },
-              { $slice: ["$dataFramesInfo", { $sum: [getIndexOfFrameId(frameId), 1, { $multiply: [-1, { $size: "$dataFramesInfo" }] }] }] }
+              { $slice: [ "$dataFramesInfo", getIndexOfFrameId(frameId) ] },
+              { $slice: [ "$dataFramesInfo", { $sum: [getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFramesInfo" } ] } ] } ] }
             ]
           }
         }
