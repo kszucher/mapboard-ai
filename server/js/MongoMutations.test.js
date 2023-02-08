@@ -200,12 +200,12 @@ describe("MongoMutationsTests", async() => {
         }
       ]
     }
-    const modified = await resolveMutation(database, 'saveMap', [maps, 'map1', 'map', mergeMutationB])
+    const modified = await resolveMutation(database, 'saveMap', [maps, 'map1', 'session1', 'map', mergeMutationB])
     const expected = [
       {
         _id: 'map1',
         ownerUser:'user1',
-        dataHistoryModifiers: [ { modifierType: "user", userId: "user1", sessionId: 0 } ],
+        dataHistoryModifiers: [ { modifierType: "user", userId: "user1", sessionId: 'session1' } ],
         dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
       }
     ]

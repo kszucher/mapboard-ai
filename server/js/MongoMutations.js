@@ -349,7 +349,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
   ).toArray()
 }
 
-async function saveMap (maps, mapId, mergeType, mergeData) {
+async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
   const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$dataHistory' }, [ mergeData ] ] }
   const getValuesByNodeIdAndNodePropId = (input, mutationId) => (
     {
@@ -402,7 +402,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
                               { $and: [
                                   { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$dataHistoryModifiers' } } }, 'user' ] },
                                   { $eq: [ { $getField: { field: 'userId', input: { $last: '$dataHistoryModifiers' } } }, '$ownerUser' ] },
-                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, 0] } // TODO use sessionId
+                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, sessionId] }
                                 ]
                               }
                             ]
@@ -420,7 +420,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
                               { $and: [
                                   { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$dataHistoryModifiers' } } }, 'user' ] },
                                   { $eq: [ { $getField: { field: 'userId', input: { $last: '$dataHistoryModifiers' } } }, '$ownerUser' ] },
-                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, 0] } // TODO use sessionId
+                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, sessionId] }
                                 ]
                               }
                             ]
@@ -531,7 +531,7 @@ async function saveMap (maps, mapId, mergeType, mergeData) {
               [{
                 modifierType: { map: 'user', node: 'server' }[mergeType],
                 userId: '$data.ownerUser',
-                sessionId: 0, // TODO use sessionId
+                sessionId,
                 // TODO add versionId
               }]
             ]
