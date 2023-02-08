@@ -117,8 +117,8 @@ async function selectMap(users, userId, sessionId, mapId, frameId) {
   ).toArray()
 }
 
-async function moveUpMapInTab (users, userId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
+async function moveUpMapInTab (users, userId, mapId) {
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   await users.findOneAndUpdate(
     { _id: userId },
     [{
@@ -142,8 +142,8 @@ async function moveUpMapInTab (users, userId) {
   )
 }
 
-async function moveDownMapInTab (users, userId) {
-  const tabIndex = { $indexOfArray: [ "$tabMapIdList", "$mapSelected" ] }
+async function moveDownMapInTab (users, userId, mapId) {
+  const tabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   await users.findOneAndUpdate(
     { _id: userId },
     [{

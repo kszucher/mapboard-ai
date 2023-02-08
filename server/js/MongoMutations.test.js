@@ -49,23 +49,23 @@ describe("MongoMutationsTests", async() => {
     expect(getElemById(modified.users, 'user1').sessions).toEqual(expected)
   })
   test('moveUpMapInTab.canMove', async() => {
-    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
-    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1'])
+    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1', 'mapMove'])
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapMove', 'mapKeep1', 'mapKeep2'])
   })
   test('moveUpMapInTab.cannotMove', async() => {
-    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
-    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1'])
+    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapMove', 'mapKeep1', 'mapKeep2'] } ] }
+    const modified = await resolveMutation(database, 'moveUpMapInTab', [users, 'user1', 'mapMove'])
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapMove', 'mapKeep1', 'mapKeep2'])
   })
   test('moveDownMapInTab.canMove', async() => {
-    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
-    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1'])
+    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapMove', 'mapKeep2'] } ] }
+    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1', 'mapMove'])
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
   })
   test('moveDownMapInTab.cannotMove', async() => {
-    const database = { users: [ {_id: 'user1', mapSelected: 'mapMove', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
-    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1'])
+    const database = { users: [ {_id: 'user1', tabMapIdList: ['mapKeep1', 'mapKeep2', 'mapMove'] } ] }
+    const modified = await resolveMutation(database, 'moveDownMapInTab', [users, 'user1', 'mapMove'])
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['mapKeep1', 'mapKeep2', 'mapMove'])
   })
   test('appendMapInTab', async() => {
