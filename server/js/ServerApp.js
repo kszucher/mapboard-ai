@@ -195,7 +195,6 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'saveMap': {
-        // await new Promise(resolve => setTimeout(resolve, 5000))
         const mapId = ObjectId(req.body.payload.mapId)
         const { mapData, frameId } = req.body.payload
         const map = await maps.findOne({ _id: mapId })
@@ -203,7 +202,6 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
         if (isEqual(userId, ownerUser) || shareToEdit !== null) {
           if (frameId === -1) {
-            // TODO: instead of dataHistoryModifiers, append this data into the item directly, under g
             await MongoMutations.saveMap(maps, mapId, 'map', mapData)
           } else {
             await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)

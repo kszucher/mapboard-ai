@@ -17,6 +17,21 @@ const getFrameIdOfIndex = (index) => ({
   $getField: { field: 'frameId', input: { $arrayElemAt: ['$dataFramesInfo', index] } }
 })
 
+const getSessionField = (sessionId, field) => ({
+  $getField: {
+    field,
+    input: {
+      $first: {
+        $filter: {
+          input: '$sessions',
+          as: 'session',
+          cond: { $eq: ["$$session.sessionId", sessionId] }
+        }
+      }
+    }
+  }
+})
+
 const setSession = (sessionId, mapId, frameId) => ({
   $set: {
     sessions: {
@@ -194,7 +209,7 @@ async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
   await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$dataFrames', getIndexOfFrameId(frameId) ] })
 }
 
-async function deleteMap (users, shares, userId, mapId) {
+async function deleteMap (users, shares, userId, sessionId, mapId) {
   const mapTabIndex = { $indexOfArray: [ "$tabMapIdList", mapId ] }
   const mapInTab = { $ne: [ mapTabIndex, -1 ] }
   const tabSize = { $size: "$tabMapIdList" }
@@ -227,9 +242,9 @@ async function deleteMap (users, shares, userId, mapId) {
           }
         }
       },
-      {
-        $set: {
-          mapSelected: {
+      { ...setSession(
+          sessionId,
+          {
             $switch: {
               branches: [
                 {
@@ -245,9 +260,14 @@ async function deleteMap (users, shares, userId, mapId) {
                   then: { $arrayElemAt: [ '$tabMapIdList', { $subtract: [ mapTabIndex, 1 ] } ] }
                 },
               ],
-              default: '$mapSelected'
+              default: getSessionField(sessionId, 'mapId')
             }
           },
+          ''
+        )
+      },
+      {
+        $set: {
           tabMapIdList : {
             $filter : {
               input: "$tabMapIdList",

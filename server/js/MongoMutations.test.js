@@ -101,15 +101,15 @@ describe("MongoMutationsTests", async() => {
     )
   })
   test('deleteMap', async() => {
-    // TODO REWORK THIS ONE killing mapSelected
+    const getSessions = (mapId) => ({sessions: [{sessionId: 'session1', mapId, frameId: ''}]})
     const database = {
       users: [
-        { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
-        { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
-        { _id: 'user3', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
-        { _id: 'user4', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
-        { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
-        { _id: 'user6', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456'] },
+        { _id: 'user1', ...getSessions('map_o_1'), tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
+        { _id: 'user2', ...getSessions('map_o_2'), tabMapIdList: ['map_o_2', 'map_o_1_s_23456'] },
+        { _id: 'user3', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
+        { _id: 'user4', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
+        { _id: 'user5', ...getSessions('map_o_5'), tabMapIdList: ['map_o_5'] },
+        { _id: 'user6', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456'] },
       ],
       maps: [
         { _id: 'map_o_1_s_23456', ownerUser: 'user1' },
@@ -131,17 +131,17 @@ describe("MongoMutationsTests", async() => {
       ],
     }
     expect(
-      await resolveMutation(database, 'deleteMap', [users, shares, 'user1', 'map_o_1_s_23456'])
+      await resolveMutation(database, 'deleteMap', [users, shares, 'user1', 'session1', 'map_o_1_s_23456'])
     ).toEqual(
       { ...database,
         ...{
           users: [
-            { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
-            { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
-            { _id: 'user3', mapSelected: 'map_o_3', tabMapIdList: ['map_o_3'] },
-            { _id: 'user4', mapSelected: 'map_o_4', tabMapIdList: ['map_o_4'] },
-            { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
-            { _id: 'user6', mapSelected: '', tabMapIdList: [] },
+            { _id: 'user1', ...getSessions('map_o_1'), tabMapIdList: ['map_o_1', 'map_o_2_s_1'] },
+            { _id: 'user2', ...getSessions('map_o_2'), tabMapIdList: ['map_o_2'] },
+            { _id: 'user3', ...getSessions('map_o_3'), tabMapIdList: ['map_o_3'] },
+            { _id: 'user4', ...getSessions('map_o_4'), tabMapIdList: ['map_o_4'] },
+            { _id: 'user5', ...getSessions('map_o_5'), tabMapIdList: ['map_o_5'] },
+            { _id: 'user6', ...getSessions(''), tabMapIdList: [] },
           ],
           shares: [
             { _id: 'share_2_1', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map_o_2_s_1' },
@@ -150,17 +150,17 @@ describe("MongoMutationsTests", async() => {
       }
     )
     expect(
-      await resolveMutation(database, 'deleteMap', [users, shares, 'user2', 'map_o_1_s_23456'])
+      await resolveMutation(database, 'deleteMap', [users, shares, 'user2', 'session1', 'map_o_1_s_23456'])
     ).toEqual(
       { ...database,
         ...{
           users: [
-            { _id: 'user1', mapSelected: 'map_o_1', tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
-            { _id: 'user2', mapSelected: 'map_o_2', tabMapIdList: ['map_o_2'] },
-            { _id: 'user3', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
-            { _id: 'user4', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
-            { _id: 'user5', mapSelected: 'map_o_5', tabMapIdList: ['map_o_5'] },
-            { _id: 'user6', mapSelected: 'map_o_1_s_23456', tabMapIdList: ['map_o_1_s_23456'] },
+            { _id: 'user1', ...getSessions('map_o_1'), tabMapIdList: ['map_o_1', 'map_o_1_s_23456', 'map_o_2_s_1'] },
+            { _id: 'user2', ...getSessions('map_o_2'), tabMapIdList: ['map_o_2'] },
+            { _id: 'user3', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_3', 'map_o_1_s_23456'] },
+            { _id: 'user4', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456', 'map_o_4'] },
+            { _id: 'user5', ...getSessions('map_o_5'), tabMapIdList: ['map_o_5'] },
+            { _id: 'user6', ...getSessions('map_o_1_s_23456'), tabMapIdList: ['map_o_1_s_23456'] },
           ],
           shares: [
             { _id: 'share_1_3', ownerUser: 'user1', shareUser: 'user3', sharedMap: 'map_o_1_s_23456' },
