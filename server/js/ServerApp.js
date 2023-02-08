@@ -138,7 +138,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       case 'selectMap': {
         const mapId = ObjectId(req.body.payload.mapId)
         const frameId = req.body.payload.frameId
-        await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId, '')
+        await MongoMutations.selectMap(users, userId, sessionId, mapId, frameId)
         return res.json({})
       }
       case 'createMapInMap': {
@@ -147,8 +147,8 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const map = await maps.findOne({ _id: mapId })
         const { path } = map
         const newMapId = (await maps.insertOne(getDefaultMap(content, userId, [...path, mapId]))).insertedId
-        await MongoMutations.selectMap(users, userId,sessionId, newMapId, '')
-        await MongoMutations.saveMap(maps, mapId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
+        await MongoMutations.selectMap(users, userId, sessionId, newMapId, '')
+        await MongoMutations.saveMap(maps, mapId, sessionId, 'node', { nodeId, linkType: 'internal', link: newMapId.toString() })
         return res.json({})
       }
       case 'createMapInTab': {
@@ -174,24 +174,27 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'moveUpMapInTab': {
-        // TODO check of inclusion AND using mapId
-        await MongoMutations.moveUpMapInTab(users, userId)
+        // TODO check of inclusion
+        const mapId = ObjectId(req.body.payload.mapId)
+        await MongoMutations.moveUpMapInTab(users, userId, mapId)
         return res.json({})
       }
       case 'moveDownMapInTab': {
-        // TODO check of inclusion AND using mapId
-        await MongoMutations.moveDownMapInTab(users, userId)
+        // TODO check of inclusion
+        const mapId = ObjectId(req.body.payload.mapId)
+        await MongoMutations.moveDownMapInTab(users, userId, mapId)
         return res.json({})
       }
       case 'deleteMap': {
-        // TODO prevent deleting the last map (in case of new users, the ONLY map)
+        // TODO prevent deleting the last map
         const mapId = ObjectId(req.body.payload.mapId)
-        await MongoMutations.deleteMap(users, shares, userId, mapId)
+        await MongoMutations.deleteMap(users, shares, userId, sessionId, mapId)
         return res.json({})
       }
       case 'deleteMapFrame': {
+        const mapId = ObjectId(req.body.payload.mapId)
         const frameId = req.body.payload.frameId
-        await MongoMutations.deleteMapFrame(maps, userId) // from maps, and from users too --> but how to tell what to select next???
+        await MongoMutations.deleteMapFrame(users, maps, userId, sessionId, mapId, frameId)
         return res.json({})
       }
       case 'saveMap': {
@@ -202,7 +205,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
         if (isEqual(userId, ownerUser) || shareToEdit !== null) {
           if (frameId === -1) {
-            await MongoMutations.saveMap(maps, mapId, 'map', mapData)
+            await MongoMutations.saveMap(maps, mapId, sessionId, 'map', mapData)
           } else {
             await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)
           }
@@ -253,7 +256,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
           { returnDocument: 'after' }
         )).value
         const mapId = share.sharedMap
-        await MongoMutations.createMapInTab(users, userId, mapId)
+        await MongoMutations.appendMapInTab(users, userId, mapId)
         return res.json({})
       }
       case 'toggleColorMode': {
