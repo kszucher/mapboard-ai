@@ -1,4 +1,4 @@
-const genNodeId = () => {
+const getRandomNodeId = () => {
   const alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyz'
   const randomAlphanumeric = { $substr: [ alphanumeric, { $toInt: { $multiply: [ { $rand: {} }, alphanumeric.length -  1 ] } }, 1 ] }
   const randomAlphanumeric8digit = new Array(8).fill(randomAlphanumeric)
@@ -697,7 +697,7 @@ async function deleteUnusedMaps(users, maps) {
 }
 
 module.exports = {
-  genNodeId,
+  genNodeId: getRandomNodeId,
   updateWorkspace,
   toggleColorMode,
   selectMap,
