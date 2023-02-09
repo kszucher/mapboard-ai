@@ -32,24 +32,24 @@ describe("MongoQueriesTests", async() => {
         }
       ],
       maps:  [
-        { _id: 'map1', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName1', path: ['r', 0] } ] ] },
-        { _id: 'map2', ownerUser: 'user2', path: [], dataHistory: [ [ { content: 'mapName2', path: ['r', 0] } ] ] },
-        { _id: 'map2a', ownerUser: 'user2', path: ['map2'], dataHistory: [ [ { content: 'mapName2a', path: ['r', 0] } ] ] },
-        { _id: 'map2aa', ownerUser: 'user2', path: ['map2', 'map2a'], dataHistory: [ [ { content: 'mapName2aa', path: ['r', 0] } ] ] },
+        { _id: 'map1', ownerUser: 'user1', path: [], versions: [ [ { content: 'mapName1', path: ['r', 0] } ] ] },
+        { _id: 'map2', ownerUser: 'user2', path: [], versions: [ [ { content: 'mapName2', path: ['r', 0] } ] ] },
+        { _id: 'map2a', ownerUser: 'user2', path: ['map2'], versions: [ [ { content: 'mapName2a', path: ['r', 0] } ] ] },
+        { _id: 'map2aa', ownerUser: 'user2', path: ['map2', 'map2a'], versions: [ [ { content: 'mapName2aa', path: ['r', 0] } ] ] },
         {
           _id: 'map2aaa',
           ownerUser: 'user2',
           path: ['map2', 'map2a', 'map2aa'],
-          dataFrames: [
+          frames: [
             [ { path: ['g'], frameId: 'f1' }, {} ],
             [ { path: ['g'], frameId: 'f2' }, {} ]
           ],
-          dataHistory: [
+          versions: [
             [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ]
           ]
         },
-        { _id: 'map3', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName3', path: ['r', 0] } ] ] },
-        { _id: 'map4', ownerUser: 'user1', path: [], dataHistory: [ [ { content: 'mapName4', path: ['r', 0] } ] ] },
+        { _id: 'map3', ownerUser: 'user1', path: [], versions: [ [ { content: 'mapName3', path: ['r', 0] } ] ] },
+        { _id: 'map4', ownerUser: 'user1', path: [], versions: [ [ { content: 'mapName4', path: ['r', 0] } ] ] },
       ],
       shares: [
         { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user2', shareUser: 'user1', sharedMap: 'map2aa' },
@@ -81,10 +81,10 @@ describe("MongoQueriesTests", async() => {
         { _id: 'user2', email: 'user2@mail.com' },
       ],
       maps: [
-        { _id: 'map1', dataHistory: [ [ { }, { content: 'mapName1', path: ['r', 0] } ] ] },
-        { _id: 'map2', dataHistory: [ [ { }, { content: 'mapName2', path: ['r', 0] } ] ] },
-        { _id: 'map3', dataHistory: [ [ { }, { content: 'mapName3', path: ['r', 0] } ] ] },
-        { _id: 'map4', dataHistory: [ [ { }, { content: 'mapName4', path: ['r', 0] } ] ] },
+        { _id: 'map1', versions: [ [ { }, { content: 'mapName1', path: ['r', 0] } ] ] },
+        { _id: 'map2', versions: [ [ { }, { content: 'mapName2', path: ['r', 0] } ] ] },
+        { _id: 'map3', versions: [ [ { }, { content: 'mapName3', path: ['r', 0] } ] ] },
+        { _id: 'map4', versions: [ [ { }, { content: 'mapName4', path: ['r', 0] } ] ] },
       ],
       shares: [
         { _id: 'share1', access: 'view', status: 'accepted', ownerUser: 'user1', shareUser: 'user2', sharedMap: 'map1' },
@@ -128,7 +128,7 @@ describe("MongoQueriesTests", async() => {
     const database = {
       maps:  [
         { _id: 'map10',
-          dataHistory: [
+          versions: [
             [
               { },
               { content: 'map10name'},
@@ -144,17 +144,17 @@ describe("MongoQueriesTests", async() => {
               { linkType: 'internal', link: 'map12', content: 'map13link' }
             ],
           ],
-          dataFrames: [ [ ] ]
+          frames: [ [ ] ]
         },
         { _id: 'map11',
-          dataHistory: [
+          versions: [
             [
               { },
               { content: 'map11name' },
               { linkType: 'internal', link: 'map111', content: 'map111link' }
             ]
           ],
-          dataFrames: [ [ ] ]
+          frames: [ [ ] ]
         }
       ]
     }

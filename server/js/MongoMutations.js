@@ -10,11 +10,11 @@ const getLastElemField = ( field, array ) => ({
 })
 
 const getIndexOfFrameId = (frameId) => ({
-  $indexOfArray: [ { $map: { input: '$dataFramesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
+  $indexOfArray: [ { $map: { input: '$framesInfo', as: 'elem', in: { $getField: { field: 'frameId', input: '$$elem' } } } }, frameId ]
 })
 
 const getFrameIdOfIndex = (index) => ({
-  $getField: { field: 'frameId', input: { $arrayElemAt: ['$dataFramesInfo', index] } }
+  $getField: { field: 'frameId', input: { $arrayElemAt: ['$framesInfo', index] } }
 })
 
 const getSessionField = (sessionId, field) => ({
@@ -180,18 +180,18 @@ async function createMapFrame (maps, mapId, frameId, newFrameId, source) {
       { $match: { _id: mapId } },
       {
         $set: {
-          dataFrames: {
+          frames: {
             $concatArrays: [
-              { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
+              { $slice: [ "$frames", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
               [ source ],
-              { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
+              { $slice: [ "$frames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$frames" } ] } ] } ] }
             ]
           },
-          dataFramesInfo: {
+          framesInfo: {
             $concatArrays: [
-              { $slice: [ "$dataFramesInfo", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
+              { $slice: [ "$framesInfo", { $sum: [ getIndexOfFrameId(frameId), 1 ] } ] },
               [ { frameId: newFrameId } ],
-              { $slice: [ "$dataFramesInfo", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFramesInfo" } ] } ] } ] }
+              { $slice: [ "$framesInfo", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$framesInfo" } ] } ] } ] }
             ]
           }
         }
@@ -202,11 +202,11 @@ async function createMapFrame (maps, mapId, frameId, newFrameId, source) {
 }
 
 async function createMapFrameImport (maps, mapId, frameId, newFrameId) {
-  await createMapFrame (maps, mapId, frameId, newFrameId, { $last: '$dataHistory' })
+  await createMapFrame (maps, mapId, frameId, newFrameId, { $last: '$versions' })
 }
 
 async function createMapFrameDuplicate (maps, mapId, frameId, newFrameId) {
-  await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$dataFrames', getIndexOfFrameId(frameId) ] })
+  await createMapFrame (maps, mapId, frameId, newFrameId, { $arrayElemAt: [ '$frames', getIndexOfFrameId(frameId) ] })
 }
 
 async function deleteMap (users, shares, userId, sessionId, mapId) {
@@ -307,8 +307,8 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
       { $set: { mapId } },
       { $lookup: { from: "maps", localField: 'mapId', foreignField: "_id", as: "mapList" } },
       { $set: { 'map': { $first: "$mapList" } } },
-      { $set: { dataFrames: '$map.dataFrames' } },
-      { $set: { dataFramesInfo: '$map.dataFramesInfo' } },
+      { $set: { frames: '$map.frames' } },
+      { $set: { framesInfo: '$map.framesInfo' } },
       {...setSession(
           sessionId,
           mapId,
@@ -321,7 +321,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
           }
         )
       },
-      { $unset: [ 'mapId', 'mapList', 'map', 'dataFrames', 'dataFramesInfo' ] },
+      { $unset: [ 'mapId', 'mapList', 'map', 'frames', 'framesInfo' ] },
       { $out: 'users' }
     ]
   ).toArray()
@@ -330,16 +330,16 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
       { $match: { _id: mapId } },
       {
         $set: {
-          dataFrames: {
+          frames: {
             $concatArrays: [
-              { $slice: [ "$dataFrames", getIndexOfFrameId(frameId) ] },
-              { $slice: [ "$dataFrames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFrames" } ] } ] } ] }
+              { $slice: [ "$frames", getIndexOfFrameId(frameId) ] },
+              { $slice: [ "$frames", { $sum: [ getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$frames" } ] } ] } ] }
             ]
           },
-          dataFramesInfo: {
+          framesInfo: {
             $concatArrays: [
-              { $slice: [ "$dataFramesInfo", getIndexOfFrameId(frameId) ] },
-              { $slice: [ "$dataFramesInfo", { $sum: [getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$dataFramesInfo" } ] } ] } ] }
+              { $slice: [ "$framesInfo", getIndexOfFrameId(frameId) ] },
+              { $slice: [ "$framesInfo", { $sum: [getIndexOfFrameId(frameId), 1, { $multiply: [ -1, { $size: "$framesInfo" } ] } ] } ] }
             ]
           }
         }
@@ -350,7 +350,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
 }
 
 async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
-  const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$dataHistory' }, [ mergeData ] ] }
+  const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$versions' }, [ mergeData ] ] }
   const getValuesByNodeIdAndNodePropId = (input, mutationId) => (
     {
       $objectToArray: {
@@ -398,17 +398,17 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
                         $cond: {
                           if: {
                             $or: [
-                              { $eq: [ { $size: "$dataHistory" }, 1 ] },
+                              { $eq: [ { $size: "$versions" }, 1 ] },
                               { $and: [
-                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$dataHistoryModifiers' } } }, 'user' ] },
-                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$dataHistoryModifiers' } } }, '$ownerUser' ] },
-                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, sessionId] }
+                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$versionsInfo' } } }, 'user' ] },
+                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$versionsInfo' } } }, '$ownerUser' ] },
+                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$versionsInfo' } } }, sessionId] }
                                 ]
                               }
                             ]
                           },
-                          then: { $last: "$dataHistory" },
-                          else: { $arrayElemAt: [ "$dataHistory", -2 ] }
+                          then: { $last: "$versions" },
+                          else: { $arrayElemAt: [ "$versions", -2 ] }
                         }
                       }, 'O'),
                     getValuesByNodeIdAndNodePropId(
@@ -416,17 +416,17 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
                         $cond: {
                           if: {
                             $or: [
-                              { $eq: [ { $size: "$dataHistory" }, 1 ] },
+                              { $eq: [ { $size: "$versions" }, 1 ] },
                               { $and: [
-                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$dataHistoryModifiers' } } }, 'user' ] },
-                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$dataHistoryModifiers' } } }, '$ownerUser' ] },
-                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$dataHistoryModifiers' } } }, sessionId] }
+                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$versionsInfo' } } }, 'user' ] },
+                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$versionsInfo' } } }, '$ownerUser' ] },
+                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$versionsInfo' } } }, sessionId] }
                                 ]
                               }
                             ]
                           },
                           then: '$newMap',
-                          else: { $last: "$dataHistory" }
+                          else: { $last: "$versions" }
                         }
                       }, 'A'),
                     getValuesByNodeIdAndNodePropId('$newMap', 'B')
@@ -446,9 +446,9 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
       { $unwind: "$data", },
       {
         $set: {
-          "data.dataHistory": {
+          "data.versions": {
             $concatArrays: [
-              "$data.dataHistory",
+              "$data.versions",
               [{
                 $map: {
                   input: '$groupResult',
@@ -525,9 +525,9 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
               }]
             ]
           },
-          "data.dataHistoryModifiers": {
+          "data.versionsInfo": {
             $concatArrays: [
-              "$data.dataHistoryModifiers",
+              "$data.versionsInfo",
               [{
                 modifierType: { map: 'user', node: 'server' }[mergeType],
                 userId: '$data.ownerUser',
@@ -550,17 +550,17 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
       { $match: { _id: mapId } },
       {
         $set: {
-          dataFrames: {
+          frames: {
             $cond: {
               if: { $ne: [ frameId, '' ] },
               then: {
                 $concatArrays: [
-                  { $slice: [ "$dataFrames", frameId ] },
+                  { $slice: [ "$frames", frameId ] },
                   [ mapData ],
-                  { $slice: [ "$dataFrames", { $add: [ 1, frameId ] }, { $size: "$dataFrames" } ] }
+                  { $slice: [ "$frames", { $add: [ 1, frameId ] }, { $size: "$frames" } ] }
                 ]
               },
-              else: "$dataFrames"
+              else: "$frames"
             }
           }
         }
@@ -573,8 +573,8 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
 async function nodeMapFun (maps, fun) {
   await maps.aggregate(
     [
-      { $set: { dataFrames: { $map: { input: '$dataFrames', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
-      { $set: { dataHistory: { $map: { input: '$dataHistory', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
+      { $set: { frames: { $map: { input: '$frames', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
+      { $set: { versions: { $map: { input: '$versions', as: "map", in: { $map: { input: "$$map", as: "node", in: fun } } } } } },
       { $merge: 'maps' }
     ]
   ).toArray()

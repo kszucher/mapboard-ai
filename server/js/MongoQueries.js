@@ -18,7 +18,7 @@ async function openWorkspace(users, userId, sessionId) {
                   input: {
                     $first: {
                       $filter: {
-                        input: { $last: '$dataHistory' },
+                        input: { $last: '$versions' },
                         as: 'node',
                         cond: { $eq: [ "$$node.path", [ 'r', 0 ] ] },
                       }
@@ -79,10 +79,10 @@ async function openWorkspace(users, userId, sessionId) {
             mapDataList: {
               $cond: {
                 if: { $eq: [ '$frameId', '' ] },
-                then: [{ $last: '$map.dataHistory' }],
+                then: [{ $last: '$map.versions' }],
                 else: {
                   $filter: {
-                    input: '$map.dataFrames',
+                    input: '$map.frames',
                     as: 'map',
                     cond: {
                       $eq: [
@@ -135,7 +135,7 @@ async function openWorkspace(users, userId, sessionId) {
           $set: {
             frameIdList: {
               $map: {
-                input: "$map.dataFrames",
+                input: "$map.frames",
                 as: "map",
                 in: {
                   $getField: {
@@ -207,7 +207,7 @@ async function getUserShares(shares, userId) {
               input: {
                 $arrayElemAt: [{
                   $filter: {
-                    input: { $last: "$map.dataHistory" },
+                    input: { $last: "$map.versions" },
                     as: 'node',
                     cond: { $eq: [ "$$node.path", [ 'r', 0 ] ] },
                   }}, 0 ]
@@ -235,8 +235,8 @@ async function nodeMapReduceFun (maps, condition, reducerInitialValue, reducerIn
                 $map: {
                   input: {
                     $concatArrays: [
-                      '$dataHistory',
-                      '$dataFrames'
+                      '$versions',
+                      '$frames'
                     ]
                   },
                   as: "map",

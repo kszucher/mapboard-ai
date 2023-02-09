@@ -51,7 +51,9 @@ const genHash = () => {
 }
 
 const getDefaultMap = (mapName, ownerUser, path) => ({
-  dataHistory: [
+  ownerUser,
+  path,
+  versions: [
     [
       { nodeId: 'node' + genHash(), path: ['g'], version: 1 },
       { nodeId: 'node' + genHash(), path: ['r', 0], content: mapName, selected: 1 },
@@ -59,14 +61,14 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
       { nodeId: 'node' + genHash(), path: ['r', 0, 'd', 1] },
     ]
   ],
-  dataHistoryModifiers: [{
+  versionsInfo: [{
     modifierType: 'user',
     userId: ownerUser,
     sessionId: 0,
+    versionId: 1,
   }],
-  dataFrames: [],
-  ownerUser,
-  path
+  frames: [],
+  framesInfo: [],
 })
 
 // const emailText = `
@@ -88,9 +90,9 @@ app.post('/beta-public', checkJwt, async (req, res) => {
     switch (req.body.type) {
       case 'liveDemo': {
         const mapId = ObjectId('5f3fd7ba7a84a4205428c96a') // this could depend on queryString
-        const mapDataFrames = (await maps.findOne({ _id: mapId })).dataFrames
+        const frames = (await maps.findOne({ _id: mapId })).frames
         const access = ACCESS_TYPES.VIEW
-        return res.json({ mapId, mapDataFrames, access })
+        return res.json({ mapId, frames, access })
       }
     }
   } catch (err) {

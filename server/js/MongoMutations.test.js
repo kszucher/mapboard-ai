@@ -74,30 +74,30 @@ describe("MongoMutationsTests", async() => {
     expect(getElemById(modified.users, 'user1').tabMapIdList).toEqual(['m1', 'm2', 'm3'])
   })
   test('createMapFrameImport', async() => {
-    const getDatabase = ({dataFrames, dataFramesInfo}) => ({
+    const getDatabase = ({frames, framesInfo}) => ({
       users: [ { _id: 'user1'}],
-      maps: [ { _id: 'map1', dataHistory: ['v1'], dataFrames, dataFramesInfo } ]
+      maps: [ { _id: 'map1', versions: ['v1'], frames, framesInfo } ]
     })
     expect(await resolveMutation(
-      getDatabase({ dataFrames: [ 'f1', 'f2', 'f3' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
+      getDatabase({ frames: [ 'f1', 'f2', 'f3' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
       'createMapFrameImport', [maps, 'map1', 'f2', 'fn'])).toEqual(
-      getDatabase({ dataFrames: [ 'f1', 'f2', 'v1', 'f3' ], dataFramesInfo: [ { frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'fn'}, {frameId: 'f3'} ] })
+      getDatabase({ frames: [ 'f1', 'f2', 'v1', 'f3' ], framesInfo: [ { frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'fn'}, {frameId: 'f3'} ] })
     )
     expect(await resolveMutation(
-      getDatabase({ dataFrames: [], dataFramesInfo: [] }),
+      getDatabase({ frames: [], framesInfo: [] }),
       'createMapFrameImport', [maps, 'map1', '', 'fn'])).toEqual(
-      getDatabase({ dataFrames: [ 'v1' ], dataFramesInfo: [ {frameId: 'fn'} ] })
+      getDatabase({ frames: [ 'v1' ], framesInfo: [ {frameId: 'fn'} ] })
     )
   })
   test('createMapFrameDuplicate', async() => {
-    const getDatabase = ({dataFrames, dataFramesInfo}) => ({
+    const getDatabase = ({frames, framesInfo}) => ({
       users: [ { _id: 'user1'}],
-      maps: [ { _id: 'map1', dataFrames, dataFramesInfo } ]
+      maps: [ { _id: 'map1', frames, framesInfo } ]
     })
     expect(await resolveMutation(
-      getDatabase({ dataFrames: [ 'f1', 'f2', 'f3' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
+      getDatabase({ frames: [ 'f1', 'f2', 'f3' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'}, {frameId: 'f3'} ] }),
       'createMapFrameDuplicate', [maps, 'map1', 'f2', 'fn'])).toEqual(
-      getDatabase({ dataFrames: [ 'f1', 'f2', 'f2', 'f3' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'},  {frameId: 'fn'}, {frameId: 'f3'} ] }),
+      getDatabase({ frames: [ 'f1', 'f2', 'f2', 'f3' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'},  {frameId: 'fn'}, {frameId: 'f3'} ] }),
     )
   })
   test('deleteMap', async() => {
@@ -174,19 +174,19 @@ describe("MongoMutationsTests", async() => {
     )
   })
   test('deleteMapFrame', async() => {
-    const getDatabase = ({frameId, dataFrames, dataFramesInfo}) => ({
+    const getDatabase = ({frameId, frames, framesInfo}) => ({
       users: [ { _id: 'user1', sessions: [ { sessionId: 'session1', mapId: 'map1', frameId } ] } ],
-      maps: [ { _id: 'map1', dataFrames, dataFramesInfo } ]
+      maps: [ { _id: 'map1', frames, framesInfo } ]
     })
     expect(await resolveMutation(
-      getDatabase({ frameId: 'f1', dataFrames: [ 'f1', 'f2' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] }),
+      getDatabase({ frameId: 'f1', frames: [ 'f1', 'f2' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] }),
       'deleteMapFrame', [users, maps, 'user1', 'session1', 'map1', 'f1'])).toEqual(
-      getDatabase({ frameId: 'f2', dataFrames: [ 'f2' ], dataFramesInfo: [ {frameId: 'f2'} ] })
+      getDatabase({ frameId: 'f2', frames: [ 'f2' ], framesInfo: [ {frameId: 'f2'} ] })
     )
     expect(await resolveMutation(
-      getDatabase({ frameId: 'f2', dataFrames: [ 'f1', 'f2' ], dataFramesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] }),
+      getDatabase({ frameId: 'f2', frames: [ 'f1', 'f2' ], framesInfo: [ {frameId: 'f1'}, {frameId: 'f2'} ] }),
       'deleteMapFrame', [users, maps, 'user1', 'session1', 'map1', 'f2'])).toEqual(
-      getDatabase({ frameId: 'f1', dataFrames: [ 'f1' ], dataFramesInfo: [ {frameId: 'f1'} ] })
+      getDatabase({ frameId: 'f1', frames: [ 'f1' ], framesInfo: [ {frameId: 'f1'} ] })
     )
   })
   test('saveMap', async() => {
@@ -195,8 +195,8 @@ describe("MongoMutationsTests", async() => {
       maps: [
         { _id: 'map1',
           ownerUser:'user1',
-          dataHistoryModifiers: [],
-          dataHistory: [ mergeBase, mergeMutationA ]
+          versionsInfo: [],
+          versions: [ mergeBase, mergeMutationA ]
         }
       ]
     }
@@ -205,8 +205,8 @@ describe("MongoMutationsTests", async() => {
       {
         _id: 'map1',
         ownerUser:'user1',
-        dataHistoryModifiers: [ { modifierType: "user", userId: "user1", sessionId: 'session1' } ],
-        dataHistory: [ mergeBase, mergeMutationA, mergeResult ]
+        versionsInfo: [ { modifierType: "user", userId: "user1", sessionId: 'session1' } ],
+        versions: [ mergeBase, mergeMutationA, mergeResult ]
       }
     ]
     expect(modified.maps).toEqual(expected)
@@ -214,10 +214,10 @@ describe("MongoMutationsTests", async() => {
   test('saveMapFrame', async() => {
     const database = {
       users: [ {_id: 'user1'} ],
-      maps: [ { _id: 'map1', ownerUser:'user1', dataFrames: [ 'mf1', 'omf', 'mf2' ] }]
+      maps: [ { _id: 'map1', ownerUser:'user1', frames: [ 'mf1', 'omf', 'mf2' ] }]
     }
     const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 1, 'nmf'])
-    expect(getElemById(modified.maps, 'map1').dataFrames).toEqual([ 'mf1', 'nmf', 'mf2' ])
+    expect(getElemById(modified.maps, 'map1').frames).toEqual([ 'mf1', 'nmf', 'mf2' ])
   })
   test('createNodeProp', async() => {
     const database = getMultiMapMultiSource([ [ { a: 'o' } ], [ { a: 'o' }, { b: 'o' } ] ])

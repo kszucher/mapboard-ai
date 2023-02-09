@@ -6,7 +6,7 @@ import MongoMutations from './MongoMutations'
 let client, users, maps, shares
 
 export const getMultiMapMultiSource = (mapArray) => {
-  const multiSource = { dataFrames: mapArray, dataHistory: mapArray }
+  const multiSource = { frames: mapArray, versions: mapArray }
   return { maps: [ { _id: 'map1', ...multiSource }, { _id: 'map2', ...multiSource } ] }
 }
 
