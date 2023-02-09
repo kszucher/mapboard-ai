@@ -1,4 +1,5 @@
 const { ACCESS_TYPES } = require('./Types')
+const { getIndexOfFrameId } = require('./MongoHelpers')
 
 async function openWorkspace(users, userId, sessionId) {
   const getMapNameList = (mapIdList, mapNameList) => (
@@ -53,7 +54,8 @@ async function openWorkspace(users, userId, sessionId) {
         { $set: { mapId: '$session.mapId' } },
         { $set: { frameId: '$session.frameId' } },
         { $lookup: { from: "maps", localField: "mapId", foreignField: "_id", as: "mapList" }, },
-        { $set: { 'map': { $first: "$mapList" } } },
+        { $set: { map: { $first: "$mapList" } } },
+        { $set: { framesInfo: '$map.framesInfo' } },
         { $set: { 'breadcrumbMapIdList': { $concatArrays: [ '$map.path', [ "$mapId" ] ] } } },
         { $lookup: { from: "shares", localField: "breadcrumbMapIdList", foreignField: "sharedMap", as: "shareList" } },
         { $set: { 'share': { $first: "$shareList" } } },
@@ -80,26 +82,7 @@ async function openWorkspace(users, userId, sessionId) {
               $cond: {
                 if: { $eq: [ '$frameId', '' ] },
                 then: [{ $last: '$map.versions' }],
-                else: {
-                  $filter: {
-                    input: '$map.frames',
-                    as: 'map',
-                    cond: {
-                      $eq: [
-                        {
-                          $size: {
-                            $filter: {
-                              input: '$$map',
-                              as: 'node',
-                              cond: { $eq: [ "$$node.frameId", '$frameId' ] },
-                            }
-                          }
-                        },
-                        1
-                      ]
-                    }
-                  }
-                }
+                else: [{ $arrayElemAt: [ '$map.frames', getIndexOfFrameId('$frameId') ] }]
               }
             }
           }
@@ -135,22 +118,9 @@ async function openWorkspace(users, userId, sessionId) {
           $set: {
             frameIdList: {
               $map: {
-                input: "$map.frames",
-                as: "map",
-                in: {
-                  $getField: {
-                    field: 'frameId',
-                    input: {
-                      $first: {
-                        $filter: {
-                          input: '$$map',
-                          as: 'node',
-                          cond: { $eq: [ "$$node.path", [ 'g' ] ] },
-                        }
-                      }
-                    }
-                  }
-                }
+                input: "$framesInfo",
+                as: "elem",
+                in: { $first: "$$elem.frameId" }
               }
             }
           }

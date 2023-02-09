@@ -41,8 +41,12 @@ describe("MongoQueriesTests", async() => {
           ownerUser: 'user2',
           path: ['map2', 'map2a', 'map2aa'],
           frames: [
-            [ { path: ['g'], frameId: 'f1' }, {} ],
-            [ { path: ['g'], frameId: 'f2' }, {} ]
+            [ { path: ['g'] }, {} ],
+            [ { path: ['g'] }, {} ]
+          ],
+          framesInfo: [
+            [ { frameId: 'f1' } ],
+            [ { frameId: 'f2' } ]
           ],
           versions: [
             [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ]
@@ -72,7 +76,7 @@ describe("MongoQueriesTests", async() => {
       frameIdList: ['f1', 'f2']
     })
     expect(modifiedA).toEqual(getExpected({frameId: '', mapDataList: [ [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ] ]}))
-    expect(modifiedB).toEqual(getExpected({frameId: 'f2', mapDataList: [ [ { path: ['g'], frameId: 'f2' }, {} ] ] }))
+    expect(modifiedB).toEqual(getExpected({frameId: 'f2', mapDataList: [ [ { path: ['g'] }, {} ] ] }))
   })
   test('getUserShares', async() => {
     const database = {

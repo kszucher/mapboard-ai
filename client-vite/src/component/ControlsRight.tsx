@@ -89,7 +89,7 @@ export const ControlsRight: FC = () => {
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === ''}
+          // disabled={frameId === ''}
           onClick={() => dispatch(api.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}
         >
           <InputIcon/>
