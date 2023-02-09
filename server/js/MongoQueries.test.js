@@ -45,8 +45,8 @@ describe("MongoQueriesTests", async() => {
             [ { path: ['g'] }, {} ]
           ],
           framesInfo: [
-            [ { frameId: 'f1' } ],
-            [ { frameId: 'f2' } ]
+            { frameId: 'f1' },
+            { frameId: 'f2' }
           ],
           versions: [
             [ { path: ['g'] }, { content: 'mapName2aaa', path: ['r', 0] } ]

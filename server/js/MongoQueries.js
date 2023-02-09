@@ -114,17 +114,7 @@ async function openWorkspace(users, userId, sessionId) {
             }
           }
         },
-        {
-          $set: {
-            frameIdList: {
-              $map: {
-                input: "$framesInfo",
-                as: "elem",
-                in: { $first: "$$elem.frameId" }
-              }
-            }
-          }
-        },
+        { $set: { frameIdList: { $map: { input: "$framesInfo", as: "elem", in: "$$elem.frameId" } } } },
         getMapNameList('tabMapIdList', 'tabMapNameList'),
         getMapNameList('breadcrumbMapIdList', 'breadcrumbMapNameList'),
         { $set: { tabId: { $indexOfArray: [ '$tabMapIdList', { $first: '$breadcrumbMapIdList' } ] } } },
