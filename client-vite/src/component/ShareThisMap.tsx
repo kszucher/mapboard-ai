@@ -42,7 +42,7 @@ export const ShareThisMap: FC = () => {
         }
         <Button
           color="primary" variant="outlined"
-          onClick={() => createShare({mapId: getMapId().mapId, shareEmail, shareAccess})}
+          onClick={() => createShare({mapId: getMapId(), shareEmail, shareAccess})}
         >
           {'SHARE'}
         </Button>

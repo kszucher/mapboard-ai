@@ -4,15 +4,18 @@ import {api, useOpenWorkspaceQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
+import {defaultUseOpenWorkspaceQueryState, getMapId} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 
 export const FrameCarousel: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
-  const { mapId, frameIdList, frameId } = data || defaultUseOpenWorkspaceQueryState
-  // const prevFrameId = // TODO implement
-  // const nextFrameId = // TODO implement
+  const { frameIdList, frameId } = data || defaultUseOpenWorkspaceQueryState
+  const frameIdPosition = frameIdList.indexOf(frameId)
+  const prevFrameIdPosition = frameIdPosition > 0 ? frameIdPosition - 1 : 0
+  const nextFrameIdPosition = frameIdPosition < frameIdList.length - 1 ? frameIdPosition + 1 : frameIdList.length - 1
+  const prevFrameId = frameIdList[prevFrameIdPosition]
+  const nextFrameId = frameIdList[nextFrameIdPosition]
   const dispatch = useDispatch()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
@@ -24,13 +27,13 @@ export const FrameCarousel: FC = () => {
           variant="dots"
           steps={frameIdList.length}
           position="static"
-          activeStep={frameId} // TODO fix this, as frameId is NO LONGER an integer, instead find the index of the current element
+          activeStep={frameIdPosition}
           backButton={
             <Button
               style={{paddingLeft:12}}
               size="large"
-              disabled={frameId === 0 || isFetching}
-              onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId, frameId: prevFrameId}))}
+              disabled={frameIdPosition === 0 || isFetching}
+              onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: prevFrameId}))}
             >
               <KeyboardArrowLeftIcon />
             </Button>
@@ -39,8 +42,8 @@ export const FrameCarousel: FC = () => {
             <Button
               style={{paddingRight:12}}
               size="large"
-              disabled={frameId === frameIdList.length - 1 || isFetching}
-              onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId, frameId: nextFrameId}))}
+              disabled={frameIdPosition === frameIdList.length - 1 || isFetching}
+              onClick={() => dispatch(api.endpoints.selectMap.initiate({ mapId: getMapId(), frameId: nextFrameId}))}
             >
               <KeyboardArrowRightIcon />
             </Button>

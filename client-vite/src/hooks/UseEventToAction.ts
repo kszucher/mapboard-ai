@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import {actions, getEditedNodeId, getMap, getCreateMapProps, getSaveMapProps} from "../core/EditorFlow";
+import {actions, getEditedNodeId, getMap} from "../core/EditorFlow";
 import {isUrl} from "../core/Utils";
 import {Dir} from "../core/Types";
 import {getMapData} from "../core/MapFlow";
@@ -68,10 +68,9 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '000') && code === 'Backspace',           ['m'],              1, 'm',  'select_S_BB',                       {}                              ],
     [ 'kd', 0, ckm(e, '000') && code === 'Escape',              ['s', 'c', 'm'],    1, 'm',  'select_R',                          {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyA',                ['s', 'c', 'm'],    1, 'm',  'select_all',                        {}                              ],
-    [ 'kd', 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],    1, 'rtk','createMapInMap',                    getCreateMapProps()           ],
+    // [ 'kd', 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],    1, 'rtk','createMapInMap',                    getCreateMapProps()             ], // TODO: open dialog instead which can accept ENTER
     [ 'kd', 0, ckm(e, '100') && code === 'KeyC',                ['s', 'c', 'm'],    1, 'm',  'copySelection',                     {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyX',                ['s', 'c', 'm'],    1, 'm',  'cutSelection',                      {}                              ],
-    [ 'kd', 0, ckm(e, '100') && code === 'KeyS',                ['s', 'c', 'm'],    1, 'rtk','saveMap',                           getSaveMapProps()               ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyZ',                ['any'],            1, 'a',  'redo',                              {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyY',                ['any'],            1, 'a',  'undo',                              {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyE',                ['s'],              1, 'm',  'transpose',                         {}                              ],

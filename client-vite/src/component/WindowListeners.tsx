@@ -2,16 +2,15 @@
 
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {addListener, isAnyOf} from "@reduxjs/toolkit";
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getMapData, reDraw} from '../core/MapFlow'
+import {getMapData, getSavedMapData, reDraw} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
-import {actions, defaultUseOpenWorkspaceQueryState, getMap, getSaveMapProps} from "../core/EditorFlow"
+import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
 import {mapProps} from "../core/DefaultProps";
@@ -45,7 +44,7 @@ export const WindowListeners: FC = () => {
 
   // TIMEOUT
   const timeoutFun = () => {
-    dispatch(api.endpoints.saveMap.initiate(getSaveMapProps()))
+    dispatch(api.endpoints.saveMap.initiate({ mapId: getMapId(), frameId: getFrameId(), mapData: getSavedMapData(getMap()) }))
     console.log('saved by timeout')
   }
 

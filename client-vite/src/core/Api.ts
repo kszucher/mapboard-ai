@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, DefaultUseOpenWorkspaceQueryState, getSaveMapProps, RootState} from "./EditorFlow";
+import {actions, DefaultUseOpenWorkspaceQueryState, getFrameId, getMap, getMapId, RootState} from "./EditorFlow";
 import {timeoutId} from "../component/WindowListeners";
 import {backendUrl} from "./Url";
+import {getSavedMapData} from "./MapFlow";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -30,19 +31,13 @@ export const api = createApi({
         if (editor.mapStackData.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
-
-          // TODO try to access mapId through this syntax
-          // if possible, we can get rid of copying data to local state
-          // so mapId may never need to be copied ???
-          // https://redux-toolkit.js.org/rtk-query/usage/usage-without-react-hooks
-
-          dispatch(api.endpoints.saveMap.initiate(getSaveMapProps()))
+          dispatch(api.endpoints.saveMap.initiate({ mapId: getMapId(), frameId: getFrameId(), mapData: getSavedMapData(getMap()) }))
         }
       },
       providesTags: ['Workspace']
     }),
-    selectMap: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'selectMap', payload: { mapId } } }),
+    selectMap: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'selectMap', payload: { mapId, frameId } } }),
       invalidatesTags: ['Workspace']
     }),
     createMapInMap: builder.mutation<void, { mapId: string, nodeId: string,  content: string }>({query: ({ mapId, nodeId, content }) =>
@@ -53,31 +48,31 @@ export const api = createApi({
         ({ url: 'beta-private', method: 'POST', body: { type: 'createMapInTab' } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameImport: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameImport' } }),
+    createMapFrameImport: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameImport', payload: { mapId, frameId } } }),
       invalidatesTags: ['Workspace']
     }),
-    createMapFrameDuplicate: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameDuplicate' } }),
+    createMapFrameDuplicate: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'createMapFrameDuplicate', payload: { mapId, frameId } } }),
       invalidatesTags: ['Workspace']
     }),
-    moveUpMapInTab: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'moveUpMapInTab' } }),
+    moveUpMapInTab: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'moveUpMapInTab', payload: { mapId } } }),
       invalidatesTags: ['Workspace']
     }),
-    moveDownMapInTab: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab' } }),
+    moveDownMapInTab: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab' }, payload: { mapId } }),
       invalidatesTags: ['Workspace']
     }),
     deleteMap: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
         ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMap', payload: { mapId } } }),
       invalidatesTags: ['Workspace']
     }),
-    deleteMapFrame: builder.mutation<void, void>({query: () =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame' } }),
+    deleteMapFrame: builder.mutation<void, { mapId: string, frameId: string }>({query: ({ mapId, frameId }) =>
+        ({ url: 'beta-private', method: 'POST', body: { type: 'deleteMapFrame', payload: { mapId, frameId } } }),
       invalidatesTags: ['Workspace']
     }),
-    saveMap: builder.mutation<void, { mapId: string, frameId: number, mapData: any }>({query: ({ mapId, frameId, mapData }) =>
+    saveMap: builder.mutation<void, { mapId: string, frameId: string, mapData: any }>({query: ({ mapId, frameId, mapData }) =>
         ({ url: 'beta-private', method: 'POST', body: { type: 'saveMap', payload: { mapId, frameId, mapData } } }),
       invalidatesTags: []
     }),

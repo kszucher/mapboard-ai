@@ -22,21 +22,21 @@ export const ControlsLeft: FC = () => {
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate())}
+          onClick={() => dispatch(api.endpoints.moveUpMapInTab.initiate({mapId: getMapId()}))}
           disabled={false}
         >
           <MoveUpIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate())}
+          onClick={() => dispatch(api.endpoints.moveDownMapInTab.initiate({mapId: getMapId()}))}
           disabled={false}
         >
           <MoveDownIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(api.endpoints.deleteMap.initiate(getMapId()))}
+          onClick={() => dispatch(api.endpoints.deleteMap.initiate({mapId: getMapId()}))}
           disabled={false}
         >
           <DeleteIcon/>

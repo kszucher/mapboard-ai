@@ -29,12 +29,12 @@ export const TabMaps: FC = () => {
         aria-label="Vertical tabs example"
         indicatorColor="primary"
         value={tabId}
-        onChange={(e, value) => dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[value]})) }
+        onChange={(e, value) => dispatch(api.endpoints.selectMap.initiate({mapId: tabMapIdList[value], frameId: ''})) }
       >
         {
           tabMapNameList.map((el: { name: string }, index: number) => (
             <Tab
-              disabled={frameId > -1}
+              disabled={frameId !== ''}
               label={tabShrink ? el.name.at(0) : el.name}
               key={index}
             />

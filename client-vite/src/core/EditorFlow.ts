@@ -1,7 +1,7 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {FormatMode, AccessTypes, PageState} from "./Types";
 import {mapAssembly} from "../map/MapAssembly";
-import {getMapData, getSavedMapData, reCalc} from "./MapFlow";
+import {reCalc} from "./MapFlow";
 import {mapDeInit} from "../map/MapDeInit";
 import {copy} from "./Utils";
 import {api} from "./Api";
@@ -43,13 +43,13 @@ export interface DefaultUseOpenWorkspaceQueryState {
   access: AccessTypes,
   tabId: number,
   mapId: string,
-  frameId: number,
+  frameId: string,
   mapDataList: [],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
   tabMapIdList: [],
   tabMapNameList: [],
-  frameIdList: [],
+  frameIdList: string[],
 }
 
 export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQueryState = {
@@ -58,7 +58,7 @@ export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQuerySta
   access: AccessTypes.UNAUTHORIZED,
   tabId: 0,
   mapId: '',
-  frameId: -1,
+  frameId: '',
   mapDataList: [],
   tabMapIdList: [],
   tabMapNameList: [],
@@ -75,21 +75,16 @@ export const getSelectTarget = () => (store.getState().editor.selectTarget)
 export const getTempMap = () => (store.getState().editor.tempMap)
 export const getMap = () : { g: any, r: any } => (store.getState().editor.mapStackData[store.getState().editor.mapStackDataIndex])
 export const getMapId = () => {
-  const { mapId } = store.getState().editor
-  return { mapId }
+  const result = api.endpoints.openWorkspace.select()(store.getState())
+  const { data } = result
+  const { mapId } = data || defaultUseOpenWorkspaceQueryState
+  return mapId
 }
-export const getSaveMapProps = () => {
-  const { mapId, frameId } = store.getState().editor
-  const m = getMap()
-  const mapData = getSavedMapData(m)
-  return { mapId, frameId, mapData }
-}
-export const getCreateMapProps = () : { mapId: string, nodeId: string, content: string }  => {
-  const { mapId } = store.getState().editor
-  const m = getMap()
-  const { lastPath } = m.g.sc
-  const last = getMapData(m, lastPath)
-  return { mapId, nodeId: last.nodeId, content: last.content }
+export const getFrameId = () => {
+  const result = api.endpoints.openWorkspace.select()(store.getState())
+  const { data } = result
+  const { frameId } = data || defaultUseOpenWorkspaceQueryState
+  return frameId
 }
 
 export const editorSlice = createSlice({

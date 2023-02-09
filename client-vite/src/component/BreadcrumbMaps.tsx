@@ -17,13 +17,13 @@ export const BreadcrumbMaps: FC = () => {
         {
           breadcrumbMapNameList.map((el: { name: string }, index: number) => (
             <Link
-              underline={frameId > -1 ? 'none': 'hover'} href="/"
+              underline={frameId !== '' ? 'none': 'hover'} href="/"
               onClick={
                 e => {
                   e.preventDefault()
-                  frameId > -1
+                  frameId !== ''
                     ? console.log('prevent')
-                    : dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index]}))
+                    : dispatch(api.endpoints.selectMap.initiate({mapId: breadcrumbMapIdList[index], frameId: ''}))
                 }
               }
               key={index}>

@@ -186,7 +186,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         return res.json({})
       }
       case 'deleteMap': {
-        // TODO prevent deleting the last map
+        // TODO prevent deleting the last map in tab
         const mapId = ObjectId(req.body.payload.mapId)
         await MongoMutations.deleteMap(users, shares, userId, sessionId, mapId)
         return res.json({})
@@ -199,7 +199,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
       }
       case 'saveMap': {
         const mapId = ObjectId(req.body.payload.mapId)
-        const { mapData, frameId } = req.body.payload
+        const { frameId, mapData } = req.body.payload
         const map = await maps.findOne({ _id: mapId })
         const { ownerUser } = map
         const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })

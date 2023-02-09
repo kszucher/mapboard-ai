@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, defaultUseOpenWorkspaceQueryState, getMapId} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState, getMapId, getFrameId} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {mapProps} from "../core/DefaultProps";
@@ -82,36 +82,36 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs4, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          disabled={frameId > -1 && frameIdList.length > 0}
-          onClick={() => dispatch(api.endpoints.selectFirstMapFrame.initiate())}
+          disabled={frameId !== '' && frameIdList.length > 0}
+          onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: frameIdList[0]}))}
         >
           <DynamicFeedIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === -1}
-          onClick={() => dispatch(api.endpoints.createMapFrameImport.initiate({mapId, frameId}))}
+          disabled={frameId === ''}
+          onClick={() => dispatch(api.endpoints.createMapFrameImport.initiate({mapId: getMapId(), frameId: getFrameId()}))}
         >
           <InputIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === -1 || frameIdList.length === 0}
-          onClick={() => dispatch(api.endpoints.createMapFrameDuplicate.initiate())}
+          disabled={frameId === '' || frameIdList.length === 0}
+          onClick={() => dispatch(api.endpoints.createMapFrameDuplicate.initiate({mapId: getMapId(), frameId: getFrameId()}))}
         >
           <ContentCopyIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === -1 || frameIdList.length === 0}
-          onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate())}
+          disabled={frameId === '' || frameIdList.length === 0}
+          onClick={() => dispatch(api.endpoints.deleteMapFrame.initiate({mapId: getMapId(), frameId: getFrameId()}))}
         >
           <DeleteIcon/>
         </IconButton>
         <IconButton
           color='secondary'
-          disabled={frameId === -1}
-          onClick={() => dispatch(api.endpoints.selectMap.initiate(getMapId()))}
+          disabled={frameId === ''}
+          onClick={() => dispatch(api.endpoints.selectMap.initiate({mapId: getMapId(), frameId: ''}))}
         >
           <CloseIcon/>
         </IconButton>
@@ -119,7 +119,7 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs5, borderRadius: '0 0 0 16px' }}>
         <IconButton
           color='secondary'
-          disabled={frameId > -1}
+          disabled={frameId !== ''}
           onClick={ () => dispatch(actions.setPageState(PageState.WS_SHARE_THIS_MAP))}
         >
           <ShareIcon/>

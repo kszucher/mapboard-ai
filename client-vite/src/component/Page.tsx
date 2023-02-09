@@ -105,7 +105,7 @@ export const Page: FC = () => {
               </>
             }
             {formatterVisible && mapStackData.length && <Formatter/>}
-            {frameId > -1 && <FrameCarousel/>}
+            {frameId !== '' && <FrameCarousel/>}
           </>
         }
         {pageState === PageState.WS_PROFILE && <Profile/>}

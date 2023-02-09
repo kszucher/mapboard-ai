@@ -1,9 +1,10 @@
 import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, getCreateMapProps} from "../core/EditorFlow";
+import {actions, getMap, getMapId} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {getMapData} from "../core/MapFlow";
 
 export const ShouldCreateMapInMap: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
@@ -20,7 +21,11 @@ export const ShouldCreateMapInMap: FC = () => {
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button
             color="primary" variant='outlined' disabled={isFetching}
-            onClick={() => dispatch(api.endpoints.createMapInMap.initiate(getCreateMapProps()))}>
+            onClick={() => dispatch(api.endpoints.createMapInMap.initiate({
+              mapId: getMapId(),
+              nodeId: getMapData(getMap(), getMap().g.sc.lastPath).nodeId,
+              content: getMapData(getMap(), getMap().g.sc.lastPath).content
+            }))}>
             {'OK'}
           </Button>
           <Button
