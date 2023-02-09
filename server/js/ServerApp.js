@@ -64,7 +64,7 @@ const getDefaultMap = (mapName, ownerUser, path) => ({
   versionsInfo: [{
     modifierType: 'user',
     userId: ownerUser,
-    sessionId: 0,
+    sessionId: '',
     versionId: 1,
   }],
   frames: [],
