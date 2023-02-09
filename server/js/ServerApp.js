@@ -206,7 +206,7 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         const { ownerUser } = map
         const shareToEdit = await shares.findOne({ shareUser: userId, sharedMap: mapId, access: 'edit' })
         if (isEqual(userId, ownerUser) || shareToEdit !== null) {
-          if (frameId === -1) {
+          if (frameId === '') {
             await MongoMutations.saveMap(maps, mapId, sessionId, 'map', mapData)
           } else {
             await MongoMutations.saveMapFrame(maps, mapId, frameId, mapData)

@@ -555,9 +555,9 @@ async function saveMapFrame (maps, mapId, frameId, mapData) {
               if: { $ne: [ frameId, '' ] },
               then: {
                 $concatArrays: [
-                  { $slice: [ "$frames", frameId ] },
+                  { $slice: [ "$frames", getIndexOfFrameId(frameId) ] },
                   [ mapData ],
-                  { $slice: [ "$frames", { $add: [ 1, frameId ] }, { $size: "$frames" } ] }
+                  { $slice: [ "$frames", { $add: [ 1, getIndexOfFrameId(frameId) ] }, { $size: "$frames" } ] }
                 ]
               },
               else: "$frames"

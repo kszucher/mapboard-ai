@@ -214,9 +214,9 @@ describe("MongoMutationsTests", async() => {
   test('saveMapFrame', async() => {
     const database = {
       users: [ {_id: 'user1'} ],
-      maps: [ { _id: 'map1', ownerUser:'user1', frames: [ 'mf1', 'omf', 'mf2' ] }]
+      maps: [ { _id: 'map1', ownerUser: 'user1', frames: [ 'mf1', 'omf', 'mf2' ], framesInfo: [ {frameId: 'f1id'}, {frameId: 'f2id'}, {frameId: 'f3id'} ] }]
     }
-    const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 1, 'nmf'])
+    const modified = await resolveMutation(database, 'saveMapFrame', [maps, 'map1', 'f2id', 'nmf'])
     expect(getElemById(modified.maps, 'map1').frames).toEqual([ 'mf1', 'nmf', 'mf2' ])
   })
   test('createNodeProp', async() => {
