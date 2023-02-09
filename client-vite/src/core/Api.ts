@@ -61,7 +61,7 @@ export const api = createApi({
       invalidatesTags: ['Workspace']
     }),
     moveDownMapInTab: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>
-        ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab' }, payload: { mapId } }),
+        ({ url: 'beta-private', method: 'POST', body: { type: 'moveDownMapInTab', payload: { mapId } } }),
       invalidatesTags: ['Workspace']
     }),
     deleteMap: builder.mutation<void, { mapId: string }>({query: ({ mapId }) =>

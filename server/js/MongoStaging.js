@@ -21,8 +21,7 @@ async function mongoStagingCommands (users, maps, shares) {
   await maps.updateMany({}, [
     {
       $set: {
-        frames: [],
-        framesInfo: [],
+        versions: [ '$versions' ]
       }
     }
   ])
