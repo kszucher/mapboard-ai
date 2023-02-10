@@ -11,9 +11,10 @@ const MongoQueries = require("./MongoQueries")
 const MongoMutations = require("./MongoMutations")
 const { baseUri } = require('./MongoSecret')
 const { ACCESS_TYPES, SHARE_STATUS } = require('./Types')
+const { authAudienceUrl } = require('./Url')
 
 const checkJwt = auth({
-  audience: 'http://local.mapboard/',
+  audience: authAudienceUrl,
   issuerBaseURL: `https://dev-gvarh14b.us.auth0.com/`,
 })
 
