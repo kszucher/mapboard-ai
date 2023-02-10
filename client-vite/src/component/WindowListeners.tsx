@@ -112,7 +112,7 @@ export const WindowListeners: FC = () => {
               whichDown = 0
               if (ln.linkType === 'internal') {
                 const ln = getMapData(m, lastOverPath)
-                dispatch(api.endpoints.selectMap.initiate({mapId: ln.link}))
+                dispatch(api.endpoints.selectMap.initiate({mapId: ln.link, frameId: ''}))
               } else if (ln.linkType === 'external') {
                 window.open(ln.link, '_blank')
                 window.focus()
