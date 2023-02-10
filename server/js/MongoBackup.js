@@ -65,7 +65,7 @@ const mongoBackup = async (mode) => {
       break
     }
     case 'file2dev': {
-      const filename = 'date_1674662607308_source_app_dev_comment_hasFrames'
+      const filename = 'date_1676029899170_source_app_dev_comment_versions_and_frames_FIXED_TESTED_CLEANED'
       await mongoRestore({source: decodeSourceFromFilename(filename), target:'app_dev', filename })
       break
     }

@@ -1,4 +1,4 @@
-const authAudienceUrl = process.env.NODE_ENV === 'development'
+const authAudienceUrl = process.env.NODE_ENV === undefined
   ? 'http://local.mapboard/'
   : 'https://mapboard.io/'
 
