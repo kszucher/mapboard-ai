@@ -195,7 +195,7 @@ describe("MongoMutationsTests", async() => {
       maps: [
         { _id: 'map1',
           ownerUser:'user1',
-          versionsInfo: [],
+          versionsInfo: [ { modifierType: "user", userId: "user0", sessionId: 'session1', versionId: 1 } ],
           versions: [ mergeBase, mergeMutationA ]
         }
       ]
@@ -205,7 +205,10 @@ describe("MongoMutationsTests", async() => {
       {
         _id: 'map1',
         ownerUser:'user1',
-        versionsInfo: [ { modifierType: "user", userId: "user1", sessionId: 'session1' } ],
+        versionsInfo: [
+          { modifierType: "user", userId: "user0", sessionId: 'session1', versionId: 1 },
+          { modifierType: "user", userId: "user1", sessionId: 'session1', versionId: 2 }
+        ],
         versions: [ mergeBase, mergeMutationA, mergeResult ]
       }
     ]

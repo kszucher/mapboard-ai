@@ -482,7 +482,7 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
                 modifierType: { map: 'user', node: 'server' }[mergeType],
                 userId: '$data.ownerUser',
                 sessionId,
-                /* versionId */
+                versionId: { $add: [ { $getField: { field: 'versionId', input: { $last: '$data.versionsInfo' } } }, 1 ] }
               }]
             ]
           }
