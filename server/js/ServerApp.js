@@ -13,7 +13,7 @@ const { baseUri } = require('./MongoSecret')
 const { ACCESS_TYPES, SHARE_STATUS } = require('./Types')
 
 const checkJwt = auth({
-  audience: 'http://local.mapboard/', // TODO make process.ENV dependent so it runs on heroku
+  audience: 'http://local.mapboard/',
   issuerBaseURL: `https://dev-gvarh14b.us.auth0.com/`,
 })
 
