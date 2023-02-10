@@ -54,7 +54,7 @@ const mongoBackup = async (mode) => {
       break
     }
     case 'dev2file': {
-      const comment = 'versions_and_frames_FIXED_TESTED'
+      const comment = 'versions_and_frames_FIXED_TESTED_CLEANED'
       await mongoDump({source: 'app_dev', comment})
       break
     }
