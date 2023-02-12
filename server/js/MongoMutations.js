@@ -46,7 +46,7 @@ async function updateWorkspace(users, userId, sessionId) {
         }
       },
       { $set: { signInCount: { $add: [ '$signInCount', 1 ] } } },
-      { $out: 'users' }
+      { $merge: 'users' }
     ]
   ).toArray()
 }
@@ -62,7 +62,7 @@ async function selectMap(users, userId, sessionId, mapId, frameId) {
   await users.aggregate([
       { $match: {_id: userId } },
       {...setSession(sessionId, mapId, frameId)},
-      { $out: 'users' }
+      { $merge: 'users' }
     ]
   ).toArray()
 }
@@ -272,7 +272,7 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
         )
       },
       { $unset: [ 'mapId', 'mapList', 'map', 'frames', 'framesInfo' ] },
-      { $out: 'users' }
+      { $merge: 'users' }
     ]
   ).toArray()
   await maps.aggregate(
