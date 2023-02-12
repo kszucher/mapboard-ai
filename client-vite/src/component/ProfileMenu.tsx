@@ -4,10 +4,12 @@ import { Divider, Menu, MenuItem } from '@mui/material'
 import {actions} from '../core/EditorFlow'
 import {PageState} from "../core/Types";
 import {api} from "../core/Api";
+import {useAuth0} from "@auth0/auth0-react";
 
 export const ProfileMenu: FC = () => {
   const moreMenu = useSelector((state: RootStateOrAny) => state.editor.moreMenu)
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const { logout } = useAuth0()
   const dispatch = useDispatch()
   return (
     <Menu
@@ -54,6 +56,7 @@ export const ProfileMenu: FC = () => {
               // TODO call auth0 signOut function
               dispatch(actions.resetState())
               dispatch(api.util.resetApiState())
+              logout({ logoutParams: { returnTo: window.location.origin }})
             }}
           >
             {'Sign Out'}
