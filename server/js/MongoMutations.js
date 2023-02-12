@@ -301,6 +301,17 @@ async function deleteMapFrame (users, maps, userId, sessionId, mapId, frameId) {
 
 async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
   const newMap = mergeType === 'map' ?  mergeData : { $concatArrays: [ { $last: '$versions' }, [ mergeData ] ] }
+  const shouldAppend = () => ({
+    $or: [
+      { $eq: [ { $size: "$versions" }, 1 ] },
+      { $and: [
+          { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$versionsInfo' } } }, 'user' ] },
+          { $eq: [ { $getField: { field: 'userId', input: { $last: '$versionsInfo' } } }, '$ownerUser' ] },
+          { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$versionsInfo' } } }, sessionId] }
+        ]
+      }
+    ]
+  })
   const getValuesByNodeIdAndNodePropId = (input, mutationId) => (
     {
       $objectToArray: {
@@ -343,20 +354,9 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
               $set: {
                 helperArray: {
                   $concatArrays: [
-                    getValuesByNodeIdAndNodePropId(
-                      {
+                    getValuesByNodeIdAndNodePropId({
                         $cond: {
-                          if: {
-                            $or: [
-                              { $eq: [ { $size: "$versions" }, 1 ] },
-                              { $and: [
-                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$versionsInfo' } } }, 'user' ] },
-                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$versionsInfo' } } }, '$ownerUser' ] },
-                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$versionsInfo' } } }, sessionId] }
-                                ]
-                              }
-                            ]
-                          },
+                          if: shouldAppend(),
                           then: { $last: "$versions" },
                           else: { $arrayElemAt: [ "$versions", -2 ] }
                         }
@@ -364,17 +364,7 @@ async function saveMap (maps, mapId, sessionId, mergeType, mergeData) {
                     getValuesByNodeIdAndNodePropId(
                       {
                         $cond: {
-                          if: {
-                            $or: [
-                              { $eq: [ { $size: "$versions" }, 1 ] },
-                              { $and: [
-                                  { $eq: [ { $getField: { field: 'modifierType', input: { $last: '$versionsInfo' } } }, 'user' ] },
-                                  { $eq: [ { $getField: { field: 'userId', input: { $last: '$versionsInfo' } } }, '$ownerUser' ] },
-                                  { $eq: [ { $getField: { field: 'sessionId', input: { $last: '$versionsInfo' } } }, sessionId] }
-                                ]
-                              }
-                            ]
-                          },
+                          if: shouldAppend(),
                           then: '$newMap',
                           else: { $last: "$versions" }
                         }
