@@ -121,7 +121,6 @@ app.post('/beta-private', checkJwt, async (req, res) => {
             { _id: userId },
             {
               $set: {
-                signInCount: 1,
                 email: userInfo.data.email,
                 name: capitalize(userInfo.data.nickname),
                 colorMode: 'dark',
@@ -130,9 +129,8 @@ app.post('/beta-private', checkJwt, async (req, res) => {
               }
             }
           )
-        } else {
-          await MongoMutations.updateWorkspace(users, userId, sessionId)
         }
+        await MongoMutations.updateWorkspace(users, userId, sessionId)
         return res.json({})
       }
       case 'openWorkspace': {
