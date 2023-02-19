@@ -43,12 +43,12 @@ const mongoRestore = async({source, target, filename}) => {
 const mongoBackup = async (mode) => {
   switch (mode) {
     case 'prod2file': {
-      const comment = ''
+      const comment = '2023021901'
       await mongoDump({source: 'app_prod', comment})
       break
     }
     case 'prod2file2dev': {
-      const comment = ''
+      const comment = '2023021901'
       await mongoDump({source: 'app_prod', comment})
       await mongoRestore({source:'app_prod', target:'app_dev'})
       break
@@ -83,4 +83,4 @@ const mongoBackup = async (mode) => {
   }
 }
 
-mongoBackup('prod2file2dev')
+mongoBackup('prod2file')
