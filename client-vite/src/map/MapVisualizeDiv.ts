@@ -8,9 +8,8 @@ export const mapVisualizeDiv = {
     mapDiv.style.width = "" + m.g.mapWidth + "px"
     // @ts-ignore
     mapDiv.style.height = "" + m.g.mapHeight + "px"
-    const mapHolderDiv : HTMLElement | null = document.getElementById('mapHolderDiv')
-    // @ts-ignore
-    mapHolderDiv.focus()
+    const mapHolderDiv: HTMLElement | null = document.getElementById('mapHolderDiv')
+    mapHolderDiv?.focus()
     mapVisualizeDiv.iterate(m, m.r[0], colorMode)
   },
 

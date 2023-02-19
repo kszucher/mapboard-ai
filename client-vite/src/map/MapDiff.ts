@@ -5,7 +5,7 @@ export const mapDiff = {
     mapDiff.iterate(pm, m, m.r[0])
   },
 
-  iterate: (pm: any, m: any, cn:any) => {
+  iterate: (pm: any, m: any, cn: any) => {
     const pn = getMapData(pm, cn.path)
     if (cn.nodeId === pn?.nodeId) {
       if (pn.content !== cn.content || pn.contentType !== cn.contentType || pn.textFontSize !== cn.textFontSize) {

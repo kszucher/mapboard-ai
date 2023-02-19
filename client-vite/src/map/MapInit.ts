@@ -3,16 +3,16 @@ import { copy, genHash, shallowCopy } from '../core/Utils'
 
 export const mapInit = {
   start: (m: any) => {
-    // note: no need for saveAlways, as these values should always be pre-made by the server
+    for (const prop in mapProps.saveAlways) {
+      // do nothing
+    }
     for (const prop in mapProps.saveOptional) {
       if (!m.g.hasOwnProperty(prop)) {
-        // @ts-ignore
-        m.g[prop] = copy(mapProps.saveOptional[prop])
+        m.g[prop] = copy(mapProps.saveOptional[prop as keyof typeof mapProps.saveOptional])
       }
     }
     for (const prop in mapProps.saveNeverInitAlways) {
-      // @ts-ignore
-      m.g[prop] = copy(mapProps.saveNeverInitAlways[prop])
+      m.g[prop] = copy(mapProps.saveNeverInitAlways[prop as keyof typeof mapProps.saveNeverInitAlways])
     }
     m.g.sLineDeltaXDefault = m.g.density === 'large' ? 30 : 20
     m.g.padding = m.g.density === 'large' ? 8 : 3
@@ -28,20 +28,17 @@ export const mapInit = {
         if (prop === 'nodeId') {
           cn[prop] = 'node' + genHash(8)
         } else {
-          // @ts-ignore
-          cn[prop] = copy(nodeProps.saveAlways[prop])
+          cn[prop] = copy(nodeProps.saveAlways[prop as keyof typeof nodeProps.saveAlways])
         }
       }
     }
     for (const prop in nodeProps.saveOptional) {
       if (!cn.hasOwnProperty(prop)) {
-        // @ts-ignore
-        cn[prop] = shallowCopy(nodeProps.saveOptional[prop])
+        cn[prop] = shallowCopy(nodeProps.saveOptional[prop as keyof typeof nodeProps.saveOptional])
       }
     }
     for (const prop in nodeProps.saveNeverInitAlways) {
-      // @ts-ignore
-      cn[prop] = shallowCopy(nodeProps.saveNeverInitAlways[prop])
+      cn[prop] = shallowCopy(nodeProps.saveNeverInitAlways[prop as keyof typeof nodeProps.saveNeverInitAlways])
     }
     cn.d.map((i: any) => mapInit.iterate(m, i))
     cn.s.map((i: any) => mapInit.iterate(m, i))

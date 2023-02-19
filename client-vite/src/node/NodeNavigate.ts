@@ -1,7 +1,7 @@
 import {getMapData} from '../core/MapFlow'
 import {Dir} from "../core/Types"
 
-export const structNavigate = (m:any, truePath: any[], direction: Dir) => {
+export const structNavigate = (m: any, truePath: any[], direction: Dir) => {
   let newPath = []
   let inDepth = - 1
   //       v
@@ -83,7 +83,7 @@ export const structNavigate = (m:any, truePath: any[], direction: Dir) => {
   return newPath
 }
 
-export const cellNavigate = (m:any, truePath: any[], direction: Dir) => {
+export const cellNavigate = (m: any, truePath: any[], direction: Dir) => {
   let newPath = truePath
   let currRef = getMapData(m, truePath)
   let pn = getMapData(m, currRef.parentPath)
