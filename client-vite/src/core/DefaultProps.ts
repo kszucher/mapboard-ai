@@ -1,12 +1,5 @@
-import {LineTypes} from "./Types";
-import {
-  SC,
-  NC,
-  GSaveAlways,
-  GSaveNever,
-  GSaveOptional,
-  NSaveAlways, NSaveNever, NSaveOptional
-} from "../types/DefaultProps";
+import {LineTypes} from "./Types"
+import {SC, NC, GSaveAlways, GSaveOptional, GSaveNever, NSaveAlways, NSaveOptional, NSaveNever} from "../types/DefaultProps"
 
 const sc = {
   structSelectedPathList: [],

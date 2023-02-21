@@ -1,4 +1,4 @@
-import {LineTypes} from "../core/Types";
+import {LineTypes} from "../core/Types"
 
 interface SC {
   structSelectedPathList: [],

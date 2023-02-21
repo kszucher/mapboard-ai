@@ -6,16 +6,16 @@ import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
 import {getMapData, getSavedMapData, reDraw} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Types"
-import {useMapDispatch} from "../hooks/UseMapDispatch";
+import {useMapDispatch} from "../hooks/UseMapDispatch"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
-import {useEventToAction} from "../hooks/UseEventToAction";
-import {orient} from "../map/MapVisualizeHolderDiv";
-import {gSaveOptional} from "../core/DefaultProps";
-import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
-import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {useEventToAction} from "../hooks/UseEventToAction"
+import {orient} from "../map/MapVisualizeHolderDiv"
+import {gSaveOptional} from "../core/DefaultProps"
+import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
 
 let whichDown = 0, fromX, fromY, elapsed = 0
 let namedInterval
