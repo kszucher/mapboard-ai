@@ -1,5 +1,7 @@
+import {M, N} from "../types/DefaultProps"
+
 export const mapChain = {
-  start: (m: any) => {
+  start: (m: M) => {
     Object.assign(m.r[0], {
       parentPath: [],
       path: ['r', 0],
@@ -9,14 +11,14 @@ export const mapChain = {
     mapChain.iterate(m, m.r[0])
   },
 
-  iterate: (m: any, cn: any) => {
+  iterate: (m: M, cn: N) => {
     if (!cn.isRoot) {
       if (cn.type === 'dir') {
-        cn.path = cn.parentPath.concat(["d", cn.index])
+        cn.path = [...cn.parentPath, "d", cn.index]
       } else if (cn.type === 'struct') {
-        cn.path = cn.parentPath.concat(["s", cn.index])
+        cn.path = [...cn.parentPath, "s", cn.index]
       } else if (cn.type === 'cell') {
-        cn.path = cn.parentPath.concat(["c", cn.index[0], cn.index[1]])
+        cn.path = [...cn.parentPath, "c", cn.index[0], cn.index[1]]
       }
     }
     let dCount = Object.keys(cn.d).length

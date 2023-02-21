@@ -1,4 +1,4 @@
-import {getMapData} from "../core/MapFlow";
+import {getMapData} from "../core/MapFlow"
 
 export const mapDiff = {
   start: (pm: any, m: any) => {

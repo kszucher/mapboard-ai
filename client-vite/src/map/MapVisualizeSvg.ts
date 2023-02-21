@@ -1,7 +1,7 @@
-// @ts-nocheck
+//@ts-nocheck
 
 import { updateMapSvgData } from '../core/DomFlow'
-import {isEqual, isOdd, nodeIdToPath} from '../core/Utils'
+import {isEqual, isOdd} from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'

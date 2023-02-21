@@ -13,7 +13,7 @@ import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
 import {useEventToAction} from "../hooks/UseEventToAction";
 import {orient} from "../map/MapVisualizeHolderDiv";
-import {mapProps} from "../core/DefaultProps";
+import {gSaveOptional} from "../core/DefaultProps";
 import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 
@@ -35,7 +35,7 @@ export const WindowListeners: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const mExists = m && Object.keys(m).length
   const tmExists = tm && Object.keys(tm).length
-  const { density, alignment } = m?.g || mapProps.saveOptional
+  const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, mapId, frameId, access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()

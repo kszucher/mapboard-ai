@@ -1,7 +1,8 @@
 import {getDefaultNode} from "../core/DefaultProps"
+import {MPartial} from "../types/DefaultProps"
 
 export const mapFix = {
-  start: (m: any) => {
+  start: (m: MPartial) => {
     mapFix.iterate(m, m.r[0])
   },
 

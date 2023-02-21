@@ -17,7 +17,7 @@ import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, defaultUseOpenWorkspaceQueryState, getMapId, getFrameId} from "../core/EditorFlow";
 import {PageState} from "../core/Types";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
-import {mapProps} from "../core/DefaultProps";
+import {gSaveOptional} from "../core/DefaultProps";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 const iconSize = 40
@@ -32,7 +32,7 @@ const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 bor
 export const ControlsRight: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-  const { density, alignment } = m?.g || mapProps.saveOptional
+  const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()

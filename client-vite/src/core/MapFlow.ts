@@ -1,4 +1,5 @@
-import {getDefaultNode, nodeProps} from './DefaultProps'
+import {getDefaultNode} from './DefaultProps'
+import {M, MPartial, N} from "../types/DefaultProps"
 import {flagDomData, updateDomData} from './DomFlow'
 import {copy, createArray, genHash, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
@@ -22,28 +23,28 @@ import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeM
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Types";
 
-export const getMapData = (m: any, path: any) => {
+export const getMapData = (m: M, path: any) => {
   return subsref(m, path)
 }
 
-export const getSavedMapData = (m: any) => {
+export const getSavedMapData = (m: M) => {
   const mCopy = copy(m)
   mapDeInit.start(mCopy)
   return mapDisassembly.start(mCopy)
 }
 
-const clearSelection = (m: any) => {
+const clearSelection = (m: M) => {
   mapSetProp.start(m, m.r[0], { selected: 0, selection: 's' }, '')
 }
 
-const updateParentLastSelectedChild = (m: any, ln: any) => {
+const updateParentLastSelectedChild = (m: M, ln: N) => {
   if (!m.g.sc.isRootIncluded) {
     let pn = getMapData(m, ln.parentPath)
     pn.lastSelectedChild = ln.index
   }
 }
 
-export const mapReducer = (m: any, action: any, payload: any) => {
+export const mapReducer = (m: M, action: any, payload: any) => {
   const { sc } = m.g
   let ln = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
@@ -156,7 +157,7 @@ export const mapReducer = (m: any, action: any, payload: any) => {
       if (!payload.add) {
         clearSelection(m)
       }
-      let toPath = [...sc.lastPath]
+      let toPath = [...sc.lastPath] as any[]
       if (payload.direction === Dir.U) {toPath = sc.geomHighPath}
       else if (payload.direction === Dir.D) {toPath = sc.geomLowPath}
       else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
@@ -458,27 +459,27 @@ export const mapReducer = (m: any, action: any, payload: any) => {
   return m
 }
 
-export const reCalc = (pm: any, m: any) => {
+export const reCalc = (pm: MPartial, m: MPartial) => {
   mapFix.start(m)
   mapInit.start(m)
-  mapChain.start(m)
-  mapDiff.start(pm, m)
-  mapCalcTask.start(m)
-  mapExtractSelection.start(m)
-  mapExtractProps.start(m)
-  mapMeasure.start(m)
-  mapPlace.start(m)
+  mapChain.start(m as M)
+  mapDiff.start(pm as M, m as M) // TODO continue using the new types from here...
+  mapCalcTask.start(m as M)
+  mapExtractSelection.start(m as M)
+  mapExtractProps.start(m as M)
+  mapMeasure.start(m as M)
+  mapPlace.start(m as M)
   return m
 }
 
-const redrawStep = (m: any, colorMode: any, isEditing: boolean, shouldAnimationInit: boolean) => {
+const redrawStep = (m: M, colorMode: any, isEditing: boolean, shouldAnimationInit: boolean) => {
   flagDomData()
   mapVisualizeSvg.start(m, colorMode, shouldAnimationInit)
   mapVisualizeDiv.start(m, colorMode)
   updateDomData()
 }
 
-export const reDraw = (m: any, colorMode: any, isEditing: boolean) => {
+export const reDraw = (m: M, colorMode: any, isEditing: boolean) => {
   if (m.g.animationRequested) {
     redrawStep(m, colorMode, isEditing, true)
   }
