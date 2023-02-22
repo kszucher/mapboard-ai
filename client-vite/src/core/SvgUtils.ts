@@ -93,7 +93,6 @@ export const getPolygonPoints = (selection: string, adjustedParams: AdjustedPara
   }
 }
 
-
 export const getPolygonPath = (params: PolygonPoints, selection: string, dir: number, margin: number) => {
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = params
   ax -= margin
