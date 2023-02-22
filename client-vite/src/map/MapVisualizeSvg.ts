@@ -3,7 +3,7 @@ import {updateMapSvgData} from '../core/DomFlow'
 import {isEqual, isOdd} from '../core/Utils'
 import {resolveScope} from '../core/DefaultProps'
 import {getColors} from '../core/Colors'
-import {getAdjustedParams, getArcPath, getBezierPath, getLinePath, getParams, getPolygonPath} from '../core/SvgUtils'
+import {getAdjustedParams, getArcPath, getBezierPath, getLinePath, getPolygonPoints, getPolygonPath} from '../core/SvgUtils'
 import {getMapData} from '../core/MapFlow'
 import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow"
 import {mapFindById} from "./MapFindById"
@@ -80,7 +80,7 @@ export const mapVisualizeSvg = {
       const adjustedParams = getAdjustedParams(cn)
       const { dir, margin } = adjustedParams
       updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(getParams(cn.selection, adjustedParams), cn.selection, dir, margin),
+        path: getPolygonPath(getPolygonPoints(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -103,7 +103,7 @@ export const mapVisualizeSvg = {
     const { dir, nsx, nex, nsy, ney, margin, r } = adjustedParams
     if (conditions.branchFill) {
       updateMapSvgData(cn.nodeId, 'branchFill', {
-        path: getPolygonPath(getParams('f', adjustedParams), 'f', dir, 0),
+        path: getPolygonPath(getPolygonPoints('f', adjustedParams), 'f', dir, 0),
         fill: cn.fFillColor,
       })
     }
@@ -119,7 +119,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.branchBorder) {
       updateMapSvgData(cn.nodeId, 'branchBorder', {
-        path: getPolygonPath(getParams('f', adjustedParams), 'f', dir, 0),
+        path: getPolygonPath(getPolygonPoints('f', adjustedParams), 'f', dir, 0),
         stroke: cn.fBorderColor,
         strokeWidth: cn.fBorderWidth,
       })
@@ -133,7 +133,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.selectionBorder && !isEqual(cn.path, m.g.sc.lastPath)) {
       updateMapSvgData(cn.nodeId, 'selectionBorder', {
-        path: getPolygonPath(getParams(cn.selection, adjustedParams), cn.selection, dir, margin),
+        path: getPolygonPath(getPolygonPoints(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -211,7 +211,7 @@ export const mapVisualizeSvg = {
                 w = cn.sumMaxColWidth[j+1] - cn.sumMaxColWidth[j]
                 h = cn.sumMaxRowHeight[i+1] - cn.sumMaxRowHeight[i]
               }
-              const tableVisParams = {
+              const tablePolygonPoints = {
                 ax: dir === - 1 ? sx + dir * w : sx,
                 bx: sx + dir*w,
                 cx: dir === - 1 ? sx : sx + dir * w,
@@ -223,7 +223,7 @@ export const mapVisualizeSvg = {
                 cyd: sy + h,
               }
               updateMapSvgData(cn.nodeId, 'selectionBorder', {
-                path: getPolygonPath(tableVisParams, 's', dir, 4),
+                path: getPolygonPath(tablePolygonPoints, 's', dir, 4),
                 stroke: SELECTION_COLOR,
                 strokeWidth: 1,
               })

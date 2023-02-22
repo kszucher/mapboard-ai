@@ -16,7 +16,7 @@ interface AdjustedParams {
   r: number
 }
 
-interface Params {
+interface PolygonPoints {
   ax: number
   bx: number
   cx: number
@@ -64,7 +64,37 @@ export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: num
   return path
 }
 
-export const getPolygonPath = (params: Params, selection: string, dir: number, margin: number) => {
+export const getPolygonPoints = (selection: string, adjustedParams: AdjustedParams) : PolygonPoints => {
+  const {dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r} = adjustedParams
+  if (selection === 's') {
+    return {
+      ax: dir === -1 ? nex : nsx,
+      bx: nex - dir * r,
+      cx: dir === -1 ? nsx : nex,
+      ayu: nsy,
+      ayd: ney,
+      byu: nsy,
+      byd: ney,
+      cyu: nsy,
+      cyd: ney
+    }
+  } else {
+    return {
+      ax: dir === -1 ? nsx + dir * totalW : nsx,
+      bx: nex + dir * deltaX,
+      cx: dir === -1 ? nsx : nsx + dir * totalW,
+      ayu: dir === -1 ? nsym : nsy,
+      ayd: dir === -1 ? neym : ney,
+      byu: nsym,
+      byd: neym,
+      cyu: dir === -1 ? nsy : nsym,
+      cyd: dir === -1 ? ney : neym,
+    }
+  }
+}
+
+
+export const getPolygonPath = (params: PolygonPoints, selection: string, dir: number, margin: number) => {
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = params
   ax -= margin
   bx -= dir * margin
@@ -141,34 +171,5 @@ export const getAdjustedParams = (cn: N) : AdjustedParams => {
       (cn.hasCell)
     ) ? 4 : -2,
     r: 8
-  }
-}
-
-export const getParams = (selection: string, adjustedParams: AdjustedParams) : Params => {
-  const {dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r} = adjustedParams
-  if (selection === 's') {
-    return {
-      ax: dir === -1 ? nex : nsx,
-      bx: nex - dir * r,
-      cx: dir === -1 ? nsx : nex,
-      ayu: nsy,
-      ayd: ney,
-      byu: nsy,
-      byd: ney,
-      cyu: nsy,
-      cyd: ney
-    }
-  } else {
-    return {
-      ax: dir === -1 ? nsx + dir * totalW : nsx,
-      bx: nex + dir * deltaX,
-      cx: dir === -1 ? nsx : nsx + dir * totalW,
-      ayu: dir === -1 ? nsym : nsy,
-      ayd: dir === -1 ? neym : ney,
-      byu: nsym,
-      byd: neym,
-      cyu: dir === -1 ? nsy : nsym,
-      cyd: dir === -1 ? ney : neym,
-    }
   }
 }
