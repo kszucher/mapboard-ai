@@ -1,17 +1,18 @@
-// @ts-nocheck
-
+import {M, N} from "../types/DefaultProps"
 import {copy, isEqual} from "../core/Utils"
-import {getMapData} from "../core/MapFlow";
+import {getMapData} from "../core/MapFlow"
 
-let currX, currY = 0
-let aboveRoot, belowRoot = 0
-let lastNearestPath = []
+let currX = 0
+let currY = 0
+let aboveRoot = false
+let belowRoot = false
+let lastNearestPath = [] as any[]
 
 export const mapFindNearest = {
-  find: (m, toX, toY) => {
+  find: (m: M, toX: number, toY: number) => {
     let moveTargetPath = []
     let moveTargetIndex = 0
-    let moveData = []
+    let moveData = [] as any[]
     let lastSelectedPath = m.g.sc.structSelectedPathList[0]
     let lastSelected = getMapData(m, lastSelectedPath)
     if (!(lastSelected.nodeStartX < toX &&
@@ -55,7 +56,7 @@ export const mapFindNearest = {
     return { moveTargetPath, moveTargetIndex, moveData }
   },
 
-  start: (m, x, y) => {
+  start: (m: M, x: number, y: number) => {
     currX = x
     currY = y
     aboveRoot = y >= m.r[0].nodeY
@@ -65,7 +66,7 @@ export const mapFindNearest = {
     return lastNearestPath
   },
 
-  iterate: (cn) => {
+  iterate: (cn: N) => {
     if (!cn.selected) {
       cn.d.map(i => mapFindNearest.iterate(i))
       if (cn.type === 'cell') {

@@ -1,17 +1,17 @@
-// @ts-nocheck
+import {M, N} from "../types/DefaultProps"
 
-let resultPath
+let resultPath: any[]
 let nodeId = ''
 
 export const mapFindById = {
-  start: (m, id) => {
+  start: (m: M, id: string) => {
     resultPath = []
     nodeId = id
     mapFindById.iterate(m, m.r[0])
     return resultPath
   },
 
-  iterate: (m, cn) => {
+  iterate: (m: M, cn: N) => {
     if (cn.nodeId === nodeId) {
       resultPath = cn.path
     }

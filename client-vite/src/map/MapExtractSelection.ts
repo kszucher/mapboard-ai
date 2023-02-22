@@ -1,8 +1,9 @@
+import {M, N} from "../types/DefaultProps"
 import { arrayValuesSame } from '../core/Utils'
 import { getMapData } from '../core/MapFlow'
 
 export const mapExtractSelection = {
-  start: (m: any) => {
+  start: (m: M) => {
     mapExtractSelection.iterate(m, m.r[0])
     const { sc } = m.g
     // indicators
@@ -47,8 +48,8 @@ export const mapExtractSelection = {
     } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
       [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map((path: any) => JSON.stringify(getMapData(m, path).parentPath)))
       if (sc.haveSameParent) {
-        let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map((path: string | any[]) => path[path.length - 2]))
-        let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path: string | any[]) => path[path.length - 1]))
+        let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 2]))
+        let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 1]))
         let sameParent = getMapData(m, sc.sameParentPath)
         if (haveSameRow && sc.cellSelectedPathList.length === sameParent.c[0].length) {
           sc.cellRowSelected = 1
@@ -72,7 +73,7 @@ export const mapExtractSelection = {
     }
   },
 
-  iterate: (m: any, cn: any) => {
+  iterate: (m: M, cn: N) => {
     if (cn.selected) {
       if (Number.isInteger(cn.path[cn.path.length - 2])) {
         m.g.sc.cellSelectedPathList.push(cn.path.slice(0)) // naturally ascending
@@ -80,8 +81,8 @@ export const mapExtractSelection = {
         m.g.sc.structSelectedPathList.push(cn.path.slice(0))
       }
     }
-    cn.d.map((i: any) => mapExtractSelection.iterate(m, i))
-    cn.s.map((i: any) => mapExtractSelection.iterate(m, i))
-    cn.c.map((i: any[]) => i.map(j => mapExtractSelection.iterate(m, j)))
+    cn.d.map((i) => mapExtractSelection.iterate(m, i))
+    cn.s.map((i) => mapExtractSelection.iterate(m, i))
+    cn.c.map((i) => i.map(j => mapExtractSelection.iterate(m, j)))
   }
 }

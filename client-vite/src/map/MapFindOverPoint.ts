@@ -1,12 +1,12 @@
-// @ts-nocheck
-
+import {M, N} from "../types/DefaultProps"
 import {copy} from "../core/Utils"
 
-let currX, currY = 0
-let lastOverPath = []
+let currX = 0
+let currY = 0
+let lastOverPath = [] as any[]
 
 export const mapFindOverPoint = {
-  start: (m, x, y) => {
+  start: (m: M, x: number, y: number) => {
     currX = x
     currY = y
     lastOverPath = []
@@ -17,7 +17,7 @@ export const mapFindOverPoint = {
     return lastOverPath
   },
 
-  iterate: (cn) => {
+  iterate: (cn: N) => {
     if (cn.nodeStartX < currX &&
       currX < cn.nodeEndX &&
       cn.nodeY - cn.selfH / 2 < currY &&

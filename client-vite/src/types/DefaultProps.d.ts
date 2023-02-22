@@ -1,21 +1,21 @@
 import {LineTypes} from "../core/Types"
 
 interface SC {
-  structSelectedPathList: [],
-  cellSelectedPathList: [],
+  structSelectedPathList: any[],
+  cellSelectedPathList: any[],
   isRootIncluded: boolean,
   maxSel: number,
   maxSelIndex: number,
   scope: string,
-  lastPath: [],
-  geomHighPath: [],
-  geomLowPath: [],
+  lastPath: any[],
+  geomHighPath: any[],
+  geomLowPath: any[],
   cellRowSelected: number,
   cellRow: number,
   cellColSelected: number,
   cellCol: number,
   haveSameParent: number,
-  sameParentPath: []
+  sameParentPath: any[]
 }
 
 interface NC {
@@ -101,7 +101,7 @@ interface NSaveNever {
   // mapChain
   isRoot: number,
   isRootChild: number,
-  parentPath: [],
+  parentPath: any[],
   type: string,
   parentType: string,
   parentParentType: string,
@@ -120,10 +120,10 @@ interface NSaveNever {
   selfH: number,
   familyW: number,
   familyH: number,
-  maxColWidth: [],
-  maxRowHeight: [],
-  sumMaxColWidth: [number],
-  sumMaxRowHeight: [number],
+  maxColWidth: number[],
+  maxRowHeight: number[],
+  sumMaxColWidth: number[],
+  sumMaxRowHeight: number[],
   maxW: number,
   maxH: number,
   spacing: number,

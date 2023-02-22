@@ -1,5 +1,7 @@
+import {M, N} from "../types/DefaultProps"
+
 export const mapPlace = {
-  start: (m: any) => {
+  start: (m: M) => {
     const cn = m.r[0]
     const {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m.g
     const leftTaskWidth = cn.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0
@@ -52,7 +54,7 @@ export const mapPlace = {
     mapPlace.iterate(m, m.r[0])
   },
 
-  iterate: (m: any, cn: any) => {
+  iterate: (m: M, cn: N) => {
     if (cn.isRoot || cn.type === 'dir') {
       cn.nodeStartX = cn.parentNodeStartX
       cn.nodeEndX = cn.parentNodeEndX

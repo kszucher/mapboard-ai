@@ -1,22 +1,24 @@
-// @ts-nocheck
+import {M, N} from "../types/DefaultProps"
+
+let propValue: string | number | any[] | undefined = undefined
 
 export const mapGetProp = {
-  start: (m, cn, prop) => {
-    let firstProp = {[prop]: cn[prop]}
-    mapGetProp.iterate(m, cn, prop, firstProp)
-    return firstProp[prop]
+  start: (m: M, cn: N, propKey: keyof N) => {
+    propValue = cn[propKey]
+    mapGetProp.iterate(m, cn, propKey)
+    return propValue
   },
 
-  iterate: (m, cn, prop, firstProp) => {
+  iterate: (m: M, cn: N, propKey: keyof N) => {
     let sCount = Object.keys(cn.s).length
     if (sCount) {
       for (let i = 0; i < sCount; i++) {
-        mapGetProp.iterate(m, cn.s[i], prop, firstProp)
-        if (cn.s[i][prop] !== firstProp[prop]) {
-          firstProp[prop] = undefined
+        mapGetProp.iterate(m, cn.s[i], propKey)
+        if (cn.s[i][propKey] !== propValue) {
+          propValue = undefined
         }
       }
     }
-    cn.c.map(i => i.map(j => mapGetProp.iterate(m, j, prop, firstProp)))
+    cn.c.map(i => i.map(j => mapGetProp.iterate(m, j, propKey)))
   }
 }

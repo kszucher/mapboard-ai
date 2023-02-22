@@ -1,9 +1,11 @@
+import {M, N} from "../types/DefaultProps"
+
 export const mapCalcTask = {
   start: (m: any) => {
     mapCalcTask.iterate(m, m.r[0])
   },
 
-  iterate: (m: any, cn: any) => {
+  iterate: (m: M, cn: N) => {
     let dCount = Object.keys(cn.d).length
     if (dCount) {
       cn.taskStatus = 0
@@ -33,6 +35,6 @@ export const mapCalcTask = {
       }
       cn.taskStatus = minTaskStatus
     }
-    cn.c.map((i: any[]) => i.map(j => mapCalcTask.iterate(m, j)))
+    cn.c.map((i) => i.map(j => mapCalcTask.iterate(m, j)))
   }
 }

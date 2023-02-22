@@ -1,11 +1,12 @@
+import {M, N} from "../types/DefaultProps"
 import {getMapData} from "../core/MapFlow"
 
 export const mapDiff = {
-  start: (pm: any, m: any) => {
+  start: (pm: M, m: M) => {
     mapDiff.iterate(pm, m, m.r[0])
   },
 
-  iterate: (pm: any, m: any, cn: any) => {
+  iterate: (pm: M, m: M, cn: N) => {
     const pn = getMapData(pm, cn.path)
     if (cn.nodeId === pn?.nodeId) {
       if (pn.content !== cn.content || pn.contentType !== cn.contentType || pn.textFontSize !== cn.textFontSize) {
@@ -20,8 +21,8 @@ export const mapDiff = {
         }
       }
     }
-    cn.d.map((i: any) => mapDiff.iterate(pm, m, i))
-    cn.s.map((i: any) => mapDiff.iterate(pm, m, i))
-    cn.c.map((i: any[]) => i.map(j => mapDiff.iterate(pm, m, j)))
+    cn.d.map((i) => mapDiff.iterate(pm, m, i))
+    cn.s.map((i) => mapDiff.iterate(pm, m, i))
+    cn.c.map((i) => i.map(j => mapDiff.iterate(pm, m, j)))
   }
 }

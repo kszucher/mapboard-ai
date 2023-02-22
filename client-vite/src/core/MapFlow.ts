@@ -1,5 +1,5 @@
-import {getDefaultNode} from './DefaultProps'
-import {M, MPartial, N} from "../types/DefaultProps"
+import {getDefaultNode, nSaveOptional} from './DefaultProps'
+import {M, MPartial, N, NC, NSaveOptional} from "../types/DefaultProps"
 import {flagDomData, updateDomData} from './DomFlow'
 import {copy, createArray, genHash, subsref, transposeArray} from './Utils'
 import {mapFindById} from '../map/MapFindById'
@@ -23,7 +23,7 @@ import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeM
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Types";
 
-export const getMapData = (m: M, path: any) => {
+export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)
 }
 
@@ -34,7 +34,7 @@ export const getSavedMapData = (m: M) => {
 }
 
 const clearSelection = (m: M) => {
-  mapSetProp.start(m, m.r[0], { selected: 0, selection: 's' }, '')
+  mapSetProp.iterate(m.r[0], { selected: 0, selection: 's' }, true)
 }
 
 const updateParentLastSelectedChild = (m: M, ln: N) => {
@@ -44,7 +44,7 @@ const updateParentLastSelectedChild = (m: M, ln: N) => {
   }
 }
 
-export const mapReducer = (m: M, action: any, payload: any) => {
+export const mapReducer = (m: M, action: string, payload: any) => {
   const { sc } = m.g
   let ln = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
@@ -127,7 +127,7 @@ export const mapReducer = (m: M, action: any, payload: any) => {
       break
     }
     case 'select_all': {
-      mapSetProp.start(m, m.r[0], { selected: 1, selection: 's' }, 'struct')
+      mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (cn: N) => (cn.type === 'struct' && !cn.hasCell))
       break
     }
     case 'selectDescendantsOut': {
@@ -317,7 +317,7 @@ export const mapReducer = (m: M, action: any, payload: any) => {
       clearSelection(m)
       const nodeList = JSON.parse(payload.text)
       for (let i = 0; i < nodeList.length; i++) {
-        mapSetProp.start(undefined, nodeList[i], ()=>({ nodeId: 'node' + genHash(8) }), '')
+        mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
         structCreate(m, ln, Dir.O, { ...nodeList[i] })
       }
       break
@@ -392,8 +392,8 @@ export const mapReducer = (m: M, action: any, payload: any) => {
     }
     // FORMAT
     case 'setFormatParams': {
-      // @ts-ignore
-      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} = {...m.g.nc, ...payload}
+      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} =
+        {...m.g.nc, ...payload} as NC
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         const cn = getMapData(m, sc.structSelectedPathList[i])
         const props = {
@@ -405,16 +405,16 @@ export const mapReducer = (m: M, action: any, payload: any) => {
           [cn.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
           textFontSize,
           textColor,
-        }
+        } as Partial<NSaveOptional>
         for (const prop in props) {
-          if (props[prop] !== undefined) {
-            const assignment = {}
-            // @ts-ignore
-            assignment[prop] = props[prop] === 'clear' ? nodeProps.saveOptional[prop] : props[prop]
+          if (props[prop as keyof NSaveOptional] !== undefined) {
+            const assignment = props[prop as keyof NSaveOptional] === 'clear'
+              ? { [prop]: nSaveOptional[prop as keyof NSaveOptional] }
+              : { [prop]: props[prop as keyof NSaveOptional] }
             if ((cn.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
               Object.assign(cn, assignment)
             } else {
-              mapSetProp.start(m, cn, assignment, '')
+              mapSetProp.iterate(cn, assignment, true)
             }
           }
         }
@@ -433,7 +433,7 @@ export const mapReducer = (m: M, action: any, payload: any) => {
       break
     }
     case 'toggleTask': {
-      mapSetProp.start(m, ln, {taskStatus: ln.taskStatus === 0 ? 1 : 0}, '')
+      mapSetProp.iterate(ln, { taskStatus: ln.taskStatus === 0 ? 1 : 0 }, true)
       break
     }
     case 'setTaskStatus': {
@@ -460,10 +460,10 @@ export const mapReducer = (m: M, action: any, payload: any) => {
 }
 
 export const reCalc = (pm: MPartial, m: MPartial) => {
-  mapFix.start(m)
-  mapInit.start(m)
+  mapFix.start(m as MPartial)
+  mapInit.start(m as MPartial)
   mapChain.start(m as M)
-  mapDiff.start(pm as M, m as M) // TODO continue using the new types from here...
+  mapDiff.start(pm as M, m as M)
   mapCalcTask.start(m as M)
   mapExtractSelection.start(m as M)
   mapExtractProps.start(m as M)
@@ -472,14 +472,14 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
   return m
 }
 
-const redrawStep = (m: M, colorMode: any, isEditing: boolean, shouldAnimationInit: boolean) => {
+const redrawStep = (m: M, colorMode: string, isEditing: boolean, shouldAnimationInit: boolean) => {
   flagDomData()
   mapVisualizeSvg.start(m, colorMode, shouldAnimationInit)
   mapVisualizeDiv.start(m, colorMode)
   updateDomData()
 }
 
-export const reDraw = (m: M, colorMode: any, isEditing: boolean) => {
+export const reDraw = (m: M, colorMode: string, isEditing: boolean) => {
   if (m.g.animationRequested) {
     redrawStep(m, colorMode, isEditing, true)
   }

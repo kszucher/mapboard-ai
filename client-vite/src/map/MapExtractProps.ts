@@ -1,10 +1,9 @@
-// @ts-nocheck
-
-import {getMapData} from "../core/MapFlow";
-import {mapGetProp} from "./MapGetProp";
+import {M, N, NSaveOptional} from "../types/DefaultProps"
+import {getMapData} from "../core/MapFlow"
+import {mapGetProp} from "./MapGetProp"
 
 export const mapExtractProps = {
-  start: (m) => {
+  start: (m: M) => {
     if (m.g.sc.lastPath.length) {
       const ln = getMapData(m, m.g.sc.lastPath)
       for (const prop of Object.keys(m.g.nc)) {
@@ -19,7 +18,7 @@ export const mapExtractProps = {
           textFontSize: 'textFontSize',
           textColor: 'textColor',
           taskStatus: 'taskStatus'
-        }[prop]
+        }[prop] as keyof NSaveOptional
         if (m.g.sc.structSelectedPathList.map(el => (getMapData(m, el))[sourceProp]).every((el, i, arr) => el  === arr[0])) {
           let propAssignment = {}
           switch (prop) {
@@ -43,7 +42,7 @@ export const mapExtractProps = {
     mapExtractProps.iterate(m, m.r[0])
   },
 
-  iterate: (m, cn) => {
+  iterate: (m: M, cn: N) => {
     if (cn.animationRequested) {
       m.g.animationRequested = 1
     }

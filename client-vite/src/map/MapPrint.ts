@@ -1,14 +1,17 @@
-// @ts-nocheck
+import {M, N} from "../types/DefaultProps"
 
 export const mapPrint = {
-  start: (m, cn) => {
+  str: '',
+  entryLength: 0,
+
+  start: (m: M, cn: N) => {
     mapPrint.str = ''
     mapPrint.entryLength = cn.path.length
     mapPrint.iterate(m, cn)
     console.log(mapPrint.str)
   },
 
-  iterate: (m, cn) => {
+  iterate: (m: M, cn: N) => {
     let indentationCount = cn.path.length - mapPrint.entryLength
     mapPrint.str += ('  '.repeat(indentationCount))
     mapPrint.str += cn.content.replace(/<br\s*[\/]?>/gi, '\n' + '  '.repeat(indentationCount))

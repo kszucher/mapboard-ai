@@ -1,17 +1,16 @@
-// @ts-nocheck
-
+import {M, N} from "../types/DefaultProps"
 import {createArray} from "../core/Utils"
-import {getEquationDim, getTextDim} from "../core/DomUtils";
+import {getEquationDim, getTextDim} from "../core/DomUtils"
 
 export const mapMeasure = {
-  start: (m) => {
+  start: (m: M) => {
     mapMeasure.iterate(m, m.r[0], {
       hasMultipleChild: 0,
       hasMultipleContentRow: 0,
     })
   },
 
-  iterate: (m, cn, params) => {
+  iterate: (m: M, cn: N, params: { hasMultipleChild: number, hasMultipleContentRow: number }) => {
     params.hasMultipleChild = 0
     params.hasMultipleContentRow = 0
     let dCount = Object.keys(cn.d).length

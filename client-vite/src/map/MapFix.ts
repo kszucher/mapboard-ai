@@ -1,12 +1,12 @@
+import {MPartial, NPartial} from "../types/DefaultProps"
 import {getDefaultNode} from "../core/DefaultProps"
-import {MPartial} from "../types/DefaultProps"
 
 export const mapFix = {
   start: (m: MPartial) => {
-    mapFix.iterate(m, m.r[0])
+    mapFix.iterate(m, m.r[0] as NPartial)
   },
 
-  iterate: (m: any, cn: any) => {
+  iterate: (m: MPartial, cn: NPartial) => {
     if (cn.type === 'cell' && !cn.s.length) {
       cn.s.push(getDefaultNode({}))
     }
