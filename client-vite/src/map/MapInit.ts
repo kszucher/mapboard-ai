@@ -26,26 +26,26 @@ export const mapInit = {
     mapInit.iterate(m as M, m.r[0])
   },
 
-  iterate: (m: M, cn: NPartial) => {
+  iterate: (m: M, n: NPartial) => {
     for (const prop in nSaveAlways) {
-      if (!cn.hasOwnProperty(prop)) {
+      if (!n.hasOwnProperty(prop)) {
         if (prop === 'nodeId') {
-          cn[prop] = 'node' + genHash(8)
+          n[prop] = 'node' + genHash(8)
         } else {
-          cn[prop as keyof NSaveAlways] = copy(nSaveAlways[prop as keyof NSaveAlways])
+          n[prop as keyof NSaveAlways] = copy(nSaveAlways[prop as keyof NSaveAlways])
         }
       }
     }
     for (const prop in nSaveOptional) {
-      if (!cn.hasOwnProperty(prop)) {
-        cn[prop as keyof NSaveOptional] = copy(nSaveOptional[prop as keyof NSaveOptional])
+      if (!n.hasOwnProperty(prop)) {
+        n[prop as keyof NSaveOptional] = copy(nSaveOptional[prop as keyof NSaveOptional])
       }
     }
     for (const prop in nSaveNever) {
-      cn[prop as keyof NSaveNever] = copy(nSaveNever[prop as keyof NSaveNever])
+      n[prop as keyof NSaveNever] = copy(nSaveNever[prop as keyof NSaveNever])
     }
-    cn.d.map(i => mapInit.iterate(m, i))
-    cn.s.map(i => mapInit.iterate(m, i))
-    cn.c.map(i => i.map(j => mapInit.iterate(m, j)))
+    n.d.map(i => mapInit.iterate(m, i))
+    n.s.map(i => mapInit.iterate(m, i))
+    n.c.map(i => i.map(j => mapInit.iterate(m, j)))
   }
 }

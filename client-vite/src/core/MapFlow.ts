@@ -127,7 +127,7 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
     case 'select_all': {
-      mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (cn: N) => (cn.type === 'struct' && !cn.hasCell))
+      mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (n: N) => (n.type === 'struct' && !n.hasCell))
       break
     }
     case 'selectDescendantsOut': {
@@ -395,14 +395,14 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} =
         {...m.g.nc, ...payload} as NC
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        const cn = getMapData(m, sc.structSelectedPathList[i])
+        const n = getMapData(m, sc.structSelectedPathList[i])
         const props = {
           lineWidth,
           lineType,
           lineColor,
-          [cn.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
-          [cn.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
-          [cn.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
+          [n.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
+          [n.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
+          [n.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
           textFontSize,
           textColor,
         } as Partial<NSaveOptional>
@@ -411,10 +411,10 @@ export const mapReducer = (m: M, action: string, payload: any) => {
             const assignment = props[prop as keyof NSaveOptional] === 'clear'
               ? { [prop]: nSaveOptional[prop as keyof NSaveOptional] }
               : { [prop]: props[prop as keyof NSaveOptional] }
-            if ((cn.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
-              Object.assign(cn, assignment)
+            if ((n.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
+              Object.assign(n, assignment)
             } else {
-              mapSetProp.iterate(cn, assignment, true)
+              mapSetProp.iterate(n, assignment, true)
             }
           }
         }
@@ -423,8 +423,8 @@ export const mapReducer = (m: M, action: string, payload: any) => {
     }
     case 'applyColorFromKey': {
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        let cn = getMapData(m, sc.structSelectedPathList[i])
-        cn.textColor = [
+        let n = getMapData(m, sc.structSelectedPathList[i])
+        n.textColor = [
           '#222222',
           '#999999', '#bbbbbb', '#dddddd',
           '#d5802a', '#1c8e1c', '#8e1c8e',
@@ -437,8 +437,8 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
     case 'setTaskStatus': {
-      let cn = getMapData(m, mapFindById.start(m, payload.nodeId))
-      cn.taskStatus = payload.taskStatus
+      let n = getMapData(m, mapFindById.start(m, payload.nodeId))
+      n.taskStatus = payload.taskStatus
       break
     }
     // EDIT

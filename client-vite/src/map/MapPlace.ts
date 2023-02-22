@@ -2,28 +2,28 @@ import {M, N} from "../types/DefaultProps"
 
 export const mapPlace = {
   start: (m: M) => {
-    const cn = m.r[0]
+    const n = m.r[0]
     const {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m.g
-    const leftTaskWidth = cn.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0
-    const leftMapWidth = cn.d[1].s.length > 0 ? sLineDeltaXDefault + cn.d[1].familyW : 0
-    const rightMapWidth = cn.d[0].s.length > 0 ? sLineDeltaXDefault + cn.d[0].familyW : 0
-    const rightTaskWidth = cn.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0
+    const leftTaskWidth = n.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0
+    const leftMapWidth = n.d[1].s.length > 0 ? sLineDeltaXDefault + n.d[1].familyW : 0
+    const rightMapWidth = n.d[0].s.length > 0 ? sLineDeltaXDefault + n.d[0].familyW : 0
+    const rightTaskWidth = n.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0
     const leftWidth = leftMapWidth + leftTaskWidth + margin
     const rightWidth = rightMapWidth + rightTaskWidth + margin
     let flow = 'both'
-    if (cn.d[0].s.length && !cn.d[1].s.length) flow = 'right'
-    if (!cn.d[0].s.length && cn.d[1].s.length) flow = 'left'
+    if (n.d[0].s.length && !n.d[1].s.length) flow = 'right'
+    if (!n.d[0].s.length && n.d[1].s.length) flow = 'left'
     let sumWidth = 0
     if (alignment === 'adaptive') {
       if (flow === 'right') {
-        sumWidth = margin + cn.selfW + rightWidth
+        sumWidth = margin + n.selfW + rightWidth
       } else if (flow === 'left') {
-        sumWidth = leftWidth + cn.selfW + margin
+        sumWidth = leftWidth + n.selfW + margin
       } else if (flow === 'both') {
-        sumWidth = leftWidth + cn.selfW + rightWidth
+        sumWidth = leftWidth + n.selfW + rightWidth
       }
     } else if (alignment === 'centered') {
-      sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + cn.selfW
+      sumWidth = 2*Math.max(...[leftWidth, rightWidth]) + n.selfW
     }
     const divMinWidth = window.screen.availWidth > 1280 ? 1280 : 800
     const mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
@@ -33,114 +33,114 @@ export const mapPlace = {
     } else if (alignment === 'adaptive') {
       if (flow === 'both') {
         let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0
-        mapStartCenterX = leftSpace + leftWidth + cn.selfW / 2
+        mapStartCenterX = leftSpace + leftWidth + n.selfW / 2
       } else if (flow === 'right') {
-        mapStartCenterX = margin + cn.selfW / 2
+        mapStartCenterX = margin + n.selfW / 2
       } else if (flow === 'left') {
-        mapStartCenterX = mapWidth - margin - cn.selfW / 2
+        mapStartCenterX = mapWidth - margin - n.selfW / 2
       }
     }
-    const rightMapHeight = cn.d.length > 0 ? cn.d[0].familyH : 0
-    const leftMapHeight =  cn.d.length > 1? cn.d[1].familyH : 0
+    const rightMapHeight = n.d.length > 0 ? n.d[0].familyH : 0
+    const leftMapHeight =  n.d.length > 1? n.d[1].familyH : 0
     const minHeight = Math.max(...[rightMapHeight, leftMapHeight])
     const mapHeight = minHeight + 60
     m.g.mapWidth = mapWidth
     m.g.mapHeight = mapHeight
-    cn.parentNodeStartX = mapStartCenterX - cn.selfW / 2 + 1
-    cn.parentNodeEndX = mapStartCenterX + cn.selfW / 2 + 1
-    cn.parentNodeY = 0
-    cn.lineDeltaX = 0
-    cn.lineDeltaY = minHeight / 2 + 30 - 0.5
+    n.parentNodeStartX = mapStartCenterX - n.selfW / 2 + 1
+    n.parentNodeEndX = mapStartCenterX + n.selfW / 2 + 1
+    n.parentNodeY = 0
+    n.lineDeltaX = 0
+    n.lineDeltaY = minHeight / 2 + 30 - 0.5
     mapPlace.iterate(m, m.r[0])
   },
 
-  iterate: (m: M, cn: N) => {
-    if (cn.isRoot || cn.type === 'dir') {
-      cn.nodeStartX = cn.parentNodeStartX
-      cn.nodeEndX = cn.parentNodeEndX
+  iterate: (m: M, n: N) => {
+    if (n.isRoot || n.type === 'dir') {
+      n.nodeStartX = n.parentNodeStartX
+      n.nodeEndX = n.parentNodeEndX
     } else {
-      if (cn.type === 'cell' && cn.parentParentType === 'cell' || cn.parentType === 'cell') {
-        if (cn.path[3] === 0) {
-          cn.nodeStartX = cn.parentNodeStartX + 2
-          cn.nodeEndX = cn.nodeStartX + cn.selfW
+      if (n.type === 'cell' && n.parentParentType === 'cell' || n.parentType === 'cell') {
+        if (n.path[3] === 0) {
+          n.nodeStartX = n.parentNodeStartX + 2
+          n.nodeEndX = n.nodeStartX + n.selfW
         } else {
-          cn.nodeEndX = cn.parentNodeEndX
-          cn.nodeStartX = cn.nodeEndX - cn.selfW
+          n.nodeEndX = n.parentNodeEndX
+          n.nodeStartX = n.nodeEndX - n.selfW
         }
       }
-      if (cn.parentType === 'struct' || cn.parentType === 'dir') {
-        if (cn.type === 'struct') {
-          if (cn.path[3] === 0) {
-            cn.nodeStartX = cn.parentNodeEndX + cn.lineDeltaX
-            cn.nodeEndX = cn.nodeStartX + cn.selfW
+      if (n.parentType === 'struct' || n.parentType === 'dir') {
+        if (n.type === 'struct') {
+          if (n.path[3] === 0) {
+            n.nodeStartX = n.parentNodeEndX + n.lineDeltaX
+            n.nodeEndX = n.nodeStartX + n.selfW
           } else {
-            cn.nodeEndX = cn.parentNodeStartX - cn.lineDeltaX
-            cn.nodeStartX = cn.nodeEndX - cn.selfW
+            n.nodeEndX = n.parentNodeStartX - n.lineDeltaX
+            n.nodeStartX = n.nodeEndX - n.selfW
           }
-        } else if (cn.type === 'cell') {
-          if (cn.parentParentType === 'struct' || cn.parentParentType === 'dir') {
+        } else if (n.type === 'cell') {
+          if (n.parentParentType === 'struct' || n.parentParentType === 'dir') {
             let diff = m.g.sLineDeltaXDefault - 20
-            if (cn.path[3] === 0) {
-              cn.nodeStartX = cn.parentNodeEndX + cn.lineDeltaX + diff
-              cn.nodeEndX = cn.nodeStartX + cn.selfW
+            if (n.path[3] === 0) {
+              n.nodeStartX = n.parentNodeEndX + n.lineDeltaX + diff
+              n.nodeEndX = n.nodeStartX + n.selfW
             } else {
-              cn.nodeEndX = cn.parentNodeStartX - cn.lineDeltaX - diff
-              cn.nodeStartX = cn.nodeEndX - cn.selfW
+              n.nodeEndX = n.parentNodeStartX - n.lineDeltaX - diff
+              n.nodeStartX = n.nodeEndX - n.selfW
             }
           }
         }
       }
     }
-    cn.nodeY = cn.parentNodeY + cn.lineDeltaY
-    if (Number.isInteger(cn.nodeY)) {
-      cn.nodeY += 0.5
+    n.nodeY = n.parentNodeY + n.lineDeltaY
+    if (Number.isInteger(n.nodeY)) {
+      n.nodeY += 0.5
     }
-    if (Number.isInteger(cn.nodeStartX)) {
-      if (cn.path[3] === 0) {
-        cn.nodeStartX += 0.5
-        cn.nodeEndX += 0.5
+    if (Number.isInteger(n.nodeStartX)) {
+      if (n.path[3] === 0) {
+        n.nodeStartX += 0.5
+        n.nodeEndX += 0.5
       } else {
-        cn.nodeStartX -= 0.5
-        cn.nodeEndX -= 0.5
+        n.nodeStartX -= 0.5
+        n.nodeEndX -= 0.5
       }
     }
-    const dCount = Object.keys(cn.d).length
+    const dCount = Object.keys(n.d).length
     for (let i = 0; i < dCount; i++) {
-      cn.d[i].parentNodeStartX = cn.nodeStartX
-      cn.d[i].parentNodeEndX = cn.nodeEndX
-      cn.d[i].parentNodeY = cn.nodeY
-      cn.d[i].lineDeltaX = 0
-      cn.d[i].lineDeltaY = 0
-      cn.d[i].selfW = cn.selfW
-      cn.d[i].selfH = cn.selfH
-      cn.d[i].isTop = 1
-      cn.d[i].isBottom = 1
-      mapPlace.iterate(m, cn.d[i])
+      n.d[i].parentNodeStartX = n.nodeStartX
+      n.d[i].parentNodeEndX = n.nodeEndX
+      n.d[i].parentNodeY = n.nodeY
+      n.d[i].lineDeltaX = 0
+      n.d[i].lineDeltaY = 0
+      n.d[i].selfW = n.selfW
+      n.d[i].selfH = n.selfH
+      n.d[i].isTop = 1
+      n.d[i].isBottom = 1
+      mapPlace.iterate(m, n.d[i])
     }
-    const rowCount = Object.keys(cn.c).length
-    const colCount = Object.keys(cn.c[0]).length
+    const rowCount = Object.keys(n.c).length
+    const colCount = Object.keys(n.c[0]).length
     for (let i = 0; i < rowCount; i++) {
       for (let j = 0; j < colCount; j++) {
-        cn.c[i][j].parentNodeStartX = cn.parentNodeStartX
-        cn.c[i][j].parentNodeEndX = cn.parentNodeEndX
-        cn.c[i][j].parentNodeY = cn.parentNodeY
-        cn.c[i][j].lineDeltaX = cn.sumMaxColWidth[j] + 20
-        cn.c[i][j].lineDeltaY = cn.nodeY + cn.sumMaxRowHeight[i] + cn.maxRowHeight[i]/2 - cn.selfH/2 - cn.parentNodeY
-        mapPlace.iterate(m, cn.c[i][j])
+        n.c[i][j].parentNodeStartX = n.parentNodeStartX
+        n.c[i][j].parentNodeEndX = n.parentNodeEndX
+        n.c[i][j].parentNodeY = n.parentNodeY
+        n.c[i][j].lineDeltaX = n.sumMaxColWidth[j] + 20
+        n.c[i][j].lineDeltaY = n.nodeY + n.sumMaxRowHeight[i] + n.maxRowHeight[i]/2 - n.selfH/2 - n.parentNodeY
+        mapPlace.iterate(m, n.c[i][j])
       }
     }
     let elapsedY = 0
-    const sCount = Object.keys(cn.s).length
+    const sCount = Object.keys(n.s).length
     for (let i = 0; i < sCount; i++) {
-      cn.s[i].parentNodeStartX = cn.nodeStartX
-      cn.s[i].parentNodeEndX = cn.nodeEndX
-      cn.s[i].parentNodeY = cn.nodeY
-      cn.s[i].lineDeltaX = m.g.sLineDeltaXDefault
-      cn.s[i].lineDeltaY = elapsedY + cn.s[i].maxH / 2 - cn.familyH / 2
-      if (i === 0 && cn.isTop) cn.s[i].isTop = 1
-      if (i === sCount - 1 && cn.isBottom === 1) cn.s[i].isBottom = 1
-      mapPlace.iterate(m, cn.s[i])
-      elapsedY += cn.s[i].maxH + cn.spacingActivated*cn.spacing
+      n.s[i].parentNodeStartX = n.nodeStartX
+      n.s[i].parentNodeEndX = n.nodeEndX
+      n.s[i].parentNodeY = n.nodeY
+      n.s[i].lineDeltaX = m.g.sLineDeltaXDefault
+      n.s[i].lineDeltaY = elapsedY + n.s[i].maxH / 2 - n.familyH / 2
+      if (i === 0 && n.isTop) n.s[i].isTop = 1
+      if (i === sCount - 1 && n.isBottom === 1) n.s[i].isBottom = 1
+      mapPlace.iterate(m, n.s[i])
+      elapsedY += n.s[i].maxH + n.spacingActivated*n.spacing
     }
   }
 }

@@ -1,40 +1,40 @@
 import {M, N} from "../types/DefaultProps"
 
 export const mapCalcTask = {
-  start: (m: any) => {
+  start: (m: M) => {
     mapCalcTask.iterate(m, m.r[0])
   },
 
-  iterate: (m: M, cn: N) => {
-    let dCount = Object.keys(cn.d).length
+  iterate: (m: M, n: N) => {
+    let dCount = Object.keys(n.d).length
     if (dCount) {
-      cn.taskStatus = 0
+      n.taskStatus = 0
       for (let i = 0; i < dCount; i++) {
-        mapCalcTask.iterate(m, cn.d[i])
+        mapCalcTask.iterate(m, n.d[i])
       }
-      const taskStatusRight = cn.d[0].taskStatus
-      const taskStatusLeft = cn.d[1].taskStatus
-      if (cn.d[0].s.length && cn.d[1].s.length) {
-        cn.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
-      } else if (cn.d[0].s.length) {
-        cn.taskStatus = taskStatusRight
-      } else if (cn.d[1].s.length) {
-        cn.taskStatus = taskStatusLeft
+      const taskStatusRight = n.d[0].taskStatus
+      const taskStatusLeft = n.d[1].taskStatus
+      if (n.d[0].s.length && n.d[1].s.length) {
+        n.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
+      } else if (n.d[0].s.length) {
+        n.taskStatus = taskStatusRight
+      } else if (n.d[1].s.length) {
+        n.taskStatus = taskStatusLeft
       }
     }
-    let sCount = Object.keys(cn.s).length
+    let sCount = Object.keys(n.s).length
     if (sCount) {
-      cn.taskStatus = 0
+      n.taskStatus = 0
       let minTaskStatus = 4
       for (let i = 0; i < sCount; i++) {
-        mapCalcTask.iterate(m, cn.s[i])
-        let currTaskStatus = cn.s[i].taskStatus
+        mapCalcTask.iterate(m, n.s[i])
+        let currTaskStatus = n.s[i].taskStatus
         if (currTaskStatus < minTaskStatus) {
           minTaskStatus = currTaskStatus
         }
       }
-      cn.taskStatus = minTaskStatus
+      n.taskStatus = minTaskStatus
     }
-    cn.c.map((i) => i.map(j => mapCalcTask.iterate(m, j)))
+    n.c.map((i) => i.map(j => mapCalcTask.iterate(m, j)))
   }
 }

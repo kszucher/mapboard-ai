@@ -4,21 +4,21 @@ export const mapPrint = {
   str: '',
   entryLength: 0,
 
-  start: (m: M, cn: N) => {
+  start: (m: M, n: N) => {
     mapPrint.str = ''
-    mapPrint.entryLength = cn.path.length
-    mapPrint.iterate(m, cn)
+    mapPrint.entryLength = n.path.length
+    mapPrint.iterate(m, n)
     console.log(mapPrint.str)
   },
 
-  iterate: (m: M, cn: N) => {
-    let indentationCount = cn.path.length - mapPrint.entryLength
+  iterate: (m: M, n: N) => {
+    let indentationCount = n.path.length - mapPrint.entryLength
     mapPrint.str += ('  '.repeat(indentationCount))
-    mapPrint.str += cn.content.replace(/<br\s*[\/]?>/gi, '\n' + '  '.repeat(indentationCount))
+    mapPrint.str += n.content.replace(/<br\s*[\/]?>/gi, '\n' + '  '.repeat(indentationCount))
     mapPrint.str += '\n'
 
-    cn.d.map(i => mapPrint.iterate(m, i))
-    cn.s.map(i => mapPrint.iterate(m, i))
-    cn.c.map(i => i.map(j => mapPrint.iterate(m, j)))
+    n.d.map(i => mapPrint.iterate(m, i))
+    n.s.map(i => mapPrint.iterate(m, i))
+    n.c.map(i => i.map(j => mapPrint.iterate(m, j)))
   }
 }

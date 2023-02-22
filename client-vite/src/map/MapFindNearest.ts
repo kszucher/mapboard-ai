@@ -66,30 +66,30 @@ export const mapFindNearest = {
     return lastNearestPath
   },
 
-  iterate: (cn: N) => {
-    if (!cn.selected) {
-      cn.d.map(i => mapFindNearest.iterate(i))
-      if (cn.type === 'cell') {
-        cn.s.map(i => mapFindNearest.iterate(i))
+  iterate: (n: N) => {
+    if (!n.selected) {
+      n.d.map(i => mapFindNearest.iterate(i))
+      if (n.type === 'cell') {
+        n.s.map(i => mapFindNearest.iterate(i))
       } else {
         let overlap = 6
         let vCondition
-        if (cn.isTop && belowRoot) {
-          vCondition = currY < (cn.nodeY + cn.maxH / 2 + overlap)
-        } else if (cn.isBottom && aboveRoot) {
-          vCondition = currY > (cn.nodeY - cn.maxH / 2 - overlap)
+        if (n.isTop && belowRoot) {
+          vCondition = currY < (n.nodeY + n.maxH / 2 + overlap)
+        } else if (n.isBottom && aboveRoot) {
+          vCondition = currY > (n.nodeY - n.maxH / 2 - overlap)
         } else {
-          vCondition = Math.abs(currY - cn.nodeY) <= cn.maxH / 2 + overlap
+          vCondition = Math.abs(currY - n.nodeY) <= n.maxH / 2 + overlap
         }
         let hCondition =
-          (cn.path[3] === 0 && currX > cn.nodeEndX) ||
-          (cn.path[3] === 1 && currX < cn.nodeStartX)
+          (n.path[3] === 0 && currX > n.nodeEndX) ||
+          (n.path[3] === 1 && currX < n.nodeStartX)
         if (vCondition && hCondition ) {
-          lastNearestPath = copy(cn.path)
-          cn.s.map(i => mapFindNearest.iterate(i))
+          lastNearestPath = copy(n.path)
+          n.s.map(i => mapFindNearest.iterate(i))
         }
       }
-      cn.c.map(i => i.map(j => mapFindNearest.iterate(j)))
+      n.c.map(i => i.map(j => mapFindNearest.iterate(j)))
     }
   }
 }

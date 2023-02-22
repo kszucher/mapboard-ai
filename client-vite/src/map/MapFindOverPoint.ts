@@ -17,17 +17,17 @@ export const mapFindOverPoint = {
     return lastOverPath
   },
 
-  iterate: (cn: N) => {
-    if (cn.nodeStartX < currX &&
-      currX < cn.nodeEndX &&
-      cn.nodeY - cn.selfH / 2 < currY &&
-      currY < cn.nodeY + cn.selfH  / 2 ) {
-      if (cn.index.length !== 2) {
-        lastOverPath = copy(cn.path)
+  iterate: (n: N) => {
+    if (n.nodeStartX < currX &&
+      currX < n.nodeEndX &&
+      n.nodeY - n.selfH / 2 < currY &&
+      currY < n.nodeY + n.selfH  / 2 ) {
+      if (n.index.length !== 2) {
+        lastOverPath = copy(n.path)
       }
     }
-    cn.d.map(i => mapFindOverPoint.iterate(i))
-    cn.s.map(i => mapFindOverPoint.iterate(i))
-    cn.c.map(i => i.map(j => mapFindOverPoint.iterate(j)))
+    n.d.map(i => mapFindOverPoint.iterate(i))
+    n.s.map(i => mapFindOverPoint.iterate(i))
+    n.c.map(i => i.map(j => mapFindOverPoint.iterate(j)))
   }
 }

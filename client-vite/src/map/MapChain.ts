@@ -11,54 +11,54 @@ export const mapChain = {
     mapChain.iterate(m, m.r[0])
   },
 
-  iterate: (m: M, cn: N) => {
-    if (!cn.isRoot) {
-      if (cn.type === 'dir') {
-        cn.path = [...cn.parentPath, "d", cn.index]
-      } else if (cn.type === 'struct') {
-        cn.path = [...cn.parentPath, "s", cn.index]
-      } else if (cn.type === 'cell') {
-        cn.path = [...cn.parentPath, "c", cn.index[0], cn.index[1]]
+  iterate: (m: M, n: N) => {
+    if (!n.isRoot) {
+      if (n.type === 'dir') {
+        n.path = [...n.parentPath, "d", n.index]
+      } else if (n.type === 'struct') {
+        n.path = [...n.parentPath, "s", n.index]
+      } else if (n.type === 'cell') {
+        n.path = [...n.parentPath, "c", n.index[0], n.index[1]]
       }
     }
-    let dCount = Object.keys(cn.d).length
+    let dCount = Object.keys(n.d).length
     for (let i = 0; i < dCount; i++) {
-      Object.assign(cn.d[i], {
+      Object.assign(n.d[i], {
         parentPath: ['r', 0],
-        parentType: cn.type,
+        parentType: n.type,
         isRootChild: 1,
         type: 'dir',
         index: i,
       })
-      mapChain.iterate(m, cn.d[i])
+      mapChain.iterate(m, n.d[i])
     }
-    let sCount = Object.keys(cn.s).length
+    let sCount = Object.keys(n.s).length
     for (let i = 0; i < sCount; i++) {
-      Object.assign(cn.s[i], {
-        parentPath: cn.path.slice(0),
-        parentType: cn.type,
-        parentParentType: cn.parentType,
+      Object.assign(n.s[i], {
+        parentPath: n.path.slice(0),
+        parentType: n.type,
+        parentParentType: n.parentType,
         type: 'struct',
         index: i,
       })
-      mapChain.iterate(m, cn.s[i])
+      mapChain.iterate(m, n.s[i])
     }
-    let rowCount = Object.keys(cn.c).length
-    let colCount = Object.keys(cn.c[0]).length
+    let rowCount = Object.keys(n.c).length
+    let colCount = Object.keys(n.c[0]).length
     for (let i = 0; i < rowCount; i++) {
       for (let j = 0; j < colCount; j++) {
-        Object.assign(cn.c[i][j], {
-          parentPath: cn.path.slice(0),
-          parentType: cn.type,
-          parentParentType: cn.parentType,
+        Object.assign(n.c[i][j], {
+          parentPath: n.path.slice(0),
+          parentType: n.type,
+          parentParentType: n.parentType,
           type: 'cell',
           index: [i, j],
         })
-        mapChain.iterate(m, cn.c[i][j])
+        mapChain.iterate(m, n.c[i][j])
       }
     }
-    cn.hasDir = dCount > 0 ? 1 : 0
-    cn.hasStruct = sCount > 0? 1 : 0
-    cn.hasCell = (rowCount === 1 && colCount === 0) ? 0 : 1
+    n.hasDir = dCount > 0 ? 1 : 0
+    n.hasStruct = sCount > 0? 1 : 0
+    n.hasCell = (rowCount === 1 && colCount === 0) ? 0 : 1
   }
 }

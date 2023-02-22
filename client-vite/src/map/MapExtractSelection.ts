@@ -44,9 +44,9 @@ export const mapExtractSelection = {
     }
     // interrelations
     if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map((path: any) => JSON.stringify(getMapData(m, path).parentPath)))
+      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map((path: any[]) => JSON.stringify(getMapData(m, path).parentPath)))
     } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map((path: any) => JSON.stringify(getMapData(m, path).parentPath)))
+      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => JSON.stringify(getMapData(m, path).parentPath)))
       if (sc.haveSameParent) {
         let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 2]))
         let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 1]))
@@ -73,16 +73,16 @@ export const mapExtractSelection = {
     }
   },
 
-  iterate: (m: M, cn: N) => {
-    if (cn.selected) {
-      if (Number.isInteger(cn.path[cn.path.length - 2])) {
-        m.g.sc.cellSelectedPathList.push(cn.path.slice(0)) // naturally ascending
+  iterate: (m: M, n: N) => {
+    if (n.selected) {
+      if (Number.isInteger(n.path[n.path.length - 2])) {
+        m.g.sc.cellSelectedPathList.push(n.path.slice(0)) // naturally ascending
       } else {
-        m.g.sc.structSelectedPathList.push(cn.path.slice(0))
+        m.g.sc.structSelectedPathList.push(n.path.slice(0))
       }
     }
-    cn.d.map(i => mapExtractSelection.iterate(m, i))
-    cn.s.map(i => mapExtractSelection.iterate(m, i))
-    cn.c.map(i => i.map(j => mapExtractSelection.iterate(m, j)))
+    n.d.map(i => mapExtractSelection.iterate(m, i))
+    n.s.map(i => mapExtractSelection.iterate(m, i))
+    n.c.map(i => i.map(j => mapExtractSelection.iterate(m, j)))
   }
 }

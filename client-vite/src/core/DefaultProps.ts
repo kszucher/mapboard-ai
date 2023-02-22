@@ -138,36 +138,36 @@ export const nSaveNever = {
   isBottom: 0,
 } as NSaveNever
 
-export const resolveScope = (cn: any) => {
+export const resolveScope = (n: any) => {
   return {
     struct:
-      cn.type === 'struct' &&
-      !cn.hasCell,
+      n.type === 'struct' &&
+      !n.hasCell,
     text:
-      cn.contentType === 'text',
-    branchFill: cn.fFillColor !== '' && cn.s.length,
-    nodeFill: cn.sFillColor !== '' || cn.taskStatus !== 0,
-    branchBorder: cn.fBorderColor !== '' && cn.s.length,
-    nodeBorder: cn.sBorderColor !== '' && !cn.hasCell,
-    selectionBorder: cn.selected && cn.type !== 'cell' && !cn.isEditing,
+      n.contentType === 'text',
+    branchFill: n.fFillColor !== '' && n.s.length,
+    nodeFill: n.sFillColor !== '' || n.taskStatus !== 0,
+    branchBorder: n.fBorderColor !== '' && n.s.length,
+    nodeBorder: n.sBorderColor !== '' && !n.hasCell,
+    selectionBorder: n.selected && n.type !== 'cell' && !n.isEditing,
     line:
-      !cn.isRoot &&
-      !cn.isRootChild &&
-      cn.parentType !== 'cell' &&
-      (cn.type === 'struct' && !cn.hasCell || cn.type === 'cell' && cn.parentParentType !== 'cell' && cn.index[0] > - 1 && cn.index[1] === 0),
+      !n.isRoot &&
+      !n.isRootChild &&
+      n.parentType !== 'cell' &&
+      (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0),
     table:
-      cn.type === "struct" &&
-      cn.hasCell,
+      n.type === "struct" &&
+      n.hasCell,
     task:
-      cn.taskStatus !== 0 &&
-      // !cn.path.includes('c') &&
-      !cn.hasDir &&
-      !cn.hasStruct &&
-      !cn.hasCell &&
-      // cn.parentType !== 'cell' &&
-      cn.contentType !== 'image' &&
-      !cn.isRoot &&
-      !cn.isRootChild
+      n.taskStatus !== 0 &&
+      // !n.path.includes('c') &&
+      !n.hasDir &&
+      !n.hasStruct &&
+      !n.hasCell &&
+      // n.parentType !== 'cell' &&
+      n.contentType !== 'image' &&
+      !n.isRoot &&
+      !n.isRootChild
   }
 }
 

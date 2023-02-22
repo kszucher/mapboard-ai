@@ -42,23 +42,23 @@ export const mapExtractProps = {
     mapExtractProps.iterate(m, m.r[0])
   },
 
-  iterate: (m: M, cn: N) => {
-    if (cn.animationRequested) {
+  iterate: (m: M, n: N) => {
+    if (n.animationRequested) {
       m.g.animationRequested = 1
     }
-    if (cn.taskStatus !== 0 && !cn.path.includes('c') && cn.path.length > 4) {
+    if (n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4) {
       try {
-        if (cn.path[3] === 0) {
+        if (n.path[3] === 0) {
           m.g.taskRight = 1
         } else {
           m.g.taskLeft = 1
         }
       } catch {
-        console.log(cn.path)
+        console.log(n.path)
       }
     }
-    cn.d.map(i => mapExtractProps.iterate(m, i))
-    cn.s.map(i => mapExtractProps.iterate(m, i))
-    cn.c.map(i => i.map(j => mapExtractProps.iterate(m, j)))
+    n.d.map(i => mapExtractProps.iterate(m, i))
+    n.s.map(i => mapExtractProps.iterate(m, i))
+    n.c.map(i => i.map(j => mapExtractProps.iterate(m, j)))
   }
 }

@@ -1,14 +1,15 @@
+import {M, SC} from "../types/DefaultProps"
 import {isEqual} from "../core/Utils"
 import {getMapData} from '../core/MapFlow'
 
-export const structDeleteReselect = (m: any, sc: any) => {
+export const structDeleteReselect = (m: M, sc: SC) => {
   let ln = getMapData(m, sc.lastPath)
   // calculate jump back
   let closestNode = ln
   for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-    let cn = getMapData(m, sc.structSelectedPathList[i])
-    if (cn.path.length < ln.path.length && isEqual(cn.path.slice(0, ln.path.length), ln.path)) {
-      closestNode = cn
+    let n = getMapData(m, sc.structSelectedPathList[i])
+    if (n.path.length < ln.path.length && isEqual(n.path.slice(0, ln.path.length), ln.path)) {
+      closestNode = n
     }
   }
   let closestNodeParent = getMapData(m, closestNode.parentPath)
@@ -21,10 +22,10 @@ export const structDeleteReselect = (m: any, sc: any) => {
   }
   // delete
   for (let i = sc.structSelectedPathList.length - 1; i > -1; i--) {
-    let cn = getMapData(m, sc.structSelectedPathList[i])
-    let cmParent = getMapData(m, cn.parentPath)
-    cmParent.taskStatus = cn.taskStatus
-    cmParent.s.splice(cn.index, 1)
+    let n = getMapData(m, sc.structSelectedPathList[i])
+    let cmParent = getMapData(m, n.parentPath)
+    cmParent.taskStatus = n.taskStatus
+    cmParent.s.splice(n.index, 1)
   }
   // reselect on jump back
   if (closestNodeParentChildLen === closestNodeParentChildDelLen) {
@@ -54,7 +55,7 @@ export const structDeleteReselect = (m: any, sc: any) => {
   }
 }
 
-export const cellDeleteReselect = (m: any, sc: any) => {
+export const cellDeleteReselect = (m: M, sc: SC) => {
   const { lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath } = sc
   let sameParent = getMapData(m, sameParentPath)
   let ln = getMapData(m, lastPath)

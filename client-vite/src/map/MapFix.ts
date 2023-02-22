@@ -6,12 +6,12 @@ export const mapFix = {
     mapFix.iterate(m, m.r[0] as NPartial)
   },
 
-  iterate: (m: MPartial, cn: NPartial) => {
-    if (cn.type === 'cell' && !cn.s.length) {
-      cn.s.push(getDefaultNode({}))
+  iterate: (m: MPartial, n: NPartial) => {
+    if (n.type === 'cell' && !n.s.length) {
+      n.s.push(getDefaultNode({}))
     }
-    if (cn.d) cn.d.map((i: any) => mapFix.iterate(m, i))
-    if (cn.s) cn.s.map((i: any) => mapFix.iterate(m, i))
-    if (cn.c) cn.c.map((i: any[]) => i.map(j => mapFix.iterate(m, j)))
+    if (n.d) n.d.map(i => mapFix.iterate(m, i))
+    if (n.s) n.s.map(i => mapFix.iterate(m, i))
+    if (n.c) n.c.map(i => i.map(j => mapFix.iterate(m, j)))
   }
 }

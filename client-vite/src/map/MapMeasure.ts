@@ -10,48 +10,48 @@ export const mapMeasure = {
     })
   },
 
-  iterate: (m: M, cn: N, params: { hasMultipleChild: number, hasMultipleContentRow: number }) => {
+  iterate: (m: M, n: N, params: { hasMultipleChild: number, hasMultipleContentRow: number }) => {
     params.hasMultipleChild = 0
     params.hasMultipleContentRow = 0
-    let dCount = Object.keys(cn.d).length
+    let dCount = Object.keys(n.d).length
     for (let i = 0; i < dCount; i++) {
-      mapMeasure.iterate(m, cn.d[i], params)
+      mapMeasure.iterate(m, n.d[i], params)
     }
-    let sCount = Object.keys(cn.s).length
+    let sCount = Object.keys(n.s).length
     if (sCount) {
       let sMaxW = 0
       for (let i = 0; i < sCount; i++) {
-        mapMeasure.iterate(m, cn.s[i], params)
-        cn.familyH += cn.s[i].maxH
-        let currMaxW = cn.s[i].maxW
+        mapMeasure.iterate(m, n.s[i], params)
+        n.familyH += n.s[i].maxH
+        let currMaxW = n.s[i].maxW
         if (currMaxW >= sMaxW) {
           sMaxW = currMaxW
         }
         if (params.hasMultipleChild || params.hasMultipleContentRow) {
-          cn.spacingActivated = 1
+          n.spacingActivated = 1
         }
       }
-      if (cn.spacingActivated) {
-        cn.familyH += (sCount - 1)*cn.spacing
+      if (n.spacingActivated) {
+        n.familyH += (sCount - 1)*n.spacing
       }
-      cn.familyW = sMaxW + m.g.sLineDeltaXDefault
+      n.familyW = sMaxW + m.g.sLineDeltaXDefault
     }
     if (sCount > 1) {
       params.hasMultipleChild = 1
     }
-    if (cn.type === 'struct' || cn.type === 'dir') {
-      if (cn.hasCell) {
-        let rowCount = Object.keys(cn.c).length
-        let colCount = Object.keys(cn.c[0]).length
+    if (n.type === 'struct' || n.type === 'dir') {
+      if (n.hasCell) {
+        let rowCount = Object.keys(n.c).length
+        let colCount = Object.keys(n.c[0]).length
         let maxCellHeightMat = createArray(rowCount, colCount)
         let maxCellWidthMat = createArray(rowCount, colCount)
         let isCellSpacingActivated = 0
         for (let i = 0; i < rowCount; i++) {
           for (let j = 0; j < colCount; j++) {
-            mapMeasure.iterate(m, cn.c[i][j], params)
-            maxCellHeightMat[i][j] = cn.c[i][j].maxH
-            maxCellWidthMat[i][j] = cn.c[i][j].maxW
-            if (cn.c[i][j].maxH > m.g.defaultH) {
+            mapMeasure.iterate(m, n.c[i][j], params)
+            maxCellHeightMat[i][j] = n.c[i][j].maxH
+            maxCellWidthMat[i][j] = n.c[i][j].maxW
+            if (n.c[i][j].maxH > m.g.defaultH) {
               isCellSpacingActivated = 1
             }
           }
@@ -59,7 +59,7 @@ export const mapMeasure = {
         if (isCellSpacingActivated === 1) {
           for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < colCount; j++) {
-              maxCellHeightMat[i][j] += cn.spacing
+              maxCellHeightMat[i][j] += n.spacing
             }
           }
         }
@@ -71,9 +71,9 @@ export const mapMeasure = {
               maxRowHeight = cellHeight
             }
           }
-          cn.maxRowHeight.push(maxRowHeight)
-          cn.sumMaxRowHeight.push(maxRowHeight + cn.sumMaxRowHeight.slice(-1)[0])
-          cn.selfH += maxRowHeight
+          n.maxRowHeight.push(maxRowHeight)
+          n.sumMaxRowHeight.push(maxRowHeight + n.sumMaxRowHeight.slice(-1)[0])
+          n.selfH += maxRowHeight
         }
         for (let j = 0; j < colCount; j++) {
           let maxColWidth = 0
@@ -82,18 +82,18 @@ export const mapMeasure = {
             if (cellWidth >= maxColWidth) {
               maxColWidth = cellWidth
             }
-            if (cn.c[i][j].s[0].taskStatus !== 0) {
+            if (n.c[i][j].s[0].taskStatus !== 0) {
               maxColWidth += 120
             }
           }
-          cn.maxColWidth.push(maxColWidth)
-          cn.sumMaxColWidth.push(maxColWidth + cn.sumMaxColWidth.slice(-1)[0])
-          cn.selfW += maxColWidth
+          n.maxColWidth.push(maxColWidth)
+          n.sumMaxColWidth.push(maxColWidth + n.sumMaxColWidth.slice(-1)[0])
+          n.selfW += maxColWidth
         }
         for (let j = 0; j < colCount; j++) {
           for (let i = 0; i < rowCount; i++) {
-            cn.c[i][j].selfW = cn.maxColWidth[j]
-            cn.c[i][j].selfH = cn.maxRowHeight[i]
+            n.c[i][j].selfW = n.maxColWidth[j]
+            n.c[i][j].selfH = n.maxRowHeight[i]
           }
         }
         if (rowCount > 1) {
@@ -101,15 +101,15 @@ export const mapMeasure = {
         }
       } else {
         // dependent on change
-        if (cn.content !== '' && (cn.dimW === 0 || cn.dimH === 0 || cn.dimChange)) {
-          if (cn.contentType === 'text') {
-            const dim = getTextDim(cn.content, cn.textFontSize)
-            cn.dimW = dim[0]
-            cn.dimH = dim[1]
-          } else if (cn.contentType === 'equation') {
-            const dim = getEquationDim(cn.content)
-            cn.dimW = dim[0]
-            cn.dimH = dim[1]
+        if (n.content !== '' && (n.dimW === 0 || n.dimH === 0 || n.dimChange)) {
+          if (n.contentType === 'text') {
+            const dim = getTextDim(n.content, n.textFontSize)
+            n.dimW = dim[0]
+            n.dimH = dim[1]
+          } else if (n.contentType === 'equation') {
+            const dim = getEquationDim(n.content)
+            n.dimW = dim[0]
+            n.dimH = dim[1]
           }
         }
         // not dependent on change
@@ -117,15 +117,15 @@ export const mapMeasure = {
         let paddingH = m.g.padding*2
         let densityW = 0
         let densityH = 0
-        if (cn.contentType === 'text') {
+        if (n.contentType === 'text') {
           densityW = m.g.density === 'large' ? 0 : 8
           densityH = m.g.density === 'large' ? 1 : 2
         }
-        cn.selfW = (cn.dimW > 20 ? cn.dimW : 20) + paddingW + densityW
-        cn.selfH = cn.dimH/17 <= 1 ? m.g.defaultH + densityH : cn.dimH + paddingH + densityH
+        n.selfW = (n.dimW > 20 ? n.dimW : 20) + paddingW + densityW
+        n.selfH = n.dimH/17 <= 1 ? m.g.defaultH + densityH : n.dimH + paddingH + densityH
       }
     }
-    cn.maxW = cn.selfW + cn.familyW
-    cn.maxH = Math.max(...[cn.selfH, cn.familyH])
+    n.maxW = n.selfW + n.familyW
+    n.maxH = Math.max(...[n.selfH, n.familyH])
   }
 }

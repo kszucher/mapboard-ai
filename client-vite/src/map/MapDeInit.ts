@@ -18,19 +18,19 @@ export const mapDeInit = {
     return m
   },
 
-  iterate: (cn: N) => {
-    cn.d.map(i => mapDeInit.iterate(i))
-    cn.s.map(i => mapDeInit.iterate(i))
-    cn.c.map(i => i.map(j => mapDeInit.iterate(j)))
-    for (const prop in cn) {
+  iterate: (n: N) => {
+    n.d.map(i => mapDeInit.iterate(i))
+    n.s.map(i => mapDeInit.iterate(i))
+    n.c.map(i => i.map(j => mapDeInit.iterate(j)))
+    for (const prop in n) {
       if (nSaveAlways.hasOwnProperty(prop)) {
         // do nothing
       } else if (nSaveOptional.hasOwnProperty(prop)) {
-        if (cn[prop as keyof NSaveOptional] === nSaveOptional[prop as keyof NSaveOptional]) {
-          delete cn[prop as keyof NSaveOptional]
+        if (n[prop as keyof NSaveOptional] === nSaveOptional[prop as keyof NSaveOptional]) {
+          delete n[prop as keyof NSaveOptional]
         }
       } else {
-        delete cn[prop as keyof NSaveNever]
+        delete n[prop as keyof NSaveNever]
       }
     }
   }

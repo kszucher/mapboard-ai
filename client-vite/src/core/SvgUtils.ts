@@ -149,26 +149,26 @@ export const getArcPath = (sx: number, sy: number, w: number, h: number, r: numb
   }
 }
 
-export const getAdjustedParams = (cn: N) : AdjustedParams => {
-  const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
-  const maxHadj = isOdd(cn.maxH) ? cn.maxH + 1 : cn.maxH
-  const dir = cn.path[3] ? -1 : 1
+export const getAdjustedParams = (n: N) : AdjustedParams => {
+  const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
+  const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
+  const dir = n.path[3] ? -1 : 1
   return {
     dir,
-    nsx: dir === -1 ? cn.nodeEndX : cn.nodeStartX,
-    nex: dir === -1 ? cn.nodeStartX : cn.nodeEndX,
-    nsy: cn.nodeY - selfHadj / 2,
-    ney: cn.nodeY + selfHadj / 2,
-    nsym: cn.nodeY - maxHadj / 2,
-    neym: cn.nodeY + maxHadj / 2,
-    totalW: cn.familyW + cn.selfW,
-    deltaX: cn.lineDeltaX,
+    nsx: dir === -1 ? n.nodeEndX : n.nodeStartX,
+    nex: dir === -1 ? n.nodeStartX : n.nodeEndX,
+    nsy: n.nodeY - selfHadj / 2,
+    ney: n.nodeY + selfHadj / 2,
+    nsym: n.nodeY - maxHadj / 2,
+    neym: n.nodeY + maxHadj / 2,
+    totalW: n.familyW + n.selfW,
+    deltaX: n.lineDeltaX,
     margin: (
-      (cn.selection === 's' && cn.sBorderColor !== '') ||
-      (cn.selection === 's' && cn.sFillColor !== '') ||
-      (cn.selection === 'f') ||
-      (cn.taskStatus > 1) ||
-      (cn.hasCell)
+      (n.selection === 's' && n.sBorderColor !== '') ||
+      (n.selection === 's' && n.sFillColor !== '') ||
+      (n.selection === 'f') ||
+      (n.taskStatus > 1) ||
+      (n.hasCell)
     ) ? 4 : -2,
     r: 8
   }

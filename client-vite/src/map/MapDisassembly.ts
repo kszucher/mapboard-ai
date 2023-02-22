@@ -1,23 +1,24 @@
+import {M, N} from "../types/DefaultProps"
 import {copy} from "../core/Utils"
 
 let dcm = []
 
 export const mapDisassembly = {
-  start: (cn: any) => {
+  start: (m: M) => {
     dcm = []
-    dcm.push(copy(cn.g))
-    mapDisassembly.iterate(cn.r[0])
+    dcm.push(copy(m.g))
+    mapDisassembly.iterate(m.r[0])
     return dcm
   },
 
-  iterate: (cn: any) => {
-    let nodeCopy = copy(cn)
+  iterate: (n: N) => {
+    const nodeCopy = copy(n)
     delete nodeCopy['d']
     delete nodeCopy['s']
     delete nodeCopy['c']
     dcm.push(nodeCopy)
-    cn.d.map((i: any) => mapDisassembly.iterate(i))
-    cn.s.map((i: any) => mapDisassembly.iterate(i))
-    cn.c.map((i: any[]) => i.map(j => mapDisassembly.iterate(j)))
+    n.d.map(i => mapDisassembly.iterate(i))
+    n.s.map(i => mapDisassembly.iterate(i))
+    n.c.map(i => i.map(j => mapDisassembly.iterate(j)))
   }
 }

@@ -34,17 +34,17 @@ export const mapFindOverRectangle = {
     return collection
   },
 
-  iterate: (cn: N, collection: any[]) => {
-    if (cn.type === 'struct' && !cn.hasCell && cn.content !== '') {
+  iterate: (n: N, collection: any[]) => {
+    if (n.type === 'struct' && !n.hasCell && n.content !== '') {
       if ( + rectanglesIntersect(
         startX, startY, startX + width, startY + height,
-        cn.nodeStartX, cn.nodeY, cn.nodeEndX, cn.nodeY
+        n.nodeStartX, n.nodeY, n.nodeEndX, n.nodeY
       )) {
-        collection.push(copy(cn.path))
+        collection.push(copy(n.path))
       }
     }
-    cn.d.map(i => mapFindOverRectangle.iterate(i, collection))
-    cn.s.map(i => mapFindOverRectangle.iterate(i, collection))
-    cn.c.map(i => i.map(j => mapFindOverRectangle.iterate(j, collection)))
+    n.d.map(i => mapFindOverRectangle.iterate(i, collection))
+    n.s.map(i => mapFindOverRectangle.iterate(i, collection))
+    n.c.map(i => i.map(j => mapFindOverRectangle.iterate(j, collection)))
   }
 }
