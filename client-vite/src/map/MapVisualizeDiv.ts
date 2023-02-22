@@ -4,10 +4,8 @@ import { getColors } from '../core/Colors'
 export const mapVisualizeDiv = {
   start: (m: any, colorMode: string) => {
     const mapDiv: HTMLElement | null = document.getElementById('mapDiv')
-    // @ts-ignore
-    mapDiv.style.width = "" + m.g.mapWidth + "px"
-    // @ts-ignore
-    mapDiv.style.height = "" + m.g.mapHeight + "px"
+    mapDiv!.style.width = "" + m.g.mapWidth + "px"
+    mapDiv!.style.height = "" + m.g.mapHeight + "px"
     const mapHolderDiv: HTMLElement | null = document.getElementById('mapHolderDiv')
     mapHolderDiv?.focus()
     mapVisualizeDiv.iterate(m, m.r[0], colorMode)
