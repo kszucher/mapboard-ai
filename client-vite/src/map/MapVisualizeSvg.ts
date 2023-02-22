@@ -21,8 +21,8 @@ const getAdjustedParams = (cn) => {
     ney: cn.nodeY + selfHadj / 2,
     nsym: cn.nodeY - maxHadj / 2,
     neym: cn.nodeY + maxHadj / 2,
-    totalw: cn.familyW + cn.selfW,
-    deltax: cn.lineDeltaX,
+    totalW: cn.familyW + cn.selfW,
+    deltaX: cn.lineDeltaX,
     margin: (
       (cn.selection === 's' && cn.sBorderColor !== '') ||
       (cn.selection === 's' && cn.sFillColor !== '') ||
@@ -35,7 +35,7 @@ const getAdjustedParams = (cn) => {
 }
 
 const getNodeVisParams = (selection, adjustedParams) => {
-  const { dir, nsx, nex, nsy, ney, nsym, neym, totalw, deltax, r } = adjustedParams
+  const { dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = adjustedParams
   if (selection === 's') {
     return {
       ax: dir ===  - 1 ? nex : nsx,
@@ -50,9 +50,9 @@ const getNodeVisParams = (selection, adjustedParams) => {
     }
   } else if (selection === 'f') {
     return {
-      ax: dir === -1 ? nsx + dir * totalw : nsx,
-      bx: nex + dir * deltax,
-      cx: dir === -1 ? nsx : nsx + dir * totalw,
+      ax: dir === -1 ? nsx + dir * totalW : nsx,
+      bx: nex + dir * deltaX,
+      cx: dir === -1 ? nsx : nsx + dir * totalW,
       ayu: dir === -1 ? nsym : nsy,
       ayd: dir === -1 ? neym : ney,
       byu: nsym,

@@ -44,8 +44,8 @@ export const mapInit = {
     for (const prop in nSaveNever) {
       cn[prop as keyof NSaveNever] = shallowCopy(nSaveNever[prop as keyof NSaveNever])
     }
-    cn.d.map((i) => mapInit.iterate(m, i))
-    cn.s.map((i) => mapInit.iterate(m, i))
-    cn.c.map((i) => i.map(j => mapInit.iterate(m, j)))
+    cn.d.map(i => mapInit.iterate(m, i))
+    cn.s.map(i => mapInit.iterate(m, i))
+    cn.c.map(i => i.map(j => mapInit.iterate(m, j)))
   }
 }

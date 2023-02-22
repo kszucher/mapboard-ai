@@ -81,8 +81,8 @@ export const mapExtractSelection = {
         m.g.sc.structSelectedPathList.push(cn.path.slice(0))
       }
     }
-    cn.d.map((i) => mapExtractSelection.iterate(m, i))
-    cn.s.map((i) => mapExtractSelection.iterate(m, i))
-    cn.c.map((i) => i.map(j => mapExtractSelection.iterate(m, j)))
+    cn.d.map(i => mapExtractSelection.iterate(m, i))
+    cn.s.map(i => mapExtractSelection.iterate(m, i))
+    cn.c.map(i => i.map(j => mapExtractSelection.iterate(m, j)))
   }
 }

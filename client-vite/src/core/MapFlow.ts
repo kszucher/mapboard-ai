@@ -469,7 +469,7 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
   mapExtractProps.start(m as M)
   mapMeasure.start(m as M)
   mapPlace.start(m as M)
-  return m
+  return m as M
 }
 
 const redrawStep = (m: M, colorMode: string, isEditing: boolean, shouldAnimationInit: boolean) => {

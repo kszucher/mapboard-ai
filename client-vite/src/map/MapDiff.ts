@@ -21,8 +21,8 @@ export const mapDiff = {
         }
       }
     }
-    cn.d.map((i) => mapDiff.iterate(pm, m, i))
-    cn.s.map((i) => mapDiff.iterate(pm, m, i))
-    cn.c.map((i) => i.map(j => mapDiff.iterate(pm, m, j)))
+    cn.d.map(i => mapDiff.iterate(pm, m, i))
+    cn.s.map(i => mapDiff.iterate(pm, m, i))
+    cn.c.map(i => i.map(j => mapDiff.iterate(pm, m, j)))
   }
 }
