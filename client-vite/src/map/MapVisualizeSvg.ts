@@ -5,8 +5,8 @@ import { resolveScope } from '../core/DefaultProps'
 import { getColors } from '../core/Colors'
 import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
 import { getMapData } from '../core/MapFlow'
-import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow";
-import {mapFindById} from "./MapFindById";
+import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow"
+import {mapFindById} from "./MapFindById"
 
 interface AdjustedParams {
   dir: number,

@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import {LineTypes} from "./Types";
+import {LineTypes} from "./Types"
 
 const getCoordsInLine = (a, b, dt) => {
   const [x0, y0] = a

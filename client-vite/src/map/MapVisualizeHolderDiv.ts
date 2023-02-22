@@ -1,5 +1,5 @@
 import {M} from "../types/DefaultProps"
-import {scrollTo} from "../core/DomUtils";
+import {scrollTo} from "../core/DomUtils"
 
 export const orient = (m: M, action: string, payload: any) => {
   const mapHolderDiv = document.getElementById('mapHolderDiv')

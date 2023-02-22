@@ -1,11 +1,11 @@
-import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {FormatMode, AccessTypes, PageState} from "./Types";
-import {mapAssembly} from "../map/MapAssembly";
-import {reCalc} from "./MapFlow";
-import {mapDeInit} from "../map/MapDeInit";
-import {copy} from "./Utils";
-import {api} from "./Api";
-import {initDomData} from "./DomFlow";
+import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {FormatMode, AccessTypes, PageState} from "./Types"
+import {mapAssembly} from "../map/MapAssembly"
+import {reCalc} from "./MapFlow"
+import {mapDeInit} from "../map/MapDeInit"
+import {copy} from "./Utils"
+import {api} from "./Api"
+import {initDomData} from "./DomFlow"
 
 interface EditorState {
   token: string,

@@ -1,5 +1,5 @@
 import {copy, subsasgn} from "../core/Utils"
-import {MPartial} from "../types/DefaultProps";
+import {MPartial} from "../types/DefaultProps"
 
 export const mapAssembly = (dataLinear: any) => {
   const copyDataLinear = copy(dataLinear)

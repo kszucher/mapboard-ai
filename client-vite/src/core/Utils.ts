@@ -1,5 +1,5 @@
 export const arrayValuesSame = (array: any[]) => {
-  let first = JSON.stringify(array[0]);
+  let first = JSON.stringify(array[0])
   for (let i = 1; i < array.length; i++) {
     if (JSON.stringify(array[i]) !== first) {
       return [false, null]

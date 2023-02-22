@@ -1,10 +1,9 @@
-// @ts-nocheck
-
-import {actions, getEditedNodeId, getMap} from "../core/EditorFlow";
-import {isUrl} from "../core/Utils";
-import {Dir} from "../core/Types";
-import {getMapData} from "../core/MapFlow";
-import {api} from "../core/Api";
+import {M} from "../types/DefaultProps"
+import {actions, getEditedNodeId, getMap} from "../core/EditorFlow"
+import {isUrl} from "../core/Utils"
+import {Dir} from "../core/Types"
+import {getMapData} from "../core/MapFlow"
+import {api} from "../core/Api"
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -14,7 +13,7 @@ const ckm = (e, condition) => (
   ['-', (+e.altKey) ? '1' : '0'].includes(condition[2])
 )
 
-const c2dt = (m, which) => {
+const c2dt = (m: M, which) => {
   const {lastPath} = m.g.sc
   let direction = ''
   if (which === R) {

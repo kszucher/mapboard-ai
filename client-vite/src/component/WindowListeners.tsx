@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'

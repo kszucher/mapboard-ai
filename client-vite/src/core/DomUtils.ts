@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import katex from "katex/dist/katex.mjs"
 import {getLatexString} from "./Utils"
 

@@ -1,21 +1,19 @@
-// @ts-nocheck
-
 import { getLatexString, isChrome } from './Utils'
 import katex from 'katex/dist/katex.mjs'
-import {getEditedNodeId} from "./EditorFlow";
+import {getEditedNodeId} from "./EditorFlow"
 
-let mapDivData = [];
-let mapSvgData = [[],[],[],[],[],[]];
+let mapDivData = []
+let mapSvgData = [[],[],[],[],[],[]]
 
 const renderContent = (contentType, content) => {
   switch (contentType) {
     case 'text':
-      return content;
+      return content
     case 'equation':
-      return katex.renderToString(getLatexString(content), {throwOnError: false});
+      return katex.renderToString(getLatexString(content), {throwOnError: false})
     case 'image':
-      let imageLink = 'https://mapboard.io/file/';
-      return '<img src="' + imageLink + content + '" alt="" id="img">';
+      let imageLink = 'https://mapboard.io/file/'
+      return '<img src="' + imageLink + content + '" alt="" id="img">'
   }
 }
 
@@ -155,7 +153,7 @@ export const updateDomData = () => {
       const { svgId, type, params, op } = currSvgData
       switch (op) {
         case 'create': {
-          let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type)
+          let svgElement = document.createElementNS("http://www.w3.org/2000/svg", type) as SVGElement
           svgElement.setAttribute("id", svgId)
           switch (type) {
             case 'path': {
@@ -206,12 +204,12 @@ export const updateDomData = () => {
               break
             }
           }
-          let parentG = document.getElementById('layer' + i)
+          let parentG = document.getElementById('layer' + i) as HTMLElement
           parentG.appendChild(svgElement)
           break
         }
         case 'update': {
-          let svgElement = document.getElementById(svgId)
+          let svgElement = document.getElementById(svgId) as HTMLElement
           if (svgElement) {
             switch (type) {
               case 'path': {
