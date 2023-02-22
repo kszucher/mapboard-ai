@@ -1,5 +1,4 @@
-//@ts-nocheck
-
+import {M, N} from "../types/DefaultProps"
 import { updateMapSvgData } from '../core/DomFlow'
 import {isEqual, isOdd} from '../core/Utils'
 import { resolveScope } from '../core/DefaultProps'
@@ -9,7 +8,21 @@ import { getMapData } from '../core/MapFlow'
 import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow";
 import {mapFindById} from "./MapFindById";
 
-const getAdjustedParams = (cn) => {
+interface AdjustedParams {
+  dir: number,
+  nsx: number,
+  nex: number,
+  nsy: number,
+  ney: number,
+  nsym: number,
+  neym: number,
+  totalW: number,
+  deltaX: number,
+  margin: number,
+  r: number
+}
+
+const getAdjustedParams = (cn: N) => {
   const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
   const maxHadj = isOdd(cn.maxH) ? cn.maxH + 1 : cn.maxH
   const dir = cn.path[3] ? -1 : 1
@@ -31,10 +44,10 @@ const getAdjustedParams = (cn) => {
       (cn.hasCell)
     ) ? 4 : -2,
     r: 8
-  }
+  } as AdjustedParams
 }
 
-const getNodeVisParams = (selection, adjustedParams) => {
+const getNodeVisParams = (selection: string, adjustedParams: AdjustedParams) => {
   const { dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = adjustedParams
   if (selection === 's') {
     return {
@@ -64,14 +77,14 @@ const getNodeVisParams = (selection, adjustedParams) => {
 }
 
 export const mapVisualizeSvg = {
-  start: (m, colorMode, shouldAnimationInit) => {
+  start: (m: M, colorMode: string, shouldAnimationInit: boolean) => {
     const editedNodeId = getEditedNodeId()
     const editedPath = editedNodeId.length ? getMapData(m, mapFindById.start(m, editedNodeId))?.path : []
     const moveTarget = getMoveTarget()
     const selectTarget = getSelectTarget()
     const mapSvgOuter = document.getElementById('mapSvgOuter')
-    mapSvgOuter.style.width = 'calc(200vw + ' + m.g.mapWidth + 'px)'
-    mapSvgOuter.style.height = 'calc(200vh + ' + m.g.mapHeight + 'px)'
+    mapSvgOuter!.style.width = 'calc(200vw + ' + m.g.mapWidth + 'px)'
+    mapSvgOuter!.style.height = 'calc(200vh + ' + m.g.mapHeight + 'px)'
     const {SELECTION_COLOR, MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
     if (true) {
       updateMapSvgData('m', 'backgroundRect', {
@@ -142,7 +155,7 @@ export const mapVisualizeSvg = {
     }
     mapVisualizeSvg.iterate(m, m.r[0], colorMode, shouldAnimationInit, editedPath)
   },
-  iterate: (m, cn, colorMode, shouldAnimationInit, editedPath) => {
+  iterate: (m: M, cn: N, colorMode: string, shouldAnimationInit: boolean, editedPath: any[]) => {
     const conditions = resolveScope(cn)
     const {
       SELECTION_COLOR,
@@ -165,7 +178,7 @@ export const mapVisualizeSvg = {
     if (conditions.nodeFill) {
       let sFillColorOverride = ''
       if (cn.taskStatus > 1) {
-        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cn.taskStatus - 2)
+        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(cn.taskStatus - 2) || ''
       }
       updateMapSvgData(cn.nodeId, 'nodeFill', {
         path: getArcPath(nsx, nsy , cn.selfW, cn.selfH, r, dir, -2, true),
@@ -207,7 +220,7 @@ export const mapVisualizeSvg = {
       y2 = cn.nodeY
       let lineColorOverride = ''
       if (cn.taskStatus > 1) {
-        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cn.taskStatus - 2)
+        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(cn.taskStatus - 2) || ''
       }
       updateMapSvgData(cn.nodeId, 'line', {
         path: getLinePath(cn.lineType, x1, y1, cn.lineDeltaX, cn.lineDeltaY, x2, y2, dir),
@@ -220,7 +233,7 @@ export const mapVisualizeSvg = {
     if (conditions.table) {
       // frame
       updateMapSvgData(cn.nodeId, 'tableFrame', {
-        path: getArcPath(nsx, nsy, cn.selfW, cn.selfH, r, dir, 0),
+        path: getArcPath(nsx, nsy, cn.selfW, cn.selfH, r, dir, 0, false),
         stroke: cn.sBorderColor === '' ? TABLE_FRAME_COLOR : cn.sBorderColor,
         strokeWidth: cn.sBorderWidth,
       })
