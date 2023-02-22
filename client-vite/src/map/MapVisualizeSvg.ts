@@ -1,80 +1,12 @@
 import {M, N} from "../types/DefaultProps"
-import { updateMapSvgData } from '../core/DomFlow'
+import {updateMapSvgData} from '../core/DomFlow'
 import {isEqual, isOdd} from '../core/Utils'
-import { resolveScope } from '../core/DefaultProps'
-import { getColors } from '../core/Colors'
-import { getArcPath, getBezierPath, getLinePath, getPolygonPath } from '../core/SvgUtils'
-import { getMapData } from '../core/MapFlow'
+import {resolveScope} from '../core/DefaultProps'
+import {getColors} from '../core/Colors'
+import {getAdjustedParams, getArcPath, getBezierPath, getLinePath, getParams, getPolygonPath} from '../core/SvgUtils'
+import {getMapData} from '../core/MapFlow'
 import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow"
 import {mapFindById} from "./MapFindById"
-
-interface AdjustedParams {
-  dir: number,
-  nsx: number,
-  nex: number,
-  nsy: number,
-  ney: number,
-  nsym: number,
-  neym: number,
-  totalW: number,
-  deltaX: number,
-  margin: number,
-  r: number
-}
-
-const getAdjustedParams = (cn: N) => {
-  const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
-  const maxHadj = isOdd(cn.maxH) ? cn.maxH + 1 : cn.maxH
-  const dir = cn.path[3] ? -1 : 1
-  return {
-    dir,
-    nsx: dir === -1 ? cn.nodeEndX : cn.nodeStartX,
-    nex: dir === -1 ? cn.nodeStartX : cn.nodeEndX,
-    nsy: cn.nodeY - selfHadj / 2,
-    ney: cn.nodeY + selfHadj / 2,
-    nsym: cn.nodeY - maxHadj / 2,
-    neym: cn.nodeY + maxHadj / 2,
-    totalW: cn.familyW + cn.selfW,
-    deltaX: cn.lineDeltaX,
-    margin: (
-      (cn.selection === 's' && cn.sBorderColor !== '') ||
-      (cn.selection === 's' && cn.sFillColor !== '') ||
-      (cn.selection === 'f') ||
-      (cn.taskStatus > 1) ||
-      (cn.hasCell)
-    ) ? 4 : -2,
-    r: 8
-  } as AdjustedParams
-}
-
-const getNodeVisParams = (selection: string, adjustedParams: AdjustedParams) => {
-  const { dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = adjustedParams
-  if (selection === 's') {
-    return {
-      ax: dir ===  - 1 ? nex : nsx,
-      bx: nex - dir * r,
-      cx: dir === - 1 ? nsx : nex,
-      ayu: nsy,
-      ayd: ney,
-      byu: nsy,
-      byd: ney,
-      cyu: nsy,
-      cyd: ney
-    }
-  } else if (selection === 'f') {
-    return {
-      ax: dir === -1 ? nsx + dir * totalW : nsx,
-      bx: nex + dir * deltaX,
-      cx: dir === -1 ? nsx : nsx + dir * totalW,
-      ayu: dir === -1 ? nsym : nsy,
-      ayd: dir === -1 ? neym : ney,
-      byu: nsym,
-      byd: neym,
-      cyu: dir === -1 ? nsy : nsym,
-      cyd: dir === -1 ? ney : neym,
-    }
-  }
-}
 
 export const mapVisualizeSvg = {
   start: (m: M, colorMode: string, shouldAnimationInit: boolean) => {
@@ -148,7 +80,7 @@ export const mapVisualizeSvg = {
       const adjustedParams = getAdjustedParams(cn)
       const { dir, margin } = adjustedParams
       updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(getNodeVisParams(cn.selection, adjustedParams), cn.selection, dir, margin),
+        path: getPolygonPath(getParams(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -171,7 +103,7 @@ export const mapVisualizeSvg = {
     const { dir, nsx, nex, nsy, ney, margin, r } = adjustedParams
     if (conditions.branchFill) {
       updateMapSvgData(cn.nodeId, 'branchFill', {
-        path: getPolygonPath(getNodeVisParams('f', adjustedParams), 'f', dir, 0),
+        path: getPolygonPath(getParams('f', adjustedParams), 'f', dir, 0),
         fill: cn.fFillColor,
       })
     }
@@ -187,7 +119,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.branchBorder) {
       updateMapSvgData(cn.nodeId, 'branchBorder', {
-        path: getPolygonPath(getNodeVisParams('f', adjustedParams), 'f', dir, 0),
+        path: getPolygonPath(getParams('f', adjustedParams), 'f', dir, 0),
         stroke: cn.fBorderColor,
         strokeWidth: cn.fBorderWidth,
       })
@@ -201,7 +133,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.selectionBorder && !isEqual(cn.path, m.g.sc.lastPath)) {
       updateMapSvgData(cn.nodeId, 'selectionBorder', {
-        path: getPolygonPath(getNodeVisParams(cn.selection, adjustedParams), cn.selection, dir, margin),
+        path: getPolygonPath(getParams(cn.selection, adjustedParams), cn.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -261,6 +193,7 @@ export const mapVisualizeSvg = {
         for (let i = 0; i < rowCount; i++) {
           for (let j = 0; j < colCount; j++) {
             if (cn.c[i][j].selected) {
+
               let sx, sy, w, h
               if (m.g.sc.cellRowSelected) {
                 sx = nsx

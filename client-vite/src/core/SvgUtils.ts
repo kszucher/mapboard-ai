@@ -1,6 +1,34 @@
 import {LineTypes} from "./Types"
+import {N} from "../types/DefaultProps";
+import {isOdd} from "./Utils";
 
-const getCoordsInLine = (a, b, dt) => {
+interface AdjustedParams {
+  dir: number,
+  nsx: number,
+  nex: number,
+  nsy: number,
+  ney: number,
+  nsym: number,
+  neym: number,
+  totalW: number,
+  deltaX: number,
+  margin: number,
+  r: number
+}
+
+interface Params {
+  ax: number
+  bx: number
+  cx: number
+  ayu: number
+  ayd: number
+  byu: number
+  byd: number
+  cyu: number
+  cyd: number
+}
+
+const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   const [x0, y0] = a
   const [x1, y1] = b
   const d = Math.sqrt(Math.pow((x1 - x0), 2) + Math.pow((y1 - y0), 2))
@@ -10,15 +38,15 @@ const getCoordsInLine = (a, b, dt) => {
   return [xt, yt]
 }
 
-export const getBezierPath = (c, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]) => {
+export const getBezierPath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => {
   return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
 }
 
-const getEdgePath = (c, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]) => {
+const getEdgePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => {
   return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 }
 
-export const getLinePath = (lineType, sx, sy, dx, dy, ex, ey, dir) => {
+export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: number, dy: number, ex: number, ey: number, dir: number) => {
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = sx + dir * dx / 4
@@ -36,7 +64,7 @@ export const getLinePath = (lineType, sx, sy, dx, dy, ex, ey, dir) => {
   return path
 }
 
-export const getPolygonPath = (params, selection, dir, margin) => {
+export const getPolygonPath = (params: Params, selection: string, dir: number, margin: number) => {
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = params
   ax -= margin
   bx -= dir * margin
@@ -69,7 +97,7 @@ export const getPolygonPath = (params, selection, dir, margin) => {
   return path + 'z'
 }
 
-export const getArcPath = (sx, sy, w, h, r, dir, margin, closed) => {
+export const getArcPath = (sx: number, sy: number, w: number, h: number, r: number, dir: number, margin: number, closed: boolean) => {
   const x1 = sx - margin * dir
   const y1 = sy + r - margin
   const horz = w - 2 * r + 2 * margin
@@ -88,5 +116,59 @@ export const getArcPath = (sx, sy, w, h, r, dir, margin, closed) => {
         a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
         a${+r},${+r} 0 0 1 ${-r},${-r}
         ${closed? 'Z' : ''}`
+  }
+}
+
+export const getAdjustedParams = (cn: N) : AdjustedParams => {
+  const selfHadj = isOdd(cn.selfH) ? cn.selfH + 1 : cn.selfH
+  const maxHadj = isOdd(cn.maxH) ? cn.maxH + 1 : cn.maxH
+  const dir = cn.path[3] ? -1 : 1
+  return {
+    dir,
+    nsx: dir === -1 ? cn.nodeEndX : cn.nodeStartX,
+    nex: dir === -1 ? cn.nodeStartX : cn.nodeEndX,
+    nsy: cn.nodeY - selfHadj / 2,
+    ney: cn.nodeY + selfHadj / 2,
+    nsym: cn.nodeY - maxHadj / 2,
+    neym: cn.nodeY + maxHadj / 2,
+    totalW: cn.familyW + cn.selfW,
+    deltaX: cn.lineDeltaX,
+    margin: (
+      (cn.selection === 's' && cn.sBorderColor !== '') ||
+      (cn.selection === 's' && cn.sFillColor !== '') ||
+      (cn.selection === 'f') ||
+      (cn.taskStatus > 1) ||
+      (cn.hasCell)
+    ) ? 4 : -2,
+    r: 8
+  }
+}
+
+export const getParams = (selection: string, adjustedParams: AdjustedParams) : Params => {
+  const {dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r} = adjustedParams
+  if (selection === 's') {
+    return {
+      ax: dir === -1 ? nex : nsx,
+      bx: nex - dir * r,
+      cx: dir === -1 ? nsx : nex,
+      ayu: nsy,
+      ayd: ney,
+      byu: nsy,
+      byd: ney,
+      cyu: nsy,
+      cyd: ney
+    }
+  } else {
+    return {
+      ax: dir === -1 ? nsx + dir * totalW : nsx,
+      bx: nex + dir * deltaX,
+      cx: dir === -1 ? nsx : nsx + dir * totalW,
+      ayu: dir === -1 ? nsym : nsy,
+      ayd: dir === -1 ? neym : ney,
+      byu: nsym,
+      byd: neym,
+      cyu: dir === -1 ? nsy : nsym,
+      cyd: dir === -1 ? ney : neym,
+    }
   }
 }
