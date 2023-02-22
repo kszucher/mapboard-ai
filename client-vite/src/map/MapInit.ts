@@ -1,6 +1,6 @@
 import {gSaveAlways, gSaveOptional, gSaveNever, nSaveAlways, nSaveOptional, nSaveNever} from '../core/DefaultProps'
 import {GSaveNever, GSaveOptional, NSaveAlways, NSaveOptional, NSaveNever, NPartial, M, MPartial} from "../types/DefaultProps"
-import { copy, genHash, shallowCopy } from '../core/Utils'
+import { copy, genHash } from '../core/Utils'
 
 export const mapInit = {
   start: (m: MPartial) => {
@@ -38,11 +38,11 @@ export const mapInit = {
     }
     for (const prop in nSaveOptional) {
       if (!cn.hasOwnProperty(prop)) {
-        cn[prop as keyof NSaveOptional] = shallowCopy(nSaveOptional[prop as keyof NSaveOptional])
+        cn[prop as keyof NSaveOptional] = copy(nSaveOptional[prop as keyof NSaveOptional])
       }
     }
     for (const prop in nSaveNever) {
-      cn[prop as keyof NSaveNever] = shallowCopy(nSaveNever[prop as keyof NSaveNever])
+      cn[prop as keyof NSaveNever] = copy(nSaveNever[prop as keyof NSaveNever])
     }
     cn.d.map(i => mapInit.iterate(m, i))
     cn.s.map(i => mapInit.iterate(m, i))

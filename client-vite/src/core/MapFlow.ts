@@ -1,7 +1,7 @@
 import {getDefaultNode, nSaveOptional} from './DefaultProps'
 import {M, MPartial, N, NC, NSaveOptional} from "../types/DefaultProps"
 import {flagDomData, updateDomData} from './DomFlow'
-import {copy, createArray, genHash, subsref, transposeArray} from './Utils'
+import {copy, createArray, genHash, subsref, transpose} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapFix} from '../map/MapFix'
 import {mapInit} from '../map/MapInit'
@@ -354,7 +354,7 @@ export const mapReducer = (m: M, action: string, payload: any) => {
     }
     case 'transpose': {
       if (ln.hasCell) {
-        ln.c = transposeArray(ln.c)
+        ln.c = transpose(ln.c)
       }
       break
     }
