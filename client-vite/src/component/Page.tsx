@@ -1,6 +1,6 @@
 import React, {FC, Fragment, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {isChrome, isEqual} from '../core/Utils'
+import {copy, isChrome, isEqual} from '../core/Utils'
 import {Auth} from "./Auth"
 import {Logo} from "./Logo"
 import {TabMaps} from "./TabMaps"
@@ -26,6 +26,7 @@ import {getEquationDim, getTextDim} from "../core/DomUtils";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 import {M, N} from "../types/DefaultProps";
 import {getColors} from "../core/Colors";
+import {getPolygonPath, getPolygonPoints} from "../core/SvgUtils";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -43,23 +44,24 @@ const getMuiTheme = (colorMode: string)  => createTheme({
   },
 })
 
-//TODO: maybe if we sort by NODEID, then we will be IMMUNE to the reorganization of the map?
-
 const Layers: FC = () => {
 
   const nodeList = useSelector((state: RootStateOrAny) => state.editor.nodeList)
+  const nodeListSorted = (copy(nodeList)).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const colorMode = 'dark'
   const {MAP_BACKGROUND} = getColors(colorMode)
 
+  // console.log(nodeList.filter((el: N) => el.fFillColor !== ''))
+
   return (
     <>
       <g id="layer0">
-        {nodeList.map((el: N) => (
-          <Fragment key={el.nodeId}>
-            {isEqual(el.path, ['g']) &&
+        {nodeListSorted.map((n: N) => (
+          <Fragment key={n.nodeId}>
+            {isEqual(n.path, ['g']) &&
               <rect
-                key={`${el.nodeId}_svg_backgroundRect`}
+                key={`${n.nodeId}_svg_backgroundRect`}
                 x={0}
                 y={0}
                 width={m.g.mapWidth}
@@ -68,25 +70,30 @@ const Layers: FC = () => {
                 ry={32}
                 fill={MAP_BACKGROUND}
                 style={{
-                transition: '0.3s ease-out'
+                  transition: '0.3s ease-out'
                 }}
               >
-                {/*const {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = params*/}
-                {/*svgElement.setAttribute("x", x)*/}
-                {/*svgElement.setAttribute("y", y)*/}
-                {/*svgElement.setAttribute("width", width)*/}
-                {/*svgElement.setAttribute("height", height)*/}
-                {/*svgElement.setAttribute("rx", rx)*/}
-                {/*svgElement.setAttribute("ry", ry)*/}
-                {/*svgElement.setAttribute("fill", fill)*/}
-                {/*svgElement.setAttribute("fill-opacity", fillOpacity)*/}
-                {/*svgElement.setAttribute("stroke", checkSvgField(stroke))*/}
-                {/*svgElement.setAttribute("stroke-width", strokeWidth)*/}
-                {/*svgElement.style.transition = preventTransition ? '' : '0.3s ease-out'*/}
               </rect>
             }
-            {
-
+          </Fragment>
+        ))}
+      </g>
+      <g id="layer1">
+        {nodeListSorted.map((n: N) => (
+          <Fragment key={n.nodeId}>
+            {n.fFillColor && n.fFillColor !== '' &&
+              <path
+                key={`${n.nodeId}_svg_branchFill`}
+                d={getPolygonPath(n, getPolygonPoints('f', n), 'f', 0)}
+                fill={n.fFillColor}
+                vectorEffect={'non-scaling-stroke'}
+                style={{
+                  transition: 'all 0.3s',
+                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+                  transitionProperty: 'd, fill'
+                }}
+              >
+              </path>
             }
           </Fragment>
         ))}

@@ -13,7 +13,7 @@ interface AdjustedParams {
   sh: number,
   totalW: number,
   deltaX: number,
-  margin: number,
+  // margin: number,
   r: number
 }
 
@@ -48,13 +48,13 @@ export const getAdjustedParams = (n: N) : AdjustedParams => {
     neym: n.nodeY + maxHadj / 2,
     totalW: n.familyW + n.selfW,
     deltaX: n.lineDeltaX,
-    margin: (
-      (n.selection === 's' && n.sBorderColor !== '') ||
-      (n.selection === 's' && n.sFillColor !== '') ||
-      (n.selection === 'f') ||
-      (n.taskStatus > 1) ||
-      (n.hasCell)
-    ) ? 4 : -2,
+    // margin: (
+    //   (n.selection === 's' && n.sBorderColor !== '') ||
+    //   (n.selection === 's' && n.sFillColor !== '') ||
+    //   (n.selection === 'f') ||
+    //   (n.taskStatus > 1) ||
+    //   (n.hasCell)
+    // ) ? 4 : -2,
 
     // ok, so margin NEEDS to be a parameter
 

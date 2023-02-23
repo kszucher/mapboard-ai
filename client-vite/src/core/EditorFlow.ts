@@ -144,6 +144,7 @@ export const editorSlice = createSlice({
         const { mapDataList } = payload
         state.mapStackData = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))) as []
         state.mapStackDataIndex = 0
+        state.nodeList = mapDisassembly.start(state.mapStackData[state.mapStackDataIndex])
         state.editedNodeId = ''
         state.pageState = PageState.WS
       }

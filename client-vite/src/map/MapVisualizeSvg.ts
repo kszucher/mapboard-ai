@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+//@ts-nocheck
 import {M, N} from "../types/DefaultProps"
 import {updateMapSvgData} from '../core/DomFlow'
 import {isEqual, isOdd} from '../core/Utils'
@@ -86,7 +85,7 @@ export const mapVisualizeSvg = {
     if (m.g.sc.structSelectedPathList.length && !editedPath.length) {
       const n = getMapData(m, m.g.sc.lastPath)
       updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(getPolygonPoints(n.selection, n), n.selection, dir, margin),
+        path: getPolygonPath(n, getPolygonPoints(n.selection, n), n.selection, 0),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -107,7 +106,7 @@ export const mapVisualizeSvg = {
     } = getColors(colorMode)
     if (conditions.branchFill) {
       updateMapSvgData(n.nodeId, 'branchFill', {
-        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', dir, 0),
+        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', 0),
         fill: n.fFillColor,
       })
     }
@@ -123,7 +122,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.branchBorder) {
       updateMapSvgData(n.nodeId, 'branchBorder', {
-        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', dir, 0),
+        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', 0),
         stroke: n.fBorderColor,
         strokeWidth: n.fBorderWidth,
       })
@@ -137,7 +136,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.selectionBorder && !isEqual(n.path, m.g.sc.lastPath)) {
       updateMapSvgData(n.nodeId, 'selectionBorder', {
-        path: getPolygonPath(n, getPolygonPoints(n.selection, n), n.selection, margin),
+        path: getPolygonPath(n, getPolygonPoints(n.selection, n), n.selection, 0),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -203,7 +202,7 @@ export const mapVisualizeSvg = {
           for (let j = 0; j < colCount; j++) {
             if (n.c[i][j].selected) {
               updateMapSvgData(n.nodeId, 'selectionBorder', {
-                path: getPolygonPath(getTablePolygonPoints(m, n, i, j), 's', dir, 4),
+                path: getPolygonPath(n, getTablePolygonPoints(m, n, i, j), 's', 4),
                 stroke: SELECTION_COLOR,
                 strokeWidth: 1,
               })
