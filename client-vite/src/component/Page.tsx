@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react'
+import React, {FC, Fragment, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome, isEqual} from '../core/Utils'
 import {Auth} from "./Auth"
@@ -24,7 +24,8 @@ import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {N} from "../types/DefaultProps";
+import {M, N} from "../types/DefaultProps";
+import {getColors} from "../core/Colors";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -42,19 +43,34 @@ const getMuiTheme = (colorMode: string)  => createTheme({
   },
 })
 
-const nodeList = [] as N[]
-// this is going to be super cool, for real, a declarative dream
-// de az egy marha jó kérdés, hogy két egymás utáni dispatch vajon képes-e az animációs effektet elérni...
-/*TODO: replace key with the good old UNIQUE names once define in DomFlow*/
+//TODO: maybe if we sort by NODEID, then we will be IMMUNE to the reorganization of the map?
 
 const Layers: FC = () => {
+
+  const nodeList = useSelector((state: RootStateOrAny) => state.editor.nodeList)
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const colorMode = 'dark'
+  const {MAP_BACKGROUND} = getColors(colorMode)
+
   return (
     <>
       <g id="layer0">
-        {nodeList.map((el: N, index: number) => (
-          <g key={index}>
-            {isEqual(el.path, ['g']) && <g>
-              <svg >
+        {nodeList.map((el: N) => (
+          <Fragment key={el.nodeId}>
+            {isEqual(el.path, ['g']) &&
+              <rect
+                key={`${el.nodeId}_svg_backgroundRect`}
+                x={0}
+                y={0}
+                width={m.g.mapWidth}
+                height={m.g.mapHeight}
+                rx={32}
+                ry={32}
+                fill={MAP_BACKGROUND}
+                style={{
+                transition: '0.3s ease-out'
+                }}
+              >
                 {/*const {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = params*/}
                 {/*svgElement.setAttribute("x", x)*/}
                 {/*svgElement.setAttribute("y", y)*/}
@@ -67,9 +83,12 @@ const Layers: FC = () => {
                 {/*svgElement.setAttribute("stroke", checkSvgField(stroke))*/}
                 {/*svgElement.setAttribute("stroke-width", strokeWidth)*/}
                 {/*svgElement.style.transition = preventTransition ? '' : '0.3s ease-out'*/}
-              </svg>
-            </g>}
-          </g>
+              </rect>
+            }
+            {
+
+            }
+          </Fragment>
         ))}
       </g>
     </>
@@ -77,14 +96,31 @@ const Layers: FC = () => {
 }
 
 const Map: FC = () => {
+
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+
   return (
     <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
       <div
         style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
-        <svg id="mapSvgOuter" style={{position: 'absolute', left: 0, top: 0}}>
+        <svg
+          id="mapSvgOuter"
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
+            height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
+          }}>
           {isChrome
-            ? <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'><Layers/></svg>
-            : <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}><Layers/></svg>
+            ?
+            <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'>
+              <Layers/>
+            </svg>
+            :
+            <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}>
+              <Layers/>
+            </svg>
           }
         </svg>
         <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
@@ -97,6 +133,9 @@ export const Page: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const mExists = m && Object.keys(m).length
+
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, frameId } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
@@ -113,7 +152,7 @@ export const Page: FC = () => {
         {
           ![PageState.AUTH].includes(pageState) &&
           <>
-            <Map/>
+            {mExists&&<Map/>}
             <Logo/>
             <ProfileButton/>
             {

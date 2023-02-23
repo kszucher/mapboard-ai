@@ -17,6 +17,14 @@ export const copy = (thing: any) => {
   return JSON.parse(JSON.stringify(thing))
 }
 
+export const shallowCopy = (thing: any) => {
+  if (typeof thing === 'number' && isFinite(thing)) {
+    return thing
+  } else {
+    return thing.slice();
+  }
+}
+
 export const isUrl = (string: string) => {
   try { return Boolean(new URL(string)) }
   catch(e){ return false }

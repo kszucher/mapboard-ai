@@ -6,6 +6,8 @@ import {mapDeInit} from "../map/MapDeInit"
 import {copy} from "./Utils"
 import {api} from "./Api"
 import {initDomData} from "./DomFlow"
+import {M, N} from "../types/DefaultProps";
+import {mapDisassembly} from "../map/MapDisassembly";
 
 interface EditorState {
   token: string,
@@ -13,8 +15,9 @@ interface EditorState {
   formatMode: FormatMode,
   tabShrink: boolean,
   tempMap: object,
-  mapStackData: [],
+  mapStackData: M[],
   mapStackDataIndex: number,
+  nodeList: N[],
   editedNodeId: string,
   moveTarget: [],
   selectTarget: [],
@@ -30,6 +33,7 @@ const editorState : EditorState = {
   tempMap: {},
   mapStackData: [],
   mapStackDataIndex: 0,
+  nodeList: [],
   editedNodeId: '',
   moveTarget: [],
   selectTarget: [],
@@ -107,9 +111,13 @@ export const editorSlice = createSlice({
       ) {
         state.mapStackData = [...state.mapStackData.slice(0, state.mapStackDataIndex + 1), action.payload] as any
         state.mapStackDataIndex = state.mapStackDataIndex + 1
+        state.nodeList = mapDisassembly.start(copy(action.payload))
       }
     },
-    mutateTempMap(state, action: PayloadAction<any>) {state.tempMap = action.payload},
+    mutateTempMap(state, action: PayloadAction<any>) {
+      state.tempMap = action.payload
+      // state.nodeList = Object.keys(action.payload).length ? mapDisassembly.start(copy(action.payload)) : []
+    },
     setEditedNodeId(state, action: PayloadAction<any>) {state.editedNodeId = action.payload},
     setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
     setSelectTarget(state, action: PayloadAction<any>) {state.selectTarget = action.payload},
