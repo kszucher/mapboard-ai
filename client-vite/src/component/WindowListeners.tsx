@@ -12,18 +12,21 @@ import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId
 import {useEventToAction} from "../hooks/UseEventToAction"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {gSaveOptional} from "../core/DefaultProps"
-import {flagDomData, initDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow"
+import {flagDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 
-let whichDown = 0, fromX, fromY, elapsed = 0
-let namedInterval
+let whichDown = 0
+let fromX = 0
+let fromY = 0
+let elapsed = 0
+let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
 let isNodeClicked = false
 let isTaskClicked = false
-let mutationObserver
-let mapAreaListener
-let landingAreaListener
-export let timeoutId
+let mutationObserver: MutationObserver
+let mapAreaListener: AbortController
+let landingAreaListener: AbortController
+export let timeoutId: NodeJS.Timeout
 
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
@@ -37,8 +40,8 @@ export const WindowListeners: FC = () => {
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, mapId, frameId, access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
-  const eventToAction = (event: any, eventType: 'string', eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
+  const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
+  const eventToAction = (event: any, eventType: string, eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
 
   // TIMEOUT
   const timeoutFun = () => {
@@ -47,7 +50,7 @@ export const WindowListeners: FC = () => {
   }
 
   // LANDING LISTENERS
-  const wheel = (e) => {
+  const wheel = (e: WheelEvent) => {
     e.preventDefault()
     if (!isIntervalRunning) {
       namedInterval = setInterval(function () {
@@ -64,36 +67,34 @@ export const WindowListeners: FC = () => {
   }
 
   // MAP LISTENERS
-  const contextmenu = (e) => {
+  const contextmenu = (e: MouseEvent) => {
     e.preventDefault()
   }
 
-  const resize = (e) => {
+  const resize = () => {
     const m = getMap()
     orient(m, 'shouldResize', {})
   }
 
-  const popstate = (e) => {
+  const popstate = () => {
   }
 
-  const mousedown = (e) => {
+  const mousedown = (e: MouseEvent) => {
     e.preventDefault()
     const {path, which} = getNativeEvent(e)
-    if (path.find(el => el.id === 'mapSvgOuter')) {
+    if (path.find((el: any) => el.id === 'mapSvgOuter')) {
       if (whichDown === 0) {
         whichDown = which;
-        (window.getSelection
-            ? window.getSelection()
-            : document.selection
-        ).empty()
+        // @ts-ignore
+        (window.getSelection ? window.getSelection() : document.selection).empty()
         elapsed = 0
         let lastOverPath = []
         const m = getMap()
         if (which === 1 || which === 3) {
           [fromX, fromY] = getCoords(e)
-          isTaskClicked = path.find(el => el.id?.substring(17, 27) === 'taskCircle')
+          isTaskClicked = path.find((el: any) => el.id?.substring(17, 27) === 'taskCircle')
           lastOverPath = mapFindOverPoint.start(m, fromX, fromY)
-          isNodeClicked = lastOverPath.length
+          isNodeClicked = lastOverPath.length !== 0
         }
         if (which === 1) {
           if (isTaskClicked) {
@@ -132,7 +133,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const mousemove = (e) => {
+  const mousemove = (e: MouseEvent) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
     const m = getMap()
@@ -157,7 +158,7 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const mouseup = (e) => {
+  const mouseup = (e: MouseEvent) => {
     e.preventDefault()
     const {which} = getNativeEvent(e)
     const m = getMap()
@@ -190,10 +191,10 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const dblclick = (e) => {
+  const dblclick = (e: MouseEvent) => {
     e.preventDefault()
     const {path} = getNativeEvent(e)
-    if (path.find(el => el.id === 'mapSvgOuter')) {
+    if (path.find((el: any) => el.id === 'mapSvgOuter')) {
       if (isNodeClicked) {
         mapDispatch('startEdit')
       } else {
@@ -203,13 +204,13 @@ export const WindowListeners: FC = () => {
     }
   }
 
-  const keydown = (e) => {
+  const keydown = (e: KeyboardEvent) => {
     eventToAction(e, 'kd', getNativeEvent(e))
   }
 
-  const paste = (e) => {
+  const paste = (e: ClipboardEvent) => {
     e.preventDefault()
-    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+    navigator.permissions.query({name: "clipboard-write" as PermissionName}).then(result => {
       if (result.state === "granted" || result.state === "prompt") {
         navigator.clipboard.read().then(item => {
           const type = item[0].types[0]
@@ -255,6 +256,7 @@ export const WindowListeners: FC = () => {
     window.addEventListener('mousemove', mousemove, { signal })
     window.addEventListener('mouseup', mouseup, { signal })
     window.addEventListener("keydown", keydown, { signal })
+    //@ts-ignore
     window.addEventListener("paste", paste, { signal })
   }
 
@@ -281,7 +283,7 @@ export const WindowListeners: FC = () => {
   }, [pageState, access])
 
   useEffect(() => {
-    const root = document.querySelector(':root')
+    const root = document.querySelector(':root') as HTMLElement
     root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
     root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
     root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
@@ -319,7 +321,7 @@ export const WindowListeners: FC = () => {
   useEffect(() => {
     if (mExists) {
       if (editedNodeId.length) {
-        const holderElement = document.getElementById(`${editedNodeId}_div`)
+        const holderElement = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
         holderElement.contentEditable = 'true'
         if (!Object.keys(tm).length) {
           holderElement.innerHTML = ''
@@ -331,8 +333,8 @@ export const WindowListeners: FC = () => {
               mapDispatch('typeText', holderElement.innerHTML)
             }
           }
-        })
-        mutationObserver.observe(holderElement, {
+        }) as MutationObserver
+        mutationObserver.observe(holderElement!, {
           attributes: false,
           childList: false,
           subtree: true,

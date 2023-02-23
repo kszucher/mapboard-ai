@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {M} from "../types/DefaultProps"
 import {actions, getEditedNodeId, getMap} from "../core/EditorFlow"
 import {isUrl} from "../core/Utils"

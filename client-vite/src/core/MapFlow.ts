@@ -474,7 +474,7 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
 
 const redrawStep = (m: M, colorMode: string, isEditing: boolean, shouldAnimationInit: boolean) => {
   flagDomData()
-  mapVisualizeSvg.start(m, colorMode, shouldAnimationInit)
+  // mapVisualizeSvg.start(m, colorMode, shouldAnimationInit)
   mapVisualizeDiv.start(m, colorMode)
   updateDomData()
 }

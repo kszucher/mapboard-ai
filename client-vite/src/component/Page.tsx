@@ -1,6 +1,6 @@
 import {FC, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {isChrome} from '../core/Utils'
+import {isChrome, isEqual} from '../core/Utils'
 import {Auth} from "./Auth"
 import {Logo} from "./Logo"
 import {TabMaps} from "./TabMaps"
@@ -24,6 +24,7 @@ import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {N} from "../types/DefaultProps";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -41,15 +42,36 @@ const getMuiTheme = (colorMode: string)  => createTheme({
   },
 })
 
+const nodeList = [] as N[]
+// this is going to be super cool, for real, a declarative dream
+// de az egy marha jó kérdés, hogy két egymás utáni dispatch vajon képes-e az animációs effektet elérni...
+/*TODO: replace key with the good old UNIQUE names once define in DomFlow*/
+
 const Layers: FC = () => {
   return (
     <>
-      <g id="layer0"/>
-      <g id="layer1"/>
-      <g id="layer2"/>
-      <g id="layer3"/>
-      <g id="layer4"/>
-      <g id="layer5"/>
+      <g id="layer0">
+        {nodeList.map((el: N, index: number) => (
+          <g key={index}>
+            {isEqual(el.path, ['g']) && <g>
+              <svg >
+                {/*const {x, y, width, height, rx, ry, fill, fillOpacity, stroke, strokeWidth, preventTransition} = params*/}
+                {/*svgElement.setAttribute("x", x)*/}
+                {/*svgElement.setAttribute("y", y)*/}
+                {/*svgElement.setAttribute("width", width)*/}
+                {/*svgElement.setAttribute("height", height)*/}
+                {/*svgElement.setAttribute("rx", rx)*/}
+                {/*svgElement.setAttribute("ry", ry)*/}
+                {/*svgElement.setAttribute("fill", fill)*/}
+                {/*svgElement.setAttribute("fill-opacity", fillOpacity)*/}
+                {/*svgElement.setAttribute("stroke", checkSvgField(stroke))*/}
+                {/*svgElement.setAttribute("stroke-width", strokeWidth)*/}
+                {/*svgElement.style.transition = preventTransition ? '' : '0.3s ease-out'*/}
+              </svg>
+            </g>}
+          </g>
+        ))}
+      </g>
     </>
   )
 }

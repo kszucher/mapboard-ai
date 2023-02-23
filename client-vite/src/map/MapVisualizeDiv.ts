@@ -4,11 +4,11 @@ import { getColors } from '../core/Colors'
 
 export const mapVisualizeDiv = {
   start: (m: M, colorMode: string) => {
-    const mapDiv: HTMLElement | null = document.getElementById('mapDiv')
-    mapDiv!.style.width = "" + m.g.mapWidth + "px"
-    mapDiv!.style.height = "" + m.g.mapHeight + "px"
-    const mapHolderDiv: HTMLElement | null = document.getElementById('mapHolderDiv')
-    mapHolderDiv?.focus()
+    const mapDiv = document.getElementById('mapDiv') as HTMLDivElement
+    mapDiv.style.width = "" + m.g.mapWidth + "px"
+    mapDiv.style.height = "" + m.g.mapHeight + "px"
+    const mapHolderDiv = document.getElementById('mapHolderDiv') as HTMLDivElement
+    mapHolderDiv.focus()
     mapVisualizeDiv.iterate(m, m.r[0], colorMode)
   },
 
@@ -31,7 +31,7 @@ export const mapVisualizeDiv = {
         color: n.textColor === 'default' ? TEXT_COLOR : n.textColor,
         transition: 'all 0.3s',
         transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-      }
+      } as Partial<CSSStyleDeclaration>
       updateMapDivData(nodeId, contentType, content, path, styleData)
     }
     n.d.map(i => mapVisualizeDiv.iterate(m, i, colorMode))

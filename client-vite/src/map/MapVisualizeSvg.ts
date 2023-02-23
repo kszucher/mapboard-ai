@@ -1,9 +1,19 @@
+// @ts-nocheck
+
 import {M, N} from "../types/DefaultProps"
 import {updateMapSvgData} from '../core/DomFlow'
 import {isEqual, isOdd} from '../core/Utils'
 import {resolveScope} from '../core/DefaultProps'
 import {getColors} from '../core/Colors'
-import {getAdjustedParams, getArcPath, getBezierPath, getLinePath, getPolygonPoints, getPolygonPath} from '../core/SvgUtils'
+import {
+  getAdjustedParams,
+  getArcPath,
+  getBezierPath,
+  getLinePath,
+  getPolygonPoints,
+  getPolygonPath,
+  getTablePolygonPoints
+} from '../core/SvgUtils'
 import {getMapData} from '../core/MapFlow'
 import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow"
 import {mapFindById} from "./MapFindById"
@@ -14,9 +24,9 @@ export const mapVisualizeSvg = {
     const editedPath = editedNodeId.length ? getMapData(m, mapFindById.start(m, editedNodeId))?.path : []
     const moveTarget = getMoveTarget()
     const selectTarget = getSelectTarget()
-    const mapSvgOuter = document.getElementById('mapSvgOuter')
-    mapSvgOuter!.style.width = 'calc(200vw + ' + m.g.mapWidth + 'px)'
-    mapSvgOuter!.style.height = 'calc(200vh + ' + m.g.mapHeight + 'px)'
+    const mapSvgOuter = document.getElementById('mapSvgOuter') as unknown as SVGElement
+    mapSvgOuter.style.width = 'calc(200vw + ' + m.g.mapWidth + 'px)'
+    mapSvgOuter.style.height = 'calc(200vh + ' + m.g.mapHeight + 'px)'
     const {SELECTION_COLOR, MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
     updateMapSvgData('m', 'backgroundRect', {
       x: 0,
@@ -75,10 +85,8 @@ export const mapVisualizeSvg = {
     }
     if (m.g.sc.structSelectedPathList.length && !editedPath.length) {
       const n = getMapData(m, m.g.sc.lastPath)
-      const adjustedParams = getAdjustedParams(n)
-      const { dir, margin } = adjustedParams
       updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(getPolygonPoints(n.selection, adjustedParams), n.selection, dir, margin),
+        path: getPolygonPath(getPolygonPoints(n.selection, n), n.selection, dir, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -97,11 +105,9 @@ export const mapVisualizeSvg = {
       TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
       TASK_LINE
     } = getColors(colorMode)
-    const adjustedParams = getAdjustedParams(n)
-    const { dir, nsx, nex, nsy, ney, margin, r } = adjustedParams
     if (conditions.branchFill) {
       updateMapSvgData(n.nodeId, 'branchFill', {
-        path: getPolygonPath(getPolygonPoints('f', adjustedParams), 'f', dir, 0),
+        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', dir, 0),
         fill: n.fFillColor,
       })
     }
@@ -111,32 +117,34 @@ export const mapVisualizeSvg = {
         sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(n.taskStatus - 2) || ''
       }
       updateMapSvgData(n.nodeId, 'nodeFill', {
-        path: getArcPath(nsx, nsy , n.selfW, n.selfH, r, dir, -2, true),
+        path: getArcPath(n, -2, true),
         fill: sFillColorOverride === '' ? n.sFillColor : sFillColorOverride
       })
     }
     if (conditions.branchBorder) {
       updateMapSvgData(n.nodeId, 'branchBorder', {
-        path: getPolygonPath(getPolygonPoints('f', adjustedParams), 'f', dir, 0),
+        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', dir, 0),
         stroke: n.fBorderColor,
         strokeWidth: n.fBorderWidth,
       })
     }
     if (conditions.nodeBorder) {
       updateMapSvgData(n.nodeId, 'nodeBorder', {
-        path: getArcPath(nsx, nsy , n.selfW, n.selfH, r, dir, -2, true),
+        path: getArcPath(n, -2, true),
         stroke: n.sBorderColor,
         strokeWidth: n.sBorderWidth,
       })
     }
     if (conditions.selectionBorder && !isEqual(n.path, m.g.sc.lastPath)) {
       updateMapSvgData(n.nodeId, 'selectionBorder', {
-        path: getPolygonPath(getPolygonPoints(n.selection, adjustedParams), n.selection, dir, margin),
+        path: getPolygonPath(n, getPolygonPoints(n.selection, n), n.selection, margin),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
     }
     if (conditions.line) {
+
+
       let x1, y1, x2, y2
       if (shouldAnimationInit && n.animationRequested) {
         x1 = dir === - 1 ? n.parentNodeStartXFrom : n.parentNodeEndXFrom
@@ -148,11 +156,14 @@ export const mapVisualizeSvg = {
       x1 = isOdd(x1)?x1-0.5:x1
       x2 = nsx
       y2 = n.nodeY
+
+
       let lineColorOverride = ''
       if (n.taskStatus > 1) {
         lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(n.taskStatus - 2) || ''
       }
       updateMapSvgData(n.nodeId, 'line', {
+        // TODO: there should be a getLinePoints instead!
         path: getLinePath(n.lineType, x1, y1, n.lineDeltaX, n.lineDeltaY, x2, y2, dir),
         strokeWidth: n.lineWidth,
         stroke: lineColorOverride === ''
@@ -163,7 +174,7 @@ export const mapVisualizeSvg = {
     if (conditions.table) {
       // frame
       updateMapSvgData(n.nodeId, 'tableFrame', {
-        path: getArcPath(nsx, nsy, n.selfW, n.selfH, r, dir, 0, false),
+        path: getArcPath(n, 0, false),
         stroke: n.sBorderColor === '' ? TABLE_FRAME_COLOR : n.sBorderColor,
         strokeWidth: n.sBorderWidth,
       })
@@ -191,37 +202,8 @@ export const mapVisualizeSvg = {
         for (let i = 0; i < rowCount; i++) {
           for (let j = 0; j < colCount; j++) {
             if (n.c[i][j].selected) {
-
-              let sx, sy, w, h
-              if (m.g.sc.cellRowSelected) {
-                sx = nsx
-                sy = nsy + n.sumMaxRowHeight[i]
-                w = n.selfW
-                h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
-              } else if (m.g.sc.cellColSelected) {
-                sx = nsx + dir*n.sumMaxColWidth[j]
-                sy = nsy
-                w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-                h = n.selfH
-              } else {
-                sx = nsx + dir*n.sumMaxColWidth[j]
-                sy = nsy + n.sumMaxRowHeight[i]
-                w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-                h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
-              }
-              const tablePolygonPoints = {
-                ax: dir === - 1 ? sx + dir * w : sx,
-                bx: sx + dir*w,
-                cx: dir === - 1 ? sx : sx + dir * w,
-                ayu: sy,
-                ayd: sy + h,
-                byu: sy,
-                byd: sy + h,
-                cyu: sy,
-                cyd: sy + h,
-              }
               updateMapSvgData(n.nodeId, 'selectionBorder', {
-                path: getPolygonPath(tablePolygonPoints, 's', dir, 4),
+                path: getPolygonPath(getTablePolygonPoints(m, n, i, j), 's', dir, 4),
                 stroke: SELECTION_COLOR,
                 strokeWidth: 1,
               })

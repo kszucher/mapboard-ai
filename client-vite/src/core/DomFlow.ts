@@ -1,9 +1,29 @@
+//@ts-nocheck
+
 import { getLatexString, isChrome } from './Utils'
+// @ts-ignore
 import katex from 'katex/dist/katex.mjs'
 import {getEditedNodeId} from "./EditorFlow"
 
-let mapDivData = []
-let mapSvgData = [[],[],[],[],[],[]]
+interface DivData {
+  op: string,
+  divId: string,
+  params: {
+    content: string,
+    contentType: string,
+    styleData: Partial<CSSStyleDeclaration>
+  }
+}
+
+interface SvgData {
+  op: string,
+  svgId: string,
+  type: string,
+  params: object // TODO extend this type so that all scenarios are covered
+}
+
+let mapDivData = [] as DivData[]
+let mapSvgData = [[],[],[],[],[],[]] as SvgData[][]
 
 const renderContent = (contentType, content) => {
   switch (contentType) {
@@ -39,11 +59,11 @@ export const flagDomData = () => {
   }
 }
 
-export const updateMapDivData = ( nodeId, contentType, content, path, styleData ) => {
+export const updateMapDivData = (nodeId: string, contentType, content, path, styleData: Partial<CSSStyleDeclaration>) => {
   const divId = `${nodeId}_div`
   let el = mapDivData.find(el => el.divId === divId)
   let shouldInnerHTMLUpdate = false
-  let shouldStyleUpdate = {}
+  let shouldStyleUpdate = {} as any
   if (el) {
     const isEditing = getEditedNodeId().length
     if (isEditing) {
@@ -69,8 +89,9 @@ export const updateMapDivData = ( nodeId, contentType, content, path, styleData 
   }
 }
 
-export const updateMapSvgData = ( nodeId, name, params ) => {
-  let layer, type
+export const updateMapSvgData = (nodeId: string, name, params) => {
+  let layer = -1
+  let type = ''
   switch (name) {
     case 'backgroundRect':          layer = 0; type = 'rect'; break
     case 'moveLine':                layer = 5; type = 'path'; break
@@ -113,9 +134,9 @@ export const updateDomData = () => {
     const { contentType, content, styleData, shouldInnerHTMLUpdate, shouldStyleUpdate } = params
     switch (op) {
       case 'create': {
-        let div = document.createElement('div')
-        div.id = divId
-        div.contentEditable = false
+        const div = document.createElement('div') as HTMLDivElement
+        div.id = divId as string
+        div.contentEditable = String(false)
         div.spellcheck = false
         div.appendChild(document.createTextNode(''))
         document.getElementById('mapDiv').appendChild(div)
@@ -129,7 +150,7 @@ export const updateDomData = () => {
         let div = document.getElementById(divId)
         if (div) {
           if (shouldInnerHTMLUpdate) {
-            div.innerHTML = renderContent(contentType, content);
+            div.innerHTML = renderContent(contentType, content)
           }
           for (const style in styleData) {
             if (shouldStyleUpdate[style]) {
@@ -140,8 +161,8 @@ export const updateDomData = () => {
         break
       }
       case 'delete': {
-        let currDiv = document.getElementById(divId);
-        currDiv.parentNode.removeChild(currDiv);
+        const currDiv = document.getElementById(divId) as HTMLDivElement
+        currDiv.parentNode?.removeChild(currDiv)
         mapDivData.splice(i, 1)
         break
       }
@@ -167,7 +188,7 @@ export const updateDomData = () => {
               svgElement.style.transitionTimingFunction = preventTransition ? '' : 'cubic-bezier(0.0,0.0,0.58,1.0)'
               svgElement.style.transitionProperty = 'd, fill, stroke-width'
               if (!isChrome) {
-                let svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate')
+                const svgElementAnimate = document.createElementNS("http://www.w3.org/2000/svg", 'animate') as SVGAnimateElement
                 svgElementAnimate.setAttribute("attributeName", "d")
                 svgElementAnimate.setAttribute("attributeType", "XML")
                 svgElementAnimate.setAttribute("dur", "0.3s")
@@ -204,12 +225,12 @@ export const updateDomData = () => {
               break
             }
           }
-          let parentG = document.getElementById('layer' + i) as HTMLElement
+          const parentG = document.getElementById('layer' + i) as unknown as SVGGElement
           parentG.appendChild(svgElement)
           break
         }
         case 'update': {
-          let svgElement = document.getElementById(svgId) as HTMLElement
+          const svgElement = document.getElementById(svgId) as unknown as SVGElement
           if (svgElement) {
             switch (type) {
               case 'path': {
@@ -220,14 +241,17 @@ export const updateDomData = () => {
                 svgElement.setAttribute("stroke", stroke)
                 svgElement.setAttribute("stroke-width", strokeWidth)
                 if (!isChrome) {
+                  // @ts-ignore
                   svgElement.lastChild.setAttribute("from", prevPath)
+                  // @ts-ignore
                   svgElement.lastChild.setAttribute("to", path)
+                  // @ts-ignore
                   svgElement.lastChild.beginElement()
                 }
                 break
               }
               case 'circle': {
-                let { cx, cy, r, fill } = params
+                const { cx, cy, r, fill } = params
                 svgElement.setAttribute("cx", cx)
                 svgElement.setAttribute("cy", cy)
                 svgElement.setAttribute("r", r)
@@ -235,7 +259,7 @@ export const updateDomData = () => {
                 break
               }
               case 'rect': {
-                let { x, y, width, height, fill } = params
+                const { x, y, width, height, fill } = params
                 svgElement.setAttribute("x", x)
                 svgElement.setAttribute("y", y)
                 svgElement.setAttribute("width", width)
@@ -248,8 +272,8 @@ export const updateDomData = () => {
           break
         }
         case 'delete': {
-          let svgElement = document.getElementById(svgId)
-          svgElement.parentNode.removeChild(svgElement)
+          const svgElement = document.getElementById(svgId) as unknown as SVGElement
+          svgElement.parentNode?.removeChild(svgElement)
           mapSvgData[i].splice(j, 1)
           break
         }
@@ -260,8 +284,8 @@ export const updateDomData = () => {
 
 export const updateDomDataContentEditableFalse = () => {
   for (let i = 0; i < mapDivData.length; i++) {
-    let currDivData = mapDivData[i]
-    const holderElement = document.getElementById(currDivData.divId)
+    const currDivData = mapDivData[i]
+    const holderElement = document.getElementById(currDivData.divId) as HTMLDivElement
     holderElement.contentEditable = 'false'
   }
 }

@@ -1,15 +1,16 @@
 import {LineTypes} from "./Types"
-import {N} from "../types/DefaultProps";
-import {isOdd} from "./Utils";
+import {M, N} from "../types/DefaultProps"
+import {isOdd} from "./Utils"
 
 interface AdjustedParams {
-  dir: number,
   nsx: number,
   nex: number,
   nsy: number,
   ney: number,
   nsym: number,
   neym: number,
+  sw: number,
+  sh: number,
   totalW: number,
   deltaX: number,
   margin: number,
@@ -26,6 +27,39 @@ interface PolygonPoints {
   byd: number
   cyu: number
   cyd: number
+}
+
+const getDir = (n: N) => {
+  return n.path[3] ? -1 : 1
+}
+
+export const getAdjustedParams = (n: N) : AdjustedParams => {
+  const dir = getDir(n)
+  const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
+  const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
+  return {
+    sw: n.selfW,
+    sh: n.selfH,
+    nsx: dir === -1 ? n.nodeEndX : n.nodeStartX,
+    nex: dir === -1 ? n.nodeStartX : n.nodeEndX,
+    nsy: n.nodeY - selfHadj / 2,
+    ney: n.nodeY + selfHadj / 2,
+    nsym: n.nodeY - maxHadj / 2,
+    neym: n.nodeY + maxHadj / 2,
+    totalW: n.familyW + n.selfW,
+    deltaX: n.lineDeltaX,
+    margin: (
+      (n.selection === 's' && n.sBorderColor !== '') ||
+      (n.selection === 's' && n.sFillColor !== '') ||
+      (n.selection === 'f') ||
+      (n.taskStatus > 1) ||
+      (n.hasCell)
+    ) ? 4 : -2,
+
+    // ok, so margin NEEDS to be a parameter
+
+    r: 8
+  }
 }
 
 const getCoordsInLine = (a: any[], b: any[], dt: number) => {
@@ -46,6 +80,10 @@ const getEdgePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) 
   return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 }
 
+export const getLinePoints = () => {
+
+}
+
 export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: number, dy: number, ex: number, ey: number, dir: number) => {
   let path
   if (lineType === LineTypes.bezier) {
@@ -64,37 +102,68 @@ export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: num
   return path
 }
 
-export const getPolygonPoints = (selection: string, adjustedParams: AdjustedParams) : PolygonPoints => {
-  const {dir, nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r} = adjustedParams
-  if (selection === 's') {
-    return {
-      ax: dir === -1 ? nex : nsx,
-      bx: nex - dir * r,
-      cx: dir === -1 ? nsx : nex,
-      ayu: nsy,
-      ayd: ney,
-      byu: nsy,
-      byd: ney,
-      cyu: nsy,
-      cyd: ney
-    }
+export const getTablePolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
+  const dir = getDir(n)
+  const { nsx, nsy } = getAdjustedParams(n)
+  let sx, sy, w, h
+  if (m.g.sc.cellRowSelected) {
+    sx = nsx
+    sy = nsy + n.sumMaxRowHeight[i]
+    w = n.selfW
+    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+  } else if (m.g.sc.cellColSelected) {
+    sx = nsx + dir*n.sumMaxColWidth[j]
+    sy = nsy
+    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+    h = n.selfH
   } else {
-    return {
-      ax: dir === -1 ? nsx + dir * totalW : nsx,
-      bx: nex + dir * deltaX,
-      cx: dir === -1 ? nsx : nsx + dir * totalW,
-      ayu: dir === -1 ? nsym : nsy,
-      ayd: dir === -1 ? neym : ney,
-      byu: nsym,
-      byd: neym,
-      cyu: dir === -1 ? nsy : nsym,
-      cyd: dir === -1 ? ney : neym,
-    }
+    sx = nsx + dir*n.sumMaxColWidth[j]
+    sy = nsy + n.sumMaxRowHeight[i]
+    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+  }
+  return {
+    ax: dir === - 1 ? sx + dir * w : sx,
+    bx: sx + dir*w,
+    cx: dir === - 1 ? sx : sx + dir * w,
+    ayu: sy,
+    ayd: sy + h,
+    byu: sy,
+    byd: sy + h,
+    cyu: sy,
+    cyd: sy + h,
   }
 }
 
-export const getPolygonPath = (params: PolygonPoints, selection: string, dir: number, margin: number) => {
-  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = params
+export const getPolygonPoints = (selection: string, n: N) : PolygonPoints => {
+  const dir = getDir(n)
+  const {  nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = getAdjustedParams(n)
+  return selection === 's' ? {
+    ax: dir === -1 ? nex : nsx,
+    bx: nex - dir * r,
+    cx: dir === -1 ? nsx : nex,
+    ayu: nsy,
+    ayd: ney,
+    byu: nsy,
+    byd: ney,
+    cyu: nsy,
+    cyd: ney
+  } : {
+    ax: dir === -1 ? nsx + dir * totalW : nsx,
+    bx: nex + dir * deltaX,
+    cx: dir === -1 ? nsx : nsx + dir * totalW,
+    ayu: dir === -1 ? nsym : nsy,
+    ayd: dir === -1 ? neym : ney,
+    byu: nsym,
+    byd: neym,
+    cyu: dir === -1 ? nsy : nsym,
+    cyd: dir === -1 ? ney : neym,
+  }
+}
+
+export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
+  const dir = getDir(n)
+  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax -= margin
   bx -= dir * margin
   cx += margin
@@ -126,11 +195,13 @@ export const getPolygonPath = (params: PolygonPoints, selection: string, dir: nu
   return path + 'z'
 }
 
-export const getArcPath = (sx: number, sy: number, w: number, h: number, r: number, dir: number, margin: number, closed: boolean) => {
-  const x1 = sx - margin * dir
-  const y1 = sy + r - margin
-  const horz = w - 2 * r + 2 * margin
-  const vert = h - 2 * r + 2 * margin
+export const getArcPath = (n: N, margin: number, closed: boolean) => {
+  const dir = getDir(n)
+  const { nsx, nsy, sw, sh, r } = getAdjustedParams(n)
+  const x1 = nsx - margin * dir
+  const y1 = nsy + r - margin
+  const horz = sw - 2 * r + 2 * margin
+  const vert = sh - 2 * r + 2 * margin
   if (dir === - 1) {
     return `M${x1},${y1} 
         a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
@@ -145,30 +216,5 @@ export const getArcPath = (sx: number, sy: number, w: number, h: number, r: numb
         a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
         a${+r},${+r} 0 0 1 ${-r},${-r}
         ${closed? 'Z' : ''}`
-  }
-}
-
-export const getAdjustedParams = (n: N) : AdjustedParams => {
-  const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
-  const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
-  const dir = n.path[3] ? -1 : 1
-  return {
-    dir,
-    nsx: dir === -1 ? n.nodeEndX : n.nodeStartX,
-    nex: dir === -1 ? n.nodeStartX : n.nodeEndX,
-    nsy: n.nodeY - selfHadj / 2,
-    ney: n.nodeY + selfHadj / 2,
-    nsym: n.nodeY - maxHadj / 2,
-    neym: n.nodeY + maxHadj / 2,
-    totalW: n.familyW + n.selfW,
-    deltaX: n.lineDeltaX,
-    margin: (
-      (n.selection === 's' && n.sBorderColor !== '') ||
-      (n.selection === 's' && n.sFillColor !== '') ||
-      (n.selection === 'f') ||
-      (n.taskStatus > 1) ||
-      (n.hasCell)
-    ) ? 4 : -2,
-    r: 8
   }
 }

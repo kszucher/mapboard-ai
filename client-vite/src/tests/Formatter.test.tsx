@@ -1,14 +1,14 @@
 import {render, screen,} from "@testing-library/react"
 import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
-import {Formatter} from "../src/component/Formatter"
+import {Formatter} from "../component/Formatter"
 import { describe, it } from 'vitest'
-import {actions, getMap, store} from "../src/core/EditorFlow";
-import {colorList} from "../src/core/Colors";
-import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../src/core/Types";
-import {reCalc} from "../src/core/MapFlow";
-import {mapAssembly} from "../src/map/MapAssembly";
-import {nodeProps} from "../src/core/DefaultProps";
+import {actions, getMap, store} from "../core/EditorFlow";
+import {colorList} from "../core/Colors";
+import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../core/Types"
+import {reCalc} from "../core/MapFlow";
+import {mapAssembly} from "../map/MapAssembly";
+import {nodeProps} from "../core/DefaultProps";
 
 describe("Formatter test", () => {
   beforeEach(() => {

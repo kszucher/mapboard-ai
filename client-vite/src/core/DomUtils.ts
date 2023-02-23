@@ -1,3 +1,4 @@
+// @ts-nocheck
 import katex from "katex/dist/katex.mjs"
 import {getLatexString} from "./Utils"
 
@@ -36,7 +37,7 @@ export const scrollTo = (to, duration) => {
 export const getCoords = (e) => {
   let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
   let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-  let mapHolderDiv = document.getElementById('mapHolderDiv')
+  let mapHolderDiv = document.getElementById('mapHolderDiv') as HTMLDivElement
   let x = e.pageX - winWidth + mapHolderDiv.scrollLeft
   let y = e.pageY - winHeight + mapHolderDiv.scrollTop
   return [x, y]
