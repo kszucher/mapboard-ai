@@ -1,6 +1,6 @@
-import React, {FC, Fragment, useEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {copy, isChrome, isEqual} from '../core/Utils'
+import {isChrome} from '../core/Utils'
 import {Auth} from "./Auth"
 import {Logo} from "./Logo"
 import {TabMaps} from "./TabMaps"
@@ -23,10 +23,8 @@ import {Settings} from './Settings'
 import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
-import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {M, N} from "../types/DefaultProps";
-import {getColors} from "../core/Colors";
-import {getPolygonPath, getPolygonPoints} from "../core/SvgUtils";
+import {useOpenWorkspaceQuery} from "../core/Api";
+import {Layers} from "./Layers";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -43,64 +41,6 @@ const getMuiTheme = (colorMode: string)  => createTheme({
     fontFamily: 'Comfortaa',
   },
 })
-
-const Layers: FC = () => {
-
-  const nodeList = useSelector((state: RootStateOrAny) => state.editor.nodeList)
-  const nodeListSorted = (copy(nodeList)).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-  const colorMode = 'dark'
-  const {MAP_BACKGROUND} = getColors(colorMode)
-
-  // console.log(nodeList.filter((el: N) => el.fFillColor !== ''))
-
-  return (
-    <>
-      <g id="layer0">
-        {nodeListSorted.map((n: N) => (
-          <Fragment key={n.nodeId}>
-            {isEqual(n.path, ['g']) &&
-              <rect
-                key={`${n.nodeId}_svg_backgroundRect`}
-                x={0}
-                y={0}
-                width={m.g.mapWidth}
-                height={m.g.mapHeight}
-                rx={32}
-                ry={32}
-                fill={MAP_BACKGROUND}
-                style={{
-                  transition: '0.3s ease-out'
-                }}
-              >
-              </rect>
-            }
-          </Fragment>
-        ))}
-      </g>
-      <g id="layer1">
-        {nodeListSorted.map((n: N) => (
-          <Fragment key={n.nodeId}>
-            {n.fFillColor && n.fFillColor !== '' &&
-              <path
-                key={`${n.nodeId}_svg_branchFill`}
-                d={getPolygonPath(n, getPolygonPoints('f', n), 'f', 0)}
-                fill={n.fFillColor}
-                vectorEffect={'non-scaling-stroke'}
-                style={{
-                  transition: 'all 0.3s',
-                  transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
-                  transitionProperty: 'd, fill'
-                }}
-              >
-              </path>
-            }
-          </Fragment>
-        ))}
-      </g>
-    </>
-  )
-}
 
 const Map: FC = () => {
 

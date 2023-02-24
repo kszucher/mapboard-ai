@@ -102,7 +102,7 @@ export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: num
   return path
 }
 
-export const getTablePolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
+export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
   const dir = getDir(n)
   const { nsx, nsy } = getAdjustedParams(n)
   let sx, sy, w, h
@@ -135,7 +135,7 @@ export const getTablePolygonPoints = (m: M, n: N, i: number, j: number) : Polygo
   }
 }
 
-export const getPolygonPoints = (selection: string, n: N) : PolygonPoints => {
+export const getStructPolygonPoints = (selection: string, n: N) : PolygonPoints => {
   const dir = getDir(n)
   const {  nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = getAdjustedParams(n)
   return selection === 's' ? {

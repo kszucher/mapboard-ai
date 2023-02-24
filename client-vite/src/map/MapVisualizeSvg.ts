@@ -9,9 +9,9 @@ import {
   getArcPath,
   getBezierPath,
   getLinePath,
-  getPolygonPoints,
+  getStructPolygonPoints,
   getPolygonPath,
-  getTablePolygonPoints
+  getCellPolygonPoints
 } from '../core/SvgUtils'
 import {getMapData} from '../core/MapFlow'
 import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow"
@@ -85,7 +85,7 @@ export const mapVisualizeSvg = {
     if (m.g.sc.structSelectedPathList.length && !editedPath.length) {
       const n = getMapData(m, m.g.sc.lastPath)
       updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(n, getPolygonPoints(n.selection, n), n.selection, 0),
+        path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -106,7 +106,7 @@ export const mapVisualizeSvg = {
     } = getColors(colorMode)
     if (conditions.branchFill) {
       updateMapSvgData(n.nodeId, 'branchFill', {
-        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', 0),
+        path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
         fill: n.fFillColor,
       })
     }
@@ -122,7 +122,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.branchBorder) {
       updateMapSvgData(n.nodeId, 'branchBorder', {
-        path: getPolygonPath(n, getPolygonPoints('f', n), 'f', 0),
+        path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
         stroke: n.fBorderColor,
         strokeWidth: n.fBorderWidth,
       })
@@ -136,7 +136,7 @@ export const mapVisualizeSvg = {
     }
     if (conditions.selectionBorder && !isEqual(n.path, m.g.sc.lastPath)) {
       updateMapSvgData(n.nodeId, 'selectionBorder', {
-        path: getPolygonPath(n, getPolygonPoints(n.selection, n), n.selection, 0),
+        path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
         stroke: SELECTION_COLOR,
         strokeWidth: 1,
       })
@@ -202,7 +202,7 @@ export const mapVisualizeSvg = {
           for (let j = 0; j < colCount; j++) {
             if (n.c[i][j].selected) {
               updateMapSvgData(n.nodeId, 'selectionBorder', {
-                path: getPolygonPath(n, getTablePolygonPoints(m, n, i, j), 's', 4),
+                path: getPolygonPath(n, getCellPolygonPoints(m, n, i, j), 's', 4),
                 stroke: SELECTION_COLOR,
                 strokeWidth: 1,
               })
