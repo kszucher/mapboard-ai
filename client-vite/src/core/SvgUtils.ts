@@ -56,8 +56,6 @@ export const getAdjustedParams = (n: N) : AdjustedParams => {
     //   (n.hasCell)
     // ) ? 4 : -2,
 
-    // ok, so margin NEEDS to be a parameter
-
     r: 8
   }
 }
@@ -202,19 +200,17 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
   const y1 = nsy + r - margin
   const horz = sw - 2 * r + 2 * margin
   const vert = sh - 2 * r + 2 * margin
-  if (dir === - 1) {
-    return `M${x1},${y1} 
-        a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
-        a${+r},${+r} 0 0 0 ${-r},${+r} v${+vert} 
-        a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
-        a${+r},${+r} 0 0 0 ${+r},${-r}
-        ${closed ? 'Z' : ''}`
-  } else {
-    return `M${x1},${y1} 
-        a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
-        a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
-        a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
-        a${+r},${+r} 0 0 1 ${-r},${-r}
-        ${closed? 'Z' : ''}`
-  }
+  return dir === -1
+    ? `M${x1},${y1}
+      a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
+      a${+r},${+r} 0 0 0 ${-r},${+r} v${+vert} 
+      a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
+      a${+r},${+r} 0 0 0 ${+r},${-r}
+      ${closed ? 'Z' : ''}`
+    : `M${x1},${y1} 
+      a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
+      a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
+      a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
+      a${+r},${+r} 0 0 1 ${-r},${-r}
+      ${closed ? 'Z' : ''}`
 }
