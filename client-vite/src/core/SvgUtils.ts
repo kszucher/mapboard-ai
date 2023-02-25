@@ -102,6 +102,32 @@ export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: num
   return path
 }
 
+export const getStructPolygonPoints = (selection: string, n: N) : PolygonPoints => {
+  const dir = getDir(n)
+  const {  nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = getAdjustedParams(n)
+  return selection === 's' ? {
+    ax: dir === -1 ? nex : nsx,
+    bx: nex - dir * r,
+    cx: dir === -1 ? nsx : nex,
+    ayu: nsy,
+    ayd: ney,
+    byu: nsy,
+    byd: ney,
+    cyu: nsy,
+    cyd: ney
+  } : {
+    ax: dir === -1 ? nsx + dir * totalW : nsx,
+    bx: nex + dir * deltaX,
+    cx: dir === -1 ? nsx : nsx + dir * totalW,
+    ayu: dir === -1 ? nsym : nsy,
+    ayd: dir === -1 ? neym : ney,
+    byu: nsym,
+    byd: neym,
+    cyu: dir === -1 ? nsy : nsym,
+    cyd: dir === -1 ? ney : neym,
+  }
+}
+
 export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
   const dir = getDir(n)
   const { nsx, nsy } = getAdjustedParams(n)
@@ -132,32 +158,6 @@ export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : Polygon
     byd: sy + h,
     cyu: sy,
     cyd: sy + h,
-  }
-}
-
-export const getStructPolygonPoints = (selection: string, n: N) : PolygonPoints => {
-  const dir = getDir(n)
-  const {  nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = getAdjustedParams(n)
-  return selection === 's' ? {
-    ax: dir === -1 ? nex : nsx,
-    bx: nex - dir * r,
-    cx: dir === -1 ? nsx : nex,
-    ayu: nsy,
-    ayd: ney,
-    byu: nsy,
-    byd: ney,
-    cyu: nsy,
-    cyd: ney
-  } : {
-    ax: dir === -1 ? nsx + dir * totalW : nsx,
-    bx: nex + dir * deltaX,
-    cx: dir === -1 ? nsx : nsx + dir * totalW,
-    ayu: dir === -1 ? nsym : nsy,
-    ayd: dir === -1 ? neym : ney,
-    byu: nsym,
-    byd: neym,
-    cyu: dir === -1 ? nsy : nsym,
-    cyd: dir === -1 ? ney : neym,
   }
 }
 
