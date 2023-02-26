@@ -1,6 +1,5 @@
 import React, {FC, useEffect} from 'react'
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {isChrome} from '../core/Utils'
 import {Auth} from "./Auth"
 import {Logo} from "./Logo"
 import {TabMaps} from "./TabMaps"
@@ -24,7 +23,7 @@ import {Profile} from './Profile'
 import {PageState} from "../core/Types";
 import {getEquationDim, getTextDim} from "../core/DomUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
-import {Layers} from "./Layers";
+import {Map} from "./Map";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -42,50 +41,14 @@ const getMuiTheme = (colorMode: string)  => createTheme({
   },
 })
 
-const Map: FC = () => {
-
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-
-  return (
-    <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
-      <div
-        style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
-        <svg
-          id="mapSvgOuter"
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
-            height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
-          }}>
-          {isChrome
-            ?
-            <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'>
-              <Layers/>
-            </svg>
-            :
-            <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}>
-              <Layers/>
-            </svg>
-          }
-        </svg>
-        <div id='mapDiv' style={{position: 'absolute', transitionProperty: 'width, height', display: 'flex', pointerEvents: 'none'}}/>
-      </div>
-    </div>
-  )
-}
-
-export const Page: FC = () => {
+export const Editor: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
   const mExists = m && Object.keys(m).length
-
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, frameId } = data || defaultUseOpenWorkspaceQueryState
-  const dispatch = useDispatch()
 
   useEffect(()=> {
     getTextDim('Test', 12)
