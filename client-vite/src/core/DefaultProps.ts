@@ -150,11 +150,11 @@ export const resolveScope = (n: any) => {
     branchBorder: n.fBorderColor !== '' && n.s.length,
     nodeBorder: n.sBorderColor !== '' && !n.hasCell,
     selectionBorder: n.selected && n.type !== 'cell' && !n.isEditing,
-    line:
-      !n.isRoot &&
-      !n.isRootChild &&
-      n.parentType !== 'cell' &&
-      (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0),
+    // line:
+      // !n.isRoot &&
+      // !n.isRootChild &&
+      // n.parentType !== 'cell' &&
+      // (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0),
     table:
       n.type === "struct" &&
       n.hasCell,

@@ -17,6 +17,15 @@ interface AdjustedParams {
   r: number
 }
 
+interface LinePoints {
+  sx: number,
+  sy: number,
+  dx: number,
+  dy: number,
+  ex: number,
+  ey: number
+}
+
 interface PolygonPoints {
   ax: number
   bx: number
@@ -33,7 +42,7 @@ const getDir = (n: N) => {
   return n.path[3] ? -1 : 1
 }
 
-export const getAdjustedParams = (n: N) : AdjustedParams => {
+export const getAdjustedParams = (n: N): AdjustedParams => {
   const dir = getDir(n)
   const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
   const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
@@ -78,11 +87,28 @@ const getEdgePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) 
   return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 }
 
-export const getLinePoints = () => {
-
+export const getLinePoints = (n: N, start: boolean): LinePoints => {
+  const dir = getDir(n)
+  let sx, sy, dx, dy, ex, ey
+  if (start) {
+    sx = dir === - 1 ? n.parentNodeStartXFrom : n.parentNodeEndXFrom
+    sy = n.parentNodeYFrom
+  } else {
+    sx = dir === - 1 ? n.parentNodeStartX : n.parentNodeEndX
+    sy = n.parentNodeY
+  }
+  sx = isOdd(sx) ? sx - 0.5 : sx
+  ex = dir === -1 ? n.nodeEndX : n.nodeStartX
+  ey = n.nodeY
+  dx = n.lineDeltaX
+  dy = n.lineDeltaY
+  return {sx, sy, dx, dy, ex, ey}
 }
 
-export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: number, dy: number, ex: number, ey: number, dir: number) => {
+export const getLinePath = (n: N, linePoints: LinePoints) => {
+  const dir = getDir(n)
+  const {lineType} = n
+  const {sx, sy, dx, dy, ex, ey} = linePoints
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = sx + dir * dx / 4
@@ -100,7 +126,7 @@ export const getLinePath = (lineType: LineTypes, sx: number, sy: number, dx: num
   return path
 }
 
-export const getStructPolygonPoints = (selection: string, n: N) : PolygonPoints => {
+export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints => {
   const dir = getDir(n)
   const {  nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = getAdjustedParams(n)
   return selection === 's' ? {

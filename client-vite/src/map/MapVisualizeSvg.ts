@@ -11,7 +11,7 @@ import {
   getLinePath,
   getStructPolygonPoints,
   getPolygonPath,
-  getCellPolygonPoints
+  getCellPolygonPoints, getLinePoints
 } from '../core/SvgUtils'
 import {getMapData} from '../core/MapFlow'
 import {getEditedNodeId, getMoveTarget, getSelectTarget} from "../core/EditorFlow"
@@ -144,7 +144,7 @@ export const mapVisualizeSvg = {
     if (conditions.line) {
 
 
-      let x1, y1, x2, y2
+      let x1, y1, dx, dy, x2, y2
       if (shouldAnimationInit && n.animationRequested) {
         x1 = dir === - 1 ? n.parentNodeStartXFrom : n.parentNodeEndXFrom
         y1 = n.parentNodeYFrom
@@ -156,6 +156,8 @@ export const mapVisualizeSvg = {
       x2 = nsx
       y2 = n.nodeY
 
+      dx=n.lineDeltaX
+      dy=n.lineDeltaY
 
       let lineColorOverride = ''
       if (n.taskStatus > 1) {
@@ -163,7 +165,7 @@ export const mapVisualizeSvg = {
       }
       updateMapSvgData(n.nodeId, 'line', {
         // TODO: there should be a getLinePoints instead!
-        path: getLinePath(n.lineType, x1, y1, n.lineDeltaX, n.lineDeltaY, x2, y2, dir),
+        path: getLinePath(n, getLinePoints(n)),
         strokeWidth: n.lineWidth,
         stroke: lineColorOverride === ''
           ? n.lineColor
