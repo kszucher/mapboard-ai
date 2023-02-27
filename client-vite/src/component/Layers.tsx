@@ -4,6 +4,7 @@ import {copy, isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
 import {N} from "../types/DefaultProps";
 import {getArcPath, getLinePath, getLinePoints, getPolygonPath, getStructPolygonPoints} from "../core/SvgUtils";
+import {mapDisassembly} from "../map/MapDisassembly";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -15,9 +16,9 @@ const pathCommonProps = {
 }
 
 export const Layers: FC = () => {
-  const nodeList = useSelector((state: RootStateOrAny) => state.editor.nodeList)
-  const nodeListSorted = (copy(nodeList)).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const nodeList = mapDisassembly.start(copy(m))
+  const nodeListSorted = (copy(nodeList)).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
   const colorMode = 'dark'
   const C = getColors(colorMode)
   return (
