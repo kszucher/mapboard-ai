@@ -99,6 +99,7 @@ export const nSaveNever = {
   isRoot: 0,
   isRootChild: 0,
   parentPath: [],
+  parentNodeId: '',
   type: '',
   parentType: '',
   parentParentType: '',

@@ -87,21 +87,16 @@ const getEdgePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) 
   return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 }
 
-export const getLinePoints = (n: N, start: boolean): LinePoints => {
-  const dir = getDir(n)
+export const getLinePoints = (na: N, nb: N): LinePoints => {
+  const dir = getDir(nb)
   let sx, sy, dx, dy, ex, ey
-  if (start) {
-    sx = dir === - 1 ? n.parentNodeStartXFrom : n.parentNodeEndXFrom
-    sy = n.parentNodeYFrom
-  } else {
-    sx = dir === - 1 ? n.parentNodeStartX : n.parentNodeEndX
-    sy = n.parentNodeY
-  }
+  sx = dir === -1 ? na.nodeStartX : na.nodeEndX
   sx = isOdd(sx) ? sx - 0.5 : sx
-  ex = dir === -1 ? n.nodeEndX : n.nodeStartX
-  ey = n.nodeY
-  dx = n.lineDeltaX
-  dy = n.lineDeltaY
+  sy = na.nodeY
+  dx = nb.lineDeltaX
+  dy = nb.lineDeltaY
+  ex = dir === -1 ? nb.nodeEndX : nb.nodeStartX
+  ey = nb.nodeY
   return {sx, sy, dx, dy, ex, ey}
 }
 

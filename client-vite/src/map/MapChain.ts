@@ -4,6 +4,7 @@ export const mapChain = {
   start: (m: M) => {
     Object.assign(m.r[0], {
       parentPath: [],
+      parentNodeId: m.g.nodeId,
       path: ['r', 0],
       isRoot: 1,
       type: 'struct',
@@ -25,6 +26,7 @@ export const mapChain = {
     for (let i = 0; i < dCount; i++) {
       Object.assign(n.d[i], {
         parentPath: ['r', 0],
+        parentNodeId: n.nodeId,
         parentType: n.type,
         isRootChild: 1,
         type: 'dir',
@@ -36,6 +38,7 @@ export const mapChain = {
     for (let i = 0; i < sCount; i++) {
       Object.assign(n.s[i], {
         parentPath: n.path.slice(0),
+        parentNodeId: n.nodeId,
         parentType: n.type,
         parentParentType: n.parentType,
         type: 'struct',
@@ -49,6 +52,7 @@ export const mapChain = {
       for (let j = 0; j < colCount; j++) {
         Object.assign(n.c[i][j], {
           parentPath: n.path.slice(0),
+          parentNodeId: n.nodeId,
           parentType: n.type,
           parentParentType: n.parentType,
           type: 'cell',

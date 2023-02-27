@@ -102,6 +102,7 @@ interface NSaveNever {
   isRoot: number,
   isRootChild: number,
   parentPath: any[],
+  parentNodeId: string,
   type: string,
   parentType: string,
   parentParentType: string,

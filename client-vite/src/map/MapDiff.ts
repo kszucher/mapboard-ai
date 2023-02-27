@@ -14,10 +14,10 @@ export const mapDiff = {
       }
       if (n.s.length !== pn.s?.length) {
         for (let i = 0; i < n.s.length; i++) {
-          n.s[i].parentNodeEndXFrom = pn.nodeEndX
-          n.s[i].parentNodeStartXFrom = pn.nodeStartX
-          n.s[i].parentNodeYFrom = pn.nodeY
-          n.s[i].animationRequested = 1
+          // n.s[i].parentNodeEndXFrom = pn.nodeEndX
+          // n.s[i].parentNodeStartXFrom = pn.nodeStartX
+          // n.s[i].parentNodeYFrom = pn.nodeY
+          // n.s[i].animationRequested = 1
         }
       }
     }

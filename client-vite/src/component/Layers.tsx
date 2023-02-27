@@ -15,6 +15,11 @@ const pathCommonProps = {
   }
 }
 
+// WARNING!!!
+// tm is not handled
+// undo-redo is not handled (we don't have the previous mdi)
+const getNodeById = (ml: N[], nodeId: string) => (ml.find((n: N) => n.nodeId === nodeId) as N)
+
 export const Layers: FC = () => {
   const mdi = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
   const md = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
@@ -115,20 +120,21 @@ export const Layers: FC = () => {
               ) &&
               <path
                 key={`${n.nodeId}_svg_line`}
-                d={n.animationRequested
-                  ? getLinePath(n, getLinePoints(n, true))
-                  : getLinePath(n, getLinePoints(n, false))
+                d={
+                  !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId)
+                    ? getLinePath(n, getLinePoints(getNodeById(pml, n.parentNodeId), n))
+                    : getLinePath(n, getLinePoints(getNodeById(ml, n.parentNodeId), n))
                 }
                 strokeWidth={n.lineWidth}
                 stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
                 fill={'none'}
                 {...pathCommonProps}
               >
-                {n.animationRequested &&
+                {!getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId) &&
                   <animate
                     attributeName='d'
-                    from={getLinePath(n, getLinePoints(n, true))}
-                    to={getLinePath(n, getLinePoints(n, false))}
+                    from={getLinePath(n, getLinePoints(getNodeById(pml, n.parentNodeId), n))}
+                    to={getLinePath(n, getLinePoints(getNodeById(ml, n.parentNodeId), n))}
                     dur={'0.3s'}
                     repeatCount={'once'}
                     fill={'freeze'}
