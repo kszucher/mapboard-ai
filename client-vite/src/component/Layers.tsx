@@ -16,15 +16,18 @@ const pathCommonProps = {
 }
 
 export const Layers: FC = () => {
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-  const nodeList = mapDisassembly.start(copy(m))
-  const nodeListSorted = (copy(nodeList)).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
+  const mdi = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
+  const md = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
+  const m = md[mdi]
+  const ml = (copy(mapDisassembly.start(copy(m)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
+  const pm = mdi > 0 ? md[mdi - 1] : {}
+  const pml = mdi > 0 ? (copy(mapDisassembly.start(copy(pm)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1) : []
   const colorMode = 'dark'
   const C = getColors(colorMode)
   return (
     <>
       <g id="layer0">
-        {nodeListSorted.map((n: N) => (
+        {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {isEqual(n.path, ['g']) &&
               <rect
@@ -46,7 +49,7 @@ export const Layers: FC = () => {
         ))}
       </g>
       <g id="layer1">
-        {nodeListSorted.map((n: N) => (
+        {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {(n.fFillColor && n.fFillColor !== '') &&
               <path
@@ -61,7 +64,7 @@ export const Layers: FC = () => {
         ))}
       </g>
       <g id="layer2">
-        {nodeListSorted.map((n: N) => (
+        {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {(n.sFillColor && n.sFillColor !== '' || n.taskStatus > 1) &&
               <path
@@ -76,7 +79,7 @@ export const Layers: FC = () => {
         ))}
       </g>
       <g id="layer3">
-        {nodeListSorted.map((n: N) => (
+        {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {(n.fBorderColor && n.fBorderColor !== '') &&
               <path

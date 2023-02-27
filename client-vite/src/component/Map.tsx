@@ -7,6 +7,7 @@ export const Map: FC = () => {
 
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
 
+
   return (
     <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
       <div
