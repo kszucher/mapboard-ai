@@ -2,7 +2,7 @@ import {FC, Fragment} from "react";
 import {RootStateOrAny, useSelector} from "react-redux";
 import {copy, isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
-import {N} from "../types/DefaultProps";
+import {M, N} from "../types/DefaultProps";
 import {getArcPath, getLinePath, getLinePoints, getPolygonPath, getStructPolygonPoints} from "../core/SvgUtils";
 import {mapDisassembly} from "../map/MapDisassembly";
 
@@ -15,18 +15,16 @@ const pathCommonProps = {
   }
 }
 
-// WARNING!!!
-// tm is not handled
-// undo-redo is not handled (we don't have the previous mdi)
 const getNodeById = (ml: N[], nodeId: string) => (ml.find((n: N) => n.nodeId === nodeId) as N)
+const m2ml = (m: M): N[] => ((copy(mapDisassembly.start(copy(m)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1))
 
 export const Layers: FC = () => {
   const mdi = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
   const md = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const m = md[mdi]
-  const ml = (copy(mapDisassembly.start(copy(m)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
-  const pm = mdi > 0 ? md[mdi - 1] : {}
-  const pml = mdi > 0 ? (copy(mapDisassembly.start(copy(pm)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1) : []
+  const ml = m2ml(m)
+  const pm = mdi > 0 ? md[mdi - 1] : {} // TODO handle tm AND undo-redo
+  const pml = mdi > 0 ? m2ml(pm) : []
   const colorMode = 'dark'
   const C = getColors(colorMode)
   return (
@@ -149,5 +147,3 @@ export const Layers: FC = () => {
     </>
   )
 }
-
-// TODO: tableFrame, tableGrid,
