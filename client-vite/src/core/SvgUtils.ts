@@ -91,6 +91,10 @@ export const getLinePoints = (na: N, nb: N): LinePoints => {
   const dir = getDir(nb)
   let sx, sy, dx, dy, ex, ey
   sx = dir === -1 ? na.nodeStartX : na.nodeEndX
+  if (nb.type === 'cell') {
+    // TODO handle the case of parentNode being ROOT child
+    sx = dir === -1 ? na.parentNodeStartX : na.parentNodeEndX
+  }
   sx = isOdd(sx) ? sx - 0.5 : sx
   sy = na.nodeY
   dx = nb.lineDeltaX

@@ -4,7 +4,7 @@ export const mapChain = {
   start: (m: M) => {
     Object.assign(m.r[0], {
       parentPath: [],
-      parentNodeId: m.g.nodeId,
+      parentNodeId: '',
       path: ['r', 0],
       isRoot: 1,
       type: 'struct',
