@@ -104,36 +104,36 @@ export const mapVisualizeSvg = {
       TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
       TASK_LINE
     } = getColors(colorMode)
-    if (conditions.branchFill) {
-      updateMapSvgData(n.nodeId, 'branchFill', {
-        path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
-        fill: n.fFillColor,
-      })
-    }
-    if (conditions.nodeFill) {
-      let sFillColorOverride = ''
-      if (n.taskStatus > 1) {
-        sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(n.taskStatus - 2) || ''
-      }
-      updateMapSvgData(n.nodeId, 'nodeFill', {
-        path: getArcPath(n, -2, true),
-        fill: sFillColorOverride === '' ? n.sFillColor : sFillColorOverride
-      })
-    }
-    if (conditions.branchBorder) {
-      updateMapSvgData(n.nodeId, 'branchBorder', {
-        path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
-        stroke: n.fBorderColor,
-        strokeWidth: n.fBorderWidth,
-      })
-    }
-    if (conditions.nodeBorder) {
-      updateMapSvgData(n.nodeId, 'nodeBorder', {
-        path: getArcPath(n, -2, true),
-        stroke: n.sBorderColor,
-        strokeWidth: n.sBorderWidth,
-      })
-    }
+    // if (conditions.branchFill) {
+    //   updateMapSvgData(n.nodeId, 'branchFill', {
+    //     path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
+    //     fill: n.fFillColor,
+    //   })
+    // }
+    // if (conditions.nodeFill) {
+    //   let sFillColorOverride = ''
+    //   if (n.taskStatus > 1) {
+    //     sFillColorOverride = [TASK_FILL_1, TASK_FILL_2, TASK_FILL_3].at(n.taskStatus - 2) || ''
+    //   }
+    //   updateMapSvgData(n.nodeId, 'nodeFill', {
+    //     path: getArcPath(n, -2, true),
+    //     fill: sFillColorOverride === '' ? n.sFillColor : sFillColorOverride
+    //   })
+    // }
+    // if (conditions.branchBorder) {
+    //   updateMapSvgData(n.nodeId, 'branchBorder', {
+    //     path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
+    //     stroke: n.fBorderColor,
+    //     strokeWidth: n.fBorderWidth,
+    //   })
+    // }
+    // if (conditions.nodeBorder) {
+    //   updateMapSvgData(n.nodeId, 'nodeBorder', {
+    //     path: getArcPath(n, -2, true),
+    //     stroke: n.sBorderColor,
+    //     strokeWidth: n.sBorderWidth,
+    //   })
+    // }
     if (conditions.selectionBorder && !isEqual(n.path, m.g.sc.lastPath)) {
       updateMapSvgData(n.nodeId, 'selectionBorder', {
         path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
@@ -141,63 +141,58 @@ export const mapVisualizeSvg = {
         strokeWidth: 1,
       })
     }
-    if (conditions.line) {
-
-
-      let x1, y1, dx, dy, x2, y2
-      if (shouldAnimationInit && n.animationRequested) {
-        x1 = dir === - 1 ? n.parentNodeStartXFrom : n.parentNodeEndXFrom
-        y1 = n.parentNodeYFrom
-      } else {
-        x1 = dir === - 1 ? n.parentNodeStartX : n.parentNodeEndX
-        y1 = n.parentNodeY
-      }
-      x1 = isOdd(x1)?x1-0.5:x1
-      x2 = nsx
-      y2 = n.nodeY
-
-      dx=n.lineDeltaX
-      dy=n.lineDeltaY
-
-      let lineColorOverride = ''
-      if (n.taskStatus > 1) {
-        lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(n.taskStatus - 2) || ''
-      }
-      updateMapSvgData(n.nodeId, 'line', {
-        // TODO: there should be a getLinePoints instead!
-        path: getLinePath(n, getLinePoints(n)),
-        strokeWidth: n.lineWidth,
-        stroke: lineColorOverride === ''
-          ? n.lineColor
-          : lineColorOverride
-      })
-    }
+    // if (conditions.line) {
+      // let x1, y1, dx, dy, x2, y2
+      // if (shouldAnimationInit && n.animationRequested) {
+      //   x1 = dir === - 1 ? n.parentNodeStartXFrom : n.parentNodeEndXFrom
+      //   y1 = n.parentNodeYFrom
+      // } else {
+      //   x1 = dir === - 1 ? n.parentNodeStartX : n.parentNodeEndX
+      //   y1 = n.parentNodeY
+      // }
+      // x1 = isOdd(x1)?x1-0.5:x1
+      // x2 = nsx
+      // y2 = n.nodeY
+      // dx=n.lineDeltaX
+      // dy=n.lineDeltaY
+      // let lineColorOverride = ''
+      // if (n.taskStatus > 1) {
+      //   lineColorOverride = [TASK_LINE_1, TASK_LINE_2, TASK_LINE_3].at(n.taskStatus - 2) || ''
+      // }
+      // updateMapSvgData(n.nodeId, 'line', {
+      //   path: getLinePath(n, getLinePoints(n)),
+      //   strokeWidth: n.lineWidth,
+      //   stroke: lineColorOverride === ''
+      //     ? n.lineColor
+      //     : lineColorOverride
+      // })
+    // }
     if (conditions.table) {
       // frame
-      updateMapSvgData(n.nodeId, 'tableFrame', {
-        path: getArcPath(n, 0, false),
-        stroke: n.sBorderColor === '' ? TABLE_FRAME_COLOR : n.sBorderColor,
-        strokeWidth: n.sBorderWidth,
-      })
+      // updateMapSvgData(n.nodeId, 'tableFrame', {
+      //   path: getArcPath(n, 0, false),
+      //   stroke: n.sBorderColor === '' ? TABLE_FRAME_COLOR : n.sBorderColor,
+      //   strokeWidth: n.sBorderWidth,
+      // })
       // grid
-      let path = ''
-      let rowCount = Object.keys(n.c).length
-      for (let i = 1; i < rowCount; i++) {
-        let x1 = n.nodeStartX
-        let x2 = n.nodeEndX
-        let y = nsy + n.sumMaxRowHeight[i]
-        path += `M${x1},${y} L${x2},${y}`
-      }
-      let colCount = Object.keys(n.c[0]).length
-      for (let j = 1; j < colCount; j++) {
-        let x = nsx + dir*n.sumMaxColWidth[j]
-        path += `M${x},${nsy} L${x},${ney}`
-      }
-      updateMapSvgData(n.nodeId, 'tableGrid', {
-        path: path,
-        stroke: TABLE_GRID,
-        strokeWidth: 1,
-      })
+      // let path = ''
+      // let rowCount = Object.keys(n.c).length
+      // for (let i = 1; i < rowCount; i++) {
+      //   let x1 = n.nodeStartX
+      //   let x2 = n.nodeEndX
+      //   let y = nsy + n.sumMaxRowHeight[i]
+      //   path += `M${x1},${y} L${x2},${y}`
+      // }
+      // let colCount = Object.keys(n.c[0]).length
+      // for (let j = 1; j < colCount; j++) {
+      //   let x = nsx + dir*n.sumMaxColWidth[j]
+      //   path += `M${x},${nsy} L${x},${ney}`
+      // }
+      // updateMapSvgData(n.nodeId, 'tableGrid', {
+      //   path: path,
+      //   stroke: TABLE_GRID,
+      //   strokeWidth: 1,
+      // })
       // cell
       tableLoops:
         for (let i = 0; i < rowCount; i++) {

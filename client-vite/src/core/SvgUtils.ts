@@ -239,3 +239,22 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
       a${+r},${+r} 0 0 1 ${-r},${-r}
       ${closed ? 'Z' : ''}`
 }
+
+export const getGridPath = (n: N) => {
+  const dir = getDir(n)
+  const { nsx, nsy, ney } = getAdjustedParams(n)
+  let path = ''
+  let rowCount = n.sumMaxRowHeight.length - 1
+  for (let i = 1; i < rowCount; i++) {
+    let x1 = n.nodeStartX
+    let x2 = n.nodeEndX
+    let y = nsy + n.sumMaxRowHeight[i]
+    path += `M${x1},${y} L${x2},${y}`
+  }
+  let colCount = n.sumMaxColWidth.length - 1
+  for (let j = 1; j < colCount; j++) {
+    let x = nsx + dir*n.sumMaxColWidth[j]
+    path += `M${x},${nsy} L${x},${ney}`
+  }
+  return path
+}

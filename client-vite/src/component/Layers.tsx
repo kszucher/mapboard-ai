@@ -3,7 +3,14 @@ import {RootStateOrAny, useSelector} from "react-redux";
 import {copy, isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
 import {M, N} from "../types/DefaultProps";
-import {getArcPath, getLinePath, getLinePoints, getPolygonPath, getStructPolygonPoints} from "../core/SvgUtils";
+import {
+  getArcPath,
+  getGridPath,
+  getLinePath,
+  getLinePoints,
+  getPolygonPath,
+  getStructPolygonPoints
+} from "../core/SvgUtils";
 import {mapDisassembly} from "../map/MapDisassembly";
 
 const pathCommonProps = {
@@ -147,6 +154,17 @@ export const Layers: FC = () => {
                 d={getArcPath(n, 0, false)}
                 stroke={n.sBorderColor === '' ? C.TABLE_FRAME_COLOR : n.sBorderColor}
                 strokeWidth={n.sBorderWidth}
+                fill={'none'}
+                {...pathCommonProps}
+              >
+              </path>
+            }
+            {(n.type === "struct" && n.hasCell) &&
+              <path
+                key={`${n.nodeId}_svg_tableGrid`}
+                d={getGridPath(n)}
+                stroke={C.TABLE_GRID}
+                strokeWidth={1}
                 fill={'none'}
                 {...pathCommonProps}
               >
