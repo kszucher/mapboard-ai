@@ -209,32 +209,33 @@ export const mapVisualizeSvg = {
         }
     }
     if (conditions.task) {
-      const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m.g
-      let startX
-      if (n.path.includes('c')) {
-        let coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
-        let currCol = n.path[n.path.lastIndexOf('c') + 2]
-        let coverCellRef = getMapData(m, coverCellPath)
-        let smcv = coverCellRef.sumMaxColWidth[currCol]
-        let mcv = coverCellRef.maxColWidth[currCol]
-        startX = dir === - 1
-          ? coverCellRef.nodeEndX - smcv - mcv + 120
-          : coverCellRef.nodeStartX + smcv + mcv - 120
-      } else {
-        startX = dir === - 1
-          ? margin + taskConfigWidth
-          : mapWidth - taskConfigWidth - margin
-      }
-      let x1 = nex
-      let x2 = startX
-      let y = n.nodeY
-      if (!isEqual(n.path, editedPath)) {
-        updateMapSvgData(n.nodeId, 'taskLine', {
-          path: `M${x1},${y} L${x2},${y}`,
-          stroke: TASK_LINE,
-          strokeWidth: 1,
-        })
-      }
+      // const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m.g
+      // let startX
+      // if (n.path.includes('c')) {
+      //   let coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
+      //   let currCol = n.path[n.path.lastIndexOf('c') + 2]
+      //   let coverCellRef = getMapData(m, coverCellPath)
+      //   let smcv = coverCellRef.sumMaxColWidth[currCol]
+      //   let mcv = coverCellRef.maxColWidth[currCol]
+      //   startX = dir === - 1
+      //     ? coverCellRef.nodeEndX - smcv - mcv + 120
+      //     : coverCellRef.nodeStartX + smcv + mcv - 120
+      // } else {
+      //   startX = dir === - 1
+      //     ? margin + taskConfigWidth
+      //     : mapWidth - taskConfigWidth - margin
+      // }
+      // let x1 = nex
+      // let x2 = startX
+      // let y = n.nodeY
+      // if (!isEqual(n.path, editedPath)) {
+      //   updateMapSvgData(n.nodeId, 'taskLine', {
+      //     path: `M${x1},${y} L${x2},${y}`,
+      //     stroke: TASK_LINE,
+      //     strokeWidth: 1,
+      //   })
+      // }
+
       for (let i = 0; i < taskConfigN; i++) {
         const cx = dir === - 1
           ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)

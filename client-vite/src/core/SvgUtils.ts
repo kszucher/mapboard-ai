@@ -1,6 +1,7 @@
 import {LineTypes} from "./Types"
 import {M, N} from "../types/DefaultProps"
 import {isOdd} from "./Utils"
+import {getMapData} from "./MapFlow";
 
 interface AdjustedParams {
   nsx: number,
@@ -257,4 +258,29 @@ export const getGridPath = (n: N) => {
     path += `M${x},${nsy} L${x},${ney}`
   }
   return path
+}
+
+export const getTaskPath = (m: M, n: N) => {
+  const dir = getDir(n)
+  const {mapWidth, margin, taskConfigWidth} = m.g
+  const { nex } = getAdjustedParams(n)
+  let startX
+  if (n.path.includes('c')) {
+    let coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
+    let currCol = n.path[n.path.lastIndexOf('c') + 2]
+    let coverCellRef = getMapData(m, coverCellPath)
+    let smcv = coverCellRef.sumMaxColWidth[currCol]
+    let mcv = coverCellRef.maxColWidth[currCol]
+    startX = dir === - 1
+      ? coverCellRef.nodeEndX - smcv - mcv + 120
+      : coverCellRef.nodeStartX + smcv + mcv - 120
+  } else {
+    startX = dir === - 1
+      ? margin + taskConfigWidth
+      : mapWidth - taskConfigWidth - margin
+  }
+  let x1 = nex
+  let x2 = startX
+  let y = n.nodeY
+  return `M${x1},${y} L${x2},${y}`
 }

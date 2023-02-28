@@ -9,7 +9,7 @@ import {
   getLinePath,
   getLinePoints,
   getPolygonPath,
-  getStructPolygonPoints
+  getStructPolygonPoints, getTaskPath
 } from "../core/SvgUtils";
 import {mapDisassembly} from "../map/MapDisassembly";
 
@@ -164,6 +164,27 @@ export const Layers: FC = () => {
                 key={`${n.nodeId}_svg_tableGrid`}
                 d={getGridPath(n)}
                 stroke={C.TABLE_GRID}
+                strokeWidth={1}
+                fill={'none'}
+                {...pathCommonProps}
+              >
+              </path>
+            }
+            {(
+                !(n.path.length === 1) && // is 'g'
+                n.taskStatus !== 0 &&
+                !n.hasDir &&
+                !n.hasStruct &&
+                !n.hasCell &&
+                n.contentType !== 'image' &&
+                !n.isRoot &&
+                !n.isRootChild //&&
+                // !isEqual(n.path, editedPath)
+              ) &&
+              <path
+                key={`${n.nodeId}_svg_tableGrid`}
+                d={getTaskPath(m, n)}
+                stroke={C.TASK_LINE}
                 strokeWidth={1}
                 fill={'none'}
                 {...pathCommonProps}
