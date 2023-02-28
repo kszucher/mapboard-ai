@@ -141,6 +141,17 @@ export const Layers: FC = () => {
                 }
               </path>
             }
+            {(n.type === "struct" && n.hasCell) &&
+              <path
+                key={`${n.nodeId}_svg_tableFrame`}
+                d={getArcPath(n, 0, false)}
+                stroke={n.sBorderColor === '' ? C.TABLE_FRAME_COLOR : n.sBorderColor}
+                strokeWidth={n.sBorderWidth}
+                fill={'none'}
+                {...pathCommonProps}
+              >
+              </path>
+            }
           </Fragment>
         ))}
       </g>
