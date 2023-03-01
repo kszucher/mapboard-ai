@@ -3,7 +3,7 @@ import {M, N} from "../types/DefaultProps"
 import {isOdd} from "./Utils"
 import {getMapData} from "./MapFlow";
 
-type AdjustedParams = Record<'nsx' | 'nex' | 'nsy' | 'ney' | 'nsym' | 'neym', number>
+type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type LinePoints = Record<'sx' | 'sy' | 'dx' | 'dy' | 'ex' | 'ey', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -16,12 +16,12 @@ export const getAdjustedParams = (n: N): AdjustedParams => {
   const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
   const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
   return {
-    nsx: dir === -1 ? n.nodeEndX : n.nodeStartX,
-    nex: dir === -1 ? n.nodeStartX : n.nodeEndX,
-    nsy: n.nodeY - selfHadj / 2,
-    ney: n.nodeY + selfHadj / 2,
-    nsym: n.nodeY - maxHadj / 2,
-    neym: n.nodeY + maxHadj / 2,
+    xi: dir === -1 ? n.nodeEndX : n.nodeStartX,
+    xo: dir === -1 ? n.nodeStartX : n.nodeEndX,
+    yu: n.nodeY - selfHadj / 2,
+    yd: n.nodeY + selfHadj / 2,
+    myu: n.nodeY - maxHadj / 2,
+    myd: n.nodeY + maxHadj / 2,
     // margin: (
     //   (n.selection === 's' && n.sBorderColor !== '') ||
     //   (n.selection === 's' && n.sFillColor !== '') ||
@@ -91,47 +91,47 @@ export const getLinePath = (n: N, linePoints: LinePoints) => {
 export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints => {
   const R = 8
   const dir = getDir(n)
-  const {  nsx, nex, nsy, ney, nsym, neym } = getAdjustedParams(n)
+  const {  xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
   return selection === 's' ? {
-    ax: dir === -1 ? nex : nsx,
-    bx: nex - dir * R,
-    cx: dir === -1 ? nsx : nex,
-    ayu: nsy,
-    ayd: ney,
-    byu: nsy,
-    byd: ney,
-    cyu: nsy,
-    cyd: ney
+    ax: n.nodeStartX,
+    bx: xo - dir * R,
+    cx: n.nodeEndX,
+    ayu: yu,
+    ayd: yd,
+    byu: yu,
+    byd: yd,
+    cyu: yu,
+    cyd: yd
   } : {
-    ax: dir === -1 ? nsx + dir * (n.familyW + n.selfW) : nsx,
-    bx: nex + dir * n.lineDeltaX,
-    cx: dir === -1 ? nsx : nsx + dir * (n.familyW + n.selfW),
-    ayu: dir === -1 ? nsym : nsy,
-    ayd: dir === -1 ? neym : ney,
-    byu: nsym,
-    byd: neym,
-    cyu: dir === -1 ? nsy : nsym,
-    cyd: dir === -1 ? ney : neym,
+    ax: dir === -1 ? xi + dir * (n.familyW + n.selfW) : xi,
+    bx: xo + dir * n.lineDeltaX,
+    cx: dir === -1 ? xi : xi + dir * (n.familyW + n.selfW),
+    ayu: dir === -1 ? myu : yu,
+    ayd: dir === -1 ? myd : yd,
+    byu: myu,
+    byd: myd,
+    cyu: dir === -1 ? yu : myu,
+    cyd: dir === -1 ? yd : myd,
   }
 }
 
 export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
   const dir = getDir(n)
-  const { nsx, nsy } = getAdjustedParams(n)
+  const { xi, yu } = getAdjustedParams(n)
   let sx, sy, w, h
   if (m.g.sc.cellRowSelected) {
-    sx = nsx
-    sy = nsy + n.sumMaxRowHeight[i]
+    sx = xi
+    sy = yu + n.sumMaxRowHeight[i]
     w = n.selfW
     h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
   } else if (m.g.sc.cellColSelected) {
-    sx = nsx + dir*n.sumMaxColWidth[j]
-    sy = nsy
+    sx = xi + dir*n.sumMaxColWidth[j]
+    sy = yu
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
     h = n.selfH
   } else {
-    sx = nsx + dir*n.sumMaxColWidth[j]
-    sy = nsy + n.sumMaxRowHeight[i]
+    sx = xi + dir*n.sumMaxColWidth[j]
+    sy = yu + n.sumMaxRowHeight[i]
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
     h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
   }
@@ -185,9 +185,9 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
 export const getArcPath = (n: N, margin: number, closed: boolean) => {
   const R = 8
   const dir = getDir(n)
-  const { nsx, nsy } = getAdjustedParams(n)
-  const x1 = nsx - margin * dir
-  const y1 = nsy + R - margin
+  const { xi, yu } = getAdjustedParams(n)
+  const x1 = xi - margin * dir
+  const y1 = yu + R - margin
   const dx = n.selfW - 2 * R + 2 * margin
   const dy = n.selfH - 2 * R + 2 * margin
   return dir === -1
@@ -207,19 +207,19 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
 
 export const getGridPath = (n: N) => {
   const dir = getDir(n)
-  const { nsx, nsy, ney } = getAdjustedParams(n)
+  const { xi, yu, yd } = getAdjustedParams(n)
   let path = ''
   let rowCount = n.sumMaxRowHeight.length - 1
   for (let i = 1; i < rowCount; i++) {
     let x1 = n.nodeStartX
     let x2 = n.nodeEndX
-    let y = nsy + n.sumMaxRowHeight[i]
+    let y = yu + n.sumMaxRowHeight[i]
     path += `M${x1},${y} L${x2},${y}`
   }
   let colCount = n.sumMaxColWidth.length - 1
   for (let j = 1; j < colCount; j++) {
-    let x = nsx + dir*n.sumMaxColWidth[j]
-    path += `M${x},${nsy} L${x},${ney}`
+    let x = xi + dir*n.sumMaxColWidth[j]
+    path += `M${x},${yu} L${x},${yd}`
   }
   return path
 }
@@ -246,8 +246,8 @@ const getTaskStartPoint = (m: M, n: N) => {
 }
 
 export const getTaskPath = (m: M, n: N) => {
-  const { nex } = getAdjustedParams(n)
-  let x1 = nex
+  const { xo } = getAdjustedParams(n)
+  let x1 = xo
   let x2 = getTaskStartPoint(m, n)
   let y = n.nodeY
   return `M${x1},${y} L${x2},${y}`
