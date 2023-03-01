@@ -3,7 +3,7 @@ import {M, N} from "../types/DefaultProps"
 import {isOdd} from "./Utils"
 import {getMapData} from "./MapFlow";
 
-type AdjustedParams = Record<'nsx' | 'nex' | 'nsy' | 'ney' | 'nsym' | 'neym' | 'sw' | 'sh' | 'totalW' | 'deltaX' | 'r', number>
+type AdjustedParams = Record<'nsx' | 'nex' | 'nsy' | 'ney' | 'nsym' | 'neym', number>
 type LinePoints = Record<'sx' | 'sy' | 'dx' | 'dy' | 'ex' | 'ey', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
@@ -16,16 +16,12 @@ export const getAdjustedParams = (n: N): AdjustedParams => {
   const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
   const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
   return {
-    sw: n.selfW,
-    sh: n.selfH,
     nsx: dir === -1 ? n.nodeEndX : n.nodeStartX,
     nex: dir === -1 ? n.nodeStartX : n.nodeEndX,
     nsy: n.nodeY - selfHadj / 2,
     ney: n.nodeY + selfHadj / 2,
     nsym: n.nodeY - maxHadj / 2,
     neym: n.nodeY + maxHadj / 2,
-    totalW: n.familyW + n.selfW,
-    deltaX: n.lineDeltaX,
     // margin: (
     //   (n.selection === 's' && n.sBorderColor !== '') ||
     //   (n.selection === 's' && n.sFillColor !== '') ||
@@ -33,8 +29,6 @@ export const getAdjustedParams = (n: N): AdjustedParams => {
     //   (n.taskStatus > 1) ||
     //   (n.hasCell)
     // ) ? 4 : -2,
-
-    r: 8
   }
 }
 
@@ -95,11 +89,12 @@ export const getLinePath = (n: N, linePoints: LinePoints) => {
 }
 
 export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints => {
+  const R = 8
   const dir = getDir(n)
-  const {  nsx, nex, nsy, ney, nsym, neym, totalW, deltaX, r } = getAdjustedParams(n)
+  const {  nsx, nex, nsy, ney, nsym, neym } = getAdjustedParams(n)
   return selection === 's' ? {
     ax: dir === -1 ? nex : nsx,
-    bx: nex - dir * r,
+    bx: nex - dir * R,
     cx: dir === -1 ? nsx : nex,
     ayu: nsy,
     ayd: ney,
@@ -108,9 +103,9 @@ export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints =
     cyu: nsy,
     cyd: ney
   } : {
-    ax: dir === -1 ? nsx + dir * totalW : nsx,
-    bx: nex + dir * deltaX,
-    cx: dir === -1 ? nsx : nsx + dir * totalW,
+    ax: dir === -1 ? nsx + dir * (n.familyW + n.selfW) : nsx,
+    bx: nex + dir * n.lineDeltaX,
+    cx: dir === -1 ? nsx : nsx + dir * (n.familyW + n.selfW),
     ayu: dir === -1 ? nsym : nsy,
     ayd: dir === -1 ? neym : ney,
     byu: nsym,
@@ -154,6 +149,7 @@ export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : Polygon
 }
 
 export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
+  const R = 12
   const dir = getDir(n)
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax -= margin
@@ -166,16 +162,15 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
   cyu -= margin
   cyd += margin
   const points = [[ax, ayu], [bx, byu], [cx, cyu], [cx, cyd], [bx, byd], [ax, ayd]]
-  const radius = 12
   let path = ''
   for (let i = 0; i < points.length; i++) {
     const prevPoint = i === 0 ? points[points.length - 1] : points[i - 1]
     const currPoint = points[i]
     const nextPoint = i === points.length - 1 ? points[0] : points[i + 1]
-    const [sx, sy] = getCoordsInLine(currPoint, prevPoint, radius)
+    const [sx, sy] = getCoordsInLine(currPoint, prevPoint, R)
     const [c1x, c1y] = currPoint
     const [c2x, c2y] = currPoint
-    const [ex, ey] = getCoordsInLine(currPoint, nextPoint, radius)
+    const [ex, ey] = getCoordsInLine(currPoint, nextPoint, R)
     if (selection === 's' && i === (dir === - 1 ? 4 : 1)) {
       path += getBezierPath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
     } else if (selection === 's' && i === (dir === - 1 ? 1 : 4)) {
@@ -188,24 +183,25 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
 }
 
 export const getArcPath = (n: N, margin: number, closed: boolean) => {
+  const R = 8
   const dir = getDir(n)
-  const { nsx, nsy, sw, sh, r } = getAdjustedParams(n)
+  const { nsx, nsy } = getAdjustedParams(n)
   const x1 = nsx - margin * dir
-  const y1 = nsy + r - margin
-  const horz = sw - 2 * r + 2 * margin
-  const vert = sh - 2 * r + 2 * margin
+  const y1 = nsy + R - margin
+  const dx = n.selfW - 2 * R + 2 * margin
+  const dy = n.selfH - 2 * R + 2 * margin
   return dir === -1
     ? `M${x1},${y1}
-      a${+r},${+r} 0 0 0 ${-r},${-r} h${-horz} 
-      a${+r},${+r} 0 0 0 ${-r},${+r} v${+vert} 
-      a${+r},${+r} 0 0 0 ${+r},${+r} h${+horz} 
-      a${+r},${+r} 0 0 0 ${+r},${-r}
+      a${+R},${+R} 0 0 0 ${-R},${-R} h${-dx} 
+      a${+R},${+R} 0 0 0 ${-R},${+R} v${+dy} 
+      a${+R},${+R} 0 0 0 ${+R},${+R} h${+dx} 
+      a${+R},${+R} 0 0 0 ${+R},${-R}
       ${closed ? 'Z' : ''}`
     : `M${x1},${y1} 
-      a${+r},${+r} 0 0 1 ${+r},${-r} h${+horz}
-      a${+r},${+r} 0 0 1 ${+r},${+r} v${+vert}
-      a${+r},${+r} 0 0 1 ${-r},${+r} h${-horz}
-      a${+r},${+r} 0 0 1 ${-r},${-r}
+      a${+R},${+R} 0 0 1 ${+R},${-R} h${+dx}
+      a${+R},${+R} 0 0 1 ${+R},${+R} v${+dy}
+      a${+R},${+R} 0 0 1 ${-R},${+R} h${-dx}
+      a${+R},${+R} 0 0 1 ${-R},${-R}
       ${closed ? 'Z' : ''}`
 }
 
