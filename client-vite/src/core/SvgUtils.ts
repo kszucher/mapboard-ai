@@ -50,8 +50,9 @@ const getEdgePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) 
   return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 }
 
-export const getLinePoints = (na: N, nb: N): LinePoints => {
+export const getLinePath = (na: N, nb: N) => {
   const dir = getDir(nb)
+  const { lineType } = nb
   let sx, sy, dx, dy, ex, ey
   sx = dir === -1 ? na.nodeStartX : na.nodeEndX
   if (nb.type === 'cell') {
@@ -64,13 +65,6 @@ export const getLinePoints = (na: N, nb: N): LinePoints => {
   dy = nb.lineDeltaY
   ex = dir === -1 ? nb.nodeEndX : nb.nodeStartX
   ey = nb.nodeY
-  return {sx, sy, dx, dy, ex, ey}
-}
-
-export const getLinePath = (n: N, linePoints: LinePoints) => {
-  const dir = getDir(n)
-  const {lineType} = n
-  const {sx, sy, dx, dy, ex, ey} = linePoints
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = sx + dir * dx / 4
@@ -91,7 +85,8 @@ export const getLinePath = (n: N, linePoints: LinePoints) => {
 export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints => {
   const R = 8
   const dir = getDir(n)
-  const {  xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
+  const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
+  const w = n.familyW + n.selfW
   return selection === 's' ? {
     ax: n.nodeStartX,
     bx: xo - dir * R,
@@ -103,9 +98,9 @@ export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints =
     cyu: yu,
     cyd: yd
   } : {
-    ax: xi + (dir === -1 ? - (n.familyW + n.selfW) : 0),
+    ax: xi + (dir === -1 ? - w : 0),
     bx: xo + dir * n.lineDeltaX,
-    cx: xi + (dir === 1 ? (n.familyW + n.selfW) : 0),
+    cx: xi + (dir === 1 ? w : 0),
     ayu: dir === -1 ? myu : yu,
     ayd: dir === -1 ? myd : yd,
     byu: myu,
@@ -118,33 +113,33 @@ export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints =
 export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
   const dir = getDir(n)
   const { xi, yu } = getAdjustedParams(n)
-  let sx, sy, w, h
+  let x, y, w, h
   if (m.g.sc.cellRowSelected) {
-    sx = xi
-    sy = yu + n.sumMaxRowHeight[i]
+    x = xi
+    y = yu + n.sumMaxRowHeight[i]
     w = n.selfW
     h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
   } else if (m.g.sc.cellColSelected) {
-    sx = xi + dir*n.sumMaxColWidth[j]
-    sy = yu
+    x = xi + dir*n.sumMaxColWidth[j]
+    y = yu
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
     h = n.selfH
   } else {
-    sx = xi + dir*n.sumMaxColWidth[j]
-    sy = yu + n.sumMaxRowHeight[i]
+    x = xi + dir*n.sumMaxColWidth[j]
+    y = yu + n.sumMaxRowHeight[i]
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
     h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
   }
   return {
-    ax: dir === - 1 ? sx + dir * w : sx,
-    bx: sx + dir*w,
-    cx: dir === - 1 ? sx : sx + dir * w,
-    ayu: sy,
-    ayd: sy + h,
-    byu: sy,
-    byd: sy + h,
-    cyu: sy,
-    cyd: sy + h,
+    ax: x + (dir === - 1 ? - w : 0),
+    bx: x + dir * w,
+    cx: x + (dir === 1 ? w : 0),
+    ayu: y,
+    ayd: y + h,
+    byu: y,
+    byd: y + h,
+    cyu: y,
+    cyd: y + h,
   }
 }
 
@@ -209,54 +204,51 @@ export const getGridPath = (n: N) => {
   const dir = getDir(n)
   const { xi, yu, yd } = getAdjustedParams(n)
   let path = ''
-  let rowCount = n.sumMaxRowHeight.length - 1
-  for (let i = 1; i < rowCount; i++) {
-    let x1 = n.nodeStartX
-    let x2 = n.nodeEndX
-    let y = yu + n.sumMaxRowHeight[i]
+  for (let i = 1; i < n.sumMaxRowHeight.length - 1; i++) {
+    const x1 = n.nodeStartX
+    const x2 = n.nodeEndX
+    const y = yu + n.sumMaxRowHeight[i]
     path += `M${x1},${y} L${x2},${y}`
   }
-  let colCount = n.sumMaxColWidth.length - 1
-  for (let j = 1; j < colCount; j++) {
-    let x = xi + dir*n.sumMaxColWidth[j]
+  for (let j = 1; j < n.sumMaxColWidth.length - 1; j++) {
+    const x = xi + dir*n.sumMaxColWidth[j]
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
 }
 
 const getTaskStartPoint = (m: M, n: N) => {
-  const {mapWidth, margin, taskConfigWidth} = m.g
+  const { mapWidth, margin, taskConfigWidth } = m.g
   const dir = getDir(n)
   let startX
   if (n.path.includes('c')) {
-    let coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
-    let currCol = n.path[n.path.lastIndexOf('c') + 2]
-    let coverCellRef = getMapData(m, coverCellPath)
-    let smcv = coverCellRef.sumMaxColWidth[currCol]
-    let mcv = coverCellRef.maxColWidth[currCol]
-    startX = dir === - 1
-      ? coverCellRef.nodeEndX - smcv - mcv + 120
-      : coverCellRef.nodeStartX + smcv + mcv - 120
+    const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
+    const currCol = n.path[n.path.lastIndexOf('c') + 2]
+    const coverCellRef = getMapData(m, coverCellPath)
+    startX =
+      (dir === - 1
+        ? coverCellRef.nodeEndX
+        : coverCellRef.nodeStartX
+      ) +
+      dir * (coverCellRef.sumMaxColWidth[currCol] + coverCellRef.maxColWidth[currCol] - 120)
   } else {
-    startX = dir === - 1
-      ? margin + taskConfigWidth
-      : mapWidth - taskConfigWidth - margin
+    startX = (dir === 1 ? mapWidth : 0) - dir * (margin + taskConfigWidth)
   }
   return startX
 }
 
 export const getTaskPath = (m: M, n: N) => {
   const { xo } = getAdjustedParams(n)
-  let x1 = xo
-  let x2 = getTaskStartPoint(m, n)
-  let y = n.nodeY
+  const x1 = xo
+  const x2 = getTaskStartPoint(m, n)
+  const y = n.nodeY
   return `M${x1},${y} L${x2},${y}`
 }
 
 export const getTaskCircle = (m: M, n: N, i: number) => {
   const dir = getDir(n)
-  const {taskConfigD, taskConfigGap} = m.g
-  let startX = getTaskStartPoint(m, n)
+  const { taskConfigD, taskConfigGap } = m.g
+  const startX = getTaskStartPoint(m, n)
   const cx = startX + dir * taskConfigD/2 + dir * i * (taskConfigD + taskConfigGap)
   const cy = n.nodeY
   const r = taskConfigD / 2

@@ -7,9 +7,10 @@ import {
   getArcPath,
   getGridPath,
   getLinePath,
-  getLinePoints,
   getPolygonPath,
-  getStructPolygonPoints, getTaskCircle, getTaskPath
+  getStructPolygonPoints,
+  getTaskCircle,
+  getTaskPath
 } from "../core/SvgUtils";
 import {mapDisassembly} from "../map/MapDisassembly";
 
@@ -130,8 +131,8 @@ export const Layers: FC = () => {
                 key={`${n.nodeId}_svg_line`}
                 d={
                   !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId)
-                    ? getLinePath(n, getLinePoints(getNodeById(pml, n.parentNodeId), n))
-                    : getLinePath(n, getLinePoints(getNodeById(ml, n.parentNodeId), n))
+                    ? getLinePath(getNodeById(pml, n.parentNodeId), n)
+                    : getLinePath(getNodeById(ml, n.parentNodeId), n)
                 }
                 strokeWidth={n.lineWidth}
                 stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -142,8 +143,8 @@ export const Layers: FC = () => {
                   !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId) &&
                   <animate
                     attributeName='d'
-                    from={getLinePath(n, getLinePoints(getNodeById(pml, n.parentNodeId), n))}
-                    to={getLinePath(n, getLinePoints(getNodeById(ml, n.parentNodeId), n))}
+                    from={getLinePath(getNodeById(pml, n.parentNodeId), n)}
+                    to={getLinePath(getNodeById(ml, n.parentNodeId), n)}
                     dur={'0.3s'}
                     repeatCount={'once'}
                     fill={'freeze'}
@@ -216,6 +217,9 @@ export const Layers: FC = () => {
                   ))
                 }
               </Fragment>
+            }
+            {
+
             }
           </Fragment>
         ))}
