@@ -3,41 +3,9 @@ import {M, N} from "../types/DefaultProps"
 import {isOdd} from "./Utils"
 import {getMapData} from "./MapFlow";
 
-interface AdjustedParams {
-  nsx: number,
-  nex: number,
-  nsy: number,
-  ney: number,
-  nsym: number,
-  neym: number,
-  sw: number,
-  sh: number,
-  totalW: number,
-  deltaX: number,
-  // margin: number,
-  r: number
-}
-
-interface LinePoints {
-  sx: number,
-  sy: number,
-  dx: number,
-  dy: number,
-  ex: number,
-  ey: number
-}
-
-interface PolygonPoints {
-  ax: number
-  bx: number
-  cx: number
-  ayu: number
-  ayd: number
-  byu: number
-  byd: number
-  cyu: number
-  cyd: number
-}
+type AdjustedParams = Record<'nsx' | 'nex' | 'nsy' | 'ney' | 'nsym' | 'neym' | 'sw' | 'sh' | 'totalW' | 'deltaX' | 'r', number>
+type LinePoints = Record<'sx' | 'sy' | 'dx' | 'dy' | 'ex' | 'ey', number>
+type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
 const getDir = (n: N) => {
   return n.path[3] ? -1 : 1
