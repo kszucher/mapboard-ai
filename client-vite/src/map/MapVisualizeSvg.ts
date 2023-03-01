@@ -236,17 +236,20 @@ export const mapVisualizeSvg = {
       //   })
       // }
 
-      for (let i = 0; i < taskConfigN; i++) {
-        const cx = dir === - 1
-          ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
-          : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
-        const cy = n.nodeY
-        const r = taskConfigD / 2
-        const fill = n.taskStatus === i + 1
-          ? [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
-          : [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
-        updateMapSvgData(n.nodeId, `taskCircle${i + 1}`, { cx, cy, r, fill })
-      }
+      // for (let i = 0; i < taskConfigN; i++) {
+      //   const cx = dir === - 1
+      //     ? startX - taskConfigD/2 - i * (taskConfigD + taskConfigGap)
+      //     : startX + taskConfigD/2 + i * (taskConfigD + taskConfigGap)
+      //   const cy = n.nodeY
+      //   const r = taskConfigD / 2
+      //   const fill = n.taskStatus === i + 1
+      //     ? [TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE].at(i)
+      //     : [TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE].at(i)
+      //
+      //
+      //
+      //   updateMapSvgData(n.nodeId, `taskCircle${i + 1}`, { cx, cy, r, fill })
+      // }
     }
     n.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
     n.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))

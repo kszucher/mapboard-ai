@@ -260,10 +260,9 @@ export const getGridPath = (n: N) => {
   return path
 }
 
-export const getTaskPath = (m: M, n: N) => {
-  const dir = getDir(n)
+const getTaskStartPoint = (m: M, n: N) => {
   const {mapWidth, margin, taskConfigWidth} = m.g
-  const { nex } = getAdjustedParams(n)
+  const dir = getDir(n)
   let startX
   if (n.path.includes('c')) {
     let coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
@@ -279,8 +278,23 @@ export const getTaskPath = (m: M, n: N) => {
       ? margin + taskConfigWidth
       : mapWidth - taskConfigWidth - margin
   }
+  return startX
+}
+
+export const getTaskPath = (m: M, n: N) => {
+  const { nex } = getAdjustedParams(n)
   let x1 = nex
-  let x2 = startX
+  let x2 = getTaskStartPoint(m, n)
   let y = n.nodeY
   return `M${x1},${y} L${x2},${y}`
+}
+
+export const getTaskCircle = (m: M, n: N, i: number) => {
+  const dir = getDir(n)
+  const {taskConfigD, taskConfigGap} = m.g
+  let startX = getTaskStartPoint(m, n)
+  const cx = startX + dir * taskConfigD/2 + dir * i * (taskConfigD + taskConfigGap)
+  const cy = n.nodeY
+  const r = taskConfigD / 2
+  return { cx, cy, r }
 }

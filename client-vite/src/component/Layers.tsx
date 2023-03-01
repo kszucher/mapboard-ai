@@ -9,7 +9,7 @@ import {
   getLinePath,
   getLinePoints,
   getPolygonPath,
-  getStructPolygonPoints, getTaskPath
+  getStructPolygonPoints, getTaskCircle, getTaskPath
 } from "../core/SvgUtils";
 import {mapDisassembly} from "../map/MapDisassembly";
 
@@ -76,7 +76,8 @@ export const Layers: FC = () => {
       <g id="layer2">
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
-            {(n.sFillColor && n.sFillColor !== '' || n.taskStatus > 1) &&
+            {
+              (n.sFillColor && n.sFillColor !== '' || n.taskStatus > 1) &&
               <path
                 key={`${n.nodeId}_svg_nodeFill`}
                 d={getArcPath(n, -2, true)}
@@ -91,7 +92,8 @@ export const Layers: FC = () => {
       <g id="layer3">
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
-            {(n.fBorderColor && n.fBorderColor !== '') &&
+            {
+              (n.fBorderColor && n.fBorderColor !== '') &&
               <path
                 key={`${n.nodeId}_svg_branchBorder`}
                 d={getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0)}
@@ -102,7 +104,8 @@ export const Layers: FC = () => {
               >
               </path>
             }
-            {(n.sBorderColor && n.sBorderColor !== '' && !n.hasCell) &&
+            {
+              (n.sBorderColor && n.sBorderColor !== '' && !n.hasCell) &&
               <path
                 key={`${n.nodeId}_svg_nodeBorder`}
                 d={getArcPath(n, -2, true)}
@@ -135,7 +138,8 @@ export const Layers: FC = () => {
                 fill={'none'}
                 {...pathCommonProps}
               >
-                {!getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId) &&
+                {
+                  !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId) &&
                   <animate
                     attributeName='d'
                     from={getLinePath(n, getLinePoints(getNodeById(pml, n.parentNodeId), n))}
@@ -148,7 +152,8 @@ export const Layers: FC = () => {
                 }
               </path>
             }
-            {(n.type === "struct" && n.hasCell) &&
+            {
+              (n.type === "struct" && n.hasCell) &&
               <path
                 key={`${n.nodeId}_svg_tableFrame`}
                 d={getArcPath(n, 0, false)}
@@ -159,7 +164,8 @@ export const Layers: FC = () => {
               >
               </path>
             }
-            {(n.type === "struct" && n.hasCell) &&
+            {
+              (n.type === "struct" && n.hasCell) &&
               <path
                 key={`${n.nodeId}_svg_tableGrid`}
                 d={getGridPath(n)}
@@ -170,7 +176,8 @@ export const Layers: FC = () => {
               >
               </path>
             }
-            {(
+            {
+              (
                 !(n.path.length === 1) && // is 'g'
                 n.taskStatus !== 0 &&
                 !n.hasDir &&
@@ -178,18 +185,37 @@ export const Layers: FC = () => {
                 !n.hasCell &&
                 n.contentType !== 'image' &&
                 !n.isRoot &&
-                !n.isRootChild //&&
-                // !isEqual(n.path, editedPath)
+                !n.isRootChild
               ) &&
-              <path
-                key={`${n.nodeId}_svg_tableGrid`}
-                d={getTaskPath(m, n)}
-                stroke={C.TASK_LINE}
-                strokeWidth={1}
-                fill={'none'}
-                {...pathCommonProps}
-              >
-              </path>
+              <Fragment key={`${n.nodeId}_svg_task`}>
+                {/*!isEqual(n.path, editedPath)*/}
+                <path
+                  key={`${n.nodeId}_svg_taskLine`}
+                  d={getTaskPath(m, n)}
+                  stroke={C.TASK_LINE}
+                  strokeWidth={1}
+                  fill={'none'}
+                  {...pathCommonProps}
+                >
+                </path>
+                {
+                  [...Array(m.g.taskConfigN)].map((el, i) => (
+                    <circle
+                      key={`${n.nodeId}_svg_taskCircle${i + 1}`}
+                      id={`${n.nodeId}_svg_taskCircle${i + 1}`}
+                      {...getTaskCircle(m, n, i)}
+                      fill={n.taskStatus === i + 1
+                        ? [C.TASK_CIRCLE_0_ACTIVE, C.TASK_CIRCLE_1_ACTIVE, C.TASK_CIRCLE_2_ACTIVE, C.TASK_CIRCLE_3_ACTIVE].at(i)
+                        : [C.TASK_CIRCLE_0_INACTIVE, C.TASK_CIRCLE_1_INACTIVE, C.TASK_CIRCLE_2_INACTIVE, C.TASK_CIRCLE_3_INACTIVE].at(i)}
+                      vectorEffect={'non-scaling-stroke'}
+                      style={{
+                        transition: '0.3s ease-out'
+                      }}
+                    >
+                    </circle>
+                  ))
+                }
+              </Fragment>
             }
           </Fragment>
         ))}
@@ -197,3 +223,5 @@ export const Layers: FC = () => {
     </>
   )
 }
+
+// TODO: all kinds of selections
