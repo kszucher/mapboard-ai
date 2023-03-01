@@ -103,9 +103,9 @@ export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints =
     cyu: yu,
     cyd: yd
   } : {
-    ax: dir === -1 ? xi + dir * (n.familyW + n.selfW) : xi,
+    ax: xi + (dir === -1 ? - (n.familyW + n.selfW) : 0),
     bx: xo + dir * n.lineDeltaX,
-    cx: dir === -1 ? xi : xi + dir * (n.familyW + n.selfW),
+    cx: xi + (dir === 1 ? (n.familyW + n.selfW) : 0),
     ayu: dir === -1 ? myu : yu,
     ayd: dir === -1 ? myd : yd,
     byu: myu,
