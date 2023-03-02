@@ -4,13 +4,12 @@ import {copy, isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
 import {M, N} from "../types/DefaultProps";
 import {
-  getArcPath,
-  getGridPath,
   getLinePath,
   getPolygonPath,
-  getStructPolygonPoints,
+  getGridPath,
+  getArcPath,
+  getTaskPath,
   getTaskCircle,
-  getTaskPath
 } from "../core/SvgUtils";
 import {mapDisassembly} from "../map/MapDisassembly";
 
@@ -24,6 +23,7 @@ const pathCommonProps = {
 }
 
 const getNodeById = (ml: N[], nodeId: string) => (ml.find((n: N) => n.nodeId === nodeId) as N)
+const getNodeByPath = (ml: N[], path: any[]) => (ml.find((n: N) => isEqual(n.path, path)) as N)
 const m2ml = (m: M): N[] => ((copy(mapDisassembly.start(copy(m)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1))
 
 export const Layers: FC = () => {
@@ -65,7 +65,7 @@ export const Layers: FC = () => {
             {(n.fFillColor && n.fFillColor !== '') &&
               <path
                 key={`${n.nodeId}_svg_branchFill`}
-                d={getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0)}
+                d={getPolygonPath(m, n, 'f')}
                 fill={n.fFillColor}
                 {...pathCommonProps}
               >
@@ -94,10 +94,11 @@ export const Layers: FC = () => {
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {
-              (n.fBorderColor && n.fBorderColor !== '') &&
+              n.fBorderColor &&
+              n.fBorderColor !== '' &&
               <path
                 key={`${n.nodeId}_svg_branchBorder`}
-                d={getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0)}
+                d={getPolygonPath(m, n, 'f')}
                 stroke={n.fBorderColor}
                 strokeWidth={n.fBorderWidth}
                 fill={'none'}
@@ -106,7 +107,9 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              (n.sBorderColor && n.sBorderColor !== '' && !n.hasCell) &&
+              n.sBorderColor &&
+              n.sBorderColor !== '' &&
+              !n.hasCell &&
               <path
                 key={`${n.nodeId}_svg_nodeBorder`}
                 d={getArcPath(n, -2, true)}
@@ -118,15 +121,10 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              (
-                !n.isRoot &&
-                !n.isRootChild &&
-                n.parentType !== 'cell' &&
-                (
-                  n.type === 'struct' && !n.hasCell ||
-                  n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0
-                )
-              ) &&
+              !n.isRoot &&
+              !n.isRootChild &&
+              n.parentType !== 'cell' &&
+              (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0) &&
               <path
                 key={`${n.nodeId}_svg_line`}
                 d={
@@ -154,7 +152,8 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              (n.type === "struct" && n.hasCell) &&
+              n.type === "struct" &&
+              n.hasCell &&
               <path
                 key={`${n.nodeId}_svg_tableFrame`}
                 d={getArcPath(n, 0, false)}
@@ -166,7 +165,8 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              (n.type === "struct" && n.hasCell) &&
+              n.type === "struct" &&
+              n.hasCell &&
               <path
                 key={`${n.nodeId}_svg_tableGrid`}
                 d={getGridPath(n)}
@@ -179,12 +179,12 @@ export const Layers: FC = () => {
             }
             {
               (
-                !(n.path.length === 1) && // is 'g'
-                n.taskStatus !== 0 &&
+                n.path.length > 1 &&
+                n.taskStatus > 0 &&
                 !n.hasDir &&
                 !n.hasStruct &&
                 !n.hasCell &&
-                n.contentType !== 'image' &&
+                !(n.contentType === 'image') &&
                 !n.isRoot &&
                 !n.isRootChild
               ) &&
@@ -218,14 +218,27 @@ export const Layers: FC = () => {
                 }
               </Fragment>
             }
-            {
-
-            }
           </Fragment>
         ))}
+      </g>
+      <g id="layer4">
+        {ml.map((n: N) => (
+          <Fragment key={n.nodeId}>
+            {
+              n.path.length === 1 &&
+              <path
+                key={`${m.g.nodeId}_svg_selectionBorder`}
+                d={getPolygonPath(m, getNodeByPath(ml, m.g.sc.lastPath), 's')}
+                stroke={C.SELECTION_COLOR}
+                strokeWidth={1}
+                fill={'none'}
+                {...pathCommonProps}
+              >
+              </path>
+            }
+          </Fragment>))
+        }
       </g>
     </>
   )
 }
-
-// TODO: all kinds of selections

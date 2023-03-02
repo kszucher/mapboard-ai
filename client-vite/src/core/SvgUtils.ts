@@ -4,14 +4,13 @@ import {isOdd} from "./Utils"
 import {getMapData} from "./MapFlow";
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
-type LinePoints = Record<'sx' | 'sy' | 'dx' | 'dy' | 'ex' | 'ey', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
 const getDir = (n: N) => {
   return n.path[3] ? -1 : 1
 }
 
-export const getAdjustedParams = (n: N): AdjustedParams => {
+const getAdjustedParams = (n: N): AdjustedParams => {
   const dir = getDir(n)
   const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
   const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
@@ -42,7 +41,7 @@ const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   return [xt, yt]
 }
 
-export const getBezierPath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => {
+const getBezierPath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => {
   return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
 }
 
@@ -82,71 +81,86 @@ export const getLinePath = (na: N, nb: N) => {
   return path
 }
 
-export const getStructPolygonPoints = (selection: string, n: N): PolygonPoints => {
+export const getPolygonPath = (m: M, n: N, selection: string) => {
   const R = 8
-  const dir = getDir(n)
-  const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
-  const w = n.familyW + n.selfW
-  return selection === 's' ? {
-    ax: n.nodeStartX,
-    bx: xo - dir * R,
-    cx: n.nodeEndX,
-    ayu: yu,
-    ayd: yd,
-    byu: yu,
-    byd: yd,
-    cyu: yu,
-    cyd: yd
-  } : {
-    ax: xi + (dir === -1 ? - w : 0),
-    bx: xo + dir * n.lineDeltaX,
-    cx: xi + (dir === 1 ? w : 0),
-    ayu: dir === -1 ? myu : yu,
-    ayd: dir === -1 ? myd : yd,
-    byu: myu,
-    byd: myd,
-    cyu: dir === -1 ? yu : myu,
-    cyd: dir === -1 ? yd : myd,
-  }
-}
-
-export const getCellPolygonPoints = (m: M, n: N, i: number, j: number) : PolygonPoints => {
-  const dir = getDir(n)
-  const { xi, yu } = getAdjustedParams(n)
-  let x, y, w, h
-  if (m.g.sc.cellRowSelected) {
-    x = xi
-    y = yu + n.sumMaxRowHeight[i]
-    w = n.selfW
-    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
-  } else if (m.g.sc.cellColSelected) {
-    x = xi + dir*n.sumMaxColWidth[j]
-    y = yu
-    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-    h = n.selfH
+  let pp: PolygonPoints
+  let dir
+  let margin
+  if (n.path.length === 1 && (m.g.sc.cellRowSelected || m.g.sc.cellColSelected || m.g.sc.lastPath.at(-3) === 'c')) {
+    const nt = getMapData(m, m.g.sc.lastPath.slice(0, m.g.sc.lastPath.lastIndexOf('c')))
+    dir = getDir(nt)
+    margin = (
+      (nt.selection === 's' && nt.sBorderColor !== '') ||
+      (nt.selection === 's' && nt.sFillColor !== '') ||
+      (nt.selection === 'f') ||
+      (nt.taskStatus > 1) ||
+      (nt.hasCell)
+    ) ? 4 : -2
+    const { xi, yu } = getAdjustedParams(nt)
+    const i = m.g.sc.cellRowSelected
+    const j = m.g.sc.cellColSelected
+    let x, y, w, h
+    if (m.g.sc.cellRowSelected) {
+      x = xi
+      y = yu + nt.sumMaxRowHeight[i]
+      w = nt.selfW
+      h = nt.sumMaxRowHeight[i+1] - nt.sumMaxRowHeight[i]
+    } else if (m.g.sc.cellColSelected) {
+      x = xi + dir*nt.sumMaxColWidth[j]
+      y = yu
+      w = nt.sumMaxColWidth[j+1] - nt.sumMaxColWidth[j]
+      h = nt.selfH
+    } else {
+      x = xi + dir*nt.sumMaxColWidth[j]
+      y = yu + nt.sumMaxRowHeight[i]
+      w = nt.sumMaxColWidth[j+1] - nt.sumMaxColWidth[j]
+      h = nt.sumMaxRowHeight[i+1] - nt.sumMaxRowHeight[i]
+    }
+    pp = {
+      ax: x + (dir === -1 ? -w : 0),
+      bx: x + dir * w,
+      cx: x + (dir === 1 ? w : 0),
+      ayu: y,
+      ayd: y + h,
+      byu: y,
+      byd: y + h,
+      cyu: y,
+      cyd: y + h
+    }
   } else {
-    x = xi + dir*n.sumMaxColWidth[j]
-    y = yu + n.sumMaxRowHeight[i]
-    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+    dir = getDir(n)
+    margin = (
+      (n.selection === 's' && n.sBorderColor !== '') ||
+      (n.selection === 's' && n.sFillColor !== '') ||
+      (n.selection === 'f') ||
+      (n.taskStatus > 1) ||
+      (n.hasCell)
+    ) ? 4 : -2
+    const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
+    const w = n.familyW + n.selfW
+    pp = selection === 's' ? {
+      ax: n.nodeStartX,
+      bx: xo - dir * R,
+      cx: n.nodeEndX,
+      ayu: yu,
+      ayd: yd,
+      byu: yu,
+      byd: yd,
+      cyu: yu,
+      cyd: yd
+    } : {
+      ax: xi + (dir === -1 ? -w : 0),
+      bx: xo + dir * n.lineDeltaX,
+      cx: xi + (dir === 1 ? w : 0),
+      ayu: dir === -1 ? myu : yu,
+      ayd: dir === -1 ? myd : yd,
+      byu: myu,
+      byd: myd,
+      cyu: dir === -1 ? yu : myu,
+      cyd: dir === -1 ? yd : myd
+    }
   }
-  return {
-    ax: x + (dir === - 1 ? - w : 0),
-    bx: x + dir * w,
-    cx: x + (dir === 1 ? w : 0),
-    ayu: y,
-    ayd: y + h,
-    byu: y,
-    byd: y + h,
-    cyu: y,
-    cyd: y + h,
-  }
-}
-
-export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
-  const R = 12
-  const dir = getDir(n)
-  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
+  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd} = pp
   ax -= margin
   bx -= dir * margin
   cx += margin
@@ -162,10 +176,10 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
     const prevPoint = i === 0 ? points[points.length - 1] : points[i - 1]
     const currPoint = points[i]
     const nextPoint = i === points.length - 1 ? points[0] : points[i + 1]
-    const [sx, sy] = getCoordsInLine(currPoint, prevPoint, R)
+    const [sx, sy] = getCoordsInLine(currPoint, prevPoint, 12)
     const [c1x, c1y] = currPoint
     const [c2x, c2y] = currPoint
-    const [ex, ey] = getCoordsInLine(currPoint, nextPoint, R)
+    const [ex, ey] = getCoordsInLine(currPoint, nextPoint, 12)
     if (selection === 's' && i === (dir === - 1 ? 4 : 1)) {
       path += getBezierPath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
     } else if (selection === 's' && i === (dir === - 1 ? 1 : 4)) {
