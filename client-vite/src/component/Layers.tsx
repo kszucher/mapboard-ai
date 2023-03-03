@@ -5,6 +5,8 @@ import {getColors} from "../core/Colors";
 import {M, N} from "../types/DefaultProps";
 import {
   getLinePath,
+  getStructPolygonPoints,
+  getCellPolygonPoints,
   getPolygonPath,
   getGridPath,
   getArcPath,
@@ -41,7 +43,10 @@ export const Layers: FC = () => {
   const pml = mdi > 0 ? m2ml(pm) : []
   const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
     ? getNodeByPath(ml, m.g.sc.sameParentPath)
-    : ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b)
+    : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
+
+
+  console.log(m.g.sc)
 
   return (
     <>
@@ -68,7 +73,7 @@ export const Layers: FC = () => {
               n.fFillColor && n.fFillColor !== '' &&
               <path
                 key={`${n.nodeId}_svg_branchFill`}
-                d={getPolygonPath(m, n, 'f', 0)}
+                d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
                 fill={n.fFillColor}
                 {...pathCommonProps}
               >
@@ -100,7 +105,7 @@ export const Layers: FC = () => {
               n.fBorderColor && n.fBorderColor !== '' &&
               <path
                 key={`${n.nodeId}_svg_branchBorder`}
-                d={getPolygonPath(m, n, 'f', 0)}
+                d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
                 stroke={n.fBorderColor}
                 strokeWidth={n.fBorderWidth}
                 fill={'none'}
@@ -226,17 +231,21 @@ export const Layers: FC = () => {
         <path
           key={`${m.g.nodeId}_svg_selectionBorder`}
           d={getPolygonPath(
-            m,
             sn,
+            ['c', 'cr', 'cc'].includes(m.g.sc.scope)
+              ? getCellPolygonPoints(m, sn)
+              : getStructPolygonPoints(sn, sn.selection)
+            ,
             sn.selection,
-            (
-              (sn.selection === 's' && (sn.sBorderColor !== '' || sn.sFillColor !== '')) ||
-              (sn.selection === 'f') ||
-              (sn.taskStatus > 1) ||
-              (sn.hasCell)
-            ) ? 4 : -2
-          )
-          }
+            ['c', 'cr', 'cc'].includes(m.g.sc.scope)
+              ? 4
+              : (
+                (sn.selection === 's' && (sn.sBorderColor !== '' || sn.sFillColor !== '')) ||
+                (sn.selection === 'f') ||
+                (sn.taskStatus > 1) ||
+                (sn.hasCell)
+              ) ? 4 : -2
+          )}
           stroke={C.SELECTION_COLOR}
           strokeWidth={1}
           fill={'none'}

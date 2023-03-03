@@ -167,7 +167,7 @@ export const mapReducer = (m: M, action: string, payload: any) => {
     }
     case 'select_S_F': {
       clearSelection(m)
-      ln.selected = 1
+      ln.s[0].selected = 1
       break
     }
     case 'select_S_B': {
@@ -182,7 +182,7 @@ export const mapReducer = (m: M, action: string, payload: any) => {
     }
     case 'select_C_IOUD': {
       clearSelection(m)
-      getMapData(m, cellNavigate(m, ln.path.slice(0, -2), payload.direction)).selected = 1
+      getMapData(m, cellNavigate(m, ln.path, payload.direction)).selected = 1
       break
     }
     case 'select_C_F': {
@@ -207,11 +207,10 @@ export const mapReducer = (m: M, action: string, payload: any) => {
     case 'select_CR_IO': {
       clearSelection(m)
       let pn = getMapData(m, ln.parentPath)
-      let parentParentRef = getMapData(m, pn.parentPath)
-      let currRow = pn.index[0]
-      let colLen = parentParentRef.c[0].length
+      let currRow = ln.index[0]
+      let colLen = pn.c[0].length
       for (let i = 0; i < colLen; i++) {
-        parentParentRef.c[currRow][i].selected = 1
+        pn.c[currRow][i].selected = 1
       }
       break
     }
@@ -226,11 +225,10 @@ export const mapReducer = (m: M, action: string, payload: any) => {
     case 'select_CC_IO': {
       clearSelection(m)
       let pn = getMapData(m, ln.parentPath)
-      let parentParentRef = getMapData(m, pn.parentPath)
-      let currCol = pn.index[1]
-      let rowLen = parentParentRef.c.length
+      let currCol = ln.index[1]
+      let rowLen = pn.c.length
       for (let i = 0; i < rowLen; i++) {
-        parentParentRef.c[i][currCol].selected = 1
+        pn.c[i][currCol].selected = 1
       }
       break
     }

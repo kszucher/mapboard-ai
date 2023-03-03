@@ -6,7 +6,7 @@ import {getMapData} from "./MapFlow";
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
-const getDir = (n: N) => {
+export const getDir = (n: N) => {
   return n.path[3] ? -1 : 1
 }
 
@@ -74,70 +74,74 @@ export const getLinePath = (na: N, nb: N) => {
   return path
 }
 
-export const getPolygonPath = (m: M, n: N, selection: string, margin: number) => {
+export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints => {
   const R = 8
-  let pp: PolygonPoints
-  let dir
-  if (['c', 'cr', 'cc'].includes(m.g.sc.scope)) {
-    dir = getDir(n)
-    const { xi, yu } = getAdjustedParams(n)
-    const i = m.g.sc.cellRowSelected
-    const j = m.g.sc.cellColSelected
-    let x, y, w, h
-    if (m.g.sc.scope === 'cr') {
-      x = xi
-      y = yu + n.sumMaxRowHeight[i]
-      w = n.selfW
-      h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
-    } else if (m.g.sc.scope === 'cc') {
-      x = xi + dir*n.sumMaxColWidth[j]
-      y = yu
-      w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-      h = n.selfH
-    } else {
-      x = xi + dir*n.sumMaxColWidth[j]
-      y = yu + n.sumMaxRowHeight[i]
-      w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-      h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
-    }
-    pp = {
-      ax: x + (dir === -1 ? -w : 0),
-      bx: x + dir * w,
-      cx: x + (dir === 1 ? w : 0),
-      ayu: y,
-      ayd: y + h,
-      byu: y,
-      byd: y + h,
-      cyu: y,
-      cyd: y + h
-    }
-  } else {
-    dir = getDir(n)
-    const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
-    const w = n.familyW + n.selfW
-    pp = selection === 's' ? {
-      ax: n.nodeStartX,
-      bx: xo - dir * R,
-      cx: n.nodeEndX,
-      ayu: yu,
-      ayd: yd,
-      byu: yu,
-      byd: yd,
-      cyu: yu,
-      cyd: yd
-    } : {
-      ax: xi + (dir === -1 ? -w : 0),
-      bx: xo + dir * n.lineDeltaX,
-      cx: xi + (dir === 1 ? w : 0),
-      ayu: dir === -1 ? myu : yu,
-      ayd: dir === -1 ? myd : yd,
-      byu: myu,
-      byd: myd,
-      cyu: dir === -1 ? yu : myu,
-      cyd: dir === -1 ? yd : myd
-    }
+  const dir = getDir(n)
+  const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
+  const w = n.familyW + n.selfW
+  return selection === 's' ? {
+    ax: n.nodeStartX,
+    bx: xo - dir * R,
+    cx: n.nodeEndX,
+    ayu: yu,
+    ayd: yd,
+    byu: yu,
+    byd: yd,
+    cyu: yu,
+    cyd: yd
+  } : {
+    ax: xi + (dir === -1 ? -w : 0),
+    bx: xo + dir * n.lineDeltaX,
+    cx: xi + (dir === 1 ? w : 0),
+    ayu: dir === -1 ? myu : yu,
+    ayd: dir === -1 ? myd : yd,
+    byu: myu,
+    byd: myd,
+    cyu: dir === -1 ? yu : myu,
+    cyd: dir === -1 ? yd : myd
   }
-  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd} = pp
+}
+
+export const getCellPolygonPoints = (m: M, n: N): PolygonPoints => {
+  const dir = getDir(n)
+  const { xi, yu } = getAdjustedParams(n)
+  let x, y, w, h
+  if (m.g.sc.scope === 'cr') {
+    const i = m.g.sc.cellRow
+    x = xi
+    y = yu + n.sumMaxRowHeight[i]
+    w = n.selfW
+    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+  } else if (m.g.sc.scope === 'cc') {
+    const j = m.g.sc.cellCol
+    x = xi + dir*n.sumMaxColWidth[j]
+    y = yu
+    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+    h = n.selfH
+  } else {
+    const i = m.g.sc.lastPath.at(-2)
+    const j = m.g.sc.lastPath.at(-1)
+    x = xi + dir*n.sumMaxColWidth[j]
+    y = yu + n.sumMaxRowHeight[i]
+    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+  }
+  return {
+    ax: x + (dir === -1 ? -w : 0),
+    bx: x + dir * w,
+    cx: x + (dir === 1 ? w : 0),
+    ayu: y,
+    ayd: y + h,
+    byu: y,
+    byd: y + h,
+    cyu: y,
+    cyd: y + h
+  }
+}
+
+export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
+  const dir = getDir(n)
+  let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax -= margin
   bx -= dir * margin
   cx += margin
