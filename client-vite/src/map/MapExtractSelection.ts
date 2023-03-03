@@ -52,11 +52,11 @@ export const mapExtractSelection = {
         let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 1]))
         let sameParent = getMapData(m, sc.sameParentPath)
         if (haveSameRow && sc.cellSelectedPathList.length === sameParent.c[0].length) {
-          sc.cellRowSelected = 1
+          sc.isCellRowSelected = 1
           sc.cellRow = sameRow
         }
         if (haveSameCol && sc.cellSelectedPathList.length === sameParent.c.length) {
-          sc.cellColSelected = 1
+          sc.isCellColSelected = 1
           sc.cellCol = sameCol
         }
       }
@@ -66,8 +66,8 @@ export const mapExtractSelection = {
       sc.scope = 's'
     } else if (sc.cellSelectedPathList.length) {
       sc.scope = 'c'
-      if (sc.cellRowSelected) sc.scope = 'cr'
-      if (sc.cellColSelected) sc.scope = 'cc'
+      if (sc.isCellRowSelected) sc.scope = 'cr'
+      if (sc.isCellColSelected) sc.scope = 'cc'
     }
   },
 

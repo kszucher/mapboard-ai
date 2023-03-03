@@ -10,9 +10,9 @@ interface SC {
   lastPath: any[],
   geomHighPath: any[],
   geomLowPath: any[],
-  cellRowSelected: number,
+  isCellRowSelected: number,
   cellRow: number,
-  cellColSelected: number,
+  isCellColSelected: number,
   cellCol: number,
   haveSameParent: number,
   sameParentPath: any[]

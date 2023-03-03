@@ -56,21 +56,21 @@ export const structDeleteReselect = (m: M, sc: SC) => {
 }
 
 export const cellDeleteReselect = (m: M, sc: SC) => {
-  const { lastPath, cellRowSelected, cellRow, cellColSelected, cellCol, sameParentPath } = sc
+  const { lastPath, isCellRowSelected, cellRow, isCellColSelected, cellCol, sameParentPath } = sc
   let sameParent = getMapData(m, sameParentPath)
   let ln = getMapData(m, lastPath)
-  if (cellRowSelected && getMapData(m, ln.parentPath).c.length === 1 ||
-    cellColSelected && getMapData(m, ln.parentPath).c[0].length === 1) {
+  if (isCellRowSelected && getMapData(m, ln.parentPath).c.length === 1 ||
+    isCellColSelected && getMapData(m, ln.parentPath).c[0].length === 1) {
     let sameParentParent = getMapData(m, sameParent.parentPath)
     sameParentParent.s.splice(sameParent.index, 1)
     sameParentParent.selected = 1
     return
   }
-  if (cellRowSelected) {
+  if (isCellRowSelected) {
     sameParent.c.splice(cellRow, 1)
     sameParent.selected = 1
   }
-  if (cellColSelected) {
+  if (isCellColSelected) {
     for (let i = 0; i < sameParent.c.length; i++) {
       sameParent.c[i].splice(cellCol, 1)
     }

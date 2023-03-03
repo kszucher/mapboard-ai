@@ -2,6 +2,7 @@ import {getDefaultNode} from "../core/DefaultProps"
 import {copy, transpose} from '../core/Utils'
 import {getMapData} from '../core/MapFlow'
 import {Dir} from "../core/Types"
+import {M} from "../types/DefaultProps"
 
 export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {
   let {structSelectedPathList, sameParentPath} = sc
@@ -109,30 +110,30 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   }
 }
 
-export const cellRowMove = (m: any, direction: Dir) => {
+export const cellRowMove = (m: M, direction: Dir) => {
   const { sc } = m.g
-  const  { sameParentPath, cellRowSelected, cellRow } = sc
+  const  { sameParentPath, isCellRowSelected, cellRow } = sc
   let sameParent = getMapData(m, sameParentPath)
-  if (direction === Dir.U && cellRowSelected && cellRow > 0) {
+  if (direction === Dir.U && isCellRowSelected && cellRow > 0) {
     [sameParent.c[cellRow], sameParent.c[cellRow - 1]] =
       [sameParent.c[cellRow - 1], sameParent.c[cellRow]]
   }
-  if (direction === Dir.D && cellRowSelected && cellRow < sameParent.c.length - 1) {
+  if (direction === Dir.D && isCellRowSelected && cellRow < sameParent.c.length - 1) {
     [sameParent.c[cellRow], sameParent.c[cellRow + 1]] =
       [sameParent.c[cellRow + 1], sameParent.c[cellRow]]
   }
 }
 
-export const cellColMove = (m: any, direction: Dir) => {
+export const cellColMove = (m: M, direction: Dir) => {
   const { sc } = m.g
-  const  { sameParentPath, cellColSelected, cellCol } = sc
+  const  { sameParentPath, isCellColSelected, cellCol } = sc
   let sameParent = getMapData(m, sameParentPath)
-  if (direction === Dir.I && cellColSelected && cellCol > 0) {
+  if (direction === Dir.I && isCellColSelected && cellCol > 0) {
     for (let i = 0; i < sameParent.c.length; i++) {
       [sameParent.c[i][cellCol], sameParent.c[i][cellCol - 1]] = [sameParent.c[i][cellCol - 1], sameParent.c[i][cellCol]]
     }
   }
-  if (direction === Dir.O && cellColSelected && cellCol < sameParent.c[0].length - 1) {
+  if (direction === Dir.O && isCellColSelected && cellCol < sameParent.c[0].length - 1) {
     for (let i = 0; i < sameParent.c.length; i++) {
       [sameParent.c[i][cellCol], sameParent.c[i][cellCol + 1]] =
         [sameParent.c[i][cellCol + 1], sameParent.c[i][cellCol]]
