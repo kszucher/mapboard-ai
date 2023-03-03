@@ -24,48 +24,55 @@ const pathCommonProps = {
 
 const getNodeById = (ml: N[], nodeId: string) => (ml.find((n: N) => n.nodeId === nodeId) as N)
 const getNodeByPath = (ml: N[], path: any[]) => (ml.find((n: N) => isEqual(n.path, path)) as N)
-const m2ml = (m: M): N[] => ((copy(mapDisassembly.start(copy(m)))).sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1))
+const m2ml = (m: M) => (
+  mapDisassembly.start(copy(m))
+    .sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
+    .filter((el: any) => el.path.length > 1)
+)
 
 export const Layers: FC = () => {
+  const colorMode = 'dark'
+  const C = getColors(colorMode)
   const mdi = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
   const md = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
   const m = md[mdi]
   const ml = m2ml(m)
   const pm = mdi > 0 ? md[mdi - 1] : {} // TODO handle tm AND undo-redo
   const pml = mdi > 0 ? m2ml(pm) : []
-  const colorMode = 'dark'
-  const C = getColors(colorMode)
+
+  let ln
+  if (m.g.sc.cellRowSelected || m.g.sc.cellColSelected || m.g.sc.lastPath.at(-3) === 'c') {
+    ln = getNodeByPath(ml, m.g.sc.lastPath)
+  } else {
+    ln = ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b)
+  }
+
   return (
     <>
       <g id="layer0">
-        {ml.map((n: N) => (
-          <Fragment key={n.nodeId}>
-            {isEqual(n.path, ['g']) &&
-              <rect
-                key={`${n.nodeId}_svg_backgroundRect`}
-                x={0}
-                y={0}
-                width={m.g.mapWidth}
-                height={m.g.mapHeight}
-                rx={32}
-                ry={32}
-                fill={C.MAP_BACKGROUND}
-                style={{
-                  transition: '0.3s ease-out'
-                }}
-              >
-              </rect>
-            }
-          </Fragment>
-        ))}
+        <rect
+          key={`${m.g.nodeId}_svg_backgroundRect`}
+          x={0}
+          y={0}
+          width={m.g.mapWidth}
+          height={m.g.mapHeight}
+          rx={32}
+          ry={32}
+          fill={C.MAP_BACKGROUND}
+          style={{
+            transition: '0.3s ease-out'
+          }}
+        >
+        </rect>
       </g>
       <g id="layer1">
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
-            {(n.fFillColor && n.fFillColor !== '') &&
+            {
+              n.fFillColor && n.fFillColor !== '' &&
               <path
                 key={`${n.nodeId}_svg_branchFill`}
-                d={getPolygonPath(m, n, 'f')}
+                d={getPolygonPath(m, n, 'f', 0)}
                 fill={n.fFillColor}
                 {...pathCommonProps}
               >
@@ -94,11 +101,10 @@ export const Layers: FC = () => {
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {
-              n.fBorderColor &&
-              n.fBorderColor !== '' &&
+              n.fBorderColor && n.fBorderColor !== '' &&
               <path
                 key={`${n.nodeId}_svg_branchBorder`}
-                d={getPolygonPath(m, n, 'f')}
+                d={getPolygonPath(m, n, 'f', 0)}
                 stroke={n.fBorderColor}
                 strokeWidth={n.fBorderWidth}
                 fill={'none'}
@@ -107,8 +113,7 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              n.sBorderColor &&
-              n.sBorderColor !== '' &&
+              n.sBorderColor && n.sBorderColor !== '' &&
               !n.hasCell &&
               <path
                 key={`${n.nodeId}_svg_nodeBorder`}
@@ -222,22 +227,26 @@ export const Layers: FC = () => {
         ))}
       </g>
       <g id="layer4">
-        {ml.map((n: N) => (
-          <Fragment key={n.nodeId}>
-            {
-              n.path.length === 1 &&
-              <path
-                key={`${m.g.nodeId}_svg_selectionBorder`}
-                d={getPolygonPath(m, getNodeByPath(ml, m.g.sc.lastPath), 's')}
-                stroke={C.SELECTION_COLOR}
-                strokeWidth={1}
-                fill={'none'}
-                {...pathCommonProps}
-              >
-              </path>
-            }
-          </Fragment>))
-        }
+        <path
+          key={`${m.g.nodeId}_svg_selectionBorder`}
+          d={getPolygonPath(
+            m,
+            ln,
+            ln.selection,
+            (
+              (ln.selection === 's' && (ln.sBorderColor !== '' || ln.sFillColor !== '')) ||
+              (ln.selection === 'f') ||
+              (ln.taskStatus > 1) ||
+              (ln.hasCell)
+            ) ? 4 : -2
+          )
+          }
+          stroke={C.SELECTION_COLOR}
+          strokeWidth={1}
+          fill={'none'}
+          {...pathCommonProps}
+        >
+        </path>
       </g>
     </>
   )

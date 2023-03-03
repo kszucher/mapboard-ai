@@ -21,13 +21,6 @@ const getAdjustedParams = (n: N): AdjustedParams => {
     yd: n.nodeY + selfHadj / 2,
     myu: n.nodeY - maxHadj / 2,
     myd: n.nodeY + maxHadj / 2,
-    // margin: (
-    //   (n.selection === 's' && n.sBorderColor !== '') ||
-    //   (n.selection === 's' && n.sFillColor !== '') ||
-    //   (n.selection === 'f') ||
-    //   (n.taskStatus > 1) ||
-    //   (n.hasCell)
-    // ) ? 4 : -2,
   }
 }
 
@@ -81,21 +74,13 @@ export const getLinePath = (na: N, nb: N) => {
   return path
 }
 
-export const getPolygonPath = (m: M, n: N, selection: string) => {
+export const getPolygonPath = (m: M, n: N, selection: string, margin: number) => {
   const R = 8
   let pp: PolygonPoints
   let dir
-  let margin
-  if (n.path.length === 1 && (m.g.sc.cellRowSelected || m.g.sc.cellColSelected || m.g.sc.lastPath.at(-3) === 'c')) {
-    const nt = getMapData(m, m.g.sc.lastPath.slice(0, m.g.sc.lastPath.lastIndexOf('c')))
+  if (m.g.sc.cellRowSelected || m.g.sc.cellColSelected || m.g.sc.lastPath.at(-3) === 'c') {
+    const nt = getMapData(m, m.g.sc.lastPath.slice(0, m.g.sc.lastPath.lastIndexOf('c'))) // TODO remove this as it is not needed, and put it in the LN creator in the other file!!!
     dir = getDir(nt)
-    margin = (
-      (nt.selection === 's' && nt.sBorderColor !== '') ||
-      (nt.selection === 's' && nt.sFillColor !== '') ||
-      (nt.selection === 'f') ||
-      (nt.taskStatus > 1) ||
-      (nt.hasCell)
-    ) ? 4 : -2
     const { xi, yu } = getAdjustedParams(nt)
     const i = m.g.sc.cellRowSelected
     const j = m.g.sc.cellColSelected
@@ -129,13 +114,6 @@ export const getPolygonPath = (m: M, n: N, selection: string) => {
     }
   } else {
     dir = getDir(n)
-    margin = (
-      (n.selection === 's' && n.sBorderColor !== '') ||
-      (n.selection === 's' && n.sFillColor !== '') ||
-      (n.selection === 'f') ||
-      (n.taskStatus > 1) ||
-      (n.hasCell)
-    ) ? 4 : -2
     const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
     const w = n.familyW + n.selfW
     pp = selection === 's' ? {
@@ -262,8 +240,7 @@ export const getTaskPath = (m: M, n: N) => {
 export const getTaskCircle = (m: M, n: N, i: number) => {
   const dir = getDir(n)
   const { taskConfigD, taskConfigGap } = m.g
-  const startX = getTaskStartPoint(m, n)
-  const cx = startX + dir * taskConfigD/2 + dir * i * (taskConfigD + taskConfigGap)
+  const cx = getTaskStartPoint(m, n) + dir * ( taskConfigD/2 + i * (taskConfigD + taskConfigGap))
   const cy = n.nodeY
   const r = taskConfigD / 2
   return { cx, cy, r }
