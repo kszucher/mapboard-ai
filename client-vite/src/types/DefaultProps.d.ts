@@ -112,10 +112,6 @@ interface NSaveNever {
   index: any[],
   // mapDiff
   dimChange: number,
-  parentNodeEndXFrom: number,
-  parentNodeStartXFrom: number,
-  parentNodeYFrom: number,
-  animationRequested: number,
   // mapMeasure
   selfW: number,
   selfH: number,

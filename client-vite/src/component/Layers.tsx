@@ -39,13 +39,9 @@ export const Layers: FC = () => {
   const ml = m2ml(m)
   const pm = mdi > 0 ? md[mdi - 1] : {} // TODO handle tm AND undo-redo
   const pml = mdi > 0 ? m2ml(pm) : []
-
-  let ln
-  if (m.g.sc.cellRowSelected || m.g.sc.cellColSelected || m.g.sc.lastPath.at(-3) === 'c') {
-    ln = getNodeByPath(ml, m.g.sc.lastPath)
-  } else {
-    ln = ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b)
-  }
+  const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
+    ? getNodeByPath(ml, m.g.sc.sameParentPath)
+    : ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b)
 
   return (
     <>
@@ -231,13 +227,13 @@ export const Layers: FC = () => {
           key={`${m.g.nodeId}_svg_selectionBorder`}
           d={getPolygonPath(
             m,
-            ln,
-            ln.selection,
+            sn,
+            sn.selection,
             (
-              (ln.selection === 's' && (ln.sBorderColor !== '' || ln.sFillColor !== '')) ||
-              (ln.selection === 'f') ||
-              (ln.taskStatus > 1) ||
-              (ln.hasCell)
+              (sn.selection === 's' && (sn.sBorderColor !== '' || sn.sFillColor !== '')) ||
+              (sn.selection === 'f') ||
+              (sn.taskStatus > 1) ||
+              (sn.hasCell)
             ) ? 4 : -2
           )
           }

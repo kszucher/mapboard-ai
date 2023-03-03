@@ -109,10 +109,6 @@ export const nSaveNever = {
   index: [],
   // mapDiff
   dimChange: 0,
-  parentNodeEndXFrom: 0,
-  parentNodeStartXFrom: 0,
-  parentNodeYFrom: 0,
-  animationRequested: 0,
   // mapMeasure
   selfW: 0,
   selfH: 0,

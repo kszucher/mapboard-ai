@@ -180,31 +180,27 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       getMapData(m, ln.path.slice(0, -5)).selected = 1
       break
     }
-    case 'select_M_IOUD': {
+    case 'select_C_IOUD': {
       clearSelection(m)
       getMapData(m, cellNavigate(m, ln.path.slice(0, -2), payload.direction)).selected = 1
-      getMapData(m, [...cellNavigate(m, ln.path.slice(0, -2), payload.direction), 's', 0]).selected = 1
       break
     }
-    case 'select_M_F': {
+    case 'select_C_F': {
       clearSelection(m)
       ln.selected = 1
-      ln.s[0].selected = 1
       break
     }
-    case 'select_M_FF': {
+    case 'select_C_FF': {
       if (ln.hasCell) {
         clearSelection(m)
         getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
-        getMapData(m, [...sc.lastPath, 'c', 0, 0, 's', 0]).selected = 1
       }
       break
     }
-    case 'select_M_B': {
+    case 'select_C_B': {
       if (ln.path.includes('c')) {
         clearSelection(m)
         getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)]).selected = 1
-        getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3), 's', 0]).selected = 1
       }
       break
     }
@@ -472,16 +468,8 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
   return m as M
 }
 
-const redrawStep = (m: M, colorMode: string, isEditing: boolean, shouldAnimationInit: boolean) => {
+export const reDraw = (m: M, colorMode: string) => {
   flagDomData()
-  // mapVisualizeSvg.start(m, colorMode, shouldAnimationInit)
   mapVisualizeDiv.start(m, colorMode)
   updateDomData()
-}
-
-export const reDraw = (m: M, colorMode: string, isEditing: boolean) => {
-  if (m.g.animationRequested) {
-    redrawStep(m, colorMode, isEditing, true)
-  }
-  redrawStep(m, colorMode, isEditing, false)
 }

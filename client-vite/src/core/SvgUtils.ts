@@ -78,28 +78,27 @@ export const getPolygonPath = (m: M, n: N, selection: string, margin: number) =>
   const R = 8
   let pp: PolygonPoints
   let dir
-  if (m.g.sc.cellRowSelected || m.g.sc.cellColSelected || m.g.sc.lastPath.at(-3) === 'c') {
-    const nt = getMapData(m, m.g.sc.lastPath.slice(0, m.g.sc.lastPath.lastIndexOf('c'))) // TODO remove this as it is not needed, and put it in the LN creator in the other file!!!
-    dir = getDir(nt)
-    const { xi, yu } = getAdjustedParams(nt)
+  if (['c', 'cr', 'cc'].includes(m.g.sc.scope)) {
+    dir = getDir(n)
+    const { xi, yu } = getAdjustedParams(n)
     const i = m.g.sc.cellRowSelected
     const j = m.g.sc.cellColSelected
     let x, y, w, h
-    if (m.g.sc.cellRowSelected) {
+    if (m.g.sc.scope === 'cr') {
       x = xi
-      y = yu + nt.sumMaxRowHeight[i]
-      w = nt.selfW
-      h = nt.sumMaxRowHeight[i+1] - nt.sumMaxRowHeight[i]
-    } else if (m.g.sc.cellColSelected) {
-      x = xi + dir*nt.sumMaxColWidth[j]
+      y = yu + n.sumMaxRowHeight[i]
+      w = n.selfW
+      h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+    } else if (m.g.sc.scope === 'cc') {
+      x = xi + dir*n.sumMaxColWidth[j]
       y = yu
-      w = nt.sumMaxColWidth[j+1] - nt.sumMaxColWidth[j]
-      h = nt.selfH
+      w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+      h = n.selfH
     } else {
-      x = xi + dir*nt.sumMaxColWidth[j]
-      y = yu + nt.sumMaxRowHeight[i]
-      w = nt.sumMaxColWidth[j+1] - nt.sumMaxColWidth[j]
-      h = nt.sumMaxRowHeight[i+1] - nt.sumMaxRowHeight[i]
+      x = xi + dir*n.sumMaxColWidth[j]
+      y = yu + n.sumMaxRowHeight[i]
+      w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+      h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
     }
     pp = {
       ax: x + (dir === -1 ? -w : 0),

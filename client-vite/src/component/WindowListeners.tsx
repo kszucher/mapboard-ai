@@ -308,13 +308,13 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mExists) {
-      reDraw(m, colorMode, editedNodeId)
+      reDraw(m, colorMode)
     }
   }, [m, colorMode])
 
   useEffect(() => {
     if (tmExists) {
-      reDraw(tm, colorMode, editedNodeId)
+      reDraw(tm, colorMode)
     }
   }, [tm])
 

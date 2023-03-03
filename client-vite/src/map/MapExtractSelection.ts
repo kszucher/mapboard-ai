@@ -62,9 +62,7 @@ export const mapExtractSelection = {
       }
     }
     // scope
-    if (sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-      sc.scope = 'm'
-    } else if (sc.structSelectedPathList.length) {
+    if (sc.structSelectedPathList.length) {
       sc.scope = 's'
     } else if (sc.cellSelectedPathList.length) {
       sc.scope = 'c'
