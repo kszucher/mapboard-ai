@@ -4,7 +4,6 @@ import {actions, getEditedNodeId, getMap} from "../core/EditorFlow"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Types"
 import {getMapData} from "../core/MapFlow"
-import {api} from "../core/Api"
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -31,7 +30,7 @@ const c2dt = (m: M, which) => {
   return { direction }
 }
 
-export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDispatch) => {
+export const useEventToAction = (event: UIEvent, eventType, eventPayload, dispatch, mapDispatch) => {
 
   // console.log(eventType)
 
@@ -43,8 +42,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
   const m = getMap()
   const editedNodeId = getEditedNodeId()
 
-  const keyStateMachineDb = [
-    [ 'eventTypeCondition', 'isEditing', 'match', 'scope', 'preventDefault', 'actionType', 'action', 'payload' ],
+  const stateMachine = [
     [ 'kd', 0, ckm(e, '000') && key === 'F1',                   ['s', 'c'],         1, 'm',  '',                                  {}                              ],
     [ 'kd', 0, ckm(e, '000') && key === 'F2',                   ['s', 'c'],         1, 'm',  'startEdit',                         {}                              ],
     [ 'kd', 0, ckm(e, '000') && key === 'F3',                   ['s', 'c'],         1, 'm',  '',                                  {}                              ],
@@ -68,7 +66,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '000') && code === 'Backspace',           ['c'],              1, 'm',  'select_S_BB',                       {}                              ],
     [ 'kd', 0, ckm(e, '000') && code === 'Escape',              ['s', 'c'],         1, 'm',  'select_R',                          {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyA',                ['s', 'c'],         1, 'm',  'select_all',                        {}                              ],
-    // [ 'kd', 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c', 'm'],    1, 'rtk','createMapInMap',                    getCreateMapProps()             ], // TODO: open dialog instead which can accept ENTER
+    [ 'kd', 0, ckm(e, '100') && code === 'KeyM',                ['s', 'c'],         1, 'a',  'createMapInMapDialog',              {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyC',                ['s', 'c'],         1, 'm',  'copySelection',                     {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyX',                ['s', 'c'],         1, 'm',  'cutSelection',                      {}                              ],
     [ 'kd', 0, ckm(e, '100') && code === 'KeyZ',                ['any'],            1, 'a',  'redo',                              {}                              ],
@@ -90,7 +88,7 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'kd', 0, ckm(e, '001') && [U,D].includes(which),          ['c'],              1, 'm',  'insert_CR_UD',                      {...c2dt(m, which), b: true}    ],
     [ 'kd', 0, ckm(e, '100') && [U,D].includes(which),          ['cr'],             1, 'm',  'move_CR_UD',                        {...c2dt(m, which)}             ],
     [ 'kd', 0, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'c'],         1, 'm',  'applyColorFromKey',                 {currColor: which - 96}         ],
-    [ 'kd', 0, ckm(e, '0-0') && which >= 48,                    ['s', 'c'],         0, 'a',  'setEditedNodeId',                   getMapData(m, m.g.sc.lastPath).nodeId     ],
+    [ 'kd', 0, ckm(e, '0-0') && which >= 48,                    ['s', 'c'],         0, 'a',  'setEditedNodeId',                   {}                              ],
     [ 'pt', 0, text.substring(0, 1) === '[',                    ['s'],             -1, 'm',  'insertNodesFromClipboard',          {text}                          ],
     [ 'pt', 0, text.substring(0, 2) === '\\[',                  ['s'],             -1, 'm',  'insert_S_O_equation',               {text}                          ],
     [ 'pt', 0, isUrl(text),                                     ['s'],             -1, 'm',  'insert_S_O_elink',                  {text}                          ],
@@ -98,12 +96,8 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
     [ 'pt', 1, true,                                            ['s'],             -1, 'm',  'append_text',                       {text}                          ],
     [ 'pi', 0, true,                                            ['s'],             -1, 'm',  'insert_S_O_image',                  {imageId, imageSize}            ],
   ]
-  let keyStateMachine = {}
-  for (let i = 0; i < keyStateMachineDb.length; i++) {
-    for (let h = 0; h < keyStateMachineDb[0].length; h++) {
-      keyStateMachine[keyStateMachineDb[0][h]] = keyStateMachineDb[i][h]
-    }
-    const { eventTypeCondition, isEditing, match, scope, preventDefault, actionType, action, payload } = keyStateMachine
+  for (let i = 0; i < stateMachine.length; i++) {
+    const [ eventTypeCondition, isEditing, match, scope, preventDefault, actionType, action, payload ] = stateMachine[i]
     if (
       eventTypeCondition === eventType &&
       !!isEditing === editedNodeId.length > 0 &&
@@ -113,10 +107,22 @@ export const useEventToAction = (event, eventType, eventPayload, dispatch, mapDi
       if (preventDefault === 1) {
         event.preventDefault()
       }
-      switch (actionType) {
-        case 'a': dispatch(actions[action](payload)); break
-        case 'rtk': dispatch(api.endpoints[action].initiate(payload)); break
-        case 'm': mapDispatch(action, payload); break
+      if (actionType === 'a') {
+        if (action === 'undo') {
+          dispatch(actions.undo)
+        } else if (action === 'redo') {
+          dispatch(actions.redo)
+        } else if (action === 'createMapInMapDialog') {
+          // TODO
+        } else if (action === 'setEditedNodeId') {
+          dispatch(actions.setEditedNodeId(
+            m.g.sc.scope === 'c'
+              ? getMapData(m, m.g.sc.lastPath).s[0].nodeId
+              : getMapData(m, m.g.sc.lastPath).nodeId
+          ))
+        }
+      } else if (actionType === 'm') {
+        mapDispatch(action, payload)
       }
       break
     }

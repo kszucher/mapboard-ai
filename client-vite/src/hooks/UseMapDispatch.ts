@@ -16,8 +16,8 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     'insert_S_O'
   ].includes(action)) {
     const tm = getTempMap()
-    const editedPath = getMapData(tm, mapFindById.start(tm, editedNodeId)).path
-    const contentToSave = getMapData(tm, editedPath).content
+    const editedNodePath = getMapData(tm, mapFindById.start(tm, editedNodeId)).path
+    const contentToSave = getMapData(tm, editedNodePath).content
     Object.assign(payload, {contentToSave})
   }
   const m = getMap()
@@ -53,7 +53,11 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     ].includes(action) &&
     getMapData(nm, nm.g.sc.lastPath).contentType !== 'image' &&
     getMapData(nm, nm.g.sc.lastPath).hasCell == false ) {
-    dispatch(actions.setEditedNodeId(getMapData(nm, nm.g.sc.lastPath).nodeId))
+    dispatch(actions.setEditedNodeId(
+      nm.g.sc.scope === 'c'
+        ? getMapData(nm, nm.g.sc.lastPath).s[0].nodeId
+        : getMapData(nm, nm.g.sc.lastPath).nodeId
+    ))
   } else {
     dispatch(actions.setEditedNodeId(''))
   }
