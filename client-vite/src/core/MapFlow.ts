@@ -381,7 +381,6 @@ export const mapReducer = (m: M, action: string, payload: any) => {
         structMove(m, 'struct2cell')
         clearSelection(m)
         getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
-        getMapData(m, [...sc.geomHighPath, 'c', 0, 0, 's', 0]).selected = 1
       }
       break
     }
