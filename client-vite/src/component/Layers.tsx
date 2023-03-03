@@ -8,8 +8,8 @@ import {
   getStructPolygonPoints,
   getCellPolygonPoints,
   getPolygonPath,
-  getGridPath,
   getArcPath,
+  getGridPath,
   getTaskPath,
   getTaskCircle,
 } from "../core/SvgUtils";
