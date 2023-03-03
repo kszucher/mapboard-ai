@@ -17,7 +17,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
   ].includes(action)) {
     const tm = getTempMap()
     const editedNodePath = getMapData(tm, mapFindById.start(tm, editedNodeId)).path
+    console.log(editedNodePath)
     const contentToSave = getMapData(tm, editedNodePath).content
+    console.log(contentToSave)
     Object.assign(payload, {contentToSave})
   }
   const m = getMap()

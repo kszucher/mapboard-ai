@@ -48,9 +48,14 @@ export const mapReducer = (m: M, action: string, payload: any) => {
   const { sc } = m.g
   let ln = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {
-    ln.content = payload.contentToSave
-    if (ln.content.substring(0, 2) === '\\[') {
-      ln.contentType = 'equation'
+    const { contentToSave } = payload
+    const isContentEquation = contentToSave.substring(0, 2) === '\\['
+    if (ln.type === 'cell') {
+      ln.s[0].content = contentToSave
+      ln.s[0].contentType = isContentEquation ? 'equation' : ln.s[0].contentType
+    } else {
+      ln.content = contentToSave
+      ln.contentType = isContentEquation ? 'equation' : ln.contentType
     }
   }
   switch (action) {
@@ -443,7 +448,7 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
     case 'typeText': {
-      Object.assign(ln, { contentType: 'text', content: payload })
+      Object.assign(ln.type === 'cell' ? ln.s[0] : ln, { contentType: 'text', content: payload })
       break
     }
     case 'finishEdit': {
