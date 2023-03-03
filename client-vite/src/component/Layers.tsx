@@ -45,9 +45,6 @@ export const Layers: FC = () => {
     ? getNodeByPath(ml, m.g.sc.sameParentPath)
     : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
 
-
-  console.log(m.g.sc)
-
   return (
     <>
       <g id="layer0">
