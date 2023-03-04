@@ -67,7 +67,7 @@ export const Layers: FC = () => {
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {
-              n.fFillColor && n.fFillColor !== '' &&
+              n.fFillColor &&
               <path
                 key={`${n.nodeId}_svg_branchFill`}
                 d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
@@ -83,7 +83,7 @@ export const Layers: FC = () => {
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {
-              (n.sFillColor && n.sFillColor !== '' || n.taskStatus > 1) &&
+              (n.sFillColor || n.taskStatus > 1) &&
               <path
                 key={`${n.nodeId}_svg_nodeFill`}
                 d={getArcPath(n, -2, true)}
@@ -99,7 +99,7 @@ export const Layers: FC = () => {
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {
-              n.fBorderColor && n.fBorderColor !== '' &&
+              n.fBorderColor &&
               <path
                 key={`${n.nodeId}_svg_branchBorder`}
                 d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
@@ -111,7 +111,7 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              n.sBorderColor && n.sBorderColor !== '' &&
+              n.sBorderColor &&
               !n.hasCell &&
               <path
                 key={`${n.nodeId}_svg_nodeBorder`}
@@ -160,7 +160,7 @@ export const Layers: FC = () => {
               <path
                 key={`${n.nodeId}_svg_tableFrame`}
                 d={getArcPath(n, 0, false)}
-                stroke={n.sBorderColor === '' ? C.TABLE_FRAME_COLOR : n.sBorderColor}
+                stroke={n.sBorderColor ? n.sBorderColor : C.TABLE_FRAME_COLOR}
                 strokeWidth={n.sBorderWidth}
                 fill={'none'}
                 {...pathCommonProps}
@@ -209,8 +209,8 @@ export const Layers: FC = () => {
                       id={`${n.nodeId}_svg_taskCircle${i + 1}`}
                       {...getTaskCircle(m, n, i)}
                       fill={n.taskStatus === i + 1
-                        ? [C.TASK_CIRCLE_0_ACTIVE, C.TASK_CIRCLE_1_ACTIVE, C.TASK_CIRCLE_2_ACTIVE, C.TASK_CIRCLE_3_ACTIVE].at(i)
-                        : [C.TASK_CIRCLE_0_INACTIVE, C.TASK_CIRCLE_1_INACTIVE, C.TASK_CIRCLE_2_INACTIVE, C.TASK_CIRCLE_3_INACTIVE].at(i)}
+                        ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)
+                        : [C.TASK_CIRCLE_0_OFF, C.TASK_CIRCLE_1_OFF, C.TASK_CIRCLE_2_OFF, C.TASK_CIRCLE_3_OFF].at(i)}
                       vectorEffect={'non-scaling-stroke'}
                       style={{
                         transition: '0.3s ease-out'
@@ -225,8 +225,24 @@ export const Layers: FC = () => {
         ))}
       </g>
       <g id="layer4">
+        {ml.map((n: N) => (
+          <Fragment key={n.nodeId}>
+            {
+              (n.selected > 1) &&
+              <path
+                key={`${n.nodeId}_svg_selectionBorderSecondary`}
+                d={getArcPath(n, -2, true)}
+                fill={n.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(n.taskStatus - 2) : n.sFillColor}
+                {...pathCommonProps}
+              >
+              </path>
+            }
+          </Fragment>
+        ))}
+      </g>
+      <g id="layer5">
         <path
-          key={`${m.g.nodeId}_svg_selectionBorder`}
+          key={`${m.g.nodeId}_svg_selectionBorderPrimary`}
           d={getPolygonPath(
             sn,
             ['c', 'cr', 'cc'].includes(m.g.sc.scope)
@@ -234,14 +250,10 @@ export const Layers: FC = () => {
               : getStructPolygonPoints(sn, sn.selection)
             ,
             sn.selection,
-            ['c', 'cr', 'cc'].includes(m.g.sc.scope)
-              ? 4
-              : (
-                (sn.selection === 's' && (sn.sBorderColor !== '' || sn.sFillColor !== '')) ||
-                (sn.selection === 'f') ||
-                (sn.taskStatus > 1) ||
-                (sn.hasCell)
-              ) ? 4 : -2
+            (
+              ['c', 'cr', 'cc'].includes(m.g.sc.scope) ||
+              sn.sBorderColor  || sn.fBorderColor  || sn.sFillColor || sn.fFillColor || sn.taskStatus > 1 || sn.hasCell
+            ) ? 4 : -2
           )}
           stroke={C.SELECTION_COLOR}
           strokeWidth={1}
@@ -250,6 +262,12 @@ export const Layers: FC = () => {
         >
         </path>
       </g>
+
+      // TODO add moveLine, moveRect, selectionRect
+      // fix issue with the table
+      // remove mapVisualize svg altogether
+      // do NOT work on DIV DOM, instead make the CGPT stuff
+
     </>
   )
 }

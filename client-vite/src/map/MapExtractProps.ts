@@ -43,9 +43,6 @@ export const mapExtractProps = {
   },
 
   iterate: (m: M, n: N) => {
-    if (n.animationRequested) {
-      m.g.animationRequested = 1
-    }
     if (n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4) {
       try {
         if (n.path[3] === 0) {

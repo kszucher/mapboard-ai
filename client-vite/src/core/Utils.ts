@@ -18,6 +18,7 @@ export const copy = (thing: any) => {
 }
 
 export const shallowCopy = (thing: any) => {
+  if (thing === undefined) return undefined;
   if (typeof thing === 'number' && isFinite(thing)) {
     return thing
   } else {
