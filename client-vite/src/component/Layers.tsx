@@ -4,7 +4,9 @@ import {copy, isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
 import {M, N} from "../types/DefaultProps";
 import {
-  getLinePath,
+  getBezierLinePath,
+  getBezierLinePoints,
+  getLinePathBetweenNodes,
   getStructPolygonPoints,
   getCellPolygonPoints,
   getPolygonPath,
@@ -31,6 +33,15 @@ const m2ml = (m: M) => (
     .sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
     .filter((el: any) => el.path.length > 1)
 )
+const getSelectionMargin = (m: M, n: N) => (
+  (
+    ['c', 'cr', 'cc'].includes(m.g.sc.scope) ||
+    (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
+    (n.selection === 'f') ||
+    n.taskStatus > 1 ||
+    n.hasCell
+  ) ? 4 : -2
+)
 
 export const Layers: FC = () => {
   const colorMode = 'dark'
@@ -44,6 +55,7 @@ export const Layers: FC = () => {
   const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
     ? getNodeByPath(ml, m.g.sc.sameParentPath)
     : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
+  const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
 
   return (
     <>
@@ -132,8 +144,8 @@ export const Layers: FC = () => {
                 key={`${n.nodeId}_svg_line`}
                 d={
                   !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId)
-                    ? getLinePath(getNodeById(pml, n.parentNodeId), n)
-                    : getLinePath(getNodeById(ml, n.parentNodeId), n)
+                    ? getLinePathBetweenNodes(getNodeById(pml, n.parentNodeId), n)
+                    : getLinePathBetweenNodes(getNodeById(ml, n.parentNodeId), n)
                 }
                 strokeWidth={n.lineWidth}
                 stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -144,8 +156,8 @@ export const Layers: FC = () => {
                   !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId) &&
                   <animate
                     attributeName='d'
-                    from={getLinePath(getNodeById(pml, n.parentNodeId), n)}
-                    to={getLinePath(getNodeById(ml, n.parentNodeId), n)}
+                    from={getLinePathBetweenNodes(getNodeById(pml, n.parentNodeId), n)}
+                    to={getLinePathBetweenNodes(getNodeById(ml, n.parentNodeId), n)}
                     dur={'0.3s'}
                     repeatCount={'once'}
                     fill={'freeze'}
@@ -181,16 +193,14 @@ export const Layers: FC = () => {
               </path>
             }
             {
-              (
-                n.path.length > 1 &&
-                n.taskStatus > 0 &&
-                !n.hasDir &&
-                !n.hasStruct &&
-                !n.hasCell &&
-                !(n.contentType === 'image') &&
-                !n.isRoot &&
-                !n.isRootChild
-              ) &&
+              n.path.length > 1 &&
+              n.taskStatus > 0 &&
+              !n.hasDir &&
+              !n.hasStruct &&
+              !n.hasCell &&
+              !(n.contentType === 'image') &&
+              !n.isRoot &&
+              !n.isRootChild &&
               <Fragment key={`${n.nodeId}_svg_task`}>
                 {/*!isEqual(n.path, editedPath)*/}
                 <path
@@ -228,11 +238,19 @@ export const Layers: FC = () => {
         {ml.map((n: N) => (
           <Fragment key={n.nodeId}>
             {
-              (n.selected > 1) &&
+              n.selected &&
+              n.selected !== m.g.sc.maxSel &&
               <path
                 key={`${n.nodeId}_svg_selectionBorderSecondary`}
-                d={getArcPath(n, -2, true)}
-                fill={n.taskStatus > 1 ? [C.TASK_FILL_1, C.TASK_FILL_2, C.TASK_FILL_3].at(n.taskStatus - 2) : n.sFillColor}
+                d={getPolygonPath(
+                  n,
+                  getStructPolygonPoints(n, n.selection),
+                  n.selection,
+                  getSelectionMargin(m, n)
+                )}
+                stroke={C.SELECTION_COLOR}
+                strokeWidth={1}
+                fill={'none'}
                 {...pathCommonProps}
               >
               </path>
@@ -250,10 +268,7 @@ export const Layers: FC = () => {
               : getStructPolygonPoints(sn, sn.selection)
             ,
             sn.selection,
-            (
-              ['c', 'cr', 'cc'].includes(m.g.sc.scope) ||
-              sn.sBorderColor  || sn.fBorderColor  || sn.sFillColor || sn.fFillColor || sn.taskStatus > 1 || sn.hasCell
-            ) ? 4 : -2
+            getSelectionMargin(m, sn)
           )}
           stroke={C.SELECTION_COLOR}
           strokeWidth={1}
@@ -262,12 +277,21 @@ export const Layers: FC = () => {
         >
         </path>
       </g>
-
-      // TODO add moveLine, moveRect, selectionRect
-      // fix issue with the table
-      // remove mapVisualize svg altogether
-      // do NOT work on DIV DOM, instead make the CGPT stuff
-
+      <g id="layer6">
+        {
+          moveTarget?.moveData?.length && // TODO use draggedNodeId instead
+          <Fragment>
+            <path
+              key={`${m.g.nodeId}_svg_moveLine`}
+              d={getBezierLinePath('M', getBezierLinePoints(moveTarget.moveData))}
+              stroke={C.MOVE_LINE_COLOR}
+              strokeWidth={1}
+              fill={'none'}
+            >
+            </path>
+          </Fragment>
+        }
+      </g>
     </>
   )
 }

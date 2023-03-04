@@ -8,7 +8,7 @@ import {
   getAdjustedParams,
   getArcPath,
   getBezierPath,
-  getLinePath,
+  getLinePathBetweenNodes,
   getStructPolygonPoints,
   getPolygonPath,
   getCellPolygonPoints, getLinePoints
@@ -27,15 +27,15 @@ export const mapVisualizeSvg = {
     mapSvgOuter.style.width = 'calc(200vw + ' + m.g.mapWidth + 'px)'
     mapSvgOuter.style.height = 'calc(200vh + ' + m.g.mapHeight + 'px)'
     const {SELECTION_COLOR, MAP_BACKGROUND, MOVE_LINE_COLOR, MOVE_RECT_COLOR, SELECTION_RECT_COLOR} = getColors(colorMode)
-    updateMapSvgData('m', 'backgroundRect', {
-      x: 0,
-      y: 0,
-      width: m.g.mapWidth,
-      height: m.g.mapHeight,
-      rx: 32,
-      ry: 32,
-      fill: MAP_BACKGROUND,
-    })
+    // updateMapSvgData('m', 'backgroundRect', {
+    //   x: 0,
+    //   y: 0,
+    //   width: m.g.mapWidth,
+    //   height: m.g.mapHeight,
+    //   rx: 32,
+    //   ry: 32,
+    //   fill: MAP_BACKGROUND,
+    // })
     if (moveTarget.moveData?.length) {
       // TODO use parent bezier style
       const deltaX = moveTarget.moveData[2] - moveTarget.moveData[0]
@@ -82,28 +82,28 @@ export const mapVisualizeSvg = {
         preventTransition: 1,
       })
     }
-    if (m.g.sc.structSelectedPathList.length && !editedPath.length) {
-      const n = getMapData(m, m.g.sc.lastPath)
-      updateMapSvgData('m', 'selectionBorderMain', {
-        path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
-        stroke: SELECTION_COLOR,
-        strokeWidth: 1,
-      })
-    }
-    mapVisualizeSvg.iterate(m, m.r[0], colorMode, shouldAnimationInit, editedPath)
+    // if (m.g.sc.structSelectedPathList.length && !editedPath.length) {
+    //   const n = getMapData(m, m.g.sc.lastPath)
+    //   updateMapSvgData('m', 'selectionBorderMain', {
+    //     path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
+    //     stroke: SELECTION_COLOR,
+    //     strokeWidth: 1,
+    //   })
+    // }
+    // mapVisualizeSvg.iterate(m, m.r[0], colorMode, shouldAnimationInit, editedPath)
   },
-  iterate: (m: M, n: N, colorMode: string, shouldAnimationInit: boolean, editedPath: any[]) => {
-    const conditions = resolveScope(n)
-    const {
-      SELECTION_COLOR,
-      TABLE_FRAME_COLOR,
-      TABLE_GRID,
-      TASK_LINE_1, TASK_LINE_2, TASK_LINE_3,
-      TASK_FILL_1, TASK_FILL_2, TASK_FILL_3,
-      TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE,
-      TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
-      TASK_LINE
-    } = getColors(colorMode)
+  // iterate: (m: M, n: N, colorMode: string, shouldAnimationInit: boolean, editedPath: any[]) => {
+    // const conditions = resolveScope(n)
+    // const {
+    //   SELECTION_COLOR,
+    //   TABLE_FRAME_COLOR,
+    //   TABLE_GRID,
+    //   TASK_LINE_1, TASK_LINE_2, TASK_LINE_3,
+    //   TASK_FILL_1, TASK_FILL_2, TASK_FILL_3,
+    //   TASK_CIRCLE_0_INACTIVE, TASK_CIRCLE_1_INACTIVE, TASK_CIRCLE_2_INACTIVE, TASK_CIRCLE_3_INACTIVE,
+    //   TASK_CIRCLE_0_ACTIVE, TASK_CIRCLE_1_ACTIVE, TASK_CIRCLE_2_ACTIVE, TASK_CIRCLE_3_ACTIVE,
+    //   TASK_LINE
+    // } = getColors(colorMode)
     // if (conditions.branchFill) {
     //   updateMapSvgData(n.nodeId, 'branchFill', {
     //     path: getPolygonPath(n, getStructPolygonPoints('f', n), 'f', 0),
@@ -134,13 +134,13 @@ export const mapVisualizeSvg = {
     //     strokeWidth: n.sBorderWidth,
     //   })
     // }
-    if (conditions.selectionBorder && !isEqual(n.path, m.g.sc.lastPath)) {
-      updateMapSvgData(n.nodeId, 'selectionBorder', {
-        path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
-        stroke: SELECTION_COLOR,
-        strokeWidth: 1,
-      })
-    }
+    // if (conditions.selectionBorder && !isEqual(n.path, m.g.sc.lastPath)) {
+    //   updateMapSvgData(n.nodeId, 'selectionBorder', {
+    //     path: getPolygonPath(n, getStructPolygonPoints(n.selection, n), n.selection, 0),
+    //     stroke: SELECTION_COLOR,
+    //     strokeWidth: 1,
+    //   })
+    // }
     // if (conditions.line) {
       // let x1, y1, dx, dy, x2, y2
       // if (shouldAnimationInit && n.animationRequested) {
@@ -167,7 +167,7 @@ export const mapVisualizeSvg = {
       //     : lineColorOverride
       // })
     // }
-    if (conditions.table) {
+    // if (conditions.table) {
       // frame
       // updateMapSvgData(n.nodeId, 'tableFrame', {
       //   path: getArcPath(n, 0, false),
@@ -194,21 +194,21 @@ export const mapVisualizeSvg = {
       //   strokeWidth: 1,
       // })
       // cell
-      tableLoops:
-        for (let i = 0; i < rowCount; i++) {
-          for (let j = 0; j < colCount; j++) {
-            if (n.c[i][j].selected) {
-              updateMapSvgData(n.nodeId, 'selectionBorder', {
-                path: getPolygonPath(n, getCellPolygonPoints(m, n, i, j), 's', 4),
-                stroke: SELECTION_COLOR,
-                strokeWidth: 1,
-              })
-              break tableLoops
-            }
-          }
-        }
-    }
-    if (conditions.task) {
+      // tableLoops:
+      //   for (let i = 0; i < rowCount; i++) {
+      //     for (let j = 0; j < colCount; j++) {
+      //       if (n.c[i][j].selected) {
+      //         updateMapSvgData(n.nodeId, 'selectionBorder', {
+      //           path: getPolygonPath(n, getCellPolygonPoints(m, n, i, j), 's', 4),
+      //           stroke: SELECTION_COLOR,
+      //           strokeWidth: 1,
+      //         })
+      //         break tableLoops
+      //       }
+      //     }
+      //   }
+    // }
+    // if (conditions.task) {
       // const {mapWidth, margin, taskConfigN, taskConfigD, taskConfigGap, taskConfigWidth} = m.g
       // let startX
       // if (n.path.includes('c')) {
@@ -250,9 +250,9 @@ export const mapVisualizeSvg = {
       //
       //   updateMapSvgData(n.nodeId, `taskCircle${i + 1}`, { cx, cy, r, fill })
       // }
-    }
-    n.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
-    n.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
-    n.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode, shouldAnimationInit, editedPath)))
-  }
+    // }
+  //   n.d.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
+  //   n.s.map(i => mapVisualizeSvg.iterate(m, i, colorMode, shouldAnimationInit, editedPath))
+  //   n.c.map(i => i.map(j => mapVisualizeSvg.iterate(m, j, colorMode, shouldAnimationInit, editedPath)))
+  // }
 }

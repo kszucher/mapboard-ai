@@ -34,15 +34,21 @@ const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   return [xt, yt]
 }
 
-const getBezierPath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => {
-  return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
-}
-
-const getEdgePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => {
+export const getEdgeLinePath = (c: string, [x1, y1, m1x, m1y, m2x, m2y, x2, y2]: number[]) => {
   return `${c}${x1},${y1}, L${m1x},${m1y}, L${m2x},${m2y}, L${x2},${y2}`
 }
 
-export const getLinePath = (na: N, nb: N) => {
+export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2]: number[]) => {
+  return `${c}${x1},${y1} C${c1x},${c1y} ${c2x},${c2y} ${x2},${y2}`
+}
+
+export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
+  const dx = bx - ax
+  const dy = by - ay
+  return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
+}
+
+export const getLinePathBetweenNodes = (na: N, nb: N) => {
   const dir = getDir(nb)
   const { lineType } = nb
   let sx, sy, dx, dy, ex, ey
@@ -63,13 +69,13 @@ export const getLinePath = (na: N, nb: N) => {
     const c1y = sy
     const c2x = sx + dir * dx / 4
     const c2y = sy + dy
-    path = getBezierPath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
+    path = getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
   } else if (lineType === LineTypes.edge) {
     const m1x = sx + dir * dx / 2
     const m1y = sy
     const m2x = sx + dir * dx / 2
     const m2y = sy + dy
-    path = getEdgePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey])
+    path = getEdgeLinePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey])
   }
   return path
 }
@@ -163,11 +169,11 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
     const [c2x, c2y] = currPoint
     const [ex, ey] = getCoordsInLine(currPoint, nextPoint, 12)
     if (selection === 's' && i === (dir === - 1 ? 4 : 1)) {
-      path += getBezierPath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
+      path += getBezierLinePath('L', [sx, sy, sx, sy, sx, sy, ex - dir * 24, ey])
     } else if (selection === 's' && i === (dir === - 1 ? 1 : 4)) {
-      path += getBezierPath('L', [sx - dir * 24, sy, ex, ey, ex, ey, ex, ey])
+      path += getBezierLinePath('L', [sx - dir * 24, sy, ex, ey, ex, ey, ex, ey])
     } else {
-      path += getBezierPath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
+      path += getBezierLinePath(i === 0 ? 'M' : 'L', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
     }
   }
   return path + 'z'

@@ -134,37 +134,37 @@ export const nSaveNever = {
   isBottom: 0,
 } as NSaveNever
 
-export const resolveScope = (n: any) => {
-  return {
-    struct:
-      n.type === 'struct' &&
-      !n.hasCell,
-    text:
-      n.contentType === 'text',
-    branchFill: n.fFillColor !== '' && n.s.length,
-    nodeFill: n.sFillColor !== '' || n.taskStatus !== 0,
-    branchBorder: n.fBorderColor !== '' && n.s.length,
-    nodeBorder: n.sBorderColor !== '' && !n.hasCell,
-    selectionBorder: n.selected && n.type !== 'cell' && !n.isEditing,
-    // line:
-      // !n.isRoot &&
-      // !n.isRootChild &&
-      // n.parentType !== 'cell' &&
-      // (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0),
-    table:
-      n.type === "struct" &&
-      n.hasCell,
-    task:
-      n.taskStatus !== 0 &&
-      // !n.path.includes('c') &&
-      !n.hasDir &&
-      !n.hasStruct &&
-      !n.hasCell &&
-      // n.parentType !== 'cell' &&
-      n.contentType !== 'image' &&
-      !n.isRoot &&
-      !n.isRootChild
-  }
-}
+// export const resolveScope = (n: any) => {
+//   return {
+//     struct:
+//       n.type === 'struct' &&
+//       !n.hasCell,
+//     text:
+//       n.contentType === 'text',
+//     branchFill: n.fFillColor !== '' && n.s.length,
+//     nodeFill: n.sFillColor !== '' || n.taskStatus !== 0,
+//     branchBorder: n.fBorderColor !== '' && n.s.length,
+//     nodeBorder: n.sBorderColor !== '' && !n.hasCell,
+//     selectionBorder: n.selected && n.type !== 'cell' && !n.isEditing,
+//     // line:
+//       // !n.isRoot &&
+//       // !n.isRootChild &&
+//       // n.parentType !== 'cell' &&
+//       // (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0),
+//     table:
+//       n.type === "struct" &&
+//       n.hasCell,
+//     task:
+//       n.taskStatus !== 0 &&
+//       // !n.path.includes('c') &&
+//       !n.hasDir &&
+//       !n.hasStruct &&
+//       !n.hasCell &&
+//       // n.parentType !== 'cell' &&
+//       n.contentType !== 'image' &&
+//       !n.isRoot &&
+//       !n.isRootChild
+//   }
+// }
 
 export const getDefaultNode = (attributes?: any) => ({d: [], s: [], c: [[]], content: '', ...attributes})
