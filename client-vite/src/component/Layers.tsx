@@ -138,7 +138,10 @@ export const Layers: FC = () => {
               !n.isRoot &&
               !n.isRootChild &&
               n.parentType !== 'cell' &&
-              (n.type === 'struct' && !n.hasCell || n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0) &&
+              (
+                n.type === 'struct' && !n.hasCell ||
+                n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0
+              ) &&
               <path
                 key={`${n.nodeId}_svg_line`}
                 d={
