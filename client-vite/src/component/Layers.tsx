@@ -28,6 +28,7 @@ const pathCommonProps = {
 
 const getNodeById = (ml: N[], nodeId: string) => (ml.find((n: N) => n.nodeId === nodeId) as N)
 const getNodeByPath = (ml: N[], path: any[]) => (ml.find((n: N) => isEqual(n.path, path)) as N)
+const getSourceNode = (n: N) => (n.type === 'cell' ? n.parentParentNodeId: n.parentNodeId)
 const m2ml = (m: M) => (
   mapDisassembly.start(copy(m))
     .sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
@@ -55,6 +56,7 @@ export const Layers: FC = () => {
   const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
     ? getNodeByPath(ml, m.g.sc.sameParentPath)
     : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
+  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
   const selectTarget = useSelector((state: RootStateOrAny) => state.editor.selectTarget)
 
@@ -145,9 +147,9 @@ export const Layers: FC = () => {
               <path
                 key={`${n.nodeId}_svg_line`}
                 d={
-                  !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId)
-                    ? getLinePathBetweenNodes(getNodeById(pml, n.parentNodeId), n)
-                    : getLinePathBetweenNodes(getNodeById(ml, n.parentNodeId), n)
+                  !getNodeById(pml, n.nodeId) && getNodeById(pml, getSourceNode(n))
+                    ? getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)), n)
+                    : getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)), n)
                 }
                 strokeWidth={n.lineWidth}
                 stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -155,11 +157,11 @@ export const Layers: FC = () => {
                 {...pathCommonProps}
               >
                 {
-                  !getNodeById(pml, n.nodeId) && getNodeById(pml, n.parentNodeId) &&
+                  !getNodeById(pml, n.nodeId) && getNodeById(pml, getSourceNode(n)) &&
                   <animate
                     attributeName='d'
-                    from={getLinePathBetweenNodes(getNodeById(pml, n.parentNodeId), n)}
-                    to={getLinePathBetweenNodes(getNodeById(ml, n.parentNodeId), n)}
+                    from={getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)), n)}
+                    to={getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)), n)}
                     dur={'0.3s'}
                     repeatCount={'once'}
                     fill={'freeze'}
@@ -204,16 +206,18 @@ export const Layers: FC = () => {
               !n.isRoot &&
               !n.isRootChild &&
               <Fragment key={`${n.nodeId}_svg_task`}>
-                {/*!isEqual(n.path, editedPath)*/}
-                <path
-                  key={`${n.nodeId}_svg_taskLine`}
-                  d={getTaskPath(m, n)}
-                  stroke={C.TASK_LINE}
-                  strokeWidth={1}
-                  fill={'none'}
-                  {...pathCommonProps}
-                >
-                </path>
+                {
+                  !isEqual(n.nodeId, editedNodeId) &&
+                  <path
+                    key={`${n.nodeId}_svg_taskLine`}
+                    d={getTaskPath(m, n)}
+                    stroke={C.TASK_LINE}
+                    strokeWidth={1}
+                    fill={'none'}
+                    {...pathCommonProps}
+                  >
+                  </path>
+                }
                 {
                   [...Array(m.g.taskConfigN)].map((el, i) => (
                     <circle
@@ -261,23 +265,25 @@ export const Layers: FC = () => {
         ))}
       </g>
       <g id="layer5">
-        <path
-          key={`${m.g.nodeId}_svg_selectionBorderPrimary`}
-          d={getPolygonPath(
-            sn,
-            ['c', 'cr', 'cc'].includes(m.g.sc.scope)
-              ? getCellPolygonPoints(sn, m.g.sc)
-              : getStructPolygonPoints(sn, sn.selection)
-            ,
-            sn.selection,
-            getSelectionMargin(m, sn)
-          )}
-          stroke={C.SELECTION_COLOR}
-          strokeWidth={1}
-          fill={'none'}
-          {...pathCommonProps}
-        >
-        </path>
+        {
+          <path
+            key={`${m.g.nodeId}_svg_selectionBorderPrimary`}
+            d={getPolygonPath(
+              sn,
+              ['c', 'cr', 'cc'].includes(m.g.sc.scope)
+                ? getCellPolygonPoints(sn, m.g.sc)
+                : getStructPolygonPoints(sn, sn.selection)
+              ,
+              sn.selection,
+              getSelectionMargin(m, sn)
+            )}
+            stroke={C.SELECTION_COLOR}
+            strokeWidth={1}
+            fill={'none'}
+            {...pathCommonProps}
+          >
+          </path>
+        }
       </g>
       <g id="layer6">
         {
