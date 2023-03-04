@@ -1,5 +1,5 @@
 import {LineTypes} from "./Types"
-import {M, N} from "../types/DefaultProps"
+import {M, N, SC} from "../types/DefaultProps"
 import {isOdd} from "./Utils"
 import {getMapData} from "./MapFlow";
 
@@ -102,25 +102,26 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
   }
 }
 
-export const getCellPolygonPoints = (m: M, n: N): PolygonPoints => {
+export const getCellPolygonPoints = (n: N, sc: SC): PolygonPoints => {
   const dir = getDir(n)
   const { xi, yu } = getAdjustedParams(n)
+  const { scope, cellRow, cellCol, lastPath } = sc
   let x, y, w, h
-  if (m.g.sc.scope === 'cr') {
-    const i = m.g.sc.cellRow
+  if (scope === 'cr') {
+    const i = cellRow
     x = xi
     y = yu + n.sumMaxRowHeight[i]
     w = n.selfW
     h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
-  } else if (m.g.sc.scope === 'cc') {
-    const j = m.g.sc.cellCol
+  } else if (scope === 'cc') {
+    const j = cellCol
     x = xi + dir*n.sumMaxColWidth[j]
     y = yu
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
     h = n.selfH
   } else {
-    const i = m.g.sc.lastPath.at(-2)
-    const j = m.g.sc.lastPath.at(-1)
+    const i = lastPath.at(-2)
+    const j = lastPath.at(-1)
     x = xi + dir*n.sumMaxColWidth[j]
     y = yu + n.sumMaxRowHeight[i]
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]

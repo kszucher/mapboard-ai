@@ -246,7 +246,7 @@ export const Layers: FC = () => {
           d={getPolygonPath(
             sn,
             ['c', 'cr', 'cc'].includes(m.g.sc.scope)
-              ? getCellPolygonPoints(m, sn)
+              ? getCellPolygonPoints(sn, m.g.sc)
               : getStructPolygonPoints(sn, sn.selection)
             ,
             sn.selection,
