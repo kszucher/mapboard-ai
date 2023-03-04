@@ -56,6 +56,7 @@ export const Layers: FC = () => {
     ? getNodeByPath(ml, m.g.sc.sameParentPath)
     : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
+  const selectTarget = useSelector((state: RootStateOrAny) => state.editor.selectTarget)
 
   return (
     <>
@@ -69,9 +70,7 @@ export const Layers: FC = () => {
           rx={32}
           ry={32}
           fill={C.MAP_BACKGROUND}
-          style={{
-            transition: '0.3s ease-out'
-          }}
+          style={{transition: '0.3s ease-out'}}
         >
         </rect>
       </g>
@@ -303,6 +302,23 @@ export const Layers: FC = () => {
             >
             </rect>
           </Fragment>
+        }
+      </g>
+      <g id="layer7">
+        {
+          selectTarget?.selectionRect?.length &&
+          <rect
+            x={selectTarget.selectionRect[0]}
+            y={selectTarget.selectionRect[1]}
+            width={selectTarget.selectionRect[2]}
+            height={selectTarget.selectionRect[3]}
+            rx={8}
+            ry={8}
+            fill={C.SELECTION_RECT_COLOR}
+            fillOpacity={0.05}
+            strokeWidth={2}
+          >
+          </rect>
         }
       </g>
     </>

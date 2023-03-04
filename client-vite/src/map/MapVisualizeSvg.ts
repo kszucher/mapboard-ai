@@ -36,38 +36,38 @@ export const mapVisualizeSvg = {
     //   ry: 32,
     //   fill: MAP_BACKGROUND,
     // })
-    if (moveTarget.moveData?.length) {
-      // TODO use parent bezier style
-      const deltaX = moveTarget.moveData[2] - moveTarget.moveData[0]
-      const deltaY = moveTarget.moveData[3] - moveTarget.moveData[1]
-      const x1 = moveTarget.moveData[0]
-      const y1 = moveTarget.moveData[1]
-      const c1x = moveTarget.moveData[0] + deltaX / 4
-      const c1y = moveTarget.moveData[1]
-      const c2x = moveTarget.moveData[0] + deltaX / 4
-      const c2y = moveTarget.moveData[1] + deltaY
-      const x2 = moveTarget.moveData[2]
-      const y2 = moveTarget.moveData[3]
-      updateMapSvgData('m', 'moveLine', {
-        path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
-        stroke: MOVE_LINE_COLOR,
-        strokeWidth: 1,
-        preventTransition: 1,
-      })
-      updateMapSvgData('m', 'moveRect', {
-        x: x2 - 10,
-        y: y2 - 10,
-        width: 20,
-        height: 20,
-        rx: 8,
-        ry: 8,
-        fill: MAP_BACKGROUND,
-        fillOpacity: 1,
-        stroke: MOVE_RECT_COLOR,
-        strokeWidth: 5,
-        preventTransition: 1,
-      })
-    }
+    // if (moveTarget.moveData?.length) {
+    //   // TODO use parent bezier style
+    //   const deltaX = moveTarget.moveData[2] - moveTarget.moveData[0]
+    //   const deltaY = moveTarget.moveData[3] - moveTarget.moveData[1]
+    //   const x1 = moveTarget.moveData[0]
+    //   const y1 = moveTarget.moveData[1]
+    //   const c1x = moveTarget.moveData[0] + deltaX / 4
+    //   const c1y = moveTarget.moveData[1]
+    //   const c2x = moveTarget.moveData[0] + deltaX / 4
+    //   const c2y = moveTarget.moveData[1] + deltaY
+    //   const x2 = moveTarget.moveData[2]
+    //   const y2 = moveTarget.moveData[3]
+    //   updateMapSvgData('m', 'moveLine', {
+    //     path: getBezierPath('M', [x1, y1, c1x, c1y, c2x, c2y, x2, y2]),
+    //     stroke: MOVE_LINE_COLOR,
+    //     strokeWidth: 1,
+    //     preventTransition: 1,
+    //   })
+    //   updateMapSvgData('m', 'moveRect', {
+    //     x: x2 - 10,
+    //     y: y2 - 10,
+    //     width: 20,
+    //     height: 20,
+    //     rx: 8,
+    //     ry: 8,
+    //     fill: MAP_BACKGROUND,
+    //     fillOpacity: 1,
+    //     stroke: MOVE_RECT_COLOR,
+    //     strokeWidth: 5,
+    //     preventTransition: 1,
+    //   })
+    // }
     if (Object.keys(selectTarget).length && selectTarget.selectionRect.length) {
       updateMapSvgData('m', 'selectionRect', {
         x: selectTarget.selectionRect[0],
