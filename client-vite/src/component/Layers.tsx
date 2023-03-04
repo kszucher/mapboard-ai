@@ -289,6 +289,19 @@ export const Layers: FC = () => {
               fill={'none'}
             >
             </path>
+            <rect
+              x={moveTarget.moveData[2] - 10}
+              y={moveTarget.moveData[3] - 10}
+              width={20}
+              height={20}
+              rx={8}
+              ry={8}
+              fill={C.MAP_BACKGROUND}
+              fillOpacity={1}
+              stroke={C.MOVE_RECT_COLOR}
+              strokeWidth={5}
+            >
+            </rect>
           </Fragment>
         }
       </g>
