@@ -31,8 +31,8 @@ export let timeoutId: NodeJS.Timeout
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const mExists = m && Object.keys(m).length
   const tmExists = tm && Object.keys(tm).length
@@ -299,7 +299,7 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mExists) {
-      if (mapStackData.length > 1) {
+      if (mapList.length > 1) {
         clearTimeout(timeoutId)
         timeoutId = setTimeout(timeoutFun, 1000)
       }

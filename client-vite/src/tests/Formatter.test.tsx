@@ -22,8 +22,8 @@ describe("Formatter test", () => {
     store.dispatch(actions.parseRespPayload({
       formatMode: FormatMode.text,
       access: AccessTypes.EDIT,
-      mapStackDataIndex: 0,
-      mapStackData: [reCalc(testMap, testMap)],
+      mapIndexList: 0,
+      mapList: [reCalc(testMap, testMap)],
     }))
     const {} = render(
       <Provider store={store}>

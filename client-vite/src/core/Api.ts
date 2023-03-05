@@ -28,7 +28,7 @@ export const api = createApi({
       query: () => ({ url: 'beta-private', method: 'POST', body: { type: 'openWorkspace' } }),
       async onQueryStarted(arg, { dispatch, getState, getCacheEntry }) {
         const editor = (getState() as RootState).editor
-        if (editor.mapStackData.length > 1) {
+        if (editor.mapList.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
           dispatch(api.endpoints.saveMap.initiate({ mapId: getMapId(), frameId: getFrameId(), mapData: getSavedMapData(getMap()) }))

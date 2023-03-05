@@ -44,8 +44,8 @@ const getMuiTheme = (colorMode: string)  => createTheme({
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
-  const mapStackData = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
   const mExists = m && Object.keys(m).length
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, frameId } = data || defaultUseOpenWorkspaceQueryState
@@ -66,7 +66,7 @@ export const Editor: FC = () => {
             <Logo/>
             <ProfileButton/>
             {
-              ![PageState.AUTH, PageState.DEMO,].includes(pageState) &&
+              ![PageState.AUTH, PageState.DEMO,].includes(pageState) && // depending on map existence, not page state
               <>
                 <UndoRedo/>
                 <BreadcrumbMaps/>
@@ -75,7 +75,7 @@ export const Editor: FC = () => {
                 <ControlsRight/>
               </>
             }
-            {formatterVisible && mapStackData.length && <Formatter/>}
+            {formatterVisible && mapList.length && <Formatter/>}
             {frameId !== '' && <FrameCarousel/>}
           </>
         }

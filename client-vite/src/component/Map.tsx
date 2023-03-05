@@ -2,9 +2,10 @@ import React, {FC} from "react";
 import {RootStateOrAny, useSelector} from "react-redux";
 import {isChrome} from "../core/Utils";
 import {MapSvg} from "./MapSvg";
+import {MapDiv} from "./MapDiv";
 
 export const Map: FC = () => {
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
   return (
     <div
       id='mapDivOuter'
@@ -39,16 +40,7 @@ export const Map: FC = () => {
             </svg>
           }
         </svg>
-        <div
-          id='mapDiv'
-          style={{
-            position: 'absolute',
-            // transitionProperty: 'width, height',
-            // width: 0,
-            // height: 0,
-            display: 'flex',
-            pointerEvents: 'none'
-          }}/>
+        <MapDiv/>
       </div>
     </div>
   )
