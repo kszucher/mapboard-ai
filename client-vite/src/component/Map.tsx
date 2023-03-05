@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {RootStateOrAny, useSelector} from "react-redux";
 import {isChrome} from "../core/Utils";
-import {Layers} from "./Layers";
+import {MapSvg} from "./MapSvg";
 
 export const Map: FC = () => {
 
@@ -24,11 +24,11 @@ export const Map: FC = () => {
           {isChrome
             ?
             <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'>
-              <Layers/>
+              <MapSvg/>
             </svg>
             :
             <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}>
-              <Layers/>
+              <MapSvg/>
             </svg>
           }
         </svg>

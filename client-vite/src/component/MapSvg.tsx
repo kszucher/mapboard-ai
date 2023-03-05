@@ -44,7 +44,7 @@ const getSelectionMargin = (m: M, n: N) => (
   ) ? 4 : -2
 )
 
-export const Layers: FC = () => {
+export const MapSvg: FC = () => {
   const colorMode = 'dark'
   const C = getColors(colorMode)
   const mdi = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
