@@ -4,11 +4,11 @@ import { getColors } from '../core/Colors'
 
 export const mapVisualizeDiv = {
   start: (m: M, colorMode: string) => {
-    const mapDiv = document.getElementById('mapDiv') as HTMLDivElement
-    mapDiv.style.width = "" + m.g.mapWidth + "px"
-    mapDiv.style.height = "" + m.g.mapHeight + "px"
-    const mapHolderDiv = document.getElementById('mapHolderDiv') as HTMLDivElement
-    mapHolderDiv.focus()
+    // const mapDiv = document.getElementById('mapDiv') as HTMLDivElement
+    // mapDiv.style.width = "" + m.g.mapWidth + "px"
+    // mapDiv.style.height = "" + m.g.mapHeight + "px"
+    // const mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement
+    // mapDivOuter.focus()
     mapVisualizeDiv.iterate(m, m.r[0], colorMode)
   },
 

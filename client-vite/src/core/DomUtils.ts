@@ -4,7 +4,7 @@ import {getLatexString} from "./Utils"
 
 export const scrollTo = (to, duration) => {
   const
-    element = document.getElementById('mapHolderDiv'),
+    element = document.getElementById('mapDivOuter'),
     start = element.scrollLeft,
     change = to - start,
     startDate = +new Date(),
@@ -37,9 +37,9 @@ export const scrollTo = (to, duration) => {
 export const getCoords = (e) => {
   let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
   let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-  let mapHolderDiv = document.getElementById('mapHolderDiv') as HTMLDivElement
-  let x = e.pageX - winWidth + mapHolderDiv.scrollLeft
-  let y = e.pageY - winHeight + mapHolderDiv.scrollTop
+  let mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement
+  let x = e.pageX - winWidth + mapDivOuter.scrollLeft
+  let y = e.pageY - winHeight + mapDivOuter.scrollTop
   return [x, y]
 }
 

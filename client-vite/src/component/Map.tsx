@@ -4,14 +4,21 @@ import {isChrome} from "../core/Utils";
 import {MapSvg} from "./MapSvg";
 
 export const Map: FC = () => {
-
   const m = useSelector((state: RootStateOrAny) => state.editor.mapStackData[state.editor.mapStackDataIndex])
-
-
   return (
-    <div id='mapHolderDiv' style={{overflowY: 'scroll', overflowX: 'scroll'}}>
+    <div
+      id='mapDivOuter'
+      style={{
+        overflowY: 'scroll',
+        overflowX: 'scroll'
+      }}>
       <div
-        style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}>
+        id='mapDivInner'
+        style={{
+          position: 'relative',
+          paddingTop: '100vh',
+          paddingLeft: '100vw',
+        }}>
         <svg
           id="mapSvgOuter"
           style={{
@@ -32,12 +39,16 @@ export const Map: FC = () => {
             </svg>
           }
         </svg>
-        <div id='mapDiv' style={{
-          position: 'absolute',
-          transitionProperty: 'width, height',
-          display: 'flex',
-          pointerEvents: 'none'
-        }}/>
+        <div
+          id='mapDiv'
+          style={{
+            position: 'absolute',
+            // transitionProperty: 'width, height',
+            // width: 0,
+            // height: 0,
+            display: 'flex',
+            pointerEvents: 'none'
+          }}/>
       </div>
     </div>
   )

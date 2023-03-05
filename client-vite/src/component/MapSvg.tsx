@@ -49,7 +49,7 @@ export const MapSvg: FC = () => {
   const C = getColors(colorMode)
   const mdi = useSelector((state: RootStateOrAny) => state.editor.mapStackDataIndex)
   const md = useSelector((state: RootStateOrAny) => state.editor.mapStackData)
-  const m = md[mdi]
+  const m = md[mdi] // use "vm" meaning any map source that needs to be visualized!!!
   const ml = m2ml(m)
   const pm = mdi > 0 ? md[mdi - 1] : {} // TODO handle tm AND undo-redo
   const pml = mdi > 0 ? m2ml(pm) : []
