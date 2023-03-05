@@ -470,7 +470,7 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
 }
 
 export const reDraw = (m: M, colorMode: string) => {
-  flagDomData()
-  mapVisualizeDiv.start(m, colorMode)
-  updateDomData()
+  // flagDomData()
+  // mapVisualizeDiv.start(m, colorMode)
+  // updateDomData()
 }

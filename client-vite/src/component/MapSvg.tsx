@@ -1,21 +1,21 @@
 import {FC, Fragment} from "react";
 import {RootStateOrAny, useSelector} from "react-redux";
-import {copy, isEqual} from "../core/Utils";
+import {isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
 import {M, N} from "../types/DefaultProps";
 import {
+  getArcPath,
   getBezierLinePath,
   getBezierLinePoints,
-  getLinePathBetweenNodes,
-  getStructPolygonPoints,
   getCellPolygonPoints,
-  getPolygonPath,
-  getArcPath,
   getGridPath,
-  getTaskPath,
+  getLinePathBetweenNodes,
+  getPolygonPath,
+  getStructPolygonPoints,
   getTaskCircle,
+  getTaskPath,
 } from "../core/SvgUtils";
-import {mapDisassembly} from "../map/MapDisassembly";
+import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -26,14 +26,7 @@ const pathCommonProps = {
   }
 }
 
-const getNodeById = (ml: N[], nodeId: string) => (ml.find((n: N) => n.nodeId === nodeId) as N)
-const getNodeByPath = (ml: N[], path: any[]) => (ml.find((n: N) => isEqual(n.path, path)) as N)
 const getSourceNode = (n: N) => (n.type === 'cell' ? n.parentParentNodeId: n.parentNodeId)
-const m2ml = (m: M) => (
-  mapDisassembly.start(copy(m))
-    .sort((a: any, b: any) => (a.nodeId > b.nodeId) ? 1 : -1)
-    .filter((el: any) => el.path.length > 1)
-)
 const getSelectionMargin = (m: M, n: N) => (
   (
     ['c', 'cr', 'cc'].includes(m.g.sc.scope) ||
