@@ -1,6 +1,5 @@
 import {getDefaultNode, nSaveOptional} from './DefaultProps'
 import {M, MPartial, N, NC, NSaveOptional} from "../types/DefaultProps"
-import {flagDomData, updateDomData} from './DomFlow'
 import {copy, createArray, genHash, subsref, transpose} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapFix} from '../map/MapFix'
@@ -15,7 +14,6 @@ import {mapMeasure} from '../map/MapMeasure'
 import {mapPlace} from '../map/MapPlace'
 import {mapSetProp} from '../map/MapSetProp'
 import {mapCalcTask} from '../map/MapCalcTask'
-import {mapVisualizeDiv} from '../map/MapVisualizeDiv'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
@@ -467,10 +465,4 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
   mapMeasure.start(m as M)
   mapPlace.start(m as M)
   return m as M
-}
-
-export const reDraw = (m: M, colorMode: string) => {
-  // flagDomData()
-  // mapVisualizeDiv.start(m, colorMode)
-  // updateDomData()
 }

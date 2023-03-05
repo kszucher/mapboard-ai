@@ -3,7 +3,6 @@ import { Button, Link,  Typography } from '@mui/material'
 import {actions} from "../core/EditorFlow";
 import {FC, useEffect} from "react";
 import { PageState} from "../core/Types";
-import {initDomData} from "../core/DomFlow";
 import {useAuth0} from "@auth0/auth0-react";
 import {api} from "../core/Api";
 import {authAudienceUrl} from "../core/Url";
@@ -52,12 +51,7 @@ export const Auth: FC = () => {
       </Button>
       <Button
         id="live-demo" color="primary" variant='contained' fullWidth
-        onClick={
-          ()=> {
-            initDomData()
-            dispatch(actions.setPageState(PageState.DEMO))
-          }
-        }>
+        onClick={()=> {dispatch(actions.setPageState(PageState.DEMO))}}>
         {'LIVE DEMO'}
       </Button>
       <Typography variant="body2" color="textSecondary" align="center">

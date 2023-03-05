@@ -1,4 +1,4 @@
-import {FC, Fragment} from "react"
+import {FC, Fragment, useEffect} from "react"
 import {RootStateOrAny, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {M, N} from "../types/DefaultProps"
@@ -21,10 +21,21 @@ const getInnerHtml = (n: N) => {
 export const MapDiv: FC = () => {
   const colorMode = 'dark'
   const C = getColors(colorMode)
-  const mdi = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
-  const md = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = md[mdi] // use "vm" meaning any map source that needs to be visualized!!!
+  const mapIndexList = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
+  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
+  const m = mapList[mapIndexList]
   const ml = m2ml(m)
+  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
+
+  //     if (isEditing) {
+  //       shouldInnerHTMLUpdate = el.params.contentType !== contentType
+  //     } else {
+  //       shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
+  //     }
+  //     for (const style in styleData) {
+  //       shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
+  //     }
+  //   }
 
   return (
     <div
@@ -42,6 +53,7 @@ export const MapDiv: FC = () => {
               n.type === 'struct' &&
               !n.hasCell &&
               <div
+                id={`${n.nodeId}_div`}
                 style = {{
                   left: 1 + n.nodeStartX,
                   top: 1 + n.nodeY - n.selfH / 2,
@@ -59,7 +71,7 @@ export const MapDiv: FC = () => {
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
                 }}
                 dangerouslySetInnerHTML={{__html: getInnerHtml(n)}}
-                // contentEditable={}
+                contentEditable={n.nodeId === editedNodeId}
               >
               </div>
             }

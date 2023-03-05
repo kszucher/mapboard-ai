@@ -2,7 +2,7 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/DomUtils"
-import {getMapData, getSavedMapData, reDraw} from '../core/MapFlow'
+import {getMapData, getSavedMapData} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch"
 import {mapFindNearest} from "../map/MapFindNearest"
@@ -12,7 +12,6 @@ import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId
 import {useEventToAction} from "../hooks/UseEventToAction"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {gSaveOptional} from "../core/DefaultProps"
-import {flagDomData, updateDomData, updateDomDataContentEditableFalse} from "../core/DomFlow"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 
 let whichDown = 0
@@ -291,13 +290,6 @@ export const WindowListeners: FC = () => {
   }, [colorMode])
 
   useEffect(() => {
-    if (mapId !== '') {
-      flagDomData()
-      updateDomData()
-    }
-  }, [mapId])
-
-  useEffect(() => {
     if (mExists) {
       if (mapList.length > 1) {
         clearTimeout(timeoutId)
@@ -308,21 +300,8 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mExists) {
-      reDraw(m, colorMode)
-    }
-  }, [m, colorMode])
-
-  useEffect(() => {
-    if (tmExists) {
-      reDraw(tm, colorMode)
-    }
-  }, [tm])
-
-  useEffect(() => {
-    if (mExists) {
       if (editedNodeId.length) {
         const holderElement = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
-        holderElement.contentEditable = 'true'
         if (!Object.keys(tm).length) {
           holderElement.innerHTML = ''
         }
@@ -343,7 +322,6 @@ export const WindowListeners: FC = () => {
       } else {
         if (mutationObserver !== undefined) {
           mutationObserver.disconnect()
-          updateDomDataContentEditableFalse()
         }
       }
     }

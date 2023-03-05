@@ -5,7 +5,6 @@ import {reCalc} from "./MapFlow"
 import {mapDeInit} from "../map/MapDeInit"
 import {copy} from "./Utils"
 import {api} from "./Api"
-import {initDomData} from "./DomFlow"
 import {M} from "../types/DefaultProps";
 
 interface EditorState {
@@ -127,7 +126,6 @@ export const editorSlice = createSlice({
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
       (state, { payload }) => {
-        initDomData()
         state.pageState = PageState.WS
       }
     )
