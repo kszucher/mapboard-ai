@@ -21,7 +21,7 @@ import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'
 import {PageState} from "../core/Types";
-import {getEquationDim, getTextDim} from "../core/DomUtils";
+import {getEquationDim, getTextDim} from "../core/MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {Map} from "./Map";
 

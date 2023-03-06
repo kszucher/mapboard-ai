@@ -14,7 +14,7 @@ import {
   getStructPolygonPoints,
   getTaskCircle,
   getTaskPath,
-} from "../core/SvgUtils";
+} from "../core/MapSvgUtils";
 import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
 
 const pathCommonProps = {
@@ -190,7 +190,6 @@ export const MapSvg: FC = () => {
               </path>
             }
             {
-              n.path.length > 1 &&
               n.taskStatus > 0 &&
               !n.hasDir &&
               !n.hasStruct &&

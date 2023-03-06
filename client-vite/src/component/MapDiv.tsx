@@ -27,15 +27,13 @@ export const MapDiv: FC = () => {
   const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
 
+  // TODO introduce the new index first to use TM, then deal with this assignment
+
   //     if (isEditing) {
   //       shouldInnerHTMLUpdate = el.params.contentType !== contentType
   //     } else {
   //       shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
   //     }
-  //     for (const style in styleData) {
-  //       shouldStyleUpdate[style] = el.params.styleData[style] !== styleData[style]
-  //     }
-  //   }
 
   return (
     <div
@@ -57,10 +55,10 @@ export const MapDiv: FC = () => {
                 style = {{
                   left: 1 + n.nodeStartX,
                   top: 1 + n.nodeY - n.selfH / 2,
-                  minWidth: (m.g.density === 'large'?  0 : -3) + n.selfW - m.g.padding - 2,
+                  minWidth: (m.g.density === 'large'? 0 : -3) + n.selfW - m.g.padding - 2,
                   minHeight: (m.g.density === 'large'? -2 : -1) + n.selfH - m.g.padding,
-                  paddingLeft: (m.g.density === 'large'?  0 :  3) + m.g.padding - 2,
-                  paddingTop: (m.g.density === 'large'?  0 :  0) + m.g.padding - 2,
+                  paddingLeft: (m.g.density === 'large'? 0 : 3) + m.g.padding - 2,
+                  paddingTop: (m.g.density === 'large'? 0 : 0) + m.g.padding - 2,
                   position: 'absolute',
                   fontSize: n.textFontSize,
                   fontFamily: 'Roboto',
