@@ -42,7 +42,9 @@ export const MapSvg: FC = () => {
   const C = getColors(colorMode)
   const mapIndexList = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = mapList[mapIndexList]
+  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
+  const tmExists = tm && Object.keys(tm).length
+  const m = tmExists ? tm : mapList[mapIndexList]
   const ml = m2ml(m)
   const pm = mapIndexList > 0 ? mapList[mapIndexList - 1] : {} // TODO handle tm AND undo-redo
   const pml = mapIndexList > 0 ? m2ml(pm) : []

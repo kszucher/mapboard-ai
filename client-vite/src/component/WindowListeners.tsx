@@ -22,7 +22,6 @@ let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
 let isNodeClicked = false
 let isTaskClicked = false
-let mutationObserver: MutationObserver
 let mapAreaListener: AbortController
 let landingAreaListener: AbortController
 export let timeoutId: NodeJS.Timeout
@@ -205,6 +204,7 @@ export const WindowListeners: FC = () => {
 
   const keydown = (e: KeyboardEvent) => {
     eventToAction(e, 'kd', getNativeEvent(e))
+    dispatch(actions.setLastKeyboardEventData({key: e.key, code: e.code}))
   }
 
   const paste = (e: ClipboardEvent) => {
@@ -297,35 +297,6 @@ export const WindowListeners: FC = () => {
       }
     }
   }, [m])
-
-  useEffect(() => {
-    if (mExists) {
-      if (editedNodeId.length) {
-        const holderElement = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
-        if (!Object.keys(tm).length) {
-          holderElement.innerHTML = ''
-        }
-        setEndOfContentEditable(holderElement)
-        mutationObserver = new MutationObserver(mutationsList => {
-          for (let mutation of mutationsList) {
-            if (mutation.type === 'characterData') {
-              mapDispatch('typeText', holderElement.innerHTML)
-            }
-          }
-        }) as MutationObserver
-        mutationObserver.observe(holderElement!, {
-          attributes: false,
-          childList: false,
-          subtree: true,
-          characterData: true
-        })
-      } else {
-        if (mutationObserver !== undefined) {
-          mutationObserver.disconnect()
-        }
-      }
-    }
-  }, [editedNodeId])
 
   useEffect(() => {
     if (mapId !== '') {

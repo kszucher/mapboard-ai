@@ -1,11 +1,14 @@
+// @ts-ignore
+import katex from "katex/dist/katex.mjs"
 import {FC, Fragment, useEffect} from "react"
-import {RootStateOrAny, useSelector} from "react-redux"
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {M, N} from "../types/DefaultProps"
 import {m2ml} from "../core/MapUtils"
-import {getLatexString} from "../core/Utils"
-// @ts-ignore
-import katex from "katex/dist/katex.mjs"
+import {copy, getLatexString} from "../core/Utils"
+import {actions} from "../core/EditorFlow";
+import {mapReducer, reCalc} from "../core/MapFlow";
+import {setEndOfContentEditable} from "../core/MapDivUtils";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -23,17 +26,23 @@ export const MapDiv: FC = () => {
   const C = getColors(colorMode)
   const mapIndexList = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = mapList[mapIndexList]
+  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
+  const tmExists = tm && Object.keys(tm).length
+  const m = tmExists ? tm : mapList[mapIndexList]
   const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
+  const lastKeyboardEventData = useSelector((state: RootStateOrAny) => state.editor.lastKeyboardEventData)
+  const dispatch = useDispatch()
 
-  // TODO introduce the new index first to use TM, then deal with this assignment
-
-  //     if (isEditing) {
-  //       shouldInnerHTMLUpdate = el.params.contentType !== contentType
-  //     } else {
-  //       shouldInnerHTMLUpdate = el.params.contentType !== contentType || el.params.content !== content
-  //     }
+  useEffect(() => {
+    if (editedNodeId.length) {
+      const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
+      if (lastKeyboardEventData.key !== 'F2') { // TODO also make a case for doubleclick
+        editedDiv.innerHTML = ''
+      }
+      setEndOfContentEditable(editedDiv)
+    }
+  }, [editedNodeId])
 
   return (
     <div
@@ -55,21 +64,33 @@ export const MapDiv: FC = () => {
                 style = {{
                   left: 1 + n.nodeStartX,
                   top: 1 + n.nodeY - n.selfH / 2,
-                  minWidth: (m.g.density === 'large'? 0 : -3) + n.selfW - m.g.padding - 2,
+                  minWidth: (m.g.density === 'large'? 0 : -3) + n.selfW - m.g.padding - 2 + 10, // do we need +10?
                   minHeight: (m.g.density === 'large'? -2 : -1) + n.selfH - m.g.padding,
                   paddingLeft: (m.g.density === 'large'? 0 : 3) + m.g.padding - 2,
                   paddingTop: (m.g.density === 'large'? 0 : 0) + m.g.padding - 2,
                   position: 'absolute',
                   fontSize: n.textFontSize,
                   fontFamily: 'Roboto',
-                  textDecoration: n.linkType !== "" ? "underline" : "",
+                  textDecoration: n.linkType.length ? "underline" : "",
                   cursor: 'default',
                   color: n.textColor === 'default' ? C.TEXT_COLOR : n.textColor,
                   transition: 'all 0.3s',
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
                 }}
-                dangerouslySetInnerHTML={{__html: getInnerHtml(n)}}
+                spellCheck={false}
+                dangerouslySetInnerHTML={
+                  n.nodeId === editedNodeId
+                    ? undefined
+                    : {__html: getInnerHtml(n)}
+                }
                 contentEditable={n.nodeId === editedNodeId}
+                onInput={(e) => {
+                  const nm = reCalc(m, mapReducer(copy(m), 'typeText', e.currentTarget.innerHTML))
+                  dispatch(actions.mutateTempMap(nm))
+                }}
               >
               </div>
             }

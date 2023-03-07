@@ -7,6 +7,8 @@ import {copy} from "./Utils"
 import {api} from "./Api"
 import {M} from "../types/DefaultProps";
 
+interface KeyboardEventData { key: string, code: string }
+
 interface EditorState {
   token: string,
   pageState: PageState,
@@ -20,6 +22,7 @@ interface EditorState {
   selectTarget: [],
   formatterVisible: boolean,
   moreMenu: boolean,
+  lastKeyboardEventData: KeyboardEventData | undefined,
 }
 
 const editorState : EditorState = {
@@ -35,6 +38,7 @@ const editorState : EditorState = {
   selectTarget: [],
   formatterVisible: false,
   moreMenu: false,
+  lastKeyboardEventData: undefined
 }
 
 export interface DefaultUseOpenWorkspaceQueryState {
@@ -121,6 +125,7 @@ export const editorSlice = createSlice({
       state.mapIndexList = state.mapIndexList < state.mapList.length - 1 ? state.mapIndexList + 1 : state.mapIndexList
       state.editedNodeId = ''
     },
+    setLastKeyboardEventData(state, action: PayloadAction<KeyboardEventData>) {state.lastKeyboardEventData = action.payload},
   },
   extraReducers: (builder) => {
     builder.addMatcher(
