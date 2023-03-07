@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
-import {getCoords, getNativeEvent, setEndOfContentEditable} from "../core/MapDivUtils"
+import {getCoords, getNativeEvent} from "../core/MapDivUtils"
 import {getMapData, getSavedMapData} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch"
@@ -28,12 +28,9 @@ export let timeoutId: NodeJS.Timeout
 
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
-  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const mExists = m && Object.keys(m).length
-  const tmExists = tm && Object.keys(tm).length
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, mapId, frameId, access } = data || defaultUseOpenWorkspaceQueryState

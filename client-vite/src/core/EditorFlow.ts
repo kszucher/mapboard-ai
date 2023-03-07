@@ -130,9 +130,7 @@ export const editorSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(
       api.endpoints.signIn.matchFulfilled,
-      (state, { payload }) => {
-        state.pageState = PageState.WS
-      }
+      (state) => {state.pageState = PageState.WS}
     )
     builder.addMatcher(
       api.endpoints.openWorkspace.matchFulfilled,
@@ -147,7 +145,7 @@ export const editorSlice = createSlice({
   }
 })
 
-export const { actions, reducer } = editorSlice
+export const { actions } = editorSlice
 
 export const store = configureStore({
   reducer: combineReducers({api: api.reducer, editor: editorSlice.reducer}),
