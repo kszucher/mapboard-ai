@@ -2,7 +2,7 @@ import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {actions} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 export const ShouldUpdateTask: FC = () => {

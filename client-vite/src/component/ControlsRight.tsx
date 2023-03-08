@@ -15,7 +15,7 @@ import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, defaultUseOpenWorkspaceQueryState, getMapId, getFrameId} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {gSaveOptional} from "../core/DefaultProps";
 import {api, useOpenWorkspaceQuery} from "../core/Api";

@@ -2,7 +2,7 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
 import { Button, Link,  Typography } from '@mui/material'
 import {actions} from "../core/EditorFlow";
 import {FC, useEffect} from "react";
-import { PageState} from "../core/Types";
+import { PageState} from "../core/Enums";
 import {useAuth0} from "@auth0/auth0-react";
 import {api} from "../core/Api";
 import {authAudienceUrl} from "../core/Url";

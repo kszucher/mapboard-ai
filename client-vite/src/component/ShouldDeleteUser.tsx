@@ -3,7 +3,7 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {api} from "../core/Api";
 import {actions} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 
 export const ShouldDeleteUser:FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)

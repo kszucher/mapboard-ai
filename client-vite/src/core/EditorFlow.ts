@@ -1,5 +1,5 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {AccessTypes, FormatMode, PageState} from "./Types"
+import {AccessTypes, FormatMode, PageState} from "./Enums"
 import {mapAssembly} from "../map/MapAssembly"
 import {reCalc} from "./MapFlow"
 import {mapDeInit} from "../map/MapDeInit"

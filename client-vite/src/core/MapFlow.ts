@@ -18,7 +18,7 @@ import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
-import {Dir} from "./Types";
+import {Dir} from "./Enums";
 
 export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)

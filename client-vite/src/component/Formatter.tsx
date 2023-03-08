@@ -5,7 +5,7 @@ import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup";
 import {colorList} from '../core/Colors'
 import {actions} from '../core/EditorFlow'
-import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Types";
+import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 export const Formatter: FC = () => {

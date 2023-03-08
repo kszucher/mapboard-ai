@@ -3,7 +3,7 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { ShouldDeleteUser } from './ShouldDeleteUser'
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 import {useOpenWorkspaceQuery} from "../core/Api";
 
 export const Profile: FC = () => {

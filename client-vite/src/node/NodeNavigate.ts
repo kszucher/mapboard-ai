@@ -1,5 +1,5 @@
 import {getMapData} from '../core/MapFlow'
-import {Dir} from "../core/Types"
+import {Dir} from "../core/Enums"
 
 export const structNavigate = (m: any, truePath: any[], direction: Dir) => {
   let newPath = []

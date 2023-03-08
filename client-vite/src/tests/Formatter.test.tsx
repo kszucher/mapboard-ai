@@ -6,7 +6,7 @@ import {Formatter} from "../component/Formatter"
 import { describe, it } from 'vitest'
 import {actions, getMap, store} from "../core/EditorFlow";
 import {colorList} from "../core/Colors";
-import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../core/Types"
+import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {reCalc} from "../core/MapFlow";
 import {mapAssembly} from "../map/MapAssembly";
 import {nodeProps} from "../core/DefaultProps";

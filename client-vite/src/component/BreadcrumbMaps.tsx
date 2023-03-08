@@ -4,7 +4,7 @@ import { Breadcrumbs, Link } from '@mui/material'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 
 export const BreadcrumbMaps: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)

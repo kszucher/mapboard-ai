@@ -20,7 +20,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {ShouldUpdateTask} from './ShouldUpdateTask'
 import {Settings} from './Settings'
 import {Profile} from './Profile'
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 import {getEquationDim, getTextDim} from "./MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {Map} from "./Map";

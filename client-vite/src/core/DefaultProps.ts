@@ -1,4 +1,4 @@
-import {LineTypes} from "./Types"
+import {LineTypes} from "./Enums"
 import {SC, NC, GSaveAlways, GSaveOptional, GSaveNever, NSaveAlways, NSaveOptional, NSaveNever} from "../types/DefaultProps"
 
 const sc = {

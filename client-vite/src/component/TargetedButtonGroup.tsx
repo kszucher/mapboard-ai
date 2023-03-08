@@ -1,6 +1,6 @@
 import {RootStateOrAny, useSelector} from "react-redux";
 import {Button, ButtonGroup} from "@mui/material";
-import {AccessTypes} from "../core/Types";
+import {AccessTypes} from "../core/Enums";
 
 export const TargetedButtonGroup = ({KEYS, value, setValue}: { KEYS: string[], value: string, setValue: Function }) => {
   const access = useSelector((state: RootStateOrAny) => state.editor.access)

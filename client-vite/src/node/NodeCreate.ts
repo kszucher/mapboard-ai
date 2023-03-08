@@ -1,6 +1,6 @@
 import {getDefaultNode} from "../core/DefaultProps"
 import { getMapData } from '../core/MapFlow'
-import {Dir} from "../core/Types"
+import {Dir} from "../core/Enums"
 
 export const structCreate = (m: any, n: any, direction: Dir, payload: object) => {
   if (direction === Dir.U) {

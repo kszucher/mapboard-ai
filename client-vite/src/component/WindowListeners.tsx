@@ -3,7 +3,7 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
 import {getCoords, getNativeEvent} from "./MapDivUtils"
 import {getMapData, getSavedMapData} from '../core/MapFlow'
-import {AccessTypes, PageState} from "../core/Types"
+import {AccessTypes, PageState} from "../core/Enums"
 import {useMapDispatch} from "../hooks/UseMapDispatch"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"

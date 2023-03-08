@@ -1,4 +1,4 @@
-import {LineTypes} from "../core/Types"
+import {LineTypes} from "../core/Enums"
 
 interface SC {
   structSelectedPathList: any[],

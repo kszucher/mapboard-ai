@@ -3,7 +3,7 @@ import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
-import {AccessTypes, PageState} from "../core/Types";
+import {AccessTypes, PageState} from "../core/Enums";
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {useOpenWorkspaceQuery} from "../core/Api";
 

@@ -5,7 +5,7 @@ import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../core/EditorFlow";
-import {PageState} from "../core/Types";
+import {PageState} from "../core/Enums";
 
 export const FrameCarousel: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)

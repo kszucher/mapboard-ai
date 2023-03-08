@@ -1,4 +1,4 @@
-import {LineTypes} from "../core/Types"
+import {LineTypes} from "../core/Enums"
 import {M, N, SC} from "../types/DefaultProps"
 import {isOdd} from "../core/Utils"
 import {getMapData} from "../core/MapFlow";

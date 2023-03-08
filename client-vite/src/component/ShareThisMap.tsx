@@ -2,7 +2,7 @@ import {FC, useState} from "react";
 import {useDispatch} from "react-redux";
 import {actions, getMapId} from '../core/EditorFlow'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
-import {AccessTypes, PageState} from "../core/Types";
+import {AccessTypes, PageState} from "../core/Enums";
 import { useCreateShareMutation} from "../core/Api";
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 

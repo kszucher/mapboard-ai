@@ -1,4 +1,4 @@
-import {AccessTypes, FormatMode, PageState} from "../core/Types";
+import {AccessTypes, FormatMode, PageState} from "../core/Enums";
 import {M} from "./DefaultProps";
 
 export interface KeyboardEventData {
