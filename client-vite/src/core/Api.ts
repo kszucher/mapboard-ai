@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, DefaultUseOpenWorkspaceQueryState, getFrameId, getMap, getMapId, RootState} from "./EditorFlow"
+import {actions, getFrameId, getMap, getMapId, RootState} from "./EditorFlow"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Url"
 import {getSavedMapData} from "./MapFlow"
+import {DefaultUseOpenWorkspaceQueryState} from "../types/EditorFlow";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

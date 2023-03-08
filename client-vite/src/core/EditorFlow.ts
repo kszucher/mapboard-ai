@@ -1,29 +1,11 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {FormatMode, AccessTypes, PageState} from "./Types"
+import {AccessTypes, FormatMode, PageState} from "./Types"
 import {mapAssembly} from "../map/MapAssembly"
 import {reCalc} from "./MapFlow"
 import {mapDeInit} from "../map/MapDeInit"
 import {copy} from "./Utils"
 import {api} from "./Api"
-import {M} from "../types/DefaultProps";
-
-interface KeyboardEventData { key: string, code: string }
-
-interface EditorState {
-  token: string,
-  pageState: PageState,
-  formatMode: FormatMode,
-  tabShrink: boolean,
-  tempMap: object,
-  mapList: M[],
-  mapListIndex: number,
-  editedNodeId: string,
-  moveTarget: [],
-  selectTarget: [],
-  formatterVisible: boolean,
-  moreMenu: boolean,
-  lastKeyboardEventData: KeyboardEventData | undefined,
-}
+import {DefaultUseOpenWorkspaceQueryState, EditorState, KeyboardEventData} from "../types/EditorFlow";
 
 const editorState : EditorState = {
   token: '',
@@ -39,21 +21,6 @@ const editorState : EditorState = {
   formatterVisible: false,
   moreMenu: false,
   lastKeyboardEventData: undefined
-}
-
-export interface DefaultUseOpenWorkspaceQueryState {
-  name: string,
-  colorMode: string,
-  access: AccessTypes,
-  tabId: number,
-  mapId: string,
-  frameId: string,
-  mapDataList: [],
-  breadcrumbMapIdList: [],
-  breadcrumbMapNameList: [],
-  tabMapIdList: [],
-  tabMapNameList: [],
-  frameIdList: string[],
 }
 
 export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQueryState = {
