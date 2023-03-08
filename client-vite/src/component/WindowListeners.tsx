@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from '../core/Colors'
-import {getCoords, getNativeEvent} from "../core/MapDivUtils"
+import {getCoords, getNativeEvent} from "./MapDivUtils"
 import {getMapData, getSavedMapData} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Types"
 import {useMapDispatch} from "../hooks/UseMapDispatch"

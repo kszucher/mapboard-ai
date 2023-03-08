@@ -14,7 +14,7 @@ import {
   getStructPolygonPoints,
   getTaskCircle,
   getTaskPath,
-} from "../core/MapSvgUtils";
+} from "./MapSvgUtils";
 import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
 
 const pathCommonProps = {

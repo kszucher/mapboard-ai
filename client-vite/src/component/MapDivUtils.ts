@@ -1,6 +1,6 @@
 // @ts-nocheck
 import katex from "katex/dist/katex.mjs"
-import {getLatexString} from "./Utils"
+import {getLatexString} from "../core/Utils"
 
 export const scrollTo = (to, duration) => {
   const

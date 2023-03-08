@@ -8,7 +8,7 @@ import {m2ml} from "../core/MapUtils"
 import {copy, getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
 import {mapReducer, reCalc} from "../core/MapFlow";
-import {setEndOfContentEditable} from "../core/MapDivUtils";
+import {setEndOfContentEditable} from "./MapDivUtils";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {

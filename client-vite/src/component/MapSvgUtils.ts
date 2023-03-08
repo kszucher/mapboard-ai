@@ -1,7 +1,7 @@
-import {LineTypes} from "./Types"
+import {LineTypes} from "../core/Types"
 import {M, N, SC} from "../types/DefaultProps"
-import {isOdd} from "./Utils"
-import {getMapData} from "./MapFlow";
+import {isOdd} from "../core/Utils"
+import {getMapData} from "../core/MapFlow";
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
