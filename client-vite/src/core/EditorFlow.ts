@@ -16,7 +16,7 @@ interface EditorState {
   tabShrink: boolean,
   tempMap: object,
   mapList: M[],
-  mapIndexList: number,
+  mapListIndex: number,
   editedNodeId: string,
   moveTarget: [],
   selectTarget: [],
@@ -32,7 +32,7 @@ const editorState : EditorState = {
   tabShrink: false,
   tempMap: {},
   mapList: [],
-  mapIndexList: 0,
+  mapListIndex: 0,
   editedNodeId: '',
   moveTarget: [],
   selectTarget: [],
@@ -75,7 +75,7 @@ const editorStateDefault = JSON.stringify(editorState)
 
 export const getEditedNodeId = () => (store.getState().editor.editedNodeId)
 export const getTempMap = () => (store.getState().editor.tempMap)
-export const getMap = () : { g: any, r: any } => (store.getState().editor.mapList[store.getState().editor.mapIndexList])
+export const getMap = () : { g: any, r: any } => (store.getState().editor.mapList[store.getState().editor.mapListIndex])
 export const getMapId = () => {
   const result = api.endpoints.openWorkspace.select()(store.getState())
   const { data } = result
@@ -102,13 +102,13 @@ export const editorSlice = createSlice({
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     mutateMapStack(state, action: PayloadAction<any>) {
-      const m = state.mapList[state.mapIndexList]
+      const m = state.mapList[state.mapListIndex]
       if (
         JSON.stringify(mapDeInit.start(copy(m))) !==
         JSON.stringify(mapDeInit.start(copy(action.payload)))
       ) {
-        state.mapList = [...state.mapList.slice(0, state.mapIndexList + 1), action.payload] as any
-        state.mapIndexList = state.mapIndexList + 1
+        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), action.payload] as any
+        state.mapListIndex = state.mapListIndex + 1
       }
     },
     mutateTempMap(state, action: PayloadAction<any>) {
@@ -118,11 +118,11 @@ export const editorSlice = createSlice({
     setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
     setSelectTarget(state, action: PayloadAction<any>) {state.selectTarget = action.payload},
     undo(state) {
-      state.mapIndexList = state.mapIndexList > 0 ? state.mapIndexList - 1 : state.mapIndexList
+      state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
       state.editedNodeId = ''
     },
     redo(state) {
-      state.mapIndexList = state.mapIndexList < state.mapList.length - 1 ? state.mapIndexList + 1 : state.mapIndexList
+      state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
       state.editedNodeId = ''
     },
     setLastKeyboardEventData(state, action: PayloadAction<KeyboardEventData>) {state.lastKeyboardEventData = action.payload},
@@ -137,7 +137,7 @@ export const editorSlice = createSlice({
       (state, { payload }) => {
         const { mapDataList } = payload
         state.mapList = mapDataList.map((el: any) => reCalc(mapAssembly(el), mapAssembly(el))) as []
-        state.mapIndexList = 0
+        state.mapListIndex = 0
         state.editedNodeId = ''
         state.pageState = PageState.WS
       }

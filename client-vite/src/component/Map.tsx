@@ -5,7 +5,7 @@ import {MapSvg} from "./MapSvg";
 import {MapDiv} from "./MapDiv";
 
 export const Map: FC = () => {
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
   return (
     <div
       id='mapDivOuter'

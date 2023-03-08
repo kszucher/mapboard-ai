@@ -45,7 +45,7 @@ export const Editor: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
   const mExists = m && Object.keys(m).length
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, frameId } = data || defaultUseOpenWorkspaceQueryState

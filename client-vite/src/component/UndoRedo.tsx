@@ -10,9 +10,9 @@ import {useOpenWorkspaceQuery} from "../core/Api";
 export const UndoRedo: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const mapIndexList = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
-  const undoDisabled = mapIndexList === 0
-  const redoDisabled = mapIndexList === mapList.length - 1
+  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
+  const undoDisabled = mapListIndex === 0
+  const redoDisabled = mapListIndex === mapList.length - 1
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()

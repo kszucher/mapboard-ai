@@ -24,11 +24,11 @@ const getInnerHtml = (n: N) => {
 export const MapDiv: FC = () => {
   const colorMode = 'dark'
   const C = getColors(colorMode)
-  const mapIndexList = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
+  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const tmExists = tm && Object.keys(tm).length
-  const m = tmExists ? tm : mapList[mapIndexList]
+  const m = tmExists ? tm : mapList[mapListIndex]
   const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const lastKeyboardEventData = useSelector((state: RootStateOrAny) => state.editor.lastKeyboardEventData)

@@ -40,14 +40,14 @@ const getSelectionMargin = (m: M, n: N) => (
 export const MapSvg: FC = () => {
   const colorMode = 'dark'
   const C = getColors(colorMode)
-  const mapIndexList = useSelector((state: RootStateOrAny) => state.editor.mapIndexList)
+  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const tmExists = tm && Object.keys(tm).length
-  const m = tmExists ? tm : mapList[mapIndexList]
+  const m = tmExists ? tm : mapList[mapListIndex]
   const ml = m2ml(m)
-  const pm = mapIndexList > 0 ? mapList[mapIndexList - 1] : {} // TODO handle tm AND undo-redo
-  const pml = mapIndexList > 0 ? m2ml(pm) : []
+  const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : {} // TODO handle tm AND undo-redo
+  const pml = mapListIndex > 0 ? m2ml(pm) : []
   const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
     ? getNodeByPath(ml, m.g.sc.sameParentPath)
     : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))

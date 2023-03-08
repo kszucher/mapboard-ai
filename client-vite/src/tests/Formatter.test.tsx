@@ -23,7 +23,7 @@ describe("Formatter test", () => {
     store.dispatch(actions.parseRespPayload({
       formatMode: FormatMode.text,
       access: AccessTypes.EDIT,
-      mapIndexList: 0,
+      mapListIndex: 0,
       mapList: [reCalc(testMap, testMap)],
     }))
     const {} = render(

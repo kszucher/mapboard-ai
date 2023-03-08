@@ -29,7 +29,7 @@ export let timeoutId: NodeJS.Timeout
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapIndexList])
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
   const mExists = m && Object.keys(m).length
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
