@@ -69,7 +69,6 @@ export const MapSvg: FC = () => {
         width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
         height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
       }}
-      onDoubleClick={() => {}} // TODO start here and continue trying to add a VERY local state for selection rect here WITHOUT the STORE!!!
     >
       <svg
         style={{
@@ -238,7 +237,7 @@ export const MapSvg: FC = () => {
                     [...Array(m.g.taskConfigN)].map((el, i) => (
                       <circle
                         key={`${n.nodeId}_svg_taskCircle${i + 1}`}
-                        id={`${n.nodeId}_svg_taskCircle${i + 1}`}
+                        id={'taskCircle'}
                         {...getTaskCircle(m, n, i)}
                         fill={n.taskStatus === i + 1
                           ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)
