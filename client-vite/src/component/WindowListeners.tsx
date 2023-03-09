@@ -93,7 +93,6 @@ export const WindowListeners: FC = () => {
         }
         if (which === 1) {
           if (isTaskClicked) {
-            mapDispatch('setTaskStatus', {taskStatus: parseInt(path[0].id.charAt(27), 10), nodeId: path[0].id.substring(0, 12)})
           } else if (isNodeClicked) {
             let ln = getMapData(m, lastOverPath)
             if (ln.linkType === '') {
