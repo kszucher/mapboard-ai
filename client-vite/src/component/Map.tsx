@@ -29,16 +29,16 @@ export const Map: FC = () => {
             width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
             height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
           }}>
-          {isChrome
-            ?
-            <svg id="mapSvgInner" style={{overflow: 'visible'}} x='calc(100vw)' y='calc(100vh)'>
-              <MapSvg/>
-            </svg>
-            :
-            <svg id="mapSvgInner" style={{overflow: 'visible', transform: 'translate(calc(100vw), calc(100vh))'}}>
-              <MapSvg/>
-            </svg>
-          }
+          <svg
+            id="mapSvgInner"
+            style={{
+              overflow: 'visible',
+              transform: isChrome ? '' : 'translate(calc(100vw), calc(100vh))'}
+            }
+            x={isChrome? 'calc(100vw)' : ''}
+            y={isChrome? 'calc(100vh)' : ''}>
+            <MapSvg/>
+          </svg>
         </svg>
         <MapDiv/>
       </div>
