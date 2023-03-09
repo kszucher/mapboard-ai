@@ -4,7 +4,7 @@ import {FC, Fragment, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {M, N} from "../types/DefaultProps"
-import {m2ml} from "../core/MapUtils"
+import {getNodeById, m2ml} from "../core/MapUtils"
 import {copy, getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
 import {mapReducer, reCalc} from "../core/MapFlow";
@@ -37,8 +37,9 @@ export const MapDiv: FC = () => {
   useEffect(() => {
     if (editedNodeId.length) {
       const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
-      if (lastKeyboardEventData.key !== 'F2') { // TODO also make a case for doubleclick
-        editedDiv.innerHTML = ''
+      if (lastKeyboardEventData.key === 'F2') { // TODO also make a case for doubleclick
+        editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
+        // TODO
       }
       setEndOfContentEditable(editedDiv)
     }
