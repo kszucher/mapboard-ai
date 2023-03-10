@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css'
 import {Provider} from "react-redux";
 import {store} from "./core/EditorFlow";
-import {Editor} from "./component/Editor";
+import {Page} from "./component/Page";
 import './Layout.css';
 import './input.css';
 import { Auth0Provider } from '@auth0/auth0-react'
@@ -23,7 +23,7 @@ root.render(
   >
     <Provider store={store}>
       {/*<React.StrictMode>*/}
-      <Editor />
+      <Page />
       {/*</React.StrictMode>,*/}
     </Provider>
   </Auth0Provider>

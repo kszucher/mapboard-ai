@@ -41,7 +41,7 @@ const getMuiTheme = (colorMode: string)  => createTheme({
   },
 })
 
-export const Editor: FC = () => {
+export const Page: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
