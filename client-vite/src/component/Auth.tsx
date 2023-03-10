@@ -5,7 +5,7 @@ import {FC, useEffect} from "react";
 import { PageState} from "../core/Enums";
 import {useAuth0} from "@auth0/auth0-react";
 import {api} from "../core/Api";
-import {authAudienceUrl} from "../core/Url";
+import {authAudienceUrl} from "../core/Urls";
 
 export const Auth: FC = () => {
   const token = useSelector((state: RootStateOrAny) => state.editor.token)
