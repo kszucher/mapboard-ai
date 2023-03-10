@@ -54,7 +54,7 @@ export const MapSvg: FC = () => {
     : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
-  const selectTarget = useSelector((state: RootStateOrAny) => state.editor.selectTarget)
+  const selectionRect = useSelector((state: RootStateOrAny) => state.editor.selectionRect)
 
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
@@ -331,12 +331,12 @@ export const MapSvg: FC = () => {
         </g>
         <g id="layer7">
           {
-            selectTarget?.selectionRect?.length &&
+            selectionRect?.length &&
             <rect
-              x={selectTarget.selectionRect[0]}
-              y={selectTarget.selectionRect[1]}
-              width={selectTarget.selectionRect[2]}
-              height={selectTarget.selectionRect[3]}
+              x={selectionRect[0]}
+              y={selectionRect[1]}
+              width={selectionRect[2]}
+              height={selectionRect[3]}
               rx={8}
               ry={8}
               fill={C.SELECTION_RECT_COLOR}

@@ -142,6 +142,7 @@ export const WindowListeners: FC = () => {
         } else {
           const [toX, toY] = getCoords(e)
           const { highlightTargetPathList, selectionRect } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
+          dispatch(actions.setSelectionRect(selectionRect))
           mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect })
         }
       } else if (which === 2) {
@@ -169,7 +170,7 @@ export const WindowListeners: FC = () => {
           } else {
             const [toX, toY] = getCoords(e)
             const { highlightTargetPathList, selectionRect } = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-            mapDispatch('selectTargetPreview', { highlightTargetPathList, selectionRect })
+            dispatch(actions.setSelectionRect([]))
             mapDispatch('selectTarget', { highlightTargetPathList })
           }
         }

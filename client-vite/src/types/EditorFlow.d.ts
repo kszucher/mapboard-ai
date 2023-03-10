@@ -16,7 +16,7 @@ export interface EditorState {
   mapListIndex: number,
   editedNodeId: string,
   moveTarget: [],
-  selectTarget: [],
+  selectionRect: [],
   formatterVisible: boolean,
   moreMenu: boolean,
   lastKeyboardEventData: KeyboardEventData | undefined,

@@ -42,6 +42,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     || action === 'selectTarget' && !payload.highlightTargetPathList.length
   ) {
     dispatch(actions.mutateTempMap(nm))
+
+
+
   } else {
     dispatch(actions.mutateMapStack(nm))
     dispatch(actions.mutateTempMap({}))
@@ -70,9 +73,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     dispatch(actions.setMoveTarget([]))
   }
   if (action === 'selectTargetPreview') {
-    dispatch(actions.setSelectTarget(payload))
+    // dispatch(actions.setSelectTarget(payload))
   }
   if (action === 'selectTarget') {
-    dispatch(actions.setSelectTarget([]))
+    // dispatch(actions.setSelectTarget([]))
   }
 }

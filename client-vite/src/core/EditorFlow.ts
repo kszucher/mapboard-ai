@@ -17,7 +17,7 @@ const editorState : EditorState = {
   mapListIndex: 0,
   editedNodeId: '',
   moveTarget: [],
-  selectTarget: [],
+  selectionRect: [],
   formatterVisible: false,
   moreMenu: false,
   lastKeyboardEventData: undefined
@@ -83,7 +83,7 @@ export const editorSlice = createSlice({
     },
     setEditedNodeId(state, action: PayloadAction<any>) {state.editedNodeId = action.payload},
     setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
-    setSelectTarget(state, action: PayloadAction<any>) {state.selectTarget = action.payload},
+    setSelectionRect(state, action: PayloadAction<any>) {state.selectionRect = action.payload},
     undo(state) {
       state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
       state.editedNodeId = ''
