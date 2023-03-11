@@ -4,11 +4,12 @@ import {FC, Fragment, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {M, N} from "../types/DefaultProps"
-import {getNodeById, m2ml} from "../core/MapUtils"
+import {m2ml} from "../core/MapUtils"
 import {copy, getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
 import {mapReducer, reCalc} from "../core/MapFlow";
 import {setEndOfContentEditable} from "./MapDivUtils";
+import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -37,8 +38,9 @@ export const MapDiv: FC = () => {
   useEffect(() => {
     if (editedNodeId.length) {
       const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
-      if (lastKeyboardEventData.key === 'F2') { // TODO also make a case for doubleclick
-        editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
+      // editedDiv.focus()
+      if (lastKeyboardEventData.key === 'F2') { // TODO: dispatch an editType: 'append' | 'replace'
+        // editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
         // TODO
       }
       setEndOfContentEditable(editedDiv)
@@ -51,7 +53,7 @@ export const MapDiv: FC = () => {
       style={{
         position: 'absolute',
         display: 'flex',
-        pointerEvents: 'none'
+        // pointerEvents: 'none'
       }}
     >
       <>
@@ -79,19 +81,44 @@ export const MapDiv: FC = () => {
                   transitionTimingFunction: 'cubic-bezier(0.0,0.0,0.58,1.0)',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis'
+                  textOverflow: 'ellipsis',
+                  // TODO add a zIndex that is dependent on path length, so a table can be selected
                 }}
+
                 spellCheck={false}
+
                 dangerouslySetInnerHTML={
                   n.nodeId === editedNodeId
                     ? undefined
                     : {__html: getInnerHtml(n)}
                 }
+
                 contentEditable={n.nodeId === editedNodeId}
+
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  useMapDispatch(dispatch, 'selectStruct', { lastOverPath: n.path })
+                  // TODO extend this functionality again
+
+                }}
+
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    console.log('FINISH EDIT BY ENTER')
+                  }
+                }}
+
                 onInput={(e) => {
                   const nm = reCalc(m, mapReducer(copy(m), 'typeText', e.currentTarget.innerHTML))
                   dispatch(actions.mutateTempMap(nm))
+
                 }}
+
+                onBlur={(e) => {
+                  console.log('FINISH EDIT BY LEAVE')
+                }}
+
               >
               </div>
             }

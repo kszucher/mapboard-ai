@@ -36,7 +36,6 @@ export const WindowListeners: FC = () => {
   const { colorMode, mapId, frameId, access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
-  const eventToAction = (event: any, eventType: string, eventData: object) => useEventMiddleware(event, eventType, eventData, dispatch, mapDispatch)
 
   // TIMEOUT
   const timeoutFun = () => {
@@ -200,7 +199,7 @@ export const WindowListeners: FC = () => {
   }
 
   const keydown = (e: KeyboardEvent) => {
-    eventToAction(e, 'kd', getNativeEvent(e))
+    useEventMiddleware({keyboardEvent: e}, dispatch)
     dispatch(actions.setLastKeyboardEventData({key: e.key, code: e.code}))
   }
 
@@ -211,7 +210,7 @@ export const WindowListeners: FC = () => {
         navigator.clipboard.read().then(item => {
           const type = item[0].types[0]
           if (type === 'text/plain') {
-            navigator.clipboard.readText().then(text => eventToAction(e, 'pt', { text }))
+            navigator.clipboard.readText().then(text => useEventMiddleware({clipboardPasteTextEvent: { text }}, dispatch))
           } else if (type === 'image/png') {
             item[0].getType('image/png').then(image => {
               const formData = new FormData()
@@ -220,7 +219,7 @@ export const WindowListeners: FC = () => {
                 ? 'http://127.0.0.1:8082/feta'
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, { method: 'post', body: formData }).then(response =>
-                response.json().then(response => eventToAction(e, 'pi', response))
+                response.json().then(response => useEventMiddleware({clipboardPasteImageEvent: response}, dispatch))
               )
             })
           }
@@ -248,9 +247,9 @@ export const WindowListeners: FC = () => {
     window.addEventListener('resize', resize, { signal })
     window.addEventListener('popstate', popstate, { signal })
     window.addEventListener('dblclick', dblclick, { signal })
-    window.addEventListener('mousedown', mousedown, { signal })
-    window.addEventListener('mousemove', mousemove, { signal })
-    window.addEventListener('mouseup', mouseup, { signal })
+    // window.addEventListener('mousedown', mousedown, { signal })
+    // window.addEventListener('mousemove', mousemove, { signal })
+    // window.addEventListener('mouseup', mouseup, { signal })
     window.addEventListener("keydown", keydown, { signal })
     //@ts-ignore
     window.addEventListener("paste", paste, { signal })
