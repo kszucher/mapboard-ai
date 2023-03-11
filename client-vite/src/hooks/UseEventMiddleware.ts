@@ -30,7 +30,7 @@ const c2dt = (m: M, which) => {
   return { direction }
 }
 
-export const useEventToAction = (event: UIEvent, eventType, eventPayload, dispatch, mapDispatch) => {
+export const useEventMiddleware = (event: UIEvent, eventType, eventPayload, dispatch, mapDispatch) => {
 
   // console.log(eventType)
 

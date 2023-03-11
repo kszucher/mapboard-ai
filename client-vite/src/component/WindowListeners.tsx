@@ -9,7 +9,7 @@ import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverPoint} from "../map/MapFindOverPoint"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
-import {useEventToAction} from "../hooks/UseEventToAction"
+import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {gSaveOptional} from "../core/DefaultProps"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
@@ -36,7 +36,7 @@ export const WindowListeners: FC = () => {
   const { colorMode, mapId, frameId, access } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
-  const eventToAction = (event: any, eventType: string, eventData: object) => useEventToAction(event, eventType, eventData, dispatch, mapDispatch)
+  const eventToAction = (event: any, eventType: string, eventData: object) => useEventMiddleware(event, eventType, eventData, dispatch, mapDispatch)
 
   // TIMEOUT
   const timeoutFun = () => {
