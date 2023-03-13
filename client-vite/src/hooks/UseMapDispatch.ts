@@ -5,7 +5,6 @@ import {actions, getEditedNodeId, getMap, getTempMap} from "../core/EditorFlow"
 import {mapFindById} from "../map/MapFindById";
 
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
-  console.log('MAP_DISPATCH: ' + action, payload)
   const editedNodeId = getEditedNodeId()
   if (editedNodeId.length && [
     'finishEdit',

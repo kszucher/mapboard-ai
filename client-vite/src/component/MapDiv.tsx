@@ -8,7 +8,6 @@ import {m2ml} from "../core/MapUtils"
 import {copy, getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
 import {mapReducer, reCalc} from "../core/MapFlow";
-import {setEndOfContentEditable} from "./MapDivUtils";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 const getInnerHtml = (n: N) => {
@@ -37,13 +36,21 @@ export const MapDiv: FC = () => {
 
   useEffect(() => {
     if (editedNodeId.length) {
+
+      console.log(editedNodeId)
+
       const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
+
+      console.log(editedDiv)
+
+      // TODO start: use editType, and follow up on all the rest... main goal is to ELIMINATE useMapDispatch!!!
+
       // editedDiv.focus()
-      if (lastKeyboardEventData.key === 'F2') { // TODO: dispatch an editType: 'append' | 'replace'
+      // if (lastKeyboardEventData.key === 'F2') { // TODO: dispatch an editType: 'append' | 'replace'
         // editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
         // TODO
-      }
-      setEndOfContentEditable(editedDiv)
+      // }
+      // setEndOfContentEditable(editedDiv)
     }
   }, [editedNodeId])
 
@@ -84,15 +91,8 @@ export const MapDiv: FC = () => {
                   textOverflow: 'ellipsis',
                   // TODO add a zIndex that is dependent on path length, so a table can be selected
                 }}
-
                 spellCheck={false}
-
-                dangerouslySetInnerHTML={
-                  n.nodeId === editedNodeId
-                    ? undefined
-                    : {__html: getInnerHtml(n)}
-                }
-
+                dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}
                 contentEditable={n.nodeId === editedNodeId}
 
                 onMouseDown={(e) => {
@@ -102,11 +102,16 @@ export const MapDiv: FC = () => {
 
                 }}
 
+
+
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
                     console.log('FINISH EDIT BY ENTER')
                   }
+
+
+
                 }}
 
                 onInput={(e) => {

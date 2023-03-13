@@ -16,6 +16,7 @@ const editorState : EditorState = {
   mapList: [],
   mapListIndex: 0,
   editedNodeId: '',
+  editType: '',
   moveTarget: [],
   selectionRect: [],
   formatterVisible: false,
@@ -82,6 +83,7 @@ export const editorSlice = createSlice({
       state.tempMap = action.payload
     },
     setEditedNodeId(state, action: PayloadAction<any>) {state.editedNodeId = action.payload},
+    setEditType(state, action: PayloadAction<any>) {state.editType = action.payload},
     setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
     setSelectionRect(state, action: PayloadAction<any>) {state.selectionRect = action.payload},
     undo(state) {

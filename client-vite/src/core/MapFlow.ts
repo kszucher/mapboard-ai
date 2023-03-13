@@ -42,6 +42,8 @@ const updateParentLastSelectedChild = (m: M, ln: N) => {
 }
 
 export const mapReducer = (m: M, action: string, payload: any) => {
+  console.log('MAP_MUTATION: ' + action, payload)
+
   const { sc } = m.g
   let ln = getMapData(m, sc.lastPath)
   if (payload.hasOwnProperty('contentToSave')) {

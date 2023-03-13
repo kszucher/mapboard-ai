@@ -66,7 +66,6 @@ export const useEventMiddleware = (
     [ kd, 0, ckm(e, '000') && key === 'F5',                   ['s', 'c'],             0, '',                         {}                              ],
     [ kd, 0, ckm(e, '000') && key === 'Enter',                ['s'],                  1, 'insert_S_D',               {}                              ],
     [ kd, 0, ckm(e, '000') && key === 'Enter',                ['c'],                  1, 'select_C_IOUD',            {direction: Dir.D}              ],
-    // [ kd, 1, ckm(e, '000') && key === 'Enter',                ['s', 'c'],             1, 'finishEdit',               {}                              ],
     [ kd, 0, ckm(e, '010') && key === 'Enter',                ['s', 'c'],             1, 'insert_S_U',               {}                              ],
     [ kd, 0, ckm(e, '001') && key === 'Enter',                ['s'],                  1, 'cellify',                  {}                              ],
     [ kd, 0, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s'],                  1, 'insert_S_O',               {}                              ],
@@ -112,6 +111,9 @@ export const useEventMiddleware = (
     [ pt, 0, true,                                            ['s'],                  0, 'insert_S_O_text',          {text}                          ],
     [ pt, 1, true,                                            ['s'],                  0, 'append_text',              {text}                          ],
     [ pi, 0, true,                                            ['s'],                  0, 'insert_S_O_image',         {imageId, imageSize}            ],
+
+    // todo: div events
+
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
     const [ eventTypeCondition, isEditing, match, scope, preventDefault, action, payload ] = stateMachine[i]
@@ -132,16 +134,19 @@ export const useEventMiddleware = (
         dispatch(actions.mutateMapStack(nm))
         dispatch(actions.mutateTempMap(nm))
         dispatch(actions.setEditedNodeId(findEditedNodeId(m)))
+        dispatch(actions.setEditType('append'))
 
       } else if (action === 'finishEdit') {
 
-      } else if (action === '') {
+
 
       } else if (action === '') {
 
       } else if (action === '') {
 
-      }else if (action === '') {
+      } else if (action === '') {
+
+      } else if (action === '') {
         // do nothing
       } else {
         const nm = reCalc(m, mapReducer(copy(m), action as string, payload))
