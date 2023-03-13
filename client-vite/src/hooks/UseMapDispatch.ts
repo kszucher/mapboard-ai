@@ -5,14 +5,15 @@ import {actions, getEditedNodeId, getMap, getTempMap} from "../core/EditorFlow"
 import {mapFindById} from "../map/MapFindById";
 
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
+  console.log('DANGEROUS_MAP_DISPATCH', action, payload)
   const editedNodeId = getEditedNodeId()
-  if (editedNodeId.length && [
-    'finishEdit',
-    'selectStruct',
-    'selectStructToo',
-    'selectStructFamily',
-    'setTaskStatus',
-    'insert_S_O'
+  if (editedNodeId.length && [''
+    // 'finishEdit',
+    // 'selectStruct',
+    // 'selectStructToo',
+    // 'selectStructFamily',
+    // 'setTaskStatus',
+    // 'insert_S_O'
     // TODO useBlur <-----------------------------
   ].includes(action)) {
     const tm = getTempMap()

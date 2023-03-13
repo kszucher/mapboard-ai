@@ -69,6 +69,12 @@ export const MapSvg: FC = () => {
         width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
         height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
       }}
+      // onClick={(e) => {
+      //   console.log('will this do')
+      // }}
+      // onKeyDown={(e) => {
+      //   console.log('will KEY do')
+      // }}
     >
       <svg
         style={{

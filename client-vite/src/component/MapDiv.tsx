@@ -1,14 +1,15 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
-import {FC, Fragment, useEffect} from "react"
+import {FC, Fragment, useEffect, useRef} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {M, N} from "../types/DefaultProps"
-import {m2ml} from "../core/MapUtils"
+import {getNodeById, m2ml} from "../core/MapUtils"
 import {copy, getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
 import {mapReducer, reCalc} from "../core/MapFlow";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
+import {setEndOfContentEditable} from "./MapDivUtils";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -34,23 +35,26 @@ export const MapDiv: FC = () => {
   const lastKeyboardEventData = useSelector((state: RootStateOrAny) => state.editor.lastKeyboardEventData)
   const dispatch = useDispatch()
 
+  // const nodesRef = useRef(null) as any
+  // const getNodeRef = () => {
+  //   if (!nodesRef.current) {
+  //     nodesRef.current = new Map()
+  //   }
+  //   return nodesRef.current
+  // }
+
   useEffect(() => {
     if (editedNodeId.length) {
 
-      console.log(editedNodeId)
 
       const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
 
-      console.log(editedDiv)
-
-      // TODO start: use editType, and follow up on all the rest... main goal is to ELIMINATE useMapDispatch!!!
-
       // editedDiv.focus()
       // if (lastKeyboardEventData.key === 'F2') { // TODO: dispatch an editType: 'append' | 'replace'
-        // editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
+      //   editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
         // TODO
       // }
-      // setEndOfContentEditable(editedDiv)
+      setEndOfContentEditable(editedDiv)
     }
   }, [editedNodeId])
 
@@ -62,6 +66,7 @@ export const MapDiv: FC = () => {
         display: 'flex',
         // pointerEvents: 'none'
       }}
+
     >
       <>
         {ml.map((n: N) => (
@@ -71,6 +76,14 @@ export const MapDiv: FC = () => {
               !n.hasCell &&
               <div
                 id={`${n.nodeId}_div`}
+                // ref={(el) => {
+                //   const nodeRef = getNodeRef()
+                //   if (el) {
+                //     nodeRef.set(n.nodeId, el)
+                //   } else {
+                //     nodeRef.delete(n.nodeId)
+                //   }
+                // }}
                 style = {{
                   left: 1 + n.nodeStartX,
                   top: 1 + n.nodeY - n.selfH / 2,
@@ -107,6 +120,9 @@ export const MapDiv: FC = () => {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
+
+                    console.log('newstuff', e.currentTarget.innerHTML)
+
                     console.log('FINISH EDIT BY ENTER')
                   }
 
@@ -116,6 +132,9 @@ export const MapDiv: FC = () => {
 
                 onInput={(e) => {
                   const nm = reCalc(m, mapReducer(copy(m), 'typeText', e.currentTarget.innerHTML))
+
+                  console.log('oninput')
+
                   dispatch(actions.mutateTempMap(nm))
 
                 }}

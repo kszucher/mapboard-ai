@@ -69,6 +69,12 @@ export const editorSlice = createSlice({
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
+
+    startEdit(state) {
+
+    },
+
+
     mutateMapStack(state, action: PayloadAction<any>) {
       const m = state.mapList[state.mapListIndex]
       if (

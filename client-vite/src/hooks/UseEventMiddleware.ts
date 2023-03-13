@@ -130,6 +130,7 @@ export const useEventMiddleware = (
       } else if (action === 'setEditedNodeId') {
         dispatch(actions.setEditedNodeId(findEditedNodeId(m)))
       } else if (action === 'startEdit') {
+        console.log('startedit...')
         const nm = reCalc(m, mapReducer(copy(m), 'startEdit', {}))
         dispatch(actions.mutateMapStack(nm))
         dispatch(actions.mutateTempMap(nm))
