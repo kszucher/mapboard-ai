@@ -36,11 +36,7 @@ export const MapDiv: FC = () => {
 
   useEffect(() => {
     if (editedNodeId.length) {
-      const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
-      if (editType === 'append') {
-        editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
-      }
-      setEndOfContentEditable(editedDiv)
+      document.getElementById(`${editedNodeId}_div`)?.focus()
     }
   }, [editedNodeId])
 
@@ -84,6 +80,12 @@ export const MapDiv: FC = () => {
                 spellCheck={false}
                 dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}
                 contentEditable={n.nodeId === editedNodeId}
+                onFocus={(e) => {
+                  if (editType === 'append') {
+                    e.currentTarget.innerHTML = getNodeById(ml, editedNodeId).content
+                  }
+                  setEndOfContentEditable(e.currentTarget)
+                }}
                 onBlur={(e) => {
                   console.log('FINISH EDIT BY LEAVE', e.currentTarget.innerHTML)
                   dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
