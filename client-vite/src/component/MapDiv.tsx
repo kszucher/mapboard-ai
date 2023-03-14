@@ -80,7 +80,6 @@ export const MapDiv: FC = () => {
                   setEndOfContentEditable(e.currentTarget)
                 }}
                 onBlur={(e) => {
-                  console.log('FINISH EDIT BY LEAVE', e.currentTarget.innerHTML)
                   dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
                 }}
                 onDoubleClick={(e) => {
@@ -96,7 +95,6 @@ export const MapDiv: FC = () => {
                 onKeyDown={(e) => {
                   e.stopPropagation()
                   if (e.key === 'Enter' && !e.shiftKey) {
-                    console.log('FINISH EDIT BY ENTER')
                     dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
                   }
                   // TODO: call a generic action that inserts, then a starEditAppend
