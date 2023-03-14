@@ -191,7 +191,7 @@ export const WindowListeners: FC = () => {
     const {path} = getNativeEvent(e)
     if (path.find((el: any) => el.id === 'mapSvgOuter')) {
       if (isNodeClicked) {
-        mapDispatch('startEdit')
+        // mapDispatch('startEdit')
       } else {
         const m = getMap()
         orient(m, 'shouldCenter', {})
