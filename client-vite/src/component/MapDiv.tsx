@@ -101,6 +101,7 @@ export const MapDiv: FC = () => {
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
+                  userSelect: 'none',
                   // TODO add a zIndex that is dependent on path length, so a table can be selected
                 }}
                 spellCheck={false}
@@ -110,9 +111,10 @@ export const MapDiv: FC = () => {
                   console.log('FINISH EDIT BY LEAVE', e.currentTarget.innerHTML)
                   dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
                 }}
+                onDoubleClick={(e) => {
+                  dispatch(actions.startEditAppend())
+                }}
                 onMouseDown={(e) => {
-                  // e.preventDefault()
-                  // e.currentTarget.focus()
                   dispatch(actions.genericMapAction({type: 'selectStruct', payload: { lastOverPath: n.path }})) // TODO use id instead of path
                   // TODO extend this functionality again
                 }}
