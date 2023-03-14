@@ -31,15 +31,7 @@ export const MapDiv: FC = () => {
   const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
-
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (editedNodeId.length) {
-      document.getElementById(`${editedNodeId}_div`)?.focus()
-    }
-  }, [editedNodeId])
-
   return (
     <div
       id='mapDiv'
@@ -56,6 +48,7 @@ export const MapDiv: FC = () => {
               !n.hasCell &&
               <div
                 id={`${n.nodeId}_div`}
+                ref={ref => ref && ref.focus()}
                 style = {{
                   left: 1 + n.nodeStartX,
                   top: 1 + n.nodeY - n.selfH / 2,
