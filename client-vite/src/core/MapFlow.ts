@@ -372,10 +372,6 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       }
       break
     }
-    case 'append_text': {
-      document.execCommand("insertHTML", false, payload.text)
-      break
-    }
     // FORMAT
     case 'setFormatParams': {
       const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} =

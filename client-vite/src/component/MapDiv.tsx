@@ -110,6 +110,13 @@ export const MapDiv: FC = () => {
                 onInput={(e) => {
                   dispatch(actions.typeText(e.currentTarget.innerHTML))
                 }}
+                onPaste={(e) => {
+                  e.preventDefault()
+                  const pasted = e.clipboardData.getData('Text')
+                  e.currentTarget.innerHTML += pasted
+                  setEndOfContentEditable(e.currentTarget)
+                  dispatch(actions.typeText(e.currentTarget.innerHTML))
+                }}
               >
               </div>
             }

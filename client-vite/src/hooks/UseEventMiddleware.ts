@@ -102,8 +102,6 @@ export const useEventMiddleware = (
     [ pt, isUrl(text),                                     ['s'],                  1, 'insert_S_O_elink',         {text},                          0 ],
     [ pt, true,                                            ['s'],                  1, 'insert_S_O_text',          {text},                          0 ],
     [ pi, true,                                            ['s'],                  1, 'insert_S_O_image',         {imageId, imageSize},            0 ],
-
-    // [ pt, true,                                            ['s'],                  0, 'append_text',              {text}                          ],
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
     const [ eventTypeCondition, match, scope, isGenericMapDispatch, type, payload, preventDefault ] = stateMachine[i]
