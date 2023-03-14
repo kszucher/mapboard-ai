@@ -47,7 +47,7 @@ export const MapDiv: FC = () => {
               n.type === 'struct' &&
               !n.hasCell &&
               <div
-                id={`${n.nodeId}_div`}
+                id={'node'}
                 ref={ref => ref && ref.focus()}
                 style = {{
                   left: 1 + n.nodeStartX,

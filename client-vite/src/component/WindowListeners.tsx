@@ -80,8 +80,6 @@ export const WindowListeners: FC = () => {
     if (path.find((el: any) => el.id === 'mapSvgOuter')) {
       if (whichDown === 0) {
         whichDown = which;
-        // @ts-ignore
-        (window.getSelection ? window.getSelection() : document.selection).empty()
         elapsed = 0
         let lastOverPath = []
         const m = getMap()
