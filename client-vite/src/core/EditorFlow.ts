@@ -1,11 +1,12 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {AccessTypes, FormatMode, PageState} from "./Enums"
 import {mapAssembly} from "../map/MapAssembly"
-import {reCalc} from "./MapFlow"
+import {getMapData, mapReducer, reCalc} from "./MapFlow"
 import {mapDeInit} from "../map/MapDeInit"
 import {copy} from "./Utils"
 import {api} from "./Api"
-import {DefaultUseOpenWorkspaceQueryState, EditorState, KeyboardEventData} from "../types/EditorFlow";
+import {DefaultUseOpenWorkspaceQueryState, EditorState} from "../types/EditorFlow";
+import {M} from "../types/DefaultProps";
 
 const editorState : EditorState = {
   token: '',
@@ -21,7 +22,6 @@ const editorState : EditorState = {
   selectionRect: [],
   formatterVisible: false,
   moreMenu: false,
-  lastKeyboardEventData: undefined
 }
 
 export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQueryState = {
@@ -57,6 +57,16 @@ export const getFrameId = () => {
   return frameId
 }
 
+const isMapChanged = (m: M, nm: M) =>
+  JSON.stringify(mapDeInit.start(copy(m))) !==
+  JSON.stringify(mapDeInit.start(copy(nm)))
+
+const findEditedNodeId = (m: M) => (
+  m.g.sc.scope === 'c'
+    ? getMapData(m, m.g.sc.lastPath).s[0].nodeId
+    : getMapData(m, m.g.sc.lastPath).nodeId
+)
+
 export const editorSlice = createSlice({
   name: 'editor',
   initialState: editorState,
@@ -69,27 +79,46 @@ export const editorSlice = createSlice({
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
-
-    startEdit(state) {
-
-    },
-
-
-    mutateMapStack(state, action: PayloadAction<any>) {
+    startEditReplace(state) {
       const m = state.mapList[state.mapListIndex]
-      if (
-        JSON.stringify(mapDeInit.start(copy(m))) !==
-        JSON.stringify(mapDeInit.start(copy(action.payload)))
-      ) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), action.payload] as any
+      state.editedNodeId = findEditedNodeId(m)
+      state.editType = 'replace'
+    },
+    startEditAppend(state) {
+      const m = state.mapList[state.mapListIndex]
+      const nm = reCalc(m, mapReducer(copy(m), 'startEditAppend', {}))
+      if (isMapChanged(m, nm)) {
+        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
         state.mapListIndex = state.mapListIndex + 1
       }
+      state.tempMap = nm
+      state.editedNodeId = findEditedNodeId(m)
+      state.editType = 'append'
     },
-    mutateTempMap(state, action: PayloadAction<any>) {
-      state.tempMap = action.payload
+    typeText(state, action: PayloadAction<any>) {
+      const m = state.mapList[state.mapListIndex]
+      state.tempMap = reCalc(m, mapReducer(copy(m), 'typeText', action.payload))
     },
-    setEditedNodeId(state, action: PayloadAction<any>) {state.editedNodeId = action.payload},
-    setEditType(state, action: PayloadAction<any>) {state.editType = action.payload},
+    finishEdit(state, action: PayloadAction<any>) {
+      const m = state.mapList[state.mapListIndex]
+      const nm = reCalc(m, mapReducer(copy(m), 'finishEdit', action.payload))
+      if (isMapChanged(m, nm)) {
+        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+        state.mapListIndex = state.mapListIndex + 1
+      }
+      state.tempMap = {}
+      state.editedNodeId = ''
+      state.editType = ''
+    },
+    genericMapAction(state, action: PayloadAction<any>) {
+      const m = state.mapList[state.mapListIndex]
+      const nm = reCalc(m, mapReducer(copy(m), action.payload.type, action.payload.payload))
+      if (isMapChanged(m, nm)) {
+        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+        state.mapListIndex = state.mapListIndex + 1
+      }
+      state.tempMap = {}
+    },
     setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
     setSelectionRect(state, action: PayloadAction<any>) {state.selectionRect = action.payload},
     undo(state) {
@@ -100,7 +129,6 @@ export const editorSlice = createSlice({
       state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
       state.editedNodeId = ''
     },
-    setLastKeyboardEventData(state, action: PayloadAction<KeyboardEventData>) {state.lastKeyboardEventData = action.payload},
   },
   extraReducers: (builder) => {
     builder.addMatcher(

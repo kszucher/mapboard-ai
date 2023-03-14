@@ -7,7 +7,6 @@ import {M, N} from "../types/DefaultProps"
 import {getNodeById, m2ml} from "../core/MapUtils"
 import {copy, getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
-import {mapReducer, reCalc} from "../core/MapFlow";
 import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {setEndOfContentEditable} from "./MapDivUtils";
 
@@ -32,7 +31,8 @@ export const MapDiv: FC = () => {
   const m = tmExists ? tm : mapList[mapListIndex]
   const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const lastKeyboardEventData = useSelector((state: RootStateOrAny) => state.editor.lastKeyboardEventData)
+  const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
+
   const dispatch = useDispatch()
 
   // const nodesRef = useRef(null) as any
@@ -46,14 +46,13 @@ export const MapDiv: FC = () => {
   useEffect(() => {
     if (editedNodeId.length) {
 
+      console.log('should start edit...')
 
       const editedDiv = document.getElementById(`${editedNodeId}_div`) as HTMLDivElement
-
       // editedDiv.focus()
-      // if (lastKeyboardEventData.key === 'F2') { // TODO: dispatch an editType: 'append' | 'replace'
-      //   editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
-        // TODO
-      // }
+      if (editType === 'append') {
+        editedDiv.innerHTML = getNodeById(ml, editedNodeId).content
+      }
       setEndOfContentEditable(editedDiv)
     }
   }, [editedNodeId])
@@ -107,42 +106,31 @@ export const MapDiv: FC = () => {
                 spellCheck={false}
                 dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}
                 contentEditable={n.nodeId === editedNodeId}
-
-                onMouseDown={(e) => {
-                  e.preventDefault()
-                  useMapDispatch(dispatch, 'selectStruct', { lastOverPath: n.path })
-                  // TODO extend this functionality again
-
-                }}
-
-
-
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault()
-
-                    console.log('newstuff', e.currentTarget.innerHTML)
-
-                    console.log('FINISH EDIT BY ENTER')
-                  }
-
-
-
-                }}
-
-                onInput={(e) => {
-                  const nm = reCalc(m, mapReducer(copy(m), 'typeText', e.currentTarget.innerHTML))
-
-                  console.log('oninput')
-
-                  dispatch(actions.mutateTempMap(nm))
-
-                }}
-
                 onBlur={(e) => {
-                  console.log('FINISH EDIT BY LEAVE')
+                  console.log('FINISH EDIT BY LEAVE', e.currentTarget.innerHTML)
+                  dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
                 }}
-
+                onMouseDown={(e) => {
+                  // e.preventDefault()
+                  // e.currentTarget.focus()
+                  dispatch(actions.genericMapAction({type: 'selectStruct', payload: { lastOverPath: n.path }})) // TODO use id instead of path
+                  // TODO extend this functionality again
+                }}
+                onMouseMove={(e) => {
+                  e.preventDefault()
+                }}
+                onKeyDown={(e) => {
+                  e.stopPropagation()
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    console.log('FINISH EDIT BY ENTER')
+                    dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
+                  }
+                  // TODO: call a generic action that inserts, then a starEditAppend
+                  // (finish will be automatic so not needed in the beginning)
+                }}
+                onInput={(e) => {
+                  dispatch(actions.typeText(e.currentTarget.innerHTML))
+                }}
               >
               </div>
             }
@@ -152,3 +140,8 @@ export const MapDiv: FC = () => {
     </div>
   )
 }
+
+// TODO add doubleclick and finish up with all the things... !!!!
+// TODO do insert SOU stuff
+// TODO do move/selection stuff so useMD can be replaced
+// reintroduce column: isGeneric: 1/0 and based on that we either call an action, or a genericMapAction

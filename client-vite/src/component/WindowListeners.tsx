@@ -31,6 +31,7 @@ export const WindowListeners: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
   const mExists = m && Object.keys(m).length
+  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
   const { colorMode, mapId, frameId, access } = data || defaultUseOpenWorkspaceQueryState
@@ -200,7 +201,6 @@ export const WindowListeners: FC = () => {
 
   const keydown = (e: KeyboardEvent) => {
     useEventMiddleware({keyboardEvent: e}, dispatch)
-    dispatch(actions.setLastKeyboardEventData({key: e.key, code: e.code}))
   }
 
   const paste = (e: ClipboardEvent) => {
@@ -262,20 +262,27 @@ export const WindowListeners: FC = () => {
   }
 
   useEffect(() => {
-    if (pageState === PageState.WS) {
-      if (access === AccessTypes.EDIT) {
-        addMapListeners()
-      } else if (access === AccessTypes.VIEW) {
-        // TODO figure out view listeners
+    if (editedNodeId) {
+      console.log('REMOVED')
+      removeMapListeners()
+      removeLandingListeners()
+    } else {
+      if (pageState === PageState.WS) {
+        if (access === AccessTypes.EDIT) {
+          console.log('ADDED')
+          addMapListeners()
+        } else if (access === AccessTypes.VIEW) {
+          // TODO figure out view listeners
+        }
+      } else if (pageState === PageState.DEMO) {
+        addLandingListeners()
       }
-    } else if (pageState === PageState.DEMO) {
-      addLandingListeners()
     }
     return () => {
       removeMapListeners()
       removeLandingListeners()
     }
-  }, [pageState, access])
+  }, [pageState, access, editedNodeId])
 
   useEffect(() => {
     const root = document.querySelector(':root') as HTMLElement

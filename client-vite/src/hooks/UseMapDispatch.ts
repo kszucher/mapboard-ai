@@ -7,22 +7,22 @@ import {mapFindById} from "../map/MapFindById";
 export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload: any = {}) => {
   console.log('DANGEROUS_MAP_DISPATCH', action, payload)
   const editedNodeId = getEditedNodeId()
-  if (editedNodeId.length && [''
-    // 'finishEdit',
-    // 'selectStruct',
-    // 'selectStructToo',
-    // 'selectStructFamily',
-    // 'setTaskStatus',
-    // 'insert_S_O'
-    // TODO useBlur <-----------------------------
-  ].includes(action)) {
-    const tm = getTempMap()
-    const editedNodePath = getMapData(tm, mapFindById.start(tm, editedNodeId)).path
-    console.log(editedNodePath)
-    const contentToSave = getMapData(tm, editedNodePath).content
-    console.log(contentToSave)
-    Object.assign(payload, {contentToSave})
-  }
+  // if (editedNodeId.length && [''
+  //   // 'finishEdit',
+  //   // 'selectStruct',
+  //   // 'selectStructToo',
+  //   // 'selectStructFamily',
+  //   // 'setTaskStatus',
+  //   // 'insert_S_O'
+  //   // TODO useBlur <-----------------------------
+  // ].includes(action)) {
+  //   const tm = getTempMap()
+  //   const editedNodePath = getMapData(tm, mapFindById.start(tm, editedNodeId)).path
+  //   console.log(editedNodePath)
+  //   const contentToSave = getMapData(tm, editedNodePath).content
+  //   console.log(contentToSave)
+  //   Object.assign(payload, {contentToSave})
+  // }
   const m = getMap()
   const nm = reCalc(m, mapReducer(copy(m), action, payload))
   if ([
@@ -32,8 +32,8 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     'startEdit'
   ].includes(action)
   ) {
-    dispatch(actions.mutateMapStack(nm))
-    dispatch(actions.mutateTempMap(nm))
+    // dispatch(actions.mutateMapStack(nm))
+    // dispatch(actions.mutateTempMap(nm))
   } else if ([
     'typeText',
     'moveTargetPreview',
@@ -42,13 +42,13 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     || action === 'moveTarget' && !payload.moveTargetPath.length
     || action === 'selectTarget' && !payload.highlightTargetPathList.length
   ) {
-    dispatch(actions.mutateTempMap(nm))
+    // dispatch(actions.mutateTempMap(nm))
 
 
 
   } else {
-    dispatch(actions.mutateMapStack(nm))
-    dispatch(actions.mutateTempMap({}))
+    // dispatch(actions.mutateMapStack(nm))
+    // dispatch(actions.mutateTempMap({}))
   }
   if ([
       'insert_S_O',
@@ -59,13 +59,9 @@ export const useMapDispatch = (dispatch: Dispatch<any>, action: string, payload:
     ].includes(action) &&
     getMapData(nm, nm.g.sc.lastPath).contentType !== 'image' &&
     getMapData(nm, nm.g.sc.lastPath).hasCell == false ) {
-    dispatch(actions.setEditedNodeId(
-      nm.g.sc.scope === 'c'
-        ? getMapData(nm, nm.g.sc.lastPath).s[0].nodeId
-        : getMapData(nm, nm.g.sc.lastPath).nodeId
-    ))
+    // dispatch(actions.setEdit()
   } else {
-    dispatch(actions.setEditedNodeId(''))
+    // dispatch(actions.clearEdit()
   }
   if (action === 'moveTargetPreview') {
     dispatch(actions.setMoveTarget(payload))

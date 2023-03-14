@@ -18,7 +18,7 @@ import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
-import {Dir} from "./Enums";
+import {Dir} from "./Enums"
 
 export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)
@@ -46,17 +46,6 @@ export const mapReducer = (m: M, action: string, payload: any) => {
 
   const { sc } = m.g
   let ln = getMapData(m, sc.lastPath)
-  if (payload.hasOwnProperty('contentToSave')) {
-    const { contentToSave } = payload
-    const isContentEquation = contentToSave.substring(0, 2) === '\\['
-    if (ln.type === 'cell') {
-      ln.s[0].content = contentToSave
-      ln.s[0].contentType = isContentEquation ? 'equation' : ln.s[0].contentType
-    } else {
-      ln.content = contentToSave
-      ln.contentType = isContentEquation ? 'equation' : ln.contentType
-    }
-  }
   switch (action) {
     // VIEW
     case 'changeDensity': {
@@ -434,12 +423,13 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
     case 'setTaskStatus': {
-      let n = getMapData(m, mapFindById.start(m, payload.nodeId))
-      n.taskStatus = payload.taskStatus
+      const { nodeId, taskStatus } = payload
+      const n = getMapData(m, mapFindById.start(m, nodeId))
+      n.taskStatus = taskStatus
       break
     }
     // EDIT
-    case'startEdit': {
+    case'startEditAppend': {
       if (ln.contentType === 'equation') {
         ln.contentType = 'text'
       }
@@ -450,6 +440,16 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
     case 'finishEdit': {
+      const { nodeId, content } = payload
+      const n = getMapData(m, mapFindById.start(m, nodeId))
+      const isContentEquation = content.substring(0, 2) === '\\['
+      if (n.type === 'cell') {
+        n.s[0].content = content
+        n.s[0].contentType = isContentEquation ? 'equation' : n.s[0].contentType
+      } else {
+        n.content = content
+        n.contentType = isContentEquation ? 'equation' : n.contentType
+      }
       break
     }
   }

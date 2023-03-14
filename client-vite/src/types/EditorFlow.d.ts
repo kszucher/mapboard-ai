@@ -1,11 +1,6 @@
 import {AccessTypes, FormatMode, PageState} from "../core/Enums";
 import {M} from "./DefaultProps";
 
-export interface KeyboardEventData {
-  key: string,
-  code: string
-}
-
 export interface EditorState {
   token: string,
   pageState: PageState,
@@ -20,7 +15,6 @@ export interface EditorState {
   selectionRect: [],
   formatterVisible: boolean,
   moreMenu: boolean,
-  lastKeyboardEventData: KeyboardEventData | undefined,
 }
 
 export interface DefaultUseOpenWorkspaceQueryState {
