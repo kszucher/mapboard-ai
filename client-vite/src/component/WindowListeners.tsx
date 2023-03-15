@@ -78,10 +78,20 @@ export const WindowListeners: ReactFragment = () => {
   }
 
   const mousedown = (e: MouseEvent) => {
-    e.preventDefault();
-    [fromX, fromY] = getCoords(e)
+    e.preventDefault()
+    const path = e.composedPath()
+    const {which} = e
+    if (path.find((el: any) => el.id === 'mapSvgOuter')) {
+      if (whichDown === 0) {
+        whichDown = which;
+        elapsed = 0
+        if (which === 1 || which === 3) {
+          [fromX, fromY] = getCoords(e)
+        }
+      }
+    }
   }
-
+  
   const mousemove = (e: MouseEvent) => {
     e.preventDefault()
     const {which} = e
@@ -202,9 +212,9 @@ export const WindowListeners: ReactFragment = () => {
     window.addEventListener('resize', resize, {signal})
     window.addEventListener('popstate', popstate, {signal})
     window.addEventListener('dblclick', dblclick, {signal})
-    // window.addEventListener('mousedown', mousedown, { signal })
-    // window.addEventListener('mousemove', mousemove, { signal })
-    // window.addEventListener('mouseup', mouseup, { signal })
+    window.addEventListener('mousedown', mousedown, { signal })
+    window.addEventListener('mousemove', mousemove, { signal })
+    window.addEventListener('mouseup', mouseup, { signal })
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
   }
