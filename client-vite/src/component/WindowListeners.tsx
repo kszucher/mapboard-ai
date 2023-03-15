@@ -77,56 +77,10 @@ export const WindowListeners: ReactFragment = () => {
   const popstate = () => {
   }
 
-  // const mousedown = (e: MouseEvent) => {
-  //   e.preventDefault()
-  //   const path = e.composedPath()
-  //   const {which} = e
-  //   if (path.find((el: any) => el.id === 'mapSvgOuter')) {
-  //     if (whichDown === 0) {
-  //       whichDown = which;
-  //       elapsed = 0
-  //       // let lastOverPath = []
-  //       const m = getMap()
-  //       if (which === 1 || which === 3) {
-  //         [fromX, fromY] = getCoords(e)
-  //         // isTaskClicked = path.find((el: any) => el.id === 'taskCircle')
-  //         // isNodeClicked = path.find((el: any) => el.id === 'node')
-  //       }
-  //       //   if (which === 1) {
-  //       //     if (isTaskClicked) {
-  //       //     } else if (isNodeClicked) {
-  //       //       let ln = getMapData(m, lastOverPath)
-  //       //       if (ln.linkType === '') {
-  //       //         if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-  //       //           mapDispatch('selectStruct', {lastOverPath})
-  //       //         } else {
-  //       //           mapDispatch('selectStructToo', {lastOverPath})
-  //       //         }
-  //       //       } else {
-  //       //         whichDown = 0
-  //       //         if (ln.linkType === 'internal') {
-  //       //           const ln = getMapData(m, lastOverPath)
-  //       //           dispatch(api.endpoints.selectMap.initiate({mapId: ln.link, frameId: ''}))
-  //       //         } else if (ln.linkType === 'external') {
-  //       //           window.open(ln.link, '_blank')
-  //       //           window.focus()
-  //       //         }
-  //       //       }
-  //       //     } else {
-  //       //     }
-  //       //   } else if (which === 2) {
-  //       //   } else if (which === 3) {
-  //       //     if (isNodeClicked) {
-  //       //       if (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) {
-  //       //         mapDispatch('selectStructFamily', {lastOverPath})
-  //       //       } else {
-  //       //         mapDispatch('selectStructToo', {lastOverPath}) // TODO: selectStructFamily too
-  //       //       }
-  //           }
-  //         }
-  //       }
-
-
+  const mousedown = (e: MouseEvent) => {
+    e.preventDefault();
+    [fromX, fromY] = getCoords(e)
+  }
 
   const mousemove = (e: MouseEvent) => {
     e.preventDefault()

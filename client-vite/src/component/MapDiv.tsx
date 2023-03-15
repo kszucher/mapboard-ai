@@ -8,6 +8,7 @@ import {getNodeById, m2ml} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
 import {actions} from "../core/EditorFlow";
 import {setEndOfContentEditable} from "./MapDivUtils";
+import {api} from "../core/Api";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -79,8 +80,26 @@ export const MapDiv: FC = () => {
                 dispatch(actions.startEditAppend())
               }}
               onMouseDown={(e) => {
-                dispatch(actions.genericMapAction({type: 'selectStruct', payload: { lastOverPath: n.path }})) // TODO use id instead of path
-                // TODO extend this functionality again
+                if (e.button === 0) {
+                  if (n.linkType === 'internal') {
+                    dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
+                  } else if (n.linkType === 'external') {
+                    window.open(n.link, '_blank')
+                    window.focus()
+                  } else {
+                    dispatch(actions.genericMapAction({
+                        type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStruct' : 'selectStructToo',
+                        payload: {lastOverPath: n.path} // TODO use id instead of path
+                      }
+                    ))
+                  }
+                } else if (e.button === 2) {
+                  dispatch(actions.genericMapAction({
+                      type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStructFamily' : 'selectStructToo',
+                      payload: {lastOverPath: n.path} // TODO use id instead of path
+                    }
+                  ))
+                }
               }}
               onMouseMove={(e) => {
                 e.preventDefault()
