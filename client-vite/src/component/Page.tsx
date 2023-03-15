@@ -24,6 +24,7 @@ import {PageState} from "../core/Enums";
 import {getEquationDim, getTextDim} from "./MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {Map} from "./Map";
+import {getColors} from "../core/Colors";
 
 const getMuiTheme = (colorMode: string)  => createTheme({
   palette: {
@@ -54,6 +55,14 @@ export const Page: FC = () => {
     getTextDim('Test', 12)
     getEquationDim('\\[Test\\]')
   }, [])
+
+  useEffect(() => {
+    const root = document.querySelector(':root') as HTMLElement
+    root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
+    root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
+    root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
+    root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
+  }, [colorMode])
 
   return (
     <div id="page">

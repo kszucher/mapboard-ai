@@ -25,7 +25,7 @@ let mapAreaListener: AbortController
 let landingAreaListener: AbortController
 export let timeoutId: NodeJS.Timeout
 
-export const WindowListeners: ReactFragment = () => {
+export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
@@ -91,7 +91,7 @@ export const WindowListeners: ReactFragment = () => {
       }
     }
   }
-  
+
   const mousemove = (e: MouseEvent) => {
     e.preventDefault()
     const {which} = e
@@ -248,13 +248,7 @@ export const WindowListeners: ReactFragment = () => {
     }
   }, [pageState, access, editedNodeId])
 
-  useEffect(() => {
-    const root = document.querySelector(':root') as HTMLElement
-    root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
-    root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
-    root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
-    root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
-  }, [colorMode])
+
 
   useEffect(() => {
     if (mExists) {
