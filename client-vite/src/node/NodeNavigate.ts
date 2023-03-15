@@ -1,7 +1,8 @@
 import {getMapData} from '../core/MapFlow'
 import {Dir} from "../core/Enums"
+import {M} from "../types/DefaultProps"
 
-export const structNavigate = (m: any, truePath: any[], direction: Dir) => {
+export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
   let newPath = []
   let inDepth = - 1
   //       v
@@ -83,14 +84,14 @@ export const structNavigate = (m: any, truePath: any[], direction: Dir) => {
   return newPath
 }
 
-export const cellNavigate = (m: any, truePath: any[], direction: Dir) => {
-  let newPath = truePath
-  let currRef = getMapData(m, truePath)
-  let pn = getMapData(m, currRef.parentPath)
-  let rowLen = pn.c.length
-  let colLen = pn.c[0].length
-  let currRow = currRef.index[0]
-  let currCol = currRef.index[1]
+export const cellNavigate = (m: M, truePath: any[], direction: Dir) => {
+  const newPath = truePath
+  const currRef = getMapData(m, truePath)
+  const pn = getMapData(m, currRef.parentPath)
+  const rowLen = pn.c.length
+  const colLen = pn.c[0].length
+  const currRow = currRef.index[0]
+  const currCol = currRef.index[1]
   let nextRow = 0
   let nextCol = 0
   switch (direction) {

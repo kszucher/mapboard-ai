@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {render, screen,} from "@testing-library/react"
 import user from "@testing-library/user-event"
 import {Provider} from "react-redux"
@@ -9,7 +8,7 @@ import {colorList} from "../core/Colors";
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {reCalc} from "../core/MapFlow";
 import {mapAssembly} from "../map/MapAssembly";
-import {nodeProps} from "../core/DefaultProps";
+import {nSaveOptional} from "../core/DefaultProps";
 
 describe("Formatter test", () => {
   beforeEach(() => {
@@ -20,12 +19,13 @@ describe("Formatter test", () => {
       {path: ['r', 0, 'd', 0, 's', 0], content: 'Texts', selected: 1},
       {path: ['r', 0, 'd', 1]},
     ])
-    store.dispatch(actions.parseRespPayload({
-      formatMode: FormatMode.text,
-      access: AccessTypes.EDIT,
-      mapListIndex: 0,
-      mapList: [reCalc(testMap, testMap)],
-    }))
+    // TODO use the latest appropriate action from EditorFlow
+    // store.dispatch(actions.parseRespPayload({
+    //   formatMode: FormatMode.text,
+    //   access: AccessTypes.EDIT,
+    //   mapListIndex: 0,
+    //   mapList: [reCalc(testMap, testMap)],
+    // }))
     const {} = render(
       <Provider store={store}>
         <Formatter/>
@@ -49,7 +49,7 @@ describe("Formatter test", () => {
     const m = getMap()
     const { nc } = m.g
     expect(nc).toEqual({
-      selection: nodeProps.saveOptional['selection'],
+      selection: nSaveOptional.selection,
       lineWidth: WidthTypes.w2,
       lineType: LineTypes.edge,
       lineColor: colorList[0][1],
@@ -58,7 +58,7 @@ describe("Formatter test", () => {
       fillColor: colorList[0][1],
       textFontSize: TextTypes.h2,
       textColor: colorList[0][1],
-      taskStatus: nodeProps.saveOptional['taskStatus'],
+      taskStatus: nSaveOptional.taskStatus,
     })
   })
   test('reset', async () => {
@@ -75,16 +75,16 @@ describe("Formatter test", () => {
     const m = getMap()
     const { nc } = m.g
     expect(nc).toEqual({
-      selection: nodeProps.saveOptional['selection'],
-      lineWidth: nodeProps.saveOptional['lineWidth'],
-      lineType: nodeProps.saveOptional['lineType'],
-      lineColor: nodeProps.saveOptional['lineColor'],
-      borderWidth: nodeProps.saveOptional['sBorderWidth'],
-      borderColor: nodeProps.saveOptional['sBorderColor'],
-      fillColor: nodeProps.saveOptional['sFillColor'],
-      textFontSize: nodeProps.saveOptional['textFontSize'],
-      textColor: nodeProps.saveOptional['textColor'],
-      taskStatus: nodeProps.saveOptional['taskStatus'],
+      selection: nSaveOptional.selection,
+      lineWidth: nSaveOptional.lineWidth,
+      lineType: nSaveOptional.lineType,
+      lineColor: nSaveOptional.lineColor,
+      borderWidth: nSaveOptional.sBorderWidth,
+      borderColor: nSaveOptional.sBorderColor,
+      fillColor: nSaveOptional.sFillColor,
+      textFontSize: nSaveOptional.textFontSize,
+      textColor: nSaveOptional.textColor,
+      taskStatus: nSaveOptional.taskStatus,
     })
   })
 

@@ -49,16 +49,12 @@ export const MapSvg: FC = () => {
   const ml = m2ml(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : {} // TODO handle tm AND undo-redo
   const pml = mapListIndex > 0 ? m2ml(pm) : []
-  const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
-    ? getNodeByPath(ml, m.g.sc.sameParentPath)
-    : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
+  const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope) ? getNodeByPath(ml, m.g.sc.sameParentPath) : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
   const selectionRect = useSelector((state: RootStateOrAny) => state.editor.selectionRect)
-
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
-
   return (
     <svg
       id="mapSvgOuter"
@@ -69,12 +65,6 @@ export const MapSvg: FC = () => {
         width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
         height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
       }}
-      // onClick={(e) => {
-      //   console.log('will this do')
-      // }}
-      // onKeyDown={(e) => {
-      //   console.log('will KEY do')
-      // }}
     >
       <svg
         style={{
