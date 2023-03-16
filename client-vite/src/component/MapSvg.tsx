@@ -62,13 +62,8 @@ export const MapSvg: FC = () => {
   const C = getColors(colorMode)
   const [fromCoords, setFromCoords] = useState({x: 0, y: 0} as {x: number, y: number})
   const [toCoords, setToCoords] = useState({x: 0, y: 0} as {x: number, y: number})
-  const [rectSelectedNodeIdList, setRectSelectedNodeIdList] = useState([] as any[])
+  const [rectSelectedNodeList, setRectSelectedNodeList] = useState([] as any[])
   const dispatch = useDispatch()
-
-  useEffect(()=>{
-    console.log(rectSelectedNodeIdList)
-  }, [rectSelectedNodeIdList])
-
   return (
     <svg
       id="mapSvgOuter"
@@ -89,7 +84,7 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           const _toCoords = getCoords(e)
           setToCoords(_toCoords)
-          setRectSelectedNodeIdList(
+          setRectSelectedNodeList(
             ml.filter(n =>
               n.type === 'struct' &&
               !n.hasCell &&
@@ -112,7 +107,7 @@ export const MapSvg: FC = () => {
           abortController.abort()
           setFromCoords({x: 0, y: 0})
           setToCoords({x: 0, y: 0})
-          setRectSelectedNodeIdList([])
+          setRectSelectedNodeList([])
         }, { signal })
       }}
     >
@@ -309,16 +304,12 @@ export const MapSvg: FC = () => {
           {ml.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
+                !rectSelectedNodeList.length &&
                 n.selected &&
                 n.selected !== m.g.sc.maxSel &&
                 <path
                   key={`${n.nodeId}_svg_selectionBorderSecondary`}
-                  d={getPolygonPath(
-                    n,
-                    getStructPolygonPoints(n, n.selection),
-                    n.selection,
-                    getSelectionMargin(m, n)
-                  )}
+                  d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(m, n))}
                   stroke={C.SELECTION_COLOR}
                   strokeWidth={1}
                   fill={'none'}
@@ -331,14 +322,12 @@ export const MapSvg: FC = () => {
         </g>
         <g id="layer5">
           {
+            !rectSelectedNodeList.length &&
             <path
               key={`${m.g.nodeId}_svg_selectionBorderPrimary`}
               d={getPolygonPath(
                 sn,
-                ['c', 'cr', 'cc'].includes(m.g.sc.scope)
-                  ? getCellPolygonPoints(sn, m.g.sc)
-                  : getStructPolygonPoints(sn, sn.selection)
-                ,
+                ['c', 'cr', 'cc'].includes(m.g.sc.scope) ? getCellPolygonPoints(sn, m.g.sc) : getStructPolygonPoints(sn, sn.selection),
                 sn.selection,
                 getSelectionMargin(m, sn)
               )}
@@ -351,6 +340,38 @@ export const MapSvg: FC = () => {
           }
         </g>
         <g id="layer6">
+          {rectSelectedNodeList.map((n: N) => (
+            <Fragment key={n.nodeId}>
+              <path
+                key={`${m.g.nodeId}_svg_selectionByRect`}
+                d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(m, n))}
+                stroke={C.SELECTION_COLOR}
+                strokeWidth={1}
+                fill={'none'}
+                {...pathCommonProps}
+              >
+              </path>
+            </Fragment>
+          ))}
+        </g>
+        <g id="layer7">
+          {
+            (fromCoords.x && fromCoords.y && toCoords.x && toCoords.y) &&
+            <rect
+              x={Math.min(fromCoords.x, toCoords.x)}
+              y={Math.min(fromCoords.y, toCoords.y)}
+              width={Math.abs(toCoords.x - fromCoords.x)}
+              height={Math.abs(toCoords.y - fromCoords.y)}
+              rx={8}
+              ry={8}
+              fill={C.SELECTION_RECT_COLOR}
+              fillOpacity={0.05}
+              strokeWidth={2}
+            >
+            </rect>
+          }
+        </g>
+        <g id="layer8">
           {
             moveTarget?.moveData?.length && // TODO use draggedNodeId instead
             <Fragment>
@@ -376,23 +397,6 @@ export const MapSvg: FC = () => {
               >
               </rect>
             </Fragment>
-          }
-        </g>
-        <g id="layer7">
-          {
-            (fromCoords.x || fromCoords.y || toCoords.x || toCoords.y) &&
-            <rect
-              x={Math.min(fromCoords.x, toCoords.x)}
-              y={Math.min(fromCoords.y, toCoords.y)}
-              width={Math.abs(toCoords.x - fromCoords.x)}
-              height={Math.abs(toCoords.y - fromCoords.y)}
-              rx={8}
-              ry={8}
-              fill={C.SELECTION_RECT_COLOR}
-              fillOpacity={0.05}
-              strokeWidth={2}
-            >
-            </rect>
           }
         </g>
       </svg>
