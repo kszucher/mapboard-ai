@@ -16,7 +16,7 @@ import {
   getTaskPath,
 } from "./MapSvgUtils";
 import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
-import {useMapDispatch} from "../hooks/UseMapDispatch";
+import {actions} from "../core/EditorFlow";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -54,7 +54,6 @@ export const MapSvg: FC = () => {
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
   const selectionRect = useSelector((state: RootStateOrAny) => state.editor.selectionRect)
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
   return (
     <svg
       id="mapSvgOuter"
@@ -242,7 +241,8 @@ export const MapSvg: FC = () => {
                         style={{
                           transition: '0.3s ease-out'
                         }}
-                        onMouseDown={() => {mapDispatch('setTaskStatus', { taskStatus: i + 1, nodeId: n.nodeId })}}
+                        onMouseDown={() =>
+                          dispatch(actions.genericMapAction({type: 'setTaskStatus', payload: { taskStatus: i + 1, nodeId: n.nodeId }}))}
                       >
                       </circle>
                     ))

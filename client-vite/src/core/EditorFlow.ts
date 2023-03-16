@@ -79,6 +79,7 @@ export const editorSlice = createSlice({
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
+
     startEditReplace(state) {
       const m = state.mapList[state.mapListIndex]
       state.editedNodeId = findEditedNodeId(m)
@@ -95,7 +96,7 @@ export const editorSlice = createSlice({
       state.editedNodeId = findEditedNodeId(m)
       state.editType = 'append'
     },
-    typeText(state, action: PayloadAction<any>) {
+    typeText(state, action: PayloadAction<any>) { // mapAction/mapActionSpecial whereas mapActionWith effects DEPENDING on mapAction type does different things!!!
       const m = state.mapList[state.mapListIndex]
       state.tempMap = reCalc(m, mapReducer(copy(m), 'typeText', action.payload))
     },

@@ -104,13 +104,13 @@ export const useEventMiddleware = (
     [ pi, true,                                            ['s'],                  1, 'insert_S_O_image',         {imageId, imageSize},            0 ],
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
-    const [ eventTypeCondition, match, scope, isGenericMapDispatch, type, payload, preventDefault ] = stateMachine[i]
+    const [ eventTypeCondition, match, scope, isGenericMapAction, type, payload, preventDefault ] = stateMachine[i]
     if (eventTypeCondition && match === true && scope.includes(m.g.sc.scope)) {
       if (preventDefault === 1 && kd) {
         someEvent.keyboardEvent && someEvent.keyboardEvent.preventDefault()
       }
       if (type.length) {
-        if (isGenericMapDispatch) {
+        if (isGenericMapAction) {
           dispatch(actions.genericMapAction({type, payload}))
         } else {
           dispatch({type: 'editor/' + type, payload})

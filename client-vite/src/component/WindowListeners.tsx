@@ -1,10 +1,8 @@
-import {FC, ReactFragment, useEffect} from "react"
+import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {getColors} from '../core/Colors'
 import {getCoords} from "./MapDivUtils"
-import {getMapData, getSavedMapData} from '../core/MapFlow'
+import {getSavedMapData} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Enums"
-import {useMapDispatch} from "../hooks/UseMapDispatch"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
@@ -33,9 +31,8 @@ export const WindowListeners: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const {density, alignment} = m?.g || gSaveOptional
   const {data} = useOpenWorkspaceQuery()
-  const {colorMode, mapId, frameId, access} = data || defaultUseOpenWorkspaceQueryState
+  const {mapId, frameId, access} = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
 
   // TIMEOUT
   const timeoutFun = () => {
@@ -105,12 +102,12 @@ export const WindowListeners: FC = () => {
         } else if (isNodeClicked) {
           const [toX, toY] = getCoords(e)
           const {moveData} = mapFindNearest.find(m, toX, toY)
-          mapDispatch('moveTargetPreview', {moveData})
+          dispatch(actions.genericMapAction({type: 'moveTargetPreview', payload:{moveData}}))
         } else {
           const [toX, toY] = getCoords(e)
           const {highlightTargetPathList, selectionRect} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
           dispatch(actions.setSelectionRect(selectionRect))
-          mapDispatch('selectTargetPreview', {highlightTargetPathList, selectionRect})
+          dispatch(actions.genericMapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
         }
       } else if (which === 2) {
         const {movementX, movementY} = e
@@ -132,13 +129,13 @@ export const WindowListeners: FC = () => {
           } else if (isNodeClicked) {
             const [toX, toY] = getCoords(e)
             const {moveData, moveTargetPath, moveTargetIndex} = mapFindNearest.find(m, toX, toY)
-            mapDispatch('moveTargetPreview', {moveData})
-            mapDispatch('moveTarget', {moveTargetPath, moveTargetIndex})
+            dispatch(actions.genericMapAction({type: 'moveTargetPreview', payload: {moveData}}))
+            dispatch(actions.genericMapAction({type: 'moveTarget', payload: {moveTargetPath, moveTargetIndex}}))
           } else {
             const [toX, toY] = getCoords(e)
-            const {highlightTargetPathList, selectionRect} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
+            const {highlightTargetPathList} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
             dispatch(actions.setSelectionRect([]))
-            mapDispatch('selectTarget', {highlightTargetPathList})
+            dispatch(actions.genericMapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
           }
         }
       } else {
@@ -146,7 +143,7 @@ export const WindowListeners: FC = () => {
           if (isNodeClicked) {
           } else if (isTaskClicked) {
           } else {
-            mapDispatch('select_R')
+            dispatch(actions.genericMapAction({type: 'select_R', payload: {}}))
           }
         }
       }
@@ -158,7 +155,7 @@ export const WindowListeners: FC = () => {
     const path = e.composedPath()
     if (path.find((el: any) => el.id === 'mapSvgOuter')) {
       if (isNodeClicked) {
-        // mapDispatch('startEdit')
+        // dispatch(actions.genericMapAction({type: 'startEdit')
       } else {
         const m = getMap()
         orient(m, 'shouldCenter', {})

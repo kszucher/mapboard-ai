@@ -1,14 +1,12 @@
 import {FC} from "react";
-import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
+import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {actions} from "../core/EditorFlow";
 import {PageState} from "../core/Enums";
-import {useMapDispatch} from "../hooks/UseMapDispatch";
 
 export const ShouldUpdateTask: FC = () => {
   const interactionDisabled = false
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
   return (
     <Modal
       open={true}
@@ -25,7 +23,7 @@ export const ShouldUpdateTask: FC = () => {
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button color="primary" variant='outlined' disabled={interactionDisabled}
                   onClick={()=>{
-                    mapDispatch('toggleTask', {})
+                    dispatch(actions.genericMapAction({type: 'toggleTask', payload:{}}))
                     dispatch(actions.setPageState(PageState.WS))
                   }}>
             {'OK'}

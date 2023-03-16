@@ -16,7 +16,6 @@ import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions, defaultUseOpenWorkspaceQueryState, getMapId, getFrameId} from "../core/EditorFlow";
 import {PageState} from "../core/Enums";
-import {useMapDispatch} from "../hooks/UseMapDispatch";
 import {gSaveOptional} from "../core/DefaultProps";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 
@@ -30,13 +29,11 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
-  const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)
 
   return (
     <>
@@ -68,13 +65,13 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={() => mapDispatch('changeDensity', {})}>
+          onClick={() => dispatch(actions.genericMapAction({type: 'changeDensity', payload: {}}))}>
           {density === 'small' && <DensitySmallIcon/>}
           {density === 'large' && <DensityMediumIcon/>}
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => mapDispatch('changeAlignment', {})}>
+          onClick={() => dispatch(actions.genericMapAction({type: 'changeAlignment', payload: {}}))}>
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
           {alignment === 'centered' && <CenterFocusStrongIcon/>}
         </IconButton>
