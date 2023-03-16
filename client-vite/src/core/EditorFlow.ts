@@ -57,10 +57,6 @@ export const getFrameId = () => {
   return frameId
 }
 
-const isMapChanged = (m: M, nm: M) =>
-  JSON.stringify(mapDeInit.start(copy(m))) !==
-  JSON.stringify(mapDeInit.start(copy(nm)))
-
 const findEditedNodeId = (m: M) => (
   m.g.sc.scope === 'c'
     ? getMapData(m, m.g.sc.lastPath).s[0].nodeId
@@ -79,46 +75,47 @@ export const editorSlice = createSlice({
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
-
-    startEditReplace(state) {
+    mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       const m = state.mapList[state.mapListIndex]
-      state.editedNodeId = findEditedNodeId(m)
-      state.editType = 'replace'
-    },
-    startEditAppend(state) {
-      const m = state.mapList[state.mapListIndex]
-      const nm = reCalc(m, mapReducer(copy(m), 'startEditAppend', {}))
-      if (isMapChanged(m, nm)) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
-        state.mapListIndex = state.mapListIndex + 1
+      if (action.payload.type === 'startEditReplace') {
+        state.editedNodeId = findEditedNodeId(m)
+        state.editType = 'replace'
+      } else {
+        const nm = reCalc(m, mapReducer(copy(m), action.payload.type, action.payload.payload))
+        const isMapChanged =
+          JSON.stringify(mapDeInit.start(copy(m))) !==
+          JSON.stringify(mapDeInit.start(copy(nm)))
+        switch (action.payload.type) {
+          case 'startEditAppend':
+            if (isMapChanged) {
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+              state.mapListIndex = state.mapListIndex + 1
+            }
+            state.tempMap = nm
+            state.editedNodeId = findEditedNodeId(m)
+            state.editType = 'append'
+            break
+          case 'typeText':
+            state.tempMap = nm
+            break;
+          case 'finishEdit':
+            if (isMapChanged) {
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+              state.mapListIndex = state.mapListIndex + 1
+            }
+            state.tempMap = {}
+            state.editedNodeId = ''
+            state.editType = ''
+            break
+          default:
+            if (isMapChanged) {
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+              state.mapListIndex = state.mapListIndex + 1
+            }
+            state.tempMap = {}
+            break
+        }
       }
-      state.tempMap = nm
-      state.editedNodeId = findEditedNodeId(m)
-      state.editType = 'append'
-    },
-    typeText(state, action: PayloadAction<any>) { // mapAction/mapActionSpecial whereas mapActionWith effects DEPENDING on mapAction type does different things!!!
-      const m = state.mapList[state.mapListIndex]
-      state.tempMap = reCalc(m, mapReducer(copy(m), 'typeText', action.payload))
-    },
-    finishEdit(state, action: PayloadAction<any>) {
-      const m = state.mapList[state.mapListIndex]
-      const nm = reCalc(m, mapReducer(copy(m), 'finishEdit', action.payload))
-      if (isMapChanged(m, nm)) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
-        state.mapListIndex = state.mapListIndex + 1
-      }
-      state.tempMap = {}
-      state.editedNodeId = ''
-      state.editType = ''
-    },
-    mapAction(state, action: PayloadAction<any>) {
-      const m = state.mapList[state.mapListIndex]
-      const nm = reCalc(m, mapReducer(copy(m), action.payload.type, action.payload.payload))
-      if (isMapChanged(m, nm)) {
-        state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
-        state.mapListIndex = state.mapListIndex + 1
-      }
-      state.tempMap = {}
     },
     setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
     setSelectionRect(state, action: PayloadAction<any>) {state.selectionRect = action.payload},

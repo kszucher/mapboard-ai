@@ -53,7 +53,7 @@ export const useEventMiddleware = (
 
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   ['s', 'c'],             0, '',                         {},                              1 ],
-    [ kd, ckm(e, '000') && key === 'F2',                   ['s', 'c'],             0, 'startEditAppend',          {},                              1 ],
+    [ kd, ckm(e, '000') && key === 'F2',                   ['s', 'c'],             1, 'startEditAppend',          {},                              1 ],
     [ kd, ckm(e, '000') && key === 'F3',                   ['s', 'c'],             0, '',                         {},                              1 ],
     [ kd, ckm(e, '000') && key === 'F5',                   ['s', 'c'],             0, '',                         {},                              0 ],
     [ kd, ckm(e, '000') && key === 'Enter',                ['s'],                  1, 'insert_S_D',               {},                              1 ],
@@ -96,7 +96,7 @@ export const useEventMiddleware = (
     [ kd, ckm(e, '001') && [U,D].includes(which),          ['c', 'cr'],            1, 'insert_CR_UD',             {...c2dt(m, which), b: false},   1 ],
     [ kd, ckm(e, '001') && [U,D].includes(which),          ['c'],                  1, 'insert_CR_UD',             {...c2dt(m, which), b: true},    1 ],
     [ kd, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'c'],             1, 'applyColorFromKey',        {currColor: which - 96},         1 ],
-    [ kd, ckm(e, '0-0') && which >= 48,                    ['s', 'c'],             0, 'startEditReplace',         {},                              0 ],
+    [ kd, ckm(e, '0-0') && which >= 48,                    ['s', 'c'],             1, 'startEditReplace',         {},                              0 ],
     [ pt, text.substring(0, 1) === '[',                    ['s'],                  1, 'insertNodesFromClipboard', {text},                          0 ],
     [ pt, text.substring(0, 2) === '\\[',                  ['s'],                  1, 'insert_S_O_equation',      {text},                          0 ],
     [ pt, isUrl(text),                                     ['s'],                  1, 'insert_S_O_elink',         {text},                          0 ],
@@ -104,13 +104,13 @@ export const useEventMiddleware = (
     [ pi, true,                                            ['s'],                  1, 'insert_S_O_image',         {imageId, imageSize},            0 ],
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
-    const [ eventTypeCondition, match, scope, isGenericMapAction, type, payload, preventDefault ] = stateMachine[i]
+    const [ eventTypeCondition, match, scope, isMapAction, type, payload, preventDefault ] = stateMachine[i]
     if (eventTypeCondition && match === true && scope.includes(m.g.sc.scope)) {
       if (preventDefault === 1 && kd) {
         someEvent.keyboardEvent && someEvent.keyboardEvent.preventDefault()
       }
       if (type.length) {
-        if (isGenericMapAction) {
+        if (isMapAction) {
           dispatch(actions.mapAction({type, payload}))
         } else {
           dispatch({type: 'editor/' + type, payload})

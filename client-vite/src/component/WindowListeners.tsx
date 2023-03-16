@@ -247,8 +247,6 @@ export const WindowListeners: FC = () => {
     }
   }, [pageState, access, editedNodeId])
 
-
-
   useEffect(() => {
     if (mExists) {
       if (mapList.length > 1) {

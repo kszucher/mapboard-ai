@@ -74,10 +74,10 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
+                dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
               }}
               onDoubleClick={(e) => {
-                dispatch(actions.startEditAppend())
+                dispatch(actions.mapAction({type: 'startEditAppend', payload: {}}))
               }}
               onMouseDown={(e) => {
                 if (e.button === 0) {
@@ -88,14 +88,18 @@ export const MapDiv: FC = () => {
                     window.focus()
                   } else {
                     dispatch(actions.mapAction({
-                        type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStruct' : 'selectStructToo',
+                        type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
+                          ? 'selectStruct'
+                          : 'selectStructToo',
                         payload: {lastOverPath: n.path} // TODO use id instead of path
                       }
                     ))
                   }
                 } else if (e.button === 2) {
                   dispatch(actions.mapAction({
-                      type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStructFamily' : 'selectStructToo',
+                      type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
+                        ? 'selectStructFamily'
+                        : 'selectStructToo',
                       payload: {lastOverPath: n.path} // TODO use id instead of path
                     }
                   ))
@@ -107,20 +111,20 @@ export const MapDiv: FC = () => {
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if (e.key === 'Enter' && !e.shiftKey) {
-                  dispatch(actions.finishEdit({ nodeId: n.nodeId, content: e.currentTarget.innerHTML }))
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
                 }
                 // TODO: call a generic action that inserts, then a starEditAppend
                 // (finish will be automatic so not needed in the beginning)
               }}
-              onInput={(e) => {
-                dispatch(actions.typeText(e.currentTarget.innerHTML))
-              }}
+              onInput={(e) =>
+                dispatch(actions.mapAction({type: 'typeText', payload: e.currentTarget.innerHTML}))
+              }
               onPaste={(e) => {
                 e.preventDefault()
                 const pasted = e.clipboardData.getData('Text')
                 e.currentTarget.innerHTML += pasted
                 setEndOfContentEditable(e.currentTarget)
-                dispatch(actions.typeText(e.currentTarget.innerHTML))
+                dispatch(actions.mapAction({type: 'typeText', payload: e.currentTarget.innerHTML}))
               }}
             >
             </div>
