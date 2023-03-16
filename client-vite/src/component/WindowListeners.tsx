@@ -4,7 +4,6 @@ import {getCoords} from "./MapDivUtils"
 import {getSavedMapData} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Enums"
 import {mapFindNearest} from "../map/MapFindNearest"
-import {mapFindOverRectangle} from "../map/MapFindOverRectangle"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
@@ -12,8 +11,8 @@ import {gSaveOptional} from "../core/DefaultProps"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 
 let whichDown = 0
-let fromX = 0
-let fromY = 0
+// let fromX = 0
+// let fromY = 0
 let elapsed = 0
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
@@ -74,22 +73,21 @@ export const WindowListeners: FC = () => {
   const popstate = () => {
   }
 
-  const mousedown = (e: MouseEvent) => {
-    e.preventDefault()
-    console.log(e.composedPath())
-    const path = e.composedPath()
-    const {which} = e
-    if (path.find((el: any) => el.id === 'mapSvgOuter')) {
-      // TODO: trigger this @mapSvgOuter, and consider TRIGGERING adding the move/up listeners THERE, and the whole move/select flow shall be encapsulated THERE
-      if (whichDown === 0) {
-        whichDown = which;
-        elapsed = 0
-        if (which === 1 || which === 3) {
-          [fromX, fromY] = getCoords(e)
-        }
-      }
-    }
-  }
+  // const mousedown = (e: MouseEvent) => {
+  //   e.preventDefault()
+  //   console.log(e.composedPath())
+  //   const path = e.composedPath()
+  //   const {which} = e
+  //   if (path.find((el: any) => el.id === 'mapSvgOuter')) {
+  //     if (whichDown === 0) {
+  //       whichDown = which;
+  //       elapsed = 0
+  //       if (which === 1 || which === 3) {
+  //         [fromX, fromY] = getCoords(e)
+  //       }
+  //     }
+  //   }
+  // }
 
   const mousemove = (e: MouseEvent) => {
     e.preventDefault()
@@ -98,17 +96,17 @@ export const WindowListeners: FC = () => {
     if (whichDown === which) {
       elapsed++
       if (which === 1) {
-        if (isTaskClicked) {
-        } else if (isNodeClicked) {
-          const [toX, toY] = getCoords(e)
-          const {moveData} = mapFindNearest.find(m, toX, toY)
-          dispatch(actions.mapAction({type: 'moveTargetPreview', payload:{moveData}}))
-        } else {
-          const [toX, toY] = getCoords(e)
-          const {highlightTargetPathList, selectionRect} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-          dispatch(actions.setSelectionRect(selectionRect))
-          dispatch(actions.mapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
-        }
+        // if (isTaskClicked) {
+        // } else if (isNodeClicked) {
+        //   const [toX, toY] = getCoords(e)
+        //   const {moveData} = mapFindNearest.find(m, toX, toY)
+        //   dispatch(actions.mapAction({type: 'moveTargetPreview', payload:{moveData}}))
+        // } else {
+        //   const [toX, toY] = getCoords(e)
+        //   const {highlightTargetPathList, selectionRect} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
+        //   dispatch(actions.setSelectionRect(selectionRect))
+        //   dispatch(actions.mapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
+        // }
       } else if (which === 2) {
         const {movementX, movementY} = e
         const m = getMap()
@@ -125,18 +123,18 @@ export const WindowListeners: FC = () => {
       whichDown = 0
       if (elapsed) {
         if (which === 1) {
-          if (isTaskClicked) {
-          } else if (isNodeClicked) {
-            const [toX, toY] = getCoords(e)
-            const {moveData, moveTargetPath, moveTargetIndex} = mapFindNearest.find(m, toX, toY)
-            dispatch(actions.mapAction({type: 'moveTargetPreview', payload: {moveData}}))
-            dispatch(actions.mapAction({type: 'moveTarget', payload: {moveTargetPath, moveTargetIndex}}))
-          } else {
-            const [toX, toY] = getCoords(e)
-            const {highlightTargetPathList} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-            // dispatch(actions.setSelectionRect([]))
-            dispatch(actions.mapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
-          }
+          // if (isTaskClicked) {
+          // } else if (isNodeClicked) {
+          //   const [toX, toY] = getCoords(e)
+          //   const {moveData, moveTargetPath, moveTargetIndex} = mapFindNearest.find(m, toX, toY)
+          //   dispatch(actions.mapAction({type: 'moveTargetPreview', payload: {moveData}}))
+          //   dispatch(actions.mapAction({type: 'moveTarget', payload: {moveTargetPath, moveTargetIndex}}))
+          // } else {
+          //   const [toX, toY] = getCoords(e)
+          //   const {highlightTargetPathList} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
+          //   // dispatch(actions.setSelectionRect([]))
+          //   dispatch(actions.mapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
+          // }
         }
       } else {
         if (which === 1) {
