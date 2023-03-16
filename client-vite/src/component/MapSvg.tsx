@@ -16,7 +16,8 @@ import {
   getTaskPath,
 } from "./MapSvgUtils";
 import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
-import {actions} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
+import {useOpenWorkspaceQuery} from "../core/Api";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -39,8 +40,6 @@ const getSelectionMargin = (m: M, n: N) => (
 )
 
 export const MapSvg: FC = () => {
-  const colorMode = 'dark'
-  const C = getColors(colorMode)
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
@@ -53,6 +52,9 @@ export const MapSvg: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
   const selectionRect = useSelector((state: RootStateOrAny) => state.editor.selectionRect)
+  const { data } = useOpenWorkspaceQuery()
+  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
+  const C = getColors(colorMode)
   const dispatch = useDispatch()
   return (
     <svg

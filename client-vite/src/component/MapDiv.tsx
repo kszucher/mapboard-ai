@@ -6,9 +6,9 @@ import {getColors} from "../core/Colors"
 import {N} from "../types/DefaultProps"
 import {getNodeById, m2ml} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
-import {actions} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {setEndOfContentEditable} from "./MapDivUtils";
-import {api} from "../core/Api";
+import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -22,8 +22,6 @@ const getInnerHtml = (n: N) => {
 }
 
 export const MapDiv: FC = () => {
-  const colorMode = 'dark'
-  const C = getColors(colorMode)
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
@@ -32,6 +30,9 @@ export const MapDiv: FC = () => {
   const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
+  const { data } = useOpenWorkspaceQuery()
+  const { colorMode } = data || defaultUseOpenWorkspaceQueryState
+  const C = getColors(colorMode)
   const dispatch = useDispatch()
   return (
     <div id='mapDiv' style={{position: 'absolute', display: 'flex'}}>
