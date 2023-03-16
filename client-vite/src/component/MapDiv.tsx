@@ -87,14 +87,14 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    dispatch(actions.genericMapAction({
+                    dispatch(actions.mapAction({
                         type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStruct' : 'selectStructToo',
                         payload: {lastOverPath: n.path} // TODO use id instead of path
                       }
                     ))
                   }
                 } else if (e.button === 2) {
-                  dispatch(actions.genericMapAction({
+                  dispatch(actions.mapAction({
                       type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStructFamily' : 'selectStructToo',
                       payload: {lastOverPath: n.path} // TODO use id instead of path
                     }

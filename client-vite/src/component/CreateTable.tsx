@@ -50,7 +50,7 @@ export const CreateTable: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.genericMapAction({type: 'insert_S_O_table', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}))
+              dispatch(actions.mapAction({type: 'insert_S_O_table', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

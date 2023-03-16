@@ -111,7 +111,7 @@ export const useEventMiddleware = (
       }
       if (type.length) {
         if (isGenericMapAction) {
-          dispatch(actions.genericMapAction({type, payload}))
+          dispatch(actions.mapAction({type, payload}))
         } else {
           dispatch({type: 'editor/' + type, payload})
         }

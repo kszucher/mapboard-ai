@@ -111,7 +111,7 @@ export const editorSlice = createSlice({
       state.editedNodeId = ''
       state.editType = ''
     },
-    genericMapAction(state, action: PayloadAction<any>) {
+    mapAction(state, action: PayloadAction<any>) {
       const m = state.mapList[state.mapListIndex]
       const nm = reCalc(m, mapReducer(copy(m), action.payload.type, action.payload.payload))
       if (isMapChanged(m, nm)) {

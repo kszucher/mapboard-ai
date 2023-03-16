@@ -23,7 +23,7 @@ export const ShouldUpdateTask: FC = () => {
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button color="primary" variant='outlined' disabled={interactionDisabled}
                   onClick={()=>{
-                    dispatch(actions.genericMapAction({type: 'toggleTask', payload:{}}))
+                    dispatch(actions.mapAction({type: 'toggleTask', payload:{}}))
                     dispatch(actions.setPageState(PageState.WS))
                   }}>
             {'OK'}

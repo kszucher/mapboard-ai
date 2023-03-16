@@ -18,10 +18,10 @@ export const Formatter: FC = () => {
   const dispatch = useDispatch()
 
   const setNodeColor = (value: string) => {
-    if (formatMode === FormatMode.text) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{textColor: value}}))
-    else if (formatMode === FormatMode.border) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{borderColor: value}}))
-    else if (formatMode === FormatMode.fill) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{fillColor: value}}))
-    else if (formatMode === FormatMode.line) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{lineColor: value}}))
+    if (formatMode === FormatMode.text) dispatch(actions.mapAction({type: 'setFormatParams', payload:{textColor: value}}))
+    else if (formatMode === FormatMode.border) dispatch(actions.mapAction({type: 'setFormatParams', payload:{borderColor: value}}))
+    else if (formatMode === FormatMode.fill) dispatch(actions.mapAction({type: 'setFormatParams', payload:{fillColor: value}}))
+    else if (formatMode === FormatMode.line) dispatch(actions.mapAction({type: 'setFormatParams', payload:{lineColor: value}}))
   }
 
   const resolveFormatColor = () => {
@@ -32,10 +32,10 @@ export const Formatter: FC = () => {
   }
 
   const resolveFormatClear = () => {
-    if (formatMode === FormatMode.text) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{textColor: 'clear', textFontSize: 'clear'}}))
-    else if (formatMode === FormatMode.border) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{borderWidth: 'clear', borderColor: 'clear'}}))
-    else if (formatMode === FormatMode.fill) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{fillColor: 'clear'}}))
-    else if (formatMode === FormatMode.line) dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{lineType: 'clear', lineWidth: 'clear', lineColor: 'clear'}}))
+    if (formatMode === FormatMode.text) dispatch(actions.mapAction({type: 'setFormatParams', payload:{textColor: 'clear', textFontSize: 'clear'}}))
+    else if (formatMode === FormatMode.border) dispatch(actions.mapAction({type: 'setFormatParams', payload:{borderWidth: 'clear', borderColor: 'clear'}}))
+    else if (formatMode === FormatMode.fill) dispatch(actions.mapAction({type: 'setFormatParams', payload:{fillColor: 'clear'}}))
+    else if (formatMode === FormatMode.line) dispatch(actions.mapAction({type: 'setFormatParams', payload:{lineType: 'clear', lineWidth: 'clear', lineColor: 'clear'}}))
   }
 
   return (
@@ -88,23 +88,23 @@ export const Formatter: FC = () => {
         {formatMode === FormatMode.text && <TargetedButtonGroup
           KEYS={Object.keys(TextTypes).filter(x => !(parseInt(x) >= 0))}
           value={TextTypes[textFontSize]}
-          setValue={(value: number) => dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{textFontSize: TextTypes[value]}}))}
+          setValue={(value: number) => dispatch(actions.mapAction({type: 'setFormatParams', payload:{textFontSize: TextTypes[value]}}))}
         />}
         {formatMode === FormatMode.border && <TargetedButtonGroup
           KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
           value={WidthTypes[borderWidth]}
-          setValue={(value: number) => dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{borderWidth: WidthTypes[value]}}))}
+          setValue={(value: number) => dispatch(actions.mapAction({type: 'setFormatParams', payload:{borderWidth: WidthTypes[value]}}))}
         />}
         {formatMode === FormatMode.line && <>
           <TargetedButtonGroup
             KEYS={Object.keys(WidthTypes).filter(x => !(parseInt(x) >= 0))}
             value={WidthTypes[lineWidth]}
-            setValue={(value: number) => dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{lineWidth: WidthTypes[value]}}))}
+            setValue={(value: number) => dispatch(actions.mapAction({type: 'setFormatParams', payload:{lineWidth: WidthTypes[value]}}))}
           />
           <TargetedButtonGroup
             KEYS={Object.keys(LineTypes).filter(x => !(parseInt(x) >= 0))}
             value={LineTypes[lineType]}
-            setValue={(value: number) => dispatch(actions.genericMapAction({type: 'setFormatParams', payload:{lineType: LineTypes[value]}}))}
+            setValue={(value: number) => dispatch(actions.mapAction({type: 'setFormatParams', payload:{lineType: LineTypes[value]}}))}
           />
         </>
         }

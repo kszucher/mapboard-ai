@@ -102,12 +102,12 @@ export const WindowListeners: FC = () => {
         } else if (isNodeClicked) {
           const [toX, toY] = getCoords(e)
           const {moveData} = mapFindNearest.find(m, toX, toY)
-          dispatch(actions.genericMapAction({type: 'moveTargetPreview', payload:{moveData}}))
+          dispatch(actions.mapAction({type: 'moveTargetPreview', payload:{moveData}}))
         } else {
           const [toX, toY] = getCoords(e)
           const {highlightTargetPathList, selectionRect} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
           dispatch(actions.setSelectionRect(selectionRect))
-          dispatch(actions.genericMapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
+          dispatch(actions.mapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
         }
       } else if (which === 2) {
         const {movementX, movementY} = e
@@ -129,13 +129,13 @@ export const WindowListeners: FC = () => {
           } else if (isNodeClicked) {
             const [toX, toY] = getCoords(e)
             const {moveData, moveTargetPath, moveTargetIndex} = mapFindNearest.find(m, toX, toY)
-            dispatch(actions.genericMapAction({type: 'moveTargetPreview', payload: {moveData}}))
-            dispatch(actions.genericMapAction({type: 'moveTarget', payload: {moveTargetPath, moveTargetIndex}}))
+            dispatch(actions.mapAction({type: 'moveTargetPreview', payload: {moveData}}))
+            dispatch(actions.mapAction({type: 'moveTarget', payload: {moveTargetPath, moveTargetIndex}}))
           } else {
             const [toX, toY] = getCoords(e)
             const {highlightTargetPathList} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
             dispatch(actions.setSelectionRect([]))
-            dispatch(actions.genericMapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
+            dispatch(actions.mapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
           }
         }
       } else {
@@ -143,7 +143,7 @@ export const WindowListeners: FC = () => {
           if (isNodeClicked) {
           } else if (isTaskClicked) {
           } else {
-            dispatch(actions.genericMapAction({type: 'select_R', payload: {}}))
+            dispatch(actions.mapAction({type: 'select_R', payload: {}}))
           }
         }
       }
@@ -155,7 +155,7 @@ export const WindowListeners: FC = () => {
     const path = e.composedPath()
     if (path.find((el: any) => el.id === 'mapSvgOuter')) {
       if (isNodeClicked) {
-        // dispatch(actions.genericMapAction({type: 'startEdit')
+        // dispatch(actions.mapAction({type: 'startEdit')
       } else {
         const m = getMap()
         orient(m, 'shouldCenter', {})

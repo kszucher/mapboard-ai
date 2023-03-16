@@ -65,13 +65,13 @@ export const ControlsRight: FC = () => {
       <div className={crd} style={{top: topOffs3, borderRadius: '0 0 0 0' }}>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.genericMapAction({type: 'changeDensity', payload: {}}))}>
+          onClick={() => dispatch(actions.mapAction({type: 'changeDensity', payload: {}}))}>
           {density === 'small' && <DensitySmallIcon/>}
           {density === 'large' && <DensityMediumIcon/>}
         </IconButton>
         <IconButton
           color='secondary'
-          onClick={() => dispatch(actions.genericMapAction({type: 'changeAlignment', payload: {}}))}>
+          onClick={() => dispatch(actions.mapAction({type: 'changeAlignment', payload: {}}))}>
           {alignment === 'adaptive' && <CenterFocusWeakIcon/>}
           {alignment === 'centered' && <CenterFocusStrongIcon/>}
         </IconButton>
