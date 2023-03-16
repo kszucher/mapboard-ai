@@ -113,9 +113,11 @@ export const MapDiv: FC = () => {
                 e.stopPropagation()
                 if (e.key === 'Enter' && !e.shiftKey) {
                   dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
+                } else if (['Insert','Tab'].includes(e.key)) {
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
+                  dispatch(actions.mapAction({type: 'insert_S_O', payload: {}}))
+                  dispatch(actions.mapAction({type: 'startEditReplace', payload: {}}))
                 }
-                // TODO: call a generic action that inserts, then a starEditAppend
-                // (finish will be automatic so not needed in the beginning)
               }}
               onInput={(e) =>
                 dispatch(actions.mapAction({type: 'typeText', payload: e.currentTarget.innerHTML}))

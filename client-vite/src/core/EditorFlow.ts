@@ -3,7 +3,7 @@ import {AccessTypes, FormatMode, PageState} from "./Enums"
 import {mapAssembly} from "../map/MapAssembly"
 import {getMapData, mapReducer, reCalc} from "./MapFlow"
 import {mapDeInit} from "../map/MapDeInit"
-import {copy} from "./Utils"
+import {copy, isEqual} from "./Utils"
 import {api} from "./Api"
 import {DefaultUseOpenWorkspaceQueryState, EditorState} from "../types/EditorFlow";
 import {M} from "../types/DefaultProps";
