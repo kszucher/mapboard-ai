@@ -19,9 +19,8 @@ export const mapFindOverRectangle = {
     const startY = fromY < toY ? fromY : toY
     const width = Math.abs(toX - fromX)
     const height = Math.abs(toY - fromY)
-    const selectionRect = [startX, startY, width, height]
     const highlightTargetPathList = mapFindOverRectangle.start(m, startX, startY, width, height)
-    return { highlightTargetPathList, selectionRect }
+    return { highlightTargetPathList }
   },
 
   start: (m: M, x: number, y: number, w: number, h: number) => {

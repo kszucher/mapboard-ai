@@ -34,13 +34,14 @@ export const scrollTo = (to: number, duration: number) => {
   animateScroll()
 }
 
-export const getCoords = (e: MouseEvent) => {
-  let winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-  let winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-  let mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement
-  let x = e.pageX - winWidth + mapDivOuter.scrollLeft
-  let y = e.pageY - winHeight + mapDivOuter.scrollTop
-  return [x, y]
+export const getCoords = (e: any) => {
+  const winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+  const winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+  const mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement
+  return {
+    x:  e.pageX - winWidth + mapDivOuter.scrollLeft,
+    y: e.pageY - winHeight + mapDivOuter.scrollTop
+  }
 }
 
 export const setEndOfContentEditable = (contentEditableElement: HTMLElement) => {

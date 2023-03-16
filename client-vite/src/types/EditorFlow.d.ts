@@ -12,7 +12,6 @@ export interface EditorState {
   editedNodeId: string,
   editType: '' | 'append' | 'replace'
   moveTarget: [],
-  selectionRect: [],
   formatterVisible: boolean,
   moreMenu: boolean,
 }

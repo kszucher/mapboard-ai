@@ -134,7 +134,7 @@ export const WindowListeners: FC = () => {
           } else {
             const [toX, toY] = getCoords(e)
             const {highlightTargetPathList} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-            dispatch(actions.setSelectionRect([]))
+            // dispatch(actions.setSelectionRect([]))
             dispatch(actions.mapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
           }
         }
@@ -211,9 +211,9 @@ export const WindowListeners: FC = () => {
     window.addEventListener('resize', resize, {signal})
     window.addEventListener('popstate', popstate, {signal})
     window.addEventListener('dblclick', dblclick, {signal})
-    window.addEventListener('mousedown', mousedown, { signal })
-    window.addEventListener('mousemove', mousemove, { signal })
-    window.addEventListener('mouseup', mouseup, { signal })
+    // window.addEventListener('mousedown', mousedown, { signal })
+    // window.addEventListener('mousemove', mousemove, { signal })
+    // window.addEventListener('mouseup', mouseup, { signal })
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
   }

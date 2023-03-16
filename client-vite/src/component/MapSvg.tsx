@@ -1,4 +1,4 @@
-import React, {FC, Fragment} from "react";
+import React, {FC, Fragment, useEffect, useState} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
 import {isChrome, isEqual} from "../core/Utils";
 import {getColors} from "../core/Colors";
@@ -18,6 +18,7 @@ import {
 import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {useOpenWorkspaceQuery} from "../core/Api";
+import {getCoords} from "./MapDivUtils";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -39,6 +40,11 @@ const getSelectionMargin = (m: M, n: N) => (
   ) ? 4 : -2
 )
 
+const rectanglesIntersect = (input: number[]) => {
+  const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
+  return maxAx >= minBx && minAx <= maxBx && minAy <= maxBy && maxAy >= minBy
+}
+
 export const MapSvg: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
@@ -51,11 +57,18 @@ export const MapSvg: FC = () => {
   const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope) ? getNodeByPath(ml, m.g.sc.sameParentPath) : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
-  const selectionRect = useSelector((state: RootStateOrAny) => state.editor.selectionRect)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
+  const [fromCoords, setFromCoords] = useState({x: 0, y: 0} as {x: number, y: number})
+  const [toCoords, setToCoords] = useState({x: 0, y: 0} as {x: number, y: number})
+  const [rectSelectedNodeIdList, setRectSelectedNodeIdList] = useState([] as any[])
   const dispatch = useDispatch()
+
+  useEffect(()=>{
+    console.log(rectSelectedNodeIdList)
+  }, [rectSelectedNodeIdList])
+
   return (
     <svg
       id="mapSvgOuter"
@@ -65,6 +78,42 @@ export const MapSvg: FC = () => {
         top: 0,
         width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
         height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
+      }}
+      onMouseDown={(e) => {
+        e.preventDefault()
+        const _fromCoords = getCoords(e)
+        setFromCoords(_fromCoords)
+        const abortController = new AbortController()
+        const { signal } = abortController
+        window.addEventListener('mousemove', (e) => {
+          e.preventDefault()
+          const _toCoords = getCoords(e)
+          setToCoords(_toCoords)
+          setRectSelectedNodeIdList(
+            ml.filter(n =>
+              n.type === 'struct' &&
+              !n.hasCell &&
+              n.content !== '' &&
+              +rectanglesIntersect([
+                Math.min(_fromCoords.x, _toCoords.x),
+                Math.min(_fromCoords.y, _toCoords.y),
+                Math.max(_fromCoords.x, _toCoords.x),
+                Math.max(_fromCoords.y, _toCoords.y),
+                n.nodeStartX,
+                n.nodeY,
+                n.nodeEndX,
+                n.nodeY,
+              ])
+            )
+          )
+        }, { signal })
+        window.addEventListener('mouseup', (e) => {
+          e.preventDefault()
+          abortController.abort()
+          setFromCoords({x: 0, y: 0})
+          setToCoords({x: 0, y: 0})
+          setRectSelectedNodeIdList([])
+        }, { signal })
       }}
     >
       <svg
@@ -243,8 +292,10 @@ export const MapSvg: FC = () => {
                         style={{
                           transition: '0.3s ease-out'
                         }}
-                        onMouseDown={() =>
+                        onMouseDown={(e) => {
+                          e.stopPropagation()
                           dispatch(actions.mapAction({type: 'setTaskStatus', payload: { taskStatus: i + 1, nodeId: n.nodeId }}))}
+                        }
                       >
                       </circle>
                     ))
@@ -329,12 +380,12 @@ export const MapSvg: FC = () => {
         </g>
         <g id="layer7">
           {
-            selectionRect?.length &&
+            (fromCoords.x || fromCoords.y || toCoords.x || toCoords.y) &&
             <rect
-              x={selectionRect[0]}
-              y={selectionRect[1]}
-              width={selectionRect[2]}
-              height={selectionRect[3]}
+              x={Math.min(fromCoords.x, toCoords.x)}
+              y={Math.min(fromCoords.y, toCoords.y)}
+              width={Math.abs(toCoords.x - fromCoords.x)}
+              height={Math.abs(toCoords.y - fromCoords.y)}
               rx={8}
               ry={8}
               fill={C.SELECTION_RECT_COLOR}
