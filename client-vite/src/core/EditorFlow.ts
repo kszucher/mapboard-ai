@@ -40,8 +40,6 @@ export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQuerySta
 
 const editorStateDefault = JSON.stringify(editorState)
 
-export const getEditedNodeId = () => (store.getState().editor.editedNodeId)
-export const getTempMap = () => (store.getState().editor.tempMap)
 export const getMap = () : { g: any, r: any } => (store.getState().editor.mapList[store.getState().editor.mapListIndex])
 export const getMapId = () => {
   const result = api.endpoints.openWorkspace.select()(store.getState())
