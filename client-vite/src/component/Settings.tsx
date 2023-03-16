@@ -1,5 +1,5 @@
 import {FC} from "react"
-import {useSelector, useDispatch, RootStateOrAny} from "react-redux"
+import {useDispatch} from "react-redux"
 import { Button, IconButton, Modal } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
@@ -8,8 +8,7 @@ import {PageState} from "../core/Enums";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 
 export const Settings: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (

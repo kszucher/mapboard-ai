@@ -1,15 +1,13 @@
 import {FC} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../core/EditorFlow";
-import {PageState} from "../core/Enums";
 
 export const FrameCarousel: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { data, isFetching } = useOpenWorkspaceQuery()
   const { frameIdList, frameId } = data || defaultUseOpenWorkspaceQueryState
   const frameIdPosition = frameIdList.indexOf(frameId)
   const prevFrameIdPosition = frameIdPosition > 0 ? frameIdPosition - 1 : 0
@@ -20,7 +18,7 @@ export const FrameCarousel: FC = () => {
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
       {
-        frameIdList.length > 0 &&
+        frameIdList.length > 0 && frameId !=='' &&
         <MobileStepper
           className="gap-3 rounded-t-2xl bg-mb-pink"
           sx={{background: 'var(--map-background-color)'}}

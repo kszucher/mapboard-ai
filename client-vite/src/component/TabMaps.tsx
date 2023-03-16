@@ -3,12 +3,10 @@ import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import {Tab, Tabs} from "@mui/material";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
-import {PageState} from "../core/Enums";
 
 export const TabMaps: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const tabShrink = useSelector((state: RootStateOrAny) => state.editor.tabShrink)
-  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { data } = useOpenWorkspaceQuery()
   const { frameId, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (

@@ -32,7 +32,7 @@ export const WindowListeners: FC = () => {
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const {density, alignment} = m?.g || gSaveOptional
-  const {data} = useOpenWorkspaceQuery(undefined, {skip: pageState === PageState.AUTH})
+  const {data} = useOpenWorkspaceQuery()
   const {colorMode, mapId, frameId, access} = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload?: any) => useMapDispatch(dispatch, action, payload)
@@ -79,9 +79,11 @@ export const WindowListeners: FC = () => {
 
   const mousedown = (e: MouseEvent) => {
     e.preventDefault()
+    console.log(e.composedPath())
     const path = e.composedPath()
     const {which} = e
     if (path.find((el: any) => el.id === 'mapSvgOuter')) {
+      // TODO: trigger this @mapSvgOuter, and consider TRIGGERING adding the move/up listeners THERE, and the whole move/select flow shall be encapsulated THERE
       if (whichDown === 0) {
         whichDown = which;
         elapsed = 0

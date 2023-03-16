@@ -7,8 +7,7 @@ import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {PageState} from "../core/Enums";
 
 export const BreadcrumbMaps: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { data } = useOpenWorkspaceQuery()
   const { frameId, breadcrumbMapIdList, breadcrumbMapNameList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (

@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
+import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {actions, getMap, getMapId} from "../core/EditorFlow";
 import {PageState} from "../core/Enums";
@@ -7,8 +7,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api";
 import {getMapData} from "../core/MapFlow";
 
 export const ShouldCreateMapInMap: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const { isFetching, isSuccess } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { isFetching } = useOpenWorkspaceQuery()
   const dispatch = useDispatch()
   return(
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">

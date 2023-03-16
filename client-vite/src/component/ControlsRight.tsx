@@ -33,7 +33,7 @@ export const ControlsRight: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
   const { density, alignment } = m?.g || gSaveOptional
-  const { data } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   const mapDispatch = (action: string, payload: any) => useMapDispatch(dispatch, action, payload)

@@ -66,8 +66,6 @@ const COLOR_DARK = {
   TASK_LINE: '#333333',
 }
 
-export const getColors = (colorMode: string) => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
-
 export const colorList = [
   ['#D3EBCE', '#ECFDDF', '#FDFFEB', '#FFECD6', '#FED3D0', '#FED3D0'],
   ['#EFEFEF', '#DEDEE8', '#F3F0E0', '#E4EADE', '#DCE5E6', '#DCE5E6'],
@@ -82,3 +80,13 @@ export const colorList = [
   ['#FFD6DE', '#E8CEE3', '#C7BAE1', '#BBD3EC', '#ECE4C5', '#82c5e2'],
   ['#391F19', '#B68E63', '#F2DFA9', '#E58119', '#746839', '#09415A'],
 ]
+
+export const getColors = (colorMode: string) => (colorMode === 'light' ? COLOR_LIGHT : COLOR_DARK)
+
+export const setColors = (colorMode: string) => {
+  const root = document.querySelector(':root') as HTMLElement
+  root.style.setProperty('--main-color', getColors(colorMode).MAIN_COLOR)
+  root.style.setProperty('--page-background-color', getColors(colorMode).PAGE_BACKGROUND)
+  root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
+  root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
+}

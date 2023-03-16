@@ -1,5 +1,5 @@
 import {FC, useState} from 'react'
-import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
+import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import { ShouldDeleteUser } from './ShouldDeleteUser'
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
@@ -8,8 +8,7 @@ import {useOpenWorkspaceQuery} from "../core/Api";
 
 export const Profile: FC = () => {
   const [childModalOpen, setChildModalOpen] = useState(false)
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const { data, isFetching } = useOpenWorkspaceQuery(undefined, { skip:  pageState === PageState.AUTH  })
+  const { data } = useOpenWorkspaceQuery()
   const { name } = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
   return (
