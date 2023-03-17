@@ -18,7 +18,7 @@ const editorState : EditorState = {
   mapListIndex: 0,
   editedNodeId: '',
   editType: '',
-  moveTarget: [],
+  moveCoords: [],
   formatterVisible: false,
   moreMenu: false,
 }
@@ -114,7 +114,6 @@ export const editorSlice = createSlice({
         }
       }
     },
-    setMoveTarget(state, action: PayloadAction<any>) {state.moveTarget = action.payload},
     undo(state) {
       state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
       state.editedNodeId = ''
@@ -123,6 +122,7 @@ export const editorSlice = createSlice({
       state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
       state.editedNodeId = ''
     },
+    setFromCoordsMove(state, action: PayloadAction<any>) {state.moveCoords = action.payload},
   },
   extraReducers: (builder) => {
     builder.addMatcher(

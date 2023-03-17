@@ -7,9 +7,9 @@ import {N} from "../types/DefaultProps"
 import {getNodeById, m2ml} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap} from "../core/EditorFlow";
-import {setEndOfContentEditable} from "./MapDivUtils";
+import {getCoords, setEndOfContentEditable} from "./MapDivUtils";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {orient} from "../map/MapVisualizeHolderDiv";
+import {mapFindNearest} from "../map/MapFindNearest";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -77,11 +77,7 @@ export const MapDiv: FC = () => {
               onBlur={(e) => {
                 dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
               }}
-              onDoubleClick={(e) => {
-                dispatch(actions.mapAction({type: 'startEditAppend', payload: {}}))
-              }}
               onMouseDown={(e) => {
-                // TODO start here and add MOVE DRAG STUFF (but of course finish the previous things too... <------------------
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
@@ -94,8 +90,28 @@ export const MapDiv: FC = () => {
                           ? 'selectStruct'
                           : 'selectStructToo',
                         payload: {lastOverPath: n.path} // TODO use id instead of path
+                      })
+                    )
+                    const abortController = new AbortController()
+                    const { signal } = abortController
+                    window.addEventListener('mousemove', (e) => {
+                      e.preventDefault()
+                      const _toCoords = getCoords(e)
+                      const { moveData } = mapFindNearest.find(m, _toCoords.x, _toCoords.y)
+                      if (moveData.length) {
+                        dispatch(actions.setFromCoordsMove(moveData))
                       }
-                    ))
+                    }, { signal })
+                    window.addEventListener('mouseup', (e) => {
+                      e.preventDefault()
+                      abortController.abort()
+                      const _toCoords = getCoords(e)
+                      const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, _toCoords.x, _toCoords.y)
+                      if (moveTargetPath.length) {
+                        dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
+                      }
+                      dispatch(actions.setFromCoordsMove([]))
+                    }, { signal })
                   }
                 } else if (e.button === 2) {
                   dispatch(actions.mapAction({
@@ -103,18 +119,12 @@ export const MapDiv: FC = () => {
                         ? 'selectStructFamily'
                         : 'selectStructToo',
                       payload: {lastOverPath: n.path} // TODO use id instead of path
-                    }
-                  ))
+                    })
+                  )
                 }
               }}
-              onMouseMove={(e) => {
-                if (e.button === 1) {
-                  e.preventDefault()
-                  console.log(e)
-                  // const {movementX, movementY} = e
-                  // const m = getMap()
-                  // orient(m, 'shouldScroll', {movementX, movementY})
-                }
+              onDoubleClick={(e) => {
+                dispatch(actions.mapAction({type: 'startEditAppend', payload: {}}))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()

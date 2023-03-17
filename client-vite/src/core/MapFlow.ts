@@ -56,16 +56,6 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       m.g.alignment = m.g.alignment === 'centered' ? 'adaptive' : 'centered'
       break
     }
-    case 'moveTargetPreview': {
-      break
-    }
-    case 'selectTargetPreview': {
-      clearSelection(m)
-      for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
-        getMapData(m, payload.highlightTargetPathList[i]).selected = 1
-      }
-      break
-    }
     // SELECT
     case 'selectStruct': {
       clearSelection(m)
@@ -238,6 +228,13 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       getMapData(m, ['r', 0]).selected = 1
       break
     }
+    case 'select_dragged': {
+      clearSelection(m)
+      for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
+        getMapData(m, payload.highlightTargetPathList[i]).selected = 1
+      }
+      break
+    }
     // INSERT
     case 'insert_S_U': {
       if (!sc.isRootIncluded) {
@@ -358,10 +355,8 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       }
       break
     }
-    case 'moveTarget': {
-      if (payload.moveTargetPath.length) {
-        nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
-      }
+    case 'move_dragged': {
+      nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
       break
     }
     case 'cellify': {

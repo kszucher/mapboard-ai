@@ -1,8 +1,11 @@
-import React, {FC, Fragment, useEffect, useState} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
-import {isChrome, isEqual} from "../core/Utils";
-import {getColors} from "../core/Colors";
-import {M, N} from "../types/DefaultProps";
+import React, {FC, Fragment, useState} from "react"
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
+import {isChrome, isEqual} from "../core/Utils"
+import {getColors} from "../core/Colors"
+import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils"
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
+import {useOpenWorkspaceQuery} from "../core/Api"
+import {M, N} from "../types/DefaultProps"
 import {
   getArcPath,
   getBezierLinePath,
@@ -14,12 +17,10 @@ import {
   getStructPolygonPoints,
   getTaskCircle,
   getTaskPath,
-} from "./MapSvgUtils";
-import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
-import {actions, defaultUseOpenWorkspaceQueryState, getMap} from "../core/EditorFlow";
-import {useOpenWorkspaceQuery} from "../core/Api";
-import {getCoords} from "./MapDivUtils";
-import {orient} from "../map/MapVisualizeHolderDiv";
+} from "./MapSvgUtils"
+
+import {getCoords} from "./MapDivUtils"
+import {orient} from "../map/MapVisualizeHolderDiv"
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -51,7 +52,7 @@ export const MapSvg: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
+  const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
   const ml = m2ml(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : {} // TODO handle tm AND undo-redo
@@ -114,10 +115,10 @@ export const MapSvg: FC = () => {
           setRectSelectedNodeList([])
         }, { signal })
       }}
-      onClick={(e) => {
+      onClick={() => {
         dispatch(actions.mapAction({type: 'select_R', payload: {}}))
       }}
-      onDoubleClick={(e) => {
+      onDoubleClick={() => {
         orient(m, 'shouldCenter', {})
       }}
     >
@@ -383,19 +384,19 @@ export const MapSvg: FC = () => {
         </g>
         <g id="layer8">
           {
-            moveTarget?.moveData?.length && // TODO use draggedNodeId instead
+            moveCoords.length &&
             <Fragment>
               <path
                 key={`${m.g.nodeId}_svg_moveLine`}
-                d={getBezierLinePath('M', getBezierLinePoints(moveTarget.moveData))}
+                d={getBezierLinePath('M', getBezierLinePoints(moveCoords))}
                 stroke={C.MOVE_LINE_COLOR}
                 strokeWidth={1}
                 fill={'none'}
               >
               </path>
               <rect
-                x={moveTarget.moveData[2] - 10}
-                y={moveTarget.moveData[3] - 10}
+                x={moveCoords[2] - 10}
+                y={moveCoords[3] - 10}
                 width={20}
                 height={20}
                 rx={8}

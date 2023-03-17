@@ -11,7 +11,7 @@ export interface EditorState {
   mapListIndex: number,
   editedNodeId: string,
   editType: '' | 'append' | 'replace'
-  moveTarget: [],
+  moveCoords: number[],
   formatterVisible: boolean,
   moreMenu: boolean,
 }
