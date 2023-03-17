@@ -112,11 +112,12 @@ export const MapSvg: FC = () => {
           abortController.abort()
           setFromCoords({x: 0, y: 0})
           setToCoords({x: 0, y: 0})
+          // dispatch(actions.mapAction({type: 'select_dragged', payload: { rectSelectedNodeList }}))
           setRectSelectedNodeList([])
         }, { signal })
       }}
       onClick={() => {
-        dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+        // dispatch(actions.mapAction({type: 'select_R', payload: {}}))
       }}
       onDoubleClick={() => {
         orient(m, 'shouldCenter', {})
@@ -356,7 +357,7 @@ export const MapSvg: FC = () => {
               <path
                 key={`${m.g.nodeId}_svg_selectionByRect`}
                 d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(m, n))}
-                stroke={C.SELECTION_COLOR}
+                stroke={'#555555'}
                 strokeWidth={1}
                 fill={'none'}
                 {...pathCommonProps}

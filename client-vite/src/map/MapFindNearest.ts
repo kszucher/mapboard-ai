@@ -12,7 +12,7 @@ export const mapFindNearest = {
   find: (m: M, toX: number, toY: number) => {
     let moveTargetPath = []
     let moveTargetIndex = 0
-    let moveData = [] as any[]
+    let moveCoords = [] as any[]
     let lastSelectedPath = m.g.sc.structSelectedPathList[0]
     let lastSelected = getMapData(m, lastSelectedPath)
     if (!(lastSelected.nodeStartX < toX &&
@@ -25,7 +25,7 @@ export const mapFindNearest = {
         let lastFound = getMapData(m, lastNearestPath)
         let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
         let fromY = lastFound.nodeY
-        moveData = [fromX, fromY, toX, toY]
+        moveCoords = [fromX, fromY, toX, toY]
         if (lastFound.s.length === 0) {
           moveTargetIndex = 0
         } else {
@@ -51,9 +51,9 @@ export const mapFindNearest = {
     if (isEqual(lastSelected.parentPath, moveTargetPath) && lastSelected.index === moveTargetIndex) {
       moveTargetPath = []
       moveTargetIndex = 0
-      moveData = []
+      moveCoords = []
     }
-    return { moveData, moveTargetPath, moveTargetIndex }
+    return { moveCoords, moveTargetPath, moveTargetIndex }
   },
 
   start: (m: M, x: number, y: number) => {

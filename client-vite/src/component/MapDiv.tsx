@@ -97,9 +97,9 @@ export const MapDiv: FC = () => {
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       const _toCoords = getCoords(e)
-                      const { moveData } = mapFindNearest.find(m, _toCoords.x, _toCoords.y)
-                      if (moveData.length) {
-                        dispatch(actions.setFromCoordsMove(moveData))
+                      const { moveCoords } = mapFindNearest.find(m, _toCoords.x, _toCoords.y)
+                      if (moveCoords.length) {
+                        dispatch(actions.setFromCoordsMove(moveCoords))
                       }
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
