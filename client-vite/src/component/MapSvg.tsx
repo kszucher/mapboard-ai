@@ -311,6 +311,7 @@ export const MapSvg: FC = () => {
                           transition: '0.3s ease-out'
                         }}
                         onMouseDown={(e) => {
+                          e.preventDefault()
                           e.stopPropagation()
                           dispatch(actions.mapAction({type: 'setTaskStatus', payload: { taskStatus: i + 1, nodeId: n.nodeId }}))}
                         }
