@@ -30,6 +30,7 @@ export const MapDiv: FC = () => {
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
   const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
   const ml = m2ml(m)
+  console.log(m.g.sc)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)

@@ -229,10 +229,11 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
     case 'select_dragged': {
-      clearSelection(m)
-      for (let i = 0; i < payload.nList.length; i++) {
-        getMapData(m, payload.nList[i].path).selected = i + 1
-      }
+      if (payload.nList.length) {
+        clearSelection(m)
+        for (let i = 0; i < payload.nList.length; i++) {
+          getMapData(m, payload.nList[i].path).selected = i + 1
+        }}
       break
     }
     // INSERT
