@@ -47,6 +47,24 @@ const rectanglesIntersect = (input: number[]) => {
   return maxAx >= minBx && minAx <= maxBx && minAy <= maxBy && maxAy >= minBy
 }
 
+const getIntersectingNodes = (ml: N[], _fromCoords: {x: number, y: number}, _toCoords: {x: number, y: number}) => (
+  ml.filter(n =>
+    n.type === 'struct' &&
+    !n.hasCell &&
+    n.content !== '' &&
+    +rectanglesIntersect([
+      Math.min(_fromCoords.x, _toCoords.x),
+      Math.min(_fromCoords.y, _toCoords.y),
+      Math.max(_fromCoords.x, _toCoords.x),
+      Math.max(_fromCoords.y, _toCoords.y),
+      n.nodeStartX,
+      n.nodeY,
+      n.nodeEndX,
+      n.nodeY,
+    ])
+  )
+)
+
 export const MapSvg: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
@@ -61,9 +79,8 @@ export const MapSvg: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
-  const [fromCoords, setFromCoords] = useState({x: 0, y: 0} as {x: number, y: number})
-  const [toCoords, setToCoords] = useState({x: 0, y: 0} as {x: number, y: number})
-  const [rectSelectedNodeList, setRectSelectedNodeList] = useState([] as any[])
+  const [selectionRectCoords, setSelectionRectCoords] = useState([] as number[])
+  const [intersectingNodes, setIntersectingNodes] = useState([] as N[])
   const dispatch = useDispatch()
   return (
     <svg
@@ -76,32 +93,20 @@ export const MapSvg: FC = () => {
       }}
       onMouseDown={(e) => {
         e.preventDefault()
-        const _fromCoords = getCoords(e)
-        setFromCoords(_fromCoords)
+        const fromCoords = getCoords(e)
         const abortController = new AbortController()
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           if (e.buttons === 1) {
-            const _toCoords = getCoords(e)
-            setToCoords(_toCoords)
-            setRectSelectedNodeList(
-              ml.filter(n =>
-                n.type === 'struct' &&
-                !n.hasCell &&
-                n.content !== '' &&
-                +rectanglesIntersect([
-                  Math.min(_fromCoords.x, _toCoords.x),
-                  Math.min(_fromCoords.y, _toCoords.y),
-                  Math.max(_fromCoords.x, _toCoords.x),
-                  Math.max(_fromCoords.y, _toCoords.y),
-                  n.nodeStartX,
-                  n.nodeY,
-                  n.nodeEndX,
-                  n.nodeY,
-                ])
-              )
-            )
+            const toCoords = getCoords(e)
+            setSelectionRectCoords([
+              Math.min(fromCoords.x, toCoords.x),
+              Math.min(fromCoords.y, toCoords.y),
+              Math.abs(toCoords.x - fromCoords.x),
+              Math.abs(toCoords.y - fromCoords.y)
+            ])
+            setIntersectingNodes(getIntersectingNodes(ml, fromCoords, toCoords))
           } else if (e.buttons === 4) {
             const { movementX, movementY } = e
             orient(m, 'shouldScroll', { movementX, movementY })
@@ -110,10 +115,10 @@ export const MapSvg: FC = () => {
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
           abortController.abort()
-          setFromCoords({x: 0, y: 0})
-          setToCoords({x: 0, y: 0})
-          // dispatch(actions.mapAction({type: 'select_dragged', payload: { rectSelectedNodeList }}))
-          setRectSelectedNodeList([])
+          const toCoords = getCoords(e)
+          dispatch(actions.mapAction({type: 'select_dragged', payload: { nList: getIntersectingNodes(ml, fromCoords, toCoords) }}))
+          setSelectionRectCoords([])
+          setIntersectingNodes([])
         }, { signal })
       }}
       onClick={() => {
@@ -316,7 +321,7 @@ export const MapSvg: FC = () => {
           {ml.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
-                !rectSelectedNodeList.length &&
+                !selectionRectCoords.length &&
                 n.selected &&
                 n.selected !== m.g.sc.maxSel &&
                 <path
@@ -334,7 +339,7 @@ export const MapSvg: FC = () => {
         </g>
         <g id="layer5">
           {
-            !rectSelectedNodeList.length &&
+            !selectionRectCoords.length &&
             <path
               key={`${m.g.nodeId}_svg_selectionBorderPrimary`}
               d={getPolygonPath(
@@ -352,7 +357,7 @@ export const MapSvg: FC = () => {
           }
         </g>
         <g id="layer6">
-          {rectSelectedNodeList.map((n: N) => (
+          {intersectingNodes.map((n: N) => (
             <Fragment key={n.nodeId}>
               <path
                 key={`${m.g.nodeId}_svg_selectionByRect`}
@@ -368,12 +373,12 @@ export const MapSvg: FC = () => {
         </g>
         <g id="layer7">
           {
-            (fromCoords.x && fromCoords.y && toCoords.x && toCoords.y) &&
+            selectionRectCoords.length &&
             <rect
-              x={Math.min(fromCoords.x, toCoords.x)}
-              y={Math.min(fromCoords.y, toCoords.y)}
-              width={Math.abs(toCoords.x - fromCoords.x)}
-              height={Math.abs(toCoords.y - fromCoords.y)}
+              x={selectionRectCoords[0]}
+              y={selectionRectCoords[1]}
+              width={selectionRectCoords[2]}
+              height={selectionRectCoords[3]}
               rx={8}
               ry={8}
               fill={C.SELECTION_RECT_COLOR}
