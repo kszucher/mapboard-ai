@@ -8,6 +8,10 @@ let aboveRoot = false
 let belowRoot = false
 let lastNearestPath = [] as any[]
 
+// notes
+// - selection is not yet applied, that is why lastSelectedPath is passed
+// - to be able to get linearized in the future, there has to be a new node prop for child count
+
 export const mapFindNearest = {
   find: (m: M, lastSelectedPath: any[], toX: number, toY: number) => {
     let moveTargetPath = []
