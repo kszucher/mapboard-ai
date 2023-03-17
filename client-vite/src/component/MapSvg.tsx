@@ -94,10 +94,12 @@ export const MapSvg: FC = () => {
       onMouseDown={(e) => {
         e.preventDefault()
         const fromCoords = getCoords(e)
+        let didMove = false
         const abortController = new AbortController()
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
+          didMove = true
           if (e.buttons === 1) {
             const toCoords = getCoords(e)
             setSelectionRectCoords([
@@ -116,13 +118,17 @@ export const MapSvg: FC = () => {
           e.preventDefault()
           abortController.abort()
           const toCoords = getCoords(e)
-          dispatch(actions.mapAction({type: 'select_dragged', payload: { nList: getIntersectingNodes(ml, fromCoords, toCoords) }}))
+          if (didMove) {
+            dispatch(actions.mapAction({
+              type: 'select_dragged',
+              payload: {nList: getIntersectingNodes(ml, fromCoords, toCoords)}
+            }))
+          } else {
+            dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+          }
           setSelectionRectCoords([])
           setIntersectingNodes([])
         }, { signal })
-      }}
-      onClick={() => {
-        // dispatch(actions.mapAction({type: 'select_R', payload: {}}))
       }}
       onDoubleClick={() => {
         orient(m, 'shouldCenter', {})
