@@ -96,17 +96,15 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      const _toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest.find(m, _toCoords.x, _toCoords.y)
-                      if (moveCoords.length) {
-                        dispatch(actions.setFromCoordsMove(moveCoords))
-                      }
+                      const toCoords = getCoords(e)
+                      const { moveCoords } = mapFindNearest.find(m, n.path, toCoords.x, toCoords.y)
+                      dispatch(actions.setFromCoordsMove(moveCoords))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       e.preventDefault()
                       abortController.abort()
-                      const _toCoords = getCoords(e)
-                      const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, _toCoords.x, _toCoords.y)
+                      const toCoords = getCoords(e)
+                      const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, n.path, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }

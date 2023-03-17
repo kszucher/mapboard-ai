@@ -9,17 +9,16 @@ let belowRoot = false
 let lastNearestPath = [] as any[]
 
 export const mapFindNearest = {
-  find: (m: M, toX: number, toY: number) => {
+  find: (m: M, lastSelectedPath: any[], toX: number, toY: number) => {
     let moveTargetPath = []
     let moveTargetIndex = 0
     let moveCoords = [] as any[]
-    let lastSelectedPath = m.g.sc.structSelectedPathList[0]
     let lastSelected = getMapData(m, lastSelectedPath)
     if (!(lastSelected.nodeStartX < toX &&
       toX < lastSelected.nodeEndX &&
       lastSelected.nodeY - lastSelected.selfH / 2 < toY &&
       toY < lastSelected.nodeY + lastSelected.selfH / 2)) {
-      let lastNearestPath = mapFindNearest.start(m, toX, toY)
+      let lastNearestPath = mapFindNearest.start(m, lastSelectedPath, toX, toY)
       if (lastNearestPath.length > 2) {
         moveTargetPath = copy(lastNearestPath)
         let lastFound = getMapData(m, lastNearestPath)
@@ -56,21 +55,21 @@ export const mapFindNearest = {
     return { moveCoords, moveTargetPath, moveTargetIndex }
   },
 
-  start: (m: M, x: number, y: number) => {
+  start: (m: M, lastSelectedPath: any[], x: number, y: number) => {
     currX = x
     currY = y
     aboveRoot = y >= m.r[0].nodeY
     belowRoot = y < m.r[0].nodeY
     lastNearestPath = []
-    mapFindNearest.iterate(m.r[0])
+    mapFindNearest.iterate(m.r[0], lastSelectedPath)
     return lastNearestPath
   },
 
-  iterate: (n: N) => {
-    if (!n.selected) {
-      n.d.map(i => mapFindNearest.iterate(i))
+  iterate: (n: N, lastSelectedPath: any[]) => {
+    if (!isEqual(n.path, lastSelectedPath)) {
+      n.d.map(i => mapFindNearest.iterate(i, lastSelectedPath))
       if (n.type === 'cell') {
-        n.s.map(i => mapFindNearest.iterate(i))
+        n.s.map(i => mapFindNearest.iterate(i, lastSelectedPath))
       } else {
         let overlap = 6
         let vCondition
@@ -86,10 +85,10 @@ export const mapFindNearest = {
           (n.path[3] === 1 && currX < n.nodeStartX)
         if (vCondition && hCondition ) {
           lastNearestPath = copy(n.path)
-          n.s.map(i => mapFindNearest.iterate(i))
+          n.s.map(i => mapFindNearest.iterate(i, lastSelectedPath))
         }
       }
-      n.c.map(i => i.map(j => mapFindNearest.iterate(j)))
+      n.c.map(i => i.map(j => mapFindNearest.iterate(j, lastSelectedPath)))
     }
   }
 }
