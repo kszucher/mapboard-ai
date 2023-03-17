@@ -1,26 +1,19 @@
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {getCoords} from "./MapDivUtils"
 import {getSavedMapData} from '../core/MapFlow'
 import {AccessTypes, PageState} from "../core/Enums"
-import {mapFindNearest} from "../map/MapFindNearest"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {gSaveOptional} from "../core/DefaultProps"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 
-let whichDown = 0
-// let fromX = 0
-// let fromY = 0
-let elapsed = 0
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
-let isNodeClicked = false
-let isTaskClicked = false
+export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
 let landingAreaListener: AbortController
-export let timeoutId: NodeJS.Timeout
+
 
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
@@ -70,97 +63,6 @@ export const WindowListeners: FC = () => {
     orient(m, 'shouldResize', {})
   }
 
-  const popstate = () => {
-  }
-
-  // const mousedown = (e: MouseEvent) => {
-  //   e.preventDefault()
-  //   console.log(e.composedPath())
-  //   const path = e.composedPath()
-  //   const {which} = e
-  //   if (path.find((el: any) => el.id === 'mapSvgOuter')) {
-  //     if (whichDown === 0) {
-  //       whichDown = which;
-  //       elapsed = 0
-  //       if (which === 1 || which === 3) {
-  //         [fromX, fromY] = getCoords(e)
-  //       }
-  //     }
-  //   }
-  // }
-
-  const mousemove = (e: MouseEvent) => {
-    e.preventDefault()
-    const {which} = e
-    const m = getMap()
-    if (whichDown === which) {
-      elapsed++
-      if (which === 1) {
-        // if (isTaskClicked) {
-        // } else if (isNodeClicked) {
-        //   const [toX, toY] = getCoords(e)
-        //   const {moveData} = mapFindNearest.find(m, toX, toY)
-        //   dispatch(actions.mapAction({type: 'moveTargetPreview', payload:{moveData}}))
-        // } else {
-        //   const [toX, toY] = getCoords(e)
-        //   const {highlightTargetPathList, selectionRect} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-        //   dispatch(actions.setSelectionRect(selectionRect))
-        //   dispatch(actions.mapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
-        // }
-      } else if (which === 2) {
-        // const {movementX, movementY} = e
-        // const m = getMap()
-        // orient(m, 'shouldScroll', {movementX, movementY})
-      }
-    }
-  }
-
-  const mouseup = (e: MouseEvent) => {
-    e.preventDefault()
-    const {which} = e
-    const m = getMap()
-    if (whichDown === which) {
-      whichDown = 0
-      if (elapsed) {
-        if (which === 1) {
-          // if (isTaskClicked) {
-          // } else if (isNodeClicked) {
-          //   const [toX, toY] = getCoords(e)
-          //   const {moveData, moveTargetPath, moveTargetIndex} = mapFindNearest.find(m, toX, toY)
-          //   dispatch(actions.mapAction({type: 'moveTargetPreview', payload: {moveData}}))
-          //   dispatch(actions.mapAction({type: 'moveTarget', payload: {moveTargetPath, moveTargetIndex}}))
-          // } else {
-          //   const [toX, toY] = getCoords(e)
-          //   const {highlightTargetPathList} = mapFindOverRectangle.find(m, fromX, fromY, toX, toY)
-          //   // dispatch(actions.setSelectionRect([]))
-          //   dispatch(actions.mapAction({type: 'selectTarget', payload: {highlightTargetPathList}}))
-          // }
-        }
-      } else {
-        if (which === 1) {
-          if (isNodeClicked) {
-          } else if (isTaskClicked) {
-          } else {
-            // dispatch(actions.mapAction({type: 'select_R', payload: {}}))
-          }
-        }
-      }
-    }
-  }
-
-  const dblclick = (e: MouseEvent) => {
-    e.preventDefault()
-    const path = e.composedPath()
-    if (path.find((el: any) => el.id === 'mapSvgOuter')) {
-      if (isNodeClicked) {
-        // dispatch(actions.mapAction({type: 'startEdit')
-      } else {
-        const m = getMap()
-        // orient(m, 'shouldCenter', {})
-      }
-    }
-  }
-
   const keydown = (e: KeyboardEvent) => {
     useEventMiddleware({keyboardEvent: e}, dispatch)
   }
@@ -207,11 +109,6 @@ export const WindowListeners: FC = () => {
     const {signal} = mapAreaListener
     window.addEventListener("contextmenu", contextmenu, {signal})
     window.addEventListener('resize', resize, {signal})
-    window.addEventListener('popstate', popstate, {signal})
-    window.addEventListener('dblclick', dblclick, {signal})
-    // window.addEventListener('mousedown', mousedown, { signal })
-    // window.addEventListener('mousemove', mousemove, { signal })
-    // window.addEventListener('mouseup', mouseup, { signal })
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
   }
