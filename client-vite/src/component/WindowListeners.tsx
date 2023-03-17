@@ -108,9 +108,9 @@ export const WindowListeners: FC = () => {
         //   dispatch(actions.mapAction({type: 'selectTargetPreview', payload: {highlightTargetPathList, selectionRect}}))
         // }
       } else if (which === 2) {
-        const {movementX, movementY} = e
-        const m = getMap()
-        orient(m, 'shouldScroll', {movementX, movementY})
+        // const {movementX, movementY} = e
+        // const m = getMap()
+        // orient(m, 'shouldScroll', {movementX, movementY})
       }
     }
   }
@@ -141,7 +141,7 @@ export const WindowListeners: FC = () => {
           if (isNodeClicked) {
           } else if (isTaskClicked) {
           } else {
-            dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+            // dispatch(actions.mapAction({type: 'select_R', payload: {}}))
           }
         }
       }
@@ -156,7 +156,7 @@ export const WindowListeners: FC = () => {
         // dispatch(actions.mapAction({type: 'startEdit')
       } else {
         const m = getMap()
-        orient(m, 'shouldCenter', {})
+        // orient(m, 'shouldCenter', {})
       }
     }
   }

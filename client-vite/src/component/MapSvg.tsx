@@ -16,9 +16,10 @@ import {
   getTaskPath,
 } from "./MapSvgUtils";
 import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils";
-import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState, getMap} from "../core/EditorFlow";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {getCoords} from "./MapDivUtils";
+import {orient} from "../map/MapVisualizeHolderDiv";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -65,7 +66,6 @@ export const MapSvg: FC = () => {
   const dispatch = useDispatch()
   return (
     <svg
-      id="mapSvgOuter"
       style={{
         position: 'absolute',
         left: 0,
@@ -81,25 +81,30 @@ export const MapSvg: FC = () => {
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
-          const _toCoords = getCoords(e)
-          setToCoords(_toCoords)
-          setRectSelectedNodeList(
-            ml.filter(n =>
-              n.type === 'struct' &&
-              !n.hasCell &&
-              n.content !== '' &&
-              +rectanglesIntersect([
-                Math.min(_fromCoords.x, _toCoords.x),
-                Math.min(_fromCoords.y, _toCoords.y),
-                Math.max(_fromCoords.x, _toCoords.x),
-                Math.max(_fromCoords.y, _toCoords.y),
-                n.nodeStartX,
-                n.nodeY,
-                n.nodeEndX,
-                n.nodeY,
-              ])
+          if (e.buttons === 1) {
+            const _toCoords = getCoords(e)
+            setToCoords(_toCoords)
+            setRectSelectedNodeList(
+              ml.filter(n =>
+                n.type === 'struct' &&
+                !n.hasCell &&
+                n.content !== '' &&
+                +rectanglesIntersect([
+                  Math.min(_fromCoords.x, _toCoords.x),
+                  Math.min(_fromCoords.y, _toCoords.y),
+                  Math.max(_fromCoords.x, _toCoords.x),
+                  Math.max(_fromCoords.y, _toCoords.y),
+                  n.nodeStartX,
+                  n.nodeY,
+                  n.nodeEndX,
+                  n.nodeY,
+                ])
+              )
             )
-          )
+          } else if (e.buttons === 4) {
+            const { movementX, movementY } = e
+            orient(m, 'shouldScroll', { movementX, movementY })
+          }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
           e.preventDefault()
@@ -108,6 +113,12 @@ export const MapSvg: FC = () => {
           setToCoords({x: 0, y: 0})
           setRectSelectedNodeList([])
         }, { signal })
+      }}
+      onClick={(e) => {
+        dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+      }}
+      onDoubleClick={(e) => {
+        orient(m, 'shouldCenter', {})
       }}
     >
       <svg

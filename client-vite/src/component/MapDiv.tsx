@@ -6,9 +6,10 @@ import {getColors} from "../core/Colors"
 import {N} from "../types/DefaultProps"
 import {getNodeById, m2ml} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
-import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState, getMap} from "../core/EditorFlow";
 import {setEndOfContentEditable} from "./MapDivUtils";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {orient} from "../map/MapVisualizeHolderDiv";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
@@ -107,7 +108,13 @@ export const MapDiv: FC = () => {
                 }
               }}
               onMouseMove={(e) => {
-                e.preventDefault()
+                if (e.button === 1) {
+                  e.preventDefault()
+                  console.log(e)
+                  // const {movementX, movementY} = e
+                  // const m = getMap()
+                  // orient(m, 'shouldScroll', {movementX, movementY})
+                }
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
