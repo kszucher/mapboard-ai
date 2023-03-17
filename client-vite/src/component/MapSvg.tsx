@@ -119,15 +119,19 @@ export const MapSvg: FC = () => {
           abortController.abort()
           const toCoords = getCoords(e)
           if (didMove) {
-            dispatch(actions.mapAction({
-              type: 'select_dragged',
-              payload: {nList: getIntersectingNodes(ml, fromCoords, toCoords)}
-            }))
+            if (e.button === 0) {
+              dispatch(actions.mapAction({
+                type: 'select_dragged',
+                payload: {nList: getIntersectingNodes(ml, fromCoords, toCoords)}
+              }))
+              setSelectionRectCoords([])
+              setIntersectingNodes([])
+            }
           } else {
-            dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+            if (e.button === 0) {
+              dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+            }
           }
-          setSelectionRectCoords([])
-          setIntersectingNodes([])
         }, { signal })
       }}
       onDoubleClick={() => {
