@@ -25,11 +25,10 @@ export const MapDiv: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const tmExists = tm && Object.keys(tm).length
-  const m = tmExists ? tm : mapList[mapListIndex]
-  const ml = m2ml(m)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
+  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const ml = m2ml(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
@@ -81,6 +80,7 @@ export const MapDiv: FC = () => {
                 dispatch(actions.mapAction({type: 'startEditAppend', payload: {}}))
               }}
               onMouseDown={(e) => {
+                // TODO start here and add MOVE DRAG STUFF (but of course finish the previous things too... <------------------
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))

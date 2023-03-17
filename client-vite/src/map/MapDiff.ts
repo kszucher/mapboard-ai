@@ -12,14 +12,6 @@ export const mapDiff = {
       if (pn.content !== n.content || pn.contentType !== n.contentType || pn.textFontSize !== n.textFontSize) {
         n.dimChange = 1
       }
-      if (n.s.length !== pn.s?.length) {
-        for (let i = 0; i < n.s.length; i++) {
-          // n.s[i].parentNodeEndXFrom = pn.nodeEndX
-          // n.s[i].parentNodeStartXFrom = pn.nodeStartX
-          // n.s[i].parentNodeYFrom = pn.nodeY
-          // n.s[i].animationRequested = 1
-        }
-      }
     }
     n.d.map(i => mapDiff.iterate(pm, m, i))
     n.s.map(i => mapDiff.iterate(pm, m, i))

@@ -49,14 +49,13 @@ export const MapSvg: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const tmExists = tm && Object.keys(tm).length
-  const m = tmExists ? tm : mapList[mapListIndex]
+  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
+  const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
+  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
   const ml = m2ml(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : {} // TODO handle tm AND undo-redo
   const pml = mapListIndex > 0 ? m2ml(pm) : []
   const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope) ? getNodeByPath(ml, m.g.sc.sameParentPath) : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
-  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const moveTarget = useSelector((state: RootStateOrAny) => state.editor.moveTarget)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
