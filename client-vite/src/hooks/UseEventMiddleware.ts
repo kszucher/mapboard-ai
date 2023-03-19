@@ -3,6 +3,7 @@ import {actions,  getMap} from "../core/EditorFlow"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
+import {mapAssembly} from "../map/MapAssembly"
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -49,7 +50,8 @@ export const useEventMiddleware = (
   const { text } = someEvent.clipboardPasteTextEvent ? someEvent.clipboardPasteTextEvent : { text: '' }
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
 
-  const m = getMap()
+  const ml = getMap()
+  const m = mapAssembly(ml) as M
 
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   ['s', 'c'],             0, '',                         {},                              1 ],

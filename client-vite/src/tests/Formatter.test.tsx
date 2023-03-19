@@ -46,7 +46,8 @@ describe("Formatter test", () => {
     await user.click(screen.getByRole('button', {name: 'w2'}))
     await user.click(screen.getByRole('button', {name: 'edge'}))
 
-    const m = getMap()
+    const ml = getMap()
+    const m = mapAssembly(ml) as M
     const { nc } = m.g
     expect(nc).toEqual({
       selection: nSaveOptional.selection,

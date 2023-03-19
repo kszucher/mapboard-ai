@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome, isEqual} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getNodeById, getNodeByPath, m2ml} from "../core/MapUtils"
+import {getNodeById, getNodeByPath} from "../core/MapUtils"
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {M, N} from "../types/DefaultProps"
@@ -21,6 +21,7 @@ import {
 
 import {getCoords} from "./MapDivUtils"
 import {orient} from "../map/MapVisualizeHolderDiv"
+import {mapAssembly} from "../map/MapAssembly";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -71,11 +72,14 @@ export const MapSvg: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
-  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const ml = m2ml(m)
-  const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : {} // TODO handle tm AND undo-redo
-  const pml = mapListIndex > 0 ? m2ml(pm) : []
-  const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope) ? getNodeByPath(ml, m.g.sc.sameParentPath) : (ml.reduce((a: N, b: N) => a.selected > b.selected ? a : b))
+  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const m = mapAssembly(ml) as M // TODO only pass g where only g is needed
+  const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : ml // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
+  const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
+    ? getNodeByPath(ml, m.g.sc.sameParentPath)
+    : ml
+      .filter((el: any) => el.path.length > 1)
+      .reduce((a: N, b: N) => a.selected > b.selected ? a : b)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)

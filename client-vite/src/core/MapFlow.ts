@@ -1,6 +1,6 @@
 import {getDefaultNode, nSaveOptional} from './DefaultProps'
-import {M, MPartial, N, NC, NSaveOptional} from "../types/DefaultProps"
-import {copy, createArray, genHash, subsref, transpose} from './Utils'
+import {M, MPartial, N, NL, NC, NSaveOptional} from "../types/DefaultProps"
+import {createArray, genHash, subsref, transpose} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapFix} from '../map/MapFix'
 import {mapInit} from '../map/MapInit'
@@ -19,15 +19,14 @@ import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Enums"
+import {mapAssembly} from "../map/MapAssembly";
 
 export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)
 }
 
-export const getSavedMapData = (m: M) => {
-  const mCopy = copy(m)
-  mapDeInit.start(mCopy)
-  return mapDisassembly.start(mCopy)
+export const getSavedMapData = (ml: NL[]) => {
+  return mapDisassembly.start(mapDeInit.start(mapAssembly(ml) as M))
 }
 
 const clearSelection = (m: M) => {
@@ -41,11 +40,13 @@ const updateParentLastSelectedChild = (m: M, ln: N) => {
   }
 }
 
-export const mapReducer = (m: M, action: string, payload: any) => {
+export const mapReducer = (pml: NL[], action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
-
+  // TODO map type validity check here to prevent errors
+  const pm = mapAssembly(pml) as M
+  const m = mapAssembly(pml) as M
   const { sc } = m.g
-  let ln = getMapData(m, sc.lastPath)
+  let ln = action !== '' ? getMapData(m, sc.lastPath) : undefined
   switch (action) {
     // VIEW
     case 'changeDensity': {
@@ -96,17 +97,6 @@ export const mapReducer = (m: M, action: string, payload: any) => {
         }
       }
       updateParentLastSelectedChild(m, ln)
-      break
-    }
-    case 'selectTarget': {
-      clearSelection(m)
-      if (payload.highlightTargetPathList.length) {
-        for (let i = 0; i < payload.highlightTargetPathList.length; i++) {
-          getMapData(m, payload.highlightTargetPathList[i]).selected = 1
-        }
-      } else {
-        getMapData(m, ['r', 0]).selected = 1
-      }
       break
     }
     case 'select_all': {
@@ -445,10 +435,6 @@ export const mapReducer = (m: M, action: string, payload: any) => {
       break
     }
   }
-  return m
-}
-
-export const reCalc = (pm: MPartial, m: MPartial) => {
   mapFix.start(m as MPartial)
   mapInit.start(m as MPartial)
   mapChain.start(m as M)
@@ -458,5 +444,5 @@ export const reCalc = (pm: MPartial, m: MPartial) => {
   mapExtractProps.start(m as M)
   mapMeasure.start(m as M)
   mapPlace.start(m as M)
-  return m as M
+  return mapDisassembly.start(m).sort((a: NL, b: NL) => (a.nodeId > b.nodeId) ? 1 : -1)
 }

@@ -4,7 +4,6 @@ import { Button, Modal, Typography } from '@mui/material'
 import {actions, getMap, getMapId} from "../core/EditorFlow";
 import {PageState} from "../core/Enums";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {getMapData} from "../core/MapFlow";
 
 export const ShouldCreateMapInMap: FC = () => {
   const { isFetching } = useOpenWorkspaceQuery()
@@ -20,11 +19,15 @@ export const ShouldCreateMapInMap: FC = () => {
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button
             color="primary" variant='outlined' disabled={isFetching}
-            onClick={() => dispatch(api.endpoints.createMapInMap.initiate({
-              mapId: getMapId(),
-              nodeId: getMapData(getMap(), getMap().g.sc.lastPath).nodeId,
-              content: getMapData(getMap(), getMap().g.sc.lastPath).content
-            }))}>
+            onClick={() =>
+              window.alert('TODO: figure out nodeId and content in the new LINEAR system')
+              // dispatch(api.endpoints.createMapInMap.initiate({
+              //   mapId: getMapId(),
+              //   nodeId: getMapData(getMap(), getMap().g.sc.lastPath).nodeId,
+              //   content: getMapData(getMap(), getMap().g.sc.lastPath).content
+              // }))
+            }
+          >
             {'OK'}
           </Button>
           <Button

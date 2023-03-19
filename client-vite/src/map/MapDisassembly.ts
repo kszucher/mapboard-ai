@@ -17,8 +17,8 @@ export const mapDisassembly = {
     delete nodeCopy['s']
     delete nodeCopy['c']
     dcm.push(nodeCopy)
-    n.d.map(i => mapDisassembly.iterate(i))
-    n.s.map(i => mapDisassembly.iterate(i))
-    n.c.map(i => i.map(j => mapDisassembly.iterate(j)))
+    n.d?.map(i => mapDisassembly.iterate(i))
+    n.s?.map(i => mapDisassembly.iterate(i))
+    n.c?.map(i => i.map(j => mapDisassembly.iterate(j)))
   }
 }

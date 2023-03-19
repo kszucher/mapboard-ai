@@ -3,16 +3,18 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {N} from "../types/DefaultProps"
-import {getNodeById, m2ml} from "../core/MapUtils"
+import {M, N} from "../types/DefaultProps"
+import {getNodeById} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
-import {actions, defaultUseOpenWorkspaceQueryState, getMap} from "../core/EditorFlow";
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 import {mapFindNearest} from "../map/MapFindNearest";
+import {mapAssembly} from "../map/MapAssembly";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
+    // return (n.nodeId + '</br>' + n.parentNodeId)
     return n.content
   } else if (n.contentType === 'equation') {
     return katex.renderToString(getLatexString(n.content), {throwOnError: false})
@@ -28,15 +30,14 @@ export const MapDiv: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
-  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const ml = m2ml(m)
-  console.log(m.g.sc)
+  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const m = mapAssembly(ml) as M
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch()
   return (
-    <div id='mapDiv' style={{position: 'absolute', display: 'flex'}}>
+    <div style={{position: 'absolute', display: 'flex'}}>
       {ml.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
@@ -99,7 +100,7 @@ export const MapDiv: FC = () => {
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       const toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest.find(m, n.path, toCoords.x, toCoords.y)
+                      const { moveCoords } = mapFindNearest.find(m as M, n.path, toCoords.x, toCoords.y)
                       dispatch(actions.setFromCoordsMove(moveCoords))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {

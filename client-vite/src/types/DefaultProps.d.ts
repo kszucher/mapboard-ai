@@ -147,6 +147,8 @@ interface M {
   r: N[]
 }
 
+type NL = N | G
+
 interface MPartial {
   g: GPartial,
   r: NPartial[]

@@ -5,8 +5,8 @@ export const mapSetProp = {
     if (typeof condition === 'function' ? condition(n) : condition) {
       Object.assign(n, typeof assignment === 'function' ? assignment() : assignment)
     }
-    n.d.map(i => mapSetProp.iterate(i, assignment, condition))
-    n.s.map(i => mapSetProp.iterate(i, assignment, condition))
-    n.c.map(i => i.map(j => mapSetProp.iterate(j, assignment, condition)))
+    n.d?.map(i => mapSetProp.iterate(i, assignment, condition))
+    n.s?.map(i => mapSetProp.iterate(i, assignment, condition))
+    n.c?.map(i => i.map(j => mapSetProp.iterate(j, assignment, condition)))
   }
 }

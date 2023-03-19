@@ -19,9 +19,9 @@ export const mapDeInit = {
   },
 
   iterate: (n: N) => {
-    n.d.map(i => mapDeInit.iterate(i))
-    n.s.map(i => mapDeInit.iterate(i))
-    n.c.map(i => i.map(j => mapDeInit.iterate(j)))
+    n.d?.map(i => mapDeInit.iterate(i))
+    n.s?.map(i => mapDeInit.iterate(i))
+    n.c?.map(i => i.map(j => mapDeInit.iterate(j)))
     for (const prop in n) {
       if (nSaveAlways.hasOwnProperty(prop)) {
         // do nothing

@@ -7,6 +7,8 @@ import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {gSaveOptional} from "../core/DefaultProps"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {mapAssembly} from "../map/MapAssembly"
+import {M} from "../types/DefaultProps"
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
@@ -14,11 +16,11 @@ export let timeoutId: NodeJS.Timeout
 let mapAreaListener: AbortController
 let landingAreaListener: AbortController
 
-
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const ml = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const m = mapAssembly(ml) as M
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const {density, alignment} = m?.g || gSaveOptional
@@ -59,7 +61,8 @@ export const WindowListeners: FC = () => {
   }
 
   const resize = () => {
-    const m = getMap()
+    const ml = getMap()
+    const m = mapAssembly(ml) as M
     orient(m, 'shouldResize', {})
   }
 
