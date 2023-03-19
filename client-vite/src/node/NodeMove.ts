@@ -15,6 +15,7 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
 }
 
 export const structMove = (m: any, target: any, direction?: Dir) => {
+  console.log(m)
   const { sc } = m.g
   const  { structSelectedPathList, lastPath, sameParentPath } = sc
   let ln = getMapData(m, lastPath)
@@ -26,7 +27,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
         let currRef = getMapData(m, structSelectedPathList[i])
         sameParent.s.splice(currRef.index, 1)
-        m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, copy(currRef))
+        m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, copy(currRef)) // TODO assign OR splice
       }
     } else if (direction === Dir.I) {
       let sameParentParent = getMapData(m, sameParent.parentPath)
