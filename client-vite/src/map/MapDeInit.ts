@@ -1,5 +1,8 @@
-import {gSaveAlways, gSaveOptional, nSaveAlways, nSaveOptional} from "../core/DefaultProps"
-import {GSaveOptional, GSaveNever, NSaveOptional, NSaveNever, N, M} from "../types/DefaultProps"
+import {M} from "../state/MTypes"
+import {GSaveOptional, GSaveNever} from "../state/GPropsTypes"
+import {NSaveOptional, NSaveNever, N} from "../state/NPropsTypes"
+import {gSaveAlways, gSaveOptional} from "../state/GProps"
+import {nSaveAlways, nSaveOptional} from "../state/NProps"
 
 export const mapDeInit = {
   start: (m: M) => {

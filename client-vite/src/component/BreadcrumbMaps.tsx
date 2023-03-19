@@ -1,10 +1,9 @@
-import {FC} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
+import {FC} from "react"
+import {useDispatch,} from "react-redux"
 import { Breadcrumbs, Link } from '@mui/material'
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
-import {PageState} from "../core/Enums";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 
 export const BreadcrumbMaps: FC = () => {
   const { data } = useOpenWorkspaceQuery()

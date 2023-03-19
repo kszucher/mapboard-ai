@@ -14,10 +14,10 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions, defaultUseOpenWorkspaceQueryState, getMapId, getFrameId} from "../core/EditorFlow";
-import {PageState} from "../core/Enums";
-import {gSaveOptional} from "../core/DefaultProps";
-import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {actions, defaultUseOpenWorkspaceQueryState, getMapId, getFrameId} from "../core/EditorFlow"
+import {PageState} from "../core/Enums"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {gSaveOptional} from "../state/GProps"
 
 const iconSize = 40
 const topOffs1 = 48*2

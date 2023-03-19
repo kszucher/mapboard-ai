@@ -1,11 +1,11 @@
-import {FC} from "react";
+import {FC} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {Button, IconButton} from '@mui/material'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
-import {TargetedButtonGroup} from "./TargetedButtonGroup";
+import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
 import {actions} from '../core/EditorFlow'
-import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums";
+import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 
 export const Formatter: FC = () => {
   const o = 32

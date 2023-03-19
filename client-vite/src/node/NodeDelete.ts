@@ -1,6 +1,7 @@
-import {M, SC} from "../types/DefaultProps"
 import {isEqual} from "../core/Utils"
 import {getMapData} from '../core/MapFlow'
+import {M} from "../state/MTypes"
+import {SC} from "../state/GPropsTypes"
 
 export const structDeleteReselect = (m: M, sc: SC) => {
   let ln = getMapData(m, sc.lastPath)

@@ -1,6 +1,7 @@
-import {M, N} from "../types/DefaultProps"
 import {copy, isEqual} from "../core/Utils"
 import {getMapData} from "../core/MapFlow"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 let currX = 0
 let currY = 0

@@ -1,6 +1,7 @@
-import {M, N, NSaveOptional} from "../types/DefaultProps"
 import {getMapData} from "../core/MapFlow"
 import {mapGetProp} from "./MapGetProp"
+import {M} from "../state/MTypes"
+import {N, NSaveOptional} from "../state/NPropsTypes"
 
 export const mapExtractProps = {
   start: (m: M) => {

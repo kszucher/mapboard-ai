@@ -1,7 +1,9 @@
 import {LineTypes} from "../core/Enums"
-import {M, N, SC} from "../types/DefaultProps"
 import {isOdd} from "../core/Utils"
-import {getMapData} from "../core/MapFlow";
+import {getMapData} from "../core/MapFlow"
+import {M} from "../state/MTypes"
+import {SC} from "../state/GPropsTypes"
+import {N} from "../state/NPropsTypes"
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>

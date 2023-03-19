@@ -1,5 +1,6 @@
-import {M, N} from "../types/DefaultProps"
 import {getMapData} from "../core/MapFlow"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 export const mapDiff = {
   start: (pm: M, m: M) => {

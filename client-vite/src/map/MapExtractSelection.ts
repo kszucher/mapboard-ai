@@ -1,6 +1,7 @@
-import {M, N} from "../types/DefaultProps"
 import { arrayValuesSame } from '../core/Utils'
 import { getMapData } from '../core/MapFlow'
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 export const mapExtractSelection = {
   start: (m: M) => {

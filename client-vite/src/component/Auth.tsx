@@ -1,13 +1,13 @@
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {Button, Link, ThemeProvider, Typography} from '@mui/material'
-import {actions} from "../core/EditorFlow";
-import {FC, useEffect} from "react";
-import { PageState} from "../core/Enums";
-import {useAuth0} from "@auth0/auth0-react";
-import {api} from "../core/Api";
-import {authAudienceUrl} from "../core/Urls";
-import {getMuiTheme} from "./Mui";
-import {setColors} from "../core/Colors";
+import {actions} from "../core/EditorFlow"
+import {FC, useEffect} from "react"
+import { PageState} from "../core/Enums"
+import {useAuth0} from "@auth0/auth0-react"
+import {api} from "../core/Api"
+import {authAudienceUrl} from "../core/Urls"
+import {getMuiTheme} from "./Mui"
+import {setColors} from "../core/Colors"
 
 export const Auth: FC = () => {
   const colorMode = 'dark'

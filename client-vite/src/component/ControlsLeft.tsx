@@ -5,8 +5,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {api} from "../core/Api";
-import {getMapId} from "../core/EditorFlow";
+import {api} from "../core/Api"
+import {getMapId} from "../core/EditorFlow"
 
 export const ControlsLeft: FC = () => {
   const dispatch = useDispatch()

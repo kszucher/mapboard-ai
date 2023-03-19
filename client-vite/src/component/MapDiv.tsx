@@ -3,14 +3,15 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {M, N} from "../types/DefaultProps"
 import {getNodeById} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
-import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow";
-import {getCoords, setEndOfContentEditable} from "./MapDivUtils";
-import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {mapFindNearest} from "../map/MapFindNearest";
-import {mapAssembly} from "../map/MapAssembly";
+import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
+import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {mapFindNearest} from "../map/MapFindNearest"
+import {mapAssembly} from "../map/MapAssembly"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {

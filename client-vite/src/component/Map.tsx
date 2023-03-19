@@ -1,6 +1,6 @@
-import React, {FC} from "react";
-import {MapSvg} from "./MapSvg";
-import {MapDiv} from "./MapDiv";
+import React, {FC} from "react"
+import {MapSvg} from "./MapSvg"
+import {MapDiv} from "./MapDiv"
 
 export const Map: FC = () => {
   return (

@@ -1,6 +1,7 @@
-import {M, N} from "../types/DefaultProps"
 import {createArray} from "../core/Utils"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 export const mapMeasure = {
   start: (m: M) => {

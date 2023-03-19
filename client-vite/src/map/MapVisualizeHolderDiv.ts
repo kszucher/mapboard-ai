@@ -1,5 +1,5 @@
-import {M} from "../types/DefaultProps"
 import {scrollTo} from "../component/MapDivUtils"
+import {M} from "../state/MTypes"
 
 export const orient = (m: M, action: string, payload: any) => {
   const mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement

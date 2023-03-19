@@ -1,5 +1,4 @@
-import {getDefaultNode, nSaveOptional} from './DefaultProps'
-import {M, MPartial, N, NL, NC, NSaveOptional} from "../types/DefaultProps"
+import {getDefaultNode} from './DefaultProps'
 import {createArray, genHash, subsref, transpose} from './Utils'
 import {mapFindById} from '../map/MapFindById'
 import {mapFix} from '../map/MapFix'
@@ -19,13 +18,17 @@ import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
 import {Dir} from "./Enums"
-import {mapAssembly} from "../map/MapAssembly";
+import {mapAssembly} from "../map/MapAssembly"
+import {M, MPartial, ML, NL} from "../state/MTypes"
+import {NC} from "../state/GPropsTypes"
+import {N, NSaveOptional} from "../state/NPropsTypes"
+import {nSaveOptional} from "../state/NProps"
 
 export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)
 }
 
-export const getSavedMapData = (ml: NL[]) => {
+export const getSavedMapData = (ml: ML) => {
   return mapDisassembly.start(mapDeInit.start(mapAssembly(ml) as M))
 }
 
@@ -40,7 +43,7 @@ const updateParentLastSelectedChild = (m: M, ln: N) => {
   }
 }
 
-export const mapReducer = (pml: NL[], action: string, payload: any) => {
+export const mapReducer = (pml: ML, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
   const pm = mapAssembly(pml) as M

@@ -1,4 +1,5 @@
-import {M, N} from "../types/DefaultProps"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 export const mapPrint = {
   str: '',

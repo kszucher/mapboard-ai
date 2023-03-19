@@ -4,8 +4,8 @@ import {getMapData, mapReducer} from "./MapFlow"
 import {mapDeInit} from "../map/MapDeInit"
 import {api} from "./Api"
 import {DefaultUseOpenWorkspaceQueryState, EditorState} from "../types/EditorFlow"
-import {M} from "../types/DefaultProps"
 import {mapAssembly} from "../map/MapAssembly"
+import {M} from "../state/MTypes"
 
 const editorState : EditorState = {
   token: '',

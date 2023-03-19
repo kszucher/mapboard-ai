@@ -1,5 +1,6 @@
-import {M, N} from "../types/DefaultProps"
 import {copy} from "../core/Utils"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 let dcm = []
 

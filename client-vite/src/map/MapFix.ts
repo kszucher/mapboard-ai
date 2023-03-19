@@ -1,5 +1,6 @@
-import {MPartial, NPartial} from "../types/DefaultProps"
 import {getDefaultNode} from "../core/DefaultProps"
+import {MPartial} from "../state/MTypes"
+import {NPartial} from "../state/NPropsTypes"
 
 export const mapFix = {
   start: (m: MPartial) => {

@@ -1,4 +1,4 @@
-import {N} from "../types/DefaultProps"
+import {N} from "../state/NPropsTypes"
 
 export const mapSetProp = {
   iterate: (n: N, assignment: Function | object, condition: Function | boolean) => {

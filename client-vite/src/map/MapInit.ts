@@ -1,6 +1,9 @@
-import {gSaveAlways, gSaveOptional, gSaveNever, nSaveAlways, nSaveOptional, nSaveNever} from '../core/DefaultProps'
-import {GSaveNever, GSaveOptional, NSaveAlways, NSaveOptional, NSaveNever, NPartial, M, MPartial} from "../types/DefaultProps"
 import {copy, genHash, shallowCopy} from '../core/Utils'
+import {M, MPartial} from "../state/MTypes"
+import {GSaveOptional, GSaveNever} from "../state/GPropsTypes"
+import {NSaveAlways, NSaveOptional, NSaveNever, NPartial} from "../state/NPropsTypes"
+import {gSaveAlways, gSaveNever, gSaveOptional} from "../state/GProps"
+import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps"
 
 export const mapInit = {
   start: (m: MPartial) => {

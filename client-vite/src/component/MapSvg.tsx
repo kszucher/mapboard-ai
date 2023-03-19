@@ -5,7 +5,6 @@ import {getColors} from "../core/Colors"
 import {getNodeById, getNodeByPath} from "../core/MapUtils"
 import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {useOpenWorkspaceQuery} from "../core/Api"
-import {M, N} from "../types/DefaultProps"
 import {
   getArcPath,
   getBezierLinePath,
@@ -18,10 +17,11 @@ import {
   getTaskCircle,
   getTaskPath,
 } from "./MapSvgUtils"
-
 import {getCoords} from "./MapDivUtils"
 import {orient} from "../map/MapVisualizeHolderDiv"
-import {mapAssembly} from "../map/MapAssembly";
+import {mapAssembly} from "../map/MapAssembly"
+import {M} from "../state/MTypes"
+import {N} from "../state/NPropsTypes"
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',

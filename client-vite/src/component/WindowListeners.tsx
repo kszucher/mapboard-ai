@@ -5,10 +5,10 @@ import {AccessTypes, PageState} from "../core/Enums"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
-import {gSaveOptional} from "../core/DefaultProps"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapAssembly} from "../map/MapAssembly"
-import {M} from "../types/DefaultProps"
+import {gSaveOptional} from "../state/GProps"
+import {M} from "../state/MTypes"
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false

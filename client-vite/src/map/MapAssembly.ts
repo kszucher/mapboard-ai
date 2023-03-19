@@ -1,7 +1,7 @@
 import {copy, subsasgn} from "../core/Utils"
-import {MPartial, NL} from "../types/DefaultProps"
+import {ML, MPartial} from "../state/MTypes"
 
-export const mapAssembly = (dataLinear: NL[]) => {
+export const mapAssembly = (dataLinear: ML) => {
   const copyDataLinear = copy(dataLinear)
   const dataLinearSorted = copyDataLinear.sort((a: any, b: any) => (a.path > b.path) ? 1 : -1)
   let dataNested = {}

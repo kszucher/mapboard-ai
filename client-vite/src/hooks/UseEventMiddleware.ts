@@ -1,9 +1,9 @@
-import {M} from "../types/DefaultProps"
 import {actions,  getMap} from "../core/EditorFlow"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {mapAssembly} from "../map/MapAssembly"
+import {M} from "../state/MTypes"
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 

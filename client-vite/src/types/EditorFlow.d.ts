@@ -1,5 +1,5 @@
-import {AccessTypes, FormatMode, PageState} from "../core/Enums";
-import {NL} from "./DefaultProps";
+import {AccessTypes, FormatMode, PageState} from "../core/Enums"
+import {ML} from "../state/MTypes"
 
 export interface EditorState {
   token: string,
@@ -7,7 +7,7 @@ export interface EditorState {
   formatMode: FormatMode,
   tabShrink: boolean,
   tempMap: object,
-  mapList: NL[][],
+  mapList: ML[],
   mapListIndex: number,
   editedNodeId: string,
   editType: '' | 'append' | 'replace'
@@ -23,7 +23,7 @@ export interface DefaultUseOpenWorkspaceQueryState {
   tabId: number,
   mapId: string,
   frameId: string,
-  mapDataList: NL[][],
+  mapDataList: ML[],
   breadcrumbMapIdList: [],
   breadcrumbMapNameList: [],
   tabMapIdList: [],
