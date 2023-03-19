@@ -5,15 +5,15 @@ export const mapPlace = {
   start: (m: M) => {
     const n = m.r[0]
     const {alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault} = m.g
-    const leftTaskWidth = n.d[1].s.length > 0 && taskLeft ? taskConfigWidth: 0
-    const leftMapWidth = n.d[1].s.length > 0 ? sLineDeltaXDefault + n.d[1].familyW : 0
-    const rightMapWidth = n.d[0].s.length > 0 ? sLineDeltaXDefault + n.d[0].familyW : 0
-    const rightTaskWidth = n.d[0].s.length > 0 && taskRight ? taskConfigWidth : 0
+    const leftTaskWidth = n.d[1].sCount > 0 && taskLeft ? taskConfigWidth: 0
+    const leftMapWidth = n.d[1].sCount > 0 ? sLineDeltaXDefault + n.d[1].familyW : 0
+    const rightMapWidth = n.d[0].sCount > 0 ? sLineDeltaXDefault + n.d[0].familyW : 0
+    const rightTaskWidth = n.d[0].sCount > 0 && taskRight ? taskConfigWidth : 0
     const leftWidth = leftMapWidth + leftTaskWidth + margin
     const rightWidth = rightMapWidth + rightTaskWidth + margin
     let flow = 'both'
-    if (n.d[0].s.length && !n.d[1].s.length) flow = 'right'
-    if (!n.d[0].s.length && n.d[1].s.length) flow = 'left'
+    if (n.d[0].sCount && !n.d[1].sCount) flow = 'right'
+    if (!n.d[0].sCount && n.d[1].sCount) flow = 'left'
     let sumWidth = 0
     if (alignment === 'adaptive') {
       if (flow === 'right') {

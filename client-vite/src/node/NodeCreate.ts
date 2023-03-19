@@ -17,7 +17,7 @@ export const structCreate = (m: any, n: any, direction: Dir, payload: object) =>
     }));
   } else if (direction === Dir.O) {
     const pn = n.isRoot? n.d[0] : n
-    pn.s.splice(pn.s.length, 0, getDefaultNode({
+    pn.s.splice(pn.sCount, 0, getDefaultNode({
       selected: 1,
       taskStatus: pn.taskStatus,
       ...payload

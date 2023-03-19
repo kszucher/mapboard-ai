@@ -30,17 +30,17 @@ export const mapFindNearest = {
         let fromX = lastFound.path[3] ? lastFound.nodeStartX : lastFound.nodeEndX
         let fromY = lastFound.nodeY
         moveCoords = [fromX, fromY, toX, toY]
-        if (lastFound.s.length === 0) {
+        if (lastFound.sCount === 0) {
           moveTargetIndex = 0
         } else {
           let insertIndex = 0
-          for (let i = 0; i < lastFound.s.length - 1; i++) {
+          for (let i = 0; i < lastFound.sCount - 1; i++) {
             if (toY > lastFound.s[i].nodeY && toY <= lastFound.s[i + 1].nodeY) {
               insertIndex = i + 1
             }
           }
-          if (toY > lastFound.s[lastFound.s.length - 1].nodeY) {
-            insertIndex = lastFound.s.length
+          if (toY > lastFound.s[lastFound.sCount - 1].nodeY) {
+            insertIndex = lastFound.sCount
           }
           let lastSelectedParentPath = lastSelected.parentPath
           if (isEqual(lastFound.path, lastSelectedParentPath)) {

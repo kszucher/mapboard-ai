@@ -93,7 +93,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
           ln.d[0].selection = 'f'
         }
       } else {
-        if (ln.s.length > 0) {
+        if (ln.sCount > 0) {
           clearSelection(m)
           ln.selected = 1
           ln.selection = 'f'
@@ -107,7 +107,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
     case 'selectDescendantsOut': {
-      if (ln.s.length > 0) {
+      if (ln.sCount > 0) {
         if (ln.path.length === 2) {
           ln.selected = 0
           if (payload.code === 'ArrowRight') {

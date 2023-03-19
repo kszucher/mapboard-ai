@@ -8,7 +8,7 @@ export const mapFix = {
   },
 
   iterate: (m: MPartial, n: NPartial) => {
-    if (n.type === 'cell' && !n.s.length) {
+    if (n.type === 'cell' && !n.sCount) {
       n.s.push(getDefaultNode({}))
     }
     if (n.d) n.d.map(i => mapFix.iterate(m, i))

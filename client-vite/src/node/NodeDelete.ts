@@ -14,7 +14,7 @@ export const structDeleteReselect = (m: M, sc: SC) => {
     }
   }
   let closestNodeParent = getMapData(m, closestNode.parentPath)
-  let closestNodeParentChildLen = closestNodeParent.s.length
+  let closestNodeParentChildLen = closestNodeParent.sCount
   let closestNodeParentChildDelLen = 0
   for (let i = closestNode.index; i > -1; i--) {
     if (closestNodeParent.s[i].selected > 0) {
@@ -37,7 +37,7 @@ export const structDeleteReselect = (m: M, sc: SC) => {
     }
   } else {
     if (closestNode.index === 0) {
-      if (closestNodeParent.s.length > 0) {
+      if (closestNodeParent.sCount > 0) {
         closestNodeParent.s[0].selected = 1
       } else {
         if (closestNodeParent.isRootChild) {

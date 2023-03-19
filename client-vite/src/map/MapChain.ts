@@ -25,6 +25,7 @@ export const mapChain = {
       }
     }
     let dCount = Object.keys(n.d).length
+    n.dCount = dCount
     for (let i = 0; i < dCount; i++) {
       Object.assign(n.d[i], {
         parentPath: ['r', 0],
@@ -38,6 +39,7 @@ export const mapChain = {
       mapChain.iterate(m, n.d[i])
     }
     let sCount = Object.keys(n.s).length
+    n.sCount = sCount
     for (let i = 0; i < sCount; i++) {
       Object.assign(n.s[i], {
         parentPath: n.path.slice(0),
@@ -52,6 +54,8 @@ export const mapChain = {
     }
     let rowCount = Object.keys(n.c).length
     let colCount = Object.keys(n.c[0]).length
+    n.cRowCount = rowCount
+    n.cColCount = colCount
     for (let i = 0; i < rowCount; i++) {
       for (let j = 0; j < colCount; j++) {
         Object.assign(n.c[i][j], {

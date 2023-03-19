@@ -26,7 +26,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
         let currRef = getMapData(m, structSelectedPathList[i])
         sameParent.s.splice(currRef.index, 1)
-        m.r[0].d[revDir].s.splice(m.r[0].d[revDir].s.length, 0, copy(currRef))
+        m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, copy(currRef))
       }
     } else if (direction === Dir.I) {
       let sameParentParent = getMapData(m, sameParent.parentPath)
@@ -42,7 +42,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
           sameParent.s.splice(currRef.index, 1)
-          upperSibling.s.splice(upperSibling.s.length - structSelectedPathList.length + i + 1, 0, copy(currRef))
+          upperSibling.s.splice(upperSibling.sCount - structSelectedPathList.length + i + 1, 0, copy(currRef))
         }
       }
     } else if (direction === Dir.U) {
@@ -57,12 +57,12 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
           sameParent.s.splice(currRef.index, 1)
-          sameParent.s.splice(sameParent.s.length - structSelectedPathList.length + i + 1, 0, copy(currRef))
+          sameParent.s.splice(sameParent.sCount - structSelectedPathList.length + i + 1, 0, copy(currRef))
         }
       }
     } else if (direction === Dir.D) {
       let geomLowRef = getMapData(m, sc.geomLowPath)
-      if (geomLowRef.index !== sameParent.s.length - 1) {
+      if (geomLowRef.index !== sameParent.sCount - 1) {
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
           sameParent.s.splice(currRef.index, 1)

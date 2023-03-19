@@ -15,11 +15,11 @@ export const mapCalcTask = {
       }
       const taskStatusRight = n.d[0].taskStatus
       const taskStatusLeft = n.d[1].taskStatus
-      if (n.d[0].s.length && n.d[1].s.length) {
+      if (n.d[0].sCount && n.d[1].sCount) {
         n.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
-      } else if (n.d[0].s.length) {
+      } else if (n.d[0].sCount) {
         n.taskStatus = taskStatusRight
-      } else if (n.d[1].s.length) {
+      } else if (n.d[1].sCount) {
         n.taskStatus = taskStatusLeft
       }
     }

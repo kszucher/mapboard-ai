@@ -39,7 +39,10 @@ export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
       for (let i = 0; i < sequence.length; i++) {
         let currDirection = sequence[i]
         let currRef = getMapData(m, newPath)
-        let currChildCount = currRef.s.length
+        let currChildCount = currRef.sCount
+        // LÉNYEG: azzal kell számolni, hogy egy KORÁBBAN BUILD-elt cucc-ból CSAK assembly történt!!!
+        // tehát, pl. sCount az elveszik, hiszen ez a build-ben nem létezett, viszont a bármely node prop az élni fog
+        // aztán, ki tudja... :'D
         let pn = getMapData(m, currRef.parentPath)
         if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
           pn.type === 'cell' && ['i'].includes(currDirection) ||
@@ -48,7 +51,7 @@ export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
           break sequenceGenerator
         }
         if (currDirection === 'u' && currRef.index === 0 ||
-          currDirection === 'd' && pn.s.length === currRef.index + 1 ||
+          currDirection === 'd' && pn.sCount === currRef.index + 1 ||
           currDirection === 'ou' && currChildCount === 0 ||
           currDirection === 'od' && currChildCount === 0) {
           break

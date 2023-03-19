@@ -48,6 +48,10 @@ export interface NSaveNever {
   hasStruct: number,
   hasCell: number,
   index: any[],
+  dCount: number,
+  sCount: number,
+  cRowCount: number,
+  cColCount: number,
   // mapDiff
   dimChange: number,
   // mapMeasure

@@ -51,6 +51,10 @@ export const nSaveNever = {
   hasStruct: 0,
   hasCell: 0,
   index: [],
+  dCount: 0,
+  sCount: 0,
+  cRowCount: 0,
+  cColCount: 0,
   // mapDiff
   dimChange: 0,
   // mapMeasure

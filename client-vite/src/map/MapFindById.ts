@@ -16,8 +16,8 @@ export const mapFindById = {
     if (n.nodeId === nodeId) {
       resultPath = n.path
     }
-    n.d.map(i => mapFindById.iterate(m, i))
-    n.s.map(i => mapFindById.iterate(m, i))
-    n.c.map(i => i.map(j => mapFindById.iterate(m, j)))
+    n.d?.map(i => mapFindById.iterate(m, i))
+    n.s?.map(i => mapFindById.iterate(m, i))
+    n.c?.map(i => i.map(j => mapFindById.iterate(m, j)))
   }
 }
