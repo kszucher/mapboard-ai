@@ -4,7 +4,7 @@ import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
 import {AccessTypes} from "../core/Enums";
-import {actions} from "../core/EditorFlow";
+import {actions} from "../core/EditorReducer";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 

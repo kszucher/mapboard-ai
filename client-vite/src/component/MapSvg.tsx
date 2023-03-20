@@ -3,7 +3,7 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome, isEqual} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {getNodeById, getNodeByPath} from "../core/MapUtils"
-import {actions} from "../core/EditorFlow"
+import {actions} from "../core/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
   getArcPath,

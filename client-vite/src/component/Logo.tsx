@@ -2,7 +2,7 @@ import {FC} from "react";
 import { IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useDispatch } from 'react-redux'
-import {actions} from "../core/EditorFlow"
+import {actions} from "../core/EditorReducer"
 
 export const Logo: FC = () => {
   const dispatch = useDispatch()

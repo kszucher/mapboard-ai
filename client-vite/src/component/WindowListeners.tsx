@@ -2,7 +2,7 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getSavedMapData} from '../map/MapReducer'
 import {AccessTypes, PageState} from "../core/Enums"
-import {actions, getMap, getMapId, getFrameId} from "../core/EditorFlow"
+import {actions, getMap, getMapId, getFrameId} from "../core/EditorReducer"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {api, useOpenWorkspaceQuery} from "../core/Api"

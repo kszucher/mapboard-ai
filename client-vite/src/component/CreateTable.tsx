@@ -1,7 +1,7 @@
 import {FC, useState} from 'react'
 import {useDispatch} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
-import {actions} from "../core/EditorFlow"
+import {actions} from "../core/EditorReducer"
 import {PageState} from "../core/Enums"
 
 export const CreateTable: FC = () => {

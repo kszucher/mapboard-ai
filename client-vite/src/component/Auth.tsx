@@ -1,6 +1,6 @@
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {Button, Link, ThemeProvider, Typography} from '@mui/material'
-import {actions} from "../core/EditorFlow"
+import {actions} from "../core/EditorReducer"
 import {FC, useEffect} from "react"
 import { PageState} from "../core/Enums"
 import {useAuth0} from "@auth0/auth0-react"

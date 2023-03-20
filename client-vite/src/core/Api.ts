@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, getFrameId, getMap, getMapId, RootState} from "./EditorFlow"
+import {actions, getFrameId, getMap, getMapId, RootState} from "./EditorReducer"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Urls"
 import {getSavedMapData} from "../map/MapReducer"

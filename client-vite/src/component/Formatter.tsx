@@ -4,7 +4,7 @@ import {Button, IconButton} from '@mui/material'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
-import {actions} from '../core/EditorFlow'
+import {actions} from '../core/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 
 export const Formatter: FC = () => {

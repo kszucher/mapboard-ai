@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, getMap, getMapId} from "../core/EditorFlow";
+import {actions, getMap, getMapId} from "../core/EditorReducer";
 import {PageState} from "../core/Enums";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
 

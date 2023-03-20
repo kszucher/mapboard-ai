@@ -2,7 +2,7 @@ import {FC} from "react";
 import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {api} from "../core/Api";
-import {actions} from "../core/EditorFlow";
+import {actions} from "../core/EditorReducer";
 import {PageState} from "../core/Enums";
 
 export const ShouldDeleteUser:FC = () => {
