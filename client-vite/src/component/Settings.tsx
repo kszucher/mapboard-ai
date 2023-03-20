@@ -3,9 +3,10 @@ import {useDispatch} from "react-redux"
 import { Button, IconButton, Modal } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
+import {actions} from "../core/EditorFlow"
 import {PageState} from "../core/Enums";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const Settings: FC = () => {
   const { data } = useOpenWorkspaceQuery()

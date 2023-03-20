@@ -1,4 +1,3 @@
-import {getDefaultNode} from '../core/DefaultProps'
 import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
 import {mapFix} from './MapFix'
@@ -23,6 +22,7 @@ import {M, MPartial, ML, NL} from "../state/MTypes"
 import {NC} from "../state/GPropsTypes"
 import {N, NSaveOptional} from "../state/NPropsTypes"
 import {nSaveOptional} from "../state/NProps"
+import {getDefaultNode} from "../core/MapUtils";
 
 export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)

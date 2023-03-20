@@ -5,13 +5,14 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {getNodeById} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
-import {actions, defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
+import {actions} from "../core/EditorFlow"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapAssembly} from "../map/MapAssembly"
 import {M} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {

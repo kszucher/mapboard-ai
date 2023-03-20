@@ -23,8 +23,8 @@ import {UndoRedo} from './UndoRedo'
 import {WindowListeners} from "./WindowListeners"
 import {setColors} from "../core/Colors"
 import {useOpenWorkspaceQuery} from "../core/Api"
-import {defaultUseOpenWorkspaceQueryState} from "../core/EditorFlow"
 import {PageState} from "../core/Enums"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const Editor: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)

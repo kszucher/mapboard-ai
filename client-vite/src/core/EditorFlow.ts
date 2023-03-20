@@ -1,41 +1,12 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {AccessTypes, FormatMode, PageState} from "./Enums"
+import {FormatMode, PageState} from "./Enums"
 import {getMapData, mapReducer} from "../map/MapReducer"
 import {mapDeInit} from "../map/MapDeInit"
 import {api} from "./Api"
-import {DefaultUseOpenWorkspaceQueryState, EditorState} from "../types/EditorFlow"
 import {mapAssembly} from "../map/MapAssembly"
 import {M} from "../state/MTypes"
-
-const editorState : EditorState = {
-  token: '',
-  pageState: PageState.AUTH,
-  formatMode: FormatMode.text,
-  tabShrink: false,
-  tempMap: {},
-  mapList: [],
-  mapListIndex: 0,
-  editedNodeId: '',
-  editType: '',
-  moveCoords: [],
-  formatterVisible: false,
-  moreMenu: false,
-}
-
-export const defaultUseOpenWorkspaceQueryState : DefaultUseOpenWorkspaceQueryState = {
-  name: '',
-  colorMode: 'dark',
-  access: AccessTypes.UNAUTHORIZED,
-  tabId: 0,
-  mapId: '',
-  frameId: '',
-  mapDataList: [],
-  tabMapIdList: [],
-  tabMapNameList: [],
-  breadcrumbMapIdList: [],
-  breadcrumbMapNameList: [],
-  frameIdList: []
-}
+import {editorState} from "../state/EditorState";
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 const editorStateDefault = JSON.stringify(editorState)
 

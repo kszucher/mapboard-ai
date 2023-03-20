@@ -4,7 +4,8 @@ import {api, useOpenWorkspaceQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import {defaultUseOpenWorkspaceQueryState, getMapId} from "../core/EditorFlow"
+import {getMapId} from "../core/EditorFlow"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const FrameCarousel: FC = () => {
   const { data, isFetching } = useOpenWorkspaceQuery()

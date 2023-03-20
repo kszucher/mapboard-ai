@@ -3,7 +3,7 @@ import {actions, getFrameId, getMap, getMapId, RootState} from "./EditorFlow"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Urls"
 import {getSavedMapData} from "../map/MapReducer"
-import {DefaultUseOpenWorkspaceQueryState} from "../types/EditorFlow";
+import {DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
