@@ -1,5 +1,5 @@
 import { arrayValuesSame } from '../core/Utils'
-import { getMapData } from '../core/MapFlow'
+import { getMapData } from './MapReducer'
 import {M} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 

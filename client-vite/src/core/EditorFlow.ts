@@ -1,6 +1,6 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {AccessTypes, FormatMode, PageState} from "./Enums"
-import {getMapData, mapReducer} from "./MapFlow"
+import {getMapData, mapReducer} from "../map/MapReducer"
 import {mapDeInit} from "../map/MapDeInit"
 import {api} from "./Api"
 import {DefaultUseOpenWorkspaceQueryState, EditorState} from "../types/EditorFlow"

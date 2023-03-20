@@ -1,4 +1,4 @@
-import {getMapData} from "../core/MapFlow"
+import {getMapData} from "./MapReducer"
 import {mapGetProp} from "./MapGetProp"
 import {M} from "../state/MTypes"
 import {N, NSaveOptional} from "../state/NPropsTypes"

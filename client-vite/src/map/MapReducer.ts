@@ -1,24 +1,24 @@
-import {getDefaultNode} from './DefaultProps'
-import {createArray, genHash, subsref, transpose} from './Utils'
-import {mapFindById} from '../map/MapFindById'
-import {mapFix} from '../map/MapFix'
-import {mapInit} from '../map/MapInit'
-import {mapCalcTask} from '../map/MapCalcTask'
-import {mapChain} from '../map/MapChain'
-import {mapDeInit} from '../map/MapDeInit'
-import {mapDiff} from "../map/MapDiff"
-import {mapDisassembly} from '../map/MapDisassembly'
-import {mapExtractProps} from "../map/MapExtractProps"
-import {mapExtractSelection} from '../map/MapExtractSelection'
-import {mapMeasure} from '../map/MapMeasure'
-import {mapPlace} from '../map/MapPlace'
-import {mapSetProp} from '../map/MapSetProp'
+import {getDefaultNode} from '../core/DefaultProps'
+import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
+import {mapFindById} from './MapFindById'
+import {mapFix} from './MapFix'
+import {mapInit} from './MapInit'
+import {mapCalcTask} from './MapCalcTask'
+import {mapChain} from './MapChain'
+import {mapDeInit} from './MapDeInit'
+import {mapDiff} from "./MapDiff"
+import {mapDisassembly} from './MapDisassembly'
+import {mapExtractProps} from "./MapExtractProps"
+import {mapExtractSelection} from './MapExtractSelection'
+import {mapMeasure} from './MapMeasure'
+import {mapPlace} from './MapPlace'
+import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
-import {Dir} from "./Enums"
-import {mapAssembly} from "../map/MapAssembly"
+import {Dir} from "../core/Enums"
+import {mapAssembly} from "./MapAssembly"
 import {M, MPartial, ML, NL} from "../state/MTypes"
 import {NC} from "../state/GPropsTypes"
 import {N, NSaveOptional} from "../state/NPropsTypes"
@@ -47,7 +47,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
   const pm = mapAssembly(pml) as M
-  const m = mapAssembly(pml) as M
+  const m = copy(pm)
   const { sc } = m.g
   let ln = action !== '' ? getMapData(m, sc.lastPath) : undefined
   switch (action) {

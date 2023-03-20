@@ -1,6 +1,6 @@
 import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {getSavedMapData} from '../core/MapFlow'
+import {getSavedMapData} from '../map/MapReducer'
 import {AccessTypes, PageState} from "../core/Enums"
 import {actions, defaultUseOpenWorkspaceQueryState, getMap, getMapId, getFrameId} from "../core/EditorFlow"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"

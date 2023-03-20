@@ -1,5 +1,5 @@
 import {isEqual} from "../core/Utils"
-import {getMapData} from '../core/MapFlow'
+import {getMapData} from '../map/MapReducer'
 import {M} from "../state/MTypes"
 import {SC} from "../state/GPropsTypes"
 

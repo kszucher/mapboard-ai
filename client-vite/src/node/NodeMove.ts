@@ -1,6 +1,6 @@
 import {getDefaultNode} from "../core/DefaultProps"
 import {copy, transpose} from '../core/Utils'
-import {getMapData} from '../core/MapFlow'
+import {getMapData} from '../map/MapReducer'
 import {Dir} from "../core/Enums"
 import {M} from "../state/MTypes"
 

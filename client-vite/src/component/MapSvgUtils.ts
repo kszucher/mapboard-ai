@@ -1,6 +1,6 @@
 import {LineTypes} from "../core/Enums"
 import {isOdd} from "../core/Utils"
-import {getMapData} from "../core/MapFlow"
+import {getMapData} from "../map/MapReducer"
 import {M} from "../state/MTypes"
 import {SC} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
