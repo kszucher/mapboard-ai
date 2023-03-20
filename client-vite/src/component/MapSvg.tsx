@@ -97,7 +97,6 @@ export const MapSvg: FC = () => {
         height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
       }}
       onMouseDown={(e) => {
-        e.preventDefault()
         const fromCoords = getCoords(e)
         let didMove = false
         const abortController = new AbortController()

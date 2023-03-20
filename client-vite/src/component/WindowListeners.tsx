@@ -2,14 +2,15 @@ import {FC, useEffect} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getSavedMapData} from '../map/MapReducer'
 import {AccessTypes, PageState} from "../core/Enums"
-import {actions, getMap, getMapId, getFrameId} from "../core/EditorReducer"
+import {actions} from "../core/EditorReducer"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {orient} from "../map/MapVisualizeHolderDiv"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapAssembly} from "../map/MapAssembly"
 import {gSaveOptional} from "../state/GProps"
 import {M} from "../state/MTypes"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState";
+import {getMap} from "../state/EditorState";
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false

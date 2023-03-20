@@ -1,5 +1,6 @@
 import {FormatMode, PageState} from "../core/Enums"
 import {EditorState} from "./EditorStateTypes";
+import {store} from "../core/EditorReducer";
 
 export const editorState: EditorState = {
   token: '',
@@ -15,3 +16,5 @@ export const editorState: EditorState = {
   formatterVisible: false,
   moreMenu: false,
 }
+
+export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])

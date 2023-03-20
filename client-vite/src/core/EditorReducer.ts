@@ -6,23 +6,8 @@ import {api} from "./Api"
 import {mapAssembly} from "../map/MapAssembly"
 import {M} from "../state/MTypes"
 import {editorState} from "../state/EditorState";
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 const editorStateDefault = JSON.stringify(editorState)
-
-export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])
-export const getMapId = () => {
-  const result = api.endpoints.openWorkspace.select()(store.getState())
-  const { data } = result
-  const { mapId } = data || defaultUseOpenWorkspaceQueryState
-  return mapId
-}
-export const getFrameId = () => {
-  const result = api.endpoints.openWorkspace.select()(store.getState())
-  const { data } = result
-  const { frameId } = data || defaultUseOpenWorkspaceQueryState
-  return frameId
-}
 
 const findEditedNodeId = (m: M) => (
   m.g.sc.scope === 'c'
