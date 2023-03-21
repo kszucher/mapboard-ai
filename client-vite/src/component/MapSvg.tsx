@@ -19,10 +19,10 @@ import {
 } from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
 import {orient} from "../map/MapVisualizeHolderDiv"
-import {mapAssembly} from "../map/MapAssembly"
 import {M} from "../state/MTypes"
+import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -34,9 +34,9 @@ const pathCommonProps = {
 }
 
 const getSourceNode = (n: N) => (n.type === 'cell' ? n.parentParentNodeId: n.parentNodeId)
-const getSelectionMargin = (m: M, n: N) => (
+const getSelectionMargin = (g: G, n: N) => (
   (
-    ['c', 'cr', 'cc'].includes(m.g.sc.scope) ||
+    ['c', 'cr', 'cc'].includes(g.sc.scope) ||
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
@@ -74,10 +74,10 @@ export const MapSvg: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const m = mapAssembly(ml) as M // TODO only pass g where only g is needed
+  const g = ml.filter((n: N) => n.path.length === 1)[0]
   const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : ml // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
-  const sn = ['c', 'cr', 'cc'].includes(m.g.sc.scope)
-    ? getNodeByPath(ml, m.g.sc.sameParentPath)
+  const sn = ['c', 'cr', 'cc'].includes(g.sc.scope)
+    ? getNodeByPath(ml, g.sc.sameParentPath)
     : ml
       .filter((el: any) => el.path.length > 1)
       .reduce((a: N, b: N) => a.selected > b.selected ? a : b)
@@ -93,8 +93,8 @@ export const MapSvg: FC = () => {
         position: 'absolute',
         left: 0,
         top: 0,
-        width: 'calc(200vw + ' + m.g.mapWidth + 'px)',
-        height: 'calc(200vh + ' + m.g.mapHeight + 'px)'
+        width: 'calc(200vw + ' + g.mapWidth + 'px)',
+        height: 'calc(200vh + ' + g.mapHeight + 'px)'
       }}
       onMouseDown={(e) => {
         const fromCoords = getCoords(e)
@@ -115,7 +115,7 @@ export const MapSvg: FC = () => {
             setIntersectingNodes(getIntersectingNodes(ml, fromCoords, toCoords))
           } else if (e.buttons === 4) {
             const { movementX, movementY } = e
-            orient(m, 'shouldScroll', { movementX, movementY })
+            orient(g, 'shouldScroll', { movementX, movementY })
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
@@ -139,7 +139,7 @@ export const MapSvg: FC = () => {
         }, { signal })
       }}
       onDoubleClick={() => {
-        orient(m, 'shouldCenter', {})
+        orient(g, 'shouldCenter', {})
       }}
     >
       <svg
@@ -152,11 +152,11 @@ export const MapSvg: FC = () => {
       >
         <g id="layer0">
           <rect
-            key={`${m.g.nodeId}_svg_backgroundRect`}
+            key={`${g.nodeId}_svg_backgroundRect`}
             x={0}
             y={0}
-            width={m.g.mapWidth}
-            height={m.g.mapHeight}
+            width={g.mapWidth}
+            height={g.mapHeight}
             rx={32}
             ry={32}
             fill={C.MAP_BACKGROUND}
@@ -297,7 +297,7 @@ export const MapSvg: FC = () => {
                     !isEqual(n.nodeId, editedNodeId) &&
                     <path
                       key={`${n.nodeId}_svg_taskLine`}
-                      d={getTaskPath(m, n)}
+                      d={getTaskPath(ml, g, n)}
                       stroke={C.TASK_LINE}
                       strokeWidth={1}
                       fill={'none'}
@@ -306,11 +306,11 @@ export const MapSvg: FC = () => {
                     </path>
                   }
                   {
-                    [...Array(m.g.taskConfigN)].map((el, i) => (
+                    [...Array(g.taskConfigN)].map((el, i) => (
                       <circle
                         key={`${n.nodeId}_svg_taskCircle${i + 1}`}
                         id={'taskCircle'}
-                        {...getTaskCircle(m, n, i)}
+                        {...getTaskCircle(ml, g, n, i)}
                         fill={n.taskStatus === i + 1
                           ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)
                           : [C.TASK_CIRCLE_0_OFF, C.TASK_CIRCLE_1_OFF, C.TASK_CIRCLE_2_OFF, C.TASK_CIRCLE_3_OFF].at(i)}
@@ -338,10 +338,10 @@ export const MapSvg: FC = () => {
               {
                 !selectionRectCoords.length &&
                 n.selected &&
-                n.selected !== m.g.sc.maxSel &&
+                n.selected !== g.sc.maxSel &&
                 <path
                   key={`${n.nodeId}_svg_selectionBorderSecondary`}
-                  d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(m, n))}
+                  d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(g, n))}
                   stroke={C.SELECTION_COLOR}
                   strokeWidth={1}
                   fill={'none'}
@@ -356,12 +356,12 @@ export const MapSvg: FC = () => {
           {
             !selectionRectCoords.length &&
             <path
-              key={`${m.g.nodeId}_svg_selectionBorderPrimary`}
+              key={`${g.nodeId}_svg_selectionBorderPrimary`}
               d={getPolygonPath(
                 sn,
-                ['c', 'cr', 'cc'].includes(m.g.sc.scope) ? getCellPolygonPoints(sn, m.g.sc) : getStructPolygonPoints(sn, sn.selection),
+                ['c', 'cr', 'cc'].includes(g.sc.scope) ? getCellPolygonPoints(sn, g.sc) : getStructPolygonPoints(sn, sn.selection),
                 sn.selection,
-                getSelectionMargin(m, sn)
+                getSelectionMargin(g, sn)
               )}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
@@ -375,8 +375,8 @@ export const MapSvg: FC = () => {
           {intersectingNodes.map((n: N) => (
             <Fragment key={n.nodeId}>
               <path
-                key={`${m.g.nodeId}_svg_selectionByRect`}
-                d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(m, n))}
+                key={`${g.nodeId}_svg_selectionByRect`}
+                d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(g, n))}
                 stroke={'#555555'}
                 strokeWidth={1}
                 fill={'none'}
@@ -408,7 +408,7 @@ export const MapSvg: FC = () => {
             moveCoords.length &&
             <Fragment>
               <path
-                key={`${m.g.nodeId}_svg_moveLine`}
+                key={`${g.nodeId}_svg_moveLine`}
                 d={getBezierLinePath('M', getBezierLinePoints(moveCoords))}
                 stroke={C.MOVE_LINE_COLOR}
                 strokeWidth={1}

@@ -1,9 +1,9 @@
 import {scrollTo} from "../component/MapDivUtils"
-import {M} from "../state/MTypes"
+import {G} from "../state/GPropsTypes"
 
-export const orient = (m: M, action: string, payload: any) => {
+export const orient = (g: G, action: string, payload: any) => {
   const mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement
-  const currScrollLeft = (window.innerWidth + m.g.mapWidth) / 2
+  const currScrollLeft = (window.innerWidth + g.mapWidth) / 2
   if (action === 'shouldLoad') {
     mapDivOuter.scrollLeft = currScrollLeft
     mapDivOuter.scrollTop = window.innerHeight - 48 * 2

@@ -33,6 +33,7 @@ export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
   const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const g = ml.filter((n: N) => n.path.length === 1)[0]
   const m = mapAssembly(ml) as M
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -51,10 +52,10 @@ export const MapDiv: FC = () => {
               style = {{
                 left: 1 + n.nodeStartX,
                 top: 1 + n.nodeY - n.selfH / 2,
-                minWidth: (m.g.density === 'large'? 0 : -3) + n.selfW - m.g.padding - 2,
-                minHeight: (m.g.density === 'large'? -2 : -1) + n.selfH - m.g.padding,
-                paddingLeft: (m.g.density === 'large'? 0 : 3) + m.g.padding - 2,
-                paddingTop: (m.g.density === 'large'? 0 : 0) + m.g.padding - 2,
+                minWidth: (g.density === 'large'? 0 : -3) + n.selfW - g.padding - 2,
+                minHeight: (g.density === 'large'? -2 : -1) + n.selfH - g.padding,
+                paddingLeft: (g.density === 'large'? 0 : 3) + g.padding - 2,
+                paddingTop: (g.density === 'large'? 0 : 0) + g.padding - 2,
                 position: 'absolute',
                 fontSize: n.textFontSize,
                 fontFamily: 'Roboto',

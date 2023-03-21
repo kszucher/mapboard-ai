@@ -14,7 +14,7 @@ export const Formatter: FC = () => {
   const height = o * colorList.length
   const formatMode = useSelector((state: RootStateOrAny) => state.editor.formatMode)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
-  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.g.nc
+  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.g.nc // FIXME possibly error!!!
   const dispatch = useDispatch()
 
   const setNodeColor = (value: string) => {

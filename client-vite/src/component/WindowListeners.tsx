@@ -9,8 +9,9 @@ import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapAssembly} from "../map/MapAssembly"
 import {gSaveOptional} from "../state/GProps"
 import {M} from "../state/MTypes"
-import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState";
-import {getMap} from "../state/EditorState";
+import {N} from "../state/NPropsTypes"
+import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
+import {getMap} from "../state/EditorState"
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
@@ -22,6 +23,7 @@ export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const ml = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const g = ml.filter((n: N) => n.path.length === 1)[0]
   const m = mapAssembly(ml) as M
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
@@ -64,8 +66,8 @@ export const WindowListeners: FC = () => {
 
   const resize = () => {
     const ml = getMap()
-    const m = mapAssembly(ml) as M
-    orient(m, 'shouldResize', {})
+    const g = ml.filter((n: N) => n.path.length === 1)[0]
+    orient(g, 'shouldResize', {})
   }
 
   const keydown = (e: KeyboardEvent) => {
@@ -158,13 +160,13 @@ export const WindowListeners: FC = () => {
 
   useEffect(() => {
     if (mapId !== '') {
-      orient(m, 'shouldLoad', {})
+      orient(g, 'shouldLoad', {})
     }
   }, [mapId, frameId])
 
   useEffect(() => {
     if (mapId !== '') {
-      orient(m, 'shouldCenter', {})
+      orient(g, 'shouldCenter', {})
     }
   }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
 

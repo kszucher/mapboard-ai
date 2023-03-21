@@ -6,7 +6,7 @@ export const mapAssembly = (dataLinear: ML) => {
   const dataLinearSorted = copyDataLinear.sort((a: any, b: any) => (a.path > b.path) ? 1 : -1)
   let dataNested = {}
   for (let i = 0; i < dataLinearSorted.length; i++) {
-    subsasgn(dataNested, copy(dataLinearSorted[i].path), copy(dataLinearSorted[i]))
+    subsasgn(dataNested, copy(dataLinearSorted[i].path), copy(dataLinearSorted[i])) // do we really need this copy again?
   }
   return dataNested as MPartial
 }
