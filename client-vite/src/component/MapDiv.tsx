@@ -31,7 +31,7 @@ export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
   const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const g = ml.filter((n: N) => n.path.length === 1)[0]
+  const g = ml.filter((n: N) => n.path.length === 1).at(0)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)

@@ -1,18 +1,20 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
-import {FormatMode, PageState} from "./Enums"
-import {getMapData, mapReducer} from "../map/MapReducer"
+import {mapReducer} from "../map/MapReducer"
+import {mapAssembly} from "../map/MapAssembly"
 import {mapDeInit} from "../map/MapDeInit"
 import {api} from "./Api"
-import {mapAssembly} from "../map/MapAssembly"
-import {M} from "../state/MTypes"
-import {editorState} from "../state/EditorState";
+import {editorState} from "../state/EditorState"
+import {FormatMode, PageState} from "./Enums"
+import {M, ML} from "../state/MTypes"
+import {G} from "../state/GPropsTypes"
+import {getNodeByPath} from "./MapUtils";
 
 const editorStateDefault = JSON.stringify(editorState)
 
-const findEditedNodeId = (m: M) => (
-  m.g.sc.scope === 'c'
-    ? getMapData(m, m.g.sc.lastPath).s[0].nodeId
-    : getMapData(m, m.g.sc.lastPath).nodeId
+const findEditedNodeId = (ml: ML, g: G) => (
+  g.sc.scope === 'c'
+    ? getNodeByPath(ml, g.sc.lastPath).s[0].nodeId
+    : getNodeByPath(ml, g.sc.lastPath).nodeId
 )
 
 export const editorSlice = createSlice({
@@ -28,14 +30,15 @@ export const editorSlice = createSlice({
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
-      const m = state.mapList[state.mapListIndex]
+      const ml = state.mapList[state.mapListIndex]
+      const g = ml.filter((n) => n.path.length === 1).at(0) as G
       if (action.payload.type === 'startEditReplace') {
-        state.editedNodeId = findEditedNodeId(mapAssembly(m) as M)
+        state.editedNodeId = findEditedNodeId(ml, g)
         state.editType = 'replace'
       } else {
-        const nm = mapReducer(m, action.payload.type, action.payload.payload)
+        const nm = mapReducer(ml, action.payload.type, action.payload.payload)
         const isMapChanged =
-          JSON.stringify(mapDeInit.start(mapAssembly(m) as M)) !==
+          JSON.stringify(mapDeInit.start(mapAssembly(ml) as M)) !==
           JSON.stringify(mapDeInit.start(mapAssembly(nm) as M))
         switch (action.payload.type) {
           case 'startEditAppend':
@@ -44,7 +47,7 @@ export const editorSlice = createSlice({
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = nm
-            state.editedNodeId = findEditedNodeId(mapAssembly(m) as M)
+            state.editedNodeId = findEditedNodeId(ml, g)
             state.editType = 'append'
             break
           case 'typeText':

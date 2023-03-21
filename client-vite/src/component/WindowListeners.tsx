@@ -23,7 +23,7 @@ export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const ml = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
-  const g = ml.filter((n: N) => n.path.length === 1)[0]
+  const g = ml.filter((n: N) => n.path.length === 1).at(0)
   const m = mapAssembly(ml) as M
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
@@ -66,7 +66,7 @@ export const WindowListeners: FC = () => {
 
   const resize = () => {
     const ml = getMap()
-    const g = ml.filter((n: N) => n.path.length === 1)[0]
+    const g = ml.filter((n: N) => n.path.length === 1).at(0)
     orient(g, 'shouldResize', {})
   }
 

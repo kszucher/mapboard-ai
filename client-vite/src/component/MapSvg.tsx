@@ -52,7 +52,7 @@ export const MapSvg: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const g = ml.filter((n: N) => n.path.length === 1)[0]
+  const g = ml.filter((n: N) => n.path.length === 1).at(0)
   const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : ml // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const sn = ['c', 'cr', 'cc'].includes(g.sc.scope)
     ? getNodeByPath(ml, g.sc.sameParentPath)
