@@ -72,8 +72,6 @@ export const subsasgn = (obj: any, path: any[], value: any) => {
   obj[pathEnd] = value
 }
 
-export const isEqual = (obj1: {}, obj2: {}) => {
-  return JSON.stringify(obj1) === JSON.stringify(obj2)
-}
+export const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b)
 
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)

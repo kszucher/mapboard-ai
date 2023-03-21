@@ -47,7 +47,7 @@ export interface NSaveNever {
   hasDir: number,
   hasStruct: number,
   hasCell: number,
-  index: any[],
+  index: number[] & number,
   dCount: number,
   sCount: number,
   cRowCount: number,

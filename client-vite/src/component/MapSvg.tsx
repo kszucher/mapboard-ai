@@ -23,6 +23,7 @@ import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
+import {mapFindIntersecting} from "../map/MapFindIntersecting";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -42,29 +43,6 @@ const getSelectionMargin = (g: G, n: N) => (
     n.taskStatus > 1 ||
     n.hasCell
   ) ? 4 : -2
-)
-
-const rectanglesIntersect = (input: number[]) => {
-  const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
-  return maxAx >= minBx && minAx <= maxBx && minAy <= maxBy && maxAy >= minBy
-}
-
-const getIntersectingNodes = (ml: N[], _fromCoords: {x: number, y: number}, _toCoords: {x: number, y: number}) => (
-  ml.filter(n =>
-    n.type === 'struct' &&
-    !n.hasCell &&
-    n.content !== '' &&
-    +rectanglesIntersect([
-      Math.min(_fromCoords.x, _toCoords.x),
-      Math.min(_fromCoords.y, _toCoords.y),
-      Math.max(_fromCoords.x, _toCoords.x),
-      Math.max(_fromCoords.y, _toCoords.y),
-      n.nodeStartX,
-      n.nodeY,
-      n.nodeEndX,
-      n.nodeY,
-    ])
-  )
 )
 
 export const MapSvg: FC = () => {
@@ -112,7 +90,7 @@ export const MapSvg: FC = () => {
               Math.abs(toCoords.x - fromCoords.x),
               Math.abs(toCoords.y - fromCoords.y)
             ])
-            setIntersectingNodes(getIntersectingNodes(ml, fromCoords, toCoords))
+            setIntersectingNodes(mapFindIntersecting(ml, fromCoords, toCoords))
           } else if (e.buttons === 4) {
             const { movementX, movementY } = e
             orient(g, 'shouldScroll', { movementX, movementY })
@@ -126,7 +104,7 @@ export const MapSvg: FC = () => {
             if (e.button === 0) {
               dispatch(actions.mapAction({
                 type: 'select_dragged',
-                payload: {nList: getIntersectingNodes(ml, fromCoords, toCoords)}
+                payload: {nList: mapFindIntersecting(ml, fromCoords, toCoords)}
               }))
               setSelectionRectCoords([])
               setIntersectingNodes([])

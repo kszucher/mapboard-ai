@@ -9,8 +9,6 @@ import {actions} from "../core/EditorReducer"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapFindNearest} from "../map/MapFindNearest"
-import {mapAssembly} from "../map/MapAssembly"
-import {M} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
@@ -34,7 +32,6 @@ export const MapDiv: FC = () => {
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
   const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
   const g = ml.filter((n: N) => n.path.length === 1)[0]
-  const m = mapAssembly(ml) as M
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
@@ -102,14 +99,14 @@ export const MapDiv: FC = () => {
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       const toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest.find(m as M, n.path, toCoords.x, toCoords.y)
+                      const { moveCoords } = mapFindNearest(ml, n, toCoords.x, toCoords.y)
                       dispatch(actions.setFromCoordsMove(moveCoords))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       e.preventDefault()
                       abortController.abort()
                       const toCoords = getCoords(e)
-                      const { moveTargetPath, moveTargetIndex } = mapFindNearest.find(m, n.path, toCoords.x, toCoords.y)
+                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(ml, n, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }
