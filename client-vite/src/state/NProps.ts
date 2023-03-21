@@ -50,7 +50,7 @@ export const nSaveNever = {
   hasDir: 0,
   hasStruct: 0,
   hasCell: 0,
-  index: [],
+  index: 0,
   dCount: 0,
   sCount: 0,
   cRowCount: 0,
