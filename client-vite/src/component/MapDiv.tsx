@@ -113,6 +113,8 @@ export const MapDiv: FC = () => {
                       dispatch(actions.setFromCoordsMove([]))
                     }, { signal })
                   }
+                } else if (e.button === 1) {
+                  e.preventDefault()
                 } else if (e.button === 2) {
                   dispatch(actions.mapAction({
                       type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)

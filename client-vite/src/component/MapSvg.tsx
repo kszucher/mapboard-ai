@@ -75,6 +75,9 @@ export const MapSvg: FC = () => {
         height: 'calc(200vh + ' + g.mapHeight + 'px)'
       }}
       onMouseDown={(e) => {
+        if (e.button === 1) {
+          e.preventDefault()
+        }
         const fromCoords = getCoords(e)
         let didMove = false
         const abortController = new AbortController()
@@ -116,7 +119,7 @@ export const MapSvg: FC = () => {
           }
         }, { signal })
       }}
-      onDoubleClick={() => {
+      onDoubleClick={(e) => {
         orient(g, 'shouldCenter', {})
       }}
     >
