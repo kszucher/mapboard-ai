@@ -8,7 +8,7 @@ import {scrollTo} from "./MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
-const getCenter = (g: G) => (window.innerWidth + g.mapWidth) / 2
+const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
 
 export const Map: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
@@ -26,7 +26,7 @@ export const Map: FC = () => {
     const { signal } = abortController
     window.addEventListener('resize', (e) => {
       if (divRef.current) {
-        divRef.current.scrollLeft = getCenter(g)
+        divRef.current.scrollLeft = getScrollLeft(g)
       }
     }, { signal })
     return () => abortController.abort()
@@ -34,14 +34,14 @@ export const Map: FC = () => {
 
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.scrollLeft = getCenter(g)
+      divRef.current.scrollLeft = getScrollLeft(g)
       divRef.current.scrollTop = window.innerHeight - 48 * 2
     }}, [mapId, frameId]
   )
 
   useEffect(() => {
     if (divRef.current) {
-      scrollTo(getCenter(g), 500)
+      scrollTo(getScrollLeft(g), 500)
     }
   }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
 
@@ -68,7 +68,7 @@ export const Map: FC = () => {
       }}
       onDoubleClick={(e) => {
         if (divRef.current) {
-          scrollTo(getCenter(g), 500)
+          scrollTo(getScrollLeft(g), 500)
         }
       }}
       style={{

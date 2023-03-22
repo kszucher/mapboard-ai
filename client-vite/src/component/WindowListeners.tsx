@@ -6,9 +6,7 @@ import {actions} from "../core/EditorReducer"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapAssembly} from "../map/MapAssembly"
-import {gSaveOptional} from "../state/GProps"
 import {M} from "../state/MTypes"
-import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap} from "../state/EditorState"
 
@@ -22,13 +20,11 @@ export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const ml = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
-  const g = ml.filter((n: N) => n.path.length === 1).at(0)
   const m = mapAssembly(ml) as M
   const mExists = m && Object.keys(m).length
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const {density, alignment} = m?.g || gSaveOptional
   const {data} = useOpenWorkspaceQuery()
-  const {mapId, frameId, access} = data || defaultUseOpenWorkspaceQueryState
+  const {access} = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
 
   // TIMEOUT
