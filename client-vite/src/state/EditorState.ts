@@ -12,6 +12,7 @@ export const editorState: EditorState = {
   mapListIndex: 0,
   editedNodeId: '',
   editType: '',
+  movementCoords: [],
   moveCoords: [],
   formatterVisible: false,
   moreMenu: false,

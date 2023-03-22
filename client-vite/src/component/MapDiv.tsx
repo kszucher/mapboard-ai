@@ -5,16 +5,15 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {getNodeById} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
-import {actions} from "../core/EditorReducer"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
-import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapFindNearest} from "../map/MapFindNearest"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {actions} from "../core/EditorReducer"
+import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/NPropsTypes"
-import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
-    // return (n.nodeId + '</br>' + n.parentNodeId)
     return n.content
   } else if (n.contentType === 'equation') {
     return katex.renderToString(getLatexString(n.content), {throwOnError: false})
@@ -80,6 +79,7 @@ export const MapDiv: FC = () => {
                 dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
               }}
               onMouseDown={(e) => {
+                e.stopPropagation()
                 if (e.button === 0) {
                   if (n.linkType === 'internal') {
                     dispatch(api.endpoints.selectMap.initiate({mapId: n.link, frameId: ''}))
@@ -87,13 +87,7 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    dispatch(actions.mapAction({
-                        type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
-                          ? 'selectStruct'
-                          : 'selectStructToo',
-                        payload: {lastOverPath: n.path} // TODO use id instead of path
-                      })
-                    )
+                    dispatch(actions.mapAction({type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStruct' : 'selectStructToo', payload: {lastOverPath: n.path}}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
@@ -116,16 +110,12 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  dispatch(actions.mapAction({
-                      type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
-                        ? 'selectStructFamily'
-                        : 'selectStructToo',
-                      payload: {lastOverPath: n.path} // TODO use id instead of path
-                    })
+                  dispatch(actions.mapAction({type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStructFamily' : 'selectStructToo', payload: {lastOverPath: n.path}})
                   )
                 }
               }}
               onDoubleClick={(e) => {
+                e.stopPropagation()
                 dispatch(actions.mapAction({type: 'startEditAppend', payload: {}}))
               }}
               onKeyDown={(e) => {

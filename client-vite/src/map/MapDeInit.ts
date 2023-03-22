@@ -38,3 +38,5 @@ export const mapDeInit = {
     }
   }
 }
+
+// TODO make this work on LINEAR data!!!

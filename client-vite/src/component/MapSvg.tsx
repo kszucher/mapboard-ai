@@ -18,7 +18,6 @@ import {
   getTaskPath,
 } from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
-import {orient} from "../map/MapVisualizeHolderDiv"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -94,9 +93,6 @@ export const MapSvg: FC = () => {
               Math.abs(toCoords.y - fromCoords.y)
             ])
             setIntersectingNodes(mapFindIntersecting(ml, fromCoords, toCoords))
-          } else if (e.buttons === 4) {
-            const { movementX, movementY } = e
-            orient(g, 'shouldScroll', { movementX, movementY })
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
@@ -118,9 +114,6 @@ export const MapSvg: FC = () => {
             }
           }
         }, { signal })
-      }}
-      onDoubleClick={(e) => {
-        orient(g, 'shouldCenter', {})
       }}
     >
       <svg

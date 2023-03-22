@@ -4,7 +4,6 @@ import {getSavedMapData} from '../map/MapReducer'
 import {AccessTypes, PageState} from "../core/Enums"
 import {actions} from "../core/EditorReducer"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
-import {orient} from "../map/MapVisualizeHolderDiv"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {mapAssembly} from "../map/MapAssembly"
 import {gSaveOptional} from "../state/GProps"
@@ -64,12 +63,6 @@ export const WindowListeners: FC = () => {
     e.preventDefault()
   }
 
-  const resize = () => {
-    const ml = getMap()
-    const g = ml.filter((n: N) => n.path.length === 1).at(0)
-    orient(g, 'shouldResize', {})
-  }
-
   const keydown = (e: KeyboardEvent) => {
     useEventMiddleware({keyboardEvent: e}, dispatch)
   }
@@ -115,7 +108,6 @@ export const WindowListeners: FC = () => {
     mapAreaListener = new AbortController()
     const {signal} = mapAreaListener
     window.addEventListener("contextmenu", contextmenu, {signal})
-    window.addEventListener('resize', resize, {signal})
     window.addEventListener("keydown", keydown, {signal})
     window.addEventListener("paste", paste, {signal})
   }
@@ -157,18 +149,6 @@ export const WindowListeners: FC = () => {
       }
     }
   }, [m])
-
-  useEffect(() => {
-    if (mapId !== '') {
-      orient(g, 'shouldLoad', {})
-    }
-  }, [mapId, frameId])
-
-  useEffect(() => {
-    if (mapId !== '') {
-      orient(g, 'shouldCenter', {})
-    }
-  }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
 
   return (
     <></>
