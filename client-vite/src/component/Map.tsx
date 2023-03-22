@@ -43,8 +43,8 @@ export const Map: FC = () => {
   useEffect(() => {
     if (mainMapDiv.current) {
       scrollTo(getScrollLeft(g), 500)
-    }
-  }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
+    }}, [density, alignment] // TODO figure out how to react to the end of moveTarget
+  )
 
   return (
     <div
