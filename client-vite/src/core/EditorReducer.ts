@@ -1,6 +1,5 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {mapReducer} from "../map/MapReducer"
-import {mapRemoveHelperProps} from "../map/MapRemoveHelperProps"
 import {api} from "./Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "./Enums"
@@ -37,7 +36,7 @@ export const editorSlice = createSlice({
         state.editType = 'replace'
       } else {
         const nml = mapReducer(ml, action.payload.type, action.payload.payload)
-        const isMapChanged = !isEqual(mapRemoveHelperProps(ml), mapRemoveHelperProps(nml))
+        const isMapChanged = !isEqual(ml, nml)
         switch (action.payload.type) {
           case 'startEditAppend':
             if (isMapChanged) {
