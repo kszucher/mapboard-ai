@@ -5,7 +5,7 @@ import {backendUrl} from "./Urls"
 import {DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes";
 import {getFrameId, getMapId} from "../state/ApiState";
 import {getMap} from "../state/EditorState";
-import {mapRemoveHelperProps} from "../map/MapDeInit";
+import {mapRemoveHelperProps} from "../map/MapRemoveHelperProps";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

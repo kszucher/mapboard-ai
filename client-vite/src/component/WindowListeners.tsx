@@ -8,7 +8,7 @@ import {mapAssembly} from "../map/MapAssembly"
 import {M} from "../state/MTypes"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap} from "../state/EditorState"
-import {mapRemoveHelperProps} from "../map/MapDeInit"
+import {mapRemoveHelperProps} from "../map/MapRemoveHelperProps"
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false

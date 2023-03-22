@@ -1,6 +1,6 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {mapReducer} from "../map/MapReducer"
-import {mapRemoveHelperProps} from "../map/MapDeInit"
+import {mapRemoveHelperProps} from "../map/MapRemoveHelperProps"
 import {api} from "./Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "./Enums"
