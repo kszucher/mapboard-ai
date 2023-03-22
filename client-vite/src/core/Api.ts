@@ -2,10 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {actions, RootState} from "./EditorReducer"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Urls"
-import {getSavedMapData} from "../map/MapReducer"
 import {DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes";
 import {getFrameId, getMapId} from "../state/ApiState";
 import {getMap} from "../state/EditorState";
+import {mapRemoveHelperProps} from "../map/MapDeInit";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -34,7 +34,7 @@ export const api = createApi({
         if (editor.mapList.length > 1) {
           console.log('saved by listener')
           clearTimeout(timeoutId)
-          dispatch(api.endpoints.saveMap.initiate({ mapId: getMapId(), frameId: getFrameId(), mapData: getSavedMapData(getMap()) }))
+          dispatch(api.endpoints.saveMap.initiate({ mapId: getMapId(), frameId: getFrameId(), mapData: mapRemoveHelperProps(getMap()) }))
         }
       },
       providesTags: ['Workspace']

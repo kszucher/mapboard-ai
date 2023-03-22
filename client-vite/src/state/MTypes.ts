@@ -12,7 +12,7 @@ export interface MPartial {
   r: NPartial[]
 }
 
-export type NL = N | G
+export type NL = N & G
 export type NLPartial = NPartial | GPartial
 export type ML = NL[]
 export type MLPartial = NLPartial[]

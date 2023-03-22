@@ -1,13 +1,13 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {mapReducer} from "../map/MapReducer"
-import {mapAssembly} from "../map/MapAssembly"
-import {mapDeInitNested} from "../map/MapDeInit"
+import {mapRemoveHelperProps} from "../map/MapDeInit"
 import {api} from "./Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "./Enums"
 import {M, ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {getNodeByPath} from "./MapUtils";
+import {isEqual} from "./Utils";
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -36,26 +36,24 @@ export const editorSlice = createSlice({
         state.editedNodeId = findEditedNodeId(ml, g)
         state.editType = 'replace'
       } else {
-        const nm = mapReducer(ml, action.payload.type, action.payload.payload)
-        const isMapChanged =
-          JSON.stringify(mapDeInitNested.start(mapAssembly(ml) as M)) !==
-          JSON.stringify(mapDeInitNested.start(mapAssembly(nm) as M))
+        const nml = mapReducer(ml, action.payload.type, action.payload.payload)
+        const isMapChanged = !isEqual(mapRemoveHelperProps(ml), mapRemoveHelperProps(nml))
         switch (action.payload.type) {
           case 'startEditAppend':
             if (isMapChanged) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
               state.mapListIndex = state.mapListIndex + 1
             }
-            state.tempMap = nm
+            state.tempMap = nml
             state.editedNodeId = findEditedNodeId(ml, g)
             state.editType = 'append'
             break
           case 'typeText':
-            state.tempMap = nm
+            state.tempMap = nml
             break;
           case 'finishEdit':
             if (isMapChanged) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = {}
@@ -64,7 +62,7 @@ export const editorSlice = createSlice({
             break
           default:
             if (isMapChanged) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nm]
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = {}

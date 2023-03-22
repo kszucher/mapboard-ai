@@ -4,7 +4,7 @@ import {ML, NL} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
 export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) => {
-  const mlp = copy(ml).sort((a: NL, b: NL) => (a.path > b.path) ? 1 : -1)
+  const mlp = copy(ml).sort((a: NL, b: NL) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   let moveCoords = [] as any[]
   let moveTargetPath = [] as any[]
   let moveTargetIndex = 0

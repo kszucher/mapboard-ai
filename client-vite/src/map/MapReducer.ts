@@ -1,10 +1,9 @@
-import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
+import {copy, createArray, genHash, isEqual, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
 import {mapFix} from './MapFix'
 import {mapInit} from './MapInit'
 import {mapCalcTask} from './MapCalcTask'
 import {mapChain} from './MapChain'
-import {mapDeInitNested} from './MapDeInit'
 import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
 import {mapExtractProps} from "./MapExtractProps"
@@ -26,14 +25,6 @@ import {getDefaultNode} from "../core/MapUtils";
 
 export const getMapData = (m: M, path: any[]) => {
   return subsref(m, path)
-}
-
-export const getSavedMapData = (ml: ML) => {
-
-
-
-
-  return mapDisassembly.start(mapDeInitNested.start(mapAssembly(ml) as M))
 }
 
 const clearSelection = (m: M) => {
