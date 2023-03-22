@@ -47,6 +47,7 @@ export const Map: FC = () => {
 
   return (
     <div
+      style={{overflowY: 'scroll', overflowX: 'scroll'}}
       ref={mainMapDiv}
       id={'mainMapDiv'}
       onMouseDown={() => {
@@ -71,17 +72,9 @@ export const Map: FC = () => {
           scrollTo(getScrollLeft(g), 500)
         }
       }}
-      style={{
-        overflowY: 'scroll',
-        overflowX: 'scroll'
-      }}>
+    >
       <div
-        style={{
-          position: 'relative',
-          paddingTop: '100vh',
-          paddingLeft: '100vw',
-          maxWidth: '100%'
-        }}
+        style={{position: 'relative', paddingTop: '100vh', paddingLeft: '100vw'}}
       >
         <MapSvg/>
         <MapDiv/>
