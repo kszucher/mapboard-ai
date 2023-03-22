@@ -4,7 +4,7 @@ import {NSaveOptional, NSaveNever, N} from "../state/NPropsTypes"
 import {gSaveAlways, gSaveOptional} from "../state/GProps"
 import {nSaveAlways, nSaveOptional} from "../state/NProps"
 
-export const mapDeInit = {
+export const mapDeInitNested = {
   start: (m: M) => {
     for (const prop in m.g) {
       if (gSaveAlways.hasOwnProperty(prop)) {
@@ -17,14 +17,14 @@ export const mapDeInit = {
         delete m.g[prop as keyof GSaveNever]
       }
     }
-    mapDeInit.iterate(m.r[0])
+    mapDeInitNested.iterate(m.r[0])
     return m
   },
 
   iterate: (n: N) => {
-    n.d?.map(i => mapDeInit.iterate(i))
-    n.s?.map(i => mapDeInit.iterate(i))
-    n.c?.map(i => i.map(j => mapDeInit.iterate(j)))
+    n.d?.map(i => mapDeInitNested.iterate(i))
+    n.s?.map(i => mapDeInitNested.iterate(i))
+    n.c?.map(i => i.map(j => mapDeInitNested.iterate(j)))
     for (const prop in n) {
       if (nSaveAlways.hasOwnProperty(prop)) {
         // do nothing

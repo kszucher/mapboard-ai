@@ -1,7 +1,7 @@
 import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {mapReducer} from "../map/MapReducer"
 import {mapAssembly} from "../map/MapAssembly"
-import {mapDeInit} from "../map/MapDeInit"
+import {mapDeInitNested} from "../map/MapDeInit"
 import {api} from "./Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "./Enums"
@@ -38,8 +38,8 @@ export const editorSlice = createSlice({
       } else {
         const nm = mapReducer(ml, action.payload.type, action.payload.payload)
         const isMapChanged =
-          JSON.stringify(mapDeInit.start(mapAssembly(ml) as M)) !==
-          JSON.stringify(mapDeInit.start(mapAssembly(nm) as M))
+          JSON.stringify(mapDeInitNested.start(mapAssembly(ml) as M)) !==
+          JSON.stringify(mapDeInitNested.start(mapAssembly(nm) as M))
         switch (action.payload.type) {
           case 'startEditAppend':
             if (isMapChanged) {

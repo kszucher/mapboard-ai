@@ -4,7 +4,7 @@ import {mapFix} from './MapFix'
 import {mapInit} from './MapInit'
 import {mapCalcTask} from './MapCalcTask'
 import {mapChain} from './MapChain'
-import {mapDeInit} from './MapDeInit'
+import {mapDeInitNested} from './MapDeInit'
 import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
 import {mapExtractProps} from "./MapExtractProps"
@@ -29,7 +29,11 @@ export const getMapData = (m: M, path: any[]) => {
 }
 
 export const getSavedMapData = (ml: ML) => {
-  return mapDisassembly.start(mapDeInit.start(mapAssembly(ml) as M))
+
+
+
+
+  return mapDisassembly.start(mapDeInitNested.start(mapAssembly(ml) as M))
 }
 
 const clearSelection = (m: M) => {
