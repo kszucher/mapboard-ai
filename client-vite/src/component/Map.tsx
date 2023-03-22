@@ -19,45 +19,45 @@ export const Map: FC = () => {
   const { density, alignment } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState
-  const divRef = useRef<HTMLDivElement>(null)
+  const mainMapDiv = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const abortController = new AbortController()
     const { signal } = abortController
     window.addEventListener('resize', (e) => {
-      if (divRef.current) {
-        divRef.current.scrollLeft = getScrollLeft(g)
+      if (mainMapDiv.current) {
+        mainMapDiv.current.scrollLeft = getScrollLeft(g)
       }
     }, { signal })
     return () => abortController.abort()
   }, [])
 
   useEffect(() => {
-    if (divRef.current) {
-      divRef.current.scrollLeft = getScrollLeft(g)
-      divRef.current.scrollTop = window.innerHeight - 48 * 2
+    if (mainMapDiv.current) {
+      mainMapDiv.current.scrollLeft = getScrollLeft(g)
+      mainMapDiv.current.scrollTop = window.innerHeight - 48 * 2
     }}, [mapId, frameId]
   )
 
   useEffect(() => {
-    if (divRef.current) {
+    if (mainMapDiv.current) {
       scrollTo(getScrollLeft(g), 500)
     }
   }, [density, alignment]) // TODO figure out how to react to the end of moveTarget
 
   return (
     <div
-      ref={divRef}
-      id={'mapDivOuter'}
-      onMouseDown={(e) => {
+      ref={mainMapDiv}
+      id={'mainMapDiv'}
+      onMouseDown={() => {
         const abortController = new AbortController()
         const { signal } = abortController
         window.addEventListener('mousemove', (e) => {
           e.preventDefault()
           if (e.buttons === 4) {
-            if (divRef.current) {
-              divRef.current.scrollLeft -= e.movementX
-              divRef.current.scrollTop -= e.movementY
+            if (mainMapDiv.current) {
+              mainMapDiv.current.scrollLeft -= e.movementX
+              mainMapDiv.current.scrollTop -= e.movementY
             }
           }
         }, { signal })
@@ -66,8 +66,8 @@ export const Map: FC = () => {
           abortController.abort()
         }, { signal })
       }}
-      onDoubleClick={(e) => {
-        if (divRef.current) {
+      onDoubleClick={() => {
+        if (mainMapDiv.current) {
           scrollTo(getScrollLeft(g), 500)
         }
       }}

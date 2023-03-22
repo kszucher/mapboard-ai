@@ -17,7 +17,7 @@ const easeOut = (t: any, b: number, c: number, d: number) => {
 }
 
 export const scrollTo = (to: number, duration: number) => {
-  const element = document.getElementById('mapDivOuter') as HTMLDivElement
+  const element = document.getElementById('mainMapDiv') as HTMLDivElement
   const start = element.scrollLeft
   const change = to - start
   const startDate = +new Date()
@@ -37,10 +37,10 @@ export const scrollTo = (to: number, duration: number) => {
 export const getCoords = (e: any) => {
   const winWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
   const winHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-  const mapDivOuter = document.getElementById('mapDivOuter') as HTMLDivElement
+  const mainMapDiv = document.getElementById('mainMapDiv') as HTMLDivElement
   return {
-    x:  e.pageX - winWidth + mapDivOuter.scrollLeft,
-    y: e.pageY - winHeight + mapDivOuter.scrollTop
+    x:  e.pageX - winWidth + mainMapDiv.scrollLeft,
+    y: e.pageY - winHeight + mainMapDiv.scrollTop
   }
 }
 
