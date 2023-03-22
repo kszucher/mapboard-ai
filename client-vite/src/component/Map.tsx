@@ -9,6 +9,7 @@ import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
+const getScrollTop = () => (window.innerHeight - 48 * 2)
 
 export const Map: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
@@ -35,7 +36,7 @@ export const Map: FC = () => {
   useEffect(() => {
     if (mainMapDiv.current) {
       mainMapDiv.current.scrollLeft = getScrollLeft(g)
-      mainMapDiv.current.scrollTop = window.innerHeight - 48 * 2
+      mainMapDiv.current.scrollTop = getScrollTop()
     }}, [mapId, frameId]
   )
 
