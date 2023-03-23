@@ -6,7 +6,7 @@ import {nSaveAlways, nSaveOptional} from "../state/NProps"
 import {copy} from "../core/Utils";
 
 export const mapRemoveHelperProps = (ml: ML) => {
-  const mlRemoved = copy(ml)
+  const mlRemoved = copy(ml).sort((a:NLPartial, b: NLPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   for (const nl of mlRemoved) {
     if (nl.path.length === 1) {
       for (const prop in nl) {
@@ -34,5 +34,5 @@ export const mapRemoveHelperProps = (ml: ML) => {
       }
     }
   }
-  return mlRemoved.sort((a:NLPartial, b: NLPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  return mlRemoved
 }
