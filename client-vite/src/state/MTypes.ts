@@ -16,3 +16,6 @@ export type NL = N & G
 export type NLPartial = NPartial | GPartial
 export type ML = NL[]
 export type MLPartial = NLPartial[]
+
+type PathItem = 'g' | 'r' | 'd' | 's' | 'c' | number
+export type Path = PathItem[]

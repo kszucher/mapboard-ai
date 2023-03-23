@@ -17,13 +17,13 @@ import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeM
 import {structNavigate, cellNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {mapAssembly} from "./MapAssembly"
-import {M, MPartial, ML, NL} from "../state/MTypes"
+import {M, MPartial, ML, NL, Path} from "../state/MTypes"
 import {NC} from "../state/GPropsTypes"
 import {N, NSaveOptional} from "../state/NPropsTypes"
 import {nSaveOptional} from "../state/NProps"
 import {getDefaultNode} from "../core/MapUtils";
 
-export const getMapData = (m: M, path: any[]) => {
+export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
 }
 
@@ -128,7 +128,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       if (!payload.add) {
         clearSelection(m)
       }
-      let toPath = [...sc.lastPath] as any[]
+      let toPath = [...sc.lastPath]
       if (payload.direction === Dir.U) {toPath = sc.geomHighPath}
       else if (payload.direction === Dir.D) {toPath = sc.geomLowPath}
       else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}

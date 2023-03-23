@@ -1,9 +1,9 @@
 import {getMapData} from '../map/MapReducer'
 import {Dir} from "../core/Enums"
-import {M} from "../state/MTypes"
+import {M, Path} from "../state/MTypes"
 
-export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
-  let newPath = []
+export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
+  let newPath = [] as Path
   let inDepth = - 1
   //       v
   //     l v r
@@ -40,9 +40,6 @@ export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
         let currDirection = sequence[i]
         let currRef = getMapData(m, newPath)
         let currChildCount = currRef.sCount
-        // LÉNYEG: azzal kell számolni, hogy egy KORÁBBAN BUILD-elt cucc-ból CSAK assembly történt!!!
-        // tehát, pl. sCount az elveszik, hiszen ez a build-ben nem létezett, viszont a bármely node prop az élni fog
-        // aztán, ki tudja... :'D
         let pn = getMapData(m, currRef.parentPath)
         if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
           pn.type === 'cell' && ['i'].includes(currDirection) ||
@@ -64,8 +61,8 @@ export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
           }
           pn.lastSelectedChild = currRef.index
         }
-        else if (currDirection === 'u') newPath[newPath.length - 1] -= 1
-        else if (currDirection === 'd') newPath[newPath.length - 1] += 1
+        else if (currDirection === 'u') newPath[newPath.length - 1] = newPath.at(-1) as number - 1
+        else if (currDirection === 'd') newPath[newPath.length - 1] = newPath.at(-1) as number + 1
         else if (currDirection === 'ou') newPath.push('s', 0)
         else if (currDirection === 'od') newPath.push('s', currChildCount - 1)
         else if (currDirection === 'om') {
@@ -87,7 +84,7 @@ export const structNavigate = (m: M, truePath: any[], direction: Dir) => {
   return newPath
 }
 
-export const cellNavigate = (m: M, truePath: any[], direction: Dir) => {
+export const cellNavigate = (m: M, truePath: Path, direction: Dir) => {
   const newPath = truePath
   const currRef = getMapData(m, truePath)
   const pn = getMapData(m, currRef.parentPath)

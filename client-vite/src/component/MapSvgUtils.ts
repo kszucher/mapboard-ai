@@ -124,8 +124,8 @@ export const getCellPolygonPoints = (n: N, sc: SC): PolygonPoints => {
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
     h = n.selfH
   } else {
-    const i = lastPath.at(-2)
-    const j = lastPath.at(-1)
+    const i = lastPath.at(-2) as number
+    const j = lastPath.at(-1) as number
     x = xi + dir*n.sumMaxColWidth[j]
     y = yu + n.sumMaxRowHeight[i]
     w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
@@ -223,7 +223,7 @@ const getTaskStartPoint = (ml: ML, g: G, n: N) => {
   let startX
   if (n.path.includes('c')) {
     const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
-    const currCol = n.path[n.path.lastIndexOf('c') + 2]
+    const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
     const coverCellRef = getNodeByPath(ml, coverCellPath)
     startX =
       (dir === - 1

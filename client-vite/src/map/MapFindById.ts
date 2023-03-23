@@ -1,7 +1,7 @@
-import {M} from "../state/MTypes"
+import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
-let resultPath: any[]
+let resultPath: Path
 let nodeId = ''
 
 export const mapFindById = {

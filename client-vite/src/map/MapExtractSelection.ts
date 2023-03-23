@@ -45,12 +45,12 @@ export const mapExtractSelection = {
     }
     // interrelations
     if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map((path: any[]) => JSON.stringify(getMapData(m, path).parentPath)))
+      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map((path) => JSON.stringify(getMapData(m, path).parentPath)))
     } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => JSON.stringify(getMapData(m, path).parentPath)))
+      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map((path) => JSON.stringify(getMapData(m, path).parentPath)))
       if (sc.haveSameParent) {
-        let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 2]))
-        let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path: any[]) => path[path.length - 1]))
+        let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map((path) => path[path.length - 2]))
+        let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path) => path[path.length - 1]))
         let sameParent = getMapData(m, sc.sameParentPath)
         if (haveSameRow && sc.cellSelectedPathList.length === sameParent.c[0].length) {
           sc.isCellRowSelected = 1

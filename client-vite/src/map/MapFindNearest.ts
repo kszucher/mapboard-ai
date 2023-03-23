@@ -1,12 +1,12 @@
 import {copy, isEqual} from "../core/Utils"
 import {getNodeById, getNodeByPath, isSubNode} from "../core/MapUtils"
-import {ML, NL} from "../state/MTypes"
+import {ML, NL, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
 export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) => {
   const mlp = copy(ml).sort((a: NL, b: NL) => (a.path.join('') > b.path.join('')) ? 1 : -1)
-  let moveCoords = [] as any[]
-  let moveTargetPath = [] as any[]
+  let moveCoords = [] as number[]
+  let moveTargetPath = [] as Path
   let moveTargetIndex = 0
   if (!(moveNode.nodeStartX < toX && toX < moveNode.nodeEndX && moveNode.nodeY - moveNode.selfH / 2 < toY && toY < moveNode.nodeY + moveNode.selfH / 2)) {
     const r0 = getNodeByPath(ml, ['r', 0])

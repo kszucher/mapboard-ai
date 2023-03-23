@@ -1,7 +1,8 @@
 import {LineTypes} from "../core/Enums"
+import {Path} from "./MTypes"
 
 export interface NSaveAlways {
-  path: any[]
+  path: Path
   d: N[]
   s: N[]
   c: N[][]
@@ -38,7 +39,7 @@ export interface NSaveNever {
   // mapChain
   isRoot: number
   isRootChild: number
-  parentPath: any[]
+  parentPath: Path
   parentNodeId: string
   parentParentNodeId: string
   type: string
