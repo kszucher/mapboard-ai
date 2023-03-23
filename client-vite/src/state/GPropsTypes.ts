@@ -19,16 +19,16 @@ export interface SC {
 }
 
 export interface NC {
-  selection: string & null
-  lineWidth: number & null
-  lineType: string & null
-  lineColor: string & null
-  borderWidth: number & null
-  borderColor: string & null
-  fillColor: string & null
-  textFontSize: number & null
-  textColor: string & null
-  taskStatus: number & null
+  selection: string | null
+  lineWidth: number | null
+  lineType: string | null
+  lineColor: string | null
+  borderWidth: number | null
+  borderColor: string | null
+  fillColor: string | null
+  textFontSize: number | null
+  textColor: string | null
+  taskStatus: number | null
 }
 
 export interface GSaveAlways {
