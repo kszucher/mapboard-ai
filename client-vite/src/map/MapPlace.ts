@@ -105,6 +105,18 @@ export const mapPlace = {
         n.nodeEndX -= 0.5
       }
     }
+
+    // X parentNodeStartX: 0, --> getParentNode = (getNodeByPath + logic)
+    // X parentNodeEndX: 0, --> getParentNode = (getNodeByPath + logic)
+    // X parentNodeY: 0, --> getParentNode = (getNodeByPath + logic)
+    //   lineDeltaX: 0,
+    //   lineDeltaY: 0,
+    //   nodeStartX: 0,
+    //   nodeEndX: 0,
+    //   nodeY: 0,
+    //   isTop: 0,
+    //   isBottom: 0,
+
     const dCount = Object.keys(n.d).length
     for (let i = 0; i < dCount; i++) {
       n.d[i].parentNodeStartX = n.nodeStartX

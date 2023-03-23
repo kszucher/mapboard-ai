@@ -33,7 +33,7 @@ const pathCommonProps = {
   }
 }
 
-const getSourceNode = (n: N) => (n.type === 'cell' ? n.parentParentNodeId: n.parentNodeId)
+const getSourceNode = (n: N) => (n.type === 'cell' ? n.parentParentNodeId: n.parentNodeId) // TODO change!!! semmi értelme ezeket tárolni, ez simán egy PATH alapú művelet!!!
 const getSelectionMargin = (g: G, n: N) => (
   (
     ['c', 'cr', 'cc'].includes(g.sc.scope) ||
