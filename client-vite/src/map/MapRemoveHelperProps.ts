@@ -1,4 +1,4 @@
-import {ML, NLPartial} from "../state/MTypes"
+import {ML, GNPartial} from "../state/MTypes"
 import {GSaveOptional, GSaveNever} from "../state/GPropsTypes"
 import {NSaveOptional, NSaveNever} from "../state/NPropsTypes"
 import {gSaveAlways, gSaveOptional} from "../state/GProps"
@@ -6,7 +6,7 @@ import {nSaveAlways, nSaveOptional} from "../state/NProps"
 import {copy} from "../core/Utils";
 
 export const mapRemoveHelperProps = (ml: ML) => {
-  const mlRemoved = copy(ml).sort((a:NLPartial, b: NLPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  const mlRemoved = copy(ml).sort((a:GNPartial, b: GNPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   for (const nl of mlRemoved) {
     if (nl.path.length === 1) {
       for (const prop in nl) {

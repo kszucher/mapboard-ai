@@ -68,6 +68,7 @@ export const nSaveNever = {
   sumMaxRowHeight: [0],
   maxW: 0,
   maxH: 0,
+  sumElapsedY: [0],
   spacing: 10,
   spacingActivated: 0,
   // mapPlace

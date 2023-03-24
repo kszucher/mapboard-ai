@@ -224,7 +224,7 @@ const getTaskStartPoint = (ml: ML, g: G, n: N) => {
   if (n.path.includes('c')) {
     const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
     const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
-    const coverCellRef = getNodeByPath(ml, coverCellPath)
+    const coverCellRef = getNodeByPath(ml, coverCellPath) as N
     startX =
       (dir === - 1
         ? coverCellRef.nodeEndX

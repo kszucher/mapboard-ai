@@ -1,4 +1,4 @@
-import {copy, createArray, genHash, isEqual, subsref, transpose} from '../core/Utils'
+import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
 import {mapFix} from './MapFix'
 import {mapInit} from './MapInit'
@@ -9,19 +9,20 @@ import {mapDisassembly} from './MapDisassembly'
 import {mapExtractProps} from "./MapExtractProps"
 import {mapExtractSelection} from './MapExtractSelection'
 import {mapMeasure} from './MapMeasure'
-import {mapPlace} from './MapPlace'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
-import {nodeMoveMouse, structMove, cellColMove, cellRowMove} from '../node/NodeMove'
-import {structNavigate, cellNavigate} from '../node/NodeNavigate'
+import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
+import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {mapAssembly} from "./MapAssembly"
-import {M, MPartial, ML, NL, Path} from "../state/MTypes"
+import {GN, M, ML, MPartial, Path} from "../state/MTypes"
 import {NC} from "../state/GPropsTypes"
 import {N, NSaveOptional} from "../state/NPropsTypes"
 import {nSaveOptional} from "../state/NProps"
-import {getDefaultNode} from "../core/MapUtils";
+import {getDefaultNode} from "../core/MapUtils"
+import {mapPlaceLinear} from "./MapPlaceLinear"
+import {mapPlace} from "./MapPlace"
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
@@ -366,12 +367,12 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
           lineWidth,
           lineType,
           lineColor,
-          [n.selection === 's' ? 'sBorderWidth' : 'fBorderWidth'] : borderWidth,
-          [n.selection === 's' ? 'sBorderColor' : 'fBorderColor'] : borderColor,
-          [n.selection === 's' ? 'sFillColor' : 'fFillColor'] : fillColor,
+          [n.selection === 's' ? 'sBorderWidth' : 'fBorderWidth']: borderWidth,
+          [n.selection === 's' ? 'sBorderColor' : 'fBorderColor']: borderColor,
+          [n.selection === 's' ? 'sFillColor' : 'fFillColor']: fillColor,
           textFontSize,
           textColor,
-        } as Partial<NSaveOptional>
+        } as unknown as Partial<NSaveOptional>
         for (const prop in props) {
           if (props[prop as keyof NSaveOptional] !== undefined) {
             const assignment = props[prop as keyof NSaveOptional] === 'clear'
@@ -441,6 +442,18 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapExtractSelection.start(m as M)
   mapExtractProps.start(m as M)
   mapMeasure.start(m as M)
-  mapPlace.start(m as M)
-  return mapDisassembly.start(m).sort((a: NL, b: NL) => (a.nodeId > b.nodeId) ? 1 : -1)
+
+  const mTest = copy(m)
+  mapPlace.start(mTest)
+  const mTestL = mapDisassembly.start(mTest)
+
+  const ml = mapDisassembly.start(m)
+  const mlp = copy(ml).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  mapPlaceLinear(mlp)
+
+  console.log(mTestL.map(el => [el.path, el.lineDeltaX, el.lineDeltaY, el.nodeStartX, el.nodeEndX, el.nodeY]))
+  console.log(mlp.map(el => [el.path, el.lineDeltaX, el.lineDeltaY, el.nodeStartX, el.nodeEndX, el.nodeY]))
+
+  const mln = mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
+  return mln
 }

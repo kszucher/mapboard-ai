@@ -12,10 +12,10 @@ export interface MPartial {
   r: NPartial[]
 }
 
-export type NL = N & G
-export type NLPartial = NPartial | GPartial
-export type ML = NL[]
-export type MLPartial = NLPartial[]
+export type GN = G & N
+export type GNPartial = GPartial & NPartial
+export type ML = GN[]
+export type MLPartial = GNPartial[]
 
-type PathItem = 'g' | 'r' | 'd' | 's' | 'c' | number
+export type PathItem = 'g' | 'r' | 'd' | 's' | 'c' | number
 export type Path = PathItem[]

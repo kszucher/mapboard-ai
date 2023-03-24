@@ -31,6 +31,7 @@ export const mapMeasure = {
         if (params.hasMultipleChild || params.hasMultipleContentRow) {
           n.spacingActivated = 1
         }
+        n.sumElapsedY.push(n.sumElapsedY[i] + n.s[i].maxH + n.spacingActivated*n.spacing)
       }
       if (n.spacingActivated) {
         n.familyH += (sCount - 1)*n.spacing

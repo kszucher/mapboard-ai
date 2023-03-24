@@ -71,7 +71,7 @@ export const MapDiv: FC = () => {
               contentEditable={n.nodeId === editedNodeId}
               onFocus={(e) => {
                 if (editType === 'append') {
-                  e.currentTarget.innerHTML = getNodeById(ml, editedNodeId).content
+                  e.currentTarget.innerHTML = (getNodeById(ml, editedNodeId) as N).content
                 }
                 setEndOfContentEditable(e.currentTarget)
               }}

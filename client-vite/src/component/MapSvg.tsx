@@ -210,8 +210,8 @@ export const MapSvg: FC = () => {
                   key={`${n.nodeId}_svg_line`}
                   d={
                     !getNodeById(pml, n.nodeId) && getNodeById(pml, getSourceNode(n))
-                      ? getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)), n)
-                      : getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)), n)
+                      ? getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)) as N, n)
+                      : getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)) as N, n)
                   }
                   strokeWidth={n.lineWidth}
                   stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -222,8 +222,8 @@ export const MapSvg: FC = () => {
                     !getNodeById(pml, n.nodeId) && getNodeById(pml, getSourceNode(n)) &&
                     <animate
                       attributeName='d'
-                      from={getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)), n)}
-                      to={getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)), n)}
+                      from={getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)) as N, n)}
+                      to={getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)) as N, n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
                       fill={'freeze'}
