@@ -21,6 +21,8 @@ export const mapMeasure = {
     let sCount = Object.keys(n.s).length
     if (sCount) {
       let sMaxW = 0
+      n.sumElapsedY=[0]
+
       for (let i = 0; i < sCount; i++) {
         mapMeasure.iterate(m, n.s[i], params)
         n.familyH += n.s[i].maxH
@@ -31,7 +33,10 @@ export const mapMeasure = {
         if (params.hasMultipleChild || params.hasMultipleContentRow) {
           n.spacingActivated = 1
         }
+      }
+      for (let i = 0; i < sCount; i++) {
         n.sumElapsedY.push(n.sumElapsedY[i] + n.s[i].maxH + n.spacingActivated*n.spacing)
+        // linear transformation: count of all descendants > count of all children
       }
       if (n.spacingActivated) {
         n.familyH += (sCount - 1)*n.spacing

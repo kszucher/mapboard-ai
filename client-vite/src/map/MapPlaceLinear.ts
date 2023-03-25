@@ -97,19 +97,19 @@ export const mapPlaceLinear = (mlp: ML) => {
         n.lineDeltaY = pn.nodeY + pn.sumMaxRowHeight[i] + pn.maxRowHeight[i]/2 - pn.selfH/2 - ppn.nodeY
       }
       if (endsWithPathPattern(n.path, 'csc') || endsWithPathPattern(n.path, 'cs')) {
-        console.log(n.content)
         n.nodeStartX = n.path[3] === 0 ? pn.nodeStartX + 2 : pn.nodeEndX - n.selfW
         n.nodeEndX = n.path[3] === 0 ? pn.nodeStartX + 2 + n.selfW : pn.nodeEndX
+        n.nodeY = pn.nodeY + n.lineDeltaY
       } else if (endsWithPathPattern(n.path, 'ds') || endsWithPathPattern(n.path, 'ss')) {
         n.nodeStartX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX : pn.nodeStartX - n.lineDeltaX - n.selfW
         n.nodeEndX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX + n.selfW : pn.nodeStartX - n.lineDeltaX
+        n.nodeY = pn.nodeY + n.lineDeltaY
       } else if (endsWithPathPattern(n.path, 'ssc') || endsWithPathPattern(n.path, 'dsc')) {
-        console.log('exists')
         const diff = g.sLineDeltaXDefault - 20
-        n.nodeStartX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX + diff : pn.nodeStartX - n.lineDeltaX - diff
-        n.nodeEndX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX + diff + n.selfW : pn.nodeStartX - n.lineDeltaX - diff
+        n.nodeStartX = n.path[3] === 0 ? ppn.nodeEndX + n.lineDeltaX + diff : ppn.nodeStartX - n.lineDeltaX - diff
+        n.nodeEndX = n.path[3] === 0 ? ppn.nodeEndX + n.lineDeltaX + diff + n.selfW : ppn.nodeStartX - n.lineDeltaX - diff
+        n.nodeY = ppn.nodeY + n.lineDeltaY
       }
-      n.nodeY = pn.nodeY + n.lineDeltaY
     }
     if (Number.isInteger(n.nodeStartX)) {
       n.nodeStartX += n.path[3] === 0 ?  0.5 : - 0.5
