@@ -88,6 +88,7 @@ export const mapPlaceLinear = (mlp: ML) => {
         const i = n.path.at(-1) as number
         n.lineDeltaX = g.sLineDeltaXDefault
         n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + pn.sumElapsedY[i]
+        n.nodeY = pn.nodeY + n.lineDeltaY
         n.isTop = i === 0 && pn.isTop ? 1 : 0
         n.isBottom = i === pn.sCount - 1 && pn.isBottom === 1 ? 1 : 0
       } else if (n.type === 'cell') {
@@ -95,20 +96,21 @@ export const mapPlaceLinear = (mlp: ML) => {
         const j = n.path.at(-1) as number
         n.lineDeltaX = pn.sumMaxColWidth[j] + 20
         n.lineDeltaY = pn.nodeY + pn.sumMaxRowHeight[i] + pn.maxRowHeight[i]/2 - pn.selfH/2 - ppn.nodeY
+        n.nodeY = ppn.nodeY + n.lineDeltaY
       }
-      if (endsWithPathPattern(n.path, 'csc') || endsWithPathPattern(n.path, 'cs')) {
-        n.nodeStartX = n.path[3] === 0 ? pn.nodeStartX + 2 : pn.nodeEndX - n.selfW
-        n.nodeEndX = n.path[3] === 0 ? pn.nodeStartX + 2 + n.selfW : pn.nodeEndX
-        n.nodeY = pn.nodeY + n.lineDeltaY
-      } else if (endsWithPathPattern(n.path, 'ds') || endsWithPathPattern(n.path, 'ss')) {
+      if (endsWithPathPattern(n.path, 'ds') || endsWithPathPattern(n.path, 'ss')) {
         n.nodeStartX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX : pn.nodeStartX - n.lineDeltaX - n.selfW
         n.nodeEndX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX + n.selfW : pn.nodeStartX - n.lineDeltaX
-        n.nodeY = pn.nodeY + n.lineDeltaY
-      } else if (endsWithPathPattern(n.path, 'ssc') || endsWithPathPattern(n.path, 'dsc')) {
+      } else if (endsWithPathPattern(n.path, 'cs')) {
+        n.nodeStartX = n.path[3] === 0 ? pn.nodeStartX + 2 : pn.nodeEndX - n.selfW
+        n.nodeEndX = n.path[3] === 0 ? pn.nodeStartX + 2 + n.selfW : pn.nodeEndX
+      } else if (endsWithPathPattern(n.path, 'dsc') || endsWithPathPattern(n.path, 'ssc')) {
         const diff = g.sLineDeltaXDefault - 20
         n.nodeStartX = n.path[3] === 0 ? ppn.nodeEndX + n.lineDeltaX + diff : ppn.nodeStartX - n.lineDeltaX - diff
         n.nodeEndX = n.path[3] === 0 ? ppn.nodeEndX + n.lineDeltaX + diff + n.selfW : ppn.nodeStartX - n.lineDeltaX - diff
-        n.nodeY = ppn.nodeY + n.lineDeltaY
+      } else if (endsWithPathPattern(n.path, 'csc')) {
+        n.nodeStartX = n.path[3] === 0 ? ppn.nodeStartX + 2 : ppn.nodeEndX - n.selfW
+        n.nodeEndX = n.path[3] === 0 ? ppn.nodeStartX + 2 + n.selfW : ppn.nodeEndX
       }
     }
     if (Number.isInteger(n.nodeStartX)) {
