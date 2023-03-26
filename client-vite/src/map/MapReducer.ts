@@ -22,7 +22,7 @@ import {N, NSaveOptional} from "../state/NPropsTypes"
 import {nSaveOptional} from "../state/NProps"
 import {getDefaultNode} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
-import {mapPlace} from "./MapPlace"
+import {mapMeasureLinear} from "./MapMeasureLinear"
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
@@ -441,19 +441,48 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapCalcTask.start(m as M)
   mapExtractSelection.start(m as M)
   mapExtractProps.start(m as M)
-  mapMeasure.start(m as M)
 
   const mTest = copy(m)
-  mapPlace.start(mTest)
-  const mTestL = mapDisassembly.start(mTest)
+
+  mapMeasure.start(m as M)
 
   const ml = mapDisassembly.start(m)
-  const mlp = copy(ml).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  const mlTest = mapDisassembly.start(mTest)
+
+  const mlp = copy(ml).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  const mlpTest = copy(mlTest).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+
+  mapMeasureLinear(mlpTest)
+
+  console.log(mlp.map(el => [
+    el.selfW,
+    el.selfH,
+    el.familyW,
+    el.familyH,
+    el.maxColWidth,
+    el.maxRowHeight,
+    el.sumMaxColWidth,
+    el.sumMaxRowHeight,
+    el.maxW,
+    el.maxH,
+    el.sumElapsedY
+  ]))
+
+  console.log(mlpTest.map(el => [
+    el.selfW,
+    el.selfH,
+    el.familyW,
+    el.familyH,
+    el.maxColWidth,
+    el.maxRowHeight,
+    el.sumMaxColWidth,
+    el.sumMaxRowHeight,
+    el.maxW,
+    el.maxH,
+    el.sumElapsedY
+  ]))
+
+
   mapPlaceLinear(mlp)
-
-  console.log(mTestL.map(el => [el.path, el.lineDeltaX, el.lineDeltaY, el.nodeStartX, el.nodeEndX, el.nodeY]))
-  console.log(mlp.map(el => [el.path, el.lineDeltaX, el.lineDeltaY, el.nodeStartX, el.nodeEndX, el.nodeY]))
-
-  const mln = mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
-  return mln
+  return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
 }
