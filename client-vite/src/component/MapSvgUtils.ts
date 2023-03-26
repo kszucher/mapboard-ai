@@ -82,7 +82,7 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
   const R = 8
   const dir = getDir(n)
   const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
-  const w = n.familyW + n.selfW
+  const w = n.maxW
   return selection === 's' ? {
     ax: n.nodeStartX,
     bx: xo - dir * R,
@@ -121,7 +121,7 @@ export const getCellPolygonPoints = (n: N, sc: SC): PolygonPoints => {
     const j = cellCol
     x = xi + dir*n.sumMaxColWidth[j]
     y = yu
-    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
+    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j] // FIXME why not simply use maxColWidth
     h = n.selfH
   } else {
     const i = lastPath.at(-2) as number
