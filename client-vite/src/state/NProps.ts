@@ -72,9 +72,6 @@ export const nSaveNever = {
   spacing: 10,
   spacingActivated: 0,
   // mapPlace
-  parentNodeStartX: 0, // REMOVE
-  parentNodeEndX: 0, // REMOVE
-  parentNodeY: 0, // REMOVE
   lineDeltaX: 0,
   lineDeltaY: 0,
   nodeStartX: 0,

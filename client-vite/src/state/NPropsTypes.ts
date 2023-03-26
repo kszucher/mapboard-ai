@@ -70,9 +70,6 @@ export interface NSaveNever {
   spacing: number
   spacingActivated: number
   // mapPlace
-  parentNodeStartX: number
-  parentNodeEndX: number
-  parentNodeY: number
   lineDeltaX: number
   lineDeltaY: number
   nodeStartX: number
