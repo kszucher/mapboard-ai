@@ -8,7 +8,6 @@ import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
 import {mapExtractProps} from "./MapExtractProps"
 import {mapExtractSelection} from './MapExtractSelection'
-import {mapMeasure} from './MapMeasure'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
@@ -444,10 +443,8 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   // PUT NEW HERE
-  mapMeasureLinear(mlp)
 
   // PUT OLD HERE
-  mapMeasure.start(m as M)
   const mlpOld = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
   console.log(mlp.map(el => [
@@ -479,6 +476,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   ]))
 
   // PUT DONE HERE
+  mapMeasureLinear(mlp)
   mapPlaceLinear(mlp)
   return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
 }
