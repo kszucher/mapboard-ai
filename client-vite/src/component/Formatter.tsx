@@ -6,6 +6,7 @@ import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
 import {actions} from '../core/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
+import {N} from "../state/NPropsTypes";
 
 export const Formatter: FC = () => {
   const o = 32
@@ -13,8 +14,12 @@ export const Formatter: FC = () => {
   const width =  o * colorList[0].length
   const height = o * colorList.length
   const formatMode = useSelector((state: RootStateOrAny) => state.editor.formatMode)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
-  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = m.g.nc // FIXME possibly error!!!
+  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
+  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
+  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
+  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const g = ml.filter((n: N) => n.path.length === 1).at(0)
+  const { selection, textColor, textFontSize, borderColor, borderWidth, fillColor, lineColor, lineWidth, lineType } = g.nc
   const dispatch = useDispatch()
 
   const setNodeColor = (value: string) => {
