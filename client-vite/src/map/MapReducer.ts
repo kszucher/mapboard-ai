@@ -452,6 +452,8 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   const mlp = copy(ml).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   const mlpTest = copy(mlTest).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
+
+  // mapMeasureLinear(mlp)
   mapMeasureLinear(mlpTest)
 
   console.log(mlp.map(el => [
@@ -483,6 +485,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   ]))
 
 
-  mapPlaceLinear(mlp)
-  return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
+  mapPlaceLinear(mlpTest)
+  return mlpTest.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
 }

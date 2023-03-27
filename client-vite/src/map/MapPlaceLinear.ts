@@ -1,18 +1,7 @@
-import {getNodeByPath} from "../core/MapUtils"
-import {ML, Path, PathItem} from "../state/MTypes"
+import {endsWithPathPattern, getNodeByPath, getParentPath} from "../core/MapUtils"
+import {ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
-
-const pathPattern = (path: Path) => path.filter((el: PathItem) => isNaN(el as any)).join('')
-const endsWithPathPattern = (path: Path, pattern: string) => pathPattern(path).slice(-pattern.length) === pattern
-const getParentPath = (path: Path) => {
-  switch (pathPattern(path).at(-1)) {
-    case 'd': return path.slice(0, -2)
-    case 's': return path.slice(0, -2)
-    case 'c': return path.slice(0, -3)
-    default: return path
-  }
-}
 
 export const mapPlaceLinear = (mlp: ML) => {
   const g = getNodeByPath(mlp, ['g']) as G

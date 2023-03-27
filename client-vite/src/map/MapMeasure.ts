@@ -25,6 +25,7 @@ export const mapMeasure = {
 
       for (let i = 0; i < sCount; i++) {
         mapMeasure.iterate(m, n.s[i], params)
+        // console.log('+++', n.s[i].maxH)
         n.familyH += n.s[i].maxH
         let currMaxW = n.s[i].maxW
         if (currMaxW >= sMaxW) {
