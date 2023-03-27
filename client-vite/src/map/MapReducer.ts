@@ -442,19 +442,13 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapExtractSelection.start(m as M)
   mapExtractProps.start(m as M)
 
-  const mTest = copy(m)
+  const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  // PUT NEW HERE
+  mapMeasureLinear(mlp)
 
+  // PUT OLD HERE
   mapMeasure.start(m as M)
-
-  const ml = mapDisassembly.start(m)
-  const mlTest = mapDisassembly.start(mTest)
-
-  const mlp = copy(ml).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-  const mlpTest = copy(mlTest).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-
-
-  // mapMeasureLinear(mlp)
-  mapMeasureLinear(mlpTest)
+  const mlpOld = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
   console.log(mlp.map(el => [
     el.selfW,
@@ -470,7 +464,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     el.sumElapsedY
   ]))
 
-  console.log(mlpTest.map(el => [
+  console.log(mlpOld.map(el => [
     el.selfW,
     el.selfH,
     el.familyW,
@@ -484,7 +478,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     el.sumElapsedY
   ]))
 
-
-  mapPlaceLinear(mlpTest)
-  return mlpTest.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
+  // PUT DONE HERE
+  mapPlaceLinear(mlp)
+  return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
 }
