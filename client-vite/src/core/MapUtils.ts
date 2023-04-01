@@ -19,18 +19,11 @@ export const isSamePath = (p: Path, pt: Path) => p.join('') === pt.join('')
 export const isSubPath = (p: Path, pt: Path) => pt.length > p.length && p.join('') === pt.slice(0, p.length).join('')
 export const endsWithPathPattern = (path: Path, pattern: string) => getPathPattern(path).slice(-pattern.length) === pattern
 export const getG = (ml: ML) => ml.filter((n: N) => n.path.length === 1).at(0) as G
+export const getLN = (ml: ML) => getNodeByPath(ml, getG(ml).sc.lastPath) as N
 export const sFinder = (ml: ML) =>  ml.filter((n: N) => getG(ml).sc.structSelectedPathList.some((sp: Path) => isSamePath(sp, n.path)))
 export const fFinder = (ml: ML) => ml.filter((n: N) => getG(ml).sc.structSelectedPathList.some((sp: Path) => isSamePath(sp, n.path) || isSubPath(sp, n.path) && n.type === 'struct'))
-export const sGetter = (ml: ML, prop: keyof N) => {
-  const g = getG(ml)
-  const ln = getNodeByPath(ml, g.sc.lastPath) as N
-  return isArrayOfEqualValues(sFinder(ml).map((n: N) => n[prop])) ? ln[prop] : null
-}
-export const fGetter = (ml: ML, prop: keyof N) => {
-  const g = getG(ml)
-  const ln = getNodeByPath(ml, g.sc.lastPath) as N
-  return isArrayOfEqualValues(fFinder(ml).map((n: N) => n[prop])) ? ln[prop] : null
-}
+export const sGetter = (ml: ML, prop: keyof N) => isArrayOfEqualValues(sFinder(ml).map((n: N) => n[prop])) ? getLN(ml)[prop] : null
+export const fGetter = (ml: ML, prop: keyof N) => isArrayOfEqualValues(fFinder(ml).map((n: N) => n[prop])) ? getLN(ml)[prop] : null
 export const sSetter  = (ml: ML, prop: keyof N, value: any) => { for (const n of sFinder(ml)) { Object.assign(n, { [prop]: value }) } }
 export const fSetter  = (ml: ML, prop: keyof N, value: any) => { for (const n of fFinder(ml)) { Object.assign(n, { [prop]: value }) } }
 // NESTED
