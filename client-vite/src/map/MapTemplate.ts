@@ -1,14 +1,10 @@
-import {M} from "../state/MTypes"
-import {N} from "../state/NPropsTypes"
+import {getNodeByPath} from "../core/MapUtils"
+import {ML} from "../state/MTypes"
+import {G} from "../state/GPropsTypes"
 
-export const mapTemplate = {
-  start: (m: M) => {
-    mapTemplate.iterate(m, m.r[0])
-  },
+export const mapTemplate = (mlp: ML) => {
+  const g = getNodeByPath(mlp, ['g']) as G
+  for (const n of mlp) {
 
-  iterate: (m: M, n: N) => {
-    n.d.map(i => mapTemplate.iterate(m, i))
-    n.s.map(i => mapTemplate.iterate(m, i))
-    n.c.map(i => i.map(j => mapTemplate.iterate(m, j)))
   }
 }

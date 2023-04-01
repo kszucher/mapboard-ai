@@ -20,6 +20,7 @@ import {fSetter, getDefaultNode, sSetter} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
 import {mapMeasureLinear} from "./MapMeasureLinear"
 import {nSaveOptional} from "../state/NProps";
+import {mapExtractSelectionLinear} from "./MapExtractSelectionLinear";
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
@@ -405,7 +406,8 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapChain.start(m as M)
   mapDiff.start(pm as M, m as M)
   mapCalcTask.start(m as M)
-  mapExtractSelection.start(m as M) // replacing this may come after getting rid of nested maps...
+  // mapExtractSelection.start(m as M)
+
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
@@ -447,6 +449,8 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     }
     // EDIT
   }
+
+  mapExtractSelectionLinear(mlp)
 
   // PUT OLD HERE
 

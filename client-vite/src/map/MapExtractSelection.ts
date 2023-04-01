@@ -3,10 +3,6 @@ import { getMapData } from './MapReducer'
 import {M} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
-// FUTURE way:
-// scope is either s, f, c, cr or cc, and multi-select will only be possible in two ways: either multi-s or multi-f
-// prevent selecting nodes in an inclusive relation (cell struct inside cell with parent cell selected as well)
-
 export const mapExtractSelection = {
   start: (m: M) => {
     mapExtractSelection.iterate(m, m.r[0])

@@ -5,7 +5,7 @@ import {G} from "../state/GPropsTypes"
 
 // LINEAR
 export const getNodeById = (ml: ML, nodeId: string) => (ml.find((n: GN) => n.nodeId === nodeId))
-export const getNodeByPath = (ml: ML, path: Path) => (ml.find((n: GN) => isSamePath(n.path, path)))
+export const getNodeByPath = (ml: ML, path: Path) => (ml.find((n: GN) => isSamePath(n.path, path))) as GN
 export const getPathPattern = (path: Path) => path.filter((el: PathItem) => isNaN(el as any)).join('')
 export const getParentPath = (path: Path) => {
   switch (getPathPattern(path).at(-1)) {
