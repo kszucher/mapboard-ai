@@ -40,8 +40,6 @@ export interface NSaveNever {
   isRoot: number
   isRootChild: number
   parentPath: Path
-  parentNodeId: string
-  parentParentNodeId: string
   type: string
   parentType: string
   parentParentType: string

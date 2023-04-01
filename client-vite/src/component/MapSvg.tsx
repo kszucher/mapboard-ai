@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome, isEqual} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getNodeById, getNodeByPath} from "../core/MapUtils"
+import {getStructParentPath, getNodeById, getNodeByPath} from "../core/MapUtils"
 import {actions} from "../core/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
@@ -33,7 +33,6 @@ const pathCommonProps = {
   }
 }
 
-const getSourceNode = (n: N) => (n.type === 'cell' ? n.parentParentNodeId: n.parentNodeId) // TODO change!!! semmi értelme ezeket tárolni, ez simán egy PATH alapú művelet!!!
 const getSelectionMargin = (g: G, n: N) => (
   (
     ['c', 'cr', 'cc'].includes(g.sc.scope) ||
@@ -209,9 +208,9 @@ export const MapSvg: FC = () => {
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
-                    !getNodeById(pml, n.nodeId) && getNodeById(pml, getSourceNode(n))
-                      ? getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)) as N, n)
-                      : getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)) as N, n)
+                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getStructParentPath(n.path))
+                      ? getLinePathBetweenNodes(getNodeByPath(pml, getStructParentPath(n.path)), n)
+                      : getLinePathBetweenNodes(getNodeByPath(ml, getStructParentPath(n.path)), n)
                   }
                   strokeWidth={n.lineWidth}
                   stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -219,11 +218,11 @@ export const MapSvg: FC = () => {
                   {...pathCommonProps}
                 >
                   {
-                    !getNodeById(pml, n.nodeId) && getNodeById(pml, getSourceNode(n)) &&
+                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getStructParentPath(n.path)) &&
                     <animate
                       attributeName='d'
-                      from={getLinePathBetweenNodes(getNodeById(pml, getSourceNode(n)) as N, n)}
-                      to={getLinePathBetweenNodes(getNodeById(ml, getSourceNode(n)) as N, n)}
+                      from={getLinePathBetweenNodes(getNodeByPath(pml, getStructParentPath(n.path)), n)}
+                      to={getLinePathBetweenNodes(getNodeByPath(ml, getStructParentPath(n.path)), n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
                       fill={'freeze'}

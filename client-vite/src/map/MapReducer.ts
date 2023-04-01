@@ -402,7 +402,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapFix.start(m as MPartial)
   mapInit.start(m as MPartial)
   mapChain.start(m as M)
-  // mapDiff.start(pm as M, m as M)
 
   const pmlp = mapDisassembly.start(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   const mlp = mapDisassembly.start(m).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML

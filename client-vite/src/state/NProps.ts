@@ -42,8 +42,6 @@ export const nSaveNever = {
   isRoot: 0,
   isRootChild: 0, // REMOVE, use type === 'dir' instead
   parentPath: [],
-  parentNodeId: '', // REMOVE
-  parentParentNodeId: '', // REMOVE
   type: '',
   parentType: '', // REMOVE
   parentParentType: '', // REMOVE
