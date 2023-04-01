@@ -6,7 +6,6 @@ import {mapCalcTask} from './MapCalcTask'
 import {mapChain} from './MapChain'
 import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
-import {mapExtractSelection} from './MapExtractSelection'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
@@ -406,8 +405,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapChain.start(m as M)
   mapDiff.start(pm as M, m as M)
   mapCalcTask.start(m as M)
-  // mapExtractSelection.start(m as M)
-
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
@@ -450,8 +447,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     // EDIT
   }
 
-  mapExtractSelectionLinear(mlp)
-
   // PUT OLD HERE
 
   const mlpOld = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
@@ -465,6 +460,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   ]))
 
   // PUT DONE HERE
+  mapExtractSelectionLinear(mlp)
   mapMeasureLinear(mlp)
   mapPlaceLinear(mlp)
   return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
