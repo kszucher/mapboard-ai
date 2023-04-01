@@ -1,4 +1,4 @@
-import {endsWithPathPattern, getNodeByPath, getPathPattern} from "../core/MapUtils"
+import {getNodeByPath, getPathPattern} from "../core/MapUtils"
 import {ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -13,7 +13,7 @@ export const mapMeasureLinear = (mlp: ML) => {
 
   for (let nIndex = mlp.length - 1; nIndex > - 1; nIndex--) {
     const n = mlp[nIndex]
-    if (mlp.find(nt => (
+    if (mlp.find(nt => ( // TODO use isSubNode for the following two lines...
       n.path.length < nt.path.length  &&
       n.path.join('') === nt.path.slice(0, n.path.length).join('') &&
       ['ss', 'sc'].includes(getPathPattern(nt.path.slice(n.path.length))))

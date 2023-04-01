@@ -1,5 +1,5 @@
 import {copy, isEqual} from "../core/Utils"
-import {getNodeById, getNodeByPath, isSubNode} from "../core/MapUtils"
+import {getNodeById, getNodeByPath, isSubPath} from "../core/MapUtils"
 import {ML, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
@@ -15,7 +15,7 @@ export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) =>
     const overlap = 6
     let moveTargetNodeId = ''
     for (const n of mlp) {
-      if ((n.type === 'struct' || n.type === 'dir') && n.nodeId !== moveNode.nodeId && !isSubNode(moveNode.path, n.path)) {
+      if ((n.type === 'struct' || n.type === 'dir') && n.nodeId !== moveNode.nodeId && !isSubPath(moveNode.path, n.path)) {
         let vCondition
         if (n.isTop && belowRoot) {
           vCondition = toY < (n.nodeY + n.maxH / 2 + overlap)

@@ -1,7 +1,11 @@
-import { arrayValuesSame } from '../core/Utils'
+import {copy, isArrayOfEqualValues} from '../core/Utils'
 import { getMapData } from './MapReducer'
 import {M} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
+
+// FUTURE way:
+// scope is either s, f, c, cr or cc, and multi-select will only be possible in two ways: either multi-s or multi-f
+// prevent selecting nodes in an inclusive relation (cell struct inside cell with parent cell selected as well)
 
 export const mapExtractSelection = {
   start: (m: M) => {
@@ -45,20 +49,26 @@ export const mapExtractSelection = {
     }
     // interrelations
     if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.structSelectedPathList.map((path) => JSON.stringify(getMapData(m, path).parentPath)))
-    } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-      [sc.haveSameParent, sc.sameParentPath] = arrayValuesSame(sc.cellSelectedPathList.map((path) => JSON.stringify(getMapData(m, path).parentPath)))
+      sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getMapData(m, path).parentPath)))
       if (sc.haveSameParent) {
-        let [haveSameRow, sameRow] = arrayValuesSame(sc.cellSelectedPathList.map((path) => path[path.length - 2]))
-        let [haveSameCol, sameCol] = arrayValuesSame(sc.cellSelectedPathList.map((path) => path[path.length - 1]))
+        sc.sameParentPath = copy(getMapData(m, sc.lastPath).parentPath)
+      }
+    } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
+      sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getMapData(m, path).parentPath)))
+      if (sc.haveSameParent) {
+        sc.sameParentPath = copy(getMapData(m, sc.lastPath).parentPath)
+      }
+      if (sc.haveSameParent) {
+        let haveSameRow = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 2]))
+        let haveSameCol = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 1]))
         let sameParent = getMapData(m, sc.sameParentPath)
         if (haveSameRow && sc.cellSelectedPathList.length === sameParent.c[0].length) {
           sc.isCellRowSelected = 1
-          sc.cellRow = sameRow
+          sc.cellRow = sc.cellSelectedPathList[0].at(-2) as number
         }
         if (haveSameCol && sc.cellSelectedPathList.length === sameParent.c.length) {
           sc.isCellColSelected = 1
-          sc.cellCol = sameCol
+          sc.cellCol = sc.cellSelectedPathList[0].at(-1) as number
         }
       }
     }

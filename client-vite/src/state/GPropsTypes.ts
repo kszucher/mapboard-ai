@@ -1,4 +1,4 @@
-import {Path} from "./MTypes";
+import {Path} from "./MTypes"
 
 export interface SC {
   structSelectedPathList: Path[]
@@ -16,19 +16,6 @@ export interface SC {
   cellCol: number
   haveSameParent: number
   sameParentPath: Path
-}
-
-export interface NC {
-  selection: string | null
-  lineWidth: number | null
-  lineType: string | null
-  lineColor: string | null
-  borderWidth: number | null
-  borderColor: string | null
-  fillColor: string | null
-  textFontSize: number | null
-  textColor: string | null
-  taskStatus: number | null
 }
 
 export interface GSaveAlways {
@@ -53,7 +40,6 @@ export interface GSaveNever {
   taskConfigD: number
   taskConfigWidth: number
   sc: SC
-  nc: NC
   taskLeft: number
   taskRight: number
 }

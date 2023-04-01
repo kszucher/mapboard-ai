@@ -9,6 +9,7 @@ export const mapPlaceLinear = (mlp: ML) => {
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N
   const r0d1 = getNodeByPath(mlp, ['r', 0, 'd', 1]) as N
 
+  // TODO get taskLeft and taskRight now and here
   const { alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault } = g
   const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
   const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
@@ -52,7 +53,7 @@ export const mapPlaceLinear = (mlp: ML) => {
 
   for (const n of mlp) {
     if (n.path.length === 1) {
-      n.mapWidth = mapWidth
+      n.mapWidth = mapWidth // TODO assign mapWidth and mapHeight to R0 instead of G as selfW and selfH, and MOVE the logic to mapMeasure!!! this will support multi-root
       n.mapHeight = mapHeight
     } else if (n.path.length === 2) {
       n.lineDeltaX = 0

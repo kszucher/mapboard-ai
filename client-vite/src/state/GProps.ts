@@ -1,4 +1,4 @@
-import {GSaveAlways, GSaveNever, GSaveOptional, NC, SC} from "./GPropsTypes"
+import {GSaveAlways, GSaveNever, GSaveOptional, SC} from "./GPropsTypes"
 
 const sc = {
   structSelectedPathList: [],
@@ -17,19 +17,6 @@ const sc = {
   haveSameParent: 0,
   sameParentPath: [],
 } as SC
-
-const nc = {
-  selection: null,
-  lineWidth: null,
-  lineType: null,
-  lineColor: null,
-  borderWidth: null,
-  borderColor: null,
-  fillColor: null,
-  textFontSize: null,
-  textColor: null,
-  taskStatus: null,
-} as NC
 
 export const gSaveAlways = {
   path: ['g'],
@@ -53,7 +40,6 @@ export const gSaveNever = {
   taskConfigD: 0,
   taskConfigWidth: 0,
   sc,
-  nc,
   taskLeft: 0,
   taskRight: 0,
 } as GSaveNever

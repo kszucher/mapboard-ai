@@ -16,12 +16,11 @@ import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {mapAssembly} from "./MapAssembly"
 import {GN, M, ML, MPartial, Path} from "../state/MTypes"
-import {NC} from "../state/GPropsTypes"
-import {N, NSaveOptional} from "../state/NPropsTypes"
-import {nSaveOptional} from "../state/NProps"
-import {getDefaultNode} from "../core/MapUtils"
+import {N} from "../state/NPropsTypes"
+import {fSetter, getDefaultNode, sSetter} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
 import {mapMeasureLinear} from "./MapMeasureLinear"
+import {nSaveOptional} from "../state/NProps";
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
@@ -356,37 +355,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       }
       break
     }
-    // FORMAT
-    case 'setFormatParams': {
-      const {lineWidth, lineType, lineColor, borderWidth, borderColor, fillColor, textFontSize, textColor} =
-        {...m.g.nc, ...payload} as NC
-      for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        const n = getMapData(m, sc.structSelectedPathList[i])
-        const props = {
-          lineWidth,
-          lineType,
-          lineColor,
-          [n.selection === 's' ? 'sBorderWidth' : 'fBorderWidth']: borderWidth,
-          [n.selection === 's' ? 'sBorderColor' : 'fBorderColor']: borderColor,
-          [n.selection === 's' ? 'sFillColor' : 'fFillColor']: fillColor,
-          textFontSize,
-          textColor,
-        } as unknown as Partial<NSaveOptional>
-        for (const prop in props) {
-          if (props[prop as keyof NSaveOptional] !== undefined) {
-            const assignment = props[prop as keyof NSaveOptional] === 'clear'
-              ? { [prop]: nSaveOptional[prop as keyof NSaveOptional] }
-              : { [prop]: props[prop as keyof NSaveOptional] }
-            if ((n.selection === 's' || ['fBorderWidth', 'fBorderColor', 'fFillColor'].includes(prop))) {
-              Object.assign(n, assignment)
-            } else {
-              mapSetProp.iterate(n, assignment, true)
-            }
-          }
-        }
-      }
-      break
-    }
     case 'applyColorFromKey': {
       for (let i = 0; i < sc.structSelectedPathList.length; i++) {
         let n = getMapData(m, sc.structSelectedPathList[i])
@@ -438,41 +406,58 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapChain.start(m as M)
   mapDiff.start(pm as M, m as M)
   mapCalcTask.start(m as M)
-  mapExtractSelection.start(m as M)
+  mapExtractSelection.start(m as M) // replacing this may come after getting rid of nested maps...
   mapExtractProps.start(m as M)
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   // PUT NEW HERE
 
+  switch (action) {
+    // SELECT
+    // INSERT
+    // DELETE
+    // MOVE
+    // FORMAT
+    case 'setLineWidth': ln.selection === 's' ? sSetter(mlp, 'lineWidth', payload) : fSetter (mlp, 'lineWidth', payload); break
+    case 'setLineType': ln.selection === 's' ? sSetter(mlp, 'lineType', payload) : fSetter (mlp, 'lineType', payload); break
+    case 'setLineColor': ln.selection === 's' ? sSetter(mlp, 'lineColor', payload) : fSetter (mlp, 'lineColor', payload); break
+    case 'setBorderWidth': ln.selection === 's' ? sSetter(mlp, 'sBorderWidth', payload) : sSetter (mlp, 'fBorderWidth', payload); break
+    case 'setBorderColor': ln.selection === 's' ? sSetter(mlp, 'sBorderColor', payload) : sSetter (mlp, 'fBorderColor', payload); break
+    case 'setFillColor': ln.selection === 's' ? sSetter(mlp, 'sFillColor', payload) : sSetter (mlp, 'fFillColor', payload); break
+    case 'setTextFontSize': ln.selection === 's' ? sSetter(mlp, 'textFontSize', payload) : fSetter (mlp, 'textFontSize', payload); break
+    case 'setTextColor': ln.selection === 's' ? sSetter(mlp, 'textColor', payload) : fSetter (mlp, 'textColor', payload); break
+    case 'clearLine': {
+      ln.selection === 's' ? sSetter(mlp, 'lineWidth', nSaveOptional.lineWidth) : fSetter (mlp, 'lineWidth', nSaveOptional.lineWidth)
+      ln.selection === 's' ? sSetter(mlp, 'lineType', nSaveOptional.lineType) : fSetter (mlp, 'lineType', nSaveOptional.lineType)
+      ln.selection === 's' ? sSetter(mlp, 'lineColor', nSaveOptional.lineColor) : fSetter (mlp, 'lineColor', nSaveOptional.lineColor)
+      break
+    }
+    case 'clearBorder': {
+      ln.selection === 's' ? sSetter(mlp, 'sBorderWidth', nSaveOptional.sBorderWidth) : sSetter(mlp, 'fBorderWidth', nSaveOptional.sBorderWidth)
+      ln.selection === 's' ? sSetter(mlp, 'sBorderColor', nSaveOptional.sBorderColor) : sSetter(mlp, 'fBorderColor', nSaveOptional.sBorderColor)
+      break
+    }
+    case 'clearFill': {
+      ln.selection === 's' ? sSetter(mlp, 'sFillColor', nSaveOptional.sFillColor) : sSetter(mlp, 'fFillColor', nSaveOptional.fFillColor)
+      break
+    }
+    case 'clearText': {
+      ln.selection === 's' ? sSetter(mlp, 'textColor', nSaveOptional.textColor) : fSetter(mlp, 'textColor', nSaveOptional.textColor)
+      ln.selection === 's' ? sSetter(mlp, 'textFontSize', nSaveOptional.textFontSize) : fSetter(mlp, 'textFontSize', nSaveOptional.textFontSize)
+      break
+    }
+    // EDIT
+  }
+
   // PUT OLD HERE
   const mlpOld = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
   console.log(mlp.map(el => [
-    el.selfW,
-    el.selfH,
-    el.familyW,
-    el.familyH,
-    el.maxColWidth,
-    el.maxRowHeight,
-    el.sumMaxColWidth,
-    el.sumMaxRowHeight,
-    el.maxW,
-    el.maxH,
-    el.sumElapsedY
+    // el.stuff
   ]))
 
   console.log(mlpOld.map(el => [
-    el.selfW,
-    el.selfH,
-    el.familyW,
-    el.familyH,
-    el.maxColWidth,
-    el.maxRowHeight,
-    el.sumMaxColWidth,
-    el.sumMaxRowHeight,
-    el.maxW,
-    el.maxH,
-    el.sumElapsedY
+    // el.stuff
   ]))
 
   // PUT DONE HERE
