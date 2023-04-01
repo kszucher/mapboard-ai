@@ -6,7 +6,6 @@ import {mapCalcTask} from './MapCalcTask'
 import {mapChain} from './MapChain'
 import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
-import {mapExtractProps} from "./MapExtractProps"
 import {mapExtractSelection} from './MapExtractSelection'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
@@ -407,9 +406,9 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapDiff.start(pm as M, m as M)
   mapCalcTask.start(m as M)
   mapExtractSelection.start(m as M) // replacing this may come after getting rid of nested maps...
-  mapExtractProps.start(m as M)
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+
   // PUT NEW HERE
 
   switch (action) {
@@ -450,6 +449,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   }
 
   // PUT OLD HERE
+
   const mlpOld = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
   console.log(mlp.map(el => [

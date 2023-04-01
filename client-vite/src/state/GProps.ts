@@ -40,6 +40,4 @@ export const gSaveNever = {
   taskConfigD: 0,
   taskConfigWidth: 0,
   sc,
-  taskLeft: 0,
-  taskRight: 0,
 } as GSaveNever

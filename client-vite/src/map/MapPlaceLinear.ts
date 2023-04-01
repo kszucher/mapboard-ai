@@ -9,8 +9,9 @@ export const mapPlaceLinear = (mlp: ML) => {
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N
   const r0d1 = getNodeByPath(mlp, ['r', 0, 'd', 1]) as N
 
-  // TODO get taskLeft and taskRight now and here
-  const { alignment, taskConfigWidth, taskLeft, taskRight, margin, sLineDeltaXDefault } = g
+  const taskRight = mlp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
+  const taskLeft = mlp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
+  const { alignment, taskConfigWidth, margin, sLineDeltaXDefault } = g
   const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
   const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
   const rightMapWidth = r0d0.sCount > 0 ? sLineDeltaXDefault + r0d0.familyW : 0

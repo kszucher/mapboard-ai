@@ -40,8 +40,6 @@ export interface GSaveNever {
   taskConfigD: number
   taskConfigWidth: number
   sc: SC
-  taskLeft: number
-  taskRight: number
 }
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever
