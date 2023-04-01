@@ -53,8 +53,6 @@ export interface NSaveNever {
   sCount: number
   cRowCount: number
   cColCount: number
-  // mapDiff
-  dimChange: number
   // mapMeasure
   selfW: number
   selfH: number

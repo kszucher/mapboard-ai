@@ -55,8 +55,6 @@ export const nSaveNever = {
   sCount: 0,
   cRowCount: 0,
   cColCount: 0,
-  // mapDiff
-  dimChange: 0, // REMOVE
   // mapMeasure
   selfW: 0,
   selfH: 0,

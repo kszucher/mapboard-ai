@@ -1,11 +1,11 @@
-import {getNodeByPath, getPathPattern} from "../core/MapUtils"
+import {getNodeById, getNodeByPath, getPathPattern} from "../core/MapUtils"
 import {ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
 
-export const mapMeasureLinear = (mlp: ML) => {
+export const mapMeasureLinear = (pmlp: ML, mlp: ML) => {
   const g = getNodeByPath(mlp, ['g']) as G
   const r0 = getNodeByPath(mlp, ['r', 0]) as N
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N
@@ -13,6 +13,7 @@ export const mapMeasureLinear = (mlp: ML) => {
 
   for (let nIndex = mlp.length - 1; nIndex > - 1; nIndex--) {
     const n = mlp[nIndex]
+    const pn = getNodeById(pmlp, n.nodeId)
     if (mlp.find(nt => ( // TODO use isSubNode for the following two lines...
       n.path.length < nt.path.length  &&
       n.path.join('') === nt.path.slice(0, n.path.length).join('') &&
@@ -77,12 +78,21 @@ export const mapMeasureLinear = (mlp: ML) => {
             cn.selfH = n.maxRowHeight[i]
           }
         }
-        if (n.cRowCount > 1) {
-          // params.hasMultipleContentRow = 1
-        }
-
       } else {
-        if (n.content !== '' && (n.dimW === 0 || n.dimH === 0 || n.dimChange)) {
+        if (
+          n.content !== '' &&
+          (
+            n.dimW === 0 ||
+            n.dimH === 0 ||
+            (
+              pn && (
+                pn.content !== n.content ||
+                pn.contentType !== n.contentType ||
+                pn.textFontSize !== n.textFontSize
+              )
+            )
+          )
+        ) {
           if (n.contentType === 'text') {
             const dim = getTextDim(n.content, n.textFontSize)
             n.dimW = dim[0]

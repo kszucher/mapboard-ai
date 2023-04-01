@@ -3,7 +3,6 @@ import {mapFindById} from './MapFindById'
 import {mapFix} from './MapFix'
 import {mapInit} from './MapInit'
 import {mapChain} from './MapChain'
-import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
@@ -403,9 +402,10 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapFix.start(m as MPartial)
   mapInit.start(m as MPartial)
   mapChain.start(m as M)
-  mapDiff.start(pm as M, m as M)
+  // mapDiff.start(pm as M, m as M)
 
-  const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  const pmlp = mapDisassembly.start(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  const mlp = mapDisassembly.start(m).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
   // PUT NEW HERE
 
@@ -446,7 +446,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     // EDIT
   }
 
-  mapCalcTaskLinear(mlp)
 
 
   // PUT OLD HERE
@@ -462,8 +461,9 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   ]))
 
   // PUT DONE HERE
+  mapCalcTaskLinear(mlp)
   mapExtractSelectionLinear(mlp)
-  mapMeasureLinear(mlp)
+  mapMeasureLinear(pmlp, mlp)
   mapPlaceLinear(mlp)
   return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
 }
