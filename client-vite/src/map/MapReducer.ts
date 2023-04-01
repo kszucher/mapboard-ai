@@ -20,6 +20,7 @@ import {mapPlaceLinear} from "./MapPlaceLinear"
 import {mapMeasureLinear} from "./MapMeasureLinear"
 import {nSaveOptional} from "../state/NProps";
 import {mapExtractSelectionLinear} from "./MapExtractSelectionLinear";
+import {mapCalcTaskLinear} from "./MapCalcTaskLinear";
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
@@ -404,7 +405,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapInit.start(m as MPartial)
   mapChain.start(m as M)
   mapDiff.start(pm as M, m as M)
-  mapCalcTask.start(m as M)
+  // mapCalcTask.start(m as M)
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
@@ -446,6 +447,9 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     }
     // EDIT
   }
+
+  mapCalcTaskLinear(mlp)
+
 
   // PUT OLD HERE
 
