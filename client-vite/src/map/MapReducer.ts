@@ -2,7 +2,6 @@ import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
 import {mapFix} from './MapFix'
 import {mapInit} from './MapInit'
-import {mapCalcTask} from './MapCalcTask'
 import {mapChain} from './MapChain'
 import {mapDiff} from "./MapDiff"
 import {mapDisassembly} from './MapDisassembly'
@@ -405,7 +404,6 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   mapInit.start(m as MPartial)
   mapChain.start(m as M)
   mapDiff.start(pm as M, m as M)
-  // mapCalcTask.start(m as M)
 
   const mlp = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
 
