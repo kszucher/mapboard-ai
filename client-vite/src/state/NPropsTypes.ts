@@ -37,16 +37,6 @@ export interface NSaveOptional {
 
 export interface NSaveNever {
   // mapChain
-  isRoot: number
-  isRootChild: number
-  parentPath: Path
-  type: string
-  parentType: string
-  parentParentType: string
-  hasDir: number
-  hasStruct: number
-  hasCell: number
-  index: any
   dCount: number
   sCount: number
   cRowCount: number

@@ -1,8 +1,5 @@
 import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
-import {mapFix} from './MapFix'
-import {mapInit} from './MapInit'
-import {mapChain} from './MapChain'
 import {mapDisassembly} from './MapDisassembly'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
@@ -11,14 +8,16 @@ import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeM
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {mapAssembly} from "./MapAssembly"
-import {GN, M, ML, MPartial, Path} from "../state/MTypes"
+import {M, ML, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {fSetter, getDefaultNode, sSetter} from "../core/MapUtils"
+import {fSetter, getDefaultNode, getNodeByPath, isC, isR, isS, sSetter} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
 import {mapMeasureLinear} from "./MapMeasureLinear"
 import {nSaveOptional} from "../state/NProps";
 import {mapExtractSelectionLinear} from "./MapExtractSelectionLinear";
 import {mapCalcTaskLinear} from "./MapCalcTaskLinear";
+import {mapAddHelperProps} from "./MapAddHelperProps";
+import {mapChainLinearNoPath} from "./MapChainLinearNoPath";
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
@@ -30,8 +29,8 @@ const clearSelection = (m: M) => {
 
 const updateParentLastSelectedChild = (m: M, ln: N) => {
   if (!m.g.sc.isRootIncluded) {
-    let pn = getMapData(m, ln.parentPath)
-    pn.lastSelectedChild = ln.index
+    let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
+    pn.lastSelectedChild = ln.path.at(-1)
   }
 }
 
@@ -41,15 +40,19 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
   const pm = mapAssembly(pml) as M
   const m = copy(pm)
   const { sc } = m.g
-  let ln = action !== '' ? getMapData(m, sc.lastPath) : undefined
+  let ln = action === 'LOAD' ? undefined : getMapData(m, sc.lastPath)
   switch (action) {
-    // VIEW
-    case 'changeDensity': {
-      m.g.density = m.g.density === 'small' ? 'large' : 'small'
-      break
-    }
-    case 'changeAlignment': {
-      m.g.alignment = m.g.alignment === 'centered' ? 'adaptive' : 'centered'
+    // // VIEW
+    // case 'changeDensity': {
+    //   m.g.density = m.g.density === 'small' ? 'large' : 'small'
+    //   break
+    // }
+    // case 'changeAlignment': {
+    //   m.g.alignment = m.g.alignment === 'centered' ? 'adaptive' : 'centered'
+    //   break
+    // }
+
+    case 'LOAD': {
       break
     }
     // SELECT
@@ -72,7 +75,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     case 'selectStructFamily': {
       const {lastOverPath} = payload
       const ln = getMapData(m, lastOverPath)
-      if (ln.path.length === 2) {
+      if (isR(ln.path)) {
         ln.selected = 0
         if (ln.d[0].selected === 1) {
           ln.d[0].selected = 0
@@ -95,12 +98,12 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
     case 'select_all': {
-      mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (n: N) => (n.type === 'struct' && !n.hasCell))
+      mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (n: N) => (isS(n.path) && !n.cRowCount && !n.cColCount))
       break
     }
     case 'selectDescendantsOut': {
       if (ln.sCount > 0) {
-        if (ln.path.length === 2) {
+        if (isR(ln.path)) {
           ln.selected = 0
           if (payload.code === 'ArrowRight') {
             ln.d[0].selected = 1
@@ -159,7 +162,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
     case 'select_C_FF': {
-      if (ln.hasCell) {
+      if (ln.cRowCount || ln.cColCount) {
         clearSelection(m)
         getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
       }
@@ -174,8 +177,8 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     }
     case 'select_CR_IO': {
       clearSelection(m)
-      let pn = getMapData(m, ln.parentPath)
-      let currRow = ln.index[0]
+      let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
+      let currRow = ln.path.at(-2)
       let colLen = pn.c[0].length
       for (let i = 0; i < colLen; i++) {
         pn.c[currRow][i].selected = 1
@@ -192,8 +195,8 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     }
     case 'select_CC_IO': {
       clearSelection(m)
-      let pn = getMapData(m, ln.parentPath)
-      let currCol = ln.index[1]
+      let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
+      let currCol = ln.path.at(-1)
       let rowLen = pn.c.length
       for (let i = 0; i < rowLen; i++) {
         pn.c[i][currCol].selected = 1
@@ -276,11 +279,11 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
     case 'insert_CC_IO': {
-      cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction)
+      cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
       break
     }
     case 'insert_CR_UD': {
-      cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction)
+      cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
       break
     }
     case 'insertNodesFromClipboard': {
@@ -323,7 +326,7 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
     case 'transpose': {
-      if (ln.hasCell) {
+      if (ln.cRowCount || ln.cColCount) {
         ln.c = transpose(ln.c)
       }
       break
@@ -382,14 +385,14 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
     case 'typeText': {
-      Object.assign(ln.type === 'cell' ? ln.s[0] : ln, { contentType: 'text', content: payload })
+      Object.assign(isC(ln.path) ? ln.s[0] : ln, { contentType: 'text', content: payload })
       break
     }
     case 'finishEdit': {
       const { nodeId, content } = payload
       const n = getMapData(m, mapFindById.start(m, nodeId))
       const isContentEquation = content.substring(0, 2) === '\\['
-      if (n.type === 'cell') {
+      if (isC(n.path)) {
         n.s[0].content = content
         n.s[0].contentType = isContentEquation ? 'equation' : n.s[0].contentType
       } else {
@@ -399,17 +402,18 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
       break
     }
   }
-  mapFix.start(m as MPartial)
-  mapInit.start(m as MPartial)
-  mapChain.start(m as M)
 
   const pmlp = mapDisassembly.start(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   const mlp = mapDisassembly.start(m).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-
-  // PUT NEW HERE
+  const g = mlp.filter((n: N) => n.path.length === 1).at(0)
+  ln = action === 'LOAD' ? undefined : getNodeByPath(mlp, sc.lastPath)
 
   switch (action) {
+    // VIEW
+    case 'changeDensity': g.density = g.density === 'small' ? 'large' : g.density; break
+    case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : g.alignment; break
     // SELECT
+
     // INSERT
     // DELETE
     // MOVE
@@ -445,24 +449,12 @@ export const mapReducer = (pml: ML, action: string, payload: any) => {
     // EDIT
   }
 
-
-
-  // PUT OLD HERE
-
-  const mlpOld = mapDisassembly.start(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-
-  console.log(mlp.map(el => [
-    // el.stuff
-  ]))
-
-  console.log(mlpOld.map(el => [
-    // el.stuff
-  ]))
-
-  // PUT DONE HERE
+  // TODO mapFix
+  mapAddHelperProps(mlp)
+  mapChainLinearNoPath(mlp)
   mapCalcTaskLinear(mlp)
   mapExtractSelectionLinear(mlp)
   mapMeasureLinear(pmlp, mlp)
   mapPlaceLinear(mlp)
-  return mlp.sort((a: GN, b: GN) => (a.nodeId > b.nodeId) ? 1 : -1)
+  return mlp.sort((a, b) => (a.nodeId > b.nodeId) ? 1 : -1)
 }

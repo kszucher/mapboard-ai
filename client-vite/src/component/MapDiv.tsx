@@ -3,7 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {getNodeById} from "../core/MapUtils"
+import {getNodeById, isS} from "../core/MapUtils"
 import {getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
@@ -40,8 +40,8 @@ export const MapDiv: FC = () => {
       {ml.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
-            n.type === 'struct' &&
-            !n.hasCell &&
+            n.contentType &&
+            // isS(n.path) && !n.cRowCount && !n.cColCount &&
             <div
               id={'node'}
               ref={ref => ref && ref.focus()}

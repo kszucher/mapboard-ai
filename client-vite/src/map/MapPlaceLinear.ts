@@ -1,4 +1,4 @@
-import {endsWithPathPattern, getNodeByPath, getParentPath} from "../core/MapUtils"
+import {endsWithPathPattern, getNodeByPath, getParentPath, isG, isR, isD, isS, isC,} from "../core/MapUtils"
 import {ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -53,16 +53,16 @@ export const mapPlaceLinear = (mlp: ML) => {
   const mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
 
   for (const n of mlp) {
-    if (n.path.length === 1) {
+    if (isG(n.path)) {
       n.mapWidth = mapWidth // TODO assign mapWidth and mapHeight to R0 instead of G as selfW and selfH, and MOVE the logic to mapMeasure!!! this will support multi-root
       n.mapHeight = mapHeight
-    } else if (n.path.length === 2) {
+    } else if (isR(n.path)) {
       n.lineDeltaX = 0
       n.lineDeltaY = mapHeight / 2 - 0.5
       n.nodeStartX = mapStartCenterX - n.selfW / 2 + 1
       n.nodeEndX = mapStartCenterX + n.selfW / 2 + 1
       n.nodeY = n.lineDeltaY
-    } else if (n.type === 'dir') {
+    } else if (isD(n.path)) {
       n.lineDeltaX = 0
       n.lineDeltaY = 0
       n.nodeStartX = r0.nodeStartX
@@ -75,7 +75,7 @@ export const mapPlaceLinear = (mlp: ML) => {
     } else {
       const pn = getNodeByPath(mlp, getParentPath(n.path)) as N
       const ppn = getNodeByPath(mlp, getParentPath(pn.path)) as N
-      if (n.type === 'struct') {
+      if (isS(n.path)) {
         const i = n.path.at(-1) as number
         n.lineDeltaX = g.sLineDeltaXDefault
         n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + pn.sumElapsedY[i]
@@ -89,7 +89,7 @@ export const mapPlaceLinear = (mlp: ML) => {
         n.nodeY = pn.nodeY + n.lineDeltaY
         n.isTop = i === 0 && pn.isTop ? 1 : 0
         n.isBottom = i === pn.sCount - 1 && pn.isBottom === 1 ? 1 : 0
-      } else if (n.type === 'cell') {
+      } else if (isC(n.path)) {
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
         n.lineDeltaX = pn.sumMaxColWidth[j] + 20

@@ -12,7 +12,7 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
   let moveTarget = getMapData(m, moveTargetPath)
   if (!moveTarget.hasOwnProperty('s')) {moveTarget.s = []}
   let tempClipboard = copy(moveSource)
-  sameParent.s.splice(moveSource.index, 1)
+  sameParent.s.splice(moveSource.path.at(-1), 1)
   moveTarget.s.splice(moveTargetIndex, 0, tempClipboard)
 }
 
@@ -30,56 +30,56 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
       let revDir = 1 - dir
       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
         let currRef = getMapData(m, structSelectedPathList[i])
-        sameParent.s.splice(currRef.index, 1)
+        sameParent.s.splice(currRef.path.at(-1), 1)
         m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, copy(currRef))
       }
     } else if (direction === Dir.I) {
-      let sameParentParent = getMapData(m, sameParent.parentPath)
+      let sameParentParent = getMapData(m, sameParent.parentPath) // FIXME getParentPath
       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
         let currRef = getMapData(m, structSelectedPathList[i])
-        sameParent.s.splice(currRef.index, 1)
-        sameParentParent.s.splice(sameParent.index + 1, 0, copy(currRef))
+        sameParent.s.splice(currRef.path.at(-1), 1)
+        sameParentParent.s.splice(sameParent.path.at(-1) + 1, 0, copy(currRef))
       }
     } else if (direction === Dir.O) {
       let geomHighRef = getMapData(m, sc.geomHighPath)
-      if (geomHighRef.index > 0) {
-        let upperSibling = sameParent.s[geomHighRef.index - 1]
+      if (geomHighRef.path.at(-1) > 0) {
+        let upperSibling = sameParent.s[geomHighRef.path.at(-1) - 1]
         if (!upperSibling.hasOwnProperty('s')) {
           upperSibling.s = []
         }
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
-          sameParent.s.splice(currRef.index, 1)
+          sameParent.s.splice(currRef.path.at(-1), 1)
           upperSibling.s.splice(upperSibling.sCount - structSelectedPathList.length + i + 1, 0, copy(currRef))
         }
       }
     } else if (direction === Dir.U) {
       let geomHighRef = getMapData(m, sc.geomHighPath)
-      if (geomHighRef.index > 0) {
+      if (geomHighRef.path.at(-1) > 0) {
         for (let i = 0; i < structSelectedPathList.length; i++) {
           let currRef = getMapData(m, structSelectedPathList[i])
-          sameParent.s.splice(currRef.index, 1)
-          sameParent.s.splice(currRef.index - 1, 0, copy(currRef))
+          sameParent.s.splice(currRef.path.at(-1), 1)
+          sameParent.s.splice(currRef.path.at(-1) - 1, 0, copy(currRef))
         }
       } else {
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
-          sameParent.s.splice(currRef.index, 1)
+          sameParent.s.splice(currRef.path.at(-1), 1)
           sameParent.s.splice(sameParent.sCount - structSelectedPathList.length + i + 1, 0, copy(currRef))
         }
       }
     } else if (direction === Dir.D) {
       let geomLowRef = getMapData(m, sc.geomLowPath)
-      if (geomLowRef.index !== sameParent.sCount - 1) {
+      if (geomLowRef.path.at(-1) !== sameParent.sCount - 1) {
         for (let i = structSelectedPathList.length - 1; i > -1; i--) {
           let currRef = getMapData(m, structSelectedPathList[i])
-          sameParent.s.splice(currRef.index, 1)
-          sameParent.s.splice(currRef.index + 1, 0, copy(currRef))
+          sameParent.s.splice(currRef.path.at(-1), 1)
+          sameParent.s.splice(currRef.path.at(-1) + 1, 0, copy(currRef))
         }
       } else {
         for (let i = 0; i < structSelectedPathList.length; i++) {
           let currRef = getMapData(m, structSelectedPathList[i])
-          sameParent.s.splice(currRef.index, 1)
+          sameParent.s.splice(currRef.path.at(-1), 1)
           sameParent.s.splice(i, 0, copy(currRef))
         }
       }
@@ -87,12 +87,12 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   } else if (target === 'struct2cell') {
     let sameParent = getMapData(m, sameParentPath)
     let geomLowRef = getMapData(m, sc.geomLowPath)
-    sameParent.s.splice(geomLowRef.index + 1, 0, getDefaultNode({}))
-    let newCellRef = sameParent.s[geomLowRef.index + 1]
+    sameParent.s.splice(geomLowRef.path.at(-1) + 1, 0, getDefaultNode({}))
+    let newCellRef = sameParent.s[geomLowRef.path.at(-1) + 1]
     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
       let currRef = getMapData(m, structSelectedPathList[i])
       newCellRef.c[0].push(getDefaultNode({s: [copy(currRef)]}))
-      sameParent.s.splice(currRef.index, 1)
+      sameParent.s.splice(currRef.path.at(-1), 1)
     }
     newCellRef.c = transpose([([].concat(...newCellRef.c))])
     newCellRef.c = newCellRef.c.reverse()

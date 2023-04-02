@@ -39,16 +39,6 @@ export const nSaveOptional = {
 
 export const nSaveNever = {
   // mapChain
-  isRoot: 0,
-  isRootChild: 0, // REMOVE, use type === 'dir' instead
-  parentPath: [],
-  type: '',
-  parentType: '', // REMOVE
-  parentParentType: '', // REMOVE
-  hasDir: 0, // REMOVE, use dCount instead!!!
-  hasStruct: 0, // REMOVE, use sCount instead!!!
-  hasCell: 0,
-  index: 0,
   dCount: 0,
   sCount: 0,
   cRowCount: 0,

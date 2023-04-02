@@ -1,4 +1,4 @@
-import {getNodeByPath} from "../core/MapUtils"
+import {getNodeByPath, getParentPath, isR} from "../core/MapUtils"
 import {ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {copy, isArrayOfEqualValues} from "../core/Utils"
@@ -23,7 +23,7 @@ export const mapExtractSelectionLinear = (mlp: ML) => {
   // indicators
   if (sc.structSelectedPathList.length) {
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-      if (getNodeByPath(mlp, sc.structSelectedPathList[i]).path.length === 2) {
+      if (isR(sc.structSelectedPathList[i])) {
         sc.isRootIncluded = true
       }
     }
@@ -58,14 +58,14 @@ export const mapExtractSelectionLinear = (mlp: ML) => {
   }
   // interrelations
   if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
-    sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mlp, path).parentPath)))
+    sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mlp, getParentPath(path)))))
     if (sc.haveSameParent) {
-      sc.sameParentPath = copy(getNodeByPath(mlp, sc.lastPath).parentPath)
+      sc.sameParentPath = copy(getNodeByPath(mlp, getParentPath(sc.lastPath)))
     }
   } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-    sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mlp, path).parentPath)))
+    sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mlp, getParentPath(path)))))
     if (sc.haveSameParent) {
-      sc.sameParentPath = copy(getNodeByPath(mlp, sc.lastPath).parentPath)
+      sc.sameParentPath = copy(getNodeByPath(mlp, getParentPath(sc.lastPath)))
     }
     if (sc.haveSameParent) {
       let haveSameRow = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 2]))

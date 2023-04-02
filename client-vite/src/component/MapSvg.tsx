@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome, isEqual} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getStructParentPath, getNodeById, getNodeByPath} from "../core/MapUtils"
+import {getStructParentPath, getNodeById, getNodeByPath, endsWithPathPattern, isS} from "../core/MapUtils"
 import {actions} from "../core/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
@@ -39,7 +39,7 @@ const getSelectionMargin = (g: G, n: N) => (
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
-    n.hasCell
+    (n.cRowCount || n.cColCount)
   ) ? 4 : -2
 )
 
@@ -185,8 +185,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                n.sBorderColor &&
-                !n.hasCell &&
+                n.sBorderColor && !n.cRowCount && !n.cColCount &&
                 <path
                   key={`${n.nodeId}_svg_nodeBorder`}
                   d={getArcPath(n, -2, true)}
@@ -198,13 +197,9 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                !n.isRoot &&
-                !n.isRootChild &&
-                n.parentType !== 'cell' &&
-                (
-                  n.type === 'struct' && !n.hasCell ||
-                  n.type === 'cell' && n.parentParentType !== 'cell' && n.index[0] > - 1 && n.index[1] === 0
-                ) &&
+                (endsWithPathPattern(n.path, 'ds') ||
+                endsWithPathPattern(n.path, 'ss') ||
+                ((endsWithPathPattern(n.path, 'dsc') || endsWithPathPattern(n.path, 'ssc')) && n.path.at(-2) > -1 && n.path.at(-1) === 0)) &&
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
@@ -232,8 +227,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                n.type === "struct" &&
-                n.hasCell &&
+                isS(n.path) && (n.cRowCount || n.cColCount) &&
                 <path
                   key={`${n.nodeId}_svg_tableFrame`}
                   d={getArcPath(n, 0, false)}
@@ -245,8 +239,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                n.type === "struct" &&
-                n.hasCell &&
+                isS(n.path) && (n.cRowCount || n.cRowCount) &&
                 <path
                   key={`${n.nodeId}_svg_tableGrid`}
                   d={getGridPath(n)}
@@ -258,13 +251,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                n.taskStatus > 0 &&
-                !n.hasDir &&
-                !n.hasStruct &&
-                !n.hasCell &&
-                !(n.contentType === 'image') &&
-                !n.isRoot &&
-                !n.isRootChild &&
+                n.taskStatus > 0 && !n.dCount && !n.sCount && !n.cRowCount && !n.cColCount && n.contentType !== 'image' &&
                 <Fragment key={`${n.nodeId}_svg_task`}>
                   {
                     !isEqual(n.nodeId, editedNodeId) &&

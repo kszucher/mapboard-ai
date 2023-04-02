@@ -1,4 +1,4 @@
-import {getNodeById, getNodeByPath, getPathPattern} from "../core/MapUtils"
+import {getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../core/MapUtils"
 import {ML} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -21,8 +21,8 @@ export const mapMeasureLinear = (pmlp: ML, mlp: ML) => {
     )) {
       n.spacingActivated = 1
     }
-    if (n.type === 'struct' || n.type == 'dir') {
-      if (n.hasCell) {
+    if (isR(n.path) || isD(n.path) || isS(n.path)) {
+      if (n.cRowCount || n.cColCount) {
         let maxCellHeightMat = createArray(n.cRowCount, n.cColCount)
         let maxCellWidthMat = createArray(n.cRowCount, n.cColCount)
         let isCellSpacingActivated = 0

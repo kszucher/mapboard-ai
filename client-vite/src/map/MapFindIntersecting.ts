@@ -1,4 +1,5 @@
 import {N} from "../state/NPropsTypes"
+import {isS} from "../core/MapUtils";
 
 export const rectanglesIntersect = (input: number[]) => {
   const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
@@ -6,9 +7,7 @@ export const rectanglesIntersect = (input: number[]) => {
 }
 export const mapFindIntersecting = (ml: N[], fromCoords: { x: number, y: number }, toCoords: { x: number, y: number }) => (
   ml.filter(n =>
-    n.type === 'struct' &&
-    !n.hasCell &&
-    n.content !== '' &&
+    isS(n.path) && !n.cRowCount && !n.cColCount && n.content !== '' &&
     +rectanglesIntersect([
       Math.min(fromCoords.x, toCoords.x),
       Math.min(fromCoords.y, toCoords.y),

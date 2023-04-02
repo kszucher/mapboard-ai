@@ -1,5 +1,5 @@
-import {copy, isEqual} from "../core/Utils"
-import {getNodeById, getNodeByPath, isSubPath} from "../core/MapUtils"
+import {copy} from "../core/Utils"
+import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSamePath, isSubPath} from "../core/MapUtils"
 import {ML, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
@@ -15,7 +15,7 @@ export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) =>
     const overlap = 6
     let moveTargetNodeId = ''
     for (const n of mlp) {
-      if ((n.type === 'struct' || n.type === 'dir') && n.nodeId !== moveNode.nodeId && !isSubPath(moveNode.path, n.path)) {
+      if ((isS(n.path) || isD(n.path)) && n.nodeId !== moveNode.nodeId && !isSubPath(moveNode.path, n.path)) {
         let vCondition
         if (n.isTop && belowRoot) {
           vCondition = toY < (n.nodeY + n.maxH / 2 + overlap)
@@ -44,13 +44,13 @@ export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) =>
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveTargetNode.path, moveNode.parentPath) && moveNode.index < moveTargetIndex) {
+        if (isSamePath(moveTargetNode.path, getParentPath(moveNode.path)) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isEqual(moveNode.parentPath, moveTargetPath) && moveNode.index === moveTargetIndex) {
+  if (isSamePath(getParentPath(moveNode.path), moveTargetPath) && moveNode.path.at(-1) === moveTargetIndex) {
     moveTargetPath = []
     moveTargetIndex = 0
     moveCoords = []

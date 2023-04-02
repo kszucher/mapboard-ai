@@ -1,6 +1,6 @@
 import {MPartial} from "../state/MTypes"
 import {NPartial} from "../state/NPropsTypes"
-import {getDefaultNode} from "../core/MapUtils";
+import {getDefaultNode, isC} from "../core/MapUtils";
 
 export const mapFix = {
   start: (m: MPartial) => {
@@ -8,7 +8,7 @@ export const mapFix = {
   },
 
   iterate: (m: MPartial, n: NPartial) => {
-    if (n.type === 'cell' && !n.sCount) {
+    if (isC(n.path) && !n.sCount) {
       n.s.push(getDefaultNode({}))
     }
     if (n.d) n.d.map(i => mapFix.iterate(m, i))

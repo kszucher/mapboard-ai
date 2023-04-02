@@ -4,11 +4,12 @@ import {NSaveOptional, NSaveNever} from "../state/NPropsTypes"
 import {gSaveAlways, gSaveOptional} from "../state/GProps"
 import {nSaveAlways, nSaveOptional} from "../state/NProps"
 import {copy} from "../core/Utils";
+import {isG} from "../core/MapUtils";
 
 export const mapRemoveHelperProps = (ml: ML) => {
   const mlRemoved = copy(ml).sort((a:GNPartial, b: GNPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   for (const nl of mlRemoved) {
-    if (nl.path.length === 1) {
+    if (isG(nl.path)) {
       for (const prop in nl) {
         if (gSaveAlways.hasOwnProperty(prop)) {
           // do nothing

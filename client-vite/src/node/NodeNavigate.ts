@@ -1,6 +1,7 @@
 import {getMapData} from '../map/MapReducer'
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
+import {isC} from "../core/MapUtils";
 
 export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
   let newPath = [] as Path
@@ -40,15 +41,15 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
         let currDirection = sequence[i]
         let currRef = getMapData(m, newPath)
         let currChildCount = currRef.sCount
-        let pn = getMapData(m, currRef.parentPath)
-        if (currRef.isRoot === 1 && ['i','u','d'].includes(currDirection) ||
-          pn.type === 'cell' && ['i'].includes(currDirection) ||
+        let pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
+        if (newPath.length === 2 && ['i','u','d'].includes(currDirection) ||
+          isC(pn.path) && ['i'].includes(currDirection) ||
           currDirection === 'om' && currChildCount === 0) {
           newPath = [...truePath]
           break sequenceGenerator
         }
-        if (currDirection === 'u' && currRef.index === 0 ||
-          currDirection === 'd' && pn.sCount === currRef.index + 1 ||
+        if (currDirection === 'u' && currRef.path.at(-1) === 0 ||
+          currDirection === 'd' && pn.sCount === currRef.path.at(-1) + 1 ||
           currDirection === 'ou' && currChildCount === 0 ||
           currDirection === 'od' && currChildCount === 0) {
           break
@@ -59,7 +60,7 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
           } else {
             newPath = newPath.slice(0, -2)
           }
-          pn.lastSelectedChild = currRef.index
+          pn.lastSelectedChild = currRef.path.at(-1)
         }
         else if (currDirection === 'u') newPath[newPath.length - 1] = newPath.at(-1) as number - 1
         else if (currDirection === 'd') newPath[newPath.length - 1] = newPath.at(-1) as number + 1
@@ -87,11 +88,11 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
 export const cellNavigate = (m: M, truePath: Path, direction: Dir) => {
   const newPath = truePath
   const currRef = getMapData(m, truePath)
-  const pn = getMapData(m, currRef.parentPath)
+  const pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
   const rowLen = pn.c.length
   const colLen = pn.c[0].length
-  const currRow = currRef.index[0]
-  const currCol = currRef.index[1]
+  const currRow = currRef.path.at(-2)
+  const currCol = currRef.path.at(-1)
   let nextRow = 0
   let nextCol = 0
   switch (direction) {
