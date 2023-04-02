@@ -24,437 +24,422 @@ export const getMapData = (m: M, path: Path) => {
 }
 
 const clearSelection = (m: M) => {
-  mapSetProp.iterate(m.r[0], { selected: 0, selection: 's' }, true)
+  // mapSetProp.iterate(m.r[0], { selected: 0, selection: 's' }, true)
 }
 
 const updateParentLastSelectedChild = (m: M, ln: N) => {
-  if (!m.g.sc.isRootIncluded) {
-    let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
-    pn.lastSelectedChild = ln.path.at(-1)
-  }
+  // if (!m.g.sc.isRootIncluded) {
+  //   let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
+  //   pn.lastSelectedChild = ln.path.at(-1)
+  // }
 }
 
-export const mapReducer = (pml: ML, action: string, payload: any) => {
+export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const pm = mapAssembly(pml) as M
-  const m = copy(pm)
-  const { sc } = m.g
-  let ln = action === 'LOAD' ? undefined : getMapData(m, sc.lastPath)
-  switch (action) {
-    // // VIEW
-    // case 'changeDensity': {
-    //   m.g.density = m.g.density === 'small' ? 'large' : 'small'
-    //   break
-    // }
-    // case 'changeAlignment': {
-    //   m.g.alignment = m.g.alignment === 'centered' ? 'adaptive' : 'centered'
-    //   break
-    // }
 
+  const pm = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  const m = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const { sc } = g
+  const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
+
+  switch (action) {
     case 'LOAD': {
+      break
+    }
+    // // VIEW
+    case 'changeDensity': {
+      g.density = g.density === 'small' ? 'large' : 'small'
+      break
+    }
+    case 'changeAlignment': {
+      g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'
       break
     }
     // SELECT
     case 'selectStruct': {
-      clearSelection(m)
-      const {lastOverPath} = payload
-      const ln = getMapData(m, lastOverPath)
-      ln.selected = 1
-      ln.selection = 's'
-      updateParentLastSelectedChild(m, ln)
+      // clearSelection(m)
+      // const {lastOverPath} = payload
+      // const ln = getMapData(m, lastOverPath)
+      // ln.selected = 1
+      // ln.selection = 's'
+      // updateParentLastSelectedChild(m, ln)
       break
     }
     case 'selectStructToo': {
-      const {lastOverPath} = payload
-      const ln = getMapData(m, lastOverPath)
-      ln.selected = sc.maxSel + 1
-      updateParentLastSelectedChild(m, ln)
+      // const {lastOverPath} = payload
+      // const ln = getMapData(m, lastOverPath)
+      // ln.selected = sc.maxSel + 1
+      // updateParentLastSelectedChild(m, ln)
       break
     }
     case 'selectStructFamily': {
-      const {lastOverPath} = payload
-      const ln = getMapData(m, lastOverPath)
-      if (isR(ln.path)) {
-        ln.selected = 0
-        if (ln.d[0].selected === 1) {
-          ln.d[0].selected = 0
-          ln.d[1].selected = 1
-          ln.d[1].selection = 'f'
-        } else {
-          clearSelection(m)
-          ln.d[0].selected = 1
-          ln.d[1].selected = 0
-          ln.d[0].selection = 'f'
-        }
-      } else {
-        if (ln.sCount > 0) {
-          clearSelection(m)
-          ln.selected = 1
-          ln.selection = 'f'
-        }
-      }
-      updateParentLastSelectedChild(m, ln)
+      // const {lastOverPath} = payload
+      // const ln = getMapData(m, lastOverPath)
+      // if (isR(ln.path)) {
+      //   ln.selected = 0
+      //   if (ln.d[0].selected === 1) {
+      //     ln.d[0].selected = 0
+      //     ln.d[1].selected = 1
+      //     ln.d[1].selection = 'f'
+      //   } else {
+      //     clearSelection(m)
+      //     ln.d[0].selected = 1
+      //     ln.d[1].selected = 0
+      //     ln.d[0].selection = 'f'
+      //   }
+      // } else {
+      //   if (ln.sCount > 0) {
+      //     clearSelection(m)
+      //     ln.selected = 1
+      //     ln.selection = 'f'
+      //   }
+      // }
+      // updateParentLastSelectedChild(m, ln)
       break
     }
     case 'select_all': {
-      mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (n: N) => (isS(n.path) && !n.cRowCount && !n.cColCount))
+      // mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (n: N) => (isS(n.path) && !n.cRowCount && !n.cColCount))
       break
     }
     case 'selectDescendantsOut': {
-      if (ln.sCount > 0) {
-        if (isR(ln.path)) {
-          ln.selected = 0
-          if (payload.code === 'ArrowRight') {
-            ln.d[0].selected = 1
-            ln.d[0].selection = 'f'
-          } else if (payload.code === 'ArrowLeft') {
-            ln.d[1].selected = 1
-            ln.d[1].selection = 'f'
-          }
-        } else if (
-          ln.path[3] === 0 && payload.code === 'ArrowRight' ||
-          ln.path[3] === 1 && payload.code === 'ArrowLeft') {
-          ln.selection = 'f'
-        } else if (
-          ln.path[3] === 0 && payload.code === 'ArrowLeft' ||
-          ln.path[3] === 1 && payload.code === 'ArrowRight') {
-          ln.selection = 's'
-        }
-      }
+      // if (ln.sCount > 0) {
+      //   if (isR(ln.path)) {
+      //     ln.selected = 0
+      //     if (payload.code === 'ArrowRight') {
+      //       ln.d[0].selected = 1
+      //       ln.d[0].selection = 'f'
+      //     } else if (payload.code === 'ArrowLeft') {
+      //       ln.d[1].selected = 1
+      //       ln.d[1].selection = 'f'
+      //     }
+      //   } else if (
+      //     ln.path[3] === 0 && payload.code === 'ArrowRight' ||
+      //     ln.path[3] === 1 && payload.code === 'ArrowLeft') {
+      //     ln.selection = 'f'
+      //   } else if (
+      //     ln.path[3] === 0 && payload.code === 'ArrowLeft' ||
+      //     ln.path[3] === 1 && payload.code === 'ArrowRight') {
+      //     ln.selection = 's'
+      //   }
+      // }
       break
     }
     case 'select_S_IOUD': {
-      if (!payload.add) {
-        clearSelection(m)
-      }
-      let toPath = [...sc.lastPath]
-      if (payload.direction === Dir.U) {toPath = sc.geomHighPath}
-      else if (payload.direction === Dir.D) {toPath = sc.geomLowPath}
-      else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
-      else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
-      getMapData(m, structNavigate(m, toPath, payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
+      // if (!payload.add) {
+      //   clearSelection(m)
+      // }
+      // let toPath = [...sc.lastPath]
+      // if (payload.direction === Dir.U) {toPath = sc.geomHighPath}
+      // else if (payload.direction === Dir.D) {toPath = sc.geomLowPath}
+      // else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
+      // else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
+      // getMapData(m, structNavigate(m, toPath, payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
       break
     }
     case 'select_S_F': {
-      clearSelection(m)
-      ln.s[0].selected = 1
+      // clearSelection(m)
+      // ln.s[0].selected = 1
       break
     }
     case 'select_S_B': {
-      clearSelection(m)
-      getMapData(m, ln.path.slice(0, -3)).selected = 1
+      // clearSelection(m)
+      // getMapData(m, ln.path.slice(0, -3)).selected = 1
       break
     }
     case 'select_S_BB': {
-      clearSelection(m)
-      getMapData(m, ln.path.slice(0, -5)).selected = 1
+      // clearSelection(m)
+      // getMapData(m, ln.path.slice(0, -5)).selected = 1
       break
     }
     case 'select_C_IOUD': {
-      clearSelection(m)
-      getMapData(m, cellNavigate(m, ln.path, payload.direction)).selected = 1
+      // clearSelection(m)
+      // getMapData(m, cellNavigate(m, ln.path, payload.direction)).selected = 1
       break
     }
     case 'select_C_F': {
-      clearSelection(m)
-      ln.selected = 1
+      // clearSelection(m)
+      // ln.selected = 1
       break
     }
     case 'select_C_FF': {
-      if (ln.cRowCount || ln.cColCount) {
-        clearSelection(m)
-        getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
-      }
+      // if (ln.cRowCount || ln.cColCount) {
+      //   clearSelection(m)
+      //   getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
+      // }
       break
     }
     case 'select_C_B': {
-      if (ln.path.includes('c')) {
-        clearSelection(m)
-        getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)]).selected = 1
-      }
+      // if (ln.path.includes('c')) {
+      //   clearSelection(m)
+      //   getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)]).selected = 1
+      // }
       break
     }
     case 'select_CR_IO': {
-      clearSelection(m)
-      let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
-      let currRow = ln.path.at(-2)
-      let colLen = pn.c[0].length
-      for (let i = 0; i < colLen; i++) {
-        pn.c[currRow][i].selected = 1
-      }
+      // clearSelection(m)
+      // let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
+      // let currRow = ln.path.at(-2)
+      // let colLen = pn.c[0].length
+      // for (let i = 0; i < colLen; i++) {
+      //   pn.c[currRow][i].selected = 1
+      // }
       break
     }
     case 'select_CR_UD': {
-      clearSelection(m)
-      for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
-        let currPath = sc.cellSelectedPathList[i]
-        getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
-      }
+      // clearSelection(m)
+      // for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
+      //   let currPath = sc.cellSelectedPathList[i]
+      //   getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
+      // }
       break
     }
     case 'select_CC_IO': {
-      clearSelection(m)
-      let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
-      let currCol = ln.path.at(-1)
-      let rowLen = pn.c.length
-      for (let i = 0; i < rowLen; i++) {
-        pn.c[i][currCol].selected = 1
-      }
+      // clearSelection(m)
+      // let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
+      // let currCol = ln.path.at(-1)
+      // let rowLen = pn.c.length
+      // for (let i = 0; i < rowLen; i++) {
+      //   pn.c[i][currCol].selected = 1
+      // }
       break
     }
     case 'select_CC_UD': {
-      clearSelection(m)
-      for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
-        let currPath = sc.cellSelectedPathList[i]
-        getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
-      }
+      // clearSelection(m)
+      // for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
+      //   let currPath = sc.cellSelectedPathList[i]
+      //   getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
+      // }
       break
     }
     case 'select_R': {
-      clearSelection(m)
-      getMapData(m, ['r', 0]).selected = 1
+      // clearSelection(m)
+      // getMapData(m, ['r', 0]).selected = 1
       break
     }
     case 'select_dragged': {
-      if (payload.nList.length) {
-        clearSelection(m)
-        for (let i = 0; i < payload.nList.length; i++) {
-          getMapData(m, payload.nList[i].path).selected = i + 1
-        }}
+      // if (payload.nList.length) {
+      //   clearSelection(m)
+      //   for (let i = 0; i < payload.nList.length; i++) {
+      //     getMapData(m, payload.nList[i].path).selected = i + 1
+      //   }}
       break
     }
     // INSERT
     case 'insert_S_U': {
-      if (!sc.isRootIncluded) {
-        clearSelection(m)
-        structCreate(m, ln, Dir.U, {})
-      }
+      // if (!sc.isRootIncluded) {
+      //   clearSelection(m)
+      //   structCreate(m, ln, Dir.U, {})
+      // }
       break
     }
     case 'insert_S_D': {
-      if (!sc.isRootIncluded) {
-        clearSelection(m)
-        structCreate(m, ln, Dir.D, {})
-      }
+      // if (!sc.isRootIncluded) {
+      //   clearSelection(m)
+      //   structCreate(m, ln, Dir.D, {})
+      // }
       break
     }
     case 'insert_S_O': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, {})
+      // clearSelection(m)
+      // structCreate(m, ln, Dir.O, {})
       break
     }
     case 'insert_S_O_text': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
+      // clearSelection(m)
+      // structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
       break
     }
     case 'insert_S_O_elink': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
+      // clearSelection(m)
+      // structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
       break
     }
     case 'insert_S_O_equation': {
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
+      // clearSelection(m)
+      // structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
       break
     }
     case 'insert_S_O_image': { // TODO check... after path is fixed
-      const { imageId, imageSize } = payload
-      const { width, height } = imageSize
-      clearSelection(m)
-      structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
+      // const { imageId, imageSize } = payload
+      // const { width, height } = imageSize
+      // clearSelection(m)
+      // structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
       break
     }
     case 'insert_S_O_table': {
-      clearSelection(m)
-      const { rowLen, colLen } = payload
-      const newTable = createArray(rowLen, colLen)
-      for (let i = 0; i < rowLen; i++) {
-        for (let j = 0; j < colLen; j++) {
-          newTable[i][j] = getDefaultNode({s: [getDefaultNode()]})
-        }
-      }
-      structCreate(m, ln, Dir.O, { taskStatus: 0, c: newTable })
+      // clearSelection(m)
+      // const { rowLen, colLen } = payload
+      // const newTable = createArray(rowLen, colLen)
+      // for (let i = 0; i < rowLen; i++) {
+      //   for (let j = 0; j < colLen; j++) {
+      //     newTable[i][j] = getDefaultNode({s: [getDefaultNode()]})
+      //   }
+      // }
+      // structCreate(m, ln, Dir.O, { taskStatus: 0, c: newTable })
       break
     }
     case 'insert_CC_IO': {
-      cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
+      // cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
       break
     }
     case 'insert_CR_UD': {
-      cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
+      // cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
       break
     }
     case 'insertNodesFromClipboard': {
-      clearSelection(m)
-      const nodeList = JSON.parse(payload.text)
-      for (let i = 0; i < nodeList.length; i++) {
-        mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
-        structCreate(m, ln, Dir.O, { ...nodeList[i] })
-      }
+      // clearSelection(m)
+      // const nodeList = JSON.parse(payload.text)
+      // for (let i = 0; i < nodeList.length; i++) {
+      //   mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
+      //   structCreate(m, ln, Dir.O, { ...nodeList[i] })
+      // }
       break
     }
     // DELETE
     case 'delete_S': {
-      if (!sc.isRootIncluded) {
-        structDeleteReselect(m, sc)
-      }
+      // if (!sc.isRootIncluded) {
+      //   structDeleteReselect(m, sc)
+      // }
       break
     }
     case 'delete_CRCC': {
-      cellDeleteReselect(m, sc)
+      // cellDeleteReselect(m, sc)
       break
     }
     // MOVE
     case 'move_S_IOUD': {
-      if (!sc.isRootIncluded && sc.haveSameParent) {
-        structMove(m, 'struct2struct', payload.direction)
-      }
+      // if (!sc.isRootIncluded && sc.haveSameParent) {
+      //   structMove(m, 'struct2struct', payload.direction)
+      // }
       break
     }
     case 'move_CR_UD': {
-      if (sc.haveSameParent) {
-        cellRowMove(m, payload.direction)
-      }
+      // if (sc.haveSameParent) {
+      //   cellRowMove(m, payload.direction)
+      // }
       break
     }
     case 'move_CC_IO': {
-      if (sc.haveSameParent) {
-        cellColMove(m, payload.direction)
-      }
+      // if (sc.haveSameParent) {
+      //   cellColMove(m, payload.direction)
+      // }
       break
     }
     case 'transpose': {
-      if (ln.cRowCount || ln.cColCount) {
-        ln.c = transpose(ln.c)
-      }
+      // if (ln.cRowCount || ln.cColCount) {
+      //   ln.c = transpose(ln.c)
+      // }
       break
     }
     case 'copySelection': {
-      if (!sc.isRootIncluded) {
-        structMove(m, 'struct2clipboard')
-      }
+      // if (!sc.isRootIncluded) {
+      //   structMove(m, 'struct2clipboard')
+      // }
       break
     }
     case 'cutSelection': {
-      if (!sc.isRootIncluded) {
-        structMove(m, 'struct2clipboard')
-        structDeleteReselect(m, sc)
-      }
+      // if (!sc.isRootIncluded) {
+      //   structMove(m, 'struct2clipboard')
+      //   structDeleteReselect(m, sc)
+      // }
       break
     }
     case 'move_dragged': {
-      nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
+      // nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
       break
     }
     case 'cellify': {
-      if (!sc.isRootIncluded && sc.haveSameParent) {
-        structMove(m, 'struct2cell')
-        clearSelection(m)
-        getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
-      }
+      // if (!sc.isRootIncluded && sc.haveSameParent) {
+      //   structMove(m, 'struct2cell')
+      //   clearSelection(m)
+      //   getMapData(m, [...sc.geomHighPath, 'c', 0, 0]).selected = 1
+      // }
       break
     }
     case 'applyColorFromKey': {
-      for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-        let n = getMapData(m, sc.structSelectedPathList[i])
-        n.textColor = [
-          '#222222',
-          '#999999', '#bbbbbb', '#dddddd',
-          '#d5802a', '#1c8e1c', '#8e1c8e',
-          '#990000', '#000099', '#ffffff'][payload.currColor]
-      }
+      // for (let i = 0; i < sc.structSelectedPathList.length; i++) {
+      //   let n = getMapData(m, sc.structSelectedPathList[i])
+      //   n.textColor = [
+      //     '#222222',
+      //     '#999999', '#bbbbbb', '#dddddd',
+      //     '#d5802a', '#1c8e1c', '#8e1c8e',
+      //     '#990000', '#000099', '#ffffff'][payload.currColor]
+      // }
       break
     }
     case 'toggleTask': {
-      mapSetProp.iterate(ln, { taskStatus: ln.taskStatus === 0 ? 1 : 0 }, true)
+      // mapSetProp.iterate(ln, { taskStatus: ln.taskStatus === 0 ? 1 : 0 }, true)
       break
     }
     case 'setTaskStatus': {
-      const { nodeId, taskStatus } = payload
-      const n = getMapData(m, mapFindById.start(m, nodeId))
-      n.taskStatus = taskStatus
+      // const { nodeId, taskStatus } = payload
+      // const n = getMapData(m, mapFindById.start(m, nodeId))
+      // n.taskStatus = taskStatus
       break
     }
     // EDIT
     case'startEditAppend': {
-      if (ln.contentType === 'equation') {
-        ln.contentType = 'text'
-      }
+      // if (ln.contentType === 'equation') {
+      //   ln.contentType = 'text'
+      // }
       break
     }
     case 'typeText': {
-      Object.assign(isC(ln.path) ? ln.s[0] : ln, { contentType: 'text', content: payload })
+      // Object.assign(isC(ln.path) ? ln.s[0] : ln, { contentType: 'text', content: payload })
       break
     }
     case 'finishEdit': {
-      const { nodeId, content } = payload
-      const n = getMapData(m, mapFindById.start(m, nodeId))
-      const isContentEquation = content.substring(0, 2) === '\\['
-      if (isC(n.path)) {
-        n.s[0].content = content
-        n.s[0].contentType = isContentEquation ? 'equation' : n.s[0].contentType
-      } else {
-        n.content = content
-        n.contentType = isContentEquation ? 'equation' : n.contentType
-      }
+      // const { nodeId, content } = payload
+      // const n = getMapData(m, mapFindById.start(m, nodeId))
+      // const isContentEquation = content.substring(0, 2) === '\\['
+      // if (isC(n.path)) {
+      //   n.s[0].content = content
+      //   n.s[0].contentType = isContentEquation ? 'equation' : n.s[0].contentType
+      // } else {
+      //   n.content = content
+      //   n.contentType = isContentEquation ? 'equation' : n.contentType
+      // }
       break
     }
-  }
-
-  const pmlp = mapDisassembly.start(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-  const mlp = mapDisassembly.start(m).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-  const g = mlp.filter((n: N) => n.path.length === 1).at(0)
-  ln = action === 'LOAD' ? undefined : getNodeByPath(mlp, sc.lastPath)
-
-  switch (action) {
-    // VIEW
-    case 'changeDensity': g.density = g.density === 'small' ? 'large' : g.density; break
-    case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : g.alignment; break
-    // SELECT
-
-    // INSERT
-    // DELETE
-    // MOVE
     // FORMAT
-    case 'setLineWidth': ln.selection === 's' ? sSetter(mlp, 'lineWidth', payload) : fSetter (mlp, 'lineWidth', payload); break
-    case 'setLineType': ln.selection === 's' ? sSetter(mlp, 'lineType', payload) : fSetter (mlp, 'lineType', payload); break
-    case 'setLineColor': ln.selection === 's' ? sSetter(mlp, 'lineColor', payload) : fSetter (mlp, 'lineColor', payload); break
-    case 'setBorderWidth': ln.selection === 's' ? sSetter(mlp, 'sBorderWidth', payload) : sSetter (mlp, 'fBorderWidth', payload); break
-    case 'setBorderColor': ln.selection === 's' ? sSetter(mlp, 'sBorderColor', payload) : sSetter (mlp, 'fBorderColor', payload); break
-    case 'setFillColor': ln.selection === 's' ? sSetter(mlp, 'sFillColor', payload) : sSetter (mlp, 'fFillColor', payload); break
-    case 'setTextFontSize': ln.selection === 's' ? sSetter(mlp, 'textFontSize', payload) : fSetter (mlp, 'textFontSize', payload); break
-    case 'setTextColor': ln.selection === 's' ? sSetter(mlp, 'textColor', payload) : fSetter (mlp, 'textColor', payload); break
+    case 'setLineWidth': ln.selection === 's' ? sSetter(m, 'lineWidth', payload) : fSetter (m, 'lineWidth', payload); break
+    case 'setLineType': ln.selection === 's' ? sSetter(m, 'lineType', payload) : fSetter (m, 'lineType', payload); break
+    case 'setLineColor': ln.selection === 's' ? sSetter(m, 'lineColor', payload) : fSetter (m, 'lineColor', payload); break
+    case 'setBorderWidth': ln.selection === 's' ? sSetter(m, 'sBorderWidth', payload) : sSetter (m, 'fBorderWidth', payload); break
+    case 'setBorderColor': ln.selection === 's' ? sSetter(m, 'sBorderColor', payload) : sSetter (m, 'fBorderColor', payload); break
+    case 'setFillColor': ln.selection === 's' ? sSetter(m, 'sFillColor', payload) : sSetter (m, 'fFillColor', payload); break
+    case 'setTextFontSize': ln.selection === 's' ? sSetter(m, 'textFontSize', payload) : fSetter (m, 'textFontSize', payload); break
+    case 'setTextColor': ln.selection === 's' ? sSetter(m, 'textColor', payload) : fSetter (m, 'textColor', payload); break
     case 'clearLine': {
-      ln.selection === 's' ? sSetter(mlp, 'lineWidth', nSaveOptional.lineWidth) : fSetter (mlp, 'lineWidth', nSaveOptional.lineWidth)
-      ln.selection === 's' ? sSetter(mlp, 'lineType', nSaveOptional.lineType) : fSetter (mlp, 'lineType', nSaveOptional.lineType)
-      ln.selection === 's' ? sSetter(mlp, 'lineColor', nSaveOptional.lineColor) : fSetter (mlp, 'lineColor', nSaveOptional.lineColor)
+      ln.selection === 's' ? sSetter(m, 'lineWidth', nSaveOptional.lineWidth) : fSetter (m, 'lineWidth', nSaveOptional.lineWidth)
+      ln.selection === 's' ? sSetter(m, 'lineType', nSaveOptional.lineType) : fSetter (m, 'lineType', nSaveOptional.lineType)
+      ln.selection === 's' ? sSetter(m, 'lineColor', nSaveOptional.lineColor) : fSetter (m, 'lineColor', nSaveOptional.lineColor)
       break
     }
     case 'clearBorder': {
-      ln.selection === 's' ? sSetter(mlp, 'sBorderWidth', nSaveOptional.sBorderWidth) : sSetter(mlp, 'fBorderWidth', nSaveOptional.sBorderWidth)
-      ln.selection === 's' ? sSetter(mlp, 'sBorderColor', nSaveOptional.sBorderColor) : sSetter(mlp, 'fBorderColor', nSaveOptional.sBorderColor)
+      ln.selection === 's' ? sSetter(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : sSetter(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
+      ln.selection === 's' ? sSetter(m, 'sBorderColor', nSaveOptional.sBorderColor) : sSetter(m, 'fBorderColor', nSaveOptional.sBorderColor)
       break
     }
     case 'clearFill': {
-      ln.selection === 's' ? sSetter(mlp, 'sFillColor', nSaveOptional.sFillColor) : sSetter(mlp, 'fFillColor', nSaveOptional.fFillColor)
+      ln.selection === 's' ? sSetter(m, 'sFillColor', nSaveOptional.sFillColor) : sSetter(m, 'fFillColor', nSaveOptional.fFillColor)
       break
     }
     case 'clearText': {
-      ln.selection === 's' ? sSetter(mlp, 'textColor', nSaveOptional.textColor) : fSetter(mlp, 'textColor', nSaveOptional.textColor)
-      ln.selection === 's' ? sSetter(mlp, 'textFontSize', nSaveOptional.textFontSize) : fSetter(mlp, 'textFontSize', nSaveOptional.textFontSize)
+      ln.selection === 's' ? sSetter(m, 'textColor', nSaveOptional.textColor) : fSetter(m, 'textColor', nSaveOptional.textColor)
+      ln.selection === 's' ? sSetter(m, 'textFontSize', nSaveOptional.textFontSize) : fSetter(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
-    // EDIT
   }
 
   // TODO mapFix
-  mapAddHelperProps(mlp)
-  mapChainLinearNoPath(mlp)
-  mapCalcTaskLinear(mlp)
-  mapExtractSelectionLinear(mlp)
-  mapMeasureLinear(pmlp, mlp)
-  mapPlaceLinear(mlp)
-  return mlp.sort((a, b) => (a.nodeId > b.nodeId) ? 1 : -1)
+  mapAddHelperProps(m)
+  mapChainLinearNoPath(m)
+  mapCalcTaskLinear(m)
+  mapExtractSelectionLinear(m)
+  mapMeasureLinear(pm, m)
+  mapPlaceLinear(m)
+  return m.sort((a, b) => (a.nodeId > b.nodeId) ? 1 : -1)
 }
