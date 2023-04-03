@@ -1,4 +1,4 @@
-import {getNodeByPath, getParentPath, isR} from "../core/MapUtils"
+import {getNodeByPath, getParentPath, isR} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {copy, isArrayOfEqualValues} from "../core/Utils"

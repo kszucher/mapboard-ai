@@ -1,5 +1,5 @@
 import {copy} from "../core/Utils"
-import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSamePath, isSubPath} from "../core/MapUtils"
+import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSamePath, isSubPath} from "./MapUtils"
 import {M, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 

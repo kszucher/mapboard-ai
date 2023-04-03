@@ -1,4 +1,4 @@
-import {getNodeByPath} from "../core/MapUtils"
+import {getNodeByPath} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 

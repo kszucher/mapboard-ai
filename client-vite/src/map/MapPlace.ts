@@ -1,4 +1,4 @@
-import {endsWithPathPattern, getNodeByPath, getParentPath, isG, isR, isD, isS, isC,} from "../core/MapUtils"
+import {endsWithPathPattern, getNodeByPath, getParentPath, isG, isR, isD, isS, isC,} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"

@@ -4,7 +4,7 @@ import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {M} from "../state/MTypes"
 import {getMap} from "../state/EditorState";
-import {getG} from "../core/MapUtils";
+import {getG} from "../map/MapUtils";
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 

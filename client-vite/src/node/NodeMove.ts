@@ -1,6 +1,6 @@
 import {copy, transpose} from '../core/Utils'
 import {Dir} from "../core/Enums"
-import {getDefaultNode} from "../core/MapUtils";
+import {getDefaultNode} from "../map/MapUtils";
 import {M} from "../state/MTypes";
 
 export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {

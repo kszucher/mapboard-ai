@@ -1,4 +1,4 @@
-import {isSamePath} from "../core/MapUtils"
+import {isSamePath} from "./MapUtils"
 import {M} from "../state/MTypes"
 
 export const mapChain = (mlp: M) => {

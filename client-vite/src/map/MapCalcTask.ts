@@ -1,4 +1,4 @@
-import {getNodeByPath} from "../core/MapUtils"
+import {getNodeByPath} from "./MapUtils"
 import {M} from "../state/MTypes"
 
 export const mapCalcTask = (mlp: M) => {

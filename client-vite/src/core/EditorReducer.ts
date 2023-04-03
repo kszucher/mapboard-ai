@@ -5,7 +5,7 @@ import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "./Enums"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
-import {getNodeByPath} from "./MapUtils";
+import {getNodeByPath} from "../map/MapUtils";
 import {isEqual} from "./Utils";
 
 const editorStateDefault = JSON.stringify(editorState)

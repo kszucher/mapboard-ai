@@ -1,4 +1,4 @@
-import {getNodeByPath, isG} from "../core/MapUtils"
+import {getNodeByPath, isG} from "./MapUtils"
 import {M, MPartial} from "../state/MTypes"
 import {GPartial, GSaveNever, GSaveOptional} from "../state/GPropsTypes"
 import {gSaveAlways, gSaveNever, gSaveOptional} from "../state/GProps"

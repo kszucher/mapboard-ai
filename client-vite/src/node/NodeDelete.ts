@@ -1,6 +1,6 @@
 import {isEqual} from "../core/Utils"
 import {SC} from "../state/GPropsTypes"
-import {endsWithPathPattern} from "../core/MapUtils";
+import {endsWithPathPattern} from "../map/MapUtils";
 import {M} from "../state/MTypes";
 
 export const structDeleteReselect = (m: M, sc: SC) => {

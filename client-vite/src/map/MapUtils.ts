@@ -1,6 +1,6 @@
 import {GN, M, Path, PathItem} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {isArrayOfEqualValues} from "./Utils"
+import {isArrayOfEqualValues} from "../core/Utils"
 import {G} from "../state/GPropsTypes"
 
 export const getPathPattern = (p: Path) => p.filter((el: PathItem) => isNaN(el as any)).join('')

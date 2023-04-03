@@ -1,6 +1,6 @@
 import { getMapData } from '../map/MapReducer'
 import {Dir} from "../core/Enums"
-import {getDefaultNode, isR} from "../core/MapUtils";
+import {getDefaultNode, isR} from "../map/MapUtils";
 
 export const structCreate = (m: any, n: any, direction: Dir, payload: object) => {
   // if (direction === Dir.U) {

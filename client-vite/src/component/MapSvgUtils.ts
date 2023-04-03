@@ -3,7 +3,7 @@ import {isOdd} from "../core/Utils"
 import {M} from "../state/MTypes"
 import {G, SC} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
-import {getNodeByPath} from "../core/MapUtils";
+import {getNodeByPath} from "../map/MapUtils";
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>

@@ -8,7 +8,7 @@ import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "../core/MapUtils"
+import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "./MapUtils"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
 import {nSaveOptional} from "../state/NProps";

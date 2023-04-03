@@ -7,7 +7,7 @@ import {colorList} from '../core/Colors'
 import {actions} from '../core/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {N} from "../state/NPropsTypes"
-import {fGetter, getNodeByPath, sGetter} from "../core/MapUtils"
+import {fGetter, getNodeByPath, sGetter} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32

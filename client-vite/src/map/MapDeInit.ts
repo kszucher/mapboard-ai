@@ -4,7 +4,7 @@ import {NSaveOptional, NSaveNever} from "../state/NPropsTypes"
 import {gSaveAlways, gSaveOptional} from "../state/GProps"
 import {nSaveAlways, nSaveOptional} from "../state/NProps"
 import {copy} from "../core/Utils";
-import {isG} from "../core/MapUtils";
+import {isG} from "./MapUtils";
 
 export const mapDeInit = (m: M) => {
   const mlRemoved = copy(m).sort((a:GNPartial, b: GNPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
