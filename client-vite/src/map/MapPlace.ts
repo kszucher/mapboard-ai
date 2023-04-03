@@ -3,7 +3,7 @@ import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 
-export const mapPlaceLinear = (mlp: M) => {
+export const mapPlace = (mlp: M) => {
   const g = getNodeByPath(mlp, ['g']) as G
   const r0 = getNodeByPath(mlp, ['r', 0]) as N
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N

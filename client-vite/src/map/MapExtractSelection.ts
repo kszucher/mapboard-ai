@@ -8,7 +8,7 @@ import {copy, isArrayOfEqualValues} from "../core/Utils"
 // - scope is either s, f, c, cr or cc, and multi-select will only be possible in two ways: either multi-s or multi-f
 // - prevent selecting nodes in an inclusive relation (cell struct inside cell with parent cell selected as well)
 
-export const mapExtractSelectionLinear = (mlp: M) => {
+export const mapExtractSelection = (mlp: M) => {
   const g = getNodeByPath(mlp, ['g']) as G
   for (const n of mlp) {
     if (n.selected) {

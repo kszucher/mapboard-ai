@@ -5,7 +5,7 @@ import {N} from "../state/NPropsTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
 
-export const mapMeasureLinear = (pmlp: M, mlp: M) => {
+export const mapMeasure = (pmlp: M, mlp: M) => {
   const g = getNodeByPath(mlp, ['g']) as G
   const r0 = getNodeByPath(mlp, ['r', 0]) as N
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N

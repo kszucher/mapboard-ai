@@ -1,7 +1,7 @@
 import {getNodeByPath} from "../core/MapUtils"
 import {M} from "../state/MTypes"
 
-export const mapCalcTaskLinear = (mlp: M) => {
+export const mapCalcTask = (mlp: M) => {
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0])
   const r0d1 = getNodeByPath(mlp, ['r', 0, 'd', 1])
   for (let nIndex = mlp.length - 1; nIndex > - 1; nIndex--) {

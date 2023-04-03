@@ -9,13 +9,13 @@ import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "../core/MapUtils"
-import {mapPlaceLinear} from "./MapPlaceLinear"
-import {mapMeasureLinear} from "./MapMeasureLinear"
+import {mapPlace} from "./MapPlace"
+import {mapMeasure} from "./MapMeasure"
 import {nSaveOptional} from "../state/NProps";
-import {mapExtractSelectionLinear} from "./MapExtractSelectionLinear";
-import {mapCalcTaskLinear} from "./MapCalcTaskLinear";
-import {mapAddHelperProps} from "./MapAddHelperProps";
-import {mapChainLinearNoPath} from "./MapChainLinearNoPath";
+import {mapExtractSelection} from "./MapExtractSelection";
+import {mapCalcTask} from "./MapCalcTask";
+import {mapInit} from "./MapInit";
+import {mapChain} from "./MapChain";
 
 const setSelect = (m: M, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
   ? { selected: 1 , selection } : { selected: 0, selection: 's' }
@@ -376,11 +376,11 @@ export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
   }
 
   // TODO mapFix
-  mapAddHelperProps(m)
-  mapChainLinearNoPath(m)
-  mapCalcTaskLinear(m)
-  mapExtractSelectionLinear(m)
-  mapMeasureLinear(pm, m)
-  mapPlaceLinear(m)
+  mapInit(m)
+  mapChain(m)
+  mapCalcTask(m)
+  mapExtractSelection(m)
+  mapMeasure(pm, m)
+  mapPlace(m)
   return m.sort((a, b) => (a.nodeId > b.nodeId) ? 1 : -1)
 }

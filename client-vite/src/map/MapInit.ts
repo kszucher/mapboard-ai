@@ -6,7 +6,7 @@ import {copy, genHash, shallowCopy} from "../core/Utils";
 import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps";
 import {NSaveAlways, NSaveNever, NSaveOptional} from "../state/NPropsTypes";
 
-export const mapAddHelperProps = (mlp: MPartial) => {
+export const mapInit = (mlp: MPartial) => {
   const g = getNodeByPath(mlp as M, ['g']) as GPartial
   for (const n of mlp) {
     if (isG(n.path)) {

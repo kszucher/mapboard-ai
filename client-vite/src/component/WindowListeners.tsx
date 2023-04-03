@@ -6,7 +6,7 @@ import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap} from "../state/EditorState"
-import {mapRemoveHelperProps} from "../map/MapRemoveHelperProps"
+import {mapDeInit} from "../map/MapDeInit"
 
 let namedInterval: NodeJS.Timeout
 let isIntervalRunning = false
@@ -29,7 +29,7 @@ export const WindowListeners: FC = () => {
     dispatch(api.endpoints.saveMap.initiate({
       mapId: getMapId(),
       frameId: getFrameId(),
-      mapData: mapRemoveHelperProps(getMap())
+      mapData: mapDeInit(getMap())
     }))
     console.log('saved by timeout')
   }

@@ -6,7 +6,7 @@ import {nSaveAlways, nSaveOptional} from "../state/NProps"
 import {copy} from "../core/Utils";
 import {isG} from "../core/MapUtils";
 
-export const mapRemoveHelperProps = (m: M) => {
+export const mapDeInit = (m: M) => {
   const mlRemoved = copy(m).sort((a:GNPartial, b: GNPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   for (const nl of mlRemoved) {
     if (isG(nl.path)) {
