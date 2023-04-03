@@ -1,4 +1,4 @@
-import {copy, createArray, genHash, isEqual, subsref, transpose} from '../core/Utils'
+import {copy, createArray, genHash, isEqual, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
@@ -16,10 +16,6 @@ import {mapExtractSelectionLinear} from "./MapExtractSelectionLinear";
 import {mapCalcTaskLinear} from "./MapCalcTaskLinear";
 import {mapAddHelperProps} from "./MapAddHelperProps";
 import {mapChainLinearNoPath} from "./MapChainLinearNoPath";
-
-export const getMapData = (m: M, path: Path) => {
-  return subsref(m, path)
-}
 
 const setSelect = (m: M, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
   ? { selected: 1 , selection } : { selected: 0, selection: 's' }

@@ -1,7 +1,6 @@
-import {getMapData} from '../map/MapReducer'
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
-import {isC} from "../core/MapUtils";
+import {getNodeByPath, getParentPath, isC} from "../core/MapUtils";
 
 export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
   let newPath = [] as Path
@@ -39,9 +38,9 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
       newPath = [...truePath]
       for (let i = 0; i < sequence.length; i++) {
         let currDirection = sequence[i]
-        let currRef = getMapData(m, newPath)
+        let currRef = getNodeByPath(m, newPath)
         let currChildCount = currRef.sCount
-        let pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
+        let pn = getNodeByPath(m, getParentPath(currRef.path))
         if (newPath.length === 2 && ['i','u','d'].includes(currDirection) ||
           isC(pn.path) && ['i'].includes(currDirection) ||
           currDirection === 'om' && currChildCount === 0) {
@@ -60,7 +59,7 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
           } else {
             newPath = newPath.slice(0, -2)
           }
-          pn.lastSelectedChild = currRef.path.at(-1)
+          pn.lastSelectedChild = currRef.path.at(-1) as number
         }
         else if (currDirection === 'u') newPath[newPath.length - 1] = newPath.at(-1) as number - 1
         else if (currDirection === 'd') newPath[newPath.length - 1] = newPath.at(-1) as number + 1
@@ -87,33 +86,33 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
 
 export const cellNavigate = (m: M, truePath: Path, direction: Dir) => {
   const newPath = truePath
-  const currRef = getMapData(m, truePath)
-  const pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
-  const rowLen = pn.c.length
-  const colLen = pn.c[0].length
-  const currRow = currRef.path.at(-2)
-  const currCol = currRef.path.at(-1)
-  let nextRow = 0
-  let nextCol = 0
-  switch (direction) {
-    case Dir.D:
-      nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow
-      nextCol = currCol
-      break
-    case Dir.U:
-      nextRow = currRow - 1 < 0 ? 0 : currRow - 1
-      nextCol = currCol
-      break
-    case Dir.O:
-      nextCol = currCol + 1 < colLen ? currCol + 1 : currCol
-      nextRow = currRow
-      break
-    case Dir.I:
-      nextCol = currCol - 1 < 0 ? 0 : currCol - 1
-      nextRow = currRow
-      break
-  }
-  newPath[newPath.length - 2] = nextRow
-  newPath[newPath.length - 1] = nextCol
+  // const currRef = getMapData(m, truePath)
+  // const pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
+  // const rowLen = pn.c.length
+  // const colLen = pn.c[0].length
+  // const currRow = currRef.path.at(-2)
+  // const currCol = currRef.path.at(-1)
+  // let nextRow = 0
+  // let nextCol = 0
+  // switch (direction) {
+  //   case Dir.D:
+  //     nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow
+  //     nextCol = currCol
+  //     break
+  //   case Dir.U:
+  //     nextRow = currRow - 1 < 0 ? 0 : currRow - 1
+  //     nextCol = currCol
+  //     break
+  //   case Dir.O:
+  //     nextCol = currCol + 1 < colLen ? currCol + 1 : currCol
+  //     nextRow = currRow
+  //     break
+  //   case Dir.I:
+  //     nextCol = currCol - 1 < 0 ? 0 : currCol - 1
+  //     nextRow = currRow
+  //     break
+  // }
+  // newPath[newPath.length - 2] = nextRow
+  // newPath[newPath.length - 1] = nextCol
   return newPath
 }

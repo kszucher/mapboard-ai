@@ -14,7 +14,7 @@ export const isOdd = (num: number) => num % 2
 export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.length - 2).replace(/\s/g, '')
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
 
-// WILL BE REMOVED once MapInit will be linearized
+// WILL BE REMOVED
 export const shallowCopy = (thing: any) => {
   if (thing === undefined) return undefined;
   if (typeof thing === 'number' && isFinite(thing)) {
@@ -22,22 +22,4 @@ export const shallowCopy = (thing: any) => {
   } else {
     return thing.slice();
   }
-}
-
-// WILL BE REMOVED
-export const subsref = (obj: any, path: any[]) : any => {
-  try {
-    return path.length ? subsref(obj[path[0]], path.slice(1)) : obj
-  } catch {
-    return undefined
-  }
-}
-
-// WILL BE REMOVED
-export const subsasgn = (obj: any, path: any[], value: any) => {
-  let pathEnd = path.pop()
-  for(let i = 0; i < path.length; i++) {
-    obj = obj[path[i]] = obj[path[i]] || []
-  }
-  obj[pathEnd] = value
 }
