@@ -1,13 +1,11 @@
 import {copy, createArray, genHash, isEqual, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
-import {mapDisassembly} from './MapDisassembly'
 import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
-import {mapAssembly} from "./MapAssembly"
 import {M, ML, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "../core/MapUtils"
@@ -24,20 +22,17 @@ export const getMapData = (m: M, path: Path) => {
 }
 
 const setSelect = (m: ML, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
-  ? { selected: 1 , selection }
-  : { selected: 0, selection: 's' }
+  ? { selected: 1 , selection } : { selected: 0, selection: 's' }
 ))
 
 export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-
   const pm = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   const m = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
-
   switch (action) {
     case 'LOAD': break
     // // VIEW
@@ -55,9 +50,7 @@ export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
             isR(payload.path) && !r0d0.selected && !r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0]) ||
             isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 1]) ||
             isR(payload.path) && !r0d0.selected && r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0])
-          )
-            ? { selected: payload.add ? maxSel + 1 : 1, selection: payload.selection }
-            : { selected: 0, selection: 's' }
+          ) ? { selected: payload.add ? maxSel + 1 : 1, selection: payload.selection } : { selected: 0, selection: 's' }
         ))
         if (!n.dCount) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
@@ -76,6 +69,7 @@ export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
       break
     }
     case 'select_S_IOUD': {
+      // TODO try to see if fixing structNavigate works...
       // if (!payload.add) {
       //   clearSelection(m)
       // }
@@ -85,6 +79,8 @@ export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
       // else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
       // else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
       // getMapData(m, structNavigate(m, toPath, payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
+
+
       break
     }
     case 'select_S_F': {

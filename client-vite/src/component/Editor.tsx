@@ -30,7 +30,7 @@ export const Editor: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
   const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
-  const mExists = m && Object.keys(m).length
+  const mExists = m && m.length
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
 
@@ -46,7 +46,7 @@ export const Editor: FC = () => {
   return (
     <ThemeProvider theme={getMuiTheme('dark')}>
       {
-        mExists&&
+        mExists &&
         <>
           <Map/>
           <UndoRedo/>

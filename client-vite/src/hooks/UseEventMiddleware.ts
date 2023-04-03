@@ -2,8 +2,7 @@ import {actions} from "../core/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
-import {mapAssembly} from "../map/MapAssembly"
-import {M, ML} from "../state/MTypes"
+import {ML} from "../state/MTypes"
 import {getMap} from "../state/EditorState";
 import {getG} from "../core/MapUtils";
 

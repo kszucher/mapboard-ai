@@ -4,8 +4,6 @@ import {AccessTypes, PageState} from "../core/Enums"
 import {actions} from "../core/EditorReducer"
 import {useEventMiddleware} from "../hooks/UseEventMiddleware"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {mapAssembly} from "../map/MapAssembly"
-import {M} from "../state/MTypes"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap} from "../state/EditorState"
 import {mapRemoveHelperProps} from "../map/MapRemoveHelperProps"
@@ -19,9 +17,8 @@ let landingAreaListener: AbortController
 export const WindowListeners: FC = () => {
   const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const ml = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
-  const m = mapAssembly(ml) as M
-  const mExists = m && Object.keys(m).length
+  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const mExists = m && m.length
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
   const {access} = data || defaultUseOpenWorkspaceQueryState

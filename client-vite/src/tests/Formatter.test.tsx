@@ -6,7 +6,6 @@ import { describe, it } from 'vitest'
 import {actions, store} from "../core/EditorReducer";
 import {colorList} from "../core/Colors";
 import {FormatMode, LineTypes, AccessTypes, TextTypes, WidthTypes} from "../core/Enums"
-import {mapAssembly} from "../map/MapAssembly";
 import {nSaveOptional} from "../state/NProps";
 import {getMap} from "../state/EditorState";
 
