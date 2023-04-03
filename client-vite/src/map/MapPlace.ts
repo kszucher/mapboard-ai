@@ -3,14 +3,14 @@ import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 
-export const mapPlace = (mlp: M) => {
-  const g = getNodeByPath(mlp, ['g']) as G
-  const r0 = getNodeByPath(mlp, ['r', 0]) as N
-  const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N
-  const r0d1 = getNodeByPath(mlp, ['r', 0, 'd', 1]) as N
+export const mapPlace = (mp: M) => {
+  const g = getNodeByPath(mp, ['g']) as G
+  const r0 = getNodeByPath(mp, ['r', 0]) as N
+  const r0d0 = getNodeByPath(mp, ['r', 0, 'd', 0]) as N
+  const r0d1 = getNodeByPath(mp, ['r', 0, 'd', 1]) as N
 
-  const taskRight = mlp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
-  const taskLeft = mlp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
+  const taskRight = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
+  const taskLeft = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
   const { alignment, taskConfigWidth, margin, sLineDeltaXDefault } = g
   const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
   const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
@@ -52,7 +52,7 @@ export const mapPlace = (mlp: M) => {
   const leftMapHeight = r0.dCount > 1 ? r0d1.familyH : 0
   const mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
 
-  for (const n of mlp) {
+  for (const n of mp) {
     if (isG(n.path)) {
       n.mapWidth = mapWidth // TODO assign mapWidth and mapHeight to R0 instead of G as selfW and selfH, and MOVE the logic to mapMeasure!!! this will support multi-root
       n.mapHeight = mapHeight
@@ -73,8 +73,8 @@ export const mapPlace = (mlp: M) => {
       n.selfW = r0.selfW // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
       n.selfH = r0.selfH // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
     } else {
-      const pn = getNodeByPath(mlp, getParentPath(n.path)) as N
-      const ppn = getNodeByPath(mlp, getParentPath(pn.path)) as N
+      const pn = getNodeByPath(mp, getParentPath(n.path)) as N
+      const ppn = getNodeByPath(mp, getParentPath(pn.path)) as N
       if (isS(n.path)) {
         const i = n.path.at(-1) as number
         n.lineDeltaX = g.sLineDeltaXDefault

@@ -5,16 +5,16 @@ import {N} from "../state/NPropsTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
 
-export const mapMeasure = (pmlp: M, mlp: M) => {
-  const g = getNodeByPath(mlp, ['g']) as G
-  const r0 = getNodeByPath(mlp, ['r', 0]) as N
-  const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N
-  const r0d1 = getNodeByPath(mlp, ['r', 0, 'd', 1]) as N
+export const mapMeasure = (pmp: M, mp: M) => {
+  const g = getNodeByPath(mp, ['g']) as G
+  const r0 = getNodeByPath(mp, ['r', 0]) as N
+  const r0d0 = getNodeByPath(mp, ['r', 0, 'd', 0]) as N
+  const r0d1 = getNodeByPath(mp, ['r', 0, 'd', 1]) as N
 
-  for (let nIndex = mlp.length - 1; nIndex > - 1; nIndex--) {
-    const n = mlp[nIndex]
-    const pn = getNodeById(pmlp, n.nodeId)
-    if (mlp.find(nt => ( // TODO use isSubNode for the following two lines...
+  for (let nIndex = mp.length - 1; nIndex > - 1; nIndex--) {
+    const n = mp[nIndex]
+    const pn = getNodeById(pmp, n.nodeId)
+    if (mp.find(nt => ( // TODO use isSubNode for the following two lines...
       n.path.length < nt.path.length  &&
       n.path.join('') === nt.path.slice(0, n.path.length).join('') &&
       ['ss', 'sc'].includes(getPathPattern(nt.path.slice(n.path.length))))
@@ -28,7 +28,7 @@ export const mapMeasure = (pmlp: M, mlp: M) => {
         let isCellSpacingActivated = 0
         for (let i = 0; i < n.cRowCount; i++) {
           for (let j = 0; j < n.cColCount; j++) {
-            const cn = getNodeByPath(mlp, [...n.path, 'c', i, j]) as N
+            const cn = getNodeByPath(mp, [...n.path, 'c', i, j]) as N
             maxCellHeightMat[i][j] = cn.maxH
             maxCellWidthMat[i][j] = cn.maxW
             if (cn.maxH > g.defaultH) {
@@ -62,7 +62,7 @@ export const mapMeasure = (pmlp: M, mlp: M) => {
             if (cellWidth >= maxColWidth) {
               maxColWidth = cellWidth
             }
-            const cn = getNodeByPath(mlp, [...n.path, 'c', i, j, 's', 0]) as N
+            const cn = getNodeByPath(mp, [...n.path, 'c', i, j, 's', 0]) as N
             if (cn.taskStatus !== 0) {
               maxColWidth += 120
             }
@@ -73,7 +73,7 @@ export const mapMeasure = (pmlp: M, mlp: M) => {
         }
         for (let j = 0; j < n.cColCount; j++) {
           for (let i = 0; i < n.cRowCount; i++) {
-            const cn = getNodeByPath(mlp, [...n.path, 'c', i, j]) as N
+            const cn = getNodeByPath(mp, [...n.path, 'c', i, j]) as N
             cn.selfW = n.maxColWidth[j]
             cn.selfH = n.maxRowHeight[i]
           }
@@ -119,7 +119,7 @@ export const mapMeasure = (pmlp: M, mlp: M) => {
     if (n.sCount) {
       let sMaxW = 0
       for (let i = 0; i < n.sCount; i++) {
-        const cn = getNodeByPath(mlp, [...n.path, 's', i]) as N
+        const cn = getNodeByPath(mp, [...n.path, 's', i]) as N
         n.familyH += cn.maxH
         let currMaxW = cn.maxW
         if (currMaxW >= sMaxW) {
@@ -127,7 +127,7 @@ export const mapMeasure = (pmlp: M, mlp: M) => {
         }
       }
       for (let i = 0; i < n.sCount; i++) {
-        const cn = getNodeByPath(mlp, [...n.path, 's', i]) as N
+        const cn = getNodeByPath(mp, [...n.path, 's', i]) as N
         n.sumElapsedY.push(n.sumElapsedY[i] + cn.maxH + n.spacingActivated * n.spacing)
       }
       if (n.spacingActivated) {

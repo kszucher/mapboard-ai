@@ -4,7 +4,7 @@ import {M, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
 export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
-  const mlp = copy(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  const mp = copy(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   let moveCoords = [] as number[]
   let moveTargetPath = [] as Path
   let moveTargetIndex = 0
@@ -14,7 +14,7 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
     const belowRoot = toY < r0.nodeY
     const overlap = 6
     let moveTargetNodeId = ''
-    for (const n of mlp) {
+    for (const n of mp) {
       if ((isS(n.path) || isD(n.path)) && n.nodeId !== moveNode.nodeId && !isSubPath(moveNode.path, n.path)) {
         let vCondition
         if (n.isTop && belowRoot) {
@@ -32,7 +32,7 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
       }
     }
     if (moveTargetNodeId.length) {
-      const moveTargetNode = getNodeById(mlp, moveTargetNodeId) as GN
+      const moveTargetNode = getNodeById(mp, moveTargetNodeId) as GN
       const fromX = moveTargetNode.path[3] ? moveTargetNode.nodeStartX : moveTargetNode.nodeEndX
       const fromY = moveTargetNode.nodeY
       moveCoords = [fromX, fromY, toX, toY]
