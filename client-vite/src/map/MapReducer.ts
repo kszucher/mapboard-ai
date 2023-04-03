@@ -1,6 +1,4 @@
 import {copy, createArray, genHash, isEqual, transpose} from '../core/Utils'
-import {mapFindById} from './MapFindById'
-import {mapSetProp} from './MapSetProp'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
