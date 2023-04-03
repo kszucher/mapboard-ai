@@ -18,17 +18,17 @@ export const Formatter: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const g = ml.filter((n: N) => n.path.length === 1).at(0)
-  const ln = getNodeByPath(ml, g.sc.lastPath) as N
-  const lineWidth = WidthTypes[sGetter(ml, 'lineWidth') || 0]
-  const lineType = LineTypes[sGetter(ml, 'lineType') || 0]
-  const lineColor = sGetter(ml, 'lineColor')
-  const borderWidth = WidthTypes[ln.selection === 's' ? sGetter(ml, 'sBorderWidth') || 0 : fGetter(ml, 'fBorderWidth') || 0]
-  const borderColor = ln.selection === 's' ? sGetter(ml, 'sBorderColor') : fGetter(ml, 'fBorderColor')
-  const fillColor = ln.selection === 's' ? sGetter(ml, 'sFillColor') : fGetter(ml, 'fFillColor')
-  const textFontSize = TextTypes[sGetter(ml, 'textFontSize') || 0]
-  const textColor = sGetter(ml, 'textColor')
+  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const ln = getNodeByPath(m, g.sc.lastPath) as N
+  const lineWidth = WidthTypes[sGetter(m, 'lineWidth') || 0]
+  const lineType = LineTypes[sGetter(m, 'lineType') || 0]
+  const lineColor = sGetter(m, 'lineColor')
+  const borderWidth = WidthTypes[ln.selection === 's' ? sGetter(m, 'sBorderWidth') || 0 : fGetter(m, 'fBorderWidth') || 0]
+  const borderColor = ln.selection === 's' ? sGetter(m, 'sBorderColor') : fGetter(m, 'fBorderColor')
+  const fillColor = ln.selection === 's' ? sGetter(m, 'sFillColor') : fGetter(m, 'fFillColor')
+  const textFontSize = TextTypes[sGetter(m, 'textFontSize') || 0]
+  const textColor = sGetter(m, 'textColor')
   const dispatch = useDispatch()
   const setFormatText = () => dispatch(actions.setFormatMode(FormatMode.text))
   const setFormatBorder = () => dispatch(actions.setFormatMode(FormatMode.border))

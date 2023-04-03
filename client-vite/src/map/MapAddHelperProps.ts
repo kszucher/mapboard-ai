@@ -1,13 +1,13 @@
 import {getNodeByPath, isG} from "../core/MapUtils"
-import {ML, MLPartial} from "../state/MTypes"
+import {M, MPartial} from "../state/MTypes"
 import {GPartial, GSaveNever, GSaveOptional} from "../state/GPropsTypes"
 import {gSaveAlways, gSaveNever, gSaveOptional} from "../state/GProps"
 import {copy, genHash, shallowCopy} from "../core/Utils";
 import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps";
 import {NSaveAlways, NSaveNever, NSaveOptional} from "../state/NPropsTypes";
 
-export const mapAddHelperProps = (mlp: MLPartial) => {
-  const g = getNodeByPath(mlp as ML, ['g']) as GPartial
+export const mapAddHelperProps = (mlp: MPartial) => {
+  const g = getNodeByPath(mlp as M, ['g']) as GPartial
   for (const n of mlp) {
     if (isG(n.path)) {
       for (const prop in gSaveAlways) {

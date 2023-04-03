@@ -5,8 +5,8 @@ export const rectanglesIntersect = (input: number[]) => {
   const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
   return maxAx >= minBx && minAx <= maxBx && minAy <= maxBy && maxAy >= minBy
 }
-export const mapFindIntersecting = (ml: N[], fromCoords: { x: number, y: number }, toCoords: { x: number, y: number }) => (
-  ml.filter(n =>
+export const mapFindIntersecting = (m: N[], fromCoords: { x: number, y: number }, toCoords: { x: number, y: number }) => (
+  m.filter(n =>
     isS(n.path) && !n.cRowCount && !n.cColCount && n.content !== '' &&
     +rectanglesIntersect([
       Math.min(fromCoords.x, toCoords.x),

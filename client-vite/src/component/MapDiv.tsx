@@ -29,15 +29,15 @@ export const MapDiv: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
-  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const g = ml.filter((n: N) => n.path.length === 1).at(0)
+  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
   const dispatch = useDispatch()
   return (
     <div style={{position: 'absolute', display: 'flex'}}>
-      {ml.map((n: N) => (
+      {m.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
             n.contentType && n.path.length !== 4 &&
@@ -71,7 +71,7 @@ export const MapDiv: FC = () => {
               contentEditable={n.nodeId === editedNodeId}
               onFocus={(e) => {
                 if (editType === 'append') {
-                  e.currentTarget.innerHTML = getNodeById(ml, editedNodeId).content
+                  e.currentTarget.innerHTML = getNodeById(m, editedNodeId).content
                 }
                 setEndOfContentEditable(e.currentTarget)
               }}
@@ -94,14 +94,14 @@ export const MapDiv: FC = () => {
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       const toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest(ml, n, toCoords.x, toCoords.y)
+                      const { moveCoords } = mapFindNearest(m, n, toCoords.x, toCoords.y)
                       dispatch(actions.setFromCoordsMove(moveCoords))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       e.preventDefault()
                       abortController.abort()
                       const toCoords = getCoords(e)
-                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(ml, n, toCoords.x, toCoords.y)
+                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(m, n, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }

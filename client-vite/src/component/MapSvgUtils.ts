@@ -1,6 +1,6 @@
 import {LineTypes} from "../core/Enums"
 import {isOdd} from "../core/Utils"
-import {M, ML} from "../state/MTypes"
+import {M} from "../state/MTypes"
 import {G, SC} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {getNodeByPath} from "../core/MapUtils";
@@ -217,14 +217,14 @@ export const getGridPath = (n: N) => {
   return path
 }
 
-const getTaskStartPoint = (ml: ML, g: G, n: N) => {
+const getTaskStartPoint = (m: M, g: G, n: N) => {
   const { mapWidth, margin, taskConfigWidth } = g
   const dir = getDir(n)
   let startX
   if (n.path.includes('c')) {
     const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
     const currCol = n.path[n.path.lastIndexOf('c') + 2] as number
-    const coverCellRef = getNodeByPath(ml, coverCellPath) as N
+    const coverCellRef = getNodeByPath(m, coverCellPath) as N
     startX =
       (dir === - 1
         ? coverCellRef.nodeEndX
@@ -237,18 +237,18 @@ const getTaskStartPoint = (ml: ML, g: G, n: N) => {
   return startX
 }
 
-export const getTaskPath = (ml: ML, g: G, n: N) => {
+export const getTaskPath = (m: M, g: G, n: N) => {
   const { xo } = getAdjustedParams(n)
   const x1 = xo
-  const x2 = getTaskStartPoint(ml, g, n)
+  const x2 = getTaskStartPoint(m, g, n)
   const y = n.nodeY
   return `M${x1},${y} L${x2},${y}`
 }
 
-export const getTaskCircle = (ml: ML, g: G, n: N, i: number) => {
+export const getTaskCircle = (m: M, g: G, n: N, i: number) => {
   const dir = getDir(n)
   const { taskConfigD, taskConfigGap } = g
-  const cx = getTaskStartPoint(ml, g, n) + dir * ( taskConfigD/2 + i * (taskConfigD + taskConfigGap))
+  const cx = getTaskStartPoint(m, g, n) + dir * ( taskConfigD/2 + i * (taskConfigD + taskConfigGap))
   const cy = n.nodeY
   const r = taskConfigD / 2
   return { cx, cy, r }

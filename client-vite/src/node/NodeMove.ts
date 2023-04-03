@@ -1,8 +1,8 @@
 import {copy, transpose} from '../core/Utils'
 import {getMapData} from '../map/MapReducer'
 import {Dir} from "../core/Enums"
-import {M} from "../state/MTypes"
 import {getDefaultNode} from "../core/MapUtils";
+import {M} from "../state/MTypes";
 
 export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {
   let {structSelectedPathList, sameParentPath} = sc

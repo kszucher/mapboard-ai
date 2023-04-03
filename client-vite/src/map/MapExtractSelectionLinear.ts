@@ -1,5 +1,5 @@
 import {getNodeByPath, getParentPath, isR} from "../core/MapUtils"
-import {ML} from "../state/MTypes"
+import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {copy, isArrayOfEqualValues} from "../core/Utils"
 
@@ -8,7 +8,7 @@ import {copy, isArrayOfEqualValues} from "../core/Utils"
 // - scope is either s, f, c, cr or cc, and multi-select will only be possible in two ways: either multi-s or multi-f
 // - prevent selecting nodes in an inclusive relation (cell struct inside cell with parent cell selected as well)
 
-export const mapExtractSelectionLinear = (mlp: ML) => {
+export const mapExtractSelectionLinear = (mlp: M) => {
   const g = getNodeByPath(mlp, ['g']) as G
   for (const n of mlp) {
     if (n.selected) {

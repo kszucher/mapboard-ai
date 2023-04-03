@@ -15,8 +15,8 @@ export const Map: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const g = ml.filter((n: N) => n.path.length === 1).at(0)
+  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { density, alignment } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState

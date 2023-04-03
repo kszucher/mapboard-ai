@@ -2,7 +2,7 @@ import {actions} from "../core/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
-import {ML} from "../state/MTypes"
+import {M} from "../state/MTypes"
 import {getMap} from "../state/EditorState";
 import {getG} from "../core/MapUtils";
 
@@ -14,7 +14,7 @@ const ckm = (e: any, condition: string) => (
   ['-', (+e.altKey) ? '1' : '0'].includes(condition[2])
 )
 
-const c2dt = (m: ML, which: number) => {
+const c2dt = (m: M, which: number) => {
   const g = getG(m)
   const {lastPath} = g.sc
   let direction

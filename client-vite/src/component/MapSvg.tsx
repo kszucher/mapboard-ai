@@ -18,7 +18,6 @@ import {
   getTaskPath,
 } from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
-import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -49,12 +48,12 @@ export const MapSvg: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
-  const ml = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
-  const g = ml.filter((n: N) => n.path.length === 1).at(0)
-  const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : ml // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
+  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const sn = ['c', 'cr', 'cc'].includes(g.sc.scope)
-    ? getNodeByPath(ml, g.sc.sameParentPath)
-    : ml
+    ? getNodeByPath(m, g.sc.sameParentPath)
+    : m
       .filter((el: any) => el.path.length > 1)
       .reduce((a: N, b: N) => a.selected > b.selected ? a : b)
   const { data } = useOpenWorkspaceQuery()
@@ -91,7 +90,7 @@ export const MapSvg: FC = () => {
               Math.abs(toCoords.x - fromCoords.x),
               Math.abs(toCoords.y - fromCoords.y)
             ])
-            setIntersectingNodes(mapFindIntersecting(ml, fromCoords, toCoords))
+            setIntersectingNodes(mapFindIntersecting(m, fromCoords, toCoords))
           }
         }, { signal })
         window.addEventListener('mouseup', (e) => {
@@ -102,7 +101,7 @@ export const MapSvg: FC = () => {
             if (e.button === 0) {
               dispatch(actions.mapAction({
                 type: 'select_dragged',
-                payload: {nList: mapFindIntersecting(ml, fromCoords, toCoords)}
+                payload: {nList: mapFindIntersecting(m, fromCoords, toCoords)}
               }))
               setSelectionRectCoords([])
               setIntersectingNodes([])
@@ -138,7 +137,7 @@ export const MapSvg: FC = () => {
           </rect>
         </g>
         <g id="layer1">
-          {ml.map((n: N) => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 n.fFillColor &&
@@ -154,7 +153,7 @@ export const MapSvg: FC = () => {
           ))}
         </g>
         <g id="layer2">
-          {ml.map((n: N) => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 (n.sFillColor || n.taskStatus > 1) &&
@@ -170,7 +169,7 @@ export const MapSvg: FC = () => {
           ))}
         </g>
         <g id="layer3">
-          {ml.map((n: N) => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 n.fBorderColor &&
@@ -205,7 +204,7 @@ export const MapSvg: FC = () => {
                   d={
                     !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getStructParentPath(n.path))
                       ? getLinePathBetweenNodes(getNodeByPath(pml, getStructParentPath(n.path)), n)
-                      : getLinePathBetweenNodes(getNodeByPath(ml, getStructParentPath(n.path)), n)
+                      : getLinePathBetweenNodes(getNodeByPath(m, getStructParentPath(n.path)), n)
                   }
                   strokeWidth={n.lineWidth}
                   stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -217,7 +216,7 @@ export const MapSvg: FC = () => {
                     <animate
                       attributeName='d'
                       from={getLinePathBetweenNodes(getNodeByPath(pml, getStructParentPath(n.path)), n)}
-                      to={getLinePathBetweenNodes(getNodeByPath(ml, getStructParentPath(n.path)), n)}
+                      to={getLinePathBetweenNodes(getNodeByPath(m, getStructParentPath(n.path)), n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
                       fill={'freeze'}
@@ -257,7 +256,7 @@ export const MapSvg: FC = () => {
                     !isEqual(n.nodeId, editedNodeId) &&
                     <path
                       key={`${n.nodeId}_svg_taskLine`}
-                      d={getTaskPath(ml, g, n)}
+                      d={getTaskPath(m, g, n)}
                       stroke={C.TASK_LINE}
                       strokeWidth={1}
                       fill={'none'}
@@ -270,7 +269,7 @@ export const MapSvg: FC = () => {
                       <circle
                         key={`${n.nodeId}_svg_taskCircle${i + 1}`}
                         id={'taskCircle'}
-                        {...getTaskCircle(ml, g, n, i)}
+                        {...getTaskCircle(m, g, n, i)}
                         fill={n.taskStatus === i + 1
                           ? [C.TASK_CIRCLE_0_ON, C.TASK_CIRCLE_1_ON, C.TASK_CIRCLE_2_ON, C.TASK_CIRCLE_3_ON].at(i)
                           : [C.TASK_CIRCLE_0_OFF, C.TASK_CIRCLE_1_OFF, C.TASK_CIRCLE_2_OFF, C.TASK_CIRCLE_3_OFF].at(i)}
@@ -293,7 +292,7 @@ export const MapSvg: FC = () => {
           ))}
         </g>
         <g id="layer4">
-          {ml.map((n: N) => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 !selectionRectCoords.length &&

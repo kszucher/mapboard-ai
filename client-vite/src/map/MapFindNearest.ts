@@ -1,15 +1,15 @@
 import {copy} from "../core/Utils"
 import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSamePath, isSubPath} from "../core/MapUtils"
-import {ML, GN, Path} from "../state/MTypes"
+import {M, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
-export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) => {
-  const mlp = copy(ml).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
+  const mlp = copy(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   let moveCoords = [] as number[]
   let moveTargetPath = [] as Path
   let moveTargetIndex = 0
   if (!(moveNode.nodeStartX < toX && toX < moveNode.nodeEndX && moveNode.nodeY - moveNode.selfH / 2 < toY && toY < moveNode.nodeY + moveNode.selfH / 2)) {
-    const r0 = getNodeByPath(ml, ['r', 0]) as N
+    const r0 = getNodeByPath(m, ['r', 0]) as N
     const aboveRoot = toY >= r0.nodeY
     const belowRoot = toY < r0.nodeY
     const overlap = 6
@@ -39,7 +39,7 @@ export const mapFindNearest = (ml: ML, moveNode: N, toX: number, toY: number) =>
       if (moveTargetNode.sCount ) {
         moveTargetIndex = moveTargetNode.sCount
         for (let i = moveTargetNode.sCount - 1; i > -1; i--) {
-          const currMoveTargetNodeChild = getNodeByPath(ml, [...moveTargetNode.path, 's', i]) as GN
+          const currMoveTargetNodeChild = getNodeByPath(m, [...moveTargetNode.path, 's', i]) as GN
           if (toY < currMoveTargetNodeChild.nodeY) {
             moveTargetIndex = i
           }

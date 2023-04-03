@@ -3,17 +3,17 @@ import {mapReducer} from "../map/MapReducer"
 import {api} from "./Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "./Enums"
-import {M, ML} from "../state/MTypes"
+import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {getNodeByPath} from "./MapUtils";
 import {isEqual} from "./Utils";
 
 const editorStateDefault = JSON.stringify(editorState)
 
-const findEditedNodeId = (ml: ML, g: G) => (
+const findEditedNodeId = (m: M, g: G) => (
   g.sc.scope === 'c'
-    ? getNodeByPath(ml, g.sc.lastPath).s[0].nodeId
-    : getNodeByPath(ml, g.sc.lastPath).nodeId
+    ? getNodeByPath(m, g.sc.lastPath).s[0].nodeId
+    : getNodeByPath(m, g.sc.lastPath).nodeId
 )
 
 export const editorSlice = createSlice({
@@ -29,14 +29,14 @@ export const editorSlice = createSlice({
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
-      const ml = state.mapList[state.mapListIndex]
-      const g = ml.filter((n) => n.path.length === 1).at(0) as G
+      const m = state.mapList[state.mapListIndex]
+      const g = m.filter((n) => n.path.length === 1).at(0) as G
       if (action.payload.type === 'startEditReplace') {
-        state.editedNodeId = findEditedNodeId(ml, g)
+        state.editedNodeId = findEditedNodeId(m, g)
         state.editType = 'replace'
       } else {
-        const nml = mapReducer(ml, action.payload.type, action.payload.payload)
-        const isMapChanged = !isEqual(ml, nml)
+        const nml = mapReducer(m, action.payload.type, action.payload.payload)
+        const isMapChanged = !isEqual(m, nml)
         switch (action.payload.type) {
           case 'startEditAppend':
             if (isMapChanged) {
@@ -44,7 +44,7 @@ export const editorSlice = createSlice({
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = nml
-            state.editedNodeId = findEditedNodeId(ml, g)
+            state.editedNodeId = findEditedNodeId(m, g)
             state.editType = 'append'
             break
           case 'typeText':

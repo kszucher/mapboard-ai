@@ -6,7 +6,7 @@ import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
-import {M, ML, Path} from "../state/MTypes"
+import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
@@ -21,15 +21,15 @@ export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
 }
 
-const setSelect = (m: ML, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
+const setSelect = (m: M, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
   ? { selected: 1 , selection } : { selected: 0, selection: 's' }
 ))
 
-export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
+export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const pm = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
-  const m = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as ML
+  const pm = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as M
+  const m = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as M
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)

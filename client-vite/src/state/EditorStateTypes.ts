@@ -1,5 +1,5 @@
 import {FormatMode, PageState} from "../core/Enums"
-import {ML} from "./MTypes"
+import {M} from "./MTypes"
 
 export interface EditorState {
   token: string
@@ -7,7 +7,7 @@ export interface EditorState {
   formatMode: FormatMode
   tabShrink: boolean
   tempMap: object
-  mapList: ML[]
+  mapList: M[]
   mapListIndex: number
   editedNodeId: string
   editType: '' | 'append' | 'replace'

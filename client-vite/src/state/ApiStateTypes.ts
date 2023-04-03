@@ -1,5 +1,5 @@
 import {AccessTypes} from "../core/Enums"
-import {ML} from "./MTypes"
+import {M} from "./MTypes"
 
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string
@@ -8,7 +8,7 @@ export interface DefaultUseOpenWorkspaceQueryState {
   tabId: number
   mapId: string
   frameId: string
-  mapDataList: ML[]
+  mapDataList: M[]
   breadcrumbMapIdList: []
   breadcrumbMapNameList: []
   tabMapIdList: []

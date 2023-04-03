@@ -1,11 +1,11 @@
 import {getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../core/MapUtils"
-import {ML} from "../state/MTypes"
+import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
 
-export const mapMeasureLinear = (pmlp: ML, mlp: ML) => {
+export const mapMeasureLinear = (pmlp: M, mlp: M) => {
   const g = getNodeByPath(mlp, ['g']) as G
   const r0 = getNodeByPath(mlp, ['r', 0]) as N
   const r0d0 = getNodeByPath(mlp, ['r', 0, 'd', 0]) as N
