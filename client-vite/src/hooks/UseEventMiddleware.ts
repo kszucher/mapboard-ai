@@ -3,8 +3,9 @@ import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {mapAssembly} from "../map/MapAssembly"
-import {M} from "../state/MTypes"
+import {M, ML} from "../state/MTypes"
 import {getMap} from "../state/EditorState";
+import {getG} from "../core/MapUtils";
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -14,8 +15,9 @@ const ckm = (e: any, condition: string) => (
   ['-', (+e.altKey) ? '1' : '0'].includes(condition[2])
 )
 
-const c2dt = (m: M, which: number) => {
-  const {lastPath} = m.g.sc
+const c2dt = (m: ML, which: number) => {
+  const g = getG(m)
+  const {lastPath} = g.sc
   let direction
   if (which === R) {
     if (lastPath.length === 2) {direction = Dir.OR}
@@ -51,8 +53,8 @@ export const useEventMiddleware = (
   const { text } = someEvent.clipboardPasteTextEvent ? someEvent.clipboardPasteTextEvent : { text: '' }
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
 
-  const ml = getMap()
-  const m = mapAssembly(ml) as M
+  const m = getMap()
+  const g = getG(m)
 
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   ['s', 'c'],             0, '',                         {},                              1 ],
@@ -88,7 +90,7 @@ export const useEventMiddleware = (
     [ kd, ckm(e, '100') && [L,R,U,D].includes(which),      ['s'],                  1, 'move_S_IOUD',              {...c2dt(m, which)},             1 ],
     [ kd, ckm(e, '000') && [L,R].includes(which),          ['cc'],                 1, 'select_CC_UD',             {...c2dt(m, which)},             1 ],
     [ kd, ckm(e, '100') && [L,R].includes(which),          ['cc'],                 1, 'move_CC_IO',               {...c2dt(m, which)},             1 ],
-    [ kd, ckm(e, '010') && [L,R].includes(which),          ['s'],                  1, 'selectDescendantsOut',     {code},                          1 ],
+    [ kd, ckm(e, '010') && [L,R].includes(which),          ['s'],                  1, 'selectDescendantsOut',     {...c2dt(m, which)},             1 ],
     [ kd, ckm(e, '010') && [L,R].includes(which),          ['c'],                  1, 'select_CR_IO',             {},                              1 ],
     [ kd, ckm(e, '001') && [L,R].includes(which),          ['c', 'cc'],            1, 'insert_CC_IO',             {...c2dt(m, which), b: false},   1 ],
     [ kd, ckm(e, '001') && [L,R].includes(which),          ['c'],                  1, 'insert_CC_IO',             {...c2dt(m, which), b: true},    1 ],
@@ -108,7 +110,7 @@ export const useEventMiddleware = (
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
     const [ eventTypeCondition, match, scope, isMapAction, type, payload, preventDefault ] = stateMachine[i]
-    if (eventTypeCondition && match === true && scope.includes(m.g.sc.scope)) {
+    if (eventTypeCondition && match === true && scope.includes(g.sc.scope)) {
       if (preventDefault === 1 && kd) {
         someEvent.keyboardEvent && someEvent.keyboardEvent.preventDefault()
       }

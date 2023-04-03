@@ -10,7 +10,7 @@ import {Dir} from "../core/Enums"
 import {mapAssembly} from "./MapAssembly"
 import {M, ML, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {fSetter, getNodeByPath, getParentNodeByPath,  isR, sSetter} from "../core/MapUtils"
+import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
 import {mapMeasureLinear} from "./MapMeasureLinear"
 import {nSaveOptional} from "../state/NProps";
@@ -22,6 +22,11 @@ import {mapChainLinearNoPath} from "./MapChainLinearNoPath";
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
 }
+
+const setSelect = (m: ML, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
+  ? { selected: 1 , selection }
+  : { selected: 0, selection: 's' }
+))
 
 export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
@@ -41,16 +46,15 @@ export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
     case 'select_S': {
       const n = getNodeByPath(m, payload.path)
       if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
-        const r0d0_selected = getNodeByPath(m, ['r', 0, 'd', 0]).selected
-        const r0d1_selected = getNodeByPath(m, ['r', 0, 'd', 1]).selected
+        const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
+        const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
         const maxSel = 0 // TODO calculate this one...
-        m.forEach(n => Object.assign(
-          n, n.path.length > 1 && (
+        m.forEach(n => Object.assign(n, n.path.length > 1 && (
             !isR(payload.path) && isEqual(n.path, payload.path) ||
             isR(payload.path) && payload.selection === 's' && isEqual(n.path, payload.path) ||
-            isR(payload.path) && !r0d0_selected && !r0d1_selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0]) ||
-            isR(payload.path) && r0d0_selected && !r0d1_selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 1]) ||
-            isR(payload.path) && !r0d0_selected && r0d1_selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0])
+            isR(payload.path) && !r0d0.selected && !r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0]) ||
+            isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 1]) ||
+            isR(payload.path) && !r0d0.selected && r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0])
           )
             ? { selected: payload.add ? maxSel + 1 : 1, selection: payload.selection }
             : { selected: 0, selection: 's' }
@@ -62,30 +66,13 @@ export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
       break
     }
     case 'select_all': {
-      // mapSetProp.iterate(m.r[0], { selected: 1, selection: 's' }, (n: N) => (isS(n.path) && !n.cRowCount && !n.cColCount))
+      m.forEach((n, i) => Object.assign(n, n.content !=='' ? { selected: i, selection: 's'} : { selected: 0, selection: 's' } ))
       break
     }
     case 'selectDescendantsOut': {
-      // if (ln.sCount > 0) {
-      //   if (isR(ln.path)) {
-      //     ln.selected = 0
-      //     if (payload.code === 'ArrowRight') {
-      //       ln.d[0].selected = 1
-      //       ln.d[0].selection = 'f'
-      //     } else if (payload.code === 'ArrowLeft') {
-      //       ln.d[1].selected = 1
-      //       ln.d[1].selection = 'f'
-      //     }
-      //   } else if (
-      //     ln.path[3] === 0 && payload.code === 'ArrowRight' ||
-      //     ln.path[3] === 1 && payload.code === 'ArrowLeft') {
-      //     ln.selection = 'f'
-      //   } else if (
-      //     ln.path[3] === 0 && payload.code === 'ArrowLeft' ||
-      //     ln.path[3] === 1 && payload.code === 'ArrowRight') {
-      //     ln.selection = 's'
-      //   }
-      // }
+      if (payload.direction === Dir.OR) setSelect(m, ['r', 0, 'd', 0], 'f')
+      else if (payload.direction === Dir.OL) setSelect(m, ['r', 0, 'd', 1], 'f')
+      else if (payload.direction === Dir.O && ln.sCount > 0) ln.selection = 'f'
       break
     }
     case 'select_S_IOUD': {
