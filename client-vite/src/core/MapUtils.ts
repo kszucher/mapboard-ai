@@ -14,8 +14,10 @@ export const isS = (p: Path) => getPathPattern(p).endsWith('s')
 export const isC = (p: Path) => getPathPattern(p).endsWith('c')
 export const isSamePath = (p: Path, pt: Path) => p.join('') === pt.join('')
 export const isSubPath = (p: Path, pt: Path) => pt.length > p.length && p.join('') === pt.slice(0, p.length).join('')
-export const getNodeById = (ml: ML, nodeId: string) => (ml.find((n: GN) => n.nodeId === nodeId))
+export const getNodeById = (ml: ML, nodeId: string) => (ml.find((n: GN) => n.nodeId === nodeId)) as GN
 export const getNodeByPath = (ml: ML, p: Path) => (ml.find((n: GN) => isSamePath(n.path, p))) as GN
+export const getParentNodeById = (ml: ML, nodeId: string) => getNodeByPath(ml, getParentPath(getNodeById(ml, nodeId).path)) as N
+export const getParentNodeByPath = (ml: ML, p: Path) => getNodeByPath(ml, getParentPath(p)) as N
 export const getG = (ml: ML) => ml.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLN = (ml: ML) => getNodeByPath(ml, getG(ml).sc.lastPath) as N
 export const sFinder = (ml: ML) =>  ml.filter((n: N) => getG(ml).sc.structSelectedPathList.some((sp: Path) => isSamePath(sp, n.path)))

@@ -60,12 +60,12 @@ export const mapExtractSelectionLinear = (mlp: ML) => {
   if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
     sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mlp, getParentPath(path)))))
     if (sc.haveSameParent) {
-      sc.sameParentPath = copy(getNodeByPath(mlp, getParentPath(sc.lastPath)))
+      sc.sameParentPath = copy(getParentPath(sc.lastPath))
     }
   } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
     sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mlp, getParentPath(path)))))
     if (sc.haveSameParent) {
-      sc.sameParentPath = copy(getNodeByPath(mlp, getParentPath(sc.lastPath)))
+      sc.sameParentPath = copy(getParentPath(sc.lastPath))
     }
     if (sc.haveSameParent) {
       let haveSameRow = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 2]))

@@ -1,4 +1,4 @@
-import {copy, createArray, genHash, subsref, transpose} from '../core/Utils'
+import {copy, createArray, genHash, isEqual, subsref, transpose} from '../core/Utils'
 import {mapFindById} from './MapFindById'
 import {mapDisassembly} from './MapDisassembly'
 import {mapSetProp} from './MapSetProp'
@@ -10,7 +10,7 @@ import {Dir} from "../core/Enums"
 import {mapAssembly} from "./MapAssembly"
 import {M, ML, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {fSetter, getDefaultNode, getNodeByPath, isC, isR, isS, sSetter} from "../core/MapUtils"
+import {fSetter, getNodeByPath, getParentNodeByPath,  isR, sSetter} from "../core/MapUtils"
 import {mapPlaceLinear} from "./MapPlaceLinear"
 import {mapMeasureLinear} from "./MapMeasureLinear"
 import {nSaveOptional} from "../state/NProps";
@@ -21,17 +21,6 @@ import {mapChainLinearNoPath} from "./MapChainLinearNoPath";
 
 export const getMapData = (m: M, path: Path) => {
   return subsref(m, path)
-}
-
-const clearSelection = (m: M) => {
-  // mapSetProp.iterate(m.r[0], { selected: 0, selection: 's' }, true)
-}
-
-const updateParentLastSelectedChild = (m: M, ln: N) => {
-  // if (!m.g.sc.isRootIncluded) {
-  //   let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
-  //   pn.lastSelectedChild = ln.path.at(-1)
-  // }
 }
 
 export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
@@ -45,58 +34,31 @@ export const mapReducer = (pmNodeSorted: ML, action: string, payload: any) => {
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
 
   switch (action) {
-    case 'LOAD': {
-      break
-    }
+    case 'LOAD': break
     // // VIEW
-    case 'changeDensity': {
-      g.density = g.density === 'small' ? 'large' : 'small'
-      break
-    }
-    case 'changeAlignment': {
-      g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'
-      break
-    }
-    // SELECT
-    case 'selectStruct': {
-      // clearSelection(m)
-      // const {lastOverPath} = payload
-      // const ln = getMapData(m, lastOverPath)
-      // ln.selected = 1
-      // ln.selection = 's'
-      // updateParentLastSelectedChild(m, ln)
-      break
-    }
-    case 'selectStructToo': {
-      // const {lastOverPath} = payload
-      // const ln = getMapData(m, lastOverPath)
-      // ln.selected = sc.maxSel + 1
-      // updateParentLastSelectedChild(m, ln)
-      break
-    }
-    case 'selectStructFamily': {
-      // const {lastOverPath} = payload
-      // const ln = getMapData(m, lastOverPath)
-      // if (isR(ln.path)) {
-      //   ln.selected = 0
-      //   if (ln.d[0].selected === 1) {
-      //     ln.d[0].selected = 0
-      //     ln.d[1].selected = 1
-      //     ln.d[1].selection = 'f'
-      //   } else {
-      //     clearSelection(m)
-      //     ln.d[0].selected = 1
-      //     ln.d[1].selected = 0
-      //     ln.d[0].selection = 'f'
-      //   }
-      // } else {
-      //   if (ln.sCount > 0) {
-      //     clearSelection(m)
-      //     ln.selected = 1
-      //     ln.selection = 'f'
-      //   }
-      // }
-      // updateParentLastSelectedChild(m, ln)
+    case 'changeDensity': g.density = g.density === 'small' ? 'large' : g.density; break
+    case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : g.density; break
+    case 'select_S': {
+      const n = getNodeByPath(m, payload.path)
+      if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
+        const r0d0_selected = getNodeByPath(m, ['r', 0, 'd', 0]).selected
+        const r0d1_selected = getNodeByPath(m, ['r', 0, 'd', 1]).selected
+        const maxSel = 0 // TODO calculate this one...
+        m.forEach(n => Object.assign(
+          n, n.path.length > 1 && (
+            !isR(payload.path) && isEqual(n.path, payload.path) ||
+            isR(payload.path) && payload.selection === 's' && isEqual(n.path, payload.path) ||
+            isR(payload.path) && !r0d0_selected && !r0d1_selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0]) ||
+            isR(payload.path) && r0d0_selected && !r0d1_selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 1]) ||
+            isR(payload.path) && !r0d0_selected && r0d1_selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0])
+          )
+            ? { selected: payload.add ? maxSel + 1 : 1, selection: payload.selection }
+            : { selected: 0, selection: 's' }
+        ))
+        if (!n.dCount) {
+          getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
+        }
+      }
       break
     }
     case 'select_all': {

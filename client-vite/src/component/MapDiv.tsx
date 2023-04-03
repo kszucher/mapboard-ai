@@ -40,7 +40,7 @@ export const MapDiv: FC = () => {
       {ml.map((n: N) => (
         <Fragment key={n.nodeId}>
           {
-            n.contentType &&
+            n.contentType && n.path.length !== 4 &&
             // isS(n.path) && !n.cRowCount && !n.cColCount &&
             <div
               id={'node'}
@@ -71,7 +71,7 @@ export const MapDiv: FC = () => {
               contentEditable={n.nodeId === editedNodeId}
               onFocus={(e) => {
                 if (editType === 'append') {
-                  e.currentTarget.innerHTML = (getNodeById(ml, editedNodeId) as N).content
+                  e.currentTarget.innerHTML = getNodeById(ml, editedNodeId).content
                 }
                 setEndOfContentEditable(e.currentTarget)
               }}
@@ -87,7 +87,8 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    dispatch(actions.mapAction({type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStruct' : 'selectStructToo', payload: {lastOverPath: n.path}}))
+                    const add = + (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
+                    dispatch(actions.mapAction({type: 'select_S', payload: { add, path: n.path, selection: 's' }}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
@@ -110,8 +111,8 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  dispatch(actions.mapAction({type: (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey) ? 'selectStructFamily' : 'selectStructToo', payload: {lastOverPath: n.path}})
-                  )
+                  const add = + (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
+                  dispatch(actions.mapAction({type: 'select_S', payload: { add, path: n.path, selection: 'f' }}))
                 }
               }}
               onDoubleClick={(e) => {
