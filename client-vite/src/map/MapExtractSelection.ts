@@ -1,7 +1,7 @@
 import {getNodeByPath, getParentPath, isR} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
-import {copy, isArrayOfEqualValues} from "../core/Utils"
+import {isArrayOfEqualValues} from "../core/Utils"
 
 // - prevent selecting nodes in an inclusive relation (cell struct inside cell with parent cell selected as well)
 
@@ -57,12 +57,12 @@ export const mapExtractSelection = (mp: M) => {
   if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
     sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mp, getParentPath(path)))))
     if (sc.haveSameParent) {
-      sc.sameParentPath = copy(getParentPath(sc.lastPath))
+      sc.sameParentPath = structuredClone(getParentPath(sc.lastPath))
     }
   } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
     sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mp, getParentPath(path)))))
     if (sc.haveSameParent) {
-      sc.sameParentPath = copy(getParentPath(sc.lastPath))
+      sc.sameParentPath = structuredClone(getParentPath(sc.lastPath))
     }
     if (sc.haveSameParent) {
       let haveSameRow = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 2]))

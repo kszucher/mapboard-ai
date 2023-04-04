@@ -2,7 +2,7 @@ import {getNodeByPath, isG} from "./MapUtils"
 import {M, MPartial} from "../state/MTypes"
 import {GPartial, GSaveNever, GSaveOptional} from "../state/GPropsTypes"
 import {gSaveAlways, gSaveNever, gSaveOptional} from "../state/GProps"
-import {copy, genHash, shallowCopy} from "../core/Utils";
+import {genHash} from "../core/Utils";
 import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps";
 import {NSaveAlways, NSaveNever, NSaveOptional} from "../state/NPropsTypes";
 
@@ -15,11 +15,11 @@ export const mapInit = (mp: MPartial) => {
       }
       for (const prop in gSaveOptional) {
         if (!g.hasOwnProperty(prop)) {
-          g[prop as keyof GSaveOptional] = copy(gSaveOptional[prop as keyof GSaveOptional])
+          g[prop as keyof GSaveOptional] = structuredClone(gSaveOptional[prop as keyof GSaveOptional])
         }
       }
       for (const prop in gSaveNever) {
-        g[prop as keyof GSaveNever] = copy(gSaveNever[prop as keyof GSaveNever])
+        g[prop as keyof GSaveNever] = structuredClone(gSaveNever[prop as keyof GSaveNever])
       }
       // 30 = 14 + 2*8, 20 = 14 + 2*3
       g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20
@@ -35,17 +35,17 @@ export const mapInit = (mp: MPartial) => {
           if (prop === 'nodeId') {
             n[prop] = 'node' + genHash(8)
           } else {
-            n[prop as keyof NSaveAlways] = copy(nSaveAlways[prop as keyof NSaveAlways])
+            n[prop as keyof NSaveAlways] = structuredClone(nSaveAlways[prop as keyof NSaveAlways])
           }
         }
       }
       for (const prop in nSaveOptional) {
         if (!n.hasOwnProperty(prop)) {
-          n[prop as keyof NSaveOptional] = shallowCopy(nSaveOptional[prop as keyof NSaveOptional])
+          n[prop as keyof NSaveOptional] = structuredClone(nSaveOptional[prop as keyof NSaveOptional])
         }
       }
       for (const prop in nSaveNever) {
-        n[prop as keyof NSaveNever] = shallowCopy(nSaveNever[prop as keyof NSaveNever])
+        n[prop as keyof NSaveNever] = structuredClone(nSaveNever[prop as keyof NSaveNever])
       }
     }
   }

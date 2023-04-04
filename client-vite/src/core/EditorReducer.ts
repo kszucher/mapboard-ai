@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
 import {mapReducer} from "../map/MapReducer"
 import {api} from "./Api"
 import {editorState} from "../state/EditorState"
@@ -29,7 +29,7 @@ export const editorSlice = createSlice({
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
-      const m = state.mapList[state.mapListIndex]
+      const m = current(state.mapList[state.mapListIndex])
       const g = m.filter((n) => n.path.length === 1).at(0) as G
       if (action.payload.type === 'startEditReplace') {
         state.editedNodeId = findEditedNodeId(m, g)

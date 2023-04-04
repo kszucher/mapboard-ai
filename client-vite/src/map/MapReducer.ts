@@ -1,4 +1,4 @@
-import {copy, createArray, genHash, isEqual, transpose} from '../core/Utils'
+import {createArray, genHash, isEqual, transpose} from '../core/Utils'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
@@ -15,7 +15,7 @@ import {mapCalcTask} from "./MapCalcTask";
 import {mapInit} from "./MapInit";
 import {mapChain} from "./MapChain";
 
-const setSelect = (m: M, path: Path, add, selection: 's' | 'f') => {
+const setSelect = (m: M, path: Path, add: boolean, selection: 's' | 'f') => {
   const maxSel = 0
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
     ? { selected: add ? maxSel + 1 : 1 , selection }
@@ -23,13 +23,18 @@ const setSelect = (m: M, path: Path, add, selection: 's' | 'f') => {
   ))
 }
 
-// const setSelectionMulti
+const setSelectMulti = (m: M, pathList: Path[], add: boolean, selection: 's' | 'f') => {
+  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pathList.map(p => p.join('')).includes(n.path.join(''))
+    ? { selected: i, selection }
+    : { selected: 0, selection: 's' }
+  ))
+}
 
 export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const pm = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as M
-  const m = copy(pmNodeSorted).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as M
+  const pm = structuredClone(pmNodeSorted)
+  const m = structuredClone(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as M
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
@@ -73,46 +78,15 @@ export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
       setSelect(m, structNavigate(m, toPath, payload.direction), payload.add, 's')
       break
     }
-    case 'select_S_F': {
-      // clearSelection(m)
-      // ln.s[0].selected = 1
-      break
-    }
-    case 'select_S_B': {
-      // clearSelection(m)
-      // getMapData(m, ln.path.slice(0, -3)).selected = 1
-      break
-    }
-    case 'select_S_BB': {
-      // clearSelection(m)
-      // getMapData(m, ln.path.slice(0, -5)).selected = 1
-      break
-    }
-    case 'select_C_IOUD': {
-      // clearSelection(m)
-      // getMapData(m, cellNavigate(m, ln.path, payload.direction)).selected = 1
-      break
-    }
-    case 'select_C_F': {
-      // clearSelection(m)
-      // ln.selected = 1
-      break
-    }
-    case 'select_C_FF': {
-      // if (ln.cRowCount || ln.cColCount) {
-      //   clearSelection(m)
-      //   getMapData(m, [...sc.lastPath, 'c', 0, 0]).selected = 1
-      // }
-      break
-    }
-    case 'select_C_B': {
-      // if (ln.path.includes('c')) {
-      //   clearSelection(m)
-      //   getMapData(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)]).selected = 1
-      // }
-      break
-    }
-    case 'select_CR_IO': {
+    case 'select_S_F': setSelect(m, [...ln.path, 's', 0], false, 's'); break
+    case 'select_S_B': setSelect(m, ln.path.slice(0, -3), false, 's'); break
+    case 'select_S_BB': setSelect(m, ln.path.slice(0, -5), false, 's'); break
+    case 'select_C_IOUD': setSelect(m, cellNavigate(m, ln.path, payload.direction), false, 's'); break
+    case 'select_C_F': setSelect(m, ln.path, false, 's'); break
+    case 'select_C_FF': (ln.cRowCount || ln.cColCount) ? setSelect(m, [...sc.lastPath, 'c', 0, 0], false, 's') : () => {}; break
+    case 'select_C_B': ln.path.includes('c') ? setSelect(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)], false, 's') : () => {}; break
+    case 'select_CR_IO': // this will be a multi-select...
+    {
       // clearSelection(m)
       // let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
       // let currRow = ln.path.at(-2)
@@ -161,6 +135,10 @@ export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
       //   }}
       break
     }
+
+
+
+
     // INSERT
     case 'insert_S_U': {
       // if (!sc.isRootIncluded) {

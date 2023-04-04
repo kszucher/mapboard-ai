@@ -1,6 +1,6 @@
 import {GN, M, Path, PathItem} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {isArrayOfEqualValues} from "../core/Utils"
+import {isArrayOfEqualValues, isEqual} from "../core/Utils"
 import {G} from "../state/GPropsTypes"
 
 export const getPathPattern = (p: Path) => p.filter((el: PathItem) => isNaN(el as any)).join('')
@@ -18,6 +18,7 @@ export const getNodeById = (m: M, nodeId: string) => (m.find((n: GN) => n.nodeId
 export const getNodeByPath = (m: M, p: Path) => (m.find((n: GN) => isSamePath(n.path, p))) as GN
 export const getParentNodeById = (m: M, nodeId: string) => getNodeByPath(m, getParentPath(getNodeById(m, nodeId).path)) as N
 export const getParentNodeByPath = (m: M, p: Path) => getNodeByPath(m, getParentPath(p)) as N
+export const haveSameParent = (p: Path, pt: Path) => isEqual(getParentPath(p), getParentPath(pt))
 export const getG = (m: M) => m.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLN = (m: M) => getNodeByPath(m, getG(m).sc.lastPath) as N
 export const sFinder = (m: M) =>  m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isSamePath(sp, n.path)))

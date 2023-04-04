@@ -1,10 +1,9 @@
-import {copy} from "../core/Utils"
 import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSamePath, isSubPath} from "./MapUtils"
 import {M, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 
 export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
-  const mp = copy(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  const mp = structuredClone(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   let moveCoords = [] as number[]
   let moveTargetPath = [] as Path
   let moveTargetIndex = 0

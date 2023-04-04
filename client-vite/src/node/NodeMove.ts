@@ -1,4 +1,4 @@
-import {copy, transpose} from '../core/Utils'
+import {transpose} from '../core/Utils'
 import {Dir} from "../core/Enums"
 import {getDefaultNode} from "../map/MapUtils";
 import {M} from "../state/MTypes";
@@ -10,7 +10,7 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
   // let moveSource = getMapData(m, structSelectedPathList[0])
   // let moveTarget = getMapData(m, moveTargetPath)
   // if (!moveTarget.hasOwnProperty('s')) {moveTarget.s = []}
-  // let tempClipboard = copy(moveSource)
+  // let tempClipboard = structuredClone(moveSource)
   // sameParent.s.splice(moveSource.path.at(-1), 1)
   // moveTarget.s.splice(moveTargetIndex, 0, tempClipboard)
 }
@@ -30,14 +30,14 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //       let currRef = getMapData(m, structSelectedPathList[i])
   //       sameParent.s.splice(currRef.path.at(-1), 1)
-  //       m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, copy(currRef))
+  //       m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, structuredClone(currRef))
   //     }
   //   } else if (direction === Dir.I) {
   //     let sameParentParent = getMapData(m, sameParent.parentPath) // FIXME getParentPath
   //     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //       let currRef = getMapData(m, structSelectedPathList[i])
   //       sameParent.s.splice(currRef.path.at(-1), 1)
-  //       sameParentParent.s.splice(sameParent.path.at(-1) + 1, 0, copy(currRef))
+  //       sameParentParent.s.splice(sameParent.path.at(-1) + 1, 0, structuredClone(currRef))
   //     }
   //   } else if (direction === Dir.O) {
   //     let geomHighRef = getMapData(m, sc.geomHighPath)
@@ -49,7 +49,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //         let currRef = getMapData(m, structSelectedPathList[i])
   //         sameParent.s.splice(currRef.path.at(-1), 1)
-  //         upperSibling.s.splice(upperSibling.sCount - structSelectedPathList.length + i + 1, 0, copy(currRef))
+  //         upperSibling.s.splice(upperSibling.sCount - structSelectedPathList.length + i + 1, 0, structuredClone(currRef))
   //       }
   //     }
   //   } else if (direction === Dir.U) {
@@ -58,13 +58,13 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //       for (let i = 0; i < structSelectedPathList.length; i++) {
   //         let currRef = getMapData(m, structSelectedPathList[i])
   //         sameParent.s.splice(currRef.path.at(-1), 1)
-  //         sameParent.s.splice(currRef.path.at(-1) - 1, 0, copy(currRef))
+  //         sameParent.s.splice(currRef.path.at(-1) - 1, 0, structuredClone(currRef))
   //       }
   //     } else {
   //       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //         let currRef = getMapData(m, structSelectedPathList[i])
   //         sameParent.s.splice(currRef.path.at(-1), 1)
-  //         sameParent.s.splice(sameParent.sCount - structSelectedPathList.length + i + 1, 0, copy(currRef))
+  //         sameParent.s.splice(sameParent.sCount - structSelectedPathList.length + i + 1, 0, structuredClone(currRef))
   //       }
   //     }
   //   } else if (direction === Dir.D) {
@@ -73,13 +73,13 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //         let currRef = getMapData(m, structSelectedPathList[i])
   //         sameParent.s.splice(currRef.path.at(-1), 1)
-  //         sameParent.s.splice(currRef.path.at(-1) + 1, 0, copy(currRef))
+  //         sameParent.s.splice(currRef.path.at(-1) + 1, 0, structuredClone(currRef))
   //       }
   //     } else {
   //       for (let i = 0; i < structSelectedPathList.length; i++) {
   //         let currRef = getMapData(m, structSelectedPathList[i])
   //         sameParent.s.splice(currRef.path.at(-1), 1)
-  //         sameParent.s.splice(i, 0, copy(currRef))
+  //         sameParent.s.splice(i, 0, structuredClone(currRef))
   //       }
   //     }
   //   }
@@ -90,7 +90,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //   let newCellRef = sameParent.s[geomLowRef.path.at(-1) + 1]
   //   for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //     let currRef = getMapData(m, structSelectedPathList[i])
-  //     newCellRef.c[0].push(getDefaultNode({s: [copy(currRef)]}))
+  //     newCellRef.c[0].push(getDefaultNode({s: [structuredClone(currRef)]}))
   //     sameParent.s.splice(currRef.path.at(-1), 1)
   //   }
   //   newCellRef.c = transpose([([].concat(...newCellRef.c))])
@@ -99,7 +99,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //   let clipboard: any[] = []
   //   for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //     let currRef = getMapData(m, structSelectedPathList[i])
-  //     let currRefCopy = copy(currRef)
+  //     let currRefCopy = structuredClone(currRef)
   //     clipboard.splice(0, 0, currRefCopy)
   //   }
   //   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
