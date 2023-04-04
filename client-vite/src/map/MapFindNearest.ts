@@ -1,6 +1,7 @@
-import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSamePath, isSubPath} from "./MapUtils"
+import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSubPath} from "./MapUtils"
 import {M, GN, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
+import {isEqual} from "../core/Utils";
 
 export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
   const mp = structuredClone(m).sort((a: GN, b: GN) => (a.path.join('') > b.path.join('')) ? 1 : -1)
@@ -43,13 +44,13 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
             moveTargetIndex = i
           }
         }
-        if (isSamePath(moveTargetNode.path, getParentPath(moveNode.path)) && moveNode.path.at(-1) < moveTargetIndex) {
+        if (isEqual(moveTargetNode.path, getParentPath(moveNode.path)) && moveNode.path.at(-1) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }
     }
   }
-  if (isSamePath(getParentPath(moveNode.path), moveTargetPath) && moveNode.path.at(-1) === moveTargetIndex) {
+  if (isEqual(getParentPath(moveNode.path), moveTargetPath) && moveNode.path.at(-1) === moveTargetIndex) {
     moveTargetPath = []
     moveTargetIndex = 0
     moveCoords = []

@@ -12,17 +12,16 @@ export const isR = (p: Path) => getPathPattern(p).endsWith('r')
 export const isD = (p: Path) => getPathPattern(p).endsWith('d')
 export const isS = (p: Path) => getPathPattern(p).endsWith('s')
 export const isC = (p: Path) => getPathPattern(p).endsWith('c')
-export const isSamePath = (p: Path, pt: Path) => p.join('') === pt.join('')
 export const isSubPath = (p: Path, pt: Path) => pt.length > p.length && p.join('') === pt.slice(0, p.length).join('')
 export const getNodeById = (m: M, nodeId: string) => (m.find((n: GN) => n.nodeId === nodeId)) as GN
-export const getNodeByPath = (m: M, p: Path) => (m.find((n: GN) => isSamePath(n.path, p))) as GN
+export const getNodeByPath = (m: M, p: Path) => (m.find((n: GN) => isEqual(n.path, p))) as GN
 export const getParentNodeById = (m: M, nodeId: string) => getNodeByPath(m, getParentPath(getNodeById(m, nodeId).path)) as N
 export const getParentNodeByPath = (m: M, p: Path) => getNodeByPath(m, getParentPath(p)) as N
 export const haveSameParent = (p: Path, pt: Path) => isEqual(getParentPath(p), getParentPath(pt))
 export const getG = (m: M) => m.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLN = (m: M) => getNodeByPath(m, getG(m).sc.lastPath) as N
-export const sFinder = (m: M) =>  m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isSamePath(sp, n.path)))
-export const fFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isSamePath(sp, n.path) || isSubPath(sp, n.path) && isS(n.path)))
+export const sFinder = (m: M) =>  m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path)))
+export const fFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path) || isSubPath(sp, n.path) && isS(n.path)))
 export const sGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(sFinder(m).map((n: N) => n[prop])) ? getLN(m)[prop] : null
 export const fGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(fFinder(m).map((n: N) => n[prop])) ? getLN(m)[prop] : null
 export const sSetter  = (m: M, prop: keyof N, value: any) => { for (const n of sFinder(m)) { Object.assign(n, { [prop]: value }) } }
