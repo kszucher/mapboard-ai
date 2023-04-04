@@ -1,4 +1,4 @@
-export const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b)
+// export const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b)
 export const isArrayOfEqualValues = (array: any[]) => array.every(el => el === array[0])
 export const createArray = (dim1: number, dim2: number) => Array.from(Array(dim1), () => new Array(dim2))
 export const isUrl = (string: string) => { try { return Boolean(new URL(string)) } catch(e) { return false } }

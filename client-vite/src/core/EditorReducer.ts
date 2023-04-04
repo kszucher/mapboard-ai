@@ -6,7 +6,7 @@ import {FormatMode, PageState} from "./Enums"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {getNodeByPath} from "../map/MapUtils";
-import {isEqual} from "./Utils";
+import isEqual from "react-fast-compare";
 
 const editorStateDefault = JSON.stringify(editorState)
 

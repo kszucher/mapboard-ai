@@ -1,4 +1,4 @@
-import {createArray, genHash, isEqual, transpose} from '../core/Utils'
+import {createArray, genHash, transpose} from '../core/Utils'
 import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
 import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
 import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
@@ -14,6 +14,7 @@ import {mapExtractSelection} from "./MapExtractSelection";
 import {mapCalcTask} from "./MapCalcTask";
 import {mapInit} from "./MapInit";
 import {mapChain} from "./MapChain";
+import isEqual from "react-fast-compare";
 
 const setSelect = (m: M, path: Path, add: boolean, selection: 's' | 'f') => {
   const maxSel = 0

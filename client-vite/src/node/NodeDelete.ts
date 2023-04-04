@@ -1,4 +1,3 @@
-import {isEqual} from "../core/Utils"
 import {SC} from "../state/GPropsTypes"
 import {endsWithPathPattern} from "../map/MapUtils";
 import {M} from "../state/MTypes";

@@ -1,6 +1,6 @@
 import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
-import {isChrome, isEqual} from "../core/Utils"
+import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {getStructParentPath, getNodeById, getNodeByPath, endsWithPathPattern, isS} from "../map/MapUtils"
 import {actions} from "../core/EditorReducer"
@@ -22,6 +22,7 @@ import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mapFindIntersecting} from "../map/MapFindIntersecting";
+import isEqual from "react-fast-compare";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',

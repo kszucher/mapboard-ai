@@ -1,5 +1,5 @@
 import {M} from "../state/MTypes"
-import {isEqual} from "../core/Utils"
+import isEqual from "react-fast-compare"
 
 export const mapChain = (mp: M) => {
   for (const n of mp) {
