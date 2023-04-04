@@ -20,12 +20,12 @@ export const getParentNodeByPath = (m: M, p: Path) => getNodeByPath(m, getParent
 export const haveSameParent = (p: Path, pt: Path) => isEqual(getParentPath(p), getParentPath(pt))
 export const getG = (m: M) => m.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLN = (m: M) => getNodeByPath(m, getG(m).sc.lastPath) as N
-export const sFinder = (m: M) =>  m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path)))
+export const sFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path)))
 export const fFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path) || isSubPath(sp, n.path) && isS(n.path)))
 export const sGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(sFinder(m).map((n: N) => n[prop])) ? getLN(m)[prop] : null
 export const fGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(fFinder(m).map((n: N) => n[prop])) ? getLN(m)[prop] : null
-export const sSetter = (m: M, prop: keyof N, value: any) => { for (const n of sFinder(m)) { Object.assign(n, { [prop]: value }) } }
-export const fSetter = (m: M, prop: keyof N, value: any) => { for (const n of fFinder(m)) { Object.assign(n, { [prop]: value }) } }
+export const sSetter = (m: M, prop: keyof N, value: any) => sFinder(m).forEach(n => n[prop] = value)
+export const fSetter = (m: M, prop: keyof N, value: any) => fFinder(m).forEach(n => n[prop] = value)
 
 // WILL BE REMOVED
 export const getDefaultNode = (attributes?: any) => ({d: [], s: [], c: [[]], content: '', ...attributes})
