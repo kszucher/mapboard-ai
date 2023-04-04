@@ -31,11 +31,10 @@ const setSelectMulti = (m: M, pathList: Path[], add: boolean, selection: 's' | '
   ))
 }
 
-export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
+export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const pm = structuredClone(pmNodeSorted)
-  const m = structuredClone(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1) as M
+  const m = structuredClone(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1)
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
