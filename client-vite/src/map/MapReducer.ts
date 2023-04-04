@@ -15,9 +15,15 @@ import {mapCalcTask} from "./MapCalcTask";
 import {mapInit} from "./MapInit";
 import {mapChain} from "./MapChain";
 
-const setSelect = (m: M, path: Path, selection: 's' | 'f') => m.forEach(n => Object.assign(n, isEqual(n.path, path)
-  ? { selected: 1 , selection } : { selected: 0, selection: 's' }
-))
+const setSelect = (m: M, path: Path, add, selection: 's' | 'f') => {
+  const maxSel = 0
+  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
+    ? { selected: add ? maxSel + 1 : 1 , selection }
+    : { selected: 0, selection: 's' }
+  ))
+}
+
+// const setSelectionMulti
 
 export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
@@ -37,15 +43,11 @@ export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
       if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
         const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
         const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
-        const maxSel = 0 // TODO calculate this one...
-        m.forEach(n => Object.assign(n, n.path.length > 1 && (
-            !isR(payload.path) && isEqual(n.path, payload.path) ||
-            isR(payload.path) && payload.selection === 's' && isEqual(n.path, payload.path) ||
-            isR(payload.path) && !r0d0.selected && !r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0]) ||
-            isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 1]) ||
-            isR(payload.path) && !r0d0.selected && r0d1.selected && payload.selection === 'f' && isEqual(n.path, ['r', 0, 'd', 0])
-          ) ? { selected: payload.add ? maxSel + 1 : 1, selection: payload.selection } : { selected: 0, selection: 's' }
-        ))
+        let toPath = []
+        if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's') toPath = payload.path
+        else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
+        else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
+        setSelect(m, toPath, payload.add, payload.selection)
         if (!n.dCount) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
         }
@@ -57,24 +59,18 @@ export const mapReducer = (pmNodeSorted: M, action: string, payload: any) => {
       break
     }
     case 'selectDescendantsOut': {
-      if (payload.direction === Dir.OR) setSelect(m, ['r', 0, 'd', 0], 'f')
-      else if (payload.direction === Dir.OL) setSelect(m, ['r', 0, 'd', 1], 'f')
+      if (payload.direction === Dir.OR) setSelect(m, ['r', 0, 'd', 0], false, 'f')
+      else if (payload.direction === Dir.OL) setSelect(m, ['r', 0, 'd', 1], false, 'f')
       else if (payload.direction === Dir.O && ln.sCount > 0) ln.selection = 'f'
       break
     }
     case 'select_S_IOUD': {
-      // TODO try to see if fixing structNavigate works...
-      // if (!payload.add) {
-      //   clearSelection(m)
-      // }
-      // let toPath = [...sc.lastPath]
-      // if (payload.direction === Dir.U) {toPath = sc.geomHighPath}
-      // else if (payload.direction === Dir.D) {toPath = sc.geomLowPath}
-      // else if (payload.direction === Dir.OR) {toPath = ['r', 0, 'd', 0]}
-      // else if (payload.direction === Dir.OL) {toPath = ['r', 0, 'd', 1]}
-      // getMapData(m, structNavigate(m, toPath, payload.direction)).selected = (payload.add ? sc.maxSel + 1 : 1)
-
-
+      let toPath = [...sc.lastPath]
+      if (payload.direction === Dir.U) toPath = sc.geomHighPath
+      else if (payload.direction === Dir.D) toPath = sc.geomLowPath
+      else if (payload.direction === Dir.OR) toPath = ['r', 0, 'd', 0]
+      else if (payload.direction === Dir.OL) toPath = ['r', 0, 'd', 1]
+      setSelect(m, structNavigate(m, toPath, payload.direction), payload.add, 's')
       break
     }
     case 'select_S_F': {
