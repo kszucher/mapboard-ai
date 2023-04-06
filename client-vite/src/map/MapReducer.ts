@@ -34,7 +34,7 @@ const setSelectMulti = (m: M, pathList: Path[], add: boolean, selection: 's' | '
 export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const m = structuredClone(pm).sort((a, b) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  const m = structuredClone(pm).sort((a, b) => a.path.join('') > b.path.join('') ? 1 : -1)
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
@@ -85,8 +85,14 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_F': setSelect(m, ln.path, false, 's'); break
     case 'select_C_FF': (ln.cRowCount || ln.cColCount) ? setSelect(m, [...sc.lastPath, 'c', 0, 0], false, 's') : () => {}; break
     case 'select_C_B': ln.path.includes('c') ? setSelect(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)], false, 's') : () => {}; break
-    case 'select_CR_IO': // this will be a multi-select...
-    {
+    case 'select_CR_IO': m.filter(n =>
+      n.path.length > 4 &&
+      n.path.join('').startsWith(ln.path.slice(0, -2).join('')) &&
+      n.path.at(-2) === ln.path.at(-2))
+      // isOfSameCellCol
+      // isOfSameCellRow
+      // TODO this is essentially done, so move this logic into
+
       // clearSelection(m)
       // let pn = getMapData(m, ln.parentPath) // FIXME getParentPath
       // let currRow = ln.path.at(-2)
@@ -95,7 +101,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       //   pn.c[currRow][i].selected = 1
       // }
       break
-    }
+
     case 'select_CR_UD': {
       // clearSelection(m)
       // for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
