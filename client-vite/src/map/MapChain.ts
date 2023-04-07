@@ -1,11 +1,11 @@
 import {M} from "../state/MTypes"
 import isEqual from "react-fast-compare"
 
-export const mapChain = (mp: M) => {
-  for (const n of mp) {
-    n.dCount = mp.findLast(nt => nt.path.length === n.path.length + 2 && isEqual(nt.path.slice(0, -2), n.path) && nt.path.at(-2) === 'd')?.path.at(-1) as number + 1 || 0
-    n.sCount = mp.findLast(nt => nt.path.length === n.path.length + 2 && isEqual(nt.path.slice(0, -2), n.path) && nt.path.at(-2) === 's')?.path.at(-1) as number + 1 || 0
-    n.cRowCount = mp.findLast(nt => nt.path.length === n.path.length + 3 && isEqual(nt.path.slice(0, -3), n.path) && nt.path.at(-3) === 'c')?.path.at(-2) as number + 1 || 0
-    n.cColCount = mp.findLast(nt => nt.path.length === n.path.length + 3 && isEqual(nt.path.slice(0, -3), n.path) && nt.path.at(-3) === 'c')?.path.at(-1) as number + 1 || 0
+export const mapChain = (m: M) => {
+  for (const n of m) {
+    n.dCount = m.findLast(nt => nt.path.length === n.path.length + 2 && isEqual(nt.path.slice(0, -2), n.path) && nt.path.at(-2) === 'd')?.path.at(-1) as number + 1 || 0
+    n.sCount = m.findLast(nt => nt.path.length === n.path.length + 2 && isEqual(nt.path.slice(0, -2), n.path) && nt.path.at(-2) === 's')?.path.at(-1) as number + 1 || 0
+    n.cRowCount = m.findLast(nt => nt.path.length === n.path.length + 3 && isEqual(nt.path.slice(0, -3), n.path) && nt.path.at(-3) === 'c')?.path.at(-2) as number + 1 || 0
+    n.cColCount = m.findLast(nt => nt.path.length === n.path.length + 3 && isEqual(nt.path.slice(0, -3), n.path) && nt.path.at(-3) === 'c')?.path.at(-1) as number + 1 || 0
   }
 }
