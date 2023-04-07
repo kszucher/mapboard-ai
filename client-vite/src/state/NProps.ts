@@ -5,9 +5,6 @@ import {LineTypes} from "../core/Enums"
 
 export const nSaveAlways = {
   path: [],
-  d: [],
-  s: [],
-  c: [[]],
   nodeId: '',
 } as NSaveAlways
 

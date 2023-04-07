@@ -3,9 +3,6 @@ import {Path} from "./MTypes"
 
 export interface NSaveAlways {
   path: Path
-  d: N[]
-  s: N[]
-  c: N[][]
   nodeId: string
 }
 
