@@ -1,4 +1,4 @@
-import {endsWithPathPattern, getNodeByPath, getParentPath, isG, isR, isD, isS, isC,} from "./MapUtils"
+import {endsWithPathPattern, getNodeByPath, getParentPath, isG, isR, isD, isS, isC,isUpperSiblingPath} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -77,8 +77,10 @@ export const mapPlace = (mp: M) => {
       const ppn = getNodeByPath(mp, getParentPath(pn.path)) as N
       if (isS(n.path)) {
         const i = n.path.at(-1) as number
+        const sumUpperSiblingMaxH = mp.filter(nt => isUpperSiblingPath(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
+        const sumElapsedY = sumUpperSiblingMaxH + i * pn.spacing * pn.spacingActivated
         n.lineDeltaX = g.sLineDeltaXDefault
-        n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + pn.sumElapsedY[i]
+        n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + sumElapsedY
         if (endsWithPathPattern(n.path, 'ds') || endsWithPathPattern(n.path, 'ss')) {
           n.nodeStartX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX : pn.nodeStartX - n.lineDeltaX - n.selfW
           n.nodeEndX = n.path[3] === 0 ? pn.nodeEndX + n.lineDeltaX + n.selfW : pn.nodeStartX - n.lineDeltaX

@@ -52,7 +52,6 @@ export interface NSaveNever {
   sumMaxRowHeight: number[]
   maxW: number
   maxH: number
-  sumElapsedY: number[]
   spacing: number
   spacingActivated: number
   // mapPlace

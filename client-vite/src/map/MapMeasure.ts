@@ -126,10 +126,6 @@ export const mapMeasure = (pmp: M, mp: M) => {
           sMaxW = currMaxW
         }
       }
-      for (let i = 0; i < n.sCount; i++) {
-        const cn = getNodeByPath(mp, [...n.path, 's', i]) as N
-        n.sumElapsedY.push(n.sumElapsedY[i] + cn.maxH + n.spacingActivated * n.spacing)
-      }
       if (n.spacingActivated) {
         n.familyH += (n.sCount - 1)*n.spacing
       }
