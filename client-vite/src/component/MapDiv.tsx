@@ -3,7 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {getNodeById} from "../map/MapUtils"
+import {getNodeById, pathSorter} from "../map/MapUtils"
 import {getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
@@ -94,14 +94,14 @@ export const MapDiv: FC = () => {
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       const toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest(m, n, toCoords.x, toCoords.y)
+                      const { moveCoords } = mapFindNearest(structuredClone(m).sort(pathSorter), n, toCoords.x, toCoords.y)
                       dispatch(actions.setFromCoordsMove(moveCoords))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       e.preventDefault()
                       abortController.abort()
                       const toCoords = getCoords(e)
-                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(m, n, toCoords.x, toCoords.y)
+                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(structuredClone(m).sort(pathSorter), n, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }

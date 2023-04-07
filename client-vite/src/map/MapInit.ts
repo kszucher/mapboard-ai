@@ -6,9 +6,9 @@ import {genHash} from "../core/Utils";
 import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps";
 import {NSaveAlways, NSaveNever, NSaveOptional} from "../state/NPropsTypes";
 
-export const mapInit = (mp: MPartial) => {
-  const g = getNodeByPath(mp as M, ['g']) as GPartial
-  for (const n of mp) {
+export const mapInit = (m: MPartial) => {
+  const g = getNodeByPath(m as M, ['g']) as GPartial
+  for (const n of m) {
     if (isG(n.path)) {
       for (const prop in gSaveAlways) {
         // do nothing

@@ -5,12 +5,12 @@ import {N} from "../state/NPropsTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
 
-export const mapMeasure = (pmp: M, mp: M) => {
-  const g = getNodeByPath(mp, ['g']) as G
-  for (let nIndex = mp.length - 1; nIndex > - 1; nIndex--) {
-    const n = mp[nIndex]
-    const pn = getNodeById(pmp, n.nodeId)
-    if (mp.find(nt => ( // TODO use isSubNode for the following two lines...
+export const mapMeasure = (pm: M, m: M) => {
+  const g = getNodeByPath(m, ['g']) as G
+  for (let nIndex = m.length - 1; nIndex > - 1; nIndex--) {
+    const n = m[nIndex]
+    const pn = getNodeById(pm, n.nodeId)
+    if (m.find(nt => ( // TODO use isSubNode for the following two lines...
       n.path.length < nt.path.length  &&
       n.path.join('') === nt.path.slice(0, n.path.length).join('') &&
       ['ss', 'sc'].includes(getPathPattern(nt.path.slice(n.path.length))))
@@ -19,11 +19,11 @@ export const mapMeasure = (pmp: M, mp: M) => {
     }
     if (isG(n.path)) {
       const { alignment, taskConfigWidth, margin, sLineDeltaXDefault } = g
-      const r0 = getNodeByPath(mp, ['r', 0]) as N
-      const r0d0 = getNodeByPath(mp, ['r', 0, 'd', 0]) as N
-      const r0d1 = getNodeByPath(mp, ['r', 0, 'd', 1]) as N
-      const taskRight = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
-      const taskLeft = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
+      const r0 = getNodeByPath(m, ['r', 0]) as N
+      const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0]) as N
+      const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1]) as N
+      const taskRight = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
+      const taskLeft = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
       const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
       const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
       const rightMapWidth = r0d0.sCount > 0 ? sLineDeltaXDefault + r0d0.familyW : 0
@@ -69,7 +69,7 @@ export const mapMeasure = (pmp: M, mp: M) => {
         let isCellSpacingActivated = 0
         for (let i = 0; i < n.cRowCount; i++) {
           for (let j = 0; j < n.cColCount; j++) {
-            const cn = getNodeByPath(mp, [...n.path, 'c', i, j]) as N
+            const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
             maxCellHeightMat[i][j] = cn.maxH
             maxCellWidthMat[i][j] = cn.maxW
             if (cn.maxH > g.defaultH) {
@@ -103,7 +103,7 @@ export const mapMeasure = (pmp: M, mp: M) => {
             if (cellWidth >= maxColWidth) {
               maxColWidth = cellWidth
             }
-            const cn = getNodeByPath(mp, [...n.path, 'c', i, j, 's', 0]) as N
+            const cn = getNodeByPath(m, [...n.path, 'c', i, j, 's', 0]) as N
             if (cn.taskStatus !== 0) {
               maxColWidth += 120
             }
@@ -114,7 +114,7 @@ export const mapMeasure = (pmp: M, mp: M) => {
         }
         for (let j = 0; j < n.cColCount; j++) {
           for (let i = 0; i < n.cRowCount; i++) {
-            const cn = getNodeByPath(mp, [...n.path, 'c', i, j]) as N
+            const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
             cn.selfW = n.maxColWidth[j]
             cn.selfH = n.maxRowHeight[i]
           }
@@ -160,7 +160,7 @@ export const mapMeasure = (pmp: M, mp: M) => {
     if (n.sCount) {
       let sMaxW = 0
       for (let i = 0; i < n.sCount; i++) {
-        const cn = getNodeByPath(mp, [...n.path, 's', i]) as N
+        const cn = getNodeByPath(m, [...n.path, 's', i]) as N
         n.familyH += cn.maxH
         let currMaxW = cn.maxW
         if (currMaxW >= sMaxW) {

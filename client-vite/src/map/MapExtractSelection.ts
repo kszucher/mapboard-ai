@@ -5,9 +5,9 @@ import {isArrayOfEqualValues} from "../core/Utils"
 
 // - prevent selecting nodes in an inclusive relation (cell struct inside cell with parent cell selected as well)
 
-export const mapExtractSelection = (mp: M) => {
-  const g = getNodeByPath(mp, ['g']) as G
-  for (const n of mp) {
+export const mapExtractSelection = (m: M) => {
+  const g = getNodeByPath(m, ['g']) as G
+  for (const n of m) {
     if (n.selected) {
       if (Number.isInteger(n.path[n.path.length - 2])) {
         g.sc.cellSelectedPathList.push(n.path.slice(0))
@@ -31,7 +31,7 @@ export const mapExtractSelection = (mp: M) => {
     sc.geomLowPath = sc.lastPath
   } else if (sc.structSelectedPathList.length) {
     for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-      let currSelectedNumber = getNodeByPath(mp, sc.structSelectedPathList[i]).selected
+      let currSelectedNumber = getNodeByPath(m, sc.structSelectedPathList[i]).selected
       if (currSelectedNumber > sc.maxSel) {
         sc.maxSel = currSelectedNumber
         sc.maxSelIndex = i
@@ -42,7 +42,7 @@ export const mapExtractSelection = (mp: M) => {
     sc.geomLowPath = sc.structSelectedPathList[sc.structSelectedPathList.length - 1]
   } else if (sc.cellSelectedPathList.length) {
     for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
-      let currSelectedNumber = getNodeByPath(mp, sc.cellSelectedPathList[i]).selected
+      let currSelectedNumber = getNodeByPath(m, sc.cellSelectedPathList[i]).selected
       if (currSelectedNumber > sc.maxSel) {
         sc.maxSel = currSelectedNumber
         sc.maxSelIndex = i
@@ -55,19 +55,19 @@ export const mapExtractSelection = (mp: M) => {
   }
   // interrelations
   if (sc.structSelectedPathList.length && !sc.cellSelectedPathList.length) {
-    sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mp, getParentPath(path)))))
+    sc.haveSameParent = + isArrayOfEqualValues(sc.structSelectedPathList.map((path) => JSON.stringify(getNodeByPath(m, getParentPath(path)))))
     if (sc.haveSameParent) {
       sc.sameParentPath = structuredClone(getParentPath(sc.lastPath))
     }
   } else if (!sc.structSelectedPathList.length && sc.cellSelectedPathList.length) {
-    sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getNodeByPath(mp, getParentPath(path)))))
+    sc.haveSameParent = + isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => JSON.stringify(getNodeByPath(m, getParentPath(path)))))
     if (sc.haveSameParent) {
       sc.sameParentPath = structuredClone(getParentPath(sc.lastPath))
     }
     if (sc.haveSameParent) {
       let haveSameRow = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 2]))
       let haveSameCol = isArrayOfEqualValues(sc.cellSelectedPathList.map((path) => path[path.length - 1]))
-      let sameParent = getNodeByPath(mp, sc.sameParentPath)
+      let sameParent = getNodeByPath(m, sc.sameParentPath)
       if (haveSameRow && sc.cellSelectedPathList.length === sameParent.cColCount) {
         sc.isCellRowSelected = 1
         sc.cellRow = sc.cellSelectedPathList[0].at(-2) as number

@@ -3,10 +3,10 @@ import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 
-export const mapPlace = (mp: M) => {
-  const g = getNodeByPath(mp, ['g']) as G
-  const r0 = getNodeByPath(mp, ['r', 0]) as N
-  for (const n of mp) {
+export const mapPlace = (m: M) => {
+  const g = getNodeByPath(m, ['g']) as G
+  const r0 = getNodeByPath(m, ['r', 0]) as N
+  for (const n of m) {
     if (isG(n.path)) {
       // do nothing
     } else if (isR(n.path)) {
@@ -26,11 +26,11 @@ export const mapPlace = (mp: M) => {
       n.selfW = r0.selfW // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
       n.selfH = r0.selfH // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
     } else {
-      const pn = getNodeByPath(mp, getParentPath(n.path)) as N
-      const ppn = getNodeByPath(mp, getParentPath(pn.path)) as N
+      const pn = getNodeByPath(m, getParentPath(n.path)) as N
+      const ppn = getNodeByPath(m, getParentPath(pn.path)) as N
       if (isS(n.path)) {
         const i = n.path.at(-1) as number
-        const sumUpperSiblingMaxH = mp.filter(nt => isUpperSiblingPath(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
+        const sumUpperSiblingMaxH = m.filter(nt => isUpperSiblingPath(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * pn.spacing * pn.spacingActivated
         n.lineDeltaX = g.sLineDeltaXDefault
         n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + sumElapsedY
