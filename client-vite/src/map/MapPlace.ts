@@ -6,61 +6,14 @@ import {N} from "../state/NPropsTypes"
 export const mapPlace = (mp: M) => {
   const g = getNodeByPath(mp, ['g']) as G
   const r0 = getNodeByPath(mp, ['r', 0]) as N
-  const r0d0 = getNodeByPath(mp, ['r', 0, 'd', 0]) as N
-  const r0d1 = getNodeByPath(mp, ['r', 0, 'd', 1]) as N
-
-  const taskRight = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
-  const taskLeft = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
-  const { alignment, taskConfigWidth, margin, sLineDeltaXDefault } = g
-  const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
-  const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
-  const rightMapWidth = r0d0.sCount > 0 ? sLineDeltaXDefault + r0d0.familyW : 0
-  const rightTaskWidth = r0d0.sCount > 0 && taskRight ? taskConfigWidth : 0
-  const leftWidth = leftMapWidth + leftTaskWidth + margin
-  const rightWidth = rightMapWidth + rightTaskWidth + margin
-  let flow = 'both'
-  if (r0d0.sCount && !r0d1.sCount) flow = 'right'
-  if (!r0d0.sCount && r0d1.sCount) flow = 'left'
-  let sumWidth = 0
-  if (alignment === 'adaptive') {
-    if (flow === 'right') {
-      sumWidth = margin + r0.selfW + rightWidth
-    } else if (flow === 'left') {
-      sumWidth = leftWidth + r0.selfW + margin
-    } else if (flow === 'both') {
-      sumWidth = leftWidth + r0.selfW + rightWidth
-    }
-  } else if (alignment === 'centered') {
-    sumWidth = 2 * Math.max(...[leftWidth, rightWidth]) + r0.selfW
-  }
-  const divMinWidth = window.screen.availWidth > 1280 ? 1280 : 800
-  const mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
-  let mapStartCenterX = 0
-  if (alignment === 'centered') {
-    mapStartCenterX = mapWidth / 2
-  } else if (alignment === 'adaptive') {
-    if (flow === 'both') {
-      let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0
-      mapStartCenterX = leftSpace + leftWidth + r0.selfW / 2
-    } else if (flow === 'right') {
-      mapStartCenterX = margin + r0.selfW / 2
-    } else if (flow === 'left') {
-      mapStartCenterX = mapWidth - margin - r0.selfW / 2
-    }
-  }
-  const rightMapHeight = r0.dCount > 0 ? r0d0.familyH : 0
-  const leftMapHeight = r0.dCount > 1 ? r0d1.familyH : 0
-  const mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
-
   for (const n of mp) {
     if (isG(n.path)) {
-      n.mapWidth = mapWidth // TODO assign mapWidth and mapHeight to R0 instead of G as selfW and selfH, and MOVE the logic to mapMeasure!!! this will support multi-root
-      n.mapHeight = mapHeight
+      // do nothing
     } else if (isR(n.path)) {
       n.lineDeltaX = 0
-      n.lineDeltaY = mapHeight / 2 - 0.5
-      n.nodeStartX = mapStartCenterX - n.selfW / 2 + 1
-      n.nodeEndX = mapStartCenterX + n.selfW / 2 + 1
+      n.lineDeltaY = g.mapHeight / 2 - 0.5
+      n.nodeStartX = g.mapStartCenterX - n.selfW / 2 + 1
+      n.nodeEndX = g.mapStartCenterX + n.selfW / 2 + 1
       n.nodeY = n.lineDeltaY
     } else if (isD(n.path)) {
       n.lineDeltaX = 0

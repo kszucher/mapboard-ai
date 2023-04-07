@@ -1,4 +1,4 @@
-import {getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "./MapUtils"
+import {getNodeById, getNodeByPath, getPathPattern, isG, isR, isD, isS} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -7,10 +7,6 @@ import {createArray} from "../core/Utils"
 
 export const mapMeasure = (pmp: M, mp: M) => {
   const g = getNodeByPath(mp, ['g']) as G
-  const r0 = getNodeByPath(mp, ['r', 0]) as N
-  const r0d0 = getNodeByPath(mp, ['r', 0, 'd', 0]) as N
-  const r0d1 = getNodeByPath(mp, ['r', 0, 'd', 1]) as N
-
   for (let nIndex = mp.length - 1; nIndex > - 1; nIndex--) {
     const n = mp[nIndex]
     const pn = getNodeById(pmp, n.nodeId)
@@ -21,7 +17,52 @@ export const mapMeasure = (pmp: M, mp: M) => {
     )) {
       n.spacingActivated = 1
     }
-    if (isR(n.path) || isD(n.path) || isS(n.path)) {
+    if (isG(n.path)) {
+      const { alignment, taskConfigWidth, margin, sLineDeltaXDefault } = g
+      const r0 = getNodeByPath(mp, ['r', 0]) as N
+      const r0d0 = getNodeByPath(mp, ['r', 0, 'd', 0]) as N
+      const r0d1 = getNodeByPath(mp, ['r', 0, 'd', 1]) as N
+      const taskRight = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
+      const taskLeft = mp.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
+      const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
+      const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
+      const rightMapWidth = r0d0.sCount > 0 ? sLineDeltaXDefault + r0d0.familyW : 0
+      const rightTaskWidth = r0d0.sCount > 0 && taskRight ? taskConfigWidth : 0
+      const leftWidth = leftMapWidth + leftTaskWidth + margin
+      const rightWidth = rightMapWidth + rightTaskWidth + margin
+      let flow = 'both'
+      if (r0d0.sCount && !r0d1.sCount) flow = 'right'
+      if (!r0d0.sCount && r0d1.sCount) flow = 'left'
+      let sumWidth = 0
+      if (alignment === 'adaptive') {
+        if (flow === 'right') {
+          sumWidth = margin + r0.selfW + rightWidth
+        } else if (flow === 'left') {
+          sumWidth = leftWidth + r0.selfW + margin
+        } else if (flow === 'both') {
+          sumWidth = leftWidth + r0.selfW + rightWidth
+        }
+      } else if (alignment === 'centered') {
+        sumWidth = 2 * Math.max(...[leftWidth, rightWidth]) + r0.selfW
+      }
+      const divMinWidth = window.screen.availWidth > 1280 ? 1280 : 800
+      n.mapWidth = sumWidth > divMinWidth ? sumWidth : divMinWidth
+      if (alignment === 'centered') {
+        n.mapStartCenterX = n.mapWidth / 2
+      } else if (alignment === 'adaptive') {
+        if (flow === 'both') {
+          let leftSpace = sumWidth < divMinWidth ? (divMinWidth - sumWidth) / 2 : 0
+          n.mapStartCenterX = leftSpace + leftWidth + r0.selfW / 2
+        } else if (flow === 'right') {
+          n.mapStartCenterX = margin + r0.selfW / 2
+        } else if (flow === 'left') {
+          n.mapStartCenterX = n.mapWidth - margin - r0.selfW / 2
+        }
+      }
+      const rightMapHeight = r0.dCount > 0 ? r0d0.familyH : 0
+      const leftMapHeight = r0.dCount > 1 ? r0d1.familyH : 0
+      n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
+    } else if (isR(n.path) || isD(n.path) || isS(n.path)) {
       if (n.cRowCount || n.cColCount) {
         let maxCellHeightMat = createArray(n.cRowCount, n.cColCount)
         let maxCellWidthMat = createArray(n.cRowCount, n.cColCount)

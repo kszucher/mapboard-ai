@@ -34,6 +34,7 @@ export const gSaveOptional = {
 export const gSaveNever = {
   mapWidth: 0,
   mapHeight: 0,
+  mapStartCenterX: 0,
   sLineDeltaXDefault: 0,
   padding: 0,
   defaultH: 0,

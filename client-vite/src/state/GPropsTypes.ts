@@ -34,6 +34,7 @@ export interface GSaveOptional {
 export interface GSaveNever {
   mapWidth: number
   mapHeight: number
+  mapStartCenterX: number
   sLineDeltaXDefault: number
   padding: number
   defaultH: number
