@@ -7,7 +7,7 @@ import {isArrayOfEqualValues} from "../core/Utils"
 
 export const mapExtractSelection = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G
-  for (const n of m) {
+  m.forEach(n => {
     if (n.selected) {
       if (Number.isInteger(n.path[n.path.length - 2])) {
         g.sc.cellSelectedPathList.push(n.path.slice(0))
@@ -15,7 +15,7 @@ export const mapExtractSelection = (m: M) => {
         g.sc.structSelectedPathList.push(n.path.slice(0))
       }
     }
-  }
+  })
   const { sc } = g
   // indicators
   if (sc.structSelectedPathList.length) {

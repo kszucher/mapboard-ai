@@ -7,8 +7,8 @@ import {createArray} from "../core/Utils"
 
 export const mapMeasure = (pm: M, m: M) => {
   const g = getNodeByPath(m, ['g']) as G
-  for (let nIndex = m.length - 1; nIndex > - 1; nIndex--) {
-    const n = m[nIndex]
+  m.reverse()
+  m.forEach(n => {
     const pn = getNodeById(pm, n.nodeId)
     if (m.find(nt => ( // TODO use isSubNode for the following two lines...
       n.path.length < nt.path.length  &&
@@ -174,5 +174,6 @@ export const mapMeasure = (pm: M, m: M) => {
     }
     n.maxW = n.selfW + n.familyW
     n.maxH = Math.max(...[n.selfH, n.familyH])
-  }
+  })
+  m.reverse()
 }

@@ -6,7 +6,7 @@ import {N} from "../state/NPropsTypes"
 export const mapPlace = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G
   const r0 = getNodeByPath(m, ['r', 0]) as N
-  for (const n of m) {
+  m.forEach(n => {
     if (isG(n.path)) {
       // do nothing
     } else if (isR(n.path)) {
@@ -67,5 +67,5 @@ export const mapPlace = (m: M) => {
     if (Number.isInteger(n.nodeY)) {
       n.nodeY += 0.5
     }
-  }
+  })
 }

@@ -7,13 +7,18 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
   let moveCoords = [] as number[]
   let moveTargetPath = [] as Path
   let moveTargetIndex = 0
-  if (!(moveNode.nodeStartX < toX && toX < moveNode.nodeEndX && moveNode.nodeY - moveNode.selfH / 2 < toY && toY < moveNode.nodeY + moveNode.selfH / 2)) {
+  if (!(
+    moveNode.nodeStartX < toX &&
+    toX < moveNode.nodeEndX &&
+    moveNode.nodeY - moveNode.selfH / 2 < toY &&
+    toY < moveNode.nodeY + moveNode.selfH / 2)
+  ) {
     const r0 = getNodeByPath(m, ['r', 0]) as N
     const aboveRoot = toY >= r0.nodeY
     const belowRoot = toY < r0.nodeY
     const overlap = 6
     let moveTargetNodeId = ''
-    for (const n of m) {
+    m.forEach(n => {
       if ((isS(n.path) || isD(n.path)) && n.nodeId !== moveNode.nodeId && !isSubPath(moveNode.path, n.path)) {
         let vCondition
         if (n.isTop && belowRoot) {
@@ -29,7 +34,7 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
           moveTargetNodeId = n.nodeId
         }
       }
-    }
+    })
     if (moveTargetNodeId.length) {
       const moveTargetNode = getNodeById(m, moveTargetNodeId) as GN
       const fromX = moveTargetNode.path[3] ? moveTargetNode.nodeStartX : moveTargetNode.nodeEndX

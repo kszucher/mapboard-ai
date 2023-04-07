@@ -4,8 +4,8 @@ import {M} from "../state/MTypes"
 export const mapCalcTask = (m: M) => {
   const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0])
   const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1])
-  for (let nIndex = m.length - 1; nIndex > - 1; nIndex--) {
-    const n = m[nIndex]
+  m.reverse()
+  m.forEach(n => {
     if (n.dCount) {
       n.taskStatus = 0
       const taskStatusRight = r0d0.taskStatus
@@ -24,5 +24,6 @@ export const mapCalcTask = (m: M) => {
         n.taskStatus = cn.taskStatus < n.taskStatus ? cn.taskStatus : n.taskStatus
       }
     }
-  }
+  })
+  m.reverse()
 }

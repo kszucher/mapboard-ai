@@ -8,7 +8,7 @@ import {NSaveAlways, NSaveNever, NSaveOptional} from "../state/NPropsTypes";
 
 export const mapInit = (m: MPartial) => {
   const g = getNodeByPath(m as M, ['g']) as GPartial
-  for (const n of m) {
+    m.forEach(n => {
     if (isG(n.path)) {
       for (const prop in gSaveAlways) {
         // do nothing
@@ -48,5 +48,5 @@ export const mapInit = (m: MPartial) => {
         n[prop as keyof NSaveNever] = structuredClone(nSaveNever[prop as keyof NSaveNever])
       }
     }
-  }
+  })
 }
