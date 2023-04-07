@@ -6,7 +6,7 @@ import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {fSetter, getNodeByPath, getParentNodeByPath, getPathPattern, isR, isS, sSetter} from "./MapUtils"
+import {fSetter, getNodeByPath, getParentNodeByPath, isR, nodeSorter, pathSorter, sSetter} from "./MapUtils"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
 import {nSaveOptional} from "../state/NProps";
@@ -34,7 +34,7 @@ const setSelectMulti = (m: M, pathList: Path[], add: boolean, selection: 's' | '
 export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const m = structuredClone(pm).sort((a, b) => a.path.join('') > b.path.join('') ? 1 : -1)
+  const m = structuredClone(pm).sort(pathSorter)
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
@@ -360,5 +360,5 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   mapExtractSelection(m)
   mapMeasure(pm, m)
   mapPlace(m)
-  return m.sort((a, b) => (a.nodeId > b.nodeId) ? 1 : -1)
+  return m.sort(nodeSorter)
 }

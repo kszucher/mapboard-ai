@@ -3,10 +3,10 @@ import {GSaveOptional, GSaveNever} from "../state/GPropsTypes"
 import {NSaveOptional, NSaveNever} from "../state/NPropsTypes"
 import {gSaveAlways, gSaveOptional} from "../state/GProps"
 import {nSaveAlways, nSaveOptional} from "../state/NProps"
-import {isG} from "./MapUtils";
+import {isG, pathSorter} from "./MapUtils";
 
 export const mapDeInit = (m: M) => {
-  const mlRemoved = structuredClone(m).sort((a:GNPartial, b: GNPartial) => (a.path.join('') > b.path.join('')) ? 1 : -1)
+  const mlRemoved = structuredClone(m).sort(pathSorter)
   for (const nl of mlRemoved) {
     if (isG(nl.path)) {
       for (const prop in nl) {

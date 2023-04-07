@@ -4,6 +4,12 @@ import {isArrayOfEqualValues} from "../core/Utils"
 import {G} from "../state/GPropsTypes"
 import isEqual from "react-fast-compare";
 
+export const pathSorter = (a, b) =>
+  a.path.length > b.path.length ||
+  a.path.length === b.path.length &&
+  a.path.findIndex((pi, i) => pi > b.path[i]) >
+  b.path.findIndex((pi, i) => pi > a.path[i]) ? 1: -1
+export const nodeSorter = (a, b) => a.nodeId > b.nodeId ? 1 : -1
 export const getPathPattern = (p: Path) => p.filter((el: PathItem) => isNaN(el as any)).join('')
 export const endsWithPathPattern = (p: Path, pattern: string) => getPathPattern(p).endsWith(pattern)
 export const getParentPath = (p: Path) => (endsWithPathPattern(p, 'd') || endsWithPathPattern(p, 's')) ? p.slice(0, -2) : p.slice(0, -3)
