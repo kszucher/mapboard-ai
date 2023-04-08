@@ -111,6 +111,9 @@ export const getCellPolygonPoints = (n: N, sc: SC): PolygonPoints => {
   const { xi, yu } = getAdjustedParams(n)
   const { scope, cellRow, cellCol, lastPath } = sc
   let x, y, w, h
+
+  console.log(scope)
+
   if (scope === 'cr') {
     const i = cellRow
     x = xi

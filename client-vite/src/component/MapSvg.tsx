@@ -299,6 +299,7 @@ export const MapSvg: FC = () => {
                 !selectionRectCoords.length &&
                 n.selected &&
                 n.selected !== g.sc.maxSel &&
+                !['cr', 'cc'].includes(g.sc.scope) &&
                 <path
                   key={`${n.nodeId}_svg_selectionBorderSecondary`}
                   d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(g, n))}

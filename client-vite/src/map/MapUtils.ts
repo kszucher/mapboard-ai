@@ -16,6 +16,8 @@ export const isS = (p: Path) => getPattern(p).endsWith('s')
 export const isC = (p: Path) => getPattern(p).endsWith('c')
 export const isChildPath = (p: Path, pt: Path) => pt.length > p.length && isEqual(p, pt.slice(0, p.length))
 export const isUpperSiblingPath = (p: Path, pt: Path) => pt.length === p.length && isEqual(p.slice(0, p.length - 1), pt.slice(0, pt.length - 1)) && p.at(-1) > pt.at(-1)
+export const isCellRowSiblingPath = (p: Path, pt: Path) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-2) === pt.at(-2)
+export const isCellColSiblingPath = (p: Path, pt: Path) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-1) === pt.at(-1)
 export const getNodeById = (m: M, nodeId: string) => (m.find((n: GN) => n.nodeId === nodeId)) as GN // TODO remove this
 export const getNodeByPath = (m: M, p: Path) => (m.find((n: GN) => isEqual(n.path, p))) as GN
 export const getParentNodeByPath = (m: M, p: Path) => getNodeByPath(m, getParentPath(p)) as N
