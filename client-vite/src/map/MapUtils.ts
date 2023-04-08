@@ -14,7 +14,7 @@ export const isR = (p: Path) => getPattern(p).endsWith('r')
 export const isD = (p: Path) => getPattern(p).endsWith('d')
 export const isS = (p: Path) => getPattern(p).endsWith('s')
 export const isC = (p: Path) => getPattern(p).endsWith('c')
-export const isSubPath = (p: Path, pt: Path) => pt.length > p.length && isEqual(p, pt.slice(0, p.length))
+export const isChildPath = (p: Path, pt: Path) => pt.length > p.length && isEqual(p, pt.slice(0, p.length))
 export const isUpperSiblingPath = (p: Path, pt: Path) => pt.length === p.length && isEqual(p.slice(0, p.length - 1), pt.slice(0, pt.length - 1)) && p.at(-1) > pt.at(-1)
 export const getNodeById = (m: M, nodeId: string) => (m.find((n: GN) => n.nodeId === nodeId)) as GN // TODO remove this
 export const getNodeByPath = (m: M, p: Path) => (m.find((n: GN) => isEqual(n.path, p))) as GN
@@ -23,7 +23,7 @@ export const haveSameParent = (p: Path, pt: Path) => isEqual(getParentPath(p), g
 export const getG = (m: M) => m.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLN = (m: M) => getNodeByPath(m, getG(m).sc.lastPath) as N
 export const sFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path)))
-export const fFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path) || isSubPath(sp, n.path) && isS(n.path)))
+export const fFinder = (m: M) => m.filter((n: N) => getG(m).sc.structSelectedPathList.some((sp: Path) => isEqual(sp, n.path) || isChildPath(sp, n.path) && isS(n.path)))
 export const sGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(sFinder(m).map((n: N) => n[prop])) ? getLN(m)[prop] : null
 export const fGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(fFinder(m).map((n: N) => n[prop])) ? getLN(m)[prop] : null
 export const sSetter = (m: M, prop: keyof N, value: any) => sFinder(m).forEach(n => n[prop] = value)
