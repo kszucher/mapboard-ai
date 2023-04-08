@@ -4,7 +4,7 @@ import {FC, Fragment} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {getNodeById, pathSorter} from "../map/MapUtils"
-import {getLatexString} from "../core/Utils"
+import {adjust, getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
@@ -46,8 +46,8 @@ export const MapDiv: FC = () => {
               id={'node'}
               ref={ref => ref && ref.focus()}
               style = {{
-                left: 1 + n.nodeStartX,
-                top: 1 + n.nodeY - n.selfH / 2,
+                left: 1 + adjust(n.nodeStartX),
+                top: 1 + adjust( n.nodeY - n.selfH / 2),
                 minWidth: (g.density === 'large'? 0 : -3) + n.selfW - g.padding - 2,
                 minHeight: (g.density === 'large'? -2 : -1) + n.selfH - g.padding,
                 paddingLeft: (g.density === 'large'? 0 : 3) + g.padding - 2,

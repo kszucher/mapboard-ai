@@ -12,3 +12,4 @@ export const genHash = (len: number) => {
 export const isOdd = (num: number) => num % 2
 export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.length - 2).replace(/\s/g, '')
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
+export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.floor(x) - 0.5

@@ -1,5 +1,5 @@
 import {LineTypes} from "../core/Enums"
-import {isOdd} from "../core/Utils"
+import {adjust, isOdd} from "../core/Utils"
 import {M} from "../state/MTypes"
 import {G, SC} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -14,15 +14,13 @@ export const getDir = (n: N) => {
 
 const getAdjustedParams = (n: N): AdjustedParams => {
   const dir = getDir(n)
-  const selfHadj = isOdd(n.selfH) ? n.selfH + 1 : n.selfH
-  const maxHadj = isOdd(n.maxH) ? n.maxH + 1 : n.maxH
   return {
     xi: dir === -1 ? n.nodeEndX : n.nodeStartX,
     xo: dir === -1 ? n.nodeStartX : n.nodeEndX,
-    yu: n.nodeY - selfHadj / 2,
-    yd: n.nodeY + selfHadj / 2,
-    myu: n.nodeY - maxHadj / 2,
-    myd: n.nodeY + maxHadj / 2,
+    yu: n.nodeY - n.selfH / 2,
+    yd: n.nodeY + n.selfH / 2,
+    myu: n.nodeY - n.maxH / 2,
+    myd: n.nodeY + n.maxH / 2,
   }
 }
 
@@ -45,8 +43,8 @@ export const getBezierLinePath = (c: string, [x1, y1, c1x, c1y, c2x, c2y, x2, y2
 }
 
 export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
-  const dx = bx - ax
-  const dy = by - ay
+  const dx = (bx - ax)
+  const dy = (by - ay)
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
@@ -54,25 +52,24 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
   const dir = getDir(nb)
   const { lineType } = nb
   let sx, sy, dx, dy, ex, ey
-  sx = dir === -1 ? na.nodeStartX : na.nodeEndX
-  sx = isOdd(sx) ? sx - 0.5 : sx
-  sy = na.nodeY
-  dx = nb.lineDeltaX
-  dy = nb.lineDeltaY
-  ex = dir === -1 ? nb.nodeEndX : nb.nodeStartX
-  ey = nb.nodeY
+  sx = (dir === -1 ? na.nodeStartX : na.nodeEndX)
+  sy = (na.nodeY)
+  ex = (dir === -1 ? nb.nodeEndX : nb.nodeStartX)
+  ey = (nb.nodeY)
+  dx = (nb.lineDeltaX)
+  dy = (nb.lineDeltaY)
   let path
   if (lineType === LineTypes.bezier) {
-    const c1x = sx + dir * dx / 4
-    const c1y = sy
-    const c2x = sx + dir * dx / 4
-    const c2y = sy + dy
+    const c1x = (sx + dir * dx / 4)
+    const c1y = (sy)
+    const c2x = (sx + dir * dx / 4)
+    const c2y = (sy + dy)
     path = getBezierLinePath('M', [sx, sy, c1x, c1y, c2x, c2y, ex, ey])
   } else if (lineType === LineTypes.edge) {
-    const m1x = sx + dir * dx / 2
-    const m1y = sy
-    const m2x = sx + dir * dx / 2
-    const m2y = sy + dy
+    const m1x = (sx + dir * dx / 2)
+    const m1y = (sy)
+    const m2x = (sx + dir * dx / 2)
+    const m2y = (sy + dy)
     path = getEdgeLinePath('M', [sx, sy, m1x, m1y, m2x, m2y, ex, ey])
   }
   return path
@@ -119,20 +116,20 @@ export const getCellPolygonPoints = (m: M): PolygonPoints => {
   if (scope === 'cr') {
     const i = cellRow
     x = xi
-    y = yu + pn.sumMaxRowHeight[i]
+    y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
   } else if (scope === 'cc') {
     const j = cellCol
-    x = xi + dir*pn.sumMaxColWidth[j] // FIXME why not use lineDelta which has this already
+    x = xi + n.lineDeltaX - 20
     y = yu
     w = pn.maxColWidth[j]
     h = pn.selfH
   } else {
     const i = lastPath.at(-2) as number
     const j = lastPath.at(-1) as number
-    x = xi + dir*pn.sumMaxColWidth[j]
-    y = yu + pn.sumMaxRowHeight[i]
+    x = xi + n.lineDeltaX - 20
+    y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.maxColWidth[j]
     h = pn.maxRowHeight[i]
   }
@@ -152,15 +149,15 @@ export const getCellPolygonPoints = (m: M): PolygonPoints => {
 export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
   const dir = getDir(n)
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
-  ax -= margin
-  bx -= dir * margin
-  cx += margin
-  ayu -= margin
-  ayd += margin
-  byu -= margin
-  byd += margin
-  cyu -= margin
-  cyd += margin
+  ax = adjust(ax - margin)
+  bx = adjust(bx - dir * margin)
+  cx = adjust(cx + margin)
+  ayu = adjust(ayu - margin)
+  ayd = adjust(ayd + margin)
+  byu = adjust(byu - margin)
+  byd = adjust(byd + margin)
+  cyu = adjust(cyu - margin)
+  cyd = adjust(cyd + margin)
   const points = [[ax, ayu], [bx, byu], [cx, cyu], [cx, cyd], [bx, byd], [ax, ayd]]
   let path = ''
   for (let i = 0; i < points.length; i++) {
@@ -186,10 +183,10 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
   const R = 8
   const dir = getDir(n)
   const { xi, yu } = getAdjustedParams(n)
-  const x1 = xi - margin * dir
-  const y1 = yu + R - margin
-  const dx = n.selfW - 2 * R + 2 * margin
-  const dy = n.selfH - 2 * R + 2 * margin
+  let x1 = adjust(xi - margin * dir)
+  let y1 = adjust(yu + R - margin)
+  let dx = n.selfW - 2 * R + 2 * margin
+  let dy = n.selfH - 2 * R + 2 * margin
   return dir === -1
     ? `M${x1},${y1}
       a${+R},${+R} 0 0 0 ${-R},${-R} h${-dx} 
@@ -210,13 +207,13 @@ export const getGridPath = (n: N) => {
   const { xi, yu, yd } = getAdjustedParams(n)
   let path = ''
   for (let i = 1; i < n.sumMaxRowHeight.length - 1; i++) {
-    const x1 = n.nodeStartX
-    const x2 = n.nodeEndX
-    const y = yu + n.sumMaxRowHeight[i]
+    const x1 = adjust(n.nodeStartX)
+    const x2 = adjust(n.nodeEndX)
+    const y = adjust(yu + n.sumMaxRowHeight[i])
     path += `M${x1},${y} L${x2},${y}`
   }
   for (let j = 1; j < n.sumMaxColWidth.length - 1; j++) {
-    const x = xi + dir*n.sumMaxColWidth[j]
+    const x = adjust(xi + dir*n.sumMaxColWidth[j])
     path += `M${x},${yu} L${x},${yd}`
   }
   return path
@@ -244,9 +241,9 @@ const getTaskStartPoint = (m: M, g: G, n: N) => {
 
 export const getTaskPath = (m: M, g: G, n: N) => {
   const { xo } = getAdjustedParams(n)
-  const x1 = xo
-  const x2 = getTaskStartPoint(m, g, n)
-  const y = n.nodeY
+  const x1 = adjust(xo)
+  const x2 = adjust(getTaskStartPoint(m, g, n))
+  const y = adjust(n.nodeY)
   return `M${x1},${y} L${x2},${y}`
 }
 
