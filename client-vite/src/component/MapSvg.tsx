@@ -197,9 +197,9 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                getPattern(n.path).endsWith('ds') ||
+                (getPattern(n.path).endsWith('ds') ||
                 getPattern(n.path).endsWith('ss') ||
-                (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) && n.path.at(-2) > -1 && n.path.at(-1) === 0 &&
+                (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) && n.path.at(-2) > -1 && n.path.at(-1) === 0) &&
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
