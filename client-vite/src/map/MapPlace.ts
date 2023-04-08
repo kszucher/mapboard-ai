@@ -7,7 +7,7 @@ import {
   isS,
   isC,
   isUpperSiblingPath,
-  getPattern,
+  getPattern, isPrecedingCellColSiblingPath, isPrecedingCellRowSiblingPath
 } from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
@@ -71,6 +71,13 @@ export const mapPlace = (m: M) => {
         }
         n.nodeY = ppn.nodeY + n.lineDeltaY
       }
+    }
+    if (Number.isInteger(n.nodeStartX)) {
+      n.nodeStartX += n.path[3] === 0 ?  0.5 : - 0.5
+      n.nodeEndX += n.path[3] === 0 ?  0.5 : - 0.5
+    }
+    if (Number.isInteger(n.nodeY)) {
+      n.nodeY += 0.5
     }
   })
 }
