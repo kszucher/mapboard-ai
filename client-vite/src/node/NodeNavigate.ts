@@ -1,9 +1,9 @@
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
-import {getNodeByPath, getParentPath, isC} from "../map/MapUtils";
+import {getNodeByPath, getParentPath, isC} from "../map/MapUtils"
 
-export const structNavigate = (m: M, truePath: Path, dir: Dir) => {
-  let newPath = [] as Path
+export const structNavigate = (m: M, path: Path, dir: Dir) => {
+  let toPath = []
   let inDepth = - 1
   //       v
   //     l v r
@@ -35,16 +35,16 @@ export const structNavigate = (m: M, truePath: Path, dir: Dir) => {
         default: console.log('sequence error')
       }
       let sequenceOk = Array(sequence.length).fill(false)
-      newPath = [...truePath]
+      toPath = [...path]
       for (let i = 0; i < sequence.length; i++) {
         let currDirection = sequence[i]
-        let currRef = getNodeByPath(m, newPath)
+        let currRef = getNodeByPath(m, toPath)
         let currChildCount = currRef.sCount
         let pn = getNodeByPath(m, getParentPath(currRef.path))
-        if (newPath.length === 2 && ['i','u','d'].includes(currDirection) ||
+        if (toPath.length === 2 && ['i','u','d'].includes(currDirection) ||
           isC(pn.path) && ['i'].includes(currDirection) ||
           currDirection === 'om' && currChildCount === 0) {
-          newPath = [...truePath]
+          toPath = [...path]
           break sequenceGenerator
         }
         if (currDirection === 'u' && currRef.path.at(-1) === 0 ||
@@ -54,24 +54,24 @@ export const structNavigate = (m: M, truePath: Path, dir: Dir) => {
           break
         }
         if (currDirection === 'i') {
-          if (newPath.length === 6) {
-            newPath = newPath.slice(0, -4)
+          if (toPath.length === 6) {
+            toPath = toPath.slice(0, -4)
           } else {
-            newPath = newPath.slice(0, -2)
+            toPath = toPath.slice(0, -2)
           }
           pn.lastSelectedChild = currRef.path.at(-1) as number
         }
-        else if (currDirection === 'u') newPath[newPath.length - 1] = newPath.at(-1) as number - 1
-        else if (currDirection === 'd') newPath[newPath.length - 1] = newPath.at(-1) as number + 1
-        else if (currDirection === 'ou') newPath.push('s', 0)
-        else if (currDirection === 'od') newPath.push('s', currChildCount - 1)
+        else if (currDirection === 'u') toPath[toPath.length - 1] = toPath.at(-1) as number - 1
+        else if (currDirection === 'd') toPath[toPath.length - 1] = toPath.at(-1) as number + 1
+        else if (currDirection === 'ou') toPath.push('s', 0)
+        else if (currDirection === 'od') toPath.push('s', currChildCount - 1)
         else if (currDirection === 'om') {
           if (!(currRef.lastSelectedChild >= 0 && currRef.lastSelectedChild < currChildCount)) {
             currRef.lastSelectedChild = currChildCount % 2
               ? Math.floor(currChildCount / 2)
               : currChildCount / 2 - 1
           }
-          newPath.push('s', currRef.lastSelectedChild)
+          toPath.push('s', currRef.lastSelectedChild)
         }
         sequenceOk[i] = true
       }
@@ -81,7 +81,7 @@ export const structNavigate = (m: M, truePath: Path, dir: Dir) => {
     }
   }
 
-  return newPath
+  return toPath
 }
 
 export const cellNavigate = (m: M, path: Path, dir: Dir) => {
