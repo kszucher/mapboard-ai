@@ -52,11 +52,7 @@ export const MapSvg: FC = () => {
   const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
-  const sn = ['c', 'cr', 'cc'].includes(g.sc.scope)
-    ? getNodeByPath(m, g.sc.sameParentPath)
-    : m
-      .filter((el: any) => el.path.length > 1)
-      .reduce((a: N, b: N) => a.selected > b.selected ? a : b)
+  const sn = m.filter((el: any) => el.path.length > 1).reduce((a: N, b: N) => a.selected > b.selected ? a : b) // what is this?
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
@@ -318,12 +314,7 @@ export const MapSvg: FC = () => {
             !selectionRectCoords.length &&
             <path
               key={`${g.nodeId}_svg_selectionBorderPrimary`}
-              d={getPolygonPath(
-                sn,
-                ['c', 'cr', 'cc'].includes(g.sc.scope) ? getCellPolygonPoints(sn, g.sc) : getStructPolygonPoints(sn, sn.selection),
-                sn.selection,
-                getSelectionMargin(g, sn)
-              )}
+              d={getPolygonPath(sn, ['c', 'cr', 'cc'].includes(g.sc.scope) ? getCellPolygonPoints(m) : getStructPolygonPoints(sn, sn.selection), sn.selection, getSelectionMargin(g, sn))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}

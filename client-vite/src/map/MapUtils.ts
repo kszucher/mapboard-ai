@@ -9,6 +9,7 @@ export const nodeSorter = (a, b) => a.nodeId > b.nodeId ? 1 : -1
 export const getPattern = (p: Path) => p.filter((el: PathItem) => isNaN(el as any)).join('')
 export const getParentPath = (p: Path) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getStructParentPath = (p: Path) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getPathDir = (p: Path) => p[3] ? -1 : 1
 export const isG = (p: Path) => getPattern(p).endsWith('g')
 export const isR = (p: Path) => getPattern(p).endsWith('r')
 export const isD = (p: Path) => getPattern(p).endsWith('d')
@@ -18,6 +19,8 @@ export const isChildPath = (p: Path, pt: Path) => pt.length > p.length && isEqua
 export const isUpperSiblingPath = (p: Path, pt: Path) => pt.length === p.length && isEqual(p.slice(0, p.length - 1), pt.slice(0, pt.length - 1)) && p.at(-1) > pt.at(-1)
 export const isCellRowSiblingPath = (p: Path, pt: Path) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-2) === pt.at(-2)
 export const isCellColSiblingPath = (p: Path, pt: Path) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-1) === pt.at(-1)
+export const isPrecedingCellRowSiblingPath = (p: Path, pt: Path) => isCellRowSiblingPath(p, pt) && p.at(-1) > pt.at(-1)
+export const isPrecedingCellColSiblingPath = (p: Path, pt: Path) => isCellColSiblingPath(p, pt) && p.at(-2) > pt.at(-2)
 export const getNodeById = (m: M, nodeId: string) => (m.find((n: GN) => n.nodeId === nodeId)) as GN // TODO remove this
 export const getNodeByPath = (m: M, p: Path) => (m.find((n: GN) => isEqual(n.path, p))) as GN
 export const getParentNodeByPath = (m: M, p: Path) => getNodeByPath(m, getParentPath(p)) as N

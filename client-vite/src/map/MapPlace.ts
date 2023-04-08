@@ -7,7 +7,7 @@ import {
   isS,
   isC,
   isUpperSiblingPath,
-  getPattern
+  getPattern, isPrecedingCellColSiblingPath, isPrecedingCellRowSiblingPath
 } from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
@@ -57,6 +57,8 @@ export const mapPlace = (m: M) => {
       } else if (isC(n.path)) {
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
+        // idea to make sumMaxColWidth a query:
+        // array.from(j).map(el => math.max(m.filter(replace path at item))).reduce(sum)
         n.lineDeltaX = pn.sumMaxColWidth[j] + 20
         n.lineDeltaY = pn.nodeY + pn.sumMaxRowHeight[i] + pn.maxRowHeight[i]/2 - pn.selfH/2 - ppn.nodeY
         if (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) {

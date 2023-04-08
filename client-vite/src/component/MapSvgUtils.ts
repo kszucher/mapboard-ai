@@ -3,7 +3,7 @@ import {isOdd} from "../core/Utils"
 import {M} from "../state/MTypes"
 import {G, SC} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
-import {getNodeByPath} from "../map/MapUtils";
+import {getG, getNodeByPath, getParentNodeByPath, getPathDir} from "../map/MapUtils";
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
@@ -106,33 +106,35 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
   }
 }
 
-export const getCellPolygonPoints = (n: N, sc: SC): PolygonPoints => {
-  const dir = getDir(n)
-  const { xi, yu } = getAdjustedParams(n)
-  const { scope, cellRow, cellCol, lastPath } = sc
+export const getCellPolygonPoints = (m: M): PolygonPoints => {
+  const g = getG(m)
+  const pn = getParentNodeByPath(m, g.sc.lastPath)
+  const n = getNodeByPath(m, g.sc.lastPath)
+  const dir = getPathDir(g.sc.lastPath)
+
+  const { xi, yu } = getAdjustedParams(pn)
+  const { scope, cellRow, cellCol, lastPath } = g.sc
+
   let x, y, w, h
-
-  console.log(scope)
-
   if (scope === 'cr') {
     const i = cellRow
     x = xi
-    y = yu + n.sumMaxRowHeight[i]
-    w = n.selfW
-    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+    y = yu + pn.sumMaxRowHeight[i]
+    w = pn.selfW
+    h = pn.maxRowHeight[i]
   } else if (scope === 'cc') {
     const j = cellCol
-    x = xi + dir*n.sumMaxColWidth[j]
+    x = xi + dir*pn.sumMaxColWidth[j] // FIXME why not use lineDelta which has this already
     y = yu
-    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j] // FIXME why not simply use maxColWidth
-    h = n.selfH
+    w = pn.maxColWidth[j]
+    h = pn.selfH
   } else {
     const i = lastPath.at(-2) as number
     const j = lastPath.at(-1) as number
-    x = xi + dir*n.sumMaxColWidth[j]
-    y = yu + n.sumMaxRowHeight[i]
-    w = n.sumMaxColWidth[j+1] - n.sumMaxColWidth[j]
-    h = n.sumMaxRowHeight[i+1] - n.sumMaxRowHeight[i]
+    x = xi + dir*pn.sumMaxColWidth[j]
+    y = yu + pn.sumMaxRowHeight[i]
+    w = pn.maxColWidth[j]
+    h = pn.maxRowHeight[i]
   }
   return {
     ax: x + (dir === -1 ? -w : 0),
