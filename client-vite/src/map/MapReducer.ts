@@ -97,7 +97,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CR_UD': setSelectMulti(m, m.filter(n => isCellRowSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
     case 'select_CC_IO': setSelectMulti(m, m.filter(n => isCellColSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
     case 'select_R': setSelect(m, ['r', 0], 's', false); break
-    case 'select_dragged':setSelectMulti(m, payload.nList.map(n => n.path), 's'); break
+    case 'select_dragged': setSelectMulti(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
     case 'insert_S_U': {
       // if (!sc.isRootIncluded) {

@@ -3,12 +3,13 @@ import {N} from "../state/NPropsTypes"
 import {isArrayOfEqualValues} from "../core/Utils"
 import {G} from "../state/GPropsTypes"
 import isEqual from "react-fast-compare";
+import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps";
 
 export const pathSorter = (a, b) => a.path.map(el => isNaN(el) ? el: 1000 + el).join('') > b.path.map(el => isNaN(el) ? el: 1000 + el).join('') ? 1 : -1
 export const nodeSorter = (a, b) => a.nodeId > b.nodeId ? 1 : -1
 export const getPattern = (p: Path) => p.filter((el: PathItem) => isNaN(el as any)).join('')
 export const getParentPath = (p: Path) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
-export const getStructParentPath = (p: Path) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getClosestParentStructPath = (p: Path) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getPathDir = (p: Path) => p[3] ? -1 : 1
 export const isG = (p: Path) => getPattern(p).endsWith('g')
 export const isR = (p: Path) => getPattern(p).endsWith('r')
@@ -35,4 +36,4 @@ export const sSetter = (m: M, prop: keyof N, value: any) => sFinder(m).forEach(n
 export const fSetter = (m: M, prop: keyof N, value: any) => fFinder(m).forEach(n => n[prop] = value)
 
 // WILL BE REMOVED
-export const getDefaultNode = (attributes?: any) => ({d: [], s: [], c: [[]], content: '', ...attributes})
+export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})

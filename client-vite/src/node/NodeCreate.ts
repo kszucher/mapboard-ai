@@ -1,31 +1,40 @@
-import { getMapData } from '../map/MapReducer'
 import {Dir} from "../core/Enums"
-import {getDefaultNode, isR} from "../map/MapUtils";
+import {getDefaultNode, pathSorter} from "../map/MapUtils";
+import {Path} from "../state/MTypes";
 
-export const structCreate = (m: any, n: any, dir: Dir, payload: object) => {
-  // if (dir === Dir.U) {
-  //   const pn = getMapData(m, n.parentPath) // FIXME getParentPath
-  //   if (!pn.hasOwnProperty('s')) {pn.s = []}
-  //   pn.s.splice(n.path.at(-1), 0, getDefaultNode({
-  //     selected: 1,
-  //     taskStatus: pn.taskStatus > 0 ?  1 : 0,
-  //   }))
-  // } else if (dir === Dir.D) {
-  //   const pn = getMapData(m, n.parentPath) // FIXME getParentPath
-  //   if (!pn.hasOwnProperty('s')) {pn.s = []}
-  //   pn.s.splice(n.path.at(-1) + 1, 0, getDefaultNode({
-  //     selected: 1,
-  //     taskStatus: pn.taskStatus > 0 ? 1 : 0,
-  //   }));
-  // } else if (dir === Dir.O) {
-  //   const pn = isR(n.path) ? n.d[0] : n
-  //   if (!pn.hasOwnProperty('s')) {pn.s = []}
-  //   pn.s.splice(pn.sCount, 0, getDefaultNode({
-  //     selected: 1,
-  //     taskStatus: pn.taskStatus,
-  //     ...payload
-  //   }))
-  // }
+export const structCreate = (m: any, dir: Dir, payload: object) => {
+  if (dir === Dir.U) {
+    // const pn = getMapData(m, n.parentPath) // FIXME getParentPath
+    // if (!pn.hasOwnProperty('s')) {pn.s = []}
+    // pn.s.splice(n.path.at(-1), 0, getDefaultNode({
+    //   selected: 1,
+    //   taskStatus: pn.taskStatus > 0 ?  1 : 0,
+    // }))
+  } else if (dir === Dir.D) {
+    // const pn = getMapData(m, n.parentPath) // FIXME getParentPath
+    // if (!pn.hasOwnProperty('s')) {pn.s = []}
+    // pn.s.splice(n.path.at(-1) + 1, 0, getDefaultNode({
+    //   selected: 1,
+    //   taskStatus: pn.taskStatus > 0 ? 1 : 0,
+    // }));
+  } else if (dir === Dir.O) {
+    // const pn = isR(n.path) ? n.d[0] : n
+    // if (!pn.hasOwnProperty('s')) {pn.s = []}
+    // pn.s.splice(pn.sCount, 0, getDefaultNode({
+    //   selected: 1,
+    //   taskStatus: pn.taskStatus,
+    //   ...payload
+    // }))
+
+
+    m.push(getDefaultNode({ path: structuredClone([  /* TODO figure out the path of what can be added */ ])})).sort(pathSorter) // TODO start here, EZ
+
+
+  } else if (dir === Dir.OR) {
+
+  } else if (dir === Dir.OL) {
+
+  }
 }
 
 export const cellColCreate = (m: any, n: any, dir: Dir) => {

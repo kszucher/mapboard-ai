@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getStructParentPath, getNodeById, getNodeByPath, getPattern, isS} from "../map/MapUtils"
+import {getClosestParentStructPath, getNodeById, getNodeByPath, getPattern, isS} from "../map/MapUtils"
 import {actions} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
@@ -199,9 +199,9 @@ export const MapSvg: FC = () => {
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
-                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getStructParentPath(n.path))
-                      ? getLinePathBetweenNodes(getNodeByPath(pml, getStructParentPath(n.path)), n)
-                      : getLinePathBetweenNodes(getNodeByPath(m, getStructParentPath(n.path)), n)
+                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getClosestParentStructPath(n.path))
+                      ? getLinePathBetweenNodes(getNodeByPath(pml, getClosestParentStructPath(n.path)), n)
+                      : getLinePathBetweenNodes(getNodeByPath(m, getClosestParentStructPath(n.path)), n)
                   }
                   strokeWidth={n.lineWidth}
                   stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -209,11 +209,11 @@ export const MapSvg: FC = () => {
                   {...pathCommonProps}
                 >
                   {
-                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getStructParentPath(n.path)) &&
+                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getClosestParentStructPath(n.path)) &&
                     <animate
                       attributeName='d'
-                      from={getLinePathBetweenNodes(getNodeByPath(pml, getStructParentPath(n.path)), n)}
-                      to={getLinePathBetweenNodes(getNodeByPath(m, getStructParentPath(n.path)), n)}
+                      from={getLinePathBetweenNodes(getNodeByPath(pml, getClosestParentStructPath(n.path)), n)}
+                      to={getLinePathBetweenNodes(getNodeByPath(m, getClosestParentStructPath(n.path)), n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
                       fill={'freeze'}
