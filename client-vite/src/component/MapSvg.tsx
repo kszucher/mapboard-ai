@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getStructParentPath, getNodeById, getNodeByPath, endsWithPathPattern, isS} from "../map/MapUtils"
+import {getStructParentPath, getNodeById, getNodeByPath, getPattern, isS} from "../map/MapUtils"
 import {actions} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
@@ -197,9 +197,9 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                (endsWithPathPattern(n.path, 'ds') ||
-                endsWithPathPattern(n.path, 'ss') ||
-                ((endsWithPathPattern(n.path, 'dsc') || endsWithPathPattern(n.path, 'ssc')) && n.path.at(-2) > -1 && n.path.at(-1) === 0)) &&
+                getPattern(n.path).endsWith('ds') ||
+                getPattern(n.path).endsWith('ss') ||
+                (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) && n.path.at(-2) > -1 && n.path.at(-1) === 0 &&
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={

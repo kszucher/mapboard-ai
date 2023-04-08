@@ -1,4 +1,4 @@
-import {getNodeById, getNodeByPath, getPathPattern, isG, isR, isD, isS} from "./MapUtils"
+import {getNodeById, getNodeByPath, getPattern, isG, isR, isD, isS} from "./MapUtils"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
@@ -13,7 +13,7 @@ export const mapMeasure = (pm: M, m: M) => {
     if (m.find(nt => ( // TODO use isSubNode for the following two lines...
       n.path.length < nt.path.length  &&
       n.path.join('') === nt.path.slice(0, n.path.length).join('') &&
-      ['ss', 'sc'].includes(getPathPattern(nt.path.slice(n.path.length))))
+      ['ss', 'sc'].includes(getPattern(nt.path.slice(n.path.length))))
     )) {
       n.spacingActivated = 1
     }
