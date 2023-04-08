@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions} from "../core/EditorReducer"
+import {actions} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {gSaveOptional} from "../state/GProps"

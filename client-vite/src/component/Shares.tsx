@@ -5,7 +5,7 @@ import { Button, IconButton, Modal, Typography } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import {actions} from "../core/EditorReducer";
+import {actions} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 import {api, useGetSharesQuery} from "../core/Api";
 

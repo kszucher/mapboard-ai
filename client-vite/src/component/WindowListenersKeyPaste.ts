@@ -1,4 +1,4 @@
-import {actions} from "../core/EditorReducer"
+import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
@@ -34,7 +34,7 @@ const c2dt = (m: M, which: number) => {
   return { dir }
 }
 
-export const useEventMiddleware = (
+export const windowListenersKeyPaste = (
   someEvent: {
     mouseEvent?: MouseEvent
     keyboardEvent?: KeyboardEvent | { key: any, code: any, which: any, preventDefault: Function }

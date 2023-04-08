@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions} from "../core/EditorReducer";
+import {actions} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 
 export const ShouldUpdateTask: FC = () => {

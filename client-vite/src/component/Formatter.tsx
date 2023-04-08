@@ -4,7 +4,7 @@ import {Button, IconButton} from '@mui/material'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
-import {actions} from '../core/EditorReducer'
+import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {N} from "../state/NPropsTypes"
 import {fGetter, getNodeByPath, sGetter} from "../map/MapUtils"

@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
-import {actions} from '../core/EditorReducer'
+import {actions} from '../editor/EditorReducer'
 import {PageState} from "../core/Enums";
 import {api} from "../core/Api";
 import {useAuth0} from "@auth0/auth0-react";

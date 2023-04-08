@@ -1,8 +1,8 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
 import {mapReducer} from "../map/MapReducer"
-import {api} from "./Api"
+import {api} from "../core/Api"
 import {editorState} from "../state/EditorState"
-import {FormatMode, PageState} from "./Enums"
+import {FormatMode, PageState} from "../core/Enums"
 import {M} from "../state/MTypes"
 import {G} from "../state/GPropsTypes"
 import {getNodeByPath} from "../map/MapUtils";

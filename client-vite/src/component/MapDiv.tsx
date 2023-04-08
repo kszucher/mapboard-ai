@@ -8,7 +8,7 @@ import {getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {actions} from "../core/EditorReducer"
+import {actions} from "../editor/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/NPropsTypes"
 

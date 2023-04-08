@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {actions, RootState} from "./EditorReducer"
+import {actions, RootState} from "../editor/EditorReducer"
 import {timeoutId} from "../component/WindowListeners"
 import {backendUrl} from "./Urls"
 import {DefaultUseOpenWorkspaceQueryState} from "../state/ApiStateTypes";
