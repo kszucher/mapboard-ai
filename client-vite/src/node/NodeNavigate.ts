@@ -85,36 +85,12 @@ export const structNavigate = (m: M, truePath: Path, dir: Dir) => {
 }
 
 export const cellNavigate = (m: M, path: Path, dir: Dir) => {
-  // TODO start here, and ROLL THE TAPE
-  // once this works again, maybe kill the sumMax stuff!!! yeah
-  const toPath = path
-  // const currRef = getMapData(m, truePath)
-  // const pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
-  // const rowLen = pn.c.length
-  // const colLen = pn.c[0].length
-  // const currRow = currRef.path.at(-2)
-  // const currCol = currRef.path.at(-1)
-  // let nextRow = 0
-  // let nextCol = 0
-  // switch (dir) {
-  //   case Dir.D:
-  //     nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow
-  //     nextCol = currCol
-  //     break
-  //   case Dir.U:
-  //     nextRow = currRow - 1 < 0 ? 0 : currRow - 1
-  //     nextCol = currCol
-  //     break
-  //   case Dir.O:
-  //     nextCol = currCol + 1 < colLen ? currCol + 1 : currCol
-  //     nextRow = currRow
-  //     break
-  //   case Dir.I:
-  //     nextCol = currCol - 1 < 0 ? 0 : currCol - 1
-  //     nextRow = currRow
-  //     break
-  // }
-  // toPath[toPath.length - 2] = nextRow
-  // toPath[toPath.length - 1] = nextCol
-  return toPath
+  let testPath = []
+  switch (dir) {
+    case Dir.I: testPath = path.map((pi, i) => i === path.length - 1 ? pi - 1 : pi); break
+    case Dir.O: testPath = path.map((pi, i) => i === path.length - 1 ? pi + 1 : pi); break
+    case Dir.U: testPath = path.map((pi, i) => i === path.length - 2 ? pi - 1 : pi); break
+    case Dir.D: testPath = path.map((pi, i) => i === path.length - 2 ? pi + 1 : pi); break
+  }
+  return getNodeByPath(m, testPath) ? testPath : path
 }
