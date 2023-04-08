@@ -12,7 +12,7 @@ export const getDir = (n: N) => {
   return n.path[3] ? -1 : 1
 }
 
-const getAdjustedParams = (n: N): AdjustedParams => {
+const getHelperParams = (n: N): AdjustedParams => {
   const dir = getDir(n)
   return {
     xi: dir === -1 ? n.nodeEndX : n.nodeStartX,
@@ -78,7 +78,7 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
 export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints => {
   const R = 8
   const dir = getDir(n)
-  const { xi, xo, yu, yd, myu, myd } = getAdjustedParams(n)
+  const { xi, xo, yu, yd, myu, myd } = getHelperParams(n)
   const w = n.maxW
   return selection === 's' ? {
     ax: n.nodeStartX,
@@ -109,7 +109,7 @@ export const getCellPolygonPoints = (m: M): PolygonPoints => {
   const n = getNodeByPath(m, g.sc.lastPath)
   const dir = getPathDir(g.sc.lastPath)
 
-  const { xi, yu } = getAdjustedParams(pn)
+  const { xi, yu } = getHelperParams(pn)
   const { scope, cellRow, cellCol, lastPath } = g.sc
 
   let x, y, w, h
@@ -182,7 +182,7 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
 export const getArcPath = (n: N, margin: number, closed: boolean) => {
   const R = 8
   const dir = getDir(n)
-  const { xi, yu } = getAdjustedParams(n)
+  const { xi, yu } = getHelperParams(n)
   let x1 = adjust(xi - margin * dir)
   let y1 = adjust(yu + R - margin)
   let dx = n.selfW - 2 * R + 2 * margin
@@ -204,7 +204,7 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
 
 export const getGridPath = (n: N) => {
   const dir = getDir(n)
-  const { xi, yu, yd } = getAdjustedParams(n)
+  const { xi, yu, yd } = getHelperParams(n)
   let path = ''
   for (let i = 1; i < n.sumMaxRowHeight.length - 1; i++) {
     const x1 = adjust(n.nodeStartX)
@@ -240,7 +240,7 @@ const getTaskStartPoint = (m: M, g: G, n: N) => {
 }
 
 export const getTaskPath = (m: M, g: G, n: N) => {
-  const { xo } = getAdjustedParams(n)
+  const { xo } = getHelperParams(n)
   const x1 = adjust(xo)
   const x2 = adjust(getTaskStartPoint(m, g, n))
   const y = adjust(n.nodeY)
