@@ -41,8 +41,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   switch (action) {
     case 'LOAD': break
     // // VIEW
-    case 'changeDensity': g.density = g.density === 'small' ? 'large' : g.density; break
-    case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : g.density; break
+    case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
+    case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'; break
     case 'select_S': {
       const n = getNodeByPath(m, payload.path)
       if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
@@ -64,24 +64,24 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'selectDescendantsOut': {
-      if (payload.direction === Dir.OR) setSelect(m, ['r', 0, 'd', 0], false, 'f')
-      else if (payload.direction === Dir.OL) setSelect(m, ['r', 0, 'd', 1], false, 'f')
-      else if (payload.direction === Dir.O && ln.sCount > 0) ln.selection = 'f'
+      if (payload.dir === Dir.OR) setSelect(m, ['r', 0, 'd', 0], false, 'f')
+      else if (payload.dir === Dir.OL) setSelect(m, ['r', 0, 'd', 1], false, 'f')
+      else if (payload.dir === Dir.O && ln.sCount > 0) ln.selection = 'f'
       break
     }
     case 'select_S_IOUD': {
       let toPath = [...sc.lastPath]
-      if (payload.direction === Dir.U) toPath = sc.geomHighPath
-      else if (payload.direction === Dir.D) toPath = sc.geomLowPath
-      else if (payload.direction === Dir.OR) toPath = ['r', 0, 'd', 0]
-      else if (payload.direction === Dir.OL) toPath = ['r', 0, 'd', 1]
-      setSelect(m, structNavigate(m, toPath, payload.direction), payload.add, 's')
+      if (payload.dir === Dir.U) toPath = sc.geomHighPath
+      else if (payload.dir === Dir.D) toPath = sc.geomLowPath
+      else if (payload.dir === Dir.OR) toPath = ['r', 0, 'd', 0]
+      else if (payload.dir === Dir.OL) toPath = ['r', 0, 'd', 1]
+      setSelect(m, structNavigate(m, toPath, payload.dir), payload.add, 's')
       break
     }
     case 'select_S_F': setSelect(m, [...ln.path, 's', 0], false, 's'); break
     case 'select_S_B': setSelect(m, ln.path.slice(0, -3), false, 's'); break
     case 'select_S_BB': setSelect(m, ln.path.slice(0, -5), false, 's'); break
-    case 'select_C_IOUD': setSelect(m, cellNavigate(m, ln.path, payload.direction), false, 's'); break
+    case 'select_C_IOUD': setSelect(m, cellNavigate(m, ln.path, payload.dir), false, 's'); break
     case 'select_C_F': setSelect(m, ln.path, false, 's'); break
     case 'select_C_FF': (ln.cRowCount || ln.cColCount) ? setSelect(m, [...sc.lastPath, 'c', 0, 0], false, 's') : () => {}; break
     case 'select_C_B': ln.path.includes('c') ? setSelect(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)], false, 's') : () => {}; break
@@ -106,7 +106,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // clearSelection(m)
       // for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
       //   let currPath = sc.cellSelectedPathList[i]
-      //   getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
+      //   getMapData(m, cellNavigate(m, currPath, payload.dir)).selected = 1
       // }
       break
     }
@@ -124,7 +124,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // clearSelection(m)
       // for (let i = 0; i < sc.cellSelectedPathList.length; i++) {
       //   let currPath = sc.cellSelectedPathList[i]
-      //   getMapData(m, cellNavigate(m, currPath, payload.direction)).selected = 1
+      //   getMapData(m, cellNavigate(m, currPath, payload.dir)).selected = 1
       // }
       break
     }
@@ -200,11 +200,11 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'insert_CC_IO': {
-      // cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
+      // cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.dir) // FIXME getParentPath
       break
     }
     case 'insert_CR_UD': {
-      // cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.direction) // FIXME getParentPath
+      // cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.dir) // FIXME getParentPath
       break
     }
     case 'insertNodesFromClipboard': {
@@ -230,19 +230,19 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     // MOVE
     case 'move_S_IOUD': {
       // if (!sc.isRootIncluded && sc.haveSameParent) {
-      //   structMove(m, 'struct2struct', payload.direction)
+      //   structMove(m, 'struct2struct', payload.dir)
       // }
       break
     }
     case 'move_CR_UD': {
       // if (sc.haveSameParent) {
-      //   cellRowMove(m, payload.direction)
+      //   cellRowMove(m, payload.dir)
       // }
       break
     }
     case 'move_CC_IO': {
       // if (sc.haveSameParent) {
-      //   cellColMove(m, payload.direction)
+      //   cellColMove(m, payload.dir)
       // }
       break
     }

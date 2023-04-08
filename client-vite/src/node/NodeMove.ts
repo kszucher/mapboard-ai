@@ -15,7 +15,7 @@ export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIn
   // moveTarget.s.splice(moveTargetIndex, 0, tempClipboard)
 }
 
-export const structMove = (m: any, target: any, direction?: Dir) => {
+export const structMove = (m: any, target: any, dir?: Dir) => {
   // const { sc } = m.g
   // const  { structSelectedPathList, lastPath, sameParentPath } = sc
   // let ln = getMapData(m, lastPath)
@@ -24,7 +24,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //   if (!sameParent.hasOwnProperty('s')) {
   //     sameParent.s = []
   //   }
-  //   if (direction === Dir.IR || direction === Dir.IL) {
+  //   if (dir === Dir.IR || dir === Dir.IL) {
   //     let dir = ln.path[3]
   //     let revDir = 1 - dir
   //     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
@@ -32,14 +32,14 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //       sameParent.s.splice(currRef.path.at(-1), 1)
   //       m.r[0].d[revDir].s.splice(m.r[0].d[revDir].sCount, 0, structuredClone(currRef))
   //     }
-  //   } else if (direction === Dir.I) {
+  //   } else if (dir === Dir.I) {
   //     let sameParentParent = getMapData(m, sameParent.parentPath) // FIXME getParentPath
   //     for (let i = structSelectedPathList.length - 1; i > -1; i--) {
   //       let currRef = getMapData(m, structSelectedPathList[i])
   //       sameParent.s.splice(currRef.path.at(-1), 1)
   //       sameParentParent.s.splice(sameParent.path.at(-1) + 1, 0, structuredClone(currRef))
   //     }
-  //   } else if (direction === Dir.O) {
+  //   } else if (dir === Dir.O) {
   //     let geomHighRef = getMapData(m, sc.geomHighPath)
   //     if (geomHighRef.path.at(-1) > 0) {
   //       let upperSibling = sameParent.s[geomHighRef.path.at(-1) - 1]
@@ -52,7 +52,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //         upperSibling.s.splice(upperSibling.sCount - structSelectedPathList.length + i + 1, 0, structuredClone(currRef))
   //       }
   //     }
-  //   } else if (direction === Dir.U) {
+  //   } else if (dir === Dir.U) {
   //     let geomHighRef = getMapData(m, sc.geomHighPath)
   //     if (geomHighRef.path.at(-1) > 0) {
   //       for (let i = 0; i < structSelectedPathList.length; i++) {
@@ -67,7 +67,7 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   //         sameParent.s.splice(sameParent.sCount - structSelectedPathList.length + i + 1, 0, structuredClone(currRef))
   //       }
   //     }
-  //   } else if (direction === Dir.D) {
+  //   } else if (dir === Dir.D) {
   //     let geomLowRef = getMapData(m, sc.geomLowPath)
   //     if (geomLowRef.path.at(-1) !== sameParent.sCount - 1) {
   //       for (let i = structSelectedPathList.length - 1; i > -1; i--) {
@@ -117,30 +117,30 @@ export const structMove = (m: any, target: any, direction?: Dir) => {
   // }
 }
 
-export const cellRowMove = (m: M, direction: Dir) => {
+export const cellRowMove = (m: M, dir: Dir) => {
   // const { sc } = m.g
   // const  { sameParentPath, isCellRowSelected, cellRow } = sc
   // let sameParent = getMapData(m, sameParentPath)
-  // if (direction === Dir.U && isCellRowSelected && cellRow > 0) {
+  // if (dir === Dir.U && isCellRowSelected && cellRow > 0) {
   //   [sameParent.c[cellRow], sameParent.c[cellRow - 1]] =
   //     [sameParent.c[cellRow - 1], sameParent.c[cellRow]]
   // }
-  // if (direction === Dir.D && isCellRowSelected && cellRow < sameParent.c.length - 1) {
+  // if (dir === Dir.D && isCellRowSelected && cellRow < sameParent.c.length - 1) {
   //   [sameParent.c[cellRow], sameParent.c[cellRow + 1]] =
   //     [sameParent.c[cellRow + 1], sameParent.c[cellRow]]
   // }
 }
 
-export const cellColMove = (m: M, direction: Dir) => {
+export const cellColMove = (m: M, dir: Dir) => {
   // const { sc } = m.g
   // const  { sameParentPath, isCellColSelected, cellCol } = sc
   // let sameParent = getMapData(m, sameParentPath)
-  // if (direction === Dir.I && isCellColSelected && cellCol > 0) {
+  // if (dir === Dir.I && isCellColSelected && cellCol > 0) {
   //   for (let i = 0; i < sameParent.c.length; i++) {
   //     [sameParent.c[i][cellCol], sameParent.c[i][cellCol - 1]] = [sameParent.c[i][cellCol - 1], sameParent.c[i][cellCol]]
   //   }
   // }
-  // if (direction === Dir.O && isCellColSelected && cellCol < sameParent.c[0].length - 1) {
+  // if (dir === Dir.O && isCellColSelected && cellCol < sameParent.c[0].length - 1) {
   //   for (let i = 0; i < sameParent.c.length; i++) {
   //     [sameParent.c[i][cellCol], sameParent.c[i][cellCol + 1]] =
   //       [sameParent.c[i][cellCol + 1], sameParent.c[i][cellCol]]

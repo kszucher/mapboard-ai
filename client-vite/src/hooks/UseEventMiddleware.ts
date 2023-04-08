@@ -17,21 +17,21 @@ const ckm = (e: any, condition: string) => (
 const c2dt = (m: M, which: number) => {
   const g = getG(m)
   const {lastPath} = g.sc
-  let direction
+  let dir
   if (which === R) {
-    if (lastPath.length === 2) {direction = Dir.OR}
-    else if (lastPath.length === 6) {direction = lastPath[3] ? Dir.IR : Dir.O}
-    else {direction = lastPath[3] ? Dir.I : Dir.O}
+    if (lastPath.length === 2) {dir = Dir.OR}
+    else if (lastPath.length === 6) {dir = lastPath[3] ? Dir.IR : Dir.O}
+    else {dir = lastPath[3] ? Dir.I : Dir.O}
   } else if (which === L) {
-    if (lastPath.length === 2) {direction = Dir.OL}
-    else if (lastPath.length === 6) {direction = lastPath[3] ? Dir.O : Dir.IL}
-    else {direction = lastPath[3] ? Dir.O : Dir.I}
+    if (lastPath.length === 2) {dir = Dir.OL}
+    else if (lastPath.length === 6) {dir = lastPath[3] ? Dir.O : Dir.IL}
+    else {dir = lastPath[3] ? Dir.O : Dir.I}
   } else if (which === U) {
-    direction = Dir.U
+    dir = Dir.U
   } else if (which === D) {
-    direction = Dir.D
+    dir = Dir.D
   }
-  return { direction }
+  return { dir }
 }
 
 export const useEventMiddleware = (
@@ -61,12 +61,12 @@ export const useEventMiddleware = (
     [ kd, ckm(e, '000') && key === 'F3',                   ['s', 'c'],             0, '',                         {},                              1 ],
     [ kd, ckm(e, '000') && key === 'F5',                   ['s', 'c'],             0, '',                         {},                              0 ],
     [ kd, ckm(e, '000') && key === 'Enter',                ['s'],                  1, 'insert_S_D',               {},                              1 ],
-    [ kd, ckm(e, '000') && key === 'Enter',                ['c'],                  1, 'select_C_IOUD',            {direction: Dir.D},              1 ],
+    [ kd, ckm(e, '000') && key === 'Enter',                ['c'],                  1, 'select_C_IOUD',            {dir: Dir.D},              1 ],
     [ kd, ckm(e, '010') && key === 'Enter',                ['s', 'c'],             1, 'insert_S_U',               {},                              1 ],
     [ kd, ckm(e, '001') && key === 'Enter',                ['s'],                  1, 'cellify',                  {},                              1 ],
     [ kd, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s'],                  1, 'insert_S_O',               {},                              1 ],
     [ kd, ckm(e, '000') && ['Insert','Tab'].includes(key), ['s', 'c'],             1, 'insert_S_O',               {},                              1 ],
-    [ kd, ckm(e, '000') && ['Insert','Tab'].includes(key), ['c'],                  1, 'select_C_IOUD',            {direction: Dir.O},              1 ],
+    [ kd, ckm(e, '000') && ['Insert','Tab'].includes(key), ['c'],                  1, 'select_C_IOUD',            {dir: Dir.O},              1 ],
     [ kd, ckm(e, '000') && key === 'Delete',               ['s'],                  1, 'delete_S',                 {},                              1 ],
     [ kd, ckm(e, '000') && key === 'Delete',               ['cr', 'cc'],           1, 'delete_CRCC',              {},                              1 ],
     [ kd, ckm(e, '000') && code === 'Space',               ['s'],                  1, 'select_C_FF',              {},                              1 ],

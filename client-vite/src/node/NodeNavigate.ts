@@ -2,7 +2,7 @@ import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
 import {getNodeByPath, getParentPath, isC} from "../map/MapUtils";
 
-export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
+export const structNavigate = (m: M, truePath: Path, dir: Dir) => {
   let newPath = [] as Path
   let inDepth = - 1
   //       v
@@ -23,7 +23,7 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
     }
     for (let outDepth = inDepth; outDepth > - 1; outDepth--) {
       let sequence = []
-      switch (direction) {
+      switch (dir) {
         case Dir.I: sequence = ['i']; break
         case Dir.IR: sequence = ['i']; break
         case Dir.IL: sequence = ['i']; break
@@ -84,8 +84,10 @@ export const structNavigate = (m: M, truePath: Path, direction: Dir) => {
   return newPath
 }
 
-export const cellNavigate = (m: M, truePath: Path, direction: Dir) => {
-  const newPath = truePath
+export const cellNavigate = (m: M, path: Path, dir: Dir) => {
+  // TODO start here, and ROLL THE TAPE
+  // once this works again, maybe kill the sumMax stuff!!! yeah
+  const toPath = path
   // const currRef = getMapData(m, truePath)
   // const pn = getMapData(m, currRef.parentPath) // FIXME getParentPath
   // const rowLen = pn.c.length
@@ -94,7 +96,7 @@ export const cellNavigate = (m: M, truePath: Path, direction: Dir) => {
   // const currCol = currRef.path.at(-1)
   // let nextRow = 0
   // let nextCol = 0
-  // switch (direction) {
+  // switch (dir) {
   //   case Dir.D:
   //     nextRow = currRow + 1 < rowLen ? currRow + 1 : currRow
   //     nextCol = currCol
@@ -112,7 +114,7 @@ export const cellNavigate = (m: M, truePath: Path, direction: Dir) => {
   //     nextRow = currRow
   //     break
   // }
-  // newPath[newPath.length - 2] = nextRow
-  // newPath[newPath.length - 1] = nextCol
-  return newPath
+  // toPath[toPath.length - 2] = nextRow
+  // toPath[toPath.length - 1] = nextCol
+  return toPath
 }
