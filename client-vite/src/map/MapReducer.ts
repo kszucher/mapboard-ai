@@ -15,7 +15,7 @@ import {
   nodeSorter,
   pathSorter,
   sSetter,
-  isCellColSiblingPath
+  isCellColSiblingPath, getDefaultNode, getInsertPath
 } from "./MapUtils"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
@@ -26,7 +26,7 @@ import {mapInit} from "./MapInit";
 import {mapChain} from "./MapChain";
 import isEqual from "react-fast-compare";
 
-const setSelect = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
+const selectNode = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
   const maxSel = 0 // TODO
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
     ? { selected: add ? maxSel + 1 : 1 , selection }
@@ -34,11 +34,16 @@ const setSelect = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
   ))
 }
 
-const setSelectMulti = (m: M, pathList: Path[], selection: 's' | 'f') => {
+const selectNodeList = (m: M, pathList: Path[], selection: 's' | 'f') => {
   m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pathList.map(p => p.join('')).includes(n.path.join(''))
     ? { selected: i, selection }
     : { selected: 0, selection: 's' }
   ))
+}
+
+const insertNode = (m, insertPath: Path, content: string) => {
+  m.push(getDefaultNode({ path: structuredClone(insertPath), content })).sort(pathSorter)
+  return insertPath
 }
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -47,7 +52,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   const m = structuredClone(pm).sort(pathSorter)
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
-  const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
+  const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath) // intead of this is getLN
   switch (action) {
     case 'LOAD': break
     // // VIEW
@@ -62,17 +67,17 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
         if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's') toPath = payload.path
         else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
         else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
-        setSelect(m, toPath, payload.selection, payload.add)
+        selectNode(m, toPath, payload.selection, payload.add)
         if (!n.dCount) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
         }
       }
       break
     }
-    case 'select_all': setSelectMulti(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
+    case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'selectDescendantsOut': {
-      if (payload.dir === Dir.OR) setSelect(m, ['r', 0, 'd', 0], 'f', false)
-      else if (payload.dir === Dir.OL) setSelect(m, ['r', 0, 'd', 1], 'f', false)
+      if (payload.dir === Dir.OR) selectNode(m, ['r', 0, 'd', 0], 'f', false)
+      else if (payload.dir === Dir.OL) selectNode(m, ['r', 0, 'd', 1], 'f', false)
       else if (payload.dir === Dir.O && ln.sCount > 0) ln.selection = 'f'
       break
     }
@@ -82,22 +87,22 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       else if (payload.dir === Dir.D) toPath = sc.geomLowPath
       else if (payload.dir === Dir.OR) toPath = ['r', 0, 'd', 0]
       else if (payload.dir === Dir.OL) toPath = ['r', 0, 'd', 1]
-      setSelect(m, structNavigate(m, toPath, payload.dir), 's', payload.add)
+      selectNode(m, structNavigate(m, toPath, payload.dir), 's', payload.add)
       break
     }
-    case 'select_S_F': setSelect(m, [...ln.path, 's', 0], 's', false); break
-    case 'select_S_B': setSelect(m, ln.path.slice(0, -3), 's', false); break
-    case 'select_S_BB': setSelect(m, ln.path.slice(0, -5), 's', false); break
-    case 'select_C_IOUD': setSelect(m, cellNavigate(m, ln.path, payload.dir), 's', false); break
-    case 'select_C_F': setSelect(m, ln.path, 's', false); break
-    case 'select_C_FF': (ln.cRowCount || ln.cColCount) ? setSelect(m, [...sc.lastPath, 'c', 0, 0], 's', false) : () => {}; break
-    case 'select_C_B': ln.path.includes('c') ? setSelect(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break
-    case 'select_CR_SAME': setSelectMulti(m, m.filter(n => isCellRowSiblingPath(n.path, ln.path)).map(n => n.path), 's'); break
-    case 'select_CC_SAME': setSelectMulti(m, m.filter(n => isCellColSiblingPath(n.path, ln.path)).map(n => n.path), 's'); break
-    case 'select_CR_UD': setSelectMulti(m, m.filter(n => isCellRowSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
-    case 'select_CC_IO': setSelectMulti(m, m.filter(n => isCellColSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
-    case 'select_R': setSelect(m, ['r', 0], 's', false); break
-    case 'select_dragged': setSelectMulti(m, payload.nList.map(n => n.path), 's'); break
+    case 'select_S_F': selectNode(m, [...ln.path, 's', 0], 's', false); break
+    case 'select_S_B': selectNode(m, ln.path.slice(0, -3), 's', false); break
+    case 'select_S_BB': selectNode(m, ln.path.slice(0, -5), 's', false); break
+    case 'select_C_IOUD': selectNode(m, cellNavigate(m, ln.path, payload.dir), 's', false); break
+    case 'select_C_F': selectNode(m, ln.path, 's', false); break
+    case 'select_C_FF': (ln.cRowCount || ln.cColCount) ? selectNode(m, [...sc.lastPath, 'c', 0, 0], 's', false) : () => {}; break
+    case 'select_C_B': ln.path.includes('c') ? selectNode(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, ln.path)).map(n => n.path), 's'); break
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, ln.path)).map(n => n.path), 's'); break
+    case 'select_CR_UD': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
+    case 'select_CC_IO': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
+    case 'select_R': selectNode(m, ['r', 0], 's', false); break
+    case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
     case 'insert_S_U': {
       // if (!sc.isRootIncluded) {
@@ -113,11 +118,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // }
       break
     }
-    case 'insert_S_O': {
-      // clearSelection(m)
-      // structCreate(m, ln, Dir.O, {})
-      break
-    }
+    case 'insert_S_O': selectNode(m, insertNode(m, getInsertPath(m), ''), 's', false); break
     case 'insert_S_O_text': {
       // clearSelection(m)
       // structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })

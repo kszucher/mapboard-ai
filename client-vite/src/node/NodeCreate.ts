@@ -25,15 +25,6 @@ export const structCreate = (m: any, dir: Dir, payload: object) => {
     //   taskStatus: pn.taskStatus,
     //   ...payload
     // }))
-
-
-    m.push(getDefaultNode({ path: structuredClone([  /* TODO figure out the path of what can be added */ ])})).sort(pathSorter) // TODO start here, EZ
-
-
-  } else if (dir === Dir.OR) {
-
-  } else if (dir === Dir.OL) {
-
   }
 }
 

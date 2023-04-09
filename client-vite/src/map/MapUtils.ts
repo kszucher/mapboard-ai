@@ -10,6 +10,7 @@ export const nodeSorter = (a, b) => a.nodeId > b.nodeId ? 1 : -1
 export const getPattern = (p: Path) => p.filter((el: PathItem) => isNaN(el as any)).join('')
 export const getParentPath = (p: Path) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getClosestParentStructPath = (p: Path) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getInsertPath = (m: M) => ([] as Path) //get ln, check d or s, use getSCount!!!
 export const getPathDir = (p: Path) => p[3] ? -1 : 1
 export const isG = (p: Path) => getPattern(p).endsWith('g')
 export const isR = (p: Path) => getPattern(p).endsWith('r')
