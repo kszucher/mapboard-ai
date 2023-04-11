@@ -6,7 +6,7 @@ export interface EditorState {
   pageState: PageState
   formatMode: FormatMode
   tabShrink: boolean
-  tempMap: object
+  tempMap: M
   mapList: M[]
   mapListIndex: number
   editedNodeId: string

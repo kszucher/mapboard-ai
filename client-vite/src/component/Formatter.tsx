@@ -18,7 +18,7 @@ export const Formatter: FC = () => {
   const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const m = tm.length ? tm : mapList[mapListIndex]
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const ln = getNodeByPath(m, g.sc.lastPath) as N
   const lineWidth = WidthTypes[sGetter(m, 'lineWidth') || 0]

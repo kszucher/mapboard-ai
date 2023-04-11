@@ -29,7 +29,7 @@ export const MapDiv: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
-  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const m = tm.length ? tm : mapList[mapListIndex]
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -76,7 +76,7 @@ export const MapDiv: FC = () => {
                 setEndOfContentEditable(e.currentTarget)
               }}
               onBlur={(e) => {
-                dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
+                dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
               }}
               onMouseDown={(e) => {
                 e.stopPropagation()
@@ -122,21 +122,21 @@ export const MapDiv: FC = () => {
               onKeyDown={(e) => {
                 e.stopPropagation()
                 if (e.key === 'Enter' && !e.shiftKey) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
                 } else if (['Insert','Tab'].includes(e.key)) {
-                  dispatch(actions.mapAction({type: 'finishEdit', payload: { nodeId: n.nodeId, content: e.currentTarget.innerHTML }}))
+                  dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
                   dispatch(actions.mapAction({type: 'insert_S_O', payload: {}}))
                 }
               }}
               onInput={(e) =>
-                dispatch(actions.mapAction({type: 'typeText', payload: e.currentTarget.innerHTML}))
+                dispatch(actions.mapAction({type: 'typeText', payload: { content:  e.currentTarget.innerHTML }}))
               }
               onPaste={(e) => {
                 e.preventDefault()
                 const pasted = e.clipboardData.getData('Text')
                 e.currentTarget.innerHTML += pasted
                 setEndOfContentEditable(e.currentTarget)
-                dispatch(actions.mapAction({type: 'typeText', payload: e.currentTarget.innerHTML}))
+                dispatch(actions.mapAction({type: 'typeText', payload: { content:  e.currentTarget.innerHTML }}))
               }}
             >
             </div>

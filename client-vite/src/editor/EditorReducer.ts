@@ -55,7 +55,7 @@ export const editorSlice = createSlice({
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
               state.mapListIndex = state.mapListIndex + 1
             }
-            state.tempMap = {}
+            state.tempMap = []
             state.editedNodeId = ''
             state.editType = ''
             break
@@ -64,7 +64,7 @@ export const editorSlice = createSlice({
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
               state.mapListIndex = state.mapListIndex + 1
             }
-            state.tempMap = {}
+            state.tempMap = []
             break
         }
       }

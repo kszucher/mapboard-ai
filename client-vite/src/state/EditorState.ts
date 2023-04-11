@@ -7,7 +7,7 @@ export const editorState: EditorState = {
   pageState: PageState.AUTH,
   formatMode: FormatMode.text,
   tabShrink: false,
-  tempMap: {},
+  tempMap: [],
   mapList: [],
   mapListIndex: 0,
   editedNodeId: '',

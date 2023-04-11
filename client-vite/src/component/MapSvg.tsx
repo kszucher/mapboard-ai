@@ -49,7 +49,7 @@ export const MapSvg: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
-  const m = tm && Object.keys(tm).length ? tm : mapList[mapListIndex]
+  const m = tm.length ? tm : mapList[mapListIndex]
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const sn = m.filter((el: any) => el.path.length > 1).reduce((a: N, b: N) => a.selected > b.selected ? a : b) // what is this?

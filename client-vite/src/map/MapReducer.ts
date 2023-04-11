@@ -1,21 +1,20 @@
-import {createArray, genHash, transpose} from '../core/Utils'
-import {cellDeleteReselect, structDeleteReselect} from '../node/NodeDelete'
-import {cellColCreate, cellRowCreate, structCreate} from '../node/NodeCreate'
-import {cellColMove, cellRowMove, nodeMoveMouse, structMove} from '../node/NodeMove'
+import {genHash, transpose} from '../core/Utils'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {
   fSetter,
+  getDefaultNode, getEditableNode, getInsertPathD,
+  getInsertPathO, getLastSelectedNode, getLP, getNodeById,
   getNodeByPath,
-  getParentNodeByPath,
+  getParentNodeByPath, incrementPathAt, isC,
+  isCellColSiblingPath,
+  isCellRowSiblingPath, isChildPath, isLowerSiblingPath,
   isR,
-  isCellRowSiblingPath,
   nodeSorter,
   pathSorter,
-  sSetter,
-  isCellColSiblingPath, getDefaultNode, getInsertPath
+  sSetter
 } from "./MapUtils"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
@@ -41,9 +40,24 @@ const selectNodeList = (m: M, pathList: Path[], selection: 's' | 'f') => {
   ))
 }
 
-const insertNode = (m, insertPath: Path, content: string) => {
-  m.push(getDefaultNode({ path: structuredClone(insertPath), content })).sort(pathSorter)
+const insertNode = (m, dir: Dir, content: string) => {
+  let insertPath
+  if (dir === Dir.O) insertPath = getInsertPathO(m)
+  else if (dir === Dir.U) insertPath = getLP(m)
+  else if (dir === Dir.D) insertPath = getInsertPathD(m)
+
+  if (dir === Dir.D) {
+    m.forEach(n => isLowerSiblingPath(insertPath, n.path) ? n.path = incrementPathAt(n.path, insertPath.length - 1) : () => {})
+  }
+
+  m.push(getDefaultNode({ path: structuredClone(insertPath), content, nodeId: 'node' + genHash(8) }))
+  m.sort(pathSorter)
   return insertPath
+}
+
+const deleteNode = () => {
+  // this will also return a path, just not the one it received but what it calculated, so
+  // with this background-flow, we have ALL select at one level, we will see whether its good or bad
 }
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -104,21 +118,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_R': selectNode(m, ['r', 0], 's', false); break
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
-    case 'insert_S_U': {
-      // if (!sc.isRootIncluded) {
-      //   clearSelection(m)
-      //   structCreate(m, ln, Dir.U, {})
-      // }
-      break
-    }
-    case 'insert_S_D': {
-      // if (!sc.isRootIncluded) {
-      //   clearSelection(m)
-      //   structCreate(m, ln, Dir.D, {})
-      // }
-      break
-    }
-    case 'insert_S_O': selectNode(m, insertNode(m, getInsertPath(m), ''), 's', false); break
+    case 'insert_S_U': selectNode(m, insertNode(m, Dir.U, ''), 's', false); break
+    case 'insert_S_D': selectNode(m, insertNode(m, Dir.D, ''), 's', false); break
+    case 'insert_S_O': selectNode(m, insertNode(m, Dir.O, ''), 's', false); break
     case 'insert_S_O_text': {
       // clearSelection(m)
       // structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
@@ -253,29 +255,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // EDIT
-    case'startEditAppend': {
-      // if (ln.contentType === 'equation') {
-      //   ln.contentType = 'text'
-      // }
-      break
-    }
-    case 'typeText': {
-      // Object.assign(isC(ln.path) ? ln.s[0] : ln, { contentType: 'text', content: payload })
-      break
-    }
-    case 'finishEdit': {
-      // const { nodeId, content } = payload
-      // const n = getMapData(m, mapFindById.start(m, nodeId))
-      // const isContentEquation = content.substring(0, 2) === '\\['
-      // if (isC(n.path)) {
-      //   n.s[0].content = content
-      //   n.s[0].contentType = isContentEquation ? 'equation' : n.s[0].contentType
-      // } else {
-      //   n.content = content
-      //   n.contentType = isContentEquation ? 'equation' : n.contentType
-      // }
-      break
-    }
+    case 'startEditAppend': getLastSelectedNode(m).contentType === 'equation' ? Object.assign(getLastSelectedNode(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(getLastSelectedNode(m), { contentType: 'text', content: payload.content }); break
+    case 'finishEdit': Object.assign(getEditableNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ln.selection === 's' ? sSetter(m, 'lineWidth', payload) : fSetter (m, 'lineWidth', payload); break
     case 'setLineType': ln.selection === 's' ? sSetter(m, 'lineType', payload) : fSetter (m, 'lineType', payload); break
