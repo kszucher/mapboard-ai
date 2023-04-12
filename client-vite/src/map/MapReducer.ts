@@ -17,7 +17,7 @@ import {
   getLS,
   getNodeByPath,
   getParentNodeByPath,
-  createPathByIncrementAt,
+  incrementPathItemAt,
   isCellColSiblingPath,
   isCellRowSiblingPath,
   isLowerSiblingPath,
@@ -25,7 +25,7 @@ import {
   nodeSorter,
   pathSorter,
   sSetter,
-  fSetter, isLowerSiblingFamilyPath,
+  fSetter, isLowerSiblingFamilyPath, isFamilyOrLowerSiblingFamilyPath,
 } from "./MapUtils"
 
 const selectNode = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
@@ -49,21 +49,19 @@ const insertNode = (m, dir: Dir, attributes: object) => {
   let insertPath
   let taskStatus
   if (dir === Dir.O) {
-    insertPath = ([...insertParentPath, 's', insertParent.sCount])
+    insertPath = [...insertParentPath, 's', insertParent.sCount]
     taskStatus = insertParent.taskStatus
   } else if (dir === Dir.U) {
-    insertPath = getLS(m).path
+    m.forEach(n => isFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? () => n.path = incrementPathItemAt(n.path, getLS(m).path.length - 1) : () => {})
+    insertPath = [...getLS(m).path]
     taskStatus = insertParent.taskStatus > 0 ?  1 : 0
   } else if (dir === Dir.D) {
-    m.forEach(n => isLowerSiblingFamilyPath(getLS(m).path, n.path) ? n.path = createPathByIncrementAt(n.path, getLS(m).path.length - 1) : () => {})
-    insertPath = createPathByIncrementAt(getLS(m).path, getLS(m).path.length - 1)
+    m.forEach(n => isLowerSiblingFamilyPath(getLS(m).path, n.path) ? () => n.path = incrementPathItemAt(n.path, getLS(m).path.length - 1) : () => {})
+    insertPath = incrementPathItemAt(getLS(m).path, getLS(m).path.length - 1)
     taskStatus = insertParent.taskStatus > 0 ?  1 : 0
-
   }
-  m.push(getDefaultNode({ path: structuredClone(insertPath), ...attributes, taskStatus, nodeId: 'node' + genHash(8) }))
+  m.push(getDefaultNode({ path: insertPath, ...attributes, taskStatus, nodeId: 'node' + genHash(8) }))
   m.sort(pathSorter)
-  m.forEach(n => console.log(n.content, n.path))
-
   return insertPath
 }
 
@@ -78,7 +76,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   const m = structuredClone(pm).sort(pathSorter)
   const g = m.filter((n: N) => n.path.length === 1).at(0)
   const { sc } = g
-  const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath) // intead of this is getLN
+  const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
   switch (action) {
     case 'LOAD': break
     // // VIEW

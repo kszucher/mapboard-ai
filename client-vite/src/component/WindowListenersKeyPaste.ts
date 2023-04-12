@@ -102,7 +102,7 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '100') && which >= 96 && which <= 105,    ['s', 'c'],             1, 'applyColorFromKey',        {currColor: which - 96},         1 ],
     [ kd, ckm(e, '0-0') && which >= 48,                    ['s', 'c'],             1, 'startEditReplace',         {},                              0 ],
     [ pt, text.substring(0, 1) === '[',                    ['s'],                  1, 'insertNodesFromClipboard', {text},                          0 ],
-    [ pt, text.substring(0, 2) === '\\[',                  ['s'],                  1, 'insert_S_O_equation',      {text},                          0 ], // TODO: resolve dir with FAKE KEY
+    [ pt, text.substring(0, 2) === '\\[',                  ['s'],                  1, 'insert_S_O_equation',      {text},                          0 ],
     [ pt, isUrl(text),                                     ['s'],                  1, 'insert_S_O_elink',         {text},                          0 ],
     [ pt, true,                                            ['s'],                  1, 'insert_S_O_text',          {text},                          0 ],
     [ pi, true,                                            ['s'],                  1, 'insert_S_O_image',         {imageId, imageSize},            0 ],
