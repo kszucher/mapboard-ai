@@ -3,19 +3,6 @@ import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
 import {M, Path} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
-import {
-  fSetter,
-  getDefaultNode, getEditableNode, getInsertPathD,
-  getInsertPathO, getLastSelectedNode, getLP, getNodeById,
-  getNodeByPath,
-  getParentNodeByPath, incrementPathAt, isC,
-  isCellColSiblingPath,
-  isCellRowSiblingPath, isChildPath, isLowerSiblingPath,
-  isR,
-  nodeSorter,
-  pathSorter,
-  sSetter
-} from "./MapUtils"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
 import {nSaveOptional} from "../state/NProps";
@@ -24,6 +11,22 @@ import {mapCalcTask} from "./MapCalcTask";
 import {mapInit} from "./MapInit";
 import {mapChain} from "./MapChain";
 import isEqual from "react-fast-compare";
+import {
+  getDefaultNode,
+  getEditableNode,
+  getLS,
+  getNodeByPath,
+  getParentNodeByPath,
+  createPathByIncrementAt,
+  isCellColSiblingPath,
+  isCellRowSiblingPath,
+  isLowerSiblingPath,
+  isR,
+  nodeSorter,
+  pathSorter,
+  sSetter,
+  fSetter, isLowerSiblingFamilyPath,
+} from "./MapUtils"
 
 const selectNode = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
   const maxSel = 0 // TODO
@@ -40,18 +43,27 @@ const selectNodeList = (m: M, pathList: Path[], selection: 's' | 'f') => {
   ))
 }
 
-const insertNode = (m, dir: Dir, content: string) => {
+const insertNode = (m, dir: Dir, attributes: object) => {
+  let insertParentPath = getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as Path: getLS(m).path
+  let insertParent = getNodeByPath(m, insertParentPath)
   let insertPath
-  if (dir === Dir.O) insertPath = getInsertPathO(m)
-  else if (dir === Dir.U) insertPath = getLP(m)
-  else if (dir === Dir.D) insertPath = getInsertPathD(m)
+  let taskStatus
+  if (dir === Dir.O) {
+    insertPath = ([...insertParentPath, 's', insertParent.sCount])
+    taskStatus = insertParent.taskStatus
+  } else if (dir === Dir.U) {
+    insertPath = getLS(m).path
+    taskStatus = insertParent.taskStatus > 0 ?  1 : 0
+  } else if (dir === Dir.D) {
+    m.forEach(n => isLowerSiblingFamilyPath(getLS(m).path, n.path) ? n.path = createPathByIncrementAt(n.path, getLS(m).path.length - 1) : () => {})
+    insertPath = createPathByIncrementAt(getLS(m).path, getLS(m).path.length - 1)
+    taskStatus = insertParent.taskStatus > 0 ?  1 : 0
 
-  if (dir === Dir.D) {
-    m.forEach(n => isLowerSiblingPath(insertPath, n.path) ? n.path = incrementPathAt(n.path, insertPath.length - 1) : () => {})
   }
-
-  m.push(getDefaultNode({ path: structuredClone(insertPath), content, nodeId: 'node' + genHash(8) }))
+  m.push(getDefaultNode({ path: structuredClone(insertPath), ...attributes, taskStatus, nodeId: 'node' + genHash(8) }))
   m.sort(pathSorter)
+  m.forEach(n => console.log(n.content, n.path))
+
   return insertPath
 }
 
@@ -118,31 +130,13 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_R': selectNode(m, ['r', 0], 's', false); break
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
-    case 'insert_S_U': selectNode(m, insertNode(m, Dir.U, ''), 's', false); break
-    case 'insert_S_D': selectNode(m, insertNode(m, Dir.D, ''), 's', false); break
-    case 'insert_S_O': selectNode(m, insertNode(m, Dir.O, ''), 's', false); break
-    case 'insert_S_O_text': {
-      // clearSelection(m)
-      // structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text })
-      break
-    }
-    case 'insert_S_O_elink': {
-      // clearSelection(m)
-      // structCreate(m, ln, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text })
-      break
-    }
-    case 'insert_S_O_equation': {
-      // clearSelection(m)
-      // structCreate(m, ln, Dir.O, { contentType: 'equation', content: payload.text })
-      break
-    }
-    case 'insert_S_O_image': { // TODO check... after path is fixed
-      // const { imageId, imageSize } = payload
-      // const { width, height } = imageSize
-      // clearSelection(m)
-      // structCreate(m, ln, Dir.O, { contentType: 'image', content: imageId, imageW: width, imageH: height })
-      break
-    }
+    case 'insert_S_U': selectNode(m, insertNode(m, Dir.U, { content: '' }), 's', false); break
+    case 'insert_S_D': selectNode(m, insertNode(m, Dir.D, { content: '' }), 's', false); break
+    case 'insert_S_O': selectNode(m, insertNode(m, Dir.O, { content: '' }), 's', false); break
+    case 'insert_S_O_text': selectNode(m, insertNode(m, Dir.O, { contentType: 'text', content: payload.text }), 's', false); break
+    case 'insert_S_O_elink': selectNode(m, insertNode(m, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text }), 's', false); break
+    case 'insert_S_O_equation': selectNode(m, insertNode(m, Dir.O, { contentType: 'equation', content: payload.text }), 's', false); break
+    case 'insert_S_O_image': selectNode(m, insertNode(m, Dir.O, { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }), 's', false); break
     case 'insert_S_O_table': {
       // clearSelection(m)
       // const { rowLen, colLen } = payload
@@ -173,7 +167,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // DELETE
-    case 'delete_S': {
+    case 'delete_S': { // TODO think about the nodes this will toss UP or DOWN
       // if (!sc.isRootIncluded) {
       //   structDeleteReselect(m, sc)
       // }
@@ -255,8 +249,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // EDIT
-    case 'startEditAppend': getLastSelectedNode(m).contentType === 'equation' ? Object.assign(getLastSelectedNode(m), { contentType: 'text' }) : () => {}; break
-    case 'typeText': Object.assign(getLastSelectedNode(m), { contentType: 'text', content: payload.content }); break
+    case 'startEditAppend': getLS(m).contentType === 'equation' ? Object.assign(getLS(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditableNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ln.selection === 's' ? sSetter(m, 'lineWidth', payload) : fSetter (m, 'lineWidth', payload); break
