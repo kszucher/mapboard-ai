@@ -7,7 +7,7 @@ import {colorList} from '../core/Colors'
 import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {N} from "../state/NPropsTypes"
-import {fGetter, getG, getNodeByPath, sGetter} from "../map/MapUtils"
+import {getSelectionFamilyProp, getG, getNodeByPath, getSelectionProp} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32
@@ -21,14 +21,14 @@ export const Formatter: FC = () => {
   const m = tm.length ? tm : mapList[mapListIndex]
   const g = getG(m)
   const ln = getNodeByPath(m, g.sc.lastPath) as N
-  const lineWidth = WidthTypes[sGetter(m, 'lineWidth') || 0]
-  const lineType = LineTypes[sGetter(m, 'lineType') || 0]
-  const lineColor = sGetter(m, 'lineColor')
-  const borderWidth = WidthTypes[ln.selection === 's' ? sGetter(m, 'sBorderWidth') || 0 : fGetter(m, 'fBorderWidth') || 0]
-  const borderColor = ln.selection === 's' ? sGetter(m, 'sBorderColor') : fGetter(m, 'fBorderColor')
-  const fillColor = ln.selection === 's' ? sGetter(m, 'sFillColor') : fGetter(m, 'fFillColor')
-  const textFontSize = TextTypes[sGetter(m, 'textFontSize') || 0]
-  const textColor = sGetter(m, 'textColor')
+  const lineWidth = WidthTypes[getSelectionProp(m, 'lineWidth') || 0]
+  const lineType = LineTypes[getSelectionProp(m, 'lineType') || 0]
+  const lineColor = getSelectionProp(m, 'lineColor')
+  const borderWidth = WidthTypes[ln.selection === 's' ? getSelectionProp(m, 'sBorderWidth') || 0 : getSelectionFamilyProp(m, 'fBorderWidth') || 0]
+  const borderColor = ln.selection === 's' ? getSelectionProp(m, 'sBorderColor') : getSelectionFamilyProp(m, 'fBorderColor')
+  const fillColor = ln.selection === 's' ? getSelectionProp(m, 'sFillColor') : getSelectionFamilyProp(m, 'fFillColor')
+  const textFontSize = TextTypes[getSelectionProp(m, 'textFontSize') || 0]
+  const textColor = getSelectionProp(m, 'textColor')
   const dispatch = useDispatch()
   const setFormatText = () => dispatch(actions.setFormatMode(FormatMode.text))
   const setFormatBorder = () => dispatch(actions.setFormatMode(FormatMode.border))
