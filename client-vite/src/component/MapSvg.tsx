@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getClosestStructParentPath, getNodeById, getNodeByPath, getPattern, isS} from "../map/MapUtils"
+import {getClosestStructParentPath, getG, getNodeById, getNodeByPath, getPattern, isS} from "../map/MapUtils"
 import {actions} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
@@ -50,7 +50,7 @@ export const MapSvg: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const g = getG(m)
   const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const sn = m.filter((el: any) => el.path.length > 1).reduce((a: N, b: N) => a.selected > b.selected ? a : b) // what is this?
   const { data } = useOpenWorkspaceQuery()

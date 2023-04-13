@@ -3,18 +3,10 @@ import {mapReducer} from "../map/MapReducer"
 import {api} from "../core/Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../core/Enums"
-import {M} from "../state/MTypes"
-import {G} from "../state/GPropsTypes"
-import {getNodeByPath} from "../map/MapUtils";
-import isEqual from "react-fast-compare";
+import {getEditedNode, getLS} from "../map/MapUtils"
+import isEqual from "react-fast-compare"
 
 const editorStateDefault = JSON.stringify(editorState)
-
-const findEditedNodeId = (m: M, g: G) => (
-  g.sc.scope === 'c'
-    ? getNodeByPath(m, g.sc.lastPath).s[0].nodeId
-    : getNodeByPath(m, g.sc.lastPath).nodeId
-)
 
 export const editorSlice = createSlice({
   name: 'editor',
@@ -30,9 +22,8 @@ export const editorSlice = createSlice({
     closeMoreMenu(state) { state.moreMenu = false },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       const m = current(state.mapList[state.mapListIndex])
-      const g = m.filter((n) => n.path.length === 1).at(0) as G
       if (action.payload.type === 'startEditReplace') {
-        state.editedNodeId = findEditedNodeId(m, g)
+        state.editedNodeId = getEditedNode(m, getLS(m).path).nodeId
         state.editType = 'replace'
       } else {
         const nml = mapReducer(m, action.payload.type, action.payload.payload)
@@ -44,12 +35,12 @@ export const editorSlice = createSlice({
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = nml
-            state.editedNodeId = findEditedNodeId(m, g)
+            state.editedNodeId = getEditedNode(m, getLS(m).path).nodeId
             state.editType = 'append'
             break
           case 'typeText':
             state.tempMap = nml
-            break;
+            break
           case 'finishEdit':
             if (isMapChanged) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]

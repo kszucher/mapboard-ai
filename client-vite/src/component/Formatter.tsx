@@ -7,7 +7,7 @@ import {colorList} from '../core/Colors'
 import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {N} from "../state/NPropsTypes"
-import {fGetter, getNodeByPath, sGetter} from "../map/MapUtils"
+import {fGetter, getG, getNodeByPath, sGetter} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32
@@ -19,7 +19,7 @@ export const Formatter: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const g = getG(m)
   const ln = getNodeByPath(m, g.sc.lastPath) as N
   const lineWidth = WidthTypes[sGetter(m, 'lineWidth') || 0]
   const lineType = LineTypes[sGetter(m, 'lineType') || 0]

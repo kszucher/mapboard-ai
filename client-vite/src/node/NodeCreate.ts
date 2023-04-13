@@ -1,5 +1,5 @@
 import {Dir} from "../core/Enums"
-import {getDefaultNode, pathSorter} from "../map/MapUtils";
+import {getDefaultNode, sortPath} from "../map/MapUtils";
 import {Path} from "../state/MTypes";
 
 export const structCreate = (m: any, dir: Dir, payload: object) => {

@@ -7,6 +7,7 @@ import {G} from "../state/GPropsTypes";
 import {scrollTo} from "./MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
+import {getG} from "../map/MapUtils";
 
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
 const getScrollTop = () => (window.innerHeight - 48 * 2)
@@ -16,7 +17,7 @@ export const Map: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const g = getG(m)
   const { density, alignment } = g
   const { data } = useOpenWorkspaceQuery()
   const { mapId, frameId } = data || defaultUseOpenWorkspaceQueryState

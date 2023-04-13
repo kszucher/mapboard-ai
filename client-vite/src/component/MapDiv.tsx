@@ -3,7 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {getNodeById, pathSorter} from "../map/MapUtils"
+import {getG, getNodeById, sortPath} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
@@ -30,7 +30,7 @@ export const MapDiv: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
@@ -94,14 +94,14 @@ export const MapDiv: FC = () => {
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
                       const toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest(structuredClone(m).sort(pathSorter), n, toCoords.x, toCoords.y)
+                      const { moveCoords } = mapFindNearest(structuredClone(m).sort(sortPath), n, toCoords.x, toCoords.y)
                       dispatch(actions.setFromCoordsMove(moveCoords))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       e.preventDefault()
                       abortController.abort()
                       const toCoords = getCoords(e)
-                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(structuredClone(m).sort(pathSorter), n, toCoords.x, toCoords.y)
+                      const { moveTargetPath, moveTargetIndex } = mapFindNearest(structuredClone(m).sort(sortPath), n, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }

@@ -13,7 +13,6 @@ import {mapChain} from "./MapChain";
 import isEqual from "react-fast-compare";
 import {
   getDefaultNode,
-  getEditableNode,
   getLS,
   getNodeByPath,
   getParentNodeByPath,
@@ -22,10 +21,16 @@ import {
   isCellRowSiblingPath,
   isLowerSiblingPath,
   isR,
-  nodeSorter,
-  pathSorter,
+  sortNode,
+  sortPath,
   sSetter,
-  fSetter, isLowerSiblingFamilyPath, isFamilyOrLowerSiblingFamilyPath,
+  fSetter,
+  isLowerSiblingFamilyPath,
+  isFamilyOrLowerSiblingFamilyPath,
+  getG,
+  getNodeById,
+  getClosestStructChildPath,
+  getEditedNode,
 } from "./MapUtils"
 
 const selectNode = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
@@ -61,7 +66,7 @@ const insertNode = (m, dir: Dir, attributes: object) => {
     taskStatus = insertParent.taskStatus > 0 ?  1 : 0
   }
   m.push(getDefaultNode({ path: insertPath, ...attributes, taskStatus, nodeId: 'node' + genHash(8) }))
-  m.sort(pathSorter)
+  m.sort(sortPath)
   return insertPath
 }
 
@@ -73,8 +78,8 @@ const deleteNode = () => {
 export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
-  const m = structuredClone(pm).sort(pathSorter)
-  const g = m.filter((n: N) => n.path.length === 1).at(0)
+  const m = structuredClone(pm).sort(sortPath)
+  const g = getG(m)
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
   switch (action) {
@@ -249,7 +254,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     // EDIT
     case 'startEditAppend': getLS(m).contentType === 'equation' ? Object.assign(getLS(m), { contentType: 'text' }) : () => {}; break
     case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
-    case 'finishEdit': Object.assign(getEditableNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
+    case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ln.selection === 's' ? sSetter(m, 'lineWidth', payload) : fSetter (m, 'lineWidth', payload); break
     case 'setLineType': ln.selection === 's' ? sSetter(m, 'lineType', payload) : fSetter (m, 'lineType', payload); break
@@ -288,5 +293,5 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   mapExtractSelection(m)
   mapMeasure(pm, m)
   mapPlace(m)
-  return m.sort(nodeSorter)
+  return m.sort(sortNode)
 }
