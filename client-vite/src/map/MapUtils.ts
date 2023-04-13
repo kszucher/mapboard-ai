@@ -19,15 +19,17 @@ export const getNodeByPath = (m: M, p: P) => (m.find((n: GN) => isEqual(n.path, 
 export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getParentPath(p)) as N
 export const getG = (m: M) => m.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLS = (m: M) => getNodeByPath(m, getG(m).sc.lastPath) as N
-export const sGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(sFinder(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
-export const fGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(fFinder(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
+export const sGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
+export const fGetter = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getClosestStructChildPath(p))
+export const getSelection = (m: M) => m.filter(nt => getG(m).sc.structSelectedPathList.some(sp => isEqual(sp, nt.path)))
+export const getSelectionFamily = (m: M) => m.filter(nt => getG(m).sc.structSelectedPathList.some(sp => isFamilyPath(sp, nt.path)))
 // SET
-export const sSetter = (m: M, prop: keyof N, value: any) => sFinder(m).forEach(n => n[prop] = value)
-export const fSetter = (m: M, prop: keyof N, value: any) => fFinder(m).forEach(n => n[prop] = value)
 export const incrementPathItemAt = (p: P, at: number) => structuredClone(p.map((pi, i) => i === at ? pi + 1 : pi))
 export const decrementPathItemAt = (p: P, at: number) => structuredClone(p.map((pi, i) => i === at ? pi - 1 : pi))
+export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
+export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionFamily(m).forEach(n => n[prop] = value)
 // BOOLEAN
 export const isG = (p: P) => getPattern(p).endsWith('g')
 export const isR = (p: P) => getPattern(p).endsWith('r')
@@ -45,6 +47,3 @@ export const isCellColSiblingPath = (p: P, pt: P) => p.length === pt.length && p
 export const isPrecedingCellRowSiblingPath = (p: P, pt: P) => isCellRowSiblingPath(p, pt) && p.at(-1) > pt.at(-1)
 export const isPrecedingCellColSiblingPath = (p: P, pt: P) => isCellColSiblingPath(p, pt) && p.at(-2) > pt.at(-2)
 export const haveSameParent = (p: P, pt: P) => isEqual(getParentPath(p), getParentPath(pt))
-// FIND
-export const sFinder = (m: M) => m.filter(nt => getG(m).sc.structSelectedPathList.some(sp => isEqual(sp, nt.path)))
-export const fFinder = (m: M) => m.filter(nt => getG(m).sc.structSelectedPathList.some(sp => isFamilyPath(sp, nt.path)))

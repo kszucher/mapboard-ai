@@ -23,8 +23,8 @@ import {
   isR,
   sortNode,
   sortPath,
-  sSetter,
-  fSetter,
+  setSelection,
+  setSelectionFamily,
   isLowerSiblingFamilyPath,
   isFamilyOrLowerSiblingFamilyPath,
   getG,
@@ -256,32 +256,32 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
-    case 'setLineWidth': ln.selection === 's' ? sSetter(m, 'lineWidth', payload) : fSetter (m, 'lineWidth', payload); break
-    case 'setLineType': ln.selection === 's' ? sSetter(m, 'lineType', payload) : fSetter (m, 'lineType', payload); break
-    case 'setLineColor': ln.selection === 's' ? sSetter(m, 'lineColor', payload) : fSetter (m, 'lineColor', payload); break
-    case 'setBorderWidth': ln.selection === 's' ? sSetter(m, 'sBorderWidth', payload) : sSetter (m, 'fBorderWidth', payload); break
-    case 'setBorderColor': ln.selection === 's' ? sSetter(m, 'sBorderColor', payload) : sSetter (m, 'fBorderColor', payload); break
-    case 'setFillColor': ln.selection === 's' ? sSetter(m, 'sFillColor', payload) : sSetter (m, 'fFillColor', payload); break
-    case 'setTextFontSize': ln.selection === 's' ? sSetter(m, 'textFontSize', payload) : fSetter (m, 'textFontSize', payload); break
-    case 'setTextColor': ln.selection === 's' ? sSetter(m, 'textColor', payload) : fSetter (m, 'textColor', payload); break
+    case 'setLineWidth': ln.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
+    case 'setLineType': ln.selection === 's' ? setSelection(m, 'lineType', payload) : setSelectionFamily (m, 'lineType', payload); break
+    case 'setLineColor': ln.selection === 's' ? setSelection(m, 'lineColor', payload) : setSelectionFamily (m, 'lineColor', payload); break
+    case 'setBorderWidth': ln.selection === 's' ? setSelection(m, 'sBorderWidth', payload) : setSelection (m, 'fBorderWidth', payload); break
+    case 'setBorderColor': ln.selection === 's' ? setSelection(m, 'sBorderColor', payload) : setSelection (m, 'fBorderColor', payload); break
+    case 'setFillColor': ln.selection === 's' ? setSelection(m, 'sFillColor', payload) : setSelection (m, 'fFillColor', payload); break
+    case 'setTextFontSize': ln.selection === 's' ? setSelection(m, 'textFontSize', payload) : setSelectionFamily (m, 'textFontSize', payload); break
+    case 'setTextColor': ln.selection === 's' ? setSelection(m, 'textColor', payload) : setSelectionFamily (m, 'textColor', payload); break
     case 'clearLine': {
-      ln.selection === 's' ? sSetter(m, 'lineWidth', nSaveOptional.lineWidth) : fSetter (m, 'lineWidth', nSaveOptional.lineWidth)
-      ln.selection === 's' ? sSetter(m, 'lineType', nSaveOptional.lineType) : fSetter (m, 'lineType', nSaveOptional.lineType)
-      ln.selection === 's' ? sSetter(m, 'lineColor', nSaveOptional.lineColor) : fSetter (m, 'lineColor', nSaveOptional.lineColor)
+      ln.selection === 's' ? setSelection(m, 'lineWidth', nSaveOptional.lineWidth) : setSelectionFamily (m, 'lineWidth', nSaveOptional.lineWidth)
+      ln.selection === 's' ? setSelection(m, 'lineType', nSaveOptional.lineType) : setSelectionFamily (m, 'lineType', nSaveOptional.lineType)
+      ln.selection === 's' ? setSelection(m, 'lineColor', nSaveOptional.lineColor) : setSelectionFamily (m, 'lineColor', nSaveOptional.lineColor)
       break
     }
     case 'clearBorder': {
-      ln.selection === 's' ? sSetter(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : sSetter(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
-      ln.selection === 's' ? sSetter(m, 'sBorderColor', nSaveOptional.sBorderColor) : sSetter(m, 'fBorderColor', nSaveOptional.sBorderColor)
+      ln.selection === 's' ? setSelection(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setSelection(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
+      ln.selection === 's' ? setSelection(m, 'sBorderColor', nSaveOptional.sBorderColor) : setSelection(m, 'fBorderColor', nSaveOptional.sBorderColor)
       break
     }
     case 'clearFill': {
-      ln.selection === 's' ? sSetter(m, 'sFillColor', nSaveOptional.sFillColor) : sSetter(m, 'fFillColor', nSaveOptional.fFillColor)
+      ln.selection === 's' ? setSelection(m, 'sFillColor', nSaveOptional.sFillColor) : setSelection(m, 'fFillColor', nSaveOptional.fFillColor)
       break
     }
     case 'clearText': {
-      ln.selection === 's' ? sSetter(m, 'textColor', nSaveOptional.textColor) : fSetter(m, 'textColor', nSaveOptional.textColor)
-      ln.selection === 's' ? sSetter(m, 'textFontSize', nSaveOptional.textFontSize) : fSetter(m, 'textFontSize', nSaveOptional.textFontSize)
+      ln.selection === 's' ? setSelection(m, 'textColor', nSaveOptional.textColor) : setSelectionFamily(m, 'textColor', nSaveOptional.textColor)
+      ln.selection === 's' ? setSelection(m, 'textFontSize', nSaveOptional.textFontSize) : setSelectionFamily(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
   }
