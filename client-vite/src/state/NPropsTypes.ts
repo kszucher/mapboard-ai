@@ -1,8 +1,8 @@
 import {LineTypes} from "../core/Enums"
-import {Path} from "./MTypes"
+import {P} from "./MTypes"
 
 export interface NSaveAlways {
-  path: Path
+  path: P
   nodeId: string
 }
 

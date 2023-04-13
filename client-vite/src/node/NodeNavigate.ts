@@ -1,8 +1,8 @@
 import {Dir} from "../core/Enums"
-import {M, Path} from "../state/MTypes"
+import {M, P} from "../state/MTypes"
 import {getNodeByPath, getParentPath, isC} from "../map/MapUtils"
 
-export const structNavigate = (m: M, path: Path, dir: Dir) => {
+export const structNavigate = (m: M, path: P, dir: Dir) => {
   let toPath = []
   let inDepth = - 1
   //       v
@@ -84,7 +84,7 @@ export const structNavigate = (m: M, path: Path, dir: Dir) => {
   return toPath
 }
 
-export const cellNavigate = (m: M, path: Path, dir: Dir) => {
+export const cellNavigate = (m: M, path: P, dir: Dir) => {
   let testPath = []
   switch (dir) {
     case Dir.I: testPath = path.map((pi, i) => i === path.length - 1 ? pi - 1 : pi); break

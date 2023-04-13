@@ -1,25 +1,25 @@
-import {Path} from "./MTypes"
+import {P} from "./MTypes"
 
 export interface SC {
-  structSelectedPathList: Path[]
-  cellSelectedPathList: Path[]
+  structSelectedPathList: P[]
+  cellSelectedPathList: P[]
   isRootIncluded: boolean
   maxSel: number
   maxSelIndex: number
   scope: string
-  lastPath: Path
-  geomHighPath: Path
-  geomLowPath: Path
+  lastPath: P
+  geomHighPath: P
+  geomLowPath: P
   isCellRowSelected: number
   cellRow: number
   isCellColSelected: number
   cellCol: number
   haveSameParent: number
-  sameParentPath: Path
+  sameParentPath: P
 }
 
 export interface GSaveAlways {
-  path: Path
+  path: P
   nodeId: string
 }
 

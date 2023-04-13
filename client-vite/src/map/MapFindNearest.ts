@@ -1,11 +1,11 @@
 import {getNodeById, getNodeByPath, getParentPath, isD, isS, isDescendantPath} from "./MapUtils"
-import {M, GN, Path} from "../state/MTypes"
+import {M, GN, P} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import isEqual from "react-fast-compare"
 
 export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
   let moveCoords = [] as number[]
-  let moveTargetPath = [] as Path
+  let moveTargetPath = [] as P
   let moveTargetIndex = 0
   if (!(
     moveNode.nodeStartX < toX &&

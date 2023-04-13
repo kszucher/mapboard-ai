@@ -7,4 +7,4 @@ export type GNPartial = GPartial & NPartial
 export type M = GN[]
 export type MPartial = GNPartial[]
 export type PathItem = 'g' | 'r' | 'd' | 's' | 'c' | number
-export type Path = PathItem[]
+export type P = PathItem[]

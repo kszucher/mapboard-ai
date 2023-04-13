@@ -1,7 +1,7 @@
 import {genHash, transpose} from '../core/Utils'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
-import {M, Path} from "../state/MTypes"
+import {M, P} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
@@ -33,7 +33,7 @@ import {
   getEditedNode,
 } from "./MapUtils"
 
-const selectNode = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
+const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   const maxSel = 0 // TODO
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
     ? { selected: add ? maxSel + 1 : 1 , selection }
@@ -41,7 +41,7 @@ const selectNode = (m: M, path: Path, selection: 's' | 'f', add: boolean) => {
   ))
 }
 
-const selectNodeList = (m: M, pathList: Path[], selection: 's' | 'f') => {
+const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
   m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pathList.map(p => p.join('')).includes(n.path.join(''))
     ? { selected: i, selection }
     : { selected: 0, selection: 's' }
@@ -49,7 +49,7 @@ const selectNodeList = (m: M, pathList: Path[], selection: 's' | 'f') => {
 }
 
 const insertNode = (m, dir: Dir, attributes: object) => {
-  let insertParentPath = getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as Path: getLS(m).path
+  let insertParentPath = getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path
   let insertParent = getNodeByPath(m, insertParentPath)
   let insertPath
   let taskStatus
