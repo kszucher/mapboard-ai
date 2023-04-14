@@ -32,6 +32,7 @@ export const editorSlice = createSlice({
           case 'startEditAppend':
             if (isMapChanged) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
+              // TODO mapListIndexFrom
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = nml
@@ -44,6 +45,7 @@ export const editorSlice = createSlice({
           case 'finishEdit':
             if (isMapChanged) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
+              // TODO mapListIndexFrom
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = []
@@ -53,6 +55,7 @@ export const editorSlice = createSlice({
           default:
             if (isMapChanged) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
+              // TODO mapListIndexFrom
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = []

@@ -21,6 +21,7 @@ export const getG = (m: M) => m.filter((n: N) => n.path.length === 1).at(0) as G
 export const getLS = (m: M) => getNodeByPath(m, getG(m).sc.lastPath) as N
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getClosestStructChildPath(p))
+export const getInsertParentNode = (m: M) => getNodeByPath(m, getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path)
 export const getSelection = (m: M) => m.filter(nt => getG(m).sc.structSelectedPathList.some(sp => isEqual(sp, nt.path)))
 export const getSelectionFamily = (m: M) => m.filter(nt => getG(m).sc.structSelectedPathList.some(sp => isFamilyPath(sp, nt.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
@@ -46,4 +47,4 @@ export const isCellRowSiblingPath = (p: P, pt: P) => p.length === pt.length && p
 export const isCellColSiblingPath = (p: P, pt: P) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-1) === pt.at(-1)
 export const isPrecedingCellRowSiblingPath = (p: P, pt: P) => isCellRowSiblingPath(p, pt) && p.at(-1) > pt.at(-1)
 export const isPrecedingCellColSiblingPath = (p: P, pt: P) => isCellColSiblingPath(p, pt) && p.at(-2) > pt.at(-2)
-export const haveSameParent = (p: P, pt: P) => isEqual(getParentPath(p), getParentPath(pt))
+export const haveSameParent = (p: P, pt: P) => isEqual(getParentPath(p), getParentPath(pt)) // aka isSiblingPath...

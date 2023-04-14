@@ -1,7 +1,7 @@
-import {genHash, transpose} from '../core/Utils'
+import {createArray, genHash, transpose} from '../core/Utils'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
-import {M, P} from "../state/MTypes"
+import {GN, M, P} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
@@ -19,7 +19,6 @@ import {
   incrementPathItemAt,
   isCellColSiblingPath,
   isCellRowSiblingPath,
-  isLowerSiblingPath,
   isR,
   sortNode,
   sortPath,
@@ -28,47 +27,65 @@ import {
   isLowerSiblingFamilyPath,
   isFamilyOrLowerSiblingFamilyPath,
   getG,
-  getNodeById,
-  getClosestStructChildPath,
   getEditedNode,
+  getInsertParentNode,
 } from "./MapUtils"
 
 const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   const maxSel = 0 // TODO
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? { selected: add ? maxSel + 1 : 1 , selection }
-    : { selected: 0, selection: 's' }
-  ))
+  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? maxSel + 1 : 1 , selection } : { selected: 0, selection: 's' }))
 }
 
 const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
-  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pathList.map(p => p.join('')).includes(n.path.join(''))
-    ? { selected: i, selection }
-    : { selected: 0, selection: 's' }
-  ))
+  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pathList.map(p => p.join('')).includes(n.path.join('')) ? { selected: i, selection } : { selected: 0, selection: 's' }))
 }
 
-const insertNode = (m, dir: Dir, attributes: object) => {
-  let insertParentPath = getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path
-  let insertParent = getNodeByPath(m, insertParentPath)
-  let insertPath
-  let taskStatus
-  if (dir === Dir.O) {
-    insertPath = [...insertParentPath, 's', insertParent.sCount]
-    taskStatus = insertParent.taskStatus
-  } else if (dir === Dir.U) {
-    m.forEach(n => isFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? () => n.path = incrementPathItemAt(n.path, getLS(m).path.length - 1) : () => {})
-    insertPath = [...getLS(m).path]
-    taskStatus = insertParent.taskStatus > 0 ?  1 : 0
-  } else if (dir === Dir.D) {
-    m.forEach(n => isLowerSiblingFamilyPath(getLS(m).path, n.path) ? () => n.path = incrementPathItemAt(n.path, getLS(m).path.length - 1) : () => {})
-    insertPath = incrementPathItemAt(getLS(m).path, getLS(m).path.length - 1)
-    taskStatus = insertParent.taskStatus > 0 ?  1 : 0
-  }
-  m.push(getDefaultNode({ path: insertPath, ...attributes, taskStatus, nodeId: 'node' + genHash(8) }))
-  m.sort(sortPath)
-  return insertPath
+const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
+  m.reverse()
+  m.forEach(n => Object.assign(n, isFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemAt(n.path, getLS(m).path.length - 1)} : {}))
+  m.reverse()
 }
+
+const moveLowerSiblingFamilyDown = (m: M) => {
+  m.reverse()
+  m.forEach(n => isLowerSiblingFamilyPath(getLS(m).path, n.path) ? () => n.path = incrementPathItemAt(n.path, getLS(m).path.length - 1) : () => {})
+  m.reverse()
+}
+
+const createNode = (m, attributes: object) => {
+  m.push(getDefaultNode({ ...attributes, nodeId: 'node' + genHash(8) }))
+  m.sort(sortPath)
+}
+
+const createNodes = (m, nodeList: N[]) => {
+  m.concat(nodeList.map(n => getDefaultNode({ ...n, nodeId: 'node' + genHash(8) }))) // ????
+  m.sort(sortPath)
+}
+
+const insertSelectNodeO = (m: M, attributes: object) => {
+  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount]
+  createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
+  selectNode(m, insertPath, 's', false)
+}
+
+const insertSelectNodeU = (m: M, attributes: object) => {
+  moveFamilyOrLowerSiblingFamilyDown(m)
+  const insertPath = getLS(m).path
+  createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
+  selectNode(m, insertPath, 's', false)
+  m.forEach(n =>{console.log(n.path,n.content)})
+}
+
+const insertSelectNodeD = (m: M, attributes: object) => {
+  moveLowerSiblingFamilyDown(m)
+  const insertPath = incrementPathItemAt(getLS(m).path, getLS(m).path.length - 1)
+  createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
+  selectNode(m, insertPath, 's', false)
+}
+
+// insert cell
+// insert cell row
+// insert cell col
 
 const deleteNode = () => {
   // this will also return a path, just not the one it received but what it calculated, so
@@ -83,7 +100,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   const { sc } = g
   const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
   switch (action) {
-    case 'LOAD': break
+    case 'LOAD':
+      break
     // // VIEW
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'; break
@@ -133,25 +151,23 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_R': selectNode(m, ['r', 0], 's', false); break
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
-    case 'insert_S_U': selectNode(m, insertNode(m, Dir.U, { content: '' }), 's', false); break
-    case 'insert_S_D': selectNode(m, insertNode(m, Dir.D, { content: '' }), 's', false); break
-    case 'insert_S_O': selectNode(m, insertNode(m, Dir.O, { content: '' }), 's', false); break
-    case 'insert_S_O_text': selectNode(m, insertNode(m, Dir.O, { contentType: 'text', content: payload.text }), 's', false); break
-    case 'insert_S_O_elink': selectNode(m, insertNode(m, Dir.O, { contentType: 'text', content: payload.text, linkType: 'external', link: payload.text }), 's', false); break
-    case 'insert_S_O_equation': selectNode(m, insertNode(m, Dir.O, { contentType: 'equation', content: payload.text }), 's', false); break
-    case 'insert_S_O_image': selectNode(m, insertNode(m, Dir.O, { contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height }), 's', false); break
+    case 'insert_S_O': insertSelectNodeO(m, {}); break
+    case 'insert_S_O_text': insertSelectNodeO(m, {contentType: 'text', content: payload.text}); break
+    case 'insert_S_O_elink': insertSelectNodeO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
+    case 'insert_S_O_equation': insertSelectNodeO(m, {contentType: 'equation', content: payload.text}); break
+    case 'insert_S_O_image': insertSelectNodeO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insert_S_O_table': {
-      // clearSelection(m)
-      // const { rowLen, colLen } = payload
-      // const newTable = createArray(rowLen, colLen)
-      // for (let i = 0; i < rowLen; i++) {
-      //   for (let j = 0; j < colLen; j++) {
-      //     newTable[i][j] = getDefaultNode({s: [getDefaultNode()]})
-      //   }
-      // }
-      // structCreate(m, ln, Dir.O, { taskStatus: 0, c: newTable })
+      insertSelectNodeO(m, {})
+      for (let i = 0; i < payload.rowLen; i++) {
+        for (let j = 0; j < payload.colLen; j++) {
+          // m.push(getDefaultNode({ path: [...insertPath, 'c', i, j], nodeId: 'node' + genHash(8) }))
+        }
+      }
+      m.sort(sortPath)
       break
     }
+    case 'insert_S_U': insertSelectNodeU(m, {}); break
+    case 'insert_S_D': insertSelectNodeD(m, {}); break
     case 'insert_CC_IO': {
       // cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.dir) // FIXME getParentPath
       break
