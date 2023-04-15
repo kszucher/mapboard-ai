@@ -22,10 +22,15 @@ export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getClosestStructCh
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path)
 export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => isFamilyPath(p, n.path)))
-export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
-export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map((n: N) => n[prop])) ? getLS(m)[prop] : null
+export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
+export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
+export const getCellRowSiblingCount = (m: M, p: P) => m.filter(n => isCellRowSiblingPath(p, n.path)).length
+export const getCellColSiblingCount = (m: M, p: P) => m.filter(n => isCellColSiblingPath(p, n.path)).length
 // SET
-export const incrementPathItemAt = (p: P, at: number) => structuredClone(p).map((pi, i) => i === at ? pi + 1 : pi)
+export const incrementPathItemPositioned = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
+export const incrementPathItemPositionedLimited = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
+export const decrementPathItemPositionedLimited = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi > limit ? pi - 1 : pi)
+
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionFamily(m).forEach(n => n[prop] = value)
 // BOOLEAN
@@ -49,6 +54,7 @@ export const haveSameParent = (p: P, pt: P) => isEqual(getParentPath(p), getPare
 
 export const isRootSelected = (m: M) => isR(getLS(m).path) && !m.find(n => n.selected && !isR(n.path))
 export const isStructSelected = (m: M) => isS(getLS(m).path) && !m.find(n => n.selected && !isS(n.path))
+export const isDirStructSelected = (m: M) => getLS(m).path.length === 6
 export const isCellSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path))
 export const isCellRowSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isCellRowSiblingPath(getLS(m).path, n.path))
 export const isCellColSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isCellColSiblingPath(getLS(m).path, n.path))

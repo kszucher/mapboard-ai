@@ -83,14 +83,3 @@ export const structNavigate = (m: M, path: P, dir: Dir) => {
 
   return toPath
 }
-
-export const cellNavigate = (m: M, path: P, dir: Dir) => {
-  let testPath = []
-  switch (dir) {
-    case Dir.I: testPath = path.map((pi, i) => i === path.length - 1 ? pi - 1 : pi); break
-    case Dir.O: testPath = path.map((pi, i) => i === path.length - 1 ? pi + 1 : pi); break
-    case Dir.U: testPath = path.map((pi, i) => i === path.length - 2 ? pi - 1 : pi); break
-    case Dir.D: testPath = path.map((pi, i) => i === path.length - 2 ? pi + 1 : pi); break
-  }
-  return getNodeByPath(m, testPath) ? testPath : path
-}

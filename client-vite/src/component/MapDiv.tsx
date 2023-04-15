@@ -37,7 +37,7 @@ export const MapDiv: FC = () => {
   const dispatch = useDispatch()
   return (
     <div style={{position: 'absolute', display: 'flex'}}>
-      {m.map((n: N) => (
+      {m.map(n => (
         <Fragment key={n.nodeId}>
           {
             n.contentType && n.path.length !== 4 &&
