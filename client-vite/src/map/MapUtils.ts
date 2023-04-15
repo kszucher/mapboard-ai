@@ -47,6 +47,7 @@ export const isPrecedingCellRowSiblingPath = (p: P, pt: P) => isCellRowSiblingPa
 export const isPrecedingCellColSiblingPath = (p: P, pt: P) => isCellColSiblingPath(p, pt) && p.at(-2) > pt.at(-2)
 export const haveSameParent = (p: P, pt: P) => isEqual(getParentPath(p), getParentPath(pt)) // FIXME call this isSiblingPath...
 
+export const isRootSelected = (m: M) => isR(getLS(m).path) && !m.find(n => n.selected && !isR(n.path))
 export const isStructSelected = (m: M) => isS(getLS(m).path) && !m.find(n => n.selected && !isS(n.path))
 export const isCellSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path))
 export const isCellRowSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isCellRowSiblingPath(getLS(m).path, n.path))
