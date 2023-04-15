@@ -1,5 +1,5 @@
 import {AccessTypes} from "../core/Enums"
-import {M} from "./MTypes"
+import {M} from "./MapPropTypes"
 
 export interface DefaultUseOpenWorkspaceQueryState {
   name: string

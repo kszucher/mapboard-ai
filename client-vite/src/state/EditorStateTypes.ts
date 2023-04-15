@@ -1,5 +1,5 @@
 import {FormatMode, PageState} from "../core/Enums"
-import {M} from "./MTypes"
+import {M} from "./MapPropTypes"
 
 export interface EditorState {
   token: string

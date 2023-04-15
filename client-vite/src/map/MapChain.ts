@@ -1,4 +1,4 @@
-import {M} from "../state/MTypes"
+import {M} from "../state/MapPropTypes"
 import isEqual from "react-fast-compare"
 
 export const mapChain = (m: M) => {

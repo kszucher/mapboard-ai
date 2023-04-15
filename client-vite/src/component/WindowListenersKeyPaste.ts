@@ -2,7 +2,7 @@ import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
-import {M} from "../state/MTypes"
+import {M} from "../state/MapPropTypes"
 import {getMap} from "../state/EditorState";
 import {getG, getLS, isCellRowSelected, isCellSelected, isStructSelected} from "../map/MapUtils";
 

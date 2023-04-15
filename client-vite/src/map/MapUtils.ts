@@ -1,9 +1,7 @@
-import {GN, M, P, PathItem} from "../state/MTypes"
-import {N} from "../state/NPropsTypes"
+import {G, GN, M, N, P, PathItem} from "../state/MapPropTypes"
+import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
 import {isArrayOfEqualValues} from "../core/Utils"
-import {G} from "../state/GPropsTypes"
-import isEqual from "react-fast-compare";
-import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/NProps";
+import isEqual from "react-fast-compare"
 
 // SORT
 export const sortPath = (a, b) => a.path.map(el => isNaN(el) ? el: 1000 + el).join('') > b.path.map(el => isNaN(el) ? el: 1000 + el).join('') ? 1 : -1

@@ -1,15 +1,13 @@
-import {createArray, genHash, transpose} from '../core/Utils'
-import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
-import { M, P} from "../state/MTypes"
-import {N} from "../state/NPropsTypes"
-import {mapPlace} from "./MapPlace"
+import {M, N, P} from "../state/MapPropTypes"
+import {mapInit} from "./MapInit"
+import {mapChain} from "./MapChain"
+import {mapCalcTask} from "./MapCalcTask"
 import {mapMeasure} from "./MapMeasure"
-import {nSaveOptional} from "../state/NProps";
-import {mapCalcTask} from "./MapCalcTask";
-import {mapInit} from "./MapInit";
-import {mapChain} from "./MapChain";
-import isEqual from "react-fast-compare";
+import {mapPlace} from "./MapPlace"
+import isEqual from "react-fast-compare"
+import {genHash, transpose} from '../core/Utils'
+import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {
   sortNode,
   sortPath,
@@ -29,6 +27,7 @@ import {
   isLowerSiblingFamilyPath,
   isFamilyOrLowerSiblingFamilyPath,
 } from "./MapUtils"
+import {nSaveOptional} from "../state/MapProps";
 
 const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))

@@ -1,6 +1,6 @@
 import {Dir} from "../core/Enums"
 import {getDefaultNode, sortPath} from "../map/MapUtils";
-import {P} from "../state/MTypes";
+import {P} from "../state/MapPropTypes";
 
 export const structCreate = (m: any, dir: Dir, payload: object) => {
   if (dir === Dir.U) {

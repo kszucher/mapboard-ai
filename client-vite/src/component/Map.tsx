@@ -2,12 +2,11 @@ import React, {FC, useEffect, useRef} from "react"
 import {MapSvg} from "./MapSvg"
 import {MapDiv} from "./MapDiv"
 import {RootStateOrAny, useSelector} from "react-redux";
-import {N} from "../state/NPropsTypes";
-import {G} from "../state/GPropsTypes";
 import {scrollTo} from "./MapDivUtils";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 import {getG} from "../map/MapUtils";
+import {G, N} from "../state/MapPropTypes";
 
 const getScrollLeft = (g: G) => (window.innerWidth + g.mapWidth) / 2
 const getScrollTop = () => (window.innerHeight - 48 * 2)

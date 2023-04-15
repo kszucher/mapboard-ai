@@ -17,8 +17,8 @@ import { CreateMapInMapIcon, TaskIcon } from './Icons'
 import {actions} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {gSaveOptional} from "../state/GProps"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState";
+import {gSaveOptional} from "../state/MapProps";
 
 const iconSize = 40
 const topOffs1 = 48*2

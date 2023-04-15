@@ -1,4 +1,4 @@
-import {M} from "../state/MTypes";
+import {M} from "../state/MapPropTypes";
 
 export const structDeleteReselect = (m: M) => {
   // let ln = getMapData(m, sc.lastPath)

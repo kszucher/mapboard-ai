@@ -1,8 +1,6 @@
 import {LineTypes} from "../core/Enums"
 import {adjust} from "../core/Utils"
-import {M} from "../state/MTypes"
-import {G} from "../state/GPropsTypes"
-import {N} from "../state/NPropsTypes"
+import {G, M, N} from "../state/MapPropTypes"
 import {
   getLS,
   getNodeByPath,

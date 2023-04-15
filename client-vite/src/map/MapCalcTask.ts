@@ -1,5 +1,5 @@
 import {getNodeByPath} from "./MapUtils"
-import {M} from "../state/MTypes"
+import {M} from "../state/MapPropTypes"
 
 export const mapCalcTask = (m: M) => {
   const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0])

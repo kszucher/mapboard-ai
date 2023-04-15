@@ -1,17 +1,5 @@
-import {
-  getNodeByPath,
-  getParentPath,
-  isG,
-  isR,
-  isD,
-  isS,
-  isC,
-  isUpperSiblingPath,
-  getPattern,
-} from "./MapUtils"
-import {M} from "../state/MTypes"
-import {G} from "../state/GPropsTypes"
-import {N} from "../state/NPropsTypes"
+import {getNodeByPath, getParentPath, isG, isR, isD, isS, isC, isUpperSiblingPath, getPattern} from "./MapUtils"
+import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G

@@ -1,7 +1,5 @@
 import {getNodeById, getNodeByPath, getPattern, isG, isR, isD, isS} from "./MapUtils"
-import {M} from "../state/MTypes"
-import {G} from "../state/GPropsTypes"
-import {N} from "../state/NPropsTypes"
+import {G, M, N} from "../state/MapPropTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
 

@@ -27,11 +27,10 @@ import {
   getTaskPath,
 } from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
-import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mapFindIntersecting} from "../map/MapFindIntersecting";
 import isEqual from "react-fast-compare";
-import {M} from "../state/MTypes";
+import {M, N} from "../state/MapPropTypes";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',

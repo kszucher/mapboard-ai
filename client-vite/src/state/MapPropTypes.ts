@@ -1,9 +1,27 @@
-import {LineTypes} from "../core/Enums"
-import {P} from "./MTypes"
+import {LineTypes} from "../core/Enums";
 
-export interface NSaveAlways {
+export interface GSaveAlways {
   path: P
   nodeId: string
+}
+
+export interface GSaveOptional {
+  alignment: string
+  density: string
+  taskConfigN: number
+  taskConfigGap: number
+  margin: number
+}
+
+export interface GSaveNever {
+  mapWidth: number
+  mapHeight: number
+  mapStartCenterX: number
+  sLineDeltaXDefault: number
+  padding: number
+  defaultH: number
+  taskConfigD: number
+  taskConfigWidth: number
 }
 
 export interface NSaveOptional {
@@ -61,5 +79,18 @@ export interface NSaveNever {
   isBottom: number
 }
 
+export interface NSaveAlways {
+  path: P
+  nodeId: string
+}
+
+export type G = GSaveAlways & GSaveOptional & GSaveNever
+export type GPartial = Required<GSaveAlways> & Partial<GSaveOptional> & Partial<GSaveNever>
 export type N = NSaveAlways & NSaveOptional & NSaveNever
 export type NPartial = Required<NSaveAlways> & Partial<NSaveOptional> & Partial<NSaveNever>
+export type GN = G & N
+export type GNPartial = GPartial & NPartial
+export type M = GN[]
+export type MPartial = GNPartial[]
+export type PathItem = 'g' | 'r' | 'd' | 's' | 'c' | number
+export type P = PathItem[]

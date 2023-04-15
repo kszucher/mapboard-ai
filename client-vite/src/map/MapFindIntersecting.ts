@@ -1,5 +1,5 @@
-import {N} from "../state/NPropsTypes"
-import {isS} from "./MapUtils";
+import {N} from "../state/MapPropTypes"
+import {isS} from "./MapUtils"
 
 export const rectanglesIntersect = (input: number[]) => {
   const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input

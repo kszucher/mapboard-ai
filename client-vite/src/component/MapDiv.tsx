@@ -10,7 +10,7 @@ import {mapFindNearest} from "../map/MapFindNearest"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {actions} from "../editor/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
-import {N} from "../state/NPropsTypes"
+import {N} from "../state/MapPropTypes";
 
 const getInnerHtml = (n: N) => {
   if (n.contentType === 'text') {
