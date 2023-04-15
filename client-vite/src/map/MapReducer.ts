@@ -87,9 +87,10 @@ const insertSelectNodeD = (m: M, attributes: object) => {
   selectNode(m, insertPath, 's', false)
 }
 
-// insert cell
-// insert cell row
-// insert cell col
+const insertSelectCellRowU = () => {}
+const insertSelectCellRowD = () => {}
+const insertSelectCellColL = () => {}
+const insertSelectCellColR = () => {}
 
 const deleteNode = () => {
   // this will also return a path, just not the one it received but what it calculated, so
