@@ -1,9 +1,16 @@
 import {LineTypes} from "../core/Enums"
-import {adjust, isOdd} from "../core/Utils"
+import {adjust} from "../core/Utils"
 import {M} from "../state/MTypes"
-import {G, SC} from "../state/GPropsTypes"
+import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
-import {getG, getNodeByPath, getParentNodeByPath, getPathDir} from "../map/MapUtils";
+import {
+  getLS,
+  getNodeByPath,
+  getParentNodeByPath,
+  getPathDir,
+  isCellColSelected,
+  isCellRowSelected
+} from "../map/MapUtils"
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
@@ -104,30 +111,27 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
 }
 
 export const getCellPolygonPoints = (m: M): PolygonPoints => {
-  const g = getG(m)
-  const pn = getParentNodeByPath(m, g.sc.lastPath)
-  const n = getNodeByPath(m, g.sc.lastPath)
-  const dir = getPathDir(g.sc.lastPath)
-
+  const ls = getLS(m)
+  const pn = getParentNodeByPath(m, ls.path)
+  const n = getNodeByPath(m, ls.path)
+  const dir = getPathDir(ls.path)
   const { xi, yu } = getHelperParams(pn)
-  const { scope, cellRow, cellCol, lastPath } = g.sc
-
   let x, y, w, h
-  if (scope === 'cr') {
-    const i = cellRow
+  if (isCellRowSelected(m)) {
+    const i = ls.path.at(-2)
     x = xi
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
-  } else if (scope === 'cc') {
-    const j = cellCol
+  } else if (isCellColSelected(m)) {
+    const j = ls.path.at(-1)
     x = xi + n.lineDeltaX - 20
     y = yu
     w = pn.maxColWidth[j]
     h = pn.selfH
   } else {
-    const i = lastPath.at(-2) as number
-    const j = lastPath.at(-1) as number
+    const i = ls.path.at(-2) as number
+    const j = ls.path.at(-1) as number
     x = xi + n.lineDeltaX - 20
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.maxColWidth[j]

@@ -3,7 +3,7 @@ import {Dir} from "../core/Enums"
 import {getDefaultNode} from "../map/MapUtils";
 import {M} from "../state/MTypes";
 
-export const nodeMoveMouse = (m: any, sc: any, moveTargetPath: any, moveTargetIndex: any) => {
+export const nodeMoveMouse = (m: any, moveTargetPath: any, moveTargetIndex: any) => {
   // let {structSelectedPathList, sameParentPath} = sc
   // let sameParent = getMapData(m, sameParentPath)
   // if (!sameParent.hasOwnProperty('s')) {sameParent.s = []}

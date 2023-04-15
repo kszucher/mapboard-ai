@@ -1,39 +1,37 @@
 import {createArray, genHash, transpose} from '../core/Utils'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {Dir} from "../core/Enums"
-import {GN, M, P} from "../state/MTypes"
+import { M, P} from "../state/MTypes"
 import {N} from "../state/NPropsTypes"
 import {mapPlace} from "./MapPlace"
 import {mapMeasure} from "./MapMeasure"
 import {nSaveOptional} from "../state/NProps";
-import {mapExtractSelection} from "./MapExtractSelection";
 import {mapCalcTask} from "./MapCalcTask";
 import {mapInit} from "./MapInit";
 import {mapChain} from "./MapChain";
 import isEqual from "react-fast-compare";
 import {
+  sortNode,
+  sortPath,
   getDefaultNode,
   getLS,
   getNodeByPath,
   getParentNodeByPath,
+  getG,
+  getEditedNode,
+  getInsertParentNode,
+  setSelection,
+  setSelectionFamily,
   incrementPathItemAt,
   isCellColSiblingPath,
   isCellRowSiblingPath,
   isR,
-  sortNode,
-  sortPath,
-  setSelection,
-  setSelectionFamily,
   isLowerSiblingFamilyPath,
   isFamilyOrLowerSiblingFamilyPath,
-  getG,
-  getEditedNode,
-  getInsertParentNode,
 } from "./MapUtils"
 
 const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
-  const maxSel = 0 // TODO
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? maxSel + 1 : 1 , selection } : { selected: 0, selection: 's' }))
+  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
 }
 
 const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
@@ -41,15 +39,11 @@ const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
-  m.reverse()
   m.forEach(n => Object.assign(n, isFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemAt(n.path, getLS(m).path.length - 1)} : {}))
-  m.reverse()
 }
 
 const moveLowerSiblingFamilyDown = (m: M) => {
-  m.reverse()
-  m.forEach(n => isLowerSiblingFamilyPath(getLS(m).path, n.path) ? () => n.path = incrementPathItemAt(n.path, getLS(m).path.length - 1) : () => {})
-  m.reverse()
+  m.forEach(n => Object.assign(n, isLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemAt(n.path, getLS(m).path.length - 1)} : {}))
 }
 
 const createNode = (m, attributes: object) => {
@@ -97,8 +91,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
   const g = getG(m)
-  const { sc } = g
-  const ln = action === 'LOAD' ? null as N : getNodeByPath(m, sc.lastPath)
+  const ls = action === 'LOAD' ? null as N : getLS(m)
   switch (action) {
     case 'LOAD':
       break
@@ -125,29 +118,29 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'selectDescendantsOut': {
       if (payload.dir === Dir.OR) selectNode(m, ['r', 0, 'd', 0], 'f', false)
       else if (payload.dir === Dir.OL) selectNode(m, ['r', 0, 'd', 1], 'f', false)
-      else if (payload.dir === Dir.O && ln.sCount > 0) ln.selection = 'f'
+      else if (payload.dir === Dir.O && ls.sCount > 0) ls.selection = 'f'
       break
     }
     case 'select_S_IOUD': {
-      let toPath = [...sc.lastPath]
-      if (payload.dir === Dir.U) toPath = sc.geomHighPath
-      else if (payload.dir === Dir.D) toPath = sc.geomLowPath
+      let toPath = [...ls.path]
+      if (payload.dir === Dir.U) toPath = m.find(n => n.selected).path
+      else if (payload.dir === Dir.D) toPath = m.findLast(n => n.selected).path
       else if (payload.dir === Dir.OR) toPath = ['r', 0, 'd', 0]
       else if (payload.dir === Dir.OL) toPath = ['r', 0, 'd', 1]
       selectNode(m, structNavigate(m, toPath, payload.dir), 's', payload.add)
       break
     }
-    case 'select_S_F': selectNode(m, [...ln.path, 's', 0], 's', false); break
-    case 'select_S_B': selectNode(m, ln.path.slice(0, -3), 's', false); break
-    case 'select_S_BB': selectNode(m, ln.path.slice(0, -5), 's', false); break
-    case 'select_C_IOUD': selectNode(m, cellNavigate(m, ln.path, payload.dir), 's', false); break
-    case 'select_C_F': selectNode(m, ln.path, 's', false); break
-    case 'select_C_FF': (ln.cRowCount || ln.cColCount) ? selectNode(m, [...sc.lastPath, 'c', 0, 0], 's', false) : () => {}; break
-    case 'select_C_B': ln.path.includes('c') ? selectNode(m, [...ln.path.slice(0, ln.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, ln.path)).map(n => n.path), 's'); break
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, ln.path)).map(n => n.path), 's'); break
-    case 'select_CR_UD': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
-    case 'select_CC_IO': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, cellNavigate(m, ln.path, payload.dir))).map(n => n.path), 's'); break
+    case 'select_S_F': selectNode(m, [...ls.path, 's', 0], 's', false); break
+    case 'select_S_B': selectNode(m, ls.path.slice(0, -3), 's', false); break
+    case 'select_S_BB': selectNode(m, ls.path.slice(0, -5), 's', false); break
+    case 'select_C_IOUD': selectNode(m, cellNavigate(m, ls.path, payload.dir), 's', false); break
+    case 'select_C_F': selectNode(m, ls.path, 's', false); break
+    case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break
+    case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, ls.path)).map(n => n.path), 's'); break
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, ls.path)).map(n => n.path), 's'); break
+    case 'select_CR_UD': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, cellNavigate(m, ls.path, payload.dir))).map(n => n.path), 's'); break
+    case 'select_CC_IO': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, cellNavigate(m, ls.path, payload.dir))).map(n => n.path), 's'); break
     case 'select_R': selectNode(m, ['r', 0], 's', false); break
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
@@ -169,11 +162,11 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_U': insertSelectNodeU(m, {}); break
     case 'insert_S_D': insertSelectNodeD(m, {}); break
     case 'insert_CC_IO': {
-      // cellColCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.dir) // FIXME getParentPath
+      // cellColCreate(m, payload.b ? getMapData(m, ls.parentPath) : ls, payload.dir) // FIXME getParentPath
       break
     }
     case 'insert_CR_UD': {
-      // cellRowCreate(m, payload.b ? getMapData(m, ln.parentPath) : ln, payload.dir) // FIXME getParentPath
+      // cellRowCreate(m, payload.b ? getMapData(m, ls.parentPath) : ls, payload.dir) // FIXME getParentPath
       break
     }
     case 'insertNodesFromClipboard': {
@@ -181,7 +174,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // const nodeList = JSON.parse(payload.text)
       // for (let i = 0; i < nodeList.length; i++) {
       //   mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
-      //   structCreate(m, ln, Dir.O, { ...nodeList[i] })
+      //   structCreate(m, ls, Dir.O, { ...nodeList[i] })
       // }
       break
     }
@@ -216,8 +209,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'transpose': {
-      // if (ln.cRowCount || ln.cColCount) {
-      //   ln.c = transpose(ln.c)
+      // if (ls.cRowCount || ls.cColCount) {
+      //   ls.c = transpose(ls.c)
       // }
       break
     }
@@ -258,7 +251,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'toggleTask': {
-      // mapSetProp.iterate(ln, { taskStatus: ln.taskStatus === 0 ? 1 : 0 }, true)
+      // mapSetProp.iterate(ls, { taskStatus: ls.taskStatus === 0 ? 1 : 0 }, true)
       break
     }
     case 'setTaskStatus': {
@@ -272,32 +265,32 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
-    case 'setLineWidth': ln.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
-    case 'setLineType': ln.selection === 's' ? setSelection(m, 'lineType', payload) : setSelectionFamily (m, 'lineType', payload); break
-    case 'setLineColor': ln.selection === 's' ? setSelection(m, 'lineColor', payload) : setSelectionFamily (m, 'lineColor', payload); break
-    case 'setBorderWidth': ln.selection === 's' ? setSelection(m, 'sBorderWidth', payload) : setSelection (m, 'fBorderWidth', payload); break
-    case 'setBorderColor': ln.selection === 's' ? setSelection(m, 'sBorderColor', payload) : setSelection (m, 'fBorderColor', payload); break
-    case 'setFillColor': ln.selection === 's' ? setSelection(m, 'sFillColor', payload) : setSelection (m, 'fFillColor', payload); break
-    case 'setTextFontSize': ln.selection === 's' ? setSelection(m, 'textFontSize', payload) : setSelectionFamily (m, 'textFontSize', payload); break
-    case 'setTextColor': ln.selection === 's' ? setSelection(m, 'textColor', payload) : setSelectionFamily (m, 'textColor', payload); break
+    case 'setLineWidth': ls.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
+    case 'setLineType': ls.selection === 's' ? setSelection(m, 'lineType', payload) : setSelectionFamily (m, 'lineType', payload); break
+    case 'setLineColor': ls.selection === 's' ? setSelection(m, 'lineColor', payload) : setSelectionFamily (m, 'lineColor', payload); break
+    case 'setBorderWidth': ls.selection === 's' ? setSelection(m, 'sBorderWidth', payload) : setSelection (m, 'fBorderWidth', payload); break
+    case 'setBorderColor': ls.selection === 's' ? setSelection(m, 'sBorderColor', payload) : setSelection (m, 'fBorderColor', payload); break
+    case 'setFillColor': ls.selection === 's' ? setSelection(m, 'sFillColor', payload) : setSelection (m, 'fFillColor', payload); break
+    case 'setTextFontSize': ls.selection === 's' ? setSelection(m, 'textFontSize', payload) : setSelectionFamily (m, 'textFontSize', payload); break
+    case 'setTextColor': ls.selection === 's' ? setSelection(m, 'textColor', payload) : setSelectionFamily (m, 'textColor', payload); break
     case 'clearLine': {
-      ln.selection === 's' ? setSelection(m, 'lineWidth', nSaveOptional.lineWidth) : setSelectionFamily (m, 'lineWidth', nSaveOptional.lineWidth)
-      ln.selection === 's' ? setSelection(m, 'lineType', nSaveOptional.lineType) : setSelectionFamily (m, 'lineType', nSaveOptional.lineType)
-      ln.selection === 's' ? setSelection(m, 'lineColor', nSaveOptional.lineColor) : setSelectionFamily (m, 'lineColor', nSaveOptional.lineColor)
+      ls.selection === 's' ? setSelection(m, 'lineWidth', nSaveOptional.lineWidth) : setSelectionFamily (m, 'lineWidth', nSaveOptional.lineWidth)
+      ls.selection === 's' ? setSelection(m, 'lineType', nSaveOptional.lineType) : setSelectionFamily (m, 'lineType', nSaveOptional.lineType)
+      ls.selection === 's' ? setSelection(m, 'lineColor', nSaveOptional.lineColor) : setSelectionFamily (m, 'lineColor', nSaveOptional.lineColor)
       break
     }
     case 'clearBorder': {
-      ln.selection === 's' ? setSelection(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setSelection(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
-      ln.selection === 's' ? setSelection(m, 'sBorderColor', nSaveOptional.sBorderColor) : setSelection(m, 'fBorderColor', nSaveOptional.sBorderColor)
+      ls.selection === 's' ? setSelection(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setSelection(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
+      ls.selection === 's' ? setSelection(m, 'sBorderColor', nSaveOptional.sBorderColor) : setSelection(m, 'fBorderColor', nSaveOptional.sBorderColor)
       break
     }
     case 'clearFill': {
-      ln.selection === 's' ? setSelection(m, 'sFillColor', nSaveOptional.sFillColor) : setSelection(m, 'fFillColor', nSaveOptional.fFillColor)
+      ls.selection === 's' ? setSelection(m, 'sFillColor', nSaveOptional.sFillColor) : setSelection(m, 'fFillColor', nSaveOptional.fFillColor)
       break
     }
     case 'clearText': {
-      ln.selection === 's' ? setSelection(m, 'textColor', nSaveOptional.textColor) : setSelectionFamily(m, 'textColor', nSaveOptional.textColor)
-      ln.selection === 's' ? setSelection(m, 'textFontSize', nSaveOptional.textFontSize) : setSelectionFamily(m, 'textFontSize', nSaveOptional.textFontSize)
+      ls.selection === 's' ? setSelection(m, 'textColor', nSaveOptional.textColor) : setSelectionFamily(m, 'textColor', nSaveOptional.textColor)
+      ls.selection === 's' ? setSelection(m, 'textFontSize', nSaveOptional.textFontSize) : setSelectionFamily(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
   }
@@ -306,7 +299,6 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   mapInit(m)
   mapChain(m)
   mapCalcTask(m)
-  mapExtractSelection(m)
   mapMeasure(pm, m)
   mapPlace(m)
   return m.sort(sortNode)

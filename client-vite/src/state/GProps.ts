@@ -1,22 +1,4 @@
-import {GSaveAlways, GSaveNever, GSaveOptional, SC} from "./GPropsTypes"
-
-const sc = {
-  structSelectedPathList: [],
-  cellSelectedPathList: [],
-  isRootIncluded: false,
-  maxSel: 0,
-  maxSelIndex: 0,
-  scope: '',
-  lastPath: [],
-  geomHighPath: [],
-  geomLowPath: [],
-  isCellRowSelected: 0,
-  cellRow: 0,
-  isCellColSelected: 0,
-  cellCol: 0,
-  haveSameParent: 0,
-  sameParentPath: [],
-} as SC
+import {GSaveAlways, GSaveNever, GSaveOptional} from "./GPropsTypes"
 
 export const gSaveAlways = {
   path: ['g'],
@@ -40,5 +22,4 @@ export const gSaveNever = {
   defaultH: 0,
   taskConfigD: 0,
   taskConfigWidth: 0,
-  sc,
 } as GSaveNever

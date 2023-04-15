@@ -6,8 +6,7 @@ import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
 import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
-import {N} from "../state/NPropsTypes"
-import {getSelectionFamilyProp, getG, getNodeByPath, getSelectionProp} from "../map/MapUtils"
+import {getSelectionFamilyProp, getSelectionProp, getLS} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32
@@ -19,14 +18,13 @@ export const Formatter: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = getG(m)
-  const ln = getNodeByPath(m, g.sc.lastPath) as N
+  const ls = getLS(m)
   const lineWidth = WidthTypes[getSelectionProp(m, 'lineWidth') || 0]
   const lineType = LineTypes[getSelectionProp(m, 'lineType') || 0]
   const lineColor = getSelectionProp(m, 'lineColor')
-  const borderWidth = WidthTypes[ln.selection === 's' ? getSelectionProp(m, 'sBorderWidth') || 0 : getSelectionFamilyProp(m, 'fBorderWidth') || 0]
-  const borderColor = ln.selection === 's' ? getSelectionProp(m, 'sBorderColor') : getSelectionFamilyProp(m, 'fBorderColor')
-  const fillColor = ln.selection === 's' ? getSelectionProp(m, 'sFillColor') : getSelectionFamilyProp(m, 'fFillColor')
+  const borderWidth = WidthTypes[ls.selection === 's' ? getSelectionProp(m, 'sBorderWidth') || 0 : getSelectionFamilyProp(m, 'fBorderWidth') || 0]
+  const borderColor = ls.selection === 's' ? getSelectionProp(m, 'sBorderColor') : getSelectionFamilyProp(m, 'fBorderColor')
+  const fillColor = ls.selection === 's' ? getSelectionProp(m, 'sFillColor') : getSelectionFamilyProp(m, 'fFillColor')
   const textFontSize = TextTypes[getSelectionProp(m, 'textFontSize') || 0]
   const textColor = getSelectionProp(m, 'textColor')
   const dispatch = useDispatch()
@@ -51,8 +49,8 @@ export const Formatter: FC = () => {
     <div className="_bg fixed w-[216px] top-[96px] right-[64px] flex flex-col gap-3 rounded-2xl p-3">
       <div className="flex justify-center">
         <IconButton color='secondary' aria-label="text" onClick={(setFormatText)}><TextIcon/></IconButton>
-        <IconButton color='secondary' aria-label="border" onClick={setFormatBorder}><BorderIcon selection={ln.selection}/></IconButton>
-        <IconButton color='secondary' aria-label="fill" onClick={setFormatFill}><FillIcon selection={ln.selection}/></IconButton>
+        <IconButton color='secondary' aria-label="border" onClick={setFormatBorder}><BorderIcon selection={ls.selection}/></IconButton>
+        <IconButton color='secondary' aria-label="fill" onClick={setFormatFill}><FillIcon selection={ls.selection}/></IconButton>
         <IconButton color='secondary' aria-label="line" onClick={setFormatLine}><LineIcon/></IconButton>
         <span className="fixed top-[97px] w-[40px] h-[2px] bg-[color:var(--main-color)]" style={{right: 225 - 40* formatMode}}/>
       </div>

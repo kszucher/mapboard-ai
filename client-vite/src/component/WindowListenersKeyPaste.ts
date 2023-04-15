@@ -4,7 +4,7 @@ import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {M} from "../state/MTypes"
 import {getMap} from "../state/EditorState";
-import {getG} from "../map/MapUtils";
+import {getG, getLS, isCellRowSelected, isCellSelected, isStructSelected} from "../map/MapUtils";
 
 const { L, U, R, D } = { L: 37, U: 38, R: 39, D: 40 }
 
@@ -15,17 +15,16 @@ const ckm = (e: any, condition: string) => (
 )
 
 const c2dt = (m: M, which: number) => {
-  const g = getG(m)
-  const {lastPath} = g.sc
+  const ls = getLS(m)
   let dir
   if (which === R) {
-    if (lastPath.length === 2) {dir = Dir.OR}
-    else if (lastPath.length === 6) {dir = lastPath[3] ? Dir.IR : Dir.O}
-    else {dir = lastPath[3] ? Dir.I : Dir.O}
+    if (ls.path.length === 2) {dir = Dir.OR}
+    else if (ls.path.length === 6) {dir = ls.path[3] ? Dir.IR : Dir.O}
+    else {dir = ls.path[3] ? Dir.I : Dir.O}
   } else if (which === L) {
-    if (lastPath.length === 2) {dir = Dir.OL}
-    else if (lastPath.length === 6) {dir = lastPath[3] ? Dir.O : Dir.IL}
-    else {dir = lastPath[3] ? Dir.O : Dir.I}
+    if (ls.path.length === 2) {dir = Dir.OL}
+    else if (ls.path.length === 6) {dir = ls.path[3] ? Dir.O : Dir.IL}
+    else {dir = ls.path[3] ? Dir.O : Dir.I}
   } else if (which === U) {
     dir = Dir.U
   } else if (which === D) {
@@ -109,7 +108,17 @@ export const windowListenersKeyPaste = (
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
     const [ eventTypeCondition, match, scope, isMapAction, type, payload, preventDefault ] = stateMachine[i]
-    if (eventTypeCondition && match === true && scope.includes(g.sc.scope)) {
+    let realScope
+    if (isStructSelected(m)) {
+      realScope = 's'
+    } else if (isCellSelected(m)) {
+      realScope = 'c'
+      if (isCellRowSelected(m))
+        realScope = 'cr'
+      if (isCellSelected(m))
+        realScope = 'cc'
+    }
+    if (eventTypeCondition && match === true && scope.includes(realScope)) {
       if (preventDefault === 1 && kd) {
         someEvent.keyboardEvent && someEvent.keyboardEvent.preventDefault()
       }

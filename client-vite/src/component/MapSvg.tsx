@@ -2,7 +2,16 @@ import React, {FC, Fragment, useState} from "react"
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getClosestStructParentPath, getG, getNodeById, getNodeByPath, getPattern, isS} from "../map/MapUtils"
+import {
+  getClosestStructParentPath,
+  getG,
+  getLS,
+  getNodeById,
+  getNodeByPath,
+  getPattern, isCellColSelected, isCellRowSelected,
+  isCellSelected,
+  isS
+} from "../map/MapUtils"
 import {actions} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
@@ -18,11 +27,11 @@ import {
   getTaskPath,
 } from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
-import {G} from "../state/GPropsTypes"
 import {N} from "../state/NPropsTypes"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mapFindIntersecting} from "../map/MapFindIntersecting";
 import isEqual from "react-fast-compare";
+import {M} from "../state/MTypes";
 
 const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
@@ -33,9 +42,9 @@ const pathCommonProps = {
   }
 }
 
-const getSelectionMargin = (g: G, n: N) => (
+const getSelectionMargin = (m: M, n: N) => (
   (
-    ['c', 'cr', 'cc'].includes(g.sc.scope) ||
+    isCellSelected(m) ||
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
@@ -51,8 +60,8 @@ export const MapSvg: FC = () => {
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const m = tm.length ? tm : mapList[mapListIndex]
   const g = getG(m)
-  const pml = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
-  const sn = m.filter((el: any) => el.path.length > 1).reduce((a: N, b: N) => a.selected > b.selected ? a : b) // what is this?
+  const ls = getLS(m)
+  const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
@@ -199,8 +208,8 @@ export const MapSvg: FC = () => {
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
-                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getClosestStructParentPath(n.path))
-                      ? getLinePathBetweenNodes(getNodeByPath(pml, getClosestStructParentPath(n.path)), n)
+                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path))
+                      ? getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
                       : getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)
                   }
                   strokeWidth={n.lineWidth}
@@ -209,10 +218,10 @@ export const MapSvg: FC = () => {
                   {...pathCommonProps}
                 >
                   {
-                    !getNodeById(pml, n.nodeId) && getNodeByPath(pml, getClosestStructParentPath(n.path)) &&
+                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path)) &&
                     <animate
                       attributeName='d'
-                      from={getLinePathBetweenNodes(getNodeByPath(pml, getClosestStructParentPath(n.path)), n)}
+                      from={getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)}
                       to={getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
@@ -294,11 +303,12 @@ export const MapSvg: FC = () => {
               {
                 !selectionRectCoords.length &&
                 n.selected &&
-                n.selected !== g.sc.maxSel &&
-                !['cr', 'cc'].includes(g.sc.scope) &&
+                n.selected !== ls.selected &&
+                !isCellRowSelected(m) &&
+                !isCellColSelected(m) &&
                 <path
                   key={`${n.nodeId}_svg_selectionBorderSecondary`}
-                  d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(g, n))}
+                  d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(m, n))}
                   stroke={C.SELECTION_COLOR}
                   strokeWidth={1}
                   fill={'none'}
@@ -314,7 +324,7 @@ export const MapSvg: FC = () => {
             !selectionRectCoords.length &&
             <path
               key={`${g.nodeId}_svg_selectionBorderPrimary`}
-              d={getPolygonPath(sn, ['c', 'cr', 'cc'].includes(g.sc.scope) ? getCellPolygonPoints(m) : getStructPolygonPoints(sn, sn.selection), sn.selection, getSelectionMargin(g, sn))}
+              d={getPolygonPath(ls, isCellSelected(m) ? getCellPolygonPoints(m) : getStructPolygonPoints(ls, ls.selection), ls.selection, getSelectionMargin(m, ls))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}
@@ -324,11 +334,11 @@ export const MapSvg: FC = () => {
           }
         </g>
         <g id="layer6">
-          {intersectingNodes.map((n: N) => (
+          {intersectingNodes.map(n => (
             <Fragment key={n.nodeId}>
               <path
                 key={`${g.nodeId}_svg_selectionByRect`}
-                d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(g, n))}
+                d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(m, n))}
                 stroke={'#555555'}
                 strokeWidth={1}
                 fill={'none'}

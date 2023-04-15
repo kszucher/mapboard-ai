@@ -1,23 +1,5 @@
 import {P} from "./MTypes"
 
-export interface SC {
-  structSelectedPathList: P[]
-  cellSelectedPathList: P[]
-  isRootIncluded: boolean
-  maxSel: number
-  maxSelIndex: number
-  scope: string
-  lastPath: P
-  geomHighPath: P
-  geomLowPath: P
-  isCellRowSelected: number
-  cellRow: number
-  isCellColSelected: number
-  cellCol: number
-  haveSameParent: number
-  sameParentPath: P
-}
-
 export interface GSaveAlways {
   path: P
   nodeId: string
@@ -40,7 +22,6 @@ export interface GSaveNever {
   defaultH: number
   taskConfigD: number
   taskConfigWidth: number
-  sc: SC
 }
 
 export type G = GSaveAlways & GSaveOptional & GSaveNever

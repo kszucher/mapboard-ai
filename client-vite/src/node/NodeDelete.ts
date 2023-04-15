@@ -1,7 +1,6 @@
-import {SC} from "../state/GPropsTypes"
 import {M} from "../state/MTypes";
 
-export const structDeleteReselect = (m: M, sc: SC) => {
+export const structDeleteReselect = (m: M) => {
   // let ln = getMapData(m, sc.lastPath)
   // // calculate jump back
   // let closestNode = ln
@@ -54,7 +53,7 @@ export const structDeleteReselect = (m: M, sc: SC) => {
   // }
 }
 
-export const cellDeleteReselect = (m: M, sc: SC) => {
+export const cellDeleteReselect = (m: M) => {
   // const { lastPath, isCellRowSelected, cellRow, isCellColSelected, cellCol, sameParentPath } = sc
   // let sameParent = getMapData(m, sameParentPath)
   // let ln = getMapData(m, lastPath)
