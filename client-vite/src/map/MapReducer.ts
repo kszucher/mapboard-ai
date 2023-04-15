@@ -9,13 +9,14 @@ import isEqual from "react-fast-compare"
 import {genHash, transpose} from '../core/Utils'
 import {cellNavigate, structNavigate} from '../node/NodeNavigate'
 import {
-  sortNode,
   sortPath,
-  getDefaultNode,
+  sortNode,
+
+  getG,
   getLS,
+  getDefaultNode,
   getNodeByPath,
   getParentNodeByPath,
-  getG,
   getEditedNode,
   getInsertParentNode,
   setSelection,
@@ -62,16 +63,16 @@ const insertSelectNodeO = (m: M, attributes: object) => {
 }
 
 const insertSelectNodeU = (m: M, attributes: object) => {
-  moveFamilyOrLowerSiblingFamilyDown(m)
   const insertPath = getLS(m).path
+  moveFamilyOrLowerSiblingFamilyDown(m)
   createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
   m.forEach(n =>{console.log(n.path,n.content)})
 }
 
 const insertSelectNodeD = (m: M, attributes: object) => {
-  moveLowerSiblingFamilyDown(m)
   const insertPath = incrementPathItemAt(getLS(m).path, getLS(m).path.length - 1)
+  moveLowerSiblingFamilyDown(m)
   createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
 }
