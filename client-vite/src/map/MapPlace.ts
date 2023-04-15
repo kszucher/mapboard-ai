@@ -1,4 +1,4 @@
-import {getNodeByPath, getParentPath, isG, isR, isD, isS, isC, isUpperSiblingPath, getPattern} from "./MapUtils"
+import {getNodeByPath, getParentPath, isG, isR, isD, isS, isC, isAnyUpperSiblingPath, getPattern} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -28,7 +28,7 @@ export const mapPlace = (m: M) => {
       const ppn = getNodeByPath(m, getParentPath(pn.path)) as N
       if (isS(n.path)) {
         const i = n.path.at(-1) as number
-        const sumUpperSiblingMaxH = m.filter(nt => isUpperSiblingPath(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
+        const sumUpperSiblingMaxH = m.filter(nt => isAnyUpperSiblingPath(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * pn.spacing * pn.spacingActivated
         n.lineDeltaX = g.sLineDeltaXDefault
         n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + sumElapsedY

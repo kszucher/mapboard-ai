@@ -27,8 +27,8 @@ import {
   isCellColSiblingPath,
   isCellRowSiblingPath,
   isR,
-  isLowerSiblingFamilyPath,
-  isFamilyOrLowerSiblingFamilyPath,
+  isAnyLowerSiblingFamilyPath,
+  isAnyFamilyOrLowerSiblingFamilyPath,
   incrementPathItemPositionedLimited,
   decrementPathItemPositionedLimited,
 } from "./MapUtils"
@@ -49,11 +49,11 @@ const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
-  m.forEach(n => Object.assign(n, isFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemPositioned(n.path, getLS(m).path.length - 1)} : {}))
+  m.forEach(n => Object.assign(n, isAnyFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemPositioned(n.path, getLS(m).path.length - 1)} : {}))
 }
 
 const moveLowerSiblingFamilyDown = (m: M) => {
-  m.forEach(n => Object.assign(n, isLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemPositioned(n.path, getLS(m).path.length - 1)} : {}))
+  m.forEach(n => Object.assign(n, isAnyLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemPositioned(n.path, getLS(m).path.length - 1)} : {}))
 }
 
 const createNode = (m, attributes: object) => {
