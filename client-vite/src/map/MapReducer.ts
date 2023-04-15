@@ -126,8 +126,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break // ok
-    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's', false); break // ok
-    case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's', false); break // ok
+    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's', false); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
+    case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's', false); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
     case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's', false); break // ok
     case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's', false); break // ok
     case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', false); break // ok
@@ -146,15 +146,14 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_D': selectNode(m, cellNavigateD(m, ls.path), 's', false); break // ok
     case 'select_C_F_firstRow': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -2 ? 0 : pi), 's', false); break // ok
     case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's', false); break // ok
-    case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break // fixme NO ternary
-    case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break // fixme NO ternary
+    case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
+    case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
     case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
     case 'select_CC_R': selectNodeList(m, getSelection(m).map(n => cellNavigateR(m, n.path)), 's'); break // ok
-
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
     case 'insert_S_O': insertSelectNodeO(m, {}); break
