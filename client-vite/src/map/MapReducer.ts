@@ -24,13 +24,12 @@ import {
   setSelection,
   setSelectionFamily,
   incrementPathItemPositioned,
-  isCellColSiblingPath,
-  isCellRowSiblingPath,
+  is_CC_siblingPath,
+  is_CR_siblingPath,
   isR,
   isAnyLowerSiblingFamilyPath,
-  isAnyFamilyOrLowerSiblingFamilyPath,
   incrementPathItemPositionedLimited,
-  decrementPathItemPositionedLimited,
+  decrementPathItemPositionedLimited, isFamilyPath,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps";
 
@@ -49,7 +48,7 @@ const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
-  m.filter(n => isAnyFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
+  m.filter(n => isFamilyPath(getLS(m).path, n.path) || isAnyLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
 }
 
 const moveLowerSiblingFamilyDown = (m: M) => {
@@ -92,10 +91,21 @@ const insertSelectTable = (m, r, c) => {
   insertNodes(m, getIndices2d(r, c).map(el => [ ...getLS(m).path, 'c', ...el, 's', 0]))
 }
 
-const insertSelectCellRowU = () => {} // TODO start here!!! these will be multiline, and very similar to the above... pushing down existing stuff, etc.
-const insertSelectCellRowD = () => {}
-const insertSelectCellColL = () => {}
-const insertSelectCellColR = () => {}
+const insertSelectCellColR = () => {
+
+}
+
+const insertSelectCellColL = () => {
+
+}
+
+const insertSelectCellRowU = () => {
+
+}
+
+const insertSelectCellRowD = () => {
+
+}
 
 const deleteNode = () => {
   // this will also return a path, just not the one it received but what it calculated, so
@@ -154,8 +164,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's', false); break // ok
     case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCellRowSiblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCellColSiblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_CR_siblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_CC_siblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
     case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
@@ -170,8 +180,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
     case 'insert_S_U': insertSelectNodeU(m, {}); break
     case 'insert_S_D': insertSelectNodeD(m, {}); break
-    case 'insert_CC_IO': {
-      // cellColCreate(m, payload.b ? getMapData(m, ls.parentPath) : ls, payload.dir) // FIXME getParentPath
+    case 'insert_CR_R': {
+
       break
     }
     case 'insert_CR_UD': {

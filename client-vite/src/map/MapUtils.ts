@@ -24,8 +24,8 @@ export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => isFamilyPath(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
-export const getCellRowSiblingCount = (m: M, p: P) => m.filter(n => isCellRowSiblingPath(p, n.path)).length
-export const getCellColSiblingCount = (m: M, p: P) => m.filter(n => isCellColSiblingPath(p, n.path)).length
+export const getCellRowSiblingCount = (m: M, p: P) => m.filter(n => is_CR_siblingPath(p, n.path)).length
+export const getCellColSiblingCount = (m: M, p: P) => m.filter(n => is_CC_siblingPath(p, n.path)).length
 // SET
 export const incrementPathItemPositioned = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
 export const incrementPathItemPositionedLimited = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
@@ -39,21 +39,20 @@ export const isR = (p: P) => getPattern(p).endsWith('r')
 export const isD = (p: P) => getPattern(p).endsWith('d')
 export const isS = (p: P) => getPattern(p).endsWith('s')
 export const isC = (p: P) => getPattern(p).endsWith('c')
-export const isDescendantPath = (p: P, pt: P) => pt.length > p.length && isEqual(p, pt.slice(0, p.length))
+export const isDescendantPath = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 export const isFamilyPath = (p: P, pt: P) => isEqual(p, pt) || isDescendantPath(p, pt)
-export const isAnyUpperSiblingPath = (p: P, pt: P) => p.length === pt.length && isEqual(p.slice(0, -1), pt.slice(0, p.length - 1)) && p.at(-1) > pt.at(-1)
-export const isAnyLowerSiblingPath = (p: P, pt: P) => p.length === pt.length && isEqual(p.slice(0, -1), pt.slice(0, p.length - 1)) && p.at(-1) < pt.at(-1)
-export const isAnyLowerSiblingFamilyPath = (p: P, pt: P) => p.length <= pt.length && isEqual(p.slice(0, -1), pt.slice(0, p.length - 1)) && p.at(-1) < pt.at(p.length - 1)
-export const isAnyFamilyOrLowerSiblingFamilyPath = (p: P, pt: P) => isFamilyPath(p, pt) || isAnyLowerSiblingFamilyPath(p, pt)
-export const isCellRowSiblingPath = (p: P, pt: P) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-2) === pt.at(-2)
-export const isCellColSiblingPath = (p: P, pt: P) => p.length === pt.length && p.join('').startsWith(pt.slice(0, -2).join('')) && p.at(-1) === pt.at(-1)
-export const isPrecedingCellRowSiblingPath = (p: P, pt: P) => isCellRowSiblingPath(p, pt) && p.at(-1) > pt.at(-1)
-export const isPrecedingCellColSiblingPath = (p: P, pt: P) => isCellColSiblingPath(p, pt) && p.at(-2) > pt.at(-2)
-export const haveSameParent = (p: P, pt: P) => isEqual(getParentPath(p), getParentPath(pt)) // FIXME call this isSiblingPath...
-
+export const isAnyUpperSiblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
+export const isAnyLowerSiblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
+export const isAnyLowerSiblingFamilyPath = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
+export const is_CR_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
+export const is_CC_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
+export const is_CR_R_siblingPath = (p: P, pt: P) => is_CR_siblingPath(p, pt) && pt.at(-1) > p.at(-1)
+export const is_CR_L_siblingPath = (p: P, pt: P) => is_CR_siblingPath(p, pt) && pt.at(-1) < p.at(-1)
+export const is_CC_U_siblingPath = (p: P, pt: P) => is_CC_siblingPath(p, pt) && pt.at(-2) < p.at(-2)
+export const is_CC_D_siblingPath = (p: P, pt: P) => is_CC_siblingPath(p, pt) && pt.at(-2) > p.at(-2)
 export const isRootSelected = (m: M) => isR(getLS(m).path) && !m.find(n => n.selected && !isR(n.path))
 export const isStructSelected = (m: M) => isS(getLS(m).path) && !m.find(n => n.selected && !isS(n.path))
 export const isDirStructSelected = (m: M) => getLS(m).path.length === 6
 export const isCellSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path))
-export const isCellRowSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isCellRowSiblingPath(getLS(m).path, n.path))
-export const isCellColSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isCellColSiblingPath(getLS(m).path, n.path))
+export const isCellRowSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && is_CR_siblingPath(getLS(m).path, n.path))
+export const isCellColSelected = (m: M) => isC(getLS(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && is_CC_siblingPath(getLS(m).path, n.path))
