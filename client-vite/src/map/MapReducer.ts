@@ -64,8 +64,6 @@ const insertNode = (m, attributes: object) => {
 const insertNodes = (m, pList: P[]) => {
   m.push(...pList.map(p => getDefaultNode({ path: structuredClone(p), nodeId: 'node' + genHash(8) })))
   m.sort(sortPath)
-  m.forEach(n =>{console.log(n.path,n.content)})
-
 }
 
 const insertSelectNodeO = (m: M, attributes: object) => {
@@ -86,6 +84,12 @@ const insertSelectNodeD = (m: M, attributes: object) => {
   moveLowerSiblingFamilyDown(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
+}
+
+const insertSelectTable = (m, r, c) => {
+  insertSelectNodeO(m, {}) // note: getLS will be up-to-date in the next phase!!!
+  insertNodes(m, getIndices2d(r, c).map(el => [ ...getLS(m).path, 'c', ...el]))
+  insertNodes(m, getIndices2d(r, c).map(el => [ ...getLS(m).path, 'c', ...el, 's', 0]))
 }
 
 const insertSelectCellRowU = () => {} // TODO start here!!! these will be multiline, and very similar to the above... pushing down existing stuff, etc.
@@ -163,12 +167,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_O_elink': insertSelectNodeO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
     case 'insert_S_O_equation': insertSelectNodeO(m, {contentType: 'equation', content: payload.text}); break
     case 'insert_S_O_image': insertSelectNodeO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insert_S_O_table': {
-      insertSelectNodeO(m, {}) // note: getLS will be up-to-date in the next phase!!!
-      insertNodes(m, getIndices2d(payload.rowLen, payload.colLen).map(el => [ ...getLS(m).path, 'c', ...el]))
-      insertNodes(m, getIndices2d(payload.rowLen, payload.colLen).map(el => [ ...getLS(m).path, 'c', ...el, 's', 0]))
-      break
-    }
+    case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
     case 'insert_S_U': insertSelectNodeU(m, {}); break
     case 'insert_S_D': insertSelectNodeD(m, {}); break
     case 'insert_CC_IO': {
