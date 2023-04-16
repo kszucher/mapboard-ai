@@ -21,7 +21,7 @@ export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlw
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getClosestStructChildPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path)
 export const getSelection = (m: M) => m.filter(n => n.selected)
-export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_O(p, n.path)))
+export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_S_O(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const get_CR_siblingCount = (m: M, p: P) => m.filter(n => is_CR(p, n.path)).length
@@ -41,13 +41,14 @@ export const is_D = (p: P) => getPattern(p).endsWith('d')
 export const is_S = (p: P) => getPattern(p).endsWith('s')
 export const is_C = (p: P) => getPattern(p).endsWith('c')
 export const is_S_O = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
+export const is_S_S_O = (p: P, pt: P) => isEqual(p, pt) || is_S_O(p, pt)
 export const is_S_U = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
 export const is_S_D = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
 export const is_S_U1 = (p: P, pt: P) => is_S_U(p, pt) && pt.at(-1) === p.at(-1) - 1
 export const is_S_D1 = (p: P, pt: P) => is_S_D(p, pt) && pt.at(-1) === p.at(-1) + 1
 export const is_S_U_O = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) < p.at(-1)
 export const is_S_D_O = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
-export const is_S_S_O_D_O = (p: P, pt: P) => isEqual(p, pt) || is_S_O(p, pt) || is_S_D_O(p, pt)
+export const is_S_S_O_D_O = (p: P, pt: P) => is_S_S_O(p, pt) || is_S_D_O(p, pt)
 export const is_CR = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const is_CC = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
 export const is_CR_R = (p: P, pt: P) => is_CR(p, pt) && pt.at(-1) > p.at(-1)
