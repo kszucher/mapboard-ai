@@ -1,4 +1,4 @@
-import {getNodeById, getNodeByPath, getPattern, isG, isR, isD, isS} from "./MapUtils"
+import {getNodeById, getNodeByPath, getPattern, is_G, is_R, is_D, is_S} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
@@ -15,7 +15,7 @@ export const mapMeasure = (pm: M, m: M) => {
     )) {
       n.spacingActivated = 1
     }
-    if (isG(n.path)) {
+    if (is_G(n.path)) {
       const { alignment, taskConfigWidth, margin, sLineDeltaXDefault } = g
       const r0 = getNodeByPath(m, ['r', 0]) as N
       const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0]) as N
@@ -60,7 +60,7 @@ export const mapMeasure = (pm: M, m: M) => {
       const rightMapHeight = r0.dCount > 0 ? r0d0.familyH : 0
       const leftMapHeight = r0.dCount > 1 ? r0d1.familyH : 0
       n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
-    } else if (isR(n.path) || isD(n.path) || isS(n.path)) {
+    } else if (is_R(n.path) || is_D(n.path) || is_S(n.path)) {
       if (n.cRowCount || n.cColCount) {
         let maxCellHeightMat = createArray(n.cRowCount, n.cColCount)
         let maxCellWidthMat = createArray(n.cRowCount, n.cColCount)

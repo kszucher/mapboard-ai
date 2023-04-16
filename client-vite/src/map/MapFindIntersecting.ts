@@ -1,5 +1,5 @@
 import {N} from "../state/MapPropTypes"
-import {isS} from "./MapUtils"
+import {is_S} from "./MapUtils"
 
 export const rectanglesIntersect = (input: number[]) => {
   const [minAx, minAy, maxAx, maxAy, minBx, minBy, maxBx, maxBy] = input
@@ -7,7 +7,7 @@ export const rectanglesIntersect = (input: number[]) => {
 }
 export const mapFindIntersecting = (m: N[], fromCoords: { x: number, y: number }, toCoords: { x: number, y: number }) => (
   m.filter(n =>
-    isS(n.path) && !n.cRowCount && !n.cColCount && n.content !== '' &&
+    is_S(n.path) && !n.cRowCount && !n.cColCount && n.content !== '' &&
     +rectanglesIntersect([
       Math.min(fromCoords.x, toCoords.x),
       Math.min(fromCoords.y, toCoords.y),

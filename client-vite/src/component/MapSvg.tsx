@@ -10,7 +10,7 @@ import {
   getNodeByPath,
   getPattern, isCellColSelected, isCellRowSelected,
   isCellSelected,
-  isS
+  is_S
 } from "../map/MapUtils"
 import {actions} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
@@ -231,7 +231,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                isS(n.path) && (n.cRowCount || n.cColCount) &&
+                is_S(n.path) && (n.cRowCount || n.cColCount) &&
                 <path
                   key={`${n.nodeId}_svg_tableFrame`}
                   d={getArcPath(n, 0, false)}
@@ -243,7 +243,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                isS(n.path) && (n.cRowCount || n.cRowCount) &&
+                is_S(n.path) && (n.cRowCount || n.cRowCount) &&
                 <path
                   key={`${n.nodeId}_svg_tableGrid`}
                   d={getGridPath(n)}

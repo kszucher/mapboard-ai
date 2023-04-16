@@ -1,11 +1,11 @@
 import {M, GSaveNever, GSaveOptional, NSaveNever, NSaveOptional} from "../state/MapPropTypes"
 import {gSaveAlways, gSaveOptional, nSaveAlways, nSaveOptional} from "../state/MapProps"
-import {isG, sortPath} from "./MapUtils"
+import {is_G, sortPath} from "./MapUtils"
 
 export const mapDeInit = (m: M) => {
   const mlRemoved = structuredClone(m).sort(sortPath)
   for (const nl of mlRemoved) {
-    if (isG(nl.path)) {
+    if (is_G(nl.path)) {
       for (const prop in nl) {
         if (gSaveAlways.hasOwnProperty(prop)) {
           // do nothing

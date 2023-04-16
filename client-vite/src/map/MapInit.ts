@@ -1,12 +1,12 @@
 import {GSaveOptional, GSaveNever, GPartial, NSaveAlways, NSaveOptional, NSaveNever, M, MPartial} from "../state/MapPropTypes"
 import {gSaveAlways, gSaveNever, gSaveOptional, nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
-import {getNodeByPath, isG} from "./MapUtils"
+import {getNodeByPath, is_G} from "./MapUtils"
 import {genHash} from "../core/Utils"
 
 export const mapInit = (m: MPartial) => {
   const g = getNodeByPath(m as M, ['g']) as GPartial
     m.forEach(n => {
-    if (isG(n.path)) {
+    if (is_G(n.path)) {
       for (const prop in gSaveAlways) {
         // do nothing
       }

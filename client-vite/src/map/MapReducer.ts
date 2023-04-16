@@ -23,20 +23,20 @@ import {
   get_CC_siblingCount,
   setSelection,
   setSelectionFamily,
-  incrementPathItemPositioned,
-  is_CC_siblingPath,
-  is_CR_siblingPath,
-  isR,
-  is_S_D_siblingFamilyPath,
-  incrementPathItemPositionedLimited,
-  decrementPathItemPositionedLimited, is_S_familyPath,
+  inc_pi,
+  is_CC,
+  is_CR,
+  is_R,
+  is_S_D_F,
+  inc_pi_lim,
+  dec_pi_lim, is_S_F,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps";
 
-const cellNavigateL = (m: M, p: P) => decrementPathItemPositionedLimited(p, p.length - 1, 0)
-const cellNavigateR = (m: M, p: P) => incrementPathItemPositionedLimited(p, p.length - 1, get_CR_siblingCount(m, p) - 1)
-const cellNavigateU = (m: M, p: P) => decrementPathItemPositionedLimited(p, p.length - 2, 0)
-const cellNavigateD = (m: M, p: P) => incrementPathItemPositionedLimited(p, p.length - 2, get_CC_siblingCount(m, p) - 1)
+const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
+const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_siblingCount(m, p) - 1)
+const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
+const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_siblingCount(m, p) - 1)
 
 const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
@@ -48,11 +48,11 @@ const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
-  m.filter(n => is_S_familyPath(getLS(m).path, n.path) || is_S_D_siblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
+  m.filter(n => is_S_F(getLS(m).path, n.path) || is_S_D_F(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
 }
 
 const moveLowerSiblingFamilyDown = (m: M) => {
-  m.filter(n => is_S_D_siblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
+  m.filter(n => is_S_D_F(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
 }
 
 const insertNode = (m, attributes: object) => {
@@ -79,7 +79,7 @@ const insertSelectNodeU = (m: M, attributes: object) => {
 }
 
 const insertSelectNodeD = (m: M, attributes: object) => {
-  const insertPath = incrementPathItemPositioned(getLS(m).path, getLS(m).path.length - 1)
+  const insertPath = inc_pi(getLS(m).path, getLS(m).path.length - 1)
   moveLowerSiblingFamilyDown(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
@@ -92,7 +92,7 @@ const insertSelectTable = (m, r, c) => {
 }
 
 const insertSelectCellColR = () => {
-
+  // increase index of cells...
 }
 
 const insertSelectCellColL = () => {
@@ -131,9 +131,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
         const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
         const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
         let toPath = []
-        if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's') toPath = payload.path
-        else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
-        else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
+        if (!is_R(payload.path) && isEqual(n.path, payload.path) || is_R(payload.path) && payload.selection === 's') toPath = payload.path
+        else if (is_R(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
+        else if (is_R(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
         selectNode(m, toPath, payload.selection, payload.add)
         if (!n.dCount) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
@@ -164,8 +164,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's', false); break // ok
     case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_CR_siblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_CC_siblingPath(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_CR(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_CC(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
     case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
