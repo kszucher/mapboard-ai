@@ -24,8 +24,8 @@ export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => isFamilyPath(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
-export const getCellRowSiblingCount = (m: M, p: P) => m.filter(n => is_CR_siblingPath(p, n.path)).length
-export const getCellColSiblingCount = (m: M, p: P) => m.filter(n => is_CC_siblingPath(p, n.path)).length
+export const get_CR_siblingCount = (m: M, p: P) => m.filter(n => is_CR_siblingPath(p, n.path)).length
+export const get_CC_siblingCount = (m: M, p: P) => m.filter(n => is_CC_siblingPath(p, n.path)).length
 // SET
 export const incrementPathItemPositioned = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
 export const incrementPathItemPositionedLimited = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)

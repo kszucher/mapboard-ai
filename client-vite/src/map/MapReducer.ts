@@ -19,8 +19,8 @@ import {
   getEditedNode,
   getInsertParentNode,
   getSelection,
-  getCellRowSiblingCount,
-  getCellColSiblingCount,
+  get_CR_siblingCount,
+  get_CC_siblingCount,
   setSelection,
   setSelectionFamily,
   incrementPathItemPositioned,
@@ -34,9 +34,9 @@ import {
 import {nSaveOptional} from "../state/MapProps";
 
 const cellNavigateL = (m: M, p: P) => decrementPathItemPositionedLimited(p, p.length - 1, 0)
-const cellNavigateR = (m: M, p: P) => incrementPathItemPositionedLimited(p, p.length - 1, getCellRowSiblingCount(m, p) - 1)
+const cellNavigateR = (m: M, p: P) => incrementPathItemPositionedLimited(p, p.length - 1, get_CR_siblingCount(m, p) - 1)
 const cellNavigateU = (m: M, p: P) => decrementPathItemPositionedLimited(p, p.length - 2, 0)
-const cellNavigateD = (m: M, p: P) => incrementPathItemPositionedLimited(p, p.length - 2, getCellColSiblingCount(m, p) - 1)
+const cellNavigateD = (m: M, p: P) => incrementPathItemPositionedLimited(p, p.length - 2, get_CC_siblingCount(m, p) - 1)
 
 const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
