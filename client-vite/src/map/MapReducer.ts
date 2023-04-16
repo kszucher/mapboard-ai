@@ -27,9 +27,9 @@ import {
   is_CC_siblingPath,
   is_CR_siblingPath,
   isR,
-  isAnyLowerSiblingFamilyPath,
+  is_S_D_siblingFamilyPath,
   incrementPathItemPositionedLimited,
-  decrementPathItemPositionedLimited, isFamilyPath,
+  decrementPathItemPositionedLimited, is_S_familyPath,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps";
 
@@ -48,11 +48,11 @@ const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
-  m.filter(n => isFamilyPath(getLS(m).path, n.path) || isAnyLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
+  m.filter(n => is_S_familyPath(getLS(m).path, n.path) || is_S_D_siblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
 }
 
 const moveLowerSiblingFamilyDown = (m: M) => {
-  m.filter(n => isAnyLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
+  m.filter(n => is_S_D_siblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
 }
 
 const insertNode = (m, attributes: object) => {

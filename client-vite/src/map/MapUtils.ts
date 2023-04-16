@@ -21,7 +21,7 @@ export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlw
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getClosestStructChildPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path)
 export const getSelection = (m: M) => m.filter(n => n.selected)
-export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => isFamilyPath(p, n.path)))
+export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_familyPath(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const get_CR_siblingCount = (m: M, p: P) => m.filter(n => is_CR_siblingPath(p, n.path)).length
@@ -39,11 +39,14 @@ export const isR = (p: P) => getPattern(p).endsWith('r')
 export const isD = (p: P) => getPattern(p).endsWith('d')
 export const isS = (p: P) => getPattern(p).endsWith('s')
 export const isC = (p: P) => getPattern(p).endsWith('c')
-export const isDescendantPath = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
-export const isFamilyPath = (p: P, pt: P) => isEqual(p, pt) || isDescendantPath(p, pt)
-export const isAnyUpperSiblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
-export const isAnyLowerSiblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
-export const isAnyLowerSiblingFamilyPath = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
+export const is_S_descendantPath = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
+export const is_S_familyPath = (p: P, pt: P) => isEqual(p, pt) || is_S_descendantPath(p, pt)
+
+export const is_S_U_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
+export const is_S_D_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
+export const is_S_U_siblingFamilyPath = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) < p.at(-1)
+export const is_S_D_siblingFamilyPath = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
+
 export const is_CR_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const is_CC_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
 export const is_CR_R_siblingPath = (p: P, pt: P) => is_CR_siblingPath(p, pt) && pt.at(-1) > p.at(-1)
