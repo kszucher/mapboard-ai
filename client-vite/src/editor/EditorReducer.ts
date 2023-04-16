@@ -21,31 +21,31 @@ export const editorSlice = createSlice({
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
-      const m = current(state.mapList[state.mapListIndex])
+      const pm = current(state.mapList[state.mapListIndex])
       if (action.payload.type === 'startEditReplace') {
-        state.editedNodeId = getEditedNode(m, getLS(m).path).nodeId
+        state.editedNodeId = getEditedNode(pm, getLS(pm).path).nodeId
         state.editType = 'replace'
       } else {
-        const nml = mapReducer(m, action.payload.type, action.payload.payload)
-        const isMapChanged = !isEqual(m, nml)
+        const m = mapReducer(pm, action.payload.type, action.payload.payload)
+        const isMapChanged = !isEqual(pm, m)
         switch (action.payload.type) {
           case 'startEditAppend':
             if (isMapChanged) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
-              // TODO mapListIndexFrom
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+              // TODO pmi = previousMapIndex
               state.mapListIndex = state.mapListIndex + 1
             }
-            state.tempMap = nml
-            state.editedNodeId = getEditedNode(m, getLS(m).path).nodeId
+            state.tempMap = m
+            state.editedNodeId = getEditedNode(pm, getLS(pm).path).nodeId
             state.editType = 'append'
             break
           case 'typeText':
-            state.tempMap = nml
+            state.tempMap = m
             break
           case 'finishEdit':
             if (isMapChanged) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
-              // TODO mapListIndexFrom
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+              // TODO pmi = previousMapIndex
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = []
@@ -54,8 +54,8 @@ export const editorSlice = createSlice({
             break
           default:
             if (isMapChanged) {
-              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), nml]
-              // TODO mapListIndexFrom
+              state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+              // TODO pmi = previousMapIndex
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = []
