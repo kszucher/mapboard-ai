@@ -41,9 +41,10 @@ export const isS = (p: P) => getPattern(p).endsWith('s')
 export const isC = (p: P) => getPattern(p).endsWith('c')
 export const is_S_descendantPath = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
 export const is_S_familyPath = (p: P, pt: P) => isEqual(p, pt) || is_S_descendantPath(p, pt)
-
 export const is_S_U_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
 export const is_S_D_siblingPath = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
+export const is_S_U_fistSiblingPath = (p: P, pt: P) => is_S_U_siblingPath(p, pt) && pt.at(-1) === p.at(-1) - 1
+export const is_S_D_fistSiblingPath = (p: P, pt: P) => is_S_D_siblingPath(p, pt) && pt.at(-1) === p.at(-1) + 1
 export const is_S_U_siblingFamilyPath = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) < p.at(-1)
 export const is_S_D_siblingFamilyPath = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
 
