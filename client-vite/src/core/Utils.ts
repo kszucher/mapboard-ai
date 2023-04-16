@@ -1,4 +1,6 @@
 // export const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b)
+import {getLS} from "../map/MapUtils";
+
 export const isArrayOfEqualValues = (array: any[]) => array.every(el => el === array[0])
 export const createArray = (dim1: number, dim2: number) => Array.from(Array(dim1), () => new Array(dim2))
 export const isUrl = (string: string) => { try { return Boolean(new URL(string)) } catch(e) { return false } }
@@ -13,3 +15,4 @@ export const isOdd = (num: number) => num % 2
 export const getLatexString = (s: string) => '\\Large ' + s.substring(2, s.length - 2).replace(/\s/g, '')
 export const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
 export const adjust = (x: number) => Number.isInteger(x) ? x + 0.5 : Math.ceil(x) - 0.5
+export const getIndices2d = (r, c) => Array(r*c).fill(null).map((el, i) => [Math.floor(i/c), i%c])

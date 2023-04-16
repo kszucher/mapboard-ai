@@ -6,7 +6,7 @@ import {mapCalcTask} from "./MapCalcTask"
 import {mapMeasure} from "./MapMeasure"
 import {mapPlace} from "./MapPlace"
 import isEqual from "react-fast-compare"
-import {genHash, transpose} from '../core/Utils'
+import {genHash, getIndices2d, transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {
   sortPath,
@@ -43,9 +43,9 @@ const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
 }
 
-const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
-  console.log('PATHLIST', pathList)
-  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pathList.map(p => p.join('')).includes(n.path.join('')) ? { selected: i, selection } : { selected: 0, selection: 's' }))
+const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
+  console.log('PATHLIST', pList)
+  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join('')) ? { selected: i, selection } : { selected: 0, selection: 's' }))
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
@@ -56,34 +56,35 @@ const moveLowerSiblingFamilyDown = (m: M) => {
   m.filter(n => isAnyLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
 }
 
-const createNode = (m, attributes: object) => {
+const insertNode = (m, attributes: object) => {
   m.push(getDefaultNode({ ...attributes, nodeId: 'node' + genHash(8) }))
   m.sort(sortPath)
 }
 
-const createNodes = (m, pList: P[]) => {
-  m.concat(pList.map(p => getDefaultNode({ path: structuredClone(p), nodeId: 'node' + genHash(8) })))
+const insertNodes = (m, pList: P[]) => {
+  m.push(...pList.map(p => getDefaultNode({ path: structuredClone(p), nodeId: 'node' + genHash(8) })))
   m.sort(sortPath)
+  m.forEach(n =>{console.log(n.path,n.content)})
+
 }
 
 const insertSelectNodeO = (m: M, attributes: object) => {
   const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount]
-  createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
+  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
   selectNode(m, insertPath, 's', false)
 }
 
 const insertSelectNodeU = (m: M, attributes: object) => {
   const insertPath = getLS(m).path
   moveFamilyOrLowerSiblingFamilyDown(m)
-  createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
+  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
-  m.forEach(n =>{console.log(n.path,n.content)})
 }
 
 const insertSelectNodeD = (m: M, attributes: object) => {
   const insertPath = incrementPathItemPositioned(getLS(m).path, getLS(m).path.length - 1)
   moveLowerSiblingFamilyDown(m)
-  createNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
+  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
 }
 
@@ -163,13 +164,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_O_equation': insertSelectNodeO(m, {contentType: 'equation', content: payload.text}); break
     case 'insert_S_O_image': insertSelectNodeO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insert_S_O_table': {
-      insertSelectNodeO(m, {})
-      for (let i = 0; i < payload.rowLen; i++) {
-        for (let j = 0; j < payload.colLen; j++) {
-          // m.push(getDefaultNode({ path: [...insertPath, 'c', i, j], nodeId: 'node' + genHash(8) }))
-        }
-      }
-
+      insertSelectNodeO(m, {}) // note: getLS will be up-to-date in the next phase!!!
+      insertNodes(m, getIndices2d(payload.rowLen, payload.colLen).map(el => [ ...getLS(m).path, 'c', ...el]))
+      insertNodes(m, getIndices2d(payload.rowLen, payload.colLen).map(el => [ ...getLS(m).path, 'c', ...el, 's', 0]))
       break
     }
     case 'insert_S_U': insertSelectNodeU(m, {}); break
@@ -307,6 +304,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
   }
+
+  // m.forEach(n => console.log(n.path, n.content))
 
   // TODO mapFix
   mapInit(m)
