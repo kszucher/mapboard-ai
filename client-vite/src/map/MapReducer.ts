@@ -27,8 +27,8 @@ import {
   is_CC,
   is_CR,
   is_R,
-  is_S_D_F,
-  is_S_O_D_F,
+  is_S_D_O,
+  is_S_S_O_D_O,
   inc_pi_lim,
   dec_pi_lim,
 } from "./MapUtils"
@@ -48,8 +48,8 @@ const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
   m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join('')) ? { selected: i, selection } : { selected: 0, selection: 's' }))
 }
 
-const inc_S_O_D_F = (m: M) => m.filter(n => is_S_O_D_F(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
-const inc_S_D_F = (m: M) => m.filter(n => is_S_D_F(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
+const inc_S_S_O_D_O = (m: M) => m.filter(n => is_S_S_O_D_O(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
+const inc_S_D_O = (m: M) => m.filter(n => is_S_D_O(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
 
 const insertNode = (m, attributes: object) => {
   m.push(getDefaultNode({ ...attributes, nodeId: 'node' + genHash(8) }))
@@ -69,14 +69,14 @@ const insertSelectNodeO = (m: M, attributes: object) => {
 
 const insertSelectNodeU = (m: M, attributes: object) => {
   const insertPath = getLS(m).path
-  inc_S_O_D_F(m)
+  inc_S_S_O_D_O(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
 }
 
 const insertSelectNodeD = (m: M, attributes: object) => {
   const insertPath = inc_pi(getLS(m).path, getLS(m).path.length - 1)
-  inc_S_D_F(m)
+  inc_S_D_O(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
   selectNode(m, insertPath, 's', false)
 }
