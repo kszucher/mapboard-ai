@@ -49,11 +49,11 @@ const selectNodeList = (m: M, pathList: P[], selection: 's' | 'f') => {
 }
 
 const moveFamilyOrLowerSiblingFamilyDown = (m: M) => {
-  m.forEach(n => Object.assign(n, isAnyFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemPositioned(n.path, getLS(m).path.length - 1)} : {}))
+  m.filter(n => isAnyFamilyOrLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
 }
 
 const moveLowerSiblingFamilyDown = (m: M) => {
-  m.forEach(n => Object.assign(n, isAnyLowerSiblingFamilyPath(getLS(m).path, n.path) ? {path: incrementPathItemPositioned(n.path, getLS(m).path.length - 1)} : {}))
+  m.filter(n => isAnyLowerSiblingFamilyPath(getLS(m).path, n.path)).forEach(n => n.path = incrementPathItemPositioned(n.path, getLS(m).path.length - 1))
 }
 
 const createNode = (m, attributes: object) => {
@@ -61,8 +61,8 @@ const createNode = (m, attributes: object) => {
   m.sort(sortPath)
 }
 
-const createNodes = (m, nodeList: N[]) => {
-  m.concat(nodeList.map(n => getDefaultNode({ ...n, nodeId: 'node' + genHash(8) }))) // ????
+const createNodes = (m, pList: P[]) => {
+  m.concat(pList.map(p => getDefaultNode({ path: structuredClone(p), nodeId: 'node' + genHash(8) })))
   m.sort(sortPath)
 }
 
@@ -87,7 +87,7 @@ const insertSelectNodeD = (m: M, attributes: object) => {
   selectNode(m, insertPath, 's', false)
 }
 
-const insertSelectCellRowU = () => {}
+const insertSelectCellRowU = () => {} // TODO start here!!! these will be multiline, and very similar to the above... pushing down existing stuff, etc.
 const insertSelectCellRowD = () => {}
 const insertSelectCellColL = () => {}
 const insertSelectCellColR = () => {}
@@ -169,7 +169,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
           // m.push(getDefaultNode({ path: [...insertPath, 'c', i, j], nodeId: 'node' + genHash(8) }))
         }
       }
-      m.sort(sortPath)
+
       break
     }
     case 'insert_S_U': insertSelectNodeU(m, {}); break
