@@ -51,7 +51,7 @@ export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_S_O(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
-// export const get_S_U_count = (m: M, p: P) =>
+export const get_S_U_count = (m: M, p: P) => m.filter(n => is_S_U(p, n.path)).length
 export const get_CR_count = (m: M, p: P) => m.filter(n => is_same_CR(p, n.path)).length
 export const get_CC_count = (m: M, p: P) => m.filter(n => is_same_CC(p, n.path)).length
 

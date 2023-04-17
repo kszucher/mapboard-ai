@@ -25,7 +25,9 @@ import {
   setSelection,
   setSelectionFamily,
   sortNode,
-  sortPath, getClosestStructParentPath, get_S_U_count,
+  sortPath,
+  getClosestStructParentPath,
+  get_S_U_count,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps"
 import {
@@ -156,22 +158,18 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
 
 
     case 'delete_S': {
-      // const reselectPath = get_S_U_count (getLS(m)) ? get_S_U1 :  getClosestStructParentPath(getLS(m).path) // nem feltétlen...
-      // és akkor most jön a neheze... megvan ugyan a teljes mindenki szeleksönje, de.... nem hívhatomközveletnül, hanem beépítve, tehát
-      // nem az m-et szrjük le vele, mármint nem SSO-val, hanem egy másik szűrővel, ami a tőlük lejjebbi, és őket DEKREMENTÁLGATJUK-e!!!
-      // nah, baromi összetett, de elvileg a mostani legókból felépíthetőő....
-
-
-
+      const reselectPath = get_S_U_count(m, getLS(m).path) ? get_S_U1 :  getClosestStructParentPath(getLS(m).path) // TODO start here...
+      // is_S_S_O = rename it to is_multi_S_S_O, ennek mintájára, is_multi_S_D_O amivel mindent megmanipulálunk!!!
+      // delete multi_S_S_O
 
       break
     }
     case 'delete_CR': break
 
-    case 'move_S_O': break // only siblings
-    case 'move_S_I': break // only siblings
-    case 'move_S_D': break // only siblings
-    case 'move_S_U': break // only siblings
+    case 'move_S_O': break // only for siblings
+    case 'move_S_I': break // only for siblings
+    case 'move_S_D': break // only for siblings
+    case 'move_S_U': break // only for siblings
     case 'move_CR_D': break;
     case 'move_CR_U': break;
     case 'move_CC_O': break;

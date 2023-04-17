@@ -35,21 +35,21 @@ const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
 export const insert_select_S_O = (m: M, attributes: object) => {
   const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount]
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
-  selectNode(m, insertPath, 's', false)
+  selectNode(m, insertPath, 's')
 }
 
 export const insert_select_S_D = (m: M, attributes: object) => {
   const insertPath = inc_pi(getLS(m).path, getLS(m).path.length - 1)
   inc_S_D_O(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
-  selectNode(m, insertPath, 's', false)
+  selectNode(m, insertPath, 's')
 }
 
 export const insert_select_S_U = (m: M, attributes: object) => {
   const insertPath = getLS(m).path
   inc_S_S_O_D_O(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
-  selectNode(m, insertPath, 's', false)
+  selectNode(m, insertPath, 's')
 }
 
 export const insert_select_table = (m: M, r: number, c: number) => {
