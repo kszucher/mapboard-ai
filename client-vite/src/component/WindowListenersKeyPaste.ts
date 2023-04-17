@@ -20,25 +20,6 @@ const ckm = (e: any, condition: string) => (
   ['-', (+e.altKey) ? '1' : '0'].includes(condition[2])
 )
 
-// const c2dt = (m: M, which: number) => {
-//   const ls = getLS(m)
-//   let dir
-//   if (which === R) {
-//     if (ls.path.length === 2) {dir = Dir.OR}
-//     else if (ls.path.length === 6) {dir = ls.path[3] ? Dir.IR : Dir.O}
-//     else {dir = ls.path[3] ? Dir.I : Dir.O}
-//   } else if (which === L) {
-//     if (ls.path.length === 2) {dir = Dir.OL}
-//     else if (ls.path.length === 6) {dir = ls.path[3] ? Dir.O : Dir.IL}
-//     else {dir = ls.path[3] ? Dir.O : Dir.I}
-//   } else if (which === U) {
-//     dir = Dir.U
-//   } else if (which === D) {
-//     dir = Dir.D
-//   }
-//   return { dir }
-// }
-
 export const windowListenersKeyPaste = (
   someEvent: {
     mouseEvent?: MouseEvent
@@ -68,10 +49,7 @@ export const windowListenersKeyPaste = (
   const cr = isCellRowSelected(m)
   const cc = isCellColSelected(m)
   const ls = getLS(m)
-
-  // console.log(code)
-  // console.log({dl, dr, r, s, ds, c, cr, cc})
-
+  
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   true, s || c,          0, '',                         {},                              1 ],
     [ kd, ckm(e, '000') && key === 'F2',                   true, s || c,          1, 'startEditAppend',          {},                              1 ],
@@ -144,21 +122,6 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '010') && code === 'ArrowUp',             true, c && !cr && !cc, 1, 'select_CC_SAME',           {}, 1                              ], // ok
     [ kd, ckm(e, '001') && code === 'ArrowUp',             true, cr,              1, 'insert_CR_U',              {}, 1                              ], // ok
 
-    // [ kd, ckm(e, '000') && [L,R,U,D].includes(which),      true, c && !cr && !cc, 1, 'select_C_IOUD',            {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '100') && [L,R,U,D].includes(which),      true, s,               1, 'move_S_IOUD',              {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '000') && [L,R].includes(which),          true, cc,              1, 'select_CC_IO',             {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '100') && [L,R].includes(which),          true, cc,              1, 'move_CC_IO',               {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '010') && [L,R].includes(which),          true, s,               1, 'selectDescendantsOut',     {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '010') && [L,R].includes(which),          true, c,               1, 'select_CR_SAME',           {},                              1 ],
-    // [ kd, ckm(e, '001') && [L,R].includes(which),          true, c, cc,           1, 'insert_CC_IO',             {...c2dt(m, which), b: false},   1 ],
-    // [ kd, ckm(e, '001') && [L,R].includes(which),          true, c,               1, 'insert_CC_IO',             {...c2dt(m, which), b: true},    1 ],
-    // [ kd, ckm(e, '000') && [U].includes(which),            true, cr,              1, 'select_CR_U',              {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '000') && [D].includes(which),            true, cr,              1, 'select_CR_D' ,             {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '100') && [U,D].includes(which),          true, cr,              1, 'move_CR_UD',               {...c2dt(m, which)},             1 ],
-    // [ kd, ckm(e, '010') && [U,D].includes(which),          true, s,               1, 'select_S_IOUD',            {...c2dt(m, which), add: true},  1 ],
-    // [ kd, ckm(e, '010') && [U,D].includes(which),          true, c,               1, 'select_CC_SAME',           {},                              1 ],
-    // [ kd, ckm(e, '001') && [U,D].includes(which),          true, c || cr,         1, 'insert_CR_UD',             {...c2dt(m, which), b: false},   1 ],
-    // [ kd, ckm(e, '001') && [U,D].includes(which),          true, c,               1, 'insert_CR_UD',             {...c2dt(m, which), b: true},    1 ],
     [ kd, ckm(e, '100') && which >= 96 && which <= 105,    true, s || c,          1, 'applyColorFromKey',        {currColor: which - 96},         1 ],
     [ kd, ckm(e, '0-0') && which >= 48,                    true, s || c,          1, 'startEditReplace',         {},                              0 ],
     [ pt, text.substring(0, 1) === '[',                    true, s,               1, 'insertNodesFromClipboard', {text},                          0 ],
