@@ -68,11 +68,11 @@ export const insert_CC_L = (m: M) => {
 }
 
 export const insert_CR_D = (m: M) => {
-  inc_gte_C_D(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CR_count(m, getLS(m).path)).fill(null).map((el, i) => [getLS(m).path.at(-2) - 1, i]))
+  inc_gt_C_D(m) // warning: getLS changes in the next phase
+  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CR_count(m, getLS(m).path)).fill(null).map((el, i) => [getLS(m).path.at(-2) + 1, i]))
 }
 
 export const insert_CR_U = (m: M) => {
-  inc_gt_C_D(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CR_count(m, getLS(m).path)).fill(null).map((el, i) => [getLS(m).path.at(-2) + 1, i]))
+  inc_gte_C_D(m) // warning: getLS changes in the next phase
+  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CR_count(m, getLS(m).path)).fill(null).map((el, i) => [getLS(m).path.at(-2) - 1, i]))
 }
