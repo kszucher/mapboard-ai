@@ -33,10 +33,10 @@ import {
   insert_CC_R,
   insert_CR_D,
   insert_CR_U,
-  insertSelectNodeD,
-  insertSelectNodeO,
-  insertSelectNodeU,
-  insertSelectTable
+  insert_select_S_D,
+  insert_select_S_O,
+  insert_select_S_U,
+  insert_select_table
 } from "./MapInsert"
 
 export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
@@ -117,14 +117,14 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CC_R': selectNodeList(m, getSelection(m).map(n => cellNavigateR(m, n.path)), 's'); break // ok
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
-    case 'insert_S_O': insertSelectNodeO(m, {}); break
-    case 'insert_S_O_text': insertSelectNodeO(m, {contentType: 'text', content: payload.text}); break
-    case 'insert_S_O_elink': insertSelectNodeO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
-    case 'insert_S_O_equation': insertSelectNodeO(m, {contentType: 'equation', content: payload.text}); break
-    case 'insert_S_O_image': insertSelectNodeO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
-    case 'insert_S_U': insertSelectNodeU(m, {}); break
-    case 'insert_S_D': insertSelectNodeD(m, {}); break
+    case 'insert_S_O': insert_select_S_O(m, {}); break
+    case 'insert_S_O_text': insert_select_S_O(m, {contentType: 'text', content: payload.text}); break
+    case 'insert_S_O_elink': insert_select_S_O(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
+    case 'insert_S_O_equation': insert_select_S_O(m, {contentType: 'equation', content: payload.text}); break
+    case 'insert_S_O_image': insert_select_S_O(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
+    case 'insert_S_O_table': insert_select_table(m, payload.rowLen, payload.colLen); break
+    case 'insert_S_U': insert_select_S_U(m, {}); break
+    case 'insert_S_D': insert_select_S_D(m, {}); break
     case 'insert_CC_R': insert_CC_R(m); break
     case 'insert_CC_L': insert_CC_L(m); break
     case 'insert_CR_U': insert_CR_U(m); break
