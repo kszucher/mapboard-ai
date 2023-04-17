@@ -25,7 +25,7 @@ import {
   setSelection,
   setSelectionFamily,
   sortNode,
-  sortPath,
+  sortPath, getClosestStructParentPath, get_S_U_count,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps"
 import {
@@ -77,9 +77,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   const g = getG(m)
   const ls = action === 'LOAD' ? null as N : getLS(m)
   switch (action) {
-    case 'LOAD':
-      break
-    // // VIEW
+    case 'LOAD': break
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'; break
     case 'select_R': selectNode(m, ['r', 0], 's'); break // fixme - does NOT clean 'f' selection on root, neither all selection
@@ -101,10 +99,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break // ok
-    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
     case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
     case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break // ok
     case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break // ok
+    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
     case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's'); break  // ok
     case 'select_S_D_too': selectNodeToo(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's'); break // ok
     case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's'); break // ok
@@ -130,7 +128,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
     case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
-    // INSERT
+
     case 'insert_S_O': insert_select_S_O(m, {}); break
     case 'insert_S_O_text': insert_select_S_O(m, {contentType: 'text', content: payload.text}); break
     case 'insert_S_O_elink': insert_select_S_O(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
@@ -156,40 +154,28 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
 
 
 
-    // DELETE
-    case 'delete_S': { // TODO think about the nodes this will toss UP or DOWN
+
+    case 'delete_S': {
+      // const reselectPath = get_S_U_count (getLS(m)) ? get_S_U1 :  getClosestStructParentPath(getLS(m).path) // nem feltétlen...
+      // és akkor most jön a neheze... megvan ugyan a teljes mindenki szeleksönje, de.... nem hívhatomközveletnül, hanem beépítve, tehát
+      // nem az m-et szrjük le vele, mármint nem SSO-val, hanem egy másik szűrővel, ami a tőlük lejjebbi, és őket DEKREMENTÁLGATJUK-e!!!
+      // nah, baromi összetett, de elvileg a mostani legókból felépíthetőő....
 
 
 
-      // if (!sc.isRootIncluded) {
-      //   structDeleteReselect(m, sc)
-      // }
-      break
-    }
-    case 'delete_CRCC': {
-      // cellDeleteReselect(m, sc)
-      break
-    }
-    // MOVE
-    case 'move_S_IOUD': { // break down to many scenarios, IR aka through, et cet BUT first we need a correct NODE NAVIGATE fun
-      // if (!sc.isRootIncluded && sc.haveSameParent) {
-      //   structMove(m, 'struct2struct', payload.dir)
-      // }
-      break
-    }
-    case 'move_CR_UD': {
-      // if (sc.haveSameParent) {
-      //   cellRowMove(m, payload.dir)
-      // }
-      break
-    }
-    case 'move_CC_IO': {
-      // if (sc.haveSameParent) {
-      //   cellColMove(m, payload.dir)
-      // }
-      break
-    }
 
+      break
+    }
+    case 'delete_CR': break
+
+    case 'move_S_O': break // only siblings
+    case 'move_S_I': break // only siblings
+    case 'move_S_D': break // only siblings
+    case 'move_S_U': break // only siblings
+    case 'move_CR_D': break;
+    case 'move_CR_U': break;
+    case 'move_CC_O': break;
+    case 'move_CC_I': break;
 
 
 
