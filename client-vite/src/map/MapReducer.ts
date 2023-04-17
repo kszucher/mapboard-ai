@@ -6,102 +6,50 @@ import {mapCalcTask} from "./MapCalcTask"
 import {mapMeasure} from "./MapMeasure"
 import {mapPlace} from "./MapPlace"
 import isEqual from "react-fast-compare"
-import {genHash, getIndices2d, transpose} from '../core/Utils'
+import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {
-  sortPath,
-  sortNode,
+  dec_pi_lim,
+  get_CC_siblingCount,
+  get_CR_siblingCount,
+  getEditedNode,
   getG,
   getLS,
-  getDefaultNode,
   getNodeByPath,
   getParentNodeByPath,
-  getEditedNode,
-  getInsertParentNode,
   getSelection,
-  get_CR_siblingCount,
-  get_CC_siblingCount,
-  setSelection,
-  setSelectionFamily,
-  inc_pi,
+  inc_pi_lim,
   is_CC,
   is_CR,
   is_R,
-  is_S_D_O,
-  is_S_S_O_D_O,
-  inc_pi_lim,
-  dec_pi_lim,
+  setSelection,
+  setSelectionFamily,
+  sortNode,
+  sortPath,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps";
+import {
+  insert_CC_L,
+  insert_CC_R,
+  insert_CR_D,
+  insert_CR_U,
+  insertSelectNodeD,
+  insertSelectNodeO,
+  insertSelectNodeU,
+  insertSelectTable
+} from "../node/NodeInsert";
 
-const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
-const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_siblingCount(m, p) - 1)
-const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
-const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_siblingCount(m, p) - 1)
+export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
+export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_siblingCount(m, p) - 1)
+export const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
+export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_siblingCount(m, p) - 1)
 
-const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
+export const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
 }
 
-const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
-  console.log('PATHLIST', pList)
+export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
   m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join('')) ? { selected: i, selection } : { selected: 0, selection: 's' }))
-}
-
-const inc_S_S_O_D_O = (m: M) => m.filter(n => is_S_S_O_D_O(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
-const inc_S_D_O = (m: M) => m.filter(n => is_S_D_O(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
-
-const insertNode = (m, attributes: object) => {
-  m.push(getDefaultNode({ ...attributes, nodeId: 'node' + genHash(8) }))
-  m.sort(sortPath)
-}
-
-const insertNodes = (m, pList: P[]) => {
-  m.push(...pList.map(p => getDefaultNode({ path: structuredClone(p), nodeId: 'node' + genHash(8) })))
-  m.sort(sortPath)
-}
-
-const insertSelectNodeO = (m: M, attributes: object) => {
-  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount]
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
-  selectNode(m, insertPath, 's', false)
-}
-
-const insertSelectNodeU = (m: M, attributes: object) => {
-  const insertPath = getLS(m).path
-  inc_S_S_O_D_O(m)
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
-  selectNode(m, insertPath, 's', false)
-}
-
-const insertSelectNodeD = (m: M, attributes: object) => {
-  const insertPath = inc_pi(getLS(m).path, getLS(m).path.length - 1)
-  inc_S_D_O(m)
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ?  1 : 0})
-  selectNode(m, insertPath, 's', false)
-}
-
-const insertSelectTable = (m, r, c) => {
-  insertSelectNodeO(m, {}) // note: getLS will be up-to-date in the next phase!!!
-  insertNodes(m, getIndices2d(r, c).map(el => [ ...getLS(m).path, 'c', ...el]))
-  insertNodes(m, getIndices2d(r, c).map(el => [ ...getLS(m).path, 'c', ...el, 's', 0]))
-}
-
-const insertSelectCellColR = () => {
-  // increase index of cells RIGHT to the current selection WITHOUT limit
-  //
-}
-
-const insertSelectCellColL = () => {
-
-}
-
-const insertSelectCellRowU = () => {
-
-}
-
-const insertSelectCellRowD = () => {
-
 }
 
 const deleteNode = () => {
@@ -177,14 +125,11 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
     case 'insert_S_U': insertSelectNodeU(m, {}); break
     case 'insert_S_D': insertSelectNodeD(m, {}); break
-    case 'insert_CR_R': {
+    case 'insert_CC_R': insert_CC_R(m); break
+    case 'insert_CC_L': insert_CC_L(m); break
+    case 'insert_CR_U': insert_CR_U(m); break
+    case 'insert_CR_D': insert_CR_D(m); break
 
-      break
-    }
-    case 'insert_CR_UD': {
-      // cellRowCreate(m, payload.b ? getMapData(m, ls.parentPath) : ls, payload.dir) // FIXME getParentPath
-      break
-    }
     case 'insertNodesFromClipboard': {
       // clearSelection(m)
       // const nodeList = JSON.parse(payload.text)

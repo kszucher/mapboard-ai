@@ -1,13 +1,12 @@
-import {G, GN, M, N, P, PathItem} from "../state/MapPropTypes"
+import {G, GN, M, N, P} from "../state/MapPropTypes"
 import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
 import {isArrayOfEqualValues} from "../core/Utils"
 import isEqual from "react-fast-compare"
 
-// SORT
 export const sortPath = (a, b) => a.path.map(el => isNaN(el) ? el: 1000 + el).join('') > b.path.map(el => isNaN(el) ? el: 1000 + el).join('') ? 1 : -1
 export const sortNode = (a, b) => a.nodeId > b.nodeId ? 1 : -1
-// GET
-export const getPattern = (p: P) => p.filter((el: PathItem) => isNaN(el as any)).join('')
+
+export const getPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const getParentPath = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getClosestStructParentPath = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getClosestStructChildPath = (p: P) => getPattern(p).endsWith('c') ? [...p, 's', 0] : p
@@ -26,15 +25,10 @@ export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(ge
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const get_CR_siblingCount = (m: M, p: P) => m.filter(n => is_CR(p, n.path)).length
 export const get_CC_siblingCount = (m: M, p: P) => m.filter(n => is_CC(p, n.path)).length
-// SET
-export const inc_pi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
-export const dec_pi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p - 1 : p)
-export const inc_pi_lim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
-export const dec_pi_lim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi > limit ? pi - 1 : pi)
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionFamily(m).forEach(n => n[prop] = value)
-// BOOLEAN
+
 export const is_G = (p: P) => getPattern(p).endsWith('g')
 export const is_R = (p: P) => getPattern(p).endsWith('r')
 export const is_D = (p: P) => getPattern(p).endsWith('d')
@@ -51,13 +45,24 @@ export const is_S_D_O = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.sli
 export const is_S_S_O_D_O = (p: P, pt: P) => is_S_S_O(p, pt) || is_S_D_O(p, pt)
 export const is_CR = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const is_CC = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
-export const is_CR_R = (p: P, pt: P) => is_CR(p, pt) && pt.at(-1) > p.at(-1)
-export const is_CR_L = (p: P, pt: P) => is_CR(p, pt) && pt.at(-1) < p.at(-1)
-export const is_CC_U = (p: P, pt: P) => is_CC(p, pt) && pt.at(-2) < p.at(-2)
-export const is_CC_D = (p: P, pt: P) => is_CC(p, pt) && pt.at(-2) > p.at(-2)
+export const is_gt_C_R = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 1) > p.at(-1)
+export const is_gte_C_R = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 1) >= p.at(-1)
+export const is_gt_C_D = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 2) > p.at(-1)
+export const is_gte_C_D = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 2) >= p.at(-1)
 export const isRootSelected = (m: M) => is_R(getLS(m).path) && !m.find(n => n.selected && !is_R(n.path))
 export const isStructSelected = (m: M) => is_S(getLS(m).path) && !m.find(n => n.selected && !is_S(n.path))
 export const isDirStructSelected = (m: M) => getLS(m).path.length === 6
 export const isCellSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path))
 export const isCellRowSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_CR(getLS(m).path, n.path))
 export const isCellColSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_CC(getLS(m).path, n.path))
+
+export const inc_pi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
+export const dec_pi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p - 1 : p)
+export const inc_pi_lim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
+export const dec_pi_lim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi > limit ? pi - 1 : pi)
+export const inc_S_S_O_D_O = (m: M) => m.filter(n => is_S_S_O_D_O(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
+export const inc_S_D_O = (m: M) => m.filter(n => is_S_D_O(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
+export const inc_gt_C_R = (m: M) => m.filter(n => is_gt_C_R(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
+export const inc_gte_C_R = (m: M) => m.filter(n => is_gte_C_R(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 1))
+export const inc_gt_C_D = (m: M) => m.filter(n => is_gt_C_D(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 2))
+export const inc_gte_C_D = (m: M) => m.filter(n => is_gte_C_D(getLS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, getLS(m).path.length - 2))
