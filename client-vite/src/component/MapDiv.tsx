@@ -87,7 +87,8 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    const add = + (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
+                    console.log(e)
+                    const add = e.ctrlKey
                     dispatch(actions.mapAction({type: 'select_S', payload: { add, path: n.path, selection: 's' }}))
                     const abortController = new AbortController()
                     const { signal } = abortController
@@ -111,7 +112,7 @@ export const MapDiv: FC = () => {
                 } else if (e.button === 1) {
                   e.preventDefault()
                 } else if (e.button === 2) {
-                  const add = + (e.ctrlKey && e.shiftKey || !e.ctrlKey && !e.shiftKey)
+                  const add = e.ctrlKey
                   dispatch(actions.mapAction({type: 'select_S', payload: { add, path: n.path, selection: 'f' }}))
                 }
               }}

@@ -44,12 +44,25 @@ export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
 export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_count(m, p) - 1)
 export const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
 
-export const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
+export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
+  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
+    ? { selected: 1, selection }
+    : { selected: 0, selection: 's' }
+  ))
+}
+
+export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
+  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
+    ? { selected: getLS(m).selected + 1 , selection }
+    : { }
+  ))
 }
 
 export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
-  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join('')) ? { selected: i, selection } : { selected: 0, selection: 's' }))
+  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join(''))
+    ? { selected: i, selection }
+    : { selected: 0, selection: 's' }
+  ))
 }
 
 const deleteNode = () => {
@@ -69,7 +82,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     // // VIEW
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'; break
-    case 'select_R': selectNode(m, ['r', 0], 's', false); break // fixme - does NOT clean 'f' selection on root, neither all selection
+    case 'select_R': selectNode(m, ['r', 0], 's'); break // fixme - does NOT clean 'f' selection on root, neither all selection
     case 'select_S': { // will be oneliner once the mouse ops will be routed
       const n = getNodeByPath(m, payload.path)
       if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
@@ -79,7 +92,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
         if (!is_R(payload.path) && isEqual(n.path, payload.path) || is_R(payload.path) && payload.selection === 's') toPath = payload.path
         else if (is_R(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
         else if (is_R(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
-        selectNode(m, toPath, payload.selection, payload.add)
+        console.log(payload.add)
+        payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
         if (!n.dCount) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
         }
@@ -87,28 +101,28 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break // ok
-    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's', false); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
-    case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's', false); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
-    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's', false); break // ok
-    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's', false); break // ok
-    case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's', false); break  // ok
-    case 'select_S_D_too': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's', true); break // fixme
-    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', false); break // ok
-    case 'select_S_U_too': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', true); break // fixme
+    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
+    case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
+    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break // ok
+    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break // ok
+    case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's'); break  // ok
+    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's'); break // ok
+    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's'); break // ok
+    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's'); break // ok
     case 'select_S_family_O': ls.selection = 'f'; break // ok
-    case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f', false); break // ok
-    case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f', false); break // ok
-    case 'select_S_F': selectNode(m, [...ls.path, 's', 0], 's', false); break // ok
-    case 'select_S_B': selectNode(m, ls.path.slice(0, -3), 's', false); break // ok
-    case 'select_S_BB': selectNode(m, ls.path.slice(0, -5), 's', false); break // ok
-    case 'select_C_R': selectNode(m, cellNavigateR(m, ls.path), 's', false); break // ok
-    case 'select_C_L': selectNode(m, cellNavigateL(m, ls.path), 's', false); break // ok
-    case 'select_C_D': selectNode(m, cellNavigateD(m, ls.path), 's', false); break // ok
-    case 'select_C_U': selectNode(m, cellNavigateU(m, ls.path), 's', false); break // ok
-    case 'select_C_F_firstRow': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -2 ? 0 : pi), 's', false); break // ok
-    case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's', false); break // ok
-    case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
+    case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break // ok
+    case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break // ok
+    case 'select_S_F': selectNode(m, [...ls.path, 's', 0], 's'); break // ok
+    case 'select_S_B': selectNode(m, ls.path.slice(0, -3), 's'); break // ok
+    case 'select_S_BB': selectNode(m, ls.path.slice(0, -5), 's'); break // ok
+    case 'select_C_R': selectNode(m, cellNavigateR(m, ls.path), 's'); break // ok
+    case 'select_C_L': selectNode(m, cellNavigateL(m, ls.path), 's'); break // ok
+    case 'select_C_D': selectNode(m, cellNavigateD(m, ls.path), 's'); break // ok
+    case 'select_C_U': selectNode(m, cellNavigateU(m, ls.path), 's'); break // ok
+    case 'select_C_F_firstRow': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -2 ? 0 : pi), 's'); break // ok
+    case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's'); break // ok
+    case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
+    case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_same_CR(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_same_CC(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CC_R': selectNodeList(m, getSelection(m).map(n => cellNavigateR(m, n.path)), 's'); break // ok
