@@ -112,7 +112,7 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '010') && code === 'ArrowRight',          true, r,               1, 'select_S_family_OR',       {}, 1                              ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowRight',          dr, s && ls.sCount,    1, 'select_S_family_O',        {}, 1                              ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowRight',          true, c && !cr && !cc, 1, 'select_CR_SAME',           {}, 1                              ], // ok
-    [ kd, ckm(e, '001') && code === 'ArrowRight',          true, cc,              1, 'insert_CC_R',              {}, 1                              ],
+    [ kd, ckm(e, '001') && code === 'ArrowRight',          true, cc,              1, 'insert_CC_R',              {}, 1                              ], // ok
 
     [ kd, ckm(e, '000') && code === 'ArrowLeft',           true, r,               1, 'select_S_OL',              {}, 1                              ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowLeft',           dr, s,                 1, 'select_S_I',               {}, 1                              ], // ok
@@ -124,23 +124,25 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '010') && code === 'ArrowLeft',           true, r,               1, 'select_S_family_OL',       {}, 1                              ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowLeft',           dl, s && ls.sCount,    1, 'select_S_family_O',        {}, 1                              ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowLeft',           true, c && !cr && !cc, 1, 'select_CR_SAME',           {}, 1                              ], // ok
-    [ kd, ckm(e, '001') && code === 'ArrowLeft',           true, cc,              1, 'insert_CC_L',              {}, 1                              ],
+    [ kd, ckm(e, '001') && code === 'ArrowLeft',           true, cc,              1, 'insert_CC_L',              {}, 1                              ], // ok
 
     [ kd, ckm(e, '000') && code === 'ArrowDown',           true, s,               1, 'select_S_D',               {}, 1                              ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowDown',           true, c && !cr,        1, 'select_C_D',               {}, 1                              ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowDown',           true, cr,              1, 'select_CR_D',              {}, 1                              ], // ok
     [ kd, ckm(e, '100') && code === 'ArrowDown',           dr, s,                 1, 'move_S_I',                 {}, 1                              ],
     [ kd, ckm(e, '100') && code === 'ArrowDown',           dl, s,                 1, 'move_S_O',                 {}, 1                              ],
+    [ kd, ckm(e, '010') && code === 'ArrowDown',           true, s,               1, 'select_S_D_too',           {}, 1                              ],
     [ kd, ckm(e, '010') && code === 'ArrowDown',           true, c && !cr && !cc, 1, 'select_CC_SAME',           {}, 1                              ], // ok
-    [ kd, ckm(e, '001') && code === 'ArrowDown',           true, cr,              1, 'insert_CR_D',              {}, 1                              ],
+    [ kd, ckm(e, '001') && code === 'ArrowDown',           true, cr,              1, 'insert_CR_D',              {}, 1                              ], // ok
 
     [ kd, ckm(e, '000') && code === 'ArrowUp',             true, s,               1, 'select_S_U',               {}, 1                              ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowUp',             true, c && !cr,        1, 'select_C_U',               {}, 1                              ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowUp',             true, cr,              1, 'select_CR_U',              {}, 1                              ], // ok
     [ kd, ckm(e, '100') && code === 'ArrowUp',             dr, s,                 1, 'move_S_I',                 {}, 1                              ],
     [ kd, ckm(e, '100') && code === 'ArrowUp',             dl, s,                 1, 'move_S_O',                 {}, 1                              ],
+    [ kd, ckm(e, '010') && code === 'ArrowUp',             true, s,               1, 'select_S_U_too',           {}, 1                              ],
     [ kd, ckm(e, '010') && code === 'ArrowUp',             true, c && !cr && !cc, 1, 'select_CC_SAME',           {}, 1                              ], // ok
-    [ kd, ckm(e, '001') && code === 'ArrowUp',             true, cr,              1, 'insert_CR_U',              {}, 1                              ],
+    [ kd, ckm(e, '001') && code === 'ArrowUp',             true, cr,              1, 'insert_CR_U',              {}, 1                              ], // ok
 
     // [ kd, ckm(e, '000') && [L,R,U,D].includes(which),      true, c && !cr && !cc, 1, 'select_C_IOUD',            {...c2dt(m, which)},             1 ],
     // [ kd, ckm(e, '100') && [L,R,U,D].includes(which),      true, s,               1, 'move_S_IOUD',              {...c2dt(m, which)},             1 ],

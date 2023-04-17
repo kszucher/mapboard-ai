@@ -139,8 +139,14 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // }
       break
     }
+
+
+
     // DELETE
     case 'delete_S': { // TODO think about the nodes this will toss UP or DOWN
+
+
+
       // if (!sc.isRootIncluded) {
       //   structDeleteReselect(m, sc)
       // }
@@ -169,6 +175,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // }
       break
     }
+
+
+
+
     case 'transpose': {
       // if (ls.cRowCount || ls.cColCount) {
       //   ls.c = transpose(ls.c)
