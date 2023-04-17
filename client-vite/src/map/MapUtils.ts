@@ -14,6 +14,7 @@ export const is_D = (p: P) => getPattern(p).endsWith('d')
 export const is_S = (p: P) => getPattern(p).endsWith('s')
 export const is_C = (p: P) => getPattern(p).endsWith('c')
 export const is_S_O = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
+export const is_S_O1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 export const is_S_S_O = (p: P, pt: P) => isEqual(p, pt) || is_S_O(p, pt)
 export const is_S_U = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) < p.at(-1)
 export const is_S_D = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1) > p.at(-1)
@@ -51,6 +52,8 @@ export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_S_O(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
+export const get_D_count = (m: M, p: P) => p.length === 2 ? 2 : 0
+export const get_S_O1_count = (m: M, p: P) => m.filter(n => is_S_O1(p, n.path)).length
 export const get_S_U_count = (m: M, p: P) => m.filter(n => is_S_U(p, n.path)).length
 export const get_CR_count = (m: M, p: P) => m.filter(n => is_same_CR(p, n.path)).length
 export const get_CC_count = (m: M, p: P) => m.filter(n => is_same_CC(p, n.path)).length
