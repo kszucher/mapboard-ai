@@ -22,8 +22,8 @@ export const is_S_D1 = (p: P, pt: P) => is_S_D(p, pt) && pt.at(-1) === p.at(-1) 
 export const is_S_U_O = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) < p.at(-1)
 export const is_S_D_O = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1) > p.at(-1)
 export const is_S_S_O_D_O = (p: P, pt: P) => is_S_S_O(p, pt) || is_S_D_O(p, pt)
-export const is_CR = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
-export const is_CC = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
+export const is_same_CR = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
+export const is_same_CC = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
 export const is_gt_C_R = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 1) > p.at(-1)
 export const is_gte_C_R = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 1) >= p.at(-1)
 export const is_gt_C_D = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) &&  pt.at(p.length - 2) > p.at(-1)
@@ -32,8 +32,8 @@ export const isRootSelected = (m: M) => is_R(getLS(m).path) && !m.find(n => n.se
 export const isStructSelected = (m: M) => is_S(getLS(m).path) && !m.find(n => n.selected && !is_S(n.path))
 export const isDirStructSelected = (m: M) => getLS(m).path.length === 6
 export const isCellSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path))
-export const isCellRowSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_CR(getLS(m).path, n.path))
-export const isCellColSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_CC(getLS(m).path, n.path))
+export const isCellRowSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_same_CR(getLS(m).path, n.path))
+export const isCellColSelected = (m: M) => is_C(getLS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_same_CC(getLS(m).path, n.path))
 
 export const getParentPath = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getClosestStructParentPath = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
@@ -51,8 +51,8 @@ export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_S_O(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getLS(m)[prop] : null
 export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? getLS(m)[prop] : null
-export const get_CR_siblingCount = (m: M, p: P) => m.filter(n => is_CR(p, n.path)).length
-export const get_CC_siblingCount = (m: M, p: P) => m.filter(n => is_CC(p, n.path)).length
+export const get_CR_count = (m: M, p: P) => m.filter(n => is_same_CR(p, n.path)).length
+export const get_CC_count = (m: M, p: P) => m.filter(n => is_same_CC(p, n.path)).length
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionFamily(m).forEach(n => n[prop] = value)

@@ -10,8 +10,8 @@ import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {
   dec_pi_lim,
-  get_CC_siblingCount,
-  get_CR_siblingCount,
+  get_CC_count,
+  get_CR_count,
   getEditedNode,
   getG,
   getLS,
@@ -19,8 +19,8 @@ import {
   getParentNodeByPath,
   getSelection,
   inc_pi_lim,
-  is_CC,
-  is_CR,
+  is_same_CC,
+  is_same_CR,
   is_R,
   setSelection,
   setSelectionFamily,
@@ -39,10 +39,10 @@ import {
   insert_select_table
 } from "./MapInsert"
 
+export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_count(m, p) - 1)
 export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
-export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_siblingCount(m, p) - 1)
+export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_count(m, p) - 1)
 export const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
-export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_siblingCount(m, p) - 1)
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f', add: boolean) => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path) ? { selected: add ? getLS(m).selected + 1 : 1 , selection } : { selected: 0, selection: 's' }))
@@ -91,10 +91,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's', false); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
     case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's', false); break // ok
     case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's', false); break // ok
-    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', false); break // ok
-    case 'select_S_U_too': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', true); break // fixme
     case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's', false); break  // ok
     case 'select_S_D_too': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's', true); break // fixme
+    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', false); break // ok
+    case 'select_S_U_too': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's', true); break // fixme
     case 'select_S_family_O': ls.selection = 'f'; break // ok
     case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f', false); break // ok
     case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f', false); break // ok
@@ -103,18 +103,18 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_S_BB': selectNode(m, ls.path.slice(0, -5), 's', false); break // ok
     case 'select_C_R': selectNode(m, cellNavigateR(m, ls.path), 's', false); break // ok
     case 'select_C_L': selectNode(m, cellNavigateL(m, ls.path), 's', false); break // ok
-    case 'select_C_U': selectNode(m, cellNavigateU(m, ls.path), 's', false); break // ok
     case 'select_C_D': selectNode(m, cellNavigateD(m, ls.path), 's', false); break // ok
+    case 'select_C_U': selectNode(m, cellNavigateU(m, ls.path), 's', false); break // ok
     case 'select_C_F_firstRow': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -2 ? 0 : pi), 's', false); break // ok
     case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's', false); break // ok
     case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's', false) : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_CR(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_CC(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
-    case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
-    case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_same_CR(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_same_CC(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CC_R': selectNodeList(m, getSelection(m).map(n => cellNavigateR(m, n.path)), 's'); break // ok
+    case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
+    case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
+    case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
     // INSERT
     case 'insert_S_O': insert_select_S_O(m, {}); break
@@ -123,12 +123,12 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_O_equation': insert_select_S_O(m, {contentType: 'equation', content: payload.text}); break
     case 'insert_S_O_image': insert_select_S_O(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
     case 'insert_S_O_table': insert_select_table(m, payload.rowLen, payload.colLen); break
-    case 'insert_S_U': insert_select_S_U(m, {}); break
     case 'insert_S_D': insert_select_S_D(m, {}); break
+    case 'insert_S_U': insert_select_S_U(m, {}); break
     case 'insert_CC_R': insert_CC_R(m); break
     case 'insert_CC_L': insert_CC_L(m); break
-    case 'insert_CR_U': insert_CR_U(m); break
     case 'insert_CR_D': insert_CR_D(m); break
+    case 'insert_CR_U': insert_CR_U(m); break
 
     case 'insertNodesFromClipboard': {
       // clearSelection(m)

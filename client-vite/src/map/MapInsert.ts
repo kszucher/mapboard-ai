@@ -1,9 +1,9 @@
 import {M, P} from "../state/MapPropTypes"
-import {genHash, get_cc_indices, get_cr_indices, get_table_indices} from "../core/Utils"
+import {genHash, get_table_indices} from "../core/Utils"
 import {selectNode} from "./MapReducer"
 import {
-  get_CC_siblingCount,
-  get_CR_siblingCount,
+  get_CC_count,
+  get_CR_count,
   getDefaultNode,
   getInsertParentNode,
   getLS,
@@ -38,13 +38,6 @@ export const insert_select_S_O = (m: M, attributes: object) => {
   selectNode(m, insertPath, 's', false)
 }
 
-export const insert_select_S_U = (m: M, attributes: object) => {
-  const insertPath = getLS(m).path
-  inc_S_S_O_D_O(m)
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
-  selectNode(m, insertPath, 's', false)
-}
-
 export const insert_select_S_D = (m: M, attributes: object) => {
   const insertPath = inc_pi(getLS(m).path, getLS(m).path.length - 1)
   inc_S_D_O(m)
@@ -52,35 +45,34 @@ export const insert_select_S_D = (m: M, attributes: object) => {
   selectNode(m, insertPath, 's', false)
 }
 
+export const insert_select_S_U = (m: M, attributes: object) => {
+  const insertPath = getLS(m).path
+  inc_S_S_O_D_O(m)
+  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
+  selectNode(m, insertPath, 's', false)
+}
+
 export const insert_select_table = (m: M, r: number, c: number) => {
-  insert_select_S_O(m, {}) // note: getLS will be up-to-date in the next phase!!!
+  insert_select_S_O(m, {}) // warning: getLS changes in the next phase
   insertCellNodeList(m, getLS(m).path, get_table_indices(r, c))
 }
 
 export const insert_CC_R = (m: M) => {
-  inc_gt_C_R(m)
-  const r = get_CR_siblingCount(m, getLS(m).path)
-  const c = getLS(m).path.at(-1) as number + 1
-  insertCellNodeList(m, getLS(m).path.slice(0, -3), get_cc_indices(r, c))
+  inc_gt_C_R(m) // warning: getLS changes in the next phase
+  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CC_count(m, getLS(m).path)).fill(null).map((el, i) => [i, getLS(m).path.at(-1) + 1]))
 }
 
 export const insert_CC_L = (m: M) => {
-  inc_gte_C_R(m)
-  const r = get_CR_siblingCount(m, getLS(m).path)
-  const c = getLS(m).path.at(-1) as number
-  insertCellNodeList(m, getLS(m).path.slice(0, -3), get_cc_indices(r, c))
-}
-
-export const insert_CR_U = (m: M) => {
-  inc_gt_C_D(m)
-  const r = getLS(m).path.at(-2) as number + 1
-  const c = get_CC_siblingCount(m, getLS(m).path)
-  insertCellNodeList(m, getLS(m).path.slice(0, -3), get_cr_indices(r, c))
+  inc_gte_C_R(m) // warning: getLS changes in the next phase
+  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CC_count(m, getLS(m).path)).fill(null).map((el, i) => [i, getLS(m).path.at(-1) - 1]))
 }
 
 export const insert_CR_D = (m: M) => {
-  inc_gte_C_D(m)
-  const r = getLS(m).path.at(-2) as number
-  const c = get_CC_siblingCount(m, getLS(m).path)
-  insertCellNodeList(m, getLS(m).path.slice(0, -3), get_cr_indices(r, c))
+  inc_gte_C_D(m) // warning: getLS changes in the next phase
+  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CR_count(m, getLS(m).path)).fill(null).map((el, i) => [getLS(m).path.at(-2) - 1, i]))
+}
+
+export const insert_CR_U = (m: M) => {
+  inc_gt_C_D(m) // warning: getLS changes in the next phase
+  insertCellNodeList(m, getLS(m).path.slice(0, -3), Array(get_CR_count(m, getLS(m).path)).fill(null).map((el, i) => [getLS(m).path.at(-2) + 1, i]))
 }
