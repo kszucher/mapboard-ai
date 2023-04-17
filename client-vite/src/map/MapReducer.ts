@@ -27,7 +27,7 @@ import {
   sortNode,
   sortPath,
 } from "./MapUtils"
-import {nSaveOptional} from "../state/MapProps";
+import {nSaveOptional} from "../state/MapProps"
 import {
   insert_CC_L,
   insert_CC_R,
@@ -37,7 +37,7 @@ import {
   insertSelectNodeO,
   insertSelectNodeU,
   insertSelectTable
-} from "../node/NodeInsert";
+} from "./MapInsert"
 
 export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
 export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_siblingCount(m, p) - 1)

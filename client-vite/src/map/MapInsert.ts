@@ -1,6 +1,6 @@
 import {M, P} from "../state/MapPropTypes"
 import {genHash, get_cc_indices, get_table_indices} from "../core/Utils"
-import {selectNode} from "../map/MapReducer"
+import {selectNode} from "./MapReducer"
 import {
   get_CR_siblingCount,
   getDefaultNode,
@@ -14,7 +14,7 @@ import {
   inc_S_D_O,
   inc_S_S_O_D_O,
   sortPath
-} from "../map/MapUtils"
+} from "./MapUtils"
 
 const insertNode = (m, attributes: object) => {
   m.push(getDefaultNode({...attributes, nodeId: 'node' + genHash(8)}))
