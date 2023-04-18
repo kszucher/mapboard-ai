@@ -4,7 +4,7 @@ import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
 import {
-  getLS,
+  get_LS,
   isCellColSelected,
   isCellRowSelected,
   isCellSelected,
@@ -39,7 +39,7 @@ export const windowListenersKeyPaste = (
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
 
   const m = getMap()
-  const dir = getDir(getLS(m))
+  const dir = getDir(get_LS(m))
   const dr = dir === 1
   const dl = dir === -1
   const r = isRootSelected(m)
@@ -48,8 +48,8 @@ export const windowListenersKeyPaste = (
   const c = isCellSelected(m)
   const cr = isCellRowSelected(m)
   const cc = isCellColSelected(m)
-  const ls = getLS(m)
-  
+  const ls = get_LS(m)
+
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   true, s || c,          0, '',                         {},                              1 ],
     [ kd, ckm(e, '000') && key === 'F2',                   true, s || c,          1, 'startEditAppend',          {},                              1 ],
@@ -109,7 +109,7 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '000') && code === 'ArrowDown',           true, cr,              1, 'select_CR_D',              {}, 1                              ], // ok
     [ kd, ckm(e, '100') && code === 'ArrowDown',           dr, s,                 1, 'move_S_I',                 {}, 1                              ],
     [ kd, ckm(e, '100') && code === 'ArrowDown',           dl, s,                 1, 'move_S_O',                 {}, 1                              ],
-    [ kd, ckm(e, '010') && code === 'ArrowDown',           true, s,               1, 'select_S_D_too',           {}, 1                              ],
+    [ kd, ckm(e, '010') && code === 'ArrowDown',           true, s,               1, 'select_S_D_too',           {}, 1                              ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowDown',           true, c && !cr && !cc, 1, 'select_CC_SAME',           {}, 1                              ], // ok
     [ kd, ckm(e, '001') && code === 'ArrowDown',           true, cr,              1, 'insert_CR_D',              {}, 1                              ], // ok
 
@@ -118,7 +118,7 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '000') && code === 'ArrowUp',             true, cr,              1, 'select_CR_U',              {}, 1                              ], // ok
     [ kd, ckm(e, '100') && code === 'ArrowUp',             dr, s,                 1, 'move_S_I',                 {}, 1                              ],
     [ kd, ckm(e, '100') && code === 'ArrowUp',             dl, s,                 1, 'move_S_O',                 {}, 1                              ],
-    [ kd, ckm(e, '010') && code === 'ArrowUp',             true, s,               1, 'select_S_U_too',           {}, 1                              ],
+    [ kd, ckm(e, '010') && code === 'ArrowUp',             true, s,               1, 'select_S_U_too',           {}, 1                              ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowUp',             true, c && !cr && !cc, 1, 'select_CC_SAME',           {}, 1                              ], // ok
     [ kd, ckm(e, '001') && code === 'ArrowUp',             true, cr,              1, 'insert_CR_U',              {}, 1                              ], // ok
 

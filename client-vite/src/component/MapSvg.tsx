@@ -4,8 +4,8 @@ import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {
   getClosestStructParentPath,
-  getG,
-  getLS,
+  get_G,
+  get_LS,
   getNodeById,
   getNodeByPath,
   getPattern, isCellColSelected, isCellRowSelected,
@@ -58,8 +58,8 @@ export const MapSvg: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = getG(m)
-  const ls = getLS(m)
+  const g = get_G(m)
+  const ls = get_LS(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

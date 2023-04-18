@@ -13,8 +13,8 @@ import {
   get_CC_count,
   get_CR_count,
   getEditedNode,
-  getG,
-  getLS,
+  get_G,
+  get_LS,
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
@@ -55,7 +55,7 @@ export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
 
 export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? { selected: getLS(m).selected + 1 , selection }
+    ? { selected: get_LS(m).selected + 1 , selection }
     : { }
   ))
 }
@@ -76,8 +76,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
-  const g = getG(m)
-  const ls = action === 'LOAD' ? null as N : getLS(m)
+  const g = get_G(m)
+  const ls = action === 'LOAD' ? null as N : get_LS(m)
   switch (action) {
     case 'LOAD': break
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
@@ -156,9 +156,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
 
 
 
-
     case 'delete_S': {
-      const reselectPath = get_S_U_count(m, getLS(m).path) ? get_S_U1 :  getClosestStructParentPath(getLS(m).path) // TODO start here...
+      const reselectPath = get_S_U_count(m, get_LS(m).path) ? get_S_U1 : getClosestStructParentPath(get_LS(m).path) // TODO start here...
       // is_S_S_O = rename it to is_multi_S_S_O, ennek mintájára, is_multi_S_D_O amivel mindent megmanipulálunk!!!
       // delete multi_S_S_O
 
@@ -230,8 +229,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // EDIT
-    case 'startEditAppend': getLS(m).contentType === 'equation' ? Object.assign(getLS(m), { contentType: 'text' }) : () => {}; break
-    case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
+    case 'startEditAppend': get_LS(m).contentType === 'equation' ? Object.assign(get_LS(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(get_LS(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ls.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break

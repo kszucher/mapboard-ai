@@ -3,7 +3,7 @@ import {mapReducer} from "../map/MapReducer"
 import {api} from "../core/Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../core/Enums"
-import {getEditedNode, getLS} from "../map/MapUtils"
+import {getEditedNode, get_LS} from "../map/MapUtils"
 import isEqual from "react-fast-compare"
 
 const editorStateDefault = JSON.stringify(editorState)
@@ -23,7 +23,7 @@ export const editorSlice = createSlice({
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       if (action.payload.type === 'startEditReplace') {
-        state.editedNodeId = getEditedNode(pm, getLS(pm).path).nodeId
+        state.editedNodeId = getEditedNode(pm, get_LS(pm).path).nodeId
         state.editType = 'replace'
       } else {
         const m = mapReducer(pm, action.payload.type, action.payload.payload)
@@ -36,7 +36,7 @@ export const editorSlice = createSlice({
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = m
-            state.editedNodeId = getEditedNode(pm, getLS(pm).path).nodeId
+            state.editedNodeId = getEditedNode(pm, get_LS(pm).path).nodeId
             state.editType = 'append'
             break
           case 'typeText':
