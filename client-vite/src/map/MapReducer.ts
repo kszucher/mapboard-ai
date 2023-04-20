@@ -9,7 +9,7 @@ import isEqual from "react-fast-compare"
 import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {
-  dec_pi_lim,
+  decPiLim,
   getCountCC,
   getCountCR,
   getEditedNode,
@@ -18,7 +18,7 @@ import {
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
-  inc_pi_lim,
+  incPiLim,
   isSameCC,
   isSameCR,
   isR,
@@ -29,26 +29,26 @@ import {
   getClosestStructParentPath,
   getCountSU,
   getSU1,
-  dec_pi_n,
+  decPiN,
   getParentPathList,
   isSD,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps"
 import {
-  insert_CC_L,
-  insert_CC_R,
-  insert_CR_D,
-  insert_CR_U,
-  insert_select_S_D,
-  insert_select_S_O,
-  insert_select_S_U,
-  insert_select_table
+  insertCCL,
+  insertCCR,
+  insertCRD,
+  insertCRU,
+  insertSelectSD,
+  insertSelectSO,
+  insertSelectSU,
+  insertSelectTable
 } from "./MapInsert"
 
-export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, getCountCR(m, p) - 1)
-export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
-export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, getCountCC(m, p) - 1)
-export const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
+export const cellNavigateR = (m: M, p: P) => incPiLim(p, p.length - 1, getCountCR(m, p) - 1)
+export const cellNavigateL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)
+export const cellNavigateD = (m: M, p: P) => incPiLim(p, p.length - 2, getCountCC(m, p) - 1)
+export const cellNavigateU = (m: M, p: P) => decPiLim(p, p.length - 2, 0)
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
@@ -111,7 +111,7 @@ const deleteSelection = (m: M) => {
     const n = m[i]
     const pathList = [...getParentPathList(n.path), n.path]
     pathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    pathList.forEach(p => n.path = dec_pi_n(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
+    pathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }
   selectNode(m, reselectPath, 's')
 }
@@ -175,18 +175,18 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
 
-    case 'insert_S_O': insert_select_S_O(m, {}); break
-    case 'insert_S_O_text': insert_select_S_O(m, {contentType: 'text', content: payload.text}); break
-    case 'insert_S_O_elink': insert_select_S_O(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
-    case 'insert_S_O_equation': insert_select_S_O(m, {contentType: 'equation', content: payload.text}); break
-    case 'insert_S_O_image': insert_select_S_O(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insert_S_O_table': insert_select_table(m, payload.rowLen, payload.colLen); break
-    case 'insert_S_D': insert_select_S_D(m, {}); break
-    case 'insert_S_U': insert_select_S_U(m, {}); break
-    case 'insert_CC_R': insert_CC_R(m); break
-    case 'insert_CC_L': insert_CC_L(m); break
-    case 'insert_CR_D': insert_CR_D(m); break
-    case 'insert_CR_U': insert_CR_U(m); break
+    case 'insert_S_O': insertSelectSO(m, {}); break
+    case 'insert_S_O_text': insertSelectSO(m, {contentType: 'text', content: payload.text}); break
+    case 'insert_S_O_elink': insertSelectSO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
+    case 'insert_S_O_equation': insertSelectSO(m, {contentType: 'equation', content: payload.text}); break
+    case 'insert_S_O_image': insertSelectSO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
+    case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
+    case 'insert_S_D': insertSelectSD(m, {}); break
+    case 'insert_S_U': insertSelectSU(m, {}); break
+    case 'insert_CC_R': insertCCR(m); break
+    case 'insert_CC_L': insertCCL(m); break
+    case 'insert_CR_D': insertCRD(m); break
+    case 'insert_CR_U': insertCRU(m); break
 
     case 'insertNodesFromClipboard': {
       // clearSelection(m)
