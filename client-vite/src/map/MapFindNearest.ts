@@ -1,6 +1,6 @@
 import {M, GN, P, N} from "../state/MapPropTypes"
 import isEqual from "react-fast-compare"
-import {getNodeById, getNodeByPath, getParentPath, is_D, is_S, is_S_O} from "./MapUtils"
+import {getNodeById, getNodeByPath, getParentPath, isD, isS, isSO} from "./MapUtils"
 
 export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
   let moveCoords = [] as number[]
@@ -18,7 +18,7 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
     const overlap = 6
     let moveTargetNodeId = ''
     m.forEach(n => {
-      if ((is_S(n.path) || is_D(n.path)) && n.nodeId !== moveNode.nodeId && !is_S_O(moveNode.path, n.path)) {
+      if ((isS(n.path) || isD(n.path)) && n.nodeId !== moveNode.nodeId && !isSO(moveNode.path, n.path)) {
         let vCondition
         if (n.isTop && belowRoot) {
           vCondition = toY < (n.nodeY + n.maxH / 2 + overlap)

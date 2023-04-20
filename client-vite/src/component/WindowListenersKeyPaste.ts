@@ -4,13 +4,13 @@ import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
 import {
-  get_LS,
-  isCellColSelected,
-  isCellRowSelected,
-  isCellSelected,
-  isDirStructSelected,
-  isRootSelected,
-  isStructSelected
+  getLS,
+  isSelectedCC,
+  isSelectedCR,
+  isSelectedC,
+  isSelectedDS,
+  isSelectedR,
+  isSelectedS
 } from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
@@ -39,16 +39,16 @@ export const windowListenersKeyPaste = (
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
 
   const m = getMap()
-  const dir = getDir(get_LS(m))
+  const dir = getDir(getLS(m))
   const dr = dir === 1
   const dl = dir === -1
-  const r = isRootSelected(m)
-  const s = isStructSelected(m)
-  const ds = isDirStructSelected(m)
-  const c = isCellSelected(m)
-  const cr = isCellRowSelected(m)
-  const cc = isCellColSelected(m)
-  const ls = get_LS(m)
+  const r = isSelectedR(m)
+  const s = isSelectedS(m)
+  const ds = isSelectedDS(m)
+  const c = isSelectedC(m)
+  const cr = isSelectedCR(m)
+  const cc = isSelectedCC(m)
+  const ls = getLS(m)
 
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   true, s || c,          0, '',                         {},                              1 ],

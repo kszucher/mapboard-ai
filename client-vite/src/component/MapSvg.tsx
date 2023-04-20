@@ -4,13 +4,13 @@ import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {
   getClosestStructParentPath,
-  get_G,
-  get_LS,
+  getG,
+  getLS,
   getNodeById,
   getNodeByPath,
-  getPattern, isCellColSelected, isCellRowSelected,
-  isCellSelected,
-  is_S
+  getPattern, isSelectedCC, isSelectedCR,
+  isSelectedC,
+  isS
 } from "../map/MapUtils"
 import {actions} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
@@ -43,7 +43,7 @@ const pathCommonProps = {
 
 const getSelectionMargin = (m: M, n: N) => (
   (
-    isCellSelected(m) ||
+    isSelectedC(m) ||
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
@@ -58,8 +58,8 @@ export const MapSvg: FC = () => {
   const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const g = get_G(m)
-  const ls = get_LS(m)
+  const g = getG(m)
+  const ls = getLS(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
@@ -231,7 +231,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                is_S(n.path) && (n.cRowCount || n.cColCount) &&
+                isS(n.path) && (n.cRowCount || n.cColCount) &&
                 <path
                   key={`${n.nodeId}_svg_tableFrame`}
                   d={getArcPath(n, 0, false)}
@@ -243,7 +243,7 @@ export const MapSvg: FC = () => {
                 </path>
               }
               {
-                is_S(n.path) && (n.cRowCount || n.cRowCount) &&
+                isS(n.path) && (n.cRowCount || n.cRowCount) &&
                 <path
                   key={`${n.nodeId}_svg_tableGrid`}
                   d={getGridPath(n)}
@@ -303,8 +303,8 @@ export const MapSvg: FC = () => {
                 !selectionRectCoords.length &&
                 n.selected &&
                 n.selected !== ls.selected &&
-                !isCellRowSelected(m) &&
-                !isCellColSelected(m) &&
+                !isSelectedCR(m) &&
+                !isSelectedCC(m) &&
                 <path
                   key={`${n.nodeId}_svg_selectionBorderSecondary`}
                   d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(m, n))}
@@ -323,7 +323,7 @@ export const MapSvg: FC = () => {
             !selectionRectCoords.length &&
             <path
               key={`${g.nodeId}_svg_selectionBorderPrimary`}
-              d={getPolygonPath(ls, isCellSelected(m) ? getCellPolygonPoints(m) : getStructPolygonPoints(ls, ls.selection), ls.selection, getSelectionMargin(m, ls))}
+              d={getPolygonPath(ls, isSelectedC(m) ? getCellPolygonPoints(m) : getStructPolygonPoints(ls, ls.selection), ls.selection, getSelectionMargin(m, ls))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}

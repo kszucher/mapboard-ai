@@ -1,19 +1,19 @@
-import {getNodeByPath, getParentPath, is_G, is_R, is_D, is_S, is_C, is_S_U, getPattern} from "./MapUtils"
+import {getNodeByPath, getParentPath, isG, isR, isD, isS, isC, isSU, getPattern} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
   const g = getNodeByPath(m, ['g']) as G
   const r0 = getNodeByPath(m, ['r', 0]) as N
   m.forEach(n => {
-    if (is_G(n.path)) {
+    if (isG(n.path)) {
       // do nothing
-    } else if (is_R(n.path)) {
+    } else if (isR(n.path)) {
       n.lineDeltaX = 0
       n.lineDeltaY = g.mapHeight / 2 - 0.5
       n.nodeStartX = g.mapStartCenterX - n.selfW / 2 + 1
       n.nodeEndX = g.mapStartCenterX + n.selfW / 2 + 1
       n.nodeY = n.lineDeltaY
-    } else if (is_D(n.path)) {
+    } else if (isD(n.path)) {
       n.lineDeltaX = 0
       n.lineDeltaY = 0
       n.nodeStartX = r0.nodeStartX
@@ -26,9 +26,9 @@ export const mapPlace = (m: M) => {
     } else {
       const pn = getNodeByPath(m, getParentPath(n.path)) as N
       const ppn = getNodeByPath(m, getParentPath(pn.path)) as N
-      if (is_S(n.path)) {
+      if (isS(n.path)) {
         const i = n.path.at(-1) as number
-        const sumUpperSiblingMaxH = m.filter(nt => is_S_U(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
+        const sumUpperSiblingMaxH = m.filter(nt => isSU(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
         const sumElapsedY = sumUpperSiblingMaxH + i * pn.spacing * pn.spacingActivated
         n.lineDeltaX = g.sLineDeltaXDefault
         n.lineDeltaY = - pn.familyH / 2 + n.maxH / 2 + sumElapsedY
@@ -42,7 +42,7 @@ export const mapPlace = (m: M) => {
         n.nodeY = pn.nodeY + n.lineDeltaY
         n.isTop = i === 0 && pn.isTop ? 1 : 0
         n.isBottom = i === pn.sCount - 1 && pn.isBottom === 1 ? 1 : 0
-      } else if (is_C(n.path)) {
+      } else if (isC(n.path)) {
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
         n.lineDeltaX = pn.sumMaxColWidth[j] + 20

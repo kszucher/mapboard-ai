@@ -1,5 +1,5 @@
 import {MPartial, NPartial} from "../state/MapPropTypes"
-import {getDefaultNode, is_C} from "./MapUtils"
+import {getDefaultNode, isC} from "./MapUtils"
 
 export const mapFix = {
   start: (m: MPartial) => {
@@ -7,7 +7,7 @@ export const mapFix = {
   },
 
   iterate: (m: MPartial, n: NPartial) => {
-    if (is_C(n.path) && !n.sCount) {
+    if (isC(n.path) && !n.sCount) {
       n.s.push(getDefaultNode({}))
     }
     if (n.d) n.d.map(i => mapFix.iterate(m, i))

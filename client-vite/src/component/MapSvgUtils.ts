@@ -2,12 +2,12 @@ import {LineTypes} from "../core/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
 import {
-  get_LS,
+  getLS,
   getNodeByPath,
   getParentNodeByPath,
   getPathDir,
-  isCellColSelected,
-  isCellRowSelected
+  isSelectedCC,
+  isSelectedCR
 } from "../map/MapUtils"
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
@@ -109,19 +109,19 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
 }
 
 export const getCellPolygonPoints = (m: M): PolygonPoints => {
-  const ls = get_LS(m)
+  const ls = getLS(m)
   const pn = getParentNodeByPath(m, ls.path)
   const n = getNodeByPath(m, ls.path)
   const dir = getPathDir(ls.path)
   const { xi, yu } = getHelperParams(pn)
   let x, y, w, h
-  if (isCellRowSelected(m)) {
+  if (isSelectedCR(m)) {
     const i = ls.path.at(-2)
     x = xi
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
-  } else if (isCellColSelected(m)) {
+  } else if (isSelectedCC(m)) {
     const j = ls.path.at(-1)
     x = xi + n.lineDeltaX - 20
     y = yu

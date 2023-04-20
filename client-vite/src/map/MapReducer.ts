@@ -10,28 +10,28 @@ import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {
   dec_pi_lim,
-  getCount_CC,
-  getCount_CR,
+  getCountCC,
+  getCountCR,
   getEditedNode,
-  get_G,
-  get_LS,
+  getG,
+  getLS,
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
   inc_pi_lim,
-  is_same_CC,
-  is_same_CR,
-  is_R,
+  isSameCC,
+  isSameCR,
+  isR,
   setSelection,
   setSelectionFamily,
   sortNode,
   sortPath,
   getClosestStructParentPath,
-  getCount_S_U,
-  get_S_U1,
+  getCountSU,
+  getSU1,
   dec_pi_n,
   getParentPathList,
-  is_S_D, is_S_S_O, getNodeById, is_G,
+  isSD, isSSO, getNodeById, isG,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps"
 import {
@@ -45,9 +45,9 @@ import {
   insert_select_table
 } from "./MapInsert"
 
-export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, getCount_CR(m, p) - 1)
+export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, getCountCR(m, p) - 1)
 export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
-export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, getCount_CC(m, p) - 1)
+export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, getCountCC(m, p) - 1)
 export const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
@@ -59,7 +59,7 @@ export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
 
 export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? { selected: get_LS(m).selected + 1 , selection }
+    ? { selected: getLS(m).selected + 1 , selection }
     : { }
   ))
 }
@@ -104,14 +104,14 @@ const xmexpected = [
 ] as M
 
 const deleteSelection = (m: M) => {
-  const reselectPath = getCount_S_U(m, get_LS(m).path)
-    ? get_S_U1(m, get_LS(m).path).path
-    : getClosestStructParentPath(get_LS(m).path)
+  const reselectPath = getCountSU(m, getLS(m).path)
+    ? getSU1(m, getLS(m).path).path
+    : getClosestStructParentPath(getLS(m).path)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
     const pathList = [...getParentPathList(n.path), n.path]
     pathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    pathList.forEach(p => n.path = dec_pi_n(n.path, p.length - 1, m.filter(n => n.selected && is_S_D(n.path, p)).length))
+    pathList.forEach(p => n.path = dec_pi_n(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }
   selectNode(m, reselectPath, 's')
 }
@@ -120,8 +120,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
-  const g = get_G(m)
-  const ls = action === 'LOAD' ? null as N : get_LS(m)
+  const g = getG(m)
+  const ls = action === 'LOAD' ? null as N : getLS(m)
   switch (action) {
     case 'LOAD': break
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
@@ -133,9 +133,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
         const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
         const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
         let toPath = []
-        if (!is_R(payload.path) && isEqual(n.path, payload.path) || is_R(payload.path) && payload.selection === 's') toPath = payload.path
-        else if (is_R(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
-        else if (is_R(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
+        if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's') toPath = payload.path
+        else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
+        else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
         console.log(payload.add)
         payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
         if (!n.dCount) {
@@ -167,8 +167,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's'); break // ok
     case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => is_same_CR(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => is_same_CC(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isSameCR(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isSameCC(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CC_R': selectNodeList(m, getSelection(m).map(n => cellNavigateR(m, n.path)), 's'); break // ok
     case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
@@ -263,8 +263,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // EDIT
-    case 'startEditAppend': get_LS(m).contentType === 'equation' ? Object.assign(get_LS(m), { contentType: 'text' }) : () => {}; break
-    case 'typeText': Object.assign(get_LS(m), { contentType: 'text', content: payload.content }); break
+    case 'startEditAppend': getLS(m).contentType === 'equation' ? Object.assign(getLS(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ls.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break

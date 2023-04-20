@@ -6,7 +6,7 @@ import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
 import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
-import {getSelectionProp_S_S_O, getSelectionProp, get_LS} from "../map/MapUtils"
+import {getSelectionPropSSO, getSelectionProp, getLS} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32
@@ -18,13 +18,13 @@ export const Formatter: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const ls = get_LS(m)
+  const ls = getLS(m)
   const lineWidth = WidthTypes[getSelectionProp(m, 'lineWidth') || 0]
   const lineType = LineTypes[getSelectionProp(m, 'lineType') || 0]
   const lineColor = getSelectionProp(m, 'lineColor')
-  const borderWidth = WidthTypes[ls.selection === 's' ? getSelectionProp(m, 'sBorderWidth') || 0 : getSelectionProp_S_S_O(m, 'fBorderWidth') || 0]
-  const borderColor = ls.selection === 's' ? getSelectionProp(m, 'sBorderColor') : getSelectionProp_S_S_O(m, 'fBorderColor')
-  const fillColor = ls.selection === 's' ? getSelectionProp(m, 'sFillColor') : getSelectionProp_S_S_O(m, 'fFillColor')
+  const borderWidth = WidthTypes[ls.selection === 's' ? getSelectionProp(m, 'sBorderWidth') || 0 : getSelectionPropSSO(m, 'fBorderWidth') || 0]
+  const borderColor = ls.selection === 's' ? getSelectionProp(m, 'sBorderColor') : getSelectionPropSSO(m, 'fBorderColor')
+  const fillColor = ls.selection === 's' ? getSelectionProp(m, 'sFillColor') : getSelectionPropSSO(m, 'fFillColor')
   const textFontSize = TextTypes[getSelectionProp(m, 'textFontSize') || 0]
   const textColor = getSelectionProp(m, 'textColor')
   const dispatch = useDispatch()
