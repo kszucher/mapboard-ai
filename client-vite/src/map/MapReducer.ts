@@ -31,7 +31,7 @@ import {
   getSU1,
   dec_pi_n,
   getParentPathList,
-  isSD, isSSO, getNodeById, isG,
+  isSD,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps"
 import {
