@@ -200,6 +200,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
 
     case 'delete_S': deleteSelection(m); break
     case 'delete_CR': break
+    case 'delete_CC': break
 
     case 'move_S_O': break // only for siblings
     case 'move_S_I': break // only for siblings
