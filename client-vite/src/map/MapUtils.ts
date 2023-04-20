@@ -37,6 +37,7 @@ export const isCellRowSelected = (m: M) => is_C(get_LS(m).path) && !m.find(n => 
 export const isCellColSelected = (m: M) => is_C(get_LS(m).path) && !m.find(n => n.selected && !is_C(n.path) || !n.selected && is_same_CC(get_LS(m).path, n.path))
 
 export const getParentPath = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
+export const getParentPathList = (p: P) => p.map((el, i) => p.slice(0, i)).filter(el => ['r', 'd', 's'].includes(el.at(-2)) || el.at(-3) === 'c' )
 export const getClosestStructParentPath = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getClosestStructChildPath = (p: P) => getPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getPathDir = (p: P) => p[3] ? -1 : 1
@@ -45,24 +46,27 @@ export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as 
 export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getParentPath(p)) as N
 export const get_G = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const get_LS = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
+export const get_S_U1 = (m: M, p: P) => m.find(n => is_S_U1(p, n.path))
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getClosestStructChildPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, get_LS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: get_LS(m).path)
 export const getSelection = (m: M) => m.filter(n => n.selected)
-export const getSelectionFamily = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_S_O(p, n.path)))
+export const getSelection_S_S_O = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_S_O(p, n.path)))
+export const getSelection_S_D_O = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => is_S_D_O(p, n.path)))
 export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? get_LS(m)[prop] : null
-export const getSelectionFamilyProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionFamily(m).map(n => n[prop])) ? get_LS(m)[prop] : null
-export const get_D_count = (m: M, p: P) => p.length === 2 ? 2 : 0
-export const get_S_O1_count = (m: M, p: P) => m.filter(n => is_S_O1(p, n.path)).length
-export const get_S_U_count = (m: M, p: P) => m.filter(n => is_S_U(p, n.path)).length
-export const get_CR_count = (m: M, p: P) => m.filter(n => is_same_CR(p, n.path)).length
-export const get_CC_count = (m: M, p: P) => m.filter(n => is_same_CC(p, n.path)).length
+export const getSelectionProp_S_S_O = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection_S_S_O(m).map(n => n[prop])) ? get_LS(m)[prop] : null
+export const getCount_D = (m: M, p: P) => p.length === 2 ? 2 : 0
+export const getCount_S_O1 = (m: M, p: P) => m.filter(n => is_S_O1(p, n.path)).length
+export const getCount_S_U = (m: M, p: P) => m.filter(n => is_S_U(p, n.path)).length
+export const getCount_CR = (m: M, p: P) => m.filter(n => is_same_CR(p, n.path)).length
+export const getCount_CC = (m: M, p: P) => m.filter(n => is_same_CC(p, n.path)).length
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
-export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionFamily(m).forEach(n => n[prop] = value)
+export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelection_S_S_O(m).forEach(n => n[prop] = value)
 
 export const inc_pi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
 export const dec_pi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p - 1 : p)
+export const dec_pi_n = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p - n : p)
 export const inc_pi_lim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
 export const dec_pi_lim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi > limit ? pi - 1 : pi)
 export const inc_S_S_O_D_O = (m: M) => m.filter(n => is_S_S_O_D_O(get_LS(m).path, n.path)).forEach(n => n.path = inc_pi(n.path, get_LS(m).path.length - 1))

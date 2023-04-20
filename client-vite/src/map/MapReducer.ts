@@ -10,8 +10,8 @@ import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {
   dec_pi_lim,
-  get_CC_count,
-  get_CR_count,
+  getCount_CC,
+  getCount_CR,
   getEditedNode,
   get_G,
   get_LS,
@@ -27,7 +27,11 @@ import {
   sortNode,
   sortPath,
   getClosestStructParentPath,
-  get_S_U_count,
+  getCount_S_U,
+  get_S_U1,
+  dec_pi_n,
+  getParentPathList,
+  is_S_D, is_S_S_O, getNodeById, is_G,
 } from "./MapUtils"
 import {nSaveOptional} from "../state/MapProps"
 import {
@@ -41,9 +45,9 @@ import {
   insert_select_table
 } from "./MapInsert"
 
-export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, get_CR_count(m, p) - 1)
+export const cellNavigateR = (m: M, p: P) => inc_pi_lim(p, p.length - 1, getCount_CR(m, p) - 1)
 export const cellNavigateL = (m: M, p: P) => dec_pi_lim(p, p.length - 1, 0)
-export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, get_CC_count(m, p) - 1)
+export const cellNavigateD = (m: M, p: P) => inc_pi_lim(p, p.length - 2, getCount_CC(m, p) - 1)
 export const cellNavigateU = (m: M, p: P) => dec_pi_lim(p, p.length - 2, 0)
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
@@ -68,8 +72,48 @@ export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
 }
 
 const deleteNode = () => {
-  // this will also return a path, just not the one it received but what it calculated, so
-  // with this background-flow, we have ALL select at one level, we will see whether its good or bad
+
+}
+
+const xm = [
+  {selected: 0, nodeId: 'a', path: ['g']},
+  {selected: 0, nodeId: 'b', path: ['r', 0]},
+  {selected: 0, nodeId: 'd', path: ['r', 0, 'd', 0]},
+  {selected: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 0, nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 0]},
+  {selected: 0, nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 1]},
+  {selected: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 2]},
+  {selected: 2, nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
+  {selected: 0, nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 's', 1, 's', 0]},
+  {selected: 0, nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 's', 1, 's', 1]},
+  {selected: 0, nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 's', 1, 's', 2]},
+  {selected: 0, nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
+  {selected: 3, nodeId: 'n', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 0]},
+  {selected: 4, nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 1]},
+  {selected: 0, nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 2]},
+] as M
+
+const xmexpected = [
+  {selected: 0, nodeId: 'a', path: ['g']},
+  {selected: 0, nodeId: 'b', path: ['r', 0]},
+  {selected: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 1, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 0, nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 0]},
+] as M
+
+const deleteSelection = (m: M) => {
+  const reselectPath = getCount_S_U(m, get_LS(m).path)
+    ? get_S_U1(m, get_LS(m).path).path
+    : getClosestStructParentPath(get_LS(m).path)
+  for (let i = m.length - 1; i > 0; i--) {
+    const n = m[i]
+    const pathList = [...getParentPathList(n.path), n.path]
+    pathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
+    pathList.forEach(p => n.path = dec_pi_n(n.path, p.length - 1, m.filter(n => n.selected && is_S_D(n.path, p)).length))
+  }
+  selectNode(m, reselectPath, 's')
 }
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -154,15 +198,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
 
-
-
-    case 'delete_S': {
-      const reselectPath = get_S_U_count(m, get_LS(m).path) ? get_S_U1 : getClosestStructParentPath(get_LS(m).path) // TODO start here...
-      // is_S_S_O = rename it to is_multi_S_S_O, ennek mintájára, is_multi_S_D_O amivel mindent megmanipulálunk!!!
-      // delete multi_S_S_O
-
-      break
-    }
+    case 'delete_S': deleteSelection(m); break
     case 'delete_CR': break
 
     case 'move_S_O': break // only for siblings
@@ -173,8 +209,6 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_CR_U': break;
     case 'move_CC_O': break;
     case 'move_CC_I': break;
-
-
 
     case 'transpose': {
       // if (ls.cRowCount || ls.cColCount) {

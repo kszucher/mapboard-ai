@@ -2,8 +2,8 @@ import {M, P} from "../state/MapPropTypes"
 import {genHash, get_table_indices} from "../core/Utils"
 import {selectNode} from "./MapReducer"
 import {
-  get_CC_count,
-  get_CR_count,
+  getCount_CC,
+  getCount_CR,
   getDefaultNode,
   getInsertParentNode,
   get_LS,
@@ -59,20 +59,20 @@ export const insert_select_table = (m: M, r: number, c: number) => {
 
 export const insert_CC_R = (m: M) => {
   inc_gt_C_R(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(get_CC_count(m, get_LS(m).path)).fill(null).map((el, i) => [i, get_LS(m).path.at(-1) + 1]))
+  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(getCount_CC(m, get_LS(m).path)).fill(null).map((el, i) => [i, get_LS(m).path.at(-1) + 1]))
 }
 
 export const insert_CC_L = (m: M) => {
   inc_gte_C_R(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(get_CC_count(m, get_LS(m).path)).fill(null).map((el, i) => [i, get_LS(m).path.at(-1) - 1]))
+  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(getCount_CC(m, get_LS(m).path)).fill(null).map((el, i) => [i, get_LS(m).path.at(-1) - 1]))
 }
 
 export const insert_CR_D = (m: M) => {
   inc_gt_C_D(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(get_CR_count(m, get_LS(m).path)).fill(null).map((el, i) => [get_LS(m).path.at(-2) + 1, i]))
+  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(getCount_CR(m, get_LS(m).path)).fill(null).map((el, i) => [get_LS(m).path.at(-2) + 1, i]))
 }
 
 export const insert_CR_U = (m: M) => {
   inc_gte_C_D(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(get_CR_count(m, get_LS(m).path)).fill(null).map((el, i) => [get_LS(m).path.at(-2) - 1, i]))
+  insertCellNodeList(m, get_LS(m).path.slice(0, -3), Array(getCount_CR(m, get_LS(m).path)).fill(null).map((el, i) => [get_LS(m).path.at(-2) - 1, i]))
 }
