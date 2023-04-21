@@ -6,7 +6,7 @@ import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
 import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
-import {getSelectionPropSSO, getSelectionProp, getLS} from "../map/MapUtils"
+import {getSelectionPropSSO, getSelectionProp, getL} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32
@@ -18,7 +18,7 @@ export const Formatter: FC = () => {
   const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
-  const ls = getLS(m)
+  const ls = getL(m)
   const lineWidth = WidthTypes[getSelectionProp(m, 'lineWidth') || 0]
   const lineType = LineTypes[getSelectionProp(m, 'lineType') || 0]
   const lineColor = getSelectionProp(m, 'lineColor')

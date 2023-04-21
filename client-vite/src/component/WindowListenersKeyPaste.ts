@@ -3,7 +3,7 @@ import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
-import {getLS, isSelectedCC, isSelectedCR, isSelectedC, isSelectedDS, isSelectedR, isSelectedS} from "../map/MapUtils";
+import {getL, isSelectedCC, isSelectedCR, isSelectedC, isSelectedDS, isSelectedR, isSelectedS} from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
 const ckm = (e: any, condition: string) => (
@@ -31,7 +31,7 @@ export const windowListenersKeyPaste = (
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
 
   const m = getMap()
-  const dir = getDir(getLS(m))
+  const dir = getDir(getL(m))
   const dr = dir === 1
   const dl = dir === -1
   const r = isSelectedR(m)
@@ -40,7 +40,7 @@ export const windowListenersKeyPaste = (
   const c = isSelectedC(m)
   const cr = isSelectedCR(m)
   const cc = isSelectedCC(m)
-  const ls = getLS(m)
+  const ls = getL(m)
 
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   true,  s || c,          0, '',                         {}, 1 ],

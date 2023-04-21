@@ -14,7 +14,7 @@ export const deleteSelection = (m: M) => {
 }
 
 export const deleteCR = (m: M) => {
-
+  const reselectRow = getCountLCRU()
 }
 
 export const deleteCC = (m: M) => {

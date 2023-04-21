@@ -5,7 +5,7 @@ import {getColors} from "../core/Colors"
 import {
   getSI1,
   getG,
-  getLS,
+  getL,
   getNodeById,
   getNodeByPath,
   getPattern, isSelectedCC, isSelectedCR,
@@ -59,7 +59,7 @@ export const MapSvg: FC = () => {
   const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
   const m = tm.length ? tm : mapList[mapListIndex]
   const g = getG(m)
-  const ls = getLS(m)
+  const ls = getL(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

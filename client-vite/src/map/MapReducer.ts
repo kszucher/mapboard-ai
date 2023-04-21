@@ -20,7 +20,7 @@ import {
   isSameCR,
   getEditedNode,
   getG,
-  getLS,
+  getL,
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
@@ -37,7 +37,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
   const g = getG(m)
-  const ls = action === 'LOAD' ? null as N : getLS(m)
+  const ls = action === 'LOAD' ? null as N : getL(m)
   switch (action) {
     case 'LOAD': break
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
@@ -182,8 +182,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // EDIT
-    case 'startEditAppend': getLS(m).contentType === 'equation' ? Object.assign(getLS(m), { contentType: 'text' }) : () => {}; break
-    case 'typeText': Object.assign(getLS(m), { contentType: 'text', content: payload.content }); break
+    case 'startEditAppend': getL(m).contentType === 'equation' ? Object.assign(getL(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(getL(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ls.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break

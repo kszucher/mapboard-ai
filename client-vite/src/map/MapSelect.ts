@@ -1,6 +1,6 @@
 import isEqual from "react-fast-compare"
 import {M, P} from "../state/MapPropTypes"
-import {getLS} from "./MapUtils"
+import {getL} from "./MapUtils"
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
@@ -10,7 +10,7 @@ export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
 }
 export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
   m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? {selected: getLS(m).selected + 1, selection}
+    ? {selected: getL(m).selected + 1, selection}
     : {}
   ))
 }
