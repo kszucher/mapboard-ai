@@ -26,7 +26,7 @@ import {
   setSelectionFamily,
   sortNode,
   sortPath,
-  getClosestStructParentPath,
+  getSI1,
   getCountSU,
   getSU1,
   decPiN,
@@ -104,9 +104,7 @@ const xmexpected = [
 ] as M
 
 const deleteSelection = (m: M) => {
-  const reselectPath = getCountSU(m, getLS(m).path)
-    ? getSU1(m, getLS(m).path).path
-    : getClosestStructParentPath(getLS(m).path)
+  const reselectPath = getCountSU(m, getLS(m).path) ? getSU1(m, getLS(m).path).path : getSI1(getLS(m).path)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
     const pathList = [...getParentPathList(n.path), n.path]
@@ -201,6 +199,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'delete_S': deleteSelection(m); break
     case 'delete_CR': break
     case 'delete_CC': break
+
+
 
     case 'move_S_O': break // only for siblings
     case 'move_S_I': break // only for siblings

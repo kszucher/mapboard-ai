@@ -3,7 +3,7 @@ import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {
-  getClosestStructParentPath,
+  getSI1,
   getG,
   getLS,
   getNodeById,
@@ -207,9 +207,9 @@ export const MapSvg: FC = () => {
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
-                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path))
-                      ? getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
-                      : getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)
+                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getSI1(n.path))
+                      ? getLinePathBetweenNodes(getNodeByPath(pm, getSI1(n.path)), n)
+                      : getLinePathBetweenNodes(getNodeByPath(m, getSI1(n.path)), n)
                   }
                   strokeWidth={n.lineWidth}
                   stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -217,11 +217,11 @@ export const MapSvg: FC = () => {
                   {...pathCommonProps}
                 >
                   {
-                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path)) &&
+                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getSI1(n.path)) &&
                     <animate
                       attributeName='d'
-                      from={getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)}
-                      to={getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)}
+                      from={getLinePathBetweenNodes(getNodeByPath(pm, getSI1(n.path)), n)}
+                      to={getLinePathBetweenNodes(getNodeByPath(m, getSI1(n.path)), n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
                       fill={'freeze'}

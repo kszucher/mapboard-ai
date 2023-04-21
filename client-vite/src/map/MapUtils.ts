@@ -38,7 +38,6 @@ export const isSelectedCC = (m: M) => isC(getLS(m).path) && !m.find(n => n.selec
 
 export const getParentPath = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getParentPathList = (p: P) => p.map((el, i) => p.slice(0, i)).filter(el => ['r', 'd', 's'].includes(el.at(-2)) || el.at(-3) === 'c' )
-export const getClosestStructParentPath = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getEditedPath = (p: P) => getPattern(p).endsWith('c') ? [...p, 's', 0] : p
 export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === nodeId) as GN
@@ -46,7 +45,8 @@ export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as 
 export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getParentPath(p)) as N
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getLS = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
-export const getSU1 = (m: M, p: P) => m.find(n => isSU1(p, n.path))
+export const getSI1 = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getSU1 = (m: M, p: P) => m.find(n => isSU1(p, n.path)) // we only need the path!!!
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path)
