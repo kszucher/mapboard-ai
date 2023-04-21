@@ -1,118 +1,36 @@
-import {Dir} from "../core/Enums"
-import {M, N, P} from "../state/MapPropTypes"
-import {mapInit} from "./MapInit"
-import {mapChain} from "./MapChain"
-import {mapCalcTask} from "./MapCalcTask"
-import {mapMeasure} from "./MapMeasure"
-import {mapPlace} from "./MapPlace"
 import isEqual from "react-fast-compare"
+import {Dir} from "../core/Enums"
 import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
+import {nSaveOptional} from "../state/MapProps"
+import {M, N} from "../state/MapPropTypes"
+import {mapCalcTask} from "./MapCalcTask"
+import {mapChain} from "./MapChain"
+import {deleteSelection} from "./MapDelete";
+import {mapInit} from "./MapInit"
+import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
+import {mapMeasure} from "./MapMeasure"
+import {mapPlace} from "./MapPlace"
+import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
 import {
-  decPiLim,
-  getCountCC,
-  getCountCR,
+  cellNavigateD,
+  cellNavigateL,
+  cellNavigateR,
+  cellNavigateU,
   getEditedNode,
   getG,
   getLS,
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
-  incPiLim,
+  isR,
   isSameCC,
   isSameCR,
-  isR,
   setSelection,
   setSelectionFamily,
   sortNode,
   sortPath,
-  getSI1,
-  getCountSU,
-  getSU1,
-  decPiN,
-  getParentPathList,
-  isSD,
 } from "./MapUtils"
-import {nSaveOptional} from "../state/MapProps"
-import {
-  insertCCL,
-  insertCCR,
-  insertCRD,
-  insertCRU,
-  insertSelectSD,
-  insertSelectSO,
-  insertSelectSU,
-  insertSelectTable
-} from "./MapInsert"
-
-export const cellNavigateR = (m: M, p: P) => incPiLim(p, p.length - 1, getCountCR(m, p) - 1)
-export const cellNavigateL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)
-export const cellNavigateD = (m: M, p: P) => incPiLim(p, p.length - 2, getCountCC(m, p) - 1)
-export const cellNavigateU = (m: M, p: P) => decPiLim(p, p.length - 2, 0)
-
-export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? { selected: 1, selection }
-    : { selected: 0, selection: 's' }
-  ))
-}
-
-export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? { selected: getLS(m).selected + 1 , selection }
-    : { }
-  ))
-}
-
-export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
-  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join(''))
-    ? { selected: i, selection }
-    : { selected: 0, selection: 's' }
-  ))
-}
-
-const deleteNode = () => {
-
-}
-
-const xm = [
-  {selected: 0, nodeId: 'a', path: ['g']},
-  {selected: 0, nodeId: 'b', path: ['r', 0]},
-  {selected: 0, nodeId: 'd', path: ['r', 0, 'd', 0]},
-  {selected: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-  {selected: 0, nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 0]},
-  {selected: 0, nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 1]},
-  {selected: 0, nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 2]},
-  {selected: 2, nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
-  {selected: 0, nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 's', 1, 's', 0]},
-  {selected: 0, nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 's', 1, 's', 1]},
-  {selected: 0, nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 's', 1, 's', 2]},
-  {selected: 0, nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 's', 2]},
-  {selected: 3, nodeId: 'n', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 0]},
-  {selected: 4, nodeId: 'o', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 1]},
-  {selected: 0, nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 's', 2, 's', 2]},
-] as M
-
-const xmexpected = [
-  {selected: 0, nodeId: 'a', path: ['g']},
-  {selected: 0, nodeId: 'b', path: ['r', 0]},
-  {selected: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
-  {selected: 1, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 0, nodeId: 'm', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
-  {selected: 0, nodeId: 'p', path: ['r', 0, 'd', 0, 's', 0, 's', 0, 's', 0]},
-] as M
-
-const deleteSelection = (m: M) => {
-  const reselectPath = getCountSU(m, getLS(m).path) ? getSU1(m, getLS(m).path).path : getSI1(getLS(m).path)
-  for (let i = m.length - 1; i > 0; i--) {
-    const n = m[i]
-    const pathList = [...getParentPathList(n.path), n.path]
-    pathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    pathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
-  }
-  selectNode(m, reselectPath, 's')
-}
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)

@@ -1,21 +1,7 @@
 import {M, P} from "../state/MapPropTypes"
 import {genHash, getTableIndices} from "../core/Utils"
-import {selectNode} from "./MapReducer"
-import {
-  getCountCC,
-  getCountCR,
-  getDefaultNode,
-  getInsertParentNode,
-  getLS,
-  incGtCD,
-  incGtCR,
-  incGteCD,
-  incGteCR,
-  incPi,
-  incSDO,
-  incSSODO,
-  sortPath
-} from "./MapUtils"
+import {selectNode} from "./MapSelect";
+import {getCountCC, getCountCR, getDefaultNode, getInsertParentNode, getLS, incGtCD, incGtCR, incGteCD, incGteCR, incPi, incSDO, incSSODO, sortPath} from "./MapUtils"
 
 const insertNode = (m: M, attributes: object) => {
   m.push(getDefaultNode({...attributes, nodeId: 'node' + genHash(8)}))

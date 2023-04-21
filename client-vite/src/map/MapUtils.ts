@@ -1,7 +1,7 @@
-import {G, GN, M, N, P} from "../state/MapPropTypes"
-import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
-import {isArrayOfEqualValues} from "../core/Utils"
 import isEqual from "react-fast-compare"
+import {isArrayOfEqualValues} from "../core/Utils"
+import {nSaveAlways, nSaveNever, nSaveOptional} from "../state/MapProps"
+import {G, GN, M, N, P} from "../state/MapPropTypes"
 
 export const sortPath = (a, b) => a.path.map(el => isNaN(el) ? el: 1000 + el).join('') > b.path.map(el => isNaN(el) ? el: 1000 + el).join('') ? 1 : -1
 export const sortNode = (a, b) => a.nodeId > b.nodeId ? 1 : -1
@@ -74,3 +74,8 @@ export const incGtCR = (m: M) => m.filter(n => isGtCR(getLS(m).path, n.path)).fo
 export const incGteCR = (m: M) => m.filter(n => isGteCR(getLS(m).path, n.path)).forEach(n => n.path = incPi(n.path, getLS(m).path.length - 1))
 export const incGtCD = (m: M) => m.filter(n => isGtCD(getLS(m).path, n.path)).forEach(n => n.path = incPi(n.path, getLS(m).path.length - 2))
 export const incGteCD = (m: M) => m.filter(n => isGteCD(getLS(m).path, n.path)).forEach(n => n.path = incPi(n.path, getLS(m).path.length - 2))
+
+export const cellNavigateR = (m: M, p: P) => incPiLim(p, p.length - 1, getCountCR(m, p) - 1)
+export const cellNavigateL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)
+export const cellNavigateD = (m: M, p: P) => incPiLim(p, p.length - 2, getCountCC(m, p) - 1)
+export const cellNavigateU = (m: M, p: P) => decPiLim(p, p.length - 2, 0)
