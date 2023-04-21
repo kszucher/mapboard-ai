@@ -6,7 +6,7 @@ import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
-import {deleteCC, deleteCR, deleteSelection} from "./MapDelete";
+import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
@@ -114,9 +114,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
 
-    case 'delete_S': deleteSelection(m); break
-    case 'delete_CR': deleteCR(m); break
-    case 'delete_CC': deleteCC(m); break
+    case 'delete_S': deleteSelectS(m); break
+    case 'delete_CR': deleteSelectCR(m); break
+    case 'delete_CC': deleteSelectCC(m); break
 
 
 
