@@ -6,30 +6,30 @@ import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
-import {deleteSelection} from "./MapDelete";
+import {deleteCC, deleteCR, deleteSelection} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
 import {
-  cellNavigateD,
-  cellNavigateL,
-  cellNavigateR,
-  cellNavigateU,
+  sortNode,
+  sortPath,
+  isR,
+  isSameCC,
+  isSameCR,
   getEditedNode,
   getG,
   getLS,
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
-  isR,
-  isSameCC,
-  isSameCR,
   setSelection,
   setSelectionFamily,
-  sortNode,
-  sortPath,
+  cellNavigateD,
+  cellNavigateL,
+  cellNavigateR,
+  cellNavigateU,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -115,8 +115,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     }
 
     case 'delete_S': deleteSelection(m); break
-    case 'delete_CR': break
-    case 'delete_CC': break
+    case 'delete_CR': deleteCR(m); break
+    case 'delete_CC': deleteCC(m); break
 
 
 

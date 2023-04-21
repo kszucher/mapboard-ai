@@ -3,15 +3,7 @@ import {isUrl} from "../core/Utils"
 import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
-import {
-  getLS,
-  isSelectedCC,
-  isSelectedCR,
-  isSelectedC,
-  isSelectedDS,
-  isSelectedR,
-  isSelectedS
-} from "../map/MapUtils";
+import {getLS, isSelectedCC, isSelectedCR, isSelectedC, isSelectedDS, isSelectedR, isSelectedS} from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
 const ckm = (e: any, condition: string) => (

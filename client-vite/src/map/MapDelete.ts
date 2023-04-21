@@ -12,3 +12,11 @@ export const deleteSelection = (m: M) => {
   }
   selectNode(m, reselectPath, 's')
 }
+
+export const deleteCR = (m: M) => {
+
+}
+
+export const deleteCC = (m: M) => {
+
+}
