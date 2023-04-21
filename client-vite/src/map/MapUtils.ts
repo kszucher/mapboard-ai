@@ -8,6 +8,12 @@ export const sortNode = (a, b) => a.nodeId > b.nodeId ? 1 : -1
 
 export const getPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 
+export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
+export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p - 1 : p)
+export const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p - n : p)
+export const incPiLim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
+export const decPiLim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi > limit ? pi - 1 : pi)
+
 export const isG = (p: P) => getPattern(p).endsWith('g')
 export const isR = (p: P) => getPattern(p).endsWith('r')
 export const isD = (p: P) => getPattern(p).endsWith('d')
@@ -66,11 +72,6 @@ export const getLSU1 = (m: M) => getSU1(getL(m).path)
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionSSO(m).forEach(n => n[prop] = value)
 
-export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p + 1 : p)
-export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p - 1 : p)
-export const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p - n : p)
-export const incPiLim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi < limit ? pi + 1 : pi)
-export const decPiLim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && pi > limit ? pi - 1 : pi)
 export const incSSODO = (m: M) => m.filter(n => isSSODO(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
 export const incSDO = (m: M) => m.filter(n => isSDO(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
 export const incGtCR = (m: M) => m.filter(n => isGtCR(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
@@ -82,3 +83,8 @@ export const cellNavigateR = (m: M, p: P) => incPiLim(p, p.length - 1, getCountC
 export const cellNavigateL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)
 export const cellNavigateD = (m: M, p: P) => incPiLim(p, p.length - 2, getCountCC(m, p) - 1)
 export const cellNavigateU = (m: M, p: P) => decPiLim(p, p.length - 2, 0)
+
+export const getCCR = (m: M) => getSelection(m).map(n => cellNavigateR(m, n.path))
+export const getCCL = (m: M) => getSelection(m).map(n => cellNavigateL(m, n.path))
+export const getCRD = (m: M) => getSelection(m).map(n => cellNavigateD(m, n.path))
+export const getCRU = (m: M) => getSelection(m).map(n => cellNavigateU(m, n.path))

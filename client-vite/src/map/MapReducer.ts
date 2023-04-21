@@ -29,7 +29,7 @@ import {
   cellNavigateD,
   cellNavigateL,
   cellNavigateR,
-  cellNavigateU,
+  cellNavigateU, getCCR, getCCL, getCRD, getCRU,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -85,10 +85,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_CR_SAME': selectNodeList(m, m.filter(n => isSameCR(n.path, ls.path)).map(n => n.path), 's'); break // ok
     case 'select_CC_SAME': selectNodeList(m, m.filter(n => isSameCC(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_R': selectNodeList(m, getSelection(m).map(n => cellNavigateR(m, n.path)), 's'); break // ok
-    case 'select_CC_L': selectNodeList(m, getSelection(m).map(n => cellNavigateL(m, n.path)), 's'); break // ok
-    case 'select_CR_D': selectNodeList(m, getSelection(m).map(n => cellNavigateD(m, n.path)), 's'); break // ok
-    case 'select_CR_U': selectNodeList(m, getSelection(m).map(n => cellNavigateU(m, n.path)), 's'); break // ok
+    case 'select_CC_R': selectNodeList(m, getCCR(m), 's'); break // ok
+    case 'select_CC_L': selectNodeList(m, getCCL(m), 's'); break // ok
+    case 'select_CR_D': selectNodeList(m, getCRD(m), 's'); break // ok
+    case 'select_CR_U': selectNodeList(m, getCRU(m), 's'); break // ok
     case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
