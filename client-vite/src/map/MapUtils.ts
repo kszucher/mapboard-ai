@@ -46,7 +46,7 @@ export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getParentPat
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getLS = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getSI1 = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
-export const getSU1 = (p: P) => p.at(-1) > 0 ? [...p.slice(0, -1), p.at(-1) - 1] : p//m.find(n => isSU1(p, n.path)) // we only need the path!!!
+export const getSU1 = (p: P) => p.at(-1) > 0 ? [...p.slice(0, -1), p.at(-1) - 1] : p
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getLS(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getLS(m).path)
@@ -59,6 +59,9 @@ export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).lengt
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountCR = (m: M, p: P) => m.filter(n => isSameCR(p, n.path)).length
 export const getCountCC = (m: M, p: P) => m.filter(n => isSameCC(p, n.path)).length
+export const getCountLSU = (m: M) => getCountSU(m, getLS(m).path)
+export const getLSI1 = (m: M) => getSI1(getLS(m).path)
+export const getLSU1 = (m: M) => getSU1(getLS(m).path)
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => n[prop] = value)
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionSSO(m).forEach(n => n[prop] = value)
