@@ -1,4 +1,4 @@
-import {deleteSelectCR, deleteSelectS} from "./MapDelete";
+import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {M} from "../state/MapPropTypes"
 
 const deleteSelectSTest = [
@@ -55,6 +55,32 @@ const deleteSelectCRResult = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
 ] as M
 
+const deleteSelectCCTest = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 1, 's', 0]},
+  {selected: 2, selection: 's', nodeId: 'i', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'j', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 1, 's', 0]},
+] as M
+
+const deleteSelectCCResult = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'h', path: ['r', 0, 'd', 0, 's', 0, 'c', 0, 0, 's', 0]},
+  {selected: 2, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 0, 's', 0]},
+] as M
+
 describe("DeleteTests", () => {
   test('deleteSelectS', () => {
     deleteSelectS(deleteSelectSTest)
@@ -64,4 +90,10 @@ describe("DeleteTests", () => {
     deleteSelectCR(deleteSelectCRTest)
     expect(deleteSelectCRTest).toEqual(deleteSelectCRResult)
   })
+  test('deleteSelectCC', () => {
+    deleteSelectCC(deleteSelectCCTest)
+    expect(deleteSelectCCTest).toEqual(deleteSelectCCResult)
+  })
 })
+
+// TODO test the function in real env (inc. deleting LAST row/col)
