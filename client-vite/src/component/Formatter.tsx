@@ -1,10 +1,10 @@
 import {FC} from "react"
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {Button, IconButton} from '@mui/material'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
-import {actions} from '../editor/EditorReducer'
+import {actions, RootState} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {getPropXASSO, getPropXA, getX} from "../map/MapUtils"
 
@@ -13,10 +13,10 @@ export const Formatter: FC = () => {
   const r = 12
   const width =  o * colorList[0].length
   const height = o * colorList.length
-  const formatMode = useSelector((state: RootStateOrAny) => state.editor.formatMode)
-  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
-  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
+  const formatMode = useSelector((state: RootState) => state.editor.formatMode)
+  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
+  const mapList = useSelector((state: RootState) => state.editor.mapList)
+  const tm = useSelector((state: RootState) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
   const ls = getX(m)
   const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') || 0]

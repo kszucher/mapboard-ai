@@ -1,5 +1,5 @@
 import React, {FC, Fragment, useState} from "react"
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {
@@ -12,7 +12,7 @@ import {
   isSelectedC,
   isS
 } from "../map/MapUtils"
-import {actions} from "../editor/EditorReducer"
+import {actions, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {
   getArcPath,
@@ -52,11 +52,11 @@ const getSelectionMargin = (m: M, n: N) => (
 )
 
 export const MapSvg: FC = () => {
-  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
-  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const moveCoords = useSelector((state: RootStateOrAny) => state.editor.moveCoords)
+  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
+  const mapList = useSelector((state: RootState) => state.editor.mapList)
+  const tm = useSelector((state: RootState) => state.editor.tempMap)
+  const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
+  const moveCoords = useSelector((state: RootState) => state.editor.moveCoords)
   const m = tm.length ? tm : mapList[mapListIndex]
   const g = getG(m)
   const ls = getX(m)
