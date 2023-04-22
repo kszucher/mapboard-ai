@@ -2,30 +2,10 @@ import React, {FC, Fragment, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {
-  getSI1,
-  getG,
-  getX,
-  getNodeById,
-  getNodeByPath,
-  getPattern, isSelectedCC, isSelectedCR,
-  isSelectedC,
-  isS
-} from "../map/MapUtils"
+import {getSI1, getG, getX, getNodeById, getNodeByPath, getPattern, isSelectedCC, isSelectedCR, isSelectedC, isS} from "../map/MapUtils"
 import {actions, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
-import {
-  getArcPath,
-  getBezierLinePath,
-  getBezierLinePoints,
-  getCellPolygonPoints,
-  getGridPath,
-  getLinePathBetweenNodes,
-  getPolygonPath,
-  getStructPolygonPoints,
-  getTaskCircle,
-  getTaskPath,
-} from "./MapSvgUtils"
+import {getArcPath, getBezierLinePath, getBezierLinePoints, getCellPolygonPoints, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath,} from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mapFindIntersecting} from "../map/MapFindIntersecting";
