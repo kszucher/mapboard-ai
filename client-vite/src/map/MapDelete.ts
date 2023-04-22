@@ -1,6 +1,6 @@
 import {M} from "../state/MapPropTypes";
 import {selectNode, selectNodeList} from "./MapSelect";
-import {decPiN, getNodeByPath, getPPList, isSD, isGteCD, getX, decPi, isGteCR, getReselectS, getReselectCR, getReselectCC, getCountXCR, getCountXCC} from "./MapUtils"
+import {decPiN, getNodeByPath, getPPList, isSD, isGteCD, getX, decPi, isGteCR, getReselectS, getReselectCR, getReselectCC} from "./MapUtils"
 
 export const deleteSelectS = (m: M) => {
   const reselectPath = getReselectS(m)
