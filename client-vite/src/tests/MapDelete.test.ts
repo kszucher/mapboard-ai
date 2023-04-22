@@ -1,7 +1,7 @@
 import {deleteSelectS} from "../map/MapDelete";
 import {M} from "../state/MapPropTypes"
 
-const deleteSelectTestData = [
+const deleteSelectTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
   {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
@@ -31,7 +31,7 @@ const deleteSelectResult = [
 
 describe("DeleteTests", () => {
   test('deleteSelectS', () => {
-    deleteSelectS(deleteSelectTestData)
-    expect(deleteSelectTestData).toEqual(deleteSelectResult)
+    deleteSelectS(deleteSelectTest)
+    expect(deleteSelectTest).toEqual(deleteSelectResult)
   })
 })

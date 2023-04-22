@@ -3,10 +3,10 @@ import {selectNode, selectNodeList} from "./MapSelect";
 import {
   decPiN,
   getCCL,
-  getCountLSU,
-  getCRU, getL,
-  getLSI1,
-  getLSU1,
+  getCountXFLSU,
+  getCRU, getX,
+  getXFSI1,
+  getXFSU1,
   getNodeByPath,
   getParentPathList,
   isGtCR, isGteCR,
@@ -14,8 +14,7 @@ import {
 } from "./MapUtils"
 
 export const deleteSelectS = (m: M) => {
-  const reselectPath = getCountLSU(m) ? getLSU1(m) : getLSI1(m)
-  console.log(reselectPath)
+  const reselectPath = getCountXFLSU(m) ? getXFSU1(m) : getXFSI1(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
     const pathList = [...getParentPathList(n.path), n.path]

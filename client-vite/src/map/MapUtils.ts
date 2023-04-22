@@ -35,12 +35,12 @@ export const isGtCR = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isGteCR = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
 export const isGtCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)!
 export const isGteCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
-export const isSelectedR = (m: M) => isR(getL(m).path) && !m.find(n => n.selected && !isR(n.path))
-export const isSelectedS = (m: M) => isS(getL(m).path) && !m.find(n => n.selected && !isS(n.path))
-export const isSelectedDS = (m: M) => getL(m).path.length === 6
-export const isSelectedC = (m: M) => isC(getL(m).path) && !m.find(n => n.selected && !isC(n.path))
-export const isSelectedCR = (m: M) => isC(getL(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isSameCR(getL(m).path, n.path))
-export const isSelectedCC = (m: M) => isC(getL(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isSameCC(getL(m).path, n.path))
+export const isSelectedR = (m: M) => isR(getX(m).path) && !m.find(n => n.selected && !isR(n.path))
+export const isSelectedS = (m: M) => isS(getX(m).path) && !m.find(n => n.selected && !isS(n.path))
+export const isSelectedDS = (m: M) => getX(m).path.length === 6
+export const isSelectedC = (m: M) => isC(getX(m).path) && !m.find(n => n.selected && !isC(n.path))
+export const isSelectedCR = (m: M) => isC(getX(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isSameCR(getX(m).path, n.path))
+export const isSelectedCC = (m: M) => isC(getX(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isSameCC(getX(m).path, n.path))
 
 export const getParentPath = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getParentPathList = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
@@ -50,34 +50,36 @@ export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === no
 export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GN
 export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getParentPath(p)) as N
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
-export const getL = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
+export const getXF = (m: M) => m.find(n => n.selected)!
+export const getXL = (m: M) => m.findLast(n => n.selected)!
 export const getSI1 = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
-export const getInsertParentNode = (m: M) => getNodeByPath(m, getL(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getL(m).path)
+export const getInsertParentNode = (m: M) => getNodeByPath(m, getX(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getX(m).path)
 export const getSelection = (m: M) => m.filter(n => n.selected)
 export const getSelectionSSO = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => isSSO(p, n.path)))
-export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getL(m)[prop] : null
-export const getSelectionPropSSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionSSO(m).map(n => n[prop])) ? getL(m)[prop] : null
+export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getSelectionPropSSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionSSO(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountCR = (m: M, p: P) => m.filter(n => isSameCR(p, n.path)).length
 export const getCountCC = (m: M, p: P) => m.filter(n => isSameCC(p, n.path)).length
-export const getCountLSU = (m: M) => getCountSU(m, getL(m).path)
-export const getLSI1 = (m: M) => getSI1(getL(m).path)
-export const getLSU1 = (m: M) => getSU1(getL(m).path)
+export const getCountXFLSU = (m: M) => getCountSU(m, getXF(m).path)
+export const getXFSI1 = (m: M) => getSI1(getXF(m).path)
+export const getXFSU1 = (m: M) => getSU1(getXF(m).path)
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionSSO(m).forEach(n => Object.assign(n, {[prop]: value}))
 
-export const incSSODO = (m: M) => m.filter(n => isSSODO(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
-export const incSDO = (m: M) => m.filter(n => isSDO(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
-export const incGtCR = (m: M) => m.filter(n => isGtCR(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
-export const incGteCR = (m: M) => m.filter(n => isGteCR(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 1))
-export const incGtCD = (m: M) => m.filter(n => isGtCD(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 2))
-export const incGteCD = (m: M) => m.filter(n => isGteCD(getL(m).path, n.path)).forEach(n => n.path = incPi(n.path, getL(m).path.length - 2))
+export const incSSODO = (m: M) => m.filter(n => isSSODO(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 1))
+export const incSDO = (m: M) => m.filter(n => isSDO(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 1))
+export const incGtCR = (m: M) => m.filter(n => isGtCR(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 1))
+export const incGteCR = (m: M) => m.filter(n => isGteCR(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 1))
+export const incGtCD = (m: M) => m.filter(n => isGtCD(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 2))
+export const incGteCD = (m: M) => m.filter(n => isGteCD(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 2))
 
 export const cellNavigateR = (m: M, p: P) => incPiLim(p, p.length - 1, getCountCR(m, p) - 1)
 export const cellNavigateL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)

@@ -2,7 +2,7 @@ import {LineTypes} from "../core/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
 import {
-  getL,
+  getX,
   getNodeByPath,
   getParentNodeByPath,
   getPathDir,
@@ -109,7 +109,7 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
 }
 
 export const getCellPolygonPoints = (m: M): PolygonPoints => {
-  const ls = getL(m)
+  const ls = getX(m)
   const pn = getParentNodeByPath(m, ls.path)
   const n = getNodeByPath(m, ls.path)
   const dir = getPathDir(ls.path)

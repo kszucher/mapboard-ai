@@ -20,7 +20,7 @@ import {
   isSameCR,
   getEditedNode,
   getG,
-  getL,
+  getX,
   getNodeByPath,
   getParentNodeByPath,
   getSelection,
@@ -29,7 +29,7 @@ import {
   cellNavigateD,
   cellNavigateL,
   cellNavigateR,
-  cellNavigateU, getCCR, getCCL, getCRD, getCRU,
+  cellNavigateU, getCCR, getCCL, getCRD, getCRU, getXF, getXL,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -37,7 +37,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
   const g = getG(m)
-  const ls = action === 'LOAD' ? {} as N : getL(m)
+  const ls = action === 'LOAD' ? {} as N : getX(m)
   switch (action) {
     case 'LOAD': break
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
@@ -65,10 +65,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break // ok
     case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break // ok
     case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
-    case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected)!.path, Dir.D), 's'); break  // ok
-    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, m.findLast(n => n.selected)!.path, Dir.D), 's'); break // ok
-    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected)!.path, Dir.U), 's'); break // ok
-    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, m.find(n => n.selected)!.path, Dir.U), 's'); break // ok
+    case 'select_S_D': selectNode(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break  // ok
+    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break // ok
+    case 'select_S_U': selectNode(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break // ok
+    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break // ok
     case 'select_S_family_O': ls.selection = 'f'; break // ok
     case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break // ok
     case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break // ok
@@ -180,8 +180,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     // EDIT
-    case 'startEditAppend': getL(m).contentType === 'equation' ? Object.assign(getL(m), { contentType: 'text' }) : () => {}; break
-    case 'typeText': Object.assign(getL(m), { contentType: 'text', content: payload.content }); break
+    case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
+    case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
     case 'setLineWidth': ls.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
