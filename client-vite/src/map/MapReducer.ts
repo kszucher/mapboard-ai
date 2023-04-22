@@ -28,7 +28,13 @@ import {
   navCD,
   navCL,
   navCR,
-  navCU, getCCR, getCCL, getCRD, getCRU, getXF, getXL,
+  navCU,
+  getCCR,
+  getCCL,
+  getCRD,
+  getCRU,
+  getXF,
+  getXL,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -86,7 +92,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CC_L': selectNodeList(m, getCCL(m), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getCRD(m), 's'); break // ok
     case 'select_CR_U': selectNodeList(m, getCRU(m), 's'); break // ok
-    case 'select_dragged': selectNodeList(m, payload.nList.map((n: GN) => n.path), 's'); break
+    case 'select_dragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
     case 'insert_S_O_text': insertSelectSO(m, {contentType: 'text', content: payload.text}); break
