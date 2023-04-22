@@ -1,12 +1,12 @@
 import {M} from "../state/MapPropTypes";
 import {selectNode, selectNodeList} from "./MapSelect";
-import {decPiN, getCCL, getCountXFLSU, getCRU, getXFSI1, getXFSU1, getNodeByPath, getParentPathList, isSD, isGteCD, getX, decPi, isGteCR} from "./MapUtils"
+import {decPiN, getNodeByPath, getPPList, isSD, isGteCD, getX, decPi, isGteCR, getReselectS, getReselectCR, getReselectCC, getCountXCR, getCountXCC} from "./MapUtils"
 
 export const deleteSelectS = (m: M) => {
-  const reselectPath = getCountXFLSU(m) ? getXFSU1(m) : getXFSI1(m)
+  const reselectPath = getReselectS(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getParentPathList(n.path), n.path]
+    const parentPathList = [...getPPList(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }
@@ -14,11 +14,10 @@ export const deleteSelectS = (m: M) => {
 }
 
 export const deleteSelectCR = (m: M) => {
-  const reselectPathList = getCRU(m)
-  // if only ONE row left, select parent S instead
+  const reselectPathList = getReselectCR(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getParentPathList(n.path), n.path]
+    const parentPathList = [...getPPList(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     isGteCD(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)})
   }
@@ -26,11 +25,10 @@ export const deleteSelectCR = (m: M) => {
 }
 
 export const deleteSelectCC = (m: M) => {
-  const reselectPathList = getCCL(m)
-  // if only ONE col left, select parent S instead
+  const reselectPathList = getReselectCC(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getParentPathList(n.path), n.path]
+    const parentPathList = [...getPPList(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     isGteCR(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 1)})
   }

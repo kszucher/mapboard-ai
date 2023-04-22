@@ -1,7 +1,11 @@
 import {M, P} from "../state/MapPropTypes"
 import {genHash, getTableIndices} from "../core/Utils"
 import {selectNode} from "./MapSelect";
-import {getCountCC, getCountCR, getDefaultNode, getInsertParentNode, getX, incGtCD, incGtCR, incGteCD, incGteCR, incPi, incSDO, incSSODO, sortPath} from "./MapUtils"
+import {
+  getCountCC, getCountCR, getCountXCU, getCountXCL, getDefaultNode, getInsertParentNode, getX,
+  incGtCD, incGtCR, incGteCD, incGteCR, incPi, incSDO, incSSODO,
+  sortPath
+} from "./MapUtils"
 
 const insertNode = (m: M, attributes: object) => {
   m.push(getDefaultNode({...attributes, nodeId: 'node' + genHash(8)}))
@@ -45,20 +49,20 @@ export const insertSelectTable = (m: M, r: number, c: number) => {
 
 export const insertCCR = (m: M) => {
   incGtCR(m)
-  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCC(m, getX(m).path)).fill(null).map((el, i) => [i, getX(m).path.at(-1) as number + 1]))
+  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCC(m, getX(m).path)).fill(null).map((el, i) => [i, getCountXCL(m) + 1]))
 }
 
 export const insertCCL = (m: M) => {
   incGteCR(m)
-  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCC(m, getX(m).path)).fill(null).map((el, i) => [i, getX(m).path.at(-1) as number - 1]))
+  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCC(m, getX(m).path)).fill(null).map((el, i) => [i, getCountXCL(m) - 1]))
 }
 
 export const insertCRD = (m: M) => {
   incGtCD(m)
-  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCR(m, getX(m).path)).fill(null).map((el, i) => [getX(m).path.at(-2) as number + 1, i]))
+  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCR(m, getX(m).path)).fill(null).map((el, i) => [getCountXCU(m) + 1, i]))
 }
 
 export const insertCRU = (m: M) => {
   incGteCD(m)
-  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCR(m, getX(m).path)).fill(null).map((el, i) => [getX(m).path.at(-2) as number - 1, i]))
+  insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCR(m, getX(m).path)).fill(null).map((el, i) => [getCountXCU(m) - 1, i]))
 }

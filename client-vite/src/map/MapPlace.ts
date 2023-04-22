@@ -1,4 +1,4 @@
-import {getNodeByPath, getParentPath, isG, isR, isD, isS, isC, isSU, getPattern} from "./MapUtils"
+import {getNodeByPath, getPP, isG, isR, isD, isS, isC, isSU, getPattern} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -24,8 +24,8 @@ export const mapPlace = (m: M) => {
       n.selfW = r0.selfW // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
       n.selfH = r0.selfH // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
     } else {
-      const pn = getNodeByPath(m, getParentPath(n.path)) as N
-      const ppn = getNodeByPath(m, getParentPath(pn.path)) as N
+      const pn = getNodeByPath(m, getPP(n.path)) as N
+      const ppn = getNodeByPath(m, getPP(pn.path)) as N
       if (isS(n.path)) {
         const i = n.path.at(-1) as number
         const sumUpperSiblingMaxH = m.filter(nt => isSU(n.path, nt.path)).map(n => n.maxH).reduce((a, b) => a + b, 0)
