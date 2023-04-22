@@ -1,5 +1,5 @@
-import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {M} from "../state/MapPropTypes"
+import {deleteSelectS, deleteSelectCR, deleteSelectCC} from "./MapDelete"
 
 const deleteSelectSTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
