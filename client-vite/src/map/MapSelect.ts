@@ -1,22 +1,16 @@
-import isEqual from "react-fast-compare"
 import {M, P} from "../state/MapPropTypes"
-import {getX} from "./MapUtils"
+import {getNodeByPath, getX} from "./MapUtils"
+
+const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? {selected: 1, selection}
-    : {selected: 0, selection: 's'}
-  ))
+  unselectNodes(m)
+  Object.assign(getNodeByPath(m, path), {selected: 1, selection})
 }
 export const selectNodeToo = (m: M, path: P, selection: 's' | 'f') => {
-  m.forEach(n => Object.assign(n, n.path.length > 1 && isEqual(n.path, path)
-    ? {selected: getX(m).selected + 1, selection}
-    : {}
-  ))
+  Object.assign(getNodeByPath(m, path), {selected: getX(m).selected + 1, selection})
 }
 export const selectNodeList = (m: M, pList: P[], selection: 's' | 'f') => {
-  m.forEach((n, i) => Object.assign(n, n.path.length > 1 && pList.map(p => p.join('')).includes(n.path.join(''))
-    ? {selected: i, selection}
-    : {selected: 0, selection: 's'}
-  ))
+  unselectNodes(m)
+  pList.map((p, i) => Object.assign(getNodeByPath(m, p), {selected: i + 1, selection}))
 }
