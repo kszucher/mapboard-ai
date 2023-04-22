@@ -77,7 +77,6 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break // ok
     case 'select_S_F': selectNode(m, [...getX(m).path, 's', 0], 's'); break // ok
     case 'select_S_B': selectNode(m, getX(m).path.slice(0, -3), 's'); break // ok
-    case 'select_S_BB': selectNode(m, getX(m).path.slice(0, -5), 's'); break // ok
     case 'select_C_R': selectNode(m, navCR(m, getX(m).path), 's'); break // ok
     case 'select_C_L': selectNode(m, navCL(m, getX(m).path), 's'); break // ok
     case 'select_C_D': selectNode(m, navCD(m, getX(m).path), 's'); break // ok
