@@ -5,18 +5,18 @@ import {genHash} from "../core/Utils"
 
 export const mapInit = (m: MPartial) => {
   const g = getNodeByPath(m as M, ['g']) as GPartial
-    m.forEach(n => {
+  m.forEach(n => {
     if (isG(n.path)) {
       for (const prop in gSaveAlways) {
         // do nothing
       }
       for (const prop in gSaveOptional) {
         if (!g.hasOwnProperty(prop)) {
-          g[prop as keyof GSaveOptional] = structuredClone(gSaveOptional[prop as keyof GSaveOptional])
+          Object.assign(g, {[prop]: structuredClone(gSaveOptional[prop as keyof GSaveOptional])})
         }
       }
       for (const prop in gSaveNever) {
-        g[prop as keyof GSaveNever] = structuredClone(gSaveNever[prop as keyof GSaveNever])
+        Object.assign(g, {[prop]: structuredClone(gSaveNever[prop as keyof GSaveNever])})
       }
       // 30 = 14 + 2*8, 20 = 14 + 2*3
       g.sLineDeltaXDefault = g.density === 'large' ? 30 : 20
@@ -32,17 +32,17 @@ export const mapInit = (m: MPartial) => {
           if (prop === 'nodeId') {
             n[prop] = 'node' + genHash(8)
           } else {
-            n[prop as keyof NSaveAlways] = structuredClone(nSaveAlways[prop as keyof NSaveAlways])
+            Object.assign(n, {[prop]: structuredClone(nSaveAlways[prop as keyof NSaveAlways])})
           }
         }
       }
       for (const prop in nSaveOptional) {
         if (!n.hasOwnProperty(prop)) {
-          n[prop as keyof NSaveOptional] = structuredClone(nSaveOptional[prop as keyof NSaveOptional])
+          Object.assign(n, {[prop]: structuredClone(nSaveOptional[prop as keyof NSaveOptional])})
         }
       }
       for (const prop in nSaveNever) {
-        n[prop as keyof NSaveNever] = structuredClone(nSaveNever[prop as keyof NSaveNever])
+        Object.assign(n, {[prop]: structuredClone(nSaveNever[prop as keyof NSaveNever])})
       }
     }
   })

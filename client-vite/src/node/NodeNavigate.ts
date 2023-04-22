@@ -3,7 +3,7 @@ import {M, P} from "../state/MapPropTypes"
 import {getNodeByPath, getParentPath, isC} from "../map/MapUtils"
 
 export const structNavigate = (m: M, path: P, dir: Dir) => {
-  let toPath = []
+  let toPath = [] as P
   let inDepth = - 1
   //       v
   //     l v r
@@ -48,7 +48,7 @@ export const structNavigate = (m: M, path: P, dir: Dir) => {
           break sequenceGenerator
         }
         if (currDirection === 'u' && currRef.path.at(-1) === 0 ||
-          currDirection === 'd' && pn.sCount === currRef.path.at(-1) + 1 ||
+          currDirection === 'd' && pn.sCount === currRef.path.at(-1) as number + 1 ||
           currDirection === 'ou' && currChildCount === 0 ||
           currDirection === 'od' && currChildCount === 0) {
           break

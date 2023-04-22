@@ -47,7 +47,7 @@ export const mapFindNearest = (m: M, moveNode: N, toX: number, toY: number) => {
             moveTargetIndex = i
           }
         }
-        if (isEqual(moveTargetNode.path, getParentPath(moveNode.path)) && moveNode.path.at(-1) < moveTargetIndex) {
+        if (isEqual(moveTargetNode.path, getParentPath(moveNode.path)) && (moveNode.path.at(-1) as number) < moveTargetIndex) {
           moveTargetIndex -= 1
         }
       }

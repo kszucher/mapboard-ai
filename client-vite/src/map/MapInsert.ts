@@ -19,7 +19,7 @@ const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
 }
 
 export const insertSelectSO = (m: M, attributes: object) => {
-  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount]
+  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
   selectNode(m, insertPath, 's')
 }
@@ -45,20 +45,20 @@ export const insertSelectTable = (m: M, r: number, c: number) => {
 
 export const insertCCR = (m: M) => {
   incGtCR(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCC(m, getL(m).path)).fill(null).map((el, i) => [i, getL(m).path.at(-1) + 1]))
+  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCC(m, getL(m).path)).fill(null).map((el, i) => [i, getL(m).path.at(-1) as number + 1]))
 }
 
 export const insertCCL = (m: M) => {
   incGteCR(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCC(m, getL(m).path)).fill(null).map((el, i) => [i, getL(m).path.at(-1) - 1]))
+  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCC(m, getL(m).path)).fill(null).map((el, i) => [i, getL(m).path.at(-1) as number - 1]))
 }
 
 export const insertCRD = (m: M) => {
   incGtCD(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCR(m, getL(m).path)).fill(null).map((el, i) => [getL(m).path.at(-2) + 1, i]))
+  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCR(m, getL(m).path)).fill(null).map((el, i) => [getL(m).path.at(-2) as number + 1, i]))
 }
 
 export const insertCRU = (m: M) => {
   incGteCD(m) // warning: getLS changes in the next phase
-  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCR(m, getL(m).path)).fill(null).map((el, i) => [getL(m).path.at(-2) - 1, i]))
+  insertCellNodeList(m, getL(m).path.slice(0, -3), Array(getCountCR(m, getL(m).path)).fill(null).map((el, i) => [getL(m).path.at(-2) as number - 1, i]))
 }

@@ -116,13 +116,13 @@ export const getCellPolygonPoints = (m: M): PolygonPoints => {
   const { xi, yu } = getHelperParams(pn)
   let x, y, w, h
   if (isSelectedCR(m)) {
-    const i = ls.path.at(-2)
+    const i = ls.path.at(-2) as number
     x = xi
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
   } else if (isSelectedCC(m)) {
-    const j = ls.path.at(-1)
+    const j = ls.path.at(-1) as number
     x = xi + n.lineDeltaX - 20
     y = yu
     w = pn.maxColWidth[j]

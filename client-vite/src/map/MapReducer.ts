@@ -3,7 +3,7 @@ import {Dir} from "../core/Enums"
 import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
-import {M, N} from "../state/MapPropTypes"
+import {GN, M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
 import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
@@ -37,7 +37,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
   const g = getG(m)
-  const ls = action === 'LOAD' ? null as N : getL(m)
+  const ls = action === 'LOAD' ? {} as N : getL(m)
   switch (action) {
     case 'LOAD': break
     case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
@@ -65,10 +65,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break // ok
     case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break // ok
     case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
-    case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's'); break  // ok
-    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, m.findLast(n => n.selected).path, Dir.D), 's'); break // ok
-    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's'); break // ok
-    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, m.find(n => n.selected).path, Dir.U), 's'); break // ok
+    case 'select_S_D': selectNode(m, structNavigate(m, m.findLast(n => n.selected)!.path, Dir.D), 's'); break  // ok
+    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, m.findLast(n => n.selected)!.path, Dir.D), 's'); break // ok
+    case 'select_S_U': selectNode(m, structNavigate(m, m.find(n => n.selected)!.path, Dir.U), 's'); break // ok
+    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, m.find(n => n.selected)!.path, Dir.U), 's'); break // ok
     case 'select_S_family_O': ls.selection = 'f'; break // ok
     case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break // ok
     case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break // ok
@@ -89,7 +89,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CC_L': selectNodeList(m, getCCL(m), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getCRD(m), 's'); break // ok
     case 'select_CR_U': selectNodeList(m, getCRU(m), 's'); break // ok
-    case 'select_dragged': selectNodeList(m, payload.nList.map(n => n.path), 's'); break
+    case 'select_dragged': selectNodeList(m, payload.nList.map((n: GN) => n.path), 's'); break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
     case 'insert_S_O_text': insertSelectSO(m, {contentType: 'text', content: payload.text}); break
@@ -117,8 +117,6 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'delete_S': deleteSelectS(m); break
     case 'delete_CR': deleteSelectCR(m); break
     case 'delete_CC': deleteSelectCC(m); break
-
-
 
     case 'move_S_O': break // only for siblings
     case 'move_S_I': break // only for siblings
