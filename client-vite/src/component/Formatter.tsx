@@ -6,7 +6,7 @@ import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
 import {actions} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
-import {getXASSOProp, getXAProp, getX} from "../map/MapUtils"
+import {getPropXASSO, getPropXA, getX} from "../map/MapUtils"
 
 export const Formatter: FC = () => {
   const o = 32
@@ -19,14 +19,14 @@ export const Formatter: FC = () => {
   const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
   const ls = getX(m)
-  const lineWidth = WidthTypes[getXAProp(m, 'lineWidth') || 0]
-  const lineType = LineTypes[getXAProp(m, 'lineType') || 0]
-  const lineColor = getXAProp(m, 'lineColor')
-  const borderWidth = WidthTypes[ls.selection === 's' ? getXAProp(m, 'sBorderWidth') || 0 : getXASSOProp(m, 'fBorderWidth') || 0]
-  const borderColor = ls.selection === 's' ? getXAProp(m, 'sBorderColor') : getXASSOProp(m, 'fBorderColor')
-  const fillColor = ls.selection === 's' ? getXAProp(m, 'sFillColor') : getXASSOProp(m, 'fFillColor')
-  const textFontSize = TextTypes[getXAProp(m, 'textFontSize') || 0]
-  const textColor = getXAProp(m, 'textColor')
+  const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') || 0]
+  const lineType = LineTypes[getPropXA(m, 'lineType') || 0]
+  const lineColor = getPropXA(m, 'lineColor')
+  const borderWidth = WidthTypes[ls.selection === 's' ? getPropXA(m, 'sBorderWidth') || 0 : getPropXASSO(m, 'fBorderWidth') || 0]
+  const borderColor = ls.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXASSO(m, 'fBorderColor')
+  const fillColor = ls.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
+  const textFontSize = TextTypes[getPropXA(m, 'textFontSize') || 0]
+  const textColor = getPropXA(m, 'textColor')
   const dispatch = useDispatch()
   const setFormatText = () => dispatch(actions.setFormatMode(FormatMode.text))
   const setFormatBorder = () => dispatch(actions.setFormatMode(FormatMode.border))
