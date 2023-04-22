@@ -25,10 +25,10 @@ import {
   getParentNodeByPath,
   setSelection,
   setSelectionFamily,
-  cellNavigateD,
-  cellNavigateL,
-  cellNavigateR,
-  cellNavigateU, getCCR, getCCL, getCRD, getCRU, getXF, getXL,
+  navCD,
+  navCL,
+  navCR,
+  navCU, getCCR, getCCL, getCRD, getCRU, getXF, getXL,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -72,10 +72,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_S_F': selectNode(m, [...getX(m).path, 's', 0], 's'); break // ok
     case 'select_S_B': selectNode(m, getX(m).path.slice(0, -3), 's'); break // ok
     case 'select_S_BB': selectNode(m, getX(m).path.slice(0, -5), 's'); break // ok
-    case 'select_C_R': selectNode(m, cellNavigateR(m, getX(m).path), 's'); break // ok
-    case 'select_C_L': selectNode(m, cellNavigateL(m, getX(m).path), 's'); break // ok
-    case 'select_C_D': selectNode(m, cellNavigateD(m, getX(m).path), 's'); break // ok
-    case 'select_C_U': selectNode(m, cellNavigateU(m, getX(m).path), 's'); break // ok
+    case 'select_C_R': selectNode(m, navCR(m, getX(m).path), 's'); break // ok
+    case 'select_C_L': selectNode(m, navCL(m, getX(m).path), 's'); break // ok
+    case 'select_C_D': selectNode(m, navCD(m, getX(m).path), 's'); break // ok
+    case 'select_C_U': selectNode(m, navCU(m, getX(m).path), 's'); break // ok
     case 'select_C_F_firstRow': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi), 's'); break // ok
     case 'select_C_F_firstCol': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi), 's'); break // ok
     case 'select_C_FF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getX(m).path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
