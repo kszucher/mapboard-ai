@@ -23,7 +23,6 @@ import {
   getX,
   getNodeByPath,
   getParentNodeByPath,
-  getXA,
   setSelection,
   setSelectionFamily,
   cellNavigateD,
@@ -36,12 +35,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
-  const g = getG(m)
-  const ls = action === 'LOAD' ? {} as N : getX(m)
   switch (action) {
     case 'LOAD': break
-    case 'changeDensity': g.density = g.density === 'small' ? 'large' : 'small'; break
-    case 'changeAlignment': g.alignment = g.alignment === 'centered' ? 'adaptive' : 'centered'; break
+    case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
+    case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
     case 'select_R': selectNode(m, ['r', 0], 's'); break // fixme - does NOT clean 'f' selection on root, neither all selection
     case 'select_S': { // will be oneliner once the mouse ops will be routed
       const n = getNodeByPath(m, payload.path)
@@ -61,30 +58,30 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break // ok
-    case 'select_S_O': selectNode(m, structNavigate(m, ls.path, Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
+    case 'select_S_O': selectNode(m, structNavigate(m, getX(m).path, Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
     case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break // ok
     case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break // ok
-    case 'select_S_I': selectNode(m, structNavigate(m, ls.path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
+    case 'select_S_I': selectNode(m, structNavigate(m, getX(m).path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
     case 'select_S_D': selectNode(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break  // ok
     case 'select_S_D_too': selectNodeToo(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break // ok
     case 'select_S_U': selectNode(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break // ok
     case 'select_S_U_too': selectNodeToo(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break // ok
-    case 'select_S_family_O': ls.selection = 'f'; break // ok
+    case 'select_S_family_O': getX(m).selection = 'f'; break // ok
     case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break // ok
     case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break // ok
-    case 'select_S_F': selectNode(m, [...ls.path, 's', 0], 's'); break // ok
-    case 'select_S_B': selectNode(m, ls.path.slice(0, -3), 's'); break // ok
-    case 'select_S_BB': selectNode(m, ls.path.slice(0, -5), 's'); break // ok
-    case 'select_C_R': selectNode(m, cellNavigateR(m, ls.path), 's'); break // ok
-    case 'select_C_L': selectNode(m, cellNavigateL(m, ls.path), 's'); break // ok
-    case 'select_C_D': selectNode(m, cellNavigateD(m, ls.path), 's'); break // ok
-    case 'select_C_U': selectNode(m, cellNavigateU(m, ls.path), 's'); break // ok
-    case 'select_C_F_firstRow': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -2 ? 0 : pi), 's'); break // ok
-    case 'select_C_F_firstCol': selectNode(m, structuredClone(ls.path).map((pi, i) => i === ls.path.length -1 ? 0 : pi), 's'); break // ok
-    case 'select_C_FF': (ls.cRowCount || ls.cColCount) ? selectNode(m, [...ls.path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_C_B': ls.path.includes('c') ? selectNode(m, [...ls.path.slice(0, ls.path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isSameCR(n.path, ls.path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isSameCC(n.path, ls.path)).map(n => n.path), 's'); break // ok
+    case 'select_S_F': selectNode(m, [...getX(m).path, 's', 0], 's'); break // ok
+    case 'select_S_B': selectNode(m, getX(m).path.slice(0, -3), 's'); break // ok
+    case 'select_S_BB': selectNode(m, getX(m).path.slice(0, -5), 's'); break // ok
+    case 'select_C_R': selectNode(m, cellNavigateR(m, getX(m).path), 's'); break // ok
+    case 'select_C_L': selectNode(m, cellNavigateL(m, getX(m).path), 's'); break // ok
+    case 'select_C_D': selectNode(m, cellNavigateD(m, getX(m).path), 's'); break // ok
+    case 'select_C_U': selectNode(m, cellNavigateU(m, getX(m).path), 's'); break // ok
+    case 'select_C_F_firstRow': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi), 's'); break // ok
+    case 'select_C_F_firstCol': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi), 's'); break // ok
+    case 'select_C_FF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getX(m).path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
+    case 'select_C_B': getX(m).path.includes('c') ? selectNode(m, [...getX(m).path.slice(0, getX(m).path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isSameCR(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isSameCC(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
     case 'select_CC_R': selectNodeList(m, getCCR(m), 's'); break // ok
     case 'select_CC_L': selectNodeList(m, getCCL(m), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getCRD(m), 's'); break // ok
@@ -109,7 +106,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // const nodeList = JSON.parse(payload.text)
       // for (let i = 0; i < nodeList.length; i++) {
       //   mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
-      //   structCreate(m, ls, Dir.O, { ...nodeList[i] })
+      //   structCreate(m, getX(m), Dir.O, { ...nodeList[i] })
       // }
       break
     }
@@ -128,8 +125,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_CC_I': break;
 
     case 'transpose': {
-      // if (ls.cRowCount || ls.cColCount) {
-      //   ls.c = transpose(ls.c)
+      // if (getX(m).cRowCount || getX(m).cColCount) {
+      //   getX(m).c = transpose(getX(m).c)
       // }
       break
     }
@@ -170,7 +167,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'toggleTask': {
-      // mapSetProp.iterate(ls, { taskStatus: ls.taskStatus === 0 ? 1 : 0 }, true)
+      // mapSetProp.iterate(getX(m), { taskStatus: getX(m).taskStatus === 0 ? 1 : 0 }, true)
       break
     }
     case 'setTaskStatus': {
@@ -184,32 +181,32 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
-    case 'setLineWidth': ls.selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
-    case 'setLineType': ls.selection === 's' ? setSelection(m, 'lineType', payload) : setSelectionFamily (m, 'lineType', payload); break
-    case 'setLineColor': ls.selection === 's' ? setSelection(m, 'lineColor', payload) : setSelectionFamily (m, 'lineColor', payload); break
-    case 'setBorderWidth': ls.selection === 's' ? setSelection(m, 'sBorderWidth', payload) : setSelection (m, 'fBorderWidth', payload); break
-    case 'setBorderColor': ls.selection === 's' ? setSelection(m, 'sBorderColor', payload) : setSelection (m, 'fBorderColor', payload); break
-    case 'setFillColor': ls.selection === 's' ? setSelection(m, 'sFillColor', payload) : setSelection (m, 'fFillColor', payload); break
-    case 'setTextFontSize': ls.selection === 's' ? setSelection(m, 'textFontSize', payload) : setSelectionFamily (m, 'textFontSize', payload); break
-    case 'setTextColor': ls.selection === 's' ? setSelection(m, 'textColor', payload) : setSelectionFamily (m, 'textColor', payload); break
+    case 'setLineWidth': getX(m).selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
+    case 'setLineType': getX(m).selection === 's' ? setSelection(m, 'lineType', payload) : setSelectionFamily (m, 'lineType', payload); break
+    case 'setLineColor': getX(m).selection === 's' ? setSelection(m, 'lineColor', payload) : setSelectionFamily (m, 'lineColor', payload); break
+    case 'setBorderWidth': getX(m).selection === 's' ? setSelection(m, 'sBorderWidth', payload) : setSelection (m, 'fBorderWidth', payload); break
+    case 'setBorderColor': getX(m).selection === 's' ? setSelection(m, 'sBorderColor', payload) : setSelection (m, 'fBorderColor', payload); break
+    case 'setFillColor': getX(m).selection === 's' ? setSelection(m, 'sFillColor', payload) : setSelection (m, 'fFillColor', payload); break
+    case 'setTextFontSize': getX(m).selection === 's' ? setSelection(m, 'textFontSize', payload) : setSelectionFamily (m, 'textFontSize', payload); break
+    case 'setTextColor': getX(m).selection === 's' ? setSelection(m, 'textColor', payload) : setSelectionFamily (m, 'textColor', payload); break
     case 'clearLine': {
-      ls.selection === 's' ? setSelection(m, 'lineWidth', nSaveOptional.lineWidth) : setSelectionFamily (m, 'lineWidth', nSaveOptional.lineWidth)
-      ls.selection === 's' ? setSelection(m, 'lineType', nSaveOptional.lineType) : setSelectionFamily (m, 'lineType', nSaveOptional.lineType)
-      ls.selection === 's' ? setSelection(m, 'lineColor', nSaveOptional.lineColor) : setSelectionFamily (m, 'lineColor', nSaveOptional.lineColor)
+      getX(m).selection === 's' ? setSelection(m, 'lineWidth', nSaveOptional.lineWidth) : setSelectionFamily (m, 'lineWidth', nSaveOptional.lineWidth)
+      getX(m).selection === 's' ? setSelection(m, 'lineType', nSaveOptional.lineType) : setSelectionFamily (m, 'lineType', nSaveOptional.lineType)
+      getX(m).selection === 's' ? setSelection(m, 'lineColor', nSaveOptional.lineColor) : setSelectionFamily (m, 'lineColor', nSaveOptional.lineColor)
       break
     }
     case 'clearBorder': {
-      ls.selection === 's' ? setSelection(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setSelection(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
-      ls.selection === 's' ? setSelection(m, 'sBorderColor', nSaveOptional.sBorderColor) : setSelection(m, 'fBorderColor', nSaveOptional.sBorderColor)
+      getX(m).selection === 's' ? setSelection(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setSelection(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
+      getX(m).selection === 's' ? setSelection(m, 'sBorderColor', nSaveOptional.sBorderColor) : setSelection(m, 'fBorderColor', nSaveOptional.sBorderColor)
       break
     }
     case 'clearFill': {
-      ls.selection === 's' ? setSelection(m, 'sFillColor', nSaveOptional.sFillColor) : setSelection(m, 'fFillColor', nSaveOptional.fFillColor)
+      getX(m).selection === 's' ? setSelection(m, 'sFillColor', nSaveOptional.sFillColor) : setSelection(m, 'fFillColor', nSaveOptional.fFillColor)
       break
     }
     case 'clearText': {
-      ls.selection === 's' ? setSelection(m, 'textColor', nSaveOptional.textColor) : setSelectionFamily(m, 'textColor', nSaveOptional.textColor)
-      ls.selection === 's' ? setSelection(m, 'textFontSize', nSaveOptional.textFontSize) : setSelectionFamily(m, 'textFontSize', nSaveOptional.textFontSize)
+      getX(m).selection === 's' ? setSelection(m, 'textColor', nSaveOptional.textColor) : setSelectionFamily(m, 'textColor', nSaveOptional.textColor)
+      getX(m).selection === 's' ? setSelection(m, 'textFontSize', nSaveOptional.textFontSize) : setSelectionFamily(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
   }
