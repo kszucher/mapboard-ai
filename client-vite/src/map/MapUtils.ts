@@ -58,10 +58,10 @@ export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.a
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getX(m).path.length === 2 ? ['r', 0, 'd', 0] as P: getX(m).path)
-export const getSelection = (m: M) => m.filter(n => n.selected)
-export const getSelectionSSO = (m: M) => m.filter(n => getSelection(m).map(n => n.path).some(p => isSSO(p, n.path)))
-export const getSelectionProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelection(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getSelectionPropSSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getSelectionSSO(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getXA = (m: M) => m.filter(n => n.selected)
+export const getXASSO = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSSO(p, n.path)))
+export const getXAProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getXASSOProp = (m: M, prop: keyof N) => isArrayOfEqualValues(getXASSO(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
@@ -71,8 +71,8 @@ export const getCountXFLSU = (m: M) => getCountSU(m, getXF(m).path)
 export const getXFSI1 = (m: M) => getSI1(getXF(m).path)
 export const getXFSU1 = (m: M) => getSU1(getXF(m).path)
 
-export const setSelection = (m: M, prop: keyof N, value: any) => getSelection(m).forEach(n => Object.assign(n, {[prop]: value}))
-export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getSelectionSSO(m).forEach(n => Object.assign(n, {[prop]: value}))
+export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
+export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
 
 export const incSSODO = (m: M) => m.filter(n => isSSODO(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 1))
 export const incSDO = (m: M) => m.filter(n => isSDO(getX(m).path, n.path)).forEach(n => n.path = incPi(n.path, getX(m).path.length - 1))
@@ -86,7 +86,7 @@ export const cellNavigateL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)
 export const cellNavigateD = (m: M, p: P) => incPiLim(p, p.length - 2, getCountCC(m, p) - 1)
 export const cellNavigateU = (m: M, p: P) => decPiLim(p, p.length - 2, 0)
 
-export const getCCR = (m: M) => getSelection(m).map(n => cellNavigateR(m, n.path))
-export const getCCL = (m: M) => getSelection(m).map(n => cellNavigateL(m, n.path))
-export const getCRD = (m: M) => getSelection(m).map(n => cellNavigateD(m, n.path))
-export const getCRU = (m: M) => getSelection(m).map(n => cellNavigateU(m, n.path))
+export const getCCR = (m: M) => getXA(m).map(n => cellNavigateR(m, n.path))
+export const getCCL = (m: M) => getXA(m).map(n => cellNavigateL(m, n.path))
+export const getCRD = (m: M) => getXA(m).map(n => cellNavigateD(m, n.path))
+export const getCRU = (m: M) => getXA(m).map(n => cellNavigateU(m, n.path))

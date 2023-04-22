@@ -23,7 +23,7 @@ import {
   getX,
   getNodeByPath,
   getParentNodeByPath,
-  getSelection,
+  getXA,
   setSelection,
   setSelectionFamily,
   cellNavigateD,

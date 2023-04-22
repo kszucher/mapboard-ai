@@ -142,7 +142,7 @@ export const MapSvg: FC = () => {
           </rect>
         </g>
         <g id="layer1">
-          {m.map(n => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 n.fFillColor &&
@@ -158,7 +158,7 @@ export const MapSvg: FC = () => {
           ))}
         </g>
         <g id="layer2">
-          {m.map(n => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 (n.sFillColor || n.taskStatus > 1) &&
@@ -174,7 +174,7 @@ export const MapSvg: FC = () => {
           ))}
         </g>
         <g id="layer3">
-          {m.map(n => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 n.fBorderColor &&
@@ -203,7 +203,7 @@ export const MapSvg: FC = () => {
               {
                 (getPattern(n.path).endsWith('ds') ||
                 getPattern(n.path).endsWith('ss') ||
-                (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) && n.path.at(-2) > -1 && n.path.at(-1) === 0) &&
+                (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0) &&
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
@@ -297,7 +297,7 @@ export const MapSvg: FC = () => {
           ))}
         </g>
         <g id="layer4">
-          {m.map(n => (
+          {m.map((n: N) => (
             <Fragment key={n.nodeId}>
               {
                 !selectionRectCoords.length &&
