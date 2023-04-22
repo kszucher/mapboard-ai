@@ -217,7 +217,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     }
   }
 
-  // m.forEach(n => console.log(n.path, n.content))
+  // m.forEach(n => console.log(n.selected, n.path, n.content))
 
   // TODO mapFix
   mapInit(m)

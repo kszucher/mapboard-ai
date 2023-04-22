@@ -24,6 +24,8 @@ const pathCommonProps = {
 const getSelectionMargin = (m: M, n: N) => (
   (
     isSelectedC(m) ||
+    isSelectedCR(m) ||
+    isSelectedCC(m) ||
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
@@ -303,7 +305,13 @@ export const MapSvg: FC = () => {
             !selectionRectCoords.length &&
             <path
               key={`${g.nodeId}_svg_selectionBorderPrimary`}
-              d={getPolygonPath(ls, isSelectedC(m) ? getCellPolygonPoints(m) : getStructPolygonPoints(ls, ls.selection), ls.selection, getSelectionMargin(m, ls))}
+              d={
+                getPolygonPath(ls,
+                  (isSelectedC(m) || isSelectedCR(m) || isSelectedCC(m))
+                    ? getCellPolygonPoints(m)
+                    : getStructPolygonPoints(ls, ls.selection), ls.selection,
+                  getSelectionMargin(m, ls)
+                )}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}

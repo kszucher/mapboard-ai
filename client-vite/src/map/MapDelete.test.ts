@@ -95,5 +95,3 @@ describe("DeleteTests", () => {
     expect(deleteSelectCCTest).toEqual(deleteSelectCCResult)
   })
 })
-
-// TODO test the function in real env (inc. deleting LAST row/col)

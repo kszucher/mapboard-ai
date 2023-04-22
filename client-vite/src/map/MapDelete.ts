@@ -15,6 +15,7 @@ export const deleteSelectS = (m: M) => {
 
 export const deleteSelectCR = (m: M) => {
   const reselectPathList = getCRU(m)
+  // if only ONE row left, select parent S instead
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
     const parentPathList = [...getParentPathList(n.path), n.path]
@@ -26,6 +27,7 @@ export const deleteSelectCR = (m: M) => {
 
 export const deleteSelectCC = (m: M) => {
   const reselectPathList = getCCL(m)
+  // if only ONE col left, select parent S instead
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
     const parentPathList = [...getParentPathList(n.path), n.path]

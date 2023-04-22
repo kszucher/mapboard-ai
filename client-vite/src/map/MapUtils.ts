@@ -35,12 +35,6 @@ export const isGtCR = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isGteCR = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
 export const isGtCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)!
 export const isGteCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
-export const isSelectedR = (m: M) => isR(getX(m).path) && !m.find(n => n.selected && !isR(n.path))
-export const isSelectedS = (m: M) => isS(getX(m).path) && !m.find(n => n.selected && !isS(n.path))
-export const isSelectedDS = (m: M) => getX(m).path.length === 6
-export const isSelectedC = (m: M) => isC(getX(m).path) && !m.find(n => n.selected && !isC(n.path))
-export const isSelectedCR = (m: M) => isC(getX(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isSameCR(getX(m).path, n.path))
-export const isSelectedCC = (m: M) => isC(getX(m).path) && !m.find(n => n.selected && !isC(n.path) || !n.selected && isSameCC(getX(m).path, n.path))
 
 export const getParentPath = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getParentPathList = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
@@ -70,6 +64,13 @@ export const getCountCC = (m: M, p: P) => m.filter(n => isSameCC(p, n.path)).len
 export const getCountXFLSU = (m: M) => getCountSU(m, getXF(m).path)
 export const getXFSI1 = (m: M) => getSI1(getXF(m).path)
 export const getXFSU1 = (m: M) => getSU1(getXF(m).path)
+
+export const isSelectedR = (m: M) => isR(getX(m).path) && !m.find(n => n.selected && !isR(n.path))
+export const isSelectedS = (m: M) => isS(getX(m).path) && !m.find(n => n.selected && !isS(n.path))
+export const isSelectedDS = (m: M) => getX(m).path.length === 6
+export const isSelectedC = (m: M) => getXA(m).length === 1 && isC(getX(m).path)
+export const isSelectedCR = (m: M) => getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getX(m).path, p))
+export const isSelectedCC = (m: M) => getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getX(m).path, p))
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
