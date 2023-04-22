@@ -39,26 +39,26 @@ export const insertSelectSU = (m: M, attributes: object) => {
 }
 
 export const insertSelectTable = (m: M, r: number, c: number) => {
-  insertSelectSO(m, {}) // warning: getLS changes in the next phase
+  insertSelectSO(m, {})
   insertCellNodeList(m, getX(m).path, getTableIndices(r, c))
 }
 
 export const insertCCR = (m: M) => {
-  incGtCR(m) // warning: getLS changes in the next phase
+  incGtCR(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCC(m, getX(m).path)).fill(null).map((el, i) => [i, getX(m).path.at(-1) as number + 1]))
 }
 
 export const insertCCL = (m: M) => {
-  incGteCR(m) // warning: getLS changes in the next phase
+  incGteCR(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCC(m, getX(m).path)).fill(null).map((el, i) => [i, getX(m).path.at(-1) as number - 1]))
 }
 
 export const insertCRD = (m: M) => {
-  incGtCD(m) // warning: getLS changes in the next phase
+  incGtCD(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCR(m, getX(m).path)).fill(null).map((el, i) => [getX(m).path.at(-2) as number + 1, i]))
 }
 
 export const insertCRU = (m: M) => {
-  incGteCD(m) // warning: getLS changes in the next phase
+  incGteCD(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCR(m, getX(m).path)).fill(null).map((el, i) => [getX(m).path.at(-2) as number - 1, i]))
 }

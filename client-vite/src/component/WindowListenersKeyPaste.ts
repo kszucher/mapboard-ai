@@ -46,7 +46,7 @@ export const windowListenersKeyPaste = (
 
   const stateMachine = [
     [ kd, ckm(e, '000') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
-    [ kd, ckm(e, '000') && key === 'F2',                   true,  s || c,          1, 'startEditAppend',          {}, 1 ],
+    [ kd, ckm(e, '000') && key === 'F2',                   true,  r || s || c,     1, 'startEditAppend',          {}, 1 ],
     [ kd, ckm(e, '000') && key === 'F3',                   true,  true,            0, '',                         {}, 1 ],
     [ kd, ckm(e, '000') && key === 'F5',                   true,  true,            0, '',                         {}, 0 ],
     [ kd, ckm(e, '000') && key === 'Enter',                true,  s,               1, 'insert_S_D',               {}, 1 ],
