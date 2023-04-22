@@ -19,13 +19,13 @@ export const Formatter: FC = () => {
   const tm = useSelector((state: RootState) => state.editor.tempMap)
   const m = tm.length ? tm : mapList[mapListIndex]
   const ls = getX(m)
-  const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') || 0]
-  const lineType = LineTypes[getPropXA(m, 'lineType') || 0]
+  const lineWidth = WidthTypes[getPropXA(m, 'lineWidth') as number || 0]
+  const lineType = LineTypes[getPropXA(m, 'lineType') as number || 0]
   const lineColor = getPropXA(m, 'lineColor')
-  const borderWidth = WidthTypes[ls.selection === 's' ? getPropXA(m, 'sBorderWidth') || 0 : getPropXASSO(m, 'fBorderWidth') || 0]
+  const borderWidth = WidthTypes[ls.selection === 's' ? getPropXA(m, 'sBorderWidth') as number || 0 : getPropXASSO(m, 'fBorderWidth') as number || 0]
   const borderColor = ls.selection === 's' ? getPropXA(m, 'sBorderColor') : getPropXASSO(m, 'fBorderColor')
   const fillColor = ls.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
-  const textFontSize = TextTypes[getPropXA(m, 'textFontSize') || 0]
+  const textFontSize = TextTypes[getPropXA(m, 'textFontSize') as number || 0]
   const textColor = getPropXA(m, 'textColor')
   const dispatch = useDispatch()
   const setFormatText = () => dispatch(actions.setFormatMode(FormatMode.text))
