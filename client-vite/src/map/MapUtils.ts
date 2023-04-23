@@ -91,8 +91,6 @@ export const isSelectedC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isSelectedCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getXP(m), p))
 export const isSelectedCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getXP(m), p))
 
-export const isXASSO = (m: M, pt: P) => getXA(m).map(n => n.path).some(p => isSSO(p, pt))
-
 export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
 
