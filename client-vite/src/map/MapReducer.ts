@@ -3,13 +3,14 @@ import {Dir} from "../core/Enums"
 import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
-import {GN, M, N} from "../state/MapPropTypes"
+import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
 import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
+import {moveSD, moveSI, moveSIL, moveSIR, moveSO, moveSU} from "./MapMove";
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
 import {
@@ -120,10 +121,12 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'delete_CR': deleteSelectCR(m); break
     case 'delete_CC': deleteSelectCC(m); break
 
-    case 'move_S_O': break // only for siblings
-    case 'move_S_I': break // only for siblings
-    case 'move_S_D': break // only for siblings
-    case 'move_S_U': break // only for siblings
+    case 'move_S_O': moveSO(m); break
+    case 'move_S_I': moveSI(m); break
+    case 'move_S_I_R': moveSIR(m); break
+    case 'move_S_I_L': moveSIL(m); break
+    case 'move_S_D': moveSD(m); break
+    case 'move_S_U': moveSU(m); break
     case 'move_CR_D': break;
     case 'move_CR_U': break;
     case 'move_CC_O': break;
