@@ -12,7 +12,7 @@ const insertNode = (m: M, attributes: object) => {
   m.sort(sortPath)
 }
 
-const insertNodeList = (m: M, pList: P[]) => {
+export const insertNodeList = (m: M, pList: P[]) => {
   m.push(...pList.map(p => getDefaultNode({path: structuredClone(p), nodeId: 'node' + genHash(8)})))
   m.sort(sortPath)
 }
