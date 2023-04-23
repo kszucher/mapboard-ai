@@ -1,5 +1,5 @@
 import {GN, M, N, P} from "../state/MapPropTypes"
-import {decPiN, getCountXFSU1SO1, getNodeByPath, getPPList, getXF, getXFSU1, getXP, isSD, sortPath} from "./MapUtils";
+import {decPiN, getCountXFSU1SO1, getNodeByPath, getPPList, getXF, getXFSU1, getXP, isSD, isXASSO, sortPath} from "./MapUtils";
 
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
@@ -14,12 +14,8 @@ const copyToClipboard = (m: M) => {
   const clipboard = [] as GN[]
   const xpl = getXP(m).length
   const xfi = getXF(m).path.at(-1) as number
-  for (let i = m.length - 1; i > 0; i--) { // TODO make it a forEach using SO
-    const n = m[i]
-    const parentPathList = [...getPPList(n.path), n.path]
-    parentPathList.some(p => getNodeByPath(m, p).selected) && clipboard.push(structuredClone({...n, path: ['s', n.path.at(xpl - 1) as number - xfi, ...n.path.slice(xpl)]} as GN))
-  }
-  return clipboard.reverse()
+  m.forEach(n => isXASSO(m, n.path) && clipboard.push(structuredClone({...n, path: ['s', n.path.at(xpl - 1) as number - xfi, ...n.path.slice(xpl)]} as GN)))
+  return clipboard
 }
 
 export const moveSO = (m: M) => {

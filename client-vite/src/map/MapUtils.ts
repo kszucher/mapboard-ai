@@ -30,6 +30,7 @@ export const isSD1 = (p: P, pt: P) => isSD(p, pt) && pt.at(-1) === p.at(-1) as n
 export const isSUO = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! < p.at(-1)!
 export const isSDO = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
 export const isSSODO = (p: P, pt: P) => isSSO(p, pt) || isSDO(p, pt)
+
 export const isSameSS = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isSameCR = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isSameCC = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
@@ -89,6 +90,8 @@ export const isSelectedSSN = (m: M) => isS(getXP(m)) && ((getXL(m).path.at(-1) a
 export const isSelectedC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isSelectedCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getXP(m), p))
 export const isSelectedCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getXP(m), p))
+
+export const isXASSO = (m: M, pt: P) => getXA(m).map(n => n.path).some(p => isSSO(p, pt))
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
