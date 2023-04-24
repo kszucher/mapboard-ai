@@ -2,22 +2,7 @@ import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
-import {
-  getX,
-  isXCC,
-  isXCR,
-  isXC,
-  isXDS,
-  isXR,
-  isXS,
-  isXSSN,
-  getCountXFSU,
-  isXCBR,
-  isXCBL,
-  isXCBD,
-  isXCBU,
-  sortPath
-} from "../map/MapUtils";
+import {getX, isXCC, isXCR, isXC, isXDS, isXR, isXS, isXSSN, getCountXFSU, isXCBR, isXCBL, isXCBD, isXCBU, sortPath} from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
 const ckm = (e: any, condition: string) => (
