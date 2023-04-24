@@ -11,9 +11,6 @@ export const getPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number + 1 : p)
 export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number - 1 : p)
 export const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
-// remove this
-export const incPiLim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && (pi as number) < limit ? pi as number + 1 : pi)
-export const decPiLim = (p: P, at: number, limit: number) => structuredClone(p).map((pi, i) => i === at && (pi as number) > limit ? pi as number - 1 : pi)
 
 export const isG = (p: P) => getPattern(p).endsWith('g')
 export const isR = (p: P) => getPattern(p).endsWith('r')
@@ -60,15 +57,19 @@ export const getXF = (m: M) => m.find(n => n.selected)!
 export const getXFP = (m: M) => getXF(m).path
 export const getXL = (m: M) => m.findLast(n => n.selected)!
 export const getXPP  = (m: M) => getPP(getXP(m))
-
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))
 export const getXFSU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXAPL = (m: M) => getXA(m).map(n => n.path)
 export const getXASSO = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSSO(p, n.path)))
-
-export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXASSO(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
+export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
+export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
+export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
+export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
+export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
+export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
+export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
 
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
@@ -81,6 +82,9 @@ export const getCountXCU = (m: M) => getXP(m).at(-2) as number
 export const getCountXCL = (m: M) => getXP(m).at(-1) as number
 export const getCountXCH = (m: M) => getCountCH(m, getXP(m))
 export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
+
+export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXASSO(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
 export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
@@ -105,17 +109,6 @@ export const incGteCR = (m: M) => m.filter(n => isGteCR(getXP(m), n.path)).forEa
 export const incGtCD = (m: M) => m.filter(n => isGtCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 export const incGteCD = (m: M) => m.filter(n => isGteCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 
-// instead of navigation, we should pre-check existence in WL!!!
-export const navCR = (m: M, p: P) => incPiLim(p, p.length - 1, getCountCH(m, p) - 1)
-export const navCL = (m: M, p: P) => decPiLim(p, p.length - 1, 0)
-export const navCD = (m: M, p: P) => incPiLim(p, p.length - 2, getCountCV(m, p) - 1)
-export const navCU = (m: M, p: P) => decPiLim(p, p.length - 2, 0)
-
-export const getCCR = (m: M) => getXA(m).map(n => navCR(m, n.path))
-export const getCCL = (m: M) => getXA(m).map(n => navCL(m, n.path))
-export const getCRD = (m: M) => getXA(m).map(n => navCD(m, n.path))
-export const getCRU = (m: M) => getXA(m).map(n => navCU(m, n.path))
-
 export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m)
-export const getReselectCR = (m: M) => getCountXCU(m) ? getCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXPP(m)] )
-export const getReselectCC = (m: M) => getCountXCL(m) ? getCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXPP(m)] )
+export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXPP(m)] )
+export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXPP(m)] )
