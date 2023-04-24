@@ -3,12 +3,12 @@ import {
   decPiN,
   getCountXFSU1SO1,
   getNodeByPath,
-  getPPList,
+  getIList,
   getXASSO,
   getXF,
   getXFSU1,
   getXP,
-  getXPP,
+  getXI2,
   isSD,
   sortPath
 } from "./MapUtils";
@@ -16,7 +16,7 @@ import {
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getPPList(n.path), n.path]
+    const parentPathList = [...getIList(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }
@@ -35,7 +35,7 @@ export const moveSO = (m: M) => {
 
 export const moveSI = (m: M) => {
   const clipboard = toClipboard(m)
-  clipboard.forEach(n => n.path = structuredClone([...getXPP(m), 's', getCountXFSU1SO1(m) + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
+  clipboard.forEach(n => n.path = structuredClone([...getXI2(m), 's', getCountXFSU1SO1(m) + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
   deleteStuff(m)
   m.push(...clipboard)
   m.sort(sortPath)
