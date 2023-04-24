@@ -3,7 +3,7 @@ import {
   decPiN,
   getCountXFSU1SO1,
   getNodeByPath,
-  getIList,
+  getIPL,
   getXASSO,
   getXF,
   getXFSU1,
@@ -16,7 +16,7 @@ import {
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getIList(n.path), n.path]
+    const parentPathList = [...getIPL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }

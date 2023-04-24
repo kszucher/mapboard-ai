@@ -37,9 +37,9 @@ export const isGtCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isGteCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
-export const getIList = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
-export const getI1 = (p: P) => getIList(p).at(-1) as P
-export const getI2 = (p: P) => getIList(p).at(-2) as P
+export const getIPL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+export const getI1 = (p: P) => getIPL(p).at(-1) as P
+export const getI2 = (p: P) => getIPL(p).at(-2) as P
 export const getEditedPath = (p: P) => getPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))

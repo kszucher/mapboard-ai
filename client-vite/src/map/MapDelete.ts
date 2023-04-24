@@ -1,12 +1,12 @@
 import {M} from "../state/MapPropTypes";
 import {selectNode, selectNodeList} from "./MapSelect";
-import {decPiN, getNodeByPath, getIList, isSD, isGteCD, getX, decPi, isGteCR, getReselectS, getReselectCR, getReselectCC} from "./MapUtils"
+import {decPiN, getNodeByPath, getIPL, isSD, isGteCD, getX, decPi, isGteCR, getReselectS, getReselectCR, getReselectCC} from "./MapUtils"
 
 export const deleteSelectS = (m: M) => {
   const reselectPath = getReselectS(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getIList(n.path), n.path]
+    const parentPathList = [...getIPL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }
@@ -17,7 +17,7 @@ export const deleteSelectCR = (m: M) => {
   const reselectPathList = getReselectCR(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getIList(n.path), n.path]
+    const parentPathList = [...getIPL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     isGteCD(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)})
   }
@@ -28,7 +28,7 @@ export const deleteSelectCC = (m: M) => {
   const reselectPathList = getReselectCC(m)
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getIList(n.path), n.path]
+    const parentPathList = [...getIPL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     isGteCR(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 1)})
   }
