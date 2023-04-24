@@ -14,11 +14,9 @@ const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (get
 const toClipboard = (m: M) => structuredClone(getXASSO(m).map(n => ({...n, path: ['s', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 
 export const moveSO = (m: M) => {
-  const xfsu1 = getXFSU1(m)
-  const cxfsu1so1 = getCountXFSU1SO1(m)
   const clipboard = toClipboard(m)
+  clipboard.forEach(n => n.path = structuredClone([...getXFSU1(m), 's', getCountXFSU1SO1(m) + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
   deleteStuff(m)
-  clipboard.forEach(n => n.path = structuredClone([...xfsu1, 's', cxfsu1so1 + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
   m.push(...clipboard)
   m.sort(sortPath)
 }
