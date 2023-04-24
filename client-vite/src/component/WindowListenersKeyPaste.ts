@@ -2,7 +2,7 @@ import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
-import {getX, isSelectedCC, isSelectedCR, isSelectedC, isSelectedDS, isSelectedR, isSelectedS, isSelectedSSN, getCountXFSU} from "../map/MapUtils";
+import {getX, isXCC, isXCR, isXC, isXDS, isXR, isXS, isXSSN, getCountXFSU} from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
 const ckm = (e: any, condition: string) => (
@@ -33,13 +33,13 @@ export const windowListenersKeyPaste = (
   const dir = getDir(getX(m))
   const dr = dir === 1
   const dl = dir === -1
-  const r = isSelectedR(m) // hasS?
-  const s = isSelectedS(m)
-  const ds = isSelectedDS(m)
-  const ssn = isSelectedSSN(m)
-  const c = isSelectedC(m)
-  const cr = isSelectedCR(m)
-  const cc = isSelectedCC(m)
+  const r = isXR(m) // hasS?
+  const s = isXS(m)
+  const ds = isXDS(m)
+  const ssn = isXSSN(m)
+  const c = isXC(m)
+  const cr = isXCR(m)
+  const cc = isXCC(m)
   const ls = getX(m)
   const cxfsu = getCountXFSU(m)
 

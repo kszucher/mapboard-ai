@@ -82,14 +82,14 @@ export const getCountXCL = (m: M) => getXP(m).at(-1) as number
 export const getCountXCR = (m: M) => getCountCR(m, getXP(m))
 export const getCountXCC = (m: M) => getCountCC(m, getXP(m))
 
-export const isSelectedR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
-export const isSelectedS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
-export const isSelectedDS = (m: M) => getXP(m).length === 6
-export const isSelectedSS = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSameSS(getXP(m), p))
-export const isSelectedSSN = (m: M) => isSelectedSS(m) && ((getXL(m).path.at(-1) as number) - (getXF(m).path.at(-1) as number)) === getXA(m).length - 1
-export const isSelectedC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
-export const isSelectedCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getXP(m), p))
-export const isSelectedCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getXP(m), p))
+export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
+export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
+export const isXDS = (m: M) => getXP(m).length === 6
+export const isXSS = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSameSS(getXP(m), p))
+export const isXSSN = (m: M) => isXSS(m) && ((getXL(m).path.at(-1) as number) - (getXF(m).path.at(-1) as number)) === getXA(m).length - 1
+export const isXC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
+export const isXCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getXP(m), p))
+export const isXCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getXP(m), p))
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
