@@ -90,10 +90,10 @@ export const isXSSN = (m: M) => isXSS(m) && ((getXL(m).path.at(-1) as number) - 
 export const isXC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isXCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getXP(m), p))
 export const isXCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getXP(m), p))
-// export const isXCBR = (m: M) => isC(getXP(m)) && getX(m).p
-// export const isXCBL = (m: M) => isC(getXP(m)) &&
-// export const isXCBD = (m: M) => isC(getXP(m)) &&
-// export const isXCBU = (m: M) => isC(getXP(m)) &&
+export const isXCBR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
+export const isXCBL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
+export const isXCBD = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m) - 1
+export const isXCBU = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
