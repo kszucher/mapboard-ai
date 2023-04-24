@@ -1,5 +1,17 @@
 import {GN, M, N, P} from "../state/MapPropTypes"
-import {decPiN, getCountXFSU1SO1, getNodeByPath, getPPList, getXASSO, getXF, getXFSU1, getXP, isSD, sortPath} from "./MapUtils";
+import {
+  decPiN,
+  getCountXFSU1SO1,
+  getNodeByPath,
+  getPPList,
+  getXASSO,
+  getXF,
+  getXFSU1,
+  getXP,
+  getXPP,
+  isSD,
+  sortPath
+} from "./MapUtils";
 
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
@@ -22,7 +34,11 @@ export const moveSO = (m: M) => {
 }
 
 export const moveSI = (m: M) => {
-
+  const clipboard = toClipboard(m)
+  clipboard.forEach(n => n.path = structuredClone([...getXPP(m), 's', getCountXFSU1SO1(m) + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
+  deleteStuff(m)
+  m.push(...clipboard)
+  m.sort(sortPath)
 }
 
 export const moveSIR = (m: M) => {

@@ -37,15 +37,16 @@ export const isGtCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isGteCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
-export const getPP = (p: P) => (getPattern(p).endsWith('d') || getPattern(p).endsWith('s')) ? p.slice(0, -2) : p.slice(0, -3)
 export const getPPList = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+export const getP1 = (p: P) => getPPList(p).at(-1) as P
+export const getP2 = (p: P) => getPPList(p).at(-2) as P
 export const getEditedPath = (p: P) => getPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))
 export const getPathDir = (p: P) => p[3] ? -1 : 1
 export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === nodeId) as GN
 export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GN
-export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getPP(p)) as N
+export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getP1(p)) as N
 
 export const getSI1 = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
@@ -56,7 +57,7 @@ export const getXP = (m: M) => getX(m).path
 export const getXF = (m: M) => m.find(n => n.selected)!
 export const getXFP = (m: M) => getXF(m).path
 export const getXL = (m: M) => m.findLast(n => n.selected)!
-export const getXPP  = (m: M) => getPP(getXP(m))
+export const getXPP  = (m: M) => getP1(getXP(m))
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))
 export const getXFSU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
