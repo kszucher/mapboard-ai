@@ -14,7 +14,9 @@ import {
   getCountXFSU,
   isXCBR,
   isXCBL,
-  isXCBD, isXCBU
+  isXCBD,
+  isXCBU,
+  sortPath
 } from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
@@ -42,7 +44,8 @@ export const windowListenersKeyPaste = (
   const { text } = someEvent.clipboardPasteTextEvent ? someEvent.clipboardPasteTextEvent : { text: '' }
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
 
-  const m = getMap()
+  const m = structuredClone((getMap())).sort(sortPath)
+
   const dir = getDir(getX(m))
   const dr = dir === 1
   const dl = dir === -1

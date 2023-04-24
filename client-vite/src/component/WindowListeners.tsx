@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {AccessTypes, PageState} from "../core/Enums"
-import {actions} from "../editor/EditorReducer"
+import {actions, RootState} from "../editor/EditorReducer"
 import {windowListenersKeyPaste} from "./WindowListenersKeyPaste"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
@@ -15,11 +15,11 @@ let mapAreaListener: AbortController
 let landingAreaListener: AbortController
 
 export const WindowListeners: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const mapList = useSelector((state: RootState) => state.editor.mapList)
+  const m = useSelector((state: RootState) => state.editor.mapList[state.editor.mapListIndex])
   const mExists = m && m.length
-  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
+  const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
   const {access} = data || defaultUseOpenWorkspaceQueryState
   const dispatch = useDispatch()
