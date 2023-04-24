@@ -1,19 +1,8 @@
 import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
-import {Dir} from "../core/Enums"
 import {Dispatch} from "react";
 import {getMap} from "../state/EditorState";
-import {
-  getX,
-  isSelectedCC,
-  isSelectedCR,
-  isSelectedC,
-  isSelectedDS,
-  isSelectedR,
-  isSelectedS,
-  isSelectedSSN,
-  getCountXFSU
-} from "../map/MapUtils";
+import {getX, isSelectedCC, isSelectedCR, isSelectedC, isSelectedDS, isSelectedR, isSelectedS, isSelectedSSN, getCountXFSU} from "../map/MapUtils";
 import {getDir} from "./MapSvgUtils";
 
 const ckm = (e: any, condition: string) => (

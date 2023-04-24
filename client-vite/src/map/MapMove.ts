@@ -1,16 +1,5 @@
 import {GN, M, N, P} from "../state/MapPropTypes"
-import {
-  decPiN,
-  getCountXFSU1SO1,
-  getNodeByPath,
-  getPPList,
-  getXASSO,
-  getXF,
-  getXFSU1,
-  getXP,
-  isSD,
-  sortPath
-} from "./MapUtils";
+import {decPiN, getCountXFSU1SO1, getNodeByPath, getPPList, getXASSO, getXF, getXFSU1, getXP, isSD, sortPath} from "./MapUtils";
 
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {

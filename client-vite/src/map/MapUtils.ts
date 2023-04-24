@@ -86,7 +86,7 @@ export const isSelectedR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected &&
 export const isSelectedS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
 export const isSelectedDS = (m: M) => getXP(m).length === 6
 export const isSelectedSS = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSameSS(getXP(m), p))
-export const isSelectedSSN = (m: M) => isS(getXP(m)) && ((getXL(m).path.at(-1) as number) - (getXF(m).path.at(-1) as number)) === getXA(m).length
+export const isSelectedSSN = (m: M) => isSelectedSS(m) && ((getXL(m).path.at(-1) as number) - (getXF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isSelectedC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isSelectedCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCR(getXP(m), p))
 export const isSelectedCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isSameCC(getXP(m), p))
