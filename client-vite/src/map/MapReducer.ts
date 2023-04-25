@@ -10,7 +10,7 @@ import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {moveSD, moveSI, moveSIL, moveSIR, moveSO, moveSU} from "./MapMove";
+import {moveCCI, moveCCO, moveCRD, moveCRU, moveSD, moveSI, moveSIL, moveSIR, moveSO, moveSU} from "./MapMove";
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
 import {
@@ -127,10 +127,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_S_I_L': moveSIL(m); break
     case 'move_S_D': moveSD(m); break
     case 'move_S_U': moveSU(m); break
-    case 'move_CR_D': break;
-    case 'move_CR_U': break;
-    case 'move_CC_O': break;
-    case 'move_CC_I': break;
+    case 'move_CR_D': moveCRD(m); break;
+    case 'move_CR_U': moveCRU(m); break;
+    case 'move_CC_O': moveCCO(m); break;
+    case 'move_CC_I': moveCCI(m); break;
 
     case 'transpose': {
       // if (getX(m).cRowCount || getX(m).cColCount) {

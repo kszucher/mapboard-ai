@@ -27,17 +27,33 @@ export const moveSI = (m: M) => {
 }
 
 export const moveSIR = (m: M) => {
-
+  // a túloldal végére tesszük
 }
 
 export const moveSIL = (m: M) => {
-
+  // a túloldal végére tesszük
 }
 
 export const moveSD = (m: M) => {
-
+  // két eset van: vagy lejjebb visszük, vagy a tetejére rakjuk
 }
 
 export const moveSU = (m: M) => {
+  // két eset van: vagy feljebb visszük, vagy az aljára rakjuk
+}
+
+export const moveCRD = (m: M) => {
+
+}
+
+export const moveCRU = (m: M) => {
+
+}
+
+export const moveCCO = (m: M) => {
+
+}
+
+export const moveCCI = (m: M) => {
 
 }
