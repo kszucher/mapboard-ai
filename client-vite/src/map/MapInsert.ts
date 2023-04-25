@@ -3,7 +3,7 @@ import {genHash, getTableIndices} from "../core/Utils"
 import {selectNode} from "./MapSelect";
 import {
   getCountCV, getCountCH, getCountXCU, getCountXCL, getDefaultNode, getInsertParentNode, getX,
-  incGtCD, incGtCR, incGteCD, incGteCR, incPi, incSDO, incSSODO,
+  incGtXCD, incGtXCR, incGteXCD, incGteXCR, incPi, incSDF, incSFDF,
   sortPath
 } from "./MapUtils"
 
@@ -30,14 +30,14 @@ export const insertSelectSO = (m: M, attributes: object) => {
 
 export const insertSelectSD = (m: M, attributes: object) => {
   const insertPath = incPi(getX(m).path, getX(m).path.length - 1)
-  incSDO(m)
+  incSDF(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
   selectNode(m, insertPath, 's')
 }
 
 export const insertSelectSU = (m: M, attributes: object) => {
   const insertPath = getX(m).path
-  incSSODO(m)
+  incSFDF(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
   selectNode(m, insertPath, 's')
 }
@@ -48,21 +48,21 @@ export const insertSelectTable = (m: M, r: number, c: number) => {
 }
 
 export const insertCCR = (m: M) => {
-  incGtCR(m)
+  incGtXCR(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCV(m, getX(m).path)).fill(null).map((el, i) => [i, getCountXCL(m) + 1]))
 }
 
 export const insertCCL = (m: M) => {
-  incGteCR(m)
+  incGteXCR(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCV(m, getX(m).path)).fill(null).map((el, i) => [i, getCountXCL(m) - 1]))
 }
 
 export const insertCRD = (m: M) => {
-  incGtCD(m)
+  incGtXCD(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCH(m, getX(m).path)).fill(null).map((el, i) => [getCountXCU(m) + 1, i]))
 }
 
 export const insertCRU = (m: M) => {
-  incGteCD(m)
+  incGteXCD(m)
   insertCellNodeList(m, getX(m).path.slice(0, -3), Array(getCountCH(m, getX(m).path)).fill(null).map((el, i) => [getCountXCU(m) - 1, i]))
 }

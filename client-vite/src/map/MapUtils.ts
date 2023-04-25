@@ -10,6 +10,7 @@ export const getPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
 
 export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number + 1 : p)
 export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number - 1 : p)
+export const incPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number + n : p)
 export const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
 
 export const isG = (p: P) => getPattern(p).endsWith('g')
@@ -17,17 +18,17 @@ export const isR = (p: P) => getPattern(p).endsWith('r')
 export const isD = (p: P) => getPattern(p).endsWith('d')
 export const isS = (p: P) => getPattern(p).endsWith('s')
 export const isC = (p: P) => getPattern(p).endsWith('c')
-export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
-export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
-export const isSSO = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
-export const isSU1 = (p: P, pt: P) => isSU(p, pt) && pt.at(-1) === p.at(-1) as number - 1
+export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
+export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
+export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
 export const isSD1 = (p: P, pt: P) => isSD(p, pt) && pt.at(-1) === p.at(-1) as number + 1
-export const isSUO = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! < p.at(-1)!
-export const isSDO = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-export const isSSODO = (p: P, pt: P) => isSSO(p, pt) || isSDO(p, pt)
-
+export const isSU1 = (p: P, pt: P) => isSU(p, pt) && pt.at(-1) === p.at(-1) as number - 1
+export const isSUF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! < p.at(-1)!
+export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
+export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
+// export const isSI1DF = (p: P, pt: P) => isSDF(p, pt)
 export const isSameSS = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isSameCR = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
 export const isSameCC = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-1) === p.at(-1)
@@ -35,7 +36,6 @@ export const isGtCR = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isGteCR = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 1)! >= p.at(-1)!
 export const isGtCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)!
 export const isGteCD = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
-
 export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getIPL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getI1 = (p: P) => getIPL(p).at(-1) as P
@@ -63,7 +63,7 @@ export const getXFSI1 = (m: M) => getSI1(getXFP(m))
 export const getXFSU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXAPL = (m: M) => getXA(m).map(n => n.path)
-export const getXASSO = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSSO(p, n.path)))
+export const getXASF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
 export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
 export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
@@ -76,17 +76,18 @@ export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
-export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
-export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getSU1(getXFP(m)))
 export const getCountCH = (m: M, p: P) => m.filter(n => isSameCR(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isSameCC(p, n.path)).length
+export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
+export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getSU1(getXFP(m)))
+export const getCountXSI1SU = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountXCU = (m: M) => getXP(m).at(-2) as number
 export const getCountXCL = (m: M) => getXP(m).at(-1) as number
 export const getCountXCH = (m: M) => getCountCH(m, getXP(m))
 export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXASSO(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXASF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
 export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
@@ -102,14 +103,15 @@ export const isXCBD = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(
 export const isXCBU = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
 
 export const setSelection = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
-export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASSO(m).forEach(n => Object.assign(n, {[prop]: value}))
+export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASF(m).forEach(n => Object.assign(n, {[prop]: value}))
 
-export const incSSODO = (m: M) => m.filter(n => isSSODO(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incSDO = (m: M) => m.filter(n => isSDO(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incGtCR = (m: M) => m.filter(n => isGtCR(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incGteCR = (m: M) => m.filter(n => isGteCR(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incGtCD = (m: M) => m.filter(n => isGtCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
-export const incGteCD = (m: M) => m.filter(n => isGteCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
+export const incSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const incSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const incSI1DF = (m: M) => m.filter(n => isSDF(getSI1(getXP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1, getXA(m).length))
+export const incGtXCR = (m: M) => m.filter(n => isGtCR(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const incGteXCR = (m: M) => m.filter(n => isGteCR(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const incGtXCD = (m: M) => m.filter(n => isGtCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
+export const incGteXCD = (m: M) => m.filter(n => isGteCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 
 export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m)
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )

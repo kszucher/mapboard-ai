@@ -4,13 +4,15 @@ import {
   getCountXFSU1SO1,
   getNodeByPath,
   getIPL,
-  getXASSO,
+  getXASF,
   getXF,
   getXFSU1,
   getXP,
   getXI2,
   isSD,
-  sortPath
+  sortPath,
+  getCountXSI1SU,
+  incSI1DF,
 } from "./MapUtils";
 
 const deleteStuff = (m: M) => {
@@ -23,21 +25,19 @@ const deleteStuff = (m: M) => {
 }
 
 const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (getXF(m).path.at(-1) as number)
-const toClipboard = (m: M) => structuredClone(getXASSO(m).map(n => ({...n, path: ['s', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 
 export const moveSO = (m: M) => {
-  const clipboard = toClipboard(m)
-  clipboard.forEach(n => n.path = structuredClone([...getXFSU1(m), 's', getCountXFSU1SO1(m) + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
+  const cb = structuredClone(getXASF(m).map(n => ({...n, path: [...getXFSU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
   deleteStuff(m)
-  m.push(...clipboard)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
 export const moveSI = (m: M) => {
-  const clipboard = toClipboard(m)
-  clipboard.forEach(n => n.path = structuredClone([...getXI2(m), 's', getCountXFSU1SO1(m) + (n.path.at(1) as number) , ...n.path.slice(2)] as P))
+  const cb = structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+  incSI1DF(m)
   deleteStuff(m)
-  m.push(...clipboard)
+  m.push(...cb)
   m.sort(sortPath)
 }
 
