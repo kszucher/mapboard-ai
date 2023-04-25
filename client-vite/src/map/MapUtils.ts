@@ -6,18 +6,24 @@ import {G, GN, M, N, P} from "../state/MapPropTypes"
 export const sortPath = (a: GN, b: GN) => a.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') > b.path.map((pi: any) => isNaN(pi) ? pi: 1000 + pi).join('') ? 1 : -1
 export const sortNode = (a: GN, b: GN) => a.nodeId > b.nodeId ? 1 : -1
 
-export const getPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
+export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GN
+export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === nodeId) as GN
+
+export const getPathPattern = (p: P) => p.filter(pi => isNaN(pi as any)).join('')
+export const getPathDir = (p: P) => p[3] ? -1 : 1
+
+export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 
 export const incPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number + 1 : p)
 export const decPi = (p: P, at: number) => structuredClone(p).map((p, i) => i === at ? p as number - 1 : p)
 export const incPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number + n : p)
 export const decPiN = (p: P, at: number, n: number) => structuredClone(p).map((p, i) => i === at ? p as number - n : p)
 
-export const isG = (p: P) => getPattern(p).endsWith('g')
-export const isR = (p: P) => getPattern(p).endsWith('r')
-export const isD = (p: P) => getPattern(p).endsWith('d')
-export const isS = (p: P) => getPattern(p).endsWith('s')
-export const isC = (p: P) => getPattern(p).endsWith('c')
+export const isG = (p: P) => getPathPattern(p).endsWith('g')
+export const isR = (p: P) => getPathPattern(p).endsWith('r')
+export const isD = (p: P) => getPathPattern(p).endsWith('d')
+export const isS = (p: P) => getPathPattern(p).endsWith('s')
+export const isC = (p: P) => getPathPattern(p).endsWith('c')
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
@@ -36,19 +42,10 @@ export const isCFRF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isCDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)!
 export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
-export const getDefaultNode = (attributes?: any) => structuredClone({...nSaveAlways, ...nSaveOptional, ...nSaveNever, ...attributes})
 export const getIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getI1 = (p: P) => getIL(p).at(-1) as P
 export const getI2 = (p: P) => getIL(p).at(-2) as P
-export const getEditedPath = (p: P) => getPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
-export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
-export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))
-export const getPathDir = (p: P) => p[3] ? -1 : 1
-export const getNodeById = (m: M, nodeId: string) => m.find(n => n.nodeId === nodeId) as GN
-export const getNodeByPath = (m: M, p: P) => m.find(n => isEqual(n.path, p)) as GN
-export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getI1(p)) as N
-
-export const getSI1 = (p: P) => (getPattern(p).endsWith('ds') || getPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getSI1 = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
@@ -119,5 +116,11 @@ export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountX
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 
 export const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (getXF(m).path.at(-1) as number)
+
 export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXFSU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+
+export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
+export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
+export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))
+export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getI1(p)) as N

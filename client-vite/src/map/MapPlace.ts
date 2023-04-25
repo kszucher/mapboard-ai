@@ -1,4 +1,4 @@
-import {getNodeByPath, getI1, getI2, isG, isR, isD, isS, isC, isSU, getPattern} from "./MapUtils"
+import {getNodeByPath, getI1, getI2, isG, isR, isD, isS, isC, isSU, getPathPattern} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -32,10 +32,10 @@ export const mapPlace = (m: M) => {
         const sumElapsedY = sumUpperSiblingMaxH + i * p1.spacing * p1.spacingActivated
         n.lineDeltaX = g.sLineDeltaXDefault
         n.lineDeltaY = - p1.familyH / 2 + n.maxH / 2 + sumElapsedY
-        if (getPattern(n.path).endsWith('ds') || getPattern(n.path).endsWith('ss')) {
+        if (getPathPattern(n.path).endsWith('ds') || getPathPattern(n.path).endsWith('ss')) {
           n.nodeStartX = n.path[3] === 0 ? p1.nodeEndX + n.lineDeltaX : p1.nodeStartX - n.lineDeltaX - n.selfW
           n.nodeEndX = n.path[3] === 0 ? p1.nodeEndX + n.lineDeltaX + n.selfW : p1.nodeStartX - n.lineDeltaX
-        } else if (getPattern(n.path).endsWith('cs')) {
+        } else if (getPathPattern(n.path).endsWith('cs')) {
           n.nodeStartX = n.path[3] === 0 ? p1.nodeStartX + 2 : p1.nodeEndX - n.selfW
           n.nodeEndX = n.path[3] === 0 ? p1.nodeStartX + 2 + n.selfW : p1.nodeEndX
         }
@@ -47,11 +47,11 @@ export const mapPlace = (m: M) => {
         const j = n.path.at(-1) as number
         n.lineDeltaX = p1.sumMaxColWidth[j] + 20
         n.lineDeltaY = p1.nodeY + p1.sumMaxRowHeight[i] + p1.maxRowHeight[i]/2 - p1.selfH/2 - p2.nodeY
-        if (getPattern(n.path).endsWith('dsc') || getPattern(n.path).endsWith('ssc')) {
+        if (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) {
           const diff = g.sLineDeltaXDefault - 20
           n.nodeStartX = n.path[3] === 0 ? p2.nodeEndX + n.lineDeltaX + diff : p2.nodeStartX - n.lineDeltaX - diff
           n.nodeEndX = n.path[3] === 0 ? p2.nodeEndX + n.lineDeltaX + diff + n.selfW : p2.nodeStartX - n.lineDeltaX - diff
-        } else if (getPattern(n.path).endsWith('csc')) {
+        } else if (getPathPattern(n.path).endsWith('csc')) {
           n.nodeStartX = n.path[3] === 0 ? p2.nodeStartX + 2 : p2.nodeEndX - n.selfW
           n.nodeEndX = n.path[3] === 0 ? p2.nodeStartX + 2 + n.selfW : p2.nodeEndX
         }
