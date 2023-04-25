@@ -43,9 +43,8 @@ export const isCDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(
 export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
 export const getIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
-export const getI1 = (p: P) => getIL(p).at(-1) as P
-export const getI2 = (p: P) => getIL(p).at(-2) as P
-export const getSI1 = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
+export const getSI1 = (p: P) => getIL(p).at(-1) as P
+export const getSI2 = (p: P) => getIL(p).at(-2) as P
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
@@ -54,8 +53,8 @@ export const getXP = (m: M) => getX(m).path
 export const getXF = (m: M) => m.find(n => n.selected)!
 export const getXFP = (m: M) => getXF(m).path
 export const getXL = (m: M) => m.findLast(n => n.selected)!
-export const getXI1  = (m: M) => getI1(getXP(m))
-export const getXI2  = (m: M) => getI2(getXP(m))
+export const getXI1  = (m: M) => getSI1(getXP(m))
+export const getXI2  = (m: M) => getSI2(getXP(m))
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))
 export const getXFSU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
@@ -123,4 +122,5 @@ export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))
-export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getI1(p)) as N
+export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getSI1(p)) as N
+export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)

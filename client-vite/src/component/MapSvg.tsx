@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getSI1, getG, getX, getNodeById, getNodeByPath, getPathPattern, isXCC, isXCR, isXC, isS} from "../map/MapUtils"
+import {getClosestStructParentPath, getG, getX, getNodeById, getNodeByPath, getPathPattern, isXCC, isXCR, isXC, isS} from "../map/MapUtils"
 import {actions, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getArcPath, getBezierLinePath, getBezierLinePoints, getCellPolygonPoints, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath,} from "./MapSvgUtils"
@@ -189,9 +189,9 @@ export const MapSvg: FC = () => {
                 <path
                   key={`${n.nodeId}_svg_line`}
                   d={
-                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getSI1(n.path))
-                      ? getLinePathBetweenNodes(getNodeByPath(pm, getSI1(n.path)), n)
-                      : getLinePathBetweenNodes(getNodeByPath(m, getSI1(n.path)), n)
+                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path))
+                      ? getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
+                      : getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)
                   }
                   strokeWidth={n.lineWidth}
                   stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -199,11 +199,11 @@ export const MapSvg: FC = () => {
                   {...pathCommonProps}
                 >
                   {
-                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getSI1(n.path)) &&
+                    !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path)) &&
                     <animate
                       attributeName='d'
-                      from={getLinePathBetweenNodes(getNodeByPath(pm, getSI1(n.path)), n)}
-                      to={getLinePathBetweenNodes(getNodeByPath(m, getSI1(n.path)), n)}
+                      from={getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)}
+                      to={getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)}
                       dur={'0.3s'}
                       repeatCount={'once'}
                       fill={'freeze'}
