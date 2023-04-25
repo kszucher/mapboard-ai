@@ -55,8 +55,8 @@ export const getXFP = (m: M) => getXF(m).path
 export const getXL = (m: M) => m.findLast(n => n.selected)!
 export const getXI1  = (m: M) => getSI1(getXP(m))
 export const getXI2  = (m: M) => getSI2(getXP(m))
-export const getXFSI1 = (m: M) => getSI1(getXFP(m))
-export const getXFSU1 = (m: M) => getSU1(getXFP(m))
+export const getXFI1 = (m: M) => getSI1(getXFP(m))
+export const getXFU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXAPL = (m: M) => getXA(m).map(n => n.path)
 export const getXASF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
@@ -110,13 +110,13 @@ export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEac
 export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 export const incXCFDF = (m: M) => m.filter(n => isCFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 
-export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m)
+export const getReselectS = (m: M) => getCountXFSU(m) ? getXFU1(m) : getXFI1(m)
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 
 export const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (getXF(m).path.at(-1) as number)
 
-export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXFSU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXFU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
