@@ -107,7 +107,7 @@ export const setSelectionFamily = (m: M, prop: keyof N, value: any) => getXASF(m
 
 export const incSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incSI1DF = (m: M) => m.filter(n => isSDF(getSI1(getXP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1, getXA(m).length))
+export const incSI1DF = (m: M) => m.filter(n => isSDF(getSI1(getXP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1 - 2, getXA(m).length))
 export const incGtXCR = (m: M) => m.filter(n => isGtCR(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incGteXCR = (m: M) => m.filter(n => isGteCR(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incGtXCD = (m: M) => m.filter(n => isGtCD(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))

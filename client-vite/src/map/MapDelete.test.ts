@@ -1,5 +1,6 @@
 import {M} from "../state/MapPropTypes"
 import {deleteSelectS, deleteSelectCR, deleteSelectCC} from "./MapDelete"
+import {sortNode} from "./MapUtils";
 
 const deleteSelectSTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
@@ -84,14 +85,14 @@ const deleteSelectCCResult = [
 describe("DeleteTests", () => {
   test('deleteSelectS', () => {
     deleteSelectS(deleteSelectSTest)
-    expect(deleteSelectSTest).toEqual(deleteSelectSResult)
+    expect(deleteSelectSTest.sort(sortNode)).toEqual(deleteSelectSResult)
   })
   test('deleteSelectCR', () => {
     deleteSelectCR(deleteSelectCRTest)
-    expect(deleteSelectCRTest).toEqual(deleteSelectCRResult)
+    expect(deleteSelectCRTest.sort(sortNode)).toEqual(deleteSelectCRResult)
   })
   test('deleteSelectCC', () => {
     deleteSelectCC(deleteSelectCCTest)
-    expect(deleteSelectCCTest).toEqual(deleteSelectCCResult)
+    expect(deleteSelectCCTest.sort(sortNode)).toEqual(deleteSelectCCResult)
   })
 })
