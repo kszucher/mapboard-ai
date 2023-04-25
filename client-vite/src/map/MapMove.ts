@@ -1,10 +1,10 @@
 import {GN, M, N, P} from "../state/MapPropTypes"
-import {decPiN, getCountXFSU1SO1, getNodeByPath, getIPL, getXASF, getXF, getXFSU1, getXP, getXI2, isSD, sortPath, getCountXSI1SU, incSI1DF} from "./MapUtils";
+import {decPiN, getCountXFSU1SO1, getNodeByPath, getIL, getXASF, getXF, getXFSU1, getXP, getXI2, isSD, sortPath, getCountXSI1SU, incXSI1DF} from "./MapUtils";
 
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getIPL(n.path), n.path]
+    const parentPathList = [...getIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }
@@ -21,7 +21,7 @@ export const moveSO = (m: M) => {
 
 export const moveSI = (m: M) => {
   const cb = structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-  incSI1DF(m)
+  incXSI1DF(m)
   deleteStuff(m)
   m.push(...cb)
   m.sort(sortPath)

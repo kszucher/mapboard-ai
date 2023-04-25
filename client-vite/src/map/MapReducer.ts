@@ -17,8 +17,8 @@ import {
   sortNode,
   sortPath,
   isR,
-  isSameCC,
-  isSameCR,
+  isCH,
+  isCV,
   getEditedNode,
   getG,
   getX,
@@ -86,8 +86,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_F_firstCol': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi), 's'); break // ok
     case 'select_C_FF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getX(m).path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': getX(m).path.includes('c') ? selectNode(m, [...getX(m).path.slice(0, getX(m).path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isSameCR(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isSameCC(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
     case 'select_CC_R': selectNodeList(m, getXCCR(m), 's'); break // ok
     case 'select_CC_L': selectNodeList(m, getXCCL(m), 's'); break // ok
     case 'select_CR_D': selectNodeList(m, getXCRD(m), 's'); break // ok
