@@ -42,11 +42,7 @@ export const moveSU = (m: M) => {
   // két eset van: vagy feljebb visszük, vagy az aljára rakjuk
 }
 
-export const moveCRD = (m: M) => {
-
-}
-
-export const moveCRU = (m: M) => {
+export const moveCCI = (m: M) => {
 
 }
 
@@ -54,6 +50,10 @@ export const moveCCO = (m: M) => {
 
 }
 
-export const moveCCI = (m: M) => {
+export const moveCRD = (m: M) => {
+
+}
+
+export const moveCRU = (m: M) => {
 
 }

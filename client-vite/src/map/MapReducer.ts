@@ -127,10 +127,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_S_I_L': moveSIL(m); break
     case 'move_S_D': moveSD(m); break
     case 'move_S_U': moveSU(m); break
+    case 'move_CC_I': moveCCI(m); break;
+    case 'move_CC_O': moveCCO(m); break;
     case 'move_CR_D': moveCRD(m); break;
     case 'move_CR_U': moveCRU(m); break;
-    case 'move_CC_O': moveCCO(m); break;
-    case 'move_CC_I': moveCCI(m); break;
 
     case 'transpose': {
       // if (getX(m).cRowCount || getX(m).cColCount) {
