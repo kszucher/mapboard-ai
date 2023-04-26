@@ -24,8 +24,8 @@ import {
   getX,
   getNodeByPath,
   getParentNodeByPath,
-  setSelection,
-  setSelectionFamily,
+  setPropXA,
+  setPropXASF,
   getXCCR,
   getXCCL,
   getXCRD,
@@ -189,32 +189,32 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
     // FORMAT
-    case 'setLineWidth': getX(m).selection === 's' ? setSelection(m, 'lineWidth', payload) : setSelectionFamily (m, 'lineWidth', payload); break
-    case 'setLineType': getX(m).selection === 's' ? setSelection(m, 'lineType', payload) : setSelectionFamily (m, 'lineType', payload); break
-    case 'setLineColor': getX(m).selection === 's' ? setSelection(m, 'lineColor', payload) : setSelectionFamily (m, 'lineColor', payload); break
-    case 'setBorderWidth': getX(m).selection === 's' ? setSelection(m, 'sBorderWidth', payload) : setSelection (m, 'fBorderWidth', payload); break
-    case 'setBorderColor': getX(m).selection === 's' ? setSelection(m, 'sBorderColor', payload) : setSelection (m, 'fBorderColor', payload); break
-    case 'setFillColor': getX(m).selection === 's' ? setSelection(m, 'sFillColor', payload) : setSelection (m, 'fFillColor', payload); break
-    case 'setTextFontSize': getX(m).selection === 's' ? setSelection(m, 'textFontSize', payload) : setSelectionFamily (m, 'textFontSize', payload); break
-    case 'setTextColor': getX(m).selection === 's' ? setSelection(m, 'textColor', payload) : setSelectionFamily (m, 'textColor', payload); break
+    case 'setLineWidth': getX(m).selection === 's' ? setPropXA(m, 'lineWidth', payload) : setPropXASF (m, 'lineWidth', payload); break
+    case 'setLineType': getX(m).selection === 's' ? setPropXA(m, 'lineType', payload) : setPropXASF (m, 'lineType', payload); break
+    case 'setLineColor': getX(m).selection === 's' ? setPropXA(m, 'lineColor', payload) : setPropXASF (m, 'lineColor', payload); break
+    case 'setBorderWidth': getX(m).selection === 's' ? setPropXA(m, 'sBorderWidth', payload) : setPropXA (m, 'fBorderWidth', payload); break
+    case 'setBorderColor': getX(m).selection === 's' ? setPropXA(m, 'sBorderColor', payload) : setPropXA (m, 'fBorderColor', payload); break
+    case 'setFillColor': getX(m).selection === 's' ? setPropXA(m, 'sFillColor', payload) : setPropXA (m, 'fFillColor', payload); break
+    case 'setTextFontSize': getX(m).selection === 's' ? setPropXA(m, 'textFontSize', payload) : setPropXASF (m, 'textFontSize', payload); break
+    case 'setTextColor': getX(m).selection === 's' ? setPropXA(m, 'textColor', payload) : setPropXASF (m, 'textColor', payload); break
     case 'clearLine': {
-      getX(m).selection === 's' ? setSelection(m, 'lineWidth', nSaveOptional.lineWidth) : setSelectionFamily (m, 'lineWidth', nSaveOptional.lineWidth)
-      getX(m).selection === 's' ? setSelection(m, 'lineType', nSaveOptional.lineType) : setSelectionFamily (m, 'lineType', nSaveOptional.lineType)
-      getX(m).selection === 's' ? setSelection(m, 'lineColor', nSaveOptional.lineColor) : setSelectionFamily (m, 'lineColor', nSaveOptional.lineColor)
+      getX(m).selection === 's' ? setPropXA(m, 'lineWidth', nSaveOptional.lineWidth) : setPropXASF (m, 'lineWidth', nSaveOptional.lineWidth)
+      getX(m).selection === 's' ? setPropXA(m, 'lineType', nSaveOptional.lineType) : setPropXASF (m, 'lineType', nSaveOptional.lineType)
+      getX(m).selection === 's' ? setPropXA(m, 'lineColor', nSaveOptional.lineColor) : setPropXASF (m, 'lineColor', nSaveOptional.lineColor)
       break
     }
     case 'clearBorder': {
-      getX(m).selection === 's' ? setSelection(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setSelection(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
-      getX(m).selection === 's' ? setSelection(m, 'sBorderColor', nSaveOptional.sBorderColor) : setSelection(m, 'fBorderColor', nSaveOptional.sBorderColor)
+      getX(m).selection === 's' ? setPropXA(m, 'sBorderWidth', nSaveOptional.sBorderWidth) : setPropXA(m, 'fBorderWidth', nSaveOptional.sBorderWidth)
+      getX(m).selection === 's' ? setPropXA(m, 'sBorderColor', nSaveOptional.sBorderColor) : setPropXA(m, 'fBorderColor', nSaveOptional.sBorderColor)
       break
     }
     case 'clearFill': {
-      getX(m).selection === 's' ? setSelection(m, 'sFillColor', nSaveOptional.sFillColor) : setSelection(m, 'fFillColor', nSaveOptional.fFillColor)
+      getX(m).selection === 's' ? setPropXA(m, 'sFillColor', nSaveOptional.sFillColor) : setPropXA(m, 'fFillColor', nSaveOptional.fFillColor)
       break
     }
     case 'clearText': {
-      getX(m).selection === 's' ? setSelection(m, 'textColor', nSaveOptional.textColor) : setSelectionFamily(m, 'textColor', nSaveOptional.textColor)
-      getX(m).selection === 's' ? setSelection(m, 'textFontSize', nSaveOptional.textFontSize) : setSelectionFamily(m, 'textFontSize', nSaveOptional.textFontSize)
+      getX(m).selection === 's' ? setPropXA(m, 'textColor', nSaveOptional.textColor) : setPropXASF(m, 'textColor', nSaveOptional.textColor)
+      getX(m).selection === 's' ? setPropXA(m, 'textFontSize', nSaveOptional.textFontSize) : setPropXASF(m, 'textFontSize', nSaveOptional.textFontSize)
       break
     }
   }
