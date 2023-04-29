@@ -32,7 +32,9 @@ export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.s
 export const isSD1 = (p: P, pt: P) => isSD(p, pt) && pt.at(-1) === p.at(-1) as number + 1
 export const isSU1 = (p: P, pt: P) => isSU(p, pt) && pt.at(-1) === p.at(-1) as number - 1
 export const isSUF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! < p.at(-1)!
+export const isSU1F = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1)! as number - 1
 export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
+export const isSD1F = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1)! as number + 1
 export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
 export const isSV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
@@ -112,8 +114,6 @@ export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEa
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incNXSI1DF = (m: M) => m.filter(n => isSDF(getSI1(getXP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1 - 2, getXA(m).length))
-
-
 export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
@@ -124,16 +124,17 @@ export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountX
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 
 export const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (getXF(m).path.at(-1) as number)
+export const m2cb = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['s', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: [...ip.slice(0, -2), 's', (ip.at(-1) as number) + (n.path.at(1) as number), ...n.path.slice(2)]}))) as GN[]
 
-export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXFSU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSIR = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 1, 's', getCountR0D1S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSIL = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSD = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbST = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSU = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSB = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-
+// export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXFSU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbSIR = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 1, 's', getCountR0D1S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbSIL = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const cbSD = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path) + 1, ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const cbST = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const cbSU = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path) - 1, ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const cbSB = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path) + getCountXFSU(m) + 1, ...n.path.slice(getXP(m).length)]}))) as GN[]
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
