@@ -1,9 +1,9 @@
 import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
-import {Dispatch} from "react";
-import {getMap} from "../state/EditorState";
-import {getX, isXCC, isXCR, isXC, isXDS, isXR, isXS, isXSSN, getCountXFSU, isXCBR, isXCBL, isXCBD, isXCBU, sortPath} from "../map/MapUtils";
-import {getDir} from "./MapSvgUtils";
+import {Dispatch} from "react"
+import {getMap} from "../state/EditorState"
+import {getX, isXCC, isXCR, isXC, isXDS, isXR, isXS, isXSSN, isXCBR, isXCBL, isXCBD, isXCBU, sortPath, getCountXFSU, getCountXLSD} from "../map/MapUtils"
+import {getDir} from "./MapSvgUtils"
 
 const ckm = (e: any, condition: string) => (
   ['-', (+e.ctrlKey ? '1' : '0')].includes(condition[0]) &&
@@ -47,6 +47,7 @@ export const windowListenersKeyPaste = (
   const cbd = isXCBD(m)
   const cbu = isXCBU(m)
   const cfsu = getCountXFSU(m)
+  const clsd = getCountXLSD(m)
 
   console.log({c,cr,cc, ssn})
 
@@ -84,9 +85,9 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '000') && code === 'ArrowRight',          dl,    s,               1, 'select_S_I',               {}, 1 ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowRight',          true,  c && !cbr,       1, 'select_C_R',               {}, 1 ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowRight',          true,  cc && !cbr,      1, 'select_CC_R',              {}, 1 ], // ok
-    [ kd, ckm(e, '100') && code === 'ArrowRight',          dr,    ssn && cfsu,     1, 'move_S_O',                 {}, 1 ],
-    [ kd, ckm(e, '100') && code === 'ArrowRight',          dl,    ssn && !ds,      1, 'move_S_I',                 {}, 1 ],
-    [ kd, ckm(e, '100') && code === 'ArrowRight',          dl,    ssn && ds,       1, 'move_S_I_L',               {}, 1 ],
+    [ kd, ckm(e, '100') && code === 'ArrowRight',          dr,    ssn && cfsu,     1, 'move_S_O',                 {}, 1 ], // ok
+    [ kd, ckm(e, '100') && code === 'ArrowRight',          dl,    ssn && !ds,      1, 'move_S_I',                 {}, 1 ], // ok
+    [ kd, ckm(e, '100') && code === 'ArrowRight',          dl,    ssn && ds,       1, 'move_S_I_L',               {}, 1 ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowRight',          true,  r,               1, 'select_S_family_OR',       {}, 1 ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowRight',          dr,    s && ls.sCount,  1, 'select_S_family_O',        {}, 1 ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowRight',          true,  c,               1, 'select_CR_SAME',           {}, 1 ], // ok
@@ -97,9 +98,9 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '000') && code === 'ArrowLeft',           dl,    s,               1, 'select_S_O',               {}, 1 ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowLeft',           true,  c && !cbl,       1, 'select_C_L',               {}, 1 ], // ok
     [ kd, ckm(e, '000') && code === 'ArrowLeft',           true,  cc && !cbl,      1, 'select_CC_L',              {}, 1 ], // ok
-    [ kd, ckm(e, '100') && code === 'ArrowLeft',           dr,    ssn && !ds,      1, 'move_S_I',                 {}, 1 ],
-    [ kd, ckm(e, '100') && code === 'ArrowLeft',           dr,    ssn && ds,       1, 'move_S_I_R',               {}, 1 ],
-    [ kd, ckm(e, '100') && code === 'ArrowLeft',           dl,    ssn && cfsu,     1, 'move_S_O',                 {}, 1 ],
+    [ kd, ckm(e, '100') && code === 'ArrowLeft',           dr,    ssn && !ds,      1, 'move_S_I',                 {}, 1 ], // ok
+    [ kd, ckm(e, '100') && code === 'ArrowLeft',           dr,    ssn && ds,       1, 'move_S_I_R',               {}, 1 ], // ok
+    [ kd, ckm(e, '100') && code === 'ArrowLeft',           dl,    ssn && cfsu,     1, 'move_S_O',                 {}, 1 ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowLeft',           true,  r,               1, 'select_S_family_OL',       {}, 1 ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowLeft',           dl,    s && ls.sCount,  1, 'select_S_family_O',        {}, 1 ], // ok
     [ kd, ckm(e, '010') && code === 'ArrowLeft',           true,  c,               1, 'select_CR_SAME',           {}, 1 ], // ok

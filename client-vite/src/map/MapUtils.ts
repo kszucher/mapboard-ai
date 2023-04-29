@@ -55,6 +55,7 @@ export const getXP = (m: M) => getX(m).path
 export const getXF = (m: M) => m.find(n => n.selected)!
 export const getXFP = (m: M) => getXF(m).path
 export const getXL = (m: M) => m.findLast(n => n.selected)!
+export const getXLP = (m: M) => getXL(m).path
 export const getXI1  = (m: M) => getSI1(getXP(m))
 export const getXI2  = (m: M) => getSI2(getXP(m))
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))
@@ -74,12 +75,14 @@ export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
+export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
 export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
+export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
 export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getSU1(getXFP(m)))
 export const getCountXSI1SU = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountXCU = (m: M) => getXP(m).at(-2) as number
