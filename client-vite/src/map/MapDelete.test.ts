@@ -83,16 +83,7 @@ const deleteSelectCCResult = [
 ] as M
 
 describe("DeleteTests", () => {
-  test('deleteSelectS', () => {
-    deleteSelectS(deleteSelectSTest)
-    expect(deleteSelectSTest.sort(sortNode)).toEqual(deleteSelectSResult)
-  })
-  test('deleteSelectCR', () => {
-    deleteSelectCR(deleteSelectCRTest)
-    expect(deleteSelectCRTest.sort(sortNode)).toEqual(deleteSelectCRResult)
-  })
-  test('deleteSelectCC', () => {
-    deleteSelectCC(deleteSelectCCTest)
-    expect(deleteSelectCCTest.sort(sortNode)).toEqual(deleteSelectCCResult)
-  })
+  test('deleteSelectS', () => {deleteSelectS(deleteSelectSTest); expect(deleteSelectSTest.sort(sortNode)).toEqual(deleteSelectSResult)})
+  test('deleteSelectCR', () => {deleteSelectCR(deleteSelectCRTest); expect(deleteSelectCRTest.sort(sortNode)).toEqual(deleteSelectCRResult)})
+  test('deleteSelectCC', () => {deleteSelectCC(deleteSelectCCTest); expect(deleteSelectCCTest.sort(sortNode)).toEqual(deleteSelectCCResult)})
 })

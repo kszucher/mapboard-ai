@@ -1,6 +1,5 @@
 import {M} from "../state/MapPropTypes"
-import {moveSI, moveSO} from "./MapMove"
-import {sortNode} from "./MapUtils"
+import {moveSO, moveSI, moveSIR, moveSIL} from "./MapMove"
 
 const moveSOTest = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
@@ -60,13 +59,50 @@ const moveSIResult = [
   {selected: 0, selection: 's', nodeId: 'k', path: ['r', 0, 'd', 0, 's', 3, 's', 0]},
 ] as M
 
+const moveSIRTest = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 1, 's', 0]},
+] as M
+
+const moveSIRResult = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 1]},
+  {selected: 0, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 1, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 1, 's', 1]},
+] as M
+
+const moveSILTest = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 1]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 1, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 1, 's', 1]},
+] as M
+
+const moveSILResult = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'g', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'e', path: ['r', 0, 'd', 1]},
+  {selected: 0, selection: 's', nodeId: 'f', path: ['r', 0, 'd', 1, 's', 0]},
+] as M
+
+
 describe("MoveTests", () => {
-  test('moveSO', () => {
-    moveSO(moveSOTest)
-    expect(moveSOTest.sort(sortNode)).toEqual(moveSOResult)
-  })
-  test('moveSI', () => {
-    moveSI(moveSITest)
-    expect(moveSITest.sort(sortNode)).toEqual(moveSIResult)
-  })
+  test('moveSO', () => {moveSO(moveSOTest); expect(moveSOTest).toEqual(moveSOResult)})
+  test('moveSI', () => {moveSI(moveSITest); expect(moveSITest).toEqual(moveSIResult)})
+  test('moveSIR', () => {moveSIR(moveSIRTest); expect(moveSIRTest).toEqual(moveSIRResult)})
+  test('moveSIL', () => {moveSIL(moveSILTest); expect(moveSILTest).toEqual(moveSILResult)})
 })
