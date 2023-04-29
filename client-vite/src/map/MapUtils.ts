@@ -48,6 +48,7 @@ export const getIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r'
 export const getSI1 = (p: P) => getIL(p).at(-1) as P
 export const getSI2 = (p: P) => getIL(p).at(-2) as P
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
+export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getR0D0 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 0])
@@ -85,7 +86,7 @@ export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
 export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
 export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
-export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getSU1(getXFP(m)))
+export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getXFSU1(m))
 export const getCountXSI1SU = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountXCU = (m: M) => getXP(m).at(-2) as number
 export const getCountXCL = (m: M) => getXP(m).at(-1) as number
@@ -114,6 +115,8 @@ export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEa
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incNXSI1DF = (m: M) => m.filter(n => isSDF(getSI1(getXP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1 - 2, getXA(m).length))
+export const incNXLSDSDF = (m: M) => m.filter(n => isSDF(getSD1(getXLP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1, getXA(m).length))
+export const incNISFDF = (m: M, p: P) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, getXA(m).length)) // use it for mouse drag
 export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
