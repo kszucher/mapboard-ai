@@ -124,6 +124,11 @@ export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: 
 export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 export const cbSIR = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 1, 's', getCountR0D1S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 export const cbSIL = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbSD = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbST = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbSU = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// export const cbSB = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))

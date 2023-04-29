@@ -40,11 +40,18 @@ export const moveSIL = (m: M) => {
 }
 
 export const moveSD = (m: M) => {
-  // két eset van: vagy lejjebb visszük, vagy a tetejére rakjuk
+}
+
+export const moveST = (m: M) => {
+
 }
 
 export const moveSU = (m: M) => {
-  // két eset van: vagy feljebb visszük, vagy az aljára rakjuk
+
+}
+
+export const moveSB = (m: M) => {
+
 }
 
 export const moveCCI = (m: M) => {
