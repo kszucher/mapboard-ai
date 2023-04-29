@@ -1,21 +1,5 @@
 import {M, P} from "../state/MapPropTypes"
-import {
-  decPiN,
-  getNodeByPath,
-  getIL,
-  isSD,
-  sortPath,
-  incNXSI1DF,
-  cbSD,
-  m2cb,
-  getXFSU1,
-  getCountXFSU1SO1,
-  cb2ip,
-  getXI2,
-  getCountXSI1SU,
-  getCountR0D1S,
-  getCountR0D0S,
-} from "./MapUtils"
+import {decPiN, getNodeByPath, getIL, isSD, sortPath, incNXSI1DF, m2cb, getXFSU1, getCountXFSU1SO1, cb2ip, getXI2, getCountXSI1SU, getCountR0D1S, getCountR0D0S, getXI1, getXFP} from "./MapUtils"
 
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
@@ -60,10 +44,11 @@ export const moveSIL = (m: M) => {
 }
 
 export const moveSD = (m: M) => {
-  const clipboard =  cbSD(m)
+  const ip = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1] as P
+  const cb = m2cb(m)
   deleteStuff(m)
-
-  m.push(...clipboard)
+  // ok we need to increment N now based on insert path
+  m.push(...cb2ip(cb, ip))
   m.sort(sortPath)
 }
 
