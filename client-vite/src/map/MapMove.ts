@@ -1,5 +1,5 @@
 import {M} from "../state/MapPropTypes"
-import {decPiN, getNodeByPath, getIL, isSD, sortPath, incXSI1DF, cbSO, cbSI, cbSIR, cbSIL} from "./MapUtils";
+import {decPiN, getNodeByPath, getIL, isSD, sortPath, incNXSI1DF, cbSO, cbSI, cbSIR, cbSIL} from "./MapUtils";
 
 const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
@@ -19,7 +19,7 @@ export const moveSO = (m: M) => {
 
 export const moveSI = (m: M) => {
   const clipboard = cbSI(m)
-  incXSI1DF(m)
+  incNXSI1DF(m)
   deleteStuff(m)
   m.push(...clipboard)
   m.sort(sortPath)
@@ -40,6 +40,10 @@ export const moveSIL = (m: M) => {
 }
 
 export const moveSD = (m: M) => {
+  // decN
+
+
+
 }
 
 export const moveST = (m: M) => {
