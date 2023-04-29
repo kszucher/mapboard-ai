@@ -19,9 +19,11 @@ export const insertNodeList = (m: M, pList: P[]) => {
 
 const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
   insertNodeList(m, indices.map(el => [...p, 'c', ...el]))
+  // FIXME probably we do not NEED to have s by default here, so there will be no need for fix, and paste will be SOLVED too --> creation when START EDIT
   insertNodeList(m, indices.map(el => [...p, 'c', ...el, 's', 0]))
 }
 
+// FIXME insertSelectSOR, insertSelectSOL, insertSelectSO
 export const insertSelectSO = (m: M, attributes: object) => {
   const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
