@@ -30,7 +30,7 @@ export const deleteStuff = (m: M) => {
   }
 }
 
-export const move = (m: M, insertPath: P, spacePath: P) => {
+export const move = (m: M, spacePath: P, insertPath: P) => {
   const cb = m2cb(m)
   makeSpaceFrom(m, spacePath)
   deleteStuff(m)
@@ -38,14 +38,14 @@ export const move = (m: M, insertPath: P, spacePath: P) => {
   m.sort(sortPath)
 }
 
-export const moveSO = (m: M) => move(m, [...getXFSU1(m), 's', getCountXFSU1SO1(m)] as P, [] as P)
-export const moveSI = (m: M) => move(m, [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P, [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P)
-export const moveSIR = (m: M) => move(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)] as P, [] as P)
-export const moveSIL = (m: M) => move(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)] as P, [] as P)
-export const moveSD = (m: M) => move(m, getXFPSD1(m),  getXLPSD2(m))
-export const moveST = (m: M) => move(m, [...getXI1(m), 's', 0] as P, [...getXI1(m), 's', 0] as P)
+export const moveSO = (m: M) => move(m, [], [...getXFSU1(m), 's', getCountXFSU1SO1(m)])
+export const moveSI = (m: M) => move(m, [...getXI2(m), 's', getCountXSI1SU(m) + 1], [...getXI2(m), 's', getCountXSI1SU(m) + 1])
+export const moveSIR = (m: M) => move(m, [], ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
+export const moveSIL = (m: M) => move(m, [], ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
+export const moveSD = (m: M) => move(m, getXLPSD2(m), getXFPSD1(m))
+export const moveST = (m: M) => move(m, [...getXI1(m), 's', 0], [...getXI1(m), 's', 0])
 export const moveSU = (m: M) => move(m, getXFPSU1(m), getXFPSU1(m))
-export const moveSB = (m: M) => move(m, [...getXI1(m), 's', getCountXLSD(m)] as P, [] as P)
+export const moveSB = (m: M) => move(m, [], [...getXI1(m), 's', getCountXLSD(m)])
 
 export const moveCCI = (m: M) => {
 
