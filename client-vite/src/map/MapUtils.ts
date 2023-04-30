@@ -130,7 +130,11 @@ export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountX
 
 export const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (getXF(m).path.at(-1) as number)
 export const m2cb = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['s', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
+// TODO m2cbCR
+// TODO m2cbCC
 export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: [...ip.slice(0, -2), 's', (ip.at(-1) as number) + (n.path.at(1) as number), ...n.path.slice(2)]}))) as GN[]
+// TODO cb2ipCR
+// TODO cb2ipCC
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))

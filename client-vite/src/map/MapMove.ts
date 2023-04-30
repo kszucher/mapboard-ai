@@ -47,10 +47,10 @@ export const moveSU = (m: M) => moveS(m, getXFPSU1(m), getXFPSU1(m))
 export const moveSB = (m: M) => moveS(m, [], [...getXI1(m), 's', getCountXLSD(m)])
 
 export const moveCCR = (m: M) => {
-  // const cb = m2cb(m) // TODO use a version that start with 'c' and does NOT use XF as this is nonexistent here anyways
-  // TODO USE THE APPROPRIATE INCREMENTER
-  // deleteStuff(m)
-  // m.push(...cb2ip(cb, insertPath)) // TODO use an appropriate version
+  // const cb = m2cb(m) // TODO use appropriate cutter
+  // TODO use appropriate incrementer
+  // deleteStuff(m) // TODO use appropriate DELETER
+  // m.push(...cb2ip(cb, insertPath)) // TODO use appropriate paster
   // m.sort(sortPath)
 }
 
