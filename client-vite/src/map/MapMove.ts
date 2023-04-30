@@ -46,11 +46,11 @@ export const moveST = (m: M) => move(m, [...getXI1(m), 's', 0], [...getXI1(m), '
 export const moveSU = (m: M) => move(m, getXFPSU1(m), getXFPSU1(m))
 export const moveSB = (m: M) => move(m, [], [...getXI1(m), 's', getCountXLSD(m)])
 
-export const moveCCI = (m: M) => {
-
+export const moveCCR = (m: M) => {
+  // similar to move, but instead of makeSpaceFrom (aka makeSpaceAfterS), makeSpaceAfterC or makeSpaceBeforeC
 }
 
-export const moveCCO = (m: M) => {
+export const moveCCL = (m: M) => {
 
 }
 
