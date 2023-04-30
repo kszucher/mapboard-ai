@@ -16,7 +16,8 @@ import {
   getXI1,
   getXFP,
   makeSpaceFrom,
-  getXLP, getXA, getCountXLSD,
+  getXA,
+  getCountXLSD,
 } from "./MapUtils"
 
 const deleteStuff = (m: M) => {

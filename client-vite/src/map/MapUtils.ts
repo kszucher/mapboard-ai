@@ -129,15 +129,6 @@ export const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number)
 export const m2cb = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['s', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
 export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: [...ip.slice(0, -2), 's', (ip.at(-1) as number) + (n.path.at(1) as number), ...n.path.slice(2)]}))) as GN[]
 
-// export const cbSO = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXFSU1(m), 's', getCountXFSU1SO1(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-// export const cbSI = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI2(m), 's', getCountXSI1SU(m) + 1 + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-// export const cbSIR = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 1, 's', getCountR0D1S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-// export const cbSIL = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['r', 0, 'd', 0, 's', getCountR0D0S(m) + getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSD = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path) + 1, ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbST = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSU = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path) - 1, ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const cbSB = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: [...getXI1(m), 's', getOffsetXF(m, n.path) + getCountXFSU(m) + 1, ...n.path.slice(getXP(m).length)]}))) as GN[]
-
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
 export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))
