@@ -16,7 +16,7 @@ import {
   getXI1,
   getXFP,
   makeSpaceFrom,
-  getXA, getSI1
+  getXLP, getXA, getCountXLSD,
 } from "./MapUtils"
 
 const deleteStuff = (m: M) => {
@@ -29,71 +29,83 @@ const deleteStuff = (m: M) => {
 }
 
 export const moveSO = (m: M) => {
-  const ip = [...getXFSU1(m), 's', getCountXFSU1SO1(m)] as P
-  const pip = [] as P
+  const insertPath = [...getXFSU1(m), 's', getCountXFSU1SO1(m)] as P
+  const spacePath = [] as P
   const cb = m2cb(m)
-  makeSpaceFrom(m, pip)
+  makeSpaceFrom(m, spacePath)
   deleteStuff(m)
-  m.push(...cb2ip(cb, ip))
+  m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 export const moveSI = (m: M) => {
-  const ip = [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P
-  const pip = [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P
+  const insertPath = [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P
+  const spacePath = [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P
   const cb = m2cb(m)
-  makeSpaceFrom(m, pip)
+  makeSpaceFrom(m, spacePath)
   deleteStuff(m)
-  m.push(...cb2ip(cb, ip))
+  m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 export const moveSIR = (m: M) => {
-  const ip = ['r', 0, 'd', 1, 's', getCountR0D1S(m)] as P
-  const pip = [] as P
+  const insertPath = ['r', 0, 'd', 1, 's', getCountR0D1S(m)] as P
+  const spacePath = [] as P
   const cb = m2cb(m)
-  makeSpaceFrom(m, pip)
+  makeSpaceFrom(m, spacePath)
   deleteStuff(m)
-  m.push(...cb2ip(cb, ip))
+  m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 export const moveSIL = (m: M) => {
-  const ip = ['r', 0, 'd', 0, 's', getCountR0D0S(m)] as P
-  const pip = [] as P
+  const insertPath = ['r', 0, 'd', 0, 's', getCountR0D0S(m)] as P
+  const spacePath = [] as P
   const cb = m2cb(m)
-  makeSpaceFrom(m, pip)
+  makeSpaceFrom(m, spacePath)
   deleteStuff(m)
-  m.push(...cb2ip(cb, ip))
+  m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 export const moveSD = (m: M) => {
-  const ip = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1] as P
-  const pip = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1 + getXA(m).length] as P
+  const insertPath = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1] as P
+  const spacePath = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1 + getXA(m).length] as P
   const cb = m2cb(m)
-  makeSpaceFrom(m, pip)
+  makeSpaceFrom(m, spacePath)
   deleteStuff(m)
-  m.push(...cb2ip(cb, ip))
+  m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 export const moveST = (m: M) => {
-  const ip = [...getXI1(m), 's', 0] as P
-  const pip = [...getXI1(m), 's', 0] as P
+  const insertPath = [...getXI1(m), 's', 0] as P
+  const spacePath = [...getXI1(m), 's', 0] as P
   const cb = m2cb(m)
-  makeSpaceFrom(m, pip)
+  makeSpaceFrom(m, spacePath)
   deleteStuff(m)
-  m.push(...cb2ip(cb, ip))
+  m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 export const moveSU = (m: M) => {
-
+  const insertPath = [...getXI1(m), 's', getXFP(m).at(-1) as number - 1] as P
+  const spacePath = [...getXI1(m), 's', getXFP(m).at(-1) as number - 1] as P
+  const cb = m2cb(m)
+  makeSpaceFrom(m, spacePath)
+  deleteStuff(m)
+  m.push(...cb2ip(cb, insertPath))
+  m.sort(sortPath)
 }
 
 export const moveSB = (m: M) => {
-
+  const insertPath = [...getXI1(m), 's', getCountXLSD(m)] as P
+  const spacePath = [] as P
+  const cb = m2cb(m)
+  makeSpaceFrom(m, spacePath)
+  deleteStuff(m)
+  m.push(...cb2ip(cb, insertPath))
+  m.sort(sortPath)
 }
 
 export const moveCCI = (m: M) => {

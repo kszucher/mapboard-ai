@@ -196,5 +196,5 @@ describe("Move_tests", () => {
   test('moveSD', () => {moveSD(moveSD_test); expect(moveSD_test).toEqual(moveSD_result)})
   test('moveST', () => {moveST(moveST_test); expect(moveST_test).toEqual(moveST_result)})
   test('moveSU', () => {moveSU(moveSU_test); expect(moveSU_test).toEqual(moveSU_result)})
-  test('moveSN', () => {moveSB(moveSB_test); expect(moveSB_test).toEqual(moveSB_result)})
+  test('moveSB', () => {moveSB(moveSB_test); expect(moveSB_test).toEqual(moveSB_result)})
 })
