@@ -30,7 +30,9 @@ const deleteStuff = (m: M) => {
 
 export const moveSO = (m: M) => {
   const ip = [...getXFSU1(m), 's', getCountXFSU1SO1(m)] as P
+  const pip = [] as P
   const cb = m2cb(m)
+  makeSpaceFrom(m, pip)
   deleteStuff(m)
   m.push(...cb2ip(cb, ip))
   m.sort(sortPath)
@@ -48,7 +50,9 @@ export const moveSI = (m: M) => {
 
 export const moveSIR = (m: M) => {
   const ip = ['r', 0, 'd', 1, 's', getCountR0D1S(m)] as P
+  const pip = [] as P
   const cb = m2cb(m)
+  makeSpaceFrom(m, pip)
   deleteStuff(m)
   m.push(...cb2ip(cb, ip))
   m.sort(sortPath)
@@ -56,7 +60,9 @@ export const moveSIR = (m: M) => {
 
 export const moveSIL = (m: M) => {
   const ip = ['r', 0, 'd', 0, 's', getCountR0D0S(m)] as P
+  const pip = [] as P
   const cb = m2cb(m)
+  makeSpaceFrom(m, pip)
   deleteStuff(m)
   m.push(...cb2ip(cb, ip))
   m.sort(sortPath)
