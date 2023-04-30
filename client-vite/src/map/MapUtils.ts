@@ -73,7 +73,7 @@ export const getXL = (m: M) => m.findLast(n => n.selected)!
 export const getXLP = (m: M) => getXL(m).path
 export const getXLPSD2 = (m: M) => getSD2(getXLP(m))
 export const getXI1  = (m: M) => getSI1(getXP(m))
-export const getXI2  = (m: M) => getSI2(getXP(m))
+export const getXI1D1 = (m: M) => getSD1(getSI1(getXP(m)))
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))
 export const getXFSU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
@@ -91,7 +91,6 @@ export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
 export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
 export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getXFSU1(m))
-export const getCountXSI1SU = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountXCU = (m: M) => getXP(m).at(-2) as number
 export const getCountXCL = (m: M) => getXP(m).at(-1) as number
 export const getCountXCH = (m: M) => getCountCH(m, getXP(m))

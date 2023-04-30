@@ -9,8 +9,6 @@ import {
   getXFSU1,
   getCountXFSU1SO1,
   cb2ip,
-  getXI2,
-  getCountXSI1SU,
   getCountR0D1S,
   getCountR0D0S,
   getXI1,
@@ -19,6 +17,7 @@ import {
   getXFPSU1,
   getXFPSD1,
   getXLPSD2,
+  getXI1D1,
 } from "./MapUtils"
 
 export const deleteStuff = (m: M) => {
@@ -39,7 +38,7 @@ export const move = (m: M, spacePath: P, insertPath: P) => {
 }
 
 export const moveSO = (m: M) => move(m, [], [...getXFSU1(m), 's', getCountXFSU1SO1(m)])
-export const moveSI = (m: M) => move(m, [...getXI2(m), 's', getCountXSI1SU(m) + 1], [...getXI2(m), 's', getCountXSI1SU(m) + 1])
+export const moveSI = (m: M) => move(m, getXI1D1(m), getXI1D1(m))
 export const moveSIR = (m: M) => move(m, [], ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
 export const moveSIL = (m: M) => move(m, [], ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
 export const moveSD = (m: M) => move(m, getXLPSD2(m), getXFPSD1(m))
