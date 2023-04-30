@@ -49,6 +49,7 @@ export const getSI1 = (p: P) => getIL(p).at(-1) as P
 export const getSI2 = (p: P) => getIL(p).at(-2) as P
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
+export const getSD2 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 2]
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getR0D0 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 0])
@@ -57,8 +58,11 @@ export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => 
 export const getXP = (m: M) => getX(m).path
 export const getXF = (m: M) => m.find(n => n.selected)!
 export const getXFP = (m: M) => getXF(m).path
+export const getXFPSU1 = (m: M) => getSU1(getXFP(m))
+export const getXFPSD1 = (m: M) => getSD1(getXFP(m))
 export const getXL = (m: M) => m.findLast(n => n.selected)!
 export const getXLP = (m: M) => getXL(m).path
+export const getXLPSD2 = (m: M) => getSD2(getXLP(m))
 export const getXI1  = (m: M) => getSI1(getXP(m))
 export const getXI2  = (m: M) => getSI2(getXP(m))
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))

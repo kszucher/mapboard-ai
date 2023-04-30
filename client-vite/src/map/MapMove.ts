@@ -17,7 +17,7 @@ import {
   getXFP,
   makeSpaceFrom,
   getXA,
-  getCountXLSD,
+  getCountXLSD, getXFPSU1, getXFPSD1, getXLP, getXLPSD2,
 } from "./MapUtils"
 
 const deleteStuff = (m: M) => {
@@ -70,8 +70,8 @@ export const moveSIL = (m: M) => {
 }
 
 export const moveSD = (m: M) => {
-  const insertPath = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1] as P
-  const spacePath = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1 + getXA(m).length] as P
+  const insertPath = getXFPSD1(m)
+  const spacePath = getXLPSD2(m)
   const cb = m2cb(m)
   makeSpaceFrom(m, spacePath)
   deleteStuff(m)
@@ -90,8 +90,8 @@ export const moveST = (m: M) => {
 }
 
 export const moveSU = (m: M) => {
-  const insertPath = [...getXI1(m), 's', getXFP(m).at(-1) as number - 1] as P
-  const spacePath = [...getXI1(m), 's', getXFP(m).at(-1) as number - 1] as P
+  const insertPath = getXFPSU1(m)
+  const spacePath = getXFPSU1(m)
   const cb = m2cb(m)
   makeSpaceFrom(m, spacePath)
   deleteStuff(m)
