@@ -44,6 +44,15 @@ export const isCFRF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isCDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)!
 export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
+export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
+export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
+export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
+export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
+export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
+export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
+export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
+export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
+
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
@@ -78,15 +87,6 @@ export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length -
 export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
 export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
 export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
-
-export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
-export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
-export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
-export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
-export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
-export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
-export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
-export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
 export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
 export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
