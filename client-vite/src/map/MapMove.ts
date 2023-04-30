@@ -1,10 +1,30 @@
 import {M, P} from "../state/MapPropTypes"
-import {decPiN, getNodeByPath, getIL, isSD, sortPath, m2cb, getXFSU1, getCountXFSU1SO1, cb2ip, getXI2, getCountXSI1SU, getCountR0D1S, getCountR0D0S, getXI1, makeSpaceFrom, getCountXLSD, getXFPSU1, getXFPSD1, getXLPSD2,} from "./MapUtils"
+import {
+  decPiN,
+  getNodeByPath,
+  getSIL,
+  isSD,
+  sortPath,
+  m2cb,
+  getXFSU1,
+  getCountXFSU1SO1,
+  cb2ip,
+  getXI2,
+  getCountXSI1SU,
+  getCountR0D1S,
+  getCountR0D0S,
+  getXI1,
+  makeSpaceFrom,
+  getCountXLSD,
+  getXFPSU1,
+  getXFPSD1,
+  getXLPSD2,
+} from "./MapUtils"
 
 export const deleteStuff = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
     const n = m[i]
-    const parentPathList = [...getIL(n.path), n.path]
+    const parentPathList = [...getSIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     parentPathList.forEach(p => n.path = decPiN(n.path, p.length - 1, m.filter(n => n.selected && isSD(n.path, p)).length))
   }

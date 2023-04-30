@@ -44,9 +44,9 @@ export const isCFRF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const isCDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! > p.at(-2)!
 export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
-export const getIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
-export const getSI1 = (p: P) => getIL(p).at(-1) as P
-export const getSI2 = (p: P) => getIL(p).at(-2) as P
+export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+export const getSI1 = (p: P) => getSIL(p).at(-1) as P
+export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
 export const getSD2 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 2]
