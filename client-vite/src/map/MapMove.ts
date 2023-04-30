@@ -5,7 +5,6 @@ import {
   getIL,
   isSD,
   sortPath,
-  incNXSI1DF,
   m2cb,
   getXFSU1,
   getCountXFSU1SO1,
@@ -16,7 +15,8 @@ import {
   getCountR0D0S,
   getXI1,
   getXFP,
-  incNXLSDSDF
+  makeSpaceFrom,
+  getXA, getSI1
 } from "./MapUtils"
 
 const deleteStuff = (m: M) => {
@@ -38,8 +38,9 @@ export const moveSO = (m: M) => {
 
 export const moveSI = (m: M) => {
   const ip = [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P
+  const pip = [...getXI2(m), 's', getCountXSI1SU(m) + 1] as P
   const cb = m2cb(m)
-  incNXSI1DF(m)
+  makeSpaceFrom(m, pip)
   deleteStuff(m)
   m.push(...cb2ip(cb, ip))
   m.sort(sortPath)
@@ -63,15 +64,22 @@ export const moveSIL = (m: M) => {
 
 export const moveSD = (m: M) => {
   const ip = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1] as P
+  const pip = [...getXI1(m), 's', getXFP(m).at(-1) as number + 1 + getXA(m).length] as P
   const cb = m2cb(m)
-  incNXLSDSDF(m)
+  makeSpaceFrom(m, pip)
   deleteStuff(m)
   m.push(...cb2ip(cb, ip))
   m.sort(sortPath)
 }
 
 export const moveST = (m: M) => {
-
+  const ip = [...getXI1(m), 's', 0] as P
+  const pip = [...getXI1(m), 's', 0] as P
+  const cb = m2cb(m)
+  makeSpaceFrom(m, pip)
+  deleteStuff(m)
+  m.push(...cb2ip(cb, ip))
+  m.sort(sortPath)
 }
 
 export const moveSU = (m: M) => {

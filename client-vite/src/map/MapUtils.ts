@@ -114,9 +114,8 @@ export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEa
 
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incNXSI1DF = (m: M) => m.filter(n => isSDF(getSI1(getXP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1 - 2, getXA(m).length))
-export const incNXLSDSDF = (m: M) => m.filter(n => isSDF(getSD1(getXLP(m)), n.path)).forEach(n => n.path = incPiN(n.path, getXP(m).length - 1, getXA(m).length))
-export const incNISFDF = (m: M, p: P) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, getXA(m).length)) // use it for mouse drag
+export const makeSpaceFrom = (m: M, p: P) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, getXA(m).length)) // use it for mouse drag
+
 export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
