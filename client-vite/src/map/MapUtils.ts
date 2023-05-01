@@ -128,13 +128,19 @@ export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 
-export const getOffsetXF = (m: M, p: P) => (p.at(getXP(m).length - 1) as number) - (getXF(m).path.at(-1) as number)
-export const m2cb = (m: M) => structuredClone(getXASF(m).map(n => ({...n, path: ['s', getOffsetXF(m, n.path), ...n.path.slice(getXP(m).length)]}))) as GN[]
-// TODO m2cbCR
-// TODO m2cbCC
-export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n => ({...n, path: [...ip.slice(0, -2), 's', (ip.at(-1) as number) + (n.path.at(1) as number), ...n.path.slice(2)]}))) as GN[]
-// TODO cb2ipCR
-// TODO cb2ipCC
+export const m2cb = (m: M) => structuredClone(getXASF(m).map(n =>
+  ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXFSU(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const m2cbCR = (m: M) => structuredClone(getXASF(m).map(n =>
+  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const m2cbCC = (m: M) => structuredClone(getXASF(m).map(n =>
+  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
+
+export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
+  ({...n, path: [...ip.slice(0, -2), 's', (ip.at(-1) as number) + (n.path.at(1) as number), ...n.path.slice(2)]}))) as GN[]
+export const cb2ipCR = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
+  ({...n, path: [...ip.slice(0, -3), 'c', (ip.at(-2) as number) + (n.path.at(1) as number), (ip.at(-1) as number), ...n.path.slice(3)]}))) as GN[]
+export const cb2ipCC = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
+  ({...n, path: [...ip.slice(0, -3), 'c', (ip.at(-2) as number), (ip.at(-1) as number) + (n.path.at(2) as number), ...n.path.slice(3)]}))) as GN[]
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
