@@ -64,34 +64,34 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       }
       break
     }
-    case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break // ok
+    case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
     case 'select_S_O': selectNode(m, structNavigate(m, getX(m).path, Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
-    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break // ok
-    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break // ok
+    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
+    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
     case 'select_S_I': selectNode(m, structNavigate(m, getX(m).path, Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
-    case 'select_S_D': selectNode(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break  // ok
-    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break // ok
-    case 'select_S_U': selectNode(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break // ok
-    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break // ok
-    case 'select_S_family_O': getX(m).selection = 'f'; break // ok
-    case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break // ok
-    case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break // ok
-    case 'select_S_F': selectNode(m, [...getX(m).path, 's', 0], 's'); break // ok
-    case 'select_S_B': selectNode(m, getX(m).path.slice(0, -3), 's'); break // ok
-    case 'select_C_R': selectNode(m, getXCR(m), 's'); break // ok
-    case 'select_C_L': selectNode(m, getXCL(m), 's'); break // ok
-    case 'select_C_D': selectNode(m, getXCD(m), 's'); break // ok
-    case 'select_C_U': selectNode(m, getXCU(m), 's'); break // ok
-    case 'select_C_F_firstRow': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi), 's'); break // ok
-    case 'select_C_F_firstCol': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi), 's'); break // ok
+    case 'select_S_D': selectNode(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break
+    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break
+    case 'select_S_U': selectNode(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break
+    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break
+    case 'select_S_family_O': getX(m).selection = 'f'; break
+    case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
+    case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
+    case 'select_S_F': selectNode(m, [...getX(m).path, 's', 0], 's'); break
+    case 'select_S_B': selectNode(m, getX(m).path.slice(0, -3), 's'); break
+    case 'select_C_R': selectNode(m, getXCR(m), 's'); break
+    case 'select_C_L': selectNode(m, getXCL(m), 's'); break
+    case 'select_C_D': selectNode(m, getXCD(m), 's'); break
+    case 'select_C_U': selectNode(m, getXCU(m), 's'); break
+    case 'select_C_F_firstRow': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -2 ? 0 : pi), 's'); break
+    case 'select_C_F_firstCol': selectNode(m, structuredClone(getX(m).path).map((pi, i) => i === getX(m).path.length -1 ? 0 : pi), 's'); break
     case 'select_C_FF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getX(m).path, 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': getX(m).path.includes('c') ? selectNode(m, [...getX(m).path.slice(0, getX(m).path.lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)).map(n => n.path), 's'); break // ok
-    case 'select_CC_R': selectNodeList(m, getXCCR(m), 's'); break // ok
-    case 'select_CC_L': selectNodeList(m, getXCCL(m), 's'); break // ok
-    case 'select_CR_D': selectNodeList(m, getXCRD(m), 's'); break // ok
-    case 'select_CR_U': selectNodeList(m, getXCRU(m), 's'); break // ok
+    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getX(m).path)).map(n => n.path), 's'); break
+    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCH(n.path, getX(m).path)).map(n => n.path), 's'); break
+    case 'select_CC_R': selectNodeList(m, getXCCR(m), 's'); break
+    case 'select_CC_L': selectNodeList(m, getXCCL(m), 's'); break
+    case 'select_CR_D': selectNodeList(m, getXCRD(m), 's'); break
+    case 'select_CR_U': selectNodeList(m, getXCRU(m), 's'); break
     case 'select_dragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
