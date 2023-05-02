@@ -1,5 +1,5 @@
 import {M, P} from "../state/MapPropTypes"
-import {deleteCR, deleteS} from "./MapDelete";
+import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {
   sortPath,
   m2cb,
@@ -21,6 +21,10 @@ import {
   cb2ipCR,
   getCountXCU,
   makeSpaceFromCR,
+  m2cbCC,
+  makeSpaceFromCC,
+  cb2ipCC,
+  getCountXCL,
 } from "./MapUtils"
 
 export const moveS = (m: M, spacePath: P, insertPath: P) => {
@@ -41,11 +45,23 @@ export const moveSU = (m: M) => moveS(m, getXFPSU1(m), getXFPSU1(m))
 export const moveSB = (m: M) => moveS(m, [], [...getXI1(m), 's', getCountXLSD(m)])
 
 export const moveCCR = (m: M) => {
-
+  const spacePath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 2] as P
+  const insertPath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 1] as P
+  const cb = m2cbCC(m)
+  makeSpaceFromCC(m, spacePath)
+  deleteCC(m)
+  m.push(...cb2ipCC(cb, insertPath))
+  m.sort(sortPath)
 }
 
 export const moveCCL = (m: M) => {
-
+  const spacePath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) - 1] as P
+  const insertPath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) -1] as P
+  const cb = m2cbCC(m)
+  makeSpaceFromCC(m, spacePath)
+  deleteCC(m)
+  m.push(...cb2ipCC(cb, insertPath))
+  m.sort(sortPath)
 }
 
 export const moveCRD = (m: M) => {
