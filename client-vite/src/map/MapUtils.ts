@@ -114,17 +114,15 @@ export const isXCBU = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
 
 export const setPropXA = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEach(n => Object.assign(n, {[prop]: value}))
-
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const makeSpaceFrom = (m: M, p: P) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, getXA(m).length)) // use it for mouse drag
-
-export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 export const incXCFDF = (m: M) => m.filter(n => isCFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
-export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
-export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
+export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
+export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
 
 export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m)
 export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )

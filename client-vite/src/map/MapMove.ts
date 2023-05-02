@@ -19,7 +19,8 @@ import {
   getXP,
   m2cbCR,
   cb2ipCR,
-  getCountXCU, incXCDF, incXCFDF,
+  getCountXCU,
+  makeSpaceFromCR,
 } from "./MapUtils"
 
 export const moveS = (m: M, spacePath: P, insertPath: P) => {
@@ -48,27 +49,11 @@ export const moveCCL = (m: M) => {
 }
 
 export const moveCRD = (m: M) => {
+  const spacePath = [...getSI1(getXP(m)), 'c', getCountXCU(m) + 2, 0] as P
   const insertPath = [...getSI1(getXP(m)), 'c', getCountXCU(m) + 1, 0] as P
-  const spacePath = []
-
   const cb = m2cbCR(m)
-
-
-
-  // console.log(getXP(m))
-
-
+  makeSpaceFromCR(m, spacePath)
   deleteCR(m)
-
-  // console.log(m)
-
-
-  // console.log(insertPath)
-
-  // console.log(getCountXCU(m))
-
-  // console.log(...cb2ipCR(cb, insertPath))
-
   m.push(...cb2ipCR(cb, insertPath))
   m.sort(sortPath)
 }
