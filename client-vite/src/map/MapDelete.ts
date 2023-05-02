@@ -1,6 +1,19 @@
 import {M} from "../state/MapPropTypes";
 import {selectNode, selectNodeList} from "./MapSelect";
-import {decPiN, getNodeByPath, getSIL, isSD, isCFDF, getX, decPi, isCFRF, getReselectS, getReselectCR, getReselectCC} from "./MapUtils"
+import {
+  decPiN,
+  getNodeByPath,
+  getSIL,
+  isSD,
+  isCFDF,
+  getX,
+  decPi,
+  isCFRF,
+  getReselectS,
+  getReselectCR,
+  getReselectCC,
+  getXA
+} from "./MapUtils"
 
 export const deleteS = (m: M) => {
   for (let i = m.length - 1; i > 0; i--) {
@@ -16,9 +29,8 @@ export const deleteCR = (m: M) => {
     const n = m[i]
     const parentPathList = [...getSIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    isCFDF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)}) && console.log(n.nodeId, getX(m).path, n.path)
-    // ef gh
-    // ij kl
+    if (!getXA(m).length) break
+    isCFDF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)})
   }
 }
 
@@ -27,6 +39,7 @@ export const deleteCC = (m: M) => {
     const n = m[i]
     const parentPathList = [...getSIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
+    if (!getXA(m).length) break
     isCFRF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 1)})
   }
 }
