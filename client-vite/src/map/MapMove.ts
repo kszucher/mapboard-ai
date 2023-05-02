@@ -27,11 +27,27 @@ import {
   getCountXCL,
 } from "./MapUtils"
 
-export const moveS = (m: M, spacePath: P, insertPath: P) => {
+const moveS = (m: M, spacePath: P, insertPath: P) => {
   const cb = m2cb(m)
   makeSpaceFrom(m, spacePath)
   deleteS(m)
   m.push(...cb2ip(cb, insertPath))
+  m.sort(sortPath)
+}
+
+const moveCR = (m: M, spacePath: P, insertPath: P) => {
+  const cb = m2cbCR(m)
+  makeSpaceFromCR(m, spacePath)
+  deleteCR(m)
+  m.push(...cb2ipCR(cb, insertPath))
+  m.sort(sortPath)
+}
+
+const moveCC = (m: M, spacePath: P, insertPath: P) => {
+  const cb = m2cbCC(m)
+  makeSpaceFromCC(m, spacePath)
+  deleteCC(m)
+  m.push(...cb2ipCC(cb, insertPath))
   m.sort(sortPath)
 }
 
@@ -44,42 +60,7 @@ export const moveST = (m: M) => moveS(m, [...getXI1(m), 's', 0], [...getXI1(m), 
 export const moveSU = (m: M) => moveS(m, getXFPSU1(m), getXFPSU1(m))
 export const moveSB = (m: M) => moveS(m, [], [...getXI1(m), 's', getCountXLSD(m)])
 
-export const moveCCR = (m: M) => {
-  const spacePath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 2] as P
-  const insertPath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 1] as P
-  const cb = m2cbCC(m)
-  makeSpaceFromCC(m, spacePath)
-  deleteCC(m)
-  m.push(...cb2ipCC(cb, insertPath))
-  m.sort(sortPath)
-}
-
-export const moveCCL = (m: M) => {
-  const spacePath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) - 1] as P
-  const insertPath = [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) -1] as P
-  const cb = m2cbCC(m)
-  makeSpaceFromCC(m, spacePath)
-  deleteCC(m)
-  m.push(...cb2ipCC(cb, insertPath))
-  m.sort(sortPath)
-}
-
-export const moveCRD = (m: M) => {
-  const spacePath = [...getSI1(getXP(m)), 'c', getCountXCU(m) + 2, 0] as P
-  const insertPath = [...getSI1(getXP(m)), 'c', getCountXCU(m) + 1, 0] as P
-  const cb = m2cbCR(m)
-  makeSpaceFromCR(m, spacePath)
-  deleteCR(m)
-  m.push(...cb2ipCR(cb, insertPath))
-  m.sort(sortPath)
-}
-
-export const moveCRU = (m: M) => {
-  const spacePath = [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0] as P
-  const insertPath = [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0] as P
-  const cb = m2cbCR(m)
-  makeSpaceFromCR(m, spacePath)
-  deleteCR(m)
-  m.push(...cb2ipCR(cb, insertPath))
-  m.sort(sortPath)
-}
+export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 2], [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 1])
+export const moveCCL = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) - 1], [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) -1])
+export const moveCRD = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountXCU(m) + 2, 0], [...getSI1(getXP(m)), 'c', getCountXCU(m) + 1, 0])
+export const moveCRU = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0], [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0])
