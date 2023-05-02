@@ -18,7 +18,8 @@ import {
   getSI1,
   getXP,
   m2cbCR,
-  incXCDF, cb2ipCR
+  cb2ipCR,
+  getCountXCU, incXCDF, incXCFDF,
 } from "./MapUtils"
 
 export const moveS = (m: M, spacePath: P, insertPath: P) => {
@@ -39,14 +40,7 @@ export const moveSU = (m: M) => moveS(m, getXFPSU1(m), getXFPSU1(m))
 export const moveSB = (m: M) => moveS(m, [], [...getXI1(m), 's', getCountXLSD(m)])
 
 export const moveCCR = (m: M) => {
-  const insertPath = getSI1(getXP(m))
-  const spacePath = []
 
-  const cb = m2cbCR(m)
-  incXCDF(m)
-  deleteCR(m)
-  m.push(...cb2ipCR(cb, insertPath))
-  m.sort(sortPath)
 }
 
 export const moveCCL = (m: M) => {
@@ -54,7 +48,29 @@ export const moveCCL = (m: M) => {
 }
 
 export const moveCRD = (m: M) => {
+  const insertPath = [...getSI1(getXP(m)), 'c', getCountXCU(m) + 1, 0] as P
+  const spacePath = []
 
+  const cb = m2cbCR(m)
+
+
+
+  // console.log(getXP(m))
+
+
+  deleteCR(m)
+
+  // console.log(m)
+
+
+  // console.log(insertPath)
+
+  // console.log(getCountXCU(m))
+
+  // console.log(...cb2ipCR(cb, insertPath))
+
+  m.push(...cb2ipCR(cb, insertPath))
+  m.sort(sortPath)
 }
 
 export const moveCRU = (m: M) => {
