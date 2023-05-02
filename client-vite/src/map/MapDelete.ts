@@ -16,7 +16,9 @@ export const deleteCR = (m: M) => {
     const n = m[i]
     const parentPathList = [...getSIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
-    isCFDF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)})
+    isCFDF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)}) && console.log(n.nodeId, getX(m).path, n.path)
+    // ef gh
+    // ij kl
   }
 }
 

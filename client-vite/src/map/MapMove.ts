@@ -59,5 +59,11 @@ export const moveCRD = (m: M) => {
 }
 
 export const moveCRU = (m: M) => {
-
+  const spacePath = [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0] as P
+  const insertPath = [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0] as P
+  const cb = m2cbCR(m)
+  makeSpaceFromCR(m, spacePath)
+  deleteCR(m)
+  m.push(...cb2ipCR(cb, insertPath))
+  m.sort(sortPath)
 }
