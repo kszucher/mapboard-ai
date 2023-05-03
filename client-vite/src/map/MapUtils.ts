@@ -24,17 +24,12 @@ export const isR = (p: P) => getPathPattern(p).endsWith('r')
 export const isD = (p: P) => getPathPattern(p).endsWith('d')
 export const isS = (p: P) => getPathPattern(p).endsWith('s')
 export const isC = (p: P) => getPathPattern(p).endsWith('c')
-export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
+export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
-export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
 export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
-export const isSD1 = (p: P, pt: P) => isSD(p, pt) && pt.at(-1) === p.at(-1) as number + 1
-export const isSU1 = (p: P, pt: P) => isSU(p, pt) && pt.at(-1) === p.at(-1) as number - 1
-export const isSUF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! < p.at(-1)!
-export const isSU1F = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1)! as number - 1
+export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
 export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
-export const isSD1F = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! === p.at(-1)! as number + 1
 export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
 export const isSV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -1), p.slice(0, -1))
 export const isCV = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, -2), p.slice(0, -2)) && pt.at(-2) === p.at(-2)
@@ -45,9 +40,9 @@ export const isCDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(
 export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 2), p.slice(0, -2)) && pt.at(p.length - 2)! >= p.at(-2)!
 
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
-export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
+export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
@@ -69,18 +64,18 @@ export const getSXF = (m: M) => m.find(n => n.selected)!
 export const getSXFP = (m: M) => getSXF(m).path
 export const getSXL = (m: M) => m.findLast(n => n.selected)!
 export const getSXLP = (m: M) => getSXL(m).path
-export const getSXAD1 = (m: M) => getSD1(getSXFP(m))
-export const getSXAD2 = (m: M) => getSD2(getSXLP(m))
-export const getSXAU1 = (m: M) => getSU1(getSXFP(m))
 export const getSXI1  = (m: M) => getSI1(getXP(m))
 export const getSXI1D1 = (m: M) => getSD1(getSI1(getXP(m)))
-export const getSXAI1 = (m: M) => getSI1(getSXFP(m))
 export const getCXD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
 export const getCXU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
 export const getCXR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
 export const getCXL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 
 export const getXA = (m: M) => m.filter(n => n.selected)
+export const getSXAD1 = (m: M) => getSD1(getSXFP(m))
+export const getSXAD2 = (m: M) => getSD2(getSXLP(m))
+export const getSXAU1 = (m: M) => getSU1(getSXFP(m))
+export const getSXAI1 = (m: M) => getSI1(getSXFP(m))
 export const getSXAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
 export const getCXAD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
 export const getCXAU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
