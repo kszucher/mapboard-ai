@@ -2,8 +2,20 @@ import {M, P} from "../state/MapPropTypes"
 import {genHash, getTableIndices} from "../core/Utils"
 import {selectNode} from "./MapSelect";
 import {
-  getCountCV, getCountCH, getCountXCU, getCountXCL, getDefaultNode, getInsertParentNode, getXP,
-  incXCDF, incXCRF, incXCFDF, incXCFRF, incPi, incXSDF, incXSFDF,
+  getCountCV,
+  getCountCH,
+  getCountXCU,
+  getCountXCL,
+  getDefaultNode,
+  getInsertParentNode,
+  getXP,
+  incXCDF,
+  incXCRF,
+  incXCFDF,
+  incXCFRF,
+  incPi,
+  incXSDF,
+  incXSFDF,
   sortPath
 } from "./MapUtils"
 
