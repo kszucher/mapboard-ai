@@ -66,14 +66,14 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
-    case 'select_S_O': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
-    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
-    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
-    case 'select_S_I': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
     case 'select_S_D': selectNode(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break
     case 'select_S_D_too': selectNodeToo(m, structNavigate(m, getXL(m).path, Dir.D), 's'); break
     case 'select_S_U': selectNode(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break
     case 'select_S_U_too': selectNodeToo(m, structNavigate(m, getXF(m).path, Dir.U), 's'); break
+    case 'select_S_O': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
+    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
+    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
+    case 'select_S_I': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
     case 'select_S_family_O': getX(m).selection = 'f'; break
     case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
     case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
@@ -89,10 +89,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_B': getXP(m).includes('c') ? selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
     case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break
-    case 'select_CC_R': selectNodeList(m, getXCCR(m), 's'); break
-    case 'select_CC_L': selectNodeList(m, getXCCL(m), 's'); break
     case 'select_CR_D': selectNodeList(m, getXCRD(m), 's'); break
     case 'select_CR_U': selectNodeList(m, getXCRU(m), 's'); break
+    case 'select_CC_R': selectNodeList(m, getXCCR(m), 's'); break
+    case 'select_CC_L': selectNodeList(m, getXCCL(m), 's'); break
     case 'select_dragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
@@ -103,10 +103,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
     case 'insert_S_D': insertSelectSD(m, {}); break
     case 'insert_S_U': insertSelectSU(m, {}); break
-    case 'insert_CC_R': insertCCR(m); break
-    case 'insert_CC_L': insertCCL(m); break
     case 'insert_CR_D': insertCRD(m); break
     case 'insert_CR_U': insertCRU(m); break
+    case 'insert_CC_R': insertCCR(m); break
+    case 'insert_CC_L': insertCCL(m); break
 
     case 'insertNodesFromClipboard': {
       // clearSelection(m)
@@ -122,18 +122,18 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'delete_CR': deleteSelectCR(m); break
     case 'delete_CC': deleteSelectCC(m); break
 
-    case 'move_S_O': moveSO(m); break
-    case 'move_S_I': moveSI(m); break
-    case 'move_S_I_R': moveSIR(m); break
-    case 'move_S_I_L': moveSIL(m); break
     case 'move_S_D': moveSD(m); break
     case 'move_S_T': moveST(m); break
     case 'move_S_U': moveSU(m); break
     case 'move_S_B': moveSB(m); break
-    case 'move_CC_R': moveCCR(m); break;
-    case 'move_CC_L': moveCCL(m); break;
+    case 'move_S_O': moveSO(m); break
+    case 'move_S_I': moveSI(m); break
+    case 'move_S_I_R': moveSIR(m); break
+    case 'move_S_I_L': moveSIL(m); break
     case 'move_CR_D': moveCRD(m); break;
     case 'move_CR_U': moveCRU(m); break;
+    case 'move_CC_R': moveCCR(m); break;
+    case 'move_CC_L': moveCCL(m); break;
 
     case 'transpose': {
       // if (getX(m).cRowCount || getX(m).cColCount) {

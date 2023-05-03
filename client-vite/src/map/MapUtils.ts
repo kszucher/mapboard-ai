@@ -46,19 +46,19 @@ export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
-export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
+export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
+export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
+export const getSD2 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 2]
+export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
 export const getSI2 = (p: P) => getSIL(p).at(-2) as P
-export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
-export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
-export const getSD2 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 2]
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getR0D0 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 0])
@@ -79,14 +79,14 @@ export const getXFSU1 = (m: M) => getSU1(getXFP(m))
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getXAPL = (m: M) => getXA(m).map(n => n.path)
 export const getXASF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
-export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
-export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
 export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
-export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
-export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
+export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
+export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
 export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
+export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
+export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
 
 export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
 export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
@@ -107,10 +107,10 @@ export const isXSSN = (m: M) => isXSS(m) && ((getXL(m).path.at(-1) as number) - 
 export const isXC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isXCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
 export const isXCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getXP(m), p))
-export const isXCBR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
-export const isXCBL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
 export const isXCBD = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m) - 1
 export const isXCBU = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
+export const isXCBR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
+export const isXCBL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
 
 export const setPropXA = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEach(n => Object.assign(n, {[prop]: value}))
@@ -118,10 +118,10 @@ export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEa
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const makeSpaceFrom = (m: M, p: P) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, getXA(m).length)) // use it for mouse drag
-export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
-export const incXCFDF = (m: M) => m.filter(n => isCFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
+export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
+export const incXCFDF = (m: M) => m.filter(n => isCFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
 export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
 export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
 

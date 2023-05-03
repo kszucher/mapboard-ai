@@ -23,13 +23,6 @@ const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
   insertNodeList(m, indices.map(el => [...p, 'c', ...el, 's', 0]))
 }
 
-// FIXME insertSelectSOR, insertSelectSOL, insertSelectSO
-export const insertSelectSO = (m: M, attributes: object) => {
-  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
-  selectNode(m, insertPath, 's')
-}
-
 export const insertSelectSD = (m: M, attributes: object) => {
   const insertPath = incPi(getXP(m), getXP(m).length - 1)
   incXSDF(m)
@@ -44,19 +37,16 @@ export const insertSelectSU = (m: M, attributes: object) => {
   selectNode(m, insertPath, 's')
 }
 
+// FIXME insertSelectSOR, insertSelectSOL, insertSelectSO
+export const insertSelectSO = (m: M, attributes: object) => {
+  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
+  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
+  selectNode(m, insertPath, 's')
+}
+
 export const insertSelectTable = (m: M, r: number, c: number) => {
   insertSelectSO(m, {})
   insertCellNodeList(m, getXP(m), getTableIndices(r, c))
-}
-
-export const insertCCR = (m: M) => {
-  incXCRF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountXCL(m) + 1]))
-}
-
-export const insertCCL = (m: M) => {
-  incXCFRF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountXCL(m) - 1]))
 }
 
 export const insertCRD = (m: M) => {
@@ -67,4 +57,14 @@ export const insertCRD = (m: M) => {
 export const insertCRU = (m: M) => {
   incXCFDF(m)
   insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountXCU(m) - 1, i]))
+}
+
+export const insertCCR = (m: M) => {
+  incXCRF(m)
+  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountXCL(m) + 1]))
+}
+
+export const insertCCL = (m: M) => {
+  incXCFRF(m)
+  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountXCL(m) - 1]))
 }

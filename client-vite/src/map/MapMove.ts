@@ -51,16 +51,16 @@ const moveCC = (m: M, spacePath: P, insertPath: P) => {
   m.sort(sortPath)
 }
 
-export const moveSO = (m: M) => moveS(m, [], [...getXFSU1(m), 's', getCountXFSU1SO1(m)])
-export const moveSI = (m: M) => moveS(m, getXI1D1(m), getXI1D1(m))
-export const moveSIR = (m: M) => moveS(m, [], ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
-export const moveSIL = (m: M) => moveS(m, [], ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
 export const moveSD = (m: M) => moveS(m, getXLPSD2(m), getXFPSD1(m))
 export const moveST = (m: M) => moveS(m, [...getXI1(m), 's', 0], [...getXI1(m), 's', 0])
 export const moveSU = (m: M) => moveS(m, getXFPSU1(m), getXFPSU1(m))
 export const moveSB = (m: M) => moveS(m, [], [...getXI1(m), 's', getCountXLSD(m)])
+export const moveSO = (m: M) => moveS(m, [], [...getXFSU1(m), 's', getCountXFSU1SO1(m)])
+export const moveSI = (m: M) => moveS(m, getXI1D1(m), getXI1D1(m))
+export const moveSIR = (m: M) => moveS(m, [], ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
+export const moveSIL = (m: M) => moveS(m, [], ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
 
-export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 2], [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 1])
-export const moveCCL = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) - 1], [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) -1])
 export const moveCRD = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountXCU(m) + 2, 0], [...getSI1(getXP(m)), 'c', getCountXCU(m) + 1, 0])
 export const moveCRU = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0], [...getSI1(getXP(m)), 'c', getCountXCU(m) - 1, 0])
+export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 2], [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) + 1])
+export const moveCCL = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) - 1], [...getSI1(getXP(m)), 'c', 0, getCountXCL(m) -1])
