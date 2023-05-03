@@ -76,17 +76,18 @@ export const getXI1  = (m: M) => getSI1(getXP(m))
 export const getXI1D1 = (m: M) => getSD1(getSI1(getXP(m)))
 export const getXFSI1 = (m: M) => getSI1(getXFP(m))
 export const getXFSU1 = (m: M) => getSU1(getXFP(m))
-export const getXA = (m: M) => m.filter(n => n.selected)
-export const getXAPL = (m: M) => getXA(m).map(n => n.path)
-export const getXASF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
 export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
 export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
 export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
 export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
-export const getXCRD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
-export const getXCRU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
-export const getXCCR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
-export const getXCCL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
+
+export const getXA = (m: M) => m.filter(n => n.selected)
+export const getXASF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
+export const getXAPL = (m: M) => getXA(m).map(n => n.path)
+export const getXACD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
+export const getXACU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
+export const getXACR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
+export const getXACL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
 
 export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
 export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
@@ -126,8 +127,8 @@ export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).
 export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
 
 export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m)
-export const getReselectCR = (m: M) => getCountXCU(m) ? getXCRU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
-export const getReselectCC = (m: M) => getCountXCL(m) ? getXCCL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
+export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
+export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
 
 export const m2cb = (m: M) => structuredClone(getXASF(m).map(n =>
   ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXFSU(m), ...n.path.slice(getXP(m).length)]}))) as GN[]

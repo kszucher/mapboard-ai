@@ -27,10 +27,10 @@ import {
   getParentNodeByPath,
   setPropXA,
   setPropXASF,
-  getXCCR,
-  getXCCL,
-  getXCRD,
-  getXCRU,
+  getXACR,
+  getXACL,
+  getXACD,
+  getXACU,
   getXF,
   getXL,
   getXCR,
@@ -89,10 +89,10 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_B': getXP(m).includes('c') ? selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
     case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break
-    case 'select_CR_D': selectNodeList(m, getXCRD(m), 's'); break
-    case 'select_CR_U': selectNodeList(m, getXCRU(m), 's'); break
-    case 'select_CC_R': selectNodeList(m, getXCCR(m), 's'); break
-    case 'select_CC_L': selectNodeList(m, getXCCL(m), 's'); break
+    case 'select_CR_D': selectNodeList(m, getXACD(m), 's'); break
+    case 'select_CR_U': selectNodeList(m, getXACU(m), 's'); break
+    case 'select_CC_R': selectNodeList(m, getXACR(m), 's'); break
+    case 'select_CC_L': selectNodeList(m, getXACL(m), 's'); break
     case 'select_dragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
