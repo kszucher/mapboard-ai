@@ -6,13 +6,12 @@ import {
   getSIL,
   isSD,
   isCFDF,
-  getX,
   decPi,
   isCFRF,
   getReselectS,
   getReselectCR,
   getReselectCC,
-  getXA
+  getXA, getXP
 } from "./MapUtils"
 
 export const deleteS = (m: M) => {
@@ -30,7 +29,7 @@ export const deleteCR = (m: M) => {
     const parentPathList = [...getSIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     if (!getXA(m).length) break
-    isCFDF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 2)})
+    isCFDF(getXP(m), n.path) && Object.assign(n, {path: decPi(n.path, getXP(m).length - 2)})
   }
 }
 
@@ -40,7 +39,7 @@ export const deleteCC = (m: M) => {
     const parentPathList = [...getSIL(n.path), n.path]
     parentPathList.some(p => getNodeByPath(m, p).selected) && m.splice(i, 1)
     if (!getXA(m).length) break
-    isCFRF(getX(m).path, n.path) && Object.assign(n, {path: decPi(n.path, getX(m).path.length - 1)})
+    isCFRF(getXP(m), n.path) && Object.assign(n, {path: decPi(n.path, getXP(m).length - 1)})
   }
 }
 
