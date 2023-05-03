@@ -6,8 +6,8 @@ import {
   getNodeByPath,
   getParentNodeByPath,
   getPathDir,
-  isXCC,
-  isXCR
+  isCCXA,
+  isCRXA
 } from "../map/MapUtils"
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
@@ -115,13 +115,13 @@ export const getCellPolygonPoints = (m: M): PolygonPoints => {
   const dir = getPathDir(ls.path)
   const { xi, yu } = getHelperParams(pn)
   let x, y, w, h
-  if (isXCR(m)) {
+  if (isCRXA(m)) {
     const i = ls.path.at(-2) as number
     x = xi
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
-  } else if (isXCC(m)) {
+  } else if (isCCXA(m)) {
     const j = ls.path.at(-1) as number
     x = xi + n.lineDeltaX - 20
     y = yu

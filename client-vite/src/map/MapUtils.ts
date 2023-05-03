@@ -93,18 +93,18 @@ export const getCountCXV = (m: M) => getCountCV(m, getXP(m))
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
 export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getSXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
-export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
-export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
-export const isXDS = (m: M) => getXP(m).length === 6
-export const isXSS = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
-export const isXSSN = (m: M) => isXSS(m) && ((getSXL(m).path.at(-1) as number) - (getSXF(m).path.at(-1) as number)) === getXA(m).length - 1
-export const isXC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
-export const isXCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
-export const isXCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getXP(m), p))
-export const isXCBD = (m: M) => isC(getXP(m)) && getCountCXU(m) === getCountCXV(m) - 1
-export const isXCBU = (m: M) => isC(getXP(m)) && getCountCXU(m) === 0
-export const isXCBR = (m: M) => isC(getXP(m)) && getCountCXL(m) === getCountCXH(m) - 1
-export const isXCBL = (m: M) => isC(getXP(m)) && getCountCXL(m) === 0
+export const isRX = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
+export const isSX = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
+export const isDSX = (m: M) => getXP(m).length === 6
+export const isSXAV = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
+export const isSXAVN = (m: M) => isSXAV(m) && ((getSXL(m).path.at(-1) as number) - (getSXF(m).path.at(-1) as number)) === getXA(m).length - 1
+export const isCX = (m: M) => isC(getXP(m)) && getXA(m).length === 1
+export const isCRXA = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
+export const isCCXA = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getXP(m), p))
+export const isCXB = (m: M) => isC(getXP(m)) && getCountCXU(m) === getCountCXV(m) - 1
+export const isCXT = (m: M) => isC(getXP(m)) && getCountCXU(m) === 0
+export const isCXR = (m: M) => isC(getXP(m)) && getCountCXL(m) === getCountCXH(m) - 1
+export const isCXL = (m: M) => isC(getXP(m)) && getCountCXL(m) === 0
 
 export const setPropXA = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
 export const setPropXASF = (m: M, prop: keyof N, value: any) => getSXAF(m).forEach(n => Object.assign(n, {[prop]: value}))

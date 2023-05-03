@@ -2,7 +2,7 @@ import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
 import {Dispatch} from "react"
 import {getMap} from "../state/EditorState"
-import {getX, isXCC, isXCR, isXC, isXDS, isXR, isXS, isXSSN, isXCBR, isXCBL, isXCBD, isXCBU, sortPath, getCountSXAU, getCountSXAD} from "../map/MapUtils"
+import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD} from "../map/MapUtils"
 import {getDir} from "./MapSvgUtils"
 
 const ckm = (e: any, condition: string) => (
@@ -34,17 +34,17 @@ export const windowListenersKeyPaste = (
   const dir = getDir(getX(m))
   const dr = dir === 1
   const dl = dir === -1
-  const r = isXR(m) // hasS?
-  const s = isXS(m)
-  const ds = isXDS(m)
-  const ssn = isXSSN(m)
-  const c = isXC(m)
-  const cr = isXCR(m)
-  const cc = isXCC(m)
-  const cbd = isXCBD(m)
-  const cbu = isXCBU(m)
-  const cbr = isXCBR(m)
-  const cbl = isXCBL(m)
+  const r = isRX(m) // hasS?
+  const s = isSX(m)
+  const ds = isDSX(m)
+  const ssn = isSXAVN(m)
+  const c = isCX(m)
+  const cr = isCRXA(m)
+  const cc = isCCXA(m)
+  const cbd = isCXB(m)
+  const cbu = isCXT(m)
+  const cbr = isCXR(m)
+  const cbl = isCXL(m)
   const sxad = getCountSXAD(m)
   const sxau = getCountSXAU(m)
 

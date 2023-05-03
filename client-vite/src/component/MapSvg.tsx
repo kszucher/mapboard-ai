@@ -2,7 +2,7 @@ import React, {FC, Fragment, useState} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
-import {getClosestStructParentPath, getG, getX, getNodeById, getNodeByPath, getPathPattern, isXCC, isXCR, isXC, isS} from "../map/MapUtils"
+import {getClosestStructParentPath, getG, getX, getNodeById, getNodeByPath, getPathPattern, isCCXA, isCRXA, isCX, isS} from "../map/MapUtils"
 import {actions, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getArcPath, getBezierLinePath, getBezierLinePoints, getCellPolygonPoints, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath,} from "./MapSvgUtils"
@@ -23,9 +23,9 @@ const pathCommonProps = {
 
 const getSelectionMargin = (m: M, n: N) => (
   (
-    isXC(m) ||
-    isXCR(m) ||
-    isXCC(m) ||
+    isCX(m) ||
+    isCRXA(m) ||
+    isCCXA(m) ||
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
@@ -285,8 +285,8 @@ export const MapSvg: FC = () => {
                 !selectionRectCoords.length &&
                 n.selected &&
                 n.selected !== ls.selected &&
-                !isXCR(m) &&
-                !isXCC(m) &&
+                !isCRXA(m) &&
+                !isCCXA(m) &&
                 <path
                   key={`${n.nodeId}_svg_selectionBorderSecondary`}
                   d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(m, n))}
@@ -307,7 +307,7 @@ export const MapSvg: FC = () => {
               key={`${g.nodeId}_svg_selectionBorderPrimary`}
               d={
                 getPolygonPath(ls,
-                  (isXC(m) || isXCR(m) || isXCC(m))
+                  (isCX(m) || isCRXA(m) || isCCXA(m))
                     ? getCellPolygonPoints(m)
                     : getStructPolygonPoints(ls, ls.selection), ls.selection,
                   getSelectionMargin(m, ls)
