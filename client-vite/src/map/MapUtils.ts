@@ -65,56 +65,54 @@ export const getR0D0 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 0])
 export const getR0D1 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 1])
 export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXP = (m: M) => getX(m).path
-export const getXF = (m: M) => m.find(n => n.selected)!
-export const getXFP = (m: M) => getXF(m).path
-export const getXFPSU1 = (m: M) => getSU1(getXFP(m))
-export const getXFPSD1 = (m: M) => getSD1(getXFP(m))
-export const getXL = (m: M) => m.findLast(n => n.selected)!
-export const getXLP = (m: M) => getXL(m).path
-export const getXLPSD2 = (m: M) => getSD2(getXLP(m))
-export const getXI1  = (m: M) => getSI1(getXP(m))
-export const getXI1D1 = (m: M) => getSD1(getSI1(getXP(m)))
-export const getXFSI1 = (m: M) => getSI1(getXFP(m))
-export const getXFSU1 = (m: M) => getSU1(getXFP(m))
-export const getXCD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
-export const getXCU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
-export const getXCR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
-export const getXCL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
+export const getSXF = (m: M) => m.find(n => n.selected)!
+export const getSXFP = (m: M) => getSXF(m).path
+export const getSXL = (m: M) => m.findLast(n => n.selected)!
+export const getSXLP = (m: M) => getSXL(m).path
+export const getSXAD1 = (m: M) => getSD1(getSXFP(m))
+export const getSXAD2 = (m: M) => getSD2(getSXLP(m))
+export const getSXAU1 = (m: M) => getSU1(getSXFP(m))
+export const getSXI1  = (m: M) => getSI1(getXP(m))
+export const getSXI1D1 = (m: M) => getSD1(getSI1(getXP(m)))
+export const getSXAI1 = (m: M) => getSI1(getSXFP(m))
+export const getCXD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
+export const getCXU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
+export const getCXR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
+export const getCXL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 
 export const getXA = (m: M) => m.filter(n => n.selected)
-export const getXASF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
-export const getXAPL = (m: M) => getXA(m).map(n => n.path)
-export const getXACD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
-export const getXACU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
-export const getXACR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
-export const getXACL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
+export const getSXAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
+export const getCXAD = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 2))
+export const getCXAU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 2))
+export const getCXAR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
+export const getCXAL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
 
-export const getCountXFSU = (m: M) => getCountSU(m, getXFP(m))
-export const getCountXLSD = (m: M) => getCountSD(m, getXLP(m))
-export const getCountXFSU1SO1 = (m: M) => getCountSO1(m, getXFSU1(m))
-export const getCountXCU = (m: M) => getXP(m).at(-2) as number
-export const getCountXCL = (m: M) => getXP(m).at(-1) as number
-export const getCountXCH = (m: M) => getCountCH(m, getXP(m))
-export const getCountXCV = (m: M) => getCountCV(m, getXP(m))
+export const getCountSXAU = (m: M) => getCountSU(m, getSXFP(m))
+export const getCountSXAD = (m: M) => getCountSD(m, getSXLP(m))
+export const getCountSXAU1O1 = (m: M) => getCountSO1(m, getSXAU1(m))
+export const getCountCXU = (m: M) => getXP(m).at(-2) as number
+export const getCountCXL = (m: M) => getXP(m).at(-1) as number
+export const getCountCXH = (m: M) => getCountCH(m, getXP(m))
+export const getCountCXV = (m: M) => getCountCV(m, getXP(m))
 
 export const getPropXA = (m: M, prop: keyof N) => isArrayOfEqualValues(getXA(m).map(n => n[prop])) ? getX(m)[prop] : null
-export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getXASF(m).map(n => n[prop])) ? getX(m)[prop] : null
+export const getPropXASSO = (m: M, prop: keyof N) => isArrayOfEqualValues(getSXAF(m).map(n => n[prop])) ? getX(m)[prop] : null
 
 export const isXR = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n.path))
 export const isXS = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
 export const isXDS = (m: M) => getXP(m).length === 6
 export const isXSS = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
-export const isXSSN = (m: M) => isXSS(m) && ((getXL(m).path.at(-1) as number) - (getXF(m).path.at(-1) as number)) === getXA(m).length - 1
+export const isXSSN = (m: M) => isXSS(m) && ((getSXL(m).path.at(-1) as number) - (getSXF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isXC = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isXCR = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
 export const isXCC = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getXP(m), p))
-export const isXCBD = (m: M) => isC(getXP(m)) && getCountXCU(m) === getCountXCV(m) - 1
-export const isXCBU = (m: M) => isC(getXP(m)) && getCountXCU(m) === 0
-export const isXCBR = (m: M) => isC(getXP(m)) && getCountXCL(m) === getCountXCH(m) - 1
-export const isXCBL = (m: M) => isC(getXP(m)) && getCountXCL(m) === 0
+export const isXCBD = (m: M) => isC(getXP(m)) && getCountCXU(m) === getCountCXV(m) - 1
+export const isXCBU = (m: M) => isC(getXP(m)) && getCountCXU(m) === 0
+export const isXCBR = (m: M) => isC(getXP(m)) && getCountCXL(m) === getCountCXH(m) - 1
+export const isXCBL = (m: M) => isC(getXP(m)) && getCountCXL(m) === 0
 
 export const setPropXA = (m: M, prop: keyof N, value: any) => getXA(m).forEach(n => Object.assign(n, {[prop]: value}))
-export const setPropXASF = (m: M, prop: keyof N, value: any) => getXASF(m).forEach(n => Object.assign(n, {[prop]: value}))
+export const setPropXASF = (m: M, prop: keyof N, value: any) => getSXAF(m).forEach(n => Object.assign(n, {[prop]: value}))
 
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
@@ -126,16 +124,16 @@ export const incXCFDF = (m: M) => m.filter(n => isCFDF(getXP(m), n.path)).forEac
 export const makeSpaceFromCR = (m: M, p: P) => m.filter(n => isCFDF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 2))
 export const makeSpaceFromCC = (m: M, p: P) => m.filter(n => isCFRF(p, n.path)).forEach(n => n.path = incPi(n.path, p.length - 1))
 
-export const getReselectS = (m: M) => getCountXFSU(m) ? getXFSU1(m) : getXFSI1(m)
-export const getReselectCR = (m: M) => getCountXCU(m) ? getXACU(m) : ( getCountXCV(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
-export const getReselectCC = (m: M) => getCountXCL(m) ? getXACL(m) : ( getCountXCH(m) >= 2 ? getXAPL(m) : [getXI1(m)] )
+export const getReselectS = (m: M) => getCountSXAU(m) ? getSXAU1(m) : getSXAI1(m)
+export const getReselectCR = (m: M) => getCountCXU(m) ? getCXAU(m) : ( getCountCXV(m) >= 2 ? getXA(m).map(n => n.path) : [getSXI1(m)] )
+export const getReselectCC = (m: M) => getCountCXL(m) ? getCXAL(m) : ( getCountCXH(m) >= 2 ? getXA(m).map(n => n.path) : [getSXI1(m)] )
 
-export const m2cb = (m: M) => structuredClone(getXASF(m).map(n =>
-  ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountXFSU(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const m2cbCR = (m: M) => structuredClone(getXASF(m).map(n =>
-  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number) - getCountXCU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]}))) as GN[]
-export const m2cbCC = (m: M) => structuredClone(getXASF(m).map(n =>
-  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountXCL(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const m2cb = (m: M) => structuredClone(getSXAF(m).map(n =>
+  ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountSXAU(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const m2cbCR = (m: M) => structuredClone(getSXAF(m).map(n =>
+  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number) - getCountCXU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]}))) as GN[]
+export const m2cbCC = (m: M) => structuredClone(getSXAF(m).map(n =>
+  ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountCXL(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
 
 export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
   ({...n, path: [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))) as GN[]

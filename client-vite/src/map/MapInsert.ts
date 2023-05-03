@@ -4,8 +4,8 @@ import {selectNode} from "./MapSelect";
 import {
   getCountCV,
   getCountCH,
-  getCountXCU,
-  getCountXCL,
+  getCountCXU,
+  getCountCXL,
   getDefaultNode,
   getInsertParentNode,
   getXP,
@@ -63,20 +63,20 @@ export const insertSelectTable = (m: M, r: number, c: number) => {
 
 export const insertCRD = (m: M) => {
   incXCDF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountXCU(m) + 1, i]))
+  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountCXU(m) + 1, i]))
 }
 
 export const insertCRU = (m: M) => {
   incXCFDF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountXCU(m) - 1, i]))
+  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountCXU(m) - 1, i]))
 }
 
 export const insertCCR = (m: M) => {
   incXCRF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountXCL(m) + 1]))
+  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountCXL(m) + 1]))
 }
 
 export const insertCCL = (m: M) => {
   incXCFRF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountXCL(m) - 1]))
+  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountCXL(m) - 1]))
 }
