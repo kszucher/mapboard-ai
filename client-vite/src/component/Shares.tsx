@@ -65,10 +65,10 @@ export const Shares: FC = () => {
             <DataGrid
               rows={shareDataExport}
               columns={columnsExport}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
+              // pageSize={5}
+              // rowsPerPageOptions={[5]}
               checkboxSelection
-              disableSelectionOnClick
+              // disableSelectionOnClick
               autoHeight={true}
             />}
         </div>
@@ -80,10 +80,10 @@ export const Shares: FC = () => {
             <DataGrid
               rows={shareDataImport}
               columns={columnsImport}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
+              // pageSize={5}
+              // rowsPerPageOptions={[5]}
               checkboxSelection
-              disableSelectionOnClick
+              // disableSelectionOnClick
               autoHeight={true}
             />}
         </div>
