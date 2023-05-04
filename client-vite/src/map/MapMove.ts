@@ -25,10 +25,10 @@ import {
   getCountCXL, getXA,
 } from "./MapUtils"
 
-const moveS = (m: M, spacePath: P, insertPath: P) => {
+const moveS = (m: M, insertPath: P) => {
   const cb = m2cbS(m)
   deleteS(m)
-  makeSpaceFromS(m, spacePath, getXA(cb).length)
+  makeSpaceFromS(m, insertPath, getXA(cb).length)
   m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
@@ -46,32 +46,32 @@ const pasteS = (m: M) => {
 
 }
 
-const moveCR = (m: M, spacePath: P, insertPath: P) => {
+const moveCR = (m: M, insertPath: P) => {
   const cb = m2cbCR(m)
   deleteCR(m)
-  makeSpaceFromCR(m, spacePath)
+  makeSpaceFromCR(m, insertPath)
   m.push(...cb2ipCR(cb, insertPath))
   m.sort(sortPath)
 }
 
-const moveCC = (m: M, spacePath: P, insertPath: P) => {
+const moveCC = (m: M, insertPath: P) => {
   const cb = m2cbCC(m)
   deleteCC(m)
-  makeSpaceFromCC(m, spacePath)
+  makeSpaceFromCC(m, insertPath)
   m.push(...cb2ipCC(cb, insertPath))
   m.sort(sortPath)
 }
 
-export const moveSD = (m: M) => moveS(m, getSXAD1(m), getSXAD1(m))
-export const moveST = (m: M) => moveS(m, [...getSXI1(m), 's', 0], [...getSXI1(m), 's', 0])
-export const moveSU = (m: M) => moveS(m, getSXAU1(m), getSXAU1(m))
-export const moveSB = (m: M) => moveS(m, [], [...getSXI1(m), 's', getCountSXAD(m)])
-export const moveSO = (m: M) => moveS(m, [], [...getSXAU1(m), 's', getCountSXAU1O1(m)])
-export const moveSI = (m: M) => moveS(m, getSXI1D1(m), getSXI1D1(m))
-export const moveSIR = (m: M) => moveS(m, [], ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
-export const moveSIL = (m: M) => moveS(m, [], ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
+export const moveSD = (m: M) => moveS(m, getSXAD1(m))
+export const moveST = (m: M) => moveS(m, [...getSXI1(m), 's', 0])
+export const moveSU = (m: M) => moveS(m, getSXAU1(m))
+export const moveSB = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAD(m)])
+export const moveSO = (m: M) => moveS(m, [...getSXAU1(m), 's', getCountSXAU1O1(m)])
+export const moveSI = (m: M) => moveS(m, getSXI1D1(m))
+export const moveSIR = (m: M) => moveS(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
+export const moveSIL = (m: M) => moveS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
 
-export const moveCRD = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) + 1, 0], [...getSI1(getXP(m)), 'c', getCountCXU(m) + 1, 0])
-export const moveCRU = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) - 1, 0], [...getSI1(getXP(m)), 'c', getCountCXU(m) - 1, 0])
-export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 1], [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 1])
-export const moveCCL = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) - 1], [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) -1])
+export const moveCRD = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) + 1, 0])
+export const moveCRU = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) - 1, 0])
+export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 1])
+export const moveCCL = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) -1])
