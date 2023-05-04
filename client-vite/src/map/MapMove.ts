@@ -1,6 +1,7 @@
 import {genHash} from "../core/Utils";
-import {M, P} from "../state/MapPropTypes"
+import {GN, M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
+import {selectNode, unselectNodes} from "./MapSelect";
 import {
   cb2ip,
   cb2ipCC,
@@ -9,14 +10,16 @@ import {
   getCountCXU,
   getCountR0D0S,
   getCountR0D1S,
+  getCountSO1,
   getCountSXAD,
   getCountSXAU,
   getCountSXAU1O1,
-  getCountSXI1U,
+  getCountSXI1U, getReselectS,
   getSXAU1,
   getSXI1,
   getSXI2,
   getXA,
+  getXP,
   m2cbCC,
   m2cbCR,
   m2cbS,
@@ -41,28 +44,35 @@ const cbSave = (cb: any) => {
   })
 }
 
+export const cutS = (m: M) => {
+  const reselectPath = getReselectS(m)
+  const cb = m2cbS(m)
+  cbSave(cb)
+  deleteS(m)
+  selectNode(m, reselectPath, 's')
+}
+
+export const copyS = (m: M) => {
+  const cb = m2cbS(m)
+  cbSave(cb)
+}
+
+export const pasteS = (m: M, payload: any) => {
+  const cb = JSON.parse(payload.text) as GN[]
+  cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
+  const insertPath = [...getXP(m), 's', getCountSO1(m, getXP(m))] as P
+  unselectNodes(m)
+  makeSpaceFromS(m, insertPath, getXA(cb).length)
+  m.push(...cb2ip(cb, insertPath))
+  m.sort(sortPath)
+}
+
 const moveS = (m: M, insertPath: P) => {
   const cb = m2cbS(m)
   deleteS(m)
   makeSpaceFromS(m, insertPath, getXA(cb).length)
   m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
-}
-
-const cutS = (m: M) => {
-  const cb = m2cbS(m)
-  deleteS(m)
-  cbSave(cb)
-}
-
-const copyS = (m: M) => {
-  const cb = m2cbS(m)
-  cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
-  cbSave(cb)
-}
-
-const pasteS = (m: M) => {
-
 }
 
 const moveCR = (m: M, insertPath: P) => {

@@ -48,7 +48,7 @@ export const windowListenersKeyPaste = (
   const sxad = getCountSXAD(m)
   const sxau = getCountSXAU(m)
 
-  console.log({c,cr,cc, sxavn})
+  // console.log({c,cr,cc, sxavn})
 
   const stateMachine = [
     [ kd, ckm(e, '---') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
@@ -73,8 +73,8 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '---') && code === 'Escape',              true,  true,            1, 'select_R',                 {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyA',                true,  true,            1, 'select_all',               {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyM',                true,  true,            0, 'createMapInMapDialog',     {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyC',                true,  s,               1, 'copySelection',            {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyX',                true,  s,               1, 'cutSelection',             {}, 1 ],
+    [ kd, ckm(e, 'c--') && code === 'KeyC',                true,  sxavn,           1, 'copySelection',            {}, 1 ],
+    [ kd, ckm(e, 'c--') && code === 'KeyX',                true,  sxavn,           1, 'cutSelection',             {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyZ',                true,  true,            0, 'redo',                     {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyY',                true,  true,            0, 'undo',                     {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyE',                true,  s,               1, 'transpose',                {}, 1 ],

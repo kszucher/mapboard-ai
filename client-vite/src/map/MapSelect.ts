@@ -1,7 +1,7 @@
 import {M, P} from "../state/MapPropTypes"
 import {getNodeByPath, getX} from "./MapUtils"
 
-const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))
+export const unselectNodes = (m: M) => m.forEach(n => n.path.length > 1 && Object.assign(n, {selected: 0, selection: 's'}))
 
 export const selectNode = (m: M, path: P, selection: 's' | 'f') => {
   unselectNodes(m)

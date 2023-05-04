@@ -10,7 +10,21 @@ import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {moveCCL, moveCCR, moveCRD, moveCRU, moveSB, moveSD, moveSI, moveSIL, moveSIR, moveSO, moveST, moveSU} from "./MapMove"
+import {
+  copyS, cutS,
+  moveCCL,
+  moveCCR,
+  moveCRD,
+  moveCRU,
+  moveSB,
+  moveSD,
+  moveSI,
+  moveSIL,
+  moveSIR,
+  moveSO,
+  moveST,
+  moveSU, pasteS
+} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
 import {
@@ -125,32 +139,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_CC_R': moveCCR(m); break;
     case 'move_CC_L': moveCCL(m); break;
 
-
-    case 'copySelection': {
-      // if (!sc.isRootIncluded) {
-      //   structMove(m, 'struct2clipboard')
-      // }
-      break
-    }
-    case 'cutSelection': {
-      // if (!sc.isRootIncluded) {
-      //   structMove(m, 'struct2clipboard')
-      //   structDeleteReselect(m, sc)
-      // }
-      break
-    }
-
-    case 'insertNodesFromClipboard': {
-      // clearSelection(m)
-      // const nodeList = JSON.parse(payload.text)
-      // for (let i = 0; i < nodeList.length; i++) {
-      //   mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
-      //   structCreate(m, getX(m), Dir.O, { ...nodeList[i] })
-      // }
-      break
-    }
-
-
+    case 'copySelection': copyS(m); break
+    case 'cutSelection': cutS(m); break
+    case 'insertNodesFromClipboard': pasteS(m, payload); break
 
     case 'move_dragged': {
       // nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
@@ -172,6 +163,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // }
       break
     }
+
+
     case 'applyColorFromKey': {
       // for (let i = 0; i < sc.structSelectedPathList.length; i++) {
       //   let n = getMapData(m, sc.structSelectedPathList[i])
