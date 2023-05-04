@@ -28,26 +28,37 @@ import {
 
 const moveS = (m: M, spacePath: P, insertPath: P) => {
   const cb = m2cb(m)
-  makeSpaceFrom(m, spacePath)
+  makeSpaceFrom(m, spacePath) // I can run getXA(cb)
   deleteS(m)
   m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
-// TODO cut/copy!!!
+const cutS = (m: M) => {
+  const cb = m2cb(m)
+
+}
+
+const copyS = (m: M) => {
+
+}
+
+const pasteS = (m: M) => {
+
+}
 
 const moveCR = (m: M, spacePath: P, insertPath: P) => {
   const cb = m2cbCR(m)
-  makeSpaceFromCR(m, spacePath)
   deleteCR(m)
+  makeSpaceFromCR(m, spacePath)
   m.push(...cb2ipCR(cb, insertPath))
   m.sort(sortPath)
 }
 
 const moveCC = (m: M, spacePath: P, insertPath: P) => {
   const cb = m2cbCC(m)
-  makeSpaceFromCC(m, spacePath)
   deleteCC(m)
+  makeSpaceFromCC(m, spacePath)
   m.push(...cb2ipCC(cb, insertPath))
   m.sort(sortPath)
 }
@@ -61,7 +72,7 @@ export const moveSI = (m: M) => moveS(m, getSXI1D1(m), getSXI1D1(m))
 export const moveSIR = (m: M) => moveS(m, [], ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
 export const moveSIL = (m: M) => moveS(m, [], ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
 
-export const moveCRD = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) + 2, 0], [...getSI1(getXP(m)), 'c', getCountCXU(m) + 1, 0])
+export const moveCRD = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) + 1, 0], [...getSI1(getXP(m)), 'c', getCountCXU(m) + 1, 0])
 export const moveCRU = (m: M) => moveCR(m, [...getSI1(getXP(m)), 'c', getCountCXU(m) - 1, 0], [...getSI1(getXP(m)), 'c', getCountCXU(m) - 1, 0])
-export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 2], [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 1])
+export const moveCCR = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 1], [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) + 1])
 export const moveCCL = (m: M) => moveCC(m, [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) - 1], [...getSI1(getXP(m)), 'c', 0, getCountCXL(m) -1])

@@ -24,6 +24,7 @@ export const isR = (p: P) => getPathPattern(p).endsWith('r')
 export const isD = (p: P) => getPathPattern(p).endsWith('d')
 export const isS = (p: P) => getPathPattern(p).endsWith('s')
 export const isC = (p: P) => getPathPattern(p).endsWith('c')
+
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
