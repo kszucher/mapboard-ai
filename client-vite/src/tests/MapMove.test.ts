@@ -12,7 +12,7 @@ import {
   moveCCL,
   moveCRD,
   moveCRU
-} from "./MapMove"
+} from "../map/MapMove"
 
 const moveSD_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
