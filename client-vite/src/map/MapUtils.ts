@@ -49,7 +49,6 @@ export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && get
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
-export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
@@ -65,7 +64,7 @@ export const getSXFP = (m: M) => getSXF(m).path
 export const getSXL = (m: M) => m.findLast(n => n.selected)!
 export const getSXLP = (m: M) => getSXL(m).path
 export const getSXI1  = (m: M) => getSI1(getXP(m))
-export const getSXI1D1 = (m: M) => getSD1(getSI1(getXP(m)))
+export const getSXI2 = (m: M) => getSI2(getXP(m))
 export const getCXD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
 export const getCXU = (m: M) => decPi(getXP(m), getXP(m).length - 2)
 export const getCXR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
@@ -80,9 +79,10 @@ export const getCXAU = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getCXAR = (m: M) => getXA(m).map(n => incPi(n.path, n.path.length - 1))
 export const getCXAL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length - 1))
 
-export const getCountSXAU = (m: M) => getCountSU(m, getSXFP(m))
 export const getCountSXAD = (m: M) => getCountSD(m, getSXLP(m))
+export const getCountSXAU = (m: M) => getCountSU(m, getSXFP(m))
 export const getCountSXAU1O1 = (m: M) => getCountSO1(m, getSXAU1(m))
+export const getCountSXI1U = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountCXU = (m: M) => getXP(m).at(-2) as number
 export const getCountCXL = (m: M) => getXP(m).at(-1) as number
 export const getCountCXH = (m: M) => getCountCH(m, getXP(m))

@@ -11,7 +11,6 @@ import {
   getSXI1,
   makeSpaceFromS,
   getCountSXAD,
-  getSXI1D1,
   m2cbCR,
   cb2ipCR,
   getCountCXU,
@@ -19,7 +18,11 @@ import {
   m2cbCC,
   makeSpaceFromCC,
   cb2ipCC,
-  getCountCXL, getXA, getCountSXAU,
+  getCountCXL,
+  getXA,
+  getCountSXAU,
+  getCountSXI1U,
+  getSXI2,
 } from "./MapUtils"
 
 const moveS = (m: M, insertPath: P) => {
@@ -64,10 +67,9 @@ export const moveST = (m: M) => moveS(m, [...getSXI1(m), 's', 0])
 export const moveSU = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAU(m) - 1])
 export const moveSB = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAD(m)])
 export const moveSO = (m: M) => moveS(m, [...getSXAU1(m), 's', getCountSXAU1O1(m)])
-export const moveSI = (m: M) => moveS(m, getSXI1D1(m))
+export const moveSI = (m: M) => moveS(m, [...getSXI2(m), 's', getCountSXI1U(m) + 1])
 export const moveSIR = (m: M) => moveS(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
 export const moveSIL = (m: M) => moveS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
-
 export const moveCRD = (m: M) => moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0])
 export const moveCRU = (m: M) => moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0])
 export const moveCCR = (m: M) => moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1])
