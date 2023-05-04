@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
 import {getColors} from "../core/Colors"
 import {getClosestStructParentPath, getG, getX, getNodeById, getNodeByPath, getPathPattern, isCCXA, isCRXA, isCX, isS} from "../map/MapUtils"
-import {actions, RootState} from "../editor/EditorReducer"
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getArcPath, getBezierLinePath, getBezierLinePoints, getCellPolygonPoints, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath,} from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
@@ -48,7 +48,7 @@ export const MapSvg: FC = () => {
   const C = getColors(colorMode)
   const [selectionRectCoords, setSelectionRectCoords] = useState([] as number[])
   const [intersectingNodes, setIntersectingNodes] = useState([] as N[])
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <svg
       style={{

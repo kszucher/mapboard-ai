@@ -1,12 +1,12 @@
 import {FC} from "react";
 import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import {actions} from "../editor/EditorReducer";
+import {actions, AppDispatch} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 
 export const ShouldUpdateTask: FC = () => {
   const interactionDisabled = false
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal
       open={true}

@@ -2,14 +2,14 @@ import {FC} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {Tab, Tabs} from "@mui/material";
 import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {RootState} from "../editor/EditorReducer";
+import {AppDispatch, RootState} from "../editor/EditorReducer";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const TabMaps: FC = () => {
   const tabShrink = useSelector((state: RootState) => state.editor.tabShrink)
   const { data } = useOpenWorkspaceQuery()
   const { frameId, tabMapIdList, tabMapNameList, tabId } = data || defaultUseOpenWorkspaceQueryState
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <div
       className="_bg fixed top-[96px] border-l-0"

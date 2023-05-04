@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux"
 import {Button, Link, ThemeProvider, Typography} from '@mui/material'
-import {actions, RootState} from "../editor/EditorReducer"
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {FC, useEffect} from "react"
 import { PageState} from "../core/Enums"
 import {useAuth0} from "@auth0/auth0-react"
@@ -13,7 +13,7 @@ export const Auth: FC = () => {
   const colorMode = 'dark'
   const token = useSelector((state: RootState) => state.editor.token)
   const { loginWithRedirect, getAccessTokenSilently, isAuthenticated } = useAuth0()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     setColors(colorMode)

@@ -8,7 +8,7 @@ import {adjust, getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {actions, RootState} from "../editor/EditorReducer"
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/MapPropTypes";
 
@@ -34,7 +34,7 @@ export const MapDiv: FC = () => {
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
   const C = getColors(colorMode)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <div style={{position: 'absolute', display: 'flex'}}>
       {m.map((n: N) => (

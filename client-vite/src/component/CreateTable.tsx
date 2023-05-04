@@ -1,14 +1,14 @@
 import {FC, useState} from 'react'
 import {useDispatch} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
-import {actions} from "../editor/EditorReducer"
+import {actions, AppDispatch} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
 
 export const CreateTable: FC = () => {
   const [row, setRow] = useState<string>('1')
   const [col, setCol] = useState<string>('1')
   const interactionDisabled = false
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
       <div className="_bg fixed top-[calc(48*2px)] right-[64px] w-[calc(6*32px)] flex flex-col gap-3 p-3 rounded-2xl">

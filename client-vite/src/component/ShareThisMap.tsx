@@ -1,6 +1,6 @@
 import {FC, useState} from "react";
 import {useDispatch} from "react-redux";
-import {actions} from '../editor/EditorReducer'
+import {actions, AppDispatch} from '../editor/EditorReducer'
 import {Button, FormControlLabel, FormLabel, Modal, Radio, RadioGroup, TextField, Typography} from '@mui/material'
 import {AccessTypes, PageState} from "../core/Enums";
 import { useCreateShareMutation} from "../core/Api";
@@ -12,7 +12,7 @@ export const ShareThisMap: FC = () => {
   const errorMessage = (response.error as BaseQueryError<any>)?.data?.message
   const [shareEmail, setShareEmail] = useState('')
   const [shareAccess, setShareAccess] = useState(AccessTypes.VIEW)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <Modal open={true} onClose={_=>{}} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
       <div className="_bg relative left-1/2 -translate-x-1/2 top-[96px] w-[384px] flex flex-col items-center inline-flex gap-4 p-5 rounded-2xl">

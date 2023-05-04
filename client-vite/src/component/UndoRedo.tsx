@@ -4,7 +4,7 @@ import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
 import {AccessTypes} from "../core/Enums";
-import {actions, RootState} from "../editor/EditorReducer";
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
@@ -15,7 +15,7 @@ export const UndoRedo: FC = () => {
   const redoDisabled = mapListIndex === mapList.length - 1
   const { data } = useOpenWorkspaceQuery()
   const { access } = data || defaultUseOpenWorkspaceQueryState
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="_bg fixed left-[272px] w-[80px] flex flex-center h-[40px] py-1 px-3 border-t-0 rounded-b-2xl">
       <div style={{ display: 'flex',  }}>

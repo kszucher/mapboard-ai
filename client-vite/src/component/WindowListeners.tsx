@@ -1,7 +1,7 @@
 import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AccessTypes, PageState} from "../core/Enums"
-import {actions, RootState} from "../editor/EditorReducer"
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {windowListenersKeyPaste} from "./WindowListenersKeyPaste"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
@@ -22,7 +22,7 @@ export const WindowListeners: FC = () => {
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const {data} = useOpenWorkspaceQuery()
   const {access} = data || defaultUseOpenWorkspaceQueryState
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   // TIMEOUT
   const timeoutFun = () => {

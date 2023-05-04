@@ -5,7 +5,7 @@ import { Button, IconButton, Modal, Typography } from '@mui/material'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CheckCircleIcon from '@mui/icons-material/AddCircleOutline'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
-import {actions} from "../editor/EditorReducer";
+import {actions, AppDispatch} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 import {api, useGetSharesQuery} from "../core/Api";
 
@@ -14,7 +14,7 @@ export const Shares: FC = () => {
   let { shareDataExport, shareDataImport } = data || { shareDataExport: [], shareDataImport: []}
   shareDataExport = shareDataExport.map((el: any) => ({...el, id: el._id}))
   shareDataImport = shareDataImport.map((el: any) => ({...el, id: el._id}))
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const columnsExport = [
     {field: 'sharedMapName',  headerName: 'Map Name',    width: 200, sortable: false, editable: false},
     {field: 'shareUserEmail', headerName: 'Shared With', width: 250, sortable: false, editable: false},

@@ -6,10 +6,11 @@ import MoveUpIcon from '@mui/icons-material/MoveUp'
 import MoveDownIcon from '@mui/icons-material/MoveDown'
 import DeleteIcon from '@mui/icons-material/Delete'
 import {api} from "../core/Api"
+import {AppDispatch} from "../editor/EditorReducer";
 import {getMapId} from "../state/ApiState";
 
 export const ControlsLeft: FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="_bg fixed left-0 width-[40px] py-1 px-3 flex items-center border-l-0 bottom-[48px] rounded-r-2xl">
       <div style={{ display: 'flex', flexDirection: 'column' }}>

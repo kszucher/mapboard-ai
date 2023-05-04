@@ -4,6 +4,7 @@ import {api, useOpenWorkspaceQuery} from "../core/Api";
 import { Button, MobileStepper } from '@mui/material'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+import {AppDispatch} from "../editor/EditorReducer";
 import {defaultUseOpenWorkspaceQueryState, getMapId} from "../state/ApiState";
 
 export const FrameCarousel: FC = () => {
@@ -14,7 +15,7 @@ export const FrameCarousel: FC = () => {
   const nextFrameIdPosition = frameIdPosition < frameIdList.length - 1 ? frameIdPosition + 1 : frameIdList.length - 1
   const prevFrameId = frameIdList[prevFrameIdPosition]
   const nextFrameId = frameIdList[nextFrameIdPosition]
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="_bg fixed left-1/2 -translate-x-1/2 bottom-0 rounded-t-2xl border-2 border-mb-pink border-b-0">
       {

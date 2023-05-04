@@ -4,7 +4,7 @@ import {Button, IconButton} from '@mui/material'
 import {BorderIcon, FillIcon, LineIcon, TextIcon} from './Icons'
 import {TargetedButtonGroup} from "./TargetedButtonGroup"
 import {colorList} from '../core/Colors'
-import {actions, RootState} from '../editor/EditorReducer'
+import {actions, AppDispatch, RootState} from '../editor/EditorReducer'
 import {FormatMode, LineTypes, TextTypes, WidthTypes} from "../core/Enums"
 import {getPropXASSO, getPropXA, getX} from "../map/MapUtils"
 
@@ -27,7 +27,7 @@ export const Formatter: FC = () => {
   const fillColor = ls.selection === 's' ? getPropXA(m, 'sFillColor') : getPropXASSO(m, 'fFillColor')
   const textFontSize = TextTypes[getPropXA(m, 'textFontSize') as number || 0]
   const textColor = getPropXA(m, 'textColor')
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const setFormatText = () => dispatch(actions.setFormatMode(FormatMode.text))
   const setFormatBorder = () => dispatch(actions.setFormatMode(FormatMode.border))
   const setFormatFill = () => dispatch(actions.setFormatMode(FormatMode.fill))
