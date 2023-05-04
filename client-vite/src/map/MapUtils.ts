@@ -72,7 +72,6 @@ export const getCXR = (m: M) => incPi(getXP(m), getXP(m).length - 1)
 export const getCXL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 
 export const getXA = (m: M) => m.filter(n => n.selected)
-export const getSXAD1 = (m: M) => getSD1(getSXFP(m))
 export const getSXAU1 = (m: M) => getSU1(getSXFP(m))
 export const getSXAI1 = (m: M) => getSI1(getSXFP(m))
 export const getSXAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))

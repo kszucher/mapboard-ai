@@ -11,10 +11,7 @@ import {
   getSXI1,
   makeSpaceFromS,
   getCountSXAD,
-  getSXAD1,
   getSXI1D1,
-  getSI1,
-  getXP,
   m2cbCR,
   cb2ipCR,
   getCountCXU,
@@ -22,7 +19,7 @@ import {
   m2cbCC,
   makeSpaceFromCC,
   cb2ipCC,
-  getCountCXL, getXA,
+  getCountCXL, getXA, getCountSXAU,
 } from "./MapUtils"
 
 const moveS = (m: M, insertPath: P) => {
@@ -62,9 +59,9 @@ const moveCC = (m: M, insertPath: P) => {
   m.sort(sortPath)
 }
 
-export const moveSD = (m: M) => moveS(m, getSXAD1(m))
+export const moveSD = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAU(m) + 1])
 export const moveST = (m: M) => moveS(m, [...getSXI1(m), 's', 0])
-export const moveSU = (m: M) => moveS(m, getSXAU1(m))
+export const moveSU = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAU(m) - 1])
 export const moveSB = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAD(m)])
 export const moveSO = (m: M) => moveS(m, [...getSXAU1(m), 's', getCountSXAU1O1(m)])
 export const moveSI = (m: M) => moveS(m, getSXI1D1(m))
