@@ -1,14 +1,14 @@
 import {FC} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { Divider, Menu, MenuItem } from '@mui/material'
-import {actions} from '../editor/EditorReducer'
+import {actions, RootState} from '../editor/EditorReducer'
 import {PageState} from "../core/Enums";
 import {api} from "../core/Api";
 import {useAuth0} from "@auth0/auth0-react";
 
 export const ProfileMenu: FC = () => {
-  const moreMenu = useSelector((state: RootStateOrAny) => state.editor.moreMenu)
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
+  const moreMenu = useSelector((state: RootState) => state.editor.moreMenu)
+  const pageState = useSelector((state: RootState) => state.editor.pageState)
   const { logout } = useAuth0()
   const dispatch = useDispatch()
   return (

@@ -1,6 +1,7 @@
 import {FC, useEffect} from 'react'
-import {RootStateOrAny, useSelector} from "react-redux"
+import {useSelector} from "react-redux"
 import {ThemeProvider} from '@mui/material'
+import {RootState} from "../editor/EditorReducer";
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ControlsLeft} from './ControlsLeft'
 import {ControlsRight} from './ControlsRight'
@@ -27,9 +28,9 @@ import {PageState} from "../core/Enums"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const Editor: FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const formatterVisible = useSelector((state: RootStateOrAny) => state.editor.formatterVisible)
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const formatterVisible = useSelector((state: RootState) => state.editor.formatterVisible)
+  const m = useSelector((state: RootState) => state.editor.mapList[state.editor.mapListIndex])
   const mExists = m && m.length
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState

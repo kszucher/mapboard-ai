@@ -1,16 +1,16 @@
 import {FC} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {IconButton} from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import RedoIcon from '@mui/icons-material/Redo'
 import {AccessTypes} from "../core/Enums";
-import {actions} from "../editor/EditorReducer";
+import {actions, RootState} from "../editor/EditorReducer";
 import {useOpenWorkspaceQuery} from "../core/Api";
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState";
 
 export const UndoRedo: FC = () => {
-  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
+  const mapList = useSelector((state: RootState) => state.editor.mapList)
+  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const undoDisabled = mapListIndex === 0
   const redoDisabled = mapListIndex === mapList.length - 1
   const { data } = useOpenWorkspaceQuery()

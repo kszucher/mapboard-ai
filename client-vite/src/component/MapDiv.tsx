@@ -1,14 +1,14 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
-import {RootStateOrAny, useDispatch, useSelector} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {getG, getNodeById, sortPath} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
-import {actions} from "../editor/EditorReducer"
+import {actions, RootState} from "../editor/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {N} from "../state/MapPropTypes";
 
@@ -24,11 +24,11 @@ const getInnerHtml = (n: N) => {
 }
 
 export const MapDiv: FC = () => {
-  const mapListIndex = useSelector((state: RootStateOrAny) => state.editor.mapListIndex)
-  const mapList = useSelector((state: RootStateOrAny) => state.editor.mapList)
-  const tm = useSelector((state: RootStateOrAny) => state.editor.tempMap)
-  const editedNodeId = useSelector((state: RootStateOrAny) => state.editor.editedNodeId)
-  const editType = useSelector((state: RootStateOrAny) => state.editor.editType)
+  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
+  const mapList = useSelector((state: RootState) => state.editor.mapList)
+  const tm = useSelector((state: RootState) => state.editor.tempMap)
+  const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
+  const editType = useSelector((state: RootState) => state.editor.editType)
   const m = tm.length ? tm : mapList[mapListIndex]
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()

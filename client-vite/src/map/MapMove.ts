@@ -34,6 +34,8 @@ const moveS = (m: M, spacePath: P, insertPath: P) => {
   m.sort(sortPath)
 }
 
+// TODO cut/copy!!!
+
 const moveCR = (m: M, spacePath: P, insertPath: P) => {
   const cb = m2cbCR(m)
   makeSpaceFromCR(m, spacePath)

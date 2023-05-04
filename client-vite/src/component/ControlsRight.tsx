@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {RootStateOrAny, useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { IconButton } from '@mui/material'
 import DensitySmallIcon from '@mui/icons-material/DensitySmall'
 import DensityMediumIcon from '@mui/icons-material/DensityMedium'
@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth'
 import PaletteIcon from '@mui/icons-material/Palette'
 import { CreateMapInMapIcon, TaskIcon } from './Icons'
-import {actions} from "../editor/EditorReducer"
+import {actions, RootState} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState";
@@ -30,7 +30,7 @@ const topOffs5 = topOffs4 + iconSize*5 + 2*4
 const crd = "_bg fixed right-0 w-[40px] flex flex-col items-center py-1 px-3 border-r-0"
 
 export const ControlsRight: FC = () => {
-  const m = useSelector((state: RootStateOrAny) => state.editor.mapList[state.editor.mapListIndex])
+  const m = useSelector((state: RootState) => state.editor.mapList[state.editor.mapListIndex])
   const { density, alignment } = m?.g || gSaveOptional
   const { data } = useOpenWorkspaceQuery()
   const { frameId, frameIdList } = data || defaultUseOpenWorkspaceQueryState

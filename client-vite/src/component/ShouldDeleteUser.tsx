@@ -1,13 +1,13 @@
 import {FC} from "react";
-import {useSelector, useDispatch, RootStateOrAny} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
 import {api} from "../core/Api";
-import {actions} from "../editor/EditorReducer";
+import {actions, RootState} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 
 export const ShouldDeleteUser:FC = () => {
-  const pageState = useSelector((state: RootStateOrAny) => state.editor.pageState)
-  const interactionDisabled = useSelector((state: RootStateOrAny) => state.editor.interactionDisabled)
+  const pageState = useSelector((state: RootState) => state.editor.pageState)
+  const interactionDisabled = useSelector((state: RootState) => state.editor.interactionDisabled)
   const dispatch = useDispatch()
   return(
     <Modal
