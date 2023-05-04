@@ -50,7 +50,6 @@ export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
 export const getSD1 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 1]
-export const getSD2 = (p: P) => [...p.slice(0, -1), p.at(-1) as number + 2]
 export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
 export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
 export const getSI1 = (p: P) => getSIL(p).at(-1) as P
@@ -74,7 +73,6 @@ export const getCXL = (m: M) => decPi(getXP(m), getXP(m).length - 1)
 
 export const getXA = (m: M) => m.filter(n => n.selected)
 export const getSXAD1 = (m: M) => getSD1(getSXFP(m))
-export const getSXAD2 = (m: M) => getSD2(getSXLP(m))
 export const getSXAU1 = (m: M) => getSU1(getSXFP(m))
 export const getSXAI1 = (m: M) => getSI1(getSXFP(m))
 export const getSXAF = (m: M) => m.filter(n => getXA(m).map(n => n.path).some(p => isSF(p, n.path)))
@@ -112,7 +110,7 @@ export const setPropXASF = (m: M, prop: keyof N, value: any) => getSXAF(m).forEa
 
 export const incXSDF = (m: M) => m.filter(n => isSDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXSFDF = (m: M) => m.filter(n => isSFDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
-export const makeSpaceFrom = (m: M, p: P) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, getXA(m).length))
+export const makeSpaceFromS = (m: M, p: P, length: number) => m.filter(n => isSFDF(p, n.path)).forEach(n => n.path = incPiN(n.path, p.length - 1, length))
 export const incXCRF = (m: M) => m.filter(n => isCRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCFRF = (m: M) => m.filter(n => isCFRF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 1))
 export const incXCDF = (m: M) => m.filter(n => isCDF(getXP(m), n.path)).forEach(n => n.path = incPi(n.path, getXP(m).length - 2))
@@ -124,7 +122,7 @@ export const getReselectS = (m: M) => getCountSXAU(m) ? getSXAU1(m) : getSXAI1(m
 export const getReselectCR = (m: M) => getCountCXU(m) ? getCXAU(m) : ( getCountCXV(m) >= 2 ? getXA(m).map(n => n.path) : [getSXI1(m)] )
 export const getReselectCC = (m: M) => getCountCXL(m) ? getCXAL(m) : ( getCountCXH(m) >= 2 ? getXA(m).map(n => n.path) : [getSXI1(m)] )
 
-export const m2cb = (m: M) => structuredClone(getSXAF(m).map(n =>
+export const m2cbS = (m: M) => structuredClone(getSXAF(m).map(n =>
   ({...n, path: ['s', (n.path.at(getXP(m).length - 1) as number) - getCountSXAU(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
 export const m2cbCR = (m: M) => structuredClone(getSXAF(m).map(n =>
   ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number) - getCountCXU(m), n.path.at(getXP(m).length - 1), ...n.path.slice(getXP(m).length)]}))) as GN[]

@@ -2,17 +2,16 @@ import {M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {
   sortPath,
-  m2cb,
+  m2cbS,
   getSXAU1,
   getCountSXAU1O1,
   cb2ip,
   getCountR0D1S,
   getCountR0D0S,
   getSXI1,
-  makeSpaceFrom,
+  makeSpaceFromS,
   getCountSXAD,
   getSXAD1,
-  getSXAD2,
   getSXI1D1,
   getSI1,
   getXP,
@@ -23,19 +22,19 @@ import {
   m2cbCC,
   makeSpaceFromCC,
   cb2ipCC,
-  getCountCXL,
+  getCountCXL, getXA,
 } from "./MapUtils"
 
 const moveS = (m: M, spacePath: P, insertPath: P) => {
-  const cb = m2cb(m)
-  makeSpaceFrom(m, spacePath) // I can run getXA(cb)
+  const cb = m2cbS(m)
   deleteS(m)
+  makeSpaceFromS(m, spacePath, getXA(cb).length)
   m.push(...cb2ip(cb, insertPath))
   m.sort(sortPath)
 }
 
 const cutS = (m: M) => {
-  const cb = m2cb(m)
+  const cb = m2cbS(m)
 
 }
 
@@ -63,7 +62,7 @@ const moveCC = (m: M, spacePath: P, insertPath: P) => {
   m.sort(sortPath)
 }
 
-export const moveSD = (m: M) => moveS(m, getSXAD2(m), getSXAD1(m))
+export const moveSD = (m: M) => moveS(m, getSXAD1(m), getSXAD1(m))
 export const moveST = (m: M) => moveS(m, [...getSXI1(m), 's', 0], [...getSXI1(m), 's', 0])
 export const moveSU = (m: M) => moveS(m, getSXAU1(m), getSXAU1(m))
 export const moveSB = (m: M) => moveS(m, [], [...getSXI1(m), 's', getCountSXAD(m)])
