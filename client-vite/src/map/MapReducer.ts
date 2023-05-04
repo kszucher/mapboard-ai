@@ -50,7 +50,7 @@ import {
   getCXR,
   getCXL,
   getCXU,
-  getCXD,
+  getCXD, getNodeById,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -144,7 +144,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insertNodesFromClipboard': pasteS(m, payload); break
 
     case 'move_dragged': {
-      // nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
+      // nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex) // TODO insertPath will be EZ: [...moveTarget, s, moveTargetIndex] !!!
       break
     }
 
@@ -180,17 +180,12 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // mapSetProp.iterate(getX(m), { taskStatus: getX(m).taskStatus === 0 ? 1 : 0 }, true)
       break
     }
-    case 'setTaskStatus': {
-      // const { nodeId, taskStatus } = payload
-      // const n = getMapData(m, mapFindById.start(m, nodeId))
-      // n.taskStatus = taskStatus
-      break
-    }
-    // EDIT
+    case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
+
     case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
     case 'typeText': Object.assign(getX(m), { contentType: 'text', content: payload.content }); break
     case 'finishEdit': Object.assign(getEditedNode(m, payload.path), { contentType: payload.content.substring(0, 2) === '\\[' ? 'equation' : 'text', content: payload.content }); break
-    // FORMAT
+
     case 'setLineWidth': getX(m).selection === 's' ? setPropXA(m, 'lineWidth', payload) : setPropXASF (m, 'lineWidth', payload); break
     case 'setLineType': getX(m).selection === 's' ? setPropXA(m, 'lineType', payload) : setPropXASF (m, 'lineType', payload); break
     case 'setLineColor': getX(m).selection === 's' ? setPropXA(m, 'lineColor', payload) : setPropXASF (m, 'lineColor', payload); break
