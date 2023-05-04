@@ -1,29 +1,45 @@
+import {genHash} from "../core/Utils";
 import {M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {
-  sortPath,
-  m2cbS,
-  getSXAU1,
-  getCountSXAU1O1,
   cb2ip,
-  getCountR0D1S,
-  getCountR0D0S,
-  getSXI1,
-  makeSpaceFromS,
-  getCountSXAD,
-  m2cbCR,
-  cb2ipCR,
-  getCountCXU,
-  makeSpaceFromCR,
-  m2cbCC,
-  makeSpaceFromCC,
   cb2ipCC,
+  cb2ipCR,
   getCountCXL,
-  getXA,
+  getCountCXU,
+  getCountR0D0S,
+  getCountR0D1S,
+  getCountSXAD,
   getCountSXAU,
+  getCountSXAU1O1,
   getCountSXI1U,
+  getSXAU1,
+  getSXI1,
   getSXI2,
+  getXA,
+  m2cbCC,
+  m2cbCR,
+  m2cbS,
+  makeSpaceFromCC,
+  makeSpaceFromCR,
+  makeSpaceFromS,
+  sortPath,
 } from "./MapUtils"
+
+const cbSave = (cb: any) => {
+  navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
+    if (result.state === "granted" || result.state === "prompt") {
+      navigator.clipboard
+        .writeText(JSON.stringify(cb, undefined, 4))
+        .then(() => {
+          console.log('moved to clipboard')
+        })
+        .catch(err => {
+          console.error('move to clipboard error: ', err)
+        })
+    }
+  })
+}
 
 const moveS = (m: M, insertPath: P) => {
   const cb = m2cbS(m)
@@ -35,11 +51,14 @@ const moveS = (m: M, insertPath: P) => {
 
 const cutS = (m: M) => {
   const cb = m2cbS(m)
-
+  deleteS(m)
+  cbSave(cb)
 }
 
 const copyS = (m: M) => {
-
+  const cb = m2cbS(m)
+  cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
+  cbSave(cb)
 }
 
 const pasteS = (m: M) => {

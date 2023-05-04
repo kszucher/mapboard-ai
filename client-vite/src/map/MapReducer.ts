@@ -108,16 +108,6 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'insert_CC_R': insertCCR(m); break
     case 'insert_CC_L': insertCCL(m); break
 
-    case 'insertNodesFromClipboard': {
-      // clearSelection(m)
-      // const nodeList = JSON.parse(payload.text)
-      // for (let i = 0; i < nodeList.length; i++) {
-      //   mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
-      //   structCreate(m, getX(m), Dir.O, { ...nodeList[i] })
-      // }
-      break
-    }
-
     case 'delete_S': deleteSelectS(m); break
     case 'delete_CR': deleteSelectCR(m); break
     case 'delete_CC': deleteSelectCC(m); break
@@ -135,12 +125,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_CC_R': moveCCR(m); break;
     case 'move_CC_L': moveCCL(m); break;
 
-    case 'transpose': {
-      // if (getX(m).cRowCount || getX(m).cColCount) {
-      //   getX(m).c = transpose(getX(m).c)
-      // }
-      break
-    }
+
     case 'copySelection': {
       // if (!sc.isRootIncluded) {
       //   structMove(m, 'struct2clipboard')
@@ -154,10 +139,31 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       // }
       break
     }
+
+    case 'insertNodesFromClipboard': {
+      // clearSelection(m)
+      // const nodeList = JSON.parse(payload.text)
+      // for (let i = 0; i < nodeList.length; i++) {
+      //   mapSetProp.iterate(nodeList[i], () => ({ nodeId: 'node' + genHash(8) }), true)
+      //   structCreate(m, getX(m), Dir.O, { ...nodeList[i] })
+      // }
+      break
+    }
+
+
+
     case 'move_dragged': {
       // nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex)
       break
     }
+
+    case 'transpose': {
+      // if (getX(m).cRowCount || getX(m).cColCount) {
+      //   getX(m).c = transpose(getX(m).c)
+      // }
+      break
+    }
+
     case 'cellify': {
       // if (!sc.isRootIncluded && sc.haveSameParent) {
       //   structMove(m, 'struct2cell')
