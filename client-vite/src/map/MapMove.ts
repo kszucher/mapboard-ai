@@ -67,7 +67,7 @@ export const pasteS = (m: M, payload: any) => {
   m.sort(sortPath)
 }
 
-const moveS = (m: M, insertPath: P) => {
+export const moveS = (m: M, insertPath: P) => {
   const cb = m2cbS(m)
   deleteS(m)
   makeSpaceFromS(m, insertPath, getXA(cb).length)
@@ -75,7 +75,7 @@ const moveS = (m: M, insertPath: P) => {
   m.sort(sortPath)
 }
 
-const moveCR = (m: M, insertPath: P) => {
+export const moveCR = (m: M, insertPath: P) => {
   const cb = m2cbCR(m)
   deleteCR(m)
   makeSpaceFromCR(m, insertPath)
@@ -83,7 +83,7 @@ const moveCR = (m: M, insertPath: P) => {
   m.sort(sortPath)
 }
 
-const moveCC = (m: M, insertPath: P) => {
+export const moveCC = (m: M, insertPath: P) => {
   const cb = m2cbCC(m)
   deleteCC(m)
   makeSpaceFromCC(m, insertPath)

@@ -15,7 +15,7 @@ import {
   moveCCL,
   moveCCR,
   moveCRD,
-  moveCRU,
+  moveCRU, moveS,
   moveSB,
   moveSD,
   moveSI,
@@ -107,7 +107,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CR_U': selectNodeList(m, getCXAU(m), 's'); break
     case 'select_CC_R': selectNodeList(m, getCXAR(m), 's'); break
     case 'select_CC_L': selectNodeList(m, getCXAL(m), 's'); break
-    case 'select_dragged': selectNodeList(m, payload.nList.map((n: N) => n.path), 's'); break
+    case 'select_dragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
     case 'insert_S_O': insertSelectSO(m, {}); break
     case 'insert_S_O_text': insertSelectSO(m, {contentType: 'text', content: payload.text}); break
@@ -142,11 +142,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
-
-    case 'move_dragged': {
-      // nodeMoveMouse(m, sc, payload.moveTargetPath, payload.moveTargetIndex) // TODO insertPath will be EZ: [...moveTarget, s, moveTargetIndex] !!!
-      break
-    }
+    case 'move_dragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
 
     case 'transpose': {
       // if (getX(m).cRowCount || getX(m).cColCount) {
