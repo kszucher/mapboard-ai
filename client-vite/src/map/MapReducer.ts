@@ -11,11 +11,13 @@ import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {
-  copyS, cutS,
+  copyS,
+  cutS,
   moveCCL,
   moveCCR,
   moveCRD,
-  moveCRU, moveS,
+  moveCRU,
+  moveS,
   moveSB,
   moveSD,
   moveSI,
@@ -23,7 +25,8 @@ import {
   moveSIR,
   moveSO,
   moveST,
-  moveSU, pasteS
+  moveSU,
+  pasteS
 } from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
@@ -50,7 +53,8 @@ import {
   getCXR,
   getCXL,
   getCXU,
-  getCXD, getNodeById,
+  getCXD,
+  getNodeById,
 } from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
@@ -145,6 +149,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'move_dragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
 
     case 'transpose': {
+      // https://stackoverflow.com/questions/872310/javascript-swap-array-elements
+      // make swap as a utility, and then just simply map through component
+
       // if (getX(m).cRowCount || getX(m).cColCount) {
       //   getX(m).c = transpose(getX(m).c)
       // }
@@ -152,6 +159,9 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     }
 
     case 'cellify': {
+      // we do an insertSelectSO table here... and will take the clipboard items and assigning them SAW-like, but how so???
+      // valahogy a foreach-ben le lehetne másolni a másolt kontent tartalmának sX részét, ahol cX0sX kialakítás lesz tehát adott sorba adott cuccot
+
       // if (!sc.isRootIncluded && sc.haveSameParent) {
       //   structMove(m, 'struct2cell')
       //   clearSelection(m)
@@ -173,7 +183,7 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
     case 'toggleTask': {
-      // mapSetProp.iterate(getX(m), { taskStatus: getX(m).taskStatus === 0 ? 1 : 0 }, true)
+      // mapSetProp.iterate(getX(m), { taskStatus: getX(m).taskStatus === 0 ? 1 : 0 }, true) // ez a 0-ból ami azt jelenti hogy no task csinál 1-et ami backlog
       break
     }
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
