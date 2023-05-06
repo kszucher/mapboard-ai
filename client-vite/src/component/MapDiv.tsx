@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
 import {getG, getNodeById, sortPath} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
+import {mSelector} from "../state/EditorState";
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
@@ -24,12 +25,9 @@ const getInnerHtml = (n: N) => {
 }
 
 export const MapDiv: FC = () => {
-  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const tm = useSelector((state: RootState) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const editType = useSelector((state: RootState) => state.editor.editType)
-  const m = tm.length ? tm : mapList[mapListIndex]
+  const m = useSelector((state:RootState) => mSelector(state))
   const g = getG(m)
   const { data } = useOpenWorkspaceQuery()
   const { colorMode } = data || defaultUseOpenWorkspaceQueryState
