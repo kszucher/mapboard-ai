@@ -10,52 +10,10 @@ import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {
-  copyS,
-  cutS,
-  moveCCL,
-  moveCCR,
-  moveCRD,
-  moveCRU,
-  moveS,
-  moveSB,
-  moveSD,
-  moveSI,
-  moveSIL,
-  moveSIR,
-  moveSO,
-  moveST,
-  moveSU,
-  pasteS
-} from "./MapMove"
+import {copyS, cutS, moveCCL, moveCCR, moveCRD, moveCRU, moveS, moveSB, moveSD, moveSI, moveSIL, moveSIR, moveSO, moveST, moveSU, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {
-  sortNode,
-  sortPath,
-  isR,
-  isCH,
-  isCV,
-  getEditedNode,
-  getG,
-  getX,
-  getXP,
-  getNodeByPath,
-  getParentNodeByPath,
-  setPropXA,
-  setPropXASF,
-  getCXAR,
-  getCXAL,
-  getCXAD,
-  getCXAU,
-  getSXF,
-  getSXL,
-  getCXR,
-  getCXL,
-  getCXU,
-  getCXD,
-  getNodeById,
-} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById,} from "./MapUtils"
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
   console.log('MAP_MUTATION: ' + action, payload)
