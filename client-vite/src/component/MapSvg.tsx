@@ -5,6 +5,8 @@ import {getColors} from "../core/Colors"
 import {getClosestStructParentPath, getG, getX, getNodeById, getNodeByPath, getPathPattern, isCCXA, isCRXA, isCX, isS} from "../map/MapUtils"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
+import {mSelector} from "../state/EditorState";
+import {MapSvgLayer1} from "./MapSvgLayer1";
 import {getArcPath, getBezierLinePath, getBezierLinePoints, getCellPolygonPoints, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath,} from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -12,7 +14,7 @@ import {mapFindIntersecting} from "../map/MapFindIntersecting";
 import isEqual from "react-fast-compare";
 import {M, N} from "../state/MapPropTypes";
 
-const pathCommonProps = {
+export const pathCommonProps = {
   vectorEffect: 'non-scaling-stroke',
   style: {
     transition: 'all 0.3s',
@@ -36,10 +38,11 @@ const getSelectionMargin = (m: M, n: N) => (
 export const MapSvg: FC = () => {
   const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
   const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const tm = useSelector((state: RootState) => state.editor.tempMap)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const moveCoords = useSelector((state: RootState) => state.editor.moveCoords)
-  const m = tm.length ? tm : mapList[mapListIndex]
+
+  const m = useSelector((state:RootState) => mSelector(state))
+
   const g = getG(m)
   const ls = getX(m)
   const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
@@ -123,22 +126,7 @@ export const MapSvg: FC = () => {
           >
           </rect>
         </g>
-        <g id="layer1">
-          {m.map((n: N) => (
-            <Fragment key={n.nodeId}>
-              {
-                n.fFillColor &&
-                <path
-                  key={`${n.nodeId}_svg_branchFill`}
-                  d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
-                  fill={n.fFillColor}
-                  {...pathCommonProps}
-                >
-                </path>
-              }
-            </Fragment>
-          ))}
-        </g>
+        <MapSvgLayer1/>
         <g id="layer2">
           {m.map((n: N) => (
             <Fragment key={n.nodeId}>

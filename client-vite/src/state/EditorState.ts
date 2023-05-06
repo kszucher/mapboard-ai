@@ -1,6 +1,7 @@
+import {useSelector} from "react-redux";
 import {FormatMode, PageState} from "../core/Enums"
 import {EditorState} from "./EditorStateTypes";
-import {store} from "../editor/EditorReducer";
+import {RootState, store} from "../editor/EditorReducer";
 
 export const editorState: EditorState = {
   token: '',
@@ -19,3 +20,4 @@ export const editorState: EditorState = {
 }
 
 export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])
+export const mSelector = (state: RootState) => state.editor.tempMap.length ? state.editor.tempMap : state.editor.mapList[state.editor.mapListIndex]
