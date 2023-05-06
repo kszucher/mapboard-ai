@@ -101,8 +101,8 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_C_L': selectNode(m, getCXL(m), 's'); break
     case 'select_C_D': selectNode(m, getCXD(m), 's'); break
     case 'select_C_U': selectNode(m, getCXU(m), 's'); break
-    case 'select_C_F_firstRow': selectNode(m, structuredClone(getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
-    case 'select_C_F_firstCol': selectNode(m, structuredClone(getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
+    case 'select_C_F_firstRow': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
+    case 'select_C_F_firstCol': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
     case 'select_C_FF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getXP(m), 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_C_B': getXP(m).includes('c') ? selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
