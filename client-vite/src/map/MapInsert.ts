@@ -1,5 +1,5 @@
-import {M, P} from "../state/MapPropTypes"
-import {genHash, getTableIndices} from "../core/Utils"
+import {GN, M, P} from "../state/MapPropTypes"
+import {genHash, getTableIndices, IS_TESTING} from "../core/Utils"
 import {selectNode} from "./MapSelect";
 import {
   getCountCV,
@@ -20,12 +20,12 @@ import {
 } from "./MapUtils"
 
 const insertNode = (m: M, attributes: object) => {
-  m.push(getDefaultNode({...attributes, nodeId: 'node' + genHash(8)}))
+  m.push({nodeId: IS_TESTING ? 'x' : 'node' + genHash(8), ...attributes} as GN)
   m.sort(sortPath)
 }
 
 export const insertNodeList = (m: M, pList: P[]) => {
-  m.push(...pList.map(p => getDefaultNode({path: structuredClone(p), nodeId: 'node' + genHash(8)})))
+  m.push(...pList.map((p, i) => getDefaultNode({path: structuredClone(p), nodeId: IS_TESTING ? 'x' + i : 'node' + genHash(8)})))
   m.sort(sortPath)
 }
 

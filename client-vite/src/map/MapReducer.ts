@@ -180,7 +180,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
 }
 
 export const mapReducer = (pm: M, action: string, payload: any) => {
-  console.log('MAPMUTATION: ' + action, payload)
+  console.log('MAP_MUTATION: ' + action, payload)
   // TODO map type validity check here to prevent errors
   const m = structuredClone(pm).sort(sortPath)
   mapReducerAtomic(m, action, payload)
