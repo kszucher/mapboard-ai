@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
 import {actions, AppDispatch} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
+import {mapActionResolver} from "../map/MapActionResolver";
 
 export const CreateTable: FC = () => {
   const [row, setRow] = useState<string>('1')
@@ -23,8 +24,9 @@ export const CreateTable: FC = () => {
               <InputLabel>
                 {'Row'}
               </InputLabel>
-              <Select value={row}
-                      onChange={(event: SelectChangeEvent) => setRow(event.target.value as string)}>
+              <Select
+                value={row}
+                onChange={(event: SelectChangeEvent) => setRow(event.target.value as string)}>
                 {[1,2,3,4,5,6,7,8,9,10].map((el, idx) => (
                   <MenuItem value={el} key={idx}>{el}</MenuItem>
                 ))}
@@ -50,7 +52,7 @@ export const CreateTable: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction({type: 'insert_S_O_table', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}))
+              dispatch(actions.mapAction(mapActionResolver({componentEvent: {type: 'insertTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}})))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

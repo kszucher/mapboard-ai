@@ -3,17 +3,64 @@ import {Dir} from "../core/Enums"
 import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
-import {M, N} from "../state/MapPropTypes"
+import {M, N, P} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
 import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete";
 import {mapInit} from "./MapInit"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertSD, insertSO, insertSU, insertTable} from "./MapInsert"
+import {
+  insertCCL,
+  insertCCR,
+  insertCRD,
+  insertCRU,
+  insertSD,
+  insertSO,
+  insertSOR,
+  insertSU,
+  insertTable
+} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2,} from "./MapUtils"
+import {
+  sortNode,
+  sortPath,
+  isR,
+  isCH,
+  isCV,
+  getEditedNode,
+  getG,
+  getX,
+  getXP,
+  getNodeByPath,
+  getParentNodeByPath,
+  setPropXA,
+  setPropXASF,
+  getCXAR,
+  getCXAL,
+  getCXAD,
+  getCXAU,
+  getSXF,
+  getSXL,
+  getCXR,
+  getCXL,
+  getCXU,
+  getCXD,
+  getNodeById,
+  getSXI1,
+  getCountSXAU,
+  getSXAU1,
+  getCountSXAD,
+  getCountSXAU1O1,
+  getCountSXI1U,
+  getCountR0D1S,
+  getCountR0D0S,
+  getCountCXU,
+  getCountCXL,
+  getSXI2,
+  incPi,
+} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -69,14 +116,15 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCCL': selectNodeList(m, getCXAL(m), 's'); break
     case 'selectdragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
-    case 'insertSO': insertSO(m, {}); break
-    case 'insertSOtext': insertSO(m, {contentType: 'text', content: payload.text}); break
-    case 'insertSOelink': insertSO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
-    case 'insertSOequation': insertSO(m, {contentType: 'equation', content: payload.text}); break
-    case 'insertSOimage': insertSO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insertSOtable': insertTable(m, payload.rowLen, payload.colLen); break
-    case 'insertSD': insertSD(m, {}); break
-    case 'insertSU': insertSU(m, {}); break
+    case 'insertSD': insertSD(m, incPi(getXP(m), getXP(m).length - 1), payload); break
+    case 'insertSU': insertSU(m, getXP(m), payload); break
+
+    // TODO finish the below
+    // OLD value: const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
+    // case 'insertSOR': insertSOR(m, payload); break
+    // case 'insertSO': insertSO(m, payload); break
+    // case 'insertSOtable': insertTable(m, payload.rowLen, payload.colLen); break
+
     case 'insertCRD': insertCRD(m); break
     case 'insertCRU': insertCRU(m); break
     case 'insertCCR': insertCCR(m); break

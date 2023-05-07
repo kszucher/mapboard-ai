@@ -13,51 +13,48 @@ import {
   incXCRF,
   incXCFDF,
   incXCFRF,
-  incPi,
-  incXSDF,
-  incXSFDF,
-  sortPath
+  sortPath,
+  makeSpaceFromS
 } from "./MapUtils"
 
-const insertNode = (m: M, attributes: object) => {
-  m.push({nodeId: IS_TESTING ? 'x' : 'node' + genHash(8), ...attributes} as GN)
+const insertNode = (m: M, ip: P, attributes: object) => { // if I return ip, this can be used in one-liners...
+  makeSpaceFromS(m, ip, 1)
+  m.push({nodeId: IS_TESTING ? 'z' : 'node' + genHash(8), ...attributes} as GN)
   m.sort(sortPath)
 }
 
 export const insertNodeList = (m: M, pList: P[]) => {
-  m.push(...pList.map((p, i) => getDefaultNode({path: structuredClone(p), nodeId: IS_TESTING ? 'x' + i : 'node' + genHash(8)})))
+  m.push(...pList.map((p, i) => getDefaultNode({path: structuredClone(p), nodeId: IS_TESTING ? 'z' + i : 'node' + genHash(8)}))) // TODO remove default
   m.sort(sortPath)
 }
 
 const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
   insertNodeList(m, indices.map(el => [...p, 'c', ...el]))
-  // FIXME probably we do not NEED to have s by default here, so there will be no need for fix, and paste will be SOLVED too --> creation when START EDIT
   insertNodeList(m, indices.map(el => [...p, 'c', ...el, 's', 0]))
 }
 
-export const insertSD = (m: M, attributes: object) => {
-  const insertPath = incPi(getXP(m), getXP(m).length - 1)
-  incXSDF(m)
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
-  selectNode(m, insertPath, 's')
+export const insertSD = (m: M, ip: P, attributes: object) => {
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
+  selectNode(m, ip, 's')
 }
 
-export const insertSU = (m: M, attributes: object) => {
-  const insertPath = getXP(m)
-  incXSFDF(m)
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
-  selectNode(m, insertPath, 's')
+export const insertSU = (m: M, ip: P, attributes: object) => {
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
+  selectNode(m, ip, 's')
 }
 
-// FIXME insertSelectSOR, insertSelectSOL, insertSelectSO
-export const insertSO = (m: M, attributes: object) => {
-  const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
-  insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
-  selectNode(m, insertPath, 's')
+export const insertSO = (m: M, ip: P, attributes: object) => {
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus})
+  selectNode(m, ip, 's')
 }
 
-export const insertTable = (m: M, r: number, c: number) => {
-  insertSO(m, {})
+export const insertSOR = (m: M, ip: P, attributes: object) => {
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus})
+  selectNode(m, ip, 's')
+}
+
+export const insertTable = (m: M, ip: P, r: number, c: number) => {
+  insertSO(m, ip, {})
   insertCellNodeList(m, getXP(m), getTableIndices(r, c))
 }
 

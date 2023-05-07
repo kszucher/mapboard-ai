@@ -2,7 +2,7 @@ import {FC, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {AccessTypes, PageState} from "../core/Enums"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
-import {windowListenersKeyPaste} from "./WindowListenersKeyPaste"
+import {mapActionResolver} from "../map/MapActionResolver"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {defaultUseOpenWorkspaceQueryState, getFrameId, getMapId} from "../state/ApiState"
 import {getMap} from "../state/EditorState"
@@ -42,9 +42,9 @@ export const WindowListeners: FC = () => {
         clearInterval(namedInterval)
         isIntervalRunning = false
         if (Math.sign(e.deltaY) === 1) {
-          dispatch(actions.redo())
+          dispatch(actions.mapAction({type: 'redo', payload: {}}))
         } else {
-          dispatch(actions.undo())
+          dispatch(actions.mapAction({type: 'undo', payload: {}}))
         }
       }, 100)
     }
@@ -57,7 +57,7 @@ export const WindowListeners: FC = () => {
   }
 
   const keydown = (e: KeyboardEvent) => {
-    windowListenersKeyPaste({keyboardEvent: e}, dispatch)
+    dispatch(actions.mapAction(mapActionResolver({keyboardEvent: e})))
   }
 
   const paste = (e: Event) => {
@@ -67,7 +67,9 @@ export const WindowListeners: FC = () => {
         navigator.clipboard.read().then(item => {
           const type = item[0].types[0]
           if (type === 'text/plain') {
-            navigator.clipboard.readText().then(text => windowListenersKeyPaste({clipboardPasteTextEvent: {text}}, dispatch))
+            navigator.clipboard.readText().then(text =>
+              dispatch(actions.mapAction(mapActionResolver({clipboardPasteTextEvent: {text}})))
+            )
           } else if (type === 'image/png') {
             item[0].getType('image/png').then(image => {
               const formData = new FormData()
@@ -76,7 +78,9 @@ export const WindowListeners: FC = () => {
                 ? 'http://127.0.0.1:8082/feta'
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData}).then(response =>
-                response.json().then(response => windowListenersKeyPaste({clipboardPasteImageEvent: response}, dispatch))
+                response.json().then(response =>
+                  dispatch(actions.mapAction(mapActionResolver({clipboardPasteImageEvent: response})))
+                )
               )
             })
           }

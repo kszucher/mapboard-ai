@@ -124,7 +124,7 @@ export const MapDiv: FC = () => {
                   dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
                 } else if (['Insert','Tab'].includes(e.key)) {
                   dispatch(actions.mapAction({type: 'finishEdit', payload: { path: n.path, content: e.currentTarget.innerHTML }}))
-                  dispatch(actions.mapAction({type: 'insert_S_O', payload: {}}))
+                  dispatch(actions.mapAction({type: 'insertSO', payload: {}}))
                 }
               }}
               onInput={(e) =>

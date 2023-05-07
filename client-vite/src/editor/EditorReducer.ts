@@ -25,6 +25,12 @@ export const editorSlice = createSlice({
       if (action.payload.type === 'startEditReplace') {
         state.editedNodeId = getEditedNode(pm, getXP(pm)).nodeId
         state.editType = 'replace'
+      } else if (action.payload.type === 'undo') {
+        state.editedNodeId = ''
+        state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
+      } else if (action.payload.type === 'redo') {
+        state.editedNodeId = ''
+        state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
       } else {
         const m = mapReducer(pm, action.payload.type, action.payload.payload)
         const isMapChanged = !isEqual(pm, m)
@@ -62,14 +68,6 @@ export const editorSlice = createSlice({
             break
         }
       }
-    },
-    undo(state) {
-      state.mapListIndex = state.mapListIndex > 0 ? state.mapListIndex - 1 : state.mapListIndex
-      state.editedNodeId = ''
-    },
-    redo(state) {
-      state.mapListIndex = state.mapListIndex < state.mapList.length - 1 ? state.mapListIndex + 1 : state.mapListIndex
-      state.editedNodeId = ''
     },
     setFromCoordsMove(state, action: PayloadAction<any>) {state.moveCoords = action.payload},
   },

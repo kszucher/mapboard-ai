@@ -22,14 +22,14 @@ export const UndoRedo: FC = () => {
         <IconButton
           color='secondary'
           disabled={[AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access) || undoDisabled}
-          onClick={_=>dispatch(actions.undo())}
+          onClick={() => dispatch(actions.mapAction({type: 'undo', payload: {}}))}
         >
           <UndoIcon/>
         </IconButton>
         <IconButton
           color='secondary'
           disabled={[AccessTypes.VIEW, AccessTypes.UNAUTHORIZED].includes(access) || redoDisabled}
-          onClick={_=>dispatch(actions.redo())}
+          onClick={() => dispatch(actions.mapAction({type: 'redo', payload: {}}))}
         >
           <RedoIcon/>
         </IconButton>

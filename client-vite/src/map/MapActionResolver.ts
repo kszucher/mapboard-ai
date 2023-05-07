@@ -1,9 +1,8 @@
 import {actions} from "../editor/EditorReducer"
 import {isUrl} from "../core/Utils"
-import {Dispatch} from "react"
 import {getMap} from "../state/EditorState"
-import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD} from "../map/MapUtils"
-import {getDir} from "./MapSvgUtils"
+import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD} from "./MapUtils"
+import {getDir} from "../component/MapSvgUtils"
 
 const ckm = (e: any, condition: string) => (
   [(+e.ctrlKey ? 'c' : '-')].includes(condition[0]) &&
@@ -11,23 +10,24 @@ const ckm = (e: any, condition: string) => (
   [(+e.altKey) ? 'a' : '-'].includes(condition[2])
 )
 
-export const windowListenersKeyPaste = (
+export const mapActionResolver = (
   someEvent: {
     mouseEvent?: MouseEvent
     keyboardEvent?: KeyboardEvent | { key: any, code: any, which: any, preventDefault: Function }
     clipboardPasteTextEvent?: { text: string }
     clipboardPasteImageEvent?: { imageId: string, imageSize: { width: number, height: number } }
-  },
-  dispatch: Dispatch<any>
-) => {
+    componentEvent?: { type: string, payload: any}
+  }): {type: string, payload: any} => {
   const kd = 'keyboardEvent' in someEvent
   const pt = 'clipboardPasteTextEvent' in someEvent
   const pi = 'clipboardPasteImageEvent' in someEvent
+  const ce = 'componentEvent' in someEvent
 
   const e = kd ? someEvent.keyboardEvent : { event: { ctrlKey: undefined, shiftKey: undefined, altKey: undefined } }
   const { key, code, which } = someEvent.keyboardEvent ? someEvent.keyboardEvent : { key: undefined, code: undefined, which: undefined }
   const { text } = someEvent.clipboardPasteTextEvent ? someEvent.clipboardPasteTextEvent : { text: '' }
   const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
+  const { type, payload } = someEvent.componentEvent ? someEvent.componentEvent : { type: undefined, payload: undefined }
 
   const m = structuredClone((getMap())).sort(sortPath)
   const ls = getX(m)
@@ -75,8 +75,8 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, 'c--') && code === 'KeyM',                true,  true,            0, 'createMapInMapDialog',     {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyC',                true,  sxavn,           1, 'copySelection',            {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyX',                true,  sxavn,           1, 'cutSelection',             {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyZ',                true,  true,            0, 'redo',                     {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyY',                true,  true,            0, 'undo',                     {}, 1 ],
+    [ kd, ckm(e, 'c--') && code === 'KeyZ',                true,  true,            1, 'redo',                     {}, 1 ],
+    [ kd, ckm(e, 'c--') && code === 'KeyY',                true,  true,            1, 'undo',                     {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'KeyE',                true,  s,               1, 'transpose',                {}, 1 ],
 
     [ kd, ckm(e, '---') && code === 'ArrowDown',           true,  s,               1, 'selectSD',                 {}, 1 ],
@@ -131,10 +131,17 @@ export const windowListenersKeyPaste = (
     [ kd, ckm(e, '---') && which >= 48,                    true,  s || c,          1, 'startEditReplace',         {}, 0 ],
     [ kd, ckm(e, '-s-') && which >= 48,                    true,  s || c,          1, 'startEditReplace',         {}, 0 ],
     [ pt, text.substring(0, 1) === '[',                    true,  s,               1, 'insertNodesFromClipboard', {text}, 0 ],
-    [ pt, text.substring(0, 2) === '\\[',                  true,  s,               1, 'insertSOequation',         {text}, 0 ],
-    [ pt, isUrl(text),                                     true,  s,               1, 'insertSOelink',            {text}, 0 ],
-    [ pt, true,                                            true,  s,               1, 'insertSOtext',             {text}, 0 ],
-    [ pi, true,                                            true,  s,               1, 'insertSOimage',            {imageId, imageSize}, 0 ],
+    [ pt, text.substring(0, 2) === '\\[',                  true,  r,               1, 'insertSOR',                {contentType: 'equation', content: text}, 0 ],
+    [ pt, text.substring(0, 2) === '\\[',                  true,  s,               1, 'insertSO',                 {contentType: 'equation', content: text}, 0 ],
+    [ pt, isUrl(text),                                     true,  r,               1, 'insertSOR',                {contentType: 'text', content: text, linkType: 'external', link: text}, 0 ],
+    [ pt, isUrl(text),                                     true,  s,               1, 'insertSO',                 {contentType: 'text', content: text, linkType: 'external', link: text}, 0 ],
+    [ pt, true,                                            true,  r,               1, 'insertSOR',                {contentType: 'text', content: text}, 0 ],
+    [ pt, true,                                            true,  s,               1, 'insertSO',                 {contentType: 'text', content: text}, 0 ],
+    [ pi, true,                                            true,  r,               1, 'insertSOR',                {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
+    [ pi, true,                                            true,  s,               1, 'insertSO',                 {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
+
+    [ ce, type === 'insertTable',                          true,  s,               1, 'insertSORTable',           {}, 0 ],
+    [ ce, type === 'insertTable',                          true,  s,               1, 'insertSOTable',            {}, 0 ],
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
     const [ eventTypeCondition, match, dirMatch, scopeMatch, isMapAction, type, payload, preventDefault ] = stateMachine[i]
@@ -144,12 +151,13 @@ export const windowListenersKeyPaste = (
       }
       if (type.length) {
         if (isMapAction) {
-          dispatch(actions.mapAction({type, payload}))
+          return {type, payload}
         } else {
-          dispatch({type: 'editor/' + type, payload})
+          return {type: 'editor/' + type, payload}
         }
       }
       break
     }
   }
+  return {type: '', payload: undefined}
 }
