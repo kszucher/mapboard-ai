@@ -35,14 +35,14 @@ const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
   insertNodeList(m, indices.map(el => [...p, 'c', ...el, 's', 0]))
 }
 
-export const insertSelectSD = (m: M, attributes: object) => {
+export const insertSD = (m: M, attributes: object) => {
   const insertPath = incPi(getXP(m), getXP(m).length - 1)
   incXSDF(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
   selectNode(m, insertPath, 's')
 }
 
-export const insertSelectSU = (m: M, attributes: object) => {
+export const insertSU = (m: M, attributes: object) => {
   const insertPath = getXP(m)
   incXSFDF(m)
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
@@ -50,14 +50,14 @@ export const insertSelectSU = (m: M, attributes: object) => {
 }
 
 // FIXME insertSelectSOR, insertSelectSOL, insertSelectSO
-export const insertSelectSO = (m: M, attributes: object) => {
+export const insertSO = (m: M, attributes: object) => {
   const insertPath = [...getInsertParentNode(m).path, 's', getInsertParentNode(m).sCount] as P
   insertNode(m, {...attributes, path: insertPath, taskStatus: getInsertParentNode(m).taskStatus})
   selectNode(m, insertPath, 's')
 }
 
-export const insertSelectTable = (m: M, r: number, c: number) => {
-  insertSelectSO(m, {})
+export const insertTable = (m: M, r: number, c: number) => {
+  insertSO(m, {})
   insertCellNodeList(m, getXP(m), getTableIndices(r, c))
 }
 

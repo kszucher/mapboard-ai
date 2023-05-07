@@ -8,7 +8,7 @@ import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
 import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
 import {mapInit} from "./MapInit"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertSelectSD, insertSelectSO, insertSelectSU, insertSelectTable} from "./MapInsert"
+import {insertCCL, insertCCR, insertCRD, insertCRU, insertSD, insertSO, insertSU, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCCL, moveCCR, moveCRD, moveCRU, moveS, moveSB, moveSD, moveSI, moveSIL, moveSIR, moveSO, moveST, moveSU, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
@@ -71,14 +71,14 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
     case 'select_CC_L': selectNodeList(m, getCXAL(m), 's'); break
     case 'select_dragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
-    case 'insert_S_O': insertSelectSO(m, {}); break
-    case 'insert_S_O_text': insertSelectSO(m, {contentType: 'text', content: payload.text}); break
-    case 'insert_S_O_elink': insertSelectSO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
-    case 'insert_S_O_equation': insertSelectSO(m, {contentType: 'equation', content: payload.text}); break
-    case 'insert_S_O_image': insertSelectSO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insert_S_O_table': insertSelectTable(m, payload.rowLen, payload.colLen); break
-    case 'insert_S_D': insertSelectSD(m, {}); break
-    case 'insert_S_U': insertSelectSU(m, {}); break
+    case 'insert_S_O': insertSO(m, {}); break
+    case 'insert_S_O_text': insertSO(m, {contentType: 'text', content: payload.text}); break
+    case 'insert_S_O_elink': insertSO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
+    case 'insert_S_O_equation': insertSO(m, {contentType: 'equation', content: payload.text}); break
+    case 'insert_S_O_image': insertSO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
+    case 'insert_S_O_table': insertTable(m, payload.rowLen, payload.colLen); break
+    case 'insert_S_D': insertSD(m, {}); break
+    case 'insert_S_U': insertSU(m, {}); break
     case 'insert_CR_D': insertCRD(m); break
     case 'insert_CR_U': insertCRU(m); break
     case 'insert_CC_R': insertCCR(m); break
