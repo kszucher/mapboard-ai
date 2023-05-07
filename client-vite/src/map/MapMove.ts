@@ -2,33 +2,7 @@ import {genHash} from "../core/Utils";
 import {GN, M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {selectNode, unselectNodes} from "./MapSelect";
-import {
-  cb2ip,
-  cb2ipCC,
-  cb2ipCR,
-  getCountCXL,
-  getCountCXU,
-  getCountR0D0S,
-  getCountR0D1S,
-  getCountSO1,
-  getCountSXAD,
-  getCountSXAU,
-  getCountSXAU1O1,
-  getCountSXI1U,
-  getReselectS,
-  getSXAU1,
-  getSXI1,
-  getSXI2,
-  getXA,
-  getXP,
-  m2cbCC,
-  m2cbCR,
-  m2cbS,
-  makeSpaceFromCC,
-  makeSpaceFromCR,
-  makeSpaceFromS,
-  sortPath,
-} from "./MapUtils"
+import {cb2ip, cb2ipCC, cb2ipCR, getCountSO1, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath,} from "./MapUtils"
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -91,16 +65,3 @@ export const moveCC = (m: M, insertPath: P) => {
   m.push(...cb2ipCC(cb, insertPath))
   m.sort(sortPath)
 }
-
-export const moveSD = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAU(m) + 1])
-export const moveST = (m: M) => moveS(m, [...getSXI1(m), 's', 0])
-export const moveSU = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAU(m) - 1])
-export const moveSB = (m: M) => moveS(m, [...getSXI1(m), 's', getCountSXAD(m)])
-export const moveSO = (m: M) => moveS(m, [...getSXAU1(m), 's', getCountSXAU1O1(m)])
-export const moveSI = (m: M) => moveS(m, [...getSXI2(m), 's', getCountSXI1U(m) + 1])
-export const moveSIR = (m: M) => moveS(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)])
-export const moveSIL = (m: M) => moveS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)])
-export const moveCRD = (m: M) => moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0])
-export const moveCRU = (m: M) => moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0])
-export const moveCCR = (m: M) => moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1])
-export const moveCCL = (m: M) => moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) - 1])

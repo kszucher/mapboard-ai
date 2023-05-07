@@ -1,18 +1,5 @@
+import {mapReducerAtomic} from "../map/MapReducer"
 import {M} from "../state/MapPropTypes"
-import {
-  moveSD,
-  moveST,
-  moveSU,
-  moveSB,
-  moveSO,
-  moveSI,
-  moveSIR,
-  moveSIL,
-  moveCCR,
-  moveCCL,
-  moveCRD,
-  moveCRU
-} from "../map/MapMove"
 
 const moveSD_test = [
   {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
@@ -321,16 +308,16 @@ const moveCCL_result = [
 ] as M
 
 describe("Move_tests", () => {
-  test('moveSD', () => {moveSD(moveSD_test); expect(moveSD_test).toEqual(moveSD_result)})
-  test('moveST', () => {moveST(moveST_test); expect(moveST_test).toEqual(moveST_result)})
-  test('moveSU', () => {moveSU(moveSU_test); expect(moveSU_test).toEqual(moveSU_result)})
-  test('moveSB', () => {moveSB(moveSB_test); expect(moveSB_test).toEqual(moveSB_result)})
-  test('moveSO', () => {moveSO(moveSO_test); expect(moveSO_test).toEqual(moveSO_result)})
-  test('moveSI', () => {moveSI(moveSI_test); expect(moveSI_test).toEqual(moveSI_result)})
-  test('moveSIR', () => {moveSIR(moveSIR_test); expect(moveSIR_test).toEqual(moveSIR_result)})
-  test('moveSIL', () => {moveSIL(moveSIL_test); expect(moveSIL_test).toEqual(moveSIL_result)})
-  test('moveCRD', () => {moveCRD(moveCRD_test); expect(moveCRD_test).toEqual(moveCRD_result)})
-  test('moveCRU', () => {moveCRU(moveCRU_test); expect(moveCRU_test).toEqual(moveCRU_result)})
-  test('moveCCR', () => {moveCCR(moveCCR_test); expect(moveCCR_test).toEqual(moveCCR_result)})
-  test('moveCCL', () => {moveCCL(moveCCL_test); expect(moveCCL_test).toEqual(moveCCL_result)})
+  test('moveSD', () => {mapReducerAtomic(moveSD_test, 'moveSD', {}); expect(moveSD_test).toEqual(moveSD_result)})
+  test('moveST', () => {mapReducerAtomic(moveST_test, 'moveST', {}); expect(moveST_test).toEqual(moveST_result)})
+  test('moveSU', () => {mapReducerAtomic(moveSU_test, 'moveSU', {}); expect(moveSU_test).toEqual(moveSU_result)})
+  test('moveSB', () => {mapReducerAtomic(moveSB_test, 'moveSB', {}); expect(moveSB_test).toEqual(moveSB_result)})
+  test('moveSO', () => {mapReducerAtomic(moveSO_test, 'moveSO', {}); expect(moveSO_test).toEqual(moveSO_result)})
+  test('moveSI', () => {mapReducerAtomic(moveSI_test, 'moveSI', {}); expect(moveSI_test).toEqual(moveSI_result)})
+  test('moveSIR', () => {mapReducerAtomic(moveSIR_test, 'moveSIR', {}); expect(moveSIR_test).toEqual(moveSIR_result)})
+  test('moveSIL', () => {mapReducerAtomic(moveSIL_test, 'moveSIL', {}); expect(moveSIL_test).toEqual(moveSIL_result)})
+  test('moveCRD', () => {mapReducerAtomic(moveCRD_test, 'moveCRD', {}); expect(moveCRD_test).toEqual(moveCRD_result)})
+  test('moveCRU', () => {mapReducerAtomic(moveCRU_test, 'moveCRU', {}); expect(moveCRU_test).toEqual(moveCRU_result)})
+  test('moveCCR', () => {mapReducerAtomic(moveCCR_test, 'moveCCR', {}); expect(moveCCR_test).toEqual(moveCCR_result)})
+  test('moveCCL', () => {mapReducerAtomic(moveCCL_test, 'moveCCL', {}); expect(moveCCL_test).toEqual(moveCCL_result)})
 })

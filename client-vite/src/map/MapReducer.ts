@@ -6,25 +6,23 @@ import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
-import {deleteSelectCC, deleteSelectCR, deleteSelectS} from "./MapDelete";
+import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCCL, insertCCR, insertCRD, insertCRU, insertSD, insertSO, insertSU, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
-import {copyS, cutS, moveCCL, moveCCR, moveCRD, moveCRU, moveS, moveSB, moveSD, moveSI, moveSIL, moveSIR, moveSO, moveST, moveSU, pasteS} from "./MapMove"
+import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById,} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2,} from "./MapUtils"
 
-export const mapReducer = (pm: M, action: string, payload: any) => {
-  console.log('MAP_MUTATION: ' + action, payload)
-  // TODO map type validity check here to prevent errors
-  const m = structuredClone(pm).sort(sortPath)
+export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
     case 'LOAD': break
     case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
-    case 'select_R': selectNode(m, ['r', 0], 's'); break // fixme - does NOT clean 'f' selection on root, neither all selection
-    case 'select_S': { // will be oneliner once the mouse ops will be routed
+    case 'selectR': selectNode(m, ['r', 0], 's'); break // fixme - does NOT clean 'f' selection on root, neither all selection
+    case 'selectS': { // will be oneliner once the mouse ops will be routed
+      const pm = m
       const n = getNodeByPath(m, payload.path)
       if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
         const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
@@ -41,70 +39,70 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       }
       break
     }
-    case 'select_all': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
-    case 'select_S_D': selectNode(m, structNavigate(m, getSXL(m).path, Dir.D), 's'); break
-    case 'select_S_D_too': selectNodeToo(m, structNavigate(m, getSXL(m).path, Dir.D), 's'); break
-    case 'select_S_U': selectNode(m, structNavigate(m, getSXF(m).path, Dir.U), 's'); break
-    case 'select_S_U_too': selectNodeToo(m, structNavigate(m, getSXF(m).path, Dir.U), 's'); break
-    case 'select_S_O': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
-    case 'select_S_OR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
-    case 'select_S_OL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
-    case 'select_S_I': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
-    case 'select_S_family_O': getX(m).selection = 'f'; break
-    case 'select_S_family_OR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
-    case 'select_S_family_OL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
-    case 'select_S_F': selectNode(m, [...getXP(m), 's', 0], 's'); break
-    case 'select_S_B': selectNode(m, getXP(m).slice(0, -3), 's'); break
-    case 'select_C_R': selectNode(m, getCXR(m), 's'); break
-    case 'select_C_L': selectNode(m, getCXL(m), 's'); break
-    case 'select_C_D': selectNode(m, getCXD(m), 's'); break
-    case 'select_C_U': selectNode(m, getCXU(m), 's'); break
-    case 'select_C_F_firstRow': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
-    case 'select_C_F_firstCol': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
-    case 'select_C_FF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getXP(m), 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_C_B': getXP(m).includes('c') ? selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
-    case 'select_CR_SAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
-    case 'select_CC_SAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break
-    case 'select_CR_D': selectNodeList(m, getCXAD(m), 's'); break
-    case 'select_CR_U': selectNodeList(m, getCXAU(m), 's'); break
-    case 'select_CC_R': selectNodeList(m, getCXAR(m), 's'); break
-    case 'select_CC_L': selectNodeList(m, getCXAL(m), 's'); break
-    case 'select_dragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
+    case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
+    case 'selectSD': selectNode(m, structNavigate(m, getSXL(m).path, Dir.D), 's'); break
+    case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getSXL(m).path, Dir.D), 's'); break
+    case 'selectSU': selectNode(m, structNavigate(m, getSXF(m).path, Dir.U), 's'); break
+    case 'selectSUtoo': selectNodeToo(m, structNavigate(m, getSXF(m).path, Dir.U), 's'); break
+    case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
+    case 'selectSOR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
+    case 'selectSOL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
+    case 'selectSI': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
+    case 'selectSfamilyO': getX(m).selection = 'f'; break
+    case 'selectSfamilyOR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
+    case 'selectSfamilyOL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
+    case 'selectSF': selectNode(m, [...getXP(m), 's', 0], 's'); break
+    case 'selectSB': selectNode(m, getXP(m).slice(0, -3), 's'); break
+    case 'selectCR': selectNode(m, getCXR(m), 's'); break
+    case 'selectCL': selectNode(m, getCXL(m), 's'); break
+    case 'selectCD': selectNode(m, getCXD(m), 's'); break
+    case 'selectCU': selectNode(m, getCXU(m), 's'); break
+    case 'selectCFfirstRow': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
+    case 'selectCFfirstCol': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
+    case 'selectCFF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getXP(m), 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
+    case 'selectCB': getXP(m).includes('c') ? selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
+    case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
+    case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break
+    case 'selectCRD': selectNodeList(m, getCXAD(m), 's'); break
+    case 'selectCRU': selectNodeList(m, getCXAU(m), 's'); break
+    case 'selectCCR': selectNodeList(m, getCXAR(m), 's'); break
+    case 'selectCCL': selectNodeList(m, getCXAL(m), 's'); break
+    case 'selectdragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
-    case 'insert_S_O': insertSO(m, {}); break
-    case 'insert_S_O_text': insertSO(m, {contentType: 'text', content: payload.text}); break
-    case 'insert_S_O_elink': insertSO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
-    case 'insert_S_O_equation': insertSO(m, {contentType: 'equation', content: payload.text}); break
-    case 'insert_S_O_image': insertSO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
-    case 'insert_S_O_table': insertTable(m, payload.rowLen, payload.colLen); break
-    case 'insert_S_D': insertSD(m, {}); break
-    case 'insert_S_U': insertSU(m, {}); break
-    case 'insert_CR_D': insertCRD(m); break
-    case 'insert_CR_U': insertCRU(m); break
-    case 'insert_CC_R': insertCCR(m); break
-    case 'insert_CC_L': insertCCL(m); break
+    case 'insertSO': insertSO(m, {}); break
+    case 'insertSOtext': insertSO(m, {contentType: 'text', content: payload.text}); break
+    case 'insertSOelink': insertSO(m, {contentType: 'text', content: payload.text, linkType: 'external', link: payload.text}); break
+    case 'insertSOequation': insertSO(m, {contentType: 'equation', content: payload.text}); break
+    case 'insertSOimage': insertSO(m, {contentType: 'image', content: payload.imageId, imageW: payload.imageSize.width, imageH: payload.imageSize.height}); break
+    case 'insertSOtable': insertTable(m, payload.rowLen, payload.colLen); break
+    case 'insertSD': insertSD(m, {}); break
+    case 'insertSU': insertSU(m, {}); break
+    case 'insertCRD': insertCRD(m); break
+    case 'insertCRU': insertCRU(m); break
+    case 'insertCCR': insertCCR(m); break
+    case 'insertCCL': insertCCL(m); break
 
-    case 'delete_S': deleteSelectS(m); break
-    case 'delete_CR': deleteSelectCR(m); break
-    case 'delete_CC': deleteSelectCC(m); break
+    case 'deleteS': deleteReselectS(m); break
+    case 'deleteCR': deleteReselectCR(m); break
+    case 'deleteCC': deleteReselectCC(m); break
 
-    case 'move_S_D': moveSD(m); break
-    case 'move_S_T': moveST(m); break
-    case 'move_S_U': moveSU(m); break
-    case 'move_S_B': moveSB(m); break
-    case 'move_S_O': moveSO(m); break
-    case 'move_S_I': moveSI(m); break
-    case 'move_S_I_R': moveSIR(m); break
-    case 'move_S_I_L': moveSIL(m); break
-    case 'move_CR_D': moveCRD(m); break;
-    case 'move_CR_U': moveCRU(m); break;
-    case 'move_CC_R': moveCCR(m); break;
-    case 'move_CC_L': moveCCL(m); break;
+    case 'moveSD': moveS(m, [...getSXI1(m), 's', getCountSXAU(m) + 1]); break
+    case 'moveST': moveS(m, [...getSXI1(m), 's', 0]); break
+    case 'moveSU': moveS(m, [...getSXI1(m), 's', getCountSXAU(m) - 1]); break
+    case 'moveSB': moveS(m, [...getSXI1(m), 's', getCountSXAD(m)]); break
+    case 'moveSO': moveS(m, [...getSXAU1(m), 's', getCountSXAU1O1(m)]); break
+    case 'moveSI': moveS(m, [...getSXI2(m), 's', getCountSXI1U(m) + 1]); break
+    case 'moveSIR': moveS(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)]); break
+    case 'moveSIL': moveS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)]); break
+    case 'moveCRD': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0]); break
+    case 'moveCRU': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0]); break
+    case 'moveCCR': moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1]); break
+    case 'moveCCL': moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) - 1]); break
 
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
-    case 'move_dragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
+    case 'movedragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
 
     case 'transpose': {
       // https://stackoverflow.com/questions/872310/javascript-swap-array-elements
@@ -179,7 +177,13 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
       break
     }
   }
+}
 
+export const mapReducer = (pm: M, action: string, payload: any) => {
+  console.log('MAPMUTATION: ' + action, payload)
+  // TODO map type validity check here to prevent errors
+  const m = structuredClone(pm).sort(sortPath)
+  mapReducerAtomic(m, action, payload)
   // m.forEach(n => console.log(n.selected, n.path, n.content))
 
   // TODO mapFix

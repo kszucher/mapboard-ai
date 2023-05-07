@@ -31,19 +31,19 @@ export const deleteCC = (m: M) => {
   }
 }
 
-export const deleteSelectS = (m: M) => {
+export const deleteReselectS = (m: M) => {
   const reselectPath = getReselectS(m)
   deleteS(m)
   selectNode(m, reselectPath, 's')
 }
 
-export const deleteSelectCR = (m: M) => {
+export const deleteReselectCR = (m: M) => {
   const reselectPathList = getReselectCR(m)
   deleteCR(m)
   selectNodeList(m, reselectPathList, 's')
 }
 
-export const deleteSelectCC = (m: M) => {
+export const deleteReselectCC = (m: M) => {
   const reselectPathList = getReselectCC(m)
   deleteCC(m)
   selectNodeList(m, reselectPathList, 's')
