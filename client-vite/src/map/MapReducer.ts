@@ -76,9 +76,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSORTable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountSXO1(m)], payload); break
     case 'insertCRD': insertCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0]); break
-    case 'insertCRU': insertCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0]); break
+    case 'insertCRU': insertCR(m, [...getSXI1(m), 'c', getCountCXU(m), 0]); break // what
     case 'insertCCR': insertCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1]); break
-    case 'insertCCL': insertCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) - 1]); break
+    case 'insertCCL': insertCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m)]); break
 
     case 'deleteS': deleteReselectS(m); break
     case 'deleteCR': deleteReselectCR(m); break

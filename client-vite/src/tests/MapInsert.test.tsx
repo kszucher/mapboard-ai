@@ -125,3 +125,5 @@ describe("InsertTests", () => {
   // test('insertCRD', () => {mapReducerAtomic(insertCRDTest, 'insertCRD', {}); expect(insertCRDTest).toEqual(insertCRDResult)})
   // test('insertCRD', () => {mapReducerAtomic(insertCRDTest, 'insertCRD', {}); expect(insertCRDTest).toEqual(insertCRDResult)})
 })
+
+// TODO finish tests and finally make a test for insertTable which is not working
