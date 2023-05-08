@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2, incPi,} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2,} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -69,8 +69,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCCL': selectNodeList(m, getCXAL(m), 's'); break
     case 'selectDragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
-    case 'insertSD': insertSD(m, incPi(getXP(m), getXP(m).length - 1), payload); break
-    case 'insertSU': insertSU(m, getXP(m), payload); break
+    case 'insertSD': insertSD(m, [...getSXI1(m), 's', getCountSXAU(m) + 1], payload); break
+    case 'insertSU': insertSU(m, [...getXP(m)], payload); break
     case 'insertSOR': insertSOR(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSO': insertSO(m, [...getXP(m), 's', getCountSXO1(m)], payload); break
     case 'insertSORtable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload.rowLen, payload.colLen); break
