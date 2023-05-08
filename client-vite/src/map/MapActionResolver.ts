@@ -18,6 +18,7 @@ export const mapActionResolver = (
     clipboardPasteImageEvent?: { imageId: string, imageSize: { width: number, height: number } }
     componentEvent?: { type: string, payload: any}
   }): {type: string, payload: any} => {
+  const me = 'mouseEvent' in someEvent
   const kd = 'keyboardEvent' in someEvent
   const pt = 'clipboardPasteTextEvent' in someEvent
   const pi = 'clipboardPasteImageEvent' in someEvent
@@ -51,6 +52,9 @@ export const mapActionResolver = (
   // console.log({c,cr,cc, sxavn})
 
   const stateMachine = [
+    // [ me, ckm(e, '---') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
+
+
     [ kd, ckm(e, '---') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
     [ kd, ckm(e, '---') && key === 'F2',                   true,  r || s || c,     1, 'startEditAppend',          {}, 1 ],
     [ kd, ckm(e, '---') && key === 'F3',                   true,  true,            0, '',                         {}, 1 ],
@@ -140,7 +144,7 @@ export const mapActionResolver = (
     [ pi, true,                                            true,  r,               1, 'insertSOR',                {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
     [ pi, true,                                            true,  s,               1, 'insertSO',                 {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
 
-    [ ce, type === 'insertTable',                          true,  s,               1, 'insertSORTable',           {}, 0 ],
+    [ ce, type === 'insertTable',                          true,  r,               1, 'insertSORTable',           {}, 0 ],
     [ ce, type === 'insertTable',                          true,  s,               1, 'insertSOTable',            {}, 0 ],
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {

@@ -25,6 +25,11 @@ export const isD = (p: P) => getPathPattern(p).endsWith('d')
 export const isS = (p: P) => getPathPattern(p).endsWith('s')
 export const isC = (p: P) => getPathPattern(p).endsWith('c')
 
+export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
+export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
+export const getSI1 = (p: P) => getSIL(p).at(-1) as P
+export const getSI2 = (p: P) => getSIL(p).at(-2) as P
+
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
@@ -48,11 +53,6 @@ export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getP
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
-
-export const getSU1 = (p: P) => p.at(-1) as number > 0 ? [...p.slice(0, -1), p.at(-1) as number - 1] : p
-export const getSIL = (p: P) => p.map((pi, i) => p.slice(0, i)).filter(pi => ['r', 'd', 's'].includes(pi.at(-2) as string) || pi.at(-3) === 'c' )
-export const getSI1 = (p: P) => getSIL(p).at(-1) as P
-export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
 export const getR0D0 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 0])
@@ -82,6 +82,7 @@ export const getCXAL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 export const getCountSXAD = (m: M) => getCountSD(m, getSXLP(m))
 export const getCountSXAU = (m: M) => getCountSU(m, getSXFP(m))
 export const getCountSXAU1O1 = (m: M) => getCountSO1(m, getSXAU1(m))
+export const getCountSXO1 = (m: M) => getCountSO1(m, getXP(m))
 export const getCountSXI1U = (m: M) => getCountSU(m, getSI1(getXP(m)))
 export const getCountCXU = (m: M) => getXP(m).at(-2) as number
 export const getCountCXL = (m: M) => getXP(m).at(-1) as number

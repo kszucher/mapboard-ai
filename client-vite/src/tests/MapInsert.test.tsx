@@ -50,9 +50,9 @@ const insertSUResult = [
 
 const insertSORTest = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
-  {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
 ] as M
 
 const insertSORResult = [
@@ -60,14 +60,15 @@ const insertSORResult = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'x', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 1]},
 ] as M
 
 const insertSOTest = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'a', path: ['g']},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
-  {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 0, selection: 's', taskStatus: 0, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
 ] as M
 
 const insertSOResult = [
@@ -75,7 +76,8 @@ const insertSOResult = [
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'b', path: ['r', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'c', path: ['r', 0, 'd', 0]},
   {selected: 0, selection: 's', taskStatus: 0, nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
-  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'x', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', taskStatus: 0, nodeId: 'e', path: ['r', 0, 'd', 0, 's', 0, 's', 0]},
+  {selected: 1, selection: 's', taskStatus: 0, nodeId: 'z', path: ['r', 0, 'd', 0, 's', 0, 's', 1]},
 ] as M
 
 describe("InsertTests", () => {
