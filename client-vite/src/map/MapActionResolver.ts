@@ -63,6 +63,7 @@ export const mapActionResolver = (
     [ kd, ckm(e, '---') && key === 'Enter',                true,  c,               1, 'selectCD',                 {}, 1 ],
     [ kd, ckm(e, '-s-') && key === 'Enter',                true,  s,               1, 'insertSU',                 {}, 1 ],
     [ kd, ckm(e, '--a') && key === 'Enter',                true,  s,               1, 'cellify',                  {}, 1 ],
+    [ kd, ckm(e, '---') && ['Insert','Tab'].includes(key), true,  r,               1, 'insertSOR',                {}, 1 ],
     [ kd, ckm(e, '---') && ['Insert','Tab'].includes(key), true,  s,               1, 'insertSO',                 {}, 1 ],
     [ kd, ckm(e, '---') && ['Insert','Tab'].includes(key), true,  c,               1, 'selectCO',                 {}, 1 ],
     [ kd, ckm(e, '---') && key === 'Delete',               true,  s,               1, 'deleteS',                  {}, 1 ],
