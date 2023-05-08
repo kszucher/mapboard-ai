@@ -7,14 +7,17 @@ import {
   getCountCXU,
   getCountCXL,
   getDefaultNode,
-  getInsertParentNode,
   getXP,
   incXCDF,
   incXCRF,
   incXCFDF,
   incXCFRF,
   sortPath,
-  makeSpaceFromS
+  makeSpaceFromS,
+  getSXI1,
+  getNodeByPath,
+  getSXUI,
+  getX
 } from "./MapUtils"
 
 const insertNode = (m: M, ip: P, attributes: object) => { // if I return ip, this can be used in one-liners...
@@ -34,22 +37,22 @@ const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
 }
 
 export const insertSD = (m: M, ip: P, attributes: object) => {
-  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus})
   selectNode(m, ip, 's')
 }
 
 export const insertSU = (m: M, ip: P, attributes: object) => {
-  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus > 0 ? 1 : 0})
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus})
   selectNode(m, ip, 's')
 }
 
 export const insertSO = (m: M, ip: P, attributes: object) => {
-  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus})
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus})
   selectNode(m, ip, 's')
 }
 
 export const insertSOR = (m: M, ip: P, attributes: object) => {
-  insertNode(m, ip, {...attributes, path: ip, taskStatus: getInsertParentNode(m).taskStatus})
+  insertNode(m, ip, {...attributes, path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus})
   selectNode(m, ip, 's')
 }
 

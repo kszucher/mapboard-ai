@@ -63,6 +63,7 @@ export const getSXF = (m: M) => m.find(n => n.selected)!
 export const getSXFP = (m: M) => getSXF(m).path
 export const getSXL = (m: M) => m.findLast(n => n.selected)!
 export const getSXLP = (m: M) => getSXL(m).path
+export const getSXUI = (m: M) => getSU1(getXP(m))
 export const getSXI1  = (m: M) => getSI1(getXP(m))
 export const getSXI2 = (m: M) => getSI2(getXP(m))
 export const getCXD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
@@ -136,6 +137,5 @@ export const cb2ipCC = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
 
 export const getEditedPath = (p: P) => getPathPattern(p).endsWith('c') ? [...p, 's', 0] as P : p
 export const getEditedNode = (m: M, p: P) => getNodeByPath(m, getEditedPath(p))
-export const getInsertParentNode = (m: M) => getNodeByPath(m, getXP(m).length === 2 ? ['r', 0, 'd', 0] as P: getXP(m))
 export const getParentNodeByPath = (m: M, p: P) => getNodeByPath(m, getSI1(p)) as N
 export const getClosestStructParentPath = (p: P) => (getPathPattern(p).endsWith('ds') || getPathPattern(p).endsWith('ss')) ? p.slice(0, -2) : p.slice(0, -5)
