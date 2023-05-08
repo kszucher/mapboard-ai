@@ -1,64 +1,37 @@
 import {GN, M, P} from "../state/MapPropTypes"
 import {genHash, getTableIndices, IS_TESTING} from "../core/Utils"
-import {selectNode} from "./MapSelect";
-import {
-  getCountCV,
-  getCountCH,
-  getCountCXU,
-  getCountCXL,
-  getDefaultNode,
-  getXP,
-  incXCDF,
-  incXCRF,
-  incXCFDF,
-  incXCFRF,
-  sortPath,
-  makeSpaceFromS,
-  getNodeByPath,
-} from "./MapUtils"
-
-const insertNode = (m: M, ip: P, attributes: object) => { // if I return ip, this can be used in one-liners...
-  makeSpaceFromS(m, ip, 1)
-  m.push({nodeId: IS_TESTING ? 'z' : 'node' + genHash(8), ...attributes} as GN)
-  m.sort(sortPath)
-}
-
-export const insertNodeList = (m: M, pList: P[]) => {
-  m.push(...pList.map((p, i) => getDefaultNode({path: structuredClone(p), nodeId: IS_TESTING ? 'z' + i : 'node' + genHash(8)}))) // TODO remove default
-  m.sort(sortPath)
-}
-
-const insertCellNodeList = (m: M, p: P, indices: number[][]) => {
-  insertNodeList(m, indices.map(el => [...p, 'c', ...el]))
-  insertNodeList(m, indices.map(el => [...p, 'c', ...el, 's', 0]))
-}
+import {unselectNodes} from "./MapSelect";
+import {getXP, sortPath, makeSpaceFromS, getNodeByPath, makeSpaceFromCR, makeSpaceFromCC, getCountCH, getCountCV,} from "./MapUtils"
 
 export const insertS = (m: M, ip: P, attributes: object) => {
-  insertNode(m, ip, {...attributes, path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus})
-  selectNode(m, ip, 's')
+  makeSpaceFromS(m, ip, 1)
+  unselectNodes(m)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'z' : 'node' + genHash(8), path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus, ...attributes} as GN)
+  m.sort(sortPath)
+  }
+
+export const insertCR = (m: M, ip: P) => {
+  makeSpaceFromCR(m, ip)
+  const rowIndices = Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [ip.at(-2), i])
+  unselectNodes(m)
+  m.push(...rowIndices.map((el, i) => ({selected: 1, selection: 's', nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el]}  as GN)))
+  m.push(...rowIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zcs' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el,'s', 0]}  as GN)))
+  m.sort(sortPath)
 }
 
-export const insertTable = (m: M, ip: P, r: number, c: number) => {
+export const insertCC = (m: M, ip: P) => {
+  makeSpaceFromCC(m, ip)
+  const colIndices = Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, ip.at(-1)])
+  unselectNodes(m)
+  m.push(...colIndices.map((el, i) => ({selected: 1, selection: 's', nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el]}  as GN)))
+  m.push(...colIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zcs' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el,'s', 0]}  as GN)))
+  m.sort(sortPath)
+}
+
+export const insertTable = (m: M, ip: P, payload: {rowLen: number, colLen: number}) => {
   insertS(m, ip, {})
-  insertCellNodeList(m, getXP(m), getTableIndices(r, c))
-}
-
-export const insertCRD = (m: M) => {
-  incXCDF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountCXU(m) + 1, i]))
-}
-
-export const insertCRU = (m: M) => {
-  incXCFDF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [getCountCXU(m) - 1, i]))
-}
-
-export const insertCCR = (m: M) => {
-  incXCRF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountCXL(m) + 1]))
-}
-
-export const insertCCL = (m: M) => {
-  incXCFRF(m)
-  insertCellNodeList(m, getXP(m).slice(0, -3), Array(getCountCV(m, getXP(m))).fill(null).map((el, i) => [i, getCountCXL(m) - 1]))
+  const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el]}  as GN)))
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zcs' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el,'s', 0]}  as GN)))
+  m.sort(sortPath)
 }

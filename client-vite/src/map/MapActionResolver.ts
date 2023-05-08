@@ -145,8 +145,8 @@ export const mapActionResolver = (
     [ pi, true,                                            true,  r,               1, 'insertSOR',                {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
     [ pi, true,                                            true,  s,               1, 'insertSO',                 {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
 
-    [ ce, type === 'insertTable',                          true,  r,               1, 'insertSORTable',           {}, 0 ],
-    [ ce, type === 'insertTable',                          true,  s,               1, 'insertSOTable',            {}, 0 ],
+    [ ce, type === 'insertTable',                          true,  r,               1, 'insertSORTable',           payload, 0 ],
+    [ ce, type === 'insertTable',                          true,  s,               1, 'insertSOTable',            payload, 0 ],
   ] as any[]
   for (let i = 0; i < stateMachine.length; i++) {
     const [ eventTypeCondition, match, dirMatch, scopeMatch, isMapAction, type, payload, preventDefault ] = stateMachine[i]

@@ -8,7 +8,7 @@ import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
 import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete";
 import {mapInit} from "./MapInit"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertS, insertTable} from "./MapInsert"
+import {insertCC, insertCR, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
@@ -73,12 +73,12 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'insertSU': insertS(m, [...getXP(m)], payload); break
     case 'insertSOR': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
     case 'insertSO': insertS(m, [...getXP(m), 's', getCountSXO1(m)], payload); break
-    case 'insertSORtable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload.rowLen, payload.colLen); break
-    case 'insertSOtable': insertTable(m, [...getXP(m), 's', getCountSXO1(m)], payload.rowLen, payload.colLen); break
-    case 'insertCRD': insertCRD(m); break
-    case 'insertCRU': insertCRU(m); break
-    case 'insertCCR': insertCCR(m); break
-    case 'insertCCL': insertCCL(m); break
+    case 'insertSORTable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
+    case 'insertSOTable': insertTable(m, [...getXP(m), 's', getCountSXO1(m)], payload); break
+    case 'insertCRD': insertCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0]); break
+    case 'insertCRU': insertCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0]); break
+    case 'insertCCR': insertCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1]); break
+    case 'insertCCL': insertCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) - 1]); break
 
     case 'deleteS': deleteReselectS(m); break
     case 'deleteCR': deleteReselectCR(m); break
@@ -93,9 +93,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'moveSIR': moveS(m, ['r', 0, 'd', 1, 's', getCountR0D1S(m)]); break
     case 'moveSIL': moveS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)]); break
     case 'moveCRD': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) + 1, 0]); break
-    case 'moveCRU': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m) - 1, 0]); break
+    case 'moveCRU': moveCR(m, [...getSXI1(m), 'c', getCountCXU(m), 0]); break
     case 'moveCCR': moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) + 1]); break
-    case 'moveCCL': moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m) - 1]); break
+    case 'moveCCL': moveCC(m, [...getSXI1(m), 'c', 0, getCountCXL(m)]); break
 
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
