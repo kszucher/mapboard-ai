@@ -114,7 +114,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCRU': selectNodeList(m, getCXAU(m), 's'); break
     case 'selectCCR': selectNodeList(m, getCXAR(m), 's'); break
     case 'selectCCL': selectNodeList(m, getCXAL(m), 's'); break
-    case 'selectdragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
+    case 'selectDragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
     case 'insertSD': insertSD(m, incPi(getXP(m), getXP(m).length - 1), payload); break
     case 'insertSU': insertSU(m, getXP(m), payload); break
@@ -150,7 +150,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
-    case 'movedragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
+    case 'moveDragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
 
     case 'transpose': {
       // https://stackoverflow.com/questions/872310/javascript-swap-array-elements

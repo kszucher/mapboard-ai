@@ -87,7 +87,7 @@ export const MapDiv: FC = () => {
                   } else {
                     console.log(e)
                     const add = e.ctrlKey
-                    dispatch(actions.mapAction({type: 'select_S', payload: { add, path: n.path, selection: 's' }}))
+                    dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
@@ -102,7 +102,7 @@ export const MapDiv: FC = () => {
                       const toCoords = getCoords(e)
                       const { moveTargetPath, moveTargetIndex } = mapFindNearest(structuredClone(m).sort(sortPath), n, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
-                        dispatch(actions.mapAction({type: 'move_dragged', payload: { moveTargetPath, moveTargetIndex }}))
+                        dispatch(actions.mapAction({type: 'moveDragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }
                       dispatch(actions.setFromCoordsMove([]))
                     }, { signal })
@@ -111,7 +111,7 @@ export const MapDiv: FC = () => {
                   e.preventDefault()
                 } else if (e.button === 2) {
                   const add = e.ctrlKey
-                  dispatch(actions.mapAction({type: 'select_S', payload: { add, path: n.path, selection: 'f' }}))
+                  dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 'f' }}))
                 }
               }}
               onDoubleClick={(e) => {

@@ -90,7 +90,7 @@ export const MapSvg: FC = () => {
           if (didMove) {
             if (e.button === 0) {
               dispatch(actions.mapAction({
-                type: 'select_dragged',
+                type: 'selectDragged',
                 payload: {nList: mapFindIntersecting(m, fromCoords, toCoords)}
               }))
               setSelectionRectCoords([])
@@ -98,7 +98,7 @@ export const MapSvg: FC = () => {
             }
           } else {
             if (e.button === 0) {
-              dispatch(actions.mapAction({type: 'select_R', payload: {}}))
+              dispatch(actions.mapAction({type: 'selectR', payload: {}}))
             }
           }
         }, { signal })
