@@ -126,7 +126,7 @@ export const m2cbCR = (m: M) => structuredClone(getSXAF(m).map(n =>
 export const m2cbCC = (m: M) => structuredClone(getSXAF(m).map(n =>
   ({...n, path: ['c', (n.path.at(getXP(m).length - 2) as number), (n.path.at(getXP(m).length - 1) as number) - getCountCXL(m), ...n.path.slice(getXP(m).length)]}))) as GN[]
 
-export const cb2ip = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
+export const cb2ipS = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
   ({...n, path: [...ip.slice(0, -2), 's', (n.path.at(1) as number) + (ip.at(-1) as number), ...n.path.slice(2)]}))) as GN[]
 export const cb2ipCR = (cb: GN[], ip: P) => structuredClone(cb.map(n =>
   ({...n, path: [...ip.slice(0, -3), 'c', (n.path.at(1) as number) + (ip.at(-2) as number), (n.path.at(2) as number), ...n.path.slice(3)]}))) as GN[]
