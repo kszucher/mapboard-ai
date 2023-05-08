@@ -8,7 +8,7 @@ import {mapCalcTask} from "./MapCalcTask"
 import {mapChain} from "./MapChain"
 import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete";
 import {mapInit} from "./MapInit"
-import {insertCCL, insertCCR, insertCRD, insertCRU, insertSD, insertSO, insertSOR, insertSU, insertTable} from "./MapInsert"
+import {insertCCL, insertCCR, insertCRD, insertCRU, insertS, insertTable} from "./MapInsert"
 import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
@@ -69,10 +69,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCCL': selectNodeList(m, getCXAL(m), 's'); break
     case 'selectDragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
 
-    case 'insertSD': insertSD(m, [...getSXI1(m), 's', getCountSXAU(m) + 1], payload); break
-    case 'insertSU': insertSU(m, [...getXP(m)], payload); break
-    case 'insertSOR': insertSOR(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
-    case 'insertSO': insertSO(m, [...getXP(m), 's', getCountSXO1(m)], payload); break
+    case 'insertSD': insertS(m, [...getSXI1(m), 's', getCountSXAU(m) + 1], payload); break
+    case 'insertSU': insertS(m, [...getXP(m)], payload); break
+    case 'insertSOR': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break
+    case 'insertSO': insertS(m, [...getXP(m), 's', getCountSXO1(m)], payload); break
     case 'insertSORtable': insertTable(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload.rowLen, payload.colLen); break
     case 'insertSOtable': insertTable(m, [...getXP(m), 's', getCountSXO1(m)], payload.rowLen, payload.colLen); break
     case 'insertCRD': insertCRD(m); break

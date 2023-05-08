@@ -55,15 +55,12 @@ export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
 export const getCountCV = (m: M, p: P) => m.filter(n => isCH(p, n.path)).length
 
 export const getG = (m: M) => m.filter(n => n.path.length === 1).at(0) as G
-export const getR0D0 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 0])
-export const getR0D1 = (m: M) => getNodeByPath(m, ['r', 0, 'd', 1])
 export const getX = (m: M) => m.filter(n => n.path.length > 1).reduce((a, b) => a.selected > b.selected ? a : b)
 export const getXP = (m: M) => getX(m).path
 export const getSXF = (m: M) => m.find(n => n.selected)!
 export const getSXFP = (m: M) => getSXF(m).path
 export const getSXL = (m: M) => m.findLast(n => n.selected)!
 export const getSXLP = (m: M) => getSXL(m).path
-export const getSXUI = (m: M) => getSU1(getXP(m))
 export const getSXI1  = (m: M) => getSI1(getXP(m))
 export const getSXI2 = (m: M) => getSI2(getXP(m))
 export const getCXD = (m: M) => incPi(getXP(m), getXP(m).length - 2)
