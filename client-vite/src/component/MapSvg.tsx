@@ -6,6 +6,7 @@ import {getClosestStructParentPath, getG, getX, getNodeById, getNodeByPath, getP
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {mSelector} from "../state/EditorState";
+import {MapSvgLayer0} from "./MapSvgLayer0";
 import {MapSvgLayer1} from "./MapSvgLayer1";
 import {getArcPath, getBezierLinePath, getBezierLinePoints, getCellPolygonPoints, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath,} from "./MapSvgUtils"
 import {getCoords} from "./MapDivUtils"
@@ -112,20 +113,7 @@ export const MapSvg: FC = () => {
         x={isChrome? 'calc(100vw)' : ''}
         y={isChrome? 'calc(100vh)' : ''}
       >
-        <g id="layer0">
-          <rect
-            key={`${g.nodeId}_svg_backgroundRect`}
-            x={0}
-            y={0}
-            width={g.mapWidth}
-            height={g.mapHeight}
-            rx={32}
-            ry={32}
-            fill={C.MAP_BACKGROUND}
-            style={{transition: '0.3s ease-out'}}
-          >
-          </rect>
-        </g>
+        <MapSvgLayer0/>
         <MapSvgLayer1/>
         <g id="layer2">
           {m.map((n: N) => (

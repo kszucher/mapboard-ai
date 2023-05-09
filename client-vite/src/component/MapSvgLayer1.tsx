@@ -1,10 +1,10 @@
 import React, {FC, Fragment} from "react"
 import {useSelector} from "react-redux"
-import {RootState} from "../editor/EditorReducer"
 import {mSelector} from "../state/EditorState"
+import {RootState} from "../editor/EditorReducer"
+import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
 import { getPolygonPath, getStructPolygonPoints } from "./MapSvgUtils"
-import {N} from "../state/MapPropTypes"
 
 export const MapSvgLayer1: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
