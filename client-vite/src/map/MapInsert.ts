@@ -8,7 +8,7 @@ export const insertS = (m: M, ip: P, attributes: object) => {
   unselectNodes(m)
   m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'z' : 'node' + genHash(8), path: ip, taskStatus: getNodeByPath(m, getXP(m)).taskStatus, ...attributes} as GN)
   m.sort(sortPath)
-  }
+}
 
 export const insertCR = (m: M, ip: P) => {
   makeSpaceFromCR(m, ip)
@@ -29,9 +29,11 @@ export const insertCC = (m: M, ip: P) => {
 }
 
 export const insertTable = (m: M, ip: P, payload: {rowLen: number, colLen: number}) => {
-  insertS(m, ip, {})
+  makeSpaceFromS(m, ip, 1)
   const tableIndices = getTableIndices(payload.rowLen, payload.colLen)
-  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el]}  as GN)))
-  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zcs' + i : 'node' + genHash(8), path: [...ip.slice(0, -3), 'c', ...el,'s', 0]}  as GN)))
+  unselectNodes(m)
+  m.push({selected: 1, selection: 's', nodeId: IS_TESTING ? 'z' : 'node' + genHash(8), path: ip} as GN)
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zc' + i : 'node' + genHash(8), path: [...ip, 'c', ...el]}  as GN)))
+  m.push(...tableIndices.map((el, i) => ({selected: 0, selection: 's', nodeId: IS_TESTING ? 'zcs' + i : 'node' + genHash(8), path: [...ip, 'c', ...el,'s', 0]}  as GN)))
   m.sort(sortPath)
 }

@@ -216,6 +216,29 @@ const insertCCLResult = [
   {selected: 0, selection: 's', nodeId: 'l', path: ['r', 0, 'd', 0, 's', 0, 'c', 1, 2, 's', 0]},
 ] as M
 
+const insertSORTableTest = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 1, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+] as M
+
+const insertSORTableResult = [
+  {selected: 0, selection: 's', nodeId: 'a', path: ['g']},
+  {selected: 0, selection: 's', nodeId: 'b', path: ['r', 0]},
+  {selected: 0, selection: 's', nodeId: 'c', path: ['r', 0, 'd', 0]},
+  {selected: 0, selection: 's', nodeId: 'd', path: ['r', 0, 'd', 0, 's', 0]},
+  {selected: 1, selection: 's', nodeId: 'z', path: ['r', 0, 'd', 0, 's', 1]},
+  {selected: 0, selection: 's', nodeId: 'zc0', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 0]},
+  {selected: 0, selection: 's', nodeId: 'zcs0', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'zc1', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1]},
+  {selected: 0, selection: 's', nodeId: 'zcs1', path: ['r', 0, 'd', 0, 's', 1, 'c', 0, 1, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'zc2', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0]},
+  {selected: 0, selection: 's', nodeId: 'zcs2', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 0, 's', 0]},
+  {selected: 0, selection: 's', nodeId: 'zc3', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1]},
+  {selected: 0, selection: 's', nodeId: 'zcs3', path: ['r', 0, 'd', 0, 's', 1, 'c', 1, 1, 's', 0]},
+] as M
+
 describe("InsertTests", () => {
   beforeEach(() => setIsTesting())
   test('insertSD', () => {mapReducerAtomic(insertSDTest, 'insertSD', {}); expect(insertSDTest).toEqual(insertSDResult)})
@@ -226,4 +249,6 @@ describe("InsertTests", () => {
   test('insertCRU', () => {mapReducerAtomic(insertCRUTest, 'insertCRU', {}); expect(insertCRUTest).toEqual(insertCRUResult)})
   test('insertCCR', () => {mapReducerAtomic(insertCCRTest, 'insertCCR', {}); expect(insertCCRTest).toEqual(insertCCRResult)})
   test('insertCCL', () => {mapReducerAtomic(insertCCLTest, 'insertCCL', {}); expect(insertCCLTest).toEqual(insertCCLResult)})
+  test('insertSORTable', () => {mapReducerAtomic(insertSORTableTest, 'insertSORTable', {rowLen: 2, colLen: 2}); expect(insertSORTableTest).toEqual(insertSORTableResult)})
+
 })
