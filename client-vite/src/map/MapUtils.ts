@@ -89,7 +89,7 @@ export const isRX = (m: M) => isR(getXP(m)) && !m.find(n => n.selected && !isR(n
 export const isSX = (m: M) => isS(getXP(m)) && !m.find(n => n.selected && !isS(n.path))
 export const isDSX = (m: M) => getXP(m).length === 6
 export const isSXAV = (m: M) => isS(getXP(m)) && getXA(m).map(n => n.path).every(p => isSV(getXP(m), p))
-export const isSXAVN = (m: M) => isSXAV(m) && ((getSXL(m).path.at(-1) as number) - (getSXF(m).path.at(-1) as number)) === getXA(m).length - 1
+export const isSXAVN = (m: M) => isSXAV(m) && ((getSXLP(m).at(-1) as number) - (getSXF(m).path.at(-1) as number)) === getXA(m).length - 1
 export const isCX = (m: M) => isC(getXP(m)) && getXA(m).length === 1
 export const isCRXA = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCV(getXP(m), p))
 export const isCCXA = (m: M) => isC(getXP(m)) && getXA(m).length > 1 && getXA(m).map(n => n.path).every(p => isCH(getXP(m), p))

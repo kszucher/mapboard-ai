@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getSXF, getSXL, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2,} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2, getSXFP, getSXLP,} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -40,10 +40,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       break
     }
     case 'selectall': selectNodeList(m, m.filter(n => n.content !== '').map(n => n.path), 's'); break
-    case 'selectSD': selectNode(m, structNavigate(m, getSXL(m).path, Dir.D), 's'); break
-    case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getSXL(m).path, Dir.D), 's'); break
-    case 'selectSU': selectNode(m, structNavigate(m, getSXF(m).path, Dir.U), 's'); break
-    case 'selectSUtoo': selectNodeToo(m, structNavigate(m, getSXF(m).path, Dir.U), 's'); break
+    case 'selectSD': selectNode(m, structNavigate(m, getSXLP(m), Dir.D), 's'); break
+    case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getSXLP(m), Dir.D), 's'); break
+    case 'selectSU': selectNode(m, structNavigate(m, getSXFP(m), Dir.U), 's'); break
+    case 'selectSUtoo': selectNodeToo(m, structNavigate(m, getSXFP(m), Dir.U), 's'); break
     case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
     case 'selectSOR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
     case 'selectSOL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
