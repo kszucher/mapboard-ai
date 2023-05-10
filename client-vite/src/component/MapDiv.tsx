@@ -3,7 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {getG, getNodeById, sortPath} from "../map/MapUtils"
+import {getG, getNodeById, isD, isR, sortPath} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState";
 import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
@@ -62,7 +62,7 @@ export const MapDiv: FC = () => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 userSelect: 'none',
-                // TODO add a zIndex that is dependent on path length, so a table can be selected
+                zIndex: n.path.length
               }}
               spellCheck={false}
               dangerouslySetInnerHTML={n.nodeId === editedNodeId ? undefined : { __html: getInnerHtml(n) }}
