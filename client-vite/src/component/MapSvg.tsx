@@ -44,13 +44,7 @@ export const MapSvg: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <svg
-      style={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: 'calc(200vw + ' + g.mapWidth + 'px)',
-        height: 'calc(200vh + ' + g.mapHeight + 'px)'
-      }}
+      style={{position: 'absolute', left: 0, top: 0, width: 'calc(200vw + ' + g.mapWidth + 'px)', height: 'calc(200vh + ' + g.mapHeight + 'px)'}}
       onMouseDown={(e) => {
         if (e.button === 1) {
           e.preventDefault()
@@ -79,10 +73,7 @@ export const MapSvg: FC = () => {
           const toCoords = getCoords(e)
           if (didMove) {
             if (e.button === 0) {
-              dispatch(actions.mapAction({
-                type: 'selectDragged',
-                payload: {nList: mapFindIntersecting(m, fromCoords, toCoords)}
-              }))
+              dispatch(actions.mapAction({type: 'selectDragged', payload: {nList: mapFindIntersecting(m, fromCoords, toCoords)}}))
               dispatch(actions.setSelectionRectCoords([]))
               dispatch(actions.setIntersectingNodes([]))
             }

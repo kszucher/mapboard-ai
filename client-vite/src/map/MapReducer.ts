@@ -20,8 +20,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'LOAD': break
     case 'changeDensity': getG(m).density = getG(m).density === 'small' ? 'large' : 'small'; break
     case 'changeAlignment': getG(m).alignment = getG(m).alignment === 'centered' ? 'adaptive' : 'centered'; break
-    case 'selectR': selectNode(m, ['r', 0], 's'); break // fixme - does NOT clean 'f' selection on root, neither all selection
-    case 'selectS': { // will be oneliner once the mouse ops will be routed
+    case 'selectR': selectNode(m, ['r', 0], 's'); break
+    case 'selectS': {
       const pm = m
       const n = getNodeByPath(m, payload.path)
       if (n.dCount || payload.selection === 's' || n.sCount && payload.selection === 'f') {
