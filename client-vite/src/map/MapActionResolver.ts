@@ -1,4 +1,4 @@
-import {actions} from "../editor/EditorReducer"
+import {SyntheticEvent} from "react"
 import {isUrl} from "../core/Utils"
 import {getMap} from "../state/EditorState"
 import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD} from "./MapUtils"
@@ -12,13 +12,13 @@ const ckm = (e: any, condition: string) => (
 
 export const mapActionResolver = (
   someEvent: {
-    mouseEvent?: MouseEvent
+    syntheticEvent?: SyntheticEvent
     keyboardEvent?: KeyboardEvent | { key: any, code: any, which: any, preventDefault: Function }
     clipboardPasteTextEvent?: { text: string }
     clipboardPasteImageEvent?: { imageId: string, imageSize: { width: number, height: number } }
     componentEvent?: { type: string, payload: any}
   }): {type: string, payload: any} => {
-  const me = 'mouseEvent' in someEvent
+  const se = 'mouseEvent' in someEvent
   const kd = 'keyboardEvent' in someEvent
   const pt = 'clipboardPasteTextEvent' in someEvent
   const pi = 'clipboardPasteImageEvent' in someEvent
@@ -52,8 +52,7 @@ export const mapActionResolver = (
   // console.log({c,cr,cc, sxavn})
 
   const stateMachine = [
-    // [ me, ckm(e, '---') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
-
+    [ se, ckm(e, '---'),                                   true,  true,            1, 'startEditAppend',          {}, 1 ],
 
     [ kd, ckm(e, '---') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
     [ kd, ckm(e, '---') && key === 'F2',                   true,  r || s || c,     1, 'startEditAppend',          {}, 1 ],

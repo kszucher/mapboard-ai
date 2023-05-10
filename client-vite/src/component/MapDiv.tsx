@@ -1,8 +1,9 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
-import {FC, Fragment} from "react"
+import {FC, Fragment, SyntheticEvent} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
+import {mapActionResolver} from "../map/MapActionResolver";
 import {getG, getNodeById, isC, isD, isR, isS, sortPath} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState";
@@ -84,7 +85,7 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    console.log(e)
+                    // console.log(e)
                     const add = e.ctrlKey
                     dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }}))
                     const abortController = new AbortController()
@@ -115,7 +116,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction({type: 'startEditAppend', payload: {}}))
+                dispatch(actions.mapAction(mapActionResolver({syntheticEvent: e})))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
