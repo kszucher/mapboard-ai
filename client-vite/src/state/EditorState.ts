@@ -1,4 +1,3 @@
-import {useSelector} from "react-redux";
 import {FormatMode, PageState} from "../core/Enums"
 import {EditorState} from "./EditorStateTypes";
 import {RootState, store} from "../editor/EditorReducer";
@@ -13,10 +12,11 @@ export const editorState: EditorState = {
   mapListIndex: 0,
   editedNodeId: '',
   editType: '',
-  movementCoords: [],
-  moveCoords: [],
   formatterVisible: false,
   moreMenu: false,
+  moveCoords: [],
+  selectionRectCoords: [],
+  intersectingNodes: [],
 }
 
 export const getMap = () => (store.getState().editor.mapList[store.getState().editor.mapListIndex])

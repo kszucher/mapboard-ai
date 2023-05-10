@@ -1,5 +1,5 @@
 import {FormatMode, PageState} from "../core/Enums"
-import {M} from "./MapPropTypes"
+import {M, N} from "./MapPropTypes"
 
 export interface EditorState {
   token: string
@@ -11,8 +11,9 @@ export interface EditorState {
   mapListIndex: number
   editedNodeId: string
   editType: '' | 'append' | 'replace'
-  movementCoords: number[]
-  moveCoords: number[]
   formatterVisible: boolean
   moreMenu: boolean
+  moveCoords: number[]
+  selectionRectCoords: number[]
+  intersectingNodes: N[]
 }

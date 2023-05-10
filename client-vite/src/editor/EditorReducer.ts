@@ -69,7 +69,9 @@ export const editorSlice = createSlice({
         }
       }
     },
-    setFromCoordsMove(state, action: PayloadAction<any>) {state.moveCoords = action.payload},
+    setMoveCoords(state, action: PayloadAction<any>) {state.moveCoords = action.payload},
+    setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
+    setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
   },
   extraReducers: (builder) => {
     builder.addMatcher(
