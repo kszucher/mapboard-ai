@@ -31,7 +31,8 @@ export const mapActionResolver = (
   const { type, payload } = someEvent.componentEvent ? someEvent.componentEvent : { type: undefined, payload: undefined }
 
   const m = structuredClone((getMap())).sort(sortPath)
-  const ls = getX(m)
+  const x = getX(m)
+  // TODO ct = contentType
   const dir = getDir(getX(m))
   const dr = dir === 1
   const dl = dir === -1
@@ -113,7 +114,7 @@ export const mapActionResolver = (
     [ kd, ckm(e, 'c--') && code === 'ArrowRight',          dl,    sxavn && ds,     1, 'moveSIL',                  {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'ArrowRight',          true,  cc && !cxr,      1, 'moveCCR',                  {}, 1 ],
     [ kd, ckm(e, '-s-') && code === 'ArrowRight',          true,  r,               1, 'selectSfamilyOR',          {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowRight',          dr,    s && ls.sCount,  1, 'selectSfamilyO',           {}, 1 ],
+    [ kd, ckm(e, '-s-') && code === 'ArrowRight',          dr,    s && x.sCount,   1, 'selectSfamilyO',           {}, 1 ],
     [ kd, ckm(e, '-s-') && code === 'ArrowRight',          true,  c,               1, 'selectCRSAME',             {}, 1 ],
     [ kd, ckm(e, '--a') && code === 'ArrowRight',          true,  cc,              1, 'insertCCR',                {}, 1 ],
 
@@ -127,7 +128,7 @@ export const mapActionResolver = (
     [ kd, ckm(e, 'c--') && code === 'ArrowLeft',           dl,    sxavn && sxau,   1, 'moveSO',                   {}, 1 ],
     [ kd, ckm(e, 'c--') && code === 'ArrowLeft',           true,  cc && !cxl,      1, 'moveCCL',                  {}, 1 ],
     [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           true,  r,               1, 'selectSfamilyOL',          {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           dl,    s && ls.sCount,  1, 'selectSfamilyO',           {}, 1 ],
+    [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           dl,    s && x.sCount,   1, 'selectSfamilyO',           {}, 1 ],
     [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           true,  c,               1, 'selectCRSAME',             {}, 1 ],
     [ kd, ckm(e, '--a') && code === 'ArrowLeft',           true,  cc,              1, 'insertCCL',                {}, 1 ],
 
