@@ -1,14 +1,13 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
-import {SyntheticEvent} from "react";
-import {getCoords} from "../component/MapDivUtils";
-import {mapFindNearest} from "../map/MapFindNearest";
+import {getCoords} from "../component/MapDivUtils"
+import {mapFindNearest} from "../map/MapFindNearest"
 import {mapReducer} from "../map/MapReducer"
 import {api} from "../core/Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../core/Enums"
 import {getEditedNode, getXP, sortPath} from "../map/MapUtils"
 import isEqual from "react-fast-compare"
-import {N} from "../state/MapPropTypes";
+import {N} from "../state/MapPropTypes"
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -34,7 +33,22 @@ export const editorSlice = createSlice({
       const { moveCoords } = mapFindNearest(spm, n, toCoords.x, toCoords.y)
       state.moveCoords = moveCoords
     },
-    resetMoveCoords(state) {
+    drag(state, action: PayloadAction<{n: N, e: MouseEvent}>) {
+      const pm = current(state.mapList[state.mapListIndex])
+      const spm = structuredClone(pm).sort(sortPath)
+      const {n, e} = action.payload
+      const toCoords = getCoords(e)
+      const { moveTargetPath, moveTargetIndex } = mapFindNearest(spm, n, toCoords.x, toCoords.y)
+      if (moveTargetPath.length) {
+        const m = mapReducer(pm, 'drag', { moveTargetPath, moveTargetIndex })
+        const isMapChanged = !isEqual(pm, m)
+        if (isMapChanged) {
+          state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+          // TODO pmi = previousMapIndex
+          state.mapListIndex = state.mapListIndex + 1
+        }
+        state.tempMap = []
+      }
       state.moveCoords = []
     },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
@@ -75,9 +89,6 @@ export const editorSlice = createSlice({
             state.editedNodeId = ''
             state.editType = ''
             break
-          // case 'moveDragged':
-          //
-          //   break
           default:
             if (isMapChanged) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]

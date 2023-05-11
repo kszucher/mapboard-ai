@@ -100,7 +100,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'copySelection': copyS(m); break
     case 'cutSelection': cutS(m); break
     case 'insertNodesFromClipboard': pasteS(m, payload); break
-    case 'moveDragged': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
+    case 'drag': moveS(m, [...payload.moveTargetPath, 's', payload.moveTargetIndex]); break
 
     case 'transpose': {
       // https://stackoverflow.com/questions/872310/javascript-swap-array-elements
