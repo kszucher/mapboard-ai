@@ -1,10 +1,14 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
+import {SyntheticEvent} from "react";
+import {getCoords} from "../component/MapDivUtils";
+import {mapFindNearest} from "../map/MapFindNearest";
 import {mapReducer} from "../map/MapReducer"
 import {api} from "../core/Api"
 import {editorState} from "../state/EditorState"
 import {FormatMode, PageState} from "../core/Enums"
-import {getEditedNode, getXP} from "../map/MapUtils"
+import {getEditedNode, getXP, sortPath} from "../map/MapUtils"
 import isEqual from "react-fast-compare"
+import {N} from "../state/MapPropTypes";
 
 const editorStateDefault = JSON.stringify(editorState)
 
@@ -58,6 +62,9 @@ export const editorSlice = createSlice({
             state.editedNodeId = ''
             state.editType = ''
             break
+          // case 'moveDragged':
+          //
+          //   break
           default:
             if (isMapChanged) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
@@ -69,7 +76,17 @@ export const editorSlice = createSlice({
         }
       }
     },
-    setMoveCoords(state, action: PayloadAction<any>) {state.moveCoords = action.payload},
+    setMoveCoords(state, action: PayloadAction<{n: N, e: MouseEvent}>) {
+      const pm = current(state.mapList[state.mapListIndex])
+      const spm = structuredClone(pm).sort(sortPath)
+      const {n, e} = action.payload
+      const toCoords = getCoords(e)
+      const { moveCoords } = mapFindNearest(spm, n, toCoords.x, toCoords.y)
+      state.moveCoords = moveCoords
+    },
+    resetMoveCoords(state) {
+      state.moveCoords = []
+    },
     setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
   },

@@ -87,14 +87,12 @@ export const MapDiv: FC = () => {
                   } else {
                     // console.log(e)
                     const add = e.ctrlKey
-                    dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }}))
+                    dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }})) // mdmd
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      const toCoords = getCoords(e)
-                      const { moveCoords } = mapFindNearest(structuredClone(m).sort(sortPath), n, toCoords.x, toCoords.y)
-                      dispatch(actions.setMoveCoords(moveCoords))
+                      dispatch(actions.setMoveCoords({e, n}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       e.preventDefault()
@@ -104,7 +102,7 @@ export const MapDiv: FC = () => {
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'moveDragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }
-                      dispatch(actions.setMoveCoords([]))
+                      dispatch(actions.resetMoveCoords())
                     }, { signal })
                   }
                 } else if (e.button === 1) {
@@ -116,7 +114,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction(mapActionResolver({syntheticEvent: e})))
+                // dispatch(actions.mapAction(mapActionResolver({mdodc: e})))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
