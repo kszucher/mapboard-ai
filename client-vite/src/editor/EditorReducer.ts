@@ -24,6 +24,19 @@ export const editorSlice = createSlice({
     toggleTabShrink(state) { state.tabShrink = !state.tabShrink },
     openMoreMenu(state, action: PayloadAction<boolean>) { state.moreMenu = action.payload },
     closeMoreMenu(state) { state.moreMenu = false },
+    setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
+    setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
+    setMoveCoords(state, action: PayloadAction<{n: N, e: MouseEvent}>) {
+      const pm = current(state.mapList[state.mapListIndex])
+      const spm = structuredClone(pm).sort(sortPath)
+      const {n, e} = action.payload
+      const toCoords = getCoords(e)
+      const { moveCoords } = mapFindNearest(spm, n, toCoords.x, toCoords.y)
+      state.moveCoords = moveCoords
+    },
+    resetMoveCoords(state) {
+      state.moveCoords = []
+    },
     mapAction(state, action: PayloadAction<{ type: string, payload: any }>) {
       const pm = current(state.mapList[state.mapListIndex])
       if (action.payload.type === 'startEditReplace') {
@@ -76,19 +89,6 @@ export const editorSlice = createSlice({
         }
       }
     },
-    setMoveCoords(state, action: PayloadAction<{n: N, e: MouseEvent}>) {
-      const pm = current(state.mapList[state.mapListIndex])
-      const spm = structuredClone(pm).sort(sortPath)
-      const {n, e} = action.payload
-      const toCoords = getCoords(e)
-      const { moveCoords } = mapFindNearest(spm, n, toCoords.x, toCoords.y)
-      state.moveCoords = moveCoords
-    },
-    resetMoveCoords(state) {
-      state.moveCoords = []
-    },
-    setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
-    setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
   },
   extraReducers: (builder) => {
     builder.addMatcher(

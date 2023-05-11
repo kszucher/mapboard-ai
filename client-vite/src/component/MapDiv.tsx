@@ -95,14 +95,16 @@ export const MapDiv: FC = () => {
                       dispatch(actions.setMoveCoords({e, n}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
-                      e.preventDefault()
                       abortController.abort()
+                      e.preventDefault()
+
                       const toCoords = getCoords(e)
                       const { moveTargetPath, moveTargetIndex } = mapFindNearest(structuredClone(m).sort(sortPath), n, toCoords.x, toCoords.y)
                       if (moveTargetPath.length) {
                         dispatch(actions.mapAction({type: 'moveDragged', payload: { moveTargetPath, moveTargetIndex }}))
                       }
                       dispatch(actions.resetMoveCoords())
+
                     }, { signal })
                   }
                 } else if (e.button === 1) {
