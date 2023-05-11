@@ -1,14 +1,12 @@
 // @ts-ignore
 import katex from "katex/dist/katex.mjs"
-import {FC, Fragment, SyntheticEvent} from "react"
+import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
-import {mapActionResolver} from "../map/MapActionResolver";
-import {getG, getNodeById, isC, isD, isR, isS, sortPath} from "../map/MapUtils"
+import {getG, getNodeById, isR, isS} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState";
-import {getCoords, setEndOfContentEditable} from "./MapDivUtils"
-import {mapFindNearest} from "../map/MapFindNearest"
+import {setEndOfContentEditable} from "./MapDivUtils"
 import {api, useOpenWorkspaceQuery} from "../core/Api"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
@@ -85,7 +83,6 @@ export const MapDiv: FC = () => {
                     window.open(n.link, '_blank')
                     window.focus()
                   } else {
-                    // console.log(e)
                     const add = e.ctrlKey
                     dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }})) // mdmd
                     const abortController = new AbortController()
