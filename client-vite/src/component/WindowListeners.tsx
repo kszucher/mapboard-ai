@@ -57,8 +57,10 @@ export const WindowListeners: FC = () => {
   }
 
   const keydown = (e: KeyboardEvent) => {
-    e.preventDefault() // TODO check if this is OK
-    dispatch(actions.mapAction(mapActionResolver(e, 'kd', {})))
+    if (!(+e.ctrlKey && e.code === 'KeyV')) {
+      e.preventDefault()
+      dispatch(actions.mapAction(mapActionResolver(e, 'kd', {})))
+    }
   }
 
   const paste = (e: Event) => {
@@ -69,7 +71,7 @@ export const WindowListeners: FC = () => {
           const type = item[0].types[0]
           if (type === 'text/plain') {
             navigator.clipboard.readText()
-              .then(text => dispatch(actions.mapAction(mapActionResolver(null, 'pt', {text}))))
+              .then(text => dispatch(actions.mapAction(mapActionResolver(null, 'pt', text))))
           } else if (type === 'image/png') {
             item[0].getType('image/png').then(image => {
               const formData = new FormData()

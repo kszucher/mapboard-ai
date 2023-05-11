@@ -33,7 +33,7 @@ export const copyS = (m: M) => {
 }
 
 export const pasteS = (m: M, payload: any) => {
-  const cb = JSON.parse(payload.text) as GN[]
+  const cb = JSON.parse(payload) as GN[]
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
   const insertPath = [...getXP(m), 's', getCountSO1(m, getXP(m))] as P
   unselectNodes(m)
