@@ -27,7 +27,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   const sxau = getCountSXAU(m) > 0
 
   switch (true) {
-    case (et === 'me' && ckm(e, '---')                                     && true                  ): return ({type: 'startEditAppend',          payload: {}})
+    case (et === 'dmdc' && ckm(e, '---')                                   && true                  ): return ({type: 'startEditAppend',          payload: {}})
 
     case (et === 'kd' && ckm(e, '---') && e.key === 'F1'                   && true                  ): return ({type: '',                         payload: {}})
     case (et === 'kd' && ckm(e, '---') && e.key === 'F2'                   && (r || s || c)         ): return ({type: 'startEditAppend',          payload: {}})

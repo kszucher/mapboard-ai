@@ -107,7 +107,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                // dispatch(actions.mapAction(mapActionResolver({divodc: e}))) // TODO startEditAppend
+                dispatch(actions.mapAction(mapActionResolver(e, 'dmdc', {})))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
