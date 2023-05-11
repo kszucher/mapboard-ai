@@ -8,12 +8,11 @@ const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey 
 export const mapActionResolver = (e: any, et: string, ep: any) => {
   const m = structuredClone((getMap())).sort(sortPath)
   const x = getX(m)
-  const ctt = x.contentType === 'text'
-  const dir = getDir(getX(m))
-  const dr = dir === 1
-  const dl = dir === -1
+  const dr = getDir(x) === 1
+  const dl = getDir(x) === -1
   const hasS = x.sCount > 0
-  const r = isRX(m) // hasS?
+  const ctt = x.contentType === 'text'
+  const r = isRX(m)
   const s = isSX(m)
   const ds = isDSX(m)
   const sxavn = isSXAVN(m)
