@@ -52,7 +52,7 @@ export const CreateTable: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver({componentEvent: {type: 'insertTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}}})))
+              dispatch(actions.mapAction(mapActionResolver(null, 'ce', {type: 'insertTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}})))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}
