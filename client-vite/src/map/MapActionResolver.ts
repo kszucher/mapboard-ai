@@ -1,41 +1,18 @@
-import {SyntheticEvent} from "react"
 import {isUrl} from "../core/Utils"
 import {getMap} from "../state/EditorState"
 import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD} from "./MapUtils"
 import {getDir} from "../component/MapSvgUtils"
 
-const ckm = (e: any, condition: string) => (
-  [(+e.ctrlKey ? 'c' : '-')].includes(condition[0]) &&
-  [(+e.shiftKey ? 's' : '-')].includes(condition[1]) &&
-  [(+e.altKey) ? 'a' : '-'].includes(condition[2])
-)
+const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
-export const mapActionResolver = (
-  someEvent: {
-    syntheticEvent?: SyntheticEvent
-    keyboardEvent?: KeyboardEvent | { key: any, code: any, which: any, preventDefault: Function }
-    clipboardPasteTextEvent?: { text: string }
-    clipboardPasteImageEvent?: { imageId: string, imageSize: { width: number, height: number } }
-    componentEvent?: { type: string, payload: any}
-  }): {type: string, payload: any} => {
-  const se = 'mouseEvent' in someEvent
-  const kd = 'keyboardEvent' in someEvent
-  const pt = 'clipboardPasteTextEvent' in someEvent
-  const pi = 'clipboardPasteImageEvent' in someEvent
-  const ce = 'componentEvent' in someEvent
-
-  const e = kd ? someEvent.keyboardEvent : { event: { ctrlKey: undefined, shiftKey: undefined, altKey: undefined } }
-  const { key, code, which } = someEvent.keyboardEvent ? someEvent.keyboardEvent : { key: undefined, code: undefined, which: undefined }
-  const { text } = someEvent.clipboardPasteTextEvent ? someEvent.clipboardPasteTextEvent : { text: '' }
-  const { imageId, imageSize } = someEvent.clipboardPasteImageEvent ? someEvent.clipboardPasteImageEvent : { imageId: undefined, imageSize: undefined }
-  const { type, payload } = someEvent.componentEvent ? someEvent.componentEvent : { type: undefined, payload: undefined }
-
+export const mapActionResolver = (e: any, et: string, ep: any) => {
   const m = structuredClone((getMap())).sort(sortPath)
   const x = getX(m)
-  // TODO ct = contentType
+  const ctt = x.contentType === 'text'
   const dir = getDir(getX(m))
   const dr = dir === 1
   const dl = dir === -1
+  const hasS = x.sCount > 0
   const r = isRX(m) // hasS?
   const s = isSX(m)
   const ds = isDSX(m)
@@ -47,122 +24,104 @@ export const mapActionResolver = (
   const cxt = isCXT(m)
   const cxr = isCXR(m)
   const cxl = isCXL(m)
-  const sxad = getCountSXAD(m)
-  const sxau = getCountSXAU(m)
+  const sxad = getCountSXAD(m) > 0
+  const sxau = getCountSXAU(m) > 0
 
-  // console.log({c,cr,cc, sxavn})
+  switch (true) {
+    case (et === 'me' && ckm(e, '---')                                     && true                  ): return ({type: 'startEditAppend',          payload: {}})
 
-  const stateMachine = [
-    [ se, ckm(e, '---'),                                   true,  true,            1, 'startEditAppend',          {}, 1 ],
+    case (et === 'kd' && ckm(e, '---') && e.key === 'F1'                   && true                  ): return ({type: '',                         payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'F2'                   && (r || s || c)         ): return ({type: 'startEditAppend',          payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'F3'                   && true                  ): return ({type: '',                         payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'F5'                   && true                  ): return ({type: '',                         payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'Enter'                && s                     ): return ({type: 'insertSD',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'Enter'                && c                     ): return ({type: 'selectCD',                 payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.key === 'Enter'                && s                     ): return ({type: 'insertSU',                 payload: {}})
+    case (et === 'kd' && ckm(e, '--a') && e.key === 'Enter'                && s                     ): return ({type: 'cellify',                  payload: {}})
+    case (et === 'kd' && ckm(e, '---') && ['Insert','Tab'].includes(e.key) && r                     ): return ({type: 'insertSOR',                payload: {}})
+    case (et === 'kd' && ckm(e, '---') && ['Insert','Tab'].includes(e.key) && s                     ): return ({type: 'insertSO',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && ['Insert','Tab'].includes(e.key) && c                     ): return ({type: 'selectCO',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'Delete'               && s                     ): return ({type: 'deleteS',                  payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'Delete'               && cr                    ): return ({type: 'deleteCR',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'Delete'               && cc                    ): return ({type: 'deleteCC',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && s                     ): return ({type: 'selectCFF',                payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && c                     ): return ({type: 'selectSF',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && cr                    ): return ({type: 'selectCFfirstCol',         payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && cc                    ): return ({type: 'selectCFfirstRow',         payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Backspace'           && s                     ): return ({type: 'selectCB',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Backspace'           && (c || cr || cc)       ): return ({type: 'selectSB',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Escape'              && true                  ): return ({type: 'selectR',                  payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyA'                && true                  ): return ({type: 'selectall',                payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyM'                && true                  ): return ({type: 'createMapInMapDialog',     payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyC'                && sxavn                 ): return ({type: 'copySelection',            payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyX'                && sxavn                 ): return ({type: 'cutSelection',             payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyZ'                && true                  ): return ({type: 'redo',                     payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyY'                && true                  ): return ({type: 'undo',                     payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyE'                && s                     ): return ({type: 'transpose',                payload: {}})
 
-    [ kd, ckm(e, '---') && key === 'F1',                   true,  true,            0, '',                         {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'F2',                   true,  r || s || c,     1, 'startEditAppend',          {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'F3',                   true,  true,            0, '',                         {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'F5',                   true,  true,            0, '',                         {}, 0 ],
-    [ kd, ckm(e, '---') && key === 'Enter',                true,  s,               1, 'insertSD',                 {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'Enter',                true,  c,               1, 'selectCD',                 {}, 1 ],
-    [ kd, ckm(e, '-s-') && key === 'Enter',                true,  s,               1, 'insertSU',                 {}, 1 ],
-    [ kd, ckm(e, '--a') && key === 'Enter',                true,  s,               1, 'cellify',                  {}, 1 ],
-    [ kd, ckm(e, '---') && ['Insert','Tab'].includes(key), true,  r,               1, 'insertSOR',                {}, 1 ],
-    [ kd, ckm(e, '---') && ['Insert','Tab'].includes(key), true,  s,               1, 'insertSO',                 {}, 1 ],
-    [ kd, ckm(e, '---') && ['Insert','Tab'].includes(key), true,  c,               1, 'selectCO',                 {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'Delete',               true,  s,               1, 'deleteS',                  {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'Delete',               true,  cr,              1, 'deleteCR',                 {}, 1 ],
-    [ kd, ckm(e, '---') && key === 'Delete',               true,  cc,              1, 'deleteCC',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Space',               true,  s,               1, 'selectCFF',                {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Space',               true,  c,               1, 'selectSF',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Space',               true,  cr,              1, 'selectCFfirstCol',         {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Space',               true,  cc,              1, 'selectCFfirstRow',         {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Backspace',           true,  s,               1, 'selectCB',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Backspace',           true,  c || cr || cc,   1, 'selectSB',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'Escape',              true,  true,            1, 'selectR',                  {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyA',                true,  true,            1, 'selectall',                {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyM',                true,  true,            0, 'createMapInMapDialog',     {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyC',                true,  sxavn,           1, 'copySelection',            {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyX',                true,  sxavn,           1, 'cutSelection',             {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyZ',                true,  true,            1, 'redo',                     {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyY',                true,  true,            1, 'undo',                     {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'KeyE',                true,  s,               1, 'transpose',                {}, 1 ],
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowDown'           && s                     ): return ({type: 'selectSD',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowDown'           && c && !cxb             ): return ({type: 'selectCD',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowDown'           && cr && !cxb            ): return ({type: 'selectCRD',                payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowDown'           && sxavn && !sxad        ): return ({type: 'moveST',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowDown'           && sxavn && sxad         ): return ({type: 'moveSD',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowDown'           && cr && !cxb            ): return ({type: 'moveCRD',                  payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowDown'           && s                     ): return ({type: 'selectSDtoo',              payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowDown'           && c                     ): return ({type: 'selectCCSAME',             payload: {}})
+    case (et === 'kd' && ckm(e, '--a') && e.code === 'ArrowDown'           && cr                    ): return ({type: 'insertCRD',                payload: {}})
 
-    [ kd, ckm(e, '---') && code === 'ArrowDown',           true,  s,               1, 'selectSD',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowDown',           true,  c && !cxb,       1, 'selectCD',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowDown',           true,  cr && !cxb,      1, 'selectCRD',                {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowDown',           true,  sxavn && !sxad,  1, 'moveST',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowDown',           true,  sxavn && sxad,   1, 'moveSD',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowDown',           true,  cr && !cxb,      1, 'moveCRD',                  {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowDown',           true,  s,               1, 'selectSDtoo',              {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowDown',           true,  c,               1, 'selectCCSAME',             {}, 1 ],
-    [ kd, ckm(e, '--a') && code === 'ArrowDown',           true,  cr,              1, 'insertCRD',                {}, 1 ],
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowUp'             && s                     ): return ({type: 'selectSU',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowUp'             && c && !cxt             ): return ({type: 'selectCU',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowUp'             && cr && !cxt            ): return ({type: 'selectCRU',                payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowUp'             && sxavn && !sxau        ): return ({type: 'moveSB',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowUp'             && sxavn && sxau         ): return ({type: 'moveSU',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowUp'             && cr && !cxt            ): return ({type: 'moveCRU',                  payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowUp'             && s                     ): return ({type: 'selectSUtoo',              payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowUp'             && c                     ): return ({type: 'selectCCSAME',             payload: {}})
+    case (et === 'kd' && ckm(e, '--a') && e.code === 'ArrowUp'             && cr                    ): return ({type: 'insertCRU',                payload: {}})
 
-    [ kd, ckm(e, '---') && code === 'ArrowUp',             true,  s,               1, 'selectSU',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowUp',             true,  c && !cxt,       1, 'selectCU',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowUp',             true,  cr && !cxt,      1, 'selectCRU',                {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowUp',             true,  sxavn && !sxau,  1, 'moveSB',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowUp',             true,  sxavn && sxau,   1, 'moveSU',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowUp',             true,  cr && !cxt,      1, 'moveCRU',                  {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowUp',             true,  s,               1, 'selectSUtoo',              {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowUp',             true,  c,               1, 'selectCCSAME',             {}, 1 ],
-    [ kd, ckm(e, '--a') && code === 'ArrowUp',             true,  cr,              1, 'insertCRU',                {}, 1 ],
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && r                     ): return ({type: 'selectSOR',                payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dr && s               ): return ({type: 'selectSO',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dl && s               ): return ({type: 'selectSI',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && c && !cxr             ): return ({type: 'selectCR',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && cc && !cxr            ): return ({type: 'selectCCR',                payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowRight'          && dr && sxavn && sxau   ): return ({type: 'moveSO',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowRight'          && dl && sxavn && !ds    ): return ({type: 'moveSI',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowRight'          && dl && sxavn && ds     ): return ({type: 'moveSIL',                  payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowRight'          && cc && !cxr            ): return ({type: 'moveCCR',                  payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight'          && r                     ): return ({type: 'selectSfamilyOR',          payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight'          && dr && s && hasS       ): return ({type: 'selectSfamilyO',           payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowRight'          && c                     ): return ({type: 'selectCRSAME',             payload: {}})
+    case (et === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight'          && cc                    ): return ({type: 'insertCCR',                payload: {}})
 
-    [ kd, ckm(e, '---') && code === 'ArrowRight',          true,  r,               1, 'selectSOR',                {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowRight',          dr,    s,               1, 'selectSO',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowRight',          dl,    s,               1, 'selectSI',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowRight',          true,  c && !cxr,       1, 'selectCR',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowRight',          true,  cc && !cxr,      1, 'selectCCR',                {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowRight',          dr,    sxavn && sxau,   1, 'moveSO',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowRight',          dl,    sxavn && !ds,    1, 'moveSI',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowRight',          dl,    sxavn && ds,     1, 'moveSIL',                  {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowRight',          true,  cc && !cxr,      1, 'moveCCR',                  {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowRight',          true,  r,               1, 'selectSfamilyOR',          {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowRight',          dr,    s && x.sCount,   1, 'selectSfamilyO',           {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowRight',          true,  c,               1, 'selectCRSAME',             {}, 1 ],
-    [ kd, ckm(e, '--a') && code === 'ArrowRight',          true,  cc,              1, 'insertCCR',                {}, 1 ],
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && r                     ): return ({type: 'selectSOL',                payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && dr && s               ): return ({type: 'selectSI',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && dl && s               ): return ({type: 'selectSO',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && c && !cxl             ): return ({type: 'selectCL',                 payload: {}})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && cc && !cxl            ): return ({type: 'selectCCL',                payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowLeft'           && dr && sxavn && !ds    ): return ({type: 'moveSI',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowLeft'           && dr && sxavn && ds     ): return ({type: 'moveSIR',                  payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowLeft'           && dl && sxavn && sxau   ): return ({type: 'moveSO',                   payload: {}})
+    case (et === 'kd' && ckm(e, 'c--') && e.code === 'ArrowLeft'           && cc && !cxl            ): return ({type: 'moveCCL',                  payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft'           && r                     ): return ({type: 'selectSfamilyOL',          payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft'           && dl && s && hasS       ): return ({type: 'selectSfamilyO',           payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.code === 'ArrowLeft'           && c                     ): return ({type: 'selectCRSAME',             payload: {}})
+    case (et === 'kd' && ckm(e, '--a') && e.code === 'ArrowLeft'           && cc                    ): return ({type: 'insertCCL',                payload: {}})
 
-    [ kd, ckm(e, '---') && code === 'ArrowLeft',           true,  r,               1, 'selectSOL',                {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowLeft',           dr,    s,               1, 'selectSI',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowLeft',           dl,    s,               1, 'selectSO',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowLeft',           true,  c && !cxl,       1, 'selectCL',                 {}, 1 ],
-    [ kd, ckm(e, '---') && code === 'ArrowLeft',           true,  cc && !cxl,      1, 'selectCCL',                {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowLeft',           dr,    sxavn && !ds,    1, 'moveSI',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowLeft',           dr,    sxavn && ds,     1, 'moveSIR',                  {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowLeft',           dl,    sxavn && sxau,   1, 'moveSO',                   {}, 1 ],
-    [ kd, ckm(e, 'c--') && code === 'ArrowLeft',           true,  cc && !cxl,      1, 'moveCCL',                  {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           true,  r,               1, 'selectSfamilyOL',          {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           dl,    s && x.sCount,   1, 'selectSfamilyO',           {}, 1 ],
-    [ kd, ckm(e, '-s-') && code === 'ArrowLeft',           true,  c,               1, 'selectCRSAME',             {}, 1 ],
-    [ kd, ckm(e, '--a') && code === 'ArrowLeft',           true,  cc,              1, 'insertCCL',                {}, 1 ],
+    case (et === 'kd' && ckm(e, 'c--') && e.which >= 96 && e.which <= 105  && s                     ): return ({type: 'applyColorFromKey',        payload: {currColor: e.which - 96}})
+    case (et === 'kd' && ckm(e, '---') && e.which >= 48                    && (s || c)              ): return ({type: 'startEditReplace',         payload: {}})
+    case (et === 'kd' && ckm(e, '-s-') && e.which >= 48                    && (s || c)              ): return ({type: 'startEditReplace',         payload: {}})
+    case (et === 'pt' && ep.text.substring(0, 1) === '['                   && s                     ): return ({type: 'insertNodesFromClipboard', payload: {text: ep.text}})
+    case (et === 'pt' && ep.text.substring(0, 2) === '\\['                 && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'equation', content: ep.text}})
+    case (et === 'pt' && ep.text.substring(0, 2) === '\\['                 && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'equation', content: ep.text}})
+    case (et === 'pt' && isUrl(ep.text)                                    && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'text', content: ep.text, linkType: 'external', link: ep.text}})
+    case (et === 'pt' && isUrl(ep.text)                                    && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'text', content: ep.text, linkType: 'external', link: ep.text}})
+    case (et === 'pt' && true                                              && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'text', content: ep.text}})
+    case (et === 'pt' && true                                              && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'text', content: ep.text}})
+    case (et === 'pi' && true                                              && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'image', content: ep.imageId, imageW: ep.imageSize.width, imageH: ep.imageSize.height}})
+    case (et === 'pi' && true                                              && s                     ): return ({type: 'insertSO',                 payload: {contentType: 'image', content: ep.imageId, imageW: ep.imageSize.width, imageH: ep.imageSize.height}})
+    case (et === 'ce' && ep.type === 'insertTable'                         && r                     ): return ({type: 'insertSORTable',           payload: ep.payload})
+    case (et === 'ce' && ep.type === 'insertTable'                         && s                     ): return ({type: 'insertSOTable',            payload: ep.payload})
 
-    [ kd, ckm(e, 'c--') && which >= 96 && which <= 105,    true,  s,               1, 'applyColorFromKey',        {currColor: which - 96}, 1 ],
-    [ kd, ckm(e, '---') && which >= 48,                    true,  s || c,          1, 'startEditReplace',         {}, 0 ],
-    [ kd, ckm(e, '-s-') && which >= 48,                    true,  s || c,          1, 'startEditReplace',         {}, 0 ],
-    [ pt, text.substring(0, 1) === '[',                    true,  s,               1, 'insertNodesFromClipboard', {text}, 0 ],
-    [ pt, text.substring(0, 2) === '\\[',                  true,  r,               1, 'insertSOR',                {contentType: 'equation', content: text}, 0 ],
-    [ pt, text.substring(0, 2) === '\\[',                  true,  s,               1, 'insertSO',                 {contentType: 'equation', content: text}, 0 ],
-    [ pt, isUrl(text),                                     true,  r,               1, 'insertSOR',                {contentType: 'text', content: text, linkType: 'external', link: text}, 0 ],
-    [ pt, isUrl(text),                                     true,  s,               1, 'insertSO',                 {contentType: 'text', content: text, linkType: 'external', link: text}, 0 ],
-    [ pt, true,                                            true,  r,               1, 'insertSOR',                {contentType: 'text', content: text}, 0 ],
-    [ pt, true,                                            true,  s,               1, 'insertSO',                 {contentType: 'text', content: text}, 0 ],
-    [ pi, true,                                            true,  r,               1, 'insertSOR',                {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
-    [ pi, true,                                            true,  s,               1, 'insertSO',                 {contentType: 'image', content: imageId, imageW: imageSize?.width, imageH: imageSize?.height}, 0 ],
-
-    [ ce, type === 'insertTable',                          true,  r,               1, 'insertSORTable',           payload, 0 ],
-    [ ce, type === 'insertTable',                          true,  s,               1, 'insertSOTable',            payload, 0 ],
-  ] as any[]
-  for (let i = 0; i < stateMachine.length; i++) {
-    const [ eventTypeCondition, match, dirMatch, scopeMatch, isMapAction, type, payload, preventDefault ] = stateMachine[i]
-    if (eventTypeCondition && match && dirMatch && scopeMatch) {
-      if (preventDefault === 1 && kd) {
-        someEvent.keyboardEvent && someEvent.keyboardEvent.preventDefault()
-      }
-      if (type.length) {
-        if (isMapAction) {
-          return {type, payload}
-        } else {
-          return {type: 'editor/' + type, payload}
-        }
-      }
-      break
-    }
+    default: return ({type: '', payload: {}})
   }
-  return {type: '', payload: undefined}
 }

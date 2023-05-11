@@ -3,6 +3,7 @@ import katex from "katex/dist/katex.mjs"
 import {FC, Fragment} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {getColors} from "../core/Colors"
+import {mapActionResolver} from "../map/MapActionResolver";
 import {getG, getNodeById, isR, isS} from "../map/MapUtils"
 import {adjust, getLatexString} from "../core/Utils"
 import {mSelector} from "../state/EditorState";
@@ -89,12 +90,12 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      dispatch(actions.simulateDrag({n, e}))
+                      // dispatch(actions.mapAction(mapActionResolver({divomd: e}))) // TODO simulateDrag
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      dispatch(actions.drag({n, e}))
+                      // dispatch(actions.mapAction(mapActionResolver({divomu: e}))) // TODO drag
                     }, { signal })
                   }
                 } else if (e.button === 1) {
@@ -106,7 +107,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                // dispatch(actions.mapAction(mapActionResolver({mdodc: e})))
+                // dispatch(actions.mapAction(mapActionResolver({divodc: e}))) // TODO startEditAppend
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()
