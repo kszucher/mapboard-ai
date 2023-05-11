@@ -85,17 +85,17 @@ export const MapDiv: FC = () => {
                     window.focus()
                   } else {
                     const add = e.ctrlKey
-                    dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }})) // mdmd
+                    dispatch(actions.mapAction({type: 'selectS', payload: { add, path: n.path, selection: 's' }}))
                     const abortController = new AbortController()
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      // dispatch(actions.mapAction(mapActionResolver({divomd: e}))) // TODO simulateDrag
+                      dispatch(actions.mapAction(mapActionResolver(e, 'dmm', {n, e})))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      // dispatch(actions.mapAction(mapActionResolver({divomu: e}))) // TODO drag
+                      dispatch(actions.mapAction(mapActionResolver(e, 'dmu', {n, e})))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
