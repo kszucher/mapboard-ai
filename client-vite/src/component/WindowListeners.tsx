@@ -57,10 +57,10 @@ export const WindowListeners: FC = () => {
   }
 
   const keydown = (e: KeyboardEvent) => {
-    if (!(+e.ctrlKey && e.code === 'KeyV')) {
+    if (!(+e.ctrlKey && e.code === 'KeyV') && !(e.which >= 48)) {
       e.preventDefault()
-      dispatch(actions.mapAction(mapActionResolver(e, 'kd', {})))
     }
+    dispatch(actions.mapAction(mapActionResolver(e, 'kd', {})))
   }
 
   const paste = (e: Event) => {
