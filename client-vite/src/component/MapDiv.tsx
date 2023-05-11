@@ -92,7 +92,7 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      dispatch(actions.setMoveCoords({e, n}))
+                      dispatch(actions.simulateDrag({e, n}))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()

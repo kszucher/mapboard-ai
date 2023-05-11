@@ -26,7 +26,7 @@ export const editorSlice = createSlice({
     closeMoreMenu(state) { state.moreMenu = false },
     setSelectionRectCoords(state, action: PayloadAction<any>) {state.selectionRectCoords = action.payload},
     setIntersectingNodes(state, action: PayloadAction<any>) {state.intersectingNodes = action.payload},
-    setMoveCoords(state, action: PayloadAction<{n: N, e: MouseEvent}>) {
+    simulateDrag(state, action: PayloadAction<{n: N, e: MouseEvent}>) {
       const pm = current(state.mapList[state.mapListIndex])
       const spm = structuredClone(pm).sort(sortPath)
       const {n, e} = action.payload
