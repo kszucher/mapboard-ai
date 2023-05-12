@@ -30,7 +30,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   switch (true) {
     case (et === 'dmm' && ckm(e, '---')                                    && true                  ): return ({type: 'simulateDrag',             payload: ep})
     case (et === 'dmu' && ckm(e, '---')                                    && true                  ): return ({type: 'drag',                     payload: ep})
-    case (et === 'dmdc' && ckm(e, '---')                                   && !cti                  ): return ({type: 'startEditAppend',          payload: ep})
+    case (et === 'dmdc' && ckm(e, '---')                                   && !cti && !hasC         ): return ({type: 'startEditAppend',          payload: ep})
 
     case (et === 'kd' && ckm(e, '---') && e.key === 'F1'                   && true                  ): return ({type: '',                         payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'F2'                   && (r || s || c)         ): return ({type: 'startEditAppend',          payload: ep})
