@@ -57,8 +57,6 @@ export const nSaveOptional = {
 } as NSaveOptional
 
 export const nSaveNever = {
-  // mapChain
-  dCount: 0,
   // mapMeasure
   selfW: 0,
   selfH: 0,

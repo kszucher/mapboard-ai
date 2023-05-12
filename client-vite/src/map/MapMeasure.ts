@@ -1,18 +1,4 @@
-import {
-  getNodeById,
-  getNodeByPath,
-  getPathPattern,
-  isG,
-  isR,
-  isD,
-  isS,
-  getCountSC,
-  getCountSCR,
-  getCountSCC,
-  getCountR0D1S,
-  getCountR0D0S,
-  getCountSS
-} from "./MapUtils"
+import {getNodeById, getNodeByPath, getPathPattern, isG, isR, isD, isS, getCountSC, getCountSCR, getCountSCC, getCountR0D1S, getCountR0D0S, getCountSS, getCountD} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
@@ -73,8 +59,8 @@ export const mapMeasure = (pm: M, m: M) => {
           n.mapStartCenterX = n.mapWidth - margin - r0.selfW / 2
         }
       }
-      const rightMapHeight = r0.dCount > 0 ? r0d0.familyH : 0
-      const leftMapHeight = r0.dCount > 1 ? r0d1.familyH : 0
+      const rightMapHeight = getCountD(m, ['r', 0]) > 0 ? r0d0.familyH : 0
+      const leftMapHeight = getCountD(m, ['r', 0]) > 1 ? r0d1.familyH : 0
       n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
     } else if (isR(n.path) || isD(n.path) || isS(n.path)) {
       if (getCountSC(m, n.path)) {

@@ -51,8 +51,6 @@ export interface NSaveOptional {
 }
 
 export interface NSaveNever {
-  // mapChain
-  dCount: number
   // mapMeasure
   selfW: number
   selfH: number

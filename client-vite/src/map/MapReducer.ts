@@ -13,7 +13,7 @@ import {mapMeasure} from "./MapMeasure"
 import {copyS, cutS, moveCC, moveCR, moveS, pasteS} from "./MapMove"
 import {mapPlace} from "./MapPlace"
 import {selectNode, selectNodeList, selectNodeToo} from "./MapSelect";
-import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2, getSXFP, getSXLP, getCountSS,} from "./MapUtils"
+import {sortNode, sortPath, isR, isCH, isCV, getEditedNode, getG, getX, getXP, getNodeByPath, getParentNodeByPath, setPropXA, setPropXASF, getCXAR, getCXAL, getCXAD, getCXAU, getCXR, getCXL, getCXU, getCXD, getNodeById, getSXI1, getCountSXAU, getCountSXO1, getSXAU1, getCountSXAD, getCountSXAU1O1, getCountSXI1U, getCountR0D1S, getCountR0D0S, getCountCXU, getCountCXL, getSXI2, getSXFP, getSXLP, getCountSS, getCountD,} from "./MapUtils"
 
 export const mapReducerAtomic = (m: M, action: string, payload: any) => {
   switch (action) {
@@ -24,7 +24,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectS': {
       const pm = m
       const n = getNodeByPath(m, payload.path)
-      if (n.dCount || payload.selection === 's' || getCountSS(m, n.path) && payload.selection === 'f') {
+      if (getCountD(m, n.path) || payload.selection === 's' || getCountSS(m, n.path) && payload.selection === 'f') {
         const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
         const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
         let toPath = []
@@ -33,7 +33,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
         else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
         // console.log(payload.add)
         payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
-        if (!n.dCount) {
+        if (!getCountD(m, n.path)) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
         }
       }
