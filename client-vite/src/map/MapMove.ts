@@ -2,7 +2,7 @@ import {genHash} from "../core/Utils";
 import {GN, M, P} from "../state/MapPropTypes"
 import {deleteCC, deleteCR, deleteS} from "./MapDelete";
 import {selectNode, unselectNodes} from "./MapSelect";
-import {cb2ipS, cb2ipCC, cb2ipCR, getCountSO1, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath,} from "./MapUtils"
+import {cb2ipS, cb2ipCC, cb2ipCR, getCountSS, getReselectS, getXA, getXP, m2cbCC, m2cbCR, m2cbS, makeSpaceFromCC, makeSpaceFromCR, makeSpaceFromS, sortPath,} from "./MapUtils"
 
 const cbSave = (cb: any) => {
   navigator.permissions.query(<PermissionDescriptor><unknown>{name: "clipboard-write"}).then(result => {
@@ -35,7 +35,7 @@ export const copyS = (m: M) => {
 export const pasteS = (m: M, payload: any) => {
   const cb = JSON.parse(payload) as GN[]
   cb.forEach(n => Object.assign(n, {nodeId: 'node' + genHash(8)}))
-  const insertPath = [...getXP(m), 's', getCountSO1(m, getXP(m))] as P
+  const insertPath = [...getXP(m), 's', getCountSS(m, getXP(m))] as P
   unselectNodes(m)
   makeSpaceFromS(m, insertPath, getXA(cb).length)
   m.push(...cb2ipS(cb, insertPath))

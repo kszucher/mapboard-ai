@@ -1,6 +1,6 @@
 import {isUrl} from "../core/Utils"
 import {getMap} from "../state/EditorState"
-import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD} from "./MapUtils"
+import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC} from "./MapUtils"
 import {getDir} from "../component/MapSvgUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
@@ -11,7 +11,8 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   const dr = getDir(x) === 1
   const dl = getDir(x) === -1
   const hasS = x.sCount > 0
-  const ctt = x.contentType === 'text'
+  const hasC = getCountSC(m, x.path) > 0
+  const cti = x.contentType === 'image'
   const r = isRX(m)
   const s = isSX(m)
   const ds = isDSX(m)
@@ -29,7 +30,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   switch (true) {
     case (et === 'dmm' && ckm(e, '---')                                    && true                  ): return ({type: 'simulateDrag',             payload: ep})
     case (et === 'dmu' && ckm(e, '---')                                    && true                  ): return ({type: 'drag',                     payload: ep})
-    case (et === 'dmdc' && ckm(e, '---')                                   && true                  ): return ({type: 'startEditAppend',          payload: ep})
+    case (et === 'dmdc' && ckm(e, '---')                                   && !cti                  ): return ({type: 'startEditAppend',          payload: ep})
 
     case (et === 'kd' && ckm(e, '---') && e.key === 'F1'                   && true                  ): return ({type: '',                         payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'F2'                   && (r || s || c)         ): return ({type: 'startEditAppend',          payload: ep})
@@ -45,7 +46,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
     case (et === 'kd' && ckm(e, '---') && e.key === 'Delete'               && s                     ): return ({type: 'deleteS',                  payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'Delete'               && cr                    ): return ({type: 'deleteCR',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'Delete'               && cc                    ): return ({type: 'deleteCC',                 payload: ep})
-    case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && s                     ): return ({type: 'selectCFF',                payload: ep})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && s && hasC             ): return ({type: 'selectCFF',                payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && c                     ): return ({type: 'selectSF',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && cr                    ): return ({type: 'selectCFfirstCol',         payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && cc                    ): return ({type: 'selectCFfirstRow',         payload: ep})

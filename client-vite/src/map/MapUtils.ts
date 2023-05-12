@@ -30,7 +30,8 @@ export const getSI2 = (p: P) => getSIL(p).at(-2) as P
 export const isSD = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! > p.at(-1)!
 export const isSU = (p: P, pt: P) => pt.length === p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(-1)! < p.at(-1)!
 export const isSO = (p: P, pt: P) => pt.length > p.length && isEqual(pt.slice(0, p.length), p)
-export const isSO1 = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
+export const isSS = (p: P, pt: P) => pt.length === p.length + 2 && isEqual(pt.slice(0, -2), p) && pt.at(-2) === 's'
+export const isSC = (p: P, pt: P) => pt.length === p.length + 3 && isEqual(pt.slice(0, -3), p) && pt.at(-3) === 'c'
 export const isSF = (p: P, pt: P) => isEqual(p, pt) || isSO(p, pt)
 export const isSDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice(0, p.length - 1), p.slice(0, -1)) && pt.at(p.length - 1)! > p.at(-1)!
 export const isSFDF = (p: P, pt: P) => isSF(p, pt) || isSDF(p, pt)
@@ -43,7 +44,8 @@ export const isCFDF = (p: P, pt: P) => pt.length >= p.length && isEqual(pt.slice
 export const getCountD = (m: M, p: P) => p.length === 2 ? 2 : 0
 export const getCountSD = (m: M, p: P) => m.filter(n => isSD(p, n.path)).length
 export const getCountSU = (m: M, p: P) => m.filter(n => isSU(p, n.path)).length
-export const getCountSO1 = (m: M, p: P) => m.filter(n => isSO1(p, n.path)).length
+export const getCountSS = (m: M, p: P) => m.filter(n => isSS(p, n.path)).length
+export const getCountSC = (m: M, p: P) => m.filter(n => isSC(p, n.path)).length
 export const getCountR0D0S = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === 1 && isS(n.path)).length
 export const getCountR0D1S  = (m: M) => m.filter(n => n.path.length === 6 && getPathDir(n.path) === -1 && isS(n.path)).length
 export const getCountCH = (m: M, p: P) => m.filter(n => isCV(p, n.path)).length
@@ -74,9 +76,11 @@ export const getCXAL = (m: M) => getXA(m).map(n => decPi(n.path, n.path.length -
 
 export const getCountSXAD = (m: M) => getCountSD(m, getSXLP(m))
 export const getCountSXAU = (m: M) => getCountSU(m, getSXFP(m))
-export const getCountSXAU1O1 = (m: M) => getCountSO1(m, getSXAU1(m))
-export const getCountSXO1 = (m: M) => getCountSO1(m, getXP(m))
+export const getCountSXAU1O1 = (m: M) => getCountSS(m, getSXAU1(m))
+export const getCountSXO1 = (m: M) => getCountSS(m, getXP(m))
 export const getCountSXI1U = (m: M) => getCountSU(m, getSI1(getXP(m)))
+export const getCountSCR = (m: M, p: P) =>  getCountCV(m, [...p, 'c', 0, 0])
+export const getCountSCC = (m: M, p: P) =>  getCountCH(m, [...p, 'c', 0, 0])
 export const getCountCXU = (m: M) => getXP(m).at(-2) as number
 export const getCountCXL = (m: M) => getXP(m).at(-1) as number
 export const getCountCXH = (m: M) => getCountCH(m, getXP(m))

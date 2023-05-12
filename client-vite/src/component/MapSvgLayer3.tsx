@@ -1,15 +1,15 @@
 import React, {FC, Fragment,} from "react"
-import isEqual from "react-fast-compare";
+import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getColors} from "../core/Colors"
-import {getClosestStructParentPath, getG, getNodeById, getNodeByPath, getPathPattern, isS} from "../map/MapUtils";
+import {getClosestStructParentPath, getCountSC, getG, getNodeById, getNodeByPath, getPathPattern, isS} from "../map/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
-import {N} from "../state/MapPropTypes";
-import {pathCommonProps} from "./MapSvg";
-import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath} from "./MapSvgUtils";
+import {N} from "../state/MapPropTypes"
+import {pathCommonProps} from "./MapSvg"
+import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath} from "./MapSvgUtils"
 
 export const MapSvgLayer3: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -39,7 +39,7 @@ export const MapSvgLayer3: FC = () => {
             </path>
           }
           {
-            n.sBorderColor && !n.cRowCount && !n.cColCount &&
+            n.sBorderColor && !getCountSC(m, n.path) &&
             <path
               key={`${n.nodeId}_svg_nodeBorder`}
               d={getArcPath(n, -2, true)}
@@ -52,7 +52,7 @@ export const MapSvgLayer3: FC = () => {
           }
           {(
               getPathPattern(n.path).endsWith('ds') ||
-              (getPathPattern(n.path).endsWith('ss') && !(n.cRowCount || n.cColCount)) ||
+              (getPathPattern(n.path).endsWith('ss') && !getCountSC(m, n.path)) ||
               (getPathPattern(n.path).endsWith('dsc') || getPathPattern(n.path).endsWith('ssc')) && n.path.at(-2) as number > -1 && n.path.at(-1) === 0
             ) &&
             <path
@@ -82,7 +82,7 @@ export const MapSvgLayer3: FC = () => {
             </path>
           }
           {
-            isS(n.path) && (n.cRowCount || n.cColCount) &&
+            isS(n.path) && getCountSC(m, n.path) &&
             <path
               key={`${n.nodeId}_svg_tableFrame`}
               d={getArcPath(n, 0, false)}
@@ -94,7 +94,7 @@ export const MapSvgLayer3: FC = () => {
             </path>
           }
           {
-            isS(n.path) && (n.cRowCount || n.cRowCount) &&
+            isS(n.path) && getCountSC(m, n.path) &&
             <path
               key={`${n.nodeId}_svg_tableGrid`}
               d={getGridPath(n)}
@@ -106,7 +106,7 @@ export const MapSvgLayer3: FC = () => {
             </path>
           }
           {
-            n.taskStatus > 0 && !n.dCount && !n.sCount && !n.cRowCount && !n.cColCount && n.contentType !== 'image' &&
+            n.taskStatus > 0 && !n.dCount && !n.sCount && !getCountSC(m, n.path) && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&

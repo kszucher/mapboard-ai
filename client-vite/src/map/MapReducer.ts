@@ -59,7 +59,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCU': selectNode(m, getCXU(m), 's'); break
     case 'selectCFfirstRow': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
     case 'selectCFfirstCol': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
-    case 'selectCFF': (getX(m).cRowCount || getX(m).cColCount) ? selectNode(m, [...getXP(m), 'c', 0, 0], 's') : () => {}; break // todo use things in WLKP and NO ternary
+    case 'selectCFF': selectNode(m, [...getXP(m), 'c', 0, 0], 's'); break
     case 'selectCB': getXP(m).includes('c') ? selectNode(m, [...getXP(m).slice(0, getXP(m).lastIndexOf('c') + 3)], 's') : () => {}; break // todo use things in WLKP and NO ternary
     case 'selectCRSAME': selectNodeList(m, m.filter(n => isCV(n.path, getXP(m))).map(n => n.path), 's'); break
     case 'selectCCSAME': selectNodeList(m, m.filter(n => isCH(n.path, getXP(m))).map(n => n.path), 's'); break

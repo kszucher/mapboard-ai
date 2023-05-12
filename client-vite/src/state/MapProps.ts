@@ -60,8 +60,6 @@ export const nSaveNever = {
   // mapChain
   dCount: 0,
   sCount: 0,
-  cRowCount: 0,
-  cColCount: 0,
   // mapMeasure
   selfW: 0,
   selfH: 0,

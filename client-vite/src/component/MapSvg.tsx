@@ -1,7 +1,7 @@
 import React, {FC} from "react"
 import {useDispatch, useSelector} from "react-redux"
 import {isChrome} from "../core/Utils"
-import {getG, isCCXA, isCRXA, isCX} from "../map/MapUtils"
+import {getCountSC, getG, isCCXA, isCRXA, isCX} from "../map/MapUtils"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {mSelector} from "../state/EditorState"
 import {MapSvgLayer0} from "./MapSvgLayer0"
@@ -34,7 +34,7 @@ export const getSelectionMargin = (m: M, n: N) => (
     (n.selection === 's' && (n.sBorderColor  || n.sFillColor)) ||
     (n.selection === 'f') ||
     n.taskStatus > 1 ||
-    (n.cRowCount || n.cColCount)
+    getCountSC(m, n.path)
   ) ? 4 : -2
 )
 

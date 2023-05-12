@@ -54,8 +54,6 @@ export interface NSaveNever {
   // mapChain
   dCount: number
   sCount: number
-  cRowCount: number
-  cColCount: number
   // mapMeasure
   selfW: number
   selfH: number
