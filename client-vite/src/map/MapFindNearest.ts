@@ -1,6 +1,6 @@
 import {M, GN, P, N} from "../state/MapPropTypes"
 import isEqual from "react-fast-compare"
-import {getNodeById, getNodeByPath, getSI1, isD, isS, isSO, sortPath} from "./MapUtils"
+import {getCountSS, getNodeById, getNodeByPath, getSI1, isD, isS, isSO, sortPath} from "./MapUtils"
 
 export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => {
   const m = structuredClone(pm).sort(sortPath)
@@ -37,12 +37,13 @@ export const mapFindNearest = (pm: M, moveNode: N, toX: number, toY: number) => 
     })
     if (moveTargetNodeId.length) {
       const moveTargetNode = getNodeById(m, moveTargetNodeId) as GN
+      const moveTargetNodeCountSS = getCountSS(m, moveTargetNode.path)
       const fromX = moveTargetNode.path[3] ? moveTargetNode.nodeStartX : moveTargetNode.nodeEndX
       const fromY = moveTargetNode.nodeY
       moveCoords = [fromX, fromY, toX, toY]
-      if (moveTargetNode.sCount ) {
-        moveTargetIndex = moveTargetNode.sCount
-        for (let i = moveTargetNode.sCount - 1; i > -1; i--) {
+      if (moveTargetNodeCountSS) {
+        moveTargetIndex = moveTargetNodeCountSS
+        for (let i = moveTargetNodeCountSS - 1; i > -1; i--) {
           const currMoveTargetNodeChild = getNodeByPath(m, [...moveTargetNode.path, 's', i]) as GN
           if (toY < currMoveTargetNodeChild.nodeY) {
             moveTargetIndex = i

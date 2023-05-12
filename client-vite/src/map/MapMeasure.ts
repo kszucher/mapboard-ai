@@ -1,4 +1,18 @@
-import {getNodeById, getNodeByPath, getPathPattern, isG, isR, isD, isS, getCountSC, getCountSCR, getCountSCC} from "./MapUtils"
+import {
+  getNodeById,
+  getNodeByPath,
+  getPathPattern,
+  isG,
+  isR,
+  isD,
+  isS,
+  getCountSC,
+  getCountSCR,
+  getCountSCC,
+  getCountR0D1S,
+  getCountR0D0S,
+  getCountSS
+} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 import {getEquationDim, getTextDim} from "../component/MapDivUtils"
 import {createArray} from "../core/Utils"
@@ -20,17 +34,19 @@ export const mapMeasure = (pm: M, m: M) => {
       const r0 = getNodeByPath(m, ['r', 0]) as N
       const r0d0 = getNodeByPath(m, ['r', 0, 'd', 0]) as N
       const r0d1 = getNodeByPath(m, ['r', 0, 'd', 1]) as N
+      const countR0D0S = getCountR0D0S(m)
+      const countR0D1S = getCountR0D1S(m)
       const taskRight = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 0)
       const taskLeft = m.some(n => n.taskStatus !== 0 && !n.path.includes('c') && n.path.length > 4 && n.path[3] === 1)
-      const leftTaskWidth = r0d1.sCount > 0 && taskLeft ? taskConfigWidth : 0
-      const leftMapWidth = r0d1.sCount > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
-      const rightMapWidth = r0d0.sCount > 0 ? sLineDeltaXDefault + r0d0.familyW : 0
-      const rightTaskWidth = r0d0.sCount > 0 && taskRight ? taskConfigWidth : 0
+      const leftTaskWidth = countR0D1S > 0 && taskLeft ? taskConfigWidth : 0
+      const leftMapWidth = countR0D1S > 0 ? sLineDeltaXDefault + r0d1.familyW : 0
+      const rightMapWidth = countR0D0S > 0 ? sLineDeltaXDefault + r0d0.familyW : 0
+      const rightTaskWidth = countR0D0S > 0 && taskRight ? taskConfigWidth : 0
       const leftWidth = leftMapWidth + leftTaskWidth + margin
       const rightWidth = rightMapWidth + rightTaskWidth + margin
       let flow = 'both'
-      if (r0d0.sCount && !r0d1.sCount) flow = 'right'
-      if (!r0d0.sCount && r0d1.sCount) flow = 'left'
+      if (countR0D0S && !countR0D1S) flow = 'right'
+      if (!countR0D0S && countR0D1S) flow = 'left'
       let sumWidth = 0
       if (alignment === 'adaptive') {
         if (flow === 'right') {
@@ -62,13 +78,13 @@ export const mapMeasure = (pm: M, m: M) => {
       n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
     } else if (isR(n.path) || isD(n.path) || isS(n.path)) {
       if (getCountSC(m, n.path)) {
-        const cRowCount = getCountSCR(m, n.path)
-        const cColCount = getCountSCC(m, n.path)
-        let maxCellHeightMat = createArray(cRowCount, cColCount)
-        let maxCellWidthMat = createArray(cRowCount, cColCount)
+        const countSCR = getCountSCR(m, n.path)
+        const countSCC = getCountSCC(m, n.path)
+        let maxCellHeightMat = createArray(countSCR, countSCC)
+        let maxCellWidthMat = createArray(countSCR, countSCC)
         let isCellSpacingActivated = 0
-        for (let i = 0; i < cRowCount; i++) {
-          for (let j = 0; j < cColCount; j++) {
+        for (let i = 0; i < countSCR; i++) {
+          for (let j = 0; j < countSCC; j++) {
             const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
             maxCellHeightMat[i][j] = cn.maxH
             maxCellWidthMat[i][j] = cn.maxW
@@ -78,15 +94,15 @@ export const mapMeasure = (pm: M, m: M) => {
           }
         }
         if (isCellSpacingActivated === 1) {
-          for (let i = 0; i < cRowCount; i++) {
-            for (let j = 0; j < cColCount; j++) {
+          for (let i = 0; i < countSCR; i++) {
+            for (let j = 0; j < countSCC; j++) {
               maxCellHeightMat[i][j] += n.spacing
             }
           }
         }
-        for (let i = 0; i < cRowCount; i++) {
+        for (let i = 0; i < countSCR; i++) {
           let maxRowHeight = 0
-          for (let j = 0; j < cColCount; j++) {
+          for (let j = 0; j < countSCC; j++) {
             let cellHeight = maxCellHeightMat[i][j]
             if (cellHeight >= maxRowHeight) {
               maxRowHeight = cellHeight
@@ -96,9 +112,9 @@ export const mapMeasure = (pm: M, m: M) => {
           n.sumMaxRowHeight.push(maxRowHeight + n.sumMaxRowHeight.slice(-1)[0])
           n.selfH += maxRowHeight
         }
-        for (let j = 0; j < cColCount; j++) {
+        for (let j = 0; j < countSCC; j++) {
           let maxColWidth = 0
-          for (let i = 0; i < cRowCount; i++) {
+          for (let i = 0; i < countSCR; i++) {
             let cellWidth = maxCellWidthMat[i][j]
             if (cellWidth >= maxColWidth) {
               maxColWidth = cellWidth
@@ -112,8 +128,8 @@ export const mapMeasure = (pm: M, m: M) => {
           n.sumMaxColWidth.push(maxColWidth + n.sumMaxColWidth.slice(-1)[0])
           n.selfW += maxColWidth
         }
-        for (let j = 0; j < cColCount; j++) {
-          for (let i = 0; i < cRowCount; i++) {
+        for (let j = 0; j < countSCC; j++) {
+          for (let i = 0; i < countSCR; i++) {
             const cn = getNodeByPath(m, [...n.path, 'c', i, j]) as N
             cn.selfW = n.maxColWidth[j]
             cn.selfH = n.maxRowHeight[i]
@@ -157,9 +173,10 @@ export const mapMeasure = (pm: M, m: M) => {
         n.selfH = n.dimH / 17 <= 1 ? g.defaultH + densityH : n.dimH + paddingH + densityH
       }
     }
-    if (n.sCount) {
+    if (getCountSS(m, n.path)) {
+      const countSS = getCountSS(m, n.path)
       let sMaxW = 0
-      for (let i = 0; i < n.sCount; i++) {
+      for (let i = 0; i < countSS; i++) {
         const cn = getNodeByPath(m, [...n.path, 's', i]) as N
         n.familyH += cn.maxH
         let currMaxW = cn.maxW
@@ -168,7 +185,7 @@ export const mapMeasure = (pm: M, m: M) => {
         }
       }
       if (n.spacingActivated) {
-        n.familyH += (n.sCount - 1)*n.spacing
+        n.familyH += (countSS - 1)*n.spacing
       }
       n.familyW = sMaxW + g.sLineDeltaXDefault
     }

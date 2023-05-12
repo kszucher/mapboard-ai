@@ -1,4 +1,4 @@
-import {getNodeByPath} from "./MapUtils"
+import {getCountR0D0S, getCountR0D1S, getCountSS, getNodeByPath} from "./MapUtils"
 import {M} from "../state/MapPropTypes"
 
 export const mapCalcTask = (m: M) => {
@@ -10,16 +10,16 @@ export const mapCalcTask = (m: M) => {
       n.taskStatus = 0
       const taskStatusRight = r0d0.taskStatus
       const taskStatusLeft = r0d1.taskStatus
-      if (r0d0.sCount && r0d1.sCount) {
+      if (getCountR0D0S(m) && getCountR0D1S(m)) {
         n.taskStatus = Math.min(...[taskStatusRight, taskStatusLeft])
-      } else if (r0d0.sCount) {
+      } else if (getCountR0D0S(m)) {
         n.taskStatus = taskStatusRight
-      } else if (r0d1.sCount) {
+      } else if (getCountR0D1S(m)) {
         n.taskStatus = taskStatusLeft
       }
-    } else if (n.sCount) {
+    } else if (getCountSS(m, n.path)) {
       n.taskStatus = 4
-      for (let i = 0; i < n.sCount; i++) {
+      for (let i = 0; i < getCountSS(m, n.path); i++) {
         const cn = getNodeByPath(m, [...n.path, 's', i])
         n.taskStatus = cn.taskStatus < n.taskStatus ? cn.taskStatus : n.taskStatus
       }

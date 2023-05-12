@@ -1,6 +1,6 @@
 import {isUrl} from "../core/Utils"
 import {getMap} from "../state/EditorState"
-import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC} from "./MapUtils"
+import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC, getCountSS} from "./MapUtils"
 import {getDir} from "../component/MapSvgUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
@@ -10,7 +10,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   const x = getX(m)
   const dr = getDir(x) === 1
   const dl = getDir(x) === -1
-  const hasS = x.sCount > 0
+  const hasS = getCountSS(m, x.path) > 0
   const hasC = getCountSC(m, x.path) > 0
   const cti = x.contentType === 'image'
   const r = isRX(m)

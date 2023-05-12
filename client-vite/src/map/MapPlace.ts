@@ -1,4 +1,4 @@
-import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern} from "./MapUtils"
+import {getNodeByPath, getSI1, getSI2, isG, isR, isD, isS, isC, isSU, getPathPattern, getCountSS} from "./MapUtils"
 import {G, M, N} from "../state/MapPropTypes"
 
 export const mapPlace = (m: M) => {
@@ -41,7 +41,7 @@ export const mapPlace = (m: M) => {
         }
         n.nodeY = p1.nodeY + n.lineDeltaY
         n.isTop = i === 0 && p1.isTop ? 1 : 0
-        n.isBottom = i === p1.sCount - 1 && p1.isBottom === 1 ? 1 : 0
+        n.isBottom = i === getCountSS(m, p1.path) - 1 && p1.isBottom === 1 ? 1 : 0
       } else if (isC(n.path)) {
         const i = n.path.at(-2) as number
         const j = n.path.at(-1) as number
