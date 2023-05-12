@@ -1,8 +1,0 @@
-import {M} from "../state/MapPropTypes"
-import isEqual from "react-fast-compare"
-import {getCountD, getCountSS} from "./MapUtils";
-
-export const mapChain = (m: M) => {
-  m.forEach(n => {
-  })
-}

@@ -5,7 +5,6 @@ import {structNavigate} from '../node/NodeNavigate'
 import {nSaveOptional} from "../state/MapProps"
 import {M, N} from "../state/MapPropTypes"
 import {mapCalcTask} from "./MapCalcTask"
-import {mapChain} from "./MapChain"
 import {deleteReselectCC, deleteReselectCR, deleteReselectS,} from "./MapDelete";
 import {mapInit} from "./MapInit"
 import {insertCC, insertCR, insertS, insertTable} from "./MapInsert"
@@ -186,7 +185,6 @@ export const mapReducer = (pm: M, action: string, payload: any) => {
 
   // TODO mapFix
   mapInit(m)
-  mapChain(m)
   mapCalcTask(m)
   mapMeasure(pm, m)
   mapPlace(m)
