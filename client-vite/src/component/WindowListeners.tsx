@@ -60,8 +60,8 @@ export const WindowListeners: FC = () => {
     if (
       (+e.ctrlKey && e.code === 'KeyZ') ||
       (+e.ctrlKey && e.code === 'KeyY') ||
-      !(+e.ctrlKey && e.code === 'KeyV') &&
-      !(e.which >= 48)
+      (+e.ctrlKey && e.which >= 96 && e.which <= 105) ||
+      (e.which < 48)
     ) {
       e.preventDefault()
     }

@@ -90,3 +90,5 @@ export const setColors = (colorMode: string) => {
   root.style.setProperty('--map-background-color', getColors(colorMode).MAP_BACKGROUND)
   root.style.setProperty('--button-color', getColors(colorMode).BUTTON_COLOR)
 }
+
+export const shortcutColors = ['#222222', '#999999', '#bbbbbb', '#dddddd', '#d5802a', '#1c8e1c', '#8e1c8e', '#990000', '#000099', '#ffffff']

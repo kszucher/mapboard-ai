@@ -1,4 +1,5 @@
 import isEqual from "react-fast-compare"
+import {shortcutColors} from "../core/Colors"
 import {Dir} from "../core/Enums"
 import {transpose} from '../core/Utils'
 import {structNavigate} from '../node/NodeNavigate'
@@ -27,10 +28,12 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
         const r0d0 = getNodeByPath(pm, ['r', 0, 'd', 0])
         const r0d1 = getNodeByPath(pm, ['r', 0, 'd', 1])
         let toPath = []
-        if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's') toPath = payload.path
-        else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f') toPath = ['r', 0, 'd', 0]
-        else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f') toPath =['r', 0, 'd', 1]
-        // console.log(payload.add)
+        if (!isR(payload.path) && isEqual(n.path, payload.path) || isR(payload.path) && payload.selection === 's')
+          toPath = payload.path
+        else if (isR(payload.path) && !r0d0.selected && payload.selection === 'f')
+          toPath = ['r', 0, 'd', 0]
+        else if (isR(payload.path) && r0d0.selected && !r0d1.selected && payload.selection === 'f')
+          toPath =['r', 0, 'd', 1]
         payload.add ? selectNodeToo(m, toPath, payload.selection) : selectNode(m, toPath, payload.selection)
         if (!getCountD(m, n.path)) {
           getParentNodeByPath(m, payload.path).lastSelectedChild = payload.path.at(-1)
@@ -123,20 +126,9 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       break
     }
 
+    case 'applyColorFromKey': setPropXA(m, 'textColor', shortcutColors[payload.currColor]); break
 
-    case 'applyColorFromKey': {
-      // for (let i = 0; i < sc.structSelectedPathList.length; i++) {
-      //   let n = getMapData(m, sc.structSelectedPathList[i])
-      //   n.textColor = [
-      //     '#222222',
-      //     '#999999', '#bbbbbb', '#dddddd',
-      //     '#d5802a', '#1c8e1c', '#8e1c8e',
-      //     '#990000', '#000099', '#ffffff'][payload.currColor]
-      // }
-      break
-    }
-    
-    case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0);break
+    case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0); break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
 
     case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
