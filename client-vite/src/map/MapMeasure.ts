@@ -63,7 +63,11 @@ export const mapMeasure = (pm: M, m: M) => {
       const leftMapHeight = getCountD(m, ['r', 0]) > 1 ? r0d1.familyH : 0
       n.mapHeight = Math.max(...[rightMapHeight, leftMapHeight]) + 60
     } else if (isR(n.path) || isD(n.path) || isS(n.path)) {
-      if (getCountSC(m, n.path)) {
+      if (isD(n.path)) {
+        const r0 = getNodeByPath(m, ['r', 0]) as N
+        n.selfW = r0.selfW
+        n.selfH = r0.selfH
+      } else if (getCountSC(m, n.path)) {
         const countSCR = getCountSCR(m, n.path)
         const countSCC = getCountSCC(m, n.path)
         let maxCellHeightMat = createArray(countSCR, countSCC)

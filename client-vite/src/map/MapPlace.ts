@@ -17,8 +17,6 @@ export const mapPlace = (m: M) => {
       n.nodeY = g.mapHeight / 2 - 0.5
       n.isTop = 1
       n.isBottom = 1
-      n.selfW = r0.selfW // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
-      n.selfH = r0.selfH // THIS SHOULD HAVE BEEN ASSIGNED IN MapMeasure
     } else {
       const p1 = getNodeByPath(m, getSI1(n.path)) as N
       const p2 = getNodeByPath(m, getSI2(n.path)) as N
