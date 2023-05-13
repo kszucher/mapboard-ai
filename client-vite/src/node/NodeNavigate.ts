@@ -25,8 +25,6 @@ export const structNavigate = (m: M, path: P, dir: Dir) => {
       let sequence = []
       switch (dir) {
         case Dir.I: sequence = ['i']; break
-        case Dir.IR: sequence = ['i']; break
-        case Dir.IL: sequence = ['i']; break
         case Dir.O: sequence = ['om']; break
         case Dir.OR: sequence = ['om']; break
         case Dir.OL: sequence = ['om']; break
