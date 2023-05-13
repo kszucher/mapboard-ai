@@ -47,8 +47,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSOR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
     case 'selectSOL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
     case 'selectSI': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break
-    case 'selectSIR': selectNode(m, structNavigate(m, getXP(m), Dir.IR), 's'); break
-    case 'selectSIL': selectNode(m, structNavigate(m, getXP(m), Dir.IL), 's'); break
+    // case 'selectSIR': selectNode(m, structNavigate(m, getXP(m), Dir.IR), 's'); break
+    // case 'selectSIL': selectNode(m, structNavigate(m, getXP(m), Dir.IL), 's'); break
     case 'selectSfamilyO': getX(m).selection = 'f'; break
     case 'selectSfamilyOR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
     case 'selectSfamilyOL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
