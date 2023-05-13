@@ -3,23 +3,10 @@ import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
 import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, getG} from "../map/MapUtils"
 
-type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
 export const getDir = (n: N) => {
   return n.path[3] ? -1 : 1
-}
-
-const getHelperParams = (n: N): AdjustedParams => {
-  const dir = getDir(n)
-  return {
-    xi: dir === -1 ? n.nodeEndX : n.nodeStartX,
-    xo: dir === -1 ? n.nodeStartX : n.nodeEndX,
-    yu: n.nodeY - n.selfH / 2,
-    yd: n.nodeY + n.selfH / 2,
-    myu: n.nodeY - n.maxH / 2,
-    myd: n.nodeY + n.maxH / 2,
-  }
 }
 
 const getCoordsInLine = (a: any[], b: any[], dt: number) => {
@@ -78,7 +65,12 @@ export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
   const dir = getDir(n)
-  const { xi, xo, yu, yd, myu, myd } = getHelperParams(n)
+  const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
+  const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
+  const yu = n.nodeY - n.selfH / 2
+  const yd = n.nodeY + n.selfH / 2
+  const myu = n.nodeY - n.maxH / 2
+  const myd = n.nodeY + n.maxH / 2
   const w = n.maxW
   return selection === 's' ? {
     ax: n.nodeStartX,
@@ -178,7 +170,8 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
 export const getArcPath = (n: N, margin: number, closed: boolean) => {
   const R = 8
   const dir = getDir(n)
-  const { xi, yu } = getHelperParams(n)
+  const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
+  const yu = n.nodeY - n.selfH / 2
   let x1 = adjust(xi - margin * dir)
   let y1 = adjust(yu + R - margin)
   let dx = n.selfW - 2 * R + 2 * margin
@@ -200,7 +193,9 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
 
 export const getGridPath = (n: N) => {
   const dir = getDir(n)
-  const { xi, yu, yd } = getHelperParams(n)
+  const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
+  const yu = n.nodeY - n.selfH / 2
+  const yd = n.nodeY + n.selfH / 2
   let path = ''
   for (let i = 1; i < n.sumMaxRowHeight.length - 1; i++) {
     const x1 = adjust(n.nodeStartX)
@@ -236,7 +231,8 @@ const getTaskStartPoint = (m: M, g: G, n: N) => {
 }
 
 export const getTaskPath = (m: M, g: G, n: N) => {
-  const { xo } = getHelperParams(n)
+  const dir = getDir(n)
+  const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
   const x1 = adjust(xo)
   const x2 = adjust(getTaskStartPoint(m, g, n))
   const y = adjust(n.nodeY)
