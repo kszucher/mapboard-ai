@@ -26,14 +26,15 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   const cxl = isCXL(m)
   const sxad = getCountSXAD(m) > 0
   const sxau = getCountSXAU(m) > 0
+  const editable = (r || s) && !cti && !hasC
 
   switch (true) {
     case (et === 'dmm' && ckm(e, '---')                                    && true                  ): return ({type: 'simulateDrag',             payload: ep})
     case (et === 'dmu' && ckm(e, '---')                                    && true                  ): return ({type: 'drag',                     payload: ep})
-    case (et === 'dmdc' && ckm(e, '---')                                   && !cti && !hasC         ): return ({type: 'startEditAppend',          payload: ep})
+    case (et === 'dmdc' && ckm(e, '---')                                   && editable              ): return ({type: 'startEditAppend',          payload: ep})
 
     case (et === 'kd' && ckm(e, '---') && e.key === 'F1'                   && true                  ): return ({type: '',                         payload: ep})
-    case (et === 'kd' && ckm(e, '---') && e.key === 'F2'                   && (r || s || c)         ): return ({type: 'startEditAppend',          payload: ep})
+    case (et === 'kd' && ckm(e, '---') && e.key === 'F2'                   && editable              ): return ({type: 'startEditAppend',          payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'F3'                   && true                  ): return ({type: '',                         payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'F5'                   && true                  ): return ({type: '',                         payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.key === 'Enter'                && s                     ): return ({type: 'insertSD',                 payload: ep})
@@ -110,8 +111,8 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
     case (et === 'kd' && ckm(e, '--a') && e.code === 'ArrowLeft'           && cc                    ): return ({type: 'insertCCL',                payload: ep})
 
     case (et === 'kd' && ckm(e, 'c--') && e.which >= 96 && e.which <= 105  && s                     ): return ({type: 'applyColorFromKey',        payload: {currColor: e.which - 96}})
-    case (et === 'kd' && ckm(e, '---') && e.which >= 48                    && (s || c)              ): return ({type: 'startEditReplace',         payload: ep})
-    case (et === 'kd' && ckm(e, '-s-') && e.which >= 48                    && (s || c)              ): return ({type: 'startEditReplace',         payload: ep})
+    case (et === 'kd' && ckm(e, '---') && e.which >= 48                    && editable              ): return ({type: 'startEditReplace',         payload: ep})
+    case (et === 'kd' && ckm(e, '-s-') && e.which >= 48                    && editable              ): return ({type: 'startEditReplace',         payload: ep})
 
     case (et === 'pt' && ep.substring(0, 1) === '['                        && s                     ): return ({type: 'insertNodesFromClipboard', payload: ep})
     case (et === 'pt' && ep.substring(0, 2) === '\\['                      && r                     ): return ({type: 'insertSOR',                payload: {contentType: 'equation', content: ep}})
