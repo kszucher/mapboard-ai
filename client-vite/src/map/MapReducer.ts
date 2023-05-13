@@ -43,10 +43,12 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSDtoo': selectNodeToo(m, structNavigate(m, getSXLP(m), Dir.D), 's'); break
     case 'selectSU': selectNode(m, structNavigate(m, getSXFP(m), Dir.U), 's'); break
     case 'selectSUtoo': selectNodeToo(m, structNavigate(m, getSXFP(m), Dir.U), 's'); break
-    case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break // todo use "ds" in WLKP, distinguish O and OR, and REMOVE structNavigate dependency
+    case 'selectSO': selectNode(m, structNavigate(m, getXP(m), Dir.O), 's'); break
     case 'selectSOR': selectNode(m, structNavigate(m, ['r', 0, 'd', 0], Dir.OR), 's'); break
     case 'selectSOL': selectNode(m, structNavigate(m, ['r', 0, 'd', 1], Dir.OL), 's'); break
-    case 'selectSI': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break // todo use "ds" in WLKP, distinguish I and IR, and REMOVE structNavigate dependency
+    case 'selectSI': selectNode(m, structNavigate(m, getXP(m), Dir.I), 's'); break
+    case 'selectSIR': selectNode(m, structNavigate(m, getXP(m), Dir.IR), 's'); break
+    case 'selectSIL': selectNode(m, structNavigate(m, getXP(m), Dir.IL), 's'); break
     case 'selectSfamilyO': getX(m).selection = 'f'; break
     case 'selectSfamilyOR': selectNode(m, ['r', 0, 'd', 0], 'f'); break
     case 'selectSfamilyOL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
@@ -67,7 +69,7 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectCCR': selectNodeList(m, getCXAR(m), 's'); break
     case 'selectCCL': selectNodeList(m, getCXAL(m), 's'); break
     case 'selectDragged': payload.nList.length ? selectNodeList(m, payload.nList.map((n: N) => n.path), 's') : () => {}; break
-    
+
     case 'insertSD': insertS(m, [...getSXI1(m), 's', getCountSXAU(m) + 1], payload); break
     case 'insertSU': insertS(m, [...getXP(m)], payload); break
     case 'insertSOR': insertS(m, ['r', 0, 'd', 0, 's', getCountR0D0S(m)], payload); break

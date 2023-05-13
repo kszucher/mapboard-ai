@@ -84,6 +84,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
 
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && r                     ): return ({type: 'selectSOR',                payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dr && s               ): return ({type: 'selectSO',                 payload: ep})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dl && ds              ): return ({type: 'selectSIL',                payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dl && s               ): return ({type: 'selectSI',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dr && c && !cxr       ): return ({type: 'selectCR',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowRight'          && dr && cc && !cxr      ): return ({type: 'selectCCR',                payload: ep})
@@ -101,6 +102,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
     case (et === 'kd' && ckm(e, '--a') && e.code === 'ArrowRight'          && dl && cc              ): return ({type: 'insertCCL',                payload: ep})
 
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && r                     ): return ({type: 'selectSOL',                payload: ep})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && dr && ds              ): return ({type: 'selectSIR',                payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && dr && s               ): return ({type: 'selectSI',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && dl && s               ): return ({type: 'selectSO',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'ArrowLeft'           && dr && c && !cxl       ): return ({type: 'selectCL',                 payload: ep})
