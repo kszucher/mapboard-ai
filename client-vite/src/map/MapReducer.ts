@@ -135,10 +135,8 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
       // }
       break
     }
-    case 'toggleTask': {
-      // mapSetProp.iterate(getX(m), { taskStatus: getX(m).taskStatus === 0 ? 1 : 0 }, true) // ez a 0-ból ami azt jelenti hogy no task csinál 1-et ami backlog
-      break
-    }
+    
+    case 'toggleTask': setPropXASF(m, 'taskStatus', getX(m).taskStatus === 0 ? 1 : 0);break
     case 'setTaskStatus': getNodeById(m, payload.nodeId).taskStatus = payload.taskStatus; break
 
     case 'startEditAppend': getX(m).contentType === 'equation' ? Object.assign(getX(m), { contentType: 'text' }) : () => {}; break
