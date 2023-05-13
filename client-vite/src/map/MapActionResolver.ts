@@ -26,7 +26,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   const cxl = isCXL(m)
   const sxad = getCountSXAD(m) > 0
   const sxau = getCountSXAU(m) > 0
-  const editable = (r || s) && !cti && !hasC
+  const editable = (r || s || c) && !cti && !hasC
 
   switch (true) {
     case (et === 'dmm' && ckm(e, '---')                                    && true                  ): return ({type: 'simulateDrag',             payload: ep})
