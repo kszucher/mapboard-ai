@@ -5,7 +5,7 @@ import {mSelector} from "../state/EditorState"
 import {RootState} from "../editor/EditorReducer"
 import {N} from "../state/MapPropTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
-import {getPolygonPath, getStructPolygonPoints} from "./MapSvgUtils"
+import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
 export const MapSvgLayer6: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -17,7 +17,7 @@ export const MapSvgLayer6: FC = () => {
         <Fragment key={n.nodeId}>
           <path
             key={`${g.nodeId}_svg_selectionByRect`}
-            d={getPolygonPath(n, getStructPolygonPoints(n, 's'), 's', getSelectionMargin(m, n))}
+            d={getPolygonPath(n, getPolygonS(n, 's'), 's', getSelectionMargin(m, n))}
             stroke={'#555555'}
             strokeWidth={1}
             fill={'none'}

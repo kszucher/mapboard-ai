@@ -1,14 +1,7 @@
 import {LineTypes} from "../core/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {
-  getX,
-  getNodeByPath,
-  getParentNodeByPath,
-  getPathDir,
-  isCCXA,
-  isCRXA
-} from "../map/MapUtils"
+import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA} from "../map/MapUtils"
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
@@ -80,7 +73,7 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
   return path
 }
 
-export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints => {
+export const getPolygonS = (n: N, selection: string): PolygonPoints => {
   const R = 8
   const dir = getDir(n)
   const { xi, xo, yu, yd, myu, myd } = getHelperParams(n)
@@ -108,7 +101,7 @@ export const getStructPolygonPoints = (n: N, selection: string): PolygonPoints =
   }
 }
 
-export const getCellPolygonPoints = (m: M): PolygonPoints => {
+export const getPolygonC = (m: M): PolygonPoints => {
   const ls = getX(m)
   const pn = getParentNodeByPath(m, ls.path)
   const n = getNodeByPath(m, ls.path)

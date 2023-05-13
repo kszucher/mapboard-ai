@@ -9,7 +9,7 @@ import {mSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
-import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getStructPolygonPoints, getTaskCircle, getTaskPath} from "./MapSvgUtils"
+import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getPolygonS, getTaskCircle, getTaskPath} from "./MapSvgUtils"
 
 export const MapSvgLayer3: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -30,7 +30,7 @@ export const MapSvgLayer3: FC = () => {
             n.fBorderColor &&
             <path
               key={`${n.nodeId}_svg_branchBorder`}
-              d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
+              d={getPolygonPath(n, getPolygonS(n, 'f'), 'f', 0)}
               stroke={n.fBorderColor}
               strokeWidth={n.fBorderWidth}
               fill={'none'}

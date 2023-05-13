@@ -4,7 +4,7 @@ import {mSelector} from "../state/EditorState"
 import {RootState} from "../editor/EditorReducer"
 import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
-import { getPolygonPath, getStructPolygonPoints } from "./MapSvgUtils"
+import { getPolygonPath, getPolygonS } from "./MapSvgUtils"
 
 export const MapSvgLayer1: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -16,7 +16,7 @@ export const MapSvgLayer1: FC = () => {
             n.fFillColor &&
             <path
               key={`${n.nodeId}_svg_branchFill`}
-              d={getPolygonPath(n, getStructPolygonPoints(n, 'f'), 'f', 0)}
+              d={getPolygonPath(n, getPolygonS(n, 'f'), 'f', 0)}
               fill={n.fFillColor}
               {...pathCommonProps}
             >

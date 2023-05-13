@@ -8,7 +8,7 @@ import {mSelector} from "../state/EditorState"
 import {RootState} from "../editor/EditorReducer"
 import {N} from "../state/MapPropTypes"
 import {getSelectionMargin, pathCommonProps} from "./MapSvg"
-import {getPolygonPath, getStructPolygonPoints} from "./MapSvgUtils"
+import {getPolygonPath, getPolygonS} from "./MapSvgUtils"
 
 export const MapSvgLayer4: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
@@ -28,7 +28,7 @@ export const MapSvgLayer4: FC = () => {
             !isCCXA(m) &&
             <path
               key={`${n.nodeId}_svg_selectionBorderSecondary`}
-              d={getPolygonPath(n, getStructPolygonPoints(n, n.selection), n.selection, getSelectionMargin(m, n))}
+              d={getPolygonPath(n, getPolygonS(n, n.selection), n.selection, getSelectionMargin(m, n))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}
