@@ -52,10 +52,10 @@ export const mapReducerAtomic = (m: M, action: string, payload: any) => {
     case 'selectSfamilyOL': selectNode(m, ['r', 0, 'd', 1], 'f'); break
     case 'selectSF': selectNode(m, [...getXP(m), 's', 0], 's'); break
     case 'selectSB': selectNode(m, getXP(m).slice(0, -3), 's'); break
-    case 'selectCR': selectNode(m, getCXR(m), 's'); break
-    case 'selectCL': selectNode(m, getCXL(m), 's'); break
     case 'selectCD': selectNode(m, getCXD(m), 's'); break
     case 'selectCU': selectNode(m, getCXU(m), 's'); break
+    case 'selectCR': selectNode(m, getCXR(m), 's'); break
+    case 'selectCL': selectNode(m, getCXL(m), 's'); break
     case 'selectCFfirstRow': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -2 ? 0 : pi), 's'); break
     case 'selectCFfirstCol': selectNode(m, (getXP(m)).map((pi, i) => i === getXP(m).length -1 ? 0 : pi), 's'); break
     case 'selectCFF': selectNode(m, [...getXP(m), 'c', 0, 0], 's'); break
