@@ -26,11 +26,11 @@ export const WindowListeners: FC = () => {
 
   // TIMEOUT
   const timeoutFun = () => {
-    // dispatch(api.endpoints.saveMap.initiate({
-    //   mapId: getMapId(),
-    //   frameId: getFrameId(),
-    //   mapData: mapDeInit(getMap())
-    // }))
+    dispatch(api.endpoints.saveMap.initiate({
+      mapId: getMapId(),
+      frameId: getFrameId(),
+      mapData: mapDeInit(getMap())
+    }))
     console.log('saved by timeout')
   }
 
