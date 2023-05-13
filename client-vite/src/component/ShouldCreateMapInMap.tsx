@@ -1,13 +1,15 @@
-import {FC} from "react";
-import {useDispatch} from "react-redux";
+import {FC} from "react"
+import {useDispatch, useSelector} from "react-redux"
 import { Button, Modal, Typography } from '@mui/material'
-import {actions, AppDispatch} from "../editor/EditorReducer";
-import {PageState} from "../core/Enums";
-import {api, useOpenWorkspaceQuery} from "../core/Api";
-import {getMapId} from "../state/ApiState";
-import {getMap} from "../state/EditorState";
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
+import {PageState} from "../core/Enums"
+import {api, useOpenWorkspaceQuery} from "../core/Api"
+import {getX} from "../map/MapUtils"
+import {getMapId} from "../state/ApiState"
+import {mSelector} from "../state/EditorState"
 
 export const ShouldCreateMapInMap: FC = () => {
+  const m = useSelector((state:RootState) => mSelector(state))
   const { isFetching } = useOpenWorkspaceQuery()
   const dispatch = useDispatch<AppDispatch>()
   return(
@@ -20,15 +22,10 @@ export const ShouldCreateMapInMap: FC = () => {
         </div>
         <div style={{ display: "flex", flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
           <Button
-            color="primary" variant='outlined' disabled={isFetching}
-            onClick={() =>
-              window.alert('TODO: figure out nodeId and content in the new LINEAR system')
-              // dispatch(api.endpoints.createMapInMap.initiate({
-              //   mapId: getMapId(),
-              //   nodeId: getMapData(getMap(), getMap().g.sc.lastPath).nodeId,
-              //   content: getMapData(getMap(), getMap().g.sc.lastPath).content
-              // }))
-            }
+            color="primary"
+            variant='outlined'
+            disabled={isFetching}
+            onClick={() => dispatch(api.endpoints.createMapInMap.initiate({mapId: getMapId(), nodeId: getX(m).nodeId, content: getX(m).content}))}
           >
             {'OK'}
           </Button>
