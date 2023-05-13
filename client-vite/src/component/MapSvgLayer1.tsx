@@ -16,7 +16,7 @@ export const MapSvgLayer1: FC = () => {
             n.fFillColor &&
             <path
               key={`${n.nodeId}_svg_branchFill`}
-              d={getPolygonPath(n, getPolygonS(n, 'f'), 'f', 0)}
+              d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
               fill={n.fFillColor}
               {...pathCommonProps}
             >

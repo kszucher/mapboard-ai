@@ -17,7 +17,7 @@ export const MapSvgLayer6: FC = () => {
         <Fragment key={n.nodeId}>
           <path
             key={`${g.nodeId}_svg_selectionByRect`}
-            d={getPolygonPath(n, getPolygonS(n, 's'), 's', getSelectionMargin(m, n))}
+            d={getPolygonPath(n, getPolygonS(m, n, 's'), 's', getSelectionMargin(m, n))}
             stroke={'#555555'}
             strokeWidth={1}
             fill={'none'}

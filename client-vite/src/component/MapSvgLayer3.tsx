@@ -30,7 +30,7 @@ export const MapSvgLayer3: FC = () => {
             n.fBorderColor &&
             <path
               key={`${n.nodeId}_svg_branchBorder`}
-              d={getPolygonPath(n, getPolygonS(n, 'f'), 'f', 0)}
+              d={getPolygonPath(n, getPolygonS(m, n, 'f'), 'f', 0)}
               stroke={n.fBorderColor}
               strokeWidth={n.fBorderWidth}
               fill={'none'}
@@ -59,8 +59,8 @@ export const MapSvgLayer3: FC = () => {
               key={`${n.nodeId}_svg_line`}
               d={
                 !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path))
-                  ? getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
-                  : getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)
+                  ? getLinePathBetweenNodes(m, getNodeByPath(pm, getClosestStructParentPath(n.path)), n)
+                  : getLinePathBetweenNodes(m, getNodeByPath(m, getClosestStructParentPath(n.path)), n)
               }
               strokeWidth={n.lineWidth}
               stroke={n.taskStatus > 1 ? [C.TASK_LINE_1, C.TASK_LINE_2, C.TASK_LINE_3].at(n.taskStatus - 2) : n.lineColor}
@@ -71,8 +71,8 @@ export const MapSvgLayer3: FC = () => {
                 !getNodeById(pm, n.nodeId) && getNodeByPath(pm, getClosestStructParentPath(n.path)) &&
                 <animate
                   attributeName='d'
-                  from={getLinePathBetweenNodes(getNodeByPath(pm, getClosestStructParentPath(n.path)), n)}
-                  to={getLinePathBetweenNodes(getNodeByPath(m, getClosestStructParentPath(n.path)), n)}
+                  from={getLinePathBetweenNodes(m, getNodeByPath(pm, getClosestStructParentPath(n.path)), n)}
+                  to={getLinePathBetweenNodes(m, getNodeByPath(m, getClosestStructParentPath(n.path)), n)}
                   dur={'0.3s'}
                   repeatCount={'once'}
                   fill={'freeze'}

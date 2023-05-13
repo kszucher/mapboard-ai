@@ -71,8 +71,6 @@ export const nSaveNever = {
   spacing: 10,
   spacingActivated: 0,
   // mapPlace
-  lineDeltaX: 0,
-  lineDeltaY: 0,
   nodeStartX: 0,
   nodeEndX: 0,
   nodeY: 0,

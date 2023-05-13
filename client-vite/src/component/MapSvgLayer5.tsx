@@ -23,7 +23,7 @@ export const MapSvgLayer5: FC = () => {
         !selectionRectCoords.length &&
         <path
           key={`${g.nodeId}_svg_selectionBorderPrimary`}
-          d={getPolygonPath(x, (isCX(m) || isCRXA(m) || isCCXA(m)) ? getPolygonC(m) : getPolygonS(x, x.selection), x.selection, getSelectionMargin(m, x))}
+          d={getPolygonPath(x, (isCX(m) || isCRXA(m) || isCCXA(m)) ? getPolygonC(m) : getPolygonS(m, x, x.selection), x.selection, getSelectionMargin(m, x))}
           stroke={C.SELECTION_COLOR}
           strokeWidth={1}
           fill={'none'}

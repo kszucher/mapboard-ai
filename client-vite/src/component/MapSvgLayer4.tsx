@@ -24,7 +24,7 @@ export const MapSvgLayer4: FC = () => {
             !selectionRectCoords.length && n.selected && n.selected !== getX(m).selected && !isCRXA(m) && !isCCXA(m) &&
             <path
               key={`${n.nodeId}_svg_selectionBorderSecondary`}
-              d={getPolygonPath(n, getPolygonS(n, n.selection), n.selection, getSelectionMargin(m, n))}
+              d={getPolygonPath(n, getPolygonS(m, n, n.selection), n.selection, getSelectionMargin(m, n))}
               stroke={C.SELECTION_COLOR}
               strokeWidth={1}
               fill={'none'}

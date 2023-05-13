@@ -1,7 +1,7 @@
 import {LineTypes} from "../core/Enums"
 import {adjust} from "../core/Utils"
 import {G, M, N} from "../state/MapPropTypes"
-import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA} from "../map/MapUtils"
+import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, getG} from "../map/MapUtils"
 
 type AdjustedParams = Record<'xi' | 'xo' | 'yu' | 'yd' | 'myu' | 'myd', number>
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
@@ -46,7 +46,8 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getLinePathBetweenNodes = (na: N, nb: N) => {
+export const getLinePathBetweenNodes = (m: M, na: N, nb: N) => {
+  const g = getG(m)
   const dir = getDir(nb)
   const { lineType } = nb
   let sx, sy, dx, dy, ex, ey
@@ -54,8 +55,8 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
   sy = (na.nodeY)
   ex = (dir === -1 ? nb.nodeEndX : nb.nodeStartX)
   ey = (nb.nodeY)
-  dx = (nb.lineDeltaX)
-  dy = (nb.lineDeltaY)
+  dx = (dir === -1 ? (na.nodeStartX - nb.nodeEndX) : (nb.nodeStartX - na.nodeEndX))
+  dy = (nb.nodeY - na.nodeY)
   let path
   if (lineType === LineTypes.bezier) {
     const c1x = (sx + dir * dx / 4)
@@ -73,8 +74,9 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
   return path
 }
 
-export const getPolygonS = (n: N, selection: string): PolygonPoints => {
+export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const R = 8
+  const g = getG(m)
   const dir = getDir(n)
   const { xi, xo, yu, yd, myu, myd } = getHelperParams(n)
   const w = n.maxW
@@ -90,7 +92,7 @@ export const getPolygonS = (n: N, selection: string): PolygonPoints => {
     cyd: yd
   } : {
     ax: xi + (dir === -1 ? -w : 0),
-    bx: xo + dir * n.lineDeltaX,
+    bx: xo + dir * g.sLineDeltaXDefault,
     cx: xi + (dir === 1 ? w : 0),
     ayu: dir === -1 ? myu : yu,
     ayd: dir === -1 ? myd : yd,
@@ -116,14 +118,14 @@ export const getPolygonC = (m: M): PolygonPoints => {
     h = pn.maxRowHeight[i]
   } else if (isCCXA(m)) {
     const j = ls.path.at(-1) as number
-    x = xi + n.lineDeltaX - 20
+    x = xi + pn.sumMaxColWidth[j]
     y = yu
     w = pn.maxColWidth[j]
     h = pn.selfH
   } else {
     const i = ls.path.at(-2) as number
     const j = ls.path.at(-1) as number
-    x = xi + n.lineDeltaX - 20
+    x = xi + pn.sumMaxColWidth[j]
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.maxColWidth[j]
     h = pn.maxRowHeight[i]
