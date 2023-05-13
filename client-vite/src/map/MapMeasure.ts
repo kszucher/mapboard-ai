@@ -106,7 +106,7 @@ export const mapMeasure = (pm: M, m: M) => {
               maxColWidth = cellWidth
             }
             const cn = getNodeByPath(m, [...n.path, 'c', i, j, 's', 0]) as N
-            if (cn.taskStatus !== 0) {
+            if (cn && cn.taskStatus !== 0) {
               maxColWidth += 120
             }
           }
