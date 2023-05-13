@@ -108,24 +108,23 @@ export const getPolygonC = (m: M): PolygonPoints => {
   const pn = getParentNodeByPath(m, ls.path)
   const n = getNodeByPath(m, ls.path)
   const dir = getPathDir(ls.path)
-  const { xi, yu } = getHelperParams(pn)
   let x, y, w, h
   if (isCRXA(m)) {
     const i = ls.path.at(-2) as number
-    x = xi
+    x = dir === -1 ? pn.nodeEndX  : pn.nodeStartX
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.selfW
     h = pn.maxRowHeight[i]
   } else if (isCCXA(m)) {
     const j = ls.path.at(-1) as number
-    x = xi + pn.sumMaxColWidth[j]
-    y = yu
+    x = dir === -1 ? pn.nodeEndX - pn.sumMaxColWidth[j] : pn.nodeStartX + pn.sumMaxColWidth[j]
+    y = pn.nodeY - pn.selfH / 2
     w = pn.maxColWidth[j]
     h = pn.selfH
   } else {
     const i = ls.path.at(-2) as number
     const j = ls.path.at(-1) as number
-    x = xi + pn.sumMaxColWidth[j]
+    x = dir === -1 ? pn.nodeEndX - pn.sumMaxColWidth[j] : pn.nodeStartX + pn.sumMaxColWidth[j]
     y = - pn.maxRowHeight[i] / 2 + n.nodeY
     w = pn.maxColWidth[j]
     h = pn.maxRowHeight[i]
