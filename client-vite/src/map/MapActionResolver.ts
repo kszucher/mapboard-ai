@@ -1,26 +1,6 @@
 import {isUrl} from "../core/Utils"
 import {getMap} from "../state/EditorState"
-import {
-  getX,
-  isCCXA,
-  isCRXA,
-  isCX,
-  isDSX,
-  isRX,
-  isSX,
-  isSXAVN,
-  isCXR,
-  isCXL,
-  isCXB,
-  isCXT,
-  sortPath,
-  getCountSXAU,
-  getCountSXAD,
-  getCountSC,
-  getCountSS,
-  getPathDir,
-  getXP
-} from "./MapUtils"
+import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC, getCountSS, getPathDir, getXP} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
