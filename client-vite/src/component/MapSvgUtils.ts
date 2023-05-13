@@ -33,8 +33,7 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
   return [ax, ay, ax + dx / 4, ay, ax + dx / 4, ay + dy, bx, by]
 }
 
-export const getLinePathBetweenNodes = (m: M, na: N, nb: N) => {
-  const g = getG(m)
+export const getLinePathBetweenNodes = (na: N, nb: N) => {
   const dir = getDir(nb)
   const { lineType } = nb
   let sx, sy, dx, dy, ex, ey
