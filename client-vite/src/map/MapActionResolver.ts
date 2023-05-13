@@ -1,6 +1,26 @@
 import {isUrl} from "../core/Utils"
 import {getMap} from "../state/EditorState"
-import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC, getCountSS, getPathDir} from "./MapUtils"
+import {
+  getX,
+  isCCXA,
+  isCRXA,
+  isCX,
+  isDSX,
+  isRX,
+  isSX,
+  isSXAVN,
+  isCXR,
+  isCXL,
+  isCXB,
+  isCXT,
+  sortPath,
+  getCountSXAU,
+  getCountSXAD,
+  getCountSC,
+  getCountSS,
+  getPathDir,
+  getXP
+} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
@@ -11,6 +31,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
   const dl = getPathDir(x.path) === -1
   const hasS = getCountSS(m, x.path) > 0
   const hasC = getCountSC(m, x.path) > 0
+  const hasParentC = getXP(m).includes('c')
   const cti = x.contentType === 'image'
   const r = isRX(m)
   const s = isSX(m)
@@ -50,7 +71,7 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
     case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && c                     ): return ({type: 'selectSF',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && cr                    ): return ({type: 'selectCFfirstCol',         payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Space'               && cc                    ): return ({type: 'selectCFfirstRow',         payload: ep})
-    case (et === 'kd' && ckm(e, '---') && e.code === 'Backspace'           && s                     ): return ({type: 'selectCB',                 payload: ep})
+    case (et === 'kd' && ckm(e, '---') && e.code === 'Backspace'           && s && hasParentC       ): return ({type: 'selectCB',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Backspace'           && (c || cr || cc)       ): return ({type: 'selectSB',                 payload: ep})
     case (et === 'kd' && ckm(e, '---') && e.code === 'Escape'              && true                  ): return ({type: 'selectR',                  payload: ep})
     case (et === 'kd' && ckm(e, 'c--') && e.code === 'KeyA'                && true                  ): return ({type: 'selectall',                payload: ep})
