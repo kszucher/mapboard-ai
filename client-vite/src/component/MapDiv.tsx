@@ -42,7 +42,7 @@ export const MapDiv: FC = () => {
             <div
               id={'node'}
               ref={ref => ref && ref.focus()}
-              style = {{
+              style={{
                 left: 1 + adjust(n.nodeStartX),
                 top: 1 + adjust( n.nodeY - n.selfH / 2),
                 minWidth: (g.density === 'large'? 0 : -3) + n.selfW - g.padding - 2,
