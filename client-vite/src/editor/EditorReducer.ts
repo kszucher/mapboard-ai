@@ -52,7 +52,6 @@ export const editorSlice = createSlice({
             const m = mapReducer(pm, 'drag', {moveTargetPath, moveTargetIndex})
             if (!isEqual(pm, m)) {
               state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-              // TODO pmi = previousMapIndex
               state.mapListIndex = state.mapListIndex + 1
             }
             state.tempMap = []
@@ -69,7 +68,6 @@ export const editorSlice = createSlice({
           const m = mapReducer(pm, 'startEditAppend', action.payload.payload)
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            // TODO pmi = previousMapIndex
             state.mapListIndex = state.mapListIndex + 1
           }
           state.tempMap = m
@@ -86,7 +84,6 @@ export const editorSlice = createSlice({
           const m = mapReducer(pm, 'finishEdit', action.payload.payload)
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            // TODO pmi = previousMapIndex
             state.mapListIndex = state.mapListIndex + 1
           }
           state.tempMap = []
@@ -98,7 +95,6 @@ export const editorSlice = createSlice({
           const m = mapReducer(pm, action.payload.type, action.payload.payload)
           if (!isEqual(pm, m)) {
             state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
-            // TODO pmi = previousMapIndex
             state.mapListIndex = state.mapListIndex + 1
           }
           state.tempMap = []

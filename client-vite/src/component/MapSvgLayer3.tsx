@@ -5,7 +5,7 @@ import {useOpenWorkspaceQuery} from "../core/Api"
 import {getColors} from "../core/Colors"
 import {getClosestStructParentPath, getCountD, getCountSC, getCountSS, getG, getNodeById, getNodeByPath, getPathPattern, isS} from "../map/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
-import {mSelector} from "../state/EditorState"
+import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {N} from "../state/MapPropTypes"
 import {pathCommonProps} from "./MapSvg"
@@ -13,9 +13,7 @@ import {getArcPath, getGridPath, getLinePathBetweenNodes, getPolygonPath, getPol
 
 export const MapSvgLayer3: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
-  const mapList = useSelector((state: RootState) => state.editor.mapList)
-  const mapListIndex = useSelector((state: RootState) => state.editor.mapListIndex)
-  const pm = mapListIndex > 0 ? mapList[mapListIndex - 1] : m // TODO ---> instead of this TERNARY, use mapListIndexBefore (TODO)
+  const pm = useSelector((state:RootState) => pmSelector(state))
   const g = getG(m)
   const editedNodeId = useSelector((state: RootState) => state.editor.editedNodeId)
   const { data } = useOpenWorkspaceQuery()
