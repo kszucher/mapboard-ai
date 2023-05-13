@@ -5,10 +5,6 @@ import {getX, getNodeByPath, getParentNodeByPath, getPathDir, isCCXA, isCRXA, ge
 
 type PolygonPoints = Record<'ax' | 'bx' | 'cx' | 'ayu' | 'ayd' | 'byu' | 'byd' | 'cyu' | 'cyd', number>
 
-export const getDir = (n: N) => {
-  return n.path[3] ? -1 : 1
-}
-
 const getCoordsInLine = (a: any[], b: any[], dt: number) => {
   const [x0, y0] = a
   const [x1, y1] = b
@@ -34,7 +30,7 @@ export const getBezierLinePoints = ([ax, ay, bx, by]: number[]): number[] => {
 }
 
 export const getLinePathBetweenNodes = (na: N, nb: N) => {
-  const dir = getDir(nb)
+  const dir = getPathDir(nb.path)
   const { lineType } = nb
   let sx, sy, dx, dy, ex, ey
   sx = (dir === -1 ? na.nodeStartX : na.nodeEndX)
@@ -63,7 +59,7 @@ export const getLinePathBetweenNodes = (na: N, nb: N) => {
 export const getPolygonS = (m: M, n: N, selection: string): PolygonPoints => {
   const R = 8
   const g = getG(m)
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
   const yu = n.nodeY - n.selfH / 2
@@ -134,7 +130,7 @@ export const getPolygonC = (m: M): PolygonPoints => {
 }
 
 export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: string, margin: number) => {
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   let { ax, bx, cx, ayu, ayd, byu, byd, cyu, cyd } = polygonPoints
   ax = adjust(ax - margin)
   bx = adjust(bx - dir * margin)
@@ -168,7 +164,7 @@ export const getPolygonPath = (n: N, polygonPoints: PolygonPoints, selection: st
 
 export const getArcPath = (n: N, margin: number, closed: boolean) => {
   const R = 8
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const yu = n.nodeY - n.selfH / 2
   let x1 = adjust(xi - margin * dir)
@@ -191,7 +187,7 @@ export const getArcPath = (n: N, margin: number, closed: boolean) => {
 }
 
 export const getGridPath = (n: N) => {
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   const xi = dir === -1 ? n.nodeEndX : n.nodeStartX
   const yu = n.nodeY - n.selfH / 2
   const yd = n.nodeY + n.selfH / 2
@@ -211,7 +207,7 @@ export const getGridPath = (n: N) => {
 
 const getTaskStartPoint = (m: M, g: G, n: N) => {
   const { mapWidth, margin, taskConfigWidth } = g
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   let startX
   if (n.path.includes('c')) {
     const coverCellPath = n.path.slice(0, n.path.lastIndexOf('c'))
@@ -230,7 +226,7 @@ const getTaskStartPoint = (m: M, g: G, n: N) => {
 }
 
 export const getTaskPath = (m: M, g: G, n: N) => {
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   const xo = dir === -1 ? n.nodeStartX : n.nodeEndX
   const x1 = adjust(xo)
   const x2 = adjust(getTaskStartPoint(m, g, n))
@@ -239,7 +235,7 @@ export const getTaskPath = (m: M, g: G, n: N) => {
 }
 
 export const getTaskCircle = (m: M, g: G, n: N, i: number) => {
-  const dir = getDir(n)
+  const dir = getPathDir(n.path)
   const { taskConfigD, taskConfigGap } = g
   const cx = getTaskStartPoint(m, g, n) + dir * ( taskConfigD/2 + i * (taskConfigD + taskConfigGap))
   const cy = n.nodeY
