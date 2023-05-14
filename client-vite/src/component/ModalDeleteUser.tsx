@@ -5,7 +5,7 @@ import {api} from "../core/Api";
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 
-export const ShouldDeleteUser:FC = () => {
+export const ModalDeleteUser:FC = () => {
   const pageState = useSelector((state: RootState) => state.editor.pageState)
   const interactionDisabled = useSelector((state: RootState) => state.editor.interactionDisabled)
   const dispatch = useDispatch<AppDispatch>()

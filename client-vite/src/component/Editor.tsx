@@ -5,7 +5,7 @@ import {RootState} from "../editor/EditorReducer";
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
 import {ControlsLeft} from './ControlsLeft'
 import {ControlsRight} from './ControlsRight'
-import {CreateTable} from './CreateTable'
+import {ModalCreateTable} from './ModalCreateTable'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
 import {Logo} from "./Logo"
@@ -16,9 +16,9 @@ import {Profile} from './Profile'
 import {ProfileButton} from './ProfileButton'
 import {Settings} from './Settings'
 import {Shares} from "./Shares"
-import {ShareThisMap} from "./ShareThisMap"
-import {ShouldCreateMapInMap} from './ShouldCreateMapInMap'
-import {ShouldUpdateTask} from './ShouldUpdateTask'
+import {ModalShareThisMap} from "./ModalShareThisMap"
+import {ModalCreateMapInMap} from './ModalCreateMapInMap'
+import {ModalToggleTaskMode} from './ModalToggleTaskMode'
 import {TabMaps} from "./TabMaps"
 import {UndoRedo} from './UndoRedo'
 import {WindowListeners} from "./WindowListeners"
@@ -68,10 +68,10 @@ export const Editor: FC = () => {
       {pageState === PageState.WS_PROFILE && <Profile/>}
       {pageState === PageState.WS_SETTINGS && <Settings/>}
       {pageState === PageState.WS_SHARES && <Shares/>}
-      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ShouldCreateMapInMap/>}
-      {pageState === PageState.WS_CREATE_TABLE && <CreateTable/>}
-      {pageState === PageState.WS_CREATE_TASK && <ShouldUpdateTask/>}
-      {pageState === PageState.WS_SHARE_THIS_MAP && <ShareThisMap/>}
+      {pageState === PageState.WS_CREATE_MAP_IN_MAP && <ModalCreateMapInMap/>}
+      {pageState === PageState.WS_CREATE_TABLE && <ModalCreateTable/>}
+      {pageState === PageState.WS_CREATE_TASK && <ModalToggleTaskMode/>}
+      {pageState === PageState.WS_SHARE_THIS_MAP && <ModalShareThisMap/>}
     </ThemeProvider>
   )
 }

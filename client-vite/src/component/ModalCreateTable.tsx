@@ -5,7 +5,7 @@ import {actions, AppDispatch} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
 import {mapActionResolver} from "../map/MapActionResolver";
 
-export const CreateTable: FC = () => {
+export const ModalCreateTable: FC = () => {
   const [row, setRow] = useState<string>('1')
   const [col, setCol] = useState<string>('1')
   const interactionDisabled = false

@@ -7,7 +7,7 @@ import { useCreateShareMutation} from "../core/Api";
 import {BaseQueryError} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import {getMapId} from "../state/ApiState";
 
-export const ShareThisMap: FC = () => {
+export const ModalShareThisMap: FC = () => {
   const [ createShare,  response ] = useCreateShareMutation()
   const errorMessage = (response.error as BaseQueryError<any>)?.data?.message
   const [shareEmail, setShareEmail] = useState('')

@@ -1,7 +1,7 @@
 import {FC, useState} from 'react'
 import {useDispatch} from "react-redux";
 import { Button, Modal, Typography } from '@mui/material'
-import { ShouldDeleteUser } from './ShouldDeleteUser'
+import { ModalDeleteUser } from './ModalDeleteUser'
 import {actions, AppDispatch} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 import {useOpenWorkspaceQuery} from "../core/Api";
@@ -26,7 +26,7 @@ export const Profile: FC = () => {
         </Button>
         {
           childModalOpen &&
-          <ShouldDeleteUser/>
+          <ModalDeleteUser/>
         }
       </div>
 

@@ -4,7 +4,7 @@ import { Button, Modal, Typography } from '@mui/material'
 import {actions, AppDispatch} from "../editor/EditorReducer";
 import {PageState} from "../core/Enums";
 
-export const ShouldUpdateTask: FC = () => {
+export const ModalToggleTaskMode: FC = () => {
   const interactionDisabled = false
   const dispatch = useDispatch<AppDispatch>()
   return (

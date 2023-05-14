@@ -8,7 +8,7 @@ import {getX} from "../map/MapUtils"
 import {getMapId} from "../state/ApiState"
 import {mSelector} from "../state/EditorState"
 
-export const ShouldCreateMapInMap: FC = () => {
+export const ModalCreateMapInMap: FC = () => {
   const m = useSelector((state:RootState) => mSelector(state))
   const { isFetching } = useOpenWorkspaceQuery()
   const dispatch = useDispatch<AppDispatch>()
