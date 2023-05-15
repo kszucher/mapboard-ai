@@ -65,7 +65,7 @@ export const WindowListeners: FC = () => {
     ) {
       e.preventDefault()
     }
-    dispatch(actions.mapAction(mapActionResolver(m, e, 'kd', {})))
+    dispatch(actions.mapAction(mapActionResolver(getMap(), e, 'kd', {})))
   }
 
   const paste = (e: Event) => {
@@ -76,7 +76,7 @@ export const WindowListeners: FC = () => {
           const type = item[0].types[0]
           if (type === 'text/plain') {
             navigator.clipboard.readText()
-              .then(text => dispatch(actions.mapAction(mapActionResolver(m, null, 'pt', text))))
+              .then(text => dispatch(actions.mapAction(mapActionResolver(getMap(), null, 'pt', text))))
           } else if (type === 'image/png') {
             item[0].getType('image/png').then(image => {
               const formData = new FormData()
@@ -85,7 +85,7 @@ export const WindowListeners: FC = () => {
                 ? 'http://127.0.0.1:8082/feta'
                 : 'https://mapboard-server.herokuapp.com/feta'
               fetch(address, {method: 'post', body: formData})
-                .then(response => response.json().then(response => dispatch(actions.mapAction(mapActionResolver(m, null, 'pi', response)))))
+                .then(response => response.json().then(response => dispatch(actions.mapAction(mapActionResolver(getMap(), null, 'pi', response)))))
             })
           }
         })
