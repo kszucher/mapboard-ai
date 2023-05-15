@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux"
-import {Button, Link, ThemeProvider, Typography} from '@mui/material'
+import {Button, CircularProgress, Link, ThemeProvider, Typography} from '@mui/material'
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
-import {FC, useEffect} from "react"
+import React, {FC, useEffect, useState} from "react"
 import { PageState} from "../core/Enums"
 import {useAuth0} from "@auth0/auth0-react"
 import {api} from "../core/Api"
@@ -12,6 +12,7 @@ import {setColors} from "../core/Colors"
 export const Auth: FC = () => {
   const colorMode = 'dark'
   const token = useSelector((state: RootState) => state.editor.token)
+  const [isWaiting, setIsWaiting] = useState(false)
   const { loginWithRedirect, getAccessTokenSilently, isAuthenticated } = useAuth0()
   const dispatch = useDispatch<AppDispatch>()
 
@@ -22,6 +23,7 @@ export const Auth: FC = () => {
   useEffect(() => {
     (async () => {
       try {
+        setIsWaiting(true)
         const token = await getAccessTokenSilently({
           authorizationParams: {
             audience: authAudienceUrl,
@@ -30,6 +32,7 @@ export const Auth: FC = () => {
         });
         dispatch(actions.setToken(token))
       } catch (e) {
+        setIsWaiting(false)
         console.error(e)
       }
     })()
@@ -50,17 +53,23 @@ export const Auth: FC = () => {
         <Typography color="primary" component="h1" variant="h6">
           {'Private Beta'}
         </Typography>
-        <Button
-          id="sign-in" color="primary" variant='contained' fullWidth
-          disabled={false}
-          onClick={() => loginWithRedirect()}>
-          {'SIGN IN / SIGN UP'}
-        </Button>
-        <Button
-          id="live-demo" color="primary" variant='contained' fullWidth
-          onClick={()=> {dispatch(actions.setPageState(PageState.DEMO))}}>
-          {'LIVE DEMO'}
-        </Button>
+        {
+          isWaiting
+            ?
+            <CircularProgress />
+            :
+            <Button
+              id="sign-in" color="primary" variant='contained' fullWidth
+              disabled={false}
+              onClick={() => loginWithRedirect()}>
+              {'SIGN IN / SIGN UP'}
+            </Button>
+        }
+        {/*<Button*/}
+        {/*  id="live-demo" color="primary" variant='contained' fullWidth*/}
+        {/*  onClick={()=> {dispatch(actions.setPageState(PageState.DEMO))}}>*/}
+        {/*  {'LIVE DEMO'}*/}
+        {/*</Button>*/}
         <Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
           <Link color="inherit" href="https://mapboard.io/">
