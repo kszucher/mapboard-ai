@@ -1,11 +1,13 @@
 import {FC, useState} from 'react'
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography, SelectChangeEvent } from '@mui/material'
-import {actions, AppDispatch} from "../editor/EditorReducer"
+import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
 import {PageState} from "../core/Enums"
 import {mapActionResolver} from "../map/MapActionResolver";
+import {mSelector} from "../state/EditorState";
 
 export const ModalCreateTable: FC = () => {
+  const m = useSelector((state:RootState) => mSelector(state))
   const [row, setRow] = useState<string>('1')
   const [col, setCol] = useState<string>('1')
   const interactionDisabled = false
@@ -52,7 +54,7 @@ export const ModalCreateTable: FC = () => {
             variant='outlined'
             disabled={interactionDisabled}
             onClick={() => {
-              dispatch(actions.mapAction(mapActionResolver(null, 'ce', {type: 'insertTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}})))
+              dispatch(actions.mapAction(mapActionResolver(m, null, 'ce', {type: 'insertTable', payload: {rowLen: parseInt(row), colLen: parseInt(col)}})))
               dispatch(actions.setPageState(PageState.WS))
             }}>
             {'OK'}

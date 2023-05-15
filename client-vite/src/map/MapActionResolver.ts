@@ -1,11 +1,11 @@
 import {isUrl} from "../core/Utils"
-import {getMap} from "../state/EditorState"
+import {M} from "../state/MapPropTypes";
 import {getX, isCCXA, isCRXA, isCX, isDSX, isRX, isSX, isSXAVN, isCXR, isCXL, isCXB, isCXT, sortPath, getCountSXAU, getCountSXAD, getCountSC, getCountSS, getPathDir, getXP} from "./MapUtils"
 
 const ckm = (e: any, condition: string) => [+e.ctrlKey ? 'c' : '-', +e.shiftKey ? 's' : '-', +e.altKey ? 'a' : '-'].join('') === condition
 
-export const mapActionResolver = (e: any, et: string, ep: any) => {
-  const m = structuredClone((getMap())).sort(sortPath)
+export const mapActionResolver = (pm: M, e: any, et: string, ep: any) => {
+  const m = structuredClone(pm).sort(sortPath)
   const x = getX(m)
   const dr = getPathDir(x.path) === 1
   const dl = getPathDir(x.path) === -1
@@ -137,6 +137,9 @@ export const mapActionResolver = (e: any, et: string, ep: any) => {
 
     case (et === 'ce' && ep.type === 'insertTable'                         && r                     ): return ({type: 'insertSORTable',           payload: ep.payload})
     case (et === 'ce' && ep.type === 'insertTable'                         && s                     ): return ({type: 'insertSOTable',            payload: ep.payload})
+
+    case (et === 'ae' && ep.type === 'insertGptSuggestions'                && r                     ): return ({type: 'insertSLOR',               payload: ep.payload})
+    case (et === 'ae' && ep.type === 'insertGptSuggestions'                && s                     ): return ({type: 'insertSLO',                payload: ep.payload})
 
     default: return ({type: '', payload: ep})
   }

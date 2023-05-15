@@ -1,5 +1,6 @@
 import {combineReducers, configureStore, createSlice, current, PayloadAction} from "@reduxjs/toolkit"
 import {getCoords} from "../component/MapDivUtils"
+import {mapActionResolver} from "../map/MapActionResolver"
 import {mapFindNearest} from "../map/MapFindNearest"
 import {mapReducer} from "../map/MapReducer"
 import {api} from "../core/Api"
@@ -122,8 +123,13 @@ export const editorSlice = createSlice({
       api.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
         const { gptSuggestions } = payload
-        console.log(gptSuggestions)
-        // TODO mutate map
+        const pm = current(state.mapList[state.mapListIndex])
+        const mapAction = mapActionResolver(pm, null, 'ae' , {type: 'insertGptSuggestions', payload: gptSuggestions})
+        const m = mapReducer(pm, mapAction.type, mapAction.payload)
+        if (!isEqual(pm, m)) {
+          state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
+          state.mapListIndex = state.mapListIndex + 1
+        }
       }
     )
   }

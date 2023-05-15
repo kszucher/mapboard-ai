@@ -90,12 +90,12 @@ export const MapDiv: FC = () => {
                     const { signal } = abortController
                     window.addEventListener('mousemove', (e) => {
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(e, 'dmm', {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmm', {n, e})))
                     }, { signal })
                     window.addEventListener('mouseup', (e) => {
                       abortController.abort()
                       e.preventDefault()
-                      dispatch(actions.mapAction(mapActionResolver(e, 'dmu', {n, e})))
+                      dispatch(actions.mapAction(mapActionResolver(m, e, 'dmu', {n, e})))
                     }, { signal })
                   }
                 } else if (e.button === 1) {
@@ -107,7 +107,7 @@ export const MapDiv: FC = () => {
               }}
               onDoubleClick={(e) => {
                 e.stopPropagation()
-                dispatch(actions.mapAction(mapActionResolver(e, 'dmdc', {})))
+                dispatch(actions.mapAction(mapActionResolver(m, e, 'dmdc', {})))
               }}
               onKeyDown={(e) => {
                 e.stopPropagation()

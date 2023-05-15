@@ -10,6 +10,10 @@ export const insertS = (m: M, ip: P, attributes: object) => {
   m.sort(sortPath)
 }
 
+export const insertSL = (m: M, ip: P) => {
+  // TODO insert multiple nodes!!!
+}
+
 export const insertCR = (m: M, ip: P) => {
   makeSpaceFromCR(m, ip)
   const rowIndices = Array(getCountCH(m, getXP(m))).fill(null).map((el, i) => [ip.at(-2), i])
