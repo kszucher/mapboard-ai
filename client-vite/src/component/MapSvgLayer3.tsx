@@ -3,7 +3,7 @@ import isEqual from "react-fast-compare"
 import {useDispatch, useSelector} from "react-redux"
 import {useOpenWorkspaceQuery} from "../core/Api"
 import {getColors} from "../core/Colors"
-import {getClosestStructParentPath, getCountD, getCountSC, getCountSS, getG, getNodeById, getNodeByPath, getPathPattern, isS} from "../map/MapUtils"
+import {getClosestStructParentPath, getCountSC, getCountSS, getG, getNodeById, getNodeByPath, getPathPattern, isD, isR, isS} from "../map/MapUtils"
 import {defaultUseOpenWorkspaceQueryState} from "../state/ApiState"
 import {mSelector, pmSelector} from "../state/EditorState"
 import {actions, AppDispatch, RootState} from "../editor/EditorReducer"
@@ -104,7 +104,7 @@ export const MapSvgLayer3: FC = () => {
             </path>
           }
           {
-            n.taskStatus > 0 && !getCountD(m, n.path) && !getCountSS(m, n.path) && !getCountSC(m, n.path) && n.contentType !== 'image' &&
+            n.taskStatus > 0 && !isR(n.path) && !isD(n.path) && !getCountSS(m, n.path) && !getCountSC(m, n.path) && n.contentType !== 'image' &&
             <Fragment key={`${n.nodeId}_svg_task`}>
               {
                 !isEqual(n.nodeId, editedNodeId) &&
