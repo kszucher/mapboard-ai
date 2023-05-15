@@ -123,8 +123,10 @@ export const editorSlice = createSlice({
       api.endpoints.getGptSuggestions.matchFulfilled,
       (state, { payload }) => {
         const { gptSuggestions } = payload
+        // TODO parse suggestions into words
+        const gptSuggestionsItemized = ['alma', 'korte', 'banan']
         const pm = current(state.mapList[state.mapListIndex])
-        const mapAction = mapActionResolver(pm, null, 'ae' , {type: 'insertGptSuggestions', payload: gptSuggestions})
+        const mapAction = mapActionResolver(pm, null, 'ae' , { type: 'insertGptSuggestions', payload: { gptSuggestionsItemized } })
         const m = mapReducer(pm, mapAction.type, mapAction.payload)
         if (!isEqual(pm, m)) {
           state.mapList = [...state.mapList.slice(0, state.mapListIndex + 1), m]
