@@ -3,8 +3,8 @@ import {useSelector} from "react-redux"
 import {ThemeProvider} from '@mui/material'
 import {RootState} from "../editor/EditorReducer";
 import {BreadcrumbMaps} from "./BreadcrumbMaps"
-import {ControlsLeft} from './ControlsLeft'
-import {ControlsRight} from './ControlsRight'
+import {SidebarLeft} from './SidebarLeft'
+import {SidebarRight} from './SidebarRight'
 import {ModalCreateTable} from './ModalCreateTable'
 import {Formatter} from "./Formatter"
 import {FrameCarousel} from "./FrameCarousel"
@@ -53,8 +53,8 @@ export const Editor: FC = () => {
           <UndoRedo/>
           <BreadcrumbMaps/>
           <TabMaps/>
-          <ControlsLeft/>
-          <ControlsRight/>
+          <SidebarLeft/>
+          <SidebarRight/>
           {
             formatterVisible &&
             <Formatter/>

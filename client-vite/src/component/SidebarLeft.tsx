@@ -9,7 +9,7 @@ import {api} from "../core/Api"
 import {AppDispatch} from "../editor/EditorReducer";
 import {getMapId} from "../state/ApiState";
 
-export const ControlsLeft: FC = () => {
+export const SidebarLeft: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   return (
     <div className="_bg fixed left-0 width-[40px] py-1 px-3 flex items-center border-l-0 bottom-[48px] rounded-r-2xl">
