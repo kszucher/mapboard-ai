@@ -118,6 +118,14 @@ export const editorSlice = createSlice({
         state.pageState = PageState.WS
       }
     )
+    builder.addMatcher(
+      api.endpoints.getGptSuggestions.matchFulfilled,
+      (state, { payload }) => {
+        const { gptSuggestions } = payload
+        console.log(gptSuggestions)
+        // TODO mutate map
+      }
+    )
   }
 })
 

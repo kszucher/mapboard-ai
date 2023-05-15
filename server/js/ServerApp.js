@@ -272,6 +272,9 @@ app.post('/beta-private', checkJwt, async (req, res) => {
         await users.deleteOne({ _id: userId })
         return res.json({})
       }
+      case 'getGptSuggestions': {
+        return res.json({gptSuggestions: 'RETURN STRING'})
+      }
     }
   } catch (err) {
     console.log(err.stack)

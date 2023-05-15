@@ -23,7 +23,7 @@ export const ModalCreateGptNodes: FC = () => {
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth size="small" variant="standard" >
               <InputLabel>
-                {'Row'}
+                {'Suggestions'}
               </InputLabel>
               <Select
                 value={numNodes}
